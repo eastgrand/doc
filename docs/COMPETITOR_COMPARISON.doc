@@ -1,0 +1,33 @@
+MPIQ vs. Traditional GIS & BI Software
+=======================================
+
+(plain-text tables, import into Word works)
+
+1. GIS Platforms
+Capability	MPIQ	ArcGIS	QGIS	MapInfo	CARTO
+Instant NL-query → map	YES	Partial	No	No	No
+Built-in SHAP	YES	Addon	Plugin	No	No
+Two-pass narrative	YES	No	No	No	No
+Persona voices	YES	No	No	No	No
+Zero-install UI	YES	Online only	Desktop	Desktop	Cloud
+Validated data bundle	YES	Optional	No	No	Optional
+
+2. BI Dashboards
+Capability	MPIQ	Tableau	Power BI	Qlik	SAP AC	SAS VA
+NL geospatial query	YES	AskData (non-spatial)	Q&A (limited)	InsightAdv.	Search2Insight	No
+Auto map render	YES	Geo ext.	Basic	Basic	Plug-in	Basic
+Explainable ML	YES	Einstein add-on	Cognitive S.	AutoML	SmartPred.	Extra
+Persona selector	YES	No	No	No	No	No
+
+3. Data-Warehouse
+Capability	MPIQ	Snowflake	BigQuery GIS	Databricks	Redshift
+End-user UI	YES	No	No	No	No
+Chat analytics	YES	Snowsight AI	No	Partner	No
+SHAP + render	YES	Streamlit	Looker	Notebook	QuickSight
+
+Differentiators
+* Two-pass map + prose guarantees consistency
+* SHAP explainability visible in pop-ups
+* Persona-specific storytelling
+* <0.5 s first map pixel, <1 % numeric drift
+* Pure browser SaaS – no desktop install 

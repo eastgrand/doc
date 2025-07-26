@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Analysis Engine</title>
+</head>
+<body>
+    <h1>Analysis Engine Debugger</h1>
+    <button onclick="testAnalysis()">Test Simple Analysis</button>
+    <div id="results"></div>
+
+    <script type="module">
+        // Import the modules we need
+        import { AnalysisEngine } from './lib/analysis/AnalysisEngine.js';
+        import { ConfigurationManager } from './lib/analysis/ConfigurationManager.js';
+        import { CachedEndpointRouter } from './lib/analysis/CachedEndpointRouter.js';
+        import { DataProcessor } from './lib/analysis/DataProcessor.js';
+
+        window.testAnalysis = async function() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<h2>Testing...</h2>';
+            
+            try {
+                // Create components
+                const configManager = new ConfigurationManager();
+                const endpointRouter = new CachedEndpointRouter(configManager);
+                const dataProcessor = new DataProcessor(configManager);
+                
+                // Test simple query
+                const query = "analyze nike markets";
+                resultsDiv.innerHTML += `<p>Query: "${query}"</p>`;
+                
+                // Test endpoint selection
+                const endpoint = await endpointRouter.selectEndpoint(query);
+                resultsDiv.innerHTML += `<p>Selected endpoint: ${endpoint}</p>`;
+                
+                // Test data loading
+                try {
+                    const rawData = await endpointRouter.callEndpoint(endpoint, query);
+                    resultsDiv.innerHTML += `<p>Raw data loaded: ${rawData.results?.length || 0} records</p>`;
+                    resultsDiv.innerHTML += `<p>Success flag: ${rawData.success}</p>`;
+                    
+                    // Test data processing
+                    const processedData = dataProcessor.processResults(rawData, endpoint);
+                    resultsDiv.innerHTML += `<p>Processed data: ${processedData.records?.length || 0} records</p>`;
+                    resultsDiv.innerHTML += `<p>Type: ${processedData.type}</p>`;
+                    
+                    if (processedData.records && processedData.records.length > 0) {
+                        resultsDiv.innerHTML += '<h3>First Record:</h3>';
+                        resultsDiv.innerHTML += '<pre>' + JSON.stringify(processedData.records[0], null, 2) + '</pre>';
+                    }
+                } catch (error) {
+                    resultsDiv.innerHTML += `<p style="color: red;">Error: ${error.message}</p>`;
+                    console.error('Full error:', error);
+                }
+                
+            } catch (error) {
+                resultsDiv.innerHTML += `<p style="color: red;">Setup Error: ${error.message}</p>`;
+                console.error('Full error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

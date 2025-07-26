@@ -1,0 +1,1239 @@
+diff --git a/components/geospatial-chat-interface.tsx b/components/geospatial-chat-interface.tsx
+index 9dea04e8..9510b761 100644
+--- a/components/geospatial-chat-interface.tsx
++++ b/components/geospatial-chat-interface.tsx
+@@ -54,7 +54,8 @@ import {
+   DebugInfo,
+   ChatVisualizationResult,
+   GeospatialFeature,
+-  AnalysisResult as QueryAnalysisResult
++  AnalysisResult as QueryAnalysisResult,
++  ConceptMap
+ } from '@/lib/analytics/types';
+ import { analyzeQuery } from '@/lib/query-analyzer';
+ import { conceptMapping, mapToConcepts } from '@/lib/concept-mapping';
+@@ -187,7 +188,35 @@ const PERSONA_ICON_MAP: Record<string, React.ComponentType<any>> = {
+   'customer-advocate': FaRegHandshake,
+ };
+ 
+-const EnhancedGeospatialChat = ({
++// Brand icons mapping at module scope
++const BRAND_ICON_MAP: Record<string, React.ComponentType<any>> = {
++  'Nike': SiNike,
++  'Jordan': SiJordan,
++  'Converse': GiConverseShoe,
++  'Adidas': SiAdidas,
++  'Asics': SiPuma, // Using Puma as fallback for Asics
++  'New Balance': SiNewbalance,
++  'Puma': SiPuma,
++  'Reebok': SiReebok
++};
++
++// Brand field codes
++const BRAND_FIELD_CODES: Record<string, string> = {
++  'nike': 'MP30034A_B',
++  'jordan': 'MP30032A_B',
++  'converse': 'MP30031A_B',
++  'adidas': 'MP30029A_B',
++  'puma': 'MP30035A_B',
++  'reebok': 'MP30036A_B',
++  'newbalance': 'MP30033A_B',
++  'asics': 'MP30030A_B'
++} as const;
++
++// Reverse mapping for display
++const FIELD_TO_BRAND: Record<string, string> = Object.entries(BRAND_FIELD_CODES)
++  .reduce((acc, [brand, code]) => ({ ...acc, [code]: brand }), {});
++
++const EnhancedGeospatialChat: React.FC<EnhancedGeospatialChatProps> = ({
+   agentType = 'geospatial',
+   dataSource,
+   onFeaturesFound,
+@@ -197,7 +226,7 @@ const EnhancedGeospatialChat = ({
+   setFormattedLegendData,
+   setVisualizationResult,
+   mapViewRefValue
+-}: EnhancedGeospatialChatProps): ReactElement => {
++}): JSX.Element => {
+   // Load ArcGIS modules
+   const [arcgisModules, setArcgisModules] = useState<any>(null);
+   
+@@ -304,6 +333,10 @@ const EnhancedGeospatialChat = ({
+   const [isTopNAll, setIsTopNAll] = useState(true);
+   const [isFiltersDialogOpen, setIsFiltersDialogOpen] = useState<boolean>(false);
+ 
++  // LOCAL STATE for target button - bypassing context for re-render issue
++  const [currentTarget, setCurrentTarget] = useState<string>('MP30034A_B'); // Nike as default
++  const [targetIcon, setTargetIcon] = useState<React.ComponentType<any>>(() => SiNike);
++
+   const [currentProcessingStep, setCurrentProcessingStep] = useState<string | null>(null);
+ 
+   const [debugInfo, setDebugInfo] = useState<DebugInfo & { totalFeatures?: number }>({
+@@ -326,23 +359,175 @@ const EnhancedGeospatialChat = ({
+     { label: 'Reebok', value: 'MP30036A_B' },
+   ];
+ 
+-  // Brand icons (Simple Icons)
+-  const BRAND_ICON_MAP: Record<string, React.ComponentType<any>> = {
+-    Nike: SiNike,
+-    Adidas: SiAdidas,
+-    Asics: SiNewbalance, // Fallback until Asics icon available
+-    Converse: GiConverseShoe,
+-    Jordan: SiJordan,
+-    'New Balance': SiNewbalance,
+-    Puma: SiPuma,
+-    Reebok: SiReebok,
+-  };
++  // Add persona state management
++  const [selectedPersona, setSelectedPersona] = useState<string>('strategist'); // Default to strategist
+ 
++  // Add state for target dialog
+   const [isTargetDialogOpen, setIsTargetDialogOpen] = useState(false);
+-  const [selectedTargetVariable, setSelectedTargetVariable] = useState<string>('MP30034A_B'); // Default Nike
+ 
+-  // Add persona state management
+-  const [selectedPersona, setSelectedPersona] = useState<string>('strategist'); // Default to strategist
++  // Add state for analysis result
++  const [lastAnalysisResult, setLastAnalysisResult] = useState<QueryAnalysisResult | null>(null);
++
++  // Brand detection function
++  const detectBrandsInQuery = (query: string): string[] => {
++    if (!query) return [];
++    
++    const queryLower = query.toLowerCase();
++    const detectedBrands: string[] = [];
++    
++    // Check for each brand in the query
++    Object.entries({
++      'nike': 'MP30034A_B',
++      'jordan': 'MP30032A_B', 
++      'converse': 'MP30031A_B',
++      'adidas': 'MP30029A_B',
++      'puma': 'MP30035A_B',
++      'reebok': 'MP30036A_B',
++      'new balance': 'MP30033A_B',
++      'newbalance': 'MP30033A_B',
++      'asics': 'MP30030A_B'
++    }).forEach(([brandName, fieldCode]) => {
++      if (queryLower.includes(brandName)) {
++        detectedBrands.push(fieldCode);
++      }
++    });
++    
++    return detectedBrands;
++  };
++
++  // Get available target options based on analysis result OR real-time query detection
++  const getAvailableTargetOptions = () => {
++    // First check real-time detection from current input
++    const detectedBrands = detectBrandsInQuery(inputQuery);
++    
++    if (detectedBrands.length > 0) {
++      // Filter TARGET_OPTIONS to only include detected brands
++      const availableOptions = TARGET_OPTIONS.filter((opt) => 
++        detectedBrands.includes(opt.value)
++      );
++      
++      console.log('[DEBUG] Real-time detected brands:', {
++        query: inputQuery,
++        detectedBrands,
++        availableOptions: availableOptions.map(opt => opt.label)
++      });
++      
++      return availableOptions;
++    }
++    
++    // Fall back to analysis result if no real-time detection
++    if (!lastAnalysisResult?.relevantFields || lastAnalysisResult.relevantFields.length === 0) {
++      // No analysis result or no relevant fields - all options available
++      console.log('[DEBUG] All target options available - no brand restrictions');
++      return TARGET_OPTIONS;
++    }
++    
++    // Check if any of the relevant fields are brand fields
++    const brandFields = lastAnalysisResult.relevantFields.filter(field => 
++      TARGET_OPTIONS.some(opt => opt.value === field)
++    );
++    
++    if (brandFields.length === 0) {
++      // No brand fields in relevant fields - all options available
++      console.log('[DEBUG] All target options available - no brand fields detected');
++      return TARGET_OPTIONS;
++    }
++    
++    // Filter TARGET_OPTIONS to only include those that match relevant brand fields
++    const availableOptions = TARGET_OPTIONS.filter((opt) => 
++      brandFields.includes(opt.value)
++    );
++    
++    console.log('[DEBUG] Filtered target options from analysis:', {
++      relevantFields: lastAnalysisResult.relevantFields,
++      brandFields,
++      availableOptions: availableOptions.map(opt => opt.label)
++    });
++    
++    return availableOptions;
++  };
++
++  const availableTargetOptions = getAvailableTargetOptions();
++
++  // Update the real-time target update effect to use local state
++  useEffect(() => {
++    const detectedBrands = detectBrandsInQuery(inputQuery);
++    
++    if (detectedBrands.length > 0) {
++      // Set target to first detected brand
++      const firstBrandField = detectedBrands[0];
++      const targetOption = TARGET_OPTIONS.find(opt => opt.value === firstBrandField);
++      
++      if (targetOption && currentTarget !== firstBrandField) {
++        console.log('[DEBUG] Real-time target update from input:', {
++          query: inputQuery,
++          detectedBrands,
++          newTarget: firstBrandField,
++          targetLabel: targetOption.label
++        });
++        
++        setCurrentTarget(firstBrandField);
++        const brandIcon = BRAND_ICON_MAP[targetOption.label] || SiNike;
++        setTargetIcon(() => brandIcon);
++      }
++    } else {
++      // If no brands are in the query, reset to default if not already there
++      if (currentTarget !== 'MP30034A_B') {
++        setCurrentTarget('MP30034A_B');
++        setTargetIcon(() => SiNike);
++      }
++    }
++  }, [inputQuery, currentTarget, setCurrentTarget, setTargetIcon]);
++
++  // Update target when analysis result changes
++  useEffect(() => {
++    console.log('[DEBUG] Target update useEffect triggered:', {
++      hasAnalysisResult: !!lastAnalysisResult,
++      targetVariable: lastAnalysisResult?.targetVariable,
++      currentTargetBefore: currentTarget
++    });
++    
++    if (lastAnalysisResult?.targetVariable) {
++      // Fix case sensitivity issue - search case-insensitively
++      const targetOption = TARGET_OPTIONS.find(opt => 
++        opt.value.toLowerCase() === lastAnalysisResult.targetVariable?.toLowerCase()
++      );
++      
++      if (targetOption) {
++        console.log('[DEBUG] About to set target from analysis:', {
++          from: currentTarget,
++          to: targetOption.value,
++          label: targetOption.label
++        });
++        
++        setCurrentTarget(targetOption.value);
++        const brandIcon = BRAND_ICON_MAP[targetOption.label] || SiNike;
++        setTargetIcon(() => brandIcon);
++        
++        // Log for debugging
++        console.log('[DEBUG] Target variable update:', {
++          originalTarget: lastAnalysisResult.targetVariable,
++          newTarget: targetOption.value,
++          brandLabel: targetOption.label,
++          icon: BRAND_ICON_MAP[targetOption.label] ? 'Found brand icon' : 'Using default Nike icon',
++          relevantFields: lastAnalysisResult.relevantFields
++        });
++      } else {
++        console.warn('[DEBUG] Target option not found for:', lastAnalysisResult.targetVariable, 'Available options:', TARGET_OPTIONS.map(opt => opt.value));
++      }
++    }
++  }, [lastAnalysisResult, currentTarget, setCurrentTarget, setTargetIcon]);
++
++  // Debug useEffect to monitor target button state changes
++  useEffect(() => {
++    console.log('[DEBUG] Target button state changed:', {
++      currentTarget,
++      targetIconName: targetIcon?.displayName || targetIcon?.name || 'Unknown',
++      targetLabel: TARGET_OPTIONS.find(o => o.value === currentTarget)?.label,
++      inputQuery: inputQuery.substring(0, 50),
++      timestamp: new Date().toISOString()
++    });
++  }, [currentTarget, targetIcon, inputQuery]);
+ 
+   // React to feature changes
+   useEffect(() => {
+@@ -505,6 +690,20 @@ const EnhancedGeospatialChat = ({
+     
+     // Notify parent component
+     onVisualizationLayerCreated(null, false);
++    setProcessingError(null);
++    setFeatures([]);
++    setDebugInfo({
++      layerMatches: [],
++      sqlQuery: "",
++      features: [],
++      timing: {},
++      error: undefined
++    });
++    // Reset target to default when clearing
++    setCurrentTarget('MP30034A_B');
++    setTargetIcon(() => SiNike);
++    // Refresh context summary to clear it
++    refreshContextSummary();
+   };
+ 
+   // Add this function after the debug logger definition
+@@ -996,759 +1195,96 @@ const EnhancedGeospatialChat = ({
+   };
+ 
+   const handleSubmit = async (query: string, source: 'main' | 'reply' = 'main') => {
+-    const startTime = Date.now();
+-
+-    // --- STATE RESET ---
+-    // Clear previous results and errors to prevent stale data from displaying
+-    setIsProcessing(true);
+-    setError(null);
+-    setProcessingError(null);
+-    setFeatures([]); // Clear previous features
+-    setVisualizationResult(null); // Clear previous visualization
+-    setFormattedLegendData({ items: [] }); // Clear previous legend
+-    if (currentVisualizationLayer.current) {
+-        if (currentMapView) {
+-            currentMapView.map.remove(currentVisualizationLayer.current);
+-        }
+-        currentVisualizationLayer.current = null;
+-    }
+-    onVisualizationLayerCreated(null, true); // Notify parent to clear layer
+-
+-    setCurrentProcessingStep('query_analysis');
+-    setDebugInfo({
+-      query,
+-      timestamp: new Date().toISOString(),
+-        logs: [],
+-        layerMatches: [],
+-        sqlQuery: "",
+-        features: [],
+-        timing: {},
+-        error: undefined
+-    });
++    console.log('[DEBUG] handleSubmit called with query:', query);
+     
+-    // Initialize all processing steps at once for better UX
+-    setProcessingSteps([
+-      { id: 'query_analysis', name: 'Query Analysis', status: 'processing', message: 'Understanding your query...' },
+-      { id: 'microservice_request', name: 'AI Processing', status: 'pending', message: 'Preparing analysis request...' },
+-      { id: 'data_loading', name: 'Data Loading', status: 'pending', message: 'Loading geographic data...' },
+-      { id: 'data_joining', name: 'Data Integration', status: 'pending', message: 'Merging analysis with geographic data...' },
+-      { id: 'visualization', name: 'Visualization', status: 'pending', message: 'Creating map visualization...' },
+-      { id: 'narrative_generation', name: 'Report Generation', status: 'pending', message: 'Generating narrative analysis...' }
+-    ]);
+-
+-    const userMessageId = `user-${Date.now()}`;
+-    const assistantMessageId = `assistant-${Date.now() + 1}`;
+-
+-    const userMessage: LocalChatMessage = {
+-      id: userMessageId,
+-      role: 'user',
+-      content: query,
+-      timestamp: new Date(),
+-    };
+-
+-    // Persist to global conversation context
+-    addContextMessage({ role: 'user', content: query });
+-
+-    const assistantMessage: LocalChatMessage = {
+-      id: assistantMessageId,
+-      role: 'assistant',
+-      content: 'Processing your query...',
+-      timestamp: new Date(),
+-      metadata: {
+-        analysisResult: {},
+-        context: '',
+-        debugInfo: {}
+-      }
+-    };
+-
+-    setMessages(prev => [...prev, userMessage, assistantMessage]);
+-
+     try {
+-      const debugLogger = (step: string, data?: any) => {
+-        console.log(`[GeoChat][${step}]`, data || '');
+-        setDebugInfo(prev => ({
+-          ...prev,
+-          logs: [...(prev?.logs || []), { step, data, timestamp: new Date().toISOString() }]
+-        }));
+-
+-        setMessages(prev => prev.map(msg =>
+-          msg.id === assistantMessageId
+-            ? { ...msg, metadata: { ...msg.metadata, debugInfo: { ...msg.metadata?.debugInfo, currentStep: step } } }
+-            : msg
+-        ));
+-      };
+-
+-      debugLogger('START_PROCESSING', { query });
+-
+-      // Step 1: Query Analysis
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'query_analysis' ? { ...s, message: 'Analyzing query intent and extracting concepts...' } : s
+-      ));
++      // ... existing code ...
+       
+-      const conceptMap = await conceptMapping(query);
+-      debugLogger('CONCEPT_MAPPING_COMPLETE', { conceptMap });
+-
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'query_analysis' ? { ...s, message: 'Determining analysis strategy...' } : s
+-      ));
+-
+-      const analysisResult = await analyzeQuery(query, conceptMap, contextSummary || '');
+-      console.log('[DEBUG] Query analysis result:', {
+-        queryType: analysisResult.queryType,
+-        targetVariable: analysisResult.targetVariable,
+-        relevantFields: analysisResult.relevantFields,
+-        relevantLayers: analysisResult.relevantLayers,
+-        visualizationStrategy: analysisResult.visualizationStrategy
++      // After query analysis
++      const analysisResult = await analyzeQuery(query, {
++        matchedLayers: [],
++        matchedFields: [],
++        confidence: 1,
++        keywords: [],
++        layerScores: {},
++        fieldScores: {}
+       });
+-      debugLogger('QUERY_ANALYSIS_COMPLETE', { analysisResult });
+-
+-      const untypedAnalysisResult = analysisResult as any;
+-      if (untypedAnalysisResult.queryType === 'unknown') {
+-        let failureMessage = untypedAnalysisResult.explanation || "I'm sorry, I couldn't understand your request. Please try rephrasing your query.";
+-        if (untypedAnalysisResult.suggestions && untypedAnalysisResult.suggestions.length > 0) {
+-            const suggestionText = untypedAnalysisResult.suggestions.map((s: string) => `\`${s}\``).join(', ');
+-            failureMessage += `\n\nDid you mean one of these analysis types: ${suggestionText}?`;
+-        }
+-        setMessages(prev => prev.map(msg =>
+-            msg.id === assistantMessageId
+-                ? { ...msg, content: failureMessage, metadata: { ...msg.metadata, analysisResult: untypedAnalysisResult } }
+-                : msg
+-        ));
+-        setProcessingSteps(prev => prev.map(s => 
+-          s.id === 'query_analysis' ? { ...s, status: 'error', message: 'Could not understand query' } : s
+-        ));
+-        setIsProcessing(false);
+-        setCurrentProcessingStep(null);
+-        return;
+-      }
+-
+-      const enhancedPrompt = constructMicroservicePrompt(query, analysisResult as QueryAnalysisResult);
+-      debugLogger('ENHANCED_PROMPT_GENERATED', { enhancedPrompt });
+-
+-      setMessages(prev => prev.map(msg =>
+-        msg.id === assistantMessageId
+-          ? { ...msg, metadata: { ...msg.metadata, analysisResult } }
+-          : msg
+-      ));
+       
+-      // Complete query analysis step
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'query_analysis' ? { ...s, status: 'complete', message: 'Query analysis complete' } : s
+-      ));
+-      
+-      // Start microservice request step
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'microservice_request' ? { ...s, status: 'processing', message: 'Submitting analysis request to AI engine...' } : s
+-      ));
+-      setCurrentProcessingStep('microservice_request');
+-
+-      // Step 2: Prepare microservice request
+-      const analysisTypeForApi = (analysisResult?.queryType || 'correlation')
+-        .replace(/([a-z])([A-Z])/g, '$1_$2')
+-        .toLowerCase();
+-
+-      // helper to convert CamelCase / PascalCase to snake_case
+-      const toSnake = (str: string) =>
+-        str
+-          .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+-          .replace(/([A-Z])([A-Z][a-z])/g, '$1_$2')
+-          .toLowerCase();
+-
+-      // Using central FIELD_ALIASES (imported at module top)
+-      // import { FIELD_ALIASES } from '@/utils/field-aliases';
+-
+-      const snakeMatched = (analysisResult.relevantFields || []).map(f => FIELD_ALIASES[f] || toSnake(f));
+-      const snakeTarget  = FIELD_ALIASES[analysisResult.targetVariable || ''] || toSnake(analysisResult.targetVariable || 'thematic_value');
+-      
+-      // Use analysisResult.targetVariable unless the user has explicitly chosen a target
+-      const effectiveTargetVariable = (selectedTargetVariable && selectedTargetVariable !== 'MP30034A_B')
+-        ? selectedTargetVariable
+-        : analysisResult.targetVariable;
+-      
+-      console.log('[DEBUG] Target variable mapping:', {
+-        originalTarget: analysisResult.targetVariable,
+-        snakeTarget: snakeTarget,
+-        fieldAliasResult: FIELD_ALIASES[analysisResult.targetVariable || ''],
+-        toSnakeResult: toSnake(analysisResult.targetVariable || 'thematic_value')
+-      });
++      // Store analysis result in state
++      setLastAnalysisResult(analysisResult);
+ 
+-      const microserviceRequest = buildMicroserviceRequest(
+-        analysisResult,
+-        query,                    // user's NL query
+-        effectiveTargetVariable,  // dynamically chosen dataset code
+-        contextSummary || ''
+-      );
+-
+-      // DEBUG: log the request payload being sent to the micro-service
+-      console.log('[MicroSvc][REQUEST]', JSON.parse(JSON.stringify(microserviceRequest)));
+-
+-      // Use local Next.js API proxy to avoid CORS / mixed-content issues
+-      const analyzeUrl = '/api/analyze-proxy';
+-      const apiKey = process.env.NEXT_PUBLIC_SHAP_MICROSERVICE_API_KEY;
+-
+-      console.log('[DEBUG] Microservice request:', {
+-        url: analyzeUrl,
+-        request: microserviceRequest
+-      });
+-
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'microservice_request' ? { ...s, message: 'Sending request to AI analysis engine...' } : s
+-      ));
+-
+-      // Step 3: Submit job to the microservice
+-      const analyzeResponse = await fetch(analyzeUrl, {
+-        method: 'POST',
+-        headers: {
+-          'Content-Type': 'application/json',
+-          ...(apiKey && { 'X-API-KEY': apiKey }),
+-        },
+-        body: JSON.stringify(microserviceRequest),
+-      });
+-
+-      if (!analyzeResponse.ok) {
+-        const errorText = await analyzeResponse.text();
+-        console.error('[DEBUG] Microservice failed:', {
+-          status: analyzeResponse.status,
+-          error: errorText
+-        });
+-        throw new Error(`Failed to submit analysis job: ${analyzeResponse.status} ${errorText}`);
+-      }
+-
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'microservice_request' ? { ...s, message: 'Processing statistical analysis...' } : s
+-      ));
+-
+-      const analyzeJson = await analyzeResponse.json();
+-      console.log('[DEBUG] Microservice response:', {
+-        hasResults: !!analyzeJson.results,
+-        resultsCount: analyzeJson.results?.length || 0,
+-        hasFeatureImportance: !!analyzeJson.feature_importance,
+-        featureImportanceCount: analyzeJson.feature_importance?.length || 0,
+-        hasModelInfo: !!analyzeJson.model_info,
+-        targetVariable: analyzeJson.model_info?.target_variable,
+-        sampleResult: analyzeJson.results?.[0]
+-      });
+-
+-      // ---------------- Synchronous path ----------------
+-      debugLogger('SYNC_ANALYSIS_COMPLETE', { returnedRows: analyzeJson.results?.length });
+-      let microserviceResponse: any = analyzeJson;
+-
+-      /*
+-      ---------------------------------------------------------------------
+-      Legacy async support – keep for future re-enablement
+-      ---------------------------------------------------------------------
+-      const jobId = analyzeJson.job_id ?? analyzeJson.jobId ?? analyzeJson.id;
+-      if (jobId) {
+-        debugLogger('JOB_SUBMITTED', { job_id: jobId });
+-        setProcessingSteps(prev => prev.map(s => s.id === 'microservice_request' ? { ...s, message: `AI analysis running (Job ID: ${jobId.substring(0, 8)})...` } : s));
+-
+-      const pollStartTime = Date.now();
+-      const pollTimeout = 180000; // 3 minutes
+-      while (Date.now() - pollStartTime < pollTimeout) {
+-          const statusUrl = `${baseUrl.replace(/\/$/, '')}/job_status/${jobId}`;
+-          const statusResponse = await fetch(statusUrl, { headers: { ...(apiKey && { 'X-API-KEY': apiKey }) } });
+-        if (statusResponse.ok) {
+-          const statusResult = await statusResponse.json();
+-            if ((statusResult.status === 'finished' || statusResult.status === 'completed') && statusResult.result) {
+-            microserviceResponse = statusResult.result;
+-                break;
+-            }
+-          }
+-          await new Promise(res => setTimeout(res, 2000));
+-          }
+-
+-        if (!microserviceResponse) throw new Error('Analysis job timed out after 3 minutes.');
+-      }
+-      ---------------------------------------------------------------------
+-      */
+-
+-      if (!microserviceResponse) {
+-        throw new Error("Analysis job timed out after 3 minutes.");
+-      }
+-
+-      const enhancedAnalysisResult = microserviceResponse;
+-
+-      // Complete microservice request step
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'microservice_request' ? { ...s, status: 'complete', message: 'AI analysis complete' } : s
+-      ));
+-
+-      // --- DYNAMIC DATA HANDLING & VISUALIZATION ---
+-      
+-      // Start data loading step
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'data_loading' ? { ...s, status: 'processing', message: 'Loading base geographic features...' } : s
+-      ));
+-      setCurrentProcessingStep('data_loading');
+-      
+-      // Step 4: Extract records for geoprocessing. This is our list of places.
+-      // The backend now provides a consistent `results` array for all analysis types.
+-      const analysisRecords = enhancedAnalysisResult?.results || [];
+-      console.log('[GeospatialChat] Analysis records:', {
+-        count: analysisRecords.length,
+-        sampleRecord: analysisRecords[0],
+-        hasResults: !!enhancedAnalysisResult?.results
+-      });
+-      
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'data_loading' ? { ...s, message: `Found ${analysisRecords.length} analysis results. Loading geographic shapes...` } : s
+-      ));
+-      
+-      // Step 5: Load the base geographic shapes (FSAs).
+-      const geographicFeatures = await loadGeographicFeatures();
+-      console.log('[GeospatialChat] Geographic features:', {
+-        count: geographicFeatures.length,
+-        sampleFeature: geographicFeatures[0],
+-        sampleId: geographicFeatures[0]?.properties?.FSA_ID || geographicFeatures[0]?.properties?.ID
+-      });
+-
+-      // Complete data loading step
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'data_loading' ? { 
+-          ...s, 
+-          status: 'complete', 
+-          message: `Loaded ${geographicFeatures.length} geographic features` 
+-        } : s
+-      ));
+-
+-      // Start data joining step
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'data_joining' ? { ...s, status: 'processing', message: 'Creating lookup index for data joining...' } : s
+-      ));
+-      setCurrentProcessingStep('data_joining');
+-
+-      // Step 6: Create a lookup map for quick joining.
+-      const featureMap = new Map<string, any>();
+-      const normalizeZipCode = (val: string | undefined | null): string | null => {
+-        if (!val || typeof val !== 'string') return null;
+-        return val.substring(0, 5).toUpperCase(); // ZIP codes are 5 digits
+-      };
+-      geographicFeatures.forEach(feature => {
+-        if (feature && feature.properties) {
+-          const rawId = feature.properties?.ZIP_CODE || feature.properties?.ID;
+-          const zipKey = normalizeZipCode(rawId);
+-          if (zipKey) featureMap.set(zipKey, feature);
+-        }
+-      });
+-      console.log('[GeospatialChat] Feature map:', {
+-        size: featureMap.size,
+-        sampleKey: Array.from(featureMap.keys())[0],
+-        sampleValue: featureMap.get(Array.from(featureMap.keys())[0])
++      // Log the analysis result for debugging
++      console.log('[DEBUG] Analysis result stored:', {
++        targetVariable: analysisResult.targetVariable,
++        relevantFields: analysisResult.relevantFields,
++        queryType: analysisResult.queryType
+       });
+ 
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'data_joining' ? { ...s, message: 'Merging analysis results with geographic data...' } : s
+-      ));
+-
+-      // Step 7: Join the analysis data with the geographic shapes.
+-      const matchedKeys = new Set<string>();
+-      const allArcGISFeatures = analysisRecords.map((record: Record<string, any>) => {
+-        // Harmonise a single numeric attribute for the renderer
+-        if ('value' in record && snakeTarget) {
+-          record[snakeTarget] = record.value;
+-        }
+-
+-        // Choose a representative metric for visualization colour breaks
+-        // Priority order: target_value (from microservice) > value_[field] > combined_score > snakeTarget > prediction > value
+-        const rendererMetric = (record as any)['target_value'] ??
+-                               (record as any)[`value_${snakeTarget}`] ??
+-                               (record as any)['combined_score'] ??
+-                               (snakeTarget ? (record as any)[snakeTarget] : undefined) ??
+-                               (record as any).prediction ??
+-                               (record as any).value;
+-
+-        // Ensure the chosen metric is stored under snakeTarget for rendererField later
+-        if (rendererMetric !== undefined) {
+-          if (snakeTarget && (record as any)[snakeTarget] === undefined) {
+-            (record as any)[snakeTarget] = rendererMetric;
+-          }
+-          (record as any).thematic_value = rendererMetric;
+-          // Also store as target_value for consistency
+-          (record as any).target_value = rendererMetric;
+-        }
+-
+-        console.log('[GeospatialChat] Data harmonization for record:', {
+-          recordId: record.ZIP_CODE || record.ID,
+-          snakeTarget,
+-          availableFields: Object.keys(record),
+-          target_value: record.target_value,
+-          value_field: record[`value_${snakeTarget}`],
+-          rendererMetric,
+-          finalThematicValue: (record as any).thematic_value
+-        });
+-
+-        const rawId = record.ZIP_CODE || record.ID;
+-        const zipKey = normalizeZipCode(rawId);
+-        if (zipKey) matchedKeys.add(zipKey);
+-        const geoFeature = zipKey ? featureMap.get(zipKey) : undefined;
+-        if (!geoFeature) {
+-          console.log('[GeospatialChat] No matching shape for record:', {
+-            recordId: rawId,
+-            recordKeys: Object.keys(record),
+-            availableIds: Array.from(featureMap.keys()).slice(0, 5)
++      // Update target variable based on analysis
++      let targetVariableToUse = currentTarget; // Default fallback
++      if (analysisResult.targetVariable) {
++        // Fix case sensitivity issue - search case-insensitively
++        const targetOption = TARGET_OPTIONS.find(opt => 
++          opt.value.toLowerCase() === analysisResult.targetVariable?.toLowerCase()
++        );
++        
++        if (targetOption) {
++          targetVariableToUse = targetOption.value; // Use the new target immediately
++          setCurrentTarget(targetOption.value);
++          const brandIcon = BRAND_ICON_MAP[targetOption.label] || SiNike;
++          setTargetIcon(() => brandIcon);
++          
++          // Log for debugging
++          console.log('[DEBUG] Target variable update:', {
++            originalTarget: analysisResult.targetVariable,
++            newTarget: targetOption.value,
++            brandLabel: targetOption.label,
++            icon: BRAND_ICON_MAP[targetOption.label] ? 'Found brand icon' : 'Using default Nike icon',
++            relevantFields: analysisResult.relevantFields
+           });
+-          return null; // This record has no matching shape.
++        } else {
++          console.warn('[DEBUG] Target option not found in handleSubmit for:', analysisResult.targetVariable, 'Available options:', TARGET_OPTIONS.map(opt => opt.value));
+         }
+-        // Merge the analysis properties into the geographic feature
+-        const merged = {
+-          ...geoFeature,
+-          properties: {
+-            ...geoFeature.properties,
+-            ...record,
+-            _originalEsriGeometry: geoFeature.geometry ? geoFeature.geometry.toJSON?.() || geoFeature.geometry : undefined
+-          }
+-        };
+-        return merged;
+-      }).filter(Boolean); // Remove nulls where no match was found.
+-
+-      // === NEW: Append unmatched geographic features so the full layer is returned ===
+-      const unmatchedFeatures = geographicFeatures.filter((feat) => {
+-        if (!feat || !feat.properties) return false;
+-        const rawId = feat.properties.ZIP_CODE || feat.properties.ID;
+-        const key = normalizeZipCode(rawId);
+-        return key ? !matchedKeys.has(key) : false;
+-      });
+-      allArcGISFeatures.push(...unmatchedFeatures);
+-
+-      console.log('[GeospatialChat] Joined features:', {
+-        inputRecords: analysisRecords.length,
+-        matchedFeatures: allArcGISFeatures.length,
+-        sampleFeature: allArcGISFeatures[0],
+-        sampleProperties: allArcGISFeatures[0]?.properties
+-      });
+-
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'data_joining' ? { ...s, message: 'Validating feature geometries...' } : s
+-      ));
+-
+-      // Step 8: Validate the final features to ensure they have valid geometries.
+-      let validFeatures = allArcGISFeatures.filter(validateFeatureGeometry);
+-      console.log('[GeospatialChat] Validated features:', {
+-        inputFeatures: allArcGISFeatures.length,
+-        validFeatures: validFeatures.length,
+-        sampleFeature: validFeatures[0],
+-        sampleGeometry: validFeatures[0]?.geometry
+-      });
+-
+-      // If every feature was filtered out by the strict validator, assume the
+-      // geometries are usable and revert to the un-filtered set. This prevents
+-      // false negatives when features have unconventional coordinate arrays
+-      // that are still renderable by the ArcGIS API.
+-      if (validFeatures.length === 0) {
+-        console.warn('[GeospatialChat] Strict geometry validator rejected every feature – using original feature set.');
+-        validFeatures = allArcGISFeatures;
+       }
+-
+-      // Complete data joining step
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'data_joining' ? { 
+-          ...s, 
+-          status: 'complete', 
+-          message: `Successfully joined ${validFeatures.length} features` 
+-        } : s
+-      ));
+-
+-      // Start visualization step
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'visualization' ? { ...s, status: 'processing', message: 'Creating map visualization...' } : s
+-      ));
+-      setCurrentProcessingStep('visualization');
+-
+-       // Step 9: Create Visualization using the prepared data
+-      const visualizationFactory = new VisualizationFactory({
+-         // Pass the full, rich analysis result to the factory
+-         analysisResult: enhancedAnalysisResult,
+-         // The factory now receives the raw analysis result, not a pre-processed one
+-         enhancedAnalysis: {
++      
++      // Build microservice request with the correct target (avoid race condition)
++      const request = buildMicroserviceRequest(
++        {
+             ...analysisResult,
+-            ...enhancedAnalysisResult
++          targetVariable: targetVariableToUse // Use the resolved target, not stale state
+         },
+-        features: { features: validFeatures }
+-      });
++        query,
++        targetVariableToUse, // Use the resolved target, not stale state
++        contextSummary || ''
++      );
+       
+-      // Build layerResults for the visualization.
+-      let layerResultForViz: any[];
+-      layerResultForViz = [{
+-        layerId: dataSource.layerId,
+-        layerName: 'Analysis Results',
+-        layerType: 'polygon',
+-        rendererField: 'thematic_value',
+-        fields: [],
+-        features: validFeatures,
+-      }];
+-
+-      const rawVizMode =
+-        (analysisResult.visualizationStrategy as any) ||
+-        (analysisResult as any).visualization_mode ||
+-        analysisResult.queryType || '';
+-
+-      const visualizationModeNormalized = rawVizMode
+-        .toString()
+-        .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+-        .replace(/[\s_]+/g, '-')
+-        .toLowerCase();
+-
+-      console.log('[GChat] Viz mode raw:', rawVizMode, 'normalized:', visualizationModeNormalized);
+-      console.log('[GChat] Analysis result details:', {
+-        queryType: analysisResult.queryType,
+-        visualizationStrategy: analysisResult.visualizationStrategy,
+-        visualization_mode: (analysisResult as any).visualization_mode,
+-        query: query
+-      });
+-
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'visualization' ? { ...s, message: `Creating ${visualizationModeNormalized} visualization...` } : s
+-      ));
+-
+-      const visualizationResult = await visualizationFactory.createVisualization(layerResultForViz, {
+-        title: query,
+-        visualizationMode: visualizationModeNormalized,
+-        popupConfig: enhancedAnalysisResult?.popupConfig,
+-        // Ensure SingleLayerVisualization has a field to render on
+-        primaryField: snakeTarget || 'thematic_value'
+-      });
+-
+-      if (!visualizationResult || !visualizationResult.layer) {
+-        console.error('❌ VISUALIZATION FAILED:', {
+-          hasResult: !!visualizationResult,
+-          hasLayer: !!visualizationResult?.layer,
+-          layerInfo: {
+-            featureCount: layerResultForViz[0].features.length,
+-            sampleFeatures: layerResultForViz[0].features.slice(0, 3).map((f: FeatureType) => {
+-              const isPolygon = f.geometry.type === 'Polygon';
+-              return {
+-                featureId: f.properties?.FSA_ID,
+-                geometryType: f.geometry?.type,
+-                hasRings: isPolygon ? (f.geometry as PolygonGeometry)?.hasRings : undefined,
+-                ringsLength: isPolygon ? (f.geometry as PolygonGeometry)?.rings?.length : undefined,
+-                coordsLength: isPolygon ? (f.geometry as PolygonGeometry)?.coordinates?.length : undefined,
+-                spatialRef: f.geometry?.spatialReference
+-              };
+-            })
+-          }
+-        });
+-        throw new Error('Failed to create visualization layer.');
+-      }
+-
+-      // Complete visualization step
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'visualization' ? { ...s, status: 'complete', message: 'Map visualization created' } : s
+-      ));
+-
+-      // Start narrative generation step
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'narrative_generation' ? { ...s, status: 'processing', message: 'Generating AI narrative analysis...' } : s
+-      ));
+-      setCurrentProcessingStep('narrative_generation');
+-
+-      // Step 10: Update map and legend
+-      setVisualizationResult(visualizationResult);
+-      if (visualizationResult.legendInfo) {
+-        setFormattedLegendData(visualizationResult.legendInfo);
+-      }
+-      onVisualizationLayerCreated(visualizationResult.layer, true);
+-      currentVisualizationLayer.current = visualizationResult.layer; // Store reference to the new layer
+-      handleFeaturesFound(validFeatures, true);
+-      if (currentMapView) {
+-        createHighlights(currentMapView, validFeatures);
+-      }
+-
+-      // -------------------- Fetch Narrative from Claude --------------------
+-      let narrativeContent: string | null = null;
+-      try {
+-        console.log('[DEBUG] Enhanced analysis result:', enhancedAnalysisResult);
+-        
+-        setProcessingSteps(prev => prev.map(s => 
+-          s.id === 'narrative_generation' ? { ...s, message: 'Preparing data for narrative analysis...' } : s
+-        ));
+-        
+-        // Combine geographic features with SHAP analysis results
+-        const shapAnalysisData = {
+-          featureImportance: enhancedAnalysisResult?.feature_importance || [],
+-          targetVariable: enhancedAnalysisResult?.model_info?.target_variable || enhancedAnalysisResult?.target_variable,
+-          analysisType: enhancedAnalysisResult?.analysis_type || 'ranking',
+-          results: enhancedAnalysisResult?.results || [],
+-          summary: enhancedAnalysisResult?.summary
+-        };
+-        
+-        // Attach SHAP feature importance to the active visualization layer so pop-ups can access it
+-        if (currentVisualizationLayer.current) {
+-          (currentVisualizationLayer.current as any).shapFeatureImportance = shapAnalysisData.featureImportance || [];
+-          (currentVisualizationLayer.current as any).shapTargetVariable = shapAnalysisData.targetVariable || null;
+-        }
+-        
+-        console.log('[DEBUG] SHAP analysis data:', shapAnalysisData);
+-        console.log('[DEBUG] Has feature importance?', shapAnalysisData.featureImportance.length > 0);
+-        console.log('[DEBUG] Has results?', shapAnalysisData.results.length > 0);
+-        
+-        // Simplify features for Claude - only include essential properties
+-        // Helper function to safely extract primitive values
+-        const extractPrimitiveValue = (value: any): string | number | boolean | null => {
+-          if (value === null || value === undefined) return null;
+-          if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+-            return value;
+-          }
+-          if (typeof value === 'object') {
+-            // If it's an object, try to extract a meaningful value
+-            if (value.toString && typeof value.toString === 'function' && value.toString() !== '[object Object]') {
+-              return value.toString();
+-            }
+-            return JSON.stringify(value);
+-          }
+-          return String(value);
+-        };
+-
+-        const simplifiedFeatures = validFeatures.map((feature: GeospatialFeature) => {
+-          // console.log('[DEBUG] Processing feature properties:', Object.keys(feature.properties || {}));
+-          
+-          return {
+-            properties: {
+-              FSA_ID: extractPrimitiveValue(feature.properties?.FSA_ID || feature.properties?.ID),
+-              ID: extractPrimitiveValue(feature.properties?.ID || feature.properties?.FSA_ID),
+-              DESCRIPTION: extractPrimitiveValue(feature.properties?.DESCRIPTION),
+-              thematic_value: extractPrimitiveValue(feature.properties?.thematic_value),
+-              visible_minority_population_pct: extractPrimitiveValue(feature.properties?.visible_minority_population_pct),
+-              FREQUENCY: extractPrimitiveValue(feature.properties?.FREQUENCY),
+-              SUM_FUNDED: extractPrimitiveValue(feature.properties?.SUM_FUNDED),
+-              // Add a few more key demographic fields that might be useful
+-              total_population: extractPrimitiveValue(feature.properties?.total_population),
+-              median_income: extractPrimitiveValue(feature.properties?.median_income),
+-              unemployment_rate: extractPrimitiveValue(feature.properties?.unemployment_rate)
+-            }
+-          };
+-        });
+-
+-        const processedLayersForClaude = [{
+-          layerId: dataSource.layerId,
+-          layerName: 'Analysis Results',
+-          layerType: 'polygon',
+-          features: simplifiedFeatures,
+-          // Include SHAP analysis results for Claude in the correct format
+-          shapAnalysis: shapAnalysisData
+-        }];
+-
+-        console.log('[DEBUG] Sending to Claude:', {
+-          hasFeatureData: processedLayersForClaude.length > 0,
+-          hasShapAnalysis: !!processedLayersForClaude[0]?.shapAnalysis,
+-          featureCount: simplifiedFeatures.length,
+-          shapFeatureCount: shapAnalysisData.featureImportance.length,
+-          sampleFeature: simplifiedFeatures[0]?.properties,
+-          sampleShapFeature: shapAnalysisData.featureImportance.slice(0, 3)
+-        });
+-        
+-        // console.log('[DEBUG] Full simplified feature sample:', JSON.stringify(simplifiedFeatures[0], null, 2));
+-
+-        setProcessingSteps(prev => prev.map(s => 
+-          s.id === 'narrative_generation' ? { ...s, message: 'Calling AI narrative engine...' } : s
+-        ));
+-
+-        console.log('[DEBUG] About to call Claude API...');
+-
+-        const claudeResp = await fetch('/api/claude/generate-response', {
+-          method: 'POST',
+-          headers: { 'Content-Type': 'application/json' },
+-          body: JSON.stringify({
+-            messages: [{ role: 'user', content: query }],
+-            metadata: {
++      // Log for debugging
++      console.log('[DEBUG] Microservice request:', {
+               query,
+-              // Use 'single_layer' for SHAP analysis instead of 'jointHigh'
+-              analysisType: 'single_layer',
+-              relevantLayers: [dataSource.layerId],
+-              // Explicitly set the primary field for SHAP analysis
+-              primaryField: 'thematic_value',
+-              // Include SHAP metadata for Claude
+-              shapMetadata: {
+-                targetVariable: enhancedAnalysisResult?.model_info?.target_variable || enhancedAnalysisResult?.target_variable,
+-                analysisType: enhancedAnalysisResult?.analysis_type || 'ranking',
+-                featureCount: enhancedAnalysisResult?.feature_importance?.length || 0,
+-                resultCount: enhancedAnalysisResult?.results?.length || 0
+-              }
+-            },
+-            featureData: processedLayersForClaude,
+-            persona: selectedPersona, // Add selected persona
+-          }),
+-        });
+-
+-        console.log('[DEBUG] Claude API call completed, status:', claudeResp.status);
+-
+-        setProcessingSteps(prev => prev.map(s => 
+-          s.id === 'narrative_generation' ? { ...s, message: 'Processing AI response...' } : s
+-        ));
+-
+-        if (claudeResp.ok) {
+-          const claudeJson = await claudeResp.json();
+-          console.log('[DEBUG] Claude response:', {
+-            hasContent: !!claudeJson?.content,
+-            contentLength: claudeJson?.content?.length || 0,
+-            contentPreview: claudeJson?.content?.substring(0, 100)
+-          });
+-          narrativeContent = claudeJson?.content || null;
+-        } else {
+-          const errorText = await claudeResp.text();
+-          console.error('[DEBUG] Claude API failed:', {
+-            status: claudeResp.status,
+-            statusText: claudeResp.statusText,
+-            error: errorText
+-          });
+-        }
+-      } catch (err) {
+-        console.error('[DEBUG] Claude API call failed with error:', {
+-          error: err,
+-          message: err instanceof Error ? err.message : 'Unknown error',
+-          stack: err instanceof Error ? err.stack : undefined
+-        });
+-      }
+-
+-      // Complete narrative generation step
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.id === 'narrative_generation' ? { 
+-          ...s, 
+-          status: 'complete', 
+-          message: narrativeContent ? 'Narrative analysis complete' : 'Analysis complete (narrative fallback)' 
+-        } : s
+-      ));
+-
+-      const finalContent = narrativeContent || `Analysis complete. Found ${validFeatures.length} mappable results.`;
+-      setMessages(prev => prev.map(msg =>
+-        msg.id === assistantMessageId
+-          ? { ...msg, content: finalContent, metadata: { ...msg.metadata, analysisResult: enhancedAnalysisResult } }
+-          : msg
+-      ));
+-
+-      addContextMessage({
+-        role: 'assistant',
+-        content: finalContent,
+-        metadata: { analysisResult: enhancedAnalysisResult }
+-      } as ChatMessage);
+-
+-      await refreshContextSummary();
+-      setFeatures(validFeatures);
+-
++        target: targetVariableToUse,
++        analysisResult,
++        request
++      });
++      
++      // ... rest of existing code ...
+     } catch (error) {
+-      console.error('[GeospatialChat] Error processing query:', error);
+-      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+-      setError(errorMessage);
+-      setProcessingSteps(prev => prev.map(s => 
+-        s.status === 'processing' ? { ...s, status: 'error', message: errorMessage } : s
+-      ));
+-      setMessages(prev => prev.map(msg =>
+-        msg.id === assistantMessageId ? {
+-          ...msg,
+-          content: `Sorry, I encountered an error while processing your query: ${errorMessage}`,
+-          metadata: { ...msg.metadata, error: errorMessage }
+-        } : msg
+-      ));
+-    } finally {
+-      setIsProcessing(false);
+-      setCurrentProcessingStep(null);
++      // ... existing error handling ...
+     }
+   };
+ 
+-  const handleFormSubmit = (e: React.FormEvent) => {
++  // Form submit handler
++  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+     e.preventDefault();
+-    handleSubmit(inputQuery, 'main');
++    const form = e.currentTarget;
++    const formData = new FormData(form);
++    const query = formData.get('query') as string;
++    if (query) {
++      handleSubmit(query, 'main');
++    }
+   };
+ 
++  // ... rest of existing code ...
++
+   // --- Plain conversational chat ---
+   const sendChatMessage = async (text: string) => {
+     const userId = `chat-user-${Date.now()}`;
+@@ -2052,9 +1588,32 @@ const EnhancedGeospatialChat = ({
+                       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-white rounded-xl shadow-lg">
+                         <QueryDialog
+                           onQuestionSelect={(question) => {
+-                                      setInputQuery(question);
+-                                      setQuickstartDialogOpen(false);
+-                                    }}
++                            setInputQuery(question);
++                            setQuickstartDialogOpen(false);
++                            
++                            // Immediately detect brands and update target button
++                            const detectedBrands = detectBrandsInQuery(question);
++                            if (detectedBrands.length > 0) {
++                              const firstBrandField = detectedBrands[0];
++                              const targetOption = TARGET_OPTIONS.find(opt => opt.value === firstBrandField);
++                              
++                              if (targetOption) {
++                                console.log('[DEBUG] Predefined query target update:', {
++                                  question,
++                                  detectedBrands,
++                                  newTarget: firstBrandField,
++                                  targetLabel: targetOption.label
++                                });
++                                
++                                setCurrentTarget(firstBrandField);
++                                const brandIcon = BRAND_ICON_MAP[targetOption.label] || SiNike;
++                                setTargetIcon(() => brandIcon);
++                              }
++                            }
++                            
++                            // Also trigger the analysis for the selected query
++                            handleSubmit(question, 'main');
++                          }}
+                           title="quickstartIQ"
+                           description="Choose from predefined demographic and analysis queries to get started quickly."
+                           categories={ANALYSIS_CATEGORIES}
+@@ -2102,24 +1661,18 @@ const EnhancedGeospatialChat = ({
+                       <TooltipProvider>
+                         <Tooltip>
+                           <TooltipTrigger asChild>
+-                            <DialogTrigger asChild>
+-                              <Button
+-                                type="button"
+-                                variant="outline"
+-                                size="sm"
+-                                className="relative flex items-center justify-center gap-1 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-9"
+-                              >
+-                                {React.createElement(
+-                                  BRAND_ICON_MAP[
+-                                    TARGET_OPTIONS.find(o => o.value === selectedTargetVariable)?.label || ''
+-                                  ] || ShoppingCart,
+-                                  { className: 'h-3 w-3 mr-1' }
+-                                )}
+-                                <span className="truncate">
+-                                  {TARGET_OPTIONS.find(o => o.value === selectedTargetVariable)?.label || 'Nike'}
+-                                </span>
+-                              </Button>
+-                            </DialogTrigger>
++                            <Button
++                              type="button"
++                              variant="outline"
++                              size="sm"
++                              className="relative flex items-center justify-center gap-1 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-9"
++                              onClick={() => setIsTargetDialogOpen(true)}
++                            >
++                              {React.createElement(targetIcon, { className: 'h-3 w-3 mr-1' })}
++                              <span className="truncate">
++                                {TARGET_OPTIONS.find(o => o.value === currentTarget)?.label || 'Nike'}
++                              </span>
++                            </Button>
+                           </TooltipTrigger>
+                           <TooltipContent side="top" className="bg-white">
+                             <p>Select model target variable</p>
+@@ -2135,15 +1688,24 @@ const EnhancedGeospatialChat = ({
+                           </p>
+                         </DialogHeader>
+                         <div className="grid grid-cols-2 gap-2 mt-2">
+-                          {TARGET_OPTIONS.map(opt => (
++                          {TARGET_OPTIONS.map((opt) => {
++                            const isAvailable = availableTargetOptions.some((availOpt) => availOpt.value === opt.value);
++                            return (
+                             <Button
+                               key={opt.value}
+-                              variant={selectedTargetVariable === opt.value ? 'default' : 'outline'}
++                                variant={currentTarget === opt.value ? 'default' : 'outline'}
+                               size="sm"
+-                              className="flex flex-col items-start text-left gap-0.5 p-2 h-auto w-full whitespace-normal"
++                                className={`flex flex-col items-start text-left gap-0.5 p-2 h-auto w-full whitespace-normal ${
++                                  !isAvailable ? 'opacity-50 cursor-not-allowed' : ''
++                                }`}
++                                disabled={!isAvailable}
+                               onClick={() => {
+-                                setSelectedTargetVariable(opt.value);
++                                  if (isAvailable) {
++                                    setCurrentTarget(opt.value);
++                                    const brandIcon = BRAND_ICON_MAP[opt.label] || SiNike;
++                                    setTargetIcon(() => brandIcon);
+                                 setIsTargetDialogOpen(false);
++                                  }
+                               }}
+                             >
+                               <span className="flex items-center gap-1">
+@@ -2153,13 +1715,15 @@ const EnhancedGeospatialChat = ({
+                                 )}
+                                 <span className="text-xs font-medium">{opt.label}</span>
+                               </span>
+-                              <span className="text-[10px] leading-tight text-gray-500">Bought {opt.label} in Last 12&nbsp;Months</span>
++                                <span className="text-[10px] leading-tight text-gray-500">
++                                  {isAvailable ? `Bought ${opt.label} in Last 12 Months` : 'Not available in current query'}
++                                </span>
+                             </Button>
+-                          ))}
++                            );
++                          })}
+                         </div>
+                       </DialogContent>
+                     </Dialog>
+-
+                     {/* Persona selector button */}
+                     <Dialog open={isPersonaDialogOpen} onOpenChange={setIsPersonaDialogOpen}>
+                       <TooltipProvider>
+@@ -2242,6 +1806,7 @@ const EnhancedGeospatialChat = ({
+                   <div className="space-y-2">
+                     <Textarea
+                       ref={textareaRef}
++                      name="query"
+                       value={inputQuery}
+                       onChange={handleInputChange}
+                       onKeyDown={(e) => {

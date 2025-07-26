@@ -1,0 +1,52 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  transpilePackages: ['@arcgis/core'],
+  reactStrictMode: true,
+  env: {
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    NEXT_PUBLIC_ANTHROPIC_API_KEY: process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY,
+  },
+  experimental: {
+    serverComponentsExternalPackages: ['@anthropic-ai/sdk']
+  },
+  async headers() {
+    return [
+      {
+        source: '/api/:path*',
+        headers: [
+          { key: 'Access-Control-Allow-Credentials', value: 'true' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          { key: 'Access-Control-Allow-Methods', value: 'GET,DELETE,PATCH,POST,PUT' },
+          { key: 'Access-Control-Allow-Headers', value: 'Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date' },
+          { key: 'x-vercel-max-allowed-size', value: '50mb' }
+        ],
+      },
+    ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/arcgis/:path*',
+        destination: 'https://geoenrichment.arcgis.com/arcgis/:path*',
+      },
+    ]
+  },
+  // Add webpack configuration to handle specific modules if needed
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+    config.module.rules.push({
+      test: /\.d\.ts$/,
+      loader: 'ignore-loader'
+    });
+    return config;
+  },
+}
+
+export default nextConfig;

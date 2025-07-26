@@ -1,0 +1,57 @@
+  console.error
+    [DEBUG] correlation variableParts: [ 'income', 'education' ]
+
+      858 |       }
+      859 |       // eslint-disable-next-line no-console
+    > 860 |       console.error('[DEBUG] correlation variableParts:', variableParts);
+          |               ^
+      861 |       if (variableParts.length === 2) {
+      862 |         return {
+      863 |           visualizationType: VisualizationType.CORRELATION,
+
+      at QueryClassifier.checkHardcodedPatterns (lib/query-classifier.ts:860:15)
+      at QueryClassifier.analyzeQuery (lib/query-classifier.ts:758:34)
+      at QueryClassifier.classifyAnalysisResult (lib/query-classifier.ts:418:31)
+      at Object.<anonymous> (test/ai-visualization-integration.test.ts:87:44)
+
+  console.error
+    Query failed: "Relationship between income and education"
+    Expected: correlation
+    Received: multivariate
+
+      88 |       if (result !== expectedType) {
+      89 |         // eslint-disable-next-line no-console
+    > 90 |         console.error(`Query failed: "${query}"
+         |                 ^
+      91 | Expected: ${expectedType}
+      92 | Received: ${result}`);
+      93 |       }
+
+      at Object.<anonymous> (test/ai-visualization-integration.test.ts:90:17)
+
+FAIL test/ai-visualization-integration.test.ts
+  AI Visualization Integration E2E
+    ✕ should classify all queries to the correct visualization type (40 ms)
+
+  ● AI Visualization Integration E2E › should classify all queries to the correct visualization type
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "correlation"
+    Received: "multivariate"
+
+      92 | Received: ${result}`);
+      93 |       }
+    > 94 |       expect(result).toBe(expectedType);
+         |                      ^
+      95 |     }
+      96 |   });
+      97 | }); 
+
+      at Object.<anonymous> (test/ai-visualization-integration.test.ts:94:22)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 total
+Snapshots:   0 total
+Time:        0.491 s, estimated 1 s
+Ran all test suites matching /test\/ai-visualization-integration.test.ts/i.

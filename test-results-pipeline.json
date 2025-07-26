@@ -1,0 +1,109 @@
+{
+  "timestamp": "2025-07-16T02:59:50.146Z",
+  "summary": {
+    "total": 5,
+    "passed": 0,
+    "failed": 5,
+    "errors": []
+  },
+  "tests": [
+    {
+      "id": "nike_ranking",
+      "query": "Show me Nike sales ranking",
+      "steps": [
+        {
+          "step": "query_classification",
+          "passed": false,
+          "details": {
+            "query": "Show me Nike sales ranking",
+            "expected": {
+              "type": "ranking",
+              "fields": "MP30034A_B"
+            },
+            "actual": {
+              "confidence": 0.7999999999999999
+            },
+            "typeMatch": false,
+            "fieldMatch": false
+          }
+        }
+      ],
+      "passed": false,
+      "errors": [
+        "Query classification failed"
+      ]
+    },
+    {
+      "id": "adidas_ranking",
+      "query": "Rank areas by Adidas performance",
+      "steps": [
+        {
+          "step": "query_classification",
+          "passed": false,
+          "error": "HTTP 500: Internal Server Error",
+          "details": {
+            "query": "Rank areas by Adidas performance"
+          }
+        }
+      ],
+      "passed": false,
+      "errors": [
+        "Query classification failed"
+      ]
+    },
+    {
+      "id": "nike_adidas_correlation",
+      "query": "Compare Nike vs Adidas sales correlation",
+      "steps": [
+        {
+          "step": "query_classification",
+          "passed": false,
+          "error": "HTTP 500: Internal Server Error",
+          "details": {
+            "query": "Compare Nike vs Adidas sales correlation"
+          }
+        }
+      ],
+      "passed": false,
+      "errors": [
+        "Query classification failed"
+      ]
+    },
+    {
+      "id": "athletic_footwear_profile",
+      "query": "Show athletic footwear market profile",
+      "steps": [
+        {
+          "step": "query_classification",
+          "passed": false,
+          "error": "HTTP 500: Internal Server Error",
+          "details": {
+            "query": "Show athletic footwear market profile"
+          }
+        }
+      ],
+      "passed": false,
+      "errors": [
+        "Query classification failed"
+      ]
+    },
+    {
+      "id": "nike_puma_joint_high",
+      "query": "Find areas with high Nike and Puma sales",
+      "steps": [
+        {
+          "step": "query_classification",
+          "passed": false,
+          "error": "HTTP 500: Internal Server Error",
+          "details": {
+            "query": "Find areas with high Nike and Puma sales"
+          }
+        }
+      ],
+      "passed": false,
+      "errors": [
+        "Query classification failed"
+      ]
+    }
+  ]
+}

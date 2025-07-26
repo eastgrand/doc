@@ -1,0 +1,77 @@
+Layer,Group,URL
+Total Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/7
+Married or living with a common-law partner,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/17
+Married (and not separated),Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/9
+Living common law,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/12
+Not married and not living with a common-law partner,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/11
+Single (never legally married),Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/1
+Separated,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/15
+Divorced,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/14
+Widowed,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/16
+2021 To 2022 Population Change,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/18
+2022 To 2023 Population Change,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/19
+2023 To 2024 Population Change,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/20
+2024 To 2025 Population Change,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/21
+2025 To 2026 Population Change,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/22
+2026 To 2027 Population Change,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/23
+Participation Rate,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/24
+Employment Rate,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/25
+Unemployment Rate,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/26
+Maintainers 25 To 34,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/27
+Maintainers 35 To 44,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/28
+Maintainers 45 To 54,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/29
+Maintainers 55 To 64,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/30
+Maintainers Median Age,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/31
+Male Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/32
+Female Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/33
+Visible Minority Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/8
+Chinese Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/34
+South Asian Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/35
+Black Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/36
+Filipino Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/37
+Latin American Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/38
+Southeast Asian Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/39
+Arab Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/40
+West Asian Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/41
+Korean Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/42
+Japanese Household Population,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/43
+Household Discretionary Income,Demographics,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/44
+Total Households,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/46
+Total by Tenure,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/45
+Owner Occupied by Tenure,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/47
+Renter Occupied by Tenure,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/48
+Band housing by Tenure,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/49
+Total by condominium status,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/50
+Condominium,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/51
+Not condominium,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/52
+Period of Construction - 1960 or before,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/53
+Period of Construction - 1961 to 1980,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/54
+Period of Construction - 1981 to 1990,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/55
+Period of Construction - 1991 to 2000,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/56
+Period of Construction - 2001 to 2005,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/57
+Period of Construction - 2006 to 2010,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/58
+Period of Construction - 2011 to 2016,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/59
+Period of Construction - 2016 to 2021,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/60
+Single-detached house,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/61
+Semi-detached house,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/62
+Row house,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/63
+Apartment or flat in a duplex,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/64
+Apartment in a building that has fewer than five storeys,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/65
+Apartment in a building that has five or more storeys,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/66
+Other single-attached house,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/82
+Movable dwelling,Housing,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/83
+Household Income,Income,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/67
+Average Household Income (Current Year $),Income,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/68
+Median Household Income (Current Year $),Income,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/69
+Aggregate Household Income (Current Year $),Income,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/70
+Household Disposable Income,Income,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/71
+2022 To 2023 Household Average Income Change,Income,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/72
+2023 To 2024 Household Average Income Change,Income,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/73
+2024 To 2025 Household Average Income Change,Income,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/74
+2025 To 2026 Household Average Income Change,Income,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/75
+2026 To 2027 Household Average Income Change,Income,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/76
+Financial services,Spending,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/77
+Service charges for banks and other financial institutions,Spending,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/78
+Property taxes,Spending,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/79
+Condominium charges,Spending,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/80
+Regular mortgage payments,Spending,https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Nesto_layers/FeatureServer/81

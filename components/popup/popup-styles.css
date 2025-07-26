@@ -1,0 +1,454 @@
+/* Popup container styles */
+.popup-container {
+  padding: 12px;
+  max-width: 300px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000; /* Ensure proper stacking */
+}
+
+/* Fix for ArcGIS popup visibility */
+.esri-popup {
+  z-index: 100 !important;
+  pointer-events: auto !important;
+}
+
+.esri-popup__main-container {
+  z-index: 100 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+  pointer-events: auto !important;
+}
+
+/* Make sure content is shown and spinner is hidden */
+.esri-popup__content {
+  display: block !important;
+  visibility: visible !important;
+}
+
+.esri-popup__loader {
+  display: none !important;
+}
+
+/* Always show the header */
+.esri-popup__header {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.popup-header {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  visibility: visible !important;
+}
+
+.popup-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  visibility: visible !important;
+  display: block !important;
+}
+
+.popup-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #666;
+}
+
+.popup-close:hover {
+  color: #000;
+}
+
+.popup-content {
+  margin-bottom: 12px;
+  max-height: none !important; /* Prevent height restrictions */
+  overflow: visible !important;
+}
+
+/* Common field display styles */
+.field-display {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.field-display-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.field-display-empty {
+  color: #888;
+  font-style: italic;
+  padding: 10px 0;
+}
+
+/* List display styles */
+.field-display-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-list {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) minmax(150px, 2fr);
+  gap: 6px 12px;
+}
+
+.field-item {
+  display: contents;
+}
+
+.field-name {
+  font-weight: 500;
+  color: #555;
+}
+
+.field-value {
+  color: #333;
+}
+
+/* Table display styles */
+.field-display-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.field-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.field-table th {
+  background-color: #f5f5f5;
+  padding: 8px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
+}
+
+.field-table td {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Custom popup container */
+.custom-popup-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  max-width: 400px;
+  min-width: 250px;
+  max-height: 80vh;
+  overflow: auto;
+  pointer-events: auto;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 100; /* Ensure it's above the map */
+}
+
+/* Inner content container */
+.popup-content-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  z-index: 101; /* Higher than container */
+}
+
+/* Header styling */
+.popup-header {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f7f9fb;
+  visibility: visible !important;
+  position: sticky; /* Keep the header visible */
+  top: 0;
+  z-index: 102; /* Higher than content */
+}
+
+.popup-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+  visibility: visible !important;
+  display: block !important;
+}
+
+.popup-close-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0;
+  margin: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-close-button:hover {
+  color: #111827;
+}
+
+/* Body styling */
+.popup-body {
+  padding: 16px;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.popup-no-data {
+  padding: 16px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* Popup actions */
+.popup-actions {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  border-top: 1px solid #e5e7eb;
+  background-color: #f8f9fa;
+}
+
+.popup-action-button {
+  padding: 6px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.popup-action-button:hover {
+  background-color: #e8e8e8;
+}
+
+.popup-action-icon {
+  display: flex;
+  align-items: center;
+}
+
+/* Symbol display */
+.popup-symbol {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 400px) {
+  .popup-container {
+    max-width: 250px;
+  }
+  
+  .field-item {
+    flex-direction: column;
+  }
+  
+  .field-value {
+    text-align: left;
+  }
+}
+
+/* Field display (list style) */
+.field-display-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-item {
+  display: flex;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.field-name {
+  flex: 0 0 40%;
+  font-weight: 500;
+  color: #374151;
+  padding-right: 8px;
+}
+
+.field-value {
+  flex: 0 0 60%;
+  color: #6b7280;
+  word-break: break-word;
+}
+
+/* Field display (table style) */
+.field-display-table {
+  width: 100%;
+}
+
+.field-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.field-table th {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  font-weight: 500;
+  color: #374151;
+}
+
+.field-table td {
+  padding: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #6b7280;
+}
+
+.field-display-empty {
+  padding: 16px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* Custom popup emergency content */
+.custom-popup-emergency-content {
+  padding: 10px;
+  background: white;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+/* Custom Popup Styles */
+.custom-popup {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 320px;
+  max-height: 500px;
+  z-index: 1000;
+}
+
+.custom-popup-container {
+  padding: 0;
+  overflow: hidden;
+}
+
+.popup-chart-container {
+  padding: 16px;
+  margin-bottom: 8px;
+}
+
+.popup-actions {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  border-top: 1px solid #e5e7eb;
+  background-color: #f8f9fa;
+}
+
+.popup-action-button {
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* Zoom button */
+.popup-action-button[data-action="zoom"],
+.popup-action-button:first-child {
+  background-color: #33a852;
+}
+
+.popup-action-button[data-action="zoom"]:hover,
+.popup-action-button:first-child:hover {
+  background-color: #2a7e42;
+}
+
+/* Infographics button */
+.popup-action-button[data-action="infographics"],
+.popup-action-button:nth-child(2) {
+  background-color: #33a852;
+}
+
+.popup-action-button[data-action="infographics"]:hover,
+.popup-action-button:nth-child(2):hover {
+  background-color: #2a7e42;
+}
+
+/* Bar chart styles */
+.chart-container {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.chart-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.chart-bar-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.chart-bar-label {
+  width: 120px;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chart-bar-wrapper {
+  flex: 1;
+  height: 24px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  margin: 0 8px;
+}
+
+.chart-bar {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.chart-bar-value {
+  min-width: 40px;
+  text-align: right;
+  font-size: 12px;
+}
+
+/* Utility classes */
+.hidden {
+  display: none;
+} 

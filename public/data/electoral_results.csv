@@ -1,0 +1,85 @@
+district_id,district_name,feduid,candidate_name,party,votes,percentage,is_winner
+ajax,Ajax,35001,Mark Holland,Liberal,28279,46.7,true
+ajax,Ajax,35001,Eli Kolani,Conservative,21832,36.1,false
+ajax,Ajax,35001,Monique Hughes,NDP,8321,13.7,false
+ajax,Ajax,35001,Lisa Robinson,PPC,1241,2.1,false
+ajax,Ajax,35001,Leigh Paulseth,Green,872,1.4,false
+algoma-manitoulin-kapuskasing,Algoma--Manitoulin--Kapuskasing,35002,Carol Hughes,NDP,15972,40.5,true
+algoma-manitoulin-kapuskasing,Algoma--Manitoulin--Kapuskasing,35002,Duke Peltier,Liberal,12618,32.0,false
+algoma-manitoulin-kapuskasing,Algoma--Manitoulin--Kapuskasing,35002,John Sagman,Conservative,9310,23.6,false
+algoma-manitoulin-kapuskasing,Algoma--Manitoulin--Kapuskasing,35002,Stephen Zimmermann,Green,871,2.2,false
+algoma-manitoulin-kapuskasing,Algoma--Manitoulin--Kapuskasing,35002,Harry Jaaskelainen,PPC,678,1.7,false
+aurora-oak-ridges-richmond-hill,Aurora--Oak Ridges--Richmond Hill,35003,Leah Taylor Roy,Liberal,21234,42.3,true
+aurora-oak-ridges-richmond-hill,Aurora--Oak Ridges--Richmond Hill,35003,Leona Alleslev,Conservative,20380,40.6,false
+aurora-oak-ridges-richmond-hill,Aurora--Oak Ridges--Richmond Hill,35003,Janice Hagan,NDP,6342,12.6,false
+aurora-oak-ridges-richmond-hill,Aurora--Oak Ridges--Richmond Hill,35003,Tim Flemming,Green,1421,2.8,false
+aurora-oak-ridges-richmond-hill,Aurora--Oak Ridges--Richmond Hill,35003,Anthony Siskos,PPC,845,1.7,false
+barrie-innisfil,Barrie--Innisfil,35004,John Brassard,Conservative,24573,46.1,true
+barrie-innisfil,Barrie--Innisfil,35004,Lisa-Marie Wilson,Liberal,17879,33.5,false
+barrie-innisfil,Barrie--Innisfil,35004,Aleesha Gostkowski,NDP,8132,15.2,false
+barrie-innisfil,Barrie--Innisfil,35004,Tanya Saari,Green,1687,3.2,false
+barrie-innisfil,Barrie--Innisfil,35004,Corrado Brancato,PPC,1052,2.0,false
+barrie-springwater-oro-medonte,Barrie--Springwater--Oro-Medonte,35005,Doug Shipley,Conservative,24345,45.2,true
+barrie-springwater-oro-medonte,Barrie--Springwater--Oro-Medonte,35005,Sergio Morales,Liberal,18642,34.6,false
+barrie-springwater-oro-medonte,Barrie--Springwater--Oro-Medonte,35005,Sarah Lochhead,NDP,8072,15.0,false
+barrie-springwater-oro-medonte,Barrie--Springwater--Oro-Medonte,35005,Marty Lancaster,Green,1785,3.3,false
+barrie-springwater-oro-medonte,Barrie--Springwater--Oro-Medonte,35005,Chris Webb,PPC,1049,1.9,false
+bay-of-quinte,Bay of Quinte,35006,Neil Ellis,Liberal,24357,41.5,true
+bay-of-quinte,Bay of Quinte,35006,Ryan Williams,Conservative,21928,37.4,false
+bay-of-quinte,Bay of Quinte,35006,Stephanie Bell,NDP,9346,15.9,false
+bay-of-quinte,Bay of Quinte,35006,Erica Charlton,Green,1852,3.1,false
+bay-of-quinte,Bay of Quinte,35006,Janine LeClerc,PPC,1212,2.1,false
+beaches-east-york,Beaches--East York,35007,Nathaniel Erskine-Smith,Liberal,25313,47.8,true
+beaches-east-york,Beaches--East York,35007,Lisa Robinson,Conservative,8124,15.4,false
+beaches-east-york,Beaches--East York,35007,Rima Berns-McGown,NDP,17044,32.2,false
+beaches-east-york,Beaches--East York,35007,Maryem Tollar,Green,1612,3.1,false
+beaches-east-york,Beaches--East York,35007,Philip Fernandez,Independent,809,1.5,false
+beauce,Beauce,24007,Richard Lehoux,Conservative,22754,38.6,true
+beauce,Beauce,24007,Maxime Bernier,PPC,16584,28.1,false
+beauce,Beauce,24007,Adam Veilleux,Liberal,8983,15.2,false
+beauce,Beauce,24007,Claude Vachon,Bloc,8869,15.0,false
+beauce,Beauce,24007,Solange Thibodeau,NDP,1118,1.9,false
+beauce,Beauce,24007,Jonathan Gilbert,Green,688,1.2,false
+brandon-souris,Brandon--Souris,46002,Larry Maguire,Conservative,21588,52.4,true
+brandon-souris,Brandon--Souris,46002,Linda Branconnier,Liberal,10082,24.5,false
+brandon-souris,Brandon--Souris,46002,Whitney Hodgins,NDP,6683,16.2,false
+brandon-souris,Brandon--Souris,46002,Bill Tiessen,Green,1454,3.5,false
+brandon-souris,Brandon--Souris,46002,Tylor Baer,PPC,1405,3.4,false
+brampton-centre,Brampton Centre,35008,Shafqat Ali,Liberal,16530,46.2,true
+brampton-centre,Brampton Centre,35008,Jagdeep Singh,Conservative,13026,36.4,false
+brampton-centre,Brampton Centre,35008,Gail Bannister-Clarke,NDP,5196,14.5,false
+brampton-centre,Brampton Centre,35008,Karan Gosal,PPC,673,1.9,false
+brampton-centre,Brampton Centre,35008,Lucas Petrini,Green,347,1.0,false
+brampton-east,Brampton East,35009,Maninder Sidhu,Liberal,18049,45.7,true
+brampton-east,Brampton East,35009,Naval Bajaj,Conservative,14894,37.7,false
+brampton-east,Brampton East,35009,Manjeet Manku,NDP,5612,14.2,false
+brampton-east,Brampton East,35009,Gaurav Walia,PPC,564,1.4,false
+brampton-east,Brampton East,35009,Roop Rai,Green,387,1.0,false
+davenport,Davenport,35020,Julie Dzerowicz,Liberal,19860,42.1,true
+davenport,Davenport,35020,Alejandra Bravo,NDP,19294,40.9,false
+davenport,Davenport,35020,Jenny Kalimbet,Conservative,5383,11.4,false
+davenport,Davenport,35020,Adrian Currie,Green,1873,4.0,false
+davenport,Davenport,35020,Troy Young,PPC,724,1.5,false
+davenport,Davenport,35020,Elizabeth Rowley,Other,45,0.1,false
+ottawa-centre,Ottawa Centre,35075,Yasir Naqvi,Liberal,33462,45.8,true
+ottawa-centre,Ottawa Centre,35075,Angella MacEwen,NDP,24555,33.6,false
+ottawa-centre,Ottawa Centre,35075,Carol Clemenhagen,Conservative,10208,14.0,false
+ottawa-centre,Ottawa Centre,35075,Angela Keller-Herzog,Green,3897,5.3,false
+ottawa-centre,Ottawa Centre,35075,Regina Watteel,PPC,962,1.3,false
+toronto-danforth,Toronto--Danforth,35109,Julie Dabrusin,Liberal,23145,47.6,true
+toronto-danforth,Toronto--Danforth,35109,Clare Hacksel,NDP,17277,35.6,false
+toronto-danforth,Toronto--Danforth,35109,Michael Carey,Conservative,5103,10.5,false
+toronto-danforth,Toronto--Danforth,35109,Maryem Tollar,Green,2138,4.4,false
+toronto-danforth,Toronto--Danforth,35109,Wayne Simmons,PPC,626,1.3,false
+toronto-danforth,Toronto--Danforth,35109,Elizabeth Abbott,Independent,310,0.6,false
+richmond-hill,Richmond Hill,35087,Majid Jowhari,Liberal,17817,43.3,true
+richmond-hill,Richmond Hill,35087,Costas Menegakis,Conservative,17371,42.2,false
+richmond-hill,Richmond Hill,35087,Adam DeVita,NDP,4615,11.2,false
+richmond-hill,Richmond Hill,35087,Ichha Kohli,Green,859,2.1,false
+richmond-hill,Richmond Hill,35087,Igor Tvorogov,PPC,475,1.2,false
+mont-royal,Mont-Royal,24055,Anthony Housefather,Liberal,24443,56.8,true
+mont-royal,Mont-Royal,24055,Frank Cavallaro,Conservative,9438,21.9,false
+mont-royal,Mont-Royal,24055,Sarah Musgrave,NDP,3521,8.2,false
+mont-royal,Mont-Royal,24055,Patrick Pierra,Bloc,3125,7.3,false
+mont-royal,Mont-Royal,24055,Marc Perez,Green,1756,4.1,false
+mont-royal,Mont-Royal,24055,Saul Ettinger,PPC,745,1.7,false 

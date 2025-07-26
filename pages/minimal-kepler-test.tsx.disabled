@@ -1,0 +1,156 @@
+// pages/minimal-kepler-test.tsx
+import React, { useEffect, useRef, useState } from 'react';
+
+export default function MinimalKeplerTest() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const [status, setStatus] = useState('Loading...');
+
+  useEffect(() => {
+    setMounted(true);
+    
+    const loadKepler = async () => {
+      try {
+        if (typeof window === 'undefined') return;
+
+        const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+        if (!mapboxToken) {
+          throw new Error('NEXT_PUBLIC_MAPBOX_TOKEN not found');
+        }
+
+        setStatus('Loading Kepler.gl...');
+
+        // Dynamic imports
+        const KeplerGl = (await import('@kepler.gl/components')).default;
+        const { addDataToMap } = await import('@kepler.gl/actions');
+        const { createStore, combineReducers, applyMiddleware } = await import('redux');
+        const keplerGlReducer = (await import('@kepler.gl/reducers')).default;
+        const { Provider } = await import('react-redux');
+        const { createRoot } = await import('react-dom/client');
+
+        // Note: React-palm middleware disabled for build compatibility
+        // @ts-ignore - react-palm types not available
+        // const { taskMiddleware: middleware } = await import('react-palm/tasks');
+        const middleware = null; // Fallback for build compatibility
+
+        // Enhanced Redux store with middleware
+        const enhancers = [applyMiddleware(
+          ReduxThunk,
+          // ...(middleware ? [middleware] : [])  // Disabled for build
+        )];
+
+        // Create store with proper middleware
+        const reducers = combineReducers({
+          keplerGl: keplerGlReducer
+        });
+
+        const store = taskMiddleware 
+          ? createStore(reducers, {}, applyMiddleware(taskMiddleware))
+          : createStore(reducers, {});
+
+        setStatus('Store created ✓');
+
+        // Data in exact format from Kepler.gl documentation
+        const testData = {
+          fields: [
+            { name: 'name', type: 'string', format: '' },
+            { name: 'value', type: 'integer', format: '' },
+            { name: 'lat', type: 'real', format: '' },
+            { name: 'lng', type: 'real', format: '' }
+          ],
+          rows: [
+            ['San Francisco', 100, 37.7749, -122.4194],
+            ['Los Angeles', 200, 34.0522, -118.2437],
+            ['San Diego', 150, 32.7157, -117.1611]
+          ]
+        };
+
+        setStatus('Creating map...');
+
+        // Simple component
+        const MapComponent = () => {
+          useEffect(() => {
+            console.log('Dispatching data to Kepler.gl:', testData);
+            console.log('Store state before dispatch:', store.getState());
+            
+            const action = addDataToMap({
+              datasets: {
+                info: { id: 'test-data', label: 'Test Cities' },
+                data: testData
+              },
+              options: { 
+                centerMap: true,
+                readOnly: false
+              }
+            });
+
+            console.log('Action to dispatch:', action);
+            store.dispatch(action);
+            
+            // Check state after dispatch
+            setTimeout(() => {
+              console.log('Store state after dispatch:', store.getState());
+              setStatus('Data dispatched to map ✓');
+            }, 500);
+          }, []);
+
+          return (
+            <KeplerGl
+              id="minimal-kepler"
+              width={800}
+              height={400}
+              mapboxApiAccessToken={mapboxToken}
+              theme="light"
+            />
+          );
+        };
+
+        // Render
+        if (containerRef.current) {
+          const root = createRoot(containerRef.current);
+          root.render(
+            <Provider store={store}>
+              <MapComponent />
+            </Provider>
+          );
+        }
+
+      } catch (err) {
+        console.error('Error:', err);
+        setStatus(`Error: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      }
+    };
+
+    loadKepler();
+  }, []);
+
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Minimal Kepler.gl Test</h1>
+      
+      <div className="mb-4 p-4 bg-gray-100 rounded">
+        <h2 className="font-semibold mb-2">Status:</h2>
+        <p className="text-blue-600">{status}</p>
+      </div>
+
+      <div className="mb-4 text-sm text-gray-600">
+        <p><strong>Instructions:</strong></p>
+        <ul className="list-disc ml-6 space-y-1">
+          <li>This test uses the exact data format from Kepler.gl documentation</li>
+          <li>Check browser console for detailed debugging information</li>
+          <li>The map should render with 3 California cities as points</li>
+        </ul>
+      </div>
+
+      <div 
+        ref={containerRef}
+        className="border rounded bg-white"
+        style={{ height: '400px', width: '100%' }}
+      />
+
+      <div className="mt-4 text-sm text-gray-600">
+        <p>If you still see "Loading..." check the browser console for errors.</p>
+      </div>
+    </div>
+  );
+} 

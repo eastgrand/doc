@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  # Frontend application
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - ML_SERVICE_ENDPOINT=https://nesto-mortgage-analytics.onrender.com
+      - API_KEY=${API_KEY:-${NEXT_PUBLIC_SHAP_API_KEY:-default_key}}

@@ -1,0 +1,21 @@
+[
+  {
+    "query": "Which areas have the highest amount of diversity and highest conversion rates?",
+    "analysis_type": "jointHigh",
+    "target_variable": "conversion_rate",
+    "matched_fields": ["total_minority_population_pct"],
+    "minApplications": 25
+  },
+  {
+    "query": "Show me areas with high income and high conversion rate",
+    "analysis_type": "jointHigh",
+    "target_variable": "conversion_rate",
+    "matched_fields": ["income"]
+  },
+  {
+    "query": "Top 10 areas by mortgage applications",
+    "analysis_type": "ranking",
+    "target_variable": "FREQUENCY",
+    "matched_fields": []
+  }
+]

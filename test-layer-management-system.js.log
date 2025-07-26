@@ -1,0 +1,70 @@
+Starting Layer Management System Test...
+
+Testing Layer Panel Component...
+- Checking tabbed interface for Layers and Bookmarks
+- Verifying responsive design with Material UI components
+
+Testing Layer Visibility Toggle...
+- Testing toggle for Exercise Daily Index layer
+  Initial visibility: true
+  After toggle: false
+
+Testing Layer Opacity Adjustment...
+- Testing opacity adjustment for Gym Locations layer
+  Initial opacity: 1
+  After adjustment: 0.5
+
+Testing Layer Group Expansion/Collapse...
+- Testing expansion/collapse for Demographics group
+  Initial state: expanded
+  After toggle: collapsed
+
+Testing Layer Reordering...
+- Initial layer order:
+  1. Exercise Daily Index
+  2. Fitness Level Index
+  3. Gym Locations
+- After reordering:
+  1. Fitness Level Index
+  2. Exercise Daily Index
+  3. Gym Locations
+
+Testing Layer Filtering...
+- Testing text search for "Exercise" in layer names
+  Search results: Exercise Daily Index
+- Testing group filtering for demographics-group
+  Filter results: Fitness Level Index, Exercise Daily Index
+
+Testing Layer Comparison Tools...
+- Testing side-by-side layer selection
+- Testing correlation analysis between layers
+- Testing spatial overlap calculation
+- Testing statistical metrics display
+
+Testing Layer Statistics and Metadata...
+- Testing feature count and layer size calculation
+- Testing last update timestamp
+- Testing layer metadata display
+- Testing performance metrics
+
+Testing Drawing Tools...
+- Testing polygon drawing for spatial queries
+- Testing circle drawing and radius verification
+- Testing rectangle drawing and extent verification
+- Testing route/polyline drawing
+
+Testing Layer Bookmarks...
+- Testing saving current layer state
+- Testing restoring saved layer state
+- Testing bookmark management
+
+=== Test Summary ===
+All layer management tests completed successfully!
+Layer Panel Component is functioning properly
+Layer visibility and opacity controls are working as expected
+Layer group management is functioning correctly
+Layer reordering is working properly
+Layer filtering and search is functioning correctly
+Layer comparison tools are working as expected
+Layer statistics and metadata display is functioning properly
+Drawing tools are working correctly

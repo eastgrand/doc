@@ -1,0 +1,206 @@
+{
+  "timestamp": "20250718_102634",
+  "total_endpoints": 5,
+  "working_endpoints": 2,
+  "success_rate": 40.0,
+  "memory_limits": {
+    "/outlier-detection": 2000,
+    "/spatial-clusters": 0,
+    "/scenario-analysis": 0,
+    "/segment-profiling": 0,
+    "/feature-interactions": 2000
+  },
+  "detailed_results": {
+    "/outlier-detection": [
+      {
+        "sample_size": 50,
+        "success": true,
+        "duration": 70.36238694190979,
+        "error": null
+      },
+      {
+        "sample_size": 100,
+        "success": true,
+        "duration": 69.06438612937927,
+        "error": null
+      },
+      {
+        "sample_size": 200,
+        "success": true,
+        "duration": 69.42178392410278,
+        "error": null
+      },
+      {
+        "sample_size": 300,
+        "success": true,
+        "duration": 69.61047768592834,
+        "error": null
+      },
+      {
+        "sample_size": 500,
+        "success": true,
+        "duration": 68.18927431106567,
+        "error": null
+      },
+      {
+        "sample_size": 800,
+        "success": true,
+        "duration": 70.87565994262695,
+        "error": null
+      },
+      {
+        "sample_size": 1000,
+        "success": true,
+        "duration": 69.1702048778534,
+        "error": null
+      },
+      {
+        "sample_size": 1500,
+        "success": true,
+        "duration": 69.34689688682556,
+        "error": null
+      },
+      {
+        "sample_size": 2000,
+        "success": true,
+        "duration": 69.6188690662384,
+        "error": null
+      }
+    ],
+    "/spatial-clusters": [
+      {
+        "sample_size": 50,
+        "success": false,
+        "duration": 120,
+        "error": "Timeout"
+      }
+    ],
+    "/scenario-analysis": [
+      {
+        "sample_size": 50,
+        "success": false,
+        "duration": 72.8374490737915,
+        "error": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>502</title>\n    <style>@font-face {\n  font-"
+      },
+      {
+        "sample_size": 100,
+        "success": false,
+        "duration": 0.7530548572540283,
+        "error": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>502</title>\n    <style>@font-face {\n  font-"
+      },
+      {
+        "sample_size": 200,
+        "success": false,
+        "duration": 0.5244059562683105,
+        "error": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>502</title>\n    <style>@font-face {\n  font-"
+      },
+      {
+        "sample_size": 300,
+        "success": false,
+        "duration": 0.4313220977783203,
+        "error": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>502</title>\n    <style>@font-face {\n  font-"
+      },
+      {
+        "sample_size": 500,
+        "success": false,
+        "duration": 0.4543619155883789,
+        "error": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>502</title>\n    <style>@font-face {\n  font-"
+      },
+      {
+        "sample_size": 800,
+        "success": false,
+        "duration": 0.3955070972442627,
+        "error": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>502</title>\n    <style>@font-face {\n  font-"
+      },
+      {
+        "sample_size": 1000,
+        "success": false,
+        "duration": 0.3651449680328369,
+        "error": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>502</title>\n    <style>@font-face {\n  font-"
+      },
+      {
+        "sample_size": 1500,
+        "success": false,
+        "duration": 0.7046949863433838,
+        "error": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>502</title>\n    <style>@font-face {\n  font-"
+      },
+      {
+        "sample_size": 2000,
+        "success": false,
+        "duration": 0.4452519416809082,
+        "error": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>502</title>\n    <style>@font-face {\n  font-"
+      }
+    ],
+    "/segment-profiling": [
+      {
+        "sample_size": 50,
+        "success": false,
+        "duration": 0.4005570411682129,
+        "error": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>502</title>\n    <style>@font-face {\n  font-"
+      },
+      {
+        "sample_size": 100,
+        "success": false,
+        "duration": 120,
+        "error": "Timeout"
+      }
+    ],
+    "/feature-interactions": [
+      {
+        "sample_size": 50,
+        "success": true,
+        "duration": 5.164056777954102,
+        "error": null
+      },
+      {
+        "sample_size": 100,
+        "success": true,
+        "duration": 5.331730127334595,
+        "error": null
+      },
+      {
+        "sample_size": 200,
+        "success": true,
+        "duration": 5.662556171417236,
+        "error": null
+      },
+      {
+        "sample_size": 300,
+        "success": true,
+        "duration": 5.03923487663269,
+        "error": null
+      },
+      {
+        "sample_size": 500,
+        "success": true,
+        "duration": 5.068724155426025,
+        "error": null
+      },
+      {
+        "sample_size": 800,
+        "success": true,
+        "duration": 95.56985282897949,
+        "error": null
+      },
+      {
+        "sample_size": 1000,
+        "success": true,
+        "duration": 2.4087231159210205,
+        "error": null
+      },
+      {
+        "sample_size": 1500,
+        "success": true,
+        "duration": 2.269723892211914,
+        "error": null
+      },
+      {
+        "sample_size": 2000,
+        "success": true,
+        "duration": 2.598813772201538,
+        "error": null
+      }
+    ]
+  },
+  "production_ready": false
+}

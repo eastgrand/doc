@@ -1,0 +1,83 @@
+{
+  "testConfig": {
+    "enabled": true,
+    "timeout": 30000,
+    "retryFailedQueries": false,
+    "maxRetries": 2,
+    "parallelExecution": false,
+    "exportResults": true,
+    "includePerformanceBenchmarks": true,
+    "verboseLogging": false
+  },
+  "categories": {
+    "ANALYSIS_CATEGORIES": {
+      "enabled": true,
+      "categories": [
+        "ranking",
+        "comparison", 
+        "bivariate",
+        "difference",
+        "multivariate",
+        "simple",
+        "hotspot"
+      ]
+    },
+    "TRENDS_CATEGORIES": {
+      "enabled": true,
+      "categories": [
+        "Single Endpoint Analysis",
+        "Multi-Endpoint Correlation",
+        "Predictive and Risk Analysis", 
+        "Advanced Multi-Endpoint",
+        "Diagnostic Analysis"
+      ]
+    }
+  },
+  "endpoints": {
+    "testOrder": [
+      "/competitive-analysis",
+      "/spatial-clustering", 
+      "/anomaly-detection",
+      "/demographic-analysis",
+      "/outlier-detection"
+    ],
+    "skipEndpoints": [],
+    "endpointTimeout": 15000
+  },
+  "visualization": {
+    "validateRenderers": true,
+    "testEffects": true,
+    "checkVisualizationTypes": [
+      "choropleth",
+      "multi-symbol", 
+      "competitive",
+      "cluster"
+    ]
+  },
+  "effects": {
+    "testFireflyEffects": true,
+    "testHoverAnimations": true,
+    "testGradientSystems": true,
+    "testAmbientParticles": true,
+    "performanceThresholds": {
+      "maxParticles": 200,
+      "maxExecutionTime": 5000,
+      "minSuccessRate": 0.8
+    }
+  },
+  "reporting": {
+    "generateMarkdown": true,
+    "generateCSV": true, 
+    "generateJSON": true,
+    "includeDetailedErrors": true,
+    "includePerformanceMetrics": true,
+    "includeVisualizationBreakdown": true,
+    "includeEffectsAnalysis": true
+  },
+  "thresholds": {
+    "minimumSuccessRate": 0.7,
+    "maximumAverageExecutionTime": 10000,
+    "minimumDataPointsPerQuery": 5,
+    "effectsSuccessRate": 0.8
+  }
+}

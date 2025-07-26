@@ -1,0 +1,13 @@
+diff --git a/components/geospatial-chat-interface.tsx b/components/geospatial-chat-interface.tsx
+index 999eb7bc..5b130400 100644
+--- a/components/geospatial-chat-interface.tsx
++++ b/components/geospatial-chat-interface.tsx
+@@ -1710,7 +1710,7 @@ const EnhancedGeospatialChat: React.FC<EnhancedGeospatialChatProps> = ({
+                             }
+                             
+                             // Also trigger the analysis for the selected query
+-                            handleSubmit(question, 'main');
++                            // handleSubmit(question, 'main'); // REMOVED to prevent auto-submission
+                           }}
+                           title="quickstartIQ"
+                           description="Choose from predefined demographic and analysis queries to get started quickly."

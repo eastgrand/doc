@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-05-18T20:23:35.350020",
+  "base_url": "https://nesto-mortgage-analytics.onrender.com",
+  "tests": {
+    "redis_connectivity": {
+      "success": false
+    },
+    "api": {
+      "health_endpoint": {
+        "success": false,
+        "data": {
+          "error": "An internal server error occurred. Please try again later.",
+          "success": false
+        },
+        "error": null
+      },
+      "predict_endpoint_auth": {
+        "success": false,
+        "data": {
+          "error": "An internal server error occurred. Please try again later.",
+          "success": false
+        },
+        "error": null
+      },
+      "predict_endpoint_no_auth": {
+        "success": true,
+        "data": {
+          "error": "An internal server error occurred. Please try again later.",
+          "success": false
+        },
+        "error": null
+      },
+      "predict_multivariate": {
+        "success": false,
+        "data": {
+          "error": "An internal server error occurred. Please try again later.",
+          "success": false
+        },
+        "error": null
+      }
+    }
+  },
+  "overall_success": false
+}

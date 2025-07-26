@@ -1,0 +1,83 @@
+{
+  "timestamp": "20250718_115120",
+  "approach": "conservative_one_by_one",
+  "delay_between_tests": 15,
+  "total_endpoints": 8,
+  "working_endpoints": 5,
+  "failed_endpoints": 3,
+  "success_rate_percent": 62.5,
+  "detailed_results": [
+    {
+      "endpoint": "/outlier-detection",
+      "description": "Outlier detection (small sample)",
+      "sample_size": 100,
+      "success": true,
+      "duration": 1.0250391960144043,
+      "status_code": 200,
+      "error": null
+    },
+    {
+      "endpoint": "/feature-interactions",
+      "description": "Feature interactions (small sample)",
+      "sample_size": 100,
+      "success": true,
+      "duration": 0.9673447608947754,
+      "status_code": 200,
+      "error": null
+    },
+    {
+      "endpoint": "/analyze",
+      "description": "Basic SHAP analysis (small sample)",
+      "sample_size": 100,
+      "success": true,
+      "duration": 0.9699931144714355,
+      "status_code": 200,
+      "error": null
+    },
+    {
+      "endpoint": "/spatial-clusters",
+      "description": "Spatial clustering (small sample)",
+      "sample_size": 100,
+      "success": true,
+      "duration": 0.9653348922729492,
+      "status_code": 200,
+      "error": null
+    },
+    {
+      "endpoint": "/comparative-analysis",
+      "description": "Comparative analysis (small sample)",
+      "sample_size": 100,
+      "success": false,
+      "duration": 0.30091071128845215,
+      "status_code": 404,
+      "error": "HTTP 404: {\"available_endpoints\":[\"GET /\",\"GET /ping\",\"GET /health\",\"POST /analyze\",\"POST /outlier-detection\","
+    },
+    {
+      "endpoint": "/competitive-analysis",
+      "description": "Competitive analysis (small sample)",
+      "sample_size": 100,
+      "success": true,
+      "duration": 1.3257269859313965,
+      "status_code": 200,
+      "error": null
+    },
+    {
+      "endpoint": "/segment-profiling",
+      "description": "Segment profiling (very small sample)",
+      "sample_size": 50,
+      "success": false,
+      "duration": 0.567357063293457,
+      "status_code": 404,
+      "error": "HTTP 404: {\"available_endpoints\":[\"GET /\",\"GET /ping\",\"GET /health\",\"POST /analyze\",\"POST /outlier-detection\","
+    },
+    {
+      "endpoint": "/scenario-analysis",
+      "description": "Scenario analysis (very small sample)",
+      "sample_size": 50,
+      "success": false,
+      "duration": 0.7504050731658936,
+      "status_code": 404,
+      "error": "HTTP 404: {\"available_endpoints\":[\"GET /\",\"GET /ping\",\"GET /health\",\"POST /analyze\",\"POST /outlier-detection\","
+    }
+  ]
+}

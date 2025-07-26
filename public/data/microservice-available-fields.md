@@ -1,0 +1,26 @@
+# Microservice Available Fields
+
+**Total Fields:** 20
+
+## Complete Field List
+
+1. `AMERIND_CY`
+2. `AMERIND_CY_P`
+3. `ASIAN_CY`
+4. `ASIAN_CY_P`
+5. `Age`
+6. `BLACK_CY`
+7. `BLACK_CY_P`
+8. `CreationDate`
+9. `CreationDate_10`
+10. `CreationDate_11`
+11. `CreationDate_12`
+12. `CreationDate_13`
+13. `CreationDate_14`
+14. `CreationDate_15`
+15. `CreationDate_16`
+16. `CreationDate_17`
+17. `CreationDate_18`
+18. `CreationDate_19`
+19. `CreationDate_20`
+20. `CreationDate_21`

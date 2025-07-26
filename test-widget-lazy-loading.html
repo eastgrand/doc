@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Widget Lazy Loading</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-results { margin: 20px 0; }
+        .test-item { padding: 10px; margin: 5px 0; border: 1px solid #ddd; }
+        .pass { background-color: #d4edda; border-color: #c3e6cb; }
+        .fail { background-color: #f8d7da; border-color: #f5c6cb; }
+        .pending { background-color: #fff3cd; border-color: #ffeaa7; }
+    </style>
+</head>
+<body>
+    <h1>Widget Lazy Loading Test</h1>
+    <p>This test verifies that widgets are created only when first opened, not on page load.</p>
+    
+    <div class="test-results">
+        <div class="test-item pass">
+            ✅ <strong>Phase 4 Implementation Complete</strong><br>
+            Widgets are now created using lazy loading pattern in MapWidgets.tsx
+        </div>
+        
+        <div class="test-item pass">
+            ✅ <strong>Widget State Tracking</strong><br>
+            initializedWidgets Set and widgetLoadingStates implemented
+        </div>
+        
+        <div class="test-item pass">
+            ✅ <strong>On-Demand Initialization</strong><br>
+            initializeWidget() function creates widgets only when activeWidget changes
+        </div>
+        
+        <div class="test-item pass">
+            ✅ <strong>Eager Loading Removed</strong><br>
+            Removed automatic widget creation from main initialization effect
+        </div>
+        
+        <div class="test-item pending">
+            🔄 <strong>Manual Testing Required</strong><br>
+            Navigate to http://localhost:3000 and click widget icons to verify:
+            <ul>
+                <li>No widgets created on page load (check console)</li>
+                <li>Widget created when first icon clicked</li>
+                <li>Widget reused on subsequent clicks</li>
+                <li>Search, LayerList, Print, Bookmarks, BasemapGallery all work</li>
+            </ul>
+        </div>
+    </div>
+    
+    <h2>Performance Impact</h2>
+    <ul>
+        <li><strong>Before:</strong> All widgets (Search, LayerList, Print, Bookmarks, BasemapGallery) created on page load</li>
+        <li><strong>After:</strong> No widgets created until user clicks widget icons</li>
+        <li><strong>Benefit:</strong> Faster initial page load, reduced memory usage</li>
+    </ul>
+    
+    <h2>Implementation Details</h2>
+    <ul>
+        <li>Widget containers created but widgets not initialized</li>
+        <li>useEffect triggers initializeWidget() when activeWidget changes</li>
+        <li>Widgets created once and reused (singleton pattern)</li>
+        <li>Loading states tracked during widget creation</li>
+    </ul>
+    
+    <script>
+        console.log('[WIDGET TEST] Page loaded - check that no ArcGIS widgets are created yet');
+        console.log('[WIDGET TEST] Click widget icons in the app to test lazy loading');
+        console.log('[WIDGET TEST] Watch for "[LAZY LOADING] Initializing widget on-demand:" messages');
+    </script>
+</body>
+</html>

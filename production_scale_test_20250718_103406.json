@@ -1,0 +1,51 @@
+{
+  "timestamp": "20250718_103406",
+  "production_requirement": 5000,
+  "max_working_size": 5000,
+  "total_tests": 4,
+  "successful_tests": 4,
+  "failed_tests": 0,
+  "production_ready": true,
+  "detailed_results": [
+    {
+      "endpoint": "/outlier-detection",
+      "sample_size": 5000,
+      "description": "Outlier detection with full production dataset",
+      "success": true,
+      "duration": 69.00373578071594,
+      "status_code": 200,
+      "response_size": 321383,
+      "error": null
+    },
+    {
+      "endpoint": "/feature-interactions",
+      "sample_size": 5000,
+      "description": "Feature interactions with full production dataset",
+      "success": true,
+      "duration": 2.7882919311523438,
+      "status_code": 200,
+      "response_size": 359,
+      "error": null
+    },
+    {
+      "endpoint": "/outlier-detection",
+      "sample_size": 3000,
+      "description": "Outlier detection with 3000 samples (60% of production)",
+      "success": true,
+      "duration": 71.21448302268982,
+      "status_code": 200,
+      "response_size": 321383,
+      "error": null
+    },
+    {
+      "endpoint": "/feature-interactions",
+      "sample_size": 3000,
+      "description": "Feature interactions with 3000 samples (60% of production)",
+      "success": true,
+      "duration": 2.576878070831299,
+      "status_code": 200,
+      "response_size": 359,
+      "error": null
+    }
+  ]
+}

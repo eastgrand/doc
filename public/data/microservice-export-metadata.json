@@ -1,0 +1,12 @@
+{
+  "start_time": "2025-07-15T11:47:40.622744",
+  "total_regions": 100,
+  "successful_exports": 100,
+  "failed_exports": 0,
+  "total_requests": 600,
+  "errors": [],
+  "end_time": "2025-07-15T11:53:39.701791",
+  "duration_seconds": 359.079057,
+  "output_file": "/Users/voldeck/code/mpiq-ai-chat/public/data/microservice-export.json",
+  "file_size_mb": 0.0627756118774414
+}

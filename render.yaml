@@ -1,0 +1,43 @@
+# Blueprint-Managed SHAP Demographic Analytics v3.0
+# This creates a separate service without affecting the existing blueprint-managed service
+services:
+  # Main web service for the demographic analysis API
+  - type: web
+    name: shap-demographic-analytics-v3
+    env: python
+    plan: starter
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 180
+    buildCommand: pip install -r requirements_py313.txt && chmod +x ./render_pre_deploy.sh && ./render_pre_deploy.sh
+    envVars:
+      - key: SERVICE_NAME
+        value: "SHAP Demographic Analytics v3.0"
+      - key: SERVICE_VERSION
+        value: "3.0.0"
+      - key: DATA_SOURCE
+        value: "ArcGIS_Synapse54_Vetements_56_Layers"
+      - key: RECORD_COUNT
+        value: "3983"
+      - key: FEATURE_COUNT
+        value: "546"
+      - key: AGGRESSIVE_MEMORY_MANAGEMENT
+        value: "true"
+      - key: SHAP_BATCH_SIZE
+        value: "100"
+      - key: SHAP_MAX_BATCH_SIZE
+        value: "200"
+      - key: SKIP_MODEL_TRAINING
+        value: "true"
+      - key: USE_PRECALCULATED_SHAP
+        value: "true"
+      - key: PORT
+        value: "10000"
+      - key: API_KEY
+        sync: false
+
+  # Worker service for background processing
+  - type: worker
+    name: shap-demographic-worker-v3
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements_py313.txt && chmod +x ./render_pre_deploy.sh && ./render_pre_deploy.sh
+    startCommand: python simple_worker.py 

@@ -1,0 +1,41 @@
+{
+  "timestamp": "20250718_113929",
+  "redis_enabled": false,
+  "total_endpoints": 6,
+  "working_endpoints": 5,
+  "failed_endpoints": 1,
+  "success_rate_percent": 83.33333333333334,
+  "average_duration": 0.7851248741149902,
+  "detailed_results": [
+    {
+      "endpoint": "/",
+      "success": true,
+      "duration": 0.36865711212158203
+    },
+    {
+      "endpoint": "/ping",
+      "success": true,
+      "duration": 0.715825080871582
+    },
+    {
+      "endpoint": "/health",
+      "success": true,
+      "duration": 0.610435962677002
+    },
+    {
+      "endpoint": "/outlier-detection",
+      "success": true,
+      "duration": 1.4457652568817139
+    },
+    {
+      "endpoint": "/feature-interactions",
+      "success": true,
+      "duration": 0.7849409580230713
+    },
+    {
+      "endpoint": "/analyze",
+      "success": false,
+      "duration": 0.2738759517669678
+    }
+  ]
+}

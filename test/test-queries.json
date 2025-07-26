@@ -1,0 +1,43 @@
+[
+  {
+    "query": "Show me the top 10 areas with the highest conversion rates",
+    "expected": {
+      "visualizationType": "TOP_N",
+      "intent": "ranking",
+      "relevantLayers": ["conversions"],
+      "topN": 10
+    }
+  },
+  {
+    "query": "Which areas have high median disposable income and high conversion rates",
+    "expected": {
+      "visualizationType": "JOINT_HIGH",
+      "intent": "joint_high_analysis",
+      "relevantLayers": ["demographics", "conversions"]
+    }
+  },
+  {
+    "query": "How does income level correlate with conversion rates?",
+    "expected": {
+      "visualizationType": "CORRELATION",
+      "intent": "correlation_analysis",
+      "relevantLayers": ["demographics", "conversions"]
+    }
+  },
+  {
+    "query": "Show me a heatmap of application density",
+    "expected": {
+      "visualizationType": "HEATMAP",
+      "intent": "density_analysis",
+      "relevantLayers": ["applications"]
+    }
+  },
+  {
+    "query": "Show me the conversion rates across all areas",
+    "expected": {
+      "visualizationType": "CHOROPLETH",
+      "intent": "simple_display",
+      "relevantLayers": ["conversions"]
+    }
+  }
+] 

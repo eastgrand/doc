@@ -1,0 +1,170 @@
+// pages/simple-kepler-test.tsx
+import React, { useEffect, useRef, useState } from 'react';
+
+export default function SimpleKeplerTest() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const [status, setStatus] = useState('Loading...');
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+    
+    const loadKepler = async () => {
+      try {
+        setStatus('Importing Kepler.gl modules...');
+        
+        if (typeof window === 'undefined') {
+          setStatus('Window not available (SSR)');
+          return;
+        }
+
+        // Check Mapbox token
+        const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+        if (!mapboxToken) {
+          throw new Error('NEXT_PUBLIC_MAPBOX_TOKEN not found');
+        }
+        setStatus('Mapbox token found ✓');
+
+        // Dynamic imports
+        const KeplerGl = (await import('@kepler.gl/components')).default;
+        const { addDataToMap } = await import('@kepler.gl/actions');
+        const { createStore, combineReducers } = await import('redux');
+        const keplerGlReducer = (await import('@kepler.gl/reducers')).default;
+        const { Provider } = await import('react-redux');
+        const { createRoot } = await import('react-dom/client');
+
+        setStatus('Modules loaded ✓');
+
+        // Create store
+        const reducers = combineReducers({
+          keplerGl: keplerGlReducer
+        });
+        const store = createStore(reducers, {});
+
+        setStatus('Redux store created ✓');
+
+        // Sample data in Kepler.gl format
+        const sampleData = {
+          fields: [
+            { name: 'name', type: 'string', format: '' },
+            { name: 'population', type: 'integer', format: '' },
+            { name: 'lat', type: 'real', format: '' },
+            { name: 'lng', type: 'real', format: '' }
+          ],
+          rows: [
+            ['San Francisco', 883305, 37.7749, -122.4194],
+            ['Los Angeles', 3971883, 34.0522, -118.2437],
+            ['San Diego', 1423851, 32.7157, -117.1611],
+            ['Sacramento', 513624, 38.5816, -121.4944]
+          ]
+        };
+
+        // Kepler component
+        const KeplerComponent = () => {
+          const [dimensions, setDimensions] = useState({ width: 800, height: 400 });
+
+          useEffect(() => {
+            // Calculate dimensions based on container
+            if (containerRef.current) {
+              const rect = containerRef.current.getBoundingClientRect();
+              setDimensions({
+                width: Math.max(rect.width - 20, 600), // Account for padding, minimum 600px
+                height: 400
+              });
+            }
+
+            setStatus('Adding data to map...');
+            
+            // Add debugging
+            console.log('Sample data being sent to Kepler:', sampleData);
+            console.log('Store state before dispatch:', store.getState());
+            
+            store.dispatch(addDataToMap({
+              datasets: {
+                info: { id: 'test-data', label: 'Test Cities' },
+                data: sampleData
+              },
+              options: { 
+                centerMap: true,
+                readOnly: false
+              }
+            }));
+            
+            // Check store state after dispatch
+            setTimeout(() => {
+              console.log('Store state after dispatch:', store.getState());
+              setStatus('Data added to map ✓');
+            }, 100);
+          }, []);
+
+          return (
+            <div style={{ width: '100%', height: '400px', overflow: 'hidden' }}>
+              <KeplerGl
+                id="simple-kepler"
+                width={dimensions.width}
+                height={dimensions.height}
+                mapboxApiAccessToken={mapboxToken}
+                theme="light"
+                mapStyle="mapbox://styles/mapbox/light-v9"
+              />
+            </div>
+          );
+        };
+
+        // Render
+        if (containerRef.current) {
+          const root = createRoot(containerRef.current);
+          root.render(
+            <Provider store={store}>
+              <KeplerComponent />
+            </Provider>
+          );
+          setStatus('Kepler.gl rendered ✓');
+        }
+
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        setError(errorMessage);
+        setStatus('Failed to load Kepler.gl');
+        console.error('Kepler.gl loading error:', err);
+      }
+    };
+
+    loadKepler();
+  }, []);
+
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Simple Kepler.gl Test</h1>
+      
+      <div className="mb-4 p-4 bg-gray-100 rounded">
+        <h2 className="font-semibold mb-2">Status:</h2>
+        <p className={error ? 'text-red-600' : 'text-green-600'}>{status}</p>
+        {error && (
+          <div className="mt-2 p-2 bg-red-100 border border-red-300 rounded">
+            <strong>Error:</strong> {error}
+          </div>
+        )}
+      </div>
+
+      <div className="mb-4">
+        <h2 className="font-semibold mb-2">Environment Check:</h2>
+        <ul className="text-sm space-y-1">
+          <li>Mapbox Token: {mounted ? (process.env.NEXT_PUBLIC_MAPBOX_TOKEN ? '✓ Set' : '✗ Missing') : '⏳ Checking...'}</li>
+          <li>Window: {mounted ? (typeof window !== 'undefined' ? '✓ Available' : '✗ Not available') : '⏳ Checking...'}</li>
+        </ul>
+      </div>
+
+      <div 
+        ref={containerRef}
+        className="border rounded bg-gray-50"
+        style={{ height: '400px', width: '100%', minWidth: '600px' }}
+      />
+
+      <div className="mt-4 text-sm text-gray-600">
+        <p>Check the browser console for additional debugging information.</p>
+      </div>
+    </div>
+  );
+} 

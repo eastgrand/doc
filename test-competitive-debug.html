@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Competitive Analysis Debug Test</title>
+</head>
+<body>
+    <h1>Competitive Analysis Debug Test</h1>
+    <p>Open browser console and visit the app, then run a competitive analysis query like:</p>
+    <ul>
+        <li>"Show Nike vs Adidas competition"</li>
+        <li>"Analyze competitive landscape"</li>  
+        <li>"Nike competitive analysis"</li>
+    </ul>
+    <p>Look for these debug messages in the console:</p>
+    <ol>
+        <li>🔥 [CachedEndpointRouter] selectEndpoint called with query</li>
+        <li>🔥 [CachedEndpointRouter] Using explicitly specified endpoint OR auto-selection</li>
+        <li>🔥 [AnalysisEngine] About to call dataProcessor.processResults with endpoint</li>
+        <li>🔍 [DataProcessor] Selected processor for [endpoint]</li>
+        <li>🔥 COMPETITIVE DATA PROCESSOR VALIDATE CALLED 🔥</li>
+        <li>🚨🚨🚨 COMPETITIVE DATA PROCESSOR PROCESS() CALLED! 🚨🚨🚨</li>
+        <li>🔥 [AnalysisEngine] First processed record value: [should be 0-10 range]</li>
+    </ol>
+    
+    <p><strong>Expected Results:</strong></p>
+    <ul>
+        <li>Endpoint should be exactly "/competitive-analysis"</li>
+        <li>CompetitiveDataProcessor should be called</li>
+        <li>First record value should be in 0-10 range (e.g., 6.24)</li>
+        <li>Visualization should show circles with different sizes and colors</li>
+    </ul>
+    
+    <p><strong>If CompetitiveDataProcessor is NOT called:</strong></p>
+    <ul>
+        <li>Check if endpoint auto-selection is working</li>
+        <li>Check if "/competitive-analysis" is being passed correctly</li>
+        <li>Check if DataProcessor.getProcessorForEndpoint() finds the right processor</li>
+    </ul>
+</body>
+</html>

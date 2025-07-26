@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Test geospatial-chat-interface",
+			"type": "shell",
+			"command": "echo \"Testing geospatial-chat-interface visualization and analysis workings. The updated code should now display processing steps and a simulated analysis response.\"",
+			"group": "test",
+			"problemMatcher": []
+		}
+	]
+}

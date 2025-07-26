@@ -1,0 +1,64 @@
+query,viz_type
+show me income distribution across neighborhoods,choropleth
+map income levels by zip code,choropleth
+display population density,choropleth
+where are the highest home values,choropleth
+which areas have the best schools,choropleth
+show wealthy neighborhoods,choropleth
+map showing poverty rates,choropleth
+income distribution by county,choropleth
+show me a heatmap of crime,heatmap
+display concentration of restaurants,heatmap
+where are accident hotspots,heatmap
+crime density map,heatmap
+show hotspots of activity,heatmap
+concentration of covid cases,heatmap
+where are customers concentrated,heatmap
+plot all store locations,scatter
+show me all schools,scatter
+mark the positions of fire hydrants,scatter
+display all bus stops,scatter
+show individual data points for rainfall,scatter
+plot event locations,scatter
+group restaurants by cuisine type,cluster
+cluster incidents by category,cluster
+segment customers by spending,cluster
+categorize properties by type,cluster
+group by income bracket,cluster
+show me the correlation between income and education,correlation
+how does crime relate to poverty,correlation
+what's the relationship between home prices and school ratings,correlation
+compare pollution levels with asthma rates,correlation
+income versus education level,correlation
+crime vs poverty,correlation
+education level impact on income,correlation
+find areas with both high income and good schools,joint_high
+show neighborhoods with both low crime and high property values,joint_high
+where are both air quality and health outcomes good,joint_high
+areas with both high education and high income,joint_high
+identify zones with both flooding and property damage,joint_high
+regions with both high tourism and high retail sales,joint_high
+show income changes over time,trends
+display population growth trends,trends
+how has crime changed over the past 5 years,trends
+housing price trends by neighborhood,trends
+show me historic pollution levels,trends
+temperature changes over decades,trends
+property value changes over time,trends
+classify properties by type,categorical
+show land use categories,categorical
+display zoning types,categorical
+categorize businesses,categorical
+show tree types in parks,categorical
+building categories by age,categorical
+map symbols sized by population,proportional_symbol
+circles sized by revenue,proportional_symbol
+bubbles proportional to customer count,proportional_symbol
+symbols scaled by earthquake magnitude,proportional_symbol
+circles sized by voter turnout,proportional_symbol
+compare crime rates between north and south neighborhoods,comparison
+difference in income between urban and suburban areas,comparison
+contrast pollution levels in industrial vs residential zones,comparison
+compare home values between 2010 and 2020,comparison
+how do school ratings differ between districts,comparison
+property tax rates relative to state average,comparison 

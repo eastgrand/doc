@@ -1,0 +1,258 @@
+import React from 'react';
+import { Loader2 } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { motion, AnimatePresence } from 'framer-motion';
+
+type LoadingStateComponent = React.FC<LoadingStateProps> & {
+  Map: React.FC;
+  Analysis: React.FC<{ progress?: number }>;
+  Visualization: React.FC;
+  FilterSync: React.FC;
+};
+
+interface LoadingStateProps {
+  type?: 'overlay' | 'inline' | 'skeleton';
+  message?: string;
+  progress?: number;
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+  showSpinner?: boolean;
+  steps?: {
+    id: string;
+    label: string;
+    status: 'pending' | 'processing' | 'complete' | 'error';
+  }[];
+}
+
+interface SkeletonProps {
+  type: 'text' | 'card' | 'chart';
+  lines?: number;
+  className?: string;
+}
+
+const Skeleton: React.FC<SkeletonProps> = ({ type, lines = 1, className = '' }) => {
+  switch (type) {
+    case 'text':
+      return (
+        <div className="space-y-2">
+          {Array.from({ length: lines }).map((_, i) => (
+            <div
+              key={i}
+              className={`h-4 bg-gray-200 rounded animate-pulse ${
+                i === lines - 1 ? 'w-4/5' : 'w-full'
+              } ${className}`}
+            />
+          ))}
+        </div>
+      );
+
+    case 'card':
+      return (
+        <Card className={`p-4 space-y-4 ${className}`}>
+          <div className="h-6 bg-gray-200 rounded w-3/4 animate-pulse" />
+          <div className="space-y-2">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={i}
+                className="h-4 bg-gray-200 rounded animate-pulse"
+                style={{ width: `${85 - i * 10}%` }}
+              />
+            ))}
+          </div>
+        </Card>
+      );
+
+    case 'chart':
+      return (
+        <div className={`w-full h-64 relative ${className}`}>
+          <div className="absolute inset-0 bg-gray-100 rounded animate-pulse" />
+          <div className="absolute bottom-0 left-0 w-16 h-full bg-gray-200" />
+          <div className="absolute bottom-0 left-16 right-0 h-8 bg-gray-200" />
+          <div className="absolute inset-16 flex items-center justify-center">
+            <div className="w-32 h-32 rounded-full bg-gray-200 animate-pulse" />
+          </div>
+        </div>
+      );
+  }
+};
+
+const LoadingStateBase: React.FC<LoadingStateProps> = ({
+  type = 'inline',
+  message = 'Loading...',
+  progress,
+  className = '',
+  size = 'md',
+  showSpinner = true,
+  steps
+}) => {
+  const sizeClasses = {
+    sm: 'h-4 w-4',
+    md: 'h-6 w-6',
+    lg: 'h-8 w-8'
+  };
+
+  const containerClasses = {
+    overlay: 'fixed inset-0 bg-black/50 flex items-center justify-center z-50',
+    inline: 'flex items-center justify-center p-4',
+    skeleton: ''
+  };
+
+  if (type === 'skeleton') {
+    return (
+      <div className={`space-y-4 ${className}`}>
+        <Skeleton type="card" />
+        <Skeleton type="chart" />
+        <Skeleton type="text" lines={3} />
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className={`${containerClasses[type]} ${className}`}
+    >
+      <Card className="bg-white rounded-lg shadow-lg p-6">
+        <div className="flex flex-col items-center space-y-4">
+          {showSpinner && (
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            >
+              <Loader2 className={`${sizeClasses[size]} text-primary`} />
+            </motion.div>
+          )}
+          
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-gray-600 text-sm"
+          >
+            {message}
+          </motion.p>
+
+          {typeof progress === 'number' && (
+            <div className="w-full max-w-xs">
+              <Progress 
+                value={progress} 
+                className="h-2 transition-all duration-300 ease-out"
+              />
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-xs text-gray-500 text-center mt-1"
+              >
+                {Math.round(progress)}%
+              </motion.p>
+            </div>
+          )}
+
+          {steps && (
+            <div className="w-full space-y-2 mt-4">
+              {steps.map((step, index) => (
+                <motion.div
+                  key={step.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex items-center space-x-2"
+                >
+                  <div className={`
+                    w-5 h-5 rounded-full flex items-center justify-center
+                    ${step.status === 'complete' ? 'bg-green-500' :
+                      step.status === 'error' ? 'bg-red-500' :
+                      step.status === 'processing' ? 'bg-blue-500 animate-pulse' :
+                      'bg-gray-200'}
+                  `}>
+                    {step.status === 'complete' && (
+                      <motion.svg
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="w-3 h-3 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </motion.svg>
+                    )}
+                    {step.status === 'error' && (
+                      <motion.svg
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="w-3 h-3 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </motion.svg>
+                    )}
+                    {step.status === 'processing' && (
+                      <Loader2 className="w-3 h-3 text-white animate-spin" />
+                    )}
+                  </div>
+                  <span className="text-sm text-gray-600">{step.label}</span>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </Card>
+    </motion.div>
+  );
+};
+
+const LoadingState = LoadingStateBase as LoadingStateComponent;
+
+// Compound components for specific loading scenarios
+const MapLoader = () => (
+  <LoadingState
+    type="overlay"
+    message="Loading map data..."
+    showSpinner={true}
+    className="absolute inset-0 bg-gray-50/90"
+  />
+);
+
+const AnalysisLoader = ({ progress }: { progress?: number }) => (
+  <LoadingState
+    type="overlay"
+    message="Analyzing data..."
+    progress={progress}
+    className="absolute inset-0 bg-gray-50/90"
+  />
+);
+
+const VisualizationLoader = () => (
+  <LoadingState
+    type="skeleton"
+    className="rounded-lg overflow-hidden"
+  />
+);
+
+const FilterSyncLoader = () => (
+  <LoadingState
+    type="inline"
+    message="Synchronizing filters..."
+    size="sm"
+    className="h-8"
+  />
+);
+
+// Add display names to compound components
+MapLoader.displayName = 'LoadingState.Map';
+AnalysisLoader.displayName = 'LoadingState.Analysis';
+VisualizationLoader.displayName = 'LoadingState.Visualization';
+FilterSyncLoader.displayName = 'LoadingState.FilterSync';
+
+// Assign compound components
+LoadingState.Map = MapLoader;
+LoadingState.Analysis = AnalysisLoader;
+LoadingState.Visualization = VisualizationLoader;
+LoadingState.FilterSync = FilterSyncLoader;
+
+export default LoadingState;

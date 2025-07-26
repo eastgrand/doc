@@ -1,0 +1,154 @@
+{
+  "infrastructure": {
+    "nextjs": {
+      "status": "FAIL",
+      "statusCode": 500,
+      "message": "Next.js server failed"
+    },
+    "arcgis": {
+      "status": "FAIL",
+      "statusCode": 500,
+      "message": "ArcGIS service failed"
+    }
+  },
+  "queryAnalysis": {
+    "Compare Nike vs Adidas in high-income areas": {
+      "claudeAnalysis": {
+        "status": "FAIL",
+        "result": null,
+        "queryType": "unknown",
+        "relevantFields": 0,
+        "confidence": 0
+      }
+    },
+    "Show areas with highest Nike market share": {
+      "claudeAnalysis": {
+        "status": "FAIL",
+        "result": null,
+        "queryType": "unknown",
+        "relevantFields": 0,
+        "confidence": 0
+      }
+    },
+    "Where are Nike sales distributed across demographics?": {
+      "claudeAnalysis": {
+        "status": "FAIL",
+        "result": null,
+        "queryType": "unknown",
+        "relevantFields": 0,
+        "confidence": 0
+      }
+    },
+    "Areas high in both Nike and premium demographics": {
+      "claudeAnalysis": {
+        "status": "FAIL",
+        "result": null,
+        "queryType": "unknown",
+        "relevantFields": 0,
+        "confidence": 0
+      }
+    },
+    "Nike market penetration by zip code": {
+      "claudeAnalysis": {
+        "status": "FAIL",
+        "result": null,
+        "queryType": "unknown",
+        "relevantFields": 0,
+        "confidence": 0
+      }
+    }
+  },
+  "frontendAnalysis": {
+    "Compare Nike vs Adidas in high-income areas": {
+      "status": "PASS",
+      "microserviceSkipped": true,
+      "analysisType": "unknown",
+      "targetVariable": "unknown",
+      "matchedFieldsCount": 0,
+      "message": "Frontend-only analysis structure created successfully"
+    },
+    "Show areas with highest Nike market share": {
+      "status": "PASS",
+      "microserviceSkipped": true,
+      "analysisType": "unknown",
+      "targetVariable": "unknown",
+      "matchedFieldsCount": 0,
+      "message": "Frontend-only analysis structure created successfully"
+    },
+    "Where are Nike sales distributed across demographics?": {
+      "status": "PASS",
+      "microserviceSkipped": true,
+      "analysisType": "unknown",
+      "targetVariable": "unknown",
+      "matchedFieldsCount": 0,
+      "message": "Frontend-only analysis structure created successfully"
+    },
+    "Areas high in both Nike and premium demographics": {
+      "status": "PASS",
+      "microserviceSkipped": true,
+      "analysisType": "unknown",
+      "targetVariable": "unknown",
+      "matchedFieldsCount": 0,
+      "message": "Frontend-only analysis structure created successfully"
+    },
+    "Nike market penetration by zip code": {
+      "status": "PASS",
+      "microserviceSkipped": true,
+      "analysisType": "unknown",
+      "targetVariable": "unknown",
+      "matchedFieldsCount": 0,
+      "message": "Frontend-only analysis structure created successfully"
+    }
+  },
+  "dataLoading": {
+    "Compare Nike vs Adidas in high-income areas": {
+      "status": "FAIL",
+      "featureCount": 0,
+      "hasGeometry": false,
+      "hasBrandData": false,
+      "hasDemo": false,
+      "message": "ArcGIS feature loading failed",
+      "statusCode": 500
+    },
+    "Show areas with highest Nike market share": {
+      "status": "FAIL",
+      "featureCount": 0,
+      "hasGeometry": false,
+      "hasBrandData": false,
+      "hasDemo": false,
+      "message": "ArcGIS feature loading failed",
+      "statusCode": 500
+    },
+    "Where are Nike sales distributed across demographics?": {
+      "status": "FAIL",
+      "featureCount": 0,
+      "hasGeometry": false,
+      "hasBrandData": false,
+      "hasDemo": false,
+      "message": "ArcGIS feature loading failed",
+      "statusCode": 500
+    },
+    "Areas high in both Nike and premium demographics": {
+      "status": "FAIL",
+      "featureCount": 0,
+      "hasGeometry": false,
+      "hasBrandData": false,
+      "hasDemo": false,
+      "message": "ArcGIS feature loading failed",
+      "statusCode": 500
+    },
+    "Nike market penetration by zip code": {
+      "status": "FAIL",
+      "featureCount": 0,
+      "hasGeometry": false,
+      "hasBrandData": false,
+      "hasDemo": false,
+      "message": "ArcGIS feature loading failed",
+      "statusCode": 500
+    }
+  },
+  "dataIntegration": {},
+  "visualizationCreation": {},
+  "mapDisplay": {},
+  "summary": {}
+}

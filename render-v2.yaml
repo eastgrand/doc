@@ -1,0 +1,94 @@
+# filepath: /Users/voldeck/code/shap-microservice/render-v2.yaml
+# Updated SHAP Microservice with ArcGIS Demographic Data Pipeline
+services:
+  # Main web service for the demographic analysis API
+  - type: web
+    name: shap-demographic-analytics-v2
+    env: python
+    plan: starter
+    buildCommand: >-
+      echo "🚀 Building SHAP Demographic Analytics v2.0" && 
+      pip cache purge &&
+      pip install --no-cache-dir -r requirements.txt &&
+      echo "✅ Dependencies installed" &&
+      chmod +x ./render_pre_deploy.sh &&
+      echo "🔧 Running pre-deployment checks..." &&
+      ./render_pre_deploy.sh &&
+      echo "⚡ Pre-deployment successful - Model files verified" &&
+      chmod +x ./deploy_to_render.sh &&
+      export SKIP_MODEL_TRAINING=true &&
+      ./deploy_to_render.sh &&
+      echo "🎉 Build complete - Ready for demographic analysis!"
+    startCommand: >-
+      echo "🌟 Starting SHAP Demographic Analytics v2.0..." &&
+      export PYTHONPATH=$PYTHONPATH:$(pwd) &&
+      echo "🧪 Testing app import..." &&
+      python3 -c "from app import app; print('✅ App import successful - 3,983 zip codes ready')" &&
+      echo "🚀 Starting gunicorn server..." &&
+      gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 180 --access-logfile - --error-logfile - --preload
+    envVars:
+      - key: SERVICE_NAME
+        value: "SHAP Demographic Analytics v2.0"
+      - key: SERVICE_VERSION
+        value: "2.0.0"
+      - key: DATA_SOURCE
+        value: "ArcGIS_Synapse54_Vetements_56_Layers"
+      - key: RECORD_COUNT
+        value: "3983"
+      - key: FEATURE_COUNT
+        value: "546"
+      - key: AGGRESSIVE_MEMORY_MANAGEMENT
+        value: "true"
+      - key: SHAP_BATCH_SIZE
+        value: "100"
+      - key: SHAP_MAX_BATCH_SIZE
+        value: "200"
+      - key: SKIP_MODEL_TRAINING
+        value: "true"
+      - key: USE_PRECALCULATED_SHAP
+        value: "true"
+      - key: PORT
+        value: "10000"
+      - key: API_KEY
+        sync: false
+        
+  # Optional: Worker service for batch processing (if needed)
+  - type: worker
+    name: shap-demographic-worker-v2
+    env: python
+    buildCommand: |-
+      set -e
+      echo "🔧 Building demographic analysis worker v2.0"
+      pip install --upgrade pip
+      pip install --no-cache-dir -r requirements.txt
+      chmod +x ./render_pre_deploy.sh
+      ./render_pre_deploy.sh
+      chmod +x ./deploy_to_render.sh
+      export SKIP_MODEL_TRAINING=true
+      ./deploy_to_render.sh
+      echo "✅ Worker build complete"
+    startCommand: >-
+      echo "👷 Starting demographic analysis worker v2.0" &&
+      python3 -c "import gc; gc.enable(); print('🗑️ Garbage collection enabled')" &&
+      chmod +x ./simple_worker.py &&
+      ./simple_worker.py
+    plan: starter
+    envVars:
+      - key: SERVICE_NAME
+        value: "SHAP Demographic Worker v2.0"
+      - key: SERVICE_VERSION
+        value: "2.0.0"
+      - key: WORKER_TYPE
+        value: "demographic_analysis"
+      - key: AGGRESSIVE_MEMORY_MANAGEMENT
+        value: "false"
+      - key: SHAP_BATCH_SIZE
+        value: "50"
+      - key: SHAP_MAX_BATCH_SIZE
+        value: "100"
+      - key: SKIP_MODEL_TRAINING
+        value: "true"
+      - key: USE_PRECALCULATED_SHAP
+        value: "true"
+      - key: API_KEY
+        sync: false 

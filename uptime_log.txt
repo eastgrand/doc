@@ -1,0 +1,8 @@
+[2025-05-18T21:15:11.472Z] 🚀 Starting ML Service uptime monitoring
+[2025-05-18T21:15:11.485Z] Service URL: https://nesto-mortgage-analytics.onrender.com
+[2025-05-18T21:15:11.485Z] Check interval: 5 minutes
+[2025-05-18T21:15:11.485Z] Timeout: 30 seconds
+[2025-05-18T21:15:11.485Z] Log file: uptime_log.txt
+[2025-05-18T21:15:11.485Z] -----------------------------------------------
+[2025-05-18T21:15:41.678Z] Initial status check: Service is DOWN
+  Status: DOWN, Response time: 30000ms, Message: Request timed out after 30000ms

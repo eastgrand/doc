@@ -1,0 +1,275 @@
+# Complete Microservice Field List
+
+**Total Fields:** 548
+**Source:** cleaned_data.csv
+
+## Geographic/ID Fields (151 fields)
+
+- `ID`
+- `OBJECTID`
+
+## Brand/Purchase Fields (26 fields)
+
+- `MP30016A_B`
+- `MP30016A_B_P`
+- `MP30018A_B`
+- `MP30018A_B_P`
+- `MP30019A_B`
+- `MP30019A_B_P`
+- `MP30021A_B`
+- `MP30021A_B_P`
+- `MP30029A_B`
+- `MP30029A_B_P`
+- `MP30030A_B`
+- `MP30030A_B_P`
+- `MP30031A_B`
+- `MP30031A_B_P`
+- `MP30032A_B`
+- `MP30032A_B_P`
+- `MP30033A_B`
+- `MP30033A_B_P`
+- `MP30034A_B`
+- `MP30034A_B_P`
+- `MP30035A_B`
+- `MP30035A_B_P`
+- `MP30036A_B`
+- `MP30036A_B_P`
+- `MP30037A_B`
+- `MP30037A_B_P`
+
+## Demographics (28 fields)
+
+- `AMERIND_CY`
+- `AMERIND_CY_P`
+- `ASIAN_CY`
+- `ASIAN_CY_P`
+- `Age`
+- `BLACK_CY`
+- `BLACK_CY_P`
+- `FAMPOP_CY`
+- `FAMPOP_CY_P`
+- `HHPOP_CY`
+- `HHPOP_CY_P`
+- `HISPAI_CY`
+- `HISPAI_CY_P`
+- `HISPBLK_CY`
+- `HISPBLK_CY_P`
+- `HISPOTH_CY`
+- `HISPOTH_CY_P`
+- `HISPPI_CY`
+- `HISPPI_CY_P`
+- `HISPWHT_CY`
+- `HISPWHT_CY_P`
+- `OTHRACE_CY`
+- `OTHRACE_CY_P`
+- `RACE2UP_CY`
+- `RACE2UP_CY_P`
+- `TOTPOP_CY`
+- `WHITE_CY`
+- `WHITE_CY_P`
+
+## Income/Economic (2 fields)
+
+- `Income`
+- `MEDDI_CY`
+
+## Housing (51 fields)
+
+- `PSIV7UMKVALM`
+- `thematic_value`
+- `thematic_value_10`
+- `thematic_value_11`
+- `thematic_value_12`
+- `thematic_value_13`
+- `thematic_value_14`
+- `thematic_value_15`
+- `thematic_value_16`
+- `thematic_value_17`
+- `thematic_value_18`
+- `thematic_value_19`
+- `thematic_value_20`
+- `thematic_value_21`
+- `thematic_value_22`
+- `thematic_value_23`
+- `thematic_value_24`
+- `thematic_value_25`
+- `thematic_value_26`
+- `thematic_value_27`
+- `thematic_value_28`
+- `thematic_value_29`
+- `thematic_value_30`
+- `thematic_value_31`
+- `thematic_value_32`
+- `thematic_value_33`
+- `thematic_value_34`
+- `thematic_value_35`
+- `thematic_value_36`
+- `thematic_value_37`
+- `thematic_value_38`
+- `thematic_value_39`
+- `thematic_value_40`
+- `thematic_value_41`
+- `thematic_value_42`
+- `thematic_value_43`
+- `thematic_value_44`
+- `thematic_value_45`
+- `thematic_value_46`
+- `thematic_value_47`
+- `thematic_value_48`
+- `thematic_value_49`
+- `thematic_value_50`
+- `thematic_value_51`
+- `thematic_value_52`
+- `thematic_value_53`
+- `thematic_value_54`
+- `thematic_value_55`
+- `thematic_value_56`
+- `thematic_value_57`
+- `thematic_value_9`
+
+## Other Fields (290 fields)
+
+- `DESCRIPTION`
+- `DIVINDX_CY`
+- `GENALPHACY`
+- `GENALPHACY_P`
+- `GENZ_CY`
+- `GENZ_CY_P`
+- `MILLENN_CY`
+- `MILLENN_CY_P`
+- `MP07109A_B`
+- `MP07109A_B_P`
+- `MP07111A_B`
+- `MP07111A_B_P`
+- `MP31035A_B`
+- `MP31035A_B_P`
+- `MP31042A_B`
+- `MP31042A_B_P`
+- `MP33020A_B`
+- `MP33020A_B_P`
+- `MP33031A_B`
+- `MP33031A_B_P`
+- `MP33032A_B`
+- `MP33032A_B_P`
+- `MP33104A_B`
+- `MP33104A_B_P`
+- `MP33105A_B`
+- `MP33105A_B_P`
+- `MP33106A_B`
+- `MP33106A_B_P`
+- `MP33107A_B`
+- `MP33107A_B_P`
+- `MP33108A_B`
+- `MP33108A_B_P`
+- `MP33119A_B`
+- `MP33119A_B_P`
+- `MP33120A_B`
+- `MP33120A_B_P`
+- `PACIFIC_CY`
+- `PACIFIC_CY_P`
+- `WLTHINDXCY`
+- `X9051_X`
+- `X9051_X_A`
+
+## Complete Alphabetical List
+
+  1. `AMERIND_CY`
+  2. `AMERIND_CY_P`
+  3. `ASIAN_CY`
+  4. `ASIAN_CY_P`
+  5. `Age`
+  6. `BLACK_CY`
+  7. `BLACK_CY_P`
+108. `DESCRIPTION`
+158. `DIVINDX_CY`
+259. `FAMPOP_CY`
+260. `FAMPOP_CY_P`
+261. `GENALPHACY`
+262. `GENALPHACY_P`
+263. `GENZ_CY`
+264. `GENZ_CY_P`
+265. `HHPOP_CY`
+266. `HHPOP_CY_P`
+267. `HISPAI_CY`
+268. `HISPAI_CY_P`
+269. `HISPBLK_CY`
+270. `HISPBLK_CY_P`
+271. `HISPOTH_CY`
+272. `HISPOTH_CY_P`
+273. `HISPPI_CY`
+274. `HISPPI_CY_P`
+275. `HISPWHT_CY`
+276. `HISPWHT_CY_P`
+277. `ID`
+278. `Income`
+279. `MEDDI_CY`
+280. `MILLENN_CY`
+281. `MILLENN_CY_P`
+282. `MP07109A_B`
+283. `MP07109A_B_P`
+284. `MP07111A_B`
+285. `MP07111A_B_P`
+286. `MP30016A_B`
+287. `MP30016A_B_P`
+288. `MP30018A_B`
+289. `MP30018A_B_P`
+290. `MP30019A_B`
+291. `MP30019A_B_P`
+292. `MP30021A_B`
+293. `MP30021A_B_P`
+294. `MP30029A_B`
+295. `MP30029A_B_P`
+296. `MP30030A_B`
+297. `MP30030A_B_P`
+298. `MP30031A_B`
+299. `MP30031A_B_P`
+300. `MP30032A_B`
+301. `MP30032A_B_P`
+302. `MP30033A_B`
+303. `MP30033A_B_P`
+304. `MP30034A_B`
+305. `MP30034A_B_P`
+306. `MP30035A_B`
+307. `MP30035A_B_P`
+308. `MP30036A_B`
+309. `MP30036A_B_P`
+310. `MP30037A_B`
+311. `MP30037A_B_P`
+312. `MP31035A_B`
+313. `MP31035A_B_P`
+314. `MP31042A_B`
+315. `MP31042A_B_P`
+316. `MP33020A_B`
+317. `MP33020A_B_P`
+318. `MP33031A_B`
+319. `MP33031A_B_P`
+320. `MP33032A_B`
+321. `MP33032A_B_P`
+322. `MP33104A_B`
+323. `MP33104A_B_P`
+324. `MP33105A_B`
+325. `MP33105A_B_P`
+326. `MP33106A_B`
+327. `MP33106A_B_P`
+328. `MP33107A_B`
+329. `MP33107A_B_P`
+330. `MP33108A_B`
+331. `MP33108A_B_P`
+332. `MP33119A_B`
+333. `MP33119A_B_P`
+334. `MP33120A_B`
+335. `MP33120A_B_P`
+336. `OBJECTID`
+386. `OTHRACE_CY`
+387. `OTHRACE_CY_P`
+388. `PACIFIC_CY`
+389. `PACIFIC_CY_P`
+390. `PSIV7UMKVALM`
+391. `RACE2UP_CY`
+392. `RACE2UP_CY_P`
+493. `TOTPOP_CY`
+494. `WHITE_CY`
+495. `WHITE_CY_P`
+496. `WLTHINDXCY`
+497. `X9051_X`
+498. `X9051_X_A`

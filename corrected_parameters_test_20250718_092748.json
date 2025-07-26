@@ -1,0 +1,90 @@
+{
+  "timestamp": "20250718_092748",
+  "total_tests": 7,
+  "successful": 2,
+  "success_rate": 28.57142857142857,
+  "results": [
+    {
+      "endpoint": "/feature-interactions",
+      "description": "Feature Interactions - confirmed working",
+      "success": true,
+      "payload": {
+        "target_field": "MP30034A_B_P",
+        "features": [
+          "MP26029",
+          "MP27014"
+        ],
+        "interaction_threshold": 0.1
+      }
+    },
+    {
+      "endpoint": "/spatial-clusters",
+      "description": "Spatial Clusters - NaN handling fix working",
+      "success": false,
+      "payload": {
+        "target_field": "MP30034A_B_P",
+        "n_clusters": 3,
+        "sample_size": 100
+      }
+    },
+    {
+      "endpoint": "/analyze",
+      "description": "Core Analysis - test with target_field",
+      "success": true,
+      "payload": {
+        "target_field": "MP30034A_B_P",
+        "features": [
+          "MP26029",
+          "MP27014"
+        ],
+        "max_features": 5
+      }
+    },
+    {
+      "endpoint": "/outlier-detection",
+      "description": "Outlier Detection - test with target_field",
+      "success": false,
+      "payload": {
+        "target_field": "MP30034A_B_P",
+        "outlier_threshold": 2.0,
+        "sample_size": 100
+      }
+    },
+    {
+      "endpoint": "/scenario-analysis",
+      "description": "Scenario Analysis - test with target_field",
+      "success": false,
+      "payload": {
+        "target_field": "MP30034A_B_P",
+        "scenarios": [
+          {
+            "MP26029": 50000
+          }
+        ],
+        "sample_size": 50
+      }
+    },
+    {
+      "endpoint": "/segment-profiling",
+      "description": "Segment Profiling - test with target_field",
+      "success": false,
+      "payload": {
+        "target_field": "MP30034A_B_P",
+        "n_segments": 3,
+        "sample_size": 100
+      }
+    },
+    {
+      "endpoint": "/comparative-analysis",
+      "description": "Comparative Analysis - test with fields parameter",
+      "success": false,
+      "payload": {
+        "fields": [
+          "MP30034A_B_P",
+          "MP30034A_B_N"
+        ],
+        "sample_size": 100
+      }
+    }
+  ]
+}

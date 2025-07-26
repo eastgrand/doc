@@ -1,0 +1,609 @@
+{
+  "timestamp": "2025-07-21T18:28:15.246Z",
+  "summary": {
+    "totalQueries": 33,
+    "successfulQueries": 0,
+    "failedQueries": 33,
+    "averageExecutionTime": 0.12121212121212122,
+    "categorySummary": {
+      "ANALYSIS_CATEGORIES:ranking": {
+        "total": 2,
+        "successful": 0
+      },
+      "ANALYSIS_CATEGORIES:comparison": {
+        "total": 2,
+        "successful": 0
+      },
+      "ANALYSIS_CATEGORIES:bivariate": {
+        "total": 2,
+        "successful": 0
+      },
+      "ANALYSIS_CATEGORIES:difference": {
+        "total": 2,
+        "successful": 0
+      },
+      "ANALYSIS_CATEGORIES:multivariate": {
+        "total": 2,
+        "successful": 0
+      },
+      "ANALYSIS_CATEGORIES:simple": {
+        "total": 2,
+        "successful": 0
+      },
+      "ANALYSIS_CATEGORIES:hotspot": {
+        "total": 2,
+        "successful": 0
+      },
+      "TRENDS_CATEGORIES:Single Endpoint Analysis": {
+        "total": 4,
+        "successful": 0
+      },
+      "TRENDS_CATEGORIES:Multi-Endpoint Correlation": {
+        "total": 4,
+        "successful": 0
+      },
+      "TRENDS_CATEGORIES:Predictive and Risk Analysis": {
+        "total": 4,
+        "successful": 0
+      },
+      "TRENDS_CATEGORIES:Advanced Multi-Endpoint": {
+        "total": 4,
+        "successful": 0
+      },
+      "TRENDS_CATEGORIES:Diagnostic Analysis": {
+        "total": 3,
+        "successful": 0
+      }
+    },
+    "endpointUsage": {},
+    "visualizationTypeBreakdown": {},
+    "effectsTestResults": {
+      "totalWithEffects": 0,
+      "effectsWorking": 0,
+      "effectTypes": {}
+    },
+    "errors": [
+      {
+        "query": "Rank the top markets for Nike expansion considering competitive landscape",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:ranking"
+      },
+      {
+        "query": "Show the highest opportunity areas combining demographic and predictive insights",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:ranking"
+      },
+      {
+        "query": "Compare Nike vs Adidas performance across demographic segments and spatial clusters",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:comparison"
+      },
+      {
+        "query": "Compare high-risk vs low-risk investment markets using multiple analysis types",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:comparison"
+      },
+      {
+        "query": "Analyze the relationship between demographics and competitive performance",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:bivariate"
+      },
+      {
+        "query": "Correlate spatial clustering patterns with anomaly detection results",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:bivariate"
+      },
+      {
+        "query": "Show differences between predicted growth and current competitive standings",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:difference"
+      },
+      {
+        "query": "Compare feature importance rankings across different market segments",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:difference"
+      },
+      {
+        "query": "Comprehensive analysis combining competitive, demographic, spatial, and predictive data",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:multivariate"
+      },
+      {
+        "query": "Multi-endpoint strategy analysis for market expansion considering all risk factors",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:multivariate"
+      },
+      {
+        "query": "Show competitive analysis results for athletic shoe market",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:simple"
+      },
+      {
+        "query": "Display demographic insights for target market identification",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:simple"
+      },
+      {
+        "query": "Find investment hotspots using anomaly detection and spatial clustering",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:hotspot"
+      },
+      {
+        "query": "Identify high-opportunity clusters combining multiple endpoint insights",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "ANALYSIS_CATEGORIES:hotspot"
+      },
+      {
+        "query": "Show spatial clusters for market identification",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Single Endpoint Analysis"
+      },
+      {
+        "query": "Run anomaly detection on market performance data",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Single Endpoint Analysis"
+      },
+      {
+        "query": "Display trend analysis for athletic shoe market",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Single Endpoint Analysis"
+      },
+      {
+        "query": "Perform outlier detection on sales data",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Single Endpoint Analysis"
+      },
+      {
+        "query": "Where should Nike expand stores considering competition and demographics?",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Multi-Endpoint Correlation"
+      },
+      {
+        "query": "Why is Vancouver underperforming - analyze root causes using multiple insights",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Multi-Endpoint Correlation"
+      },
+      {
+        "query": "Show high-opportunity, low-risk markets for investment",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Multi-Endpoint Correlation"
+      },
+      {
+        "query": "Correlate demographic trends with competitive landscape analysis",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Multi-Endpoint Correlation"
+      },
+      {
+        "query": "Use predictive modeling to forecast market opportunities",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Predictive and Risk Analysis"
+      },
+      {
+        "query": "Combine sensitivity analysis with feature importance rankings",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Predictive and Risk Analysis"
+      },
+      {
+        "query": "Run scenario analysis across demographic segments",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Predictive and Risk Analysis"
+      },
+      {
+        "query": "Compare model performance across different market types",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Predictive and Risk Analysis"
+      },
+      {
+        "query": "Comprehensive market strategy combining all available analysis types",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Advanced Multi-Endpoint"
+      },
+      {
+        "query": "Feature interaction analysis across competitive and demographic data",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Advanced Multi-Endpoint"
+      },
+      {
+        "query": "Segment profiling with comparative analysis insights",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Advanced Multi-Endpoint"
+      },
+      {
+        "query": "Strategic recommendations using correlation and predictive modeling",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Advanced Multi-Endpoint"
+      },
+      {
+        "query": "Why are certain markets underperforming using root cause analysis?",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Diagnostic Analysis"
+      },
+      {
+        "query": "Identify market anomalies and their demographic correlations",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Diagnostic Analysis"
+      },
+      {
+        "query": "Compare actual vs predicted performance across market segments",
+        "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function",
+        "category": "TRENDS_CATEGORIES:Diagnostic Analysis"
+      }
+    ],
+    "performance": {
+      "fastest": {
+        "query": "Rank the top markets for Nike expansion considering competitive landscape",
+        "time": 0
+      },
+      "slowest": {
+        "query": "Compare Nike vs Adidas performance across demographic segments and spatial clusters",
+        "time": 1
+      },
+      "averageDataPoints": 0
+    }
+  },
+  "detailedResults": [
+    {
+      "query": "Rank the top markets for Nike expansion considering competitive landscape",
+      "category": "ANALYSIS_CATEGORIES:ranking",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Show the highest opportunity areas combining demographic and predictive insights",
+      "category": "ANALYSIS_CATEGORIES:ranking",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Compare Nike vs Adidas performance across demographic segments and spatial clusters",
+      "category": "ANALYSIS_CATEGORIES:comparison",
+      "success": false,
+      "executionTime": 1,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Compare high-risk vs low-risk investment markets using multiple analysis types",
+      "category": "ANALYSIS_CATEGORIES:comparison",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Analyze the relationship between demographics and competitive performance",
+      "category": "ANALYSIS_CATEGORIES:bivariate",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Correlate spatial clustering patterns with anomaly detection results",
+      "category": "ANALYSIS_CATEGORIES:bivariate",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Show differences between predicted growth and current competitive standings",
+      "category": "ANALYSIS_CATEGORIES:difference",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Compare feature importance rankings across different market segments",
+      "category": "ANALYSIS_CATEGORIES:difference",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Comprehensive analysis combining competitive, demographic, spatial, and predictive data",
+      "category": "ANALYSIS_CATEGORIES:multivariate",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Multi-endpoint strategy analysis for market expansion considering all risk factors",
+      "category": "ANALYSIS_CATEGORIES:multivariate",
+      "success": false,
+      "executionTime": 1,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Show competitive analysis results for athletic shoe market",
+      "category": "ANALYSIS_CATEGORIES:simple",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Display demographic insights for target market identification",
+      "category": "ANALYSIS_CATEGORIES:simple",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Find investment hotspots using anomaly detection and spatial clustering",
+      "category": "ANALYSIS_CATEGORIES:hotspot",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Identify high-opportunity clusters combining multiple endpoint insights",
+      "category": "ANALYSIS_CATEGORIES:hotspot",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Show spatial clusters for market identification",
+      "category": "TRENDS_CATEGORIES:Single Endpoint Analysis",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Run anomaly detection on market performance data",
+      "category": "TRENDS_CATEGORIES:Single Endpoint Analysis",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Display trend analysis for athletic shoe market",
+      "category": "TRENDS_CATEGORIES:Single Endpoint Analysis",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Perform outlier detection on sales data",
+      "category": "TRENDS_CATEGORIES:Single Endpoint Analysis",
+      "success": false,
+      "executionTime": 1,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Where should Nike expand stores considering competition and demographics?",
+      "category": "TRENDS_CATEGORIES:Multi-Endpoint Correlation",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Why is Vancouver underperforming - analyze root causes using multiple insights",
+      "category": "TRENDS_CATEGORIES:Multi-Endpoint Correlation",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Show high-opportunity, low-risk markets for investment",
+      "category": "TRENDS_CATEGORIES:Multi-Endpoint Correlation",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Correlate demographic trends with competitive landscape analysis",
+      "category": "TRENDS_CATEGORIES:Multi-Endpoint Correlation",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Use predictive modeling to forecast market opportunities",
+      "category": "TRENDS_CATEGORIES:Predictive and Risk Analysis",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Combine sensitivity analysis with feature importance rankings",
+      "category": "TRENDS_CATEGORIES:Predictive and Risk Analysis",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Run scenario analysis across demographic segments",
+      "category": "TRENDS_CATEGORIES:Predictive and Risk Analysis",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Compare model performance across different market types",
+      "category": "TRENDS_CATEGORIES:Predictive and Risk Analysis",
+      "success": false,
+      "executionTime": 1,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Comprehensive market strategy combining all available analysis types",
+      "category": "TRENDS_CATEGORIES:Advanced Multi-Endpoint",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Feature interaction analysis across competitive and demographic data",
+      "category": "TRENDS_CATEGORIES:Advanced Multi-Endpoint",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Segment profiling with comparative analysis insights",
+      "category": "TRENDS_CATEGORIES:Advanced Multi-Endpoint",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Strategic recommendations using correlation and predictive modeling",
+      "category": "TRENDS_CATEGORIES:Advanced Multi-Endpoint",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Why are certain markets underperforming using root cause analysis?",
+      "category": "TRENDS_CATEGORIES:Diagnostic Analysis",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Identify market anomalies and their demographic correlations",
+      "category": "TRENDS_CATEGORIES:Diagnostic Analysis",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    },
+    {
+      "query": "Compare actual vs predicted performance across market segments",
+      "category": "TRENDS_CATEGORIES:Diagnostic Analysis",
+      "success": false,
+      "executionTime": 0,
+      "analysisSuccess": false,
+      "visualizationSuccess": false,
+      "effectsEnabled": false,
+      "dataPointCount": 0,
+      "error": "Pipeline error: TypeError: this.analysisEngine.analyzeQuery is not a function"
+    }
+  ]
+}

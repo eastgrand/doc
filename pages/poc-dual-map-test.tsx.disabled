@@ -1,0 +1,207 @@
+// pages/poc-dual-map-test.tsx
+import { useState, useEffect } from 'react';
+import { PocDataAdapter } from '@/lib/data-adapters/poc-data-adapter';
+import { PocDualMapToggle } from '@/components/map/PocDualMapToggle';
+
+// Sample test data that mimics ESRI visualization data
+const sampleData = {
+  features: [
+    {
+      attributes: {
+        OBJECTID: 1,
+        NAME: 'San Francisco',
+        POPULATION: 883305,
+        CATEGORY: 'High',
+        VALUE: 100,
+        INCOME: 112000
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [-122.4194, 37.7749]
+      }
+    },
+    {
+      attributes: {
+        OBJECTID: 2,
+        NAME: 'Los Angeles',
+        POPULATION: 3971883,
+        CATEGORY: 'Very High',
+        VALUE: 150,
+        INCOME: 65000
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [-118.2437, 34.0522]
+      }
+    },
+    {
+      attributes: {
+        OBJECTID: 3,
+        NAME: 'San Diego',
+        POPULATION: 1423851,
+        CATEGORY: 'High',
+        VALUE: 90,
+        INCOME: 78000
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [-117.1611, 32.7157]
+      }
+    },
+    {
+      attributes: {
+        OBJECTID: 4,
+        NAME: 'Sacramento',
+        POPULATION: 513624,
+        CATEGORY: 'Medium',
+        VALUE: 75,
+        INCOME: 68000
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [-121.4944, 38.5816]
+      }
+    },
+    {
+      attributes: {
+        OBJECTID: 5,
+        NAME: 'Oakland',
+        POPULATION: 433031,
+        CATEGORY: 'Medium',
+        VALUE: 85,
+        INCOME: 73000
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [-122.2711, 37.8044]
+      }
+    }
+  ],
+  layerName: 'California Cities Analysis',
+  rendererField: 'VALUE'
+};
+
+export default function PocDualMapTest() {
+  const [mounted, setMounted] = useState(false);
+  const [universalData] = useState(() => 
+    PocDataAdapter.fromEsriVisualization(sampleData)
+  );
+
+  const [showMapboxTokenWarning, setShowMapboxTokenWarning] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setShowMapboxTokenWarning(!process.env.NEXT_PUBLIC_MAPBOX_TOKEN);
+  }, []);
+
+  return (
+    <div className="container mx-auto p-4">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold mb-2">POC: Dual Map Visualization Test</h1>
+        <p className="text-gray-600 mb-6">
+          Testing the integration between ESRI standard view and Kepler.gl visualization
+        </p>
+
+        {/* Mapbox Token Warning */}
+        {mounted && showMapboxTokenWarning && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-yellow-800">
+                  Mapbox Token Required
+                </h3>
+                <div className="mt-2 text-sm text-yellow-700">
+                  <p>
+                    To test Kepler.gl functionality, add your Mapbox token to <code>.env.local</code>:
+                  </p>
+                  <code className="block mt-1 bg-yellow-100 p-2 rounded">
+                    NEXT_PUBLIC_MAPBOX_TOKEN=your_mapbox_token_here
+                  </code>
+                </div>
+                <div className="mt-3">
+                  <button
+                    onClick={() => setShowMapboxTokenWarning(false)}
+                    className="text-sm bg-yellow-200 hover:bg-yellow-300 text-yellow-800 px-3 py-1 rounded"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Data Summary */}
+        <div className="bg-gray-50 rounded-lg p-4 mb-6">
+          <h2 className="text-lg font-semibold mb-2">Sample Data Summary</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div>
+              <span className="font-medium">Features:</span> {universalData.features.length}
+            </div>
+            <div>
+              <span className="font-medium">Fields:</span> {universalData.fields.length}
+            </div>
+            <div>
+              <span className="font-medium">Type:</span> {universalData.metadata.visualizationType}
+            </div>
+            <div>
+              <span className="font-medium">Renderer:</span> {universalData.metadata.rendererField}
+            </div>
+          </div>
+          
+          <div className="mt-3">
+            <span className="font-medium">Fields:</span>
+            <div className="flex flex-wrap gap-2 mt-1">
+              {universalData.fields.map((field, index) => (
+                <span
+                  key={index}
+                  className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800"
+                >
+                  {field.name} ({field.type})
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Dual Map Component */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <PocDualMapToggle
+            data={universalData}
+            height={500}
+          />
+        </div>
+
+        {/* Instructions */}
+        <div className="mt-6 bg-blue-50 rounded-lg p-4">
+          <h3 className="text-lg font-semibold text-blue-800 mb-2">Test Instructions</h3>
+          <ol className="list-decimal list-inside space-y-2 text-blue-700">
+            <li>Click the "🌍 Kepler View" button to switch to Kepler.gl visualization</li>
+            <li>Verify that the data loads correctly in Kepler.gl</li>
+            <li>Test switching back and forth between views</li>
+            <li>Check the browser console for any errors</li>
+            <li>Verify that the data conversion works correctly</li>
+          </ol>
+        </div>
+
+        {/* Debug Info */}
+        <details className="mt-6">
+          <summary className="cursor-pointer text-gray-600 hover:text-gray-800">
+            Debug: View Converted Data
+          </summary>
+          <div className="mt-2 bg-gray-100 rounded p-4">
+            <h4 className="font-medium mb-2">Universal Data Format:</h4>
+            <pre className="text-xs overflow-auto bg-white p-3 rounded border">
+              {JSON.stringify(universalData, null, 2)}
+            </pre>
+          </div>
+        </details>
+      </div>
+    </div>
+  );
+} 

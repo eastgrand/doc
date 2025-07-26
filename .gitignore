@@ -1,0 +1,63 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# env files (can opt-in for commiting if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Large data files and endpoint files
+public/data/endpoints/all_endpoints.json
+public/data/endpoints/analyze_shap_test.json
+public/data/endpoints/*.json
+scripts/public/data/endpoints/all_endpoints.json
+scripts/public/data/endpoints/market-sizing.json
+scripts/public/data/endpoints/competitive_analysis.json
+scripts/public/data/endpoints/brand-analysis.json
+scripts/public/data/endpoints/trend_analysis.json
+scripts/public/data/endpoints/segment-profiling.json
+scripts/public/data/endpoints/analyze.json
+scripts/public/data/endpoints/real-estate-analysis.json
+scripts/public/data/endpoints/correlation_analysis.json
+scripts/public/data/endpoints/demographic_insights.json
+scripts/public/data/endpoints/*.json
+
+# Virtual environment files
+shap-microservice/venv_py311/
+*/venv*/
+
+# Endpoints directory
+endpoints/

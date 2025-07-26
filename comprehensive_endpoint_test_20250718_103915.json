@@ -1,0 +1,138 @@
+{
+  "timestamp": "20250718_103915",
+  "total_endpoints": 16,
+  "working_endpoints": 0,
+  "failed_endpoints": 16,
+  "success_rate_percent": 0.0,
+  "average_duration": 0,
+  "detailed_results": [
+    {
+      "endpoint": "/analyze",
+      "description": "Basic SHAP analysis",
+      "success": false,
+      "duration": 1.16532301902771,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/feature-interactions",
+      "description": "Feature interaction analysis",
+      "success": false,
+      "duration": 0.3609449863433838,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/comparative-analysis",
+      "description": "Comparative analysis between groups",
+      "success": false,
+      "duration": 0.4469168186187744,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/outlier-detection",
+      "description": "Outlier detection with SHAP explanations",
+      "success": false,
+      "duration": 0.41276097297668457,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/scenario-analysis",
+      "description": "What-if scenario analysis",
+      "success": false,
+      "duration": 0.7078990936279297,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/segment-profiling",
+      "description": "Customer segment profiling",
+      "success": false,
+      "duration": 0.35079503059387207,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/spatial-clusters",
+      "description": "Spatial clustering analysis",
+      "success": false,
+      "duration": 0.4123342037200928,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/demographic-insights",
+      "description": "Demographic pattern insights",
+      "success": false,
+      "duration": 0.3496856689453125,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/trend-analysis",
+      "description": "Temporal trend analysis",
+      "success": false,
+      "duration": 0.3867161273956299,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/feature-importance-ranking",
+      "description": "Feature importance ranking",
+      "success": false,
+      "duration": 0.3639349937438965,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/correlation-analysis",
+      "description": "Feature correlation analysis",
+      "success": false,
+      "duration": 0.3718447685241699,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/anomaly-detection",
+      "description": "Anomaly detection with explanations",
+      "success": false,
+      "duration": 0.3938910961151123,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/predictive-modeling",
+      "description": "Predictive modeling with SHAP",
+      "success": false,
+      "duration": 0.4015989303588867,
+      "status_code": 502,
+      "error": "502 Bad Gateway - Service error"
+    },
+    {
+      "endpoint": "/sensitivity-analysis",
+      "description": "Feature sensitivity analysis",
+      "success": false,
+      "duration": 0.45522093772888184,
+      "status_code": 404,
+      "error": "HTTP 404: <!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try agai"
+    },
+    {
+      "endpoint": "/model-performance",
+      "description": "Model performance evaluation",
+      "success": false,
+      "duration": 0.2927708625793457,
+      "status_code": 404,
+      "error": "HTTP 404: <!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try agai"
+    },
+    {
+      "endpoint": "/competitive-analysis",
+      "description": "Competitive brand analysis",
+      "success": false,
+      "duration": 0.32129597663879395,
+      "status_code": 400,
+      "error": "HTTP 400: {\"error\":\"Primary brand 'None' not found in dataset\"}\n"
+    }
+  ]
+}

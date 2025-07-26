@@ -1,0 +1,466 @@
+import { 
+  MEMORY_CONFIG, 
+  SESSION_CONFIG, 
+  generateSessionId, 
+  isSessionExpired,
+  validateMemoryConfig,
+  getUserScopedKey,
+  getCurrentUserId,
+  setUserId,
+  clearUserSession
+} from '@/config/chat-memory-config';
+import { ConversationMemory } from '@/components/ConversationMemory';
+import { ChatSessionManager } from '@/lib/chat/session-manager';
+
+// Mock fetch for query classification API
+global.fetch = jest.fn();
+
+// Mock browser environment
+const mockLocalStorage = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
+};
+
+const mockSessionStorage = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
+};
+
+// Setup browser mocks
+Object.defineProperty(global, 'window', {
+  value: {
+    localStorage: mockLocalStorage,
+    sessionStorage: mockSessionStorage,
+    location: {
+      search: ''
+    }
+  },
+  writable: true,
+});
+
+Object.defineProperty(global, 'localStorage', {
+  value: mockLocalStorage,
+  writable: true,
+});
+
+Object.defineProperty(global, 'sessionStorage', {
+  value: mockSessionStorage,
+  writable: true,
+});
+
+// Mock browser APIs
+Object.defineProperty(global, 'navigator', {
+  value: {
+    userAgent: 'test-browser'
+  },
+  writable: true,
+});
+
+Object.defineProperty(global, 'screen', {
+  value: {
+    width: 1920,
+    height: 1080
+  },
+  writable: true,
+});
+
+// Mock canvas for fingerprinting
+Object.defineProperty(global, 'document', {
+  value: {
+    createElement: jest.fn(() => ({
+      getContext: jest.fn(() => ({
+        fillText: jest.fn()
+      })),
+      toDataURL: jest.fn(() => 'data:image/png;base64,test')
+    }))
+  },
+  writable: true,
+});
+
+// Mock fetch for API calls
+global.fetch = jest.fn();
+
+describe('Phase 1: Core Context Integration', () => {
+  let mockFetch: jest.MockedFunction<typeof fetch>;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
+    
+    // Clear mock storage
+    mockLocalStorage.getItem.mockReturnValue(null);
+    mockSessionStorage.getItem.mockReturnValue(null);
+    
+    // Default mock for query classification API
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({ classification: 'new-analysis' })
+    } as Response);
+  });
+
+  describe('Memory Configuration', () => {
+    test('should have valid memory configuration', () => {
+      expect(validateMemoryConfig()).toBe(true);
+      expect(MEMORY_CONFIG.MAX_MEMORY_MESSAGES).toBe(50);
+      expect(MEMORY_CONFIG.SUMMARIZE_THRESHOLD).toBe(15);
+      expect(MEMORY_CONFIG.SESSION_TIMEOUT).toBe(30 * 60 * 1000);
+    });
+
+    test('should generate unique session IDs', () => {
+      const id1 = generateSessionId();
+      const id2 = generateSessionId();
+      
+      expect(id1).toMatch(/^session_\d+_[a-z0-9]+$/);
+      expect(id2).toMatch(/^session_\d+_[a-z0-9]+$/);
+      expect(id1).not.toBe(id2);
+    });
+
+    test('should generate user-scoped session IDs', () => {
+      const userId = 'user123';
+      const sessionId = generateSessionId(userId);
+      
+      expect(sessionId).toMatch(/^session_user123_\d+_[a-z0-9]+$/);
+    });
+
+    test('should correctly detect session expiration', () => {
+      const now = Date.now();
+      const expired = now - (MEMORY_CONFIG.SESSION_TIMEOUT + 1000);
+      const active = now - 1000;
+
+      expect(isSessionExpired(expired)).toBe(true);
+      expect(isSessionExpired(active)).toBe(false);
+    });
+  });
+
+  describe('User-Scoped Storage', () => {
+    test('should create user-scoped storage keys', () => {
+      const baseKey = 'test_key';
+      const userId = 'user123';
+      
+      const scopedKey = getUserScopedKey(baseKey, userId);
+      expect(scopedKey).toBe('user_user123_test_key');
+      
+      // Without user ID should return base key
+      const unscopedKey = getUserScopedKey(baseKey);
+      expect(unscopedKey).toBe(baseKey);
+    });
+
+    test('should handle user ID management', () => {
+      const userId = 'testuser123';
+      
+      // Set user ID
+      setUserId(userId, false);
+      expect(mockSessionStorage.setItem).toHaveBeenCalledWith('mpiQ_user_id', userId);
+      
+      // Set persistent user ID
+      setUserId(userId, true);
+      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('mpiQ_persistent_user_id', userId);
+      
+      // Clear user session
+      clearUserSession();
+      expect(mockSessionStorage.removeItem).toHaveBeenCalledWith('mpiQ_user_id');
+    });
+  });
+
+  describe('Enhanced Conversation Memory', () => {
+    let memory: ConversationMemory;
+
+    beforeEach(() => {
+      memory = new ConversationMemory();
+    });
+
+    test('should start new session and track metadata', () => {
+      const sessionId = memory.startNewSession(true, 'correlation');
+      const session = memory.getCurrentSession();
+
+      expect(sessionId).toMatch(/^session_\d+_[a-z0-9]+$/);
+      expect(session).toBeTruthy();
+      expect(session?.classification).toBe('new-analysis');
+      expect(session?.analysisType).toBe('correlation');
+      expect(session?.messageCount).toBe(0); // Starts at 0, boundary message doesn't count
+    });
+
+    test('should add messages with session tracking', () => {
+      memory.startNewSession();
+      
+      memory.addMessage({
+        role: 'user',
+        content: 'Test message'
+      }, 'strategist');
+
+      const messages = memory.getCurrentSessionMessages();
+      expect(messages).toHaveLength(1);
+      expect(messages[0].content).toBe('Test message');
+      expect(messages[0].persona).toBe('strategist');
+      expect(messages[0].sessionId).toBeTruthy();
+    });
+
+    test('should clear session and reset context', () => {
+      memory.startNewSession();
+      memory.addMessage({ role: 'user', content: 'Test' });
+      
+      expect(memory.getMessages()).toHaveLength(2); // Session start + message
+      
+      memory.clearSession();
+      
+      expect(memory.getMessages()).toHaveLength(0);
+      expect(memory.getCurrentSession()).toBeNull();
+    });
+
+    test('should export and import session state', () => {
+      const sessionId = memory.startNewSession(true, 'thematic');
+      memory.addMessage({ role: 'user', content: 'Test export' });
+
+      const exported = memory.export();
+      
+      expect(exported.currentSession).toBeTruthy();
+      expect(exported.currentSession?.sessionId).toBe(sessionId);
+      expect(exported.messages).toHaveLength(2);
+
+      const newMemory = new ConversationMemory();
+      newMemory.import(exported);
+
+      expect(newMemory.getCurrentSession()?.sessionId).toBe(sessionId);
+      expect(newMemory.getMessages()).toHaveLength(2);
+    });
+  });
+
+  describe('Chat Session Manager', () => {
+    let sessionManager: ChatSessionManager;
+    const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
+
+    beforeEach(() => {
+      sessionManager = new ChatSessionManager();
+    });
+
+    test('should handle new-analysis query classification with user ID', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => 'new-analysis'
+      } as Response);
+
+      const userId = 'user123';
+      const decision = await sessionManager.handleNewQuery(
+        'Show me income levels by region',
+        '',
+        'strategist',
+        'correlation',
+        userId
+      );
+
+      expect(decision.classification).toBe('new-analysis');
+      expect(decision.isNewSession).toBe(true);
+      expect(decision.shouldClearContext).toBe(true);
+      expect(decision.sessionAction).toBe('start-new');
+      expect(decision.sessionId).toMatch(/^session_user123_\d+_[a-z0-9]+$/);
+      
+      // Check that session includes user ID
+      const session = sessionManager.getCurrentSession();
+      expect(session?.userId).toBe(userId);
+    });
+
+    test('should handle follow-up query classification', async () => {
+      // First query to establish session
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ classification: 'new-analysis' })
+      } as Response);
+
+      await sessionManager.handleNewQuery('Initial query', '', undefined, undefined, 'user123');
+
+      // Follow-up query
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ classification: 'follow-up' })
+      } as Response);
+
+      const decision = await sessionManager.handleNewQuery(
+        'Why is that?',
+        'user: Initial query\nassistant: Analysis results...',
+        undefined,
+        undefined,
+        'user123'
+      );
+
+      expect(decision.classification).toBe('follow-up');
+      expect(decision.isNewSession).toBe(false);
+      expect(decision.shouldClearContext).toBe(false);
+      expect(decision.sessionAction).toBe('continue');
+    });
+
+    test('should handle session timeout', async () => {
+      // Start a session
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ classification: 'new-analysis' })
+      } as Response);
+
+      await sessionManager.handleNewQuery('Initial query', '', undefined, undefined, 'user123');
+      
+      // Manually expire the session by accessing the private property
+      // In a real scenario, this would happen naturally over time
+      const currentSession = sessionManager.getCurrentSession();
+      if (currentSession) {
+        // Modify the session manager's internal state
+        (sessionManager as any).currentSession.lastActivity = Date.now() - (MEMORY_CONFIG.SESSION_TIMEOUT + 1000);
+      }
+
+      // Next query should trigger timeout restart
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ classification: 'follow-up' })
+      } as Response);
+
+      const decision = await sessionManager.handleNewQuery(
+        'Follow-up after timeout',
+        'previous conversation',
+        undefined,
+        undefined,
+        'user123'
+      );
+
+      expect(decision.sessionAction).toBe('timeout-restart');
+      expect(decision.shouldClearContext).toBe(true);
+      expect(decision.trigger).toBe('timeout');
+    });
+
+    test('should fallback to new-analysis on API error', async () => {
+      mockFetch.mockRejectedValueOnce(new Error('API Error'));
+
+      const decision = await sessionManager.handleNewQuery(
+        'Query with API error',
+        'conversation history',
+        undefined,
+        undefined,
+        'user123'
+      );
+
+      expect(decision.classification).toBe('new-analysis');
+      expect(decision.isNewSession).toBe(true);
+      expect(decision.shouldClearContext).toBe(true);
+    });
+
+    test('should update session context', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ classification: 'new-analysis' })
+      } as Response);
+
+      await sessionManager.handleNewQuery('Initial query', '', undefined, undefined, 'user123');
+
+      sessionManager.updateSessionContext(
+        ['income', 'education'],
+        ['Toronto', 'Vancouver'],
+        { correlation: 0.75 },
+        'tactician'
+      );
+
+      const session = sessionManager.getCurrentSession();
+      expect(session?.analysisContext.metrics).toEqual(['income', 'education']);
+      expect(session?.analysisContext.regions).toEqual(['Toronto', 'Vancouver']);
+      expect(session?.analysisContext.lastResults).toEqual({ correlation: 0.75 });
+      expect(session?.activePersona).toBe('tactician');
+    });
+
+    test('should manually clear session', () => {
+      // First create a session
+      const sessionManager = new ChatSessionManager();
+      (sessionManager as any).currentSession = {
+        sessionId: 'test-session',
+        startTime: Date.now(),
+        lastActivity: Date.now(),
+        messageCount: 1,
+        classification: 'follow-up',
+        userId: 'user123',
+        activePersona: 'strategist',
+        analysisContext: { type: 'test', metrics: [], regions: [], lastResults: null }
+      };
+
+      const decision = sessionManager.clearCurrentSession();
+
+      expect(decision.classification).toBe('new-analysis');
+      expect(decision.shouldClearContext).toBe(true);
+      expect(decision.trigger).toBe('manual-clear');
+      expect(sessionManager.getCurrentSession()).toBeNull();
+    });
+  });
+
+  describe('Integration Tests', () => {
+    test('should integrate session manager with conversation memory', async () => {
+      const memory = new ConversationMemory();
+      const sessionManager = new ChatSessionManager(memory);
+      
+      const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ classification: 'new-analysis' })
+      } as Response);
+
+      // Handle first query
+      const decision = await sessionManager.handleNewQuery(
+        'Test integration',
+        '',
+        undefined,
+        undefined,
+        'user123'
+      );
+
+      expect(decision.isNewSession).toBe(true);
+      
+      // Session should be tracked in both manager and memory
+      const managerSession = sessionManager.getCurrentSession();
+      
+      expect(managerSession?.sessionId).toBeTruthy();
+      expect(managerSession?.userId).toBe('user123');
+    });
+
+    test('should isolate sessions between different users', async () => {
+      const sessionManager1 = new ChatSessionManager();
+      const sessionManager2 = new ChatSessionManager();
+      
+      const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
+      
+      // User 1 starts a session
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ classification: 'new-analysis' })
+      } as Response);
+      
+      const decision1 = await sessionManager1.handleNewQuery(
+        'User 1 query',
+        '',
+        undefined,
+        undefined,
+        'user1'
+      );
+
+      // User 2 starts a session
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ classification: 'new-analysis' })
+      } as Response);
+      
+      const decision2 = await sessionManager2.handleNewQuery(
+        'User 2 query',
+        '',
+        undefined,
+        undefined,
+        'user2'
+      );
+
+      // Sessions should be different
+      expect(decision1.sessionId).not.toBe(decision2.sessionId);
+      
+      const session1 = sessionManager1.getCurrentSession();
+      const session2 = sessionManager2.getCurrentSession();
+      
+      expect(session1?.userId).toBe('user1');
+      expect(session2?.userId).toBe('user2');
+      expect(session1?.sessionId).not.toBe(session2?.sessionId);
+    });
+  });
+}); 

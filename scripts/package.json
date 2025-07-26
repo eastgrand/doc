@@ -1,0 +1,14 @@
+{
+  "name": "query-classification-tools",
+  "version": "1.0.0",
+  "description": "Tools for ML query classification",
+  "private": true,
+  "scripts": {
+    "generate-data": "node generate-training-data.js",
+    "train-model": "python train-model.py"
+  },
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "csv-writer": "^1.6.0"
+  }
+} 

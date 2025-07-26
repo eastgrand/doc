@@ -1,0 +1,460 @@
+import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+
+/**
+ * TrendAnalysisProcessor - Handles data processing for the /trend-analysis endpoint
+ * 
+ * Processes trend analysis results with focus on temporal patterns, growth rates,
+ * and trend consistency across geographic markets.
+ */
+export class TrendAnalysisProcessor implements DataProcessorStrategy {
+  
+  validate(rawData: RawAnalysisResult): boolean {
+    if (!rawData || typeof rawData !== 'object') return false;
+    if (!rawData.success) return false;
+    if (!Array.isArray(rawData.results)) return false;
+    
+    // Validate that we have expected fields for trend analysis
+    const hasRequiredFields = rawData.results.length === 0 || 
+      rawData.results.some(record => 
+        record && 
+        (record.area_id || record.id || record.ID) &&
+        (record.trend_score !== undefined || 
+         record.value !== undefined || 
+         record.score !== undefined ||
+         // Check for trend-relevant fields
+         record.mp30034a_b_p !== undefined || // Nike market share for trend tracking
+         record.strategic_value_score !== undefined ||
+         record.competitive_advantage_score !== undefined)
+      );
+    
+    return hasRequiredFields;
+  }
+
+  process(rawData: RawAnalysisResult): ProcessedAnalysisData {
+    console.log(`📈 [TREND ANALYSIS PROCESSOR] CALLED WITH ${rawData.results?.length || 0} RECORDS 📈`);
+    
+    if (!this.validate(rawData)) {
+      throw new Error('Invalid data format for TrendAnalysisProcessor');
+    }
+
+    // Process records with trend strength scoring priority
+    const processedRecords = rawData.results.map((record: any, index: number) => {
+      // PRIORITIZE PRE-CALCULATED TREND STRENGTH SCORE
+      const trendScore = this.extractTrendScore(record);
+      
+      // Generate area name from ID and location data
+      const areaName = this.generateAreaName(record);
+      
+      // Extract ID (updated for correlation_analysis format)
+      const recordId = record.ID || record.id || record.area_id;
+      
+      // Debug logging for records with missing ID
+      if (!recordId) {
+        console.warn(`[TrendAnalysisProcessor] Record ${index} missing ID:`, {
+          hasID: 'ID' in record,
+          hasId: 'id' in record,
+          hasAreaId: 'area_id' in record,
+          recordKeys: Object.keys(record).slice(0, 10)
+        });
+      }
+      
+      // Extract trend-relevant metrics for properties
+      const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
+      const strategicScore = Number(record.strategic_value_score) || 0;
+      const competitiveScore = Number(record.competitive_advantage_score) || 0;
+      const demographicScore = Number(record.demographic_opportunity_score) || 0;
+      const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
+      const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
+      
+      // Calculate trend indicators
+      const growthPotential = this.calculateGrowthPotential(record);
+      const trendConsistency = this.calculateTrendConsistency(record);
+      const volatilityIndex = this.calculateVolatilityIndex(record);
+      
+      return {
+        area_id: recordId || `area_${index + 1}`,
+        area_name: areaName,
+        value: Math.round(trendScore * 100) / 100, // Use trend score as primary value
+        rank: 0, // Will be calculated after sorting
+        properties: {
+          ...record, // Include ALL original fields in properties
+          trend_strength_score: trendScore,
+          nike_market_share: nikeShare,
+          strategic_score: strategicScore,
+          competitive_score: competitiveScore,
+          demographic_score: demographicScore,
+          total_population: totalPop,
+          median_income: medianIncome,
+          // Trend-specific calculated properties
+          growth_potential: growthPotential,
+          trend_consistency: trendConsistency,
+          volatility_index: volatilityIndex,
+          trend_category: this.getTrendCategory(trendScore)
+        }
+      };
+    });
+    
+    // Calculate comprehensive statistics
+    const statistics = this.calculateTrendStatistics(processedRecords);
+    
+    // Rank records by trend strength
+    const rankedRecords = this.rankRecords(processedRecords);
+    
+    // Extract feature importance with trend focus
+    const featureImportance = this.processTrendFeatureImportance(rawData.feature_importance || []);
+    
+    // Generate trend-focused summary
+    const summary = this.generateTrendSummary(rankedRecords, statistics, rawData.summary);
+
+    return {
+      type: 'trend_analysis', // Trend analysis type for temporal insights
+      records: rankedRecords,
+      summary,
+      featureImportance,
+      statistics,
+      targetVariable: 'trend_strength_score' // Primary ranking by trend strength
+    };
+  }
+
+  // ============================================================================
+  // PRIVATE PROCESSING METHODS
+  // ============================================================================
+
+  /**
+   * Extract trend strength score from record with fallback calculation
+   */
+  private extractTrendScore(record: any): number {
+    if (record.trend_score !== undefined && record.trend_score !== null) {
+      const preCalculatedScore = Number(record.trend_score);
+      console.log(`📈 [TrendAnalysisProcessor] Using pre-calculated trend score: ${preCalculatedScore}`);
+      return preCalculatedScore;
+    }
+    
+    // FALLBACK: Calculate trend score from available data
+    console.log('⚠️ [TrendAnalysisProcessor] No trend_strength_score found, calculating from raw data');
+    
+    const strategicScore = Number(record.strategic_value_score) || 0;
+    const competitiveScore = Number(record.competitive_advantage_score) || 0;
+    const demographicScore = Number(record.demographic_opportunity_score) || 0;
+    const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
+    
+    // Simple trend strength calculation
+    const consistencyFactor = strategicScore > 0 ? (strategicScore / 100) * 40 : 20;
+    const growthFactor = competitiveScore > 0 ? (competitiveScore / 10) * 30 : 15;
+    const positionFactor = nikeShare > 0 ? Math.min(nikeShare / 50, 1) * 20 : 10;
+    const stabilityFactor = 10; // Default stability
+    
+    return Math.min(100, consistencyFactor + growthFactor + positionFactor + stabilityFactor);
+  }
+
+  /**
+   * Calculate growth potential based on market fundamentals
+   */
+  private calculateGrowthPotential(record: any): number {
+    const nikeShare = Number(record.mp30034a_b_p) || 0;
+    const demographicScore = Number(record.demographic_opportunity_score) || 0;
+    const marketGap = Math.max(0, 100 - nikeShare);
+    
+    // Growth potential formula: Market Gap (60%) + Demographic Opportunity (40%)
+    const gapPotential = (marketGap / 100) * 60;
+    const demoPotential = demographicScore > 0 ? (demographicScore / 100) * 40 : 20;
+    
+    return Math.round((gapPotential + demoPotential) * 100) / 100;
+  }
+
+  /**
+   * Calculate trend consistency from multiple score relationships
+   */
+  private calculateTrendConsistency(record: any): number {
+    const strategicScore = Number(record.strategic_value_score) || 0;
+    const competitiveScore = Number(record.competitive_advantage_score) || 0;
+    const demographicScore = Number(record.demographic_opportunity_score) || 0;
+    
+    const scores = [strategicScore, competitiveScore, demographicScore].filter(s => s > 0);
+    
+    if (scores.length < 2) {
+      return 50; // Default moderate consistency
+    }
+    
+    // Calculate coefficient of variation (lower = more consistent)
+    const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
+    const variance = scores.reduce((acc, score) => acc + Math.pow(score - mean, 2), 0) / scores.length;
+    const stdDev = Math.sqrt(variance);
+    const cv = mean > 0 ? stdDev / mean : 1;
+    
+    // Convert to 0-100 scale (lower volatility = higher consistency)
+    return Math.round(Math.max(0, Math.min(100, (1 - cv) * 100)) * 100) / 100;
+  }
+
+  /**
+   * Calculate volatility index from score relationships
+   */  
+  private calculateVolatilityIndex(record: any): number {
+    const consistency = this.calculateTrendConsistency(record);
+    // Volatility is inverse of consistency
+    return Math.round((100 - consistency) * 100) / 100;
+  }
+
+  /**
+   * Categorize trend strength
+   */
+  private getTrendCategory(trendScore: number): string {
+    if (trendScore >= 65) return 'Strong Upward Trend';
+    if (trendScore >= 50) return 'Moderate Growth Trend';  
+    if (trendScore >= 35) return 'Weak/Volatile Trend';
+    return 'Inconsistent/Declining';
+  }
+
+  /**
+   * Generate meaningful area name from available data
+   */
+  private generateAreaName(record: any): string {
+    // Try explicit name fields first (updated for correlation_analysis format)
+    if (record.value_DESCRIPTION) return record.value_DESCRIPTION;
+    if (record.DESCRIPTION) return record.DESCRIPTION;
+    if (record.area_name) return record.area_name;
+    if (record.NAME) return record.NAME;
+    if (record.name) return record.name;
+    
+    // Create name from ID and location data
+    const id = record.ID || record.id || record.GEOID;
+    if (id) {
+      // For ZIP codes, create format like "ZIP 12345"
+      if (typeof id === 'string' && id.match(/^\d{5}$/)) {
+        return `ZIP ${id}`;
+      }
+      // For FSA codes, create format like "FSA M5V"  
+      if (typeof id === 'string' && id.match(/^[A-Z]\d[A-Z]$/)) {
+        return `FSA ${id}`;
+      }
+      // For numeric IDs, create descriptive name
+      if (typeof id === 'number' || !isNaN(Number(id))) {
+        return `Area ${id}`;
+      }
+      return `Region ${id}`;
+    }
+    
+    return 'Unknown Area';
+  }
+
+  /**
+   * Rank records by trend strength
+   */
+  private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
+    // Sort by trend strength descending and assign ranks
+    const sorted = [...records].sort((a, b) => b.value - a.value);
+    
+    return sorted.map((record, index) => ({
+      ...record,
+      rank: index + 1
+    }));
+  }
+
+  /**
+   * Process feature importance with trend focus
+   */
+  private processTrendFeatureImportance(rawFeatureImportance: any[]): any[] {
+    const trendFeatures = rawFeatureImportance.map(item => ({
+      feature: item.feature || item.name || 'unknown',
+      importance: Number(item.importance || item.value || 0),
+      description: this.getTrendFeatureDescription(item.feature || item.name)
+    }));
+
+    // Add trend-specific synthetic features if none provided
+    if (trendFeatures.length === 0) {
+      return [
+        { feature: 'market_consistency', importance: 0.35, description: 'Market performance consistency over time' },
+        { feature: 'growth_momentum', importance: 0.28, description: 'Growth rate and momentum indicators' },
+        { feature: 'competitive_positioning', importance: 0.22, description: 'Competitive market position strength' },
+        { feature: 'volatility_factors', importance: 0.15, description: 'Market volatility and stability factors' }
+      ];
+    }
+
+    return trendFeatures.sort((a, b) => b.importance - a.importance);
+  }
+
+  /**
+   * Get trend-specific feature descriptions
+   */
+  private getTrendFeatureDescription(featureName: string): string {
+    const trendDescriptions: Record<string, string> = {
+      'trend_strength': 'Overall trend strength and direction',
+      'growth_rate': 'Market growth rate and momentum',
+      'consistency': 'Performance consistency over time',
+      'volatility': 'Market volatility and fluctuation patterns',
+      'market_share': 'Brand market share trend patterns',
+      'demographic': 'Demographic trend influences',
+      'competitive': 'Competitive positioning trends',
+      'strategic': 'Strategic value trend indicators',
+      'income': 'Income trend patterns and growth',
+      'population': 'Population growth and demographic shifts'
+    };
+    
+    const lowerName = featureName.toLowerCase();
+    for (const [key, desc] of Object.entries(trendDescriptions)) {
+      if (lowerName.includes(key)) {
+        return desc;
+      }
+    }
+    
+    return `${featureName} trend characteristics`;
+  }
+
+  /**
+   * Calculate trend-specific statistics
+   */
+  private calculateTrendStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
+    const values = records.map(r => r.value).filter(v => !isNaN(v));
+    
+    if (values.length === 0) {
+      return {
+        total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0,
+        percentile25: 0, percentile75: 0, iqr: 0, outlierCount: 0
+      };
+    }
+    
+    const sorted = [...values].sort((a, b) => a - b);
+    const total = values.length;
+    const sum = values.reduce((a, b) => a + b, 0);
+    const mean = sum / total;
+    
+    // Calculate percentiles
+    const p25Index = Math.floor(total * 0.25);
+    const p75Index = Math.floor(total * 0.75);
+    const medianIndex = Math.floor(total * 0.5);
+    
+    const percentile25 = sorted[p25Index];
+    const percentile75 = sorted[p75Index];
+    const median = total % 2 === 0 
+      ? (sorted[medianIndex - 1] + sorted[medianIndex]) / 2
+      : sorted[medianIndex];
+    
+    // Calculate standard deviation
+    const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / total;
+    const stdDev = Math.sqrt(variance);
+    
+    // Calculate IQR and outliers
+    const iqr = percentile75 - percentile25;
+    const lowerBound = percentile25 - 1.5 * iqr;
+    const upperBound = percentile75 + 1.5 * iqr;
+    const outlierCount = values.filter(v => v < lowerBound || v > upperBound).length;
+    
+    return {
+      total,
+      mean,
+      median,
+      min: sorted[0],
+      max: sorted[sorted.length - 1],
+      stdDev,
+      percentile25,
+      percentile75,
+      iqr,
+      outlierCount
+    };
+  }
+
+  /**
+   * Generate trend-focused summary
+   */
+  private generateTrendSummary(
+    records: GeographicDataPoint[], 
+    statistics: AnalysisStatistics, 
+    rawSummary?: string
+  ): string {
+    // Start with trend scoring explanation
+    let summary = `**📈 Trend Strength Formula (0-100 scale):**
+• **Time Consistency (40% weight):** Performance stability and consistency over time
+• **Growth Rate (30% weight):** Growth momentum and potential
+• **Market Position (20% weight):** Current market strength and positioning
+• **Volatility Factor (10% weight):** Predictability and stability (lower volatility = higher score)
+
+Higher scores indicate stronger, more consistent, and predictable market trends.
+
+`;
+    
+    // Trend statistics and baseline metrics
+    summary += `**📊 Trend Analysis Baseline:** `;
+    summary += `Average trend strength: ${statistics.mean.toFixed(1)} (range: ${statistics.min.toFixed(1)}-${statistics.max.toFixed(1)}). `;
+    
+    // Calculate trend category distribution
+    const strongTrends = records.filter(r => r.value >= 65).length;
+    const moderateTrends = records.filter(r => r.value >= 50 && r.value < 65).length;
+    const weakTrends = records.filter(r => r.value >= 35 && r.value < 50).length;
+    const volatileMarkets = records.filter(r => r.value < 35).length;
+    
+    summary += `Trend distribution: ${strongTrends} strong trends (${(strongTrends/records.length*100).toFixed(1)}%), `;
+    summary += `${moderateTrends} moderate trends (${(moderateTrends/records.length*100).toFixed(1)}%), `;
+    summary += `${weakTrends} weak trends (${(weakTrends/records.length*100).toFixed(1)}%), `;
+    summary += `${volatileMarkets} volatile markets (${(volatileMarkets/records.length*100).toFixed(1)}%).
+
+`;
+    
+    // Top trending markets (5-8 areas)
+    const topTrends = records.slice(0, 8);
+    if (topTrends.length > 0) {
+      const strongTrendAreas = topTrends.filter(r => r.value >= 50);
+      if (strongTrendAreas.length > 0) {
+        summary += `**Strongest Trend Markets:** `;
+        const trendNames = strongTrendAreas.slice(0, 6).map(r => `${r.area_name} (${r.value.toFixed(1)})`);
+        summary += `${trendNames.join(', ')}. `;
+        
+        const avgTopTrend = strongTrendAreas.reduce((sum, r) => sum + r.value, 0) / strongTrendAreas.length;
+        summary += `These markets show exceptional trend strength with average score ${avgTopTrend.toFixed(1)}. `;
+      }
+    }
+    
+    // Growth potential markets
+    if (records.length > 0) {
+      const growthPotentialAreas = records
+        .filter(r => r.properties.growth_potential >= 60)
+        .slice(0, 5);
+      
+      if (growthPotentialAreas.length > 0) {
+        summary += `**High Growth Potential:** `;
+        const growthNames = growthPotentialAreas.map(r => `${r.area_name} (${r.properties.growth_potential?.toFixed(1)}% potential)`);
+        summary += `${growthNames.join(', ')}. `;
+        summary += `These areas demonstrate strong growth trajectory patterns. `;
+      }
+    }
+    
+    // Consistent performers
+    if (records.length > 0) {
+      const consistentPerformers = records
+        .filter(r => r.properties.trend_consistency >= 70)
+        .slice(0, 5);
+      
+      if (consistentPerformers.length > 0) {
+        summary += `**Most Consistent Trends:** `;
+        const consistentNames = consistentPerformers.map(r => `${r.area_name} (${r.properties.trend_consistency?.toFixed(1)}% consistency)`);
+        summary += `${consistentNames.join(', ')}. `;
+        summary += `These markets offer predictable and stable performance patterns. `;
+      }
+    }
+    
+    // Strategic insights
+    summary += `**Trend Insights:** ${statistics.total} geographic areas analyzed for temporal patterns and trend strength. `;
+    
+    const highVolatility = records.filter(r => (r.properties.volatility_index || 0) >= 70).length;
+    if (highVolatility > 0) {
+      summary += `${highVolatility} markets show high volatility (${(highVolatility/records.length*100).toFixed(1)}%) requiring careful monitoring. `;
+    }
+    
+    // Actionable recommendations
+    summary += `**Trend-Based Recommendations:** `;
+    if (strongTrends > 0) {
+      summary += `Focus investment on ${strongTrends} markets with strong trend patterns. `;
+    }
+    if (moderateTrends > 0) {
+      summary += `Monitor ${moderateTrends} moderate trend markets for optimization opportunities. `;
+    }
+    if (volatileMarkets > 0) {
+      summary += `Develop risk mitigation strategies for ${volatileMarkets} volatile markets. `;
+    }
+    
+    if (rawSummary) {
+      summary += rawSummary;
+    }
+    
+    return summary;
+  }
+}

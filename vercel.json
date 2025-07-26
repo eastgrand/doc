@@ -1,0 +1,16 @@
+{
+  "framework": "nextjs",
+  "functions": {
+    "app/api/**/*.{js,ts}": {
+      "maxDuration": 30
+    },
+    "pages/api/**/*.{js,ts}": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "NODE_OPTIONS": "--max-old-space-size=4096"
+  },
+  "buildCommand": "npm run build",
+  "installCommand": "npm install"
+} 

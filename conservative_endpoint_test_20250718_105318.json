@@ -1,0 +1,80 @@
+{
+  "timestamp": "20250718_105318",
+  "approach": "conservative_one_by_one",
+  "delay_between_tests": 15,
+  "total_endpoints": 8,
+  "working_endpoints": 3,
+  "failed_endpoints": 5,
+  "success_rate_percent": 37.5,
+  "detailed_results": [
+    {
+      "endpoint": "/outlier-detection",
+      "description": "Outlier detection (small sample)",
+      "sample_size": 100,
+      "success": true,
+      "duration": 74.73016595840454,
+      "status_code": 200,
+      "error": null
+    },
+    {
+      "endpoint": "/feature-interactions",
+      "description": "Feature interactions (small sample)",
+      "sample_size": 100,
+      "success": true,
+      "duration": 2.7898478507995605,
+      "status_code": 200,
+      "error": null
+    },
+    {
+      "endpoint": "/analyze",
+      "description": "Basic SHAP analysis (small sample)",
+      "sample_size": 100,
+      "success": true,
+      "duration": 0.9417500495910645,
+      "status_code": 200,
+      "error": null
+    },
+    {
+      "endpoint": "/spatial-clusters",
+      "description": "Spatial clustering (small sample)",
+      "sample_size": 100,
+      "success": false,
+      "duration": 120.17088007926941,
+      "error": "Request timeout"
+    },
+    {
+      "endpoint": "/comparative-analysis",
+      "description": "Comparative analysis (small sample)",
+      "sample_size": 100,
+      "success": false,
+      "duration": 0.43549013137817383,
+      "status_code": 400,
+      "error": "HTTP 400: {\"error\":\"Grouping field 'MP25035' not found in dataset\"}\n"
+    },
+    {
+      "endpoint": "/competitive-analysis",
+      "description": "Competitive analysis (small sample)",
+      "sample_size": 100,
+      "success": false,
+      "duration": 0.29938817024230957,
+      "status_code": 400,
+      "error": "HTTP 400: {\"error\":\"Primary brand 'None' not found in dataset\"}\n"
+    },
+    {
+      "endpoint": "/segment-profiling",
+      "description": "Segment profiling (very small sample)",
+      "sample_size": 50,
+      "success": false,
+      "duration": 120.1712818145752,
+      "error": "Request timeout"
+    },
+    {
+      "endpoint": "/scenario-analysis",
+      "description": "Scenario analysis (very small sample)",
+      "sample_size": 50,
+      "success": false,
+      "duration": 120.16749691963196,
+      "error": "Request timeout"
+    }
+  ]
+}

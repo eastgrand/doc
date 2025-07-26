@@ -1,0 +1,26 @@
+{
+  "total_fields": 20,
+  "extraction_method": "error_response_parsing",
+  "fields": [
+    "AMERIND_CY",
+    "AMERIND_CY_P",
+    "ASIAN_CY",
+    "ASIAN_CY_P",
+    "Age",
+    "BLACK_CY",
+    "BLACK_CY_P",
+    "CreationDate",
+    "CreationDate_10",
+    "CreationDate_11",
+    "CreationDate_12",
+    "CreationDate_13",
+    "CreationDate_14",
+    "CreationDate_15",
+    "CreationDate_16",
+    "CreationDate_17",
+    "CreationDate_18",
+    "CreationDate_19",
+    "CreationDate_20",
+    "CreationDate_21"
+  ]
+}

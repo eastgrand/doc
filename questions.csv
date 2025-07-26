@@ -1,0 +1,7 @@
+Query,Fields,Visualization
+Which areas have the most applications?,applications,topN
+Do areas with high rates of diversity have high conversion rates?',visibleMinorityHouseholdPopulation;conversionRate,correlation
+Which areas have low median incomes but high number of applications?',medianHouseholdIncome;applications,ranking
+Show the areas with the highest level of applications and high conversion rates',applications;conversionRate,joint high
+Which areas have high concentrations of condos and high conversion rates',condominium;conversionRate,joint high
+Which areas have high concentrations of South Asian population and applications',southAsianHouseholdPopulation;applications,joint high

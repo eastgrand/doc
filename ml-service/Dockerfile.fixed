@@ -1,0 +1,31 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Install dependencies first to leverage Docker cache
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY app.py ./
+COPY service_health_check.py ./
+
+# Set timezone to UTC
+ENV TZ=UTC
+
+# Set Redis fallback mode to true by default
+ENV REDIS_GRACEFUL_FALLBACK=true
+ENV REDIS_TIMEOUT=10
+ENV REDIS_SOCKET_KEEPALIVE=true
+ENV REDIS_MAX_RETRIES=3
+ENV REDIS_RETRY_BACKOFF=0.5
+
+# Add a health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:${PORT:-5000}/ping || exit 1
+
+# Expose port
+EXPOSE ${PORT:-5000}
+
+# Run app with enhanced output buffering for better logging
+CMD ["python", "-u", "app.py"] 

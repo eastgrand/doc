@@ -1,0 +1,97 @@
+Starting SHAP Microservice Integration Test...
+
+Testing microservice API endpoints...
+- Submitting analysis job to /analyze endpoint
+  POST https://nesto-mortgage-analytics.onrender.com/analyze
+  Payload: {"target_variable":"CONVERSION_RATE","query":"Show me areas with high exercise daily index and high conversion rates"}
+  Job submitted successfully, received job_id: test-job-1748555046499
+
+- Polling job status from /job_status endpoint
+  GET https://nesto-mortgage-analytics.onrender.com/job_status/test-job-1748555046499
+  Poll attempt 1: Job status - processing
+  Poll attempt 2: Job status - processing
+  Poll attempt 3: Job status - processing
+  Poll final: Job status - completed
+
+- Job results received: {
+  "status": "completed",
+  "summary": "Analysis shows that EXERCISE_DAILY_INDEX has a strong positive correlation with CONVERSION_RATE in urban areas.",
+  "feature_importance": [
+    {
+      "feature": "EXERCISE_DAILY_INDEX",
+      "importance": 0.35
+    },
+    {
+      "feature": "POPULATION_DENSITY",
+      "importance": 0.28
+    },
+    {
+      "feature": "INCOME_LEVEL",
+      "importance": 0.22
+    }
+  ],
+  "results": [
+    {
+      "ID": 1,
+      "score": 0.85,
+      "insights": "High exercise index correlates with high conversion"
+    },
+    {
+      "ID": 2,
+      "score": 0.72,
+      "insights": "Moderate exercise index shows average conversion"
+    }
+  ]
+}
+
+- Testing feature augmentation with microservice insights
+  Original features:
+[
+  {
+    "attributes": {
+      "OBJECTID": 1,
+      "NAME": "Location A"
+    }
+  },
+  {
+    "attributes": {
+      "OBJECTID": 2,
+      "NAME": "Location B"
+    }
+  }
+]
+  Augmented features:
+[
+  {
+    "attributes": {
+      "OBJECTID": 1,
+      "NAME": "Location A",
+      "microserviceInsights": {
+        "ID": 1,
+        "score": 0.85,
+        "insights": "High exercise index correlates with high conversion"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "OBJECTID": 2,
+      "NAME": "Location B",
+      "microserviceInsights": {
+        "ID": 2,
+        "score": 0.72,
+        "insights": "Moderate exercise index shows average conversion"
+      }
+    }
+  }
+]
+
+- Testing AI explanation generation
+  Generated AI explanation: "Analysis shows that EXERCISE_DAILY_INDEX has a strong positive correlation with CONVERSION_RATE in urban areas. The most important factors are EXERCISE_DAILY_INDEX (35%) and POPULATION_DENSITY (28%)."
+
+=== Test Summary ===
+All SHAP microservice integration tests completed successfully!
+API endpoints are functioning properly
+Asynchronous job processing is working as expected
+Feature augmentation is being applied correctly
+AI explanations are being generated from microservice results

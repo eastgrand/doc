@@ -1,0 +1,420 @@
+MapClient.tsx:55 [MapClient MapLegend] Rendering legend: {title: '', type: 'simple', visible: false, itemCount: 0, sampleItems: Array(0)}
+MapClient.tsx:325 [MapClient] Starting map initialization...
+vendors-node_modules_c.js?v=1753556408157:2466 Using Calcite Components 3.2.1 [Date: 2025-05-29, Revision: 618973fec]
+MapClient.tsx:337 [MapClient] ArcGIS modules loaded successfully
+MapClient.tsx:341 [MapClient] API key set: true
+MapClient.tsx:344 [MapClient] Creating map with light grey basemap...
+MapClient.tsx:348 [MapClient] Map created successfully
+MapClient.tsx:356 [MapClient] Creating MapView...
+MapClient.tsx:372 [MapClient] MapView created, waiting for it to be ready...
+warn-once.js:16 Image with src "/mpiq_pin2.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+warnOnce @ warn-once.js:16
+eval @ image-component.js:112
+Promise.then
+handleLoading @ image-component.js:37
+onLoad @ image-component.js:198
+callCallback @ react-dom.development.js:20565
+invokeGuardedCallbackImpl @ react-dom.development.js:20614
+invokeGuardedCallback @ react-dom.development.js:20689
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
+executeDispatch @ react-dom.development.js:32128
+processDispatchQueueItemsInOrder @ react-dom.development.js:32160
+processDispatchQueue @ react-dom.development.js:32173
+dispatchEventsForPlugins @ react-dom.development.js:32184
+eval @ react-dom.development.js:32374
+batchedUpdates$1 @ react-dom.development.js:24953
+batchedUpdates @ react-dom.development.js:28844
+dispatchEventForPluginEventSystem @ react-dom.development.js:32373
+dispatchEvent @ react-dom.development.js:30141
+MapClient.tsx:384 [MapClient] MapView is ready
+MapClient.tsx:396 [MapClient] Calling onMapLoad...
+MapClient.tsx:398 [MapClient] Map initialization complete
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+ConfigurationManager.ts:35 [ConfigurationManager] Creating singleton instance...
+ConfigurationManager.ts:59 [ConfigurationManager] Loading configurations...
+ConfigurationManager.ts:69 [ConfigurationManager] ✅ Singleton loaded configurations for 14 endpoints
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
+AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: false, firstLayerUrl: undefined, firstLayerId: undefined, extractedLayerNumber: null, constructedServiceUrl: null, …}
+geospatial-chat-interface.tsx:509 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:526 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+AnalysisEngine.ts:88 [AnalysisEngine] Creating singleton instance...
+AnalysisEngine.ts:53 🚨🚨🚨 [ANALYSIS ENGINE] Constructor called!
+CachedEndpointRouter.ts:20 [CachedEndpointRouter] Initialized with multi-endpoint awareness
+DataProcessor.ts:153 [DataProcessor] Initialized 20 specialized processors
+VisualizationRenderer.ts:292 [VisualizationRenderer] Initialized 5 specialized renderers
+CachedEndpointRouter.ts:20 [CachedEndpointRouter] Initialized with multi-endpoint awareness
+MultiEndpointRouter.ts:35 [MultiEndpointRouter] Initialized with multi-endpoint support
+MultiEndpointAnalysisEngine.ts:74 [MultiEndpointAnalysisEngine] Initialized with multi-endpoint capabilities
+AnalysisEngine.ts:69 [AnalysisEngine] Multi-endpoint system enabled
+AnalysisEngine.ts:75 [AnalysisEngine] Initialized with multi-endpoint support: {multiEndpointEnabled: true, config: {…}}
+geospatial-chat-interface.tsx:3878 [GeospatialChat] isInfographicsOpen: false
+layerConfigAdapter.ts:91 [Adapter] Final generated config: {layerCount: 50, groupCount: 4, groups: {…}}
+geospatial-chat-interface.tsx:687 [DEBUG] Features state changed: {count: 0, timestamp: '2025-07-26T19:00:47.750Z', firstFeatureKeys: 'no features', hasCachedSummary: false}
+geospatial-chat-interface.tsx:793 [DEBUG] Target button state changed: {currentTarget: 'MP30034A_B_P', targetIconName: 'SiNike', targetLabel: undefined, inputQuery: '', timestamp: '2025-07-26T19:00:47.753Z'}
+geospatial-chat-interface.tsx:809 [GeospatialChat] Features useEffect triggered: {featuresIsArray: true, featuresLength: 0, isProcessing: false, firstFeature: null}
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+geospatial-chat-interface.tsx:509 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:526 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:3878 [GeospatialChat] isInfographicsOpen: false
+LayerController.tsx:788 [LC] Creating 50 layers during initialization
+LayerController.tsx:797 [LC] Creating layer: 2024 Total Population Zips
+MapWidgets.tsx:446 [LAZY LOADING] MapWidgets initialization - widgets will be created on-demand
+MapWidgets.tsx:451 [LAZY LOADING] MapWidgets ready for on-demand widget creation
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Total Population Zips', layerId: 'Synapse54_Vetements_layers_layer_8', rendererField: 'thematic_value', fields: Array(11), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Total Population Zips
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Total Population Zips
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Total Population Zips: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'TOTPOP_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Total Population Zips: ['thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Total Population Zips with title field: thematic_value
+LayerController.tsx:797 [LC] Creating layer: 2024 Diversity Index
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Diversity Index', layerId: 'Synapse54_Vetements_layers_layer_10', rendererField: 'thematic_value', fields: Array(11), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Diversity Index
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Diversity Index
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Diversity Index: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'DIVINDX_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Diversity Index: ['thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Diversity Index with title field: thematic_value
+LayerController.tsx:797 [LC] Creating layer: 2024 White Population ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 White Population ( )', layerId: 'Synapse54_Vetements_layers_layer_11', rendererField: 'WHITE_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 White Population ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 White Population ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 White Population ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'WHITE_CY', 'WHITE_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 White Population ( ): (2) ['WHITE_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 White Population ( ) with title field: WHITE_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Black Population ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Black Population ( )', layerId: 'Synapse54_Vetements_layers_layer_12', rendererField: 'BLACK_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Black Population ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Black Population ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Black Population ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'BLACK_CY', 'BLACK_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Black Population ( ): (2) ['BLACK_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Black Population ( ) with title field: BLACK_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 American Indian Population ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 American Indian Population ( )', layerId: 'Synapse54_Vetements_layers_layer_13', rendererField: 'AMERIND_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 American Indian Population ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 American Indian Population ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 American Indian Population ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'AMERIND_CY', 'AMERIND_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 American Indian Population ( ): (2) ['AMERIND_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 American Indian Population ( ) with title field: AMERIND_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Asian Population ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Asian Population ( )', layerId: 'Synapse54_Vetements_layers_layer_14', rendererField: 'ASIAN_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Asian Population ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Asian Population ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Asian Population ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'ASIAN_CY', 'ASIAN_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Asian Population ( ): (2) ['ASIAN_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Asian Population ( ) with title field: ASIAN_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Pacific Islander Population ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Pacific Islander Population ( )', layerId: 'Synapse54_Vetements_layers_layer_15', rendererField: 'PACIFIC_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Pacific Islander Population ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Pacific Islander Population ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Pacific Islander Population ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'PACIFIC_CY', 'PACIFIC_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Pacific Islander Population ( ): (2) ['PACIFIC_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Pacific Islander Population ( ) with title field: PACIFIC_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Other Race Population ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Other Race Population ( )', layerId: 'Synapse54_Vetements_layers_layer_16', rendererField: 'OTHRACE_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Other Race Population ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Other Race Population ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Other Race Population ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'OTHRACE_CY', 'OTHRACE_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Other Race Population ( ): (2) ['OTHRACE_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Other Race Population ( ) with title field: OTHRACE_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Population of 2+ Races ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Population of 2+ Races ( )', layerId: 'Synapse54_Vetements_layers_layer_17', rendererField: 'RACE2UP_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Population of 2+ Races ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Population of 2+ Races ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Population of 2+ Races ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'RACE2UP_CY', 'RACE2UP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Population of 2+ Races ( ): (2) ['RACE2UP_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Population of 2+ Races ( ) with title field: RACE2UP_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Hispanic White Pop ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Hispanic White Pop ( )', layerId: 'Synapse54_Vetements_layers_layer_18', rendererField: 'HISPWHT_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Hispanic White Pop ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Hispanic White Pop ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Hispanic White Pop ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPWHT_CY', 'HISPWHT_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Hispanic White Pop ( ): (2) ['HISPWHT_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Hispanic White Pop ( ) with title field: HISPWHT_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Hispanic Black Pop ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Hispanic Black Pop ( )', layerId: 'Synapse54_Vetements_layers_layer_19', rendererField: 'HISPBLK_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Hispanic Black Pop ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Hispanic Black Pop ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Hispanic Black Pop ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPBLK_CY', 'HISPBLK_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Hispanic Black Pop ( ): (2) ['HISPBLK_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Hispanic Black Pop ( ) with title field: HISPBLK_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Hispanic American Indian Pop ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Hispanic American Indian Pop ( )', layerId: 'Synapse54_Vetements_layers_layer_20', rendererField: 'HISPAI_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Hispanic American Indian Pop ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Hispanic American Indian Pop ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Hispanic American Indian Pop ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPAI_CY', 'HISPAI_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Hispanic American Indian Pop ( ): (2) ['HISPAI_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Hispanic American Indian Pop ( ) with title field: HISPAI_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Hispanic Pacific Islander Pop ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Hispanic Pacific Islander Pop ( )', layerId: 'Synapse54_Vetements_layers_layer_21', rendererField: 'HISPPI_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Hispanic Pacific Islander Pop ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Hispanic Pacific Islander Pop ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Hispanic Pacific Islander Pop ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPPI_CY', 'HISPPI_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Hispanic Pacific Islander Pop ( ): (2) ['HISPPI_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Hispanic Pacific Islander Pop ( ) with title field: HISPPI_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Hispanic Other Race Pop ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Hispanic Other Race Pop ( )', layerId: 'Synapse54_Vetements_layers_layer_22', rendererField: 'HISPOTH_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Hispanic Other Race Pop ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Hispanic Other Race Pop ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Hispanic Other Race Pop ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPOTH_CY', 'HISPOTH_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Hispanic Other Race Pop ( ): (2) ['HISPOTH_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Hispanic Other Race Pop ( ) with title field: HISPOTH_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Household Population ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Household Population ( )', layerId: 'Synapse54_Vetements_layers_layer_24', rendererField: 'HHPOP_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Household Population ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Household Population ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Household Population ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HHPOP_CY', 'HHPOP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Household Population ( ): (2) ['HHPOP_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Household Population ( ) with title field: HHPOP_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Family Population ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Family Population ( )', layerId: 'Synapse54_Vetements_layers_layer_25', rendererField: 'FAMPOP_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Family Population ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Family Population ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Family Population ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'FAMPOP_CY', 'FAMPOP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Family Population ( ): (2) ['FAMPOP_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Family Population ( ) with title field: FAMPOP_CY_P
+LayerController.tsx:797 [LC] Creating layer: Generation Z Pop ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: 'Generation Z Pop ( )', layerId: 'Synapse54_Vetements_layers_layer_55', rendererField: 'GENZ_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to Generation Z Pop ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: Generation Z Pop ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for Generation Z Pop ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for Generation Z Pop ( ): (2) ['GENZ_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for Generation Z Pop ( ) with title field: GENZ_CY_P
+LayerController.tsx:797 [LC] Creating layer: Generation Alpha Pop ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: 'Generation Alpha Pop ( )', layerId: 'Synapse54_Vetements_layers_layer_56', rendererField: 'GENALPHACY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to Generation Alpha Pop ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: Generation Alpha Pop ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for Generation Alpha Pop ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for Generation Alpha Pop ( ): (2) ['GENALPHACY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for Generation Alpha Pop ( ) with title field: GENALPHACY_P
+LayerController.tsx:797 [LC] Creating layer: Millennial Pop ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: 'Millennial Pop ( )', layerId: 'Synapse54_Vetements_layers_layer_57', rendererField: 'MILLENN_CY_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to Millennial Pop ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: Millennial Pop ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for Millennial Pop ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MILLENN_CY', 'MILLENN_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for Millennial Pop ( ): (2) ['MILLENN_CY_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for Millennial Pop ( ) with title field: MILLENN_CY_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Median Disposable Income
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Median Disposable Income', layerId: 'Synapse54_Vetements_layers_layer_9', rendererField: 'thematic_value', fields: Array(11), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Median Disposable Income
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Median Disposable Income
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Median Disposable Income: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'MEDDI_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Median Disposable Income: ['thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Median Disposable Income with title field: thematic_value
+LayerController.tsx:797 [LC] Creating layer: 2024 Wealth Index
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Wealth Index', layerId: 'Synapse54_Vetements_layers_layer_23', rendererField: 'thematic_value', fields: Array(11), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Wealth Index
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Wealth Index
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Wealth Index: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'WLTHINDXCY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Wealth Index: ['thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Wealth Index with title field: thematic_value
+LayerController.tsx:797 [LC] Creating layer: 2024 Sports Rec Exercise Equipment (Avg)
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Sports Rec Exercise Equipment (Avg)', layerId: 'Synapse54_Vetements_layers_layer_26', rendererField: 'thematic_value', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Sports Rec Exercise Equipment (Avg)
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Sports Rec Exercise Equipment (Avg)
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Sports Rec Exercise Equipment (Avg): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X9051_X', 'X9051_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Sports Rec Exercise Equipment (Avg): ['thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Sports Rec Exercise Equipment (Avg) with title field: thematic_value
+LayerController.tsx:797 [LC] Creating layer: 2024 Spent $300+ on Sports Clothing 12 Mo
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Spent $300+ on Sports Clothing 12 Mo', layerId: 'Synapse54_Vetements_layers_layer_27', rendererField: 'MP07109A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Spent $300+ on Sports Clothing 12 Mo
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Spent $300+ on Sports Clothing 12 Mo
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Spent $300+ on Sports Clothing 12 Mo: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP07109A_B', 'MP07109A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Spent $300+ on Sports Clothing 12 Mo: (2) ['MP07109A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Spent $300+ on Sports Clothing 12 Mo with title field: MP07109A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Spent $100+ on Athletic Workout Wear
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Spent $100+ on Athletic Workout Wear', layerId: 'Synapse54_Vetements_layers_layer_28', rendererField: 'MP07111A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Spent $100+ on Athletic Workout Wear
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Spent $100+ on Athletic Workout Wear
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Spent $100+ on Athletic Workout Wear: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP07111A_B', 'MP07111A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Spent $100+ on Athletic Workout Wear: (2) ['MP07111A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Spent $100+ on Athletic Workout Wear with title field: MP07111A_B_P
+LayerController.tsx:797 [LC] Creating layer: Spent 200 On Shoes
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: 'Spent 200 On Shoes', layerId: 'Synapse54_Vetements_layers_layer_29', rendererField: 'PSIV7UMKVALM', fields: Array(11), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to Spent 200 On Shoes
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: Spent 200 On Shoes
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for Spent 200 On Shoes: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'PSIV7UMKVALM', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for Spent 200 On Shoes: (2) ['PSIV7UMKVALM', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for Spent 200 On Shoes with title field: PSIV7UMKVALM
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought Athletic Shoes 12 Mo ( )', layerId: 'Synapse54_Vetements_layers_layer_30', rendererField: 'MP30016A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought Athletic Shoes 12 Mo ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30016A_B', 'MP30016A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought Athletic Shoes 12 Mo ( ): (2) ['MP30016A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought Athletic Shoes 12 Mo ( ) with title field: MP30016A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought Basketball Shoes 12 Mo ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought Basketball Shoes 12 Mo ( )', layerId: 'Synapse54_Vetements_layers_layer_31', rendererField: 'MP30018A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought Basketball Shoes 12 Mo ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought Basketball Shoes 12 Mo ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought Basketball Shoes 12 Mo ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30018A_B', 'MP30018A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought Basketball Shoes 12 Mo ( ): (2) ['MP30018A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought Basketball Shoes 12 Mo ( ) with title field: MP30018A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought Cross-Training Shoes 12 Mo ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought Cross-Training Shoes 12 Mo ( )', layerId: 'Synapse54_Vetements_layers_layer_32', rendererField: 'MP30019A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought Cross-Training Shoes 12 Mo ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought Cross-Training Shoes 12 Mo ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought Cross-Training Shoes 12 Mo ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30019A_B', 'MP30019A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought Cross-Training Shoes 12 Mo ( ): (2) ['MP30019A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought Cross-Training Shoes 12 Mo ( ) with title field: MP30019A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought Running or Jogging Shoes 12 Mo
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought Running or Jogging Shoes 12 Mo', layerId: 'Synapse54_Vetements_layers_layer_33', rendererField: 'MP30021A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought Running or Jogging Shoes 12 Mo
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought Running or Jogging Shoes 12 Mo
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought Running or Jogging Shoes 12 Mo: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30021A_B', 'MP30021A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought Running or Jogging Shoes 12 Mo: (2) ['MP30021A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought Running or Jogging Shoes 12 Mo with title field: MP30021A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought Adidas Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought Adidas Athletic Shoes 12 Mo ( )', layerId: 'Synapse54_Vetements_layers_layer_34', rendererField: 'MP30029A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought Adidas Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought Adidas Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought Adidas Athletic Shoes 12 Mo ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30029A_B', 'MP30029A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought Adidas Athletic Shoes 12 Mo ( ): (2) ['MP30029A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought Adidas Athletic Shoes 12 Mo ( ) with title field: MP30029A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought Asics Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought Asics Athletic Shoes 12 Mo ( )', layerId: 'Synapse54_Vetements_layers_layer_35', rendererField: 'MP30030A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought Asics Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought Asics Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought Asics Athletic Shoes 12 Mo ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30030A_B', 'MP30030A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought Asics Athletic Shoes 12 Mo ( ): (2) ['MP30030A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought Asics Athletic Shoes 12 Mo ( ) with title field: MP30030A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought Converse Athletic Shoes 12 Mo
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought Converse Athletic Shoes 12 Mo', layerId: 'Synapse54_Vetements_layers_layer_36', rendererField: 'MP30031A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought Converse Athletic Shoes 12 Mo
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought Converse Athletic Shoes 12 Mo
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought Converse Athletic Shoes 12 Mo: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30031A_B', 'MP30031A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought Converse Athletic Shoes 12 Mo: (2) ['MP30031A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought Converse Athletic Shoes 12 Mo with title field: MP30031A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought Jordan Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought Jordan Athletic Shoes 12 Mo ( )', layerId: 'Synapse54_Vetements_layers_layer_37', rendererField: 'MP30032A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought Jordan Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought Jordan Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought Jordan Athletic Shoes 12 Mo ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30032A_B', 'MP30032A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought Jordan Athletic Shoes 12 Mo ( ): (2) ['MP30032A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought Jordan Athletic Shoes 12 Mo ( ) with title field: MP30032A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought New Balance Athletic Shoes 12 M
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought New Balance Athletic Shoes 12 M', layerId: 'Synapse54_Vetements_layers_layer_38', rendererField: 'MP30033A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought New Balance Athletic Shoes 12 M
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought New Balance Athletic Shoes 12 M
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought New Balance Athletic Shoes 12 M: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30033A_B', 'MP30033A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought New Balance Athletic Shoes 12 M: (2) ['MP30033A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought New Balance Athletic Shoes 12 M with title field: MP30033A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought Nike Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought Nike Athletic Shoes 12 Mo ( )', layerId: 'Synapse54_Vetements_layers_layer_39', rendererField: 'MP30034A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought Nike Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought Nike Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought Nike Athletic Shoes 12 Mo ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30034A_B', 'MP30034A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought Nike Athletic Shoes 12 Mo ( ): (2) ['MP30034A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought Nike Athletic Shoes 12 Mo ( ) with title field: MP30034A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought Puma Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought Puma Athletic Shoes 12 Mo ( )', layerId: 'Synapse54_Vetements_layers_layer_40', rendererField: 'MP30035A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought Puma Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought Puma Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought Puma Athletic Shoes 12 Mo ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30035A_B', 'MP30035A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought Puma Athletic Shoes 12 Mo ( ): (2) ['MP30035A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought Puma Athletic Shoes 12 Mo ( ) with title field: MP30035A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought Reebok Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought Reebok Athletic Shoes 12 Mo ( )', layerId: 'Synapse54_Vetements_layers_layer_41', rendererField: 'MP30036A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought Reebok Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought Reebok Athletic Shoes 12 Mo ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought Reebok Athletic Shoes 12 Mo ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30036A_B', 'MP30036A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought Reebok Athletic Shoes 12 Mo ( ): (2) ['MP30036A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought Reebok Athletic Shoes 12 Mo ( ) with title field: MP30036A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Bought Skechers Athletic Shoes 12 Mo
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Bought Skechers Athletic Shoes 12 Mo', layerId: 'Synapse54_Vetements_layers_layer_42', rendererField: 'MP30037A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Bought Skechers Athletic Shoes 12 Mo
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Bought Skechers Athletic Shoes 12 Mo
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Bought Skechers Athletic Shoes 12 Mo: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30037A_B', 'MP30037A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Bought Skechers Athletic Shoes 12 Mo: (2) ['MP30037A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Bought Skechers Athletic Shoes 12 Mo with title field: MP30037A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Shopped at Dick`s Sporting Goods Store
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Shopped at Dick`s Sporting Goods Store', layerId: 'Synapse54_Vetements_layers_layer_43', rendererField: 'MP31035A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Shopped at Dick`s Sporting Goods Store
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Shopped at Dick`s Sporting Goods Store
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Shopped at Dick`s Sporting Goods Store: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP31035A_B', 'MP31035A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Shopped at Dick`s Sporting Goods Store: (2) ['MP31035A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Shopped at Dick`s Sporting Goods Store with title field: MP31035A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Shopped at Foot Locker Store 3 Mo ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Shopped at Foot Locker Store 3 Mo ( )', layerId: 'Synapse54_Vetements_layers_layer_44', rendererField: 'MP31042A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Shopped at Foot Locker Store 3 Mo ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Shopped at Foot Locker Store 3 Mo ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Shopped at Foot Locker Store 3 Mo ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP31042A_B', 'MP31042A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Shopped at Foot Locker Store 3 Mo ( ): (2) ['MP31042A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Shopped at Foot Locker Store 3 Mo ( ) with title field: MP31042A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Participated in Jogging or Running 12
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Participated in Jogging or Running 12', layerId: 'Synapse54_Vetements_layers_layer_45', rendererField: 'MP33020A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Participated in Jogging or Running 12
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Participated in Jogging or Running 12
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Participated in Jogging or Running 12: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33020A_B', 'MP33020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Participated in Jogging or Running 12: (2) ['MP33020A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Participated in Jogging or Running 12 with title field: MP33020A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Participated in Yoga 12 Mo ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Participated in Yoga 12 Mo ( )', layerId: 'Synapse54_Vetements_layers_layer_46', rendererField: 'MP33032A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Participated in Yoga 12 Mo ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Participated in Yoga 12 Mo ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Participated in Yoga 12 Mo ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33032A_B', 'MP33032A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Participated in Yoga 12 Mo ( ): (2) ['MP33032A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Participated in Yoga 12 Mo ( ) with title field: MP33032A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Participated in Weight Lifting 12 Mo
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Participated in Weight Lifting 12 Mo', layerId: 'Synapse54_Vetements_layers_layer_47', rendererField: 'MP33031A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Participated in Weight Lifting 12 Mo
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Participated in Weight Lifting 12 Mo
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Participated in Weight Lifting 12 Mo: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33031A_B', 'MP33031A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Participated in Weight Lifting 12 Mo: (2) ['MP33031A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Participated in Weight Lifting 12 Mo with title field: MP33031A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 MLB Super Fan (10-10 on 10 Scale) ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 MLB Super Fan (10-10 on 10 Scale) ( )', layerId: 'Synapse54_Vetements_layers_layer_48', rendererField: 'MP33104A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 MLB Super Fan (10-10 on 10 Scale) ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 MLB Super Fan (10-10 on 10 Scale) ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 MLB Super Fan (10-10 on 10 Scale) ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33104A_B', 'MP33104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 MLB Super Fan (10-10 on 10 Scale) ( ): (2) ['MP33104A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 MLB Super Fan (10-10 on 10 Scale) ( ) with title field: MP33104A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 NASCAR Super Fan (10-10 on 10 Scale)
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 NASCAR Super Fan (10-10 on 10 Scale)', layerId: 'Synapse54_Vetements_layers_layer_49', rendererField: 'MP33105A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 NASCAR Super Fan (10-10 on 10 Scale)
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 NASCAR Super Fan (10-10 on 10 Scale)
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 NASCAR Super Fan (10-10 on 10 Scale): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33105A_B', 'MP33105A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 NASCAR Super Fan (10-10 on 10 Scale): (2) ['MP33105A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 NASCAR Super Fan (10-10 on 10 Scale) with title field: MP33105A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 NBA Super Fan (10-10 on 10 Scale) ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 NBA Super Fan (10-10 on 10 Scale) ( )', layerId: 'Synapse54_Vetements_layers_layer_50', rendererField: 'MP33106A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 NBA Super Fan (10-10 on 10 Scale) ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 NBA Super Fan (10-10 on 10 Scale) ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 NBA Super Fan (10-10 on 10 Scale) ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33106A_B', 'MP33106A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 NBA Super Fan (10-10 on 10 Scale) ( ): (2) ['MP33106A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 NBA Super Fan (10-10 on 10 Scale) ( ) with title field: MP33106A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 NFL Super Fan (10-10 on 10 Scale) ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 NFL Super Fan (10-10 on 10 Scale) ( )', layerId: 'Synapse54_Vetements_layers_layer_51', rendererField: 'MP33107A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 NFL Super Fan (10-10 on 10 Scale) ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 NFL Super Fan (10-10 on 10 Scale) ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 NFL Super Fan (10-10 on 10 Scale) ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33107A_B', 'MP33107A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 NFL Super Fan (10-10 on 10 Scale) ( ): (2) ['MP33107A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 NFL Super Fan (10-10 on 10 Scale) ( ) with title field: MP33107A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 NHL Super Fan (10-10 on 10 Scale) ( )
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 NHL Super Fan (10-10 on 10 Scale) ( )', layerId: 'Synapse54_Vetements_layers_layer_52', rendererField: 'MP33108A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 NHL Super Fan (10-10 on 10 Scale) ( )
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 NHL Super Fan (10-10 on 10 Scale) ( )
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 NHL Super Fan (10-10 on 10 Scale) ( ): (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33108A_B', 'MP33108A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 NHL Super Fan (10-10 on 10 Scale) ( ): (2) ['MP33108A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 NHL Super Fan (10-10 on 10 Scale) ( ) with title field: MP33108A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 Intl Soccer Super Fan
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 Intl Soccer Super Fan', layerId: 'Synapse54_Vetements_layers_layer_53', rendererField: 'MP33119A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 Intl Soccer Super Fan
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 Intl Soccer Super Fan
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 Intl Soccer Super Fan: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33119A_B', 'MP33119A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 Intl Soccer Super Fan: (2) ['MP33119A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 Intl Soccer Super Fan with title field: MP33119A_B_P
+LayerController.tsx:797 [LC] Creating layer: 2024 MLS Soccer Super Fan
+enhancedLayerCreation.ts:103 Layer configuration: {layerName: '2024 MLS Soccer Super Fan', layerId: 'Synapse54_Vetements_layers_layer_54', rendererField: 'MP33120A_B_P', fields: Array(12), geographicType: 'postal', …}
+enhancedLayerCreation.ts:146 ✅ Simple renderer applied to 2024 MLS Soccer Super Fan
+enhancedLayerCreation.ts:151 ✅ Layer created without loading features: 2024 MLS Soccer Super Fan
+enhancedLayerCreation.ts:157 [Popup Debug] Available fields for 2024 MLS Soccer Super Fan: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33120A_B', 'MP33120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+enhancedLayerCreation.ts:178 [Popup Debug] Selected popup fields for 2024 MLS Soccer Super Fan: (2) ['MP33120A_B_P', 'thematic_value']
+enhancedLayerCreation.ts:206 ✅ AI-style popup template created for 2024 MLS Soccer Super Fan with title field: MP33120A_B_P
+AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
+AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: true, firstLayerUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…services/Synapse54_Vetements_layers/FeatureServer', firstLayerId: 'Synapse54_Vetements_layers_layer_8', extractedLayerNumber: '8', constructedServiceUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…rvices/Synapse54_Vetements_layers/FeatureServer/8', …}
+geospatial-chat-interface.tsx:509 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:526 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:3878 [GeospatialChat] isInfographicsOpen: false
