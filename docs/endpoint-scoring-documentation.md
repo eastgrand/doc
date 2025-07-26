@@ -552,7 +552,7 @@ The model performance score evaluates ML models based on:
 ## 16. Strategic Analysis
 
 **Endpoint**: `/strategic-analysis`  
-**Script**: `strategic-value-scores.js`
+**Script**: `strategic-value-scores.js` + `create-strategic-analysis.js`
 
 ### Formula
 
@@ -563,25 +563,35 @@ Strategic Value Score = (
   0.20 × Data Reliability +
   0.15 × Market Scale
 )
+
+where:
+- Market Opportunity = (0.60 × Demographic Score) + (0.40 × Market Gap)
+- Competitive Position = (0.67 × Competitive Advantage) + (0.33 × Brand Positioning)
+- Data Reliability = (0.75 × Correlation Strength) + (0.25 × Cluster Consistency)
+- Market Scale = (0.60 × Population Scale) + (0.40 × Economic Scale)
 ```
 
 ### Plain Language
 
-The strategic value score provides executive-level insights by combining:
+The strategic value score provides comprehensive expansion insights for Nike by evaluating:
 
-- Market opportunity (demographics + fundamentals)
-- Competitive positioning strength
-- Data reliability and correlation strength
-- Overall market scale and size
+- **Market Opportunity (35%)**: How attractive the demographics and untapped market potential are
+- **Competitive Position (30%)**: Nike's competitive advantage and brand strength in the market
+- **Data Reliability (20%)**: How predictable and consistent the market patterns are
+- **Market Scale (15%)**: The overall size and economic value of the market
+
+This creates a unified 0-100 score identifying the best strategic expansion opportunities.
 
 ### Fields Used
 
-- `competitive_advantage_score`
-- `demographic_opportunity_score`
-- `correlation_strength_score`
-- `cluster_performance_score`
-- Market size indicators
-- Income and population data
+- `competitive_advantage_score` - Pre-calculated competitive positioning
+- `demographic_opportunity_score` - Pre-calculated demographic favorability
+- `correlation_strength_score` - Data pattern reliability
+- `cluster_performance_score` - Market consistency indicator
+- `mp30034a_b_p` - Nike market share (for market gap calculation)
+- `total_population` - Market size
+- `median_income` - Economic scale indicator
+- `target_value` - Analysis consistency measure
 
 ---
 
