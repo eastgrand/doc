@@ -1,0 +1,58 @@
+--- a/components/geospatial-chat-interface.tsx
++++ b/components/geospatial-chat-interface.tsx
+@@ -XXX,6 +XXX,15 @@ const clearVisualization = () => {
+     if (currentVisualizationLayer.current) {
+       console.log('[AnalysisEngine] 🗑️ REMOVING EXISTING LAYER:', {
+         layerId: currentVisualizationLayer.current.id,
+         layerTitle: currentVisualizationLayer.current.title,
+         reason: 'clearVisualization called',
+         callStack: new Error().stack?.split('\n')[1]
+       });
+       if (currentMapView) {
+         currentMapView.map.remove(currentVisualizationLayer.current);
++        // IMPORTANT: Destroy the layer to free memory
++        if (typeof (currentVisualizationLayer.current as any).destroy === 'function') {
++          (currentVisualizationLayer.current as any).destroy();
++        }
+       }
+       currentVisualizationLayer.current = null;
+     }
++    
++    // Clear any graphics
++    if (currentMapView) {
++      currentMapView.graphics.removeAll();
++    }
++    
+     onVisualizationLayerCreated(null, true);
+     setCurrentProcessingStep('query_analysis');
+     setDebugInfo({
+
+@@ -XXX,6 +XXX,10 @@ const handleAnalyze = async (query: string) => {
+     try {
++      // Clear previous results first
++      clearVisualization();
++      
+       console.log('[GeospatialChatInterface] 🎯 Starting analysis:', { 
+         query, 
+         savedOptions,
+         timestamp: new Date().toISOString() 
+       });
+       
+       setIsAnalyzing(true);
+-      clearVisualization();
+       setCurrentQuery(query);
+
+@@ add useEffect cleanup
++  // Cleanup on unmount
++  useEffect(() => {
++    return () => {
++      // Cleanup visualization layer
++      if (currentVisualizationLayer.current && currentMapView) {
++        currentMapView.map.remove(currentVisualizationLayer.current);
++        if (typeof (currentVisualizationLayer.current as any).destroy === 'function') {
++          (currentVisualizationLayer.current as any).destroy();
++        }
++      }
++      currentVisualizationLayer.current = null;
++    };
++  }, [currentMapView]);

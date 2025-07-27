@@ -222,7 +222,7 @@ export class AnalysisEngine {
       console.log(`[AnalysisEngine] Raw data success: ${analysisData.success}`);
       console.log(`[AnalysisEngine] Raw data keys:`, Object.keys(analysisData));
       
-      const processedData = this.dataProcessor.processResults(analysisData, selectedEndpoint);
+      const processedData = this.dataProcessor.processResultsWithCityAnalysis(analysisData, selectedEndpoint, query);
       
       console.log(`[AnalysisEngine] Processed data returned:`, {
         type: processedData.type,

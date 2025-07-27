@@ -3488,7 +3488,7 @@ const EnhancedGeospatialChat = memo(({
       ));
 
       // Create detailed analysis summary if Claude fails
-      const finalContent = narrativeContent || createAnalysisSummary(
+      const baseFinalContent = narrativeContent || createAnalysisSummary(
         analysisResult, 
         enhancedAnalysisResult, 
         validFeatures.length,
@@ -3496,6 +3496,17 @@ const EnhancedGeospatialChat = memo(({
         TARGET_OPTIONS,
         currentTarget
       );
+      
+      // Check for fallback analysis and add warning message if needed
+      const isFallbackAnalysis = enhancedAnalysisResult?.is_fallback || 
+                                 enhancedAnalysisResult?.status === 'fallback' ||
+                                 baseFinalContent?.includes?.('fallback') ||
+                                 baseFinalContent?.includes?.('unavailable');
+      
+      const fallbackWarning = isFallbackAnalysis ? 
+        `⚠️ **Limited Analysis Mode**: The full AI analysis service is currently unavailable. This is a simplified analysis using basic data patterns. Please try again later for complete insights with advanced scoring and recommendations.\n\n---\n\n` : '';
+      
+      const finalContent = fallbackWarning + baseFinalContent;
       
       // Update message with streaming content
       setMessages(prev => prev.map(msg =>

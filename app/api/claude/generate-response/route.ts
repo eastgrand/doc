@@ -14,6 +14,7 @@ import { detectThresholdQuery, detectSegmentQuery, detectComparativeQuery } from
 import { getPersona, defaultPersona } from '../prompts';
 import { unionByGeoId } from '../../../../types/union-layer';
 import { multiEndpointFormatting, strategicSynthesis } from '../shared/base-prompt';
+import { CityAnalysisUtils } from '../../../../lib/analysis/CityAnalysisUtils';
 
 // --- Dynamic Field Alias Overrides ---
 // Will be populated per request based on metadata.fieldAliases sent from the frontend
@@ -150,6 +151,7 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       break;
       
     case 'comparative_analysis':
+    case 'comparative-analysis':
     case 'comparative':
       metricsSection += 'Comparative Analysis - Brand vs competitor performance:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
@@ -160,15 +162,21 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         const comparativeScore = props?.comparative_analysis_score || props?.target_value;
         metricsSection += `   Comparative Analysis Score: ${comparativeScore || 'N/A'}\n`;
         
-        // Add competitive context with brand comparisons
+        // Add competitive context with brand comparisons (external competitors only)
         if (props?.nike_market_share) {
           metricsSection += `   Nike Market Share: ${props.nike_market_share.toFixed(1)}%\n`;
         }
         if (props?.adidas_market_share) {
           metricsSection += `   Adidas Market Share: ${props.adidas_market_share.toFixed(1)}%\n`;
         }
-        if (props?.jordan_market_share) {
-          metricsSection += `   Jordan Market Share: ${props.jordan_market_share.toFixed(1)}%\n`;
+        if (props?.puma_market_share) {
+          metricsSection += `   Puma Market Share: ${props.puma_market_share.toFixed(1)}%\n`;
+        }
+        if (props?.under_armour_market_share) {
+          metricsSection += `   Under Armour Market Share: ${props.under_armour_market_share.toFixed(1)}%\n`;
+        }
+        if (props?.new_balance_market_share) {
+          metricsSection += `   New Balance Market Share: ${props.new_balance_market_share.toFixed(1)}%\n`;
         }
         
         // Add performance gap indicators
@@ -185,6 +193,185 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         }
         if (props?.median_income) {
           metricsSection += `   Median Income: $${(props.median_income / 1000).toFixed(1)}K\n`;
+        }
+        metricsSection += '\n';
+      });
+      break;
+      
+    case 'spatial_clusters':
+    case 'spatial-clusters':
+      metricsSection += 'Spatial Clusters Analysis - Geographic clustering patterns:\n\n';
+      topFeatures.forEach((feature: any, index: number) => {
+        const props = feature.properties;
+        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        metricsSection += `   Cluster Score: ${props?.target_value || 'N/A'}\n`;
+        
+        if (props?.cluster_id !== undefined) {
+          metricsSection += `   Cluster ID: ${props.cluster_id}\n`;
+        }
+        if (props?.total_population) {
+          metricsSection += `   Population: ${(props.total_population / 1000).toFixed(1)}K\n`;
+        }
+        if (props?.median_income) {
+          metricsSection += `   Median Income: $${(props.median_income / 1000).toFixed(1)}K\n`;
+        }
+        metricsSection += '\n';
+      });
+      break;
+      
+    case 'correlation_analysis':
+    case 'correlation-analysis':
+    case 'correlation':
+      metricsSection += 'Correlation Analysis - Statistical relationships:\n\n';
+      topFeatures.forEach((feature: any, index: number) => {
+        const props = feature.properties;
+        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        metricsSection += `   Correlation Score: ${props?.target_value || 'N/A'}\n`;
+        
+        if (props?.correlation_strength) {
+          metricsSection += `   Correlation Strength: ${props.correlation_strength}\n`;
+        }
+        if (props?.statistical_significance) {
+          metricsSection += `   Statistical Significance: ${props.statistical_significance}\n`;
+        }
+        metricsSection += '\n';
+      });
+      break;
+      
+    case 'segment_profiling':
+    case 'segment-profiling':
+      metricsSection += 'Segment Profiling Analysis - Customer segmentation:\n\n';
+      topFeatures.forEach((feature: any, index: number) => {
+        const props = feature.properties;
+        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        metricsSection += `   Segment Profiling Score: ${props?.target_value || 'N/A'}\n`;
+        
+        if (props?.primary_segment_type) {
+          metricsSection += `   Primary Segment: ${props.primary_segment_type}\n`;
+        }
+        if (props?.segment_size) {
+          metricsSection += `   Segment Size: ${props.segment_size}\n`;
+        }
+        if (props?.nike_segment_affinity) {
+          metricsSection += `   Nike Affinity: ${props.nike_segment_affinity}\n`;
+        }
+        metricsSection += '\n';
+      });
+      break;
+      
+    case 'trend_analysis':
+    case 'trend-analysis':
+    case 'trends':
+      metricsSection += 'Trend Analysis - Temporal patterns and growth:\n\n';
+      topFeatures.forEach((feature: any, index: number) => {
+        const props = feature.properties;
+        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        metricsSection += `   Trend Strength Score: ${props?.target_value || 'N/A'}\n`;
+        
+        if (props?.growth_potential) {
+          metricsSection += `   Growth Potential: ${props.growth_potential}\n`;
+        }
+        if (props?.trend_consistency) {
+          metricsSection += `   Trend Consistency: ${props.trend_consistency}\n`;
+        }
+        if (props?.volatility_index) {
+          metricsSection += `   Volatility Index: ${props.volatility_index}\n`;
+        }
+        metricsSection += '\n';
+      });
+      break;
+      
+    case 'anomaly_detection':
+    case 'anomaly-detection':
+      metricsSection += 'Anomaly Detection Analysis - Unusual market patterns:\n\n';
+      topFeatures.forEach((feature: any, index: number) => {
+        const props = feature.properties;
+        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        metricsSection += `   Anomaly Detection Score: ${props?.target_value || 'N/A'}\n`;
+        
+        if (props?.anomaly_type) {
+          metricsSection += `   Anomaly Type: ${props.anomaly_type}\n`;
+        }
+        if (props?.statistical_deviation) {
+          metricsSection += `   Statistical Deviation: ${props.statistical_deviation}\n`;
+        }
+        metricsSection += '\n';
+      });
+      break;
+      
+    case 'feature_interactions':
+    case 'feature-interactions':
+      metricsSection += 'Feature Interactions Analysis - Multi-variable relationships:\n\n';
+      topFeatures.forEach((feature: any, index: number) => {
+        const props = feature.properties;
+        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        metricsSection += `   Feature Interaction Score: ${props?.target_value || 'N/A'}\n`;
+        
+        if (props?.correlation_strength) {
+          metricsSection += `   Correlation Strength: ${props.correlation_strength}\n`;
+        }
+        if (props?.synergy_effect) {
+          metricsSection += `   Synergy Effect: ${props.synergy_effect}\n`;
+        }
+        metricsSection += '\n';
+      });
+      break;
+      
+    case 'outlier_detection':
+    case 'outlier-detection':
+      metricsSection += 'Outlier Detection Analysis - Exceptional market characteristics:\n\n';
+      topFeatures.forEach((feature: any, index: number) => {
+        const props = feature.properties;
+        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        metricsSection += `   Outlier Detection Score: ${props?.target_value || 'N/A'}\n`;
+        
+        if (props?.outlier_type) {
+          metricsSection += `   Outlier Type: ${props.outlier_type}\n`;
+        }
+        if (props?.statistical_outlier_level) {
+          metricsSection += `   Statistical Outlier Level: ${props.statistical_outlier_level}\n`;
+        }
+        metricsSection += '\n';
+      });
+      break;
+      
+    case 'scenario_analysis':
+    case 'scenario-analysis':
+      metricsSection += 'Scenario Analysis - Market adaptability and flexibility:\n\n';
+      topFeatures.forEach((feature: any, index: number) => {
+        const props = feature.properties;
+        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        metricsSection += `   Scenario Analysis Score: ${props?.target_value || 'N/A'}\n`;
+        
+        if (props?.scenario_adaptability_level) {
+          metricsSection += `   Adaptability Level: ${props.scenario_adaptability_level}\n`;
+        }
+        if (props?.market_resilience_strength) {
+          metricsSection += `   Market Resilience: ${props.market_resilience_strength}\n`;
+        }
+        if (props?.strategic_flexibility_rating) {
+          metricsSection += `   Strategic Flexibility: ${props.strategic_flexibility_rating}\n`;
+        }
+        metricsSection += '\n';
+      });
+      break;
+      
+    case 'predictive_modeling':
+    case 'predictive-modeling':
+      metricsSection += 'Predictive Modeling Analysis - Forecasting reliability:\n\n';
+      topFeatures.forEach((feature: any, index: number) => {
+        const props = feature.properties;
+        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        metricsSection += `   Predictive Modeling Score: ${props?.target_value || 'N/A'}\n`;
+        
+        if (props?.model_confidence_level) {
+          metricsSection += `   Model Confidence: ${props.model_confidence_level}\n`;
+        }
+        if (props?.forecast_reliability) {
+          metricsSection += `   Forecast Reliability: ${props.forecast_reliability}\n`;
+        }
+        if (props?.prediction_confidence) {
+          metricsSection += `   Prediction Confidence: ${props.prediction_confidence}\n`;
         }
         metricsSection += '\n';
       });
@@ -899,8 +1086,22 @@ export async function POST(req: NextRequest) {
         const rankingContext = metadata?.rankingContext;
         console.log('🎯 [CLAUDE API] Received ranking context:', rankingContext);
         console.log('🚨 [CLAUDE API CALLED] Route accessed with metadata keys:', Object.keys(metadata || {}));
-        console.log('🚨 [CLAUDE API] Query/message:', messages?.[messages.length - 1]?.content || metadata?.query);
+        const currentQuery = messages?.[messages.length - 1]?.content || metadata?.query || '';
+        console.log('🚨 [CLAUDE API] Query/message:', currentQuery);
         console.log('🚨 [CLAUDE API] FeatureData type:', typeof featureData, Array.isArray(featureData) ? 'array' : 'object');
+        
+        // 🌟 NEW: City Analysis Detection
+        const detectedCities = CityAnalysisUtils.detectCitiesInQuery(currentQuery);
+        const isCityQuery = detectedCities.length > 0;
+        const isCityComparison = CityAnalysisUtils.isComparisonQuery(currentQuery) && detectedCities.length >= 2;
+        
+        if (isCityQuery) {
+          console.log('🏙️ [CITY ANALYSIS] Detected city query:', {
+            cities: detectedCities,
+            isComparison: isCityComparison,
+            query: currentQuery
+          });
+        }
         if (metadata?.matched_fields) {
           console.log('[DEBUG] matched_fields length:', (metadata.matched_fields as string[]).length);
           console.log('[DEBUG] First 5 matched_fields:', (metadata.matched_fields as string[]).slice(0,5));
@@ -1355,6 +1556,20 @@ How else can I help analyze the data in your selected ZIP codes?`,
           dataSummary += `Total Features Analyzed: ${originalSummary.datasetOverview.totalFeatures}\n`;
           dataSummary += `Geographic Coverage: ${originalSummary.datasetOverview.geographicCoverage.uniqueDescriptions} unique areas\n`;
           dataSummary += `Analysis Timestamp: ${originalSummary.datasetOverview.analysisTimestamp}\n\n`;
+          
+          // 🏙️ Add city analysis metadata if detected
+          if (isCityQuery) {
+            dataSummary += `=== CITY-LEVEL ANALYSIS DETECTED ===\n`;
+            dataSummary += `Detected Cities: ${detectedCities.join(', ')}\n`;
+            dataSummary += `Analysis Type: ${isCityComparison ? 'City Comparison' : 'Single City Analysis'}\n`;
+            if (isCityComparison) {
+              dataSummary += `📊 INSTRUCTIONS: Aggregate ZIP code data by city and provide city-level comparisons\n`;
+              dataSummary += `🎯 FOCUS: Compare ${detectedCities[0]} vs ${detectedCities[1]} performance using aggregated metrics\n`;
+            } else {
+              dataSummary += `🎯 FOCUS: Analyze ${detectedCities[0]} performance by aggregating all ZIP codes within the city\n`;
+            }
+            dataSummary += `💡 NOTE: Data is at ZIP code level - aggregate to city level for analysis\n\n`;
+          }
           
           // Add field statistics
           if (originalSummary.fieldStatistics) {
@@ -1976,6 +2191,10 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
         const personaAnalysisType = derivedAnalysisType || 'default';
         console.log(`[Claude] Using analysis type: ${personaAnalysisType} (from: ${derivedAnalysisType ? 'featureData' : 'metadata'})`);
         
+        // Normalize analysis type for persona task instructions (convert hyphens to underscores)
+        const normalizedPersonaAnalysisType = personaAnalysisType.replace(/-/g, '_');
+        console.log(`[Claude] Normalized analysis type for persona: ${normalizedPersonaAnalysisType}`);
+        
         // Add endpoint-specific enhanced metrics for AnalysisEngine results
         if (Array.isArray(featureData) && featureData.length > 0 && featureData[0].features) {
           console.log(`[Enhanced Metrics] Adding endpoint-specific metrics for ${personaAnalysisType}`);
@@ -2023,12 +2242,14 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
         }
         
         // Get persona-specific task instructions with proper typing
-        const personaTaskInstructions = (selectedPersona.taskInstructions as any)[personaAnalysisType] || 
+        const personaTaskInstructions = (selectedPersona.taskInstructions as any)[normalizedPersonaAnalysisType] || 
                                         selectedPersona.taskInstructions.default;
+        console.log(`[Claude] Selected persona task instructions for '${normalizedPersonaAnalysisType}':`, personaTaskInstructions ? 'FOUND' : 'USING DEFAULT');
         
         // Get analysis-specific technical prompt
         const { getAnalysisPrompt } = await import('../shared/analysis-prompts');
-        const analysisSpecificPrompt = getAnalysisPrompt(personaAnalysisType);
+        const analysisSpecificPrompt = getAnalysisPrompt(normalizedPersonaAnalysisType);
+        console.log(`[Claude] Analysis-specific prompt length:`, analysisSpecificPrompt.length);
         
         // 🎯 NEW: Add ranking context if present
         const rankingContextPrompt = rankingContext ? `

@@ -624,7 +624,7 @@ export class MLAnalyticsService {
     const fallbackResult: AnalysisResult = {
       job_id: jobId,
       status: 'fallback',
-      error: 'ML service is currently unavailable. Using fallback data.',
+      error: 'ML service is currently unavailable. Using simplified fallback analysis with basic data patterns.',
       model_type: request.analysis_type,
       processing_time: 0.1,
       is_fallback: true

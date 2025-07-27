@@ -1,5 +1,6 @@
 import { RawAnalysisResult, ProcessedAnalysisData, DataProcessorStrategy } from './types';
 import { ConfigurationManager } from './ConfigurationManager';
+import { CityAnalysisUtils, CityAnalysisResult } from './CityAnalysisUtils';
 
 // Import specialized processors
 import { CoreAnalysisProcessor } from './strategies/processors/CoreAnalysisProcessor';
@@ -37,6 +38,36 @@ export class DataProcessor {
     this.configManager = configManager;
     this.processors = new Map();
     this.initializeProcessors();
+  }
+
+  /**
+   * Process raw results with city analysis support
+   */
+  processResultsWithCityAnalysis(rawResults: RawAnalysisResult, endpoint: string, query: string = ''): ProcessedAnalysisData & { cityAnalysis?: CityAnalysisResult } {
+    const processedData = this.processResults(rawResults, endpoint);
+    
+    // Perform city analysis if query contains city references
+    if (query) {
+      const cityAnalysis = CityAnalysisUtils.analyzeQuery(query, processedData.records, processedData.targetVariable);
+      
+      if (cityAnalysis.isCityQuery) {
+        console.log(`[DataProcessor] City analysis detected:`, {
+          cities: cityAnalysis.detectedCities,
+          isComparison: cityAnalysis.isComparison,
+          filteredRecords: cityAnalysis.filteredData.length
+        });
+        
+        // Update processed data with city-filtered results if applicable
+        if (cityAnalysis.filteredData.length > 0 && cityAnalysis.filteredData.length < processedData.records.length) {
+          processedData.records = cityAnalysis.filteredData;
+          console.log(`[DataProcessor] Filtered data to ${cityAnalysis.filteredData.length} city-specific records`);
+        }
+        
+        return { ...processedData, cityAnalysis };
+      }
+    }
+    
+    return processedData;
   }
 
   /**

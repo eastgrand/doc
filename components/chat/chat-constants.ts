@@ -1,35 +1,32 @@
 export const ANALYSIS_CATEGORIES = {
-  'strategic': [
+  'Strategic Analysis': [
     'Show me the top strategic markets for Nike expansion'
   ],
-  'comparitive': [
-    'Compare Nike\'s market position against competitors'
+  'Comparative Analysis': [
+    'Compare Nike performance between New York and Philadelphia'
   ],
-  'competitive': [
-    'Competitive positioning of Nike vs Adidas'
+  'Competitive Analysis': [
+    'Show competitive positioning of Nike vs Adidas'
   ],
-  'demographic': [
+  'Demographic Analysis': [
     'Which markets have the highest demographic opportunity scores for Nike?'
   ],
-  'customer-profile': [
+  'Customer Profile': [
     'Show me areas with ideal customer personas for athletic brands'
   ],
-  'multi-endpoint': [
+  'Multi-Endpoint': [
     'Analyze customer profiles and compare with strategic opportunities'
   ],
-  'location': [
+  'Location Analysis': [
     'Show me geographic clusters of similar markets'  
   ],
-  'insights': [
+  'Insights': [
     'What market factors are most strongly correlated with Nike\'s success?'
   ],
-  'analysis': [
-    'Which markets are most adaptable to different strategic scenarios?',
-  ],
-  'quality': [
+  'Quality Analysis': [
     'Show me markets that have outliers with unique characteristics'
   ],
-  'brand': [
+  'Brand Analysis': [
     'Which markets have the strongest Nike brand positioning?'
   ]
 };
@@ -68,5 +65,15 @@ export const TRENDS_CATEGORIES = {
     'Which markets combine ideal customer fit with growth potential?',
     'Analyze customer personas alongside market trends and competitive landscape',
     'Where do customer profiles, demographics, and strategic value align best?'
+  ],
+  'City & Regional Comparisons': [
+    'Compare Nike performance between New York and Philadelphia',
+    'How does Chicago demographic opportunity compare to Los Angeles?',
+    'Compare Boston vs Miami for Nike brand positioning',
+    'NYC vs SF: which city has better customer profiles for Nike?',
+    'Compare demographic scores between major East Coast and West Coast cities',
+    'Which performs better for Nike: Seattle or Denver markets?',
+    'Compare strategic value between Dallas and Houston',
+    'Atlanta vs Phoenix: demographic and market opportunity comparison'
   ]
 }; 
