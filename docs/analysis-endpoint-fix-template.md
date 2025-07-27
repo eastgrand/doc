@@ -898,6 +898,198 @@ Your Analysis Score
 4. **Wrong opacity**: Use `rgba(r, g, b, 0.6)` not hex colors
 5. **Path issues**: Verify VisualizationRenderer uses direct legend when available
 
+## Comparative Analysis Fix Case Study (2025-01-27) ⚡ LIVE EXAMPLE
+
+### Problem Description
+
+**Symptoms**:
+
+- Comparative query "Compare Nike's market position against competitors" had correct analysis but grey visualization
+- All comparison scores were identical (4.05), making analysis meaningless
+- Claude received payload but analysis was uniform across all areas
+
+**Root Causes Identified**:
+
+1. **Data Issue**: All comparative_analysis_score values were identical (4.05) - scoring script needed to be regenerated
+2. **Field Mismatch**: Processor used `competitive_advantage_score` as targetVariable but data contained `comparison_score`
+3. **Missing Field Declaration**: `comparison_score` not included in feature attribute mapping
+4. **No Direct Rendering**: Complex rendering chain instead of direct processor rendering
+
+### Diagnostic Process Used
+
+**Step 1: Log Analysis**:
+
+```javascript
+// Found in logs:
+Record 1: {area_name: '11211 (Brooklyn)', value: 9.28, comparison_score: undefined, hasTargetField: false, targetFieldType: 'undefined'}
+// This indicated field was missing at record level
+```
+
+**Step 2: Data Investigation**:
+
+```bash
+# Checked if all scores were identical
+grep "comparison_score" logs1.txt | head -5
+# Result: All showed 4.05 - confirmed uniform scoring issue
+```
+
+**Step 3: Scoring Script Regeneration**:
+
+```bash
+node scripts/scoring/comparative-analysis-scores.js
+# Result: Generated proper score range 2.0-68.4 with average 43.4
+```
+
+### Solution Implementation
+
+**Step 1: Fixed Data Generation**:
+
+```bash
+# Regenerated scoring with proper distribution
+node scripts/scoring/comparative-analysis-scores.js
+# Result: 3,983 records with scores ranging 2.0-68.4
+```
+
+**Step 2: Updated Processor - Field Alignment**:
+
+```typescript
+// In ComparativeAnalysisProcessor.ts
+return {
+  area_id: recordId || `area_${index + 1}`,
+  area_name: areaName,
+  value: Math.round(comparativeScore * 100) / 100,
+  comparison_score: Math.round(comparativeScore * 100) / 100, // ✅ ADDED
+  competitive_advantage_score: Math.round(comparativeScore * 100) / 100, // Keep for compatibility
+  // ...
+};
+
+// Updated targetVariable
+targetVariable: 'comparison_score', // ✅ CHANGED from 'competitive_advantage_score'
+```
+
+**Step 3: Updated Scoring Logic**:
+
+```typescript
+private extractComparativeScore(record: any): number {
+  // PRIORITY 1: Use new comparative_analysis_score from regenerated data
+  if (record.comparative_analysis_score !== undefined && record.comparative_analysis_score !== null) {
+    const comparativeScore = Number(record.comparative_analysis_score);
+    console.log(`⚖️ [ComparativeAnalysisProcessor] Using comparative_analysis_score: ${comparativeScore}`);
+    return comparativeScore;
+  }
+  // ... fallbacks
+}
+```
+
+**Step 4: Added Direct Rendering**:
+
+```typescript
+return {
+  type: 'competitive_analysis',
+  records: rankedRecords,
+  summary, featureImportance, statistics,
+  targetVariable: 'comparison_score',
+  renderer: this.createComparativeRenderer(rankedRecords), // ✅ DIRECT RENDERER
+  legend: this.createComparativeLegend(rankedRecords) // ✅ DIRECT LEGEND
+};
+
+private createComparativeRenderer(records: any[]): any {
+  const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+  const quartileBreaks = this.calculateQuartileBreaks(values);
+  
+  // Comparative colors: Red (low) -> Orange -> Light Green -> Dark Green (high)
+  const comparativeColors = [
+    [215, 48, 39, 0.6],   // Red (lowest competitive advantage)
+    [253, 174, 97, 0.6],  // Orange  
+    [166, 217, 106, 0.6], // Light Green
+    [26, 152, 80, 0.6]    // Dark Green (highest competitive advantage)
+  ];
+  
+  return {
+    type: 'class-breaks',
+    field: 'comparison_score', // Direct field reference
+    classBreakInfos: quartileBreaks.map((breakRange, i) => ({
+      minValue: breakRange.min,
+      maxValue: breakRange.max,
+      symbol: {
+        type: 'simple-fill',
+        color: comparativeColors[i], // Direct array format
+        outline: { color: [255, 255, 255, 0.8], width: 1 }
+      }
+    })),
+    defaultSymbol: {
+      type: 'simple-fill',
+      color: [200, 200, 200, 0.5]
+    }
+  };
+}
+```
+
+**Step 5: Added Feature Attribute Mapping**:
+
+```typescript
+// In geospatial-chat-interface.tsx
+strategic_value_score: typeof record.strategic_value_score === 'number' ? record.strategic_value_score : (typeof record.properties?.strategic_value_score === 'number' ? record.properties.strategic_value_score : (typeof record.value === 'number' ? record.value : 0)),
+competitive_advantage_score: typeof record.competitive_advantage_score === 'number' ? record.competitive_advantage_score : (typeof record.properties?.competitive_advantage_score === 'number' ? record.properties.competitive_advantage_score : (typeof record.value === 'number' ? record.value : 0)),
+comparison_score: typeof record.comparison_score === 'number' ? record.comparison_score : (typeof record.properties?.comparison_score === 'number' ? record.properties.comparison_score : (typeof record.value === 'number' ? record.value : 0)), // ✅ ADDED
+```
+
+### Files Modified
+
+1. **`/scripts/scoring/comparative-analysis-scores.js`** - Regenerated proper score distribution
+2. **`/lib/analysis/strategies/processors/ComparativeAnalysisProcessor.ts`** - Added direct rendering and fixed field alignment
+3. **`/components/geospatial-chat-interface.tsx`** - Added `comparison_score` to feature attribute mapping
+
+### Results Achieved
+
+**Before Fix**:
+
+- ❌ All scores identical (4.05)
+- ❌ Grey visualization
+- ❌ Uniform analysis across all areas
+- ❌ "100% market gap" calculations
+
+**After Fix**:
+
+- ✅ Score range: 2.0-68.4 (average 43.4)
+- ✅ Colored visualization with red-to-green gradient
+- ✅ Meaningful geographic differentiation
+- ✅ Accurate competitive analysis with varied insights
+
+### Key Lessons Learned
+
+1. **Data Quality First**: Always check if the underlying scores have proper distribution before investigating rendering issues
+2. **Field Name Consistency**: Ensure processor `targetVariable` exactly matches the field name in the data
+3. **Direct Rendering Pattern**: Use direct processor rendering for more reliable visualization than complex chains
+4. **Feature Attribute Mapping**: All target variables must be mapped in the UI component for renderer access
+5. **Scoring Script Regeneration**: When adding new analysis types, regenerate scoring to ensure proper data distribution
+
+### Testing Verification
+
+```javascript
+// Verify score distribution
+console.log('Score range:', Math.min(...values), '-', Math.max(...values));
+// Should show: 2.0 - 68.4
+
+// Verify field access
+console.log('comparison_score available:', typeof record.comparison_score);
+// Should show: 'number'
+
+// Verify renderer field
+console.log('Renderer field:', renderer.field);
+// Should show: 'comparison_score'
+```
+
+### Success Pattern for Future Endpoints
+
+1. **Generate proper scoring** with `node scripts/scoring/[endpoint]-scores.js`
+2. **Update processor** to use correct field names and add direct rendering
+3. **Add feature attribute mapping** for target variable
+4. **Test visualization** shows colors instead of grey
+5. **Verify analysis** provides meaningful geographic insights
+
+This case study demonstrates the complete fix workflow from data issues through rendering problems to final visualization success.
+
 ---
 
 This template ensures consistent, reliable analysis endpoints that properly detect query intent, use correct data fields, and provide accurate visualizations and responses. All renderers now automatically support any target variable specified by processors.

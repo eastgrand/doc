@@ -20,6 +20,7 @@ import { BrandAnalysisProcessor } from './strategies/processors/BrandAnalysisPro
 import { RealEstateAnalysisProcessor } from './strategies/processors/RealEstateAnalysisProcessor';
 import { RiskDataProcessor } from './strategies/processors/RiskDataProcessor';
 import { StrategicAnalysisProcessor } from './strategies/processors/StrategicAnalysisProcessor';
+import { CustomerProfileProcessor } from './strategies/processors/CustomerProfileProcessor';
 
 /**
  * DataProcessor - Standardizes raw microservice data into consistent format
@@ -141,6 +142,7 @@ export class DataProcessor {
     this.processors.set('/scenario-analysis', new ScenarioAnalysisProcessor());
     this.processors.set('/strategic-analysis', new StrategicAnalysisProcessor()); // Use dedicated StrategicAnalysisProcessor
     this.processors.set('/market-sizing', new MarketSizingProcessor());
+    this.processors.set('/customer-profile', new CustomerProfileProcessor()); // Customer profile analysis processor
     this.processors.set('/brand-analysis', new BrandAnalysisProcessor());
     this.processors.set('/real-estate-analysis', new RealEstateAnalysisProcessor());
     

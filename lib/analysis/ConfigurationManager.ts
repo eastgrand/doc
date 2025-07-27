@@ -518,6 +518,37 @@ export class ConfigurationManager {
         validationRules: { maxScenarios: 5 },
         mockResponses: false
       },
+      {
+        id: '/customer-profile',
+        name: 'Customer Profile Analysis',
+        description: 'Analyze customer profiles and personas across geographic markets with demographic, psychographic, and behavioral characteristics',
+        category: 'segmentation',
+        url: '/customer-profile',
+        defaultVisualization: 'cluster',
+        payloadTemplate: {
+          target_variable: '',
+          sample_size: 5000,
+          profile_depth: 'comprehensive',
+          segment_focus: 'all',
+          include_psychographics: true
+        },
+        responseProcessor: 'CustomerProfileProcessor',
+        keywords: ['customer profile', 'customer persona', 'target customer', 'customer characteristics', 'customer fit', 'persona analysis', 'buyer profile', 'customer behavior', 'lifestyle patterns', 'customer demographics', 'target demographics', 'demographic fit', 'lifestyle analysis', 'customer values', 'psychographics'],
+        targetVariable: 'customer_profile_score',
+        scoreFieldName: 'customer_profile_score',
+        requiredFields: ['target_variable'],
+        optionalFields: ['sample_size', 'profile_depth', 'segment_focus', 'include_psychographics'],
+        expectedResponseTime: 25000,
+        cacheable: true,
+        rateLimit: { requests: 40, window: 3600000 },
+        validationRules: {
+          profileDepths: ['basic', 'standard', 'comprehensive'],
+          segmentFocus: ['all', 'primary', 'secondary', 'emerging'],
+          maxSampleSize: 8000,
+          minSampleSize: 500
+        },
+        mockResponses: false
+      }
     ];
 
     // Store configurations with validation

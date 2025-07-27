@@ -20,6 +20,8 @@ This document describes the scoring formulas and fields used for each data analy
 14. [Sensitivity Analysis](#sensitivity-analysis)
 15. [Model Performance](#model-performance)
 16. [Strategic Analysis](#strategic-analysis)
+17. [Customer Profile](#customer-profile)
+18. [Multi-Endpoint Analysis](#multi-endpoint-analysis)
 
 ---
 
@@ -595,9 +597,139 @@ This creates a unified 0-100 score identifying the best strategic expansion oppo
 
 ---
 
+## 17. Customer Profile
+
+**Endpoint**: `/customer-profile`  
+**Script**: `generate-customer-profile-scores.js`
+
+### Formula
+
+```
+Customer Profile Score = (
+  0.30 × Demographic Alignment +
+  0.25 × Lifestyle Score +
+  0.25 × Behavioral Score +
+  0.20 × Market Context Score
+)
+
+where:
+- Demographic Alignment = Age Match + Income Fit + Household Size + Population Density
+- Lifestyle Score = Wealth Index + Activity Patterns + Urban/Professional + Health/Fitness
+- Behavioral Score = Nike Affinity + Purchase Propensity + Early Adopter + Brand Loyalty
+- Market Context = Market Size + Economic Stability + Competitive Context + Growth Potential
+```
+
+### Plain Language
+
+The customer profile score identifies how well a geographic area matches Nike's ideal customer profile by evaluating:
+
+- **Demographic Alignment (30%)**: How well the age (16-45, peak 25-35), income ($35K-$150K, sweet spot $50K-$100K), and household characteristics match Nike's target customer
+- **Lifestyle Score (25%)**: Activity patterns, wealth indicators, urban/professional lifestyle markers, and health/fitness orientation
+- **Behavioral Score (25%)**: Brand affinity (Nike market share), purchase propensity, early adopter characteristics, and brand loyalty indicators
+- **Market Context (20%)**: Market size, economic stability, competitive environment, and growth potential
+
+The score also identifies one of 5 customer personas:
+
+- Athletic Enthusiasts
+- Fashion-Forward Professionals
+- Premium Brand Loyalists
+- Emerging Young Adults
+- Value-Conscious Families
+
+### Fields Used
+
+- `total_population` / `value_TOTPOP_CY` - Market size
+- `median_income` / `value_AVGHINC_CY` - Income demographics
+- `median_age` / `value_MEDAGE_CY` - Age demographics (default: 35)
+- `household_size` / `value_AVGHHSZ_CY` - Household composition (default: 2.5)
+- `wealth_index` / `value_WLTHINDXCY` - Wealth indicators (default: 100)
+- `mp30034a_b_p` / `value_MP30034A_B_P` - Nike market share (brand affinity)
+- Calculated fields:
+  - `demographic_alignment` - Component score
+  - `lifestyle_score` - Component score
+  - `behavioral_score` - Component score
+  - `market_context_score` - Component score
+  - `persona_type` - Identified customer persona
+  - `target_confidence` - Confidence in profile match
+
+---
+
+## 18. Multi-Endpoint Analysis
+
+**Endpoint**: Multiple endpoints combined  
+**Detection**: `MultiEndpointQueryDetector.ts`
+
+### Detection Formula
+
+```
+Multi-Endpoint Detection Score = (
+  Pattern Match Score × Pattern Weight × Keyword Coverage
+)
+
+where:
+- Pattern Match Score = (matched_keywords / total_pattern_keywords)
+- Pattern Weight = predefined weight for pattern type (0.7-1.0)
+- Keyword Coverage = min(1, matched_keywords / 2)
+
+Triggers when:
+- Detection Score > 0.4 (threshold)
+- At least 2 keywords match from different endpoint patterns
+```
+
+### Combination Strategies
+
+1. **Overlay Strategy**: Layers multiple analyses on same geography
+   - Shows different scoring dimensions as toggleable layers
+   - Preserves individual endpoint scoring
+
+2. **Comparison Strategy**: Side-by-side analysis comparison
+   - Split-screen or multi-panel visualization
+   - Allows direct comparison of different metrics
+
+3. **Sequential Strategy**: Ordered analysis flow
+   - Analyzes with primary endpoint first
+   - Uses results to filter/enhance secondary analysis
+
+4. **Correlation Strategy**: Finds relationships between endpoints
+   - Combines scores using weighted averages
+   - Identifies areas where multiple factors align
+
+### Plain Language
+
+Multi-endpoint analysis automatically detects when a query requires insights from multiple analysis types and combines them intelligently. For example:
+
+- "Customer profiles AND strategic opportunities" → Combines customer-profile + strategic-analysis
+- "Demographics WITH competitive positioning" → Combines demographic-insights + competitive-analysis
+- "Market trends AND customer segments" → Combines trend-analysis + segment-profiling
+
+The system:
+
+- Detects multi-endpoint needs using keyword patterns
+- Runs analyses in parallel for performance
+- Merges results based on geographic location
+- Presents unified insights with multiple perspectives
+
+### Common Multi-Endpoint Patterns
+
+1. **Customer + Strategic**: Identifies markets with both ideal customers AND expansion opportunities
+2. **Demographic + Competitive**: Shows demographic strengths in competitively advantaged markets
+3. **Trend + Risk**: Combines growth trends with anomaly/risk detection
+4. **Segment + Geographic**: Overlays customer segments on geographic clusters
+
+### Fields Used
+
+- All fields from constituent endpoints
+- Location identifiers for merging (ID, ZIP_CODE, FSA_ID, geo_id)
+- Scores from each endpoint with prefixed names (e.g., strategic_strategic_value_score)
+- Metadata fields for quality and confidence metrics
+
+---
+
 ## Notes
 
 1. All scores are typically normalized to a 0-100 scale for consistency
 2. Missing data is handled with appropriate defaults or exclusion
 3. Scores may be adjusted based on data quality indicators
 4. Some endpoints may have multiple scoring variants for different use cases
+5. Customer Profile uses defaults for missing demographic data (age: 35, household: 2.5)
+6. Multi-endpoint analysis preserves individual endpoint scores while creating combined insights

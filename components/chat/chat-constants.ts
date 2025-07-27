@@ -1,7 +1,6 @@
 export const ANALYSIS_CATEGORIES = {
   'strategic': [
-    'Show me the top strategic markets for Nike expansion',
-    'Which markets have the highest demographic opportunity scores for Nike?'
+    'Show me the top strategic markets for Nike expansion'
   ],
   'comparitive': [
     'Compare Nike\'s market position against competitors'
@@ -11,6 +10,12 @@ export const ANALYSIS_CATEGORIES = {
   ],
   'demographic': [
     'Which markets have the highest demographic opportunity scores for Nike?'
+  ],
+  'customer-profile': [
+    'Show me areas with ideal customer personas for athletic brands'
+  ],
+  'multi-endpoint': [
+    'Analyze customer profiles and compare with strategic opportunities'
   ],
   'location': [
     'Show me geographic clusters of similar markets'  
@@ -46,12 +51,22 @@ export const TRENDS_CATEGORIES = {
     'Which markets have the highest demographic opportunity scores for Nike?',
     'Show me markets with the clearest customer segments for targeted marketing',
     'What market factors are most strongly correlated with Nike\'s success?',
-    'Which markets have the strongest interactions between demographics, income, and Nike preference?'
+    'Which markets have the strongest interactions between demographics, income, and Nike preference?',
+    'Which markets best match Nike\'s target customer profile?',
+    'Where are Athletic Enthusiasts and Fashion-Forward Professionals concentrated?',
+    'Show me customer persona distribution across different markets'
   ],
   'Location & Real Estate': [
     'Show me geographic clusters of similar markets for regional distribution planning',
     'Which locations are best for new Nike flagship stores?',
     'Show me markets that are exceptional outliers with unique characteristics',
     'Show me markets with unusual patterns that need investigation'
+  ],
+  'Multi-Analysis & Insights': [
+    'Compare customer profiles with strategic market opportunities',
+    'Show me areas with high demographic scores AND strong competitive positioning',
+    'Which markets combine ideal customer fit with growth potential?',
+    'Analyze customer personas alongside market trends and competitive landscape',
+    'Where do customer profiles, demographics, and strategic value align best?'
   ]
 }; 
