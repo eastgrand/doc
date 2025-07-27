@@ -22,6 +22,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
          record.value !== undefined || 
          record.score !== undefined ||
          // Check for anomaly-relevant fields
+         record.value_MP30034A_B_P !== undefined || // Nike market share (raw format)
          record.mp30034a_b_p !== undefined || // Nike market share for pattern analysis
          record.strategic_value_score !== undefined ||
          record.competitive_advantage_score !== undefined)

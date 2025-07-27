@@ -33,7 +33,13 @@ export const PROCESSOR_TYPES = {
   DEMOGRAPHIC_ANALYSIS: 'demographic_analysis',
   CORRELATION_ANALYSIS: 'correlation_analysis',
   TREND_ANALYSIS: 'trend_analysis',
-  RISK_ANALYSIS: 'risk_analysis'
+  RISK_ANALYSIS: 'risk_analysis',
+  FEATURE_INTERACTIONS: 'feature_interactions',
+  OUTLIER_DETECTION: 'outlier_detection',
+  ANOMALY_DETECTION: 'anomaly_detection',
+  PREDICTIVE_MODELING: 'predictive_modeling',
+  SCENARIO_ANALYSIS: 'scenario_analysis',
+  SEGMENT_PROFILING: 'segment_profiling'
 } as const;
 
 /**
@@ -48,8 +54,16 @@ export const ENDPOINT_PROCESSOR_MAP = {
   '/risk-analysis': PROCESSOR_TYPES.RISK_ANALYSIS,
   '/correlation-analysis': PROCESSOR_TYPES.CORRELATION_ANALYSIS,
   '/threshold-analysis': PROCESSOR_TYPES.CORE_ANALYSIS,
-  '/feature-interactions': PROCESSOR_TYPES.CORE_ANALYSIS,
-  '/outlier-detection': PROCESSOR_TYPES.CORE_ANALYSIS,
+  // Use specialized processors for endpoints that have them
+  '/feature-interactions': PROCESSOR_TYPES.FEATURE_INTERACTIONS,
+  '/outlier-detection': PROCESSOR_TYPES.OUTLIER_DETECTION,
+  '/anomaly-detection': PROCESSOR_TYPES.ANOMALY_DETECTION,
   '/comparative-analysis': PROCESSOR_TYPES.COMPETITIVE_ANALYSIS,
-  '/predictive-modeling': PROCESSOR_TYPES.CORE_ANALYSIS
+  '/predictive-modeling': PROCESSOR_TYPES.PREDICTIVE_MODELING,
+  '/scenario-analysis': PROCESSOR_TYPES.SCENARIO_ANALYSIS,
+  '/segment-profiling': PROCESSOR_TYPES.SEGMENT_PROFILING,
+  // Fallback to core analysis for endpoints without specialized processors
+  '/sensitivity-analysis': PROCESSOR_TYPES.CORE_ANALYSIS,
+  '/model-performance': PROCESSOR_TYPES.CORE_ANALYSIS,
+  '/feature-importance-ranking': PROCESSOR_TYPES.CORE_ANALYSIS
 } as const; 

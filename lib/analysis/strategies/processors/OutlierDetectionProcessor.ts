@@ -22,9 +22,12 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
          record.value !== undefined || 
          record.score !== undefined ||
          // Check for outlier-relevant fields
+         record.value_MP30034A_B_P !== undefined || // Nike market share (raw format)
          record.mp30034a_b_p !== undefined || // Nike market share for outlier analysis
          record.strategic_value_score !== undefined ||
+         record.value_TOTPOP_CY !== undefined || // Total population (raw format)
          record.total_population !== undefined ||
+         record.value_MEDDI_CY !== undefined || // Median income (raw format)
          record.median_income !== undefined)
       );
     

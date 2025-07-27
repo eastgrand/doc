@@ -23,15 +23,15 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       // Extract the pre-calculated segment profiling score
       const segmentScore = Number(record.segment_profiling_score) || 0;
       
-      // Extract related metrics for additional analysis
-      const nikeShare = Number(record.mp30034a_b_p) || 0;
+      // Extract related metrics for additional analysis (updated for actual dataset fields)
+      const nikeShare = Number(record.value_MP30034A_B_P || record.mp30034a_b_p) || 0;
       const strategicScore = Number(record.strategic_value_score) || 0;
       const competitiveScore = Number(record.competitive_advantage_score) || 0;
       const demographicScore = Number(record.demographic_opportunity_score) || 0;
       const trendScore = Number(record.trend_strength_score) || 0;
       const correlationScore = Number(record.correlation_strength_score) || 0;
-      const totalPop = Number(record.total_population) || 0;
-      const medianIncome = Number(record.median_income) || 0;
+      const totalPop = Number(record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population) || 0;
+      const medianIncome = Number(record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income) || 0;
 
       // Calculate additional segmentation indicators
       const indicators = this.calculateSegmentationIndicators({

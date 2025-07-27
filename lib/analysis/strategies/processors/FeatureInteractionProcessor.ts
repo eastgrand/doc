@@ -22,6 +22,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
          record.value !== undefined || 
          record.score !== undefined ||
          // Check for interaction-relevant fields
+         record.value_MP30034A_B_P !== undefined || // Nike market share (raw format)
          record.mp30034a_b_p !== undefined || // Nike market share for interactions
          record.strategic_value_score !== undefined ||
          record.demographic_opportunity_score !== undefined ||

@@ -13,18 +13,20 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Validate correlation-specific fields
+    // Validate correlation-specific fields - check for actual data structure
     const hasCorrelationFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
-        // Pre-calculated correlation fields
-        (record.correlation_score !== undefined ||
-         // Correlation analysis variables
+        // Check for actual correlation data fields present in the dataset
+        (record.value_MP30034A_B_P !== undefined ||   // Nike market share (raw format)
+         record.value_TOTPOP_CY !== undefined ||      // Total population (raw format)
+         record.ID !== undefined ||                   // Area ID
+         // Fallback fields for other datasets
+         record.correlation_score !== undefined ||
          record.target_value !== undefined ||
          record.median_income !== undefined ||
          record.total_population !== undefined ||
          record.demographic_opportunity_score !== undefined ||
-         // Nike market share (primary correlation variable)
          record.mp30034a_b_p !== undefined)
       );
     
@@ -97,18 +99,18 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       // Use correlation strength score as the primary value
       const value = correlationScore;
       
-      // Extract correlation-specific properties
+      // Extract correlation-specific properties (updated for actual dataset fields)
       const properties = {
         ...this.extractProperties(record),
         correlation_strength_score: correlationScore,
-        target_value: Number(record.target_value) || 0,
-        median_income: Number(record.median_income) || 0,
-        total_population: Number(record.total_population) || 0,
+        target_value: Number(record.value_MP30034A_B_P || record.target_value) || 0,
+        median_income: Number(record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income) || 0,
+        total_population: Number(record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population) || 0,
         demographic_opportunity_score: Number(record.demographic_opportunity_score) || 0,
-        nike_market_share: Number(record.mp30034a_b_p) || 0,
-        asian_population: Number(record.asian_population) || 0,
-        black_population: Number(record.black_population) || 0,
-        white_population: Number(record.white_population) || 0,
+        nike_market_share: Number(record.value_MP30034A_B_P || record.mp30034a_b_p) || 0,
+        asian_population: Number(record.value_ASIAN_CY || record.asian_population) || 0,
+        black_population: Number(record.value_BLACK_CY || record.black_population) || 0,
+        white_population: Number(record.value_WHITE_CY || record.white_population) || 0,
         correlation_strength: this.getCorrelationStrengthLevel(correlationScore)
       };
       

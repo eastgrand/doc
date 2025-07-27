@@ -13,24 +13,25 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Validate demographic-specific fields (updated for correlation_analysis dataset)
+    // Validate demographic-specific fields - check for actual data structure
     const hasDemographicFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
-        // Check for correlation_analysis demographic fields
-        (record.demographic_opportunity_score !== undefined || // Pre-calculated score
-         record.total_population !== undefined ||             // Total population
-         record.median_income !== undefined ||               // Median income
-         record.white_population !== undefined ||            // White population
-         record.asian_population !== undefined ||            // Asian population
-         record.black_population !== undefined ||            // Black population
-         // Legacy demographic fields
-         record.value_TOTPOP_CY !== undefined ||    // Total population
-         record.value_AVGHINC_CY !== undefined ||   // Average household income
-         record.value_MEDAGE_CY !== undefined ||    // Median age
-         record.population !== undefined ||         // Legacy population field
-         record.income !== undefined ||            // Legacy income field
-         record.demographic_score !== undefined)    // Demographic score
+        // Check for actual demographic data fields present in the dataset
+        (record.value_TOTPOP_CY !== undefined ||      // Total population (actual field)
+         record.TOTPOP_CY !== undefined ||            // Total population (alternative)
+         record.value_MP30034A_B_P !== undefined ||   // Nike market share % (target variable)
+         record.value_DESCRIPTION !== undefined ||     // Area description
+         record.ID !== undefined ||                   // Area ID
+         // Fallback demographic fields for other datasets
+         record.demographic_opportunity_score !== undefined || 
+         record.total_population !== undefined ||     
+         record.median_income !== undefined ||        
+         record.value_AVGHINC_CY !== undefined ||     
+         record.value_MEDAGE_CY !== undefined ||      
+         record.population !== undefined ||           
+         record.income !== undefined ||              
+         record.demographic_score !== undefined)      
       );
     
     return hasDemographicFields;
@@ -62,7 +63,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'demographic_opportunity_score',
+      targetVariable: 'value_MP30034A_B_P', // Nike market share percentage
       renderer: this.createDemographicRenderer(records), // Add direct renderer
       legend: this.createDemographicLegend(records), // Add direct legend
       demographicAnalysis // Additional metadata for demographic visualization
@@ -84,18 +85,18 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       // Use demographic score as the primary value
       const value = demographicScore;
       
-      // Extract demographic-specific properties (updated for correlation_analysis dataset)
+      // Extract demographic-specific properties (updated for actual dataset fields)
       const properties = {
         ...this.extractProperties(record),
         demographic_opportunity_score: demographicScore,
-        population: record.total_population || record.value_TOTPOP_CY || record.population || 0,
-        avg_income: record.median_income || record.value_AVGHINC_CY || record.income || 0,
+        population: record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population || record.population || 0,
+        avg_income: record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income || record.income || 0,
         median_age: record.value_MEDAGE_CY || record.age || 0,
         household_size: record.value_AVGHHSZ_CY || record.household_size || 0,
-        white_population: record.white_population || 0,
-        asian_population: record.asian_population || 0,
-        black_population: record.black_population || 0,
-        diversity_index: this.calculateDiversityIndex(record),
+        white_population: record.value_WHITE_CY || record.white_population || 0,
+        asian_population: record.value_ASIAN_CY || record.asian_population || 0,
+        black_population: record.value_BLACK_CY || record.black_population || 0,
+        diversity_index: record.value_DIVINDX_CY || this.calculateDiversityIndex(record),
         lifestyle_score: this.calculateLifestyleScore(record),
         economic_stability: this.calculateEconomicStability(record)
       };
@@ -122,23 +123,23 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
   }
 
   private extractDemographicScore(record: any): number {
-    // PRIORITY 1: PRE-CALCULATED DEMOGRAPHIC OPPORTUNITY SCORE
-    if (record.demographic_opportunity_score !== undefined && record.demographic_opportunity_score !== null) {
-      const preCalculatedScore = Number(record.demographic_opportunity_score);
-      console.log(`🎯 [DemographicDataProcessor] Using pre-calculated score: ${preCalculatedScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
-      return preCalculatedScore;
-    }
-    
-    // PRIORITY 2: Use Nike market share as demographic appeal indicator
+    // PRIORITY 1: Nike market share as primary demographic opportunity indicator
     if (record.value_MP30034A_B_P !== undefined && record.value_MP30034A_B_P !== null) {
       const nikeShare = Number(record.value_MP30034A_B_P);
       console.log(`🎯 [DemographicDataProcessor] Using Nike market share as demographic score: ${nikeShare} for ${record.value_DESCRIPTION || record.ID || 'Unknown'}`);
       return nikeShare;
     }
     
+    // PRIORITY 2: PRE-CALCULATED DEMOGRAPHIC OPPORTUNITY SCORE (for other datasets)
+    if (record.demographic_opportunity_score !== undefined && record.demographic_opportunity_score !== null) {
+      const preCalculatedScore = Number(record.demographic_opportunity_score);
+      console.log(`🎯 [DemographicDataProcessor] Using pre-calculated score: ${preCalculatedScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+      return preCalculatedScore;
+    }
+    
     // Fallback: Calculate demographic fit score from available data
-    const population = record.total_population || record.value_TOTPOP_CY || record.population || 0;
-    const income = record.median_income || record.value_AVGHINC_CY || record.income || 0;
+    const population = record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population || record.population || 0;
+    const income = record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income || record.income || 0;
     const age = record.value_MEDAGE_CY || record.age || 0;
     const householdSize = record.value_AVGHHSZ_CY || record.household_size || 0;
     
@@ -592,7 +593,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'demographic_opportunity_score', // Direct field reference
+      field: 'value_MP30034A_B_P', // Nike market share percentage
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,
