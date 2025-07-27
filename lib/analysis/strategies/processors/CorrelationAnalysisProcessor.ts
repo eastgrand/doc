@@ -76,6 +76,8 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       featureImportance,
       statistics,
       targetVariable: 'correlation_strength_score',
+      renderer: this.createCorrelationRenderer(records), // Add direct renderer
+      legend: this.createCorrelationLegend(records), // Add direct legend
       correlationAnalysis // Additional metadata for correlation visualization
     };
   }
@@ -120,6 +122,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
         area_id,
         area_name,
         value,
+        correlation_strength_score: correlationScore, // Add target variable at top level
         rank: 0, // Will be calculated in ranking
         category,
         coordinates: record.coordinates || [0, 0],
@@ -450,5 +453,111 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
     summary += `**Recommendations:** Leverage identified correlation patterns for market prediction and strategic planning. Areas with strong correlation scores offer more predictable outcomes for business initiatives. `;
     
     return summary;
+  }
+
+  // ============================================================================
+  // DIRECT RENDERING METHODS
+  // ============================================================================
+
+  /**
+   * Create direct renderer for correlation analysis visualization
+   */
+  private createCorrelationRenderer(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use teal/cyan gradient for correlations: Light teal -> Dark teal (strong correlation)
+    const correlationColors = [
+      [199, 233, 192, 0.6],  // #c7e9c0 - Light teal (weak correlation)
+      [116, 196, 118, 0.6],  // #74c476 - Medium teal
+      [65, 171, 93, 0.6],    // #41ab5d - Teal  
+      [35, 139, 69, 0.6]     // #238b45 - Dark teal (strong correlation)
+    ];
+    
+    return {
+      type: 'class-breaks',
+      field: 'correlation_strength_score', // Direct field reference
+      classBreakInfos: quartileBreaks.map((breakRange, i) => ({
+        minValue: breakRange.min,
+        maxValue: breakRange.max,
+        symbol: {
+          type: 'simple-fill',
+          color: correlationColors[i], // Direct array format
+          outline: { color: [255, 255, 255, 0.8], width: 1 }
+        },
+        label: this.formatClassLabel(i, quartileBreaks)
+      })),
+      defaultSymbol: {
+        type: 'simple-fill',
+        color: [200, 200, 200, 0.5],
+        outline: { color: [255, 255, 255, 0.8], width: 1 }
+      }
+    };
+  }
+
+  /**
+   * Create direct legend for correlation analysis
+   */
+  private createCorrelationLegend(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use RGBA format with correct opacity to match features
+    const colors = [
+      'rgba(199, 233, 192, 0.6)',  // Weak correlation
+      'rgba(116, 196, 118, 0.6)',  // Medium-low  
+      'rgba(65, 171, 93, 0.6)',    // Medium-high
+      'rgba(35, 139, 69, 0.6)'     // Strong correlation
+    ];
+    
+    const legendItems = [];
+    for (let i = 0; i < quartileBreaks.length; i++) {
+      legendItems.push({
+        label: this.formatClassLabel(i, quartileBreaks),
+        color: colors[i],
+        minValue: quartileBreaks[i].min,
+        maxValue: quartileBreaks[i].max
+      });
+    }
+    
+    return {
+      title: 'Correlation Strength Score',
+      items: legendItems,
+      position: 'bottom-right'
+    };
+  }
+
+  /**
+   * Calculate quartile breaks for rendering
+   */
+  private calculateQuartileBreaks(values: number[]): Array<{min: number, max: number}> {
+    if (values.length === 0) return [];
+    
+    const q1 = values[Math.floor(values.length * 0.25)];
+    const q2 = values[Math.floor(values.length * 0.5)];
+    const q3 = values[Math.floor(values.length * 0.75)];
+    
+    return [
+      { min: values[0], max: q1 },
+      { min: q1, max: q2 },
+      { min: q2, max: q3 },
+      { min: q3, max: values[values.length - 1] }
+    ];
+  }
+
+  /**
+   * Format class labels for legend (same as strategic)
+   */
+  private formatClassLabel(classIndex: number, breaks: Array<{min: number, max: number}>): string {
+    if (classIndex === 0) {
+      // First class: < maxValue
+      return `< ${breaks[classIndex].max.toFixed(1)}`;
+    } else if (classIndex === breaks.length - 1) {
+      // Last class: > minValue  
+      return `> ${breaks[classIndex].min.toFixed(1)}`;
+    } else {
+      // Middle classes: minValue - maxValue
+      return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
+    }
   }
 }

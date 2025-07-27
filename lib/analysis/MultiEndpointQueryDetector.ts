@@ -66,6 +66,22 @@ export class MultiEndpointQueryDetector {
       weight: 0.7
     },
     
+    // Customer Profile + Demographics
+    {
+      keywords: ['demographic', 'fit', 'target', 'customer', 'profile'],
+      endpoints: ['/strategic-analysis', '/segment-profiling'],
+      strategy: 'correlation',
+      weight: 0.85
+    },
+    
+    // Demographic Opportunity Analysis
+    {
+      keywords: ['demographic', 'opportunity', 'scores'],
+      endpoints: ['/strategic-analysis'],
+      strategy: 'overlay',
+      weight: 0.9
+    },
+    
     // Clustering + Demographics
     {
       keywords: ['segment', 'similar', 'cluster', 'group', 'demographic'],
@@ -108,8 +124,8 @@ export class MultiEndpointQueryDetector {
     const patternScores = this.scorePatterns(lowerQuery);
     const bestPattern = patternScores[0];
     
-    // Determine if multi-endpoint is needed
-    const isMultiEndpoint = bestPattern && bestPattern.score >= 0.6;
+    // Determine if multi-endpoint is needed (lowered threshold)
+    const isMultiEndpoint = bestPattern && bestPattern.score >= 0.4;
     
     if (isMultiEndpoint) {
       const result: MultiEndpointQuery = {
@@ -187,17 +203,39 @@ export class MultiEndpointQueryDetector {
     const scores = this.multiEndpointPatterns.map(pattern => {
       let score = 0;
       let matchCount = 0;
+      const matchedKeywords: string[] = [];
       
       // Count keyword matches
       for (const keyword of pattern.keywords) {
         if (query.includes(keyword)) {
           score += pattern.weight;
           matchCount++;
+          matchedKeywords.push(keyword);
         }
       }
       
-      // Normalize by number of keywords matched vs total
-      const normalizedScore = matchCount > 0 ? (score / pattern.keywords.length) * (matchCount / pattern.keywords.length) : 0;
+      // More lenient scoring: if we match at least 2 keywords, apply partial score
+      let normalizedScore = 0;
+      if (matchCount >= 2) {
+        // Award points for matching multiple keywords
+        const matchRatio = matchCount / pattern.keywords.length;
+        normalizedScore = pattern.weight * matchRatio * Math.min(1, matchCount / 2);
+      } else if (matchCount === 1) {
+        // Single keyword match gets lower score
+        normalizedScore = pattern.weight * 0.3;
+      }
+      
+      // Debug logging for patterns with matches
+      if (matchCount > 0) {
+        console.log(`[MultiEndpointQueryDetector] Pattern match:`, {
+          keywords: pattern.keywords,
+          matched: matchedKeywords,
+          matchCount,
+          rawScore: score,
+          normalizedScore,
+          endpoints: pattern.endpoints
+        });
+      }
       
       return { pattern, score: normalizedScore };
     });

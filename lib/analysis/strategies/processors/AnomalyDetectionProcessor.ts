@@ -77,6 +77,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         value: Math.round(anomalyScore * 100) / 100, // Use anomaly score as primary value
+        anomaly_detection_score: Math.round(anomalyScore * 100) / 100, // Add target variable at top level
         rank: 0, // Will be calculated after sorting
         properties: {
           ...record, // Include ALL original fields in properties
@@ -117,7 +118,9 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'anomaly_detection_score' // Primary ranking by anomaly score
+      targetVariable: 'anomaly_detection_score', // Primary ranking by anomaly score
+      renderer: this.createAnomalyRenderer(rankedRecords), // Add direct renderer
+      legend: this.createAnomalyLegend(rankedRecords) // Add direct legend
     };
   }
 
@@ -571,5 +574,111 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
     }
     
     return summary;
+  }
+
+  // ============================================================================
+  // DIRECT RENDERING METHODS
+  // ============================================================================
+
+  /**
+   * Create direct renderer for anomaly detection visualization
+   */
+  private createAnomalyRenderer(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use inverted colors for anomaly detection: Green (low anomaly) -> Orange -> Red (high anomaly)
+    const anomalyColors = [
+      [26, 152, 80, 0.6],    // #1a9850 - Green (normal behavior)
+      [166, 217, 106, 0.6],  // #a6d96a - Light Green
+      [253, 174, 97, 0.6],   // #fdae61 - Orange  
+      [215, 48, 39, 0.6]     // #d73027 - Red (highest anomaly)
+    ];
+    
+    return {
+      type: 'class-breaks',
+      field: 'anomaly_detection_score', // Direct field reference
+      classBreakInfos: quartileBreaks.map((breakRange, i) => ({
+        minValue: breakRange.min,
+        maxValue: breakRange.max,
+        symbol: {
+          type: 'simple-fill',
+          color: anomalyColors[i], // Direct array format
+          outline: { color: [255, 255, 255, 0.8], width: 1 }
+        },
+        label: this.formatClassLabel(i, quartileBreaks)
+      })),
+      defaultSymbol: {
+        type: 'simple-fill',
+        color: [200, 200, 200, 0.5],
+        outline: { color: [255, 255, 255, 0.8], width: 1 }
+      }
+    };
+  }
+
+  /**
+   * Create direct legend for anomaly detection
+   */
+  private createAnomalyLegend(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use RGBA format with correct opacity to match features
+    const colors = [
+      'rgba(26, 152, 80, 0.6)',    // Normal behavior
+      'rgba(166, 217, 106, 0.6)',  // Low anomaly  
+      'rgba(253, 174, 97, 0.6)',   // Medium anomaly
+      'rgba(215, 48, 39, 0.6)'     // High anomaly
+    ];
+    
+    const legendItems = [];
+    for (let i = 0; i < quartileBreaks.length; i++) {
+      legendItems.push({
+        label: this.formatClassLabel(i, quartileBreaks),
+        color: colors[i],
+        minValue: quartileBreaks[i].min,
+        maxValue: quartileBreaks[i].max
+      });
+    }
+    
+    return {
+      title: 'Anomaly Detection Score',
+      items: legendItems,
+      position: 'bottom-right'
+    };
+  }
+
+  /**
+   * Calculate quartile breaks for rendering
+   */
+  private calculateQuartileBreaks(values: number[]): Array<{min: number, max: number}> {
+    if (values.length === 0) return [];
+    
+    const q1 = values[Math.floor(values.length * 0.25)];
+    const q2 = values[Math.floor(values.length * 0.5)];
+    const q3 = values[Math.floor(values.length * 0.75)];
+    
+    return [
+      { min: values[0], max: q1 },
+      { min: q1, max: q2 },
+      { min: q2, max: q3 },
+      { min: q3, max: values[values.length - 1] }
+    ];
+  }
+
+  /**
+   * Format class labels for legend (same as strategic)
+   */
+  private formatClassLabel(classIndex: number, breaks: Array<{min: number, max: number}>): string {
+    if (classIndex === 0) {
+      // First class: < maxValue
+      return `< ${breaks[classIndex].max.toFixed(1)}`;
+    } else if (classIndex === breaks.length - 1) {
+      // Last class: > minValue  
+      return `> ${breaks[classIndex].min.toFixed(1)}`;
+    } else {
+      // Middle classes: minValue - maxValue
+      return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
+    }
   }
 }

@@ -84,7 +84,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         value: Math.round(comparativeScore * 100) / 100, // Use comparative score as primary value
-        competitive_advantage_score: Math.round(comparativeScore * 100) / 100, // Add at top level for visualization
+        comparison_score: Math.round(comparativeScore * 100) / 100, // Add comparison_score at top level for visualization
+        competitive_advantage_score: Math.round(comparativeScore * 100) / 100, // Keep for compatibility
         rank: 0, // Will be calculated after sorting
         properties: {
           ...record, // Include ALL original fields in properties
@@ -132,8 +133,116 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'competitive_advantage_score' // Use competitive score for competitive analysis
+      targetVariable: 'comparison_score', // Use comparison_score to match new data
+      renderer: this.createComparativeRenderer(rankedRecords), // Add direct renderer
+      legend: this.createComparativeLegend(rankedRecords) // Add direct legend
     };
+  }
+
+  // ============================================================================
+  // DIRECT RENDERING METHODS
+  // ============================================================================
+
+  /**
+   * Create direct renderer for comparative analysis visualization
+   */
+  private createComparativeRenderer(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Comparative colors: Red (low competition) -> Orange -> Light Green -> Dark Green (high competitive advantage)
+    const comparativeColors = [
+      [215, 48, 39, 0.6],   // #d73027 - Red (lowest comparative advantage)
+      [253, 174, 97, 0.6],  // #fdae61 - Orange  
+      [166, 217, 106, 0.6], // #a6d96a - Light Green
+      [26, 152, 80, 0.6]    // #1a9850 - Dark Green (highest comparative advantage)
+    ];
+    
+    return {
+      type: 'class-breaks',
+      field: 'comparison_score', // Direct field reference
+      classBreakInfos: quartileBreaks.map((breakRange, i) => ({
+        minValue: breakRange.min,
+        maxValue: breakRange.max,
+        symbol: {
+          type: 'simple-fill',
+          color: comparativeColors[i], // Direct array format
+          outline: { color: [255, 255, 255, 0.8], width: 1 }
+        },
+        label: this.formatClassLabel(i, quartileBreaks)
+      })),
+      defaultSymbol: {
+        type: 'simple-fill',
+        color: [200, 200, 200, 0.5],
+        outline: { color: [255, 255, 255, 0.8], width: 1 }
+      }
+    };
+  }
+
+  /**
+   * Create direct legend for comparative analysis
+   */
+  private createComparativeLegend(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use RGBA format with correct opacity to match features
+    const colors = [
+      'rgba(215, 48, 39, 0.6)',   // Low competitive advantage
+      'rgba(253, 174, 97, 0.6)',  // Medium-low  
+      'rgba(166, 217, 106, 0.6)', // Medium-high
+      'rgba(26, 152, 80, 0.6)'    // High competitive advantage
+    ];
+    
+    const legendItems = [];
+    for (let i = 0; i < quartileBreaks.length; i++) {
+      legendItems.push({
+        label: this.formatClassLabel(i, quartileBreaks),
+        color: colors[i],
+        minValue: quartileBreaks[i].min,
+        maxValue: quartileBreaks[i].max
+      });
+    }
+    
+    return {
+      title: 'Comparative Advantage Score',
+      items: legendItems,
+      position: 'bottom-right'
+    };
+  }
+
+  /**
+   * Calculate quartile breaks for rendering
+   */
+  private calculateQuartileBreaks(values: number[]): Array<{min: number, max: number}> {
+    if (values.length === 0) return [];
+    
+    const q1 = values[Math.floor(values.length * 0.25)];
+    const q2 = values[Math.floor(values.length * 0.5)];
+    const q3 = values[Math.floor(values.length * 0.75)];
+    
+    return [
+      { min: values[0], max: q1 },
+      { min: q1, max: q2 },
+      { min: q2, max: q3 },
+      { min: q3, max: values[values.length - 1] }
+    ];
+  }
+
+  /**
+   * Format class labels for legend
+   */
+  private formatClassLabel(classIndex: number, breaks: Array<{min: number, max: number}>): string {
+    if (classIndex === 0) {
+      // First class: < maxValue
+      return `< ${breaks[classIndex].max.toFixed(1)}`;
+    } else if (classIndex === breaks.length - 1) {
+      // Last class: > minValue  
+      return `> ${breaks[classIndex].min.toFixed(1)}`;
+    } else {
+      // Middle classes: minValue - maxValue
+      return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
+    }
   }
 
   // ============================================================================
@@ -144,10 +253,17 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    * Extract comparative analysis score from record with fallback calculation
    */
   private extractComparativeScore(record: any): number {
-    // PRIORITY 1: Use pre-calculated comparative score
+    // PRIORITY 1: Use new comparative_analysis_score from regenerated data
+    if (record.comparative_analysis_score !== undefined && record.comparative_analysis_score !== null) {
+      const comparativeScore = Number(record.comparative_analysis_score);
+      console.log(`⚖️ [ComparativeAnalysisProcessor] Using comparative_analysis_score: ${comparativeScore}`);
+      return comparativeScore;
+    }
+    
+    // PRIORITY 2: Use legacy comparative_score if available
     if (record.comparative_score !== undefined && record.comparative_score !== null) {
       const preCalculatedScore = Number(record.comparative_score);
-      console.log(`⚖️ [ComparativeAnalysisProcessor] Using pre-calculated comparative score: ${preCalculatedScore}`);
+      console.log(`⚖️ [ComparativeAnalysisProcessor] Using legacy comparative_score: ${preCalculatedScore}`);
       return preCalculatedScore;
     }
     

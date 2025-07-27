@@ -79,6 +79,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         value: Math.round(interactionScore * 100) / 100, // Use interaction score as primary value
+        feature_interaction_score: Math.round(interactionScore * 100) / 100, // Add target variable at top level
         rank: 0, // Will be calculated after sorting
         properties: {
           ...record, // Include ALL original fields in properties
@@ -121,7 +122,9 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'feature_interaction_score' // Primary ranking by interaction strength
+      targetVariable: 'feature_interaction_score', // Primary ranking by interaction strength
+      renderer: this.createFeatureInteractionRenderer(rankedRecords), // Add direct renderer
+      legend: this.createFeatureInteractionLegend(rankedRecords) // Add direct legend
     };
   }
 
@@ -641,5 +644,111 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     }
     
     return summary;
+  }
+
+  // ============================================================================
+  // DIRECT RENDERING METHODS
+  // ============================================================================
+
+  /**
+   * Create direct renderer for feature interaction visualization
+   */
+  private createFeatureInteractionRenderer(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use purple/blue gradient for feature interactions: Light blue -> Purple (high interaction)
+    const interactionColors = [
+      [158, 202, 225, 0.6],  // #9ecae1 - Light blue (low interaction)
+      [107, 174, 214, 0.6],  // #6baed6 - Medium blue
+      [74, 138, 184, 0.6],   // #4a8ab8 - Blue  
+      [99, 82, 139, 0.6]     // #63528b - Purple (high interaction)
+    ];
+    
+    return {
+      type: 'class-breaks',
+      field: 'feature_interaction_score', // Direct field reference
+      classBreakInfos: quartileBreaks.map((breakRange, i) => ({
+        minValue: breakRange.min,
+        maxValue: breakRange.max,
+        symbol: {
+          type: 'simple-fill',
+          color: interactionColors[i], // Direct array format
+          outline: { color: [255, 255, 255, 0.8], width: 1 }
+        },
+        label: this.formatClassLabel(i, quartileBreaks)
+      })),
+      defaultSymbol: {
+        type: 'simple-fill',
+        color: [200, 200, 200, 0.5],
+        outline: { color: [255, 255, 255, 0.8], width: 1 }
+      }
+    };
+  }
+
+  /**
+   * Create direct legend for feature interaction
+   */
+  private createFeatureInteractionLegend(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use RGBA format with correct opacity to match features
+    const colors = [
+      'rgba(158, 202, 225, 0.6)',  // Low interaction
+      'rgba(107, 174, 214, 0.6)',  // Medium-low  
+      'rgba(74, 138, 184, 0.6)',   // Medium-high
+      'rgba(99, 82, 139, 0.6)'     // High interaction
+    ];
+    
+    const legendItems = [];
+    for (let i = 0; i < quartileBreaks.length; i++) {
+      legendItems.push({
+        label: this.formatClassLabel(i, quartileBreaks),
+        color: colors[i],
+        minValue: quartileBreaks[i].min,
+        maxValue: quartileBreaks[i].max
+      });
+    }
+    
+    return {
+      title: 'Feature Interaction Score',
+      items: legendItems,
+      position: 'bottom-right'
+    };
+  }
+
+  /**
+   * Calculate quartile breaks for rendering
+   */
+  private calculateQuartileBreaks(values: number[]): Array<{min: number, max: number}> {
+    if (values.length === 0) return [];
+    
+    const q1 = values[Math.floor(values.length * 0.25)];
+    const q2 = values[Math.floor(values.length * 0.5)];
+    const q3 = values[Math.floor(values.length * 0.75)];
+    
+    return [
+      { min: values[0], max: q1 },
+      { min: q1, max: q2 },
+      { min: q2, max: q3 },
+      { min: q3, max: values[values.length - 1] }
+    ];
+  }
+
+  /**
+   * Format class labels for legend (same as strategic)
+   */
+  private formatClassLabel(classIndex: number, breaks: Array<{min: number, max: number}>): string {
+    if (classIndex === 0) {
+      // First class: < maxValue
+      return `< ${breaks[classIndex].max.toFixed(1)}`;
+    } else if (classIndex === breaks.length - 1) {
+      // Last class: > minValue  
+      return `> ${breaks[classIndex].min.toFixed(1)}`;
+    } else {
+      // Middle classes: minValue - maxValue
+      return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
+    }
   }
 }

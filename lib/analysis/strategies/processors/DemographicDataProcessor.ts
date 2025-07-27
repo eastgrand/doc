@@ -63,6 +63,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       featureImportance,
       statistics,
       targetVariable: 'demographic_opportunity_score',
+      renderer: this.createDemographicRenderer(records), // Add direct renderer
+      legend: this.createDemographicLegend(records), // Add direct legend
       demographicAnalysis // Additional metadata for demographic visualization
     };
   }
@@ -108,6 +110,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
         area_id,
         area_name,
         value,
+        demographic_opportunity_score: demographicScore, // Add target variable at top level
         rank: 0, // Will be calculated in ranking
         category,
         coordinates: record.coordinates || [0, 0],
@@ -566,5 +569,111 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     }
     
     return summary;
+  }
+
+  // ============================================================================
+  // DIRECT RENDERING METHODS
+  // ============================================================================
+
+  /**
+   * Create direct renderer for demographic analysis visualization
+   */
+  private createDemographicRenderer(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use same colors as strategic analysis: Red (low) -> Orange -> Light Green -> Dark Green (high)
+    const demographicColors = [
+      [215, 48, 39, 0.6],   // #d73027 - Red (lowest demographic opportunity)
+      [253, 174, 97, 0.6],  // #fdae61 - Orange  
+      [166, 217, 106, 0.6], // #a6d96a - Light Green
+      [26, 152, 80, 0.6]    // #1a9850 - Dark Green (highest demographic opportunity)
+    ];
+    
+    return {
+      type: 'class-breaks',
+      field: 'demographic_opportunity_score', // Direct field reference
+      classBreakInfos: quartileBreaks.map((breakRange, i) => ({
+        minValue: breakRange.min,
+        maxValue: breakRange.max,
+        symbol: {
+          type: 'simple-fill',
+          color: demographicColors[i], // Direct array format
+          outline: { color: [255, 255, 255, 0.8], width: 1 }
+        },
+        label: this.formatClassLabel(i, quartileBreaks)
+      })),
+      defaultSymbol: {
+        type: 'simple-fill',
+        color: [200, 200, 200, 0.5],
+        outline: { color: [255, 255, 255, 0.8], width: 1 }
+      }
+    };
+  }
+
+  /**
+   * Create direct legend for demographic analysis
+   */
+  private createDemographicLegend(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use RGBA format with correct opacity to match features (same as strategic)
+    const colors = [
+      'rgba(215, 48, 39, 0.6)',   // Low demographic opportunity
+      'rgba(253, 174, 97, 0.6)',  // Medium-low  
+      'rgba(166, 217, 106, 0.6)', // Medium-high
+      'rgba(26, 152, 80, 0.6)'    // High demographic opportunity
+    ];
+    
+    const legendItems = [];
+    for (let i = 0; i < quartileBreaks.length; i++) {
+      legendItems.push({
+        label: this.formatClassLabel(i, quartileBreaks),
+        color: colors[i],
+        minValue: quartileBreaks[i].min,
+        maxValue: quartileBreaks[i].max
+      });
+    }
+    
+    return {
+      title: 'Demographic Opportunity Score',
+      items: legendItems,
+      position: 'bottom-right'
+    };
+  }
+
+  /**
+   * Calculate quartile breaks for rendering
+   */
+  private calculateQuartileBreaks(values: number[]): Array<{min: number, max: number}> {
+    if (values.length === 0) return [];
+    
+    const q1 = values[Math.floor(values.length * 0.25)];
+    const q2 = values[Math.floor(values.length * 0.5)];
+    const q3 = values[Math.floor(values.length * 0.75)];
+    
+    return [
+      { min: values[0], max: q1 },
+      { min: q1, max: q2 },
+      { min: q2, max: q3 },
+      { min: q3, max: values[values.length - 1] }
+    ];
+  }
+
+  /**
+   * Format class labels for legend (same as strategic)
+   */
+  private formatClassLabel(classIndex: number, breaks: Array<{min: number, max: number}>): string {
+    if (classIndex === 0) {
+      // First class: < maxValue
+      return `< ${breaks[classIndex].max.toFixed(1)}`;
+    } else if (classIndex === breaks.length - 1) {
+      // Last class: > minValue  
+      return `> ${breaks[classIndex].min.toFixed(1)}`;
+    } else {
+      // Middle classes: minValue - maxValue
+      return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
+    }
   }
 } 

@@ -75,6 +75,8 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       featureImportance,
       statistics,
       targetVariable: 'competitive_advantage_score',
+      renderer: this.createCompetitiveRenderer(records), // Add direct renderer  
+      legend: this.createCompetitiveLegend(records), // Add direct legend
       competitiveAnalysis // Additional metadata for competitive visualization
     };
   }
@@ -210,11 +212,11 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
   }
 
   private determineCompetitivePosition(score: number): string {
-    if (score >= 8.5) return 'dominant_advantage';
-    if (score >= 7.0) return 'strong_advantage';
-    if (score >= 5.5) return 'competitive_advantage';
-    if (score >= 4.0) return 'moderate_position';
-    if (score >= 2.5) return 'weak_position';
+    if (score >= 85) return 'dominant_advantage';
+    if (score >= 70) return 'strong_advantage';
+    if (score >= 55) return 'competitive_advantage';
+    if (score >= 40) return 'moderate_position';
+    if (score >= 25) return 'weak_position';
     return 'disadvantaged';
   }
 
@@ -433,16 +435,16 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     const dataQualityPercent = (nonZeroRecords.length / recordCount * 100).toFixed(1);
     
     // Start with plain-language explanation of competitive advantage scoring
-    let summary = `**🏆 Understanding Competitive Advantage Scores (1-10 scale):**
+    let summary = `**🏆 Understanding Competitive Advantage Scores (0-100 scale):**
 
 **What This Score Measures:** How well-positioned Nike is to succeed in each market compared to competitors, especially Adidas. Higher scores indicate markets where Nike has the strongest advantages for growth and expansion.
 
 **How We Calculate It:** The score combines three key factors that determine Nike's competitive strength:
-• **Market Position (worth up to 4 points):** How much stronger Nike's market share is compared to Adidas, plus how well Nike's brand characteristics match what drives success in that area
-• **Market Fit (worth up to 3.5 points):** How well the local demographics align with Nike's core customer base - people aged 16-35 with household incomes between $35K-$150K tend to be Nike's strongest markets
-• **Competitive Environment (worth up to 2.5 points):** How fragmented the market is and whether there's room for Nike to grow without intense competition
+• **Market Position (worth up to 40 points):** How much stronger Nike's market share is compared to Adidas, plus how well Nike's brand characteristics match what drives success in that area
+• **Market Fit (worth up to 35 points):** How well the local demographics align with Nike's core customer base - people aged 16-35 with household incomes between $35K-$150K tend to be Nike's strongest markets
+• **Competitive Environment (worth up to 25 points):** How fragmented the market is and whether there's room for Nike to grow without intense competition
 
-**Why This Matters:** Markets with scores of 7+ are prime expansion targets, while scores below 4 suggest either strong competition or poor demographic fit.
+**Why This Matters:** Markets with scores of 70+ are prime expansion targets, while scores below 40 suggest either strong competition or poor demographic fit.
 
 `;
     
@@ -474,9 +476,9 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     summary += `Market demographics: wealth index ${avgWealthIndex.toFixed(0)}, $${(avgIncome/1000).toFixed(0)}K estimated income, ${(avgPopulation/1000).toFixed(0)}K average population. `;
     
     // Expansion opportunity distribution
-    const highExpansion = records.filter(r => r.value >= 7.0).length;
-    const moderateExpansion = records.filter(r => r.value >= 5.0).length;
-    const developingExpansion = records.filter(r => r.value >= 3.0).length;
+    const highExpansion = records.filter(r => r.value >= 70).length;
+    const moderateExpansion = records.filter(r => r.value >= 50).length;
+    const developingExpansion = records.filter(r => r.value >= 30).length;
     
     summary += `Expansion distribution: ${highExpansion} high-opportunity markets (${(highExpansion/recordCount*100).toFixed(1)}%), ${moderateExpansion} moderate+ (${(moderateExpansion/recordCount*100).toFixed(1)}%), ${developingExpansion} developing+ (${(developingExpansion/recordCount*100).toFixed(1)}%).
 
@@ -520,13 +522,13 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     }
     
     // Market segmentation based on expansion opportunity scores (not Nike dominance)
-    const topTierMarkets = records.filter(r => r.value >= 8.0).slice(0, 5);
-    const strongMarkets = records.filter(r => r.value >= 6.0 && r.value < 8.0).slice(0, 5);
-    const emergingMarkets = records.filter(r => r.value >= 4.0 && r.value < 6.0).slice(0, 5);
+    const topTierMarkets = records.filter(r => r.value >= 80).slice(0, 5);
+    const strongMarkets = records.filter(r => r.value >= 60 && r.value < 80).slice(0, 5);
+    const emergingMarkets = records.filter(r => r.value >= 40 && r.value < 60).slice(0, 5);
     
     if (topTierMarkets.length > 0) {
       summary += `
-\n**🏆 Premium Expansion Targets** (8.0+ expansion scores - high growth potential): `;
+\n**🏆 Premium Expansion Targets** (80+ expansion scores - high growth potential): `;
       topTierMarkets.forEach((record, index) => {
         const nikeShare = Number(record.properties?.value_MP30034A_B_P) || 0; // Already in percentage format
         summary += `${record.area_name} (${record.value.toFixed(1)} score, ${nikeShare.toFixed(1)}% Nike share), `;
@@ -536,7 +538,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     
     if (strongMarkets.length > 0) {
       summary += `
-\n**📈 Strong Expansion Targets** (6.0-8.0 expansion scores - solid growth potential): `;
+\n**📈 Strong Expansion Targets** (60-80 expansion scores - solid growth potential): `;
       strongMarkets.forEach((record, index) => {
         const nikeShare = Number(record.properties?.value_MP30034A_B_P) || 0; // Already in percentage format
         summary += `${record.area_name} (${record.value.toFixed(1)} score, ${nikeShare.toFixed(1)}% Nike share), `;
@@ -546,7 +548,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     
     if (emergingMarkets.length > 0) {
       summary += `
-\n**🌱 Developing Expansion Markets** (4.0-6.0 expansion scores - moderate growth potential): `;
+\n**🌱 Developing Expansion Markets** (40-60 expansion scores - moderate growth potential): `;
       emergingMarkets.forEach((record, index) => {
         const nikeShare = Number(record.properties?.value_MP30034A_B_P) || 0; // Already in percentage format
         summary += `${record.area_name} (${record.value.toFixed(1)} score, ${nikeShare.toFixed(1)}% Nike share), `;
@@ -558,18 +560,18 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     summary += `
 \n**Strategic Expansion Insights:** `;
     
-    if (avgScore >= 6.0) {
+    if (avgScore >= 60) {
       summary += `Strong overall market landscape with average competitive advantage of ${avgScore.toFixed(1)}. `;
-    } else if (avgScore >= 4.0) {
+    } else if (avgScore >= 40) {
       summary += `Moderate expansion potential with average competitive advantage of ${avgScore.toFixed(1)}. `;
     } else {
       summary += `Challenging market conditions with average competitive advantage of ${avgScore.toFixed(1)}. `;
     }
     
     // High-scoring market concentration
-    const highScoreMarkets = records.filter(r => r.value >= 7.0).length;
+    const highScoreMarkets = records.filter(r => r.value >= 70).length;
     if (highScoreMarkets > 0) {
-      summary += `${highScoreMarkets} markets show exceptional expansion potential (7.0+ scores). `;
+      summary += `${highScoreMarkets} markets show exceptional expansion potential (70+ scores). `;
     }
     
     // Competitive positioning insights
@@ -582,8 +584,114 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     }
     
     // Recommendation based on expansion focus
-    summary += `**Expansion Strategy:** Prioritize markets with scores 6.0+ for immediate expansion, while developing 4.0-6.0 score markets for future opportunities. Focus on demographic alignment and competitive positioning advantages. `;
+    summary += `**Expansion Strategy:** Prioritize markets with scores 60+ for immediate expansion, while developing 40-60 score markets for future opportunities. Focus on demographic alignment and competitive positioning advantages. `;
     
     return summary;
+  }
+
+  // ============================================================================
+  // DIRECT RENDERING METHODS
+  // ============================================================================
+
+  /**
+   * Create direct renderer for competitive analysis visualization
+   */
+  private createCompetitiveRenderer(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use same colors as strategic analysis: Red (low) -> Orange -> Light Green -> Dark Green (high)
+    const competitiveColors = [
+      [215, 48, 39, 0.6],   // #d73027 - Red (lowest competitive advantage)
+      [253, 174, 97, 0.6],  // #fdae61 - Orange  
+      [166, 217, 106, 0.6], // #a6d96a - Light Green
+      [26, 152, 80, 0.6]    // #1a9850 - Dark Green (highest competitive advantage)
+    ];
+    
+    return {
+      type: 'class-breaks',
+      field: 'competitive_advantage_score', // Direct field reference
+      classBreakInfos: quartileBreaks.map((breakRange, i) => ({
+        minValue: breakRange.min,
+        maxValue: breakRange.max,
+        symbol: {
+          type: 'simple-fill',
+          color: competitiveColors[i], // Direct array format
+          outline: { color: [255, 255, 255, 0.8], width: 1 }
+        },
+        label: this.formatClassLabel(i, quartileBreaks)
+      })),
+      defaultSymbol: {
+        type: 'simple-fill',
+        color: [200, 200, 200, 0.5],
+        outline: { color: [255, 255, 255, 0.8], width: 1 }
+      }
+    };
+  }
+
+  /**
+   * Create direct legend for competitive analysis
+   */
+  private createCompetitiveLegend(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use RGBA format with correct opacity to match features (same as strategic)
+    const colors = [
+      'rgba(215, 48, 39, 0.6)',   // Low competitive advantage
+      'rgba(253, 174, 97, 0.6)',  // Medium-low  
+      'rgba(166, 217, 106, 0.6)', // Medium-high
+      'rgba(26, 152, 80, 0.6)'    // High competitive advantage
+    ];
+    
+    const legendItems = [];
+    for (let i = 0; i < quartileBreaks.length; i++) {
+      legendItems.push({
+        label: this.formatClassLabel(i, quartileBreaks),
+        color: colors[i],
+        minValue: quartileBreaks[i].min,
+        maxValue: quartileBreaks[i].max
+      });
+    }
+    
+    return {
+      title: 'Competitive Advantage Score',
+      items: legendItems,
+      position: 'bottom-right'
+    };
+  }
+
+  /**
+   * Calculate quartile breaks for rendering
+   */
+  private calculateQuartileBreaks(values: number[]): Array<{min: number, max: number}> {
+    if (values.length === 0) return [];
+    
+    const q1 = values[Math.floor(values.length * 0.25)];
+    const q2 = values[Math.floor(values.length * 0.5)];
+    const q3 = values[Math.floor(values.length * 0.75)];
+    
+    return [
+      { min: values[0], max: q1 },
+      { min: q1, max: q2 },
+      { min: q2, max: q3 },
+      { min: q3, max: values[values.length - 1] }
+    ];
+  }
+
+  /**
+   * Format class labels for legend (same as strategic)
+   */
+  private formatClassLabel(classIndex: number, breaks: Array<{min: number, max: number}>): string {
+    if (classIndex === 0) {
+      // First class: < maxValue
+      return `< ${breaks[classIndex].max.toFixed(1)}`;
+    } else if (classIndex === breaks.length - 1) {
+      // Last class: > minValue  
+      return `> ${breaks[classIndex].min.toFixed(1)}`;
+    } else {
+      // Middle classes: minValue - maxValue
+      return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
+    }
   }
 } 

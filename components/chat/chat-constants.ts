@@ -1,12 +1,16 @@
 export const ANALYSIS_CATEGORIES = {
   'strategic': [
-    'Show me the top strategic markets for Nike expansion'
+    'Show me the top strategic markets for Nike expansion',
+    'Which markets have the highest demographic opportunity scores for Nike?'
   ],
-  'competitive': [
+  'comparitive': [
     'Compare Nike\'s market position against competitors'
   ],
+  'competitive': [
+    'Competitive positioning of Nike vs Adidas'
+  ],
   'demographic': [
-    'Which markets have the best demographic fit for Nike\'s target customer profile?'
+    'Which markets have the highest demographic opportunity scores for Nike?'
   ],
   'location': [
     'Show me geographic clusters of similar markets'  
@@ -39,7 +43,7 @@ export const TRENDS_CATEGORIES = {
     'Which markets have the strongest Nike brand positioning?'
   ],
   'Customer & Demographics': [
-    'Which markets have the best demographic fit for Nike\'s target customer profile?',
+    'Which markets have the highest demographic opportunity scores for Nike?',
     'Show me markets with the clearest customer segments for targeted marketing',
     'What market factors are most strongly correlated with Nike\'s success?',
     'Which markets have the strongest interactions between demographics, income, and Nike preference?'

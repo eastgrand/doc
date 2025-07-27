@@ -142,7 +142,11 @@ export function getRelevantFields(attributes: Record<string, any>, query: string
   // For demographic/cultural queries
   if (queryLower.includes('cultural') || queryLower.includes('diversity') || 
       queryLower.includes('demographic') || queryLower.includes('population') ||
-      queryLower.includes('ethnic') || queryLower.includes('race')) {
+      queryLower.includes('ethnic') || queryLower.includes('race') ||
+      (queryLower.includes('target') && queryLower.includes('customer')) ||
+      (queryLower.includes('customer') && queryLower.includes('profile')) ||
+      (queryLower.includes('demographic') && queryLower.includes('fit')) ||
+      queryLower.includes('target audience') || queryLower.includes('customer base')) {
     const demographicFields = availableFields.filter(f => {
       const fieldLower = f.toLowerCase();
       return (
