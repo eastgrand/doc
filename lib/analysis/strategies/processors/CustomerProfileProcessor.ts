@@ -10,12 +10,22 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
-    if (!rawData.success) return false;
-    if (!Array.isArray(rawData.results)) return false;
+    
+    // Handle both formats: direct array or wrapped object
+    let dataArray: any[];
+    if (Array.isArray(rawData)) {
+      // Direct array format: [{...}, {...}]
+      dataArray = rawData;
+    } else if (rawData.success && Array.isArray(rawData.results)) {
+      // Wrapped format: {success: true, results: [{...}, {...}]}
+      dataArray = rawData.results;
+    } else {
+      return false;
+    }
     
     // Validate customer profile-specific fields
-    const hasCustomerProfileFields = rawData.results.length === 0 || 
-      rawData.results.some(record => 
+    const hasCustomerProfileFields = dataArray.length === 0 || 
+      dataArray.some(record => 
         record && 
         (record.customer_profile_score !== undefined || // Pre-calculated score
          record.total_population !== undefined ||        // Population for analysis
@@ -31,14 +41,26 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {
-    console.log(`👤 [CUSTOMER PROFILE PROCESSOR] CALLED WITH ${rawData.results?.length || 0} RECORDS 👤`);
+    // Handle both formats: direct array or wrapped object
+    let dataArray: any[];
+    if (Array.isArray(rawData)) {
+      // Direct array format: [{...}, {...}]
+      dataArray = rawData;
+      console.log(`👤 [CUSTOMER PROFILE PROCESSOR] CALLED WITH ${dataArray.length} RECORDS (direct array) 👤`);
+    } else if (rawData.success && Array.isArray(rawData.results)) {
+      // Wrapped format: {success: true, results: [{...}, {...}]}
+      dataArray = rawData.results;
+      console.log(`👤 [CUSTOMER PROFILE PROCESSOR] CALLED WITH ${dataArray.length} RECORDS (wrapped) 👤`);
+    } else {
+      throw new Error('Invalid data format for CustomerProfileProcessor');
+    }
     
     if (!this.validate(rawData)) {
       throw new Error('Invalid data format for CustomerProfileProcessor');
     }
 
     // Process records with customer profile information
-    const records = this.processCustomerProfileRecords(rawData.results);
+    const records = this.processCustomerProfileRecords(dataArray);
     
     // Calculate customer profile statistics
     const statistics = this.calculateCustomerProfileStatistics(records);
@@ -47,10 +69,16 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     const customerProfileAnalysis = this.analyzeCustomerProfilePatterns(records);
     
     // Process feature importance for customer profile factors
-    const featureImportance = this.processCustomerProfileFeatureImportance(rawData.feature_importance || []);
+    const featureImportance = this.processCustomerProfileFeatureImportance(
+      Array.isArray(rawData) ? [] : (rawData.feature_importance || [])
+    );
     
     // Generate customer profile summary
-    const summary = this.generateCustomerProfileSummary(records, customerProfileAnalysis, rawData.summary);
+    const summary = this.generateCustomerProfileSummary(
+      records, 
+      customerProfileAnalysis, 
+      Array.isArray(rawData) ? undefined : rawData.summary
+    );
 
     return {
       type: 'customer_profile',
@@ -58,7 +86,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'customer_profile_score',
+      targetVariable: 'demographic_opportunity_score', // Primary customer profile indicator
       renderer: this.createCustomerProfileRenderer(records), // Add direct renderer
       legend: this.createCustomerProfileLegend(records), // Add direct legend
       customerProfileAnalysis // Additional metadata for customer profile visualization
@@ -127,7 +155,14 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   private extractCustomerProfileScore(record: any): number {
-    // PRIORITY 1: PRE-CALCULATED CUSTOMER PROFILE SCORE
+    // PRIORITY 1: Demographic opportunity score as primary customer profile indicator
+    if (record.demographic_opportunity_score !== undefined && record.demographic_opportunity_score !== null) {
+      const demographicScore = Number(record.demographic_opportunity_score);
+      console.log(`👤 [CustomerProfileProcessor] Using demographic opportunity score: ${demographicScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+      return demographicScore;
+    }
+    
+    // PRIORITY 2: PRE-CALCULATED CUSTOMER PROFILE SCORE
     if (record.customer_profile_score !== undefined && record.customer_profile_score !== null) {
       const preCalculatedScore = Number(record.customer_profile_score);
       console.log(`👤 [CustomerProfileProcessor] Using pre-calculated score: ${preCalculatedScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
@@ -135,7 +170,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     }
     
     // FALLBACK: Calculate customer profile score from available data
-    console.log('⚠️ [CustomerProfileProcessor] No customer_profile_score found, calculating from available data');
+    console.log('⚠️ [CustomerProfileProcessor] No pre-calculated scores found, calculating from available data');
     
     const components = this.calculateProfileComponents(record);
     
@@ -771,7 +806,7 @@ Higher scores indicate stronger alignment with Nike's ideal customer profile acr
     
     return {
       type: 'class-breaks',
-      field: 'customer_profile_score', // Direct field reference
+      field: 'demographic_opportunity_score', // Primary customer profile indicator
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,
