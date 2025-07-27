@@ -86,7 +86,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'demographic_opportunity_score', // Primary customer profile indicator
+      targetVariable: 'customer_profile_score',
       renderer: this.createCustomerProfileRenderer(records), // Add direct renderer
       legend: this.createCustomerProfileLegend(records), // Add direct legend
       customerProfileAnalysis // Additional metadata for customer profile visualization
@@ -108,20 +108,17 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       // Use customer profile score as the primary value
       const value = customerProfileScore;
       
-      // Extract customer profile components
-      const profileComponents = this.calculateProfileComponents(record);
-      
-      // Extract customer profile-specific properties
+      // Extract customer profile-specific properties from pre-calculated data
       const properties = {
         ...this.extractProperties(record),
         customer_profile_score: customerProfileScore,
-        demographic_alignment: profileComponents.demographic_alignment,
-        lifestyle_score: profileComponents.lifestyle_score,
-        behavioral_score: profileComponents.behavioral_score,
-        market_context_score: profileComponents.market_context_score,
-        profile_category: this.getCustomerProfileCategory(customerProfileScore),
-        persona_type: this.identifyPersonaType(record, profileComponents),
-        target_confidence: this.calculateTargetConfidence(profileComponents),
+        demographic_alignment: Number(record.demographic_alignment) || 0,
+        lifestyle_score: Number(record.lifestyle_score) || 0,
+        behavioral_score: Number(record.behavioral_score) || 0,
+        market_context_score: Number(record.market_context_score) || 0,
+        profile_category: record.profile_category || this.getCustomerProfileCategory(customerProfileScore),
+        persona_type: this.identifyPersonaType(record),
+        target_confidence: Math.min(100, (customerProfileScore + (Number(record.demographic_alignment) || 0)) / 2),
         population: record.total_population || record.value_TOTPOP_CY || record.population || 0,
         avg_income: record.median_income || record.value_AVGHINC_CY || record.income || 0,
         median_age: record.value_MEDAGE_CY || record.age || 0,
@@ -155,34 +152,22 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   private extractCustomerProfileScore(record: any): number {
-    // PRIORITY 1: Demographic opportunity score as primary customer profile indicator
-    if (record.demographic_opportunity_score !== undefined && record.demographic_opportunity_score !== null) {
-      const demographicScore = Number(record.demographic_opportunity_score);
-      console.log(`👤 [CustomerProfileProcessor] Using demographic opportunity score: ${demographicScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
-      return demographicScore;
-    }
-    
-    // PRIORITY 2: PRE-CALCULATED CUSTOMER PROFILE SCORE
+    // Use pre-calculated customer profile score from data
     if (record.customer_profile_score !== undefined && record.customer_profile_score !== null) {
-      const preCalculatedScore = Number(record.customer_profile_score);
-      console.log(`👤 [CustomerProfileProcessor] Using pre-calculated score: ${preCalculatedScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
-      return preCalculatedScore;
+      const score = Number(record.customer_profile_score);
+      console.log(`👤 [CustomerProfileProcessor] Using customer_profile_score: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+      return score;
     }
     
-    // FALLBACK: Calculate customer profile score from available data
-    console.log('⚠️ [CustomerProfileProcessor] No pre-calculated scores found, calculating from available data');
+    // Fallback to demographic opportunity score if customer profile score not available
+    if (record.demographic_opportunity_score !== undefined && record.demographic_opportunity_score !== null) {
+      const score = Number(record.demographic_opportunity_score);
+      console.log(`👤 [CustomerProfileProcessor] Fallback to demographic_opportunity_score: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+      return score;
+    }
     
-    const components = this.calculateProfileComponents(record);
-    
-    // Weighted combination of profile components
-    const customerProfileScore = (
-      components.demographic_alignment * 0.30 +
-      components.lifestyle_score * 0.25 +
-      components.behavioral_score * 0.25 +
-      components.market_context_score * 0.20
-    );
-    
-    return Math.max(0, Math.min(100, customerProfileScore));
+    console.log('⚠️ [CustomerProfileProcessor] No customer profile or demographic scores found');
+    return 0;
   }
 
   private calculateProfileComponents(record: any): {
@@ -191,48 +176,78 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     behavioral_score: number;
     market_context_score: number;
   } {
-    // Extract base demographic data
-    const population = record.total_population || record.value_TOTPOP_CY || record.population || 0;
-    const income = record.median_income || record.value_AVGHINC_CY || record.income || 0;
-    const age = record.value_MEDAGE_CY || record.age || 0;
-    const householdSize = record.value_AVGHHSZ_CY || record.household_size || 0;
-    const wealthIndex = record.value_WLTHINDXCY || 100;
-    const nikeAffinity = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
+    // Extract available data from customer-profile.json structure
+    const population = record.total_population || record.value_TOTPOP_CY || 0;
+    const income = record.median_income || record.value_AVGHINC_CY || 0;
+    const asianPop = record.asian_population || 0;
+    const blackPop = record.black_population || 0;
+    const whitePop = record.white_population || 0;
+    
+    // Behavioral indicators
+    const nikeMarketShare = Number(record.mp30034a_b_p || record.target_value) || 0;
+    const strategicValue = Number(record.strategic_value_score) || 0;
+    const trendStrength = Number(record.trend_strength_score) || 0;
+    const correlationStrength = Number(record.correlation_strength_score) || 0;
+    
+    // Market context
+    const demographicOpportunity = Number(record.demographic_opportunity_score) || 0;
 
-    // 1. Demographic Alignment (30% weight)
-    let demographicAlignment = 0;
+    // 1. Demographic Alignment (25% weight) - Use existing demographic opportunity as base
+    const demographicAlignment = Math.min(100, demographicOpportunity);
     
-    // Age alignment (Nike's target: 16-45, peak at 25-35)
-    if (age > 0) {
-      if (age >= 25 && age <= 35) {
-        demographicAlignment += 25; // Peak demographic
-      } else if (age >= 16 && age <= 45) {
-        demographicAlignment += 20 - Math.abs(age - 30) * 0.5; // Declining from peak
-      } else {
-        demographicAlignment += Math.max(0, 10 - Math.abs(age - 30) * 0.3); // Outside core but some potential
-      }
-    }
+    // 2. Behavioral Score (35% weight) - Nike preference and market trends
+    let behavioralScore = 0;
     
-    // Income alignment (Nike's target: $35K-$150K, sweet spot $50K-$100K)
+    // Nike market share indicates actual customer behavior preference
+    behavioralScore += Math.min(40, nikeMarketShare * 1.5); // Up to 40 points from market share
+    
+    // Strategic value indicates market responsiveness to athletic brands
+    behavioralScore += Math.min(30, strategicValue * 0.3); // Up to 30 points from strategic value
+    
+    // Trend strength indicates evolving customer behavior
+    behavioralScore += Math.min(30, trendStrength * 0.3); // Up to 30 points from trends
+    
+    // 3. Spending Patterns (25% weight) - Income-based purchasing power
+    let lifestyleScore = 0;
+    
     if (income > 0) {
-      if (income >= 50000 && income <= 100000) {
-        demographicAlignment += 25; // Sweet spot
-      } else if (income >= 35000 && income <= 150000) {
-        demographicAlignment += 20 - Math.abs(income - 75000) / 10000; // Declining from sweet spot
+      // Nike's sweet spot: $40K-$120K income range
+      if (income >= 40000 && income <= 120000) {
+        lifestyleScore += 50; // Optimal spending range
       } else if (income >= 25000 && income <= 200000) {
-        demographicAlignment += 10; // Extended range
+        lifestyleScore += 30; // Extended range
       } else {
-        demographicAlignment += 5; // Some potential
+        lifestyleScore += 15; // Some potential
       }
     }
     
-    // Household size alignment (optimal: 2-4 people)
-    if (householdSize > 0) {
-      if (householdSize >= 2 && householdSize <= 4) {
-        demographicAlignment += 15;
-      } else {
-        demographicAlignment += Math.max(0, 10 - Math.abs(householdSize - 3) * 3);
-      }
+    // Population density affects purchasing patterns (urban = more brand conscious)
+    if (population > 0) {
+      const densityScore = Math.min(25, Math.log10(population) * 5); // Urban areas score higher
+      lifestyleScore += densityScore;
+    }
+    
+    // Diversity index (calculated from population mix) affects lifestyle patterns
+    const totalPop = asianPop + blackPop + whitePop;
+    if (totalPop > 0) {
+      const diversity = 1 - Math.pow((asianPop/totalPop), 2) - Math.pow((blackPop/totalPop), 2) - Math.pow((whitePop/totalPop), 2);
+      lifestyleScore += diversity * 25; // More diverse = varied lifestyle patterns
+    }
+    
+    // 4. Market Context Score (15% weight) - Overall market health and correlation
+    let marketContextScore = 0;
+    
+    // Correlation strength indicates market predictability and segment clarity
+    marketContextScore += Math.min(50, correlationStrength * 0.5);
+    
+    // Population size indicates market opportunity
+    if (population > 0) {
+      marketContextScore += Math.min(30, Math.log10(population) * 6);
+    }
+    
+    // Income level indicates market premium potential
+    if (income > 0) {
+      marketContextScore += Math.min(20, income / 5000);
     }
     
     // Population density factor (larger markets have more potential)
@@ -331,19 +346,19 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     return 'Limited Customer Profile Fit';
   }
 
-  private identifyPersonaType(record: any, components: any): string {
-    const age = record.value_MEDAGE_CY || record.age || 0;
+  private identifyPersonaType(record: any): string {
     const income = record.median_income || record.value_AVGHINC_CY || record.income || 0;
-    const nikeAffinity = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-    const wealthIndex = record.value_WLTHINDXCY || 100;
+    const nikeAffinity = Number(record.mp30034a_b_p || record.target_value) || 0;
+    const behavioralScore = Number(record.behavioral_score) || 0;
+    const demographicScore = Number(record.demographic_alignment) || 0;
 
-    // Athletic Enthusiasts: High Nike affinity + active age range
-    if (nikeAffinity >= 25 && age >= 18 && age <= 40 && components.behavioral_score >= 70) {
+    // Athletic Enthusiasts: High Nike affinity + strong behavioral score
+    if (nikeAffinity >= 25 && behavioralScore >= 70) {
       return 'Athletic Enthusiasts';
     }
     
-    // Fashion-Forward Professionals: High income + urban age + good lifestyle score
-    if (income >= 60000 && age >= 25 && age <= 45 && components.lifestyle_score >= 70) {
+    // Fashion-Forward Professionals: High income + good lifestyle score
+    if (income >= 60000 && Number(record.lifestyle_score) >= 70) {
       return 'Fashion-Forward Professionals';
     }
     
@@ -806,7 +821,7 @@ Higher scores indicate stronger alignment with Nike's ideal customer profile acr
     
     return {
       type: 'class-breaks',
-      field: 'demographic_opportunity_score', // Primary customer profile indicator
+      field: 'customer_profile_score',
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,
