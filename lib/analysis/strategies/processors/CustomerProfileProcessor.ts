@@ -117,17 +117,17 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
         behavioral_score: Number(record.behavioral_score) || 0,
         market_context_score: Number(record.market_context_score) || 0,
         profile_category: record.profile_category || this.getCustomerProfileCategory(customerProfileScore),
-        persona_type: this.identifyPersonaType(record),
-        target_confidence: Math.min(100, (customerProfileScore + (Number(record.demographic_alignment) || 0)) / 2),
+        persona_type: record.persona_type || this.identifyPersonaType(record),
+        target_confidence: Number(record.target_confidence) || 0,
+        brand_loyalty_indicator: Number(record.brand_loyalty_indicator) || 0,
+        lifestyle_alignment: Number(record.lifestyle_alignment) || 0,
+        purchase_propensity: Number(record.purchase_propensity) || 0,
         population: record.total_population || record.value_TOTPOP_CY || record.population || 0,
         avg_income: record.median_income || record.value_AVGHINC_CY || record.income || 0,
         median_age: record.value_MEDAGE_CY || record.age || 0,
         household_size: record.value_AVGHHSZ_CY || record.household_size || 0,
         wealth_index: record.value_WLTHINDXCY || 100,
-        nike_affinity: Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0,
-        brand_loyalty_indicator: this.calculateBrandLoyalty(record),
-        lifestyle_alignment: this.calculateLifestyleAlignment(record),
-        purchase_propensity: this.calculatePurchasePropensity(record)
+        nike_affinity: Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0
       };
       
       // Extract SHAP values
@@ -170,173 +170,6 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     return 0;
   }
 
-  private calculateProfileComponents(record: any): {
-    demographic_alignment: number;
-    lifestyle_score: number;
-    behavioral_score: number;
-    market_context_score: number;
-  } {
-    // Extract available data from customer-profile.json structure
-    const population = record.total_population || record.value_TOTPOP_CY || 0;
-    const income = record.median_income || record.value_AVGHINC_CY || 0;
-    const asianPop = record.asian_population || 0;
-    const blackPop = record.black_population || 0;
-    const whitePop = record.white_population || 0;
-    
-    // Behavioral indicators
-    const nikeMarketShare = Number(record.mp30034a_b_p || record.target_value) || 0;
-    const strategicValue = Number(record.strategic_value_score) || 0;
-    const trendStrength = Number(record.trend_strength_score) || 0;
-    const correlationStrength = Number(record.correlation_strength_score) || 0;
-    
-    // Market context
-    const demographicOpportunity = Number(record.demographic_opportunity_score) || 0;
-
-    // 1. Demographic Alignment (25% weight) - Use existing demographic opportunity as base
-    const demographicAlignment = Math.min(100, demographicOpportunity);
-    
-    // 2. Behavioral Score (35% weight) - Nike preference and market trends
-    let behavioralScore = 0;
-    
-    // Nike market share indicates actual customer behavior preference
-    behavioralScore += Math.min(40, nikeMarketShare * 1.5); // Up to 40 points from market share
-    
-    // Strategic value indicates market responsiveness to athletic brands
-    behavioralScore += Math.min(30, strategicValue * 0.3); // Up to 30 points from strategic value
-    
-    // Trend strength indicates evolving customer behavior
-    behavioralScore += Math.min(30, trendStrength * 0.3); // Up to 30 points from trends
-    
-    // 3. Spending Patterns (25% weight) - Income-based purchasing power
-    let lifestyleScore = 0;
-    
-    if (income > 0) {
-      // Nike's sweet spot: $40K-$120K income range
-      if (income >= 40000 && income <= 120000) {
-        lifestyleScore += 50; // Optimal spending range
-      } else if (income >= 25000 && income <= 200000) {
-        lifestyleScore += 30; // Extended range
-      } else {
-        lifestyleScore += 15; // Some potential
-      }
-    }
-    
-    // Population density affects purchasing patterns (urban = more brand conscious)
-    if (population > 0) {
-      const densityScore = Math.min(25, Math.log10(population) * 5); // Urban areas score higher
-      lifestyleScore += densityScore;
-    }
-    
-    // Diversity index (calculated from population mix) affects lifestyle patterns
-    const totalPop = asianPop + blackPop + whitePop;
-    if (totalPop > 0) {
-      const diversity = 1 - Math.pow((asianPop/totalPop), 2) - Math.pow((blackPop/totalPop), 2) - Math.pow((whitePop/totalPop), 2);
-      lifestyleScore += diversity * 25; // More diverse = varied lifestyle patterns
-    }
-    
-    // 4. Market Context Score (15% weight) - Overall market health and correlation
-    let marketContextScore = 0;
-    
-    // Correlation strength indicates market predictability and segment clarity
-    marketContextScore += Math.min(50, correlationStrength * 0.5);
-    
-    // Population size indicates market opportunity
-    if (population > 0) {
-      marketContextScore += Math.min(30, Math.log10(population) * 6);
-    }
-    
-    // Income level indicates market premium potential
-    if (income > 0) {
-      marketContextScore += Math.min(20, income / 5000);
-    }
-    
-    // Population density factor (larger markets have more potential)
-    if (population > 0) {
-      demographicAlignment += Math.min(35, Math.log10(population) * 8); // Log scale for population impact
-    }
-
-    // 2. Lifestyle Score (25% weight)
-    let lifestyleScore = 0;
-    
-    // Wealth index alignment (Nike targets middle to upper-middle class)
-    const wealthScore = Math.min(40, (wealthIndex / 150) * 40); // Scale wealth index to 0-40 points
-    lifestyleScore += wealthScore;
-    
-    // Activity/Lifestyle inference from demographics
-    if (age >= 18 && age <= 40 && income >= 40000) {
-      lifestyleScore += 25; // Active lifestyle demographic
-    }
-    
-    // Urban/suburban inference (higher income + smaller household often = urban professional)
-    if (income > 60000 && householdSize <= 3) {
-      lifestyleScore += 20; // Urban professional lifestyle
-    }
-    
-    // Health/fitness potential (prime Nike demographic)
-    if (age >= 20 && age <= 50 && income >= 35000) {
-      lifestyleScore += 15; // Health-conscious demographic
-    }
-
-    // 3. Behavioral Score (25% weight)
-    let behavioralScore = 0;
-    
-    // Nike brand affinity (direct behavioral indicator)
-    if (nikeAffinity > 0) {
-      behavioralScore += (nikeAffinity / 50) * 40; // Nike market share as behavior proxy
-    }
-    
-    // Purchase propensity based on income and age
-    if (income >= 30000 && age >= 16 && age <= 55) {
-      const propensity = Math.min(25, (income / 80000) * 25);
-      behavioralScore += propensity;
-    }
-    
-    // Early adopter potential (younger, higher income)
-    if (age >= 18 && age <= 35 && income >= 50000) {
-      behavioralScore += 20;
-    }
-    
-    // Brand loyalty potential (stable income, prime demographic)
-    if (income >= 40000 && age >= 25 && age <= 45) {
-      behavioralScore += 15;
-    }
-
-    // 4. Market Context Score (20% weight)
-    let marketContextScore = 0;
-    
-    // Market size factor
-    if (population > 0) {
-      marketContextScore += Math.min(30, (population / 100000) * 30); // Larger markets = better context
-    }
-    
-    // Economic stability (income relative to local context)
-    if (income > 0 && wealthIndex > 0) {
-      const stability = Math.min(25, (wealthIndex / 120) * 25);
-      marketContextScore += stability;
-    }
-    
-    // Competitive context (Nike presence indicates viable market)
-    if (nikeAffinity > 10) {
-      marketContextScore += 25; // Proven Nike market
-    } else if (nikeAffinity > 0) {
-      marketContextScore += 15; // Some Nike presence
-    } else {
-      marketContextScore += 10; // Untapped potential
-    }
-    
-    // Growth potential (younger demographics + rising income)
-    if (age < 35 && income >= 35000) {
-      marketContextScore += 20;
-    }
-
-    return {
-      demographic_alignment: Math.min(100, demographicAlignment),
-      lifestyle_score: Math.min(100, lifestyleScore),
-      behavioral_score: Math.min(100, behavioralScore),
-      market_context_score: Math.min(100, marketContextScore)
-    };
-  }
-
   private getCustomerProfileCategory(score: number): string {
     if (score >= 90) return 'Ideal Customer Profile Match';
     if (score >= 75) return 'Strong Customer Profile Fit';
@@ -368,7 +201,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     }
     
     // Emerging Young Adults: Young age + moderate income + high behavioral potential
-    if (age >= 16 && age <= 28 && income >= 25000 && components.behavioral_score >= 50) {
+    if (income >= 25000 && behavioralScore >= 50) {
       return 'Emerging Young Adults';
     }
     
@@ -381,25 +214,6 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     return 'Mixed Customer Profile';
   }
 
-  private calculateTargetConfidence(components: any): number {
-    // Confidence based on consistency across components
-    const scores = [
-      components.demographic_alignment,
-      components.lifestyle_score,
-      components.behavioral_score,
-      components.market_context_score
-    ];
-    
-    const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
-    const variance = scores.reduce((acc, score) => acc + Math.pow(score - mean, 2), 0) / scores.length;
-    const standardDev = Math.sqrt(variance);
-    
-    // High confidence when scores are consistently high and have low variance
-    const consistency = Math.max(0, 100 - (standardDev * 2)); // Lower std dev = higher confidence
-    const strength = mean; // Higher overall scores = higher confidence
-    
-    return Math.min(100, (consistency * 0.4 + strength * 0.6));
-  }
 
   private calculateBrandLoyalty(record: any): number {
     const nikeAffinity = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
