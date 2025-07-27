@@ -20,8 +20,8 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
     }
 
     const records = rawData.results.map((record: any, index: number) => {
-      // Extract the pre-calculated segment profiling score
-      const segmentScore = Number(record.segment_profiling_score) || 0;
+      // Extract or calculate segment profiling score with fallback logic
+      const segmentScore = this.extractSegmentScore(record);
       
       // Extract related metrics for additional analysis (updated for actual dataset fields)
       const nikeShare = Number(record.value_MP30034A_B_P || record.mp30034a_b_p) || 0;
@@ -121,8 +121,50 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       summary,
       featureImportance: rawData.feature_importance || [],
       statistics,
-      targetVariable: 'segment_profiling_score'
+      targetVariable: 'value_MP30034A_B_P' // Nike market share percentage for segmentation
     };
+  }
+
+  private extractSegmentScore(record: any): number {
+    // PRIORITY 1: Nike market share as primary segment profiling indicator  
+    if (record.value_MP30034A_B_P !== undefined && record.value_MP30034A_B_P !== null) {
+      const nikeShare = Number(record.value_MP30034A_B_P);
+      console.log(`🎯 [SegmentProfilingProcessor] Using Nike market share as segment score: ${nikeShare} for ${record.value_DESCRIPTION || record.ID || 'Unknown'}`);
+      return nikeShare;
+    }
+    
+    // PRIORITY 2: Pre-calculated segment profiling score (for other datasets)
+    if (record.segment_profiling_score !== undefined && record.segment_profiling_score !== null) {
+      const preCalculatedScore = Number(record.segment_profiling_score);
+      console.log(`🎯 [SegmentProfilingProcessor] Using pre-calculated segment score: ${preCalculatedScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+      return preCalculatedScore;
+    }
+    
+    // Fallback: Calculate segment fit score from available demographic and market data
+    const population = record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population || 0;
+    const income = record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income || 0;
+    const age = record.value_MEDAGE_CY || record.age || 0;
+    const diversity = record.value_DIVINDX_CY || record.diversity_index || 50; // Default mid-range
+    
+    // Calculate composite segment profiling score (0-100)
+    let segmentScore = 0;
+    
+    // Population density component (0-20 points) - larger markets have clearer segments
+    const populationScore = Math.min((population / 75000) * 20, 20);
+    
+    // Income diversity component (0-25 points) - mixed income = better segmentation
+    const incomeScore = income > 0 ? Math.min((income / 120000) * 25, 25) : 0;
+    
+    // Age diversity component (0-25 points) - working age populations = better segments
+    const ageScore = age > 0 ? Math.max(0, 25 - Math.abs(age - 40) * 0.5) : 0;
+    
+    // Market diversity component (0-30 points) - higher diversity = clearer segments
+    const diversityScore = (diversity / 100) * 30;
+    
+    segmentScore = populationScore + incomeScore + ageScore + diversityScore;
+    
+    console.log('⚠️ [SegmentProfilingProcessor] No pre-calculated segment_profiling_score found, using fallback calculation');
+    return Math.max(0, Math.min(100, segmentScore));
   }
 
   private calculateSegmentationIndicators(metrics: {
