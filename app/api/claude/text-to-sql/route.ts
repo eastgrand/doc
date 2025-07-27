@@ -25,7 +25,7 @@ interface Layer {
   type: string;
 }
 
-export const runtime = 'edge'; // Optional: use edge runtime
+// export const runtime = 'edge'; // Disabled due to CommonJS compatibility issues
 
 export async function POST(request: Request) {
   if (!process.env.ANTHROPIC_API_KEY) {

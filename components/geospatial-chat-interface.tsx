@@ -586,6 +586,7 @@ const EnhancedGeospatialChat = memo(({
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingError, setProcessingError] = useState<string | null>(null);
   const [processingSteps, setProcessingSteps] = useState<GeoProcessingStep[]>([]);
+  const [cancelRequested, setCancelRequested] = useState(false);
   const [error, setError] = useState<React.ReactNode | null>(null);
   const [features, setFeatures] = useState<GeospatialFeature[]>([]);
   const [selectedMessage, setSelectedMessage] = useState<LocalChatMessage | null>(null);
@@ -898,6 +899,25 @@ const EnhancedGeospatialChat = memo(({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      // Cleanup visualization layer on unmount
+      if (currentVisualizationLayer.current && currentMapView && currentMapView.map) {
+        console.log('[GeospatialChat] Cleaning up visualization layer on unmount');
+        try {
+          currentMapView.map.remove(currentVisualizationLayer.current);
+          if (typeof (currentVisualizationLayer.current as any).destroy === 'function') {
+            (currentVisualizationLayer.current as any).destroy();
+          }
+        } catch (error) {
+          console.warn('[GeospatialChat] Error during cleanup:', error);
+        }
+      }
+      currentVisualizationLayer.current = null;
+    };
+  }, [currentMapView]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newQuery = e.target.value;
     setInputQuery(newQuery);
@@ -1095,6 +1115,23 @@ const EnhancedGeospatialChat = memo(({
     setIsInfographicsOpen(true);
   };
 
+  const handleCancel = () => {
+    console.log('[QueryManager] User requested to cancel current analysis');
+    setCancelRequested(true);
+    setIsProcessing(false);
+    setCurrentProcessingStep(null);
+    
+    // Clear analysis state
+    clearAnalysis();
+    
+    toast({
+      title: "Analysis Cancelled",
+      description: "The current analysis has been stopped.",
+      variant: "default",
+      duration: 2000,
+    });
+  };
+
   const handleClear = () => {
     // Clear UI state
     setMessages([]);
@@ -1103,18 +1140,27 @@ const EnhancedGeospatialChat = memo(({
     setProcessingError(null);
     setError(null);
     setFeatures([]);
+    setCancelRequested(false);
 
     // Clear visualization layer from map
     if (currentMapView) {
       const highlightLayer = currentMapView.map.layers.find(
         (layer) => layer.title === "Highlighted FSAs"
       );
-      if (highlightLayer) {
-        currentMapView.map.remove(highlightLayer);
+      if (highlightLayer && currentMapView && currentMapView.map) {
+        try {
+          currentMapView.map.remove(highlightLayer);
+        } catch (error) {
+          console.warn('[GeospatialChat] Error removing highlight layer:', error);
+        }
       }
 
-      if (currentVisualizationLayer.current) {
-        currentMapView.map.remove(currentVisualizationLayer.current);
+      if (currentVisualizationLayer.current && currentMapView && currentMapView.map) {
+        try {
+          currentMapView.map.remove(currentVisualizationLayer.current);
+        } catch (error) {
+          console.warn('[GeospatialChat] Error removing visualization layer:', error);
+        }
         currentVisualizationLayer.current = null;
       }
 
@@ -1644,8 +1690,31 @@ const EnhancedGeospatialChat = memo(({
         } : null
       });
 
+      // VISUALIZATION-ONLY MEMORY OPTIMIZATION
+      // IMPORTANT: This optimization ONLY affects ArcGIS Graphics creation for browser performance
+      // The original data.records remains intact and is used for analysis/chat context
+      const getOptimalFeatureLimit = (totalRecords: number) => {
+        if (totalRecords <= 4000) return totalRecords; // Keep all data for normal datasets (like ours with 3,983)
+        if (totalRecords <= 8000) return 6000; // Large datasets: keep 75%
+        return 4000; // Very large datasets: reasonable limit for performance
+      };
+      
+      const optimalLimit = getOptimalFeatureLimit(data.records.length);
+      const recordsToProcess = data.records.length > optimalLimit 
+        ? data.records.slice(0, optimalLimit)
+        : data.records;
+      
+      console.log('[AnalysisEngine] VISUALIZATION-ONLY memory optimization:', {
+        originalRecords: data.records.length,
+        processedRecords: recordsToProcess.length,
+        coveragePercent: Math.round((recordsToProcess.length / data.records.length) * 100),
+        limitApplied: data.records.length > optimalLimit,
+        strategy: data.records.length <= 4000 ? 'Full dataset' : 'Intelligent limiting',
+        note: 'This only affects ArcGIS Graphics - original data preserved for analysis'
+      });
+
       // Convert AnalysisEngine data to ArcGIS features - IMPROVED with debugging
-      const arcgisFeatures = data.records.map((record: any, index: number) => {
+      const arcgisFeatures = recordsToProcess.map((record: any, index: number) => {
         // Only create features with valid geometry
         if (!record.geometry || !record.geometry.coordinates) {
           console.warn(`[AnalysisEngine] Skipping record ${index} - no valid geometry:`, {
@@ -1746,85 +1815,65 @@ const EnhancedGeospatialChat = memo(({
           return null;
         }
 
+        // VISUALIZATION-ONLY ATTRIBUTE OPTIMIZATION
+        // IMPORTANT: This only affects ArcGIS Graphics attributes for browser performance
+        // The full record data is preserved separately for analysis/chat context
+        const essentialAttributes: any = {
+          OBJECTID: index + 1,
+          area_name: record.area_name || 'Unknown Area',
+          value: typeof record.value === 'number' ? record.value : 0,
+          ID: String(record.properties?.ID || record.area_id || ''),
+          
+          // Target variable field (dynamic based on analysis type)
+          [data.targetVariable]: typeof record.value === 'number' ? record.value : 
+                                 typeof record.properties?.thematic_value === 'number' ? record.properties.thematic_value : 0
+        };
+
+        // DYNAMIC FIELD INCLUSION: Automatically include fields that the renderer actually uses
+        // Check what fields the renderer references and include those
+        const rendererFields = new Set<string>();
+        
+        // Extract field names from renderer configuration
+        if (visualization.renderer?.field) {
+          rendererFields.add(visualization.renderer.field);
+        }
+        if (visualization.renderer?.visualVariables) {
+          visualization.renderer.visualVariables.forEach((vv: any) => {
+            if (vv.field) rendererFields.add(vv.field);
+          });
+        }
+        if (visualization.renderer?.classBreakInfos) {
+          // Class breaks renderer uses the main field
+          if (visualization.renderer.field) rendererFields.add(visualization.renderer.field);
+        }
+        
+        // Include renderer fields if they exist in the record
+        rendererFields.forEach(fieldName => {
+          if (fieldName && (record[fieldName] !== undefined || record.properties?.[fieldName] !== undefined)) {
+            essentialAttributes[fieldName] = record[fieldName] ?? record.properties?.[fieldName];
+          }
+        });
+        
+        // Always include common demographic fields for popups if they exist
+        const commonDemographicFields = [
+          'value_TOTPOP_CY', 'TOTPOP_CY', 
+          'value_AVGHINC_CY', 'AVGHINC_CY',
+          'value_WLTHINDXCY', 'WLTHINDXCY',
+          'nike_market_share', 'adidas_market_share', 'jordan_market_share',
+          'rank', 'competitive_advantage_score', 'strategic_value_score',
+          'customer_profile_score', 'persona_type'
+        ];
+        
+        commonDemographicFields.forEach(fieldName => {
+          const value = record[fieldName] ?? record.properties?.[fieldName];
+          if (value !== undefined && value !== null) {
+            essentialAttributes[fieldName] = value;
+          }
+        });
+
         return new Graphic({
           geometry: arcgisGeometry,
-          attributes: {
-            OBJECTID: index + 1,
-            area_name: record.area_name || 'Unknown Area',
-            value: typeof record.value === 'number' ? record.value : 0,
-            thematic_value: (() => {
-              console.log(`🔍 [THEMATIC DEBUG] ${record.area_name}:`);
-              console.log(`   data.type: "${data.type}"`);
-              console.log(`   record.value: ${record.value} (${typeof record.value})`);
-              console.log(`   record.properties?.thematic_value: ${record.properties?.thematic_value} (${typeof record.properties?.thematic_value})`);
-              console.log(`   record.properties?.competitive_advantage_score: ${record.properties?.competitive_advantage_score} (${typeof record.properties?.competitive_advantage_score})`);
-              
-              // Check the condition step by step
-              const condition1 = data.type === 'competitive_analysis';
-              const condition2 = typeof record.value === 'number';
-              console.log(`   Condition 1 (data.type === 'competitive_analysis'): ${condition1}`);
-              console.log(`   Condition 2 (typeof record.value === 'number'): ${condition2}`);
-              console.log(`   Both conditions true: ${condition1 && condition2}`);
-              
-              const rawValue = data.type === 'competitive_analysis' && typeof record.value === 'number' ? record.value :
-                               data.type === 'strategic_analysis' && typeof record.value === 'number' ? record.value :
-                               typeof record.properties?.thematic_value === 'number' ? record.properties.thematic_value : 
-                               typeof record.value === 'number' ? record.value : 0;
-              
-              console.log(`   → rawValue selected: ${rawValue}`);
-              
-              // AGGRESSIVE CAPPING: Cap any value >10 to 1-10 scale for certain analysis types
-              // BUT DO NOT cap strategic analysis (0-100 range) or competitive analysis (0-10 range)
-              let thematicValue = rawValue;
-              if (rawValue > 10.0 && data.type !== 'strategic_analysis' && data.type !== 'competitive_analysis') {
-                thematicValue = Math.max(1.0, Math.min(10.0, rawValue / 10));
-                console.log(`🔧 [THEMATIC CAPPING] ${record.area_name}: ${rawValue} → ${thematicValue.toFixed(1)} (type: ${data.type})`);
-              } else if (data.type === 'strategic_analysis' || data.type === 'competitive_analysis') {
-                console.log(`✅ [NO CAPPING] ${data.type} preserving original value: ${rawValue}`);
-              }
-              
-              console.log(`   → FINAL thematicValue: ${thematicValue}`);
-              return thematicValue;
-            })(), // Use competitive score only for competitive analysis
-            rank: typeof record.rank === 'number' ? record.rank : index + 1,
-            category: record.category || 'default',
-            // Core analysis fields with safe defaults
-            opportunityScore: typeof record.properties?.opportunityScore === 'number' ? record.properties.opportunityScore : (typeof record.value === 'number' ? record.value : 0),
-            nike_market_share: typeof record.properties?.nike_market_share === 'number' ? record.properties.nike_market_share : 0,
-            adidas_market_share: typeof record.properties?.adidas_market_share === 'number' ? record.properties.adidas_market_share : 0,
-            competitive_advantage: typeof record.properties?.competitive_advantage === 'number' ? record.properties.competitive_advantage : 0,
-            // Add market_share field for renderer visual variables
-            market_share: typeof record.properties?.market_share === 'number' ? record.properties.market_share : 0,
-            competitive_score: typeof record.properties?.competitive_score === 'number' ? record.properties.competitive_score : record.value,
-            // CRITICAL: Add ALL targetVariable fields for renderer access - pull from TOP LEVEL record fields
-            // Strategic and competitive analysis
-            strategic_value_score: typeof record.strategic_value_score === 'number' ? record.strategic_value_score : (typeof record.properties?.strategic_value_score === 'number' ? record.properties.strategic_value_score : (typeof record.value === 'number' ? record.value : 0)),
-            competitive_advantage_score: typeof record.competitive_advantage_score === 'number' ? record.competitive_advantage_score : (typeof record.properties?.competitive_advantage_score === 'number' ? record.properties.competitive_advantage_score : (typeof record.value === 'number' ? record.value : 0)),
-            comparison_score: typeof record.comparison_score === 'number' ? record.comparison_score : (typeof record.properties?.comparison_score === 'number' ? record.properties.comparison_score : (typeof record.value === 'number' ? record.value : 0)),
-            expansion_opportunity_score: typeof record.expansion_opportunity_score === 'number' ? record.expansion_opportunity_score : (typeof record.properties?.expansion_opportunity_score === 'number' ? record.properties.expansion_opportunity_score : (typeof record.value === 'number' ? record.value : 0)),
-            // Analysis type specific scores
-            correlation_strength_score: typeof record.correlation_strength_score === 'number' ? record.correlation_strength_score : (typeof record.properties?.correlation_strength_score === 'number' ? record.properties.correlation_strength_score : (typeof record.value === 'number' ? record.value : 0)),
-            brand_analysis_score: typeof record.brand_analysis_score === 'number' ? record.brand_analysis_score : (typeof record.properties?.brand_analysis_score === 'number' ? record.properties.brand_analysis_score : (typeof record.value === 'number' ? record.value : 0)),
-            trend_strength_score: typeof record.trend_strength_score === 'number' ? record.trend_strength_score : (typeof record.properties?.trend_strength_score === 'number' ? record.properties.trend_strength_score : (typeof record.value === 'number' ? record.value : 0)),
-            feature_interaction_score: typeof record.feature_interaction_score === 'number' ? record.feature_interaction_score : (typeof record.properties?.feature_interaction_score === 'number' ? record.properties.feature_interaction_score : (typeof record.value === 'number' ? record.value : 0)),
-            market_sizing_score: typeof record.market_sizing_score === 'number' ? record.market_sizing_score : (typeof record.properties?.market_sizing_score === 'number' ? record.properties.market_sizing_score : (typeof record.value === 'number' ? record.value : 0)),
-            predictive_modeling_score: typeof record.predictive_modeling_score === 'number' ? record.predictive_modeling_score : (typeof record.properties?.predictive_modeling_score === 'number' ? record.properties.predictive_modeling_score : (typeof record.value === 'number' ? record.value : 0)),
-            risk_adjusted_score: typeof record.risk_adjusted_score === 'number' ? record.risk_adjusted_score : (typeof record.properties?.risk_adjusted_score === 'number' ? record.properties.risk_adjusted_score : (typeof record.value === 'number' ? record.value : 0)),
-            trend_strength: typeof record.trend_strength === 'number' ? record.trend_strength : (typeof record.properties?.trend_strength === 'number' ? record.properties.trend_strength : (typeof record.value === 'number' ? record.value : 0)),
-            real_estate_analysis_score: typeof record.real_estate_analysis_score === 'number' ? record.real_estate_analysis_score : (typeof record.properties?.real_estate_analysis_score === 'number' ? record.properties.real_estate_analysis_score : (typeof record.value === 'number' ? record.value : 0)),
-            scenario_analysis_score: typeof record.scenario_analysis_score === 'number' ? record.scenario_analysis_score : (typeof record.properties?.scenario_analysis_score === 'number' ? record.properties.scenario_analysis_score : (typeof record.value === 'number' ? record.value : 0)),
-            demographic_opportunity_score: typeof record.demographic_opportunity_score === 'number' ? record.demographic_opportunity_score : (typeof record.properties?.demographic_opportunity_score === 'number' ? record.properties.demographic_opportunity_score : (typeof record.value === 'number' ? record.value : 0)),
-            cluster_performance_score: typeof record.cluster_performance_score === 'number' ? record.cluster_performance_score : (typeof record.properties?.cluster_performance_score === 'number' ? record.properties.cluster_performance_score : (typeof record.value === 'number' ? record.value : 0)),
-            anomaly_detection_score: typeof record.anomaly_detection_score === 'number' ? record.anomaly_detection_score : (typeof record.properties?.anomaly_detection_score === 'number' ? record.properties.anomaly_detection_score : (typeof record.value === 'number' ? record.value : 0)),
-            outlier_detection_score: typeof record.outlier_detection_score === 'number' ? record.outlier_detection_score : (typeof record.properties?.outlier_detection_score === 'number' ? record.properties.outlier_detection_score : (typeof record.value === 'number' ? record.value : 0)),
-            // Additional safe fields
-            ID: String(record.properties?.ID || record.area_id || ''),
-            TOTPOP_CY: typeof record.properties?.TOTPOP_CY === 'number' ? record.properties.TOTPOP_CY : 0,
-            AVGHINC_CY: typeof record.properties?.AVGHINC_CY === 'number' ? record.properties.AVGHINC_CY : 0,
-            MEDAGE_CY: typeof record.properties?.MEDAGE_CY === 'number' ? record.properties.MEDAGE_CY : 0,
-            zip_code: String(record.properties?.zip_code || record.area_id || ''),
-            city_name: String(record.properties?.city_name || 'Unknown City')
-          }
+          attributes: essentialAttributes
         });
       }).filter(feature => feature !== null); // Remove null features
 
@@ -1851,40 +1900,80 @@ const EnhancedGeospatialChat = memo(({
       });
 
 
-      // Create feature layer with AnalysisEngine's advanced renderer
-      const featureLayer = new FeatureLayer({
-        source: arcgisFeatures,
-        fields: [
-          { name: 'OBJECTID', type: 'oid' },
-          { name: 'area_name', type: 'string' },
-          { name: 'value', type: 'double' },
-          { name: 'rank', type: 'integer' },
-          { name: 'category', type: 'string' },
-          // Core analysis fields
-          { name: data.targetVariable, type: 'double' }, // ✅ ADD TARGET VARIABLE FIELD DYNAMICALLY
-          { name: 'opportunityScore', type: 'double' },
-          { name: 'nike_market_share', type: 'double' },
-          { name: 'adidas_market_share', type: 'double' },
-          { name: 'competitive_advantage', type: 'double' },
-          { name: 'market_share', type: 'double' },
-          { name: 'competitive_score', type: 'double' },
-          // Additional common fields with safe defaults
-          { name: 'ID', type: 'string' },
-          { name: 'TOTPOP_CY', type: 'double' },
-          { name: 'AVGHINC_CY', type: 'double' },
-          { name: 'MEDAGE_CY', type: 'double' },
-          { name: 'zip_code', type: 'string' },
-          { name: 'city_name', type: 'string' }
-        ],
-        objectIdField: 'OBJECTID',
-        geometryType: actualGeometryType, // Use actual geometry type
-        spatialReference: { wkid: 4326 }, // Explicitly set WGS84 geographic coordinate system
-        renderer: data.renderer || visualization.renderer, // Use direct processor renderer if available, otherwise fallback to complex chain
-        popupTemplate: visualization.popupTemplate,
-        title: `AnalysisEngine - ${data.targetVariable || 'Analysis'}`,
-        visible: true,
+      // DYNAMIC FIELD SCHEMA: Generate field definitions based on what attributes actually exist
+      // IMPORTANT: These field definitions only affect the ArcGIS FeatureLayer schema
+      // The full data remains available for analysis/chat context via setFeatures()
+      const essentialFields = [
+        { name: 'OBJECTID', type: 'oid' },
+        { name: 'area_name', type: 'string' },
+        { name: 'value', type: 'double' },
+        { name: 'ID', type: 'string' },
+        { name: data.targetVariable, type: 'double' } // Dynamic target variable field
+      ];
+
+      // Dynamically discover what fields exist in the graphics and add appropriate schema
+      if (arcgisFeatures.length > 0) {
+        const sampleAttributes = arcgisFeatures[0].attributes;
+        const fieldTypeMap: Record<string, string> = {
+          // Common field type mappings
+          'rank': 'integer',
+          'TOTPOP_CY': 'double', 'value_TOTPOP_CY': 'double',
+          'AVGHINC_CY': 'double', 'value_AVGHINC_CY': 'double', 
+          'WLTHINDXCY': 'double', 'value_WLTHINDXCY': 'double',
+          'nike_market_share': 'double', 'adidas_market_share': 'double', 'jordan_market_share': 'double',
+          'competitive_advantage_score': 'double', 'strategic_value_score': 'double', 'customer_profile_score': 'double',
+          'persona_type': 'string'
+        };
+        
+        // Add fields that actually exist in the data
+        Object.keys(sampleAttributes).forEach(fieldName => {
+          // Skip fields we already defined
+          if (essentialFields.some(f => f.name === fieldName)) return;
+          
+          const value = sampleAttributes[fieldName];
+          let fieldType = 'string'; // default
+          
+          if (fieldTypeMap[fieldName]) {
+            fieldType = fieldTypeMap[fieldName];
+          } else if (typeof value === 'number') {
+            fieldType = Number.isInteger(value) ? 'integer' : 'double';
+          } else if (typeof value === 'string') {
+            fieldType = 'string';
+          }
+          
+          essentialFields.push({ name: fieldName, type: fieldType });
+        });
+      }
+
+      console.log('[AnalysisEngine] Memory-optimized field definitions:', {
+        totalFields: essentialFields.length,
+        fieldNames: essentialFields.map(f => f.name)
+      });
+
+      // MEMORY SAFEGUARD: Create feature layer with proper error handling
+      let featureLayer;
+      try {
+        featureLayer = new FeatureLayer({
+          source: arcgisFeatures,
+          fields: essentialFields,
+          objectIdField: 'OBJECTID',
+          geometryType: actualGeometryType, // Use actual geometry type
+          spatialReference: { wkid: 4326 }, // Explicitly set WGS84 geographic coordinate system
+          renderer: data.renderer || visualization.renderer, // Use direct processor renderer if available, otherwise fallback to complex chain
+          popupTemplate: visualization.popupTemplate,
+          title: `AnalysisEngine - ${data.targetVariable || 'Analysis'}`,
+          visible: true,
         opacity: 0.8
       });
+
+      console.log('[AnalysisEngine] FeatureLayer created successfully');
+      
+      } catch (featureLayerError) {
+        console.error('[AnalysisEngine] Failed to create FeatureLayer:', featureLayerError);
+        // Clean up arcgisFeatures array to free memory
+        arcgisFeatures.length = 0;
+        throw new Error(`FeatureLayer creation failed: ${featureLayerError}`);
+      }
 
       // Note: Enhanced styling will be applied after layer is added to map to preserve popup functionality
 
@@ -1896,48 +1985,11 @@ const EnhancedGeospatialChat = memo(({
         rendererSource: data.renderer ? 'processor' : 'visualization chain'
       });
       
-      console.log('[AnalysisEngine] RENDERER DEBUG:', {
-        rendererType: (data.renderer || visualization.renderer)?.type,
-        rendererField: visualization.renderer?.field,
-        rendererFieldExists: arcgisFeatures[0] ? visualization.renderer?.field in arcgisFeatures[0].attributes : false,
-        sampleAttributeValue: arcgisFeatures[0]?.attributes?.[visualization.renderer?.field],
-        sampleDataRange: {
-          min: Math.min(...arcgisFeatures.slice(0, 10).map(f => f.attributes?.value || 0)),
-          max: Math.max(...arcgisFeatures.slice(0, 10).map(f => f.attributes?.value || 0))
-        },
-        allAttributeKeys: arcgisFeatures[0] ? Object.keys(arcgisFeatures[0].attributes) : [],
-        rendererClassBreaks: visualization.renderer?.classBreakInfos?.length || 0
-      });
-
-      console.log('[AnalysisEngine] FeatureLayer created with renderer:', {
+      // MEMORY OPTIMIZATION: Reduce logging overhead
+      console.log('[AnalysisEngine] Renderer applied:', {
         rendererType: visualization.renderer?.type,
-        rendererField: visualization.renderer?.field || 'Using visual variables',
-        visualVariables: visualization.renderer?.visualVariables?.length || 0,
-        visualVariableFields: visualization.renderer?.visualVariables?.map((vv: any) => vv.field) || [],
-        visualVariableDetails: visualization.renderer?.visualVariables?.map((vv: any) => ({
-          type: vv.type,
-          field: vv.field,
-          stops: vv.stops?.length || 0,
-          title: vv.legendOptions?.title
-        })) || [],
-        classBreaks: visualization.renderer?.classBreakInfos?.length || 0,
-        sampleAttributes: arcgisFeatures[0]?.attributes,
-        sampleValueField: arcgisFeatures[0]?.attributes?.value,
-        sampleNikeMarketShare: arcgisFeatures[0]?.attributes?.nike_market_share,
-        sampleMarketShare: arcgisFeatures[0]?.attributes?.market_share,
-        valueRange: {
-          min: Math.min(...arcgisFeatures.slice(0, 100).map(f => f.attributes?.value || 0)),
-          max: Math.max(...arcgisFeatures.slice(0, 100).map(f => f.attributes?.value || 0))
-        },
-        nikeMarketShareRange: {
-          min: Math.min(...arcgisFeatures.slice(0, 100).map(f => f.attributes?.nike_market_share || 0)),
-          max: Math.max(...arcgisFeatures.slice(0, 100).map(f => f.attributes?.nike_market_share || 0))
-        },
-        marketShareRange: {
-          min: Math.min(...arcgisFeatures.slice(0, 100).map(f => f.attributes?.market_share || 0)),
-          max: Math.max(...arcgisFeatures.slice(0, 100).map(f => f.attributes?.market_share || 0))
-        },
-        fullRenderer: visualization.renderer
+        rendererField: visualization.renderer?.field,
+        attributesAvailable: arcgisFeatures[0] ? Object.keys(arcgisFeatures[0].attributes).length : 0
       });
 
       // DEBUG: FeatureLayer created, check its properties
@@ -2495,15 +2547,44 @@ const EnhancedGeospatialChat = memo(({
   const handleSubmit = async (query: string, source: 'main' | 'reply' = 'main') => {
     console.log('🚨 [FUNCTION CALL] handleSubmit called with query:', query);
     console.log('🚨 [FUNCTION CALL] source:', source);
+    
+    // Handle overlapping queries - prevent new queries while processing
+    if (isProcessing) {
+      console.warn('[QueryManager] Query already in progress, ignoring new query:', query);
+      toast({
+        title: "Query in Progress",
+        description: "Please wait for the current analysis to complete before starting a new one.",
+        variant: "default",
+        duration: 3000,
+      });
+      return;
+    }
+    
+    // Check if there are existing results and warn user (optional auto-clear)
+    if (features.length > 0 || currentVisualizationLayer.current) {
+      console.log('[QueryManager] Existing results detected, auto-clearing before new query');
+      toast({
+        title: "Previous Results Cleared",
+        description: "Automatically cleared previous analysis to start new query. Use the Clear button manually if preferred.",
+        variant: "default",
+        duration: 2000,
+      });
+    }
+    
     const startTime = Date.now();
     console.log('[AnalysisEngine Integration] Starting enhanced analysis workflow');
 
     // --- STATE RESET (same as original) ---
     setIsProcessing(true);
+    setCancelRequested(false);
     setError(null);
     setProcessingError(null);
     setFeatures([]);
     setFormattedLegendData({ items: [] });
+    
+    // Clear cached datasets to prevent memory leaks (automatic cleanup)
+    console.log('[QueryManager] Auto-clearing previous analysis data');
+    clearAnalysis();
     
     // Clear existing visualization layer
     if (currentVisualizationLayer.current) {
@@ -2513,10 +2594,23 @@ const EnhancedGeospatialChat = memo(({
         reason: 'clearVisualization called',
         callStack: new Error().stack?.split('\n')[1]
       });
-      if (currentMapView) {
-        currentMapView.map.remove(currentVisualizationLayer.current);
+      if (currentMapView && currentMapView.map) {
+        try {
+          currentMapView.map.remove(currentVisualizationLayer.current);
+        } catch (error) {
+          console.warn('[GeospatialChat] Error removing visualization layer:', error);
+        }
+        // IMPORTANT: Destroy the layer to free memory
+        if (typeof (currentVisualizationLayer.current as any).destroy === 'function') {
+          (currentVisualizationLayer.current as any).destroy();
+        }
       }
       currentVisualizationLayer.current = null;
+    }
+    
+    // Clear any graphics
+    if (currentMapView) {
+      currentMapView.graphics.removeAll();
     }
     onVisualizationLayerCreated(null, true);
 
@@ -2570,6 +2664,12 @@ const EnhancedGeospatialChat = memo(({
     addContextMessage({ role: 'user', content: query });
 
     try {
+      // Check for cancellation before starting
+      if (cancelRequested) {
+        console.log('[QueryManager] Cancellation detected before analysis start');
+        return;
+      }
+
       // --- ENHANCED: AnalysisEngine Integration ---
       console.log('[AnalysisEngine] Executing analysis with enhanced engine');
       
@@ -2584,6 +2684,12 @@ const EnhancedGeospatialChat = memo(({
       // Execute analysis using our new AnalysisEngine
       console.log('🚨🚨🚨 [STRATEGIC DEBUG] Starting AnalysisEngine with options:', analysisOptions);
       const analysisResult: AnalysisResult = await executeAnalysis(query, analysisOptions);
+      
+      // Check for cancellation after analysis
+      if (cancelRequested) {
+        console.log('[QueryManager] Cancellation detected after analysis');
+        return;
+      }
       
       // EXPLICIT DEBUG FOR STRATEGIC ANALYSIS
       if (query.toLowerCase().includes('strategic')) {
@@ -2938,8 +3044,21 @@ const EnhancedGeospatialChat = memo(({
         sampleRecordName: enhancedAnalysisResult.data.records[0]?.area_name
       });
       
-      // Apply the AnalysisEngine's VisualizationResult with joined geographic data
-      const createdLayer = await applyAnalysisEngineVisualization(analysisResult.visualization, enhancedAnalysisResult.data, currentMapView);
+      // CRITICAL FIX: Create optimized data copy ONLY for visualization
+      // Keep the original enhancedAnalysisResult.data intact for analysis and chat context
+      const visualizationData = {
+        ...enhancedAnalysisResult.data,
+        records: enhancedAnalysisResult.data.records // Reference the same records - optimization happens inside visualization function
+      };
+      
+      console.log('[AnalysisEngine] Data flow separation:', {
+        originalDataRecords: enhancedAnalysisResult.data.records.length,
+        visualizationDataRecords: visualizationData.records.length,
+        preservingFullDataForAnalysis: true
+      });
+      
+      // Apply visualization with separated data flow
+      const createdLayer = await applyAnalysisEngineVisualization(analysisResult.visualization, visualizationData, currentMapView);
       
       // Pass the created layer to the callback
       if (createdLayer) {
@@ -3405,14 +3524,36 @@ const EnhancedGeospatialChat = memo(({
 
       await refreshContextSummary();
       
-      console.log('🚨 [FEATURES STORAGE] About to setFeatures with validFeatures.length:', validFeatures.length);
-      console.log('🚨 [FEATURES STORAGE] First validFeature sample:', validFeatures[0] ? {
-        thematic_value: validFeatures[0].properties?.thematic_value,
-        value_MP30034A_B_P: validFeatures[0].properties?.value_MP30034A_B_P,
-        description: validFeatures[0].properties?.DESCRIPTION
-      } : 'No features');
+      // CRITICAL FIX: Use FULL data for features context, not visualization-optimized data
+      // Convert enhancedAnalysisResult.data.records back to GeospatialFeature format for analysis/chat
+      const fullDataFeatures = enhancedAnalysisResult.data.records.map((record: any) => ({
+        type: 'Feature' as const,
+        geometry: record.geometry,
+        properties: {
+          ...record.properties,
+          // Ensure all analysis fields are preserved for chat context
+          thematic_value: record.value,
+          target_value: record.value,
+          area_name: record.area_name,
+          area_id: record.area_id || record.properties?.ID
+        }
+      }));
       
-      setFeatures(validFeatures);
+      console.log('🚨 [FEATURES STORAGE] Using FULL data for analysis context:', {
+        fullDataFeaturesLength: fullDataFeatures.length,
+        visualizationFeaturesLength: validFeatures.length,
+        preservedAllFields: true,
+        sampleFullDataFields: fullDataFeatures[0] ? Object.keys(fullDataFeatures[0].properties).length : 0,
+        sampleRecord: fullDataFeatures[0] ? {
+          thematic_value: fullDataFeatures[0].properties?.thematic_value,
+          value_MP30034A_B_P: fullDataFeatures[0].properties?.value_MP30034A_B_P,
+          description: fullDataFeatures[0].properties?.DESCRIPTION,
+          totalProperties: Object.keys(fullDataFeatures[0].properties).length
+        } : 'No features'
+      });
+      
+      // Use FULL data for analysis/chat context, not visualization-optimized data
+      setFeatures(fullDataFeatures as GeospatialFeature[]);
 
       console.log('[AnalysisEngine] Integration complete');
 
@@ -3912,8 +4053,12 @@ const EnhancedGeospatialChat = memo(({
   
       if (!newVisualizationResult || !newVisualizationResult.layer) throw new Error('Failed to create updated visualization layer.');
   
-      if (currentVisualizationLayer.current && currentMapView) {
-        currentMapView.map.remove(currentVisualizationLayer.current);
+      if (currentVisualizationLayer.current && currentMapView && currentMapView.map) {
+        try {
+          currentMapView.map.remove(currentVisualizationLayer.current);
+        } catch (error) {
+          console.warn('[GeospatialChat] Error removing visualization layer:', error);
+        }
       }
       onVisualizationLayerCreated(newVisualizationResult.layer, true);
       currentVisualizationLayer.current = newVisualizationResult.layer;
@@ -4810,15 +4955,20 @@ const EnhancedGeospatialChat = memo(({
                           <TooltipTrigger asChild>
                             <Button
                               ref={analyzeButtonRef}
-                              type="submit"
+                              type={isProcessing ? "button" : "submit"}
                               size="sm"
-                              className="flex items-center justify-center gap-2 px-4 bg-[#33a852] hover:bg-[#2d9748] text-white rounded-lg h-8"
-                              disabled={!inputQuery.trim() || isProcessing}
+                              className={`flex items-center justify-center gap-2 px-4 rounded-lg h-8 ${
+                                isProcessing 
+                                  ? "bg-red-600 hover:bg-red-700 text-white" 
+                                  : "bg-[#33a852] hover:bg-[#2d9748] text-white"
+                              }`}
+                              disabled={!inputQuery.trim() && !isProcessing}
+                              onClick={isProcessing ? handleCancel : undefined}
                             >
                               {isProcessing ? (
                                 <>
-                                  <Loader2 className="h-4 w-4 animate-spin" />
-                                  <span>Analyzing</span>
+                                  <X className="h-4 w-4" />
+                                  <span>Stop</span>
                                 </>
                               ) : (
                                 'Analyze'

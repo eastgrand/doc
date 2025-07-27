@@ -32,6 +32,7 @@ const nextConfig = {
     ]
   },
   webpack: (config, { isServer }) => {
+
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -66,6 +67,7 @@ const nextConfig = {
             chunks: 'all',
             priority: 5,
             maxSize: 2000000,
+            enforce: true,
           },
         },
       },

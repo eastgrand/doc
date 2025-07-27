@@ -149,6 +149,47 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       });
       break;
       
+    case 'comparative_analysis':
+    case 'comparative':
+      metricsSection += 'Comparative Analysis - Brand vs competitor performance:\n\n';
+      topFeatures.forEach((feature: any, index: number) => {
+        const props = feature.properties;
+        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        
+        // Use comparative_analysis_score as primary metric
+        const comparativeScore = props?.comparative_analysis_score || props?.target_value;
+        metricsSection += `   Comparative Analysis Score: ${comparativeScore || 'N/A'}\n`;
+        
+        // Add competitive context with brand comparisons
+        if (props?.nike_market_share) {
+          metricsSection += `   Nike Market Share: ${props.nike_market_share.toFixed(1)}%\n`;
+        }
+        if (props?.adidas_market_share) {
+          metricsSection += `   Adidas Market Share: ${props.adidas_market_share.toFixed(1)}%\n`;
+        }
+        if (props?.jordan_market_share) {
+          metricsSection += `   Jordan Market Share: ${props.jordan_market_share.toFixed(1)}%\n`;
+        }
+        
+        // Add performance gap indicators
+        if (props?.brand_performance_gap) {
+          metricsSection += `   Nike vs Competitor Gap: ${props.brand_performance_gap}\n`;
+        }
+        if (props?.competitive_dynamics_level) {
+          metricsSection += `   Competitive Intensity: ${props.competitive_dynamics_level}\n`;
+        }
+        
+        // Include demographic context for targeting
+        if (props?.total_population) {
+          metricsSection += `   Market Size: ${(props.total_population / 1000).toFixed(1)}K people\n`;
+        }
+        if (props?.median_income) {
+          metricsSection += `   Median Income: $${(props.median_income / 1000).toFixed(1)}K\n`;
+        }
+        metricsSection += '\n';
+      });
+      break;
+      
     default:
       // For other analysis types, provide basic enhanced info
       metricsSection += `${analysisType} Analysis - Enhanced metrics:\n\n`;

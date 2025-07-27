@@ -9,24 +9,40 @@
 export const analysisPrompts = {
   competitive_analysis: `
 COMPETITIVE ANALYSIS TECHNICAL CONTEXT:
-You are analyzing competitive advantage data with pre-calculated scores (1-10 scale).
+You are analyzing competitive positioning data to identify Nike's strategic advantages versus competitors like Adidas, Jordan, and other athletic brands across different geographic markets.
+
+SCORING METHODOLOGY:
+The competitive_advantage_score (1-10 scale) represents Nike's overall competitive strength in each market, calculated by combining:
+• Market Share Dominance: Nike's market share relative to competitors (25% weight)
+• Demographic Alignment: How well local demographics match Nike's target customer profile (25% weight) 
+• Competitive Pressure: Inverse of competitor strength and market saturation (25% weight)
+• Brand Category Strength: Nike's performance in key categories like footwear, apparel, and lifestyle (25% weight)
+
+Higher scores indicate markets where Nike has stronger competitive positioning for expansion or investment.
 
 DATA STRUCTURE:
-- competitive_advantage_score: Primary ranking metric (1-10 scale)
-- market_share_context: Supporting data for explanation only
-- Nike, Adidas, Jordan, etc. market share percentages: Context, NOT for ranking
+- competitive_advantage_score: Primary ranking metric (1-10 scale, precise decimals)
+- nike_market_share: Nike's current market share percentage
+- adidas_market_share: Adidas competitor market share percentage  
+- jordan_market_share: Jordan brand market share percentage
+- demographic_fit_score: How well demographics align with Nike's target customers
+- competitive_pressure_index: Level of competition from other brands
+- brand_category_strength: Nike's relative strength across product categories
 
 CRITICAL REQUIREMENTS:
-1. ALWAYS rank and prioritize by competitive_advantage_score (1-10)
-2. NEVER rank by raw market share percentages
-3. Use market share data only to EXPLAIN WHY certain areas have high competitive scores
-4. Focus on expansion opportunities, not current market dominance
-5. Scores incorporate: market dominance + demographic alignment + competitive pressure + category strength
+1. ALWAYS rank and prioritize by competitive_advantage_score (1-10 scale)
+2. Discuss specific competitors (Adidas, Jordan, etc.) and market share dynamics in analysis
+3. Explain HOW the scoring methodology creates competitive advantages in each market
+4. Compare Nike's performance versus named competitors using market share data
+5. Focus on strategic competitive positioning, not just current market dominance
+6. Use competitor data to explain competitive dynamics and opportunities
 
 ANALYSIS FOCUS:
-- Identify markets with high competitive advantage scores for expansion
-- Explain the underlying factors driving competitive advantages
-- Recommend strategic expansion priorities based on competitive positioning
+- Identify markets where Nike has strongest competitive advantages versus Adidas, Jordan, and other rivals
+- Explain competitive positioning factors: market share gaps, demographic advantages, brand strength
+- Analyze competitor dynamics and how Nike can leverage competitive advantages for expansion
+- Recommend competitive strategies based on Nike's positioning relative to specific competitors
+- Discuss market share trends and competitive threats/opportunities by competitor
 `,
 
   demographic_insights: `
@@ -54,6 +70,15 @@ ANALYSIS FOCUS:
 TREND ANALYSIS TECHNICAL CONTEXT:
 You are analyzing trend strength data to identify markets with strong temporal patterns and growth momentum.
 
+SCORING METHODOLOGY:
+The trend_strength_score (0-100 scale) measures how strong and reliable market trends are in each area, combining:
+• Growth Consistency: How steady the growth pattern has been over time (30% weight)
+• Growth Rate: The pace of positive market development (25% weight)  
+• Pattern Stability: How predictable and sustainable the trends appear (25% weight)
+• Volatility Control: Lower volatility indicates more reliable trends (20% weight)
+
+Higher scores indicate markets with strong, consistent growth patterns that are ideal for strategic investment.
+
 DATA STRUCTURE:
 - trend_strength_score: Primary ranking metric (0-100 scale)
 - growth_potential: Market growth trajectory indicators
@@ -77,6 +102,15 @@ ANALYSIS FOCUS:
   anomaly_detection: `
 ANOMALY DETECTION TECHNICAL CONTEXT:
 You are analyzing anomaly detection data to identify statistical outliers and unusual market patterns.
+
+SCORING METHODOLOGY:
+The anomaly_detection_score (0-100 scale) measures how unusual or exceptional each market is compared to normal patterns, combining:
+• Statistical Deviation: How far market metrics deviate from typical ranges (30% weight)
+• Pattern Uniqueness: Unusual combinations of characteristics not seen elsewhere (25% weight)
+• Performance Extremes: Exceptionally high or low performance levels (25% weight)
+• Contextual Outliers: Markets that don't fit expected patterns for their context (20% weight)
+
+Higher scores indicate markets with the most unusual characteristics that warrant investigation for exceptional opportunities or data validation.
 
 DATA STRUCTURE:
 - anomaly_detection_score: Primary ranking metric (0-100 scale)
@@ -103,6 +137,15 @@ ANALYSIS FOCUS:
 FEATURE INTERACTION TECHNICAL CONTEXT:
 You are analyzing feature interaction data to identify complex relationships and synergistic effects between multiple market variables.
 
+SCORING METHODOLOGY:
+The feature_interaction_score (0-100 scale) measures how strongly multiple market variables work together in each area, combining:
+• Correlation Strength: How strongly different variables relate to each other (30% weight)
+• Synergy Effects: When combined variables produce stronger results than individually (25% weight)
+• Multi-Variable Patterns: Complex relationships involving three or more variables (25% weight)
+• Non-Linear Dynamics: Advanced interactions that go beyond simple correlations (20% weight)
+
+Higher scores indicate markets where multiple factors work together synergistically, creating opportunities for multi-channel strategies.
+
 DATA STRUCTURE:
 - feature_interaction_score: Primary ranking metric (0-100 scale)
 - correlation_strength: Strength of correlations between variables
@@ -128,6 +171,15 @@ ANALYSIS FOCUS:
 OUTLIER DETECTION TECHNICAL CONTEXT:
 You are analyzing outlier detection data to identify geographic areas with exceptional performance or characteristics that stand out significantly from typical patterns.
 
+SCORING METHODOLOGY:
+The outlier_detection_score (0-100 scale) measures how exceptional and unique each market's characteristics are, combining:
+• Statistical Uniqueness: How far the market deviates from normal statistical ranges (30% weight)
+• Performance Extremes: Exceptionally high or low performance indicators (25% weight)
+• Contextual Rarity: Unique characteristics rare for markets of this type (25% weight)
+• Pattern Exceptions: Markets that break typical rules and expected patterns (20% weight)
+
+Higher scores indicate markets with the most exceptional characteristics that represent either outstanding opportunities or require special investigation.
+
 DATA STRUCTURE:
 - outlier_detection_score: Primary ranking metric (0-100 scale)
 - statistical_outlier_level: Statistical deviation from population norms
@@ -152,6 +204,15 @@ ANALYSIS FOCUS:
   comparative_analysis: `
 COMPARATIVE ANALYSIS TECHNICAL CONTEXT:
 You are analyzing comparative analysis data to identify relative performance between different brands, regions, or market characteristics and competitive positioning opportunities.
+
+SCORING METHODOLOGY:
+The comparative_analysis_score (0-100 scale) measures relative market performance and competitive positioning strength, combining:
+• Brand Performance Gap: How Nike performs versus key competitors in each market (30% weight)
+• Market Position Strength: Nike's relative dominance and market standing (25% weight)
+• Competitive Dynamics: The competitive landscape and pressure levels (25% weight)
+• Growth Differential: Nike's growth potential versus competitors (20% weight)
+
+Higher scores indicate markets where Nike has the strongest competitive advantages and positioning for expansion.
 
 DATA STRUCTURE:
 - comparative_analysis_score: Primary ranking metric (0-100 scale)
@@ -242,6 +303,15 @@ ANALYSIS FOCUS:
 PREDICTIVE MODELING TECHNICAL CONTEXT:
 You are analyzing predictive modeling data to identify markets with high forecasting reliability and prediction confidence for strategic planning.
 
+SCORING METHODOLOGY:
+The predictive_modeling_score (0-100 scale) measures how reliably we can forecast market performance in each area, combining:
+• Model Confidence: How confident our predictive models are about forecasts (30% weight)
+• Data Quality: The completeness and reliability of historical data (25% weight)
+• Pattern Stability: How consistent historical patterns are for reliable predictions (25% weight)
+• Forecast Reliability: Track record of accurate predictions in similar markets (20% weight)
+
+Higher scores indicate markets where strategic planning can rely on high-confidence predictions and reliable forecasting.
+
 DATA STRUCTURE:
 - predictive_modeling_score: Primary ranking metric (0-100 scale)
 - model_confidence_level: Prediction confidence assessment (High/Moderate/Low)
@@ -268,6 +338,15 @@ ANALYSIS FOCUS:
   segment_profiling: `
 SEGMENT PROFILING TECHNICAL CONTEXT:
 You are analyzing segment profiling data to identify markets with strong customer segmentation potential and distinct segment characteristics.
+
+SCORING METHODOLOGY:
+The segment_profiling_score (0-100 scale) measures how well-defined and actionable customer segments are in each market, combining:
+• Demographic Distinctiveness: How clearly different customer groups can be identified (30% weight)
+• Behavioral Clustering: Strength of behavioral patterns that group customers naturally (25% weight)
+• Segment Size Viability: Whether segments are large enough for targeted marketing (25% weight)
+• Nike Brand Affinity: How well segments align with Nike's brand and target customers (20% weight)
+
+Higher scores indicate markets with clear, actionable customer segments that are ideal for targeted marketing strategies and personalized approaches.
 
 DATA STRUCTURE:
 - segment_profiling_score: Primary ranking metric (0-100 scale)
@@ -297,6 +376,15 @@ ANALYSIS FOCUS:
 SCENARIO ANALYSIS TECHNICAL CONTEXT:
 You are analyzing scenario analysis data to identify markets with strong scenario planning capabilities and strategic adaptability.
 
+SCORING METHODOLOGY:
+The scenario_analysis_score (0-100 scale) measures how well each market can adapt to different business scenarios and strategic changes, combining:
+• Market Adaptability: How flexibly the market responds to different business strategies (30% weight)
+• Resilience Strength: Market stability across various economic and competitive conditions (25% weight)
+• Strategic Flexibility: Ability to pivot strategies based on changing market conditions (25% weight)
+• Planning Maturity: How sophisticated scenario planning can be in this market (20% weight)
+
+Higher scores indicate markets that are ideal for advanced strategic planning and can successfully adapt to multiple business scenarios.
+
 DATA STRUCTURE:
 - scenario_analysis_score: Primary ranking metric (0-100 scale)
 - scenario_adaptability_level: Market adaptability to different scenarios (Highly/Well/Moderately Adaptable)
@@ -325,6 +413,15 @@ ANALYSIS FOCUS:
 MARKET SIZING TECHNICAL CONTEXT:
 You are analyzing market sizing data to identify markets with the largest strategic opportunities and revenue potential.
 
+SCORING METHODOLOGY:
+The market_sizing_score (0-100 scale) measures total market opportunity potential in each area, combining:
+• Market Scale: Total addressable market size and population reach (35% weight)
+• Revenue Potential: Expected revenue generation capability based on income levels (30% weight)
+• Growth Capacity: Market expansion potential and demographic growth trends (20% weight)
+• Market Quality: Purchasing power and customer segment attractiveness (15% weight)
+
+Higher scores indicate markets with the largest strategic opportunities for significant business investment and revenue generation.
+
 DATA STRUCTURE:
 - market_sizing_score: Primary ranking metric (0-100 scale)
 - market_category: Market size classification (Mega/Large/Medium-Large/Medium/Small Market)
@@ -351,6 +448,15 @@ ANALYSIS FOCUS:
 BRAND ANALYSIS TECHNICAL CONTEXT:
 You are analyzing brand analysis data to identify markets with strongest Nike brand opportunities and competitive positioning.
 
+SCORING METHODOLOGY:
+The brand_analysis_score (0-100 scale) measures Nike's brand strength and growth potential in each market, combining:
+• Current Brand Position: Nike's existing market presence and brand recognition (30% weight)
+• Market Share Opportunity: Potential for Nike brand growth and expansion (25% weight)
+• Competitive Landscape: How favorable the competitive environment is for Nike (25% weight)
+• Brand-Market Fit: How well Nike's brand positioning matches local market preferences (20% weight)
+
+Higher scores indicate markets where Nike's brand has the strongest foundation and greatest growth potential for strategic brand investment.
+
 DATA STRUCTURE:
 - brand_analysis_score: Primary ranking metric (0-100 scale)
 - nike_market_share: Current Nike market share percentage
@@ -376,6 +482,15 @@ ANALYSIS FOCUS:
   real_estate_analysis: `
 REAL ESTATE ANALYSIS TECHNICAL CONTEXT:
 You are analyzing real estate analysis data to identify optimal retail locations for Nike store placement and property investment.
+
+SCORING METHODOLOGY:
+The real_estate_analysis_score (0-100 scale) measures location suitability for Nike retail investment, combining:
+• Location Quality: Premium location characteristics and retail environment appeal (35% weight)
+• Demographic Fit: How well the location's customer base matches Nike's target demographics (25% weight)
+• Accessibility & Traffic: Foot traffic potential and customer accessibility (25% weight)
+• Market Opportunity: Local market size and retail growth potential (15% weight)
+
+Higher scores indicate locations with the best combination of premium positioning, target demographics, and high customer traffic for successful Nike retail investment.
 
 DATA STRUCTURE:
 - real_estate_analysis_score: Primary ranking metric (0-100 scale)
@@ -497,6 +612,7 @@ export function getAnalysisPrompt(analysisType: string): string {
   // Map common analysis type variations
   const typeMapping: Record<string, string> = {
     'competitive': 'competitive_analysis',
+    'comparative': 'comparative_analysis',
     'demographic': 'demographic_insights',
     'cluster': 'spatial_clusters',
     'clustering': 'spatial_clusters',

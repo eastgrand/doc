@@ -644,6 +644,21 @@ export class AnalysisEngine {
    * Clear current analysis and reset state
    */
   clearAnalysis(): void {
+    // Clear cached datasets to prevent memory leaks
+    const cacheStatus = this.endpointRouter.getCacheStatus();
+    console.log('[AnalysisEngine] Clearing cache with status:', cacheStatus);
+    this.endpointRouter.clearCache();
+    
+    // Clear visualization effects and resources
+    this.visualizationRenderer.clearEffects();
+    
+    // Log memory usage if available (Chrome only)
+    if (performance.memory) {
+      const used = Math.round(performance.memory.usedJSHeapSize / 1048576);
+      const total = Math.round(performance.memory.totalJSHeapSize / 1048576);
+      console.log(`[AnalysisEngine] Memory after cache clear: ${used}MB / ${total}MB`);
+    }
+    
     this.stateManager.updateState({
       currentAnalysis: null,
       currentVisualization: null,

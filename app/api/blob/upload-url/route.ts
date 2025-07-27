@@ -1,7 +1,7 @@
 import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
+// export const runtime = 'edge'; // Disabled due to CommonJS compatibility issues
 
 export async function OPTIONS(request: Request) {
   return NextResponse.json({}, {
