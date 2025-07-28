@@ -59,5 +59,9 @@ scripts/public/data/endpoints/*.json
 shap-microservice/venv_py311/
 */venv*/
 
-# Endpoints directory
+# Endpoint directories (all variations)
 endpoints/
+public/data/endpoints-original/
+public/data/endpoints-deduplicated/
+public/data/endpoints-nike-optimized/
+public/data/endpoints-gis-cleaned/

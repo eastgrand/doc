@@ -13,7 +13,11 @@
     "test:chat-queries": "jest test/chat-constants-queries.test.ts",
     "test:pipeline": "jest test/query-pipeline.test.ts",
     "test:classifications": "jest test/predefined-queries-classification.test.ts",
-    "migrate-to-blob": "ts-node scripts/migrate-to-blob.ts"
+    "migrate-to-blob": "ts-node scripts/migrate-to-blob.ts",
+    "migrate-batch": "ts-node scripts/migrate-batch.ts",
+    "deduplicate-endpoints": "ts-node scripts/deduplicate-endpoints.ts",
+    "nike-optimize": "ts-node scripts/nike-focused-optimization.ts",
+    "remove-gis-metadata": "ts-node scripts/remove-gis-metadata.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.36.3",
