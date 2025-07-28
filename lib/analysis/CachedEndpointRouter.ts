@@ -1,6 +1,7 @@
 import { AnalysisOptions, RawAnalysisResult } from './types';
 import { ConfigurationManager } from './ConfigurationManager';
 import { loadEndpointData } from '@/utils/blob-data-loader';
+import { EnhancedQueryAnalyzer } from './EnhancedQueryAnalyzer';
 
 /**
  * CachedEndpointRouter - Enhanced with multi-endpoint detection
@@ -15,10 +16,12 @@ export class CachedEndpointRouter {
   private configManager: ConfigurationManager;
   private cachedDatasets: Map<string, any> = new Map();
   private loadingPromises: Map<string, Promise<any>> = new Map();
+  private queryAnalyzer: EnhancedQueryAnalyzer;
 
   constructor(configManager: ConfigurationManager) {
     this.configManager = configManager;
-    console.log('[CachedEndpointRouter] Initialized with multi-endpoint awareness');
+    this.queryAnalyzer = new EnhancedQueryAnalyzer();
+    console.log('[CachedEndpointRouter] Initialized with enhanced query analyzer');
   }
 
   /**
@@ -128,9 +131,37 @@ export class CachedEndpointRouter {
   }
 
   /**
-   * Standard single endpoint suggestion (existing logic)
+   * Standard single endpoint suggestion - Now uses EnhancedQueryAnalyzer
    */
   public suggestSingleEndpoint(query: string): string {
+    console.log(`[CachedEndpointRouter] Using enhanced query analyzer for: "${query}"`);
+    
+    // Use the enhanced query analyzer
+    const bestEndpoint = this.queryAnalyzer.getBestEndpoint(query);
+    const scores = this.queryAnalyzer.analyzeQuery(query);
+    
+    // Log analysis results for debugging
+    if (scores.length > 0) {
+      console.log(`[CachedEndpointRouter] Top 3 endpoint scores:`);
+      scores.slice(0, 3).forEach((score, i) => {
+        console.log(`  ${i + 1}. ${score.endpoint}: ${score.score} - ${score.reasons.join('; ')}`);
+      });
+    }
+    
+    // Also log identified fields
+    const fields = this.queryAnalyzer.getQueryFields(query);
+    if (fields.length > 0) {
+      console.log(`[CachedEndpointRouter] Identified fields:`, fields);
+    }
+    
+    console.log(`[CachedEndpointRouter] Selected endpoint: ${bestEndpoint}`);
+    return bestEndpoint;
+  }
+
+  /**
+   * Legacy endpoint suggestion method (kept for backwards compatibility)
+   */
+  private legacySuggestSingleEndpoint(query: string): string {
     const lowerQuery = query.toLowerCase();
     const endpoints = this.configManager.getEndpointConfigurations();
     

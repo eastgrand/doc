@@ -357,7 +357,7 @@ export class ConfigurationManager {
         defaultVisualization: 'bivariate',
         payloadTemplate: { target_variable: '', sample_size: 5000 },
         responseProcessor: 'CorrelationAnalysisProcessor',
-        keywords: ['correlation', 'relationship', 'related', 'association'],
+        keywords: ['correlation', 'statistical correlation', 'correlates with'],
         targetVariable: 'correlation_score',
         scoreFieldName: 'correlation_score',
         requiredFields: ['target_variable'],
@@ -376,7 +376,7 @@ export class ConfigurationManager {
         defaultVisualization: 'choropleth',
         payloadTemplate: { target_variable: '', sample_size: 5000 },
         responseProcessor: 'DemographicDataProcessor', // Demographic data processor
-        keywords: ['demographic', 'demographics', 'population', 'age', 'income', 'lifestyle', 'demographic opportunity', 'demographic score', 'demographic insights'],
+        keywords: ['demographic', 'demographics', 'population', 'age', 'income', 'lifestyle', 'demographic opportunity', 'demographic score', 'demographic insights', 'yoga', 'fitness', 'gym', 'athletic', 'running', 'health', 'wellness', 'active lifestyle', 'exercise'],
         targetVariable: 'demographic_score',
         scoreFieldName: 'demographic_score',
         requiredFields: ['target_variable'],
@@ -561,7 +561,7 @@ export class ConfigurationManager {
           include_psychographics: true
         },
         responseProcessor: 'CustomerProfileProcessor',
-        keywords: ['customer profile', 'customer persona', 'ideal customer', 'target customer', 'customer characteristics', 'customer fit', 'persona analysis', 'buyer profile', 'customer behavior', 'lifestyle patterns', 'customer demographics', 'target demographics', 'demographic fit', 'lifestyle analysis', 'customer values', 'psychographics', 'customer personas', 'ideal customer personas'],
+        keywords: ['customer profile', 'customer persona', 'ideal customer', 'target customer', 'customer characteristics', 'customer fit', 'persona analysis', 'buyer profile', 'customer behavior', 'lifestyle patterns', 'customer demographics', 'target demographics', 'demographic fit', 'lifestyle analysis', 'customer values', 'psychographics', 'customer personas', 'ideal customer personas', 'yoga enthusiast', 'fitness lifestyle', 'gym member', 'athletic customer', 'health conscious', 'wellness focused', 'active lifestyle'],
         targetVariable: 'customer_profile_score',
         scoreFieldName: 'customer_profile_score',
         requiredFields: ['target_variable'],
