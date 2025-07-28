@@ -16,6 +16,7 @@ export { SegmentProfilingProcessor } from './SegmentProfilingProcessor';
 export { ScenarioAnalysisProcessor } from './ScenarioAnalysisProcessor';
 export { MarketSizingProcessor } from './MarketSizingProcessor';
 export { BrandAnalysisProcessor } from './BrandAnalysisProcessor';
+export { BrandDifferenceProcessor } from './BrandDifferenceProcessor';
 export { RealEstateAnalysisProcessor } from './RealEstateAnalysisProcessor';
 export { StrategicAnalysisProcessor } from './StrategicAnalysisProcessor';
 
@@ -39,7 +40,8 @@ export const PROCESSOR_TYPES = {
   ANOMALY_DETECTION: 'anomaly_detection',
   PREDICTIVE_MODELING: 'predictive_modeling',
   SCENARIO_ANALYSIS: 'scenario_analysis',
-  SEGMENT_PROFILING: 'segment_profiling'
+  SEGMENT_PROFILING: 'segment_profiling',
+  BRAND_DIFFERENCE: 'brand_difference'
 } as const;
 
 /**
@@ -62,6 +64,7 @@ export const ENDPOINT_PROCESSOR_MAP = {
   '/predictive-modeling': PROCESSOR_TYPES.PREDICTIVE_MODELING,
   '/scenario-analysis': PROCESSOR_TYPES.SCENARIO_ANALYSIS,
   '/segment-profiling': PROCESSOR_TYPES.SEGMENT_PROFILING,
+  '/brand-difference': PROCESSOR_TYPES.BRAND_DIFFERENCE,
   // Fallback to core analysis for endpoints without specialized processors
   '/sensitivity-analysis': PROCESSOR_TYPES.CORE_ANALYSIS,
   '/model-performance': PROCESSOR_TYPES.CORE_ANALYSIS,

@@ -319,6 +319,34 @@ export class ConfigurationManager {
         },
         mockResponses: false
       },
+      {
+        id: '/brand-difference',
+        name: 'Brand Market Share Difference',
+        description: 'Calculate and visualize percent difference in market share between any two brands',
+        category: 'competitive',
+        url: '/brand-difference',
+        defaultVisualization: 'choropleth',
+        payloadTemplate: {
+          brand1: 'nike',
+          brand2: 'adidas',
+          sample_size: 5000,
+          analysis_type: 'percent_difference'
+        },
+        responseProcessor: 'BrandDifferenceProcessor',
+        keywords: ['difference', 'brand difference', 'market share difference', 'percent difference', 'nike vs adidas difference', 'compare brands', 'brand comparison difference', 'share difference', 'vs', 'versus', 'nike adidas difference'],
+        targetVariable: 'brand_difference_score',
+        scoreFieldName: 'brand_difference_score',
+        requiredFields: ['brand1', 'brand2'],
+        optionalFields: ['sample_size', 'analysis_type'],
+        expectedResponseTime: 20000,
+        cacheable: true,
+        rateLimit: { requests: 40, window: 3600000 },
+        validationRules: {
+          supportedBrands: ['nike', 'adidas', 'jordan'],
+          analysisTypes: ['percent_difference', 'absolute_difference']
+        },
+        mockResponses: false
+      },
       // Add remaining 13 endpoints with similar enhanced configurations...
       {
         id: '/correlation-analysis',

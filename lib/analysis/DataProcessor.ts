@@ -18,6 +18,7 @@ import { SegmentProfilingProcessor } from './strategies/processors/SegmentProfil
 import { ScenarioAnalysisProcessor } from './strategies/processors/ScenarioAnalysisProcessor';
 import { MarketSizingProcessor } from './strategies/processors/MarketSizingProcessor';
 import { BrandAnalysisProcessor } from './strategies/processors/BrandAnalysisProcessor';
+import { BrandDifferenceProcessor } from './strategies/processors/BrandDifferenceProcessor';
 import { RealEstateAnalysisProcessor } from './strategies/processors/RealEstateAnalysisProcessor';
 import { RiskDataProcessor } from './strategies/processors/RiskDataProcessor';
 import { StrategicAnalysisProcessor } from './strategies/processors/StrategicAnalysisProcessor';
@@ -163,6 +164,7 @@ export class DataProcessor {
     this.processors.set('/market-sizing', new MarketSizingProcessor());
     this.processors.set('/customer-profile', new CustomerProfileProcessor()); // Customer profile analysis processor
     this.processors.set('/brand-analysis', new BrandAnalysisProcessor());
+    this.processors.set('/brand-difference', new BrandDifferenceProcessor()); // Brand market share difference analysis
     this.processors.set('/real-estate-analysis', new RealEstateAnalysisProcessor());
     
     // All 16 endpoints now have dedicated processors!

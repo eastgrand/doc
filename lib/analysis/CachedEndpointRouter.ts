@@ -341,6 +341,7 @@ export class CachedEndpointRouter {
       '/segment-profiling': 'segment-profiling',
       '/scenario-analysis': 'scenario-analysis',
       '/brand-analysis': 'competitive-analysis',
+      '/brand-difference': 'brand-difference',
       '/market-sizing': 'segment-profiling',
       '/real-estate-analysis': 'spatial-clusters'
     };
