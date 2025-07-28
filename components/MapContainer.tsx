@@ -28,6 +28,7 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
   const [loadingProgress, setLoadingProgress] = useState({ loaded: 0, total: 0 });
   const [showLoadingModal, setShowLoadingModal] = useState(true);
   const [layerControllerInitialized, setLayerControllerInitialized] = useState(false);
+  const [allLayersFullyLoaded, setAllLayersFullyLoaded] = useState(false);
 
   // Use refs to track initialization state and prevent loops
   const initializationCompleted = useRef(false);
@@ -36,6 +37,14 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
   // Stable callbacks using useCallback with minimal dependencies
   const handleLayerInitializationProgress = useCallback(({ loaded, total }: { loaded: number; total: number; }) => {
     setLoadingProgress({ loaded, total });
+    
+    // Check if all layers are fully loaded
+    if (loaded === total && total > 0) {
+      // Add a small delay to ensure all renderers are applied
+      setTimeout(() => {
+        setAllLayersFullyLoaded(true);
+      }, 1000); // Give 1 second for all quartile renderers to complete
+    }
   }, []);
 
   const handleLayerInitializationComplete = useCallback(() => {
@@ -65,6 +74,7 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
       if (!initializationCompleted.current) {
         setLayerControllerInitialized(false);
         setShowLoadingModal(true);
+        setAllLayersFullyLoaded(false);
         setLoadingProgress({ loaded: 0, total: 0 });
       }
     } catch (error) {
@@ -72,15 +82,13 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
     }
   }, [view]); // Add view as a dependency
 
-  // Simplified modal visibility effect - only hide when initialization is complete
+  // Hide modal only when ALL layers are fully loaded AND initialization is complete
   useEffect(() => {
-    if (layerControllerInitialized && showLoadingModal) {
-      const timeoutId = setTimeout(() => {
-        setShowLoadingModal(false);
-      }, 500);
-      return () => clearTimeout(timeoutId);
+    if (layerControllerInitialized && allLayersFullyLoaded && showLoadingModal) {
+      console.log('[MapContainer] All layers fully loaded, hiding modal');
+      setShowLoadingModal(false);
     }
-  }, [layerControllerInitialized, showLoadingModal]);
+  }, [layerControllerInitialized, allLayersFullyLoaded, showLoadingModal]);
 
   // Create feature layer map for analysis manager
   const createFeatureLayerMap = useCallback((

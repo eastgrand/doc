@@ -35,7 +35,7 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
   };
 
   return (
-    <div className="fixed inset-0 bg-white/90 backdrop-blur-sm z-[9999] flex items-center justify-center">
+    <div className="fixed inset-0 bg-white/95 backdrop-blur-md z-[99999] flex items-center justify-center pointer-events-auto">
       <div className="max-w-md w-full mx-auto p-6">
         <div className="space-y-6">
           <div className="flex items-center justify-center">
