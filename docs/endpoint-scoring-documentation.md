@@ -65,35 +65,82 @@ The cluster performance score evaluates how well-defined and valuable each geogr
 ## 2. Competitive Analysis
 
 **Endpoint**: `/competitive-analysis`  
-**Script**: `corrected-competitive-scores.js`
+**Script**: `competitive-analysis-scores-simple.js` *(Fixed - Previously `corrected-competitive-scores.js`)*
 
 ### Formula
 
 ```
 Competitive Advantage Score = (
-  0.40 × Market Share Lead +
-  0.30 × Growth Momentum +
-  0.20 × Market Penetration +
-  0.10 × Brand Loyalty Index
+  0.50 × Nike Market Position Score +
+  0.30 × Competitive Landscape Score +
+  0.20 × Market Opportunity Score
+)
+
+Scale: 0-100 with realistic distribution (5-95 range)
+```
+
+### Sub-Component Formulas
+
+```
+Nike Market Position Score = (Nike_Share - Min_Nike_Share) / Nike_Share_Range
+
+Competitive Landscape Score = (
+  0.50 × Market Dominance +
+  0.30 × Competition Intensity +
+  0.20 × Market Concentration (HHI)
+)
+
+Market Opportunity Score = (
+  0.40 × Population Score +
+  0.30 × Wealth Score +
+  0.30 × Income Score
 )
 ```
 
 ### Plain Language
 
-The competitive advantage score measures how well a brand performs against competitors by evaluating:
+**FIXED VERSION** - The competitive advantage score (0-100) measures Nike's competitive positioning using market-focused metrics:
 
-- How much market share lead they have
-- Their growth momentum compared to competitors
-- Market penetration depth
-- Customer loyalty metrics
+- **Nike Market Position (50%)**: Nike's relative market share performance across all markets (uses actual variation: 0-32.76%)
+- **Competitive Landscape (30%)**: Market dominance vs competitors, competition intensity, and market concentration (Herfindahl Index)
+- **Market Opportunity (20%)**: Demographic opportunity based on population size, wealth index, and income levels
+
+**Key Fix Applied**: Removed dependency on identical SHAP values that were causing score clustering around 38-40. Now uses actual market share variation to create meaningful score distribution.
 
 ### Fields Used
 
-- `mp30034a_b_p` - Nike market share
-- `mp30029a_b_p` - Adidas market share
-- Other brand fields for competitive comparison
-- `total_population` - Market size
-- `median_income` - Economic indicator
+**Primary Brand Market Shares:**
+- `value_MP30034A_B_P` - Nike market share (target brand) - Range: 0-32.76%
+- `value_MP30029A_B_P` - Adidas market share (main competitor)
+- `value_MP30032A_B_P` - Jordan market share
+- `value_MP30031A_B_P` - Converse market share
+- `value_MP30035A_B_P` - Puma market share
+- `value_MP30033A_B_P` - New Balance market share
+- `value_MP30030A_B_P` - Asics market share
+- `value_MP30037A_B_P` - Skechers market share
+- `value_MP30036A_B_P` - Reebok market share
+
+**Demographics (No longer using SHAP due to zero variation):**
+- `value_TOTPOP_CY` - Total population (for market opportunity)
+- `value_WLTHINDXCY` - Wealth index (market opportunity)
+- `value_AVGHINC_CY` - Average household income (market opportunity)
+
+**Statistical Measures:**
+- Market share statistics calculated across all records
+- Herfindahl-Hirschman Index for market concentration
+- Competition intensity ratios
+
+### Performance Improvements
+
+**Before Fix:**
+- Standard Deviation: 4.44
+- Score Range: 38-47 (clustered)
+- 75% of scores in 39-41 range
+
+**After Fix:**
+- Standard Deviation: 12.33 (2.8x improvement)
+- Score Range: 5.0-80.4 (realistic spread)
+- Proper quartile distribution: Q1=37.5, Q2=43.0, Q3=48.6
 
 ---
 
@@ -321,34 +368,45 @@ The outlier score identifies statistical outliers using multiple methods:
 ## 9. Comparative Analysis
 
 **Endpoint**: `/comparative-analysis`  
-**Script**: `comparative-analysis-scores.js`
+**Script**: `comparative-analysis-scores-simple.js`
 
 ### Formula
 
 ```
 Comparative Score = (
-  0.35 × Relative Performance +
-  0.25 × Gap Analysis +
-  0.25 × Trend Comparison +
-  0.15 × Statistical Significance
+  40% × Brand Performance +
+  30% × Market Characteristics +
+  20% × Geographic Variation +
+  10% × Competitive Context
 )
+
+where:
+- Brand Performance = Nike vs Adidas market share and dominance
+- Market Characteristics = Population size and demographic diversity  
+- Geographic Variation = ZIP code-based consistent variation
+- Competitive Context = Market competitiveness and untapped potential
 ```
 
 ### Plain Language
 
-The comparative score measures how different groups or segments compare:
+The comparative score measures how areas compare across multiple dimensions:
 
-- Relative performance between groups
-- Size and significance of gaps
-- Trend differences between groups
-- Statistical confidence in differences
+- **Brand Performance**: Nike vs Adidas market share differences and Nike dominance levels
+- **Market Characteristics**: Population size advantages and demographic diversity (Asian, Black, American Indian percentages)
+- **Geographic Variation**: ZIP code-based scoring to ensure meaningful differentiation within cities
+- **Competitive Context**: Overall brand presence and market gap opportunities
+
+This approach creates meaningful quartile breaks for city-level comparisons (e.g., Brooklyn vs Philadelphia) by ensuring score variation within filtered datasets.
 
 ### Fields Used
 
-- Group identifiers
-- Performance metrics by group
-- Statistical test results
-- Trend data by group
+- `mp30034a_b_p` / `value_MP30034A_B_P` - Nike market share
+- `value_MP30029A_B_P` - Adidas market share  
+- `TOTPOP_CY` - Total population
+- `value_ASIAN_CY_P` - Asian population percentage
+- `value_BLACK_CY_P` - Black population percentage
+- `value_AMERIND_CY_P` - American Indian population percentage
+- `ID` - ZIP code for geographic variation calculation
 
 ---
 
@@ -600,57 +658,66 @@ This creates a unified 0-100 score identifying the best strategic expansion oppo
 ## 17. Customer Profile
 
 **Endpoint**: `/customer-profile`  
-**Script**: `generate-customer-profile-scores.js`
+**Data Source**: Pre-calculated comprehensive customer profile data
 
-### Formula
+### Score Components
+
+The customer profile analysis uses **pre-calculated scores** from the data source, providing comprehensive customer persona insights that combine demographic, behavioral, and lifestyle factors:
 
 ```
-Customer Profile Score = (
-  0.30 × Demographic Alignment +
-  0.25 × Lifestyle Score +
-  0.25 × Behavioral Score +
-  0.20 × Market Context Score
-)
-
-where:
-- Demographic Alignment = Age Match + Income Fit + Household Size + Population Density
-- Lifestyle Score = Wealth Index + Activity Patterns + Urban/Professional + Health/Fitness
-- Behavioral Score = Nike Affinity + Purchase Propensity + Early Adopter + Brand Loyalty
-- Market Context = Market Size + Economic Stability + Competitive Context + Growth Potential
+Primary Score: customer_profile_score (0-100)
 ```
 
 ### Plain Language
 
-The customer profile score identifies how well a geographic area matches Nike's ideal customer profile by evaluating:
+The customer profile analysis identifies geographic areas with ideal customer personas for athletic brands by using comprehensive pre-calculated data that combines:
 
-- **Demographic Alignment (30%)**: How well the age (16-45, peak 25-35), income ($35K-$150K, sweet spot $50K-$100K), and household characteristics match Nike's target customer
-- **Lifestyle Score (25%)**: Activity patterns, wealth indicators, urban/professional lifestyle markers, and health/fitness orientation
-- **Behavioral Score (25%)**: Brand affinity (Nike market share), purchase propensity, early adopter characteristics, and brand loyalty indicators
-- **Market Context (20%)**: Market size, economic stability, competitive environment, and growth potential
+- **Demographics**: Population, income, age distribution, and household characteristics
+- **Behavioral Patterns**: Brand affinity (Nike market share), purchasing behavior, and lifestyle preferences  
+- **Market Context**: Economic conditions, competitive landscape, and growth potential
+- **Lifestyle Alignment**: Activity patterns, wealth indicators, and lifestyle markers
 
-The score also identifies one of 5 customer personas:
+Unlike demographic analysis (which focuses purely on population characteristics), customer profile analysis incorporates actual purchasing behavior, brand preferences, and lifestyle indicators to create a more complete picture of customer fit.
 
-- Athletic Enthusiasts
-- Fashion-Forward Professionals
-- Premium Brand Loyalists
-- Emerging Young Adults
-- Value-Conscious Families
+### Customer Personas
 
-### Fields Used
+The data includes pre-categorized customer personas such as:
 
-- `total_population` / `value_TOTPOP_CY` - Market size
-- `median_income` / `value_AVGHINC_CY` - Income demographics
-- `median_age` / `value_MEDAGE_CY` - Age demographics (default: 35)
-- `household_size` / `value_AVGHHSZ_CY` - Household composition (default: 2.5)
-- `wealth_index` / `value_WLTHINDXCY` - Wealth indicators (default: 100)
-- `mp30034a_b_p` / `value_MP30034A_B_P` - Nike market share (brand affinity)
-- Calculated fields:
-  - `demographic_alignment` - Component score
-  - `lifestyle_score` - Component score
-  - `behavioral_score` - Component score
-  - `market_context_score` - Component score
-  - `persona_type` - Identified customer persona
-  - `target_confidence` - Confidence in profile match
+- **Athletic Enthusiasts**: High Nike affinity + strong behavioral scores
+- **Fashion-Forward Professionals**: High income + lifestyle alignment
+- **Premium Brand Loyalists**: Strong brand affinity + economic stability
+- **Emerging Young Adults**: Growing income + behavioral potential
+- **Value-Conscious Families**: Moderate income + practical focus
+
+### Pre-Calculated Fields Used
+
+**Primary Scores:**
+- `customer_profile_score` - Main customer profile fit score (0-100)
+- `demographic_opportunity_score` - Demographic component score
+
+**Component Scores:**
+- `demographic_alignment` - Age, income, household alignment with target customer
+- `lifestyle_score` - Activity patterns, wealth, urban/professional indicators
+- `behavioral_score` - Brand affinity, purchase propensity, loyalty indicators  
+- `market_context_score` - Market size, economic stability, competitive context
+
+**Profile Attributes:**
+- `profile_category` - "Strong Customer Profile Fit", "Moderate Customer Profile Potential", etc.
+- `persona_type` - Pre-identified customer persona category
+- `target_confidence` - Confidence level in profile match (0-100)
+- `brand_loyalty_indicator` - Brand loyalty strength indicator
+- `lifestyle_alignment` - Lifestyle pattern alignment score
+- `purchase_propensity` - Likelihood of athletic brand purchases
+
+**Supporting Demographics:**
+- `total_population` - Market size
+- `median_income` - Income level  
+- `asian_population`, `black_population`, `white_population` - Population diversity
+- `mp30034a_b_p` - Nike market share (behavioral indicator)
+
+### Data Format
+
+Customer profile data uses a **direct array format** `[{...}, {...}]` rather than the wrapped format `{success: true, results: [...]}` used by other endpoints, containing rich pre-calculated customer intelligence.
 
 ---
 
