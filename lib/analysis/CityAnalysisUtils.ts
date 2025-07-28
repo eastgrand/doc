@@ -104,12 +104,55 @@ export class CityAnalysisUtils {
   }
   
   /**
-   * Filter data by city name
+   * Filter data by city name with more precise matching
    */
   static filterDataByCity(data: any[], cityName: string): any[] {
     return data.filter(record => {
       const description = record.DESCRIPTION || record.area_name || '';
-      return description.toLowerCase().includes(cityName.toLowerCase());
+      const descLower = description.toLowerCase();
+      const cityLower = cityName.toLowerCase();
+      
+      // Get all aliases for this city
+      const cityAliases = CITY_MAPPINGS[cityName] || [cityName];
+      
+      // Check if description matches any alias more precisely
+      return cityAliases.some(alias => {
+        const aliasLower = alias.toLowerCase();
+        
+        // For very common city names like "New York", be very restrictive first to avoid false matches
+        if (['new york', 'philadelphia', 'chicago', 'los angeles'].includes(aliasLower)) {
+          // Only match exact city names or city names followed by ZIP/area indicators
+          // Avoid matching "New York Mills", "New York State", etc.
+          if (descLower === aliasLower) return true;
+          if (descLower.includes(`(${aliasLower})`)) return true;
+          if (descLower.includes(`${aliasLower},`)) return true;
+          
+          // For "New York", only match if it's followed by specific patterns
+          if (aliasLower === 'new york') {
+            // Allow "New York" followed by ZIP code patterns or borough indicators
+            return /^new york\s*(\d{5}|\(|$)/i.test(description) ||
+                   /^new york city/i.test(description) ||
+                   /^nyc/i.test(description);
+          }
+          
+          // For other major cities, match only if followed by ZIP or end of string
+          return new RegExp(`^${aliasLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*(\\d{5}|$|\\()`).test(description);
+        }
+        
+        // For borough names within NYC, check if it starts with the borough name
+        if (cityName === 'New York' && ['manhattan', 'brooklyn', 'queens', 'bronx', 'staten island'].includes(aliasLower)) {
+          return descLower.startsWith(aliasLower) || descLower.includes(`(${aliasLower})`);
+        }
+        
+        // For exact matches or parenthetical matches like "New York (Manhattan)"
+        if (descLower === aliasLower || descLower.includes(`(${aliasLower})`)) {
+          return true;
+        }
+        
+        // For other cities, use word boundary matching
+        const wordBoundaryRegex = new RegExp(`\\b${aliasLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+        return wordBoundaryRegex.test(description);
+      });
     });
   }
   
