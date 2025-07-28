@@ -105,7 +105,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "target_variable": "MP30034A_B_P",
             "target_variables": ALL_BRAND_FIELDS,
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": True  # Get all fields from server,
+            "include_all_fields": True,  # Get all fields from server
             "calculate_shap": True,
             "include_shap_values": True,
             "shap_method": "tree_explainer"
@@ -239,7 +239,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "target_variables": ALL_BRAND_FIELDS,
             "method": "shap",
             "max_factors": 30,
-            "include_all_fields": True  # Get all fields from server,  # Use optimized field filter
+            "include_all_fields": True,  # Get all fields from server  # Use optimized field filter
             "calculate_per_record": True,  # Ensure per-record SHAP values
             "per_location_shap": True,  # Calculate unique SHAP values for each location
             "location_specific": True,  # Location-specific feature importance
@@ -277,7 +277,8 @@ ENDPOINT_CONFIGS_ORIGINAL = {
 }
 
 # Process all endpoints that need optimization (the 28MB files)
-ENDPOINT_CONFIGS = ENDPOINT_CONFIGS_ORIGINAL  # Use all endpoints instead of just 2
+# Use all endpoints - aligned with working SHAP implementation
+ENDPOINT_CONFIGS = ENDPOINT_CONFIGS_ORIGINAL
 
 def filter_record(record: Dict[str, Any], fields_to_keep: set) -> Dict[str, Any]:
     """Filter a record to only include the specified fields."""
