@@ -45,6 +45,41 @@ ALL_BRAND_FIELDS = [
     "MP30030A_B_P"   # Asics
 ]
 
+def filter_data(data: Dict[str, Any], fields_to_keep: set) -> Dict[str, Any]:
+    """Filter response data to only include specified fields plus SHAP fields."""
+    filtered_data = {}
+    
+    # Keep only core fields we want
+    core_fields = {'analysis_type', 'feature_importance', 'results', 'success'}
+    
+    for key, value in data.items():
+        if key in core_fields:
+            filtered_data[key] = value
+    
+    # Filter the results records if they exist
+    if 'results' in filtered_data and filtered_data['results']:
+        filtered_results = []
+        for record in filtered_data['results']:
+            filtered_record = {}
+            
+            # Always include SHAP fields (these are the key fields we need)
+            shap_fields = {k: v for k, v in record.items() if k.startswith('shap_')}
+            filtered_record.update(shap_fields)
+            
+            # Include the original 191 fields from complete_field_list_keep.txt
+            original_fields = {k: v for k, v in record.items() if k in fields_to_keep}
+            filtered_record.update(original_fields)
+            
+            # Exclude unwanted metadata fields
+            exclude_fields = {'processing_time', 'timestamp', 'computation_time', 'memory_usage', 
+                            'batch_id', 'record_index', 'analysis_id', 'version'}
+            final_record = {k: v for k, v in filtered_record.items() if k not in exclude_fields}
+            
+            filtered_results.append(final_record)
+        filtered_data['results'] = filtered_results
+    
+    return filtered_data
+
 # Only process the two endpoints we need
 ENDPOINT_CONFIGS_ORIGINAL = {
     "spatial_clusters": {
@@ -57,7 +92,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "cluster_count": 8,
             "clustering_method": "kmeans",
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     },
     "competitive_analysis": {
@@ -70,7 +105,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "target_variable": "MP30034A_B_P",
             "target_variables": ALL_BRAND_FIELDS,
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False,
+            "include_all_fields": True  # Get all fields from server,
             "calculate_shap": True,
             "include_shap_values": True,
             "shap_method": "tree_explainer"
@@ -85,7 +120,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "secondary_variables": ALL_BRAND_FIELDS[1:],
             "target_variables": ALL_BRAND_FIELDS,
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     },
     "demographic_insights": {
@@ -97,7 +132,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "target_variables": ALL_BRAND_FIELDS,
             "matched_fields": ALL_BRAND_FIELDS + ["TOTPOP_CY", "MEDDI_CY"],
             "include_segments": True,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     },
     "trend_analysis": {
@@ -109,7 +144,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "trend_variables": ALL_BRAND_FIELDS,
             "target_variables": ALL_BRAND_FIELDS,
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     },
     "anomaly_detection": {
@@ -120,7 +155,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "target_variables": ALL_BRAND_FIELDS,
             "anomaly_method": "isolation_forest",
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     },
     "feature_interactions": {
@@ -132,7 +167,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "target_variables": ALL_BRAND_FIELDS,
             "interaction_depth": 2,
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     },
     "outlier_detection": {
@@ -143,7 +178,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "target_variables": ALL_BRAND_FIELDS,
             "outlier_method": "zscore",
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     },
     "comparative_analysis": {
@@ -155,7 +190,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "comparison_method": "statistical",
             "target_variables": ALL_BRAND_FIELDS,
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     },
     "predictive_modeling": {
@@ -168,7 +203,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "model_type": "xgboost",
             "include_shap": True,
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     },
     "segment_profiling": {
@@ -180,7 +215,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "target_variables": ALL_BRAND_FIELDS,
             "segment_count": 6,
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     },
     "scenario_analysis": {
@@ -192,7 +227,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "target_variable": "MP30034A_B_P",
             "target_variables": ALL_BRAND_FIELDS,
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     },
     "feature_importance_ranking": {
@@ -204,8 +239,14 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "target_variables": ALL_BRAND_FIELDS,
             "method": "shap",
             "max_factors": 30,
-            "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server,  # Use optimized field filter
+            "calculate_per_record": True,  # Ensure per-record SHAP values
+            "per_location_shap": True,  # Calculate unique SHAP values for each location
+            "location_specific": True,  # Location-specific feature importance
+            "include_shap_values": True,
+            "shap_method": "tree_explainer",
+            "explainer_mode": "local",  # Local explanations for each record
+            "matched_fields": ALL_BRAND_FIELDS
         }
     },
     "sensitivity_analysis": {
@@ -217,7 +258,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "target_variables": ALL_BRAND_FIELDS,
             "sensitivity_variables": ["TOTPOP_CY", "MEDDI_CY"],
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     },
     "model_performance": {
@@ -230,7 +271,7 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "performance_metrics": ["r2_score", "mae", "rmse"],
             "cross_validation": True,
             "matched_fields": ALL_BRAND_FIELDS,
-            "include_all_fields": False
+            "include_all_fields": True  # Get all fields from server
         }
     }
 }
@@ -242,37 +283,54 @@ def filter_record(record: Dict[str, Any], fields_to_keep: set) -> Dict[str, Any]
     """Filter a record to only include the specified fields."""
     return {key: value for key, value in record.items() if key in fields_to_keep}
 
-def export_endpoint_data(endpoint_name: str, config: dict, fields_to_keep: list) -> bool:
-    """Export data from a specific endpoint with field filtering, overwriting original files."""
+def export_endpoint_data(endpoint_name: str, config: dict, fields_to_keep: set) -> bool:
+    """Export data from a specific endpoint with client-side field filtering."""
     print(f"\n📊 Exporting optimized data for: {endpoint_name}")
     
     url = f"{MICROSERVICE_URL}{config['endpoint']}"
-    headers = {"X-API-Key": API_KEY}
     
-    # Update payload to use optimized fields instead of downloading all fields
+    # Update payload to get ALL fields from microservice, then filter client-side
     payload = config['payload'].copy()
-    payload['matched_fields'] = fields_to_keep
-    payload['include_all_fields'] = False
+    payload['include_all_fields'] = True  # Get all fields from server
+    print(f"   📋 Will filter to {len(fields_to_keep)} fields client-side")
     
     try:
         print(f"   🔄 Making request to {url}")
-        response = requests.post(url, json=payload, headers=headers, timeout=300)
+        print(f"   📋 Requesting ALL fields from microservice...")
+        response = requests.post(url, json=payload, headers=HEADERS, timeout=600)
         
         if response.status_code == 200:
             data = response.json()
             
-            # Check the results (microservice should already return only specified fields)
-            if 'results' in data and data['results']:
-                field_count = len(data['results'][0].keys()) if data['results'] else 0
-                print(f"   ✅ Received {field_count} fields (optimized at source)")
-                print(f"   📊 Records: {len(data['results'])}")
+            # Debug: Check raw response before filtering
+            if 'results' in data and len(data['results']) > 0:
+                sample_raw = data['results'][0]
+                shap_count = len([k for k in sample_raw.keys() if k.startswith('shap_')])
+                total_raw_fields = len(sample_raw.keys())
+                print(f"   📊 Raw response fields: {total_raw_fields}")
+                print(f"   📊 SHAP fields in raw: {shap_count}")
+            
+            # Filter the data client-side to keep only specified fields
+            print(f"   🔄 Applying client-side filtering...")
+            filtered_data = filter_data(data, fields_to_keep)
+            
+            if 'results' in filtered_data and len(filtered_data['results']) > 0:
+                sample_filtered = filtered_data['results'][0]
+                filtered_shap_count = len([k for k in sample_filtered.keys() if k.startswith('shap_')])
+                total_filtered_fields = len(sample_filtered.keys())
+                print(f"   ✅ Filtered fields total: {total_filtered_fields}")
+                print(f"   ✅ SHAP fields preserved: {filtered_shap_count}")
+            
+            # Check the results
+            if 'results' in filtered_data and filtered_data['results']:
+                print(f"   ✅ Received {len(filtered_data['results'])} records")
                 
                 # Save filtered data (OVERWRITING original file)
                 os.makedirs(OUTPUT_DIR, exist_ok=True)
                 output_file = f"{OUTPUT_DIR}/{endpoint_name.replace('_', '-')}.json"
                 
                 with open(output_file, 'w') as f:
-                    json.dump(data, f, indent=2, default=str)
+                    json.dump(filtered_data, f, indent=2, default=str)
                 
                 file_size = os.path.getsize(output_file) / (1024 * 1024)  # MB
                 print(f"   💾 Overwritten {output_file} ({file_size:.2f} MB)")
@@ -300,11 +358,9 @@ def main():
         print("❌ No fields to keep loaded. Exiting.")
         return
     
-    # Convert to list for API call
-    fields_list = list(fields_to_keep) if isinstance(fields_to_keep, set) else fields_to_keep
-    
     print(f"📋 Will export {len(fields_to_keep)} fields from {len(ENDPOINT_CONFIGS)} endpoints")
     print(f"🌐 Microservice: {MICROSERVICE_URL}")
+    print(f"📋 Using client-side field filtering for optimal SHAP calculation")
     print(f"⚠️  Will OVERWRITE existing files in {OUTPUT_DIR}")
     
     successful_exports = 0
@@ -313,7 +369,7 @@ def main():
     for i, (endpoint_name, config) in enumerate(ENDPOINT_CONFIGS.items(), 1):
         print(f"\n[{i}/{len(ENDPOINT_CONFIGS)}] Processing {endpoint_name}")
         
-        if export_endpoint_data(endpoint_name, config, fields_list):
+        if export_endpoint_data(endpoint_name, config, fields_to_keep):
             successful_exports += 1
             
             # Load the saved data for combined export
