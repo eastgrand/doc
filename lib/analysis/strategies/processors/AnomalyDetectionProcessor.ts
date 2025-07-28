@@ -566,7 +566,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
     if (moderateAnomalies > 0) {
       summary += `Review ${moderateAnomalies} moderate anomaly markets for potential insights or corrections. `;
     }
-    if (statistics.outlierCount > 0) {
+    if (statistics.outlierCount && statistics.outlierCount > 0) {
       summary += `${statistics.outlierCount} statistical outliers detected requiring pattern analysis. `;
     }
     

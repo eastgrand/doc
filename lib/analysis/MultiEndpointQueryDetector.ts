@@ -74,6 +74,14 @@ export class MultiEndpointQueryDetector {
       weight: 0.85
     },
     
+    // Customer Profile + Strategic Analysis
+    {
+      keywords: ['customer', 'strategic', 'opportunit', 'compare', 'analyz'],
+      endpoints: ['/customer-profile', '/strategic-analysis'],
+      strategy: 'comparison',
+      weight: 0.9
+    },
+    
     // Demographic Opportunity Analysis
     {
       keywords: ['demographic', 'opportunity', 'scores'],

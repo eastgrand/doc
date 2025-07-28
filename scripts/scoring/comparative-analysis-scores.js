@@ -13,21 +13,22 @@ const path = require('path');
 
 console.log('⚖️ Starting Comparative Analysis Scoring...');
 
-// Load the microservice data
-const dataPath = path.join(__dirname, '../../public/data/microservice-export.json');
-const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+// Load comparative analysis data
+const dataPath = path.join(__dirname, '../../public/data/endpoints/comparative-analysis.json');
+let data;
 
-// Access correlation_analysis dataset
-const correlationData = data.datasets.correlation_analysis;
-if (!correlationData || !correlationData.results) {
-  console.error('❌ correlation_analysis dataset not found');
+try {
+  data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+  console.log(`✅ Loaded data with ${data.results?.length || 0} records`);
+} catch (error) {
+  console.error('❌ Failed to load data:', error.message);
   process.exit(1);
 }
 
-console.log(`📊 Processing ${correlationData.results.length} records for comparative analysis scoring...`);
+console.log(`📊 Processing ${data.results.length} records for comparative analysis scoring...`);
 
 // First pass: Calculate comparative baselines for relative analysis
-const comparativeBaselines = calculateComparativeBaselines(correlationData.results);
+const comparativeBaselines = calculateComparativeBaselines(data.results);
 
 // Comparative analysis scoring formula considers:
 // 1. Brand Performance Gap (35%) - Nike vs competitors performance differential
@@ -255,7 +256,7 @@ const scoreStats = {
 
 console.log('🔄 Calculating comparative analysis scores...');
 
-correlationData.results.forEach((record, index) => {
+data.results.forEach((record, index) => {
   const score = calculateComparativeScore(record, comparativeBaselines);
   record.comparative_analysis_score = score;
   
@@ -268,7 +269,7 @@ correlationData.results.forEach((record, index) => {
   processedCount++;
   
   if (processedCount % 500 === 0) {
-    console.log(`   Processed ${processedCount}/${correlationData.results.length} records...`);
+    console.log(`   Processed ${processedCount}/${data.results.length} records...`);
   }
 });
 
@@ -299,7 +300,7 @@ Object.entries(scoreRanges).forEach(([range, count]) => {
 });
 
 // Show top 15 best comparative performance areas
-const topComparative = correlationData.results
+const topComparative = data.results
   .sort((a, b) => b.comparative_analysis_score - a.comparative_analysis_score)
   .slice(0, 15);
 
@@ -317,7 +318,7 @@ topComparative.forEach((record, index) => {
 });
 
 // Add comparative analysis metadata
-correlationData.comparative_analysis_metadata = {
+data.comparative_analysis_metadata = {
   scoring_methodology: {
     brand_performance_gap: '35% - Nike vs competitors performance differential',
     market_position_strength: '30% - Relative market positioning and dominance',
@@ -351,8 +352,13 @@ correlationData.comparative_analysis_metadata = {
 };
 
 // Save updated data
-console.log('💾 Saving updated dataset...');
-fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
+console.log('💾 Saving Comparative Analysis...');
+try {
+  fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
+  console.log('✅ Successfully saved comparative-analysis.json');
+} catch (error) {
+  console.error('❌ Failed to save:', error.message);
+}
 
 console.log('✅ Comparative analysis scoring complete!');
 console.log(`📄 Updated dataset saved to: ${dataPath}`);

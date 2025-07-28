@@ -50,7 +50,6 @@ export class AnalysisEngine {
   private enableMultiEndpoint: boolean;
 
   private constructor(config?: DeepPartial<AnalysisEngineConfig>) {
-    console.log('🚨🚨🚨 [ANALYSIS ENGINE] Constructor called!');
     // Initialize configuration with defaults
     this.config = this.initializeConfig(config);
     
@@ -105,8 +104,6 @@ export class AnalysisEngine {
     const startTime = Date.now();
 
     try {
-      console.log(`🚨🚨🚨 [ANALYSIS ENGINE DEBUG] executeAnalysis called with query: "${query}"`);
-      console.log(`🚨 [ANALYSIS ENGINE DEBUG] options:`, options);
       
       if (this.config.debugMode) {
         console.log(`[AnalysisEngine] Starting analysis: "${query}"`);
@@ -118,9 +115,7 @@ export class AnalysisEngine {
       console.log('[AnalysisEngine] Using frontend cache as primary data source');
       
       // Use endpoint router to select appropriate endpoint based on query
-      console.log(`🚨 [ANALYSIS ENGINE DEBUG] About to call endpointRouter.selectEndpoint`);
       const selectedEndpoint = await this.endpointRouter.selectEndpoint(query, options);
-      console.log(`🚨 [ANALYSIS ENGINE DEBUG] Selected endpoint: ${selectedEndpoint}`);
       console.log(`[AnalysisEngine] Selected endpoint: ${selectedEndpoint}`);
       
       // Check if this should be routed to multi-endpoint analysis
@@ -209,18 +204,9 @@ export class AnalysisEngine {
       }
       
       // Load data from frontend cache (3,983 records with 102 fields)
-      console.log(`🚨 [ANALYSIS ENGINE DEBUG] About to call endpointRouter.callEndpoint`);
       const analysisData = await this.endpointRouter.callEndpoint(selectedEndpoint, query, options);
-      console.log(`🚨 [ANALYSIS ENGINE DEBUG] callEndpoint returned data:`, {
-        success: analysisData?.success,
-        recordCount: analysisData?.results?.length || 0
-      });
       
       // Process the cached data using the correct method name
-      console.log(`[AnalysisEngine] About to call dataProcessor.processResults with endpoint: "${selectedEndpoint}"`);
-      console.log(`[AnalysisEngine] Raw data has ${analysisData.results?.length || 0} records`);
-      console.log(`[AnalysisEngine] Raw data success: ${analysisData.success}`);
-      console.log(`[AnalysisEngine] Raw data keys:`, Object.keys(analysisData));
       
       const processedData = this.dataProcessor.processResultsWithCityAnalysis(analysisData, selectedEndpoint, query);
       
@@ -653,9 +639,9 @@ export class AnalysisEngine {
     this.visualizationRenderer.clearEffects();
     
     // Log memory usage if available (Chrome only)
-    if (performance.memory) {
-      const used = Math.round(performance.memory.usedJSHeapSize / 1048576);
-      const total = Math.round(performance.memory.totalJSHeapSize / 1048576);
+    if ((performance as any).memory) {
+      const used = Math.round((performance as any).memory.usedJSHeapSize / 1048576);
+      const total = Math.round((performance as any).memory.totalJSHeapSize / 1048576);
       console.log(`[AnalysisEngine] Memory after cache clear: ${used}MB / ${total}MB`);
     }
     

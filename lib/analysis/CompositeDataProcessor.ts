@@ -114,12 +114,15 @@ export class CompositeDataProcessor {
     multiResult: MultiEndpointResult
   ): Promise<CompositeAnalysisResult> {
     
-    console.log(`[CompositeDataProcessor] Processing composite analysis for ${mergedData.mergedRecords.length} locations`);
+    // Handle both MergedDataset format and RawAnalysisResult format
+    const recordsArray = (mergedData as any).mergedRecords || (mergedData as any).results || [];
+    
+    console.log(`[CompositeDataProcessor] Processing composite analysis for ${recordsArray.length} locations`);
     
     try {
       // Generate composite insights for each location
       const compositeInsights = await Promise.all(
-        mergedData.mergedRecords.map(record => this.generateCompositeInsight(record, mergedData))
+        recordsArray.map((record: any) => this.generateCompositeInsight(record, mergedData))
       );
 
       // Calculate cross-endpoint correlations
@@ -273,10 +276,11 @@ export class CompositeDataProcessor {
     const location = record.FSA_ID || record.location;
     
     // Find similar areas in same cluster
-    const similarAreas = mergedData.mergedRecords
-      .filter(r => r.cluster_id === clusterId && r.FSA_ID !== location)
+    const records = (mergedData as any).mergedRecords || (mergedData as any).results || [];
+    const similarAreas = records
+      .filter((r: any) => r.cluster_id === clusterId && r.FSA_ID !== location)
       .slice(0, 5)
-      .map(r => r.FSA_ID);
+      .map((r: any) => r.FSA_ID);
 
     const geographicAdvantages = this.identifyGeographicAdvantages(record);
     const locationQuality = this.calculateLocationQuality(record);
@@ -522,18 +526,18 @@ export class CompositeDataProcessor {
     // Calculate correlations between key metrics from different endpoints
     const correlations: Record<string, number> = {};
     
-    const records = mergedData.mergedRecords;
+    const records = (mergedData as any).mergedRecords || (mergedData as any).results || [];
     if (records.length < 10) return correlations;
 
     // Example correlations
     correlations['competition_vs_demographics'] = this.calculateCorrelation(
-      records.map(r => r.value_Nike_preference || 0),
-      records.map(r => r.value_AVGHINC_CY || 0)
+      records.map((r: any) => r.value_Nike_preference || 0),
+      records.map((r: any) => r.value_AVGHINC_CY || 0)
     );
 
     correlations['risk_vs_opportunity'] = this.calculateCorrelation(
-      records.map(r => r.market_volatility || 0),
-      records.map(r => r.predicted_growth || 0)
+      records.map((r: any) => r.market_volatility || 0),
+      records.map((r: any) => r.predicted_growth || 0)
     );
 
     return correlations;

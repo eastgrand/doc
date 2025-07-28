@@ -74,35 +74,23 @@ export class DataProcessor {
    * Process raw results into standardized format using endpoint-specific processors
    */
   processResults(rawResults: RawAnalysisResult, endpoint: string): ProcessedAnalysisData {
-    console.log(`🚨🚨🚨 [DataProcessor] processResults called with endpoint: "${endpoint}" 🚨🚨🚨`);
     
     try {
       // Get the appropriate processor for this endpoint
       const processor = this.getProcessorForEndpoint(endpoint);
       
-      console.log(`🔥🔥🔥 [DataProcessor] Processing ${endpoint} with processor: ${processor.constructor.name} 🔥🔥🔥`);
-      console.log(`🔥 [DataProcessor] Raw data has ${rawResults.results?.length || 0} records`);
       
       // CRITICAL DEBUG: Show first record to confirm data structure
       if (rawResults.results && rawResults.results.length > 0) {
         const firstRecord = rawResults.results[0];
-        console.log(`🔥 [DataProcessor] First record sample:`, {
-          area_id: firstRecord.area_id,
-          has_nike_share: firstRecord.value_MP30034A_B_P !== undefined,
-          nike_share_value: firstRecord.value_MP30034A_B_P,
-          has_adidas_share: firstRecord.value_MP30029A_B_P !== undefined,
-          recordKeys: Object.keys(firstRecord).slice(0, 10)
-        });
       }
       
       // FORCE competitive analysis to always use CompetitiveDataProcessor
       if (endpoint === '/competitive-analysis') {
-        console.log(`🔥🔥🔥 [DataProcessor] COMPETITIVE ANALYSIS ENDPOINT DETECTED 🔥🔥🔥`);
       }
       
       // Validate raw data first
       const validationResult = processor.validate(rawResults);
-      console.log(`🔥 [DataProcessor] Validation result for ${processor.constructor.name}: ${validationResult}`);
       
       if (!validationResult) {
         console.error(`🚨🚨🚨 [DataProcessor] VALIDATION FAILED for ${endpoint} using ${processor.constructor.name} 🚨🚨🚨`);
@@ -187,26 +175,20 @@ export class DataProcessor {
   }
 
   private getProcessorForEndpoint(endpoint: string): DataProcessorStrategy {
-    console.log(`🔥 [DataProcessor] getProcessorForEndpoint called with endpoint: "${endpoint}"`);
-    console.log(`🔥 [DataProcessor] Available processors:`, Array.from(this.processors.keys()));
     
     // SPECIFIC FIX: Only force CompetitiveDataProcessor for competitive analysis endpoints
     if (endpoint.includes('competitive') || endpoint === '/competitive-analysis') {
       const competitiveProcessor = this.processors.get('/competitive-analysis')!;
-      console.log(`🔥 [DataProcessor] FORCING CompetitiveDataProcessor for ${endpoint}`);
-      console.log(`🔥 [DataProcessor] Using processor:`, competitiveProcessor.constructor.name);
       return competitiveProcessor;
     }
     
     // Try to get specific processor for endpoint
     if (this.processors.has(endpoint)) {
       const processor = this.processors.get(endpoint)!;
-      console.log(`🔥 [DataProcessor] Found specific processor for ${endpoint}:`, processor.constructor.name);
       return processor;
     }
     
     // Fallback to default processor
-    console.log(`🔥 [DataProcessor] No specific processor found for ${endpoint}, using default processor`);
     return this.processors.get('default')!;
   }
 

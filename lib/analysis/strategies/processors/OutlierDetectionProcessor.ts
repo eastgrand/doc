@@ -718,7 +718,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
     if (moderateOutliers > 0) {
       summary += `Investigate ${moderateOutliers} moderate outlier markets for specialized strategies or market insights. `;
     }
-    if (statistics.outlierCount > 0) {
+    if (statistics.outlierCount && statistics.outlierCount > 0) {
       summary += `${statistics.outlierCount} statistical outliers detected requiring pattern validation and opportunity assessment. `;
     }
     

@@ -362,7 +362,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     }
     
     // Expansion opportunities
-    const highPotential = records.filter(r => r.value >= statistics.percentile75).length;
+    const highPotential = records.filter(r => r.value >= (statistics.percentile75 || statistics.mean)).length;
     summary += `**Expansion Opportunities:** ${highPotential} markets (${(highPotential/records.length*100).toFixed(1)}%) show high strategic value for expansion. `;
     
     // Market insights
@@ -377,7 +377,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       summary += `Prioritize immediate expansion in top-scoring markets. `;
     }
     summary += `Focus on markets with high market gap and favorable demographics. `;
-    summary += `Consider pilot programs in emerging markets scoring above ${statistics.percentile75.toFixed(1)}. `;
+    summary += `Consider pilot programs in emerging markets scoring above ${(statistics.percentile75 || statistics.mean).toFixed(1)}. `;
     
     return summary;
   }

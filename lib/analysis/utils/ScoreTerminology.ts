@@ -134,6 +134,15 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
     interpretationLow: 'weak segment fit'
   },
   
+  '/customer-profile': {
+    primaryScoreType: 'customer profile scores',
+    scoreFieldName: 'customer_profile_score',
+    scoreDescription: 'Comprehensive customer persona fit combining demographic alignment (30%), lifestyle patterns (25%), behavioral indicators (25%), and market context (20%)',
+    scoreRange: '0-100',
+    interpretationHigh: 'ideal customer profile match',
+    interpretationLow: 'poor customer profile alignment'
+  },
+  
   '/scenario-analysis': {
     primaryScoreType: 'scenario impact scores',
     scoreFieldName: 'scenario_score',

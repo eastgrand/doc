@@ -18,6 +18,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
   }
 
   render(data: ProcessedAnalysisData, config: VisualizationConfig): VisualizationResult {
+    console.log('🚨🚨🚨 [ClusterRenderer] UPDATED VERSION EXECUTING - SHOULD USE POLYGON FILLS');
     console.log(`[ClusterRenderer] Rendering ${data.records.length} clustered records`);
     
     // Extract cluster information
@@ -142,12 +143,17 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
   private createClusterRenderer(clusterInfo: ClusterInfo, clusterColors: string[], config: VisualizationConfig): any {
     // Detect geometry type from config or default to polygon for cluster analysis
     const geometryType = (config as any).geometryType || 'polygon';
-    const valueField = config.valueField || 'value';
+    console.log('🔍 [ClusterRenderer] Detected geometryType:', geometryType, 'config.geometryType:', (config as any).geometryType);
+    // For cluster rendering, always use 'value' field which contains cluster IDs
+    // regardless of what targetVariable is configured as
+    const valueField = 'value';
     
     // For clustering with polygon data, support both polygon fills and centroid points
+    console.log('🔍 [ClusterRenderer] About to check if geometryType === polygon:', geometryType === 'polygon');
     if (geometryType === 'polygon') {
-      // Check if we should use centroids for point-style cluster visualization
-      const usePointClusters = valueField === 'cluster_assignment' || clusterInfo.clusterCount > 5;
+      console.log('✅ [ClusterRenderer] Taking POLYGON branch - should use filled areas');
+      // Always use polygon fills for better geographic understanding
+      const usePointClusters = false; // Disabled: always show polygons for spatial clusters
       
       if (usePointClusters) {
         console.log('[ClusterRenderer] Using enhanced firefly centroids for cluster point symbols');
@@ -200,6 +206,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
       }
       
       // ENHANCED POLYGON CLUSTER VISUALIZATION
+      console.log('🎯 [ClusterRenderer] Using POLYGON renderer - should show filled areas, not circles');
       const enhancedPolygonColors = this.getEnhancedPolygonColors(clusterInfo.clusterCount);
       
         return {
@@ -247,6 +254,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
           }
         };
     } else {
+      console.log('❌ [ClusterRenderer] Taking POINT branch - geometryType was not polygon:', geometryType);
       // ENHANCED POINT GEOMETRY - firefly cluster symbols
       const fireflyClusterColors = this.getClusterFireflyColors(clusterInfo.clusterCount);
       

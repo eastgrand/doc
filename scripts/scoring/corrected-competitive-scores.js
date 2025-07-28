@@ -119,18 +119,18 @@ function calculateCorrectedCompetitiveScore(record) {
       (competitivePressure * 0.20) +                   // Competition: 20%
       (categoryAlignment * 0.10);                      // Category strength: 10%
     
-    // Convert to 1-10 scale with realistic distribution
-    let finalScore = 1 + (weightedScore * 9);
+    // Convert to 0-100 scale to match other endpoints
+    let finalScore = 10 + (weightedScore * 80); // Base 10, up to 90 from weighted score
     
     // Nike brand strength adjustments based on absolute market share
-    if (nikeShare >= 35) finalScore += 1.5;      // Dominant position
-    else if (nikeShare >= 28) finalScore += 1.0; // Strong position
-    else if (nikeShare >= 22) finalScore += 0.5; // Good position
-    else if (nikeShare <= 12) finalScore -= 1.0; // Weak position
-    else if (nikeShare <= 8) finalScore -= 2.0;  // Very weak position
+    if (nikeShare >= 35) finalScore += 15;      // Dominant position
+    else if (nikeShare >= 28) finalScore += 10; // Strong position
+    else if (nikeShare >= 22) finalScore += 5;  // Good position
+    else if (nikeShare <= 12) finalScore -= 10; // Weak position
+    else if (nikeShare <= 8) finalScore -= 20;  // Very weak position
     
-    // Ensure score is between 1-10
-    finalScore = Math.max(1.0, Math.min(10.0, finalScore));
+    // Ensure score is between 0-100
+    finalScore = Math.max(0, Math.min(100, finalScore));
     
     return {
       score: Math.round(finalScore * 10) / 10,
@@ -173,7 +173,7 @@ sampleRecords.forEach((record, idx) => {
   console.log(`   Category Alignment: ${result.components.categoryAlignment}`);
   console.log(`   Strongest Competitor: ${result.components.strongestCompetitor}%`);
   console.log(`   Market Concentration: ${result.components.marketConcentration}`);
-  console.log(`   🏆 FINAL SCORE: ${result.score}/10`);
+  console.log(`   🏆 FINAL SCORE: ${result.score}/100`);
 });
 
 // Apply corrected scores to all records

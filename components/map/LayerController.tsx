@@ -55,7 +55,6 @@ class LayerController {
   }
 
   private async initializeLayers() {
-    console.log('Initializing layers...');
     const newLayerStates: { [key: string]: { layer: __esri.FeatureLayer | null } } = {};
     const layerPromises: Promise<void>[] = [];
 
@@ -135,7 +134,6 @@ class LayerController {
   }
 
   private async initializeGoogleTrendsLayers(region: 'ON' | 'BC') {
-    console.log(`Initializing Google Trends layers for region: ${region}`);
     const newLayerStates = { ...this.layerStates };
 
     const googleTrendsGroup = this.layerGroups.find(group => group.id === 'google-trends-group');

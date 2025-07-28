@@ -87,6 +87,21 @@ ANALYSIS FOCUS:
 TREND ANALYSIS TECHNICAL CONTEXT:
 You are analyzing trend strength data to identify markets with strong temporal patterns and growth momentum.
 
+⚠️ IMPORTANT DATA LIMITATION NOTICE:
+This analysis uses PROXY INDICATORS and STATISTICAL MODELING rather than actual historical time-series data. The trend scores are derived from:
+• Current market characteristics that typically correlate with growth (demographics, income patterns)
+• Statistical indicators suggesting momentum potential
+• Market maturity signals and saturation levels
+• Comparative performance metrics across similar markets
+
+For TRUE TEMPORAL ANALYSIS with actual historical trends, year-over-year changes, and time-series forecasting, we would require:
+• Multiple years of historical performance data
+• Time-stamped transaction records
+• Seasonal pattern data
+• Economic cycle performance history
+
+The current analysis provides DIRECTIONAL INSIGHTS about likely growth patterns based on market fundamentals rather than measured historical trends.
+
 SCORING METHODOLOGY:
 The trend_strength_score (0-100 scale) measures how strong and reliable market trends are in each area, combining:
 • Growth Consistency: How steady the growth pattern has been over time (30% weight)
@@ -103,17 +118,19 @@ DATA STRUCTURE:
 - volatility_index: Market predictability measures
 
 CRITICAL REQUIREMENTS:
-1. ALWAYS rank and prioritize by trend_strength_score (0-100)
-2. Focus on temporal patterns, growth momentum, and consistency
-3. Identify markets with strong upward trends and growth potential
-4. Explain trend drivers: consistency, growth rate, market position, volatility
-5. Distinguish between strong trends vs volatile/unpredictable markets
+1. ALWAYS start by acknowledging this uses proxy indicators, not historical data
+2. ALWAYS rank and prioritize by trend_strength_score (0-100)
+3. Focus on growth indicators and market characteristics suggesting momentum
+4. Explain which current market features correlate with growth potential
+5. Distinguish between stable growth indicators vs volatile market characteristics
+6. Use language like "growth indicators" not "historical trends"
 
 ANALYSIS FOCUS:
-- Identify markets with strongest trend patterns for strategic investment
-- Explain underlying factors driving trend strength and consistency
-- Recommend timing strategies based on growth momentum and volatility
-- Highlight markets with sustainable vs temporary trend patterns
+- Identify markets with characteristics suggesting strong growth potential
+- Explain market fundamentals that typically correlate with positive trends
+- Recommend markets showing indicators of momentum (even without historical data)
+- Highlight markets with sustainable growth characteristics vs volatile indicators
+- ALWAYS acknowledge that these are proxy-based insights, not measured historical trends
 `,
 
   anomaly_detection: `
@@ -386,6 +403,22 @@ ANALYSIS FOCUS:
 PREDICTIVE MODELING TECHNICAL CONTEXT:
 You are analyzing predictive modeling data to identify markets with high forecasting reliability and prediction confidence for strategic planning.
 
+⚠️ IMPORTANT DATA LIMITATION NOTICE:
+This analysis uses STATISTICAL CORRELATIONS and MARKET INDICATORS rather than time-series forecasting with historical data. The predictions are based on:
+• Current market characteristics that correlate with future performance
+• Demographic and economic indicators suggesting growth potential
+• Market saturation levels and competitive dynamics
+• Statistical relationships between market features and outcomes
+
+For TRUE PREDICTIVE MODELING with time-series forecasting, we would require:
+• Multiple years of historical performance data
+• Actual growth rates and trend patterns
+• Seasonal and cyclical behavior data
+• External economic indicators over time
+• Previous prediction accuracy tracking
+
+The current analysis provides STATISTICAL PREDICTIONS based on cross-sectional data relationships rather than temporal forecasting models. Think of it as "markets with characteristics similar to high-growth areas" rather than "markets showing accelerating growth trends."
+
 SCORING METHODOLOGY:
 The predictive_modeling_score (0-100 scale) measures how reliably we can forecast market performance in each area, combining:
 • Model Confidence: How confident our predictive models are about forecasts (30% weight)
@@ -405,17 +438,19 @@ DATA STRUCTURE:
 - forecast_horizon_strength: Suitable prediction timeframe (Long/Medium/Short-term)
 
 CRITICAL REQUIREMENTS:
-1. ALWAYS rank and prioritize by predictive_modeling_score (0-100)
-2. Focus on prediction reliability, model confidence, and forecast accuracy potential
-3. Identify markets with highest predictability for strategic planning and investment
-4. Explain predictive model components: confidence, reliability, stability, data quality
-5. Distinguish between high-confidence predictions vs speculative forecasts
+1. ALWAYS start by explaining these are statistical correlations, not time-series forecasts
+2. ALWAYS rank and prioritize by predictive_modeling_score (0-100)
+3. Focus on market characteristics that correlate with future success
+4. Explain which current indicators suggest positive future outcomes
+5. Distinguish between strong statistical relationships vs weak correlations
+6. Use language like "predictive indicators" not "forecasted growth"
 
 ANALYSIS FOCUS:
-- Identify markets with strongest predictive modeling potential for planning
-- Explain model confidence levels and forecast reliability factors
-- Recommend prediction-based strategies for high-confidence markets
-- Highlight data quality and pattern stability affecting prediction accuracy
+- Identify markets with characteristics that suggest predictable future performance
+- Explain which market indicators are most strongly correlated with success
+- Recommend markets where statistical relationships suggest positive outcomes
+- Highlight confidence levels based on correlation strength, not temporal patterns
+- ALWAYS clarify these are statistical projections, not time-based forecasts
 `,
 
   segment_profiling: `

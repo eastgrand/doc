@@ -1,21 +1,18 @@
 Navigated to http://localhost:3000/
-vendors-node_modules_next_d.css?v=1753636790174:5 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_d.css?v=1753636790174:5:1)
-vendors-node_modules_next_dist_client_a.js?v=1753636790174:490 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_dist_client_a.js?v=1753636790174:490:29)
+vendors-node_modules_next_d.css?v=1753711019313:5 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_d.css?v=1753711019313:5:1)
+vendors-node_modules_next_dist_client_a.js?v=1753711019313:1456 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_dist_client_a.js?v=1753711019313:1456:29)
 Navigated to http://localhost:3000/map
-vendors-node_modules_next_d.css?v=1753636867183:5 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_d.css?v=1753636867183:5:1)
-vendors-node_modules_next_dist_cl.js?v=1753636867183:242 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+vendors-node_modules_next_d.css?v=1753711096528:5 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_d.css?v=1753711096528:5:1)
+vendors-node_modules_next_dist_cl.js?v=1753711096528:242 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
 MapClient.tsx:55 [MapClient MapLegend] Rendering legend: {title: '', type: 'simple', visible: false, itemCount: 0, sampleItems: Array(0)}
 MapClient.tsx:325 [MapClient] Starting map initialization...
-vendors-node_modules_c.js?v=1753636867183:2466 Using Calcite Components 3.2.1 [Date: 2025-05-29, Revision: 618973fec]
+vendors-node_modules_c.js?v=1753711096528:2466 Using Calcite Components 3.2.1 [Date: 2025-05-29, Revision: 618973fec]
 MapClient.tsx:337 [MapClient] ArcGIS modules loaded successfully
 MapClient.tsx:341 [MapClient] API key set: true
 MapClient.tsx:344 [MapClient] Creating map with light grey basemap...
 MapClient.tsx:348 [MapClient] Map created successfully
 MapClient.tsx:356 [MapClient] Creating MapView...
 MapClient.tsx:372 [MapClient] MapView created, waiting for it to be ready...
-MapClient.tsx:384 [MapClient] MapView is ready
-MapClient.tsx:396 [MapClient] Calling onMapLoad...
-MapClient.tsx:398 [MapClient] Map initialization complete
 warn-once.js:16 Image with src "/mpiq_pin2.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
 warnOnce @ warn-once.js:16
 eval @ image-component.js:112
@@ -35,53 +32,45 @@ batchedUpdates$1 @ react-dom.development.js:24953
 batchedUpdates @ react-dom.development.js:28844
 dispatchEventForPluginEventSystem @ react-dom.development.js:32373
 dispatchEvent @ react-dom.development.js:30141
+MapClient.tsx:384 [MapClient] MapView is ready
+MapClient.tsx:396 [MapClient] Calling onMapLoad...
+MapClient.tsx:398 [MapClient] Map initialization complete
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
 LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+layerConfigAdapter.ts:91 [Adapter] Final generated config: {layerCount: 50, groupCount: 4, groups: {…}}
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LayerController.tsx:632 [LayerController] View or config changed, resetting initialization state
+LayerController.tsx:652 [LayerController] Starting initialization for: -["income","participation","population","spending"]
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_8
+MapWidgets.tsx:451 [LAZY LOADING] MapWidgets initialization - widgets will be created on-demand
+MapWidgets.tsx:456 [LAZY LOADING] MapWidgets ready for on-demand widget creation
 ConfigurationManager.ts:35 [ConfigurationManager] Creating singleton instance...
 ConfigurationManager.ts:59 [ConfigurationManager] Loading configurations...
 ConfigurationManager.ts:69 [ConfigurationManager] ✅ Singleton loaded configurations for 15 endpoints
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
 AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: false, firstLayerUrl: undefined, firstLayerId: undefined, extractedLayerNumber: null, constructedServiceUrl: null, …}
-geospatial-chat-interface.tsx:509 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:526 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-AnalysisEngine.ts:88 [AnalysisEngine] Creating singleton instance...
-AnalysisEngine.ts:53 🚨🚨🚨 [ANALYSIS ENGINE] Constructor called!
+geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+AnalysisEngine.ts:87 [AnalysisEngine] Creating singleton instance...
 CachedEndpointRouter.ts:20 [CachedEndpointRouter] Initialized with multi-endpoint awareness
-DataProcessor.ts:186 [DataProcessor] Initialized 21 specialized processors
+DataProcessor.ts:174 [DataProcessor] Initialized 21 specialized processors
 VisualizationRenderer.ts:292 [VisualizationRenderer] Initialized 5 specialized renderers
 CachedEndpointRouter.ts:20 [CachedEndpointRouter] Initialized with multi-endpoint awareness
 MultiEndpointRouter.ts:35 [MultiEndpointRouter] Initialized with multi-endpoint support
 MultiEndpointAnalysisEngine.ts:74 [MultiEndpointAnalysisEngine] Initialized with multi-endpoint capabilities
-AnalysisEngine.ts:69 [AnalysisEngine] Multi-endpoint system enabled
-AnalysisEngine.ts:75 [AnalysisEngine] Initialized with multi-endpoint support: {multiEndpointEnabled: true, config: {…}}
-geospatial-chat-interface.tsx:4031 [GeospatialChat] isInfographicsOpen: false
-layerConfigAdapter.ts:91 [Adapter] Final generated config: {layerCount: 50, groupCount: 4, groups: {…}}
-geospatial-chat-interface.tsx:688 [DEBUG] Features state changed: {count: 0, timestamp: '2025-07-27T17:21:38.086Z', firstFeatureKeys: 'no features', hasCachedSummary: false}
-geospatial-chat-interface.tsx:794 [DEBUG] Target button state changed: {currentTarget: 'MP30034A_B_P', targetIconName: 'SiNike', targetLabel: undefined, inputQuery: '', timestamp: '2025-07-27T17:21:38.109Z'}
-geospatial-chat-interface.tsx:810 [GeospatialChat] Features useEffect triggered: {featuresIsArray: true, featuresLength: 0, isProcessing: false, firstFeature: null}
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-geospatial-chat-interface.tsx:509 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:526 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-geospatial-chat-interface.tsx:4031 [GeospatialChat] isInfographicsOpen: false
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_8
-MapWidgets.tsx:451 [LAZY LOADING] MapWidgets initialization - widgets will be created on-demand
-MapWidgets.tsx:456 [LAZY LOADING] MapWidgets ready for on-demand widget creation
+AnalysisEngine.ts:68 [AnalysisEngine] Multi-endpoint system enabled
+AnalysisEngine.ts:74 [AnalysisEngine] Initialized with multi-endpoint support: {multiEndpointEnabled: true, config: {…}}
+geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_8
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_8: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'TOTPOP_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_8, field: thematic_value
-createQuartileRenderer.ts:22 [createQuartileRenderer] STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:23 [createQuartileRenderer] DEFAULT_COLOR_STOPS: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Total Population Zips'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Total Population Zips' (thematic_value): (4) [1016, 3973, 13647, 145962]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Total Population Zips, Field: thematic_value, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=1016, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=1016, max=3973, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=3973, max=13647, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=13647, max=145962, color= (3) [26, 152, 80]
+geospatial-chat-interface.tsx:373 [DEBUG] Features state changed: {count: 0, timestamp: '2025-07-28T13:58:53.380Z', firstFeatureKeys: 'no features', hasCachedSummary: false}
+geospatial-chat-interface.tsx:457 [DEBUG] Target button state changed: {currentTarget: 'MP30034A_B_P', targetIconName: 'SiNike', targetLabel: undefined, inputQuery: '', timestamp: '2025-07-28T13:58:53.385Z'}
+geospatial-chat-interface.tsx:473 [GeospatialChat] Features useEffect triggered: {featuresIsArray: true, featuresLength: 0, isProcessing: false, firstFeature: null}
+geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_8
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_10
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 2, internalProgress: 0}
@@ -91,14 +80,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_10
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_10: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'DIVINDX_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_10, field: thematic_value
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Diversity Index'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Diversity Index' (thematic_value): (4) [16.2, 29.4, 53.7, 89.6]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Diversity Index, Field: thematic_value, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=16.2, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=16.2, max=29.4, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=29.4, max=53.7, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=53.7, max=89.6, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_10
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_11
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 4, internalProgress: 2}
@@ -108,14 +89,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_11
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_11: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'WHITE_CY', 'WHITE_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_11, field: WHITE_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 White Population ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 White Population ( )' (WHITE_CY_P): (4) [73.23, 88.08, 93.32, 100]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 White Population ( ), Field: WHITE_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=73.23, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=73.23, max=88.08, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=88.08, max=93.32, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=93.32, max=100, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_11
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_12
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 6, internalProgress: 4}
@@ -125,14 +98,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_12
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_12: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'BLACK_CY', 'BLACK_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_12, field: BLACK_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Black Population ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Black Population ( )' (BLACK_CY_P): (4) [0.72, 1.94, 5.92, 92.38]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Black Population ( ), Field: BLACK_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=0.72, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=0.72, max=1.94, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=1.94, max=5.92, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=5.92, max=92.38, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_12
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_13
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 8, internalProgress: 6}
@@ -142,14 +107,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_13
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_13: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'AMERIND_CY', 'AMERIND_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_13, field: AMERIND_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 American Indian Population ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 American Indian Population ( )' (AMERIND_CY_P): (4) [0.16, 0.27, 0.5, 88.24]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 American Indian Population ( ), Field: AMERIND_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=0.16, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=0.16, max=0.27, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=0.27, max=0.5, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=0.5, max=88.24, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_13
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_14
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 10, internalProgress: 8}
@@ -159,14 +116,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_14
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_14: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'ASIAN_CY', 'ASIAN_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_14, field: ASIAN_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Asian Population ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Asian Population ( )' (ASIAN_CY_P): (4) [0.47, 1.4, 4.47, 77.33]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Asian Population ( ), Field: ASIAN_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=0.47, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=0.47, max=1.4, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=1.4, max=4.47, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=4.47, max=77.33, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_14
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_15
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 12, internalProgress: 10}
@@ -176,14 +125,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_15
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_15: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'PACIFIC_CY', 'PACIFIC_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_15, field: PACIFIC_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Pacific Islander Population ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Pacific Islander Population ( )' (PACIFIC_CY_P): (4) [0.02, 0.04, 0.07, 1.24]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Pacific Islander Population ( ), Field: PACIFIC_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=0.02, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=0.02, max=0.04, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=0.04, max=0.07, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=0.07, max=1.24, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_15
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_16
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 14.000000000000002, internalProgress: 12}
@@ -193,14 +134,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_16
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_16: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'OTHRACE_CY', 'OTHRACE_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_16, field: OTHRACE_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Other Race Population ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Other Race Population ( )' (OTHRACE_CY_P): (4) [0.7, 1.66, 4.21, 80]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Other Race Population ( ), Field: OTHRACE_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=0.7, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=0.7, max=1.66, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=1.66, max=4.21, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=4.21, max=80, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_16
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_17
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 16, internalProgress: 14.000000000000002}
@@ -210,14 +143,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_17
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_17: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'RACE2UP_CY', 'RACE2UP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_17, field: RACE2UP_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Population of 2+ Races ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Population of 2+ Races ( )' (RACE2UP_CY_P): (4) [4.34, 5.92, 8.13, 100]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Population of 2+ Races ( ), Field: RACE2UP_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=4.34, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=4.34, max=5.92, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=5.92, max=8.13, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=8.13, max=100, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_17
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_18
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 18, internalProgress: 16}
@@ -227,14 +152,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_18
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_18: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPWHT_CY', 'HISPWHT_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_18, field: HISPWHT_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Hispanic White Pop ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Hispanic White Pop ( )' (HISPWHT_CY_P): (4) [18.36, 24.67, 33.76, 100]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Hispanic White Pop ( ), Field: HISPWHT_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=18.36, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=18.36, max=24.67, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=24.67, max=33.76, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=33.76, max=100, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_18
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_19
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 20, internalProgress: 18}
@@ -244,14 +161,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_19
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_19: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPBLK_CY', 'HISPBLK_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_19, field: HISPBLK_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Hispanic Black Pop ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Hispanic Black Pop ( )' (HISPBLK_CY_P): (4) [2.13, 3.83, 6.67, 100]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Hispanic Black Pop ( ), Field: HISPBLK_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=2.13, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=2.13, max=3.83, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=3.83, max=6.67, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=6.67, max=100, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_19
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_20
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 22, internalProgress: 20}
@@ -261,14 +170,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_20
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_20: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPAI_CY', 'HISPAI_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_20, field: HISPAI_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Hispanic American Indian Pop ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Hispanic American Indian Pop ( )' (HISPAI_CY_P): (4) [1.16, 1.84, 2.94, 100]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Hispanic American Indian Pop ( ), Field: HISPAI_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=1.16, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=1.16, max=1.84, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=1.84, max=2.94, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=2.94, max=100, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_20
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_21
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 24, internalProgress: 22}
@@ -278,14 +179,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_21
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_21: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPPI_CY', 'HISPPI_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_21, field: HISPPI_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Hispanic Pacific Islander Pop ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Hispanic Pacific Islander Pop ( )' (HISPPI_CY_P): (4) [0.08, 0.16, 0.37, 33.33]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Hispanic Pacific Islander Pop ( ), Field: HISPPI_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=0.08, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=0.08, max=0.16, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=0.16, max=0.37, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=0.37, max=33.33, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_21
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_22
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 26, internalProgress: 24}
@@ -295,14 +188,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_22
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_22: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPOTH_CY', 'HISPOTH_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_22, field: HISPOTH_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Hispanic Other Race Pop ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Hispanic Other Race Pop ( )' (HISPOTH_CY_P): (4) [19.05, 28.21, 39.29, 100]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Hispanic Other Race Pop ( ), Field: HISPOTH_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=19.05, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=19.05, max=28.21, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=28.21, max=39.29, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=39.29, max=100, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_22
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_24
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 28.000000000000004, internalProgress: 26}
@@ -312,14 +197,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_24
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_24: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HHPOP_CY', 'HHPOP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_24, field: HHPOP_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Household Population ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Household Population ( )' (HHPOP_CY_P): (4) [99, 99, 100, 100]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Household Population ( ), Field: HHPOP_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=99, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=99, max=99, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=99, max=100, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=100, max=100, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_24
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_25
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 30, internalProgress: 28.000000000000004}
@@ -329,14 +206,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_25
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_25: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'FAMPOP_CY', 'FAMPOP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_25, field: FAMPOP_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Family Population ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Family Population ( )' (FAMPOP_CY_P): (4) [74.99, 79.65, 83.43, 100]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Family Population ( ), Field: FAMPOP_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=74.99, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=74.99, max=79.65, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=79.65, max=83.43, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=83.43, max=100, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_25
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_55
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 32, internalProgress: 30}
@@ -346,14 +215,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_55
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_55: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_55, field: GENZ_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer 'Generation Z Pop ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer 'Generation Z Pop ( )' (GENZ_CY_P): (4) [18.18, 20.07, 22.07, 99.4]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: Generation Z Pop ( ), Field: GENZ_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=18.18, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=18.18, max=20.07, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=20.07, max=22.07, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=22.07, max=99.4, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_55
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_56
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 34, internalProgress: 32}
@@ -363,14 +224,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_56
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_56: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_56, field: GENALPHACY_P
-createQuartileRenderer.ts:161 Creating renderer for layer 'Generation Alpha Pop ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer 'Generation Alpha Pop ( )' (GENALPHACY_P): (4) [6.97, 7.96, 8.97, 40]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: Generation Alpha Pop ( ), Field: GENALPHACY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=6.97, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=6.97, max=7.96, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=7.96, max=8.97, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=8.97, max=40, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_56
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_57
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 36, internalProgress: 34}
@@ -380,14 +233,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_57
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_57: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MILLENN_CY', 'MILLENN_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_57, field: MILLENN_CY_P
-createQuartileRenderer.ts:161 Creating renderer for layer 'Millennial Pop ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer 'Millennial Pop ( )' (MILLENN_CY_P): (4) [18.7, 20.59, 23.16, 100]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: Millennial Pop ( ), Field: MILLENN_CY_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=18.7, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=18.7, max=20.59, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=20.59, max=23.16, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=23.16, max=100, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_57
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_9
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 38, internalProgress: 36}
@@ -397,14 +242,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_9
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_9: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'MEDDI_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_9, field: thematic_value
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Median Disposable Income'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Median Disposable Income' (thematic_value): (4) [51388, 60322, 81588, 200001]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Median Disposable Income, Field: thematic_value, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=51388, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=51388, max=60322, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=60322, max=81588, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=81588, max=200001, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_9
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_23
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 40, internalProgress: 38}
@@ -414,14 +251,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_23
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_23: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'WLTHINDXCY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_23, field: thematic_value
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Wealth Index'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Wealth Index' (thematic_value): (4) [68, 93, 137, 355]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Wealth Index, Field: thematic_value, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=68, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=68, max=93, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=93, max=137, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=137, max=355, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_23
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_26
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 42, internalProgress: 40}
@@ -431,14 +260,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_26
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_26: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X9051_X', 'X9051_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_26, field: thematic_value
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Sports Rec Exercise Equipment (Avg)'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Sports Rec Exercise Equipment (Avg)' (thematic_value): (4) [223.4, 270.76, 357.2, 914]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Sports Rec Exercise Equipment (Avg), Field: thematic_value, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=223.4, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=223.4, max=270.76, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=270.76, max=357.2, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=357.2, max=914, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_26
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_27
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 44, internalProgress: 42}
@@ -448,14 +269,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_27
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_27: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP07109A_B', 'MP07109A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_27, field: MP07109A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Spent $300+ on Sports Clothing 12 Mo'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Spent $300+ on Sports Clothing 12 Mo' (MP07109A_B_P): (4) [21.21, 22.63, 24.82, 33.33]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Spent $300+ on Sports Clothing 12 Mo, Field: MP07109A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=21.21, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=21.21, max=22.63, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=22.63, max=24.82, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=24.82, max=33.33, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_27
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_28
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 46, internalProgress: 44}
@@ -465,14 +278,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_28
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_28: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP07111A_B', 'MP07111A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_28, field: MP07111A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Spent $100+ on Athletic Workout Wear'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Spent $100+ on Athletic Workout Wear' (MP07111A_B_P): (4) [9.94, 11.79, 15.11, 25.07]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Spent $100+ on Athletic Workout Wear, Field: MP07111A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=9.94, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=9.94, max=11.79, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=11.79, max=15.11, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=15.11, max=25.07, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_28
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_29
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 48, internalProgress: 46}
@@ -482,14 +287,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_29
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_29: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'PSIV7UMKVALM', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_29, field: PSIV7UMKVALM
-createQuartileRenderer.ts:161 Creating renderer for layer 'Spent 200 On Shoes'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer 'Spent 200 On Shoes' (PSIV7UMKVALM): (4) [95, 387, 1553, 18381]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: Spent 200 On Shoes, Field: PSIV7UMKVALM, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=95, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=95, max=387, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=387, max=1553, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=1553, max=18381, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_29
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_30
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 50, internalProgress: 48}
@@ -499,14 +296,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_30
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_30: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30016A_B', 'MP30016A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_30, field: MP30016A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought Athletic Shoes 12 Mo ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought Athletic Shoes 12 Mo ( )' (MP30016A_B_P): (4) [58.56, 60.54, 61.6, 75]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought Athletic Shoes 12 Mo ( ), Field: MP30016A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=58.56, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=58.56, max=60.54, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=60.54, max=61.6, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=61.6, max=75, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_30
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_31
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 52, internalProgress: 50}
@@ -516,14 +305,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_31
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_31: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30018A_B', 'MP30018A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_31, field: MP30018A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought Basketball Shoes 12 Mo ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought Basketball Shoes 12 Mo ( )' (MP30018A_B_P): (4) [2.71, 2.94, 3.49, 12.07]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought Basketball Shoes 12 Mo ( ), Field: MP30018A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=2.71, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=2.71, max=2.94, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=2.94, max=3.49, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=3.49, max=12.07, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_31
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_32
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 54, internalProgress: 52}
@@ -533,14 +314,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_32
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_32: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30019A_B', 'MP30019A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_32, field: MP30019A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought Cross-Training Shoes 12 Mo ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought Cross-Training Shoes 12 Mo ( )' (MP30019A_B_P): (4) [4.25, 4.59, 4.85, 9.09]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought Cross-Training Shoes 12 Mo ( ), Field: MP30019A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=4.25, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=4.25, max=4.59, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=4.59, max=4.85, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=4.85, max=9.09, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_32
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_33
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 56.00000000000001, internalProgress: 54}
@@ -550,14 +323,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_33
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_33: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30021A_B', 'MP30021A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_33, field: MP30021A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought Running or Jogging Shoes 12 Mo'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought Running or Jogging Shoes 12 Mo' (MP30021A_B_P): (4) [13.42, 14.64, 16.33, 25]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought Running or Jogging Shoes 12 Mo, Field: MP30021A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=13.42, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=13.42, max=14.64, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=14.64, max=16.33, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=16.33, max=25, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_33
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_34
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 57.99999999999999, internalProgress: 56.00000000000001}
@@ -567,14 +332,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_34
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_34: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30029A_B', 'MP30029A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_34, field: MP30029A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought Adidas Athletic Shoes 12 Mo ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought Adidas Athletic Shoes 12 Mo ( )' (MP30029A_B_P): (4) [10.15, 11.1, 13.34, 26.78]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought Adidas Athletic Shoes 12 Mo ( ), Field: MP30029A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=10.15, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=10.15, max=11.1, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=11.1, max=13.34, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=13.34, max=26.78, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_34
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_35
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 60, internalProgress: 57.99999999999999}
@@ -584,14 +341,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_35
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_35: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30030A_B', 'MP30030A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_35, field: MP30030A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought Asics Athletic Shoes 12 Mo ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought Asics Athletic Shoes 12 Mo ( )' (MP30030A_B_P): (4) [4.26, 4.72, 5.27, 9.09]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought Asics Athletic Shoes 12 Mo ( ), Field: MP30030A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=4.26, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=4.26, max=4.72, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=4.72, max=5.27, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=5.27, max=9.09, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_35
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_36
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 62, internalProgress: 60}
@@ -601,14 +350,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_36
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_36: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30031A_B', 'MP30031A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_36, field: MP30031A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought Converse Athletic Shoes 12 Mo'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought Converse Athletic Shoes 12 Mo' (MP30031A_B_P): (4) [3.3, 3.63, 4.12, 7.99]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought Converse Athletic Shoes 12 Mo, Field: MP30031A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=3.3, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=3.3, max=3.63, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=3.63, max=4.12, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=4.12, max=7.99, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_36
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_37
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 64, internalProgress: 62}
@@ -618,14 +359,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_37
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_37: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30032A_B', 'MP30032A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_37, field: MP30032A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought Jordan Athletic Shoes 12 Mo ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought Jordan Athletic Shoes 12 Mo ( )' (MP30032A_B_P): (4) [1.17, 1.44, 1.93, 9.22]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought Jordan Athletic Shoes 12 Mo ( ), Field: MP30032A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=1.17, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=1.17, max=1.44, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=1.44, max=1.93, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=1.93, max=9.22, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_37
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_38
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 66, internalProgress: 64}
@@ -635,14 +368,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_38
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_38: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30033A_B', 'MP30033A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_38, field: MP30033A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought New Balance Athletic Shoes 12 M'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought New Balance Athletic Shoes 12 M' (MP30033A_B_P): (4) [9.99, 10.94, 11.7, 20]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought New Balance Athletic Shoes 12 M, Field: MP30033A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=9.99, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=9.99, max=10.94, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=10.94, max=11.7, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=11.7, max=20, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_38
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_39
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 68, internalProgress: 66}
@@ -652,14 +377,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_39
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_39: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30034A_B', 'MP30034A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_39, field: MP30034A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought Nike Athletic Shoes 12 Mo ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought Nike Athletic Shoes 12 Mo ( )' (MP30034A_B_P): (4) [15.42, 17.02, 18.83, 32.76]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought Nike Athletic Shoes 12 Mo ( ), Field: MP30034A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=15.42, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=15.42, max=17.02, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=17.02, max=18.83, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=18.83, max=32.76, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_39
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_40
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 70, internalProgress: 68}
@@ -669,14 +386,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_40
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_40: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30035A_B', 'MP30035A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_40, field: MP30035A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought Puma Athletic Shoes 12 Mo ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought Puma Athletic Shoes 12 Mo ( )' (MP30035A_B_P): (4) [2.79, 3.04, 3.61, 10.86]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought Puma Athletic Shoes 12 Mo ( ), Field: MP30035A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=2.79, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=2.79, max=3.04, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=3.04, max=3.61, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=3.61, max=10.86, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_40
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_41
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 72, internalProgress: 70}
@@ -686,14 +395,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_41
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_41: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30036A_B', 'MP30036A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_41, field: MP30036A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought Reebok Athletic Shoes 12 Mo ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought Reebok Athletic Shoes 12 Mo ( )' (MP30036A_B_P): (4) [2.53, 2.73, 3.24, 9.57]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought Reebok Athletic Shoes 12 Mo ( ), Field: MP30036A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=2.53, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=2.53, max=2.73, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=2.73, max=3.24, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=3.24, max=9.57, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_41
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_42
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 74, internalProgress: 72}
@@ -703,14 +404,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_42
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_42: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30037A_B', 'MP30037A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_42, field: MP30037A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Bought Skechers Athletic Shoes 12 Mo'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Bought Skechers Athletic Shoes 12 Mo' (MP30037A_B_P): (4) [12.88, 14.28, 15.45, 25]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Bought Skechers Athletic Shoes 12 Mo, Field: MP30037A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=12.88, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=12.88, max=14.28, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=14.28, max=15.45, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=15.45, max=25, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_42
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_43
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 76, internalProgress: 74}
@@ -720,14 +413,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_43
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_43: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP31035A_B', 'MP31035A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_43, field: MP31035A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Shopped at Dick`s Sporting Goods Store'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Shopped at Dick`s Sporting Goods Store' (MP31035A_B_P): (4) [10.81, 12.25, 13.75, 25]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Shopped at Dick`s Sporting Goods Store, Field: MP31035A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=10.81, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=10.81, max=12.25, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=12.25, max=13.75, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=13.75, max=25, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_43
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_44
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 78, internalProgress: 76}
@@ -737,14 +422,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_44
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_44: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP31042A_B', 'MP31042A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_44, field: MP31042A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Shopped at Foot Locker Store 3 Mo ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Shopped at Foot Locker Store 3 Mo ( )' (MP31042A_B_P): (4) [1.36, 1.65, 2.27, 15.52]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Shopped at Foot Locker Store 3 Mo ( ), Field: MP31042A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=1.36, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=1.36, max=1.65, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=1.65, max=2.27, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=2.27, max=15.52, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_44
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_45
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 80, internalProgress: 78}
@@ -754,14 +431,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_45
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_45: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33020A_B', 'MP33020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_45, field: MP33020A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Participated in Jogging or Running 12'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Participated in Jogging or Running 12' (MP33020A_B_P): (4) [7, 8.52, 11.07, 18.68]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Participated in Jogging or Running 12, Field: MP33020A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=7, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=7, max=8.52, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=8.52, max=11.07, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=11.07, max=18.68, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_45
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_46
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 82, internalProgress: 80}
@@ -771,14 +440,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_46
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_46: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33032A_B', 'MP33032A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_46, field: MP33032A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Participated in Yoga 12 Mo ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Participated in Yoga 12 Mo ( )' (MP33032A_B_P): (4) [6.6, 8.95, 11.34, 20]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Participated in Yoga 12 Mo ( ), Field: MP33032A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=6.6, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=6.6, max=8.95, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=8.95, max=11.34, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=11.34, max=20, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_46
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_47
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 84, internalProgress: 82}
@@ -788,14 +449,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_47
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_47: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33031A_B', 'MP33031A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_47, field: MP33031A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Participated in Weight Lifting 12 Mo'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Participated in Weight Lifting 12 Mo' (MP33031A_B_P): (4) [12.42, 13.87, 16.06, 25]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Participated in Weight Lifting 12 Mo, Field: MP33031A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=12.42, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=12.42, max=13.87, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=13.87, max=16.06, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=16.06, max=25, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_47
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_48
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 86, internalProgress: 84}
@@ -805,14 +458,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_48
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_48: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33104A_B', 'MP33104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_48, field: MP33104A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 MLB Super Fan (10-10 on 10 Scale) ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 MLB Super Fan (10-10 on 10 Scale) ( )' (MP33104A_B_P): (4) [3.38, 4.07, 4.55, 10.34]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 MLB Super Fan (10-10 on 10 Scale) ( ), Field: MP33104A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=3.38, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=3.38, max=4.07, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=4.07, max=4.55, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=4.55, max=10.34, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_48
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_49
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 88, internalProgress: 86}
@@ -822,14 +467,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_49
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_49: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33105A_B', 'MP33105A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_49, field: MP33105A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 NASCAR Super Fan (10-10 on 10 Scale)'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 NASCAR Super Fan (10-10 on 10 Scale)' (MP33105A_B_P): (4) [1.58, 1.8, 1.98, 6.9]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 NASCAR Super Fan (10-10 on 10 Scale), Field: MP33105A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=1.58, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=1.58, max=1.8, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=1.8, max=1.98, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=1.98, max=6.9, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_49
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_50
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 90, internalProgress: 88}
@@ -839,14 +476,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_50
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_50: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33106A_B', 'MP33106A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_50, field: MP33106A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 NBA Super Fan (10-10 on 10 Scale) ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 NBA Super Fan (10-10 on 10 Scale) ( )' (MP33106A_B_P): (4) [2.17, 2.7, 3.4, 14.37]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 NBA Super Fan (10-10 on 10 Scale) ( ), Field: MP33106A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=2.17, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=2.17, max=2.7, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=2.7, max=3.4, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=3.4, max=14.37, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_50
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_51
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 92, internalProgress: 90}
@@ -856,14 +485,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_51
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_51: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33107A_B', 'MP33107A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_51, field: MP33107A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 NFL Super Fan (10-10 on 10 Scale) ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 NFL Super Fan (10-10 on 10 Scale) ( )' (MP33107A_B_P): (4) [8.66, 9.34, 9.76, 16.67]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 NFL Super Fan (10-10 on 10 Scale) ( ), Field: MP33107A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=8.66, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=8.66, max=9.34, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=9.34, max=9.76, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=9.76, max=16.67, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_51
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_52
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 94, internalProgress: 92}
@@ -873,14 +494,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_52
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_52: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33108A_B', 'MP33108A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_52, field: MP33108A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 NHL Super Fan (10-10 on 10 Scale) ( )'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 NHL Super Fan (10-10 on 10 Scale) ( )' (MP33108A_B_P): (4) [1.8, 2.23, 2.66, 6.9]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 NHL Super Fan (10-10 on 10 Scale) ( ), Field: MP33108A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=1.8, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=1.8, max=2.23, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=2.23, max=2.66, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=2.66, max=6.9, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_52
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_53
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 96, internalProgress: 94}
@@ -890,14 +503,6 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_53
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_53: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33119A_B', 'MP33119A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_53, field: MP33119A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 Intl Soccer Super Fan'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 Intl Soccer Super Fan' (MP33119A_B_P): (4) [1.17, 1.68, 2.38, 6.25]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 Intl Soccer Super Fan, Field: MP33119A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=1.17, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=1.17, max=1.68, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=1.68, max=2.38, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=2.38, max=6.25, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_53
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_54
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 98, internalProgress: 96}
@@ -907,22 +512,745 @@ LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_54
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_54: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33120A_B', 'MP33120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_54, field: MP33120A_B_P
-createQuartileRenderer.ts:161 Creating renderer for layer '2024 MLS Soccer Super Fan'. Is Google Trends layer: undefined
-createQuartileRenderer.ts:169 Calculated breaks for layer '2024 MLS Soccer Super Fan' (MP33120A_B_P): (4) [0.52, 0.81, 1.21, 5.46]
-createQuartileRenderer.ts:180 [createQuartileRenderer] Layer: 2024 MLS Soccer Super Fan, Field: MP33120A_B_P, Color stops: (4) [Array(3), Array(3), Array(3), Array(3)]
-createQuartileRenderer.ts:181 [createQuartileRenderer] Using STANDARD_COLOR_SCHEME: (4) ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 0: min=0, max=0.52, color= (3) [215, 48, 39]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 1: min=0.52, max=0.81, color= (3) [253, 174, 97]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 2: min=0.81, max=1.21, color= (3) [166, 217, 106]
-createQuartileRenderer.ts:308 [createQuartileRenderer] Class break 3: min=1.21, max=5.46, color= (3) [26, 152, 80]
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_54
 MapWidgets.tsx:529 [MapWidgets] Layer initialization complete
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 100, internalProgress: 98}
 LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
 AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: true, firstLayerUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…services/Synapse54_Vetements_layers/FeatureServer', firstLayerId: 'Synapse54_Vetements_layers_layer_8', extractedLayerNumber: '8', constructedServiceUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…rvices/Synapse54_Vetements_layers/FeatureServer/8', …}
-geospatial-chat-interface.tsx:509 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:526 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-geospatial-chat-interface.tsx:4031 [GeospatialChat] isInfographicsOpen: false
+geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 100, internalProgress: 100}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
+index.mjs:468 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+eval @ index.mjs:468
+commitHookEffectListMount @ react-dom.development.js:21102
+commitHookPassiveMountEffects @ react-dom.development.js:23154
+commitPassiveMountOnFiber @ react-dom.development.js:23259
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
+Navigated to http://localhost:3000/map
+vendors-node_modules_next_d.css?v=1753711160312:5 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_d.css?v=1753711160312:5:1)
+vendors-node_modules_next_dist_cl.js?v=1753711160312:242 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+MapClient.tsx:55 [MapClient MapLegend] Rendering legend: {title: '', type: 'simple', visible: false, itemCount: 0, sampleItems: Array(0)}
+MapClient.tsx:325 [MapClient] Starting map initialization...
+vendors-node_modules_c.js?v=1753711160312:2466 Using Calcite Components 3.2.1 [Date: 2025-05-29, Revision: 618973fec]
+MapClient.tsx:337 [MapClient] ArcGIS modules loaded successfully
+MapClient.tsx:341 [MapClient] API key set: true
+MapClient.tsx:344 [MapClient] Creating map with light grey basemap...
+MapClient.tsx:348 [MapClient] Map created successfully
+MapClient.tsx:356 [MapClient] Creating MapView...
+MapClient.tsx:372 [MapClient] MapView created, waiting for it to be ready...
+warn-once.js:16 Image with src "/mpiq_pin2.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+warnOnce @ warn-once.js:16
+eval @ image-component.js:112
+Promise.then
+handleLoading @ image-component.js:37
+onLoad @ image-component.js:198
+callCallback @ react-dom.development.js:20565
+invokeGuardedCallbackImpl @ react-dom.development.js:20614
+invokeGuardedCallback @ react-dom.development.js:20689
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
+executeDispatch @ react-dom.development.js:32128
+processDispatchQueueItemsInOrder @ react-dom.development.js:32160
+processDispatchQueue @ react-dom.development.js:32173
+dispatchEventsForPlugins @ react-dom.development.js:32184
+eval @ react-dom.development.js:32374
+batchedUpdates$1 @ react-dom.development.js:24953
+batchedUpdates @ react-dom.development.js:28844
+dispatchEventForPluginEventSystem @ react-dom.development.js:32373
+dispatchEvent @ react-dom.development.js:30141
+MapClient.tsx:384 [MapClient] MapView is ready
+MapClient.tsx:396 [MapClient] Calling onMapLoad...
+MapClient.tsx:398 [MapClient] Map initialization complete
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+ConfigurationManager.ts:35 [ConfigurationManager] Creating singleton instance...
+ConfigurationManager.ts:59 [ConfigurationManager] Loading configurations...
+ConfigurationManager.ts:69 [ConfigurationManager] ✅ Singleton loaded configurations for 15 endpoints
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
+AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: false, firstLayerUrl: undefined, firstLayerId: undefined, extractedLayerNumber: null, constructedServiceUrl: null, …}
+geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+AnalysisEngine.ts:87 [AnalysisEngine] Creating singleton instance...
+CachedEndpointRouter.ts:20 [CachedEndpointRouter] Initialized with multi-endpoint awareness
+DataProcessor.ts:174 [DataProcessor] Initialized 21 specialized processors
+VisualizationRenderer.ts:292 [VisualizationRenderer] Initialized 5 specialized renderers
+CachedEndpointRouter.ts:20 [CachedEndpointRouter] Initialized with multi-endpoint awareness
+MultiEndpointRouter.ts:35 [MultiEndpointRouter] Initialized with multi-endpoint support
+MultiEndpointAnalysisEngine.ts:74 [MultiEndpointAnalysisEngine] Initialized with multi-endpoint capabilities
+AnalysisEngine.ts:68 [AnalysisEngine] Multi-endpoint system enabled
+AnalysisEngine.ts:74 [AnalysisEngine] Initialized with multi-endpoint support: {multiEndpointEnabled: true, config: {…}}
+geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
+layerConfigAdapter.ts:91 [Adapter] Final generated config: {layerCount: 50, groupCount: 4, groups: {…}}
+geospatial-chat-interface.tsx:373 [DEBUG] Features state changed: {count: 0, timestamp: '2025-07-28T13:59:30.292Z', firstFeatureKeys: 'no features', hasCachedSummary: false}
+geospatial-chat-interface.tsx:457 [DEBUG] Target button state changed: {currentTarget: 'MP30034A_B_P', targetIconName: 'SiNike', targetLabel: undefined, inputQuery: '', timestamp: '2025-07-28T13:59:30.293Z'}
+geospatial-chat-interface.tsx:473 [GeospatialChat] Features useEffect triggered: {featuresIsArray: true, featuresLength: 0, isProcessing: false, firstFeature: null}
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
+LayerController.tsx:632 [LayerController] View or config changed, resetting initialization state
+LayerController.tsx:652 [LayerController] Starting initialization for: -["income","participation","population","spending"]
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_8
+MapWidgets.tsx:451 [LAZY LOADING] MapWidgets initialization - widgets will be created on-demand
+MapWidgets.tsx:456 [LAZY LOADING] MapWidgets ready for on-demand widget creation
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_8
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_8: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'TOTPOP_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_8, field: thematic_value
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_8
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_10
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 2, internalProgress: 0}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 2, internalProgress: 2}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_10
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_10: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'DIVINDX_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_10, field: thematic_value
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_10
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_11
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 4, internalProgress: 2}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 4, internalProgress: 4}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_11
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_11: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'WHITE_CY', 'WHITE_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_11, field: WHITE_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_11
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_12
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 6, internalProgress: 4}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 6, internalProgress: 6}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_12
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_12: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'BLACK_CY', 'BLACK_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_12, field: BLACK_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_12
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_13
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 8, internalProgress: 6}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 8, internalProgress: 8}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_13
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_13: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'AMERIND_CY', 'AMERIND_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_13, field: AMERIND_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_13
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_14
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 10, internalProgress: 8}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 10, internalProgress: 10}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_14
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_14: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'ASIAN_CY', 'ASIAN_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_14, field: ASIAN_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_14
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_15
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 12, internalProgress: 10}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 12, internalProgress: 12}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_15
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_15: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'PACIFIC_CY', 'PACIFIC_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_15, field: PACIFIC_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_15
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_16
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 14.000000000000002, internalProgress: 12}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 14.000000000000002, internalProgress: 14.000000000000002}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_16
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_16: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'OTHRACE_CY', 'OTHRACE_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_16, field: OTHRACE_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_16
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_17
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 16, internalProgress: 14.000000000000002}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 16, internalProgress: 16}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_17
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_17: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'RACE2UP_CY', 'RACE2UP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_17, field: RACE2UP_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_17
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_18
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 18, internalProgress: 16}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 18, internalProgress: 18}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_18
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_18: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPWHT_CY', 'HISPWHT_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_18, field: HISPWHT_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_18
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_19
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 20, internalProgress: 18}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 20, internalProgress: 20}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_19
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_19: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPBLK_CY', 'HISPBLK_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_19, field: HISPBLK_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_19
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_20
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 22, internalProgress: 20}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 22, internalProgress: 22}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_20
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_20: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPAI_CY', 'HISPAI_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_20, field: HISPAI_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_20
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_21
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 24, internalProgress: 22}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 24, internalProgress: 24}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_21
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_21: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPPI_CY', 'HISPPI_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_21, field: HISPPI_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_21
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_22
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 26, internalProgress: 24}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 26, internalProgress: 26}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_22
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_22: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPOTH_CY', 'HISPOTH_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_22, field: HISPOTH_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_22
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_24
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 28.000000000000004, internalProgress: 26}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 28.000000000000004, internalProgress: 28.000000000000004}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_24
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_24: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HHPOP_CY', 'HHPOP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_24, field: HHPOP_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_24
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_25
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 30, internalProgress: 28.000000000000004}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 30, internalProgress: 30}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_25
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_25: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'FAMPOP_CY', 'FAMPOP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_25, field: FAMPOP_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_25
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_55
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 32, internalProgress: 30}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 32, internalProgress: 32}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_55
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_55: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_55, field: GENZ_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_55
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_56
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 34, internalProgress: 32}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 34, internalProgress: 34}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_56
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_56: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_56, field: GENALPHACY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_56
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_57
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 36, internalProgress: 34}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 36, internalProgress: 36}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_57
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_57: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MILLENN_CY', 'MILLENN_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_57, field: MILLENN_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_57
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_9
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 38, internalProgress: 36}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 38, internalProgress: 38}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_9
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_9: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'MEDDI_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_9, field: thematic_value
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_9
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_23
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 40, internalProgress: 38}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 40, internalProgress: 40}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_23
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_23: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'WLTHINDXCY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_23, field: thematic_value
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_23
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_26
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 42, internalProgress: 40}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 42, internalProgress: 42}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_26
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_26: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X9051_X', 'X9051_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_26, field: thematic_value
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_26
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_27
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 44, internalProgress: 42}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 44, internalProgress: 44}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_27
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_27: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP07109A_B', 'MP07109A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_27, field: MP07109A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_27
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_28
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 46, internalProgress: 44}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 46, internalProgress: 46}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_28
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_28: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP07111A_B', 'MP07111A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_28, field: MP07111A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_28
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_29
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 48, internalProgress: 46}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 48, internalProgress: 48}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_29
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_29: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'PSIV7UMKVALM', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_29, field: PSIV7UMKVALM
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_29
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_30
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 50, internalProgress: 48}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 50, internalProgress: 50}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_30
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_30: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30016A_B', 'MP30016A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_30, field: MP30016A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_30
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_31
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 52, internalProgress: 50}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 52, internalProgress: 52}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_31
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_31: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30018A_B', 'MP30018A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_31, field: MP30018A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_31
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_32
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 54, internalProgress: 52}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 54, internalProgress: 54}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_32
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_32: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30019A_B', 'MP30019A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_32, field: MP30019A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_32
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_33
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 56.00000000000001, internalProgress: 54}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 56.00000000000001, internalProgress: 56.00000000000001}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_33
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_33: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30021A_B', 'MP30021A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_33, field: MP30021A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_33
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_34
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 57.99999999999999, internalProgress: 56.00000000000001}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 57.99999999999999, internalProgress: 57.99999999999999}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_34
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_34: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30029A_B', 'MP30029A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_34, field: MP30029A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_34
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_35
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 60, internalProgress: 57.99999999999999}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 60, internalProgress: 60}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_35
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_35: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30030A_B', 'MP30030A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_35, field: MP30030A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_35
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_36
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 62, internalProgress: 60}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 62, internalProgress: 62}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_36
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_36: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30031A_B', 'MP30031A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_36, field: MP30031A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_36
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_37
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 64, internalProgress: 62}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 64, internalProgress: 64}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_37
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_37: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30032A_B', 'MP30032A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_37, field: MP30032A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_37
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_38
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 66, internalProgress: 64}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 66, internalProgress: 66}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_38
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_38: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30033A_B', 'MP30033A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_38, field: MP30033A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_38
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_39
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 68, internalProgress: 66}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 68, internalProgress: 68}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_39
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_39: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30034A_B', 'MP30034A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_39, field: MP30034A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_39
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_40
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 70, internalProgress: 68}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 70, internalProgress: 70}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_40
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_40: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30035A_B', 'MP30035A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_40, field: MP30035A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_40
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_41
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 72, internalProgress: 70}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 72, internalProgress: 72}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_41
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_41: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30036A_B', 'MP30036A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_41, field: MP30036A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_41
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_42
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 74, internalProgress: 72}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 74, internalProgress: 74}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_42
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_42: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30037A_B', 'MP30037A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_42, field: MP30037A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_42
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_43
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 76, internalProgress: 74}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 76, internalProgress: 76}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_43
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_43: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP31035A_B', 'MP31035A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_43, field: MP31035A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_43
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_44
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 78, internalProgress: 76}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 78, internalProgress: 78}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_44
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_44: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP31042A_B', 'MP31042A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_44, field: MP31042A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_44
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_45
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 80, internalProgress: 78}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 80, internalProgress: 80}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_45
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_45: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33020A_B', 'MP33020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_45, field: MP33020A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_45
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_46
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 82, internalProgress: 80}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 82, internalProgress: 82}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_46
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_46: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33032A_B', 'MP33032A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_46, field: MP33032A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_46
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_47
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 84, internalProgress: 82}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 84, internalProgress: 84}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_47
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_47: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33031A_B', 'MP33031A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_47, field: MP33031A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_47
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_48
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 86, internalProgress: 84}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 86, internalProgress: 86}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_48
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_48: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33104A_B', 'MP33104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_48, field: MP33104A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_48
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_49
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 88, internalProgress: 86}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 88, internalProgress: 88}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_49
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_49: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33105A_B', 'MP33105A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_49, field: MP33105A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_49
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_50
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 90, internalProgress: 88}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 90, internalProgress: 90}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_50
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_50: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33106A_B', 'MP33106A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_50, field: MP33106A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_50
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_51
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 92, internalProgress: 90}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 92, internalProgress: 92}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_51
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_51: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33107A_B', 'MP33107A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_51, field: MP33107A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_51
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_52
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 94, internalProgress: 92}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 94, internalProgress: 94}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_52
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_52: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33108A_B', 'MP33108A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_52, field: MP33108A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_52
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_53
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 96, internalProgress: 94}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 96, internalProgress: 96}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_53
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_53: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33119A_B', 'MP33119A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_53, field: MP33119A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_53
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_54
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 98, internalProgress: 96}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 98, internalProgress: 98}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_54
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_54: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33120A_B', 'MP33120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_54, field: MP33120A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_54
+MapWidgets.tsx:529 [MapWidgets] Layer initialization complete
+LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 100, internalProgress: 98}
+LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
+AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: true, firstLayerUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…services/Synapse54_Vetements_layers/FeatureServer', firstLayerId: 'Synapse54_Vetements_layers_layer_8', extractedLayerNumber: '8', constructedServiceUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…rvices/Synapse54_Vetements_layers/FeatureServer/8', …}
+geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
 LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 100, internalProgress: 100}
 LoadingModal.tsx:23 [LoadingModal] Not showing - returning null

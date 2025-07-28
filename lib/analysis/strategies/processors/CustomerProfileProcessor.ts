@@ -187,6 +187,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
   private identifyPersonaType(record: any): string {
     const income = record.median_income || record.value_AVGHINC_CY || record.income || 0;
+    const age = record.median_age || record.value_MEDAGE_CY || record.age || 35;
     const nikeAffinity = Number(record.mp30034a_b_p || record.target_value) || 0;
     const behavioralScore = Number(record.behavioral_score) || 0;
     const demographicScore = Number(record.demographic_alignment) || 0;

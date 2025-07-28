@@ -644,13 +644,13 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     const initId = `${viewId}-${configHash}`;
     
     // Check if we've already initialized this exact combination
-    if (hasInitialized.current === initId) {
+    if (hasInitialized.current === Boolean(initId)) {
       console.log('[LayerController] Already initialized this view+config combination, skipping');
       return;
     }
     
     console.log('[LayerController] Starting initialization for:', initId);
-    hasInitialized.current = initId;
+    hasInitialized.current = Boolean(initId);
     initializeLayers();
   }, [view, config, isInitialized, initializeLayers]);
 

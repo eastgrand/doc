@@ -25,6 +25,7 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
   }
 
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {
+    console.log('🚨🚨🚨 [ClusterDataProcessor] UPDATED VERSION EXECUTING - SHOULD SEE NEW CLUSTER LOGIC');
     if (!this.validate(rawData)) {
       throw new Error('Invalid data format for ClusterDataProcessor');
     }
@@ -60,9 +61,71 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
   // ============================================================================
 
   private processClusterRecords(rawRecords: any[]): GeographicDataPoint[] {
-    return rawRecords.map((record, index) => {
-      const area_id = record.ID || record.area_id || record.id || record.GEOID || `area_${index}`;
-      const area_name = record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || record.name || record.NAME || `Area ${index + 1}`;
+    // Use existing cluster_id and cluster_label from the dataset
+    const clusterMap = new Map<number, any[]>();
+    
+    rawRecords.forEach(record => {
+      // Use the predefined cluster_id from the dataset
+      const clusterId = Number(record.cluster_id);
+      const clusterLabel = record.cluster_label || `Cluster ${clusterId}`;
+      
+      console.log('🔥 [ClusterDataProcessor] Using existing cluster_id:', clusterId, 'label:', clusterLabel, 'for record:', record.ID);
+      
+      if (!clusterMap.has(clusterId)) {
+        clusterMap.set(clusterId, []);
+      }
+      clusterMap.get(clusterId)!.push(record);
+    });
+    
+    // Calculate average performance for each cluster and get top 5
+    const clusterPerformances = Array.from(clusterMap.entries()).map(([clusterId, records]) => {
+      const avgPerformance = records.reduce((sum, record) => 
+        sum + (Number(record.cluster_performance_score) || 0), 0) / records.length;
+      return { clusterId, records, avgPerformance };
+    });
+    
+    // For cluster visualization, show all 5 clusters as centroids instead of individual areas
+    console.log('🔍 [ClusterDataProcessor] All clusters before centroid creation:', clusterPerformances.map(c => `Cluster ${c.clusterId}: ${c.records.length} records, avg ${c.avgPerformance.toFixed(1)}`));
+    
+    // Create cluster centroid records (one representative record per cluster)
+    const clusterCentroids = clusterPerformances.map(cluster => {
+      // Find the most representative record for this cluster (highest similarity/performance)
+      const sortedRecords = cluster.records.sort((a, b) => {
+        const scoreA = Number(a.cluster_performance_score) || 0;
+        const scoreB = Number(b.cluster_performance_score) || 0;
+        return scoreB - scoreA;
+      });
+      
+      const representativeRecord = sortedRecords[0]; // Best record in cluster
+      const centroidCoordinates = this.calculateCentroid(cluster.records);
+      
+      // Create a centroid record representing this entire cluster
+      return {
+        ...representativeRecord,
+        // Override coordinates with true centroid
+        coordinates: centroidCoordinates,
+        // Add cluster metadata
+        clusterId: cluster.clusterId,
+        cluster_size: cluster.records.length,
+        cluster_average_performance: cluster.avgPerformance,
+        is_cluster_centroid: true,
+        represented_areas: cluster.records.length,
+        // Override geometry to be a point at centroid location
+        geometry: {
+          type: 'Point',
+          coordinates: centroidCoordinates
+        }
+      };
+    });
+    
+    console.log('🎯 [ClusterDataProcessor] Created', clusterCentroids.length, 'cluster centroids representing', clusterPerformances.reduce((sum, c) => sum + c.records.length, 0), 'total areas');
+    
+    // Use cluster centroids instead of individual records
+    const topClusterRecords = clusterCentroids;
+    
+    return topClusterRecords.map((record, index) => {
+      const area_id = `cluster_${record.clusterId || index}`;
+      const area_name = `Cluster ${record.clusterId || index + 1} (${record.represented_areas} areas)`;
       
       // Spatial clustering ONLY uses cluster_performance_score - no fallbacks
       const clusterPerformanceScore = Number(record.cluster_performance_score);
@@ -71,16 +134,17 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
         throw new Error(`Spatial clustering record ${record.ID || index} is missing cluster_performance_score`);
       }
       
-      // Use cluster performance score as the primary value
-      const value = clusterPerformanceScore;
+      // Use the existing cluster_id from the dataset
+      const clusterId = Number(record.cluster_id);
+      const value = clusterId;
       
       // Extract cluster-specific properties
       const properties = {
         ...record,
         cluster_performance_score: clusterPerformanceScore,
         score_source: 'cluster_performance_score',
-        cluster_id: record.cluster_id || -1,
-        cluster_label: record.cluster_label || 'Unknown Cluster',
+        cluster_id: clusterId,
+        cluster_label: record.cluster_label || this.getClusterLabel(clusterId), // Use existing labels from dataset
         cluster_size: record.cluster_size || 0,
         similarity_score: Number(record.similarity_score) || 0
       };
@@ -88,8 +152,8 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
       // Extract SHAP values
       const shapValues = this.extractShapValues(record);
       
-      // Category is the cluster name/label (prioritize pre-calculated label)
-      const category = record.cluster_label || this.getClusterLabel(record.cluster_id || -1);
+      // Category is the cluster name/label (use existing labels from dataset)
+      const category = record.cluster_label || this.getClusterLabel(clusterId);
 
       return {
         area_id,
@@ -168,18 +232,15 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
   }
 
   private getClusterLabel(clusterId: number): string {
-    // Generate meaningful cluster labels
-    const labels = [
-      'Urban Core', 'Suburban Family', 'Rural Traditional', 'College Town',
-      'Retirement Community', 'Young Professional', 'Industrial Area', 'Mixed Development',
-      'Affluent Suburb', 'Working Class', 'Tourist Area', 'Agricultural Region'
-    ];
-    
-    if (clusterId >= 0 && clusterId < labels.length) {
-      return labels[clusterId];
+    // Use performance-based cluster labels for clarity
+    switch (clusterId) {
+      case 0: return 'High Performance Markets';
+      case 1: return 'Medium-High Performance Markets';
+      case 2: return 'Medium Performance Markets';
+      case 3: return 'Developing Markets';
+      case 4: return 'Emerging Markets';
+      default: return 'Unknown Cluster';
     }
-    
-    return `Cluster ${clusterId}`;
   }
 
   private calculateClusterStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
@@ -547,5 +608,28 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     }
     
     return patterns;
+  }
+
+  /**
+   * Calculate centroid coordinates from cluster records
+   */
+  private calculateCentroid(records: any[]): [number, number] {
+    if (records.length === 0) return [0, 0];
+    
+    let totalLat = 0;
+    let totalLon = 0;
+    let validCoords = 0;
+    
+    records.forEach(record => {
+      if (record.coordinates && Array.isArray(record.coordinates) && record.coordinates.length >= 2) {
+        totalLon += record.coordinates[0];
+        totalLat += record.coordinates[1];
+        validCoords++;
+      }
+    });
+    
+    if (validCoords === 0) return [0, 0];
+    
+    return [totalLon / validCoords, totalLat / validCoords];
   }
 } 

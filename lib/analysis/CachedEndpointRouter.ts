@@ -76,6 +76,10 @@ export class CachedEndpointRouter {
       /comprehensive.*consider/i,
       /competitive.*and.*demographic.*analysis/i,
       /strategic.*and.*competitive.*analysis/i
+      // Temporarily disabled customer profile multi-endpoint patterns
+      // /customer.*profile.*and.*strategic/i,
+      // /customer.*profile.*compare.*strategic/i,
+      // /analyze.*customer.*profile.*strategic/i
     ];
 
     // Check for pattern matches
@@ -84,7 +88,7 @@ export class CachedEndpointRouter {
     // Check for explicit endpoint combinations in query
     const mentionedEndpoints = this.countEndpointMentions(query);
     
-    if (false) {
+    if (true) {
       console.log('[CachedEndpointRouter] Multi-endpoint detection:', {
         query: query.substring(0, 50) + '...',
         hasMultiPattern,
@@ -101,13 +105,16 @@ export class CachedEndpointRouter {
    */
   private countEndpointMentions(query: string): number {
     const lowerQuery = query.toLowerCase();
+    
+    // Only count multi-endpoint signals when there are explicit analysis type mentions
+    // Don't count generic brand names or simple performance mentions
     const endpointKeywords = {
-      competitive: ['compet', 'brand', 'nike', 'adidas', 'market share'],
-      demographic: ['demographic', 'population', 'income', 'age', 'household'],
-      spatial: ['cluster', 'similar', 'area', 'region', 'location'],
-      predictive: ['predict', 'forecast', 'future', 'growth', 'trend'],
-      risk: ['risk', 'anomaly', 'unusual', 'volatile'],
-      performance: ['perform', 'outlier', 'underperform', 'exception']
+      competitive: ['competitive analysis', 'competition analysis', 'competitor analysis', 'market share analysis'],
+      demographic: ['demographic analysis', 'population analysis', 'income analysis', 'age analysis'],
+      spatial: ['cluster analysis', 'spatial analysis', 'location analysis', 'geographic analysis'],
+      predictive: ['predictive analysis', 'forecast analysis', 'trend analysis'],
+      risk: ['risk analysis', 'anomaly analysis', 'volatile analysis'],
+      strategic: ['strategic analysis', 'strategy analysis', 'investment analysis']
     };
 
     let mentionedEndpoints = 0;
@@ -131,16 +138,44 @@ export class CachedEndpointRouter {
     for (const config of endpoints) {
       let score = 0;
       
-      // Check keyword matches
+      // Check keyword matches with weighted scoring
       for (const keyword of config.keywords) {
         if (lowerQuery.includes(keyword.toLowerCase())) {
-          score += 1;
+          // Give higher weight to more specific endpoint keywords
+          if (config.id === '/demographic-insights' && keyword === 'demographic') {
+            score += 3; // Strong boost for demographic queries
+          } else if (config.id === '/competitive-analysis' && (keyword === 'competitive' || keyword === 'competition')) {
+            score += 3; // Strong boost for competitive queries
+          } else if (config.id === '/comparative-analysis' && keyword === 'compare') {
+            score += 3; // Strong boost for comparative queries
+          } else if (config.id === '/strategic-analysis' && keyword === 'strategic') {
+            score += 3; // Strong boost for strategic queries
+          } else if (keyword.length > 6) {
+            score += 1.5; // Moderate boost for longer, more specific keywords
+          } else {
+            score += 1; // Standard score for generic keywords
+          }
         }
       }
       
       // Boost score for exact matches
       if (config.keywords.some(keyword => lowerQuery === keyword.toLowerCase())) {
         score += 2;
+      }
+      
+      // Special handling: demographic queries with "opportunity" should prioritize demographic-insights
+      if (config.id === '/demographic-insights' && 
+          lowerQuery.includes('demographic') && 
+          (lowerQuery.includes('opportunity') || lowerQuery.includes('score'))) {
+        score += 5; // Strong boost for demographic opportunity queries
+      }
+      
+      // Special handling: "market factors" queries should go to feature-interactions
+      // This is the most semantically appropriate endpoint for factor analysis
+      if (config.id === '/feature-interactions' && 
+          lowerQuery.includes('market factor') && 
+          (lowerQuery.includes('success') || lowerQuery.includes('correlat'))) {
+        score += 7; // Strong boost for market factors analysis
       }
       
       if (score > bestMatch.score) {
@@ -330,24 +365,30 @@ export class CachedEndpointRouter {
    */
   private processCachedData(cachedData: any, query: string, options?: AnalysisOptions): RawAnalysisResult {
     try {
+      // Handle both direct array format and wrapped object format
+      let dataArray: any[] = [];
+      
+      if (Array.isArray(cachedData)) {
+        // Direct array format: [{...}, {...}]
+        dataArray = cachedData;
+        console.log(`[CachedEndpointRouter] Processing direct array format with ${dataArray.length} records`);
+      } else if (cachedData.results && Array.isArray(cachedData.results)) {
+        // Wrapped format: {success: true, results: [{...}, {...}]}
+        dataArray = cachedData.results;
+        console.log(`[CachedEndpointRouter] Processing wrapped format with ${dataArray.length} records`);
+      } else {
+        console.warn(`[CachedEndpointRouter] No valid data array found in cached data:`, Object.keys(cachedData));
+      }
+
       // Ensure we have a valid structure
       const processedResult: RawAnalysisResult = {
         success: true,
-        results: cachedData.results || [],
+        results: dataArray,
         model_info: cachedData.model_info || {},
         feature_importance: cachedData.feature_importance || [],
       };
 
-      // Don't filter by target variable - return ALL records for complete analysis
-      // The visualization factory will handle field selection appropriately
-      if (cachedData.results && Array.isArray(cachedData.results)) {
-        processedResult.results = cachedData.results;
-        
-        console.log(`[CachedEndpointRouter] Processed ${processedResult.results.length} cached records`);
-      } else {
-        console.warn(`[CachedEndpointRouter] No results array found in cached data:`, Object.keys(cachedData));
-      }
-
+      console.log(`[CachedEndpointRouter] Processed ${processedResult.results.length} cached records`);
       return processedResult;
       
     } catch (error) {

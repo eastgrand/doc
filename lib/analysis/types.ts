@@ -83,6 +83,7 @@ export interface RawAnalysisResult {
   total_records?: number;
   progressive_processed?: boolean;
   final_memory_mb?: number;
+  correlation_metadata?: any;
 }
 
 // ============================================================================
@@ -108,6 +109,7 @@ export interface ProcessedAnalysisData {
   correlationMatrix?: any; // Optional correlation-specific metadata
   riskAssessment?: any; // Optional risk-specific metadata
   customerProfileAnalysis?: any; // Optional customer profile-specific metadata
+  correlationAnalysis?: any; // Optional correlation-specific metadata
 }
 
 export interface GeographicDataPoint {
@@ -168,6 +170,13 @@ export interface AnalysisStatistics {
   // Risk-specific
   avgVolatility?: number;
   avgUncertainty?: number;
+  // Customer Profile specific
+  avgDemographicAlignment?: number;
+  avgLifestyleScore?: number;
+  avgBehavioralScore?: number;
+  avgTargetConfidence?: number;
+  strongCorrelations?: number;
+  correlationMatrix?: any;
 }
 
 // ============================================================================

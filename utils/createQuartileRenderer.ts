@@ -19,8 +19,6 @@ const DEFAULT_COLOR_STOPS: ColorStop[] = STANDARD_COLOR_SCHEME.slice(0, 5).map(c
   ];
 });
 
-console.log('[createQuartileRenderer] STANDARD_COLOR_SCHEME:', STANDARD_COLOR_SCHEME);
-console.log('[createQuartileRenderer] DEFAULT_COLOR_STOPS:', DEFAULT_COLOR_STOPS);
 
 // Grey color for filtered-out features
 const FILTERED_OUT_COLOR: ColorStop = [150, 150, 150]; // Grey
@@ -158,7 +156,6 @@ const createQuartileRenderer = async (
       (layer as any).metadata?.isGoogleTrendsLayer
     );
 
-    console.log(`Creating renderer for layer '${layer.title}'. Is Google Trends layer: ${isGoogleTrendsLayer}`);
 
     // Use custom breaks if provided, otherwise calculate quantiles
     const breaks = customBreaks || await calculateQuantiles(layer, field, {
@@ -166,7 +163,6 @@ const createQuartileRenderer = async (
       isNormalized: isGoogleTrendsLayer // Normalize Google Trends values
     });
 
-    console.log(`Calculated breaks for layer '${layer.title}' (${field}):`, breaks);
 
     // For custom breaks, ensure we include 0 as the first break
     const finalBreaks = customBreaks ? [0, ...breaks] : breaks;
@@ -177,8 +173,6 @@ const createQuartileRenderer = async (
     // Define custom colors for Google Trends layers
     const effectiveColorStops = colorStops;
     
-    console.log(`[createQuartileRenderer] Layer: ${layer.title}, Field: ${field}, Color stops:`, effectiveColorStops);
-    console.log(`[createQuartileRenderer] Using STANDARD_COLOR_SCHEME:`, STANDARD_COLOR_SCHEME);
 
     // CHANGE: Get the lowest category color for no-data/0 values (usually red)
     
@@ -227,7 +221,6 @@ const createQuartileRenderer = async (
     
     // If filtering is enabled with both filterField and filterThreshold
     if (filterField && filterThreshold !== undefined) {
-      console.log(`Creating filtered renderer for '${layer.title}' using filter field '${filterField}' with threshold ${filterThreshold}`);
 
       // Create a class-breaks renderer with Arcade expression
       renderer = new ClassBreaksRenderer({
@@ -278,11 +271,11 @@ const createQuartileRenderer = async (
           ? formatCurrency(minValue)
           : minValue.toLocaleString();
 
-        // Create range label instead of single value
-        const label = i === 0 && minValue === 0
-          ? `0 - ${formattedMaxValue}`
+        // Create standard quartile labels with < and > format
+        const label = i === 0
+          ? `< ${formattedMaxValue}`
           : i === finalBreaks.length - 1
-          ? `${formattedMinValue}+`  // Show "+" for highest range
+          ? `> ${formattedMinValue}`
           : `${formattedMinValue} - ${formattedMaxValue}`;
 
         renderer.addClassBreakInfo({
@@ -305,7 +298,6 @@ const createQuartileRenderer = async (
           const colorIndex = isCompositeIndex ? (finalBreaks.length - 1 - i) : i;
           const colorArray = effectiveColorStops[colorIndex] || effectiveColorStops[0];
           
-          console.log(`[createQuartileRenderer] Class break ${i}: min=${i === 0 ? 0 : finalBreaks[i - 1]}, max=${breakValue}, color=`, colorArray);
           
           const minValue = i === 0 ? 0 : finalBreaks[i - 1];
           
@@ -322,11 +314,11 @@ const createQuartileRenderer = async (
             ? formatCurrency(minValue)
             : minValue.toLocaleString();
 
-          // Create range label instead of single value
-          const label = i === 0 && minValue === 0
-            ? `0 - ${formattedMaxValue}`
+          // Create standard quartile labels with < and > format
+          const label = i === 0
+            ? `< ${formattedMaxValue}`
             : i === finalBreaks.length - 1
-            ? `${formattedMinValue}+`  // Show "+" for highest range
+            ? `> ${formattedMinValue}`
             : `${formattedMinValue} - ${formattedMaxValue}`;
 
           return {

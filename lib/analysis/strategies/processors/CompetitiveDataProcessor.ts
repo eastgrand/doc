@@ -434,17 +434,14 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     const nonZeroRecords = records.filter(r => r.value > 0);
     const dataQualityPercent = (nonZeroRecords.length / recordCount * 100).toFixed(1);
     
-    // Start with plain-language explanation of competitive advantage scoring
-    let summary = `**🏆 Understanding Competitive Advantage Scores (0-100 scale):**
+    // Start with competitive advantage scoring explanation
+    let summary = `**🏆 Competitive Advantage Formula (0-100 scale):**
+• **Market Dominance (40% weight):** Nike's market share vs confirmed competitors and market concentration
+• **SHAP-Weighted Demographics (30% weight):** Demographic favorability based on Nike and key segment SHAP values
+• **Competitive Pressure (20% weight):** Threat level from strongest competitors relative to Nike's position
+• **Category Strength (10% weight):** Nike's performance in key categories vs category averages
 
-**What This Score Measures:** How well-positioned Nike is to succeed in each market compared to competitors, especially Adidas. Higher scores indicate markets where Nike has the strongest advantages for growth and expansion.
-
-**How We Calculate It:** The score combines three key factors that determine Nike's competitive strength:
-• **Market Position (worth up to 40 points):** How much stronger Nike's market share is compared to Adidas, plus how well Nike's brand characteristics match what drives success in that area
-• **Market Fit (worth up to 35 points):** How well the local demographics align with Nike's core customer base - people aged 16-35 with household incomes between $35K-$150K tend to be Nike's strongest markets
-• **Competitive Environment (worth up to 25 points):** How fragmented the market is and whether there's room for Nike to grow without intense competition
-
-**Why This Matters:** Markets with scores of 70+ are prime expansion targets, while scores below 40 suggest either strong competition or poor demographic fit.
+Higher scores indicate markets where Nike has the strongest competitive positioning for growth and expansion.
 
 `;
     

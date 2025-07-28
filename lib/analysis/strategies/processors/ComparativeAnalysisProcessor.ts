@@ -134,8 +134,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       featureImportance,
       statistics,
       targetVariable: 'comparison_score', // Use comparison_score to match new data
-      renderer: this.createComparativeRenderer(rankedRecords), // Add direct renderer
-      legend: this.createComparativeLegend(rankedRecords) // Add direct legend
+      renderer: this.createComparativeRenderer(rankedRecords), // Add back custom renderer
+      legend: this.createComparativeLegend(rankedRecords) // Add back custom legend
     };
   }
 
@@ -230,7 +230,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   }
 
   /**
-   * Format class labels for legend
+   * Format class labels for legend with proper < and > format
    */
   private formatClassLabel(classIndex: number, breaks: Array<{min: number, max: number}>): string {
     if (classIndex === 0) {
