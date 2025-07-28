@@ -20,9 +20,21 @@ async function loadBlobUrlMappings(): Promise<Record<string, string>> {
   }
 
   try {
-    const response = await fetch('/data/blob-urls.json');
-    if (response.ok) {
-      blobUrlMappings = await response.json();
+    // Check if we're running in browser or server context
+    if (typeof window !== 'undefined') {
+      // Browser context - use relative URL
+      const response = await fetch('/data/blob-urls.json');
+      if (response.ok) {
+        blobUrlMappings = await response.json();
+        return blobUrlMappings!;
+      }
+    } else {
+      // Server context - load directly from file system
+      const fs = await import('fs/promises');
+      const path = await import('path');
+      const filePath = path.join(process.cwd(), 'public/data/blob-urls.json');
+      const fileContent = await fs.readFile(filePath, 'utf-8');
+      blobUrlMappings = JSON.parse(fileContent);
       return blobUrlMappings!;
     }
   } catch (error) {
@@ -66,11 +78,28 @@ export async function loadEndpointData(endpoint: string): Promise<BlobEndpointDa
 
   try {
     // Fallback to local file
-    const localResponse = await fetch(`/data/endpoints/${endpoint}.json`);
-    if (localResponse.ok) {
-      const data = await localResponse.json();
-      blobDataCache.set(endpoint, data);
-      return data;
+    if (typeof window !== 'undefined') {
+      // Browser context
+      const localResponse = await fetch(`/data/endpoints/${endpoint}.json`);
+      if (localResponse.ok) {
+        const data = await localResponse.json();
+        blobDataCache.set(endpoint, data);
+        return data;
+      }
+    } else {
+      // Server context - load directly from file system
+      const fs = await import('fs/promises');
+      const path = await import('path');
+      const filePath = path.join(process.cwd(), 'public/data/endpoints', `${endpoint}.json`);
+      try {
+        const fileContent = await fs.readFile(filePath, 'utf-8');
+        const data = JSON.parse(fileContent);
+        blobDataCache.set(endpoint, data);
+        console.log(`✅ Loaded ${endpoint} from local file system`);
+        return data;
+      } catch (fsError) {
+        console.warn(`Local file not found: ${filePath}`);
+      }
     }
   } catch (error) {
     console.warn(`Failed to load ${endpoint} from local storage:`, error);
