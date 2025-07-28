@@ -130,7 +130,9 @@ export class VisualizationRenderer {
           config: visualizationConfig,
           renderer: data.renderer,
           popupTemplate: this.createMinimalPopupTemplate(),
-          legend: data.legend
+          legend: data.legend,
+          extent: data.extent || null,
+          shouldZoom: data.shouldZoom || false
         };
         console.log(`[VisualizationRenderer] Direct renderer result:`, {
           type: result?.type,
@@ -351,7 +353,11 @@ export class VisualizationRenderer {
     const vizConfig = this.configManager.getVisualizationConfig(endpointConfig.id);
     
     // Detect geometry type from data records
-    const geometryType = this.detectGeometryType(data);
+    // For spatial clustering, check if we have cluster centroids (point data) or individual areas (polygon data)
+    const hasClusterCentroids = data.records.some(r => r.properties?.is_cluster_centroid === true);
+    const geometryType = data.type === 'spatial_clustering' && !hasClusterCentroids 
+      ? 'polygon' 
+      : this.detectGeometryType(data);
     
     return {
       // Base configuration

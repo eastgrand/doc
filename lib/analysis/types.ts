@@ -99,12 +99,15 @@ export interface ProcessedAnalysisData {
   targetVariable: string;
   renderer?: any; // Optional direct renderer (bypasses complex rendering chain)
   legend?: any; // Optional direct legend (bypasses complex legend generation)
+  extent?: __esri.Extent | null; // Optional extent for map zooming
+  shouldZoom?: boolean; // Whether to zoom to features extent
   clusterAnalysis?: ClusterAnalysisMetadata; // Optional cluster-specific metadata
   competitiveAnalysis?: CompetitiveAnalysisMetadata; // Optional competitive-specific metadata
   demographicAnalysis?: any; // Optional demographic-specific metadata
   trendAnalysis?: any; // Optional trend-specific metadata
   correlationMatrix?: any; // Optional correlation-specific metadata
   riskAssessment?: any; // Optional risk-specific metadata
+  customerProfileAnalysis?: any; // Optional customer profile-specific metadata
 }
 
 export interface GeographicDataPoint {

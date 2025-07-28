@@ -3,13 +3,13 @@ export const ANALYSIS_CATEGORIES = {
     'Show me the top strategic markets for Nike expansion'
   ],
   'Comparative Analysis': [
-    'Compare Nike performance between New York and Philadelphia'
+    'Compare Nike performance between Brooklyn and Philadelphia'
   ],
   'Competitive Analysis': [
     'Show competitive positioning of Nike vs Adidas'
   ],
-  'Demographic Analysis': [
-    'Which markets have the highest demographic opportunity scores for Nike?'
+  'Demographic Insights': [
+    'Which areas have the best customer demographics for Nike?'
   ],
   'Customer Profile': [
     'Show me areas with ideal customer personas for athletic brands'
@@ -49,6 +49,9 @@ export const DISABLED_ANALYSIS_CATEGORIES = {
   ],
   'Market Segmentation': [
     'Which markets have the clearest customer segmentation profiles?'
+  ],
+  'Sensitivity Analysis': [
+    'How do Nike market rankings change if we adjust income weights by 20%?'
   ]
 };
 

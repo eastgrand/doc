@@ -2425,13 +2425,37 @@ Performance Context:
         
         let anthropicResponse;
         try {
+            // Process messages for conversation context
+            const conversationMessages = messages.map((msg: any) => ({
+                role: msg.role === 'assistant' ? 'assistant' as const : 'user' as const,
+                content: msg.content
+            }));
+            
+            // Ensure the conversation has proper alternating user/assistant structure
+            const validMessages = [];
+            let lastRole = '';
+            
+            for (const msg of conversationMessages) {
+                // Skip consecutive messages from the same role (Claude API requires alternating)
+                if (msg.role !== lastRole) {
+                    validMessages.push(msg);
+                    lastRole = msg.role;
+                }
+            }
+            
+            // Ensure the conversation ends with a user message
+            if (validMessages.length === 0 || validMessages[validMessages.length - 1].role !== 'user') {
+                validMessages.push({ role: 'user' as const, content: userMessage });
+            }
+            
+            console.log('[Claude] Sending conversation with', validMessages.length, 'messages');
+            console.log('[Claude] Message roles:', validMessages.map(m => m.role).join(' -> '));
+            
             anthropicResponse = await anthropic.messages.create({
                 model: 'claude-3-5-sonnet-20240620',
                 max_tokens: 4096,
                 system: dynamicSystemPrompt,
-                messages: [
-                    { role: 'user', content: userMessage }
-                ]
+                messages: validMessages
             });
             console.log('[Claude] Anthropic API call successful.');
         } catch (anthropicError) {

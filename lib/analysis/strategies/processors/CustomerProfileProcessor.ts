@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import Extent from '@arcgis/core/geometry/Extent';
 
 /**
  * CustomerProfileProcessor - Handles data processing for the /customer-profile endpoint
@@ -80,6 +81,9 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       Array.isArray(rawData) ? undefined : rawData.summary
     );
 
+    // Calculate extent from features for map zooming
+    const extent = this.calculateExtentFromFeatures(records);
+
     return {
       type: 'customer_profile',
       records,
@@ -89,7 +93,9 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       targetVariable: 'customer_profile_score',
       renderer: this.createCustomerProfileRenderer(records), // Add direct renderer
       legend: this.createCustomerProfileLegend(records), // Add direct legend
-      customerProfileAnalysis // Additional metadata for customer profile visualization
+      customerProfileAnalysis, // Additional metadata for customer profile visualization
+      extent, // Add extent for map zooming
+      shouldZoom: extent !== null // Enable zooming if we have valid extent
     };
   }
 
@@ -625,12 +631,12 @@ Higher scores indicate stronger alignment with Nike's ideal customer profile acr
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
-    // Use categorical colors for customer profile personas: Purple -> Blue -> Teal -> Green (high profile fit)
+    // Use standard red-to-green color scheme consistent with other endpoints
     const profileColors = [
-      [142, 1, 82, 0.6],      // #8e0152 - Dark purple (low profile fit)
-      [74, 119, 174, 0.6],    // #4a77ae - Blue  
-      [62, 178, 188, 0.6],    // #3eb2bc - Teal
-      [35, 139, 69, 0.6]      // #238b45 - Green (high profile fit)
+      [215, 48, 39, 0.6],     // #d73027 - Red (low customer profile fit)
+      [253, 174, 97, 0.6],    // #fdae61 - Orange  
+      [166, 217, 106, 0.6],   // #a6d96a - Light Green
+      [26, 152, 80, 0.6]      // #1a9850 - Dark Green (high customer profile fit)
     ];
     
     return {
@@ -661,12 +667,12 @@ Higher scores indicate stronger alignment with Nike's ideal customer profile acr
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
-    // Use RGBA format with correct opacity to match features
+    // Use RGBA format with correct opacity to match features - standard red-to-green scheme
     const colors = [
-      'rgba(142, 1, 82, 0.6)',    // Low customer profile fit
-      'rgba(74, 119, 174, 0.6)',  // Medium-low  
-      'rgba(62, 178, 188, 0.6)',  // Medium-high
-      'rgba(35, 139, 69, 0.6)'    // High customer profile fit
+      'rgba(215, 48, 39, 0.6)',   // Low customer profile fit
+      'rgba(253, 174, 97, 0.6)',  // Medium-low  
+      'rgba(166, 217, 106, 0.6)', // Medium-high
+      'rgba(26, 152, 80, 0.6)'    // High customer profile fit
     ];
     
     const legendItems = [];
@@ -718,5 +724,71 @@ Higher scores indicate stronger alignment with Nike's ideal customer profile acr
       // Middle classes: minValue - maxValue
       return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
     }
+  }
+
+  /**
+   * Calculate extent from geographic features for map zooming
+   * Based on single-layer-visualization extent calculation method
+   */
+  private calculateExtentFromFeatures(records: GeographicDataPoint[]): Extent | null {
+    if (!records || records.length === 0) {
+      console.warn('[CustomerProfileProcessor] No records provided for extent calculation.');
+      return null;
+    }
+
+    console.log(`[CustomerProfileProcessor] Calculating extent for ${records.length} customer profile records.`);
+
+    // Filter for records with valid coordinates
+    const validCoords = records
+      .filter(record => 
+        record.coordinates && 
+        Array.isArray(record.coordinates) && 
+        record.coordinates.length >= 2 &&
+        isFinite(record.coordinates[0]) && 
+        isFinite(record.coordinates[1])
+      )
+      .map(record => record.coordinates);
+
+    if (validCoords.length === 0) {
+      console.warn('[CustomerProfileProcessor] No records with valid coordinates found.');
+      return null;
+    }
+
+    console.log(`[CustomerProfileProcessor] Found ${validCoords.length} records with valid coordinates.`);
+
+    // Calculate bounding box from coordinate points
+    let xmin = Infinity, ymin = Infinity, xmax = -Infinity, ymax = -Infinity;
+
+    validCoords.forEach(coord => {
+      if (coord && coord.length >= 2) {
+        const x = coord[0];
+        const y = coord[1];
+        xmin = Math.min(xmin, x);
+        ymin = Math.min(ymin, y);
+        xmax = Math.max(xmax, x);
+        ymax = Math.max(ymax, y);
+      }
+    });
+
+    // Validate calculated bounds
+    if (!isFinite(xmin) || !isFinite(ymin) || !isFinite(xmax) || !isFinite(ymax)) {
+      console.warn('[CustomerProfileProcessor] Invalid extent bounds calculated.');
+      return null;
+    }
+
+    // Add small padding to ensure features are visible
+    const paddingX = Math.max((xmax - xmin) * 0.1, 0.01); // 10% padding or minimum
+    const paddingY = Math.max((ymax - ymin) * 0.1, 0.01);
+
+    const extent = new Extent({
+      xmin: xmin - paddingX,
+      ymin: ymin - paddingY,
+      xmax: xmax + paddingX,
+      ymax: ymax + paddingY,
+      spatialReference: { wkid: 4326 } // Assuming WGS84 coordinates
+    });
+
+    console.log(`[CustomerProfileProcessor] Calculated extent: ${JSON.stringify(extent.toJSON())}`);
+    return extent;
   }
 }

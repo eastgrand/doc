@@ -48,6 +48,7 @@ import { layers } from '@/config/layers';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { personaMetadata } from '@/app/api/claude/prompts';
 import ChatBar from '@/components/chat/ChatBar';
+import { classifyQuery } from '@/lib/ai/query-classifier';
 
 // AnalysisEngine Integration - Replace existing managers
 import { useAnalysisEngine, AnalysisOptions, AnalysisResult, VisualizationResult, ProcessedAnalysisData } from '@/lib/analysis';
@@ -2097,6 +2098,93 @@ const EnhancedGeospatialChat = memo(({
     }
   };
 
+  // 🎯 NEW: Handle contextual chat without triggering new analysis
+  const handleContextualChat = async (query: string) => {
+    console.log('[Contextual Chat] Starting contextual response for:', query);
+    
+    try {
+      setIsProcessing(true);
+      
+      // Add user message to chat
+      const userMessage: ChatMessage = {
+        id: Date.now().toString(),
+        role: 'user',
+        content: query,
+        timestamp: new Date(),
+        metadata: { context: 'contextual_chat' }
+      };
+      setMessages(prev => [...prev, userMessage]);
+      
+      // Prepare data for Claude - use existing features and analysis data
+      const processedLayersForClaude = features.length > 0 ? [{
+        layerId: dataSource.layerId,
+        layerName: 'Analysis Results',
+        layerType: 'polygon',
+        features: features,
+      }] : [];
+      
+      // Call Claude API for contextual response
+      const claudeResp = await fetch('/api/claude/generate-response', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
+          metadata: {
+            query,
+            analysisType: lastAnalysisEndpoint ? lastAnalysisEndpoint.replace('/', '').replace(/-/g, '_') : 'contextual_chat',
+            relevantLayers: [dataSource.layerId],
+            isContextualChat: true // Flag to indicate this is contextual, not new analysis
+          },
+          featureData: processedLayersForClaude,
+          persona: selectedPersona,
+        }),
+      });
+      
+      if (claudeResp.ok) {
+        const claudeJson = await claudeResp.json();
+        const assistantContent = claudeJson?.content;
+        
+        if (assistantContent) {
+          // Add assistant response to chat
+          const assistantMessage: ChatMessage = {
+            id: (Date.now() + 1).toString(),
+            role: 'assistant',
+            content: assistantContent,
+            timestamp: new Date(),
+            metadata: { context: 'contextual_response', debugInfo: { persona: selectedPersona } }
+          };
+          setMessages(prev => [...prev, assistantMessage]);
+          console.log('[Contextual Chat] Successfully added contextual response');
+        } else {
+          throw new Error('No content received from Claude API');
+        }
+      } else {
+        const errorData = await claudeResp.json();
+        throw new Error(errorData.error || 'Claude API request failed');
+      }
+      
+    } catch (error) {
+      console.error('[Contextual Chat] Error:', error);
+      toast({
+        title: "Chat Error",
+        description: "Failed to get contextual response. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+      
+      // Add error message to chat
+      const errorMessage: ChatMessage = {
+        id: (Date.now() + 2).toString(),
+        role: 'assistant',
+        content: "I'm sorry, I encountered an error while processing your question. Please try rephrasing your question or starting a new analysis.",
+        timestamp: new Date(),
+        metadata: { context: 'error_response' }
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   const handleSubmit = async (query: string, source: 'main' | 'reply' = 'main') => {
     console.log('🚨 [FUNCTION CALL] handleSubmit called with query:', query);
@@ -2112,6 +2200,33 @@ const EnhancedGeospatialChat = memo(({
         duration: 3000,
       });
       return;
+    }
+
+    // 🎯 NEW: Query Classification for Chat Messages
+    if (source === 'reply') {
+      console.log('[Chat Classification] Classifying reply query:', query);
+      
+      // Get conversation history for classification
+      const conversationHistory = messages.map(m => `${m.role}: ${m.content}`).join('\n');
+      
+      try {
+        const classification = await classifyQuery(query, conversationHistory);
+        console.log('[Chat Classification] Query classified as:', classification);
+        
+        if (classification === 'follow-up') {
+          // Handle as contextual chat - call Claude API directly
+          console.log('[Chat Classification] Handling as contextual follow-up');
+          return await handleContextualChat(query);
+        } else {
+          // Handle as new analysis - continue with full analysis pipeline
+          console.log('[Chat Classification] Handling as new analysis');
+          // Continue with existing logic below
+        }
+      } catch (error) {
+        console.error('[Chat Classification] Error classifying query:', error);
+        // Default to new analysis on error
+        console.log('[Chat Classification] Defaulting to new analysis due to classification error');
+      }
     }
     
     // Check if there are existing results and warn user (optional auto-clear)
