@@ -6,7 +6,8 @@ export const ANALYSIS_CATEGORIES = {
     'Compare Nike performance between Brooklyn and Philadelphia'
   ],
   'Competitive Analysis': [
-    'Show competitive positioning of Nike vs Adidas'
+    'Show competitive positioning of Nike vs Adidas',
+    'Show me the market share difference between Nike and Adidas'
   ],
   'Demographic Insights': [
     'Which areas have the best customer demographics for Nike?'
@@ -66,7 +67,9 @@ export const TRENDS_CATEGORIES = {
     'Where does Nike have the biggest competitive advantages against Adidas in California?',
     'Compare Nike\'s market position against competitors in major metropolitan areas',
     'Where is Nike\'s brand strongest and where does it need development?',
-    'Which markets have the strongest Nike brand positioning?'
+    'Which markets have the strongest Nike brand positioning?',
+    'Show me the percent difference in market share between Nike and Adidas',
+    'Where does Nike have the largest market share lead over Adidas?'
   ],
   'Customer & Demographics': [
     'Which markets have the highest demographic opportunity scores for Nike?',
