@@ -8,6 +8,31 @@ interface BlobEndpointData {
 // Cache for blob data to avoid repeated fetches
 const blobDataCache = new Map<string, any>();
 
+// Cache for blob URL mappings
+let blobUrlMappings: Record<string, string> | null = null;
+
+/**
+ * Load blob URL mappings from the static file
+ */
+async function loadBlobUrlMappings(): Promise<Record<string, string>> {
+  if (blobUrlMappings !== null) {
+    return blobUrlMappings;
+  }
+
+  try {
+    const response = await fetch('/data/blob-urls.json');
+    if (response.ok) {
+      blobUrlMappings = await response.json();
+      return blobUrlMappings!;
+    }
+  } catch (error) {
+    console.warn('Failed to load blob URL mappings:', error);
+  }
+
+  blobUrlMappings = {};
+  return blobUrlMappings;
+}
+
 /**
  * Load endpoint data from Vercel Blob storage
  * Falls back to local files if blob storage fails
@@ -19,14 +44,21 @@ export async function loadEndpointData(endpoint: string): Promise<BlobEndpointDa
   }
 
   try {
-    // Try to load from Vercel Blob first
-    const blobUrl = `${process.env.NEXT_PUBLIC_BLOB_STORE_URL}/endpoints/${endpoint}.json`;
-    const response = await fetch(blobUrl);
+    // Load blob URL mappings and get the actual URL
+    const urlMappings = await loadBlobUrlMappings();
+    const actualBlobUrl = urlMappings[endpoint];
     
-    if (response.ok) {
-      const data = await response.json();
-      blobDataCache.set(endpoint, data);
-      return data;
+    if (actualBlobUrl) {
+      const response = await fetch(actualBlobUrl);
+      
+      if (response.ok) {
+        const data = await response.json();
+        blobDataCache.set(endpoint, data);
+        console.log(`✅ Loaded ${endpoint} from blob storage`);
+        return data;
+      }
+    } else {
+      console.warn(`No blob URL mapping found for endpoint: ${endpoint}`);
     }
   } catch (error) {
     console.warn(`Failed to load ${endpoint} from blob storage:`, error);

@@ -1,0 +1,19 @@
+{
+  "strategic-analysis": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/strategic-analysis-qZtDytSyG5lTsYmDbXtmjQLl7IdJo5.json",
+  "analyze": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/analyze-j1l6kpK9tbzFdTri5EDgbQQBPPLgNM.json",
+  "anomaly-detection": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/anomaly-detection-jpmiJZV2hXNudFINvMqDLs4WMsg5ja.json",
+  "correlation-analysis": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/correlation-analysis-L0QGWv4CziyTaLWG2LtxQy9lR8Lm61.json",
+  "demographic-insights": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/demographic-insights-bIy6UR9mGzjXldp8mu1jlZCSIzQwbE.json",
+  "feature-interactions": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/feature-interactions-ncAae66Ygtoz4jDz6BObPIyXHDtPXZ.json",
+  "model-performance": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/model-performance-ZZrTo12qUfhgRYo4pVaryVz4yShFev.json",
+  "outlier-detection": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/outlier-detection-7vD46etxpcc17hwed2yQtfXyEPikte.json",
+  "predictive-modeling": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/predictive-modeling-DhlHRk8MFgorsGMnwnp9gvqwyWXeJR.json",
+  "scenario-analysis": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/scenario-analysis-LuLePsLbLKwsLGbQ5cepjm4a4CJa0l.json",
+  "segment-profiling": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/segment-profiling-mhXQQXaP3jvTzpN0prA9ddZ9D5ekra.json",
+  "sensitivity-analysis": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/sensitivity-analysis-EJkkbC9WZCplnDnxDSapzjT9OtBAul.json",
+  "spatial-clusters": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/spatial-clusters-DgWIIuQECltQF8Skf1Fyl1g7YXBlZ5.json",
+  "trend-analysis": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/trend-analysis-Ujo88frKur88acAvayTNqj9kAWw6ZC.json",
+  "comparative-analysis": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/comparative-analysis-0htxSAmDY2i6gUVLgIo2pG8zDnhmE7.json",
+  "feature-importance-ranking": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/feature-importance-ranking-vydT6wA47ZaFJEMARdYsHxFOqs8qI9.json",
+  "competitive-analysis": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/competitive-analysis-O17Pb5nNoxWZLY0fjQr8L6TrpwcepG.json"
+}
