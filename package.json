@@ -122,6 +122,25 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
+  "overrides": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-palm": {
+      "enzyme-adapter-utils": "^1.14.0"
+    },
+    "@kepler.gl/components": {
+      "react": "^18.3.1",
+      "react-dom": "^18.3.1"
+    },
+    "@kepler.gl/actions": {
+      "react": "^18.3.1",
+      "react-dom": "^18.3.1"
+    },
+    "@kepler.gl/reducers": {
+      "react": "^18.3.1",
+      "react-dom": "^18.3.1"
+    }
+  },
   "engines": {
     "node": ">=18.0.0"
   }
