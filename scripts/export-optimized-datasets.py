@@ -273,6 +273,45 @@ ENDPOINT_CONFIGS_ORIGINAL = {
             "matched_fields": ALL_BRAND_FIELDS,
             "include_all_fields": True  # Get all fields from server
         }
+    },
+    "analyze": {
+        "endpoint": "/analyze",
+        "payload": {
+            "query": "General analysis across ALL brand categories with comprehensive insights",
+            "analysis_type": "analyze",
+            "target_variable": "MP30034A_B_P",
+            "target_variables": ALL_BRAND_FIELDS,
+            "include_correlations": True,
+            "include_trends": True,
+            "matched_fields": ALL_BRAND_FIELDS,
+            "include_all_fields": True  # Get all fields from server
+        }
+    },
+    "customer_profile": {
+        "endpoint": "/customer-profile", 
+        "payload": {
+            "query": "Customer profiling analysis across ALL brand preferences",
+            "analysis_type": "customer_profile",
+            "target_variable": "MP30034A_B_P", 
+            "target_variables": ALL_BRAND_FIELDS,
+            "profile_dimensions": ["demographic", "behavioral", "geographic"],
+            "segmentation_depth": "detailed",
+            "matched_fields": ALL_BRAND_FIELDS,
+            "include_all_fields": True  # Get all fields from server
+        }
+    },
+    "strategic_analysis": {
+        "endpoint": "/strategic-analysis",
+        "payload": {
+            "query": "Strategic market analysis across ALL brand categories",
+            "analysis_type": "strategic", 
+            "target_variable": "MP30034A_B_P",
+            "target_variables": ALL_BRAND_FIELDS,
+            "strategic_focus": ["market_share", "competitive_positioning", "growth_opportunities"],
+            "time_horizon": "long_term",
+            "matched_fields": ALL_BRAND_FIELDS,
+            "include_all_fields": True  # Get all fields from server
+        }
     }
 }
 
