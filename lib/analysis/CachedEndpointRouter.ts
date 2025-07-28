@@ -1,5 +1,6 @@
 import { AnalysisOptions, RawAnalysisResult } from './types';
 import { ConfigurationManager } from './ConfigurationManager';
+import { loadEndpointData } from '@/utils/blob-data-loader';
 
 /**
  * CachedEndpointRouter - Enhanced with multi-endpoint detection
@@ -256,14 +257,26 @@ export class CachedEndpointRouter {
    * Load dataset from JSON file - Updated to use standard file names (now containing optimized data)
    */
   private async loadDatasetFromFile(endpointKey: string): Promise<any> {
+    console.log(`[CachedEndpointRouter] Looking for dataset with key: "${endpointKey}"`);
+
+    // First try to load from Vercel Blob storage (for large files)
+    try {
+      const blobData = await loadEndpointData(endpointKey);
+      if (blobData) {
+        console.log(`[CachedEndpointRouter] ✅ Loaded data for ${endpointKey} from blob storage`);
+        return blobData;
+      }
+    } catch (error) {
+      console.warn(`[CachedEndpointRouter] Failed to load ${endpointKey} from blob storage:`, error);
+    }
+
+    // Fallback to local files for smaller datasets or development
     const possiblePaths = [
       `/data/endpoints/${endpointKey}.json`,            // Individual endpoint files (now optimized)
       `/data/endpoints/all_endpoints.json`,             // Combined file (now optimized)
       `/data/microservice-export-all-endpoints.json`,  // Legacy combined file  
       `/data/microservice-export.json`                 // Legacy file
     ];
-
-    console.log(`[CachedEndpointRouter] Looking for dataset with key: "${endpointKey}"`);
 
     for (const path of possiblePaths) {
       try {
