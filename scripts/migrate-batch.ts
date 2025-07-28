@@ -56,7 +56,7 @@ async function migrateInBatches() {
       }
     } catch (error) {
       failCount++;
-      console.error(`❌ Error with ${endpoint}:`, error?.message || error);
+      console.error(`❌ Error with ${endpoint}:`, (error as any)?.message || error);
       console.log('');
     }
 
