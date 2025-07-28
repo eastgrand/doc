@@ -8,6 +8,7 @@ interface QueryDialogProps {
   title: string;
   description: string;
   categories: Record<string, string[]>;
+  disabledCategories?: Record<string, string[]>;
 }
 
 const QueryDialog: React.FC<QueryDialogProps> = ({
@@ -15,6 +16,7 @@ const QueryDialog: React.FC<QueryDialogProps> = ({
   title,
   description,
   categories,
+  disabledCategories = {},
 }) => {
   return (
     <>
@@ -35,6 +37,7 @@ const QueryDialog: React.FC<QueryDialogProps> = ({
         <p className="text-sm text-gray-600 mt-2">{description}</p>
       </DialogHeader>
       <div className="grid gap-6 py-6 px-4 bg-gray-50/50">
+        {/* Enabled Categories */}
         {Object.entries(categories).map(([category, questions]) => (
           <div
             key={category}
@@ -52,6 +55,33 @@ const QueryDialog: React.FC<QueryDialogProps> = ({
                   onClick={() => {
                     onQuestionSelect(question);
                   }}
+                >
+                  {question}
+                </Button>
+              ))}
+            </div>
+          </div>
+        ))}
+        
+        {/* Disabled Categories */}
+        {Object.entries(disabledCategories).map(([category, questions]) => (
+          <div
+            key={`disabled-${category}`}
+            className="space-y-3 bg-gray-100 p-4 rounded-xl shadow-sm opacity-60"
+          >
+            <h3 className="font-semibold text-sm text-gray-500 flex items-center gap-2">
+              {category}
+              <span className="text-xs bg-gray-300 text-gray-600 px-2 py-1 rounded-full">
+                Coming Soon
+              </span>
+            </h3>
+            <div className="grid gap-1">
+              {questions.map((question, index) => (
+                <Button
+                  key={index}
+                  variant="ghost"
+                  disabled
+                  className="justify-start text-left text-xs text-gray-400 cursor-not-allowed h-auto py-2 px-3 whitespace-normal"
                 >
                   {question}
                 </Button>

@@ -1,15 +1,14 @@
 /**
- * Strategic Value Scoring Script
+ * Strategic Value Scoring Script - Following Documentation Specification
  * 
- * Creates comprehensive strategic value scores for the general analysis endpoint
- * by combining multiple analytical dimensions: competitive advantage, demographic opportunity,
- * correlation strength, and market fundamentals into a unified strategic ranking.
+ * Creates comprehensive strategic value scores for the strategic analysis endpoint
+ * following the exact formula documented in endpoint-scoring-documentation.md
  */
 
 const fs = require('fs');
 const path = require('path');
 
-console.log('🎯 Starting Strategic Value Scoring...');
+console.log('🎯 Starting Strategic Value Scoring (Documentation-Compliant)...');
 
 // Load the microservice data
 const dataPath = path.join(__dirname, '../../public/data/microservice-export.json');
@@ -24,11 +23,19 @@ if (!correlationData || !correlationData.results) {
 
 console.log(`📊 Processing ${correlationData.results.length} records for strategic value scoring...`);
 
-// Strategic value scoring formula incorporates multiple analytical dimensions:
-// 1. Market Opportunity (35%) - Demographics + Market fundamentals  
-// 2. Competitive Position (30%) - Competitive advantage + Brand positioning
-// 3. Data Reliability (20%) - Correlation strength + Data consistency
-// 4. Market Scale (15%) - Population size + Economic scale
+// Strategic value scoring formula following documented specification:
+// Strategic Value Score = (
+//   0.35 × Market Opportunity +
+//   0.30 × Competitive Position +
+//   0.20 × Data Reliability +
+//   0.15 × Market Scale
+// )
+//
+// where:
+// - Market Opportunity = (0.60 × Demographic Score) + (0.40 × Market Gap)
+// - Competitive Position = (0.67 × Competitive Advantage) + (0.33 × Brand Positioning)
+// - Data Reliability = (0.75 × Correlation Strength) + (0.25 × Cluster Consistency)
+// - Market Scale = (0.60 × Population Scale) + (0.40 × Economic Scale)
 
 function calculateStrategicValueScore(record) {
   // Extract all available scores and metrics
@@ -43,92 +50,72 @@ function calculateStrategicValueScore(record) {
   const totalPopulation = Number(record.total_population) || 0;
   const nikeShare = Number(record.mp30034a_b_p) || 0;
   
-  let strategicScore = 0;
-  
-  // 1. MARKET OPPORTUNITY COMPONENT (35 points)
-  // Combines demographic opportunity with market fundamentals
+  // 1. MARKET OPPORTUNITY (35% weight)
+  // Market Opportunity = (0.60 × Demographic Score) + (0.40 × Market Gap)
   let marketOpportunity = 0;
   
-  // Demographic opportunity (60% of market opportunity)
-  if (demographicScore > 0) {
-    marketOpportunity += (demographicScore / 100) * 21; // 21 points max
-  } else {
-    // Fallback demographic calculation if no pre-calculated score
-    const incomeScore = medianIncome > 0 ? Math.min((medianIncome / 100000) * 10, 10) : 5;
-    const popScore = totalPopulation > 0 ? Math.min((totalPopulation / 50000) * 11, 11) : 5;
-    marketOpportunity += incomeScore + popScore;
-  }
+  // Demographic component (60% of market opportunity)
+  const demographicComponent = demographicScore; // Already 0-100 scale
   
-  // Market fundamentals (40% of market opportunity) 
+  // Market gap component (40% of market opportunity) 
   const marketGap = Math.max(0, 100 - nikeShare); // Untapped market potential
-  const marketGapScore = (marketGap / 100) * 14; // 14 points max
-  marketOpportunity += marketGapScore;
+  const marketGapComponent = marketGap; // Already 0-100 scale
   
-  strategicScore += marketOpportunity;
+  marketOpportunity = (0.60 * demographicComponent) + (0.40 * marketGapComponent);
   
-  // 2. COMPETITIVE POSITION COMPONENT (30 points)
-  // Competitive advantage + brand positioning strength
+  // 2. COMPETITIVE POSITION (30% weight)
+  // Competitive Position = (0.67 × Competitive Advantage) + (0.33 × Brand Positioning)
   let competitivePosition = 0;
   
-  if (competitiveScore > 0) {
-    // Use pre-calculated competitive advantage score (1-10 scale)
-    competitivePosition += (competitiveScore / 10) * 20; // 20 points max
-  } else {
-    // Fallback competitive calculation
-    const competitiveAdvantage = Math.max(0, nikeShare - 10); // Above 10% considered advantage
-    competitivePosition += Math.min(competitiveAdvantage / 2, 20);
-  }
+  // Competitive advantage component (67% of competitive position)
+  // Competitive score is already on 0-100 scale
+  const competitiveAdvantage = competitiveScore; // Already 0-100 scale
   
-  // Brand positioning (Nike market share strength)
-  const brandPositioning = nikeShare > 0 ? Math.min((nikeShare / 50) * 10, 10) : 0; // 10 points max
-  competitivePosition += brandPositioning;
+  // Brand positioning component (33% of competitive position)
+  // Scale Nike market share to 0-100 where 50% share = 100 points
+  const brandPositioning = Math.min((nikeShare / 50) * 100, 100);
   
-  strategicScore += competitivePosition;
+  competitivePosition = (0.67 * competitiveAdvantage) + (0.33 * brandPositioning);
   
-  // 3. DATA RELIABILITY COMPONENT (20 points)
-  // How reliable/predictable is this market based on data patterns
+  // 3. DATA RELIABILITY (20% weight)
+  // Data Reliability = (0.75 × Correlation Strength) + (0.25 × Cluster Consistency)
   let dataReliability = 0;
   
-  if (correlationScore > 0) {
-    // Use correlation strength as reliability indicator
-    dataReliability += (correlationScore / 100) * 15; // 15 points max
-  } else {
-    // Default moderate reliability
-    dataReliability += 10;
-  }
+  // Correlation strength component (75% of data reliability)
+  const correlationComponent = correlationScore; // Already 0-100 scale
   
-  // Cluster consistency (if clustered)
+  // Cluster consistency component (25% of data reliability)
+  let clusterConsistency = 0;
   if (clusterScore > 0) {
-    dataReliability += (clusterScore / 100) * 5; // 5 points max
+    clusterConsistency = clusterScore; // Already 0-100 scale
   } else if (targetValue > 0) {
-    // Use target value consistency as proxy
-    const targetConsistency = Math.min(targetValue / 20, 1) * 5;
-    dataReliability += targetConsistency;
+    // Use target value consistency as proxy (normalize to 0-100)
+    clusterConsistency = Math.min((targetValue / 50) * 100, 100);
+  } else {
+    clusterConsistency = 50; // Default moderate consistency
   }
   
-  strategicScore += dataReliability;
+  dataReliability = (0.75 * correlationComponent) + (0.25 * clusterConsistency);
   
-  // 4. MARKET SCALE COMPONENT (15 points)
-  // Population size + economic scale
+  // 4. MARKET SCALE (15% weight)
+  // Market Scale = (0.60 × Population Scale) + (0.40 × Economic Scale)
   let marketScale = 0;
   
-  // Population scale (60% of market scale)
-  if (totalPopulation > 0) {
-    const popScale = Math.min((totalPopulation / 100000) * 9, 9); // 9 points max
-    marketScale += popScale;
-  } else {
-    marketScale += 5; // Default moderate scale
-  }
+  // Population scale component (60% of market scale)
+  // Normalize population to 0-100 where 100k = 100 points
+  const populationScale = totalPopulation > 0 ? Math.min((totalPopulation / 100000) * 100, 100) : 0;
   
-  // Economic scale (40% of market scale)
-  if (medianIncome > 0) {
-    const economicScale = Math.min((medianIncome / 150000) * 6, 6); // 6 points max
-    marketScale += economicScale;
-  } else {
-    marketScale += 3; // Default moderate economic scale
-  }
+  // Economic scale component (40% of market scale)  
+  // Normalize income to 0-100 where $150k = 100 points
+  const economicScale = medianIncome > 0 ? Math.min((medianIncome / 150000) * 100, 100) : 0;
   
-  strategicScore += marketScale;
+  marketScale = (0.60 * populationScale) + (0.40 * economicScale);
+  
+  // FINAL STRATEGIC VALUE SCORE
+  const strategicScore = (0.35 * marketOpportunity) + 
+                        (0.30 * competitivePosition) + 
+                        (0.20 * dataReliability) + 
+                        (0.15 * marketScale);
   
   // Ensure score is in 0-100 range
   return Math.max(0, Math.min(100, Math.round(strategicScore * 100) / 100));
@@ -208,10 +195,10 @@ topStrategic.forEach((record, index) => {
 // Add strategic scoring metadata
 correlationData.strategic_scoring_metadata = {
   scoring_methodology: {
-    market_opportunity: '35% - Demographics + Market fundamentals',
-    competitive_position: '30% - Competitive advantage + Brand positioning', 
-    data_reliability: '20% - Correlation strength + Data consistency',
-    market_scale: '15% - Population size + Economic scale'
+    market_opportunity: '35% - (0.60 × Demographic Score) + (0.40 × Market Gap)',
+    competitive_position: '30% - (0.67 × Competitive Advantage) + (0.33 × Brand Positioning)', 
+    data_reliability: '20% - (0.75 × Correlation Strength) + (0.25 × Cluster Consistency)',
+    market_scale: '15% - (0.60 × Population Scale) + (0.40 × Economic Scale)'
   },
   score_statistics: {
     mean: avgScore,
@@ -242,4 +229,4 @@ console.log('\n📋 Next steps:');
 console.log('   1. ✅ Created strategic_value_score for all records');
 console.log('   2. ✅ Added strategic scoring metadata');
 console.log('   3. 🔄 Update CoreAnalysisProcessor to use strategic scores');
-console.log('   4. 🔄 Test general analysis endpoint');
+console.log('   4. 🔄 Test strategic analysis endpoint');

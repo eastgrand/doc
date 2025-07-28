@@ -1,14 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useRef, useEffect, useCallback, ReactElement, memo, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useCallback, ReactElement, memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Slider } from '@/components/ui/slider';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { getPrimaryScoreField, extractScoreValue } from '@/lib/analysis/utils/FieldMappingConfig';
-import { ConfigurationManager } from '@/lib/analysis/ConfigurationManager';
+import { extractScoreValue } from '@/lib/analysis/utils/FieldMappingConfig';
 import {
   Dialog,
   DialogContent,
@@ -27,30 +24,13 @@ import Image from 'next/image';
 import InfographicsTab from './tabs/InfographicsTab';
 import {
   Loader2,
-  AlertCircle,
-  Copy,
-  FileSpreadsheet,
   BarChart,
-  Save,
   X,
-  CheckCircle,
-  XCircle,
   Brain,
-  Database,
-  Cog,
-  Target as TargetIcon,
   UserCog,
-  Check,
-  Filter,
-  MessageSquare,
-  ShoppingCart,
 } from 'lucide-react';
-import AITab from './tabs/AITab';
 import { useChatContext } from './chat-context-provider';
 import { 
-  AnalysisContext, 
-  LayerDataOptions, 
-  AnalysisServiceRequest, 
   ChatMessage, 
   GeoProcessingStep,
   DebugInfo,
@@ -58,20 +38,14 @@ import {
   GeospatialFeature,
   AnalysisResult as QueryAnalysisResult
 } from '@/lib/analytics/types';
-import { analyzeQuery } from '@/lib/query-analyzer';
-import { conceptMapping, mapToConcepts } from '@/lib/concept-mapping';
 import { VisualizationFactory } from '@/utils/visualization-factory';
-import { ANALYSIS_CATEGORIES, TRENDS_CATEGORIES } from './chat/chat-constants';
+import { ANALYSIS_CATEGORIES, DISABLED_ANALYSIS_CATEGORIES } from './chat/chat-constants';
 import { createHighlights } from './chat/map-highlight-manager';
-import ProcessingIndicator from './chat/ProcessingIndicator';
 import QueryDialog from './chat/QueryDialog';
 import MessageList from './chat/MessageList';
-import { geospatialChatUtils } from '@/utils/geospatial-chat-utils';
 import { CustomVisualizationPanel } from '@/components/Visualization/CustomVisualizationPanel';
 import { layers } from '@/config/layers';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-import { FIELD_ALIASES } from '@/utils/field-aliases';
-import { buildMicroserviceRequest } from '@/lib/build-microservice-request';
 import { personaMetadata } from '@/app/api/claude/prompts';
 import ChatBar from '@/components/chat/ChatBar';
 
@@ -80,7 +54,7 @@ import { useAnalysisEngine, AnalysisOptions, AnalysisResult, VisualizationResult
 
 // Endpoint Selection Integration
 import AnalysisEndpointSelector from '@/components/analysis/AnalysisEndpointSelector';
-import { suggestAnalysisEndpoint, getQuickEndpointSuggestion } from '@/utils/endpoint-suggestion';
+import { suggestAnalysisEndpoint } from '@/utils/endpoint-suggestion';
 
 // Score Terminology System
 import { generateScoreDescription, validateScoreTerminology, validateScoreExplanationPlacement, getScoreConfigForEndpoint } from '@/lib/analysis/utils/ScoreTerminology';
@@ -104,11 +78,6 @@ import { FaRegHandshake } from 'react-icons/fa';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import Graphic from '@arcgis/core/Graphic';
 import * as geometryEngine from '@arcgis/core/geometry/geometryEngine';
-import Point from '@arcgis/core/geometry/Point';
-import Polygon from '@arcgis/core/geometry/Polygon';
-import * as projection from '@arcgis/core/geometry/projection';
-import SpatialReference from '@arcgis/core/geometry/SpatialReference';
-import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 
 // Types for feature validation
 type BaseGeometry = {
@@ -178,20 +147,7 @@ interface EnhancedGeospatialChatProps {
   mapViewRefValue?: __esri.MapView | null;
 }
 
-// Mock chat context for compatibility 
-// const useChatContext = () => {
-//   return {
-//     addMessage: (message: any) => {},
-//     contextSummary: "",
-//     refreshContextSummary: () => {}
-//   };
-// };
 
-// Mock MapView types for compatibility
-type MapView = __esri.MapView;
-type SceneView = __esri.SceneView;
-
-const VERBOSE_GEOMETRY_LOGS = false;
 
 // Persona icons map (module-scope so it's visible throughout the file)
 const PERSONA_ICON_MAP: Record<string, React.ComponentType<any>> = {
@@ -203,242 +159,6 @@ const PERSONA_ICON_MAP: Record<string, React.ComponentType<any>> = {
 };
 
 // Frontend Analysis Function - Processes geographic features to generate analysis results
-const performFrontendAnalysis = async (
-  analysisResult: any,
-  geographicFeatures: FeatureType[],
-  targetVariable: string,
-  query: string
-) => {
-  console.log('[Frontend Analysis] Starting analysis:', {
-    queryType: analysisResult.queryType,
-    targetVariable,
-    featureCount: geographicFeatures.length,
-    sampleFields: geographicFeatures[0]?.properties ? Object.keys(geographicFeatures[0].properties).slice(0, 10) : []
-  });
-
-  // Map snake_case target variable back to actual field name in features
-  const findActualFieldName = (snakeTarget: string, sampleFeature: any): string => {
-    if (!sampleFeature?.properties) return snakeTarget;
-    
-    const props = sampleFeature.properties;
-    
-    // Check for exact match first
-    if (props.hasOwnProperty(snakeTarget)) return snakeTarget;
-    
-    // Convert snake_case to original format variations
-    const variations = [
-      snakeTarget.toUpperCase().replace(/_/g, ''), // mp30029_a_b_p -> MP30029ABP
-      snakeTarget.toUpperCase().replace(/_/g, '_'), // mp30029_a_b_p -> MP30029_A_B_P  
-      snakeTarget.toUpperCase(), // mp30029_a_b_p -> MP30029_A_B_P
-      snakeTarget.replace(/_/g, '').toUpperCase(), // mp30029_a_b_p -> MP30029ABP
-      snakeTarget.replace(/([a-z])([a-z])_([a-z])_([a-z])_([a-z])/g, '$1$2$3$4$5').toUpperCase(), // Handle specific patterns
-      // Handle cached data with value_ prefix
-      `value_${snakeTarget.toUpperCase()}`, // mp30029_a_b_p -> value_MP30029_A_B_P
-      `value_${snakeTarget.toUpperCase().replace(/_/g, '')}`, // mp30029_a_b_p -> value_MP30029ABP
-      `shap_${snakeTarget.toUpperCase()}`, // mp30029_a_b_p -> shap_MP30029_A_B_P
-      `shap_${snakeTarget.toUpperCase().replace(/_/g, '')}`, // mp30029_a_b_p -> shap_MP30029ABP
-    ];
-    
-    // Try each variation
-    for (const variation of variations) {
-      if (props.hasOwnProperty(variation)) {
-        console.log('[Frontend Analysis] Field mapping:', snakeTarget, '->', variation);
-        return variation;
-      }
-    }
-    
-    // Check if it's a known brand field mapping (with cached data prefixes)
-    if (snakeTarget === 'mp30029_a_b_p') {
-      // Try cached data variations first
-      if (props.hasOwnProperty('value_MP30029A_B_P')) return 'value_MP30029A_B_P';
-      if (props.hasOwnProperty('shap_MP30029A_B_P')) return 'shap_MP30029A_B_P';
-      return 'MP30029A_B_P'; // Fallback
-    }
-    if (snakeTarget === 'mp30034_a_b_p') {
-      if (props.hasOwnProperty('value_MP30034A_B_P')) return 'value_MP30034A_B_P';
-      if (props.hasOwnProperty('shap_MP30034A_B_P')) return 'shap_MP30034A_B_P';
-      return 'MP30034A_B_P'; // Fallback
-    }
-    if (snakeTarget === 'mp30032_a_b_p') {
-      if (props.hasOwnProperty('value_MP30032A_B_P')) return 'value_MP30032A_B_P';
-      if (props.hasOwnProperty('shap_MP30032A_B_P')) return 'shap_MP30032A_B_P';
-      return 'MP30032A_B_P'; // Fallback
-    }
-    if (snakeTarget === 'mp30031_a_b_p') {
-      if (props.hasOwnProperty('value_MP30031A_B_P')) return 'value_MP30031A_B_P';
-      if (props.hasOwnProperty('shap_MP30031A_B_P')) return 'shap_MP30031A_B_P';
-      return 'MP30031A_B_P'; // Fallback - Puma
-    }
-    if (snakeTarget === 'mp30033_a_b_p') {
-      if (props.hasOwnProperty('value_MP30033A_B_P')) return 'value_MP30033A_B_P';
-      if (props.hasOwnProperty('shap_MP30033A_B_P')) return 'shap_MP30033A_B_P';
-      return 'MP30033A_B_P'; // Fallback - New Balance
-    }
-    if (snakeTarget === 'mp30035_a_b_p') {
-      if (props.hasOwnProperty('value_MP30035A_B_P')) return 'value_MP30035A_B_P';
-      if (props.hasOwnProperty('shap_MP30035A_B_P')) return 'shap_MP30035A_B_P';
-      return 'MP30035A_B_P'; // Fallback - Reebok
-    }
-    if (snakeTarget === 'mp30036_a_b_p') {
-      if (props.hasOwnProperty('value_MP30036A_B_P')) return 'value_MP30036A_B_P';
-      if (props.hasOwnProperty('shap_MP30036A_B_P')) return 'shap_MP30036A_B_P';
-      return 'MP30036A_B_P'; // Fallback - Converse
-    }
-    if (snakeTarget === 'mp30030_a_b_p') {
-      if (props.hasOwnProperty('value_MP30030A_B_P')) return 'value_MP30030A_B_P';
-      if (props.hasOwnProperty('shap_MP30030A_B_P')) return 'shap_MP30030A_B_P';
-      return 'MP30030A_B_P'; // Fallback - Asics
-    }
-    
-    console.log('[Frontend Analysis] No field mapping found for:', snakeTarget, 'Available fields:', Object.keys(props).slice(0, 10));
-    return snakeTarget;
-  };
-
-  const actualFieldName = findActualFieldName(targetVariable, geographicFeatures[0]);
-  console.log('[Frontend Analysis] Using field name:', { targetVariable, actualFieldName });
-
-  const queryType = analysisResult.queryType || 'ranking';
-  let results: any[] = [];
-
-  switch (queryType) {
-    case 'topN':
-    case 'ranking': {
-      // For ranking queries, sort features by target variable and return top N
-      const validFeatures = geographicFeatures
-        .filter(feature => {
-          const value = feature.properties?.[actualFieldName];
-          return value !== null && value !== undefined && !isNaN(Number(value));
-        })
-        .map(feature => ({
-          id: feature.properties?.FSA_ID || feature.properties?.ID || 'unknown',
-          value: Number(feature.properties[actualFieldName] || 0),
-          ...feature.properties
-        }))
-        .sort((a, b) => b.value - a.value)
-        .slice(0, 25); // Top 25 results
-
-      results = validFeatures;
-      console.log('[Frontend Analysis] Ranking results:', {
-        totalFeatures: geographicFeatures.length,
-        validFeatures: validFeatures.length,
-        topValue: validFeatures[0]?.value,
-        targetField: actualFieldName,
-        originalTarget: targetVariable
-      });
-      break;
-    }
-
-    case 'correlation':
-    case 'comparison': {
-      // For correlation queries, calculate correlation between relevant fields
-      const relevantFields = analysisResult.relevantFields || [actualFieldName];
-      if (relevantFields.length >= 2) {
-        const primaryField = findActualFieldName(relevantFields[0], geographicFeatures[0]);
-        const secondaryField = findActualFieldName(relevantFields[1], geographicFeatures[0]);
-        
-        const validFeatures = geographicFeatures
-          .filter(feature => {
-            const val1 = feature.properties?.[primaryField];
-            const val2 = feature.properties?.[secondaryField];
-            return val1 !== null && val1 !== undefined && !isNaN(Number(val1)) &&
-                   val2 !== null && val2 !== undefined && !isNaN(Number(val2));
-          })
-          .map(feature => ({
-            id: feature.properties?.FSA_ID || feature.properties?.ID || 'unknown',
-            primary_value: Number(feature.properties[primaryField] || 0),
-            secondary_value: Number(feature.properties[secondaryField] || 0),
-            correlation_strength: Math.random() * 0.5 + 0.5, // Simplified correlation for now
-            ...feature.properties
-          }));
-
-        results = validFeatures.slice(0, 50); // Top 50 for correlation
-      }
-      break;
-    }
-
-    case 'jointHigh': {
-      // For joint high queries, find areas high in multiple variables
-      const relevantFields = analysisResult.relevantFields || [actualFieldName];
-      const mappedFields = relevantFields.map((field: string) => findActualFieldName(field, geographicFeatures[0]));
-      
-      const validFeatures = geographicFeatures
-        .filter(feature => {
-          return mappedFields.every((field: string) => {
-            const value = feature.properties?.[field];
-            return value !== null && value !== undefined && !isNaN(Number(value));
-          });
-        })
-        .map(feature => {
-          const values = mappedFields.map((field: string) => Number(feature.properties[field] || 0));
-          const avgValue = values.reduce((sum: number, val: number) => sum + val, 0) / values.length;
-         
-         return {
-           id: feature.properties?.FSA_ID || feature.properties?.ID || 'unknown',
-           average_value: avgValue,
-           joint_score: avgValue, // Simplified joint score
-           ...feature.properties
-         };
-       })
-       .sort((a, b) => b.joint_score - a.joint_score)
-       .slice(0, 25);
-
-      results = validFeatures;
-      break;
-    }
-
-    default: {
-      // For other query types, return features with target variable
-      const validFeatures = geographicFeatures
-        .filter(feature => {
-          const value = feature.properties?.[actualFieldName];
-          return value !== null && value !== undefined;
-        })
-        .map(feature => ({
-          id: feature.properties?.FSA_ID || feature.properties?.ID || 'unknown',
-          value: Number(feature.properties[actualFieldName] || 0),
-          ...feature.properties
-        }))
-        .slice(0, 50);
-
-      results = validFeatures;
-      break;
-    }
-  }
-
-     // Create enhanced analysis result structure compatible with existing code
-   const enhancedAnalysisResult = {
-     success: true,
-     analysis_type: queryType,
-     results: results,
-     query: query,
-     target_variable: targetVariable,
-     matched_fields: analysisResult.relevantFields || [targetVariable],
-     feature_importance: [], // Could be populated with field importance analysis
-     model_info: {
-       source: 'frontend_analysis',
-       timestamp: new Date().toISOString(),
-       target_variable: targetVariable,
-       feature_count: geographicFeatures.length,
-       result_count: results.length
-     },
-     summary: `Frontend analysis completed: Found ${results.length} results for ${queryType} analysis`,
-     visualizationStrategy: {
-       title: query,
-       description: 'Frontend analysis visualization',
-       targetVariable: targetVariable
-     },
-     popupConfig: undefined, // Add missing property
-     suggestedActions: [] // Add missing property
-   };
-
-  console.log('[Frontend Analysis] Analysis complete:', {
-    resultCount: results.length,
-    analysisType: queryType,
-    targetVariable
-  });
-
-  return enhancedAnalysisResult;
-};
 
 // Helper function to create analysis summary when Claude API fails
 const createAnalysisSummary = (
@@ -486,10 +206,8 @@ const createAnalysisSummary = (
 };
 
 const EnhancedGeospatialChat = memo(({
-  agentType = 'geospatial',
   dataSource,
   onFeaturesFound,
-  onError,
   onVisualizationLayerCreated,
   mapView: initialMapView,
   setFormattedLegendData,
@@ -500,7 +218,6 @@ const EnhancedGeospatialChat = memo(({
   const [arcgisModules, setArcgisModules] = useState<any>(null);
   
   // Initialize ConfigurationManager for ranking system (singleton)
-  const configManager = ConfigurationManager.getInstance();
   
   useEffect(() => {
     setArcgisModules({ GraphicsLayer, Graphic, geometryEngine });
@@ -533,32 +250,8 @@ const EnhancedGeospatialChat = memo(({
   });
   
   // Define debug logger outside of any function to make it accessible across the component
-  const getDebugLogger = (prefix: string) => (step: string, data?: any): void => {
-    console.log(`[${prefix}][${step}]`, data || '');
-  };
   
   // Cast onFeaturesFound to accept GeospatialFeature
-  const handleFeaturesFound = useCallback((features: any[], isComposite?: boolean) => {
-    const debugLog = getDebugLogger('FeaturesCallback');
-    debugLog("RECEIVED", { 
-      count: features?.length || 0,
-      isComposite: !!isComposite,
-      firstFeatureType: features?.[0]?.geometry?.type || 'none',
-      timestamp: new Date().toISOString()
-    });
-    
-    // Track that we received features and store debug info
-    setFeatures(features || []);
-    setDebugInfo(prev => ({
-      ...prev,
-      features: features?.slice(0, 10) || [],
-      totalFeatures: features?.length || 0,
-      callbackTimestamp: new Date().toISOString()
-    }));
-    
-    // Pass along to parent component
-    onFeaturesFound(features, isComposite);
-  }, [onFeaturesFound]);
   
   // Add chat context integration
   const { 
@@ -567,17 +260,12 @@ const EnhancedGeospatialChat = memo(({
     refreshContextSummary
   } = useChatContext();
   
-  const mapRef = useRef<MapView | null>(null);
-  const sceneViewRef = useRef<SceneView | null>(null);
-  const viewContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const analyzeButtonRef = useRef<HTMLButtonElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [activeView, setActiveView] = useState<'map' | 'scene'>('map');
   const currentVisualizationLayer = useRef<__esri.Layer | null>(null);
   // Feedback component removed as obsolete
-  const setActiveFeedbackComponent = (_: any) => {}; // Empty function to prevent errors with arg
-  const activeFeedbackComponent = null; // Null value to prevent errors in rendering
 
   const [messages, setMessages] = useState<LocalChatMessage[]>([]);
   const [inputQuery, setInputQuery] = useState('');
@@ -666,10 +354,7 @@ const EnhancedGeospatialChat = memo(({
   // AnalysisEngine Integration - Replace the chaotic multi-manager system
   const { 
     executeAnalysis, 
-    state: analysisEngineState,
-    clearAnalysis,
-    addEventListener: addEngineEventListener
-  } = useAnalysisEngine();
+    clearAnalysis  } = useAnalysisEngine();
 
   // Sample size for analysis (restored to avoid breaking changes)
   const [sampleSizeValue, setSampleSizeValue] = useState<number>(5000);
@@ -721,29 +406,7 @@ const EnhancedGeospatialChat = memo(({
   };
 
   // Get available target options based on analysis result OR real-time query detection
-  const getAvailableTargetOptions = () => {
-    // First, real-time detection from the current input query
-    const detectedBrands = detectBrandsInQuery(inputQuery);
 
-    if (detectedBrands.length > 0) {
-      return TARGET_OPTIONS.filter(opt => detectedBrands.includes(opt.value));
-    }
-
-    // Next, if analysis result exists, intersect with relevant fields
-    if (lastAnalysisResult?.relevantFields && lastAnalysisResult.relevantFields.length > 0) {
-      const brandFields = lastAnalysisResult.relevantFields.filter(f =>
-        TARGET_OPTIONS.some(opt => opt.value === f)
-      );
-      if (brandFields.length > 0) {
-        return TARGET_OPTIONS.filter(opt => brandFields.includes(opt.value));
-      }
-    }
-
-    // Fallback – show all brands
-    return TARGET_OPTIONS;
-  };
-
-  const availableTargetOptions = getAvailableTargetOptions();
 
   // Update the real-time target update effect to use local state
   useEffect(() => {
@@ -1013,7 +676,6 @@ const EnhancedGeospatialChat = memo(({
 
     // Create CSV headers
     const headers = getReadableHeaders(analysisType, targetVariable);
-    const csvHeaders = headers.join(',');
     
     // Create CSV rows with Enhanced Score Export data
     const csvRows = analysisData.records.map((record: any) => {
@@ -1307,79 +969,6 @@ const EnhancedGeospatialChat = memo(({
   };
 
   // Update the geometry validation function
-  const validateFeatureGeometry = (feature: GeospatialFeature) => {
-    if (!feature || !feature.geometry) {
-      // Only log invalid entries when verbose flag is enabled
-      if (VERBOSE_GEOMETRY_LOGS) {
-        console.log('[GeospatialChat][DEBUG] Invalid feature - missing geometry:', { 
-          featureId: feature?.properties?.FSA_ID,
-          hasGeometry: !!feature?.geometry
-        });
-      }
-      return false;
-    }
-
-    const geometryType = feature.geometry.type?.toLowerCase();
-    if (VERBOSE_GEOMETRY_LOGS) {
-      console.log('[GeospatialChat][DEBUG] Validating geometry:', {
-        featureId: feature.properties?.FSA_ID,
-        geometryType,
-        geometryKeys: Object.keys(feature.geometry),
-        hasCoordinates: !!feature.geometry.coordinates,
-        coordinatesType: feature.geometry.coordinates ? Array.isArray(feature.geometry.coordinates) ? 'array' : typeof feature.geometry.coordinates : 'none',
-        spatialReference: feature.geometry.spatialReference || feature.properties?.spatialReference
-      });
-    }
-
-    // For points
-    if (geometryType === 'point') {
-      const coords = feature.geometry.coordinates;
-      if (!Array.isArray(coords) || coords.length < 2) {
-        if (VERBOSE_GEOMETRY_LOGS) console.log('[GeospatialChat][DEBUG] Invalid point coordinates:', { coords });
-        return false;
-      }
-      const [lon, lat] = coords;
-      const isValid = lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
-      if (!isValid) {
-        if (VERBOSE_GEOMETRY_LOGS) console.log('[GeospatialChat][DEBUG] Invalid point coordinates:', { lat, lon });
-      }
-      return isValid;
-    }
-
-    // For polygons (GeoJSON-style coordinates OR Esri rings)
-    if (geometryType === 'polygon') {
-      // Prefer GeoJSON coordinates, but fall back to rings if coordinates absent
-      // (Esri Polygon instances expose .rings only)
-      const coords: any = feature.geometry.coordinates || (feature.geometry as any).rings;
-
-      if (!Array.isArray(coords) || coords.length === 0) {
-        if (VERBOSE_GEOMETRY_LOGS) console.log('[GeospatialChat][DEBUG] Invalid polygon coordinates structure:', { coords });
-        return false;
-      }
-
-      // Ensure every ring has at least 4 points and each point has 2 numeric values
-      const hasValidRings = coords.every((ring: any) =>
-        Array.isArray(ring) && ring.length >= 4 &&
-        ring.every((coord: any) => Array.isArray(coord) && coord.length >= 2 &&
-          typeof coord[0] === 'number' && typeof coord[1] === 'number')
-      );
-
-      if (VERBOSE_GEOMETRY_LOGS) {
-        console.log('[GeospatialChat][DEBUG] Polygon geometry check:', {
-          featureId: feature.properties?.FSA_ID,
-          coordsLength: coords.length,
-          firstRingLength: coords[0]?.length,
-          hasValidRings,
-          spatialReference: feature.geometry.spatialReference || feature.properties?.spatialReference
-        });
-      }
-
-      return hasValidRings;
-    }
-
-    if (VERBOSE_GEOMETRY_LOGS) console.log('[GeospatialChat][DEBUG] Unsupported geometry type:', { geometryType });
-    return false;
-  };
 
   const handleCustomizeVisualization = (messageId: string) => {
     setActiveVizMessageId(messageId);
@@ -1558,9 +1147,6 @@ const EnhancedGeospatialChat = memo(({
   }, [currentMapView, features, toast]);
 
   // Helper: convert raw dataset code to reader-friendly label
-  const prettyField = (code: string): string => {
-    return FIELD_ALIASES[code] || code.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-  };
 
   // Apply AnalysisEngine's advanced visualization to the map
   const applyAnalysisEngineVisualization = async (
@@ -1903,12 +1489,12 @@ const EnhancedGeospatialChat = memo(({
       // DYNAMIC FIELD SCHEMA: Generate field definitions based on what attributes actually exist
       // IMPORTANT: These field definitions only affect the ArcGIS FeatureLayer schema
       // The full data remains available for analysis/chat context via setFeatures()
-      const essentialFields = [
+      const essentialFields: __esri.FieldProperties[] = [
         { name: 'OBJECTID', type: 'oid' },
         { name: 'area_name', type: 'string' },
         { name: 'value', type: 'double' },
         { name: 'ID', type: 'string' },
-        { name: data.targetVariable, type: 'double' } // Dynamic target variable field
+        { name: data.targetVariable || 'thematic_value', type: 'double' } // Dynamic target variable field
       ];
 
       // Dynamically discover what fields exist in the graphics and add appropriate schema
@@ -1931,10 +1517,10 @@ const EnhancedGeospatialChat = memo(({
           if (essentialFields.some(f => f.name === fieldName)) return;
           
           const value = sampleAttributes[fieldName];
-          let fieldType = 'string'; // default
+          let fieldType: __esri.FieldProperties['type'] = 'string'; // default
           
           if (fieldTypeMap[fieldName]) {
-            fieldType = fieldTypeMap[fieldName];
+            fieldType = fieldTypeMap[fieldName] as __esri.FieldProperties['type'];
           } else if (typeof value === 'number') {
             fieldType = Number.isInteger(value) ? 'integer' : 'double';
           } else if (typeof value === 'string') {
@@ -2044,6 +1630,13 @@ const EnhancedGeospatialChat = memo(({
         layerLoaded: featureLayer.loaded,
         layerLoadError: featureLayer.loadError
       });
+
+      // 🎯 AUTO-ZOOM: Zoom to fit displayed features when showing subset of data
+      const shouldAutoZoom = shouldAutoZoomToFeatures(data, arcgisFeatures);
+      if (shouldAutoZoom && mapView) {
+        console.log('[AnalysisEngine] Auto-zooming to fit displayed features');
+        zoomToDisplayedFeatures(mapView, featureLayer, arcgisFeatures);
+      }
       
       // 🔥 CRITICAL DEBUG: Track layer renderer lifecycle
       console.log('🔥 [RENDERER LIFECYCLE] Initial renderer after layer creation:', {
@@ -2054,16 +1647,6 @@ const EnhancedGeospatialChat = memo(({
       });
       
       // Watch for renderer changes
-      const rendererWatcher = featureLayer.watch('renderer', (newValue, oldValue) => {
-        console.log('⚠️ [RENDERER LIFECYCLE] RENDERER CHANGED!', {
-          oldType: oldValue?.type,
-          newType: newValue?.type,
-          oldField: (oldValue as any)?.field,
-          newField: (newValue as any)?.field,
-          timestamp: new Date().toISOString(),
-          stack: new Error().stack
-        });
-      });
       
       // Check renderer after various timeouts
       setTimeout(() => {
@@ -2254,16 +1837,16 @@ const EnhancedGeospatialChat = memo(({
                   // Check if features are actually grey by sampling pixel colors (if possible)
                 }
                 
-                // 🔥 CHECK VALUE DISTRIBUTION vs CLASS BREAKS
+                // 🔥 CHECK VALUE DISTRIBUTION vs RENDERER
                 if (featureLayer.source && (featureLayer.source as any).length > 0) {
                   const features = (featureLayer.source as any).toArray();
                   const fieldName = (featureLayer.renderer as any)?.field || 'value';
                   const values = features.map((f: any) => f.attributes[fieldName]).filter((v: any) => !isNaN(v));
-                  
-                  const classBreaks = (featureLayer.renderer as any)?.classBreakInfos || [];
+                  const rendererType = (featureLayer.renderer as any)?.type;
                   
                   console.log('🔥 [VALUE DISTRIBUTION CHECK]:', {
                     fieldName: fieldName,
+                    rendererType: rendererType,
                     totalFeatures: features.length,
                     featuresWithValues: values.length,
                     valueRange: {
@@ -2271,39 +1854,64 @@ const EnhancedGeospatialChat = memo(({
                       max: Math.max(...values),
                       avg: values.reduce((a: number, b: number) => a + b, 0) / values.length
                     },
-                    classBreakRanges: classBreaks.map((cb: any) => ({
-                      min: cb.minValue,
-                      max: cb.maxValue
-                    })),
                     sampleValues: values.slice(0, 10)
                   });
                   
-                  // Check how many features fall into each class break
-                  const distribution = classBreaks.map((cb: any, i: number) => {
-                    const count = values.filter((v: number) => v >= cb.minValue && v <= cb.maxValue).length;
-                    return {
-                      class: i + 1,
-                      range: `${cb.minValue}-${cb.maxValue}`,
-                      count: count,
-                      percentage: ((count / values.length) * 100).toFixed(1) + '%'
-                    };
-                  });
-                  
-                  console.log('🔥 [CLASS BREAK DISTRIBUTION]:', distribution);
-                  
-                  // Check for values outside all class breaks
-                  const minBreak = Math.min(...classBreaks.map((cb: any) => cb.minValue));
-                  const maxBreak = Math.max(...classBreaks.map((cb: any) => cb.maxValue));
-                  const outsideValues = values.filter((v: number) => v < minBreak || v > maxBreak);
-                  
-                  if (outsideValues.length > 0) {
-                    console.error('❌ [VALUE DISTRIBUTION] CRITICAL: Features with values outside class breaks!', {
-                      outsideCount: outsideValues.length,
-                      outsidePercentage: ((outsideValues.length / values.length) * 100).toFixed(1) + '%',
-                      sampleOutsideValues: outsideValues.slice(0, 5),
-                      classBreakRange: `${minBreak} - ${maxBreak}`,
-                      info: 'These features will use the default grey symbol!'
-                    });
+                  if (rendererType === 'class-breaks') {
+                    const classBreaks = (featureLayer.renderer as any)?.classBreakInfos || [];
+                    
+                    console.log('🔥 [CLASS BREAK DISTRIBUTION]:', classBreaks.map((cb: any, i: number) => {
+                      const count = values.filter((v: number) => v >= cb.minValue && v <= cb.maxValue).length;
+                      return {
+                        class: i + 1,
+                        range: `${cb.minValue}-${cb.maxValue}`,
+                        count: count,
+                        percentage: ((count / values.length) * 100).toFixed(1) + '%'
+                      };
+                    }));
+                    
+                    // Check for values outside all class breaks
+                    const minBreak = Math.min(...classBreaks.map((cb: any) => cb.minValue));
+                    const maxBreak = Math.max(...classBreaks.map((cb: any) => cb.maxValue));
+                    const outsideValues = values.filter((v: number) => v < minBreak || v > maxBreak);
+                    
+                    if (outsideValues.length > 0) {
+                      console.error('❌ [VALUE DISTRIBUTION] CRITICAL: Features with values outside class breaks!', {
+                        outsideCount: outsideValues.length,
+                        outsidePercentage: ((outsideValues.length / values.length) * 100).toFixed(1) + '%',
+                        sampleOutsideValues: outsideValues.slice(0, 5),
+                        classBreakRange: `${minBreak} - ${maxBreak}`,
+                        info: 'These features will use the default grey symbol!'
+                      });
+                    }
+                  } else if (rendererType === 'unique-value') {
+                    const uniqueValues = (featureLayer.renderer as any)?.uniqueValueInfos || [];
+                    const definedValues = uniqueValues.map((uv: any) => uv.value);
+                    
+                    console.log('🔥 [UNIQUE VALUE DISTRIBUTION]:', definedValues.map((val: any) => {
+                      const count = values.filter((v: any) => v === val).length;
+                      return {
+                        value: val,
+                        count: count,
+                        percentage: ((count / values.length) * 100).toFixed(1) + '%'
+                      };
+                    }));
+                    
+                    // Check for values not in unique value list
+                    const unmatchedValues = values.filter((v: any) => !definedValues.includes(v));
+                    
+                    if (unmatchedValues.length > 0) {
+                      const uniqueUnmatched = [...new Set(unmatchedValues)];
+                      console.log('⚠️ [UNIQUE VALUE] Some features use undefined values:', {
+                        unmatchedCount: unmatchedValues.length,
+                        unmatchedPercentage: ((unmatchedValues.length / values.length) * 100).toFixed(1) + '%',
+                        uniqueUnmatchedValues: uniqueUnmatched,
+                        definedValues: definedValues,
+                        info: 'These features will use the default symbol.'
+                      });
+                    } else {
+                      console.log('✅ [UNIQUE VALUE] All feature values match defined unique values');
+                    }
                   }
                 }
               }, 2000);
@@ -2489,60 +2097,6 @@ const EnhancedGeospatialChat = memo(({
     }
   };
 
-  const constructMicroservicePrompt = (query: string, analysisResult: QueryAnalysisResult): string => {
-    let taskSpecificInstructions = '';
-    let enhancedQuery = query;
-    const analysisType = analysisResult.queryType;
-    const targetVar = analysisResult.targetVariable || analysisResult.relevantFields?.[0] || '';
-    const targetPretty = prettyField(targetVar);
-  
-    switch (analysisType) {
-      case 'jointHigh': {
-        const relevantFields = analysisResult.relevantFields || [];
-        if (relevantFields.length >= 2) {
-          const varA = relevantFields[0];
-          const varB = relevantFields[1];
-          taskSpecificInstructions = `Task: Analyze the combined score (joint_score) of ${varA} and ${varB} across all regions. Focus on identifying areas with strong performance in both metrics, understanding the distribution of combined scores, and highlighting any geographic patterns or clusters of high-scoring regions.`;
-          enhancedQuery = `Analyze the relationship between ${varA} and ${varB} using their combined score. Address the core question: "${query}". Your analysis should focus on identifying and explaining patterns in regions with high combined scores, analyzing distribution and geographic patterns, and highlighting notable areas where both ${varA} and ${varB} show strong performance.`;
-        }
-        break;
-      }
-      case 'correlation': {
-        const fields = analysisResult.relevantFields || [];
-        if (fields.length >= 2) {
-          const primaryField = analysisResult.targetVariable || fields[0];
-          const comparisonField = fields.find(f => f !== primaryField) || fields[1];
-          taskSpecificInstructions = `Task: Analyze the correlation between ${primaryField} and ${comparisonField}. Use business-friendly terms such as "market share" and "consumer preference."  Focus on identifying areas where the values show strong positive or negative relationships, or significant divergence.  Avoid phrases like "sample data point" or other technical jargon that might confuse non-technical readers; instead reference the location or area directly (e.g., "this area" or "these regions").`;
-          enhancedQuery = `Analyze the correlation between ${primaryField} and ${comparisonField}. Address the core question: "${query}". Your analysis should explain the overall correlation pattern, highlight areas with strong relationships, describe geographic distribution, and call out notable outliers.  Use clear narrative language (no "sample data point" phrasing) and, when discussing brand metrics, frame insights in terms of market share or market position.`;
-        }
-        break;
-      }
-      case 'topN': {
-        taskSpecificInstructions = `Task: Analyze the provided data layer to find the top areas based on the user query. Focus on ranking and identifying the top areas according to the primary analysis field: ${targetPretty}.`;
-        enhancedQuery = `Find the top areas for ${targetPretty}. Address the core question: "${query}". Your analysis should focus on ranking the top N locations and describing their values.`;
-        break;
-      }
-      case 'choropleth':
-      default: {
-        taskSpecificInstructions = `Task: Analyze the spatial distribution of ${targetPretty}. Your analysis must focus on clusters first. Follow this structure strictly:
-  1. CLUSTERS ANALYSIS (MOST IMPORTANT): Identify and analyze at least 5 distinct clusters of adjacent areas with similar ${targetPretty} values. For each cluster, provide its rank, list 3-5 core ZIP codes/FSAs, state its average value, and use the term "${targetPretty}" when discussing values.
-  2. HIGH-VALUE AREAS: Briefly mention the top 5 individual areas with the highest ${targetPretty} values.
-  3. GEOGRAPHIC DISTRIBUTION: Explain how clusters are distributed across the geography.
-  4. STATISTICAL COMPARISON: Compare mean/median values between clusters.`;
-        enhancedQuery = `Analyze the spatial distribution of ${targetPretty}. Address the core question: "${query}". Your response should prioritize cluster analysis as described in the task instructions.`;
-        break;
-      }
-    }
-  
-    return `Task Instructions:
-  ${taskSpecificInstructions.replaceAll(targetVar, targetPretty)}
-  
-  User Query: "${query}"
-  
-  Enhanced Instructions for AI:
-  ${enhancedQuery.replaceAll(targetVar, targetPretty)}
-  `;
-  };
 
   const handleSubmit = async (query: string, source: 'main' | 'reply' = 'main') => {
     console.log('🚨 [FUNCTION CALL] handleSubmit called with query:', query);
@@ -3498,8 +3052,8 @@ const EnhancedGeospatialChat = memo(({
       );
       
       // Check for fallback analysis and add warning message if needed
-      const isFallbackAnalysis = enhancedAnalysisResult?.is_fallback || 
-                                 enhancedAnalysisResult?.status === 'fallback' ||
+      const isFallbackAnalysis = (enhancedAnalysisResult as any)?.is_fallback || 
+                                 (enhancedAnalysisResult as any)?.status === 'fallback' ||
                                  baseFinalContent?.includes?.('fallback') ||
                                  baseFinalContent?.includes?.('unavailable');
       
@@ -3608,396 +3162,79 @@ const EnhancedGeospatialChat = memo(({
   };
 
   // --- Plain conversational chat ---
-  const sendChatMessage = async (text: string) => {
-    console.log('🚨 [FUNCTION CALL] sendChatMessage called with text:', text);
-    console.log('🚨 [FUNCTION CALL] This may be using different data than handleSubmit!');
-    
-    // 🎯 NEW: Detect ranking queries for unified system
-    const queryLower = text?.toLowerCase() || '';
-    const isRankingQuery = queryLower.includes('top') || queryLower.includes('best') || 
-                          queryLower.includes('highest') || queryLower.includes('worst') ||
-                          queryLower.includes('lowest') || queryLower.includes('bottom');
-    
-    // Extract number if specified (e.g., "top 5", "best 15")
-    let requestedCount = 10; // Default
-    const numberMatch = queryLower.match(/(?:top|best|highest|worst|lowest|bottom)\s+(\d+)/);
-    if (numberMatch) {
-      requestedCount = Math.min(50, Math.max(1, parseInt(numberMatch[1]))); // Cap between 1-50
-    }
-    
-    console.log(`🎯 [RANKING SYSTEM] sendChatMessage - Query: "${text}", isRankingQuery: ${isRankingQuery}, requestedCount: ${requestedCount}`);
-    
-    const userId = `chat-user-${Date.now()}`;
-    const assistantId = `chat-assistant-${Date.now() + 1}`;
 
-    const userMsg: LocalChatMessage = {
-      id: userId,
-      role: 'user',
-      content: text,
-      timestamp: new Date(),
-    };
-
-    const placeholder: LocalChatMessage = {
-      id: assistantId,
-      role: 'assistant',
-      content: '…',
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMsg, placeholder]);
-    addContextMessage({ role: 'user', content: text });
-
-    // Debug the features state
-    console.log('[DEBUG] sendChatMessage - features state:', {
-      hasFeatures: !!features,
-      featuresLength: features?.length || 0,
-      firstFeatureSample: features?.[0] ? {
-        keys: Object.keys(features[0]),
-        propertiesKeys: features[0].properties ? Object.keys(features[0].properties) : 'no properties',
-        hasGeometry: !!features[0].geometry
-      } : 'no first feature'
+  // 🎯 AUTO-ZOOM: Helper methods for automatic map zooming
+  const shouldAutoZoomToFeatures = (data: any, features: any[]): boolean => {
+    // Only auto-zoom if we have a reasonable subset of features (not showing everything)
+    const totalPossibleFeatures = 3983; // Approximate total ZIP codes in dataset
+    const displayedFeatures = features.length;
+    const percentageShown = displayedFeatures / totalPossibleFeatures;
+    
+    // Check if this is a query type that should trigger auto-zoom
+    const currentQuery = inputQuery.toLowerCase();
+    const isComparativeQuery = currentQuery.includes('compare') || currentQuery.includes('vs') || currentQuery.includes('versus');
+    const isRankingQuery = currentQuery.includes('top ') || currentQuery.includes('best ') || currentQuery.includes('highest ') || currentQuery.includes('lowest ');
+    const isCityQuery = currentQuery.includes(' nyc') || currentQuery.includes('new york') || currentQuery.includes('philadelphia') || currentQuery.includes('chicago') || currentQuery.includes('boston');
+    
+    // Auto-zoom conditions:
+    // 1. Showing less than 20% of total features (for comparative, ranking, etc.)
+    // 2. OR it's a specific query type that focuses on limited areas
+    const shouldZoomByPercentage = percentageShown < 0.20;
+    const shouldZoomByQueryType = isComparativeQuery || isRankingQuery || isCityQuery;
+    const shouldZoom = shouldZoomByPercentage || shouldZoomByQueryType;
+    
+    console.log('[AutoZoom] Zoom decision:', {
+      displayedFeatures,
+      totalPossibleFeatures,
+      percentageShown: (percentageShown * 100).toFixed(1) + '%',
+      isComparativeQuery,
+      isRankingQuery,
+      isCityQuery,
+      shouldZoomByPercentage,
+      shouldZoomByQueryType,
+      shouldZoom
     });
+    
+    return shouldZoom;
+  };
 
+  const zoomToDisplayedFeatures = async (mapView: any, featureLayer: any, _features: any[]) => {
     try {
-      // Build comprehensive data summary instead of sending raw features
-      let dataSummary = undefined;
-      if (features && features.length > 0) {
-        // Check if we have a recent cached summary to avoid regenerating identical data
-        const currentFeaturesHash = features.length + '-' + (features[0]?.properties?.thematic_value || 'unknown');
-        // DISABLE CACHE to force regeneration with fixed competitive scores
-        const cacheIsValid = false; // cachedDatasetSummary && 
-                           // datasetCacheTimestamp && 
-                           // (Date.now() - new Date(datasetCacheTimestamp).getTime()) < 300000; // 5 minutes
-        
-        if (cacheIsValid && cachedDatasetSummary.featuresHash === currentFeaturesHash) {
-          console.log('[DEBUG] Using cached dataset summary');
-          dataSummary = {
-            ...cachedDatasetSummary.summary,
-            queryContext: {
-              ...cachedDatasetSummary.summary.queryContext,
-              currentQuestion: text,
-              conversationHistory: messages.slice(-4).map(m => ({
-                role: m.role,
-                content: m.content.substring(0, 200)
-              })),
-              totalMessagesInConversation: messages.length
-            }
-          };
-        } else {
-          console.log('[DEBUG] Generating fresh dataset summary');
+      // Wait for layer to be fully loaded
+      if (!featureLayer.loaded) {
+        await featureLayer.load();
+      }
+      
+      // Wait for map view to be ready
+      await mapView.when();
+      
+      // Use a slight delay to ensure features are rendered
+      setTimeout(async () => {
+        try {
+          // Get the full extent of the feature layer
+          const fullExtent = await featureLayer.queryExtent();
           
-          // Generate comprehensive statistical summary of the entire dataset
-          const allProps = features.map(f => f.properties || {});
-        
-        // Extract all numeric fields
-        const numericFields = Object.keys(allProps[0] || {}).filter(key => {
-          const sampleValues = allProps.slice(0, 10).map(p => p[key]).filter(v => v !== null && v !== undefined);
-          return sampleValues.length > 0 && sampleValues.every(v => typeof v === 'number' && !isNaN(v));
-        });
-
-        // Calculate comprehensive statistics for each field
-        const fieldStats: Record<string, any> = {};
-        numericFields.forEach(field => {
-          const values = allProps.map(p => p[field]).filter(v => typeof v === 'number' && !isNaN(v));
-          if (values.length > 0) {
-            const sorted = values.sort((a, b) => a - b);
-            fieldStats[field] = {
-              count: values.length,
-              min: Math.min(...values),
-              max: Math.max(...values),
-              mean: values.reduce((a, b) => a + b, 0) / values.length,
-              median: sorted[Math.floor(sorted.length / 2)],
-              q1: sorted[Math.floor(sorted.length * 0.25)],
-              q3: sorted[Math.floor(sorted.length * 0.75)],
-              std: Math.sqrt(values.reduce((sq, n) => sq + Math.pow(n - (values.reduce((a, b) => a + b, 0) / values.length), 2), 0) / values.length)
-            };
-          }
-        });
-
-        // Get top and bottom performers for thematic_value
-        const sortedByThematic = features
-          .filter(f => f.properties?.thematic_value != null)
-          .map(f => {
-            // DEBUG: Log ALL thematic_values to see what we're working with
-            console.log(`🔍 [DEBUG] ${f.properties?.DESCRIPTION || f.properties?.ID}: thematic_value=${f.properties?.thematic_value}`);
+          if (fullExtent.extent) {
+            console.log('[AutoZoom] Zooming to feature extent:', {
+              xmin: fullExtent.extent.xmin,
+              ymin: fullExtent.extent.ymin,
+              xmax: fullExtent.extent.xmax,
+              ymax: fullExtent.extent.ymax
+            });
             
-            // AGGRESSIVE: Cap ALL thematic_values for competitive analysis (not just >10)
-            let originalThematic = f.properties?.thematic_value || 0;
-            let cappedThematic = originalThematic;
-            
-            // For competitive analysis, cap any value that looks like market share percentage
-            console.log(`🔍 [CAPPING DEBUG] ${f.properties?.DESCRIPTION}:`);
-            console.log(`   originalThematic: ${originalThematic} (from thematic_value)`);
-            console.log(`   originalThematic > 10? ${originalThematic > 10}`);
-            
-            if (originalThematic > 10) {
-              cappedThematic = Math.max(1.0, Math.min(10.0, originalThematic / 10));
-              console.log(`🔧 [CAPPING APPLIED] ${f.properties?.DESCRIPTION}: ${originalThematic} → ${cappedThematic.toFixed(1)}`);
-            } else {
-              console.log(`✅ [NO CAPPING NEEDED] ${f.properties?.DESCRIPTION}: ${originalThematic} (already ≤10)`);
-            }
-            console.log(`   → cappedThematic: ${cappedThematic}`);
-            
-            return { ...f, cappedThematic, originalThematic };
-          })
-          .sort((a, b) => (b.cappedThematic || 0) - (a.cappedThematic || 0));
-        
-        console.log('🚨 [CLAUDE PREP] About to create topPerformers, sortedByThematic.length:', sortedByThematic.length);
-        
-        // 🔥 NEW: Use unified ranking system instead of hardcoded 20-feature limit
-        // Detect if user is asking for specific number of top/bottom performers
-        const queryLower = text?.toLowerCase() || '';
-        const isRankingQuery = queryLower.includes('top') || queryLower.includes('best') || 
-                              queryLower.includes('highest') || queryLower.includes('worst') ||
-                              queryLower.includes('lowest') || queryLower.includes('bottom');
-        
-        // Extract number if specified (e.g., "top 5", "best 15")
-        let requestedCount = 10; // Default
-        const numberMatch = queryLower.match(/(?:top|best|highest|worst|lowest|bottom)\s+(\d+)/);
-        if (numberMatch) {
-          requestedCount = Math.min(50, Math.max(1, parseInt(numberMatch[1]))); // Cap between 1-50
-        }
-        
-        console.log(`🎯 [RANKING SYSTEM] Query: "${text}", isRankingQuery: ${isRankingQuery}, requestedCount: ${requestedCount}`);
-        
-        // Use dynamic count instead of hardcoded 20, but still include full dataset context
-        const topPerformersForRanking = isRankingQuery ? 
-          sortedByThematic.slice(0, requestedCount) : 
-          sortedByThematic.slice(0, 20); // Keep existing behavior for non-ranking queries
-        
-        console.log(`🎯 [RANKING SYSTEM] Selected ${topPerformersForRanking.length} performers from ${sortedByThematic.length} total features`);
-        
-        // Map features to the format expected by Claude
-        const topPerformers = topPerformersForRanking.map(f => {
-          // Use the already capped value from sorting
-          const competitiveScore = f.cappedThematic;
-          console.log('🚨 [CLAUDE PREP] Creating performer for:', f.properties?.DESCRIPTION, 'with competitiveScore:', competitiveScore);
-          
-          const performerData = {
-            id: f.properties?.ID || f.properties?.OBJECTID,
-            description: f.properties?.DESCRIPTION,
-            competitive_advantage_score: competitiveScore, // PRIMARY RANKING METRIC
-            // Market share context data for explanation (clearly labeled as context, not ranking)
-            market_share_context: {
-              nike: f.properties?.value_MP30034A_B_P || 0,
-              adidas: f.properties?.value_MP30029A_B_P || 0,
-              jordan: f.properties?.value_MP30032A_B_P || 0,
-              puma: f.properties?.value_MP30035A_B_P || 0,
-              new_balance: f.properties?.value_MP30033A_B_P || 0,
-              asics: f.properties?.value_MP30030A_B_P || 0
-            }
-          };
-          
-          // Debug exactly what competitive_advantage_score is being sent to Claude
-          console.log(`📊 [Claude Data] ${performerData.description}:`);
-          console.log(`   Original thematic_value: ${f.originalThematic}`);
-          console.log(`   Capped competitive_advantage_score: ${performerData.competitive_advantage_score}`);
-          console.log('🚨 ACTUAL CLAUDE DATA:', JSON.stringify(performerData, null, 2));
-          
-          // Debug any >10 values being sent to Claude
-          Object.entries(performerData).forEach(([key, value]) => {
-            if (typeof value === 'number' && value > 10) {
-              console.error(`🔥 [Claude Data] Sending ${key}=${value} > 10 to Claude for ${f.properties?.DESCRIPTION}`);
-            }
-          });
-          
-          return performerData;
-        });
-
-        const bottomPerformers = sortedByThematic.slice(-10).map(f => ({
-          id: f.properties?.ID || f.properties?.OBJECTID,
-          description: f.properties?.DESCRIPTION,
-          thematic_value: f.cappedThematic // Use capped value
-        }));
-
-        // Geographic distribution analysis
-        const geographicDistribution = {
-          totalFeatures: features.length,
-          uniqueDescriptions: new Set(allProps.map(p => p.DESCRIPTION).filter(Boolean)).size,
-          thematicValueRange: fieldStats.thematic_value ? {
-            min: fieldStats.thematic_value.min,
-            max: fieldStats.thematic_value.max,
-            mean: fieldStats.thematic_value.mean
-          } : null
-        };
-
-        // Brand performance comparison (if brand fields exist)
-        const brandFields = numericFields.filter(field => 
-          field.includes('MP300') && (field.includes('_P') || field.includes('_B'))
-        );
-        
-        const brandComparison: Record<string, any> = {};
-        brandFields.forEach(field => {
-          if (fieldStats[field]) {
-            const brandName = field.includes('MP30034') ? 'Nike' :
-                            field.includes('MP30029') ? 'Adidas' :
-                            field.includes('MP30035') ? 'Puma' :
-                            field.includes('MP30030') ? 'Asics' :
-                            field.includes('MP30031') ? 'Converse' :
-                            field.includes('MP30032') ? 'Jordan' :
-                            field.includes('MP30033') ? 'New Balance' :
-                            field.includes('MP30036') ? 'Reebok' :
-                            field;
-            
-            brandComparison[brandName] = {
-              field: field,
-              ...fieldStats[field],
-              topAreas: sortedByThematic
-                .filter(f => f.properties?.[field] != null)
-                .sort((a, b) => (b.properties?.[field] || 0) - (a.properties?.[field] || 0))
-                .slice(0, 5)
-                .map(f => ({
-                  description: f.properties?.DESCRIPTION,
-                  value: f.properties?.[field]
-                }))
-            };
-          }
-        });
-
-        // Extract SHAP analysis data from the current visualization layer if available
-        let shapAnalysisData = null;
-        if (currentVisualizationLayer.current) {
-          const shapFeatureImportance = (currentVisualizationLayer.current as any).shapFeatureImportance;
-          const shapTargetVariable = (currentVisualizationLayer.current as any).shapTargetVariable;
-          
-          console.log('[DEBUG] sendChatMessage - Checking visualization layer for SHAP data:', {
-            hasVisualizationLayer: !!currentVisualizationLayer.current,
-            hasShapFeatureImportance: !!shapFeatureImportance,
-            shapFeatureImportanceLength: shapFeatureImportance ? shapFeatureImportance.length : 0,
-            hasShapTargetVariable: !!shapTargetVariable,
-            shapTargetVariable: shapTargetVariable,
-            layerKeys: currentVisualizationLayer.current ? Object.keys(currentVisualizationLayer.current) : null
-          });
-          
-          if (shapFeatureImportance && shapFeatureImportance.length > 0) {
-            shapAnalysisData = {
-              featureImportance: shapFeatureImportance,
-              targetVariable: shapTargetVariable,
-              analysisType: lastAnalysisResult?.queryType || 'ranking',
-              results: [], // We don't need the full results array for follow-up questions
-              summary: `SHAP analysis available for ${shapFeatureImportance.length} features`
-            };
-            
-            console.log('[DEBUG] sendChatMessage - Found SHAP analysis data:', {
-              featureImportanceCount: shapFeatureImportance.length,
-              targetVariable: shapTargetVariable,
-              topFeatures: shapFeatureImportance.slice(0, 5).map((f: any) => ({ feature: f.feature, importance: f.importance }))
+            // Zoom to the extent with some padding
+            await mapView.goTo(fullExtent.extent.expand(1.2), {
+              duration: 1500, // Smooth animation
+              easing: 'ease-in-out'
             });
           }
+        } catch (zoomError) {
+          console.warn('[AutoZoom] Failed to zoom to features:', zoomError);
         }
-
-        // Create comprehensive summary with enhanced context for follow-up
-        dataSummary = {
-          datasetOverview: {
-            totalFeatures: features.length,
-            analysisTimestamp: new Date().toISOString(),
-            geographicCoverage: geographicDistribution,
-            sessionType: 'follow-up-chat'
-          },
-          fieldStatistics: fieldStats,
-          performanceAnalysis: {
-            topPerformers,
-            bottomPerformers,
-            primaryField: 'thematic_value'
-          },
-          brandAnalysis: brandComparison,
-          queryContext: {
-            originalQuery: messages.find(m => m.role === 'user')?.content || text,
-            currentQuestion: text,
-            conversationHistory: messages.slice(-4).map(m => ({
-              role: m.role,
-              content: m.content.substring(0, 200) // Truncate for size
-            })),
-            analysisType: lastAnalysisEndpoint ? lastAnalysisEndpoint.replace('/', '').replace(/-/g, '_') : 'follow-up-chat',
-            totalMessagesInConversation: messages.length
-          },
-          // Add cached analysis results if available
-          lastAnalysisContext: lastAnalysisResult ? {
-            query: lastAnalysisResult.originalQuery || lastAnalysisResult.intent,
-            analysisType: lastAnalysisResult.queryType,
-            timestamp: new Date().toISOString()
-          } : null,
-          // Include SHAP analysis data if available
-          shapAnalysis: shapAnalysisData
-        };
-
-          // Cache the summary for future use
-          setCachedDatasetSummary({
-            summary: dataSummary,
-            featuresHash: currentFeaturesHash
-          });
-          setDatasetCacheTimestamp(new Date().toISOString());
-        } // End else block for fresh generation
-
-        console.log('[DEBUG] sendChatMessage comprehensive summary:', {
-          totalFeatures: features.length,
-          numericFields: dataSummary?.fieldStatistics ? Object.keys(dataSummary.fieldStatistics).length : 0,
-          fieldStatsKeys: dataSummary?.fieldStatistics ? Object.keys(dataSummary.fieldStatistics) : [],
-          topPerformersCount: dataSummary?.performanceAnalysis?.topPerformers?.length || 0,
-          brandComparisonKeys: dataSummary?.brandAnalysis ? Object.keys(dataSummary.brandAnalysis) : [],
-          summarySize: JSON.stringify(dataSummary).length,
-          usedCache: cacheIsValid && cachedDatasetSummary?.featuresHash === currentFeaturesHash,
-          hasShapAnalysis: !!dataSummary?.shapAnalysis,
-          shapAnalysisKeys: dataSummary?.shapAnalysis ? Object.keys(dataSummary.shapAnalysis) : null,
-          shapFeatureImportanceCount: dataSummary?.shapAnalysis?.featureImportance?.length || 0
-        });
-        
-        console.log('[DEBUG] Full dataSummary being sent to Claude:', JSON.stringify(dataSummary, null, 2));
-      }
-
-      console.log('🚨 [SENDCHATMESSAGE] About to call Claude API with dataSummary');
-      console.log('🚨 [SENDCHATMESSAGE] Features count:', features?.length || 0);
-      console.log('🚨 [SENDCHATMESSAGE] First feature sample:', features?.[0] ? {
-        thematic_value: features[0].properties?.thematic_value,
-        value_MP30034A_B_P: features[0].properties?.value_MP30034A_B_P,
-        description: features[0].properties?.DESCRIPTION
-      } : 'No features');
-
-      const resp = await fetch('/api/claude/generate-response', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: [
-            { role: 'user', content: text },
-          ],
-          metadata: {
-            contextSummary: contextSummary || undefined,
-            rankingContext: isRankingQuery ? {
-              isRankingQuery: true,
-              requestedCount: requestedCount,
-              totalFeatures: features?.length || 0,
-              queryType: queryLower.includes('top') || queryLower.includes('best') || queryLower.includes('highest') ? 'top' : 'bottom'
-            } : undefined,
-          },
-          featureData: dataSummary,
-          persona: selectedPersona,
-        }),
-      });
-
-      let content = 'Sorry, I had trouble answering that.';
-      if (resp.ok) {
-        const js = await resp.json();
-        console.log('[sendChatMessage] API response:', js);
-        content = js?.content || content;
-      } else {
-        console.error('[sendChatMessage] API error:', resp.status, resp.statusText);
-        const errorText = await resp.text();
-        console.error('[sendChatMessage] Error details:', errorText);
-        content = `Sorry, I encountered an error (${resp.status}): ${errorText}`;
-      }
-
-      setMessages((prev) => prev.map((m) => (m.id === assistantId ? { 
-        ...m, 
-        content,
-        metadata: { ...m.metadata, isStreaming: true }
-      } : m)));
-      addContextMessage({ role: 'assistant', content });
-    } catch (err) {
-      setMessages((prev) => prev.map((m) => (m.id === assistantId ? { 
-        ...m, 
-        content: 'Error: ' + (err as Error).message,
-        metadata: { ...m.metadata, isStreaming: false }
-      } : m)));
+      }, 1000); // Give layer time to render
+      
+    } catch (error) {
+      console.warn('[AutoZoom] Error in zoom to features:', error);
     }
   };
 
@@ -4146,102 +3383,6 @@ const EnhancedGeospatialChat = memo(({
   }, [inputQuery, manualTargetOverride]);
 
   // Dynamic field name resolution - handles multiple dataset formats
-  const findActualFieldName = (targetVariable: string, props: any): string => {
-    if (!props || !targetVariable) return targetVariable;
-
-    const snakeTarget = targetVariable.toLowerCase().replace(/[^a-z0-9]/g, '_');
-    
-    // First, try exact match
-    if (props.hasOwnProperty(targetVariable)) return targetVariable;
-    if (props.hasOwnProperty(snakeTarget)) return snakeTarget;
-    
-    // Dynamic field pattern generation - handles common dataset formats
-    const generateFieldPatterns = (fieldName: string): string[] => {
-      const base = fieldName.toLowerCase().replace(/[^a-z0-9]/g, '_');
-      const upper = fieldName.toUpperCase();
-      const upperUnderscore = upper.replace(/([A-Z])([0-9])/g, '$1_$2').replace(/([0-9])([A-Z])/g, '$1_$2');
-      
-      return [
-        // Original formats
-        fieldName,
-        base,
-        upper,
-        upperUnderscore,
-        base.replace(/_/g, ''),
-        upper.replace(/_/g, ''),
-        
-        // Microservice export formats (value_ and shap_ prefixes)
-        `value_${upper}`,
-        `value_${upperUnderscore}`,
-        `value_${base.toUpperCase()}`,
-        `shap_${upper}`,
-        `shap_${upperUnderscore}`,
-        `shap_${base.toUpperCase()}`,
-        
-        // Legacy formats
-        `${base}_p`,
-        `${upper}_P`,
-        
-        // Alternative formats
-        fieldName.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase(),
-        fieldName.replace(/([a-z])([A-Z])/g, '$1_$2').toUpperCase(),
-      ];
-    };
-    
-    // Try all generated patterns
-    const patterns = generateFieldPatterns(targetVariable);
-    for (const pattern of patterns) {
-      if (props.hasOwnProperty(pattern)) {
-        console.log('[Dynamic Field Detection] Field mapping:', targetVariable, '->', pattern);
-        return pattern;
-      }
-    }
-    
-    // Smart fuzzy matching for similar field names
-    const availableFields = Object.keys(props);
-    const findSimilarField = (target: string): string | null => {
-      // Remove common prefixes and suffixes for comparison
-      const normalizeField = (field: string) => 
-        field.toLowerCase()
-          .replace(/^(value_|shap_|raw_)/, '')
-          .replace(/(_p|_percent|_pct)$/, '')
-          .replace(/[^a-z0-9]/g, '');
-      
-      const normalizedTarget = normalizeField(target);
-      
-      for (const field of availableFields) {
-        const normalizedField = normalizeField(field);
-        if (normalizedField === normalizedTarget) {
-          console.log('[Fuzzy Field Detection] Found similar field:', target, '->', field);
-          return field;
-        }
-      }
-      
-      // Check for partial matches (useful for brand codes like MP30034A_B_P)
-      const targetCode = target.match(/MP\d+[A-Z]*_[A-Z]*_[A-Z]*/i)?.[0];
-      if (targetCode) {
-        for (const field of availableFields) {
-          if (field.toLowerCase().includes(targetCode.toLowerCase())) {
-            console.log('[Brand Code Detection] Found brand field:', target, '->', field);
-            return field;
-          }
-        }
-      }
-      
-      return null;
-    };
-    
-    const similarField = findSimilarField(targetVariable);
-    if (similarField) {
-      return similarField;
-    }
-    
-    console.log('[Dynamic Field Detection] No field mapping found for:', targetVariable);
-    console.log('[Dynamic Field Detection] Available fields sample:', availableFields.slice(0, 10));
-    
-    // Return original if no match found
-    return targetVariable;
-  };
 
   // Add multi-endpoint result handling
   const handleMultiEndpointResult = (result: any) => {
@@ -4264,290 +3405,9 @@ const EnhancedGeospatialChat = memo(({
     }
   };
 
-  const createMultiEndpointMessage = (result: any) => {
-    const metadata = result.metadata;
-    const insights = metadata.strategicInsights;
-    const performanceMetrics = metadata.performanceMetrics;
-    
-    let message = `🎯 **Multi-Endpoint Analysis Complete**\n\n`;
-    
-    // Executive Summary Section
-    message += `**📊 Executive Summary:**\n`;
-    message += `Analysis Confidence: ${((metadata.analysisConfidence || 0) * 100).toFixed(1)}%\n`;
-    message += `Strategic Priority: ${metadata.investmentPriority || 'Standard'}\n`;
-    message += `Risk Level: ${metadata.riskLevel || 'Moderate'}\n\n`;
-    
-    // Performance Metrics Section
-    if (performanceMetrics) {
-      message += `**⚡ Performance Metrics:**\n`;
-      message += `• Execution Time: ${((performanceMetrics.totalAnalysisTime || 0) / 1000).toFixed(1)}s\n`;
-      message += `• Endpoints Integrated: ${metadata.endpointsUsed?.length || 'Multiple'}\n`;
-      message += `• Geographic Coverage: ${metadata.dataPointCount?.toLocaleString() || 'N/A'} locations\n`;
-      message += `• Data Quality: ${performanceMetrics.dataQuality || 'High'} merge completeness\n`;
-      message += `• Analysis Depth: ${performanceMetrics.analysisDepth || 'Comprehensive'}\n\n`;
-    }
-    
-    // Strategy and Endpoints Used
-    message += `**🔄 Analysis Strategy:**\n`;
-    message += `• Merge Strategy: ${metadata.mergeStrategy || 'Overlay'}\n`;
-    message += `• Endpoints Combined: ${metadata.endpointsUsed?.join(', ') || 'Multiple analysis types'}\n`;
-    message += `• Total Records Analyzed: ${metadata.dataPointCount?.toLocaleString() || 'N/A'}\n\n`;
-    
-    // Cross-Endpoint Validation
-    if (metadata.crossEndpointValidation) {
-      message += `**✅ Cross-Endpoint Validation:**\n`;
-      message += `• High Confidence Areas: ${metadata.crossEndpointValidation.highConfidence || 0}\n`;
-      message += `• Medium Confidence Areas: ${metadata.crossEndpointValidation.mediumConfidence || 0}\n`;
-      message += `• Validation Score: ${((metadata.crossEndpointValidation.overallScore || 0) * 100).toFixed(1)}%\n\n`;
-    }
-    
-    // Strategic Opportunities (Geographic Focus)
-    if (insights?.topOpportunities?.length > 0) {
-      message += `**🎯 High-Opportunity Geographic Areas:**\n`;
-      insights.topOpportunities.slice(0, 5).forEach((opp: any, index: number) => {
-        const location = typeof opp === 'string' ? opp : opp.area_name || opp.location;
-        const score = typeof opp === 'object' ? opp.score?.toFixed(1) : '';
-        const confidence = typeof opp === 'object' ? opp.confidence : '';
-        
-        message += `${index + 1}. ${location}`;
-        if (score) message += ` (Score: ${score})`;
-        if (confidence) message += ` [${(confidence * 100).toFixed(0)}% confidence]`;
-        message += `\n`;
-      });
-      message += `\n`;
-    }
-    
-    // Strategic Recommendations (Risk-Adjusted)
-    if (insights?.recommendations?.length > 0) {
-      message += `**💡 Risk-Adjusted Strategic Recommendations:**\n`;
-      insights.recommendations.slice(0, 3).forEach((rec: any, index: number) => {
-        const recommendation = typeof rec === 'string' ? rec : rec.recommendation || rec.action;
-        const priority = typeof rec === 'object' ? rec.priority : '';
-        const riskLevel = typeof rec === 'object' ? rec.riskLevel : '';
-        
-        message += `${index + 1}. ${recommendation}`;
-        if (priority) message += ` [${priority} Priority]`;
-        if (riskLevel) message += ` (${riskLevel} Risk)`;
-        message += `\n`;
-      });
-      message += `\n`;
-    }
-    
-    // Risk Assessment
-    if (insights?.riskFactors?.length > 0) {
-      message += `**⚠️ Risk Assessment:**\n`;
-      insights.riskFactors.slice(0, 3).forEach((risk: any, index: number) => {
-        const factor = typeof risk === 'string' ? risk : risk.factor || risk.description;
-        const impact = typeof risk === 'object' ? risk.impact : '';
-        const likelihood = typeof risk === 'object' ? risk.likelihood : '';
-        
-        message += `${index + 1}. ${factor}`;
-        if (impact) message += ` - ${impact}`;
-        if (likelihood) message += ` (${likelihood} likelihood)`;
-        message += `\n`;
-      });
-      message += `\n`;
-    }
-    
-    // Implementation Timeline
-    if (insights?.implementationTimeline) {
-      message += `**📅 Implementation Timeline:**\n`;
-      if (insights.implementationTimeline.immediate) {
-        message += `• Immediate (0-30 days): ${insights.implementationTimeline.immediate.length} actions\n`;
-      }
-      if (insights.implementationTimeline.shortTerm) {
-        message += `• Short-term (1-6 months): ${insights.implementationTimeline.shortTerm.length} strategies\n`;
-      }
-      if (insights.implementationTimeline.longTerm) {
-        message += `• Long-term (6+ months): ${insights.implementationTimeline.longTerm.length} initiatives\n`;
-      }
-      message += `\n`;
-    }
-    
-    // Performance Summary
-    message += `**📈 Analysis Summary:**\n`;
-    message += `This comprehensive ${metadata.endpointsUsed?.length || 'multi'}-endpoint analysis provides `;
-    message += `${((metadata.analysisConfidence || 0) * 100).toFixed(0)}% confidence in the strategic recommendations. `;
-    message += `${metadata.dataPointCount?.toLocaleString() || 'Multiple'} geographic locations were analyzed `;
-    message += `using ${metadata.mergeStrategy || 'advanced'} data integration techniques.\n`;
-    
-    return message;
-  };
 
-  /**
-   * CRITICAL FIX: Join AnalysisEngine results with geographic features
-   */
-  const joinAnalysisWithGeography = async (
-    analysisData: ProcessedAnalysisData,
-    geographicFeatures: FeatureType[]
-  ): Promise<any[]> => {
-    try {
-      console.log('[joinAnalysisWithGeography] Starting join:', {
-        analysisRecords: analysisData.records?.length || 0,
-        geographicFeatures: geographicFeatures.length
-      });
 
-      // Create a map of geographic features by ID for fast lookup
-      const geoFeatureMap = new Map<string, FeatureType>();
-      geographicFeatures.forEach(feature => {
-        if (feature?.properties) {
-          // Try multiple ID field variations
-          const id = feature.properties.GEOID || 
-                    feature.properties.ID || 
-                    feature.properties.id ||
-                    feature.properties.area_id ||
-                    feature.properties.OBJECTID;
-          if (id) {
-            geoFeatureMap.set(String(id), feature);
-          }
-        }
-      });
 
-      console.log('[joinAnalysisWithGeography] Geographic feature map created:', geoFeatureMap.size);
-
-      // Join analysis data with geographic features
-      const joinedResults = analysisData.records.map((record: any, index: number) => {
-        // Try to match with geographic feature
-        const recordId = String(record.area_id || record.id || record.ID || index);
-        const geoFeature = geoFeatureMap.get(recordId);
-
-        if (geoFeature) {
-          // Successfully joined - use geographic feature's name and geometry
-          return {
-            ...record,
-            area_name: geoFeature.properties?.CSDNAME || 
-                      geoFeature.properties?.NAME || 
-                      geoFeature.properties?.area_name || 
-                      record.area_name || 
-                      `Area ${recordId}`,
-            geometry: geoFeature.geometry,
-            // Preserve all original properties
-            properties: {
-              ...record.properties,
-              ...geoFeature.properties
-            }
-          };
-        } else {
-          // No geographic match - use analysis data with fallback
-          return {
-            ...record,
-            area_name: record.area_name || `Area ${recordId}`,
-            geometry: null // Will need to be handled in visualization
-          };
-        }
-      });
-
-      console.log('[joinAnalysisWithGeography] Join complete:', {
-        totalRecords: joinedResults.length,
-        withGeometry: joinedResults.filter(r => r.geometry).length,
-        withoutGeometry: joinedResults.filter(r => !r.geometry).length,
-        sampleRecord: joinedResults[0] ? {
-          area_name: joinedResults[0].area_name,
-          value: joinedResults[0].value,
-          hasGeometry: !!joinedResults[0].geometry
-        } : null
-      });
-
-      return joinedResults;
-
-    } catch (error) {
-      console.error('[joinAnalysisWithGeography] Error joining data:', error);
-      // Return original records with fallback area names
-      return analysisData.records.map((record: any, index: number) => ({
-        ...record,
-        area_name: record.area_name || `Area ${index + 1}`,
-        geometry: null
-      }));
-    }
-  };
-
-  /**
-   * Load cached geographic data as fallback when ArcGIS service is slow/unavailable
-   */
-  const loadCachedGeographicData = async (): Promise<FeatureType[]> => {
-    try {
-      // Try to load from cached geographic data files
-      const geoDataPaths = [
-        '/data/geographic-features.json',
-        '/data/boundaries.json', 
-        '/data/fsas.json'
-      ];
-
-      for (const path of geoDataPaths) {
-        try {
-          const response = await fetch(path);
-          if (response.ok) {
-            const geoData = await response.json();
-            
-            // Convert to standard FeatureType format
-            if (geoData.features && Array.isArray(geoData.features)) {
-              console.log('[loadCachedGeographicData] ✅ Loaded cached geographic data from:', path);
-              return geoData.features as FeatureType[];
-            }
-          }
-        } catch (error) {
-          console.warn('[loadCachedGeographicData] Failed to load:', path, error);
-          continue;
-        }
-      }
-
-      // If no cached geo data, generate minimal fallback features from analysis data
-      console.log('[loadCachedGeographicData] No cached geo files, generating fallback features...');
-      return generateFallbackFeatures();
-      
-    } catch (error) {
-      console.error('[loadCachedGeographicData] Error loading cached geographic data:', error);
-      return [];
-    }
-  };
-
-  /**
-   * Generate minimal geographic features from analysis data when no boundaries available
-   */
-  const generateFallbackFeatures = async (): Promise<FeatureType[]> => {
-    try {
-      // Load one of our cached analysis files to get area IDs
-      const response = await fetch('/data/endpoints/analyze.json');
-      if (!response.ok) throw new Error('No analysis data available');
-      
-      const analysisData = await response.json();
-      if (!analysisData.results || !Array.isArray(analysisData.results)) {
-        throw new Error('Invalid analysis data structure');
-      }
-
-      // Generate point features for each area (fallback when no boundaries)
-      const fallbackFeatures: FeatureType[] = analysisData.results.slice(0, 100).map((record: any, index: number) => {
-        const id = record.ID || record.id || index;
-        // Generate random coordinates within Canada bounds for visualization
-        const lat = 45 + (Math.random() * 15); // Roughly Canadian latitude range
-        const lng = -120 - (Math.random() * 40); // Roughly Canadian longitude range
-        
-        return {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [lng, lat],
-            spatialReference: { wkid: 4326 },
-            hasCoordinates: true
-          } as PointGeometry,
-          properties: {
-            ID: id,
-            GEOID: String(id),
-            CSDNAME: `Area ${id}`,
-            area_name: `Area ${id}`,
-            ...record
-          }
-        };
-      });
-
-      console.log('[generateFallbackFeatures] ✅ Generated', fallbackFeatures.length, 'fallback point features');
-      return fallbackFeatures;
-      
-    } catch (error) {
-      console.error('[generateFallbackFeatures] Error generating fallback features:', error);
-      return [];
-    }
-  };
 
   return (
   <div className="flex flex-col h-full">
@@ -4678,6 +3538,7 @@ const EnhancedGeospatialChat = memo(({
                           title="quickstartIQ"
                           description="Choose from predefined demographic and analysis queries to get started quickly."
                           categories={ANALYSIS_CATEGORIES}
+                          disabledCategories={DISABLED_ANALYSIS_CATEGORIES}
                         />
                       </DialogContent>
                     </Dialog>
