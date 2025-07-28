@@ -13,8 +13,21 @@ async function migrateEndpointFiles() {
   console.log('Starting migration of endpoint files to Vercel Blob storage...');
 
   try {
+    // Check if endpoints directory exists
+    try {
+      await fs.access(ENDPOINTS_DIR);
+    } catch (error) {
+      console.log('⚠️  Endpoints directory not found - skipping migration (expected in production)');
+      return;
+    }
+
     const files = await fs.readdir(ENDPOINTS_DIR);
     const jsonFiles = files.filter(file => file.endsWith('.json'));
+
+    if (jsonFiles.length === 0) {
+      console.log('ℹ️  No endpoint files found to migrate');
+      return;
+    }
 
     console.log(`Found ${jsonFiles.length} endpoint files to migrate`);
 

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' next build --no-lint",
+    "build:with-migration": "npm run migrate-to-blob && npm run build",
     "start": "next start",
     "copy-arcgis-assets": "cp -r node_modules/@arcgis/core/assets public/assets",
     "test": "jest",
