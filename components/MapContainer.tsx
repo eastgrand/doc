@@ -36,12 +36,15 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
 
   // Stable callbacks using useCallback with minimal dependencies
   const handleLayerInitializationProgress = useCallback(({ loaded, total }: { loaded: number; total: number; }) => {
+    console.log('[MapContainer] Layer progress:', { loaded, total, allComplete: loaded === total && total > 0 });
     setLoadingProgress({ loaded, total });
     
     // Check if all layers are fully loaded
     if (loaded === total && total > 0) {
+      console.log('[MapContainer] All layers loaded, setting timeout to mark as complete');
       // Add a small delay to ensure all renderers are applied
       setTimeout(() => {
+        console.log('[MapContainer] Timeout complete, marking all layers as fully loaded');
         setAllLayersFullyLoaded(true);
       }, 1000); // Give 1 second for all quartile renderers to complete
     }
@@ -84,6 +87,13 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
 
   // Hide modal only when ALL layers are fully loaded AND initialization is complete
   useEffect(() => {
+    console.log('[MapContainer] State check:', { 
+      layerControllerInitialized, 
+      allLayersFullyLoaded, 
+      showLoadingModal,
+      willHide: layerControllerInitialized && allLayersFullyLoaded && showLoadingModal
+    });
+    
     if (layerControllerInitialized && allLayersFullyLoaded && showLoadingModal) {
       console.log('[MapContainer] All layers fully loaded, hiding modal');
       setShowLoadingModal(false);
