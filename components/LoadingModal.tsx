@@ -10,7 +10,9 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
   // Internal progress state to manage continuous loading even when tab is inactive
   const [internalProgress, setInternalProgress] = useState(externalProgress);
   
-  console.log('[LoadingModal] Render:', { show, externalProgress, internalProgress });
+  // Add stack trace to identify which component is rendering this modal
+  const stack = new Error().stack?.split('\n')[2]?.trim() || 'unknown';
+  console.log('[LoadingModal] Render:', { show, externalProgress, internalProgress, caller: stack });
   
   // Simplified useEffect to avoid loops - only update when external progress increases
   useEffect(() => {
@@ -20,11 +22,11 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
   }, [externalProgress, internalProgress]); // Add internalProgress to dependencies
   
   if (!show) {
-    console.log('[LoadingModal] Not showing - returning null');
+    console.log('[LoadingModal] ❌ NOT SHOWING - returning null, caller:', stack);
     return null;
   }
   
-  console.log('[LoadingModal] Showing modal');
+  console.log('[LoadingModal] ✅ SHOWING MODAL, caller:', stack);
   
   const getLoadingMessage = () => {
     if (internalProgress < 30) return "Initializing map...";
