@@ -1,13 +1,15 @@
-# Query to Visualization Flow Documentation
+# Complete Query-to-Visualization Flow Reference
 
 **Date**: January 2025  
-**Status**: ✅ **CURRENT SYSTEM - Updated for ZIP Code Boundaries & Frontend Cache Architecture**  
-**System**: MPIQ AI Chat - Geospatial Analysis Platform with Cached ZIP Code Boundaries
+**Status**: ✅ **CURRENT SYSTEM - Updated with Enhanced Query Processing & Blob Storage**  
+**System**: MPIQ AI Chat - Geospatial Analysis Platform with AnalysisEngine & EnhancedQueryAnalyzer
 **Last Updated**: January 2025 - Complete system flow traced and documented
 
 ## 🎯 Overview
 
-This document provides a comprehensive walkthrough of the **current** query-to-visualization flow in the MPIQ AI Chat system, from user input to final map display. The system now uses **cached ZIP Code boundaries** and **frontend-only analysis** with the new AnalysisEngine architecture.
+This document provides a comprehensive walkthrough of the **current** query-to-visualization flow in the MPIQ AI Chat system, from user input to final map display. The system uses **EnhancedQueryAnalyzer for intelligent endpoint routing**, **Vercel Blob storage for optimized data**, and **unified AnalysisEngine architecture** for consistent performance.
+
+**Example Query**: "how does asian population affect Nike sales?"
 
 ---
 
@@ -15,15 +17,17 @@ This document provides a comprehensive walkthrough of the **current** query-to-v
 
 ### **Core Components**
 - **Frontend**: Next.js React application with ArcGIS Maps SDK
-- **AnalysisEngine**: Unified analysis system with cached endpoint data
-- **CachedEndpointRouter**: Loads pre-exported analysis datasets (no microservice calls)
-- **ZIP Code Boundaries**: Cached 3,983 ZIP Code polygons (15.7 MB local file)
+- **EnhancedQueryAnalyzer**: Intelligent query processing with field-aware routing
+- **AnalysisEngine**: Unified analysis system with blob-stored endpoint data
+- **CachedEndpointRouter**: Loads optimized analysis datasets from Vercel Blob storage
+- **Blob Storage**: 249MB total (77.9% reduced from 1.5GB original)
 - **Visualization System**: Advanced visualization factory with multiple renderer types
 
 ### **Key Data Sources**
-1. **Cached Analysis Data**: 16 pre-exported endpoint datasets (3,983 records each with 102 fields)
-2. **Cached ZIP Boundaries**: Local ZIP Code polygon geometries (public/data/boundaries/zip_boundaries.json)
-3. **No Live Services**: System operates entirely on cached/local data for performance and reliability
+1. **Blob Storage Data**: 16 optimized endpoint datasets (Nike-focused, GIS metadata removed)
+2. **EnhancedQueryAnalyzer**: Field mappings for brands, demographics, lifestyle terms
+3. **Vercel Blob URLs**: External hosting via `public/data/blob-urls.json`
+4. **No Live Services**: System operates on cached blob data for performance and reliability
 
 ---
 
@@ -31,37 +35,43 @@ This document provides a comprehensive walkthrough of the **current** query-to-v
 
 ### **Step 1: User Query Input**
 **File**: `components/geospatial-chat-interface.tsx`
-**Function**: `handleSubmit()`
+**Component**: `ChatBar`
 
 ```typescript
-const handleSubmit = async (query: string, source: 'main' | 'reply' = 'main') => {
-  // State reset and initialization
-  setIsProcessing(true);
-  setError(null);
-  setFeatures([]);
-  setFormattedLegendData({ items: [] });
-  
-  // Initialize processing steps display
-  setProcessingSteps([
-    { id: 'query_analysis', name: 'Query Analysis', status: 'processing' },
-    { id: 'microservice_request', name: 'AI Processing', status: 'pending' },
-    { id: 'data_loading', name: 'Data Loading', status: 'pending' },
-    { id: 'data_joining', name: 'Data Integration', status: 'pending' },
-    { id: 'visualization', name: 'Visualization', status: 'pending' },
-    { id: 'narrative_generation', name: 'Report Generation', status: 'pending' }
-  ]);
-}
+// User types: "how does asian population affect Nike sales?"
+<ChatBar onSend={handleSendMessage} />
 ```
 
 **What happens:**
-- User types natural language query (e.g., "Show Nike vs Adidas competition in high-income ZIP codes")
+- User types natural language query in ChatBar component
+- Query is captured and passed to main chat interface
+- Chat interface triggers analysis workflow
 - System clears previous results and initializes processing state
-- Processing steps are displayed to user for transparency
-- Sets up message handling for chat interface
 
 ---
 
-### **Step 2: AnalysisEngine Initialization**
+### **Step 2: Enhanced Query Analysis & Endpoint Selection**
+**File**: `lib/analysis/EnhancedQueryAnalyzer.ts`
+**Function**: `analyzeQuery()` and `getBestEndpoint()`
+
+```typescript
+const analyzer = new EnhancedQueryAnalyzer();
+const endpoint = analyzer.getBestEndpoint("how does asian population affect Nike sales?");
+// Returns: "/demographic-insights"
+```
+
+**What happens:**
+- **Field Recognition**: Identifies "asian" → `ASIAN_CY` field, "nike" → `MP30034A_B_P` field
+- **Intent Detection**: Recognizes "affect" as relationship intent (not correlation)
+- **Endpoint Scoring**: 
+  - `/demographic-insights`: 6.0 points (demographics keyword + relationship intent bonus)
+  - `/correlation-analysis`: -2.0 points (avoid terms present: demographic)
+  - `/strategic-analysis`: 2.0 points (relationship intent bonus)
+- **Selected**: `/demographic-insights`
+
+---
+
+### **Step 3: AnalysisEngine Execution**
 **File**: `lib/analysis/AnalysisEngine.ts`
 **Function**: `executeAnalysis()`
 
@@ -88,90 +98,54 @@ const analysisData = await this.endpointRouter.callEndpoint(selectedEndpoint, qu
 
 ---
 
-### **Step 3: Cached Data Loading**
+### **Step 4: Endpoint Routing & Data Loading**
 **File**: `lib/analysis/CachedEndpointRouter.ts`
-**Function**: `callEndpoint()` and `loadCachedDataset()`
+**Function**: `selectEndpoint()` and `callEndpoint()`
 
 ```typescript
-async callEndpoint(endpoint: string, query: string, options?: AnalysisOptions): Promise<RawAnalysisResult> {
-  console.log(`[CachedEndpointRouter] Loading cached data for ${endpoint}`);
-  
-  // Load the cached dataset for this endpoint
-  const cachedData = await this.loadCachedDataset(endpoint);
-  
-  // Process the cached data based on query and options
-  const processedResult = this.processCachedData(cachedData, query, options);
-  
-  console.log(`[CachedEndpointRouter] Loaded ${processedResult.results?.length || 0} records from cache`);
-  return processedResult;
-}
-```
-
-**Cached Data Loading Process:**
-```typescript
-private async loadCachedDataset(endpoint: string): Promise<any> {
-  const endpointKey = this.getEndpointKey(endpoint);
-  const cachePath = `/data/endpoints/${endpointKey}.json`;
-  
-  const response = await fetch(cachePath);
-  if (!response.ok) {
-    throw new Error(`Failed to load cached data: ${response.status}`);
-  }
-  
-  return await response.json();
-}
+// Endpoint selection confirmed: "/demographic-insights"
+const data = await this.callEndpoint("/demographic-insights", query, options);
 ```
 
 **What happens:**
-- **Fast Local Loading**: Loads cached analysis data from local JSON files
-- **Complete Dataset**: Each file contains 3,983 records with 102 comprehensive fields
-- **Rich Data Available**: Nike/Adidas brand data, demographics, economic indicators
-- **No Network Dependencies**: All data is local for maximum performance
+- **Cache Check**: Looks for cached data for `demographic-insights`
+- **Blob Storage Loading**: If not cached, loads from Vercel Blob storage
+- **Data Source**: `loadEndpointData()` from `utils/blob-data-loader.ts`
+- **URL Resolution**: Maps endpoint to blob URL via `public/data/blob-urls.json`
 
 ---
 
-### **Step 4: ZIP Code Boundary Loading**
-**File**: `components/geospatial-chat-interface.tsx`
-**Function**: `loadGeographicFeatures()`
+### **Step 5: Data Loading (Blob Storage)**
+**File**: `utils/blob-data-loader.ts`
+**Function**: `loadEndpointData()`
 
 ```typescript
-// UPDATED: Load cached ZIP Code boundaries instead of ArcGIS service
-const loadGeographicFeatures: () => Promise<(FeatureType | null)[]> = async () => {
-  console.log('[loadGeographicFeatures] Loading cached ZIP Code boundaries...');
-  
-  // Load cached ZIP Code polygon boundaries (fast, reliable)
-  const response = await fetch('/data/boundaries/zip_boundaries.json');
-  const boundariesData = await response.json();
-  
-  console.log('[loadGeographicFeatures] ✅ Cached ZIP Code boundaries loaded:', {
-    total: boundariesData.features.length,
-    fileSize: `15.7 MB`,
-    source: 'cached_local_file'
-  });
-  
-  // Convert GeoJSON features to internal FeatureType format
-  const features: FeatureType[] = boundariesData.features.map((feature: any) => ({
-    type: 'Feature',
-    geometry: {
-      type: feature.geometry.type,
-      coordinates: feature.geometry.coordinates,
-      spatialReference: { wkid: 4326 },
-      hasCoordinates: true,
-      hasRings: feature.geometry.type === 'Polygon'
-    } as PolygonGeometry,
-    properties: feature.properties
-  }));
-  
-  return features;
-};
+// Loads: demographic-insights data from Vercel Blob
+const blobUrl = "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/endpoints/demographic-insights-XYZ.json"
+const data = await fetch(blobUrl).then(r => r.json());
 ```
 
 **What happens:**
-- **NEW**: Loads cached ZIP Code polygon boundaries from local file (15.7 MB)
-- **3,983 ZIP Polygons**: Complete boundary data for all analysis areas
-- **No ArcGIS Timeouts**: Eliminates network timeout issues from live services
-- **Fast Loading**: Local file loads in milliseconds vs. seconds for live service
-- **Reliable Geometry**: Actual polygon boundaries for proper visualization
+- **Context Detection**: Server vs browser context handling
+- **URL Mapping**: `demographic-insights` → actual blob URL with random suffix
+- **Data Structure**: Returns GeoJSON-like features with demographic and Nike sales data
+- **Optimization**: Pre-processed data (77.9% smaller after GIS metadata removal)
+
+---
+
+### **Step 6: Data Processing**
+**File**: `lib/analysis/DataProcessor.ts`
+**Function**: `processResults()`
+
+```typescript
+const processedData = this.dataProcessor.processResults(rawData, "/demographic-insights");
+```
+
+**What happens:**
+- **Field Mapping**: Maps query terms to actual data fields (`ASIAN_CY`, `MP30034A_B_P`)
+- **Score Calculation**: Calculates `demographic_score` for ranking
+- **Geometry Validation**: Ensures valid GeoJSON geometry for visualization
+- **Data Enrichment**: Adds calculated fields and normalizes values
 
 ---
 
