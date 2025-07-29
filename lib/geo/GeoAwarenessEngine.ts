@@ -75,7 +75,8 @@ export class GeoAwarenessEngine {
   };
 
   private constructor() {
-    this.initializeGeographicData();
+    // Defer initialization to avoid blocking on startup
+    // Will initialize on first use
   }
 
   public static getInstance(): GeoAwarenessEngine {
@@ -94,6 +95,11 @@ export class GeoAwarenessEngine {
     endpoint?: string
   ): Promise<GeoFilterResult> {
     const startTime = Date.now();
+    
+    // Initialize geographic data on first use
+    if (this.geographicHierarchy.size === 0) {
+      this.initializeGeographicData();
+    }
     
     try {
       console.log('[GeoAwarenessEngine] Processing geo query:', query);
@@ -472,19 +478,28 @@ export class GeoAwarenessEngine {
   // === UTILITY METHODS ===
 
   private initializeGeographicData(): void {
-    // Load geographic data from GeoDataManager
-    const dataManager = require('./GeoDataManager').GeoDataManager.getInstance();
-    const database = dataManager.getDatabase();
-    
-    this.geographicHierarchy = database.entities;
-    this.zipCodeToCity = database.zipCodeToCity;
-    this.aliasMap = database.aliasMap;
-    
-    console.log('[GeoAwarenessEngine] Loaded geographic data:', {
-      entities: this.geographicHierarchy.size,
-      zipCodes: this.zipCodeToCity.size,
-      aliases: this.aliasMap.size
-    });
+    try {
+      // Load geographic data from GeoDataManager
+      const { GeoDataManager } = require('./GeoDataManager');
+      const dataManager = GeoDataManager.getInstance();
+      const database = dataManager.getDatabase();
+      
+      this.geographicHierarchy = database.entities;
+      this.zipCodeToCity = database.zipCodeToCity;
+      this.aliasMap = database.aliasMap;
+      
+      console.log('[GeoAwarenessEngine] Loaded geographic data:', {
+        entities: this.geographicHierarchy.size,
+        zipCodes: this.zipCodeToCity.size,
+        aliases: this.aliasMap.size
+      });
+    } catch (error) {
+      console.error('[GeoAwarenessEngine] Failed to initialize geographic data:', error);
+      // Initialize with empty maps to prevent crashes
+      this.geographicHierarchy = new Map();
+      this.zipCodeToCity = new Map();
+      this.aliasMap = new Map();
+    }
   }
 
   /**
