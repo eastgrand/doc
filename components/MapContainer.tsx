@@ -49,13 +49,12 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
 
   const handleLayerInitializationComplete = useCallback(() => {
     console.log('[MapContainer] Layer initialization complete - closing loading modal');
-    console.log('[MapContainer] Before state update - showLoadingModal:', showLoadingModal);
     setLayerControllerInitialized(true);
     setAllLayersFullyLoaded(true);
     setShowLoadingModal(false);
     console.log('[MapContainer] Called setShowLoadingModal(false)');
     initializationCompleted.current = true; // Mark as completed
-  }, [showLoadingModal]);
+  }, []);
 
   // Initialize layer config - only run once per unique view
   useEffect(() => {
