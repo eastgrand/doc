@@ -3774,7 +3774,7 @@ const EnhancedGeospatialChat = memo(({
             <button
               type="button"
               onClick={() => setInputMode('analysis')}
-              className={`flex-1 px-3 py-2 rounded-md border transition-all ${
+              className={`flex-1 px-3 py-1 rounded-md border transition-all ${
                 inputMode === 'analysis' 
                   ? 'bg-[#33a852] text-white border-[#33a852] shadow-sm' 
                   : 'bg-gray-50 hover:bg-gray-100 border-gray-200'
@@ -3788,7 +3788,7 @@ const EnhancedGeospatialChat = memo(({
             <button
               type="button"
               onClick={() => setInputMode('chat')}
-              className={`flex-1 px-3 py-2 rounded-md border transition-all ${
+              className={`flex-1 px-3 py-1 rounded-md border transition-all ${
                 inputMode === 'chat' 
                   ? 'bg-[#33a852] text-white border-[#33a852] shadow-sm' 
                   : 'bg-gray-50 hover:bg-gray-100 border-gray-200'
@@ -3866,7 +3866,7 @@ const EnhancedGeospatialChat = memo(({
                                 type="button"
                                 variant="outline"
                                 size="sm"
-                                className="relative flex items-center justify-center gap-2 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-9"
+                                className="relative flex items-center justify-center gap-2 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-7"
                               >
                                 <Image
                                   src="/mpiq_pin2.png"
@@ -3910,7 +3910,7 @@ const EnhancedGeospatialChat = memo(({
                             type="button"
                             variant="outline"
                             size="sm"
-                            className="relative flex items-center justify-center gap-2 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-9"
+                            className="relative flex items-center justify-center gap-2 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-7"
                             onClick={handleInfographicsClick}
                           >
                             <Image
@@ -3946,7 +3946,7 @@ const EnhancedGeospatialChat = memo(({
                                 type="button"
                                 variant="outline"
                                 size="sm"
-                                className="relative flex items-center justify-center gap-1 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-9"
+                                className="relative flex items-center justify-center gap-1 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-7"
                                 onClick={() => setIsTargetDialogOpen(true)}
                               >
                                 {React.createElement(
@@ -4021,7 +4021,7 @@ const EnhancedGeospatialChat = memo(({
                                 type="button"
                                 variant="outline"
                                 size="sm"
-                                className="relative flex items-center justify-center gap-1 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-9"
+                                className="relative flex items-center justify-center gap-1 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-7"
                               >
                                 {React.createElement(
                                   PERSONA_ICON_MAP[selectedPersona] || UserCog,
