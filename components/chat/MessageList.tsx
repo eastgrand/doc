@@ -53,6 +53,7 @@ interface MessageListProps {
   onMessageClick: (message: LocalChatMessage) => void;
   onCopyText: (text: string) => void;
   onExportData: (messageId: string) => void;
+  onSHAPChart: (messageId: string) => void;
   onInfographicsClick: (e: React.MouseEvent) => void;
   onReplyClick: (messageId: string) => void;
   onCustomizeVisualization: (messageId: string) => void;
@@ -67,6 +68,7 @@ const MessageList: React.FC<MessageListProps> = ({
   onMessageClick,
   onCopyText,
   onExportData,
+  onSHAPChart,
   onInfographicsClick,
   onReplyClick,
   onCustomizeVisualization,
@@ -396,6 +398,28 @@ const MessageList: React.FC<MessageListProps> = ({
                                 </TooltipTrigger>
                                 <TooltipContent side="top" className="bg-white">
                                   <p>Export data to CSV</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          )}
+
+                          {/* SHAP Feature Importance Chart */}
+                          {message.metadata?.analysisResult?.data && (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded"
+                                    onClick={(e: React.MouseEvent) => {
+                                      e.stopPropagation();
+                                      onSHAPChart(message.id);
+                                    }}
+                                  >
+                                    <BarChart className="h-4 w-4" />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="top" className="bg-white">
+                                  <p>Why these scores? (Feature importance)</p>
                                 </TooltipContent>
                               </Tooltip>
                             </TooltipProvider>

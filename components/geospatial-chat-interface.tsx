@@ -74,6 +74,7 @@ import { PiStrategy, PiLightning } from 'react-icons/pi';
 import { GoLightBulb } from 'react-icons/go';
 import { VscTools } from 'react-icons/vsc';
 import { FaRegHandshake } from 'react-icons/fa';
+import { SHAPChartModal } from './chart/SHAPChartModal';
 
 // Load ArcGIS API
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
@@ -776,6 +777,97 @@ const EnhancedGeospatialChat = memo(({
     e.stopPropagation();
     console.log('[GeospatialChat] handleInfographicsClick called');
     setIsInfographicsOpen(true);
+  };
+
+  // Extract SHAP values from analysis data and create chart data
+  const extractSHAPValues = (analysisData: any): Array<{name: string, value: number}> => {
+    try {
+      // Get the features from the analysis data
+      const features = analysisData.features || [];
+      if (features.length === 0) return [];
+
+      // Aggregate SHAP values across all features
+      const shapAggregation: Record<string, number[]> = {};
+      
+      features.forEach((feature: any) => {
+        const properties = feature.properties || {};
+        
+        // Find all SHAP fields (fields starting with 'shap_')
+        Object.keys(properties).forEach(key => {
+          if (key.startsWith('shap_') && typeof properties[key] === 'number') {
+            // Clean field name (remove 'shap_' prefix and make readable)
+            const fieldName = key.replace('shap_', '').replace(/_/g, ' ');
+            const readableName = fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+            
+            if (!shapAggregation[readableName]) {
+              shapAggregation[readableName] = [];
+            }
+            shapAggregation[readableName].push(Math.abs(properties[key])); // Use absolute value for importance
+          }
+        });
+      });
+
+      // Calculate average importance for each field
+      const shapValues = Object.entries(shapAggregation).map(([name, values]) => ({
+        name,
+        value: values.reduce((sum, val) => sum + val, 0) / values.length
+      }));
+
+      // Sort by importance (descending) and take top 10
+      return shapValues
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 10)
+        .filter(item => item.value > 0); // Only include non-zero values
+
+    } catch (error) {
+      console.error('[SHAP Extract] Error extracting SHAP values:', error);
+      return [];
+    }
+  };
+
+  const handleSHAPChart = async (messageId: string) => {
+    try {
+      // Find the message with analysis data
+      const message = messages.find(m => m.id === messageId);
+      if (!message?.metadata?.analysisResult?.data) {
+        toast({
+          title: "Chart creation failed",
+          description: "No analysis data found to create chart",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const analysisData = message.metadata.analysisResult.data;
+      console.log('[SHAP Chart] Creating feature importance chart for:', analysisData.type);
+      
+      // Extract SHAP values from the analysis data
+      const shapData = extractSHAPValues(analysisData);
+      
+      if (!shapData || shapData.length === 0) {
+        toast({
+          title: "Chart creation failed", 
+          description: "No feature importance data found in this analysis",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Open chart modal with shapData
+      setSHAPChartData(shapData);
+      setSHAPAnalysisType(analysisData.type || 'analysis');
+      setSHAPChartOpen(true);
+      
+      console.log('[SHAP Chart] Generated chart data:', shapData);
+
+    } catch (error) {
+      console.error('[SHAP Chart] Error creating chart:', error);
+      toast({
+        title: "Chart creation failed",
+        description: "An error occurred while creating the chart",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleCancel = () => {
@@ -3553,6 +3645,9 @@ const EnhancedGeospatialChat = memo(({
 
   const [inputMode, setInputMode] = useState<'analysis' | 'chat'>('analysis');
   const [showChatNudge, setShowChatNudge] = useState(false);
+  const [shapChartData, setSHAPChartData] = useState<Array<{name: string, value: number}>>([]);
+  const [shapChartOpen, setSHAPChartOpen] = useState(false);
+  const [shapAnalysisType, setSHAPAnalysisType] = useState<string>('');
   
   // Show gentle nudge to try chat mode after successful analysis
   useEffect(() => {
@@ -3628,6 +3723,7 @@ const EnhancedGeospatialChat = memo(({
         onMessageClick={handleMessageClick}
         onCopyText={handleCopyText}
         onExportData={handleExportData}
+        onSHAPChart={handleSHAPChart}
         onInfographicsClick={handleInfographicsClick}
         onReplyClick={(messageId) => {
           setReplyToMessageId(messageId);
@@ -4383,6 +4479,14 @@ const EnhancedGeospatialChat = memo(({
         )}
       </DialogContent>
     </Dialog>
+
+    {/* SHAP Feature Importance Chart Modal */}
+    <SHAPChartModal
+      isOpen={shapChartOpen}
+      onClose={() => setSHAPChartOpen(false)}
+      data={shapChartData}
+      analysisType={shapAnalysisType}
+    />
 
     {/* Root container closing */}
     </div>
