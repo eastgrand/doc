@@ -21,7 +21,6 @@ interface MapContainerProps {
 }
 
 const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) => {
-  console.log('[MapContainer] Component created with view:', !!view);
   const layerControllerRef = useRef<LayerControllerRef>(null);
   const [layerConfig, setLayerConfig] = useState<ProjectLayerConfig | null>(null);
   
@@ -51,14 +50,9 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
   const handleLayerInitializationComplete = useCallback(() => {
     console.log('[MapContainer] Layer initialization complete - closing loading modal');
     setLayerControllerInitialized(true);
+    setAllLayersFullyLoaded(true);
+    setShowLoadingModal(false);
     initializationCompleted.current = true; // Mark as completed
-    
-    // BACKUP: Force loading modal to disappear after 3 seconds if it's still hanging
-    setTimeout(() => {
-      console.log('[MapContainer] INITIALIZATION COMPLETE TIMEOUT: Forcing loading modal to close after 3 seconds');
-      setShowLoadingModal(false);
-      setAllLayersFullyLoaded(true);
-    }, 3000);
   }, []);
 
   // Initialize layer config - only run once per unique view
@@ -91,13 +85,7 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
         setAllLayersFullyLoaded(false);
         setLoadingProgress({ loaded: 0, total: 0 });
         
-        // ADDITIONAL BACKUP: Force close loading modal after 8 seconds regardless
-        setTimeout(() => {
-          console.log('[MapContainer] BACKUP TIMEOUT: Forcing loading modal to close after 8 seconds');
-          setShowLoadingModal(false);
-          setAllLayersFullyLoaded(true);
-          setLayerControllerInitialized(true);
-        }, 8000);
+        // Allow proper initialization callback to handle modal closure
       }
     } catch (error) {
       console.error('[MapContainer] Error creating layer config:', error);
@@ -112,19 +100,7 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
     }
   }, [layerControllerInitialized, allLayersFullyLoaded, showLoadingModal]);
   
-  // EMERGENCY: If view exists and we're still loading after 5 seconds, force close
-  useEffect(() => {
-    if (view && showLoadingModal) {
-      const emergencyTimeout = setTimeout(() => {
-        console.log('[MapContainer] EMERGENCY TIMEOUT: View exists but loading modal still showing after 5 seconds - forcing close');
-        setShowLoadingModal(false);
-        setAllLayersFullyLoaded(true);
-        setLayerControllerInitialized(true);
-      }, 5000);
-      
-      return () => clearTimeout(emergencyTimeout);
-    }
-  }, [view, showLoadingModal]);
+  // Removed aggressive emergency timeout - let proper callback handle modal closure
 
   // Create feature layer map for analysis manager
   const createFeatureLayerMap = useCallback((
@@ -214,12 +190,7 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
    // console.log('[MC] About to render LoadingModal with:', { progress: calculatedProgress, show: showLoadingModal });
   }
 
-  console.log('[MapContainer] Render:', { 
-    hasView: !!view, 
-    hasLayerConfig: !!layerConfig, 
-    showLoadingModal,
-    layerConfigGroupCount: layerConfig?.groups?.length || 0
-  });
+  // Debug render info removed to reduce log noise
 
   return (
     <div className="relative w-full h-full">
