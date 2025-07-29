@@ -10,11 +10,9 @@ import React, {
 import { X, Map as MapIcon, Folder, Table as TableIcon } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import './widget-styles.css';
-import type { LayerState } from '@/components/ResizableSidebar';
+// LayerState import removed - not needed without layer management
 import { Root } from 'react-dom/client';
-import { createProjectConfig } from '@/adapters/layerConfigAdapter';
-import type { ProjectLayerConfig } from '@/types/layers';
-import { LoadingModal } from '@/components/LoadingModal';
+// Layer config and loading imports removed - handled by MapContainer
 
 // ArcGIS Imports
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -26,8 +24,7 @@ import Bookmark from '@arcgis/core/webmap/Bookmark';
 import Extent from '@arcgis/core/geometry/Extent';
 import Collection from '@arcgis/core/core/Collection';
 
-// Custom Imports
-import LayerController, { LayerControllerRef } from './LayerController/LayerController';
+// LayerController removed - handled by MapContainer to prevent duplicate initialization
 
 
 // Type Definitions
@@ -45,9 +42,7 @@ interface MapWidgetsProps {
   onClose: () => void;
   onLayerSelect: (layer: __esri.FeatureLayer) => void;
   onToggleWidget: (widgetName: string) => void;
-  // legend?: __esri.Legend; // <<< Keep this commented or remove if definitely unused
   showLoading?: boolean;
-  onLayerStatesChange: (states: { [key: string]: LayerState }) => void;
   visibleWidgets?: string[]; // Array of widget names that should be visible
   onCorrelationAnalysis: (layer: __esri.FeatureLayer, primaryField: string, comparisonField: string) => void;
 }
@@ -75,7 +70,6 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
   onToggleWidget,
   // legend,
   showLoading = false,
-  onLayerStatesChange,
   visibleWidgets = ['search', 'layerList', 'bookmarks', 'print', 'basemapGallery'], // Added 'basemapGallery' to default
 }: MapWidgetsProps) {
 
@@ -99,17 +93,9 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
   const filterRootRef = useRef<Root | null>(null);
   const indexRootRef = useRef<Root | null>(null);
   
-  // Layer management
-  const layerControllerRef = useRef<LayerControllerRef | null>(null);
+  // LayerController ref removed - handled by MapContainer
   
-  // State
-  const [layerConfig, setLayerConfig] = useState<ProjectLayerConfig | null>(null);
-  const [initializationProgress, setInitializationProgress] = useState(0);
-
-  // Handle layer state changes
-  const handleLayerStatesChange = useCallback((newStates: { [key: string]: LayerState }) => {
-    onLayerStatesChange(newStates);
-  }, [onLayerStatesChange]);
+  // State and handlers removed - layer management handled by MapContainer
   const [containersReady, setContainersReady] = useState(false);
   const widgetCleanupHandles = useRef<Map<string, __esri.Handle[]>>(new Map());
   
@@ -118,26 +104,7 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
 
   const layerListActionHandleRef = useRef<__esri.Handle | null>(null);
 
-  // Initialize layer config
-  useEffect(() => {
-    try {
-      const config = createProjectConfig();
-     /* console.log('[MapWidgets] Created layer config:', {
-        groupCount: config.groups.length,
-        groups: config.groups.map(g => ({
-          id: g.id,
-          title: g.title,
-          layerCount: g.layers?.length || 0,
-          layerIds: g.layers?.map(l => l.id) || []
-        })),
-        totalLayers: config.groups.reduce((sum, g) => sum + (g.layers?.length || 0), 0)
-      });*/
-      setLayerConfig(config);
-    } catch (error) {
-      console.error('Error creating layer config:', error);
-      setInitializationProgress(100);
-    }
-  }, []);
+  // Layer config removed - handled by MapContainer
 
   // Create widget container - WRAP IN useCallback
   const createWidgetContainer = useCallback((type: string, color: string): HTMLDivElement => {
@@ -509,36 +476,16 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
 
   }, [view, containersReady, visibleWidgets, createWidgetContainer]); // Dependencies
 
-  // Render logic
+  // Render logic - LayerController removed as it's handled by MapContainer
   const layerControllerPortal = useMemo(() => {
-    if (!containersReady || !view || !layerConfig) {
-      return null;
-    }
-    const container = containersRef.current?.get('layerList'); 
-    if (!container) return null;
-    return createPortal(
-      <LayerController
-        ref={layerControllerRef}
-        view={view}
-        config={layerConfig}
-        onLayerStatesChange={handleLayerStatesChange}
-        onLayerInitializationProgress={(progress) => {
-          setInitializationProgress((progress.loaded / progress.total) * 100);
-        }}
-        onInitializationComplete={() => {
-          console.log('[MapWidgets] Layer initialization complete');
-        }}
-        visible={activeWidget === 'layerList'}
-      />,
-      container
-    );
-  }, [view, layerConfig, handleLayerStatesChange, containersReady, activeWidget]);
+    // LayerController is now handled by MapContainer to prevent duplicate initialization
+    return null;
+  }, []);
 
   if (!view) return null;
 
   return (
     <div className="map-widgets-container">
-      <LoadingModal progress={initializationProgress} show={showLoading} />
       {showLoading && (
         <div className="loading-indicator">
           <span>Loading layers...</span>

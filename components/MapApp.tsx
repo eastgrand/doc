@@ -294,7 +294,6 @@ export const MapApp: React.FC = memo(() => {
               onClose={handleCloseWidget}
               onLayerSelect={handleLayerSelect}
               onToggleWidget={handleToggleWidget}
-              onLayerStatesChange={handleLayerStatesChange}
               onCorrelationAnalysis={handleCorrelationAnalysis}
               visibleWidgets={memoizedVisibleWidgets}
             />
