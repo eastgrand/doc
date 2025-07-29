@@ -39,6 +39,7 @@ import { colorToRgba, getSymbolShape, getSymbolSize } from '@/utils/symbol-utils
 import { VisualizationResult as ChatVisualizationResult } from '@/types/geospatial-chat';
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
 import Color from '@arcgis/core/Color';
+import { LoadingModal } from '@/components/LoadingModal';
 
 console.log('[MAP_APP] MapApp component function body executing');
 
@@ -120,6 +121,17 @@ export const MapApp: React.FC = memo(() => {
   const [formattedLegendData, setFormattedLegendData] = useState<any>(null);
   const [visualizationResult, setVisualizationResult] = useState<any>(null);
 
+  // Loading state management
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [showLoading, setShowLoading] = useState(true);
+  const [loadingStages, setLoadingStages] = useState({
+    mounted: false,
+    mapInitialized: false,
+    layersLoaded: false,
+    analysisToolsReady: false,
+    widgetsReady: false
+  });
+
   // Sync formattedLegendData with mapLegend state
   useEffect(() => {
     if (formattedLegendData) {
@@ -166,14 +178,44 @@ export const MapApp: React.FC = memo(() => {
     }
   }, []);
 
+  // Track loading progress based on stages
+  useEffect(() => {
+    const stages = Object.values(loadingStages);
+    const completedStages = stages.filter(Boolean).length;
+    const totalStages = stages.length;
+    const progress = Math.round((completedStages / totalStages) * 100);
+    
+    setLoadingProgress(progress);
+    
+    // Hide loading when all stages complete
+    if (progress === 100) {
+      setTimeout(() => setShowLoading(false), 500);
+    }
+  }, [loadingStages]);
+
   useEffect(() => {
     setMounted(true);
+    setLoadingStages(prev => ({ ...prev, mounted: true }));
   }, []);
 
   // Simple handlers
   const handleMapLoad = useCallback((view: __esri.MapView) => {
     console.log('[MapApp] handleMapLoad called with view:', view);
     setMapView(view);
+    setLoadingStages(prev => ({ ...prev, mapInitialized: true }));
+    
+    // Track when layers are loaded
+    if (view.map) {
+      view.map.allLayers.on('change', () => {
+        setLoadingStages(prev => ({ ...prev, layersLoaded: true }));
+      });
+      
+      // Mark layers as loaded if already present
+      if (view.map.allLayers.length > 0) {
+        setLoadingStages(prev => ({ ...prev, layersLoaded: true }));
+      }
+    }
+    
     console.log('[MapApp] mapView state set');
   }, []);
 
@@ -210,8 +252,18 @@ export const MapApp: React.FC = memo(() => {
         .filter(layer => layer.type === 'feature')
         .toArray() as __esri.FeatureLayer[];
       setFeatureLayers(currentFeatureLayers);
+      setLoadingStages(prev => ({ ...prev, analysisToolsReady: true }));
     }
   }, [mapView]);
+
+  // Mark widgets as ready when they're rendered
+  useEffect(() => {
+    if (mapView && mounted) {
+      setTimeout(() => {
+        setLoadingStages(prev => ({ ...prev, widgetsReady: true }));
+      }, 1000);
+    }
+  }, [mapView, mounted]);
 
   const handleCorrelationAnalysis = useCallback((layer: __esri.FeatureLayer, primaryField: string, comparisonField: string) => {
     // Handle correlation analysis
@@ -228,81 +280,86 @@ export const MapApp: React.FC = memo(() => {
   }
 
   return (
-    <div className="fixed inset-0 flex">
-      {/* Left Toolbar */}
-      <div className="w-16 bg-gray-100 flex flex-col z-[9999]">
-        {/* Home button hidden */}
-        
-        {/* Widget Icons */}
-        {mapView && (
-          <DynamicMapWidgets
-            view={mapView}
-            activeWidget={activeWidget}
-            onClose={handleCloseWidget}
-            onLayerSelect={handleLayerSelect}
-            onToggleWidget={handleToggleWidget}
-            onLayerStatesChange={handleLayerStatesChange}
-            onCorrelationAnalysis={handleCorrelationAnalysis}
-            visibleWidgets={memoizedVisibleWidgets}
-          />
-        )}
-      </div>
-
-      {/* Main Map Container */}
-      <div className="flex-1 relative">
-        <MapClient
-          key="main-map-client"
-          onMapLoad={handleMapLoad}
-          onError={handleMapError}
-          sidebarWidth={sidebarWidth}
-          showLabels={showLabels}
-          legend={mapLegend}
-        />
-        
-        {/* Custom popup handler for each feature layer */}
-        {mapView && mapView.map && featureLayers.map(layer => (
-          <CustomPopupManager
-            key={layer.id}
-            mapView={mapView}
-            layer={layer}
-          />
-        ))}
-        
-        {/* Custom zoom controls */}
-        {mapView && (
-          <CustomZoom
-            view={mapView}
-            sidebarWidth={sidebarWidth}
-          />
-        )}
-      </div>
-
-      {/* Right Sidebar */}
-        <ResizableSidebar
-          key="main-sidebar"
-          view={mapView}
-          layerStates={layerStates}
-          defaultWidth={400}
-          minWidth={300}
-          maxWidth={600}
-          onWidthChange={setSidebarWidth}
-        onLayerStatesChange={setLayerStates}
-          chatInterface={
-          mapView ? (
-            <DynamicAITab
-              key="main-ai-tab"
+    <>
+      {/* Loading Modal - blocks all interaction until everything loads */}
+      <LoadingModal progress={loadingProgress} show={showLoading} />
+      
+      <div className="fixed inset-0 flex">
+        {/* Left Toolbar */}
+        <div className="w-16 bg-gray-100 flex flex-col z-[9999]">
+          {/* Home button hidden */}
+          
+          {/* Widget Icons */}
+          {mapView && (
+            <DynamicMapWidgets
               view={mapView}
-              layerStates={layerStates}
-              onLayerStateChange={handleLayerStateChange}
-              setFormattedLegendData={setFormattedLegendData}
-              setVisualizationResult={setVisualizationResult}
-              mapViewRefValue={mapView}
-              onVisualizationCreated={handleVisualizationCreated}
+              activeWidget={activeWidget}
+              onClose={handleCloseWidget}
+              onLayerSelect={handleLayerSelect}
+              onToggleWidget={handleToggleWidget}
+              onLayerStatesChange={handleLayerStatesChange}
+              onCorrelationAnalysis={handleCorrelationAnalysis}
+              visibleWidgets={memoizedVisibleWidgets}
             />
-          ) : null
-          }
-        />
-    </div>
+          )}
+        </div>
+
+        {/* Main Map Container */}
+        <div className="flex-1 relative">
+          <MapClient
+            key="main-map-client"
+            onMapLoad={handleMapLoad}
+            onError={handleMapError}
+            sidebarWidth={sidebarWidth}
+            showLabels={showLabels}
+            legend={mapLegend}
+          />
+          
+          {/* Custom popup handler for each feature layer */}
+          {mapView && mapView.map && featureLayers.map(layer => (
+            <CustomPopupManager
+              key={layer.id}
+              mapView={mapView}
+              layer={layer}
+            />
+          ))}
+          
+          {/* Custom zoom controls */}
+          {mapView && (
+            <CustomZoom
+              view={mapView}
+              sidebarWidth={sidebarWidth}
+            />
+          )}
+        </div>
+
+        {/* Right Sidebar */}
+          <ResizableSidebar
+            key="main-sidebar"
+            view={mapView}
+            layerStates={layerStates}
+            defaultWidth={400}
+            minWidth={300}
+            maxWidth={600}
+            onWidthChange={setSidebarWidth}
+          onLayerStatesChange={setLayerStates}
+            chatInterface={
+            mapView ? (
+              <DynamicAITab
+                key="main-ai-tab"
+                view={mapView}
+                layerStates={layerStates}
+                onLayerStateChange={handleLayerStateChange}
+                setFormattedLegendData={setFormattedLegendData}
+                setVisualizationResult={setVisualizationResult}
+                mapViewRefValue={mapView}
+                onVisualizationCreated={handleVisualizationCreated}
+              />
+            ) : null
+            }
+          />
+      </div>
+    </>
   );
 });
 
