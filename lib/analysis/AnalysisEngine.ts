@@ -23,6 +23,9 @@ import { ConfigurationManager } from './ConfigurationManager';
 import { MultiEndpointAnalysisEngine, MultiEndpointAnalysisOptions, MultiEndpointAnalysisResult } from './MultiEndpointAnalysisEngine';
 import { MultiEndpointQueryDetector } from './MultiEndpointQueryDetector';
 
+// Import clustering system
+import { ClusteringService } from '../clustering/ClusteringService';
+
 /**
  * AnalysisEngine - Unified entry point for all analysis operations (Singleton)
  * 
@@ -49,6 +52,9 @@ export class AnalysisEngine {
   private queryDetector?: MultiEndpointQueryDetector;
   private enableMultiEndpoint: boolean;
 
+  // Clustering system components
+  private clusteringService: ClusteringService;
+
   private constructor(config?: DeepPartial<AnalysisEngineConfig>) {
     // Initialize configuration with defaults
     this.config = this.initializeConfig(config);
@@ -67,6 +73,10 @@ export class AnalysisEngine {
       this.queryDetector = new MultiEndpointQueryDetector();
       console.log('[AnalysisEngine] Multi-endpoint system enabled');
     }
+
+    // Initialize clustering system
+    this.clusteringService = ClusteringService.getInstance();
+    console.log('[AnalysisEngine] Clustering system initialized');
 
     // Configurations are loaded automatically by singleton
 
@@ -271,7 +281,7 @@ export class AnalysisEngine {
         console.warn('[AnalysisEngine] No visualization renderer available');
       }
 
-      const result: AnalysisResult = {
+      let result: AnalysisResult = {
         success: true,
         endpoint: selectedEndpoint,
         data: processedData,
@@ -326,8 +336,18 @@ export class AnalysisEngine {
         }
       };
 
+      // Apply clustering if enabled
+      if (this.clusteringService.isEnabled()) {
+        console.log('[AnalysisEngine] Applying clustering to analysis result');
+        try {
+          result = await this.clusteringService.applyClusteringToAnalysis(result);
+        } catch (error) {
+          console.warn('[AnalysisEngine] Clustering failed, using original result:', error);
+        }
+      }
+
       // Update state
-      this.updateStateWithResult(result, processedData);
+      this.updateStateWithResult(result, result.data);
 
       if (this.config.debugMode) {
         console.log(`[AnalysisEngine] Cache-based analysis complete:`, {
@@ -712,6 +732,38 @@ export class AnalysisEngine {
   }
 
   /**
+   * Get clustering service instance
+   */
+  getClusteringService(): ClusteringService {
+    return this.clusteringService;
+  }
+
+  /**
+   * Set clustering configuration
+   */
+  setClusteringConfig(config: Partial<import('../clustering/types').ClusterConfig>): void {
+    this.clusteringService.setConfig(config);
+  }
+
+  /**
+   * Preview clustering for current analysis data
+   */
+  async previewClustering(config?: Partial<import('../clustering/types').ClusterConfig>): Promise<import('../clustering/types').ClusteringResult | null> {
+    const currentState = this.getState();
+    if (!currentState.currentAnalysis) {
+      console.warn('[AnalysisEngine] No current analysis data for clustering preview');
+      return null;
+    }
+
+    try {
+      return await this.clusteringService.previewClustering(currentState.currentAnalysis, config);
+    } catch (error) {
+      console.error('[AnalysisEngine] Clustering preview failed:', error);
+      return null;
+    }
+  }
+
+  /**
    * Access individual modules (for advanced usage)
    */
   get modules() {
@@ -720,7 +772,8 @@ export class AnalysisEngine {
       visualizationRenderer: this.visualizationRenderer,
       dataProcessor: this.dataProcessor,
       stateManager: this.stateManager,
-      configManager: this.configManager
+      configManager: this.configManager,
+      clusteringService: this.clusteringService
     };
   }
 
