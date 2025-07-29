@@ -7,9 +7,20 @@ interface LoadingModalProps {
 }
 
 export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalProgress, show }) => {
-  // TEMPORARY DEBUG: Force all LoadingModals to be hidden to test if this is the source
-  console.log('[LoadingModal] 🚫 FORCED HIDDEN FOR DEBUGGING - original show:', show, 'progress:', externalProgress);
-  return null;
+  // Internal progress state to manage continuous loading even when tab is inactive
+  const [internalProgress, setInternalProgress] = useState(externalProgress);
+  
+  // Simplified useEffect to avoid loops - only update when external progress increases
+  useEffect(() => {
+    if (externalProgress > internalProgress) {
+      setInternalProgress(externalProgress);
+    }
+  }, [externalProgress, internalProgress]);
+  
+  // Early return with null when not showing - this was the fix
+  if (!show) {
+    return null;
+  }
   
   const getLoadingMessage = () => {
     if (internalProgress < 30) return "Initializing map...";
