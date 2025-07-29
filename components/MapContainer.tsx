@@ -48,6 +48,7 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
   }, []);
 
   const handleLayerInitializationComplete = useCallback(() => {
+    console.log('[MapContainer] Layer initialization complete - closing loading modal');
     setLayerControllerInitialized(true);
     initializationCompleted.current = true; // Mark as completed
     
@@ -75,10 +76,15 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
     
     try {
       const config = createProjectConfig();
+      console.log('[MapContainer] Created layer config:', {
+        groupCount: config.groups.length,
+        totalLayers: config.groups.reduce((sum, g) => sum + (g.layers?.length || 0), 0)
+      });
       setLayerConfig(config);
       
       // Only reset state if we haven't completed initialization yet
       if (!initializationCompleted.current) {
+        console.log('[MapContainer] Starting layer initialization');
         setLayerControllerInitialized(false);
         setShowLoadingModal(true);
         setAllLayersFullyLoaded(false);
@@ -93,6 +99,7 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
         }, 8000);
       }
     } catch (error) {
+      console.error('[MapContainer] Error creating layer config:', error);
       setShowLoadingModal(false);
     }
   }, [view]); // Add view as a dependency
@@ -221,6 +228,15 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
             onInitializationComplete={handleLayerInitializationComplete}
             visible={true}
           />
+        </div>
+      )}
+      
+      {/* Debug info */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="absolute bottom-4 left-4 bg-black text-white p-2 text-xs">
+          Loading: {showLoadingModal ? 'true' : 'false'} | 
+          Controller: {layerControllerInitialized ? 'true' : 'false'} | 
+          Layers: {allLayersFullyLoaded ? 'true' : 'false'}
         </div>
       )}
     </div>

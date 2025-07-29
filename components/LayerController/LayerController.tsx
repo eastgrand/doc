@@ -492,7 +492,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
   const layerStatesRef = useRef<LayerStatesMap>({});
   const initializationInProgress = useRef(false);
   const isMountedRef = useRef(true);
-  const hasInitialized = useRef(false);
+  const hasInitialized = useRef<string | null>(null);
 
   // Update ref when state changes
   useEffect(() => {
@@ -630,13 +630,13 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
   useEffect(() => {
     // Reset initialization state when view or config changes
     console.log('[LayerController] View or config changed, resetting initialization state');
-    hasInitialized.current = false;
+    hasInitialized.current = null;
     setIsInitialized(false);
   }, [view, config]);
 
   // Only initialize if not already initialized
   useEffect(() => {
-    if (!view || !config || isInitialized || initializationInProgress.current || hasInitialized.current) return;
+    if (!view || !config || isInitialized || initializationInProgress.current || hasInitialized.current !== null) return;
     
     // Create unique identifier for this view+config combination to prevent duplicates
     const viewId = view.container ? view.container.id : 'default';
@@ -644,13 +644,13 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     const initId = `${viewId}-${configHash}`;
     
     // Check if we've already initialized this exact combination
-    if (hasInitialized.current === Boolean(initId)) {
+    if (hasInitialized.current === initId) {
       console.log('[LayerController] Already initialized this view+config combination, skipping');
       return;
     }
     
     console.log('[LayerController] Starting initialization for:', initId);
-    hasInitialized.current = Boolean(initId);
+    hasInitialized.current = initId;
     initializeLayers();
   }, [view, config, isInitialized, initializeLayers]);
 
