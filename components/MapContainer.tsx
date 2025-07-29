@@ -51,11 +51,12 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
     setLayerControllerInitialized(true);
     initializationCompleted.current = true; // Mark as completed
     
-    // BACKUP: Force loading modal to disappear after 5 seconds if it's still hanging
+    // BACKUP: Force loading modal to disappear after 3 seconds if it's still hanging
     setTimeout(() => {
+      console.log('[MapContainer] INITIALIZATION COMPLETE TIMEOUT: Forcing loading modal to close after 3 seconds');
       setShowLoadingModal(false);
       setAllLayersFullyLoaded(true);
-    }, 5000);
+    }, 3000);
   }, []);
 
   // Initialize layer config - only run once per unique view
@@ -83,12 +84,13 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
         setAllLayersFullyLoaded(false);
         setLoadingProgress({ loaded: 0, total: 0 });
         
-        // ADDITIONAL BACKUP: Force close loading modal after 15 seconds regardless
+        // ADDITIONAL BACKUP: Force close loading modal after 8 seconds regardless
         setTimeout(() => {
-          console.log('[MapContainer] BACKUP TIMEOUT: Forcing loading modal to close after 15 seconds');
+          console.log('[MapContainer] BACKUP TIMEOUT: Forcing loading modal to close after 8 seconds');
           setShowLoadingModal(false);
           setAllLayersFullyLoaded(true);
-        }, 15000);
+          setLayerControllerInitialized(true);
+        }, 8000);
       }
     } catch (error) {
       setShowLoadingModal(false);
@@ -101,6 +103,20 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
       setShowLoadingModal(false);
     }
   }, [layerControllerInitialized, allLayersFullyLoaded, showLoadingModal]);
+  
+  // EMERGENCY: If view exists and we're still loading after 5 seconds, force close
+  useEffect(() => {
+    if (view && showLoadingModal) {
+      const emergencyTimeout = setTimeout(() => {
+        console.log('[MapContainer] EMERGENCY TIMEOUT: View exists but loading modal still showing after 5 seconds - forcing close');
+        setShowLoadingModal(false);
+        setAllLayersFullyLoaded(true);
+        setLayerControllerInitialized(true);
+      }, 5000);
+      
+      return () => clearTimeout(emergencyTimeout);
+    }
+  }, [view, showLoadingModal]);
 
   // Create feature layer map for analysis manager
   const createFeatureLayerMap = useCallback((
