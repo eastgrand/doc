@@ -1505,7 +1505,7 @@ const EnhancedGeospatialChat = memo(({
           
           // Target variable field (dynamic based on analysis type)
           [data.targetVariable]: typeof record.value === 'number' ? record.value : 
-                                 typeof record.properties?.thematic_value === 'number' ? record.properties.thematic_value : 0
+                                 typeof record.properties?.[data.targetVariable] === 'number' ? record.properties[data.targetVariable] : 0
         };
 
         // DYNAMIC FIELD INCLUSION: Automatically include fields that the renderer actually uses
@@ -1587,7 +1587,7 @@ const EnhancedGeospatialChat = memo(({
         { name: 'area_name', type: 'string' },
         { name: 'value', type: 'double' },
         { name: 'ID', type: 'string' },
-        { name: data.targetVariable || 'thematic_value', type: 'double' } // Dynamic target variable field
+        { name: data.targetVariable || 'value', type: 'double' } // Dynamic target variable field
       ];
 
       // Dynamically discover what fields exist in the graphics and add appropriate schema
@@ -1800,7 +1800,7 @@ const EnhancedGeospatialChat = memo(({
               availableFields: availableFields.slice(0, 10), // Show first 10 fields
               sampleValues: {
                 value: firstFeature.attributes?.value,
-                thematic_value: firstFeature.attributes?.thematic_value,
+                [data.targetVariable]: firstFeature.attributes?.[data.targetVariable],
                 strategic_value_score: firstFeature.attributes?.strategic_value_score,
                 competitive_advantage_score: firstFeature.attributes?.competitive_advantage_score
               }
@@ -2135,9 +2135,10 @@ const EnhancedGeospatialChat = memo(({
         const sampleFeature = arcgisFeatures[0];
         console.log('[AnalysisEngine] 🔍 SAMPLE FEATURE ATTRIBUTES:', {
           attributeKeys: Object.keys(sampleFeature.attributes),
+          targetVariable: data.targetVariable,
+          [data.targetVariable]: sampleFeature.attributes[data.targetVariable],
           strategic_value_score: sampleFeature.attributes.strategic_value_score,
           competitive_advantage_score: sampleFeature.attributes.competitive_advantage_score,
-          thematic_value: sampleFeature.attributes.thematic_value,
           value: sampleFeature.attributes.value
         });
       }
@@ -2744,12 +2745,12 @@ const EnhancedGeospatialChat = memo(({
           
           // FIXED: Preserve competitive analysis data during geographic join
           const isCompetitiveAnalysis = analysisResult.data.type === 'competitive_analysis';
-          const competitiveFields = ['value', 'competitive_advantage_score', 'thematic_value'];
+          const competitiveFields = ['value', 'competitive_advantage_score', analysisResult.data.targetVariable];
           
           console.log(`🔧 [JOIN DEBUG] Record ${index} (${record.area_name}):`);
           console.log(`   isCompetitiveAnalysis: ${isCompetitiveAnalysis}`);
           console.log(`   record.value BEFORE join: ${record.value}`);
-          console.log(`   record.properties.thematic_value BEFORE join: ${record.properties?.thematic_value}`);
+          console.log(`   record.properties[${analysisResult.data.targetVariable}] BEFORE join: ${record.properties?.[analysisResult.data.targetVariable]}`);
           
           // Preserve original competitive data
           const preservedProps = { ...record.properties };
@@ -2788,7 +2789,7 @@ const EnhancedGeospatialChat = memo(({
           };
           
           console.log(`   🔧 AFTER join - record.value: ${joinedRecord.value}`);
-          console.log(`   🔧 AFTER join - properties.thematic_value: ${joinedRecord.properties?.thematic_value}`);
+          console.log(`   🔧 AFTER join - properties[${analysisResult.data.targetVariable}]: ${joinedRecord.properties?.[analysisResult.data.targetVariable]}`);
           
           return joinedRecord;
         } else {
@@ -2857,7 +2858,7 @@ const EnhancedGeospatialChat = memo(({
       console.log('🚨 [FLOW CHECK] Enhanced analysis result created');
       console.log('🚨 [FLOW CHECK] First record value after join:', enhancedAnalysisResult.data.records[0]?.value);
       console.log('🚨 [FLOW CHECK] First record nike_market_share:', enhancedAnalysisResult.data.records[0]?.properties?.nike_market_share);
-      console.log('🚨 [FLOW CHECK] First record thematic_value:', enhancedAnalysisResult.data.records[0]?.properties?.thematic_value);
+      console.log('🚨 [FLOW CHECK] First record targetVariable:', enhancedAnalysisResult.data.records[0]?.properties?.[enhancedAnalysisResult.data.targetVariable]);
       console.log('🚨 [FLOW CHECK] Data type:', enhancedAnalysisResult.data.type);
 
       // --- ENHANCED: Use AnalysisEngine's advanced visualization system ---
@@ -2902,7 +2903,7 @@ const EnhancedGeospatialChat = memo(({
             properties: {
               ...record.properties,
               // Ensure competitive scores are used, not market share
-              thematic_value: record.value, // Use the competitive score as thematic_value
+              [enhancedAnalysisResult.data.targetVariable]: record.value, // Use the competitive score as target variable
               competitive_advantage_score: record.properties?.competitive_advantage_score || record.value,
               // Keep market share as context but don't let it override competitive scores
               nike_market_share_context: record.properties?.nike_market_share || record.properties?.value_MP30034A_B_P,
@@ -2912,7 +2913,7 @@ const EnhancedGeospatialChat = memo(({
           
           console.log('🔄 [FEATURES SYNC] Sample competitive feature:', {
             area_name: competitiveFeatures[0]?.properties?.area_name,
-            thematic_value: competitiveFeatures[0]?.properties?.thematic_value,
+            [enhancedAnalysisResult.data.targetVariable]: competitiveFeatures[0]?.properties?.[enhancedAnalysisResult.data.targetVariable],
             competitive_advantage_score: competitiveFeatures[0]?.properties?.competitive_advantage_score,
             nike_market_share_context: competitiveFeatures[0]?.properties?.nike_market_share_context
           });
@@ -3369,7 +3370,7 @@ const EnhancedGeospatialChat = memo(({
         properties: {
           ...record.properties,
           // Ensure all analysis fields are preserved for chat context
-          thematic_value: record.value,
+          [enhancedAnalysisResult.data.targetVariable]: record.value,
           target_value: record.value,
           area_name: record.area_name,
           area_id: record.area_id || record.properties?.ID
@@ -3382,7 +3383,7 @@ const EnhancedGeospatialChat = memo(({
         preservedAllFields: true,
         sampleFullDataFields: fullDataFeatures[0] ? Object.keys(fullDataFeatures[0].properties).length : 0,
         sampleRecord: fullDataFeatures[0] ? {
-          thematic_value: fullDataFeatures[0].properties?.thematic_value,
+          [enhancedAnalysisResult.data.targetVariable]: fullDataFeatures[0].properties?.[enhancedAnalysisResult.data.targetVariable],
           value_MP30034A_B_P: fullDataFeatures[0].properties?.value_MP30034A_B_P,
           description: fullDataFeatures[0].properties?.DESCRIPTION,
           totalProperties: Object.keys(fullDataFeatures[0].properties).length

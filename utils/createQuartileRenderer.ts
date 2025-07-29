@@ -146,7 +146,7 @@ const createQuartileRenderer = async (
 
     const fieldInfo = layer.fields?.find(f => f.name === field);
     if (!fieldInfo) {
-      throw new Error(`Field '${field}' (expected 'thematic_value') not found in visualization layer '${layer.title}'`);
+      throw new Error(`Field '${field}' not found in visualization layer '${layer.title}'. Available fields: ${layer.fields?.map(f => f.name).join(', ')}`);
     }
 
     // Check if the layer is a Google Trends layer
