@@ -21,6 +21,7 @@ interface MapContainerProps {
 }
 
 const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) => {
+  console.log('[MapContainer] Component created with view:', !!view);
   const layerControllerRef = useRef<LayerControllerRef>(null);
   const [layerConfig, setLayerConfig] = useState<ProjectLayerConfig | null>(null);
   
@@ -212,6 +213,13 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
   if (layerConfig) {
    // console.log('[MC] About to render LoadingModal with:', { progress: calculatedProgress, show: showLoadingModal });
   }
+
+  console.log('[MapContainer] Render:', { 
+    hasView: !!view, 
+    hasLayerConfig: !!layerConfig, 
+    showLoadingModal,
+    layerConfigGroupCount: layerConfig?.groups?.length || 0
+  });
 
   return (
     <div className="relative w-full h-full">

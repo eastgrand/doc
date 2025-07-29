@@ -311,6 +311,14 @@ export const MapApp: React.FC = memo(() => {
             legend={mapLegend}
           />
           
+          {/* Layer Controller and Management */}
+          {mapView && (
+            <MapContainer
+              view={mapView}
+              analysisConfig={{ layers: {} }}
+            />
+          )}
+          
           {/* Custom popup handler for each feature layer */}
           {mapView && mapView.map && featureLayers.map(layer => (
             <CustomPopupManager
