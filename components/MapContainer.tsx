@@ -48,11 +48,9 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
   }, []);
 
   const handleLayerInitializationComplete = useCallback(() => {
-    console.log('[MapContainer] Layer initialization complete - closing loading modal');
     setLayerControllerInitialized(true);
     setAllLayersFullyLoaded(true);
     setShowLoadingModal(false);
-    console.log('[MapContainer] Called setShowLoadingModal(false)');
     initializationCompleted.current = true; // Mark as completed
   }, []);
 
@@ -72,21 +70,14 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
     
     try {
       const config = createProjectConfig();
-      console.log('[MapContainer] Created layer config:', {
-        groupCount: config.groups.length,
-        totalLayers: config.groups.reduce((sum, g) => sum + (g.layers?.length || 0), 0)
-      });
       setLayerConfig(config);
       
       // Only reset state if we haven't completed initialization yet
       if (!initializationCompleted.current) {
-        console.log('[MapContainer] Starting layer initialization');
         setLayerControllerInitialized(false);
         setShowLoadingModal(true);
         setAllLayersFullyLoaded(false);
         setLoadingProgress({ loaded: 0, total: 0 });
-        
-        // Allow proper initialization callback to handle modal closure
       }
     } catch (error) {
       console.error('[MapContainer] Error creating layer config:', error);

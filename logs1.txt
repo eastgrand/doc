@@ -1,18 +1,369 @@
 Navigated to http://localhost:3000/
-vendors-node_modules_next_d.css?v=1753711019313:5 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_d.css?v=1753711019313:5:1)
-vendors-node_modules_next_dist_client_a.js?v=1753711019313:1456 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_dist_client_a.js?v=1753711019313:1456:29)
+vendors-node_modules_next_d.css?v=1753801436677:5 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_d.css?v=1753801436677:5:1)
+vendors-node_modules_next_dist_client_a.js?v=1753801436677:1467 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_dist_client_a.js?v=1753801436677:1467:29)
 Navigated to http://localhost:3000/map
-vendors-node_modules_next_d.css?v=1753711096528:5 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_d.css?v=1753711096528:5:1)
-vendors-node_modules_next_dist_cl.js?v=1753711096528:242 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+vendors-node_modules_next_d.css?v=1753801518051:5 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_d.css?v=1753801518051:5:1)
+vendors-node_modules_next_dist_cl.js?v=1753801518051:242 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 0
 MapClient.tsx:55 [MapClient MapLegend] Rendering legend: {title: '', type: 'simple', visible: false, itemCount: 0, sampleItems: Array(0)}
 MapClient.tsx:325 [MapClient] Starting map initialization...
-vendors-node_modules_c.js?v=1753711096528:2466 Using Calcite Components 3.2.1 [Date: 2025-05-29, Revision: 618973fec]
+vendors-node_modules_c.js?v=1753801518051:2466 Using Calcite Components 3.2.1 [Date: 2025-05-29, Revision: 618973fec]
 MapClient.tsx:337 [MapClient] ArcGIS modules loaded successfully
 MapClient.tsx:341 [MapClient] API key set: true
 MapClient.tsx:344 [MapClient] Creating map with light grey basemap...
 MapClient.tsx:348 [MapClient] Map created successfully
 MapClient.tsx:356 [MapClient] Creating MapView...
 MapClient.tsx:372 [MapClient] MapView created, waiting for it to be ready...
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 20
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 20
+MapClient.tsx:384 [MapClient] MapView is ready
+MapClient.tsx:396 [MapClient] Calling onMapLoad...
+MapClient.tsx:398 [MapClient] Map initialization complete
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 20
+layerConfigAdapter.ts:91 [Adapter] Final generated config: {layerCount: 50, groupCount: 4, groups: {…}}
+MapContainer.tsx:75 [MapContainer] Created layer config: {groupCount: 4, totalLayers: 50}
+MapContainer.tsx:83 [MapContainer] Starting layer initialization
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 60
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 0
+LayerController.tsx:632 [LayerController] View or config changed, resetting initialization state
+LayerController.tsx:652 [LayerController] Starting initialization for: -["income","participation","population","spending"]
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_8
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 60
+ConfigurationManager.ts:35 [ConfigurationManager] Creating singleton instance...
+ConfigurationManager.ts:59 [ConfigurationManager] Loading configurations...
+ConfigurationManager.ts:69 [ConfigurationManager] ✅ Singleton loaded configurations for 16 endpoints
+MapWidgets.tsx:418 [LAZY LOADING] MapWidgets initialization - widgets will be created on-demand
+MapWidgets.tsx:423 [LAZY LOADING] MapWidgets ready for on-demand widget creation
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_8
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_8: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'TOTPOP_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_8, field: thematic_value
+AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
+AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: false, firstLayerUrl: undefined, firstLayerId: undefined, extractedLayerNumber: null, constructedServiceUrl: null, …}
+geospatial-chat-interface.tsx:228 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:245 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+AnalysisEngine.ts:97 [AnalysisEngine] Creating singleton instance...
+CachedEndpointRouter.ts:24 [CachedEndpointRouter] Initialized with enhanced query analyzer
+DataProcessor.ts:247 [DataProcessor] Initialized 22 specialized processors
+VisualizationRenderer.ts:294 [VisualizationRenderer] Initialized 5 specialized renderers
+CachedEndpointRouter.ts:24 [CachedEndpointRouter] Initialized with enhanced query analyzer
+MultiEndpointRouter.ts:35 [MultiEndpointRouter] Initialized with multi-endpoint support
+MultiEndpointAnalysisEngine.ts:74 [MultiEndpointAnalysisEngine] Initialized with multi-endpoint capabilities
+AnalysisEngine.ts:74 [AnalysisEngine] Multi-endpoint system enabled
+AnalysisEngine.ts:79 [AnalysisEngine] Clustering system initialized
+AnalysisEngine.ts:84 [AnalysisEngine] Initialized with multi-endpoint support: {multiEndpointEnabled: true, config: {…}}
+geospatial-chat-interface.tsx:3541 [GeospatialChat] isInfographicsOpen: false
+geospatial-chat-interface.tsx:375 [DEBUG] Features state changed: {count: 0, timestamp: '2025-07-29T15:06:15.847Z', firstFeatureKeys: 'no features', hasCachedSummary: false}
+geospatial-chat-interface.tsx:459 [DEBUG] Target button state changed: {currentTarget: 'MP30034A_B_P', targetIconName: 'SiNike', targetLabel: undefined, inputQuery: '', timestamp: '2025-07-29T15:06:15.853Z'}
+geospatial-chat-interface.tsx:475 [GeospatialChat] Features useEffect triggered: {featuresIsArray: true, featuresLength: 0, isProcessing: false, firstFeature: null}
+geospatial-chat-interface.tsx:228 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:245 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:3541 [GeospatialChat] isInfographicsOpen: false
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_8
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_10
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 2
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 2
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_10
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_10: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'DIVINDX_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_10, field: thematic_value
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_10
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_11
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 4
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 4
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_11
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_11: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'WHITE_CY', 'WHITE_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_11, field: WHITE_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_11
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_12
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 6
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 6
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_12
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_12: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'BLACK_CY', 'BLACK_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_12, field: BLACK_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_12
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_13
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 8
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 8
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_13
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_13: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'AMERIND_CY', 'AMERIND_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_13, field: AMERIND_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_13
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_14
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 10
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 10
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_14
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_14: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'ASIAN_CY', 'ASIAN_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_14, field: ASIAN_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_14
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_15
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 12
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 12
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_15
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_15: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'PACIFIC_CY', 'PACIFIC_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_15, field: PACIFIC_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_15
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_16
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 14.000000000000002
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 14.000000000000002
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_16
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_16: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'OTHRACE_CY', 'OTHRACE_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_16, field: OTHRACE_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_16
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_17
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 16
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 16
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_17
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_17: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'RACE2UP_CY', 'RACE2UP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_17, field: RACE2UP_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_17
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_18
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 18
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 18
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_18
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_18: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPWHT_CY', 'HISPWHT_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_18, field: HISPWHT_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_18
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_19
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 20
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 20
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_19
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_19: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPBLK_CY', 'HISPBLK_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_19, field: HISPBLK_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_19
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_20
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 22
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 22
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_20
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_20: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPAI_CY', 'HISPAI_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_20, field: HISPAI_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_20
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_21
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 24
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 24
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_21
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_21: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPPI_CY', 'HISPPI_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_21, field: HISPPI_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_21
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_22
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 26
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 26
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_22
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_22: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPOTH_CY', 'HISPOTH_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_22, field: HISPOTH_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_22
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_24
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 28.000000000000004
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 28.000000000000004
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_24
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_24: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HHPOP_CY', 'HHPOP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_24, field: HHPOP_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_24
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_25
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 30
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 30
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_25
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_25: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'FAMPOP_CY', 'FAMPOP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_25, field: FAMPOP_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_25
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_55
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 32
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 32
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_55
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_55: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_55, field: GENZ_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_55
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_56
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 34
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 34
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_56
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_56: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_56, field: GENALPHACY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_56
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_57
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 36
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 36
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_57
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_57: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MILLENN_CY', 'MILLENN_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_57, field: MILLENN_CY_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_57
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_9
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 38
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 38
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_9
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_9: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'MEDDI_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_9, field: thematic_value
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_9
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_23
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 40
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 40
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_23
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_23: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'WLTHINDXCY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_23, field: thematic_value
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_23
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_26
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 42
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 42
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_26
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_26: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X9051_X', 'X9051_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_26, field: thematic_value
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_26
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_27
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 44
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 44
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_27
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_27: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP07109A_B', 'MP07109A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_27, field: MP07109A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_27
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_28
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 46
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 46
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_28
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_28: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP07111A_B', 'MP07111A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_28, field: MP07111A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_28
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_29
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 48
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 48
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_29
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_29: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'PSIV7UMKVALM', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_29, field: PSIV7UMKVALM
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_29
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_30
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 50
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 50
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_30
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_30: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30016A_B', 'MP30016A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_30, field: MP30016A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_30
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_31
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 52
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 52
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_31
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_31: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30018A_B', 'MP30018A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_31, field: MP30018A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_31
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_32
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 54
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 54
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_32
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_32: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30019A_B', 'MP30019A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_32, field: MP30019A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_32
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_33
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 56.00000000000001
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 56.00000000000001
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_33
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_33: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30021A_B', 'MP30021A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_33, field: MP30021A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_33
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_34
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 57.99999999999999
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 57.99999999999999
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_34
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_34: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30029A_B', 'MP30029A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_34, field: MP30029A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_34
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_35
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 60
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 60
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_35
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_35: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30030A_B', 'MP30030A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_35, field: MP30030A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_35
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_36
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 62
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 62
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_36
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_36: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30031A_B', 'MP30031A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_36, field: MP30031A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_36
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_37
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 64
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 64
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_37
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_37: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30032A_B', 'MP30032A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_37, field: MP30032A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_37
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_38
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 66
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 66
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_38
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_38: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30033A_B', 'MP30033A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_38, field: MP30033A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_38
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_39
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 68
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 68
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_39
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_39: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30034A_B', 'MP30034A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_39, field: MP30034A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_39
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_40
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 70
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 70
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_40
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_40: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30035A_B', 'MP30035A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_40, field: MP30035A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_40
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_41
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 72
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 72
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_41
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_41: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30036A_B', 'MP30036A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_41, field: MP30036A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_41
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_42
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 74
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 74
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_42
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_42: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30037A_B', 'MP30037A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_42, field: MP30037A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_42
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_43
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 76
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 76
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_43
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_43: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP31035A_B', 'MP31035A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_43, field: MP31035A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_43
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_44
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 78
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 78
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_44
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_44: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP31042A_B', 'MP31042A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_44, field: MP31042A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_44
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_45
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 80
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 80
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_45
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_45: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33020A_B', 'MP33020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_45, field: MP33020A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_45
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_46
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 82
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 82
+utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_46
+utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_46: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33032A_B', 'MP33032A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_46, field: MP33032A_B_P
+utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_46
+utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_47
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 84
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 84
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 60
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 84
+AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
+AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: false, firstLayerUrl: undefined, firstLayerId: undefined, extractedLayerNumber: null, constructedServiceUrl: null, …}
+geospatial-chat-interface.tsx:228 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:245 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:3541 [GeospatialChat] isInfographicsOpen: false
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 80
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 84
+AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
+AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: false, firstLayerUrl: undefined, firstLayerId: undefined, extractedLayerNumber: null, constructedServiceUrl: null, …}
+geospatial-chat-interface.tsx:228 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:245 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:3541 [GeospatialChat] isInfographicsOpen: false
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 80
 warn-once.js:16 Image with src "/mpiq_pin2.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
 warnOnce @ warn-once.js:16
 eval @ image-component.js:112
@@ -32,1225 +383,58 @@ batchedUpdates$1 @ react-dom.development.js:24953
 batchedUpdates @ react-dom.development.js:28844
 dispatchEventForPluginEventSystem @ react-dom.development.js:32373
 dispatchEvent @ react-dom.development.js:30141
-MapClient.tsx:384 [MapClient] MapView is ready
-MapClient.tsx:396 [MapClient] Calling onMapLoad...
-MapClient.tsx:398 [MapClient] Map initialization complete
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-layerConfigAdapter.ts:91 [Adapter] Final generated config: {layerCount: 50, groupCount: 4, groups: {…}}
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LayerController.tsx:632 [LayerController] View or config changed, resetting initialization state
-LayerController.tsx:652 [LayerController] Starting initialization for: -["income","participation","population","spending"]
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_8
-MapWidgets.tsx:451 [LAZY LOADING] MapWidgets initialization - widgets will be created on-demand
-MapWidgets.tsx:456 [LAZY LOADING] MapWidgets ready for on-demand widget creation
-ConfigurationManager.ts:35 [ConfigurationManager] Creating singleton instance...
-ConfigurationManager.ts:59 [ConfigurationManager] Loading configurations...
-ConfigurationManager.ts:69 [ConfigurationManager] ✅ Singleton loaded configurations for 15 endpoints
-AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
-AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: false, firstLayerUrl: undefined, firstLayerId: undefined, extractedLayerNumber: null, constructedServiceUrl: null, …}
-geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-AnalysisEngine.ts:87 [AnalysisEngine] Creating singleton instance...
-CachedEndpointRouter.ts:20 [CachedEndpointRouter] Initialized with multi-endpoint awareness
-DataProcessor.ts:174 [DataProcessor] Initialized 21 specialized processors
-VisualizationRenderer.ts:292 [VisualizationRenderer] Initialized 5 specialized renderers
-CachedEndpointRouter.ts:20 [CachedEndpointRouter] Initialized with multi-endpoint awareness
-MultiEndpointRouter.ts:35 [MultiEndpointRouter] Initialized with multi-endpoint support
-MultiEndpointAnalysisEngine.ts:74 [MultiEndpointAnalysisEngine] Initialized with multi-endpoint capabilities
-AnalysisEngine.ts:68 [AnalysisEngine] Multi-endpoint system enabled
-AnalysisEngine.ts:74 [AnalysisEngine] Initialized with multi-endpoint support: {multiEndpointEnabled: true, config: {…}}
-geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_8
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_8: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'TOTPOP_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_8, field: thematic_value
-geospatial-chat-interface.tsx:373 [DEBUG] Features state changed: {count: 0, timestamp: '2025-07-28T13:58:53.380Z', firstFeatureKeys: 'no features', hasCachedSummary: false}
-geospatial-chat-interface.tsx:457 [DEBUG] Target button state changed: {currentTarget: 'MP30034A_B_P', targetIconName: 'SiNike', targetLabel: undefined, inputQuery: '', timestamp: '2025-07-28T13:58:53.385Z'}
-geospatial-chat-interface.tsx:473 [GeospatialChat] Features useEffect triggered: {featuresIsArray: true, featuresLength: 0, isProcessing: false, firstFeature: null}
-geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_8
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_10
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 2, internalProgress: 0}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 2, internalProgress: 2}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_10
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_10: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'DIVINDX_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_10, field: thematic_value
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_10
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_11
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 4, internalProgress: 2}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 4, internalProgress: 4}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_11
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_11: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'WHITE_CY', 'WHITE_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_11, field: WHITE_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_11
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_12
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 6, internalProgress: 4}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 6, internalProgress: 6}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_12
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_12: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'BLACK_CY', 'BLACK_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_12, field: BLACK_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_12
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_13
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 8, internalProgress: 6}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 8, internalProgress: 8}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_13
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_13: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'AMERIND_CY', 'AMERIND_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_13, field: AMERIND_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_13
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_14
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 10, internalProgress: 8}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 10, internalProgress: 10}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_14
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_14: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'ASIAN_CY', 'ASIAN_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_14, field: ASIAN_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_14
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_15
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 12, internalProgress: 10}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 12, internalProgress: 12}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_15
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_15: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'PACIFIC_CY', 'PACIFIC_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_15, field: PACIFIC_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_15
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_16
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 14.000000000000002, internalProgress: 12}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 14.000000000000002, internalProgress: 14.000000000000002}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_16
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_16: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'OTHRACE_CY', 'OTHRACE_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_16, field: OTHRACE_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_16
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_17
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 16, internalProgress: 14.000000000000002}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 16, internalProgress: 16}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_17
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_17: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'RACE2UP_CY', 'RACE2UP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_17, field: RACE2UP_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_17
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_18
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 18, internalProgress: 16}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 18, internalProgress: 18}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_18
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_18: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPWHT_CY', 'HISPWHT_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_18, field: HISPWHT_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_18
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_19
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 20, internalProgress: 18}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 20, internalProgress: 20}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_19
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_19: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPBLK_CY', 'HISPBLK_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_19, field: HISPBLK_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_19
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_20
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 22, internalProgress: 20}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 22, internalProgress: 22}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_20
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_20: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPAI_CY', 'HISPAI_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_20, field: HISPAI_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_20
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_21
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 24, internalProgress: 22}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 24, internalProgress: 24}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_21
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_21: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPPI_CY', 'HISPPI_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_21, field: HISPPI_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_21
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_22
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 26, internalProgress: 24}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 26, internalProgress: 26}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_22
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_22: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPOTH_CY', 'HISPOTH_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_22, field: HISPOTH_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_22
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_24
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 28.000000000000004, internalProgress: 26}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 28.000000000000004, internalProgress: 28.000000000000004}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_24
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_24: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HHPOP_CY', 'HHPOP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_24, field: HHPOP_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_24
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_25
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 30, internalProgress: 28.000000000000004}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 30, internalProgress: 30}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_25
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_25: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'FAMPOP_CY', 'FAMPOP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_25, field: FAMPOP_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_25
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_55
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 32, internalProgress: 30}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 32, internalProgress: 32}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_55
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_55: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_55, field: GENZ_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_55
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_56
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 34, internalProgress: 32}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 34, internalProgress: 34}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_56
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_56: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_56, field: GENALPHACY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_56
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_57
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 36, internalProgress: 34}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 36, internalProgress: 36}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_57
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_57: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MILLENN_CY', 'MILLENN_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_57, field: MILLENN_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_57
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_9
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 38, internalProgress: 36}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 38, internalProgress: 38}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_9
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_9: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'MEDDI_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_9, field: thematic_value
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_9
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_23
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 40, internalProgress: 38}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 40, internalProgress: 40}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_23
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_23: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'WLTHINDXCY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_23, field: thematic_value
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_23
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_26
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 42, internalProgress: 40}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 42, internalProgress: 42}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_26
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_26: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X9051_X', 'X9051_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_26, field: thematic_value
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_26
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_27
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 44, internalProgress: 42}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 44, internalProgress: 44}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_27
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_27: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP07109A_B', 'MP07109A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_27, field: MP07109A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_27
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_28
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 46, internalProgress: 44}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 46, internalProgress: 46}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_28
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_28: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP07111A_B', 'MP07111A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_28, field: MP07111A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_28
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_29
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 48, internalProgress: 46}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 48, internalProgress: 48}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_29
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_29: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'PSIV7UMKVALM', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_29, field: PSIV7UMKVALM
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_29
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_30
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 50, internalProgress: 48}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 50, internalProgress: 50}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_30
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_30: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30016A_B', 'MP30016A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_30, field: MP30016A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_30
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_31
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 52, internalProgress: 50}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 52, internalProgress: 52}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_31
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_31: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30018A_B', 'MP30018A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_31, field: MP30018A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_31
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_32
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 54, internalProgress: 52}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 54, internalProgress: 54}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_32
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_32: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30019A_B', 'MP30019A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_32, field: MP30019A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_32
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_33
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 56.00000000000001, internalProgress: 54}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 56.00000000000001, internalProgress: 56.00000000000001}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_33
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_33: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30021A_B', 'MP30021A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_33, field: MP30021A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_33
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_34
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 57.99999999999999, internalProgress: 56.00000000000001}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 57.99999999999999, internalProgress: 57.99999999999999}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_34
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_34: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30029A_B', 'MP30029A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_34, field: MP30029A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_34
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_35
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 60, internalProgress: 57.99999999999999}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 60, internalProgress: 60}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_35
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_35: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30030A_B', 'MP30030A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_35, field: MP30030A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_35
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_36
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 62, internalProgress: 60}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 62, internalProgress: 62}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_36
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_36: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30031A_B', 'MP30031A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_36, field: MP30031A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_36
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_37
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 64, internalProgress: 62}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 64, internalProgress: 64}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_37
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_37: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30032A_B', 'MP30032A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_37, field: MP30032A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_37
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_38
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 66, internalProgress: 64}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 66, internalProgress: 66}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_38
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_38: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30033A_B', 'MP30033A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_38, field: MP30033A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_38
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_39
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 68, internalProgress: 66}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 68, internalProgress: 68}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_39
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_39: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30034A_B', 'MP30034A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_39, field: MP30034A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_39
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_40
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 70, internalProgress: 68}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 70, internalProgress: 70}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_40
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_40: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30035A_B', 'MP30035A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_40, field: MP30035A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_40
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_41
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 72, internalProgress: 70}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 72, internalProgress: 72}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_41
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_41: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30036A_B', 'MP30036A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_41, field: MP30036A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_41
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_42
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 74, internalProgress: 72}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 74, internalProgress: 74}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_42
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_42: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30037A_B', 'MP30037A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_42, field: MP30037A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_42
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_43
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 76, internalProgress: 74}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 76, internalProgress: 76}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_43
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_43: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP31035A_B', 'MP31035A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_43, field: MP31035A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_43
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_44
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 78, internalProgress: 76}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 78, internalProgress: 78}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_44
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_44: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP31042A_B', 'MP31042A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_44, field: MP31042A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_44
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_45
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 80, internalProgress: 78}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 80, internalProgress: 80}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_45
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_45: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33020A_B', 'MP33020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_45, field: MP33020A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_45
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_46
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 82, internalProgress: 80}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 82, internalProgress: 82}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_46
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_46: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33032A_B', 'MP33032A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_46, field: MP33032A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_46
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_47
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 84, internalProgress: 82}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 84, internalProgress: 84}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_47
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_47: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33031A_B', 'MP33031A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_47, field: MP33031A_B_P
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_47
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_48
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 86, internalProgress: 84}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 86, internalProgress: 86}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 86
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 86
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_48
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_48: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33104A_B', 'MP33104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_48, field: MP33104A_B_P
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_48
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_49
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 88, internalProgress: 86}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 88, internalProgress: 88}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 88
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 88
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_49
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_49: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33105A_B', 'MP33105A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_49, field: MP33105A_B_P
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_49
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_50
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 90, internalProgress: 88}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 90, internalProgress: 90}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 90
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 90
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_50
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_50: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33106A_B', 'MP33106A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_50, field: MP33106A_B_P
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_50
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_51
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 92, internalProgress: 90}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 92, internalProgress: 92}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 92
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 92
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_51
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_51: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33107A_B', 'MP33107A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_51, field: MP33107A_B_P
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_51
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_52
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 94, internalProgress: 92}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 94, internalProgress: 94}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 94
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 94
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_52
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_52: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33108A_B', 'MP33108A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_52, field: MP33108A_B_P
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_52
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_53
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 96, internalProgress: 94}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 96, internalProgress: 96}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 96
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 96
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_53
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_53: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33119A_B', 'MP33119A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_53, field: MP33119A_B_P
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_53
 utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_54
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 98, internalProgress: 96}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 98, internalProgress: 98}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 98
+LoadingModal.tsx:21 [LoadingModal] Render with show: true progress: 98
 utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_54
 utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_54: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33120A_B', 'MP33120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
 utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_54, field: MP33120A_B_P
 utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_54
-MapWidgets.tsx:529 [MapWidgets] Layer initialization complete
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 100, internalProgress: 98}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
-AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: true, firstLayerUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…services/Synapse54_Vetements_layers/FeatureServer', firstLayerId: 'Synapse54_Vetements_layers_layer_8', extractedLayerNumber: '8', constructedServiceUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…rvices/Synapse54_Vetements_layers/FeatureServer/8', …}
-geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 100, internalProgress: 100}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
-index.mjs:468 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-eval @ index.mjs:468
-commitHookEffectListMount @ react-dom.development.js:21102
-commitHookPassiveMountEffects @ react-dom.development.js:23154
-commitPassiveMountOnFiber @ react-dom.development.js:23259
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
-Navigated to http://localhost:3000/map
-vendors-node_modules_next_d.css?v=1753711160312:5 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_d.css?v=1753711160312:5:1)
-vendors-node_modules_next_dist_cl.js?v=1753711160312:242 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
-MapClient.tsx:55 [MapClient MapLegend] Rendering legend: {title: '', type: 'simple', visible: false, itemCount: 0, sampleItems: Array(0)}
-MapClient.tsx:325 [MapClient] Starting map initialization...
-vendors-node_modules_c.js?v=1753711160312:2466 Using Calcite Components 3.2.1 [Date: 2025-05-29, Revision: 618973fec]
-MapClient.tsx:337 [MapClient] ArcGIS modules loaded successfully
-MapClient.tsx:341 [MapClient] API key set: true
-MapClient.tsx:344 [MapClient] Creating map with light grey basemap...
-MapClient.tsx:348 [MapClient] Map created successfully
-MapClient.tsx:356 [MapClient] Creating MapView...
-MapClient.tsx:372 [MapClient] MapView created, waiting for it to be ready...
-warn-once.js:16 Image with src "/mpiq_pin2.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
-warnOnce @ warn-once.js:16
-eval @ image-component.js:112
-Promise.then
-handleLoading @ image-component.js:37
-onLoad @ image-component.js:198
-callCallback @ react-dom.development.js:20565
-invokeGuardedCallbackImpl @ react-dom.development.js:20614
-invokeGuardedCallback @ react-dom.development.js:20689
-invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
-executeDispatch @ react-dom.development.js:32128
-processDispatchQueueItemsInOrder @ react-dom.development.js:32160
-processDispatchQueue @ react-dom.development.js:32173
-dispatchEventsForPlugins @ react-dom.development.js:32184
-eval @ react-dom.development.js:32374
-batchedUpdates$1 @ react-dom.development.js:24953
-batchedUpdates @ react-dom.development.js:28844
-dispatchEventForPluginEventSystem @ react-dom.development.js:32373
-dispatchEvent @ react-dom.development.js:30141
-MapClient.tsx:384 [MapClient] MapView is ready
-MapClient.tsx:396 [MapClient] Calling onMapLoad...
-MapClient.tsx:398 [MapClient] Map initialization complete
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-ConfigurationManager.ts:35 [ConfigurationManager] Creating singleton instance...
-ConfigurationManager.ts:59 [ConfigurationManager] Loading configurations...
-ConfigurationManager.ts:69 [ConfigurationManager] ✅ Singleton loaded configurations for 15 endpoints
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
-AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: false, firstLayerUrl: undefined, firstLayerId: undefined, extractedLayerNumber: null, constructedServiceUrl: null, …}
-geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-AnalysisEngine.ts:87 [AnalysisEngine] Creating singleton instance...
-CachedEndpointRouter.ts:20 [CachedEndpointRouter] Initialized with multi-endpoint awareness
-DataProcessor.ts:174 [DataProcessor] Initialized 21 specialized processors
-VisualizationRenderer.ts:292 [VisualizationRenderer] Initialized 5 specialized renderers
-CachedEndpointRouter.ts:20 [CachedEndpointRouter] Initialized with multi-endpoint awareness
-MultiEndpointRouter.ts:35 [MultiEndpointRouter] Initialized with multi-endpoint support
-MultiEndpointAnalysisEngine.ts:74 [MultiEndpointAnalysisEngine] Initialized with multi-endpoint capabilities
-AnalysisEngine.ts:68 [AnalysisEngine] Multi-endpoint system enabled
-AnalysisEngine.ts:74 [AnalysisEngine] Initialized with multi-endpoint support: {multiEndpointEnabled: true, config: {…}}
-geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
-layerConfigAdapter.ts:91 [Adapter] Final generated config: {layerCount: 50, groupCount: 4, groups: {…}}
-geospatial-chat-interface.tsx:373 [DEBUG] Features state changed: {count: 0, timestamp: '2025-07-28T13:59:30.292Z', firstFeatureKeys: 'no features', hasCachedSummary: false}
-geospatial-chat-interface.tsx:457 [DEBUG] Target button state changed: {currentTarget: 'MP30034A_B_P', targetIconName: 'SiNike', targetLabel: undefined, inputQuery: '', timestamp: '2025-07-28T13:59:30.293Z'}
-geospatial-chat-interface.tsx:473 [GeospatialChat] Features useEffect triggered: {featuresIsArray: true, featuresLength: 0, isProcessing: false, firstFeature: null}
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 0, internalProgress: 0}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
-LayerController.tsx:632 [LayerController] View or config changed, resetting initialization state
-LayerController.tsx:652 [LayerController] Starting initialization for: -["income","participation","population","spending"]
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_8
-MapWidgets.tsx:451 [LAZY LOADING] MapWidgets initialization - widgets will be created on-demand
-MapWidgets.tsx:456 [LAZY LOADING] MapWidgets ready for on-demand widget creation
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_8
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_8: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'TOTPOP_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_8, field: thematic_value
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_8
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_10
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 2, internalProgress: 0}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 2, internalProgress: 2}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_10
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_10: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'DIVINDX_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_10, field: thematic_value
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_10
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_11
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 4, internalProgress: 2}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 4, internalProgress: 4}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_11
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_11: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'WHITE_CY', 'WHITE_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_11, field: WHITE_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_11
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_12
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 6, internalProgress: 4}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 6, internalProgress: 6}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_12
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_12: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'BLACK_CY', 'BLACK_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_12, field: BLACK_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_12
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_13
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 8, internalProgress: 6}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 8, internalProgress: 8}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_13
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_13: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'AMERIND_CY', 'AMERIND_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_13, field: AMERIND_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_13
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_14
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 10, internalProgress: 8}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 10, internalProgress: 10}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_14
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_14: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'ASIAN_CY', 'ASIAN_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_14, field: ASIAN_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_14
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_15
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 12, internalProgress: 10}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 12, internalProgress: 12}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_15
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_15: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'PACIFIC_CY', 'PACIFIC_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_15, field: PACIFIC_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_15
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_16
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 14.000000000000002, internalProgress: 12}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 14.000000000000002, internalProgress: 14.000000000000002}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_16
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_16: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'OTHRACE_CY', 'OTHRACE_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_16, field: OTHRACE_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_16
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_17
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 16, internalProgress: 14.000000000000002}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 16, internalProgress: 16}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_17
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_17: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'RACE2UP_CY', 'RACE2UP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_17, field: RACE2UP_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_17
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_18
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 18, internalProgress: 16}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 18, internalProgress: 18}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_18
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_18: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPWHT_CY', 'HISPWHT_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_18, field: HISPWHT_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_18
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_19
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 20, internalProgress: 18}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 20, internalProgress: 20}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_19
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_19: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPBLK_CY', 'HISPBLK_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_19, field: HISPBLK_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_19
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_20
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 22, internalProgress: 20}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 22, internalProgress: 22}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_20
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_20: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPAI_CY', 'HISPAI_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_20, field: HISPAI_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_20
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_21
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 24, internalProgress: 22}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 24, internalProgress: 24}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_21
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_21: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPPI_CY', 'HISPPI_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_21, field: HISPPI_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_21
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_22
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 26, internalProgress: 24}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 26, internalProgress: 26}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_22
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_22: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HISPOTH_CY', 'HISPOTH_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_22, field: HISPOTH_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_22
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_24
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 28.000000000000004, internalProgress: 26}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 28.000000000000004, internalProgress: 28.000000000000004}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_24
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_24: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'HHPOP_CY', 'HHPOP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_24, field: HHPOP_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_24
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_25
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 30, internalProgress: 28.000000000000004}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 30, internalProgress: 30}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_25
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_25: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'FAMPOP_CY', 'FAMPOP_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_25, field: FAMPOP_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_25
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_55
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 32, internalProgress: 30}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 32, internalProgress: 32}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_55
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_55: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_55, field: GENZ_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_55
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_56
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 34, internalProgress: 32}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 34, internalProgress: 34}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_56
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_56: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_56, field: GENALPHACY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_56
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_57
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 36, internalProgress: 34}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 36, internalProgress: 36}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_57
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_57: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MILLENN_CY', 'MILLENN_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_57, field: MILLENN_CY_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_57
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_9
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 38, internalProgress: 36}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 38, internalProgress: 38}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_9
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_9: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'MEDDI_CY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_9, field: thematic_value
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_9
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_23
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 40, internalProgress: 38}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 40, internalProgress: 40}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_23
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_23: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'WLTHINDXCY', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_23, field: thematic_value
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_23
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_26
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 42, internalProgress: 40}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 42, internalProgress: 42}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_26
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_26: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X9051_X', 'X9051_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_26, field: thematic_value
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_26
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_27
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 44, internalProgress: 42}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 44, internalProgress: 44}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_27
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_27: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP07109A_B', 'MP07109A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_27, field: MP07109A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_27
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_28
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 46, internalProgress: 44}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 46, internalProgress: 46}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_28
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_28: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP07111A_B', 'MP07111A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_28, field: MP07111A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_28
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_29
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 48, internalProgress: 46}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 48, internalProgress: 48}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_29
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_29: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'PSIV7UMKVALM', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_29, field: PSIV7UMKVALM
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_29
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_30
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 50, internalProgress: 48}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 50, internalProgress: 50}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_30
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_30: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30016A_B', 'MP30016A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_30, field: MP30016A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_30
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_31
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 52, internalProgress: 50}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 52, internalProgress: 52}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_31
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_31: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30018A_B', 'MP30018A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_31, field: MP30018A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_31
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_32
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 54, internalProgress: 52}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 54, internalProgress: 54}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_32
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_32: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30019A_B', 'MP30019A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_32, field: MP30019A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_32
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_33
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 56.00000000000001, internalProgress: 54}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 56.00000000000001, internalProgress: 56.00000000000001}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_33
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_33: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30021A_B', 'MP30021A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_33, field: MP30021A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_33
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_34
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 57.99999999999999, internalProgress: 56.00000000000001}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 57.99999999999999, internalProgress: 57.99999999999999}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_34
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_34: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30029A_B', 'MP30029A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_34, field: MP30029A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_34
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_35
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 60, internalProgress: 57.99999999999999}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 60, internalProgress: 60}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_35
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_35: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30030A_B', 'MP30030A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_35, field: MP30030A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_35
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_36
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 62, internalProgress: 60}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 62, internalProgress: 62}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_36
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_36: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30031A_B', 'MP30031A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_36, field: MP30031A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_36
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_37
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 64, internalProgress: 62}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 64, internalProgress: 64}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_37
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_37: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30032A_B', 'MP30032A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_37, field: MP30032A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_37
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_38
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 66, internalProgress: 64}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 66, internalProgress: 66}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_38
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_38: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30033A_B', 'MP30033A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_38, field: MP30033A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_38
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_39
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 68, internalProgress: 66}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 68, internalProgress: 68}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_39
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_39: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30034A_B', 'MP30034A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_39, field: MP30034A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_39
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_40
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 70, internalProgress: 68}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 70, internalProgress: 70}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_40
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_40: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30035A_B', 'MP30035A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_40, field: MP30035A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_40
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_41
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 72, internalProgress: 70}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 72, internalProgress: 72}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_41
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_41: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30036A_B', 'MP30036A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_41, field: MP30036A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_41
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_42
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 74, internalProgress: 72}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 74, internalProgress: 74}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_42
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_42: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP30037A_B', 'MP30037A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_42, field: MP30037A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_42
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_43
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 76, internalProgress: 74}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 76, internalProgress: 76}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_43
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_43: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP31035A_B', 'MP31035A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_43, field: MP31035A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_43
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_44
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 78, internalProgress: 76}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 78, internalProgress: 78}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_44
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_44: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP31042A_B', 'MP31042A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_44, field: MP31042A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_44
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_45
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 80, internalProgress: 78}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 80, internalProgress: 80}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_45
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_45: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33020A_B', 'MP33020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_45, field: MP33020A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_45
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_46
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 82, internalProgress: 80}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 82, internalProgress: 82}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_46
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_46: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33032A_B', 'MP33032A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_46, field: MP33032A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_46
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_47
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 84, internalProgress: 82}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 84, internalProgress: 84}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_47
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_47: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33031A_B', 'MP33031A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_47, field: MP33031A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_47
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_48
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 86, internalProgress: 84}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 86, internalProgress: 86}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_48
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_48: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33104A_B', 'MP33104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_48, field: MP33104A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_48
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_49
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 88, internalProgress: 86}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 88, internalProgress: 88}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_49
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_49: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33105A_B', 'MP33105A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_49, field: MP33105A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_49
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_50
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 90, internalProgress: 88}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 90, internalProgress: 90}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_50
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_50: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33106A_B', 'MP33106A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_50, field: MP33106A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_50
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_51
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 92, internalProgress: 90}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 92, internalProgress: 92}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_51
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_51: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33107A_B', 'MP33107A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_51, field: MP33107A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_51
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_52
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 94, internalProgress: 92}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 94, internalProgress: 94}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_52
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_52: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33108A_B', 'MP33108A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_52, field: MP33108A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_52
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_53
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 96, internalProgress: 94}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 96, internalProgress: 96}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_53
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_53: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33119A_B', 'MP33119A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_53, field: MP33119A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_53
-utils.ts:40 [LC createLayer] Starting layer creation for: Synapse54_Vetements_layers_layer_54
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 98, internalProgress: 96}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 98, internalProgress: 98}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-utils.ts:72 [LC createLayer] Layer loaded: Synapse54_Vetements_layers_layer_54
-utils.ts:79 [LC createLayer] Available fields for Synapse54_Vetements_layers_layer_54: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP33120A_B', 'MP33120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:90 [LC createLayer] ✨ Applying quartile renderer to layer: Synapse54_Vetements_layers_layer_54, field: MP33120A_B_P
-utils.ts:106 ✅ Successfully applied quartile renderer to layer: Synapse54_Vetements_layers_layer_54
-MapWidgets.tsx:529 [MapWidgets] Layer initialization complete
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 100, internalProgress: 98}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
-AITab.tsx:46 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
-AITab.tsx:91 [AITab] DataSource configuration: {hasFirstLayer: true, firstLayerUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…services/Synapse54_Vetements_layers/FeatureServer', firstLayerId: 'Synapse54_Vetements_layers_layer_8', extractedLayerNumber: '8', constructedServiceUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…rvices/Synapse54_Vetements_layers/FeatureServer/8', …}
-geospatial-chat-interface.tsx:226 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:243 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-geospatial-chat-interface.tsx:3268 [GeospatialChat] isInfographicsOpen: false
-LoadingModal.tsx:13 [LoadingModal] Render: {show: false, externalProgress: 100, internalProgress: 100}
-LoadingModal.tsx:23 [LoadingModal] Not showing - returning null
+MapContainer.tsx:51 [MapContainer] Layer initialization complete - closing loading modal
+MapContainer.tsx:55 [MapContainer] Called setShowLoadingModal(false)

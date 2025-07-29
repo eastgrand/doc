@@ -218,7 +218,8 @@ export class AnalysisEngine {
       
       // Process the cached data using the correct method name
       
-      const processedData = this.dataProcessor.processResultsWithCityAnalysis(analysisData, selectedEndpoint, query);
+      // Use the new geo-awareness system for geographic filtering
+      const processedData = await this.dataProcessor.processResultsWithGeographicAnalysis(analysisData, selectedEndpoint, query);
       
       console.log(`[AnalysisEngine] Processed data returned:`, {
         type: processedData.type,

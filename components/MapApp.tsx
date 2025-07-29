@@ -39,7 +39,6 @@ import { colorToRgba, getSymbolShape, getSymbolSize } from '@/utils/symbol-utils
 import { VisualizationResult as ChatVisualizationResult } from '@/types/geospatial-chat';
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
 import Color from '@arcgis/core/Color';
-import { LoadingModal } from '@/components/LoadingModal';
 
 console.log('[MAP_APP] MapApp component function body executing');
 
@@ -121,16 +120,6 @@ export const MapApp: React.FC = memo(() => {
   const [formattedLegendData, setFormattedLegendData] = useState<any>(null);
   const [visualizationResult, setVisualizationResult] = useState<any>(null);
 
-  // Loading state management
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [showLoading, setShowLoading] = useState(true);
-  const [loadingStages, setLoadingStages] = useState({
-    mounted: false,
-    mapInitialized: false,
-    layersLoaded: false,
-    analysisToolsReady: false,
-    widgetsReady: false
-  });
 
   // Sync formattedLegendData with mapLegend state
   useEffect(() => {
@@ -178,42 +167,13 @@ export const MapApp: React.FC = memo(() => {
     }
   }, []);
 
-  // Track loading progress based on stages
-  useEffect(() => {
-    const stages = Object.values(loadingStages);
-    const completedStages = stages.filter(Boolean).length;
-    const totalStages = stages.length;
-    const progress = Math.round((completedStages / totalStages) * 100);
-    
-    setLoadingProgress(progress);
-    
-    // Hide loading when all stages complete
-    if (progress === 100) {
-      setTimeout(() => setShowLoading(false), 500);
-    }
-  }, [loadingStages]);
-
   useEffect(() => {
     setMounted(true);
-    setLoadingStages(prev => ({ ...prev, mounted: true }));
   }, []);
 
   // Simple handlers
   const handleMapLoad = useCallback((view: __esri.MapView) => {
     setMapView(view);
-    setLoadingStages(prev => ({ ...prev, mapInitialized: true }));
-    
-    // Track when layers are loaded
-    if (view.map) {
-      view.map.allLayers.on('change', () => {
-        setLoadingStages(prev => ({ ...prev, layersLoaded: true }));
-      });
-      
-      // Mark layers as loaded if already present
-      if (view.map.allLayers.length > 0) {
-        setLoadingStages(prev => ({ ...prev, layersLoaded: true }));
-      }
-    }
   }, []);
 
   const handleMapError = useCallback((error: Error) => {
@@ -249,18 +209,8 @@ export const MapApp: React.FC = memo(() => {
         .filter(layer => layer.type === 'feature')
         .toArray() as __esri.FeatureLayer[];
       setFeatureLayers(currentFeatureLayers);
-      setLoadingStages(prev => ({ ...prev, analysisToolsReady: true }));
     }
   }, [mapView]);
-
-  // Mark widgets as ready when they're rendered
-  useEffect(() => {
-    if (mapView && mounted) {
-      setTimeout(() => {
-        setLoadingStages(prev => ({ ...prev, widgetsReady: true }));
-      }, 1000);
-    }
-  }, [mapView, mounted]);
 
   const handleCorrelationAnalysis = useCallback((layer: __esri.FeatureLayer, primaryField: string, comparisonField: string) => {
     // Handle correlation analysis
@@ -277,10 +227,7 @@ export const MapApp: React.FC = memo(() => {
   }
 
   return (
-    <>
-      {/* Loading Modal - blocks all interaction until everything loads */}
-      <LoadingModal progress={loadingProgress} show={showLoading} />
-      
+    <>      
       <div className="fixed inset-0 flex">
         {/* Left Toolbar */}
         <div className="w-16 bg-gray-100 flex flex-col z-[9999]">

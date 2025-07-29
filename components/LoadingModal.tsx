@@ -17,10 +17,8 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
     }
   }, [externalProgress, internalProgress]);
   
-  // Early return with null when not showing - this was the fix
-  console.log('[LoadingModal] Render with show:', show, 'progress:', externalProgress);
+  // Early return with null when not showing
   if (!show) {
-    console.log('[LoadingModal] Not showing - returning null');
     return null;
   }
   

@@ -18,12 +18,14 @@ Transform individual zip code analysis into campaign territory planning by clust
 ## **📋 Business Requirements**
 
 ### **Primary Goals**
+
 - ✅ **Campaign-Scale Planning**: Results suitable for real marketing campaigns
 - ✅ **Analysis-Driven**: Clusters based on actual analysis scores, not arbitrary geography
 - ✅ **User Control**: Adjustable cluster parameters for different campaign scales
 - ✅ **Geographic Coherence**: Clusters must be geographically sensible for logistics
 
 ### **User Stories**
+
 1. **Campaign Manager**: "I need 5 strategic territories in California, each with 50K+ population"
 2. **Media Planner**: "Show me competitive territories where Nike vs Adidas dynamics are similar"
 3. **Marketing Director**: "Group demographic segments into viable advertising regions"
@@ -35,11 +37,13 @@ Transform individual zip code analysis into campaign territory planning by clust
 ### **Clustering Algorithm: Geographic K-Means**
 
 **Primary Algorithm**: K-means with geographic distance weighting
+
 - **Analysis Features**: Strategic scores, competitive metrics, demographic data (80% weight)
 - **Geographic Features**: Latitude/longitude proximity (20% weight)
 - **Distance Constraint**: Maximum 50 miles between zip codes in same cluster
 
 **Why Geographic K-Means:**
+
 - ✅ **Predictable cluster count** - User specifies desired number
 - ✅ **Analysis-driven** - Primary clustering based on business metrics
 - ✅ **Geographic coherence** - Distance weighting prevents scattered clusters
@@ -49,11 +53,13 @@ Transform individual zip code analysis into campaign territory planning by clust
 ### **Distance Constraints**
 
 **Maximum Cluster Radius**: 50 miles
+
 - **Rationale**: Typical advertising DMA (Designated Market Area) coverage
 - **Implementation**: Hard constraint - reject clusters exceeding radius
 - **Fallback**: Split oversized clusters into sub-clusters
 
 **Minimum Cluster Distance**: 10 miles between cluster centroids
+
 - **Rationale**: Prevents overlapping campaign territories
 - **Implementation**: Post-processing step to merge too-close clusters
 
@@ -62,11 +68,13 @@ Transform individual zip code analysis into campaign territory planning by clust
 ## **🎨 User Interface Design**
 
 ### **Default Behavior**
+
 - ✅ **Clustering OFF by default** - Maintains current individual zip code behavior
 - ✅ **Optional enhancement** - Users explicitly enable clustering
 - ✅ **Clear toggle** - Obvious on/off state
 
 ### **Cluster Configuration Panel**
+
 ```
 ┌─────────── 🎯 Campaign Territory Clustering ───────────┐
 │ [ ] Enable clustering for campaign planning             │
@@ -87,6 +95,7 @@ Transform individual zip code analysis into campaign territory planning by clust
 ```
 
 ### **Results Display Enhancements**
+
 - **Individual Mode** (current): Shows individual zip codes
 - **Clustered Mode** (new): Shows territories with cluster boundaries
 - **Toggle View**: Switch between individual and clustered visualization
@@ -97,6 +106,7 @@ Transform individual zip code analysis into campaign territory planning by clust
 ## **🏗️ Implementation Architecture**
 
 ### **File Structure**
+
 ```
 /components/clustering/
   ├── ClusterConfigPanel.tsx      // User controls UI
@@ -121,6 +131,7 @@ Transform individual zip code analysis into campaign territory planning by clust
 ```
 
 ### **Core Interfaces**
+
 ```typescript
 interface ClusterConfig {
   enabled: boolean;                    // Default: false
@@ -164,24 +175,28 @@ interface ClusterResult {
 ## **🚀 Implementation Phases**
 
 ### **Phase 1: Core Infrastructure (Week 1)**
+
 1. ✅ Create clustering types and interfaces
 2. ✅ Implement geographic K-means algorithm with distance constraints
 3. ✅ Add feature extraction for strategic/competitive/demographic endpoints
 4. ✅ Create basic cluster validation (size, population, radius)
 
 ### **Phase 2: UI Integration (Week 2)**
+
 1. ✅ Build ClusterConfigPanel component
 2. ✅ Integrate with existing query pipeline
 3. ✅ Add cluster toggle to analysis results
 4. ✅ Implement preview functionality
 
 ### **Phase 3: Visualization Enhancement (Week 3)**
+
 1. ✅ Create cluster boundary visualization on map
 2. ✅ Add territory summary cards
 3. ✅ Implement view toggle (individual vs clustered)
 4. ✅ Generate automatic territory names
 
 ### **Phase 4: Campaign Features (Week 4)**
+
 1. ✅ Add cluster-level export functionality
 2. ✅ Generate campaign planning recommendations
 3. ✅ Create territory comparison tools
@@ -192,6 +207,7 @@ interface ClusterResult {
 ## **🎯 User Experience Flow**
 
 ### **Default Experience (No Change)**
+
 ```
 Current behavior maintained:
 1. User selects analysis type
@@ -201,6 +217,7 @@ Current behavior maintained:
 ```
 
 ### **Clustering Experience (New Optional)**
+
 ```
 Enhanced workflow:
 1. User selects analysis type
@@ -218,16 +235,19 @@ Enhanced workflow:
 ## **📊 Success Metrics**
 
 ### **Technical Metrics**
+
 - ✅ **Clustering Performance**: < 2 seconds for territory generation
 - ✅ **Geographic Coherence**: 95%+ of clusters within radius limits
 - ✅ **Territory Quality**: 90%+ of clusters meet size/population requirements
 
 ### **Business Metrics**
+
 - ✅ **User Adoption**: 30%+ of power users enable clustering within 30 days
 - ✅ **Campaign Utility**: Territory results used for actual campaign planning
 - ✅ **Export Usage**: Cluster-level exports increase by 200%
 
 ### **User Experience Metrics**
+
 - ✅ **Feature Discovery**: 80%+ of users notice clustering option
 - ✅ **Understanding**: 90%+ understand territory vs individual difference
 - ✅ **Satisfaction**: Positive feedback on campaign-scale insights
@@ -237,17 +257,20 @@ Enhanced workflow:
 ## **🚧 Edge Cases & Constraints**
 
 ### **Geographic Constraints**
+
 - **Sparse Areas**: Rural regions may not meet population requirements
 - **Urban Density**: Cities may create tiny territories with high population
 - **State Boundaries**: Territories may cross state lines (acceptable for campaigns)
 - **Water Bodies**: Algorithm should respect major geographic barriers
 
 ### **Data Quality**
+
 - **Missing Scores**: Handle zip codes with incomplete analysis data
 - **Outliers**: Extremely high/low scores that skew clustering
 - **Population Zeros**: Zip codes with zero population (industrial areas)
 
 ### **User Error Handling**
+
 - **Impossible Parameters**: Too many clusters for available zip codes
 - **Conflicting Requirements**: High min population + small radius
 - **No Valid Clusters**: All territories fail validation criteria
@@ -257,6 +280,7 @@ Enhanced workflow:
 ## **🔧 Configuration & Defaults**
 
 ### **Default Settings (Conservative)**
+
 ```typescript
 const DEFAULT_CLUSTER_CONFIG: ClusterConfig = {
   enabled: false,                     // Maintains current behavior
@@ -269,6 +293,7 @@ const DEFAULT_CLUSTER_CONFIG: ClusterConfig = {
 ```
 
 ### **Recommended Settings by Use Case**
+
 ```typescript
 // Large-scale brand campaigns
 const BRAND_CAMPAIGN_CONFIG = {
@@ -297,18 +322,21 @@ const LOCAL_TEST_CONFIG = {
 ## **📝 Development Notes**
 
 ### **Libraries & Dependencies**
+
 - **Clustering**: Custom K-means implementation (avoid heavy ML libraries)
 - **Geography**: Use existing ArcGIS geometry utilities
 - **Distance**: Haversine formula for accurate geographic distance
 - **Boundaries**: Convex hull algorithm for territory polygons
 
 ### **Performance Considerations**
+
 - **Lazy Loading**: Only cluster when user enables feature
 - **Caching**: Cache clustering results for repeated queries
 - **Progressive**: Show clustering progress for large datasets
 - **Limits**: Maximum 1000 zip codes for clustering (performance)
 
 ### **Future Enhancements**
+
 - **Advanced Algorithms**: DBSCAN for natural territory discovery
 - **Multi-Criteria**: Cluster by multiple analysis types simultaneously
 - **Territory Names**: AI-generated descriptive territory names
