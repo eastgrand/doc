@@ -492,12 +492,6 @@ export class EnhancedQueryAnalyzer {
       avoidTerms: [],
       weight: 0.9
     },
-    '/correlation-analysis': {
-      primaryKeywords: ['correlation', 'correlate', 'statistical relationship'],
-      contextKeywords: ['what relates to', 'statistical correlation'],
-      avoidTerms: ['compare', 'versus', 'difference', 'trend', 'demographic'],
-      weight: 0.3 // Heavily penalized to avoid overuse
-    }
   };
 
   /**

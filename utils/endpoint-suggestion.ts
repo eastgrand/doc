@@ -38,12 +38,6 @@ const ENDPOINT_KEYWORD_MAP = {
     patterns: [/\w+\s+vs\s+\w+/i, /compare.*brand/i, /\w+\s+versus\s+\w+/i],
     weight: 1.3
   },
-  '/correlation-analysis': {
-    primary: ['correlation', 'relationship', 'related', 'connection', 'linked'],
-    secondary: ['between', 'association', 'dependency', 'influence', 'factor'],
-    patterns: [/relationship.*between/i, /correlation.*with/i, /related.*to/i],
-    weight: 1.1
-  },
   '/demographic-insights': {
     primary: ['demographic', 'population', 'age', 'income', 'lifestyle', 'customer'],
     secondary: ['profile', 'segment', 'characteristics', 'who', 'people'],
@@ -117,7 +111,7 @@ export function suggestAnalysisEndpoint(
     });
 
     // Pattern matching (very high weight)
-    config.patterns.forEach((pattern, index) => {
+    config.patterns.forEach((pattern) => {
       if (pattern.test(query)) {
         score += 5 * config.weight;
         reasoning.push(`Pattern match: recognized query structure`);

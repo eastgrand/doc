@@ -74,7 +74,7 @@ export const TRENDS_CATEGORIES = {
   'Customer & Demographics': [
     'Which markets have the highest demographic opportunity scores for Nike?',
     'Show me markets with the clearest customer segments for targeted marketing',
-    'What market factors are most strongly correlated with Nike\'s success?',
+    'What market factors are most strongly associated with Nike\'s success?',
     'Which markets have the strongest interactions between demographics, income, and Nike preference?',
     'Which markets best match Nike\'s target customer profile?',
     'Where are Athletic Enthusiasts and Fashion-Forward Professionals concentrated?',
@@ -135,6 +135,6 @@ export const TRENDS_CATEGORIES = {
     'Which markets are most likely to grow for Nike in the next year?',
     'Forecast Nike performance trends across different regions',
     'Where do income, age, and lifestyle factors combine to predict Nike success?',
-    'Show me markets where brand loyalty correlates with demographic clusters'
+    'Show me markets where brand loyalty aligns with demographic clusters'
   ]
 }; 
