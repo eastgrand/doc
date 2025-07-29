@@ -50,6 +50,12 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
   const handleLayerInitializationComplete = useCallback(() => {
     setLayerControllerInitialized(true);
     initializationCompleted.current = true; // Mark as completed
+    
+    // BACKUP: Force loading modal to disappear after 5 seconds if it's still hanging
+    setTimeout(() => {
+      setShowLoadingModal(false);
+      setAllLayersFullyLoaded(true);
+    }, 5000);
   }, []);
 
   // Initialize layer config - only run once per unique view
@@ -76,6 +82,13 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
         setShowLoadingModal(true);
         setAllLayersFullyLoaded(false);
         setLoadingProgress({ loaded: 0, total: 0 });
+        
+        // ADDITIONAL BACKUP: Force close loading modal after 15 seconds regardless
+        setTimeout(() => {
+          console.log('[MapContainer] BACKUP TIMEOUT: Forcing loading modal to close after 15 seconds');
+          setShowLoadingModal(false);
+          setAllLayersFullyLoaded(true);
+        }, 15000);
       }
     } catch (error) {
       setShowLoadingModal(false);
