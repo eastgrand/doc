@@ -185,15 +185,27 @@ export const MapApp: React.FC = memo(() => {
     const totalStages = stages.length;
     const progress = Math.round((completedStages / totalStages) * 100);
     
+    console.log('[MapApp] Loading stages:', {
+      ...loadingStages,
+      completedStages: `${completedStages}/${totalStages}`,
+      progress: `${progress}%`,
+      willHide: progress === 100
+    });
+    
     setLoadingProgress(progress);
     
     // Hide loading when all stages complete
     if (progress === 100) {
-      setTimeout(() => setShowLoading(false), 500);
+      console.log('[MapApp] All stages complete, hiding loading in 500ms');
+      setTimeout(() => {
+        console.log('[MapApp] Timeout complete, hiding loading modal');
+        setShowLoading(false);
+      }, 500);
     }
   }, [loadingStages]);
 
   useEffect(() => {
+    console.log('[MapApp] Setting mounted = true');
     setMounted(true);
     setLoadingStages(prev => ({ ...prev, mounted: true }));
   }, []);
@@ -201,17 +213,20 @@ export const MapApp: React.FC = memo(() => {
   // Simple handlers
   const handleMapLoad = useCallback((view: __esri.MapView) => {
     console.log('[MapApp] handleMapLoad called with view:', view);
+    console.log('[MapApp] Setting mapInitialized = true');
     setMapView(view);
     setLoadingStages(prev => ({ ...prev, mapInitialized: true }));
     
     // Track when layers are loaded
     if (view.map) {
       view.map.allLayers.on('change', () => {
+        console.log('[MapApp] Layers changed, setting layersLoaded = true');
         setLoadingStages(prev => ({ ...prev, layersLoaded: true }));
       });
       
       // Mark layers as loaded if already present
       if (view.map.allLayers.length > 0) {
+        console.log('[MapApp] Layers already present, setting layersLoaded = true');
         setLoadingStages(prev => ({ ...prev, layersLoaded: true }));
       }
     }
@@ -251,6 +266,7 @@ export const MapApp: React.FC = memo(() => {
       const currentFeatureLayers = mapView.map.allLayers
         .filter(layer => layer.type === 'feature')
         .toArray() as __esri.FeatureLayer[];
+      console.log('[MapApp] Setting analysisToolsReady = true, feature layers:', currentFeatureLayers.length);
       setFeatureLayers(currentFeatureLayers);
       setLoadingStages(prev => ({ ...prev, analysisToolsReady: true }));
     }
@@ -259,7 +275,9 @@ export const MapApp: React.FC = memo(() => {
   // Mark widgets as ready when they're rendered
   useEffect(() => {
     if (mapView && mounted) {
+      console.log('[MapApp] Setting widgetsReady = true in 1000ms');
       setTimeout(() => {
+        console.log('[MapApp] Timeout complete, setting widgetsReady = true');
         setLoadingStages(prev => ({ ...prev, widgetsReady: true }));
       }, 1000);
     }
