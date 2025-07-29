@@ -2186,6 +2186,71 @@ const EnhancedGeospatialChat = memo(({
     }
   };
 
+  // Generate contextual placeholder text based on current analysis state
+  const getContextualPlaceholder = (): string => {
+    // If there are existing results, suggest follow-up questions
+    if (features.length > 0 || lastAnalysisEndpoint) {
+      const placeholders = [
+        "Ask a question about this analysis...",
+        "What would you like to know about these results?",
+        "Ask for more details or insights...",
+        "How can I help explain this data?",
+        "What specific aspect interests you?"
+      ];
+      return placeholders[Math.floor(Math.random() * placeholders.length)];
+    }
+    
+    // No analysis yet, suggest starting one
+    const startingPlaceholders = [
+      "Ask about Nike's market opportunities...",
+      "Try: 'Show me strategic markets for Nike expansion'",
+      "Ask: 'Compare Nike vs Adidas performance'",
+      "Try: 'Which areas have ideal customer demographics?'",
+      "Ask about brand positioning or market analysis..."
+    ];
+    return startingPlaceholders[Math.floor(Math.random() * startingPlaceholders.length)];
+  };
+
+  // Generate smart suggestions based on current analysis context
+  const getSmartSuggestions = (): string[] => {
+    if (!lastAnalysisEndpoint) return [];
+
+    const suggestions: Record<string, string[]> = {
+      'strategic-analysis': [
+        "Why is this area ranked #1?",
+        "What makes these markets strategic?",
+        "Which factors drive the high scores?",
+        "How reliable is this ranking?"
+      ],
+      'competitive-analysis': [
+        "Where does Nike have the biggest advantage?",
+        "Why does Adidas perform better here?",
+        "What's driving the brand differences?",
+        "Which markets are most competitive?"
+      ],
+      'demographic-insights': [
+        "What demographics drive this pattern?",
+        "Why do these areas score high?",
+        "Which age groups are most important?",
+        "How does income affect these results?"
+      ],
+      'comparative-analysis': [
+        "What explains the performance difference?",
+        "Which area has better demographics?",
+        "Why does one outperform the other?",
+        "What should we focus on?"
+      ]
+    };
+
+    const endpointKey = lastAnalysisEndpoint.replace('/', '');
+    return suggestions[endpointKey] || [
+      "What does this data tell us?",
+      "Why do we see this pattern?",
+      "What should we focus on?",
+      "How can we use these insights?"
+    ];
+  };
+
   const handleSubmit = async (query: string, source: 'main' | 'reply' = 'main') => {
     console.log('🚨 [FUNCTION CALL] handleSubmit called with query:', query);
     console.log('🚨 [FUNCTION CALL] source:', source);
@@ -3487,6 +3552,33 @@ const EnhancedGeospatialChat = memo(({
   };
 
   const [inputMode, setInputMode] = useState<'analysis' | 'chat'>('analysis');
+  const [showChatNudge, setShowChatNudge] = useState(false);
+  
+  // Show gentle nudge to try chat mode after successful analysis
+  useEffect(() => {
+    if (features.length > 0 && lastAnalysisEndpoint && inputMode === 'analysis' && !isProcessing) {
+      // Show nudge after 3 seconds, hide after 10 seconds
+      const showTimer = setTimeout(() => {
+        setShowChatNudge(true);
+      }, 3000);
+      
+      const hideTimer = setTimeout(() => {
+        setShowChatNudge(false);
+      }, 13000);
+      
+      return () => {
+        clearTimeout(showTimer);
+        clearTimeout(hideTimer);
+      };
+    }
+  }, [features.length, lastAnalysisEndpoint, isProcessing]);
+  
+  // Hide nudge when user switches to chat mode
+  useEffect(() => {
+    if (inputMode === 'chat') {
+      setShowChatNudge(false);
+    }
+  }, [inputMode]);
 
   // Reset manual override whenever the user enters a completely new query
   const lastQueryRef = useRef<string>('');
@@ -3551,22 +3643,76 @@ const EnhancedGeospatialChat = memo(({
     <div className="flex-shrink-0 max-h-[50vh] overflow-y-auto">
       <div className="px-4 py-2 bg-white border-t border-gray-200">
 
+        {/* Chat Nudge Notification */}
+        {showChatNudge && inputMode === 'analysis' && (
+          <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg animate-fade-in">
+            <div className="flex items-start gap-2">
+              <Brain className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+              <div className="flex-1 text-sm">
+                <div className="font-medium text-blue-800">💬 Ask questions about your results!</div>
+                <div className="text-blue-600 text-xs mt-1">
+                  Switch to "Ask Questions" mode to explore why certain areas scored high, what drives the patterns, and get deeper insights.
+                </div>
+                <button
+                  onClick={() => setInputMode('chat')}
+                  className="mt-2 text-xs px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                >
+                  Try it now →
+                </button>
+              </div>
+              <button
+                onClick={() => setShowChatNudge(false)}
+                className="text-blue-400 hover:text-blue-600 text-sm flex-shrink-0"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Mode Toggle */}
-        <div className="mb-2 flex gap-2 text-sm">
-          <button
-            type="button"
-            onClick={() => setInputMode('analysis')}
-            className={`px-3 py-1 rounded-md border ${inputMode === 'analysis' ? 'bg-[#33a852] text-white' : 'bg-gray-100'}`}
-          >
-            Analysis
-          </button>
-          <button
-            type="button"
-            onClick={() => setInputMode('chat')}
-            className={`px-3 py-1 rounded-md border ${inputMode === 'chat' ? 'bg-[#33a852] text-white' : 'bg-gray-100'}`}
-          >
-            Chat
-          </button>
+        <div className="mb-3 space-y-2">
+          {/* Mode Toggle */}
+          <div className="flex gap-2 text-sm">
+            <button
+              type="button"
+              onClick={() => setInputMode('analysis')}
+              className={`flex-1 px-3 py-2 rounded-md border transition-all ${
+                inputMode === 'analysis' 
+                  ? 'bg-[#33a852] text-white border-[#33a852] shadow-sm' 
+                  : 'bg-gray-50 hover:bg-gray-100 border-gray-200'
+              }`}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <BarChart className="w-4 h-4" />
+                <span className="font-medium">New Analysis</span>
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setInputMode('chat')}
+              className={`flex-1 px-3 py-2 rounded-md border transition-all ${
+                inputMode === 'chat' 
+                  ? 'bg-blue-600 text-white border-blue-600 shadow-sm' 
+                  : 'bg-gray-50 hover:bg-gray-100 border-gray-200'
+              }`}
+              disabled={!features.length && !lastAnalysisEndpoint}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Brain className="w-4 h-4" />
+                <span className="font-medium">Ask Questions</span>
+              </div>
+            </button>
+          </div>
+          
+          {/* Mode Description */}
+          <div className="text-xs text-gray-600 px-1">
+            {inputMode === 'analysis' ? (
+              <span>🎯 <strong>Create new visualization:</strong> "Show me strategic markets for Nike" or "Compare Nike vs Adidas"</span>
+            ) : (
+              <span>💬 <strong>Ask about current results:</strong> "Why is this area ranked so high?" or "What does this score mean?"</span>
+            )}
+          </div>
         </div>
 
         {inputMode === 'analysis' && (
@@ -3976,7 +4122,32 @@ const EnhancedGeospatialChat = memo(({
         )}
 
         {inputMode === 'chat' && (
-          <ChatBar onSend={(query) => handleSubmit(query, 'main')} />
+          <div className="space-y-3">
+            {/* Smart Suggestions */}
+            {(features.length > 0 || lastAnalysisEndpoint) && (
+              <div className="space-y-2">
+                <div className="text-xs font-medium text-gray-700">💡 Try asking:</div>
+                <div className="flex flex-wrap gap-1">
+                  {getSmartSuggestions().map((suggestion, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleSubmit(suggestion, 'reply')}
+                      className="text-xs px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded border border-blue-200 transition-colors"
+                      disabled={isProcessing}
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            <ChatBar 
+              onSend={(query) => handleSubmit(query, 'reply')} 
+              placeholder={getContextualPlaceholder()}
+              disabled={isProcessing}
+            />
+          </div>
         )}
       </div>
     </div>
@@ -4000,6 +4171,22 @@ const EnhancedGeospatialChat = memo(({
       
       ::-webkit-scrollbar-track {
         background-color: rgba(0,0,0,0.05) !important;
+      }
+      
+      /* Chat nudge animation */
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       
       .overflow-y-auto {
