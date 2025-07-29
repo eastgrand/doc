@@ -14,7 +14,7 @@ import { detectThresholdQuery, detectSegmentQuery, detectComparativeQuery } from
 import { getPersona, defaultPersona } from '../prompts';
 import { unionByGeoId } from '../../../../types/union-layer';
 import { multiEndpointFormatting, strategicSynthesis } from '../shared/base-prompt';
-import { CityAnalysisUtils } from '../../../../lib/analysis/CityAnalysisUtils';
+import { GeoAwarenessEngine } from '../../../../lib/geo/GeoAwarenessEngine';
 
 // --- Dynamic Field Alias Overrides ---
 // Will be populated per request based on metadata.fieldAliases sent from the frontend
@@ -1090,14 +1090,17 @@ export async function POST(req: NextRequest) {
         console.log('🚨 [CLAUDE API] Query/message:', currentQuery);
         console.log('🚨 [CLAUDE API] FeatureData type:', typeof featureData, Array.isArray(featureData) ? 'array' : 'object');
         
-        // 🌟 NEW: City Analysis Detection
-        const detectedCities = CityAnalysisUtils.detectCitiesInQuery(currentQuery);
-        const isCityQuery = detectedCities.length > 0;
-        const isCityComparison = CityAnalysisUtils.isComparisonQuery(currentQuery) && detectedCities.length >= 2;
+        // 🌟 NEW: Geographic Analysis Detection using new Geo-Awareness System
+        const geoEngine = GeoAwarenessEngine.getInstance();
+        const geoResult = await geoEngine.processGeoQuery(currentQuery, []);
+        const detectedCities = geoResult.matchedEntities.map(e => e.name);
+        const isCityQuery = geoResult.matchedEntities.length > 0;
+        const isCityComparison = geoResult.matchedEntities.length >= 2 && currentQuery.toLowerCase().includes('vs');
         
         if (isCityQuery) {
-          console.log('🏙️ [CITY ANALYSIS] Detected city query:', {
-            cities: detectedCities,
+          console.log('🏙️ [GEO ANALYSIS] Detected geographic query:', {
+            entities: geoResult.matchedEntities.map(e => ({ name: e.name, type: e.type })),
+            filterMethod: geoResult.filterStats.filterMethod,
             isComparison: isCityComparison,
             query: currentQuery
           });

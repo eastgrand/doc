@@ -1,6 +1,7 @@
 import { RawAnalysisResult, ProcessedAnalysisData, DataProcessorStrategy } from './types';
 import { ConfigurationManager } from './ConfigurationManager';
 import { CityAnalysisUtils, CityAnalysisResult } from './CityAnalysisUtils';
+import { GeoAwarenessEngine } from '../geo/GeoAwarenessEngine';
 
 // Import specialized processors
 import { CoreAnalysisProcessor } from './strategies/processors/CoreAnalysisProcessor';
@@ -42,17 +43,87 @@ export class DataProcessor {
   }
 
   /**
-   * Process raw results with city analysis support
+   * Process raw results with geographic analysis support
    */
-  processResultsWithCityAnalysis(rawResults: RawAnalysisResult, endpoint: string, query: string = ''): ProcessedAnalysisData & { cityAnalysis?: CityAnalysisResult } {
+  async processResultsWithGeographicAnalysis(rawResults: RawAnalysisResult, endpoint: string, query: string = ''): Promise<ProcessedAnalysisData & { geoAnalysis?: any }> {
     const processedData = this.processResults(rawResults, endpoint);
     
-    // Perform city analysis if query contains city references
+    // Perform geographic analysis if query contains geographic references
+    if (query && query.trim().length > 2) {
+      try {
+        const geoEngine = GeoAwarenessEngine.getInstance();
+        const geoResult = await geoEngine.processGeoQuery(query, processedData.records, endpoint);
+        
+        if (geoResult.matchedEntities.length > 0) {
+          console.log(`[DataProcessor] Geographic analysis detected:`, {
+            entities: geoResult.matchedEntities.map(e => ({ name: e.name, type: e.type })),
+            originalRecords: geoResult.filterStats.totalRecords,
+            filteredRecords: geoResult.filteredRecords.length,
+            method: geoResult.filterStats.filterMethod,
+            processingTime: `${geoResult.filterStats.processingTimeMs}ms`
+          });
+          
+          // Update processed data with geo-filtered results if applicable
+          if (geoResult.filteredRecords.length > 0 && geoResult.filteredRecords.length < processedData.records.length) {
+            processedData.records = geoResult.filteredRecords;
+            console.log(`[DataProcessor] ✅ Filtered data to ${geoResult.filteredRecords.length} geographically relevant records`);
+          }
+          
+          return { 
+            ...processedData, 
+            geoAnalysis: {
+              entities: geoResult.matchedEntities,
+              filterStats: geoResult.filterStats,
+              warnings: geoResult.warnings,
+              fallbackUsed: geoResult.fallbackUsed
+            }
+          };
+        }
+      } catch (error) {
+        console.warn('[DataProcessor] Geographic analysis failed, falling back to legacy city analysis:', error);
+        
+        // Fallback to legacy city analysis
+        const cityAnalysis = CityAnalysisUtils.analyzeQuery(query, processedData.records, processedData.targetVariable);
+        
+        if (cityAnalysis.isCityQuery) {
+          console.log(`[DataProcessor] Legacy city analysis fallback:`, {
+            cities: cityAnalysis.detectedCities,
+            isComparison: cityAnalysis.isComparison,
+            filteredRecords: cityAnalysis.filteredData.length
+          });
+          
+          if (cityAnalysis.filteredData.length > 0 && cityAnalysis.filteredData.length < processedData.records.length) {
+            processedData.records = cityAnalysis.filteredData;
+            console.log(`[DataProcessor] 🔄 Fallback: Filtered data to ${cityAnalysis.filteredData.length} city-specific records`);
+          }
+          
+          return { 
+            ...processedData, 
+            geoAnalysis: {
+              legacyFallback: true,
+              cityAnalysis
+            }
+          };
+        }
+      }
+    }
+    
+    return processedData;
+  }
+
+  /**
+   * Process raw results with city analysis support (legacy method for backward compatibility)
+   */
+  processResultsWithCityAnalysis(rawResults: RawAnalysisResult, endpoint: string, query: string = ''): ProcessedAnalysisData & { cityAnalysis?: CityAnalysisResult } {
+    // This method is kept for backward compatibility, but now calls the new geographic analysis
+    // We can't make it async without breaking existing code, so we handle it synchronously
+    const processedData = this.processResults(rawResults, endpoint);
+    
     if (query) {
       const cityAnalysis = CityAnalysisUtils.analyzeQuery(query, processedData.records, processedData.targetVariable);
       
       if (cityAnalysis.isCityQuery) {
-        console.log(`[DataProcessor] City analysis detected:`, {
+        console.log(`[DataProcessor] Legacy city analysis (consider upgrading to processResultsWithGeographicAnalysis):`, {
           cities: cityAnalysis.detectedCities,
           isComparison: cityAnalysis.isComparison,
           filteredRecords: cityAnalysis.filteredData.length
