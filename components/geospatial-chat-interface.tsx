@@ -3742,24 +3742,24 @@ const EnhancedGeospatialChat = memo(({
 
         {/* Chat Nudge Notification */}
         {showChatNudge && inputMode === 'analysis' && (
-          <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg animate-fade-in">
+          <div className="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg animate-fade-in">
             <div className="flex items-start gap-2">
-              <Brain className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+              <Brain className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
               <div className="flex-1 text-sm">
-                <div className="font-medium text-blue-800">💬 Ask questions about your results!</div>
-                <div className="text-blue-600 text-xs mt-1">
+                <div className="font-medium text-green-800">💬 Ask questions about your results!</div>
+                <div className="text-green-600 text-xs mt-1">
                   Switch to "Ask Questions" mode to explore why certain areas scored high, what drives the patterns, and get deeper insights.
                 </div>
                 <button
                   onClick={() => setInputMode('chat')}
-                  className="mt-2 text-xs px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                  className="mt-2 text-xs px-2 py-1 bg-[#33a852] text-white rounded hover:bg-[#2d9748] transition-colors"
                 >
                   Try it now →
                 </button>
               </div>
               <button
                 onClick={() => setShowChatNudge(false)}
-                className="text-blue-400 hover:text-blue-600 text-sm flex-shrink-0"
+                className="text-green-400 hover:text-green-600 text-sm flex-shrink-0"
               >
                 ×
               </button>
@@ -3782,7 +3782,7 @@ const EnhancedGeospatialChat = memo(({
             >
               <div className="flex items-center justify-center gap-2">
                 <BarChart className="w-4 h-4" />
-                <span className="font-medium">New Analysis</span>
+                <span className="font-medium text-xs">New Analysis</span>
               </div>
             </button>
             <button
@@ -3790,24 +3790,24 @@ const EnhancedGeospatialChat = memo(({
               onClick={() => setInputMode('chat')}
               className={`flex-1 px-3 py-2 rounded-md border transition-all ${
                 inputMode === 'chat' 
-                  ? 'bg-blue-600 text-white border-blue-600 shadow-sm' 
+                  ? 'bg-[#33a852] text-white border-[#33a852] shadow-sm' 
                   : 'bg-gray-50 hover:bg-gray-100 border-gray-200'
               }`}
               disabled={!features.length && !lastAnalysisEndpoint}
             >
               <div className="flex items-center justify-center gap-2">
                 <Brain className="w-4 h-4" />
-                <span className="font-medium">Ask Questions</span>
+                <span className="font-medium text-xs">Ask Questions</span>
               </div>
             </button>
           </div>
           
           {/* Mode Description */}
-          <div className="text-xs text-gray-600 px-1">
+          <div className="text-[10px] text-gray-600 px-1">
             {inputMode === 'analysis' ? (
-              <span>🎯 <strong>Create new visualization:</strong> "Show me strategic markets for Nike" or "Compare Nike vs Adidas"</span>
+              <span>🎯 Create visualization: "Compare Nike vs Adidas"</span>
             ) : (
-              <span>💬 <strong>Ask about current results:</strong> "Why is this area ranked so high?" or "What does this score mean?"</span>
+              <span>💬 Ask about results: "What does this score mean?"</span>
             )}
           </div>
         </div>
@@ -4225,11 +4225,11 @@ const EnhancedGeospatialChat = memo(({
               <div className="space-y-2">
                 <div className="text-xs font-medium text-gray-700">💡 Try asking:</div>
                 <div className="flex flex-wrap gap-1">
-                  {getSmartSuggestions().map((suggestion, index) => (
+                  {getSmartSuggestions().slice(0, 2).map((suggestion, index) => (
                     <button
                       key={index}
                       onClick={() => handleSubmit(suggestion, 'reply')}
-                      className="text-xs px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded border border-blue-200 transition-colors"
+                      className="text-xs px-2 py-1 bg-green-50 hover:bg-green-100 text-green-700 rounded border border-green-200 transition-colors"
                       disabled={isProcessing}
                     >
                       {suggestion}
