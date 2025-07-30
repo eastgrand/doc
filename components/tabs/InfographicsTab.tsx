@@ -960,7 +960,7 @@ export default function InfographicsTab({
             geometry: geometry,
             attributes: {
               Name: "Location",
-              TravelTime: timeInMinutes
+              [bufferType === "drivetime" ? "TravelTime" : "WalkTime"]: timeInMinutes
             }
           }]
         }),
@@ -972,13 +972,13 @@ export default function InfographicsTab({
         travelMode: {
           attributeParameterValues: [],
           description: "Results are calculated using the street network",
-          impedanceAttributeName: "TravelTime",
-          name: bufferType === "drivetime" ? "Driving Time" : "Walking Time",
+          impedanceAttributeName: bufferType === "drivetime" ? "TravelTime" : "WalkTime",
+          name: bufferType === "drivetime" ? "Driving Time" : "Walking Distance",
           type: bufferType === "drivetime" ? "automobile" : "walk",
-          useHierarchy: true,
+          useHierarchy: bufferType === "drivetime",
           restrictionAttributeNames: [],
           simplificationTolerance: 2,
-          timeAttributeName: "TravelTime"
+          timeAttributeName: bufferType === "drivetime" ? "TravelTime" : "WalkTime"
         }
       });
 
@@ -1002,29 +1002,7 @@ export default function InfographicsTab({
       }
     } catch (error) {
       console.error('Error creating service area:', error);
-      
-      // Fallback to estimated radius calculation
-      let timeInMinutes = parseFloat(bufferValue);
-      if (bufferUnit === 'miles' || bufferUnit === 'kilometers') {
-        const speedInKmh = bufferType === 'drivetime' ? 50 : 5;
-        const distanceInKm = bufferUnit === 'miles' 
-          ? parseFloat(bufferValue) * 1.60934 
-          : parseFloat(bufferValue);
-        timeInMinutes = (distanceInKm / speedInKmh) * 60;
-      }
-
-      const estimatedRadius = bufferType === 'drivetime' 
-        ? timeInMinutes * 800  // ~48 km/h
-        : timeInMinutes * 80;  // ~4.8 km/h
-
-      const bufferGeometry = new Circle({
-        center: geometry as __esri.Point,
-        radius: estimatedRadius,
-        radiusUnit: "meters",
-        spatialReference: view.spatialReference
-      });
-
-      createAndAddBuffer(bufferGeometry, color);
+      throw error; // Re-throw the error to be handled by the UI
     }
   }, [geometry, bufferType, bufferValue, bufferUnit, view, createAndAddBuffer]);
 
