@@ -5,7 +5,7 @@
  * meaningful clustering inputs for campaign territory planning.
  */
 
-import { ClusteringFeature, ClusteringMethod, ClusteringError, CLUSTERING_ERROR_CODES } from '../types';
+import { ClusteringFeature, ClusteringError, CLUSTERING_ERROR_CODES } from '../types';
 
 export interface AnalysisData {
   type: string;
@@ -19,12 +19,36 @@ export interface AnalysisData {
 }
 
 /**
- * Main feature extraction function
+ * Auto-detect clustering method based on analysis endpoint and type
+ */
+function detectClusteringMethod(analysisType: string, endpoint?: string): 'strategic-scores' | 'competitive-scores' | 'demographic-scores' | 'analysis-geographic' {
+  // Check endpoint first (most reliable indicator)
+  if (endpoint) {
+    if (endpoint.includes('strategic')) return 'strategic-scores';
+    if (endpoint.includes('competitive')) return 'competitive-scores';
+    if (endpoint.includes('demographic')) return 'demographic-scores';
+  }
+  
+  // Fall back to analysis type
+  if (analysisType) {
+    if (analysisType.includes('strategic')) return 'strategic-scores';
+    if (analysisType.includes('competitive')) return 'competitive-scores';
+    if (analysisType.includes('demographic')) return 'demographic-scores';
+  }
+  
+  // Default to combined analysis + geographic for best results
+  return 'analysis-geographic';
+}
+
+/**
+ * Auto-detect clustering method from analysis endpoint and extract features
  */
 export function extractClusteringFeatures(
   analysisData: AnalysisData,
-  method: ClusteringMethod
+  endpoint?: string
 ): ClusteringFeature[] {
+  // Auto-detect clustering method from endpoint or analysis type
+  const method = detectClusteringMethod(analysisData.type, endpoint);
   try {
     if (!analysisData.features || analysisData.features.length === 0) {
       throw new ClusteringError(

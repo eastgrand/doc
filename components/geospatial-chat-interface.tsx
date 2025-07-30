@@ -28,6 +28,7 @@ import {
   X,
   Brain,
   UserCog,
+  Target,
 } from 'lucide-react';
 import { useChatContext } from './chat-context-provider';
 import { 
@@ -59,6 +60,10 @@ import { suggestAnalysisEndpoint } from '@/utils/endpoint-suggestion';
 
 // Score Terminology System
 import { generateScoreDescription, validateScoreTerminology, validateScoreExplanationPlacement, getScoreConfigForEndpoint } from '@/lib/analysis/utils/ScoreTerminology';
+
+// Clustering Components
+import { ClusterConfigPanel } from '@/components/clustering/ClusterConfigPanel';
+import { ClusterConfig, DEFAULT_CLUSTER_CONFIG } from '@/lib/clustering/types';
 
 // Brand icons (Simple Icons)
 import {
@@ -171,6 +176,14 @@ const createAnalysisSummary = (
   targetOptions: Array<{label: string, value: string}>,
   currentTargetValue: string
 ): string => {
+  // CRITICAL: Use existing summary if it exists (e.g., from clustering)
+  if (analysisResult.data?.summary && analysisResult.data.summary.trim().length > 0) {
+    console.log('🎯 [createAnalysisSummary] Using existing summary from analysisResult.data.summary');
+    console.log('🎯 [createAnalysisSummary] Summary preview:', analysisResult.data.summary.substring(0, 200) + '...');
+    return `## Analysis Complete: ${query}\n\n${analysisResult.data.summary}`;
+  }
+  
+  console.log('🎯 [createAnalysisSummary] No existing summary found, generating default template');
   const endpoint = analysisResult.endpoint;
   const dataPoints = analysisResult.data?.records?.length || 0;
   const targetField = targetOptions.find((opt: any) => opt.value === currentTargetValue)?.label || 'Performance';
@@ -354,9 +367,10 @@ const EnhancedGeospatialChat = memo(({
   const [lastAnalysisEndpoint, setLastAnalysisEndpoint] = useState<string | null>(null);
   
   // AnalysisEngine Integration - Replace the chaotic multi-manager system
+  const analysisEngine = useAnalysisEngine();
   const { 
     executeAnalysis, 
-    clearAnalysis  } = useAnalysisEngine();
+    clearAnalysis  } = analysisEngine;
 
   // Sample size for analysis (restored to avoid breaking changes)
   const [sampleSizeValue, setSampleSizeValue] = useState<number>(5000);
@@ -1308,6 +1322,14 @@ const EnhancedGeospatialChat = memo(({
       }
 
       // Check if records have geometry
+      console.log('[applyAnalysisEngineVisualization] First record inspection:', {
+        hasRecord: !!data.records[0],
+        recordKeys: data.records[0] ? Object.keys(data.records[0]) : [],
+        hasGeometry: data.records[0] ? !!(data.records[0] as any).geometry : false,
+        geometryValue: data.records[0] ? (data.records[0] as any).geometry : null,
+        isCluster: data.records[0] ? (data.records[0] as any).properties?.is_cluster : false
+      });
+      
       const recordsWithGeometry = (data.records as any[]).filter((record: any) => record.geometry && record.geometry.coordinates);
       console.log('[applyAnalysisEngineVisualization] Geometry check:', {
         totalRecords: data.records.length,
@@ -1317,7 +1339,8 @@ const EnhancedGeospatialChat = memo(({
           type: recordsWithGeometry[0].geometry.type,
           hasCoordinates: !!recordsWithGeometry[0].geometry.coordinates,
           coordinatesLength: recordsWithGeometry[0].geometry.coordinates?.length
-        } : 'No geometry found'
+        } : 'No geometry found',
+        isClustered: data.isClustered
       });
 
       if (recordsWithGeometry.length === 0) {
@@ -1392,14 +1415,29 @@ const EnhancedGeospatialChat = memo(({
         note: 'This only affects ArcGIS Graphics - original data preserved for analysis'
       });
 
+      // FINAL GEOMETRY CHECK BEFORE ARCGIS FEATURE CREATION
+      console.log('[AnalysisEngine] 🔍 PRE-ARCGIS GEOMETRY CHECK:');
+      recordsToProcess.forEach((record: any, index: number) => {
+        console.log(`[AnalysisEngine] 🔍 Record ${index + 1} (${record.area_name}) final geometry:`, {
+          hasGeometry: !!record.geometry,
+          geometryType: record.geometry?.type,
+          hasCoordinates: !!record.geometry?.coordinates,
+          geometryValid: !!(record.geometry && record.geometry.coordinates),
+          isCluster: record.properties?.is_cluster,
+          geometryJSON: record.geometry ? JSON.stringify(record.geometry) : 'NO GEOMETRY'
+        });
+      });
+      
       // Convert AnalysisEngine data to ArcGIS features - IMPROVED with debugging
       const arcgisFeatures = recordsToProcess.map((record: any, index: number) => {
         // Only create features with valid geometry
         if (!record.geometry || !record.geometry.coordinates) {
-          console.warn(`[AnalysisEngine] Skipping record ${index} - no valid geometry:`, {
+          console.warn(`[AnalysisEngine] ❌ Skipping record ${index} - no valid geometry:`, {
             area_name: record.area_name,
             hasGeometry: !!record.geometry,
-            geometryType: record.geometry?.type
+            geometryType: record.geometry?.type,
+            isCluster: record.properties?.is_cluster,
+            reason: !record.geometry ? 'NO_GEOMETRY_OBJECT' : 'NO_COORDINATES_ARRAY'
           });
           return null;
         }
@@ -1412,7 +1450,16 @@ const EnhancedGeospatialChat = memo(({
             // Check if visualization renderer wants to use centroids
             const useCentroids = visualization.renderer?._useCentroids;
             
-            console.log(`[AnalysisEngine] Polygon geometry check:`, {
+            console.log(`[AnalysisEngine] 🟦 POLYGON CONVERSION for ${record.area_name}:`, {
+              isCluster: record.properties?.is_cluster,
+              useCentroids,
+              hasCoordinates: !!record.geometry.coordinates,
+              coordinatesLength: record.geometry.coordinates?.length,
+              firstRingLength: record.geometry.coordinates?.[0]?.length,
+              polygonGeometry: record.geometry
+            });
+            
+            console.log(`[AnalysisEngine] Original polygon geometry check:`, {
               area: record.area_name,
               hasRenderer: !!visualization.renderer,
               rendererType: visualization.renderer?.type,
@@ -1470,12 +1517,28 @@ const EnhancedGeospatialChat = memo(({
                 
               }
             } else {
+              console.log(`[AnalysisEngine] 🟦 Creating POLYGON geometry for ${record.area_name}:`, {
+                hasCoordinates: !!record.geometry.coordinates,
+                coordinatesLength: record.geometry.coordinates?.length,
+                firstRingLength: record.geometry.coordinates?.[0]?.length,
+                isCluster: record.properties?.is_cluster,
+                originalGeometry: record.geometry
+              });
+              
               // GeoJSON Polygon to ArcGIS Polygon for other visualizations
               arcgisGeometry = {
                 type: 'polygon',
                 rings: record.geometry.coordinates,
                 spatialReference: { wkid: 4326 }
               };
+              
+              console.log(`[AnalysisEngine] ✅ POLYGON ArcGIS geometry created for ${record.area_name}:`, {
+                geometryType: arcgisGeometry.type,
+                hasRings: !!arcgisGeometry.rings,
+                ringsCount: arcgisGeometry.rings?.length,
+                firstRingPoints: arcgisGeometry.rings?.[0]?.length,
+                isCluster: record.properties?.is_cluster
+              });
             }
           } else if (record.geometry.type === 'Point') {
             // GeoJSON Point to ArcGIS Point
@@ -1550,10 +1613,21 @@ const EnhancedGeospatialChat = memo(({
           }
         });
 
-        return new Graphic({
+        const graphic = new Graphic({
           geometry: arcgisGeometry,
           attributes: essentialAttributes
         });
+        
+        console.log(`[AnalysisEngine] ✅ ArcGIS Graphic created for ${record.area_name}:`, {
+          hasGraphic: !!graphic,
+          hasGeometry: !!graphic.geometry,
+          geometryType: graphic.geometry?.type,
+          hasAttributes: !!graphic.attributes,
+          isCluster: record.properties?.is_cluster,
+          areaName: graphic.attributes?.area_name
+        });
+        
+        return graphic;
       }).filter(feature => feature !== null); // Remove null features
 
       console.log('[AnalysisEngine] Created features:', {
@@ -1638,7 +1712,16 @@ const EnhancedGeospatialChat = memo(({
           objectIdField: 'OBJECTID',
           geometryType: actualGeometryType, // Use actual geometry type
           spatialReference: { wkid: 4326 }, // Explicitly set WGS84 geographic coordinate system
-          renderer: data.renderer || visualization.renderer, // Use direct processor renderer if available, otherwise fallback to complex chain
+          renderer: (() => {
+            console.log('[FeatureLayer] 🎯 Renderer selection:', {
+              hasDataRenderer: !!data.renderer,
+              hasVisualizationRenderer: !!visualization.renderer,
+              dataIsClustered: data.isClustered,
+              visualizationType: visualization.type,
+              rendererType: visualization.renderer?.type
+            });
+            return data.renderer || visualization.renderer;
+          })(), // Use direct processor renderer if available, otherwise fallback to complex chain
           popupTemplate: visualization.popupTemplate,
           title: `AnalysisEngine - ${data.targetVariable || 'Analysis'}`,
           visible: true,
@@ -2146,22 +2229,15 @@ const EnhancedGeospatialChat = memo(({
       // If renderer is broken, let's try a simple approach
       if (!visualization.renderer || visualization.renderer.type === 'simple') {
         console.log('[AnalysisEngine] 🚨 RENDERER IS BROKEN - APPLYING SIMPLE FIX');
+        console.log('[AnalysisEngine] 🔥 STRATEGIC VIZ DEBUG - Using dynamic targetVariable:', data.targetVariable);
         try {
           const { createQuartileRenderer } = await import('@/utils/createQuartileRenderer');
           
-          // Determine which field to use based on analysis type
-          let rendererField = 'value'; // fallback
-          if (data.type === 'strategic_analysis') {
-            rendererField = 'strategic_value_score';
-          } else if (data.type === 'competitive_analysis') {
-            rendererField = 'competitive_advantage_score';
-          }
-          
-          console.log(`[AnalysisEngine] 🎯 Trying to render with field: ${rendererField}`);
+          console.log(`[AnalysisEngine] 🎯 Trying to render with field: ${data.targetVariable}`);
           
           const rendererResult = await createQuartileRenderer({
             layer: featureLayer,
-            field: rendererField,
+            field: data.targetVariable,
             opacity: 0.6
           });
           
@@ -2500,17 +2576,48 @@ const EnhancedGeospatialChat = memo(({
       // --- ENHANCED: AnalysisEngine Integration ---
       console.log('[AnalysisEngine] Executing analysis with enhanced engine');
       
+      // Debug clustering configuration
+      console.log('🚨🚨🚨 [CLUSTER STATE DEBUG] Cluster config state:', {
+        enabled: clusterConfig.enabled,
+        numClusters: clusterConfig.numClusters,
+        minScorePercentile: clusterConfig.minScorePercentile,
+        methodAutoDetected: 'from-endpoint',
+        willPassToAnalysis: clusterConfig.enabled ? 'YES' : 'NO',
+        fullConfig: clusterConfig,
+        isDefaultConfig: clusterConfig.enabled === false,
+        userNeedsToEnableClustering: !clusterConfig.enabled
+      });
+
       const analysisOptions: AnalysisOptions = {
         sampleSize: sampleSizeValue || 5000,
         targetVariable: currentTarget,
         forceRefresh: false, // Use caching for better performance
         // Use selected endpoint if not 'auto'
-        endpoint: selectedEndpoint !== 'auto' ? selectedEndpoint : undefined
+        endpoint: selectedEndpoint !== 'auto' ? selectedEndpoint : undefined,
+        // Always pass clustering configuration
+        clusterConfig: clusterConfig
       };
 
       // Execute analysis using our new AnalysisEngine
+      console.log('🚨🚨🚨 [EXECUTION PATH] About to call executeAnalysis - this should appear!');
       console.log('🚨🚨🚨 [STRATEGIC DEBUG] Starting AnalysisEngine with options:', analysisOptions);
+      console.log('🎯 [CLUSTER DEBUG] Final clusterConfig in options:', {
+        ...analysisOptions.clusterConfig,
+        willApplyClustering: analysisOptions.clusterConfig?.enabled ? 'YES' : 'NO'
+      });
+      console.log('🎯 [CLUSTER DEBUG] ABOUT TO CALL executeAnalysis with query:', query);
+      
       const analysisResult: AnalysisResult = await executeAnalysis(query, analysisOptions);
+      
+      console.log('🎯 [CLUSTER DEBUG] AnalysisResult received:', {
+        success: analysisResult.success,
+        endpoint: analysisResult.endpoint,
+        dataType: analysisResult.data?.type,
+        recordCount: analysisResult.data?.records?.length,
+        isClustered: analysisResult.data?.isClustered,
+        hasVisualization: !!analysisResult.visualization,
+        visualizationType: analysisResult.visualization?.type
+      });
       
       // Check for cancellation after analysis
       if (cancelRequested) {
@@ -2670,7 +2777,14 @@ const EnhancedGeospatialChat = memo(({
       const targetVariable = analysisResult.data.targetVariable || 'analysis_score';
       console.log(`🎯 [JOIN] Target variable for this analysis: ${targetVariable}`);
       
-      const joinedResults = analysisResult.data.records.map((record: any, index: number) => {
+      // ALWAYS perform geographic join - clustered data also needs geometry!
+      console.log('[AnalysisEngine] 🎯 Performing geographic join for all data (including clustered)');
+      if (analysisResult.data.isClustered) {
+        console.log('[AnalysisEngine] 🎯 Clustered data detected - will join ZIP codes with their geometries');
+      }
+      
+      // Geographic join process for all data (clustered and non-clustered)
+      var joinedResults = analysisResult.data.records.map((record: any, index: number) => {
         // ENHANCED: Extract ZIP Code from AnalysisEngine record structure
         // Check multiple possible locations for the ID field
         const recordAreaId = (record as any).area_id;
@@ -2855,37 +2969,119 @@ const EnhancedGeospatialChat = memo(({
         }
       };
 
-      console.log('🚨 [FLOW CHECK] Enhanced analysis result created');
-      console.log('🚨 [FLOW CHECK] First record value after join:', enhancedAnalysisResult.data.records[0]?.value);
-      console.log('🚨 [FLOW CHECK] First record nike_market_share:', enhancedAnalysisResult.data.records[0]?.properties?.nike_market_share);
-      console.log('🚨 [FLOW CHECK] First record targetVariable:', enhancedAnalysisResult.data.records[0]?.properties?.[enhancedAnalysisResult.data.targetVariable]);
-      console.log('🚨 [FLOW CHECK] Data type:', enhancedAnalysisResult.data.type);
+      // 🎯 CLUSTERING: Apply clustering AFTER geometry join (when we have real ZIP code geometries)
+      let finalAnalysisResult = enhancedAnalysisResult;
+      
+      console.log('🚨🚨🚨 [EXECUTION TRACE] About to check clustering condition - THIS LINE SHOULD ALWAYS APPEAR');
+      console.log('🚨🚨🚨 [EXECUTION TRACE] Current analysisOptions.clusterConfig:', analysisOptions.clusterConfig);
+      
+      // Check if clustering is enabled in analysis options
+      console.log('🚨🚨🚨 [CLUSTERING DEBUG] Checking clustering condition:', {
+        hasClusterConfig: !!analysisOptions.clusterConfig,
+        clusterConfig: analysisOptions.clusterConfig,
+        isEnabled: analysisOptions.clusterConfig?.enabled,
+        conditionResult: analysisOptions.clusterConfig && analysisOptions.clusterConfig.enabled
+      });
+      
+      if (analysisOptions.clusterConfig && analysisOptions.clusterConfig.enabled) {
+        console.log('🎯 [CLUSTERING] Applying clustering AFTER geometry join with real ZIP code geometries');
+        console.log('🎯 [CLUSTERING] Config:', analysisOptions.clusterConfig);
+        console.log('🎯 [CLUSTERING] Records before clustering:', {
+          count: enhancedAnalysisResult.data.records.length,
+          hasGeometry: enhancedAnalysisResult.data.records.filter(r => r.geometry).length,
+          sampleGeometry: enhancedAnalysisResult.data.records[0]?.geometry?.type
+        });
+        
+        try {
+          // Get clustering service instance
+          const clusteringService = analysisEngine.engine.getClusteringService();
+          
+          // Set the config before applying clustering
+          clusteringService.setConfig(analysisOptions.clusterConfig);
+          console.log('🎯 [CLUSTERING] Config set on service:', clusteringService.getConfig());
+          
+          // Apply clustering to the geometry-enhanced analysis result
+          finalAnalysisResult = await clusteringService.applyClusteringToAnalysis(
+            enhancedAnalysisResult,
+            analysisOptions.clusterConfig
+          );
+          
+          console.log('🎯 [CLUSTERING] Clustering applied successfully:', {
+            originalRecords: enhancedAnalysisResult.data.records.length,
+            clusteredRecords: finalAnalysisResult.data.records.length,
+            isClustered: finalAnalysisResult.data.isClustered,
+            clusterCount: finalAnalysisResult.data.clusters?.length || 0
+          });
+          
+          // Regenerate visualization for clustered data
+          const clusterVisualization = analysisEngine.engine.modules.visualizationRenderer.createVisualization(
+            finalAnalysisResult.data, 
+            finalAnalysisResult.endpoint
+          );
+          
+          finalAnalysisResult = {
+            ...finalAnalysisResult,
+            visualization: clusterVisualization
+          };
+          
+          console.log('🎯 [CLUSTERING] New visualization created:', {
+            type: clusterVisualization?.type,
+            hasRenderer: !!clusterVisualization?.renderer,
+            rendererType: clusterVisualization?.renderer?.type,
+            isClusterRenderer: clusterVisualization?.type === 'cluster'
+          });
+          
+        } catch (error) {
+          console.error('🎯 [CLUSTERING] Clustering failed:', error);
+          // Continue with non-clustered result if clustering fails
+        }
+      } else {
+        console.log('🎯 [CLUSTERING] Skipping clustering - not enabled or configured');
+      }
+      console.log('🚨 [FLOW CHECK] First record targetVariable:', finalAnalysisResult.data.records[0]?.properties?.[finalAnalysisResult.data.targetVariable]);
+      console.log('🚨 [FLOW CHECK] Data type:', finalAnalysisResult.data.type);
 
       // --- ENHANCED: Use AnalysisEngine's advanced visualization system ---
       console.log('[AnalysisEngine] Applying advanced visualization system');
       console.log('[AnalysisEngine] Enhanced data check:', {
-        totalRecords: enhancedAnalysisResult.data.records.length,
-        recordsWithGeometry: enhancedAnalysisResult.data.records.filter((r: any) => r.geometry).length,
-        sampleRecordGeometry: enhancedAnalysisResult.data.records[0]?.geometry?.type,
-        sampleRecordId: enhancedAnalysisResult.data.records[0]?.area_id,
-        sampleRecordName: enhancedAnalysisResult.data.records[0]?.area_name
+        totalRecords: finalAnalysisResult.data.records.length,
+        recordsWithGeometry: finalAnalysisResult.data.records.filter((r: any) => r.geometry).length,
+        sampleRecordGeometry: finalAnalysisResult.data.records[0]?.geometry?.type,
+        sampleRecordId: finalAnalysisResult.data.records[0]?.area_id,
+        sampleRecordName: finalAnalysisResult.data.records[0]?.area_name,
+        isClustered: finalAnalysisResult.data.isClustered
       });
       
-      // CRITICAL FIX: Create optimized data copy ONLY for visualization
-      // Keep the original enhancedAnalysisResult.data intact for analysis and chat context
+      // Create visualization data from final analysis result (may be clustered)
       const visualizationData = {
-        ...enhancedAnalysisResult.data,
-        records: enhancedAnalysisResult.data.records // Reference the same records - optimization happens inside visualization function
+        ...finalAnalysisResult.data,
+        records: finalAnalysisResult.data.records
       };
       
       console.log('[AnalysisEngine] Data flow separation:', {
-        originalDataRecords: enhancedAnalysisResult.data.records.length,
+        originalDataRecords: finalAnalysisResult.data.records.length,
         visualizationDataRecords: visualizationData.records.length,
-        preservingFullDataForAnalysis: true
+        preservingFullDataForAnalysis: true,
+        isClustered: visualizationData.isClustered
       });
       
       // Apply visualization with separated data flow
-      const createdLayer = await applyAnalysisEngineVisualization(analysisResult.visualization, visualizationData, currentMapView);
+      // For clustered data, ensure clean layer state to avoid conflicts
+      if (finalAnalysisResult.data.isClustered && currentMapView) {
+        console.log('🎯 [CLUSTERING] Clearing existing layers before creating cluster visualization');
+        
+        // Remove any existing analysis layers to prevent conflicts
+        const existingLayers = currentMapView.map.layers.toArray().filter(layer => 
+          layer.id && (layer.id.includes('analysis') || layer.id.includes('layer'))
+        );
+        
+        existingLayers.forEach(layer => {
+          console.log('🎯 [CLUSTERING] Removing existing layer:', layer.id);
+          currentMapView.map.remove(layer);
+        });
+      }
+      
+      const createdLayer = await applyAnalysisEngineVisualization(finalAnalysisResult.visualization, visualizationData, currentMapView);
       
       // Pass the created layer to the callback
       if (createdLayer) {
@@ -2893,17 +3089,17 @@ const EnhancedGeospatialChat = memo(({
         onVisualizationLayerCreated(createdLayer, true);
         
         // CRITICAL FIX: Update features state with processed competitive scores
-        if (enhancedAnalysisResult.data.type === 'competitive_analysis') {
+        if (finalAnalysisResult.data.type === 'competitive_analysis') {
           console.log('🔄 [FEATURES SYNC] Updating features state with competitive scores...');
           
           // Create features with competitive advantage scores instead of raw market share
-          const competitiveFeatures = enhancedAnalysisResult.data.records.map((record: any) => ({
+          const competitiveFeatures = finalAnalysisResult.data.records.map((record: any) => ({
             type: 'Feature',
             geometry: record.geometry,
             properties: {
               ...record.properties,
               // Ensure competitive scores are used, not market share
-              [enhancedAnalysisResult.data.targetVariable]: record.value, // Use the competitive score as target variable
+              [finalAnalysisResult.data.targetVariable]: record.value, // Use the competitive score as target variable
               competitive_advantage_score: record.properties?.competitive_advantage_score || record.value,
               // Keep market share as context but don't let it override competitive scores
               nike_market_share_context: record.properties?.nike_market_share || record.properties?.value_MP30034A_B_P,
@@ -2913,7 +3109,7 @@ const EnhancedGeospatialChat = memo(({
           
           console.log('🔄 [FEATURES SYNC] Sample competitive feature:', {
             area_name: competitiveFeatures[0]?.properties?.area_name,
-            [enhancedAnalysisResult.data.targetVariable]: competitiveFeatures[0]?.properties?.[enhancedAnalysisResult.data.targetVariable],
+            [finalAnalysisResult.data.targetVariable]: competitiveFeatures[0]?.properties?.[finalAnalysisResult.data.targetVariable],
             competitive_advantage_score: competitiveFeatures[0]?.properties?.competitive_advantage_score,
             nike_market_share_context: competitiveFeatures[0]?.properties?.nike_market_share_context
           });
@@ -2929,16 +3125,16 @@ const EnhancedGeospatialChat = memo(({
 
 
       // Create legend from AnalysisEngine result
-      if (analysisResult.visualization.legend) {
-        console.log('[AnalysisEngine] Processing legend:', analysisResult.visualization.legend);
+      if (finalAnalysisResult.visualization.legend) {
+        console.log('[AnalysisEngine] Processing legend:', finalAnalysisResult.visualization.legend);
         
         let legendData;
-        if ((analysisResult.visualization.legend as any).components) {
+        if ((finalAnalysisResult.visualization.legend as any).components) {
           // Dual-variable format with components array
           legendData = {
-            title: analysisResult.visualization.legend.title,
+            title: finalAnalysisResult.visualization.legend.title,
             type: 'dual-variable',
-            components: (analysisResult.visualization.legend as any).components.map((component: any) => ({
+            components: (finalAnalysisResult.visualization.legend as any).components.map((component: any) => ({
               title: component.title,
               type: component.type,
               items: component.items.map((item: any) => ({
@@ -2950,11 +3146,11 @@ const EnhancedGeospatialChat = memo(({
               }))
             }))
           };
-        } else if (analysisResult.visualization.legend.items) {
+        } else if (finalAnalysisResult.visualization.legend.items) {
           // Standard format with items array
           legendData = {
-            title: analysisResult.visualization.legend.title,
-            items: analysisResult.visualization.legend.items.map(item => ({
+            title: finalAnalysisResult.visualization.legend.title,
+            items: finalAnalysisResult.visualization.legend.items.map(item => ({
               label: item.label,
               color: item.color,
               value: item.value,
@@ -2985,16 +3181,16 @@ const EnhancedGeospatialChat = memo(({
 
       // Update state - the AnalysisEngine manages its own visualization layer
       setVisualizationResult({
-        type: analysisResult.visualization.type,
-        legend: analysisResult.visualization.legend,
-        config: analysisResult.visualization.config
+        type: finalAnalysisResult.visualization.type,
+        legend: finalAnalysisResult.visualization.legend,
+        config: finalAnalysisResult.visualization.config
       } as any);
       
       // Notify parent that new layer was created (layer is managed by applyAnalysisEngineVisualization)
       onVisualizationLayerCreated(currentVisualizationLayer.current, true);
 
       // Auto-zoom to data if configured
-      if (analysisResult.visualization.config?.autoZoom && currentMapView && geographicFeatures.length > 0) {
+      if (finalAnalysisResult.visualization.config?.autoZoom && currentMapView && geographicFeatures.length > 0) {
         // Calculate extent from geographic features
         const [geometryEngine] = await Promise.all([
           import('@arcgis/core/geometry/geometryEngine')
@@ -3030,19 +3226,22 @@ const EnhancedGeospatialChat = memo(({
 
       // --- NARRATIVE GENERATION using existing Claude integration ---
       console.log('🚨 [FLOW CHECK] Reached narrative generation section');
-      console.log('🚨 [FLOW CHECK] enhancedAnalysisResult exists:', !!enhancedAnalysisResult);
-      console.log('🚨 [FLOW CHECK] enhancedAnalysisResult.data.records.length:', enhancedAnalysisResult?.data?.records?.length || 0);
+      console.log('🚨 [FLOW CHECK] finalAnalysisResult exists:', !!finalAnalysisResult);
+      console.log('🚨 [FLOW CHECK] finalAnalysisResult.data.records.length:', finalAnalysisResult?.data?.records?.length || 0);
+      console.log('🚨 [FLOW CHECK] Is clustered:', finalAnalysisResult?.data?.isClustered);
       
       let narrativeContent: string | null = null;
       try {
         console.log('[AnalysisEngine] Generating narrative with Claude');
         
         // Debug the top 3 records being sent to Claude
-        console.log('[Claude] Top 3 records being sent:', enhancedAnalysisResult?.data?.records?.slice(0, 3).map(r => ({
+        console.log('[Claude] Top 3 records being sent:', finalAnalysisResult?.data?.records?.slice(0, 3).map(r => ({
           area_name: r.area_name,
           area_id: r.area_id,
           competitive_score: r.value,
-          rank: r.rank
+          rank: r.rank,
+          cluster_id: r.cluster_id,
+          is_clustered: finalAnalysisResult?.data?.isClustered
         })));
         
         setProcessingSteps(prev => prev.map(s => 
@@ -3050,26 +3249,38 @@ const EnhancedGeospatialChat = memo(({
         ));
 
         // Save the endpoint for follow-up questions
-        setLastAnalysisEndpoint(analysisResult.endpoint);
+        setLastAnalysisEndpoint(finalAnalysisResult.endpoint);
         
         // Use existing Claude integration with enhanced analysis result
         const targetPretty = TARGET_OPTIONS.find(opt => opt.value === currentTarget)?.label || 'Performance';
         
+        // Check if this is clustered data and adjust the prompt accordingly
+        const isClusteredAnalysis = finalAnalysisResult?.data?.summary && finalAnalysisResult.data.summary.trim().length > 0;
+        const hasClusterAnalysis = isClusteredAnalysis && finalAnalysisResult.data.isClustered;
+        
+        console.log('🎯 [CLAUDE PAYLOAD] isClusteredAnalysis:', isClusteredAnalysis);
+        console.log('🎯 [CLAUDE PAYLOAD] hasClusterAnalysis:', hasClusterAnalysis);
+        
         const claudePayload = {
             messages: [{ 
               role: 'user', 
-              content: generateScoreDescription(analysisResult.endpoint, query)
+              content: hasClusterAnalysis 
+                ? `${generateScoreDescription(finalAnalysisResult.endpoint, query)}\n\nIMPORTANT: This is a TERRITORY CLUSTERING analysis. The data has been organized into geographic territories/clusters. Base your response on the territory clustering analysis provided in the metadata. Focus on territories rather than individual ZIP codes.`
+                : generateScoreDescription(finalAnalysisResult.endpoint, query)
             }],
             metadata: {
               query,
-              analysisType: analysisResult.endpoint.replace('/', '').replace(/-/g, '_'), // Convert /strategic-analysis to strategic_analysis
+              analysisType: finalAnalysisResult.endpoint.replace('/', '').replace(/-/g, '_'), // Convert /strategic-analysis to strategic_analysis
               relevantLayers: [dataSource.layerId],
               primaryField: targetPretty,
-              endpoint: analysisResult.endpoint,
-              targetVariable: analysisResult.data?.targetVariable || 'analysis_score',
-              analysisEndpoint: analysisResult.endpoint,
-              scoreType: getScoreConfigForEndpoint(analysisResult.endpoint).scoreFieldName,
-              processingTime: Date.now() - startTime
+              endpoint: finalAnalysisResult.endpoint,
+              targetVariable: finalAnalysisResult.data?.targetVariable || 'analysis_score',
+              analysisEndpoint: finalAnalysisResult.endpoint,
+              scoreType: getScoreConfigForEndpoint(finalAnalysisResult.endpoint).scoreFieldName,
+              processingTime: Date.now() - startTime,
+              // CRITICAL: Include cluster analysis information
+              isClustered: hasClusterAnalysis,
+              clusterAnalysis: hasClusterAnalysis ? finalAnalysisResult.data.summary : null
             },
             // Use the expected ProcessedLayerResult format with REAL analysis data
             featureData: [{
@@ -3077,7 +3288,7 @@ const EnhancedGeospatialChat = memo(({
               layerName: 'Analysis Results',  
               layerType: 'polygon',
               layer: {} as any,
-              features: enhancedAnalysisResult?.data?.records?.map((result: any, index: number) => {
+              features: finalAnalysisResult?.data?.records?.map((result: any, index: number) => {
                 // Debug area names to understand the issue
                 if (index < 5) {
                   console.log(`[Claude Data] Record ${index + 1} - DETAILED:`, {
@@ -3116,7 +3327,7 @@ const EnhancedGeospatialChat = memo(({
                 });
                 
                 // Use ConfigurationManager for proper score field mapping
-                const scoreConfig = getScoreConfigForEndpoint(analysisResult.endpoint);
+                const scoreConfig = getScoreConfigForEndpoint(finalAnalysisResult.endpoint);
                 const scoreFieldName = scoreConfig.scoreFieldName;
                 
                 // Generic approach: try to find the score field from the configuration
@@ -3125,7 +3336,7 @@ const EnhancedGeospatialChat = memo(({
                                    result.value || 
                                    0;
                                    
-                console.log(`[Claude Data] ${analysisResult.endpoint} - using ${scoreFieldName}: ${targetValue} for ${result.area_name}`);
+                console.log(`[Claude Data] ${finalAnalysisResult.endpoint} - using ${scoreFieldName}: ${targetValue} for ${result.area_name}`);
 
                 const claudeFeature = {
                   properties: {
@@ -3135,8 +3346,12 @@ const EnhancedGeospatialChat = memo(({
                     target_field: targetPretty,
                     score_field_name: scoreFieldName, // Add the correct score field name for Claude
                     rank: result.rank || 0,
-                    analysis_endpoint: analysisResult.endpoint,
-                    total_areas_analyzed: enhancedAnalysisResult?.data?.records?.length || 0,
+                    analysis_endpoint: finalAnalysisResult.endpoint,
+                    total_areas_analyzed: finalAnalysisResult?.data?.records?.length || 0,
+                    // Add clustering information if available
+                    cluster_id: result.cluster_id,
+                    cluster_name: result.cluster_name,
+                    is_clustered: finalAnalysisResult?.data?.isClustered || false,
                     
                     // Brand market shares
                     nike_market_share: nikeShare,
@@ -3314,10 +3529,10 @@ const EnhancedGeospatialChat = memo(({
         } : s
       ));
 
-      // Create detailed analysis summary if Claude fails
+      // Create detailed analysis summary if Claude fails - use finalAnalysisResult for clustered data
       const baseFinalContent = narrativeContent || createAnalysisSummary(
-        analysisResult, 
-        enhancedAnalysisResult, 
+        finalAnalysisResult, 
+        finalAnalysisResult, 
         validFeatures.length,
         query,
         TARGET_OPTIONS,
@@ -3343,7 +3558,7 @@ const EnhancedGeospatialChat = memo(({
               content: finalContent, 
               metadata: { 
                 ...msg.metadata, 
-                analysisResult: enhancedAnalysisResult,
+                analysisResult: finalAnalysisResult,
                 isStreaming: true 
               } 
             }
@@ -3357,20 +3572,20 @@ const EnhancedGeospatialChat = memo(({
       addContextMessage({
         role: 'assistant',
         content: finalContent,
-        metadata: { analysisResult: enhancedAnalysisResult }
+        metadata: { analysisResult: finalAnalysisResult }
       } as ChatMessage);
 
       await refreshContextSummary();
       
       // CRITICAL FIX: Use FULL data for features context, not visualization-optimized data
-      // Convert enhancedAnalysisResult.data.records back to GeospatialFeature format for analysis/chat
-      const fullDataFeatures = enhancedAnalysisResult.data.records.map((record: any) => ({
+      // Convert finalAnalysisResult.data.records back to GeospatialFeature format for analysis/chat
+      const fullDataFeatures = finalAnalysisResult.data.records.map((record: any) => ({
         type: 'Feature' as const,
         geometry: record.geometry,
         properties: {
           ...record.properties,
           // Ensure all analysis fields are preserved for chat context
-          [enhancedAnalysisResult.data.targetVariable]: record.value,
+          [finalAnalysisResult.data.targetVariable]: record.value,
           target_value: record.value,
           area_name: record.area_name,
           area_id: record.area_id || record.properties?.ID
@@ -3649,6 +3864,13 @@ const EnhancedGeospatialChat = memo(({
   const [shapChartData, setSHAPChartData] = useState<Array<{name: string, value: number}>>([]);
   const [shapChartOpen, setSHAPChartOpen] = useState(false);
   const [shapAnalysisType, setSHAPAnalysisType] = useState<string>('');
+  
+  // Clustering state
+  const [clusterConfig, setClusterConfig] = useState<ClusterConfig>({
+    ...DEFAULT_CLUSTER_CONFIG,
+    minScorePercentile: DEFAULT_CLUSTER_CONFIG.minScorePercentile ?? 70
+  });
+  const [clusterDialogOpen, setClusterDialogOpen] = useState(false);
   
   // Show gentle nudge to try chat mode after successful analysis
   useEffect(() => {
@@ -4070,6 +4292,43 @@ const EnhancedGeospatialChat = memo(({
                             </Button>
                           ))}
                         </div>
+                      </DialogContent>
+                    </Dialog>
+
+                    {/* Cluster Configuration button */}
+                    <Dialog open={clusterDialogOpen} onOpenChange={setClusterDialogOpen}>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <DialogTrigger asChild>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                className="relative flex items-center justify-center gap-1 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-7"
+                              >
+                                <Target className="h-3 w-3 mr-1" />
+                                <span className="truncate">
+                                  {clusterConfig.enabled ? `${clusterConfig.numClusters} Clusters` : 'Clustering'}
+                                </span>
+                              </Button>
+                            </DialogTrigger>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" className="bg-white">
+                            <p>Configure clustering</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
+                        <DialogHeader>
+                          <DialogTitle>Clustering Configuration</DialogTitle>
+                        </DialogHeader>
+                        <ClusterConfigPanel
+                          config={clusterConfig}
+                          onConfigChange={setClusterConfig}
+                          onSave={() => setClusterDialogOpen(false)}
+                          className="border-0 shadow-none"
+                        />
                       </DialogContent>
                     </Dialog>
                   </div>

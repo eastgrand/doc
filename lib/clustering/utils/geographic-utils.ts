@@ -69,8 +69,8 @@ export function calculateCentroid(features: ClusteringFeature[]): [number, numbe
 }
 
 /**
- * Generate cluster boundary polygon using convex hull algorithm
- * Returns GeoJSON Polygon
+ * Generate cluster boundary polygon that encompasses ZIP code territories
+ * Returns GeoJSON Polygon based on bounding box of all ZIP codes in cluster
  */
 export function generateClusterBoundary(features: ClusteringFeature[]): GeoJSON.Polygon {
   if (features.length === 0) {
@@ -87,67 +87,65 @@ export function generateClusterBoundary(features: ClusteringFeature[]): GeoJSON.
     };
   }
   
-  if (features.length === 1) {
-    // Single point - create small square around it
-    const [lon, lat] = [features[0].longitude, features[0].latitude];
-    const offset = 0.01; // Small offset for visibility
-    return {
-      type: 'Polygon',
-      coordinates: [[
-        [lon - offset, lat - offset],
-        [lon - offset, lat + offset],
-        [lon + offset, lat + offset],
-        [lon + offset, lat - offset],
-        [lon - offset, lat - offset]
-      ]]
-    };
+  // Calculate bounding box for all features in the cluster
+  const validFeatures = features.filter(f => 
+    typeof f.latitude === 'number' && typeof f.longitude === 'number' &&
+    !isNaN(f.latitude) && !isNaN(f.longitude)
+  );
+  
+  if (validFeatures.length === 0) {
+    return generateBoundingBoxPolygon([]);
   }
   
-  if (features.length === 2) {
-    // Two points - create rectangle around them
-    const points = features.map(f => [f.longitude, f.latitude]);
-    const minLon = Math.min(...points.map(p => p[0]));
-    const maxLon = Math.max(...points.map(p => p[0]));
-    const minLat = Math.min(...points.map(p => p[1]));
-    const maxLat = Math.max(...points.map(p => p[1]));
-    const padding = 0.01;
-    
-    return {
-      type: 'Polygon',
-      coordinates: [[
-        [minLon - padding, minLat - padding],
-        [minLon - padding, maxLat + padding],
-        [maxLon + padding, maxLat + padding],
-        [maxLon + padding, minLat - padding],
-        [minLon - padding, minLat - padding]
-      ]]
-    };
-  }
+  const lats = validFeatures.map(f => f.latitude);
+  const lons = validFeatures.map(f => f.longitude);
+  const minLon = Math.min(...lons);
+  const maxLon = Math.max(...lons);
+  const minLat = Math.min(...lats);
+  const maxLat = Math.max(...lats);
   
-  // For 3+ points, use convex hull
-  const points = features
-    .map(f => [f.longitude, f.latitude] as [number, number])
-    .filter(p => !isNaN(p[0]) && !isNaN(p[1]));
-    
-  if (points.length < 3) {
-    // Fallback to bounding box
-    return generateBoundingBoxPolygon(points);
-  }
+  // Calculate appropriate padding based on cluster size
+  const lonRange = maxLon - minLon;
+  const latRange = maxLat - minLat;
   
-  const hull = convexHull(points);
+  // Use 20% padding or minimum 0.05 degrees (roughly 3-5 miles)
+  const padding = Math.max(
+    0.05,  // Minimum padding for small clusters
+    lonRange * 0.2,  // 20% of longitude range
+    latRange * 0.2   // 20% of latitude range
+  );
   
-  // Ensure we have at least 3 points for a valid polygon
-  if (hull.length < 3) {
-    return generateBoundingBoxPolygon(points);
-  }
+  console.log(`[ClusterBoundary] Generating boundary for ${validFeatures.length} ZIP codes:`, {
+    lonRange: lonRange.toFixed(4),
+    latRange: latRange.toFixed(4),
+    padding: padding.toFixed(4),
+    bounds: {
+      minLon: (minLon - padding).toFixed(4),
+      maxLon: (maxLon + padding).toFixed(4),
+      minLat: (minLat - padding).toFixed(4),
+      maxLat: (maxLat + padding).toFixed(4)
+    }
+  });
   
-  // Close the polygon by adding the first point at the end
-  const closedHull = [...hull, hull[0]];
-  
-  return {
-    type: 'Polygon',
-    coordinates: [closedHull]
+  // Create territory boundary as a padded bounding box
+  const territoryBoundary = {
+    type: 'Polygon' as const,
+    coordinates: [[
+      [minLon - padding, minLat - padding],  // Bottom-left
+      [minLon - padding, maxLat + padding],  // Top-left
+      [maxLon + padding, maxLat + padding],  // Top-right
+      [maxLon + padding, minLat - padding],  // Bottom-right
+      [minLon - padding, minLat - padding]   // Close polygon
+    ]]
   };
+  
+  console.log(`[ClusterBoundary] Created territory polygon:`, {
+    coordinatesCount: territoryBoundary.coordinates[0].length,
+    firstCoordinate: territoryBoundary.coordinates[0][0],
+    lastCoordinate: territoryBoundary.coordinates[0][territoryBoundary.coordinates[0].length - 1]
+  });
+  
+  return territoryBoundary;
 }
 
 /**
@@ -174,7 +172,14 @@ function generateBoundingBoxPolygon(points: [number, number][]): GeoJSON.Polygon
   const minLat = Math.min(...lats);
   const maxLat = Math.max(...lats);
   
-  const padding = Math.max(0.01, (maxLon - minLon) * 0.1, (maxLat - minLat) * 0.1);
+  // Use more generous padding for territory boundaries
+  const lonRange = maxLon - minLon;
+  const latRange = maxLat - minLat;
+  const padding = Math.max(
+    0.05,  // Minimum 0.05 degrees (roughly 3-5 miles)
+    lonRange * 0.2,  // 20% of range
+    latRange * 0.2
+  );
   
   return {
     type: 'Polygon',

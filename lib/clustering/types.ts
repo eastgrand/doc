@@ -5,19 +5,17 @@
  * based on analysis results (strategic, competitive, demographic) and geographic proximity.
  */
 
-export type ClusteringMethod = 
-  | 'strategic-scores'     // Strategic analysis results only
-  | 'competitive-scores'   // Competitive analysis results only  
-  | 'demographic-scores'   // Demographic analysis results only
-  | 'analysis-geographic'; // Analysis scores + geographic proximity (recommended)
+// Clustering method is now auto-detected based on the analysis endpoint
+// This eliminates the need for manual method selection and reduces user confusion
 
 export interface ClusterConfig {
   enabled: boolean;                    // Default: false - maintains current behavior
-  numClusters: number;                // Default: 5, Range: 1-20
+  numClusters: number;                // Default: 5, Range: 1-20 - Maximum territories to create
   minZipCodes: number;                // Default: 10, Range: 5-50
   minPopulation: number;              // Default: 50000, Range: 10K-1M
   maxRadiusMiles: number;             // Default: 50, Range: 20-100
-  method: ClusteringMethod;           // Default: 'analysis-geographic'
+  minScorePercentile: number;         // Default: 70, Range: 50-90 - Only include top X percentile
+  // method field removed - now auto-detected from analysis endpoint
 }
 
 export interface ClusteringFeature {
@@ -87,7 +85,7 @@ export interface ClusteringResult {
   invalidClusters: number;
   
   // Processing metadata
-  algorithm: string;                  // "geographic-kmeans"
+  algorithm: string;                  // "region-growing"
   processingTimeMs: number;
   parameters: ClusterConfig;
 }
@@ -123,7 +121,8 @@ export const DEFAULT_CLUSTER_CONFIG: ClusterConfig = {
   minZipCodes: 10,                    // Meaningful territory size
   minPopulation: 50000,               // Viable campaign audience
   maxRadiusMiles: 50,                 // Typical DMA coverage
-  method: 'analysis-geographic'       // Balanced approach
+  minScorePercentile: 70              // Only top 30% of ZIP codes
+  // method removed - auto-detected from analysis endpoint
 };
 
 // Preset configurations for common use cases
@@ -131,29 +130,29 @@ export const CAMPAIGN_PRESETS: Record<string, Partial<ClusterConfig>> = {
   'brand-campaign': {
     numClusters: 5,
     minPopulation: 100000,
-    maxRadiusMiles: 75,
-    method: 'strategic-scores'
+    maxRadiusMiles: 75
+    // Large-scale brand campaigns need fewer, larger territories
   },
   
   'regional-advertising': {
     numClusters: 8,
     minPopulation: 25000,
-    maxRadiusMiles: 35,
-    method: 'analysis-geographic'
+    maxRadiusMiles: 35
+    // Regional focus with moderate territory sizes
   },
   
   'local-testing': {
     numClusters: 12,
     minPopulation: 10000,
-    maxRadiusMiles: 25,
-    method: 'demographic-scores'
+    maxRadiusMiles: 25
+    // Small-scale testing with tight geographic control
   },
   
   'competitive-analysis': {
     numClusters: 6,
     minPopulation: 50000,
-    maxRadiusMiles: 50,
-    method: 'competitive-scores'
+    maxRadiusMiles: 50
+    // Competitive analysis needs balanced territory coverage
   }
 };
 

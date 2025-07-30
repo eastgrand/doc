@@ -1660,17 +1660,23 @@ How else can I help analyze the data in your selected ZIP codes?`,
         } else {
           // Fall back to regular processing for blob-based data
 
-        // --- CRITICAL: Generate Cluster Information ---
-        const clusterInfo = generateClusterInformation(
-          processedLayersData,
-          primaryAnalysisField,
-          metadata?.clusterOptions?.maxClusters,
-          metadata?.clusterOptions?.minMembers
-        );
-        if (clusterInfo) {
-            dataSummary += "\n=== CLUSTER INFORMATION ===\n";
-            dataSummary += clusterInfo;
-            dataSummary += "\n==========================\n\n";
+        // --- CRITICAL: Generate Cluster Information (only if new clustering system is not active) ---
+        // Skip old clustering logic when new clustering system has provided cluster analysis
+        if (!metadata?.isClustered) {
+          console.log('[Claude API] No new clustering detected, using legacy cluster information generation');
+          const clusterInfo = generateClusterInformation(
+            processedLayersData,
+            primaryAnalysisField,
+            metadata?.clusterOptions?.maxClusters,
+            metadata?.clusterOptions?.minMembers
+          );
+          if (clusterInfo) {
+              dataSummary += "\n=== CLUSTER INFORMATION ===\n";
+              dataSummary += clusterInfo;
+              dataSummary += "\n==========================\n\n";
+          }
+        } else {
+          console.log('[Claude API] New clustering system is active, skipping legacy cluster information generation');
         }
 
         // Loop through layers to create detailed summary (or use optimized data)
@@ -2377,6 +2383,29 @@ Performance Context:
         // Ensure userMessage is defined - use the joint analysis message if available, otherwise create a standard message
         if (!userMessage) {
           userMessage = `${userQuery}\n\n${dataSummary}`;
+        }
+        
+        // CRITICAL: Handle cluster analysis if provided in metadata
+        if (metadata?.isClustered && metadata?.clusterAnalysis) {
+          console.log('🎯 [CLAUDE API] Detected cluster analysis in metadata');
+          console.log('🎯 [CLAUDE API] Cluster analysis length:', metadata.clusterAnalysis.length);
+          console.log('🎯 [CLAUDE API] Adding cluster analysis to user message');
+          
+          userMessage = `${userQuery}
+
+IMPORTANT: This is a TERRITORY CLUSTERING analysis. Use the territory clustering analysis below as the primary source of information. Focus your response on territories/clusters rather than individual areas.
+
+=== TERRITORY CLUSTERING ANALYSIS ===
+${metadata.clusterAnalysis}
+
+=== DETAILED DATA (for reference only) ===
+${dataSummary}
+
+Your response should:
+1. Base the analysis primarily on the territory clustering results above
+2. Focus on territories/clusters as the main geographic units
+3. Use endpoint-specific terminology for the analysis type: ${metadata?.analysisType || 'analysis'}
+4. Provide strategic recommendations based on territory performance`;
         }
         
         // 🚨 DEBUG: For strategic analysis, check what's actually in the message

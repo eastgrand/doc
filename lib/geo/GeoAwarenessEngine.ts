@@ -36,9 +36,9 @@ export interface GeographicEntity {
 export interface GeoQuery {
   originalQuery: string;
   entities: GeographicEntity[];
-  queryType: 'single_location' | 'comparison' | 'regional' | 'proximity';
-  spatialRelation?: 'within' | 'near' | 'contains' | 'intersects';
-  radius?: number; // in miles
+  queryType: 'single_location' | 'comparison' | 'regional' | 'proximity' | 'non_geographic';
+  spatialRelation?: 'within' | 'near' | 'contains' | 'intersects' | 'none';
+  radius?: number | null; // in miles
 }
 
 export interface GeoFilterResult {
@@ -160,22 +160,47 @@ export class GeoAwarenessEngine {
     const entities: GeographicEntity[] = [];
     const queryLower = query.toLowerCase();
     
-    // Method 1: Direct entity matching with hierarchy
+    console.log(`🔍 [GEO DEBUG] Parsing query: "${query}"`);
+    
+    // STEP 1: Check for explicit geographic intent indicators
+    const hasExplicitGeoIntent = this.hasExplicitGeographicIntent(queryLower);
+    
+    if (!hasExplicitGeoIntent) {
+      console.log(`🚫 [GEO DEBUG] Query lacks explicit geographic intent - skipping geographic filtering`);
+      return {
+        originalQuery: query,
+        entities: [],
+        queryType: 'non_geographic',
+        spatialRelation: 'none',
+        radius: null
+      };
+    }
+    
+    // STEP 2: Only proceed with matching if we have clear geographic intent
+    console.log(`✅ [GEO DEBUG] Query has explicit geographic intent - proceeding with matching`);
+    
+    // Method 1: Direct entity matching with hierarchy (most reliable)
     const directMatches = this.findDirectMatches(queryLower);
+    console.log(`🔍 [GEO DEBUG] Direct matches:`, directMatches.map(e => ({ name: e.name, type: e.type })));
     entities.push(...directMatches);
     
-    // Method 2: ZIP code pattern matching
+    // Method 2: ZIP code pattern matching (very reliable)
     const zipMatches = this.findZipCodeMatches(query);
+    console.log(`🔍 [GEO DEBUG] ZIP matches:`, zipMatches.map(e => ({ name: e.name, type: e.type })));
     entities.push(...zipMatches);
     
-    // Method 3: Regional pattern matching
+    // Method 3: Regional pattern matching (reliable)
     const regionalMatches = this.findRegionalMatches(queryLower);
+    console.log(`🔍 [GEO DEBUG] Regional matches:`, regionalMatches.map(e => ({ name: e.name, type: e.type })));
     entities.push(...regionalMatches);
     
-    // Method 4: Fuzzy matching for typos/variations
-    if (entities.length === 0) {
+    // Method 4: Fuzzy matching ONLY if we already have strong geographic intent and no matches yet
+    if (entities.length === 0 && this.hasStrongGeographicSignals(queryLower)) {
       const fuzzyMatches = this.findFuzzyMatches(queryLower);
+      console.log(`🔍 [GEO DEBUG] Fuzzy matches (with strong signals):`, fuzzyMatches.map(e => ({ name: e.name, type: e.type })));
       entities.push(...fuzzyMatches);
+    } else if (entities.length === 0) {
+      console.log(`🚫 [GEO DEBUG] No geographic entities found and no strong geographic signals - treating as non-geographic query`);
     }
     
     // Determine query type
@@ -500,6 +525,68 @@ export class GeoAwarenessEngine {
       this.zipCodeToCity = new Map();
       this.aliasMap = new Map();
     }
+  }
+
+  /**
+   * Check if query has explicit geographic intent indicators
+   */
+  private hasExplicitGeographicIntent(query: string): boolean {
+    const explicitGeoIndicators = [
+      // Location prepositions and indicators
+      /\bin\s+[a-z]+/,           // "in Brooklyn", "in NYC"
+      /\bfrom\s+[a-z]+/,         // "from Manhattan"
+      /\bnear\s+[a-z]+/,         // "near Philadelphia"
+      /\baround\s+[a-z]+/,       // "around Boston"
+      /\bacross\s+[a-z]+/,       // "across New Jersey"
+      
+      // Geographic comparison words
+      /\bcompare.*\b(cities|states|regions|areas|markets)\b/,
+      /\b(cities|states|regions|areas|markets).*\bcompare\b/,
+      /\bbetween\s+[a-z]+\s+and\s+[a-z]+/,  // "between NYC and LA"
+      
+      // Explicit location mentions
+      /\bzip\s*code/i,
+      /\bpostal\s*code/i,
+      /\b\d{5}(-\d{4})?\b/,      // ZIP code pattern
+      
+      // Geographic analysis terms
+      /\bgeographic/i,
+      /\bregional/i,
+      /\blocal/i,
+      /\bneighborhood/i,
+      /\bborough/i,
+      /\bcounty/i,
+      /\bstate\s+(by|comparison|analysis)/i,
+      /\bcity\s+(by|comparison|analysis)/i,
+      
+      // Map/location specific terms
+      /\bmap\s+of/i,
+      /\bshow\s+me\s+(where|locations|places)/i,
+      /\bfind\s+(locations|places|areas)/i
+    ];
+    
+    return explicitGeoIndicators.some(pattern => pattern.test(query));
+  }
+
+  /**
+   * Check for strong geographic signals that would justify fuzzy matching
+   */
+  private hasStrongGeographicSignals(query: string): boolean {
+    const strongSignals = [
+      // Multi-word location patterns (even if not in our database)
+      /\b[A-Z][a-z]+\s+(City|County|Beach|Park|Valley|Heights|Hills|Lake|River)\b/,
+      /\b(North|South|East|West|New|Old|Upper|Lower)\s+[A-Z][a-z]+\b/,
+      
+      // Common location suffixes
+      /\b[A-Z][a-z]+\s*,\s*[A-Z]{2}\b/,  // "Brooklyn, NY"
+      /\b[A-Z][a-z]+\s+(Avenue|Street|Road|Boulevard|Drive)\b/,
+      
+      // Regional indicators
+      /\b(downtown|uptown|midtown|suburbs|metro|metropolitan)\b/i,
+      /\b(northern|southern|eastern|western)\s+[a-z]+/i
+    ];
+    
+    return strongSignals.some(pattern => pattern.test(query));
   }
 
   /**

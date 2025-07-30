@@ -14,11 +14,29 @@ export class GeographicKMeans {
   private config: ClusterConfig;
   private features: ClusteringFeature[];
   private normalizedFeatures: ClusteringFeature[];
+  private detectedMethod: string = 'analysis-geographic';
   
   constructor(config: ClusterConfig) {
     this.config = config;
     this.features = [];
     this.normalizedFeatures = [];
+  }
+
+  /**
+   * Detect clustering method from feature characteristics
+   */
+  private detectMethodFromFeatures(features: ClusteringFeature[]): string {
+    if (features.length === 0) return 'analysis-geographic';
+    
+    const sample = features[0];
+    
+    // Check for specific feature combinations to determine method
+    if (sample.strategicScore !== undefined) return 'strategic-scores';
+    if (sample.nikeShare !== undefined && sample.adidasShare !== undefined) return 'competitive-scores';
+    if (sample.demographicOpportunity !== undefined && !sample.strategicScore) return 'demographic-scores';
+    
+    // Default to combined analysis + geographic
+    return 'analysis-geographic';
   }
 
   /**
@@ -33,6 +51,7 @@ export class GeographicKMeans {
       
       // Store and normalize features
       this.features = features;
+      this.detectedMethod = this.detectMethodFromFeatures(features);
       this.normalizedFeatures = this.normalizeFeatures(features);
       
       // Run k-means with geographic constraints
@@ -109,16 +128,28 @@ export class GeographicKMeans {
     const primaryScores = features.map(f => f.primaryScore);
     const secondaryScores = features.map(f => f.secondaryScore || 0);
     const populations = features.map(f => f.population);
+    const latitudes = features.map(f => f.latitude);
+    const longitudes = features.map(f => f.longitude);
     
-    const primaryRange = [Math.min(...primaryScores), Math.max(...primaryScores)];
-    const secondaryRange = [Math.min(...secondaryScores), Math.max(...secondaryScores)];
-    const populationRange = [Math.min(...populations), Math.max(...populations)];
+    const primaryRange: [number, number] = [Math.min(...primaryScores), Math.max(...primaryScores)];
+    const secondaryRange: [number, number] = [Math.min(...secondaryScores), Math.max(...secondaryScores)];
+    const populationRange: [number, number] = [Math.min(...populations), Math.max(...populations)];
+    const latitudeRange: [number, number] = [Math.min(...latitudes), Math.max(...latitudes)];
+    const longitudeRange: [number, number] = [Math.min(...longitudes), Math.max(...longitudes)];
+    
+    console.log(`[GeographicKMeans] 📍 Coordinate ranges:`, {
+      latRange: latitudeRange,
+      lonRange: longitudeRange,
+      scoreRange: primaryRange
+    });
     
     return features.map(feature => ({
       ...feature,
       primaryScore: this.normalizeValue(feature.primaryScore, primaryRange),
       secondaryScore: feature.secondaryScore ? this.normalizeValue(feature.secondaryScore, secondaryRange) : 0,
-      population: this.normalizeValue(feature.population, populationRange)
+      population: this.normalizeValue(feature.population, populationRange),
+      latitude: this.normalizeValue(feature.latitude, latitudeRange),
+      longitude: this.normalizeValue(feature.longitude, longitudeRange)
     }));
   }
 
@@ -206,7 +237,7 @@ export class GeographicKMeans {
     const analysisWeight = 0.8;
     const geographicWeight = 0.2;
     
-    switch (this.config.method) {
+    switch (this.detectedMethod) {
       case 'strategic-scores':
         return [
           feature.primaryScore,
@@ -289,15 +320,16 @@ export class GeographicKMeans {
 
   /**
    * Check if adding a feature to a cluster satisfies geographic constraints
+   * NOTE: Uses original (non-normalized) coordinates for actual distance calculations
    */
   private satisfiesGeographicConstraint(featureIndex: number, clusterAssignment: number[]): boolean {
     if (clusterAssignment.length === 0) return true; // Empty cluster is always valid
     
-    const newFeature = this.features[featureIndex];
+    const newFeature = this.features[featureIndex]; // Use original features with real coordinates
     
     // Check distance to all other features in cluster
     for (const assignedIndex of clusterAssignment) {
-      const assignedFeature = this.features[assignedIndex];
+      const assignedFeature = this.features[assignedIndex]; // Use original features with real coordinates
       const distance = calculateDistance(
         newFeature.latitude, newFeature.longitude,
         assignedFeature.latitude, assignedFeature.longitude
@@ -371,10 +403,10 @@ export class GeographicKMeans {
       const assignment = assignments[i];
       if (assignment.length === 0) continue;
       
-      const clusterFeatures = assignment.map(index => this.features[index]);
+      const clusterFeatures = assignment.map(index => this.features[index]); // Original features for geographic calculations
       const zipCodes = clusterFeatures.map(f => f.zipCode);
       
-      // Calculate geographic properties
+      // Calculate geographic properties using original (non-normalized) coordinates
       const centroid = calculateCentroid(clusterFeatures);
       const boundary = generateClusterBoundary(clusterFeatures);
       const radiusMiles = this.calculateClusterRadius(clusterFeatures);
@@ -386,7 +418,7 @@ export class GeographicKMeans {
       const scoreRange: [number, number] = [Math.min(...scores), Math.max(...scores)];
       
       // Generate cluster name
-      const name = generateClusterName(clusterFeatures, this.config.method, i + 1);
+      const name = generateClusterName(clusterFeatures, this.detectedMethod, i + 1);
       
       const cluster: ClusterResult = {
         clusterId: i,
@@ -411,14 +443,17 @@ export class GeographicKMeans {
 
   /**
    * Calculate cluster radius (max distance from centroid)
+   * NOTE: Uses original (non-normalized) coordinates for actual distance calculations
    */
   private calculateClusterRadius(features: ClusteringFeature[]): number {
     if (features.length === 0) return 0;
     
-    const centroid = calculateCentroid(features);
+    // Use original features for geographic calculations
+    const originalFeatures = features.map(f => this.features.find(orig => orig.zipCode === f.zipCode)!);
+    const centroid = calculateCentroid(originalFeatures);
     let maxDistance = 0;
     
-    features.forEach(feature => {
+    originalFeatures.forEach(feature => {
       const distance = calculateDistance(
         centroid[1], centroid[0], // centroid is [lng, lat], need [lat, lng]
         feature.latitude, feature.longitude

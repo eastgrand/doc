@@ -17,12 +17,13 @@ const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
         value={value}
         onChange={(e) => onValueChange?.(Number(e.target.value))}
         className={cn(
-          "h-1.5 w-full appearance-none rounded-full bg-primary/20",
-          "range-thumb:block range-thumb:h-4 range-thumb:w-4 range-thumb:rounded-full",
-          "range-thumb:border range-thumb:border-primary/50 range-thumb:bg-background",
-          "range-thumb:transition-colors range-thumb:focus-visible:outline-none",
-          "range-thumb:focus-visible:ring-1 range-thumb:focus-visible:ring-ring",
-          "range-thumb:disabled:pointer-events-none range-thumb:disabled:opacity-50",
+          "h-2 w-full appearance-none rounded-full bg-gray-200",
+          "[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full",
+          "[&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-[#33a852] [&::-webkit-slider-thumb]:bg-[#33a852]",
+          "[&::-webkit-slider-thumb]:shadow-sm [&::-webkit-slider-thumb]:cursor-pointer",
+          "[&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:rounded-full",
+          "[&::-moz-range-thumb]:border [&::-moz-range-thumb]:border-[#33a852] [&::-moz-range-thumb]:bg-[#33a852]",
+          "[&::-moz-range-thumb]:shadow-sm [&::-moz-range-thumb]:cursor-pointer",
           className
         )}
         {...props}

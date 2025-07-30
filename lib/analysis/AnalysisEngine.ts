@@ -128,6 +128,9 @@ export class AnalysisEngine {
       const selectedEndpoint = await this.endpointRouter.selectEndpoint(query, options);
       console.log(`[AnalysisEngine] Selected endpoint: ${selectedEndpoint}`);
       
+      // NOTE: Clustering is now handled in geospatial-chat-interface.tsx after geometry join
+      // This ensures clustering has access to real ZIP code geometries instead of approximations
+      
       // Check if this should be routed to multi-endpoint analysis
       if (selectedEndpoint === 'MULTI_ENDPOINT_DETECTED') {
         console.log('[AnalysisEngine] Routing to multi-endpoint analysis');
@@ -251,28 +254,55 @@ export class AnalysisEngine {
         }
       }
       
-      // Create visualization from cached data
+      // Create initial result structure (without visualization yet)
+      let result: AnalysisResult = {
+        success: true,
+        endpoint: selectedEndpoint,
+        data: processedData,
+        visualization: null, // Will be created after clustering
+        metadata: {
+          executionTime: Date.now() - startTime,
+          dataPointCount: processedData.records?.length || 0,
+          timestamp: new Date().toISOString()
+        }
+      };
+
+      // NOTE: Clustering moved to geospatial-chat-interface.tsx after geometry join
+      // This ensures clustering has access to real ZIP code geometries instead of approximations
+
+      // Create visualization from final data (after clustering if enabled)
       let visualization: any = null;
       if (this.visualizationRenderer) {
         try {
-          console.log('[AnalysisEngine] Creating visualization for endpoint:', selectedEndpoint);
-          console.log('[AnalysisEngine] Processed data:', { 
-            type: processedData.type, 
-            recordCount: processedData.records?.length,
-            targetVariable: processedData.targetVariable 
+          console.log('[AnalysisEngine] 🎯 About to create visualization (AFTER clustering):', {
+            endpoint: selectedEndpoint,
+            dataType: result.data.type,
+            recordCount: result.data.records?.length,
+            isClustered: result.data.isClustered,
+            hasGeometry: result.data.records?.[0]?.geometry ? 'YES' : 'NO',
+            targetVariable: result.data.targetVariable,
+            firstClusterRecord: result.data.isClustered ? {
+              area_name: result.data.records?.[0]?.area_name,
+              value: result.data.records?.[0]?.value,
+              zip_codes: result.data.records?.[0]?.properties?.zip_codes?.length
+            } : 'Not clustered'
           });
-          visualization = this.visualizationRenderer.createVisualization(processedData, selectedEndpoint);
-          console.log('[AnalysisEngine] Visualization result:', { 
+          
+          visualization = this.visualizationRenderer.createVisualization(result.data, selectedEndpoint);
+          
+          console.log('[AnalysisEngine] 🎯 Visualization created:', {
+            success: !!visualization,
             type: visualization?.type,
             hasRenderer: !!visualization?.renderer,
-            hasConfig: !!visualization?.config 
+            hasConfig: !!visualization?.config,
+            hasLegend: !!visualization?.legend
           });
 
           // ⭐ If visualization contains competitive analysis data, incorporate it into the summary
           // DISABLED: This was injecting uncapped scores and market share data into Claude's analysis
           // if (visualization && visualization._competitiveAnalysis) {
           //   console.log('[AnalysisEngine] Found competitive analysis data in visualization, updating summary');
-          //   processedData.summary = this.incorporateCompetitiveAnalysis(processedData.summary, visualization._competitiveAnalysis);
+          //   result.data.summary = this.incorporateCompetitiveAnalysis(result.data.summary, visualization._competitiveAnalysis);
           // }
         } catch (vizError) {
           console.error('[AnalysisEngine] Visualization creation failed:', vizError);
@@ -282,70 +312,51 @@ export class AnalysisEngine {
         console.warn('[AnalysisEngine] No visualization renderer available');
       }
 
-      let result: AnalysisResult = {
-        success: true,
-        endpoint: selectedEndpoint,
-        data: processedData,
-        visualization: visualization || { 
-          type: 'choropleth', 
-          config: {
-            colorScheme: 'viridis',
-            opacity: 0.8,
-            strokeWidth: 1,
-            valueField: 'opportunityScore',
-            labelField: 'area_name',
-            popupFields: ['area_name']
-          },
-          renderer: {
-            type: 'simple',
-            symbol: {
-              type: 'simple-marker',
-              style: 'circle',
-              color: [65, 105, 225, 0.8],
-              size: 12,
-              outline: {
-                color: '#FFFFFF',
-                width: 1
-              }
-            },
-            _useCentroids: true
-          },
-          popupTemplate: {
-            title: '{area_name}',
-            content: [{
-              type: 'fields',
-              fieldInfos: [
-                { fieldName: 'area_name', label: 'Area' },
-                { fieldName: 'value', label: 'Value' }
-              ]
-            }]
-          },
-          legend: { 
-            title: 'Analysis',
-            items: [{
-              label: 'Analysis Areas',
-              color: '#4169E1',
-              value: 0,
-              symbol: 'circle'
-            }]
-          }
+      // Set final visualization (or fallback)
+      result.visualization = visualization || { 
+        type: 'choropleth', 
+        config: {
+          colorScheme: 'viridis',
+          opacity: 0.8,
+          strokeWidth: 1,
+          valueField: 'opportunityScore',
+          labelField: 'area_name',
+          popupFields: ['area_name']
         },
-        metadata: {
-          executionTime: Date.now() - startTime,
-          dataPointCount: processedData.records?.length || 0,
-          timestamp: new Date().toISOString()
+        renderer: {
+          type: 'simple',
+          symbol: {
+            type: 'simple-marker',
+            style: 'circle',
+            color: [65, 105, 225, 0.8],
+            size: 12,
+            outline: {
+              color: '#FFFFFF',
+              width: 1
+            }
+          },
+          _useCentroids: true
+        },
+        popupTemplate: {
+          title: '{area_name}',
+          content: [{
+            type: 'fields',
+            fieldInfos: [
+              { fieldName: 'area_name', label: 'Area' },
+              { fieldName: 'value', label: 'Value' }
+            ]
+          }]
+        },
+        legend: { 
+          title: 'Analysis',
+          items: [{
+            label: 'Analysis Areas',
+            color: '#4169E1',
+            value: 0,
+            symbol: 'circle'
+          }]
         }
       };
-
-      // Apply clustering if enabled
-      if (this.clusteringService.isEnabled()) {
-        console.log('[AnalysisEngine] Applying clustering to analysis result');
-        try {
-          result = await this.clusteringService.applyClusteringToAnalysis(result);
-        } catch (error) {
-          console.warn('[AnalysisEngine] Clustering failed, using original result:', error);
-        }
-      }
 
       // Update state
       this.updateStateWithResult(result, result.data);
@@ -757,7 +768,7 @@ export class AnalysisEngine {
     }
 
     try {
-      return await this.clusteringService.previewClustering(currentState.currentAnalysis, config);
+      return await this.clusteringService.previewClustering(currentState.currentAnalysis, config, currentState.selectedEndpoint);
     } catch (error) {
       console.error('[AnalysisEngine] Clustering preview failed:', error);
       return null;

@@ -20,6 +20,17 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
   render(data: ProcessedAnalysisData, config: VisualizationConfig): VisualizationResult {
     console.log('🚨🚨🚨 [ClusterRenderer] UPDATED VERSION EXECUTING - SHOULD USE POLYGON FILLS');
     console.log(`[ClusterRenderer] Rendering ${data.records.length} clustered records`);
+    console.log(`[ClusterRenderer] 🎯 Data structure:`, {
+      isClustered: data.isClustered,
+      hasClusterInfo: !!data.clusters,
+      clusterCount: data.clusters?.length || 0,
+      sampleRecord: data.records[0] ? {
+        cluster_id: data.records[0].cluster_id,
+        cluster_name: data.records[0].cluster_name,
+        hasGeometry: !!data.records[0].geometry,
+        geometryType: data.records[0].geometry?.type
+      } : null
+    });
     
     // Extract cluster information
     const clusterInfo = this.extractClusterInformation(data);
@@ -56,15 +67,29 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
   private extractClusterInformation(data: ProcessedAnalysisData): ClusterInfo {
     const clusterMap = new Map<number, ClusterDetails>();
     
+    console.log(`[ClusterRenderer] 📍 Extracting cluster info from ${data.records.length} records`);
+    console.log(`[ClusterRenderer] 📍 Sample record:`, {
+      hasClusterId: !!data.records[0]?.cluster_id,
+      clusterId: data.records[0]?.cluster_id,
+      clusterName: data.records[0]?.cluster_name,
+      isClustered: data.records[0]?.properties?.is_clustered
+    });
+    
     // Analyze each record to build cluster information
     data.records.forEach(record => {
-      const clusterId = record.value; // Cluster ID is stored as value
-      const similarityScore = record.properties.similarity_score || 0;
+      // Get cluster ID from direct field (clustered ZIP records)
+      const clusterId = record.cluster_id; // Cluster ID is stored as direct property
+      const clusterName = record.cluster_name || `Cluster ${clusterId + 1}`;
+      
+      if (clusterId === undefined || clusterId === null) {
+        console.warn(`[ClusterRenderer] Record ${record.area_name} missing cluster_id field`);
+        return;
+      }
       
       if (!clusterMap.has(clusterId)) {
         clusterMap.set(clusterId, {
           id: clusterId,
-          label: record.category || `Cluster ${clusterId}`,
+          label: clusterName,
           members: [],
           avgSimilarity: 0,
           size: 0,
@@ -77,6 +102,9 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
       cluster.members.push(record);
       cluster.size++;
     });
+    
+    console.log(`[ClusterRenderer] ✅ Extracted ${clusterMap.size} clusters:`, 
+      Array.from(clusterMap.values()).map(c => ({ id: c.id, label: c.label, size: c.size })));
     
     // Calculate final cluster statistics
     Array.from(clusterMap.values()).forEach(cluster => {
@@ -144,9 +172,9 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
     // Detect geometry type from config or default to polygon for cluster analysis
     const geometryType = (config as any).geometryType || 'polygon';
     console.log('🔍 [ClusterRenderer] Detected geometryType:', geometryType, 'config.geometryType:', (config as any).geometryType);
-    // For cluster rendering, always use 'value' field which contains cluster IDs
-    // regardless of what targetVariable is configured as
-    const valueField = 'value';
+    // For cluster rendering, use 'cluster_id' field from individual ZIP codes
+    const valueField = 'cluster_id';
+    console.log(`[ClusterRenderer] 🎯 Using field '${valueField}' for cluster coloring`);
     
     // For clustering with polygon data, support both polygon fills and centroid points
     console.log('🔍 [ClusterRenderer] About to check if geometryType === polygon:', geometryType === 'polygon');
@@ -159,7 +187,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
         console.log('[ClusterRenderer] Using enhanced firefly centroids for cluster point symbols');
         
         // FIREFLY-ENHANCED CLUSTER POINTS
-        const fireflyClusterColors = this.getClusterFireflyColors(clusterInfo.clusterCount);
+        console.log('🎯 [ClusterRenderer] Using same colors as legend for firefly points');
         
         return {
           type: 'unique-value',
@@ -171,10 +199,10 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
             symbol: {
               type: 'simple-marker',
               style: 'circle',
-                color: fireflyClusterColors[index],
+                color: clusterColors[index], // Use same colors as legend
                 size: baseSize,
               outline: {
-                  color: fireflyClusterColors[index], // Match outline for seamless blend
+                  color: clusterColors[index], // Match outline for seamless blend - use legend colors
                   width: 0
                 },
                 // CLUSTER FIREFLY ENHANCEMENT
@@ -207,7 +235,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
       
       // ENHANCED POLYGON CLUSTER VISUALIZATION
       console.log('🎯 [ClusterRenderer] Using POLYGON renderer - should show filled areas, not circles');
-      const enhancedPolygonColors = this.getEnhancedPolygonColors(clusterInfo.clusterCount);
+      console.log('🎯 [ClusterRenderer] Using same colors as legend for consistency');
       
         return {
           type: 'unique-value',
@@ -216,23 +244,11 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
             value: cluster.id,
             symbol: {
               type: 'simple-fill',
-            color: enhancedPolygonColors[index].fill,
+              color: clusterColors[index], // Use same colors as legend
               outline: {
-              color: enhancedPolygonColors[index].outline,
-              width: 2,
-              style: 'solid'
-            },
-            // POLYGON ENHANCEMENT PROPERTIES
-            _polygonEffects: {
-              gradient: true,
-              gradientType: 'radial',
-              gradientStops: [
-                { color: enhancedPolygonColors[index].fill, position: 0 },
-                { color: enhancedPolygonColors[index].edge, position: 1 }
-              ],
-              borderAnimation: 'glow',
-              opacity: 0.7,
-              texturePattern: cluster.size > 10 ? 'dots' : 'none'
+                color: this.darkenColor(clusterColors[index], 0.3), // Darker version of same color
+                width: 2,
+                style: 'solid'
               }
             },
             label: cluster.label
@@ -244,19 +260,12 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
               color: [128, 128, 128, 0.8],
               width: 1
             }
-        },
-        _polygonMode: true,
-        _visualEffects: {
-          gradient: true,
-          borderGlow: true,
-          textureOverlay: true,
-          quality: 'high'
           }
         };
     } else {
       console.log('❌ [ClusterRenderer] Taking POINT branch - geometryType was not polygon:', geometryType);
       // ENHANCED POINT GEOMETRY - firefly cluster symbols
-      const fireflyClusterColors = this.getClusterFireflyColors(clusterInfo.clusterCount);
+      console.log('🎯 [ClusterRenderer] Using same colors as legend for point geometry');
       
       return {
         type: 'unique-value',
@@ -268,10 +277,10 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
           symbol: {
             type: 'simple-marker',
             style: 'circle',
-              color: fireflyClusterColors[index],
+              color: clusterColors[index], // Use same colors as legend
               size: baseSize,
             outline: {
-                color: fireflyClusterColors[index],
+                color: clusterColors[index], // Use same colors as legend
                 width: 0
               },
               // CLUSTER FIREFLY ENHANCEMENT

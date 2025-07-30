@@ -55,8 +55,9 @@ export class DataProcessor {
         const geoResult = await geoEngine.processGeoQuery(query, processedData.records, endpoint);
         
         if (geoResult.matchedEntities.length > 0) {
-          console.log(`[DataProcessor] Geographic analysis detected:`, {
-            entities: geoResult.matchedEntities.map(e => ({ name: e.name, type: e.type })),
+          console.log(`[DataProcessor] 🔍 DEBUGGING Geographic analysis detected:`, {
+            query: query,
+            entities: geoResult.matchedEntities.map(e => ({ name: e.name, type: e.type, aliases: e.aliases })),
             originalRecords: geoResult.filterStats.totalRecords,
             filteredRecords: geoResult.filteredRecords.length,
             method: geoResult.filterStats.filterMethod,

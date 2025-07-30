@@ -99,12 +99,15 @@ export class VisualizationRenderer {
     try {
       console.log(`[VisualizationRenderer] Creating visualization for ${endpoint} with ${data.records.length} records`);
       console.log(`[VisualizationRenderer] Data type: ${data.type}, target variable: ${data.targetVariable}`);
+      console.log(`[VisualizationRenderer] Is clustered data:`, data.isClustered);
       console.log(`[VisualizationRenderer] Sample record:`, data.records[0] ? {
         area_id: data.records[0].area_id,
         area_name: data.records[0].area_name,
         value: data.records[0].value,
         hasProperties: !!data.records[0].properties,
-        propertyKeys: data.records[0].properties ? Object.keys(data.records[0].properties).slice(0, 5) : []
+        propertyKeys: data.records[0].properties ? Object.keys(data.records[0].properties).slice(0, 5) : [],
+        isCluster: data.records[0].properties?.is_cluster,
+        clusterZipCodes: data.records[0].properties?.zip_codes?.length
       } : 'No records');
       
       // Get endpoint configuration
@@ -123,7 +126,9 @@ export class VisualizationRenderer {
       const visualizationConfig = this.createVisualizationConfig(data, endpointConfig, visualizationType);
       
       // Check for direct rendering (bypasses complex chain)
-      if (data.renderer && data.legend) {
+      // CRITICAL: Always skip direct rendering for clustered data to ensure ClusterRenderer is used
+      // CRITICAL: Never use direct rendering for clustered data - always use cluster renderer
+      if (data.renderer && data.legend && !data.isClustered) {
         console.log(`[VisualizationRenderer] 🎯 Using DIRECT RENDERING from processor`);
         const result = {
           type: visualizationType,
@@ -143,6 +148,15 @@ export class VisualizationRenderer {
           legendItems: result?.legend?.items?.length
         });
         return result;
+      }
+      
+      // For clustered data, always use the full rendering pipeline
+      if (data.isClustered) {
+        console.log(`[VisualizationRenderer] 🎯 Clustered data detected - using full rendering pipeline`);
+        console.log(`[VisualizationRenderer] 🎯 Cluster details:`, {
+          clusterCount: data.clusters?.length || 0,
+          sampledClusterIds: data.records.slice(0, 3).map(r => ({ area: r.area_name, clusterId: r.cluster_id }))
+        });
       }
       
       // Fallback to complex rendering chain
@@ -297,7 +311,13 @@ export class VisualizationRenderer {
   private determineVisualizationType(data: ProcessedAnalysisData, defaultType: VisualizationType): VisualizationType {
     // Use data characteristics to optimize visualization type selection
     
-    // For cluster analysis, always use cluster renderer
+    // For clustered data (new approach: ZIP codes with cluster assignments), always use cluster renderer
+    if (data.isClustered) {
+      console.log('[VisualizationRenderer] 🎯 Using CLUSTER renderer for clustered data (ZIP codes with cluster assignments)');
+      return 'cluster';
+    }
+    
+    // For cluster analysis, always use cluster renderer (legacy spatial clustering)
     if (data.type === 'spatial_clustering' || data.clusterAnalysis) {
       console.log('[VisualizationRenderer] 🎯 Using CLUSTER renderer for spatial clustering');
       return 'cluster';

@@ -142,7 +142,26 @@ const createQuartileRenderer = async (
       await layer.load();
     }
 
-    //console.log(`[createQuartileRenderer] About to call calculateQuantiles for field: '${field}'`);
+    console.log(`🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: '${field}'`);
+    console.log(`🔥 [STRATEGIC VIZ DEBUG] Available fields in layer:`, layer.fields?.map(f => f.name) || 'none');
+    
+    // Also check the first feature to see what attributes are actually available
+    const testQuery = layer.createQuery();
+    testQuery.outFields = ['*'];
+    testQuery.returnGeometry = false;
+    testQuery.num = 1;
+    
+    try {
+      const testFeatureSet = await layer.queryFeatures(testQuery);
+      if (testFeatureSet.features && testFeatureSet.features.length > 0) {
+        const firstFeature = testFeatureSet.features[0];
+        console.log(`🔥 [STRATEGIC VIZ DEBUG] First feature attributes:`, Object.keys(firstFeature.attributes));
+        console.log(`🔥 [STRATEGIC VIZ DEBUG] Target field '${field}' value:`, firstFeature.attributes[field]);
+        console.log(`🔥 [STRATEGIC VIZ DEBUG] Strategic value score:`, firstFeature.attributes['strategic_value_score']);
+      }
+    } catch (testError) {
+      console.warn('Could not query test feature:', testError);
+    }
 
     const fieldInfo = layer.fields?.find(f => f.name === field);
     if (!fieldInfo) {

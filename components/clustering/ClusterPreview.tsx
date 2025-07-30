@@ -89,7 +89,7 @@ export function ClusterPreview({
     setConfig(newConfig);
     // Reset preview when config changes significantly
     if (newConfig.numClusters !== config.numClusters || 
-        newConfig.method !== config.method ||
+        // Method is now auto-detected, no manual comparison needed
         newConfig.minZipCodes !== config.minZipCodes ||
         newConfig.minPopulation !== config.minPopulation ||
         newConfig.maxRadiusMiles !== config.maxRadiusMiles) {

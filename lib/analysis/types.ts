@@ -1,6 +1,8 @@
 // Core Analysis Engine Types and Interfaces
 // Enhanced with Multi-Endpoint Analysis Support
 
+import { ClusterConfig } from '@/lib/clustering/types';
+
 // ============================================================================
 // ANALYSIS ENGINE CORE TYPES
 // ============================================================================
@@ -11,6 +13,9 @@ export interface AnalysisOptions {
   sampleSize?: number;
   forceRefresh?: boolean;
   visualizationType?: string;
+  
+  // Clustering options
+  clusterConfig?: ClusterConfig;
   
   // Multi-endpoint options
   endpoints?: string[];
@@ -110,6 +115,9 @@ export interface ProcessedAnalysisData {
   riskAssessment?: any; // Optional risk-specific metadata
   customerProfileAnalysis?: any; // Optional customer profile-specific metadata
   correlationAnalysis?: any; // Optional correlation-specific metadata
+  // Clustering-related fields
+  isClustered?: boolean; // Whether this data has been processed by clustering
+  clusters?: any[]; // Array of cluster information when available
 }
 
 export interface GeographicDataPoint {
@@ -121,6 +129,10 @@ export interface GeographicDataPoint {
   coordinates?: [number, number];
   properties: Record<string, any>;
   shapValues?: Record<string, number>;
+  geometry?: any; // GeoJSON geometry (Point, Polygon, etc.)
+  // Clustering-related fields
+  cluster_id?: number; // Cluster assignment when data is clustered
+  cluster_name?: string; // Human-readable cluster name
 }
 
 export interface FeatureImportance {
