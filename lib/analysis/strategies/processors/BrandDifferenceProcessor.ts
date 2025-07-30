@@ -100,11 +100,8 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       const brand1Share = Number(record[brand1Field]) || 0; // Already in percentage format
       const brand2Share = Number(record[brand2Field]) || 0; // Already in percentage format
       
-      // Calculate percent difference: (brand1 - brand2) / brand2 * 100
-      // If brand2 is 0, use absolute difference
-      const difference = brand2Share > 0 
-        ? ((brand1Share - brand2Share) / brand2Share) * 100
-        : brand1Share - brand2Share;
+      // Calculate simple difference: brand1 - brand2 (both already in percentage format)
+      const difference = brand1Share - brand2Share;
       
       // Use difference as the primary value for visualization
       const value = difference;
@@ -370,7 +367,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     
     let summary = `**📊 ${brand1Name} vs ${brand2Name} Market Share Difference Analysis**\n\n`;
     
-    summary += `**Methodology:** Calculated percent difference in market share between ${brand1Name} and ${brand2Name} across ${recordCount} markets. `;
+    summary += `**Methodology:** Calculated market share difference between ${brand1Name} and ${brand2Name} across ${recordCount} markets (${brand1Name} % - ${brand2Name} %). `;
     summary += `Positive values indicate ${brand1Name} advantage, negative values indicate ${brand2Name} advantage.\n\n`;
     
     // Overall market comparison
