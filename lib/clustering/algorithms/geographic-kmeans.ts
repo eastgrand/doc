@@ -5,7 +5,7 @@
  * with hard distance constraints to ensure territories are geographically coherent.
  */
 
-import { ClusteringFeature, ClusterConfig, ClusterResult, ClusteringResult, ClusteringError, CLUSTERING_ERROR_CODES } from '../types';
+import { ClusteringFeature, ClusterConfig, ClusterResult, ClusteringResult, ClusteringError, CLUSTERING_ERROR_CODES, ClusteringMethod } from '../types';
 import { calculateDistance, calculateCentroid, generateClusterBoundary } from '../utils/geographic-utils';
 import { validateCluster } from '../utils/cluster-validation';
 import { generateClusterName } from '../utils/cluster-naming';
@@ -418,7 +418,7 @@ export class GeographicKMeans {
       const scoreRange: [number, number] = [Math.min(...scores), Math.max(...scores)];
       
       // Generate cluster name
-      const name = generateClusterName(clusterFeatures, this.detectedMethod, i + 1);
+      const name = generateClusterName(clusterFeatures, this.detectedMethod as ClusteringMethod, i + 1);
       
       const cluster: ClusterResult = {
         clusterId: i,

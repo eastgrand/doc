@@ -11,11 +11,27 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
+// Simple collapsible implementation (avoiding Radix dependency)
+const SimpleCollapsible: React.FC<{ 
+  open: boolean; 
+  onOpenChange: (open: boolean) => void;
+  children: React.ReactNode;
+}> = ({ open, onOpenChange, children }) => {
+  return <div>{children}</div>;
+};
+
+const SimpleCollapsibleTrigger: React.FC<{ 
+  asChild?: boolean; 
+  children: React.ReactNode;
+}> = ({ children }) => {
+  return <div>{children}</div>;
+};
+
+const SimpleCollapsibleContent: React.FC<{ 
+  children: React.ReactNode;
+}> = ({ children }) => {
+  return <div>{children}</div>;
+};
 import { 
   Target, 
   MapPin, 
@@ -306,19 +322,19 @@ function TerritoryCard({
                 <Share2 className="h-4 w-4" />
               </Button>
             )}
-            <Collapsible open={isExpanded} onOpenChange={onExpand}>
-              <CollapsibleTrigger asChild>
-                <Button variant="ghost" size="sm">
+            <SimpleCollapsible open={isExpanded} onOpenChange={onExpand}>
+              <SimpleCollapsibleTrigger asChild>
+                <Button variant="ghost" size="sm" onClick={onExpand}>
                   {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                 </Button>
-              </CollapsibleTrigger>
-            </Collapsible>
+              </SimpleCollapsibleTrigger>
+            </SimpleCollapsible>
           </div>
         </div>
 
         {/* Expanded Details */}
-        <Collapsible open={isExpanded} onOpenChange={onExpand}>
-          <CollapsibleContent>
+        {isExpanded && (
+          <SimpleCollapsibleContent>
             <Separator className="my-4" />
             
             <div className="space-y-4">
@@ -400,8 +416,8 @@ function TerritoryCard({
                 </div>
               </div>
             </div>
-          </CollapsibleContent>
-        </Collapsible>
+          </SimpleCollapsibleContent>
+        )}
       </CardContent>
     </Card>
   );

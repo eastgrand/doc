@@ -215,7 +215,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     if (differences.length === 0) {
       return {
         total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0,
-        quintiles: { differences: [] }
+        quintiles: { differences: [] } as any
       };
     }
     
@@ -245,7 +245,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       stdDev,
       quintiles: {
         differences: quintileResult.quintiles
-      }
+      } as any
     };
   }
 

@@ -2,16 +2,16 @@
 
 // This is what should replace the current clustering approach in ClusteringService.ts
 
-const enhanceAnalysisWithClusters_CORRECT = (originalResult, clusteringResult) => {
+const enhanceAnalysisWithClusters_CORRECT = (originalResult: any, clusteringResult: any) => {
   
   // Create cluster-level records (territories) instead of individual ZIP codes
-  const clusterRecords = [];
+  const clusterRecords: any[] = [];
   
   console.log(`[ClusteringService] 🎯 Creating cluster territory records from ${clusteringResult.clusters.length} clusters`);
   
   for (const cluster of clusteringResult.clusters) {
     // Get all original ZIP code records belonging to this cluster
-    const clusterZipRecords = (originalResult.data.records || []).filter(record => {
+    const clusterZipRecords = (originalResult.data.records || []).filter((record: any) => {
       const zipCode = record.properties?.geo_id || record.properties?.zip_code || record.area_name;
       return cluster.zipCodes.includes(zipCode);
     });
@@ -22,9 +22,9 @@ const enhanceAnalysisWithClusters_CORRECT = (originalResult, clusteringResult) =
     }
 
     // Aggregate cluster metrics
-    const totalValue = clusterZipRecords.reduce((sum, record) => sum + (record.value || 0), 0);
+    const totalValue = clusterZipRecords.reduce((sum: any, record: any) => sum + (record.value || 0), 0);
     const avgValue = totalValue / clusterZipRecords.length;
-    const totalPopulation = clusterZipRecords.reduce((sum, record) => 
+    const totalPopulation = clusterZipRecords.reduce((sum: any, record: any) => 
       sum + (record.properties?.total_population || 0), 0);
 
     // Create cluster territory boundary from all ZIP codes in the cluster
@@ -73,7 +73,7 @@ const enhanceAnalysisWithClusters_CORRECT = (originalResult, clusteringResult) =
     records: clusterRecords, // Use cluster territories instead of individual ZIP codes
     totalRecords: clusterRecords.length, // Now shows cluster count (12), not ZIP count (3983)
     clusters: clusteringResult.clusters,
-    clusteringSummary: generateClusteringSummary(clusteringResult),
+    clusteringSummary: `Generated ${clusteringResult.clusters.length} cluster territories`,
     isClustered: true,
     clusteringApproach: 'cluster_territories',
     originalRecordCount: originalResult.data.records?.length || 0
@@ -94,16 +94,16 @@ const enhanceAnalysisWithClusters_CORRECT = (originalResult, clusteringResult) =
   };
 };
 
-const createClusterTerritoryBoundary = (zipRecords) => {
+const createClusterTerritoryBoundary = (zipRecords: any[]) => {
   if (zipRecords.length === 0) return null;
   
   // Extract all coordinates from ZIP code geometries that have been joined with boundaries
-  const allCoordinates = [];
+  const allCoordinates: any[] = [];
   
-  zipRecords.forEach(record => {
+  zipRecords.forEach((record: any) => {
     if (record.geometry?.type === 'Polygon' && record.geometry.coordinates?.[0]) {
       // Extract coordinates from polygon rings
-      record.geometry.coordinates[0].forEach(coord => {
+      record.geometry.coordinates[0].forEach((coord: any) => {
         allCoordinates.push(coord);
       });
     } else if (record.geometry?.type === 'Point' && record.geometry.coordinates) {

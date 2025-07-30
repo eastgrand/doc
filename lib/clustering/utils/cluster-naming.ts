@@ -375,8 +375,8 @@ export function generateClusterInsights(
       break;
       
     case 'competitive-scores':
-      const nikeShare = characteristics.nikeShares?.[0] || 0;
-      const adidasShare = characteristics.adidasShares?.[0] || 0;
+      const nikeShare = (characteristics as any).nikeShares?.[0] || 0;
+      const adidasShare = (characteristics as any).adidasShares?.[0] || 0;
       if (nikeShare > adidasShare * 1.5) {
         insights.push('Nike preference');
       } else if (adidasShare > nikeShare * 1.5) {

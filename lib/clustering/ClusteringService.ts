@@ -515,7 +515,7 @@ export class ClusteringService {
     };
 
     // Keep individual ZIP code records but add cluster assignments for coloring
-    const clusteredZipRecords = [];
+    const clusteredZipRecords: any[] = [];
     
     // Create a map of ZIP codes to cluster assignments
     const zipToClusterMap = new Map();
@@ -819,7 +819,7 @@ export class ClusteringService {
       }
     };
 
-    return configs[endpoint] || {
+    return configs[endpoint as keyof typeof configs] || {
       name: 'Market Analysis',
       scoreField: 'value',
       scoreName: 'Market Score', 
@@ -928,7 +928,7 @@ This ${config.focus} analysis has identified ${clusters.length} distinct market 
    */
   private generateClusterDetails(cluster: any, rank: number, config: any): string {
     const topZipsText = cluster.topZips
-      .map(zip => `${zip.code} (${zip.name}, score: ${zip.score.toFixed(1)})`)
+      .map((zip: any) => `${zip.code} (${zip.name}, score: ${zip.score.toFixed(1)})`)
       .join(', ');
 
     return `**${rank}. ${cluster.name}** - ${cluster.zipCount} ZIP codes, Avg ${config.scoreName}: ${cluster.avgScore.toFixed(1)}

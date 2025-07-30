@@ -60,9 +60,8 @@ export function ClusterViewToggle({
             <ToggleGroup 
               type="single" 
               value={viewMode} 
-              onValueChange={(value: ViewMode) => value && onViewModeChange(value)}
+              onValueChange={(value) => value && onViewModeChange(value as ViewMode)}
               className="bg-muted rounded-lg p-1"
-              disabled={disabled}
             >
               <ToggleGroupItem 
                 value="individual" 
@@ -203,18 +202,15 @@ export function CompactClusterViewToggle({
       <ToggleGroup 
         type="single" 
         value={viewMode} 
-        onValueChange={(value: ViewMode) => value && onViewModeChange(value)}
+        onValueChange={(value) => value && onViewModeChange(value as ViewMode)}
         className="bg-muted rounded p-1"
-        size="sm"
-        disabled={disabled}
       >
-        <ToggleGroupItem value="individual" aria-label="Individual view" size="sm">
+        <ToggleGroupItem value="individual" aria-label="Individual view">
           <MapPin className="h-3 w-3" />
         </ToggleGroupItem>
         <ToggleGroupItem 
           value="clustered" 
           aria-label="Clustered view" 
-          size="sm"
           disabled={clusterCount === 0}
         >
           <Target className="h-3 w-3" />
@@ -222,7 +218,6 @@ export function CompactClusterViewToggle({
         <ToggleGroupItem 
           value="both" 
           aria-label="Both views" 
-          size="sm"
           disabled={clusterCount === 0}
         >
           <BarChart3 className="h-3 w-3" />

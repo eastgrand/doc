@@ -79,7 +79,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
     data.records.forEach(record => {
       // Get cluster ID from direct field (clustered ZIP records)
       const clusterId = record.cluster_id; // Cluster ID is stored as direct property
-      const clusterName = record.cluster_name || `Cluster ${clusterId + 1}`;
+      const clusterName = record.cluster_name || `Cluster ${(clusterId ?? 0) + 1}`;
       
       if (clusterId === undefined || clusterId === null) {
         console.warn(`[ClusterRenderer] Record ${record.area_name} missing cluster_id field`);

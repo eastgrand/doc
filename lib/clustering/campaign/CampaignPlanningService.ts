@@ -680,9 +680,10 @@ export class CampaignPlanningService {
     const synergies: string[] = [];
 
     // Analyze top opportunities
-    const highScoreTerritories = territories.filter(t => 
-      clusters.find(c => c.clusterId === t.territoryId)?.averageScore >= 7
-    );
+    const highScoreTerritories = territories.filter(t => {
+      const cluster = clusters.find(c => c.clusterId === t.territoryId);
+      return cluster && cluster.averageScore >= 7;
+    });
     
     if (highScoreTerritories.length > 0) {
       topOpportunities.push(
@@ -690,9 +691,10 @@ export class CampaignPlanningService {
       );
     }
 
-    const largeTerritories = territories.filter(t => 
-      clusters.find(c => c.clusterId === t.territoryId)?.totalPopulation >= 200000
-    );
+    const largeTerritories = territories.filter(t => {
+      const cluster = clusters.find(c => c.clusterId === t.territoryId);
+      return cluster && cluster.totalPopulation >= 200000;
+    });
     
     if (largeTerritories.length > 0) {
       topOpportunities.push(
@@ -729,9 +731,10 @@ export class CampaignPlanningService {
     }
 
     // Risk factors
-    const lowScoreTerritories = territories.filter(t => 
-      clusters.find(c => c.clusterId === t.territoryId)?.averageScore <= 3
-    );
+    const lowScoreTerritories = territories.filter(t => {
+      const cluster = clusters.find(c => c.clusterId === t.territoryId);
+      return cluster && cluster.averageScore <= 3;
+    });
     
     if (lowScoreTerritories.length > 0) {
       riskFactors.push(

@@ -8,6 +8,15 @@
 // Clustering method is now auto-detected based on the analysis endpoint
 // This eliminates the need for manual method selection and reduces user confusion
 
+export type ClusteringMethod = 
+  | 'region-growing'
+  | 'strategic-scores'
+  | 'competitive-analysis'
+  | 'demographic-analysis'
+  | 'competitive-scores'
+  | 'analysis-geographic'
+  | 'demographic-scores';
+
 export interface ClusterConfig {
   enabled: boolean;                    // Default: false - maintains current behavior
   numClusters: number;                // Default: 5, Range: 1-20 - Maximum territories to create

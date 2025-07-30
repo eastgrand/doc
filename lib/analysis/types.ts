@@ -35,7 +35,7 @@ export interface AnalysisOptions {
 export interface AnalysisResult {
   endpoint: string;
   data: ProcessedAnalysisData;
-  visualization: VisualizationResult;
+  visualization?: VisualizationResult;
   success: boolean;
   error?: string;
   metadata?: AnalysisMetadata;
@@ -115,6 +115,8 @@ export interface ProcessedAnalysisData {
   riskAssessment?: any; // Optional risk-specific metadata
   customerProfileAnalysis?: any; // Optional customer profile-specific metadata
   correlationAnalysis?: any; // Optional correlation-specific metadata
+  brandAnalysis?: any; // Optional brand comparison-specific metadata
+  brandComparison?: any; // Optional brand comparison data
   // Clustering-related fields
   isClustered?: boolean; // Whether this data has been processed by clustering
   clusters?: any[]; // Array of cluster information when available

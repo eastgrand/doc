@@ -11,7 +11,8 @@ import {
   ClusterResult, 
   ClusteringResult, 
   ClusteringError, 
-  CLUSTERING_ERROR_CODES 
+  CLUSTERING_ERROR_CODES,
+  ClusteringMethod
 } from '../types';
 import { calculateDistance, calculateCentroid, generateClusterBoundary } from '../utils/geographic-utils';
 import { validateCluster } from '../utils/cluster-validation';
@@ -287,7 +288,7 @@ export class RegionGrowingAlgorithm {
     const scoreRange: [number, number] = [Math.min(...scores), Math.max(...scores)];
     
     // Generate name
-    const name = generateClusterName(features, this.detectedMethod, clusterId + 1);
+    const name = generateClusterName(features, this.detectedMethod as ClusteringMethod, clusterId + 1);
     
     return {
       clusterId,

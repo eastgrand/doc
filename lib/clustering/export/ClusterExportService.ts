@@ -201,7 +201,7 @@ export class ClusterExportService {
     if (options.customFields) {
       options.customFields.forEach(field => {
         // This would be extended to include custom field extraction logic
-        baseData[field] = cluster[field as keyof ClusterResult] || '';
+        (baseData as any)[field] = cluster[field as keyof ClusterResult] || '';
       });
     }
 

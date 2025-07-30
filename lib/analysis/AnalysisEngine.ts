@@ -259,7 +259,7 @@ export class AnalysisEngine {
         success: true,
         endpoint: selectedEndpoint,
         data: processedData,
-        visualization: null, // Will be created after clustering
+        // visualization will be added after clustering
         metadata: {
           executionTime: Date.now() - startTime,
           dataPointCount: processedData.records?.length || 0,

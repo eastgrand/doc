@@ -3081,7 +3081,13 @@ const EnhancedGeospatialChat = memo(({
         });
       }
       
-      const createdLayer = await applyAnalysisEngineVisualization(finalAnalysisResult.visualization, visualizationData, currentMapView);
+      if (!finalAnalysisResult.visualization) {
+        console.error('[AnalysisEngine] No visualization result available');
+        return;
+      }
+      
+      const visualization = finalAnalysisResult.visualization;
+      const createdLayer = await applyAnalysisEngineVisualization(visualization, visualizationData, currentMapView);
       
       // Pass the created layer to the callback
       if (createdLayer) {
@@ -3125,16 +3131,16 @@ const EnhancedGeospatialChat = memo(({
 
 
       // Create legend from AnalysisEngine result
-      if (finalAnalysisResult.visualization.legend) {
-        console.log('[AnalysisEngine] Processing legend:', finalAnalysisResult.visualization.legend);
+      if (visualization.legend) {
+        console.log('[AnalysisEngine] Processing legend:', visualization.legend);
         
         let legendData;
-        if ((finalAnalysisResult.visualization.legend as any).components) {
+        if ((visualization.legend as any).components) {
           // Dual-variable format with components array
           legendData = {
-            title: finalAnalysisResult.visualization.legend.title,
+            title: visualization.legend.title,
             type: 'dual-variable',
-            components: (finalAnalysisResult.visualization.legend as any).components.map((component: any) => ({
+            components: (visualization.legend as any).components.map((component: any) => ({
               title: component.title,
               type: component.type,
               items: component.items.map((item: any) => ({
@@ -3146,11 +3152,11 @@ const EnhancedGeospatialChat = memo(({
               }))
             }))
           };
-        } else if (finalAnalysisResult.visualization.legend.items) {
+        } else if (visualization.legend.items) {
           // Standard format with items array
           legendData = {
-            title: finalAnalysisResult.visualization.legend.title,
-            items: finalAnalysisResult.visualization.legend.items.map(item => ({
+            title: visualization.legend.title,
+            items: visualization.legend.items.map((item: any) => ({
               label: item.label,
               color: item.color,
               value: item.value,
@@ -3181,16 +3187,16 @@ const EnhancedGeospatialChat = memo(({
 
       // Update state - the AnalysisEngine manages its own visualization layer
       setVisualizationResult({
-        type: finalAnalysisResult.visualization.type,
-        legend: finalAnalysisResult.visualization.legend,
-        config: finalAnalysisResult.visualization.config
+        type: visualization.type,
+        legend: visualization.legend,
+        config: visualization.config
       } as any);
       
       // Notify parent that new layer was created (layer is managed by applyAnalysisEngineVisualization)
       onVisualizationLayerCreated(currentVisualizationLayer.current, true);
 
       // Auto-zoom to data if configured
-      if (finalAnalysisResult.visualization.config?.autoZoom && currentMapView && geographicFeatures.length > 0) {
+      if (visualization.config?.autoZoom && currentMapView && geographicFeatures.length > 0) {
         // Calculate extent from geographic features
         const [geometryEngine] = await Promise.all([
           import('@arcgis/core/geometry/geometryEngine')
