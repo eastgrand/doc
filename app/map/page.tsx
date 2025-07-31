@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic'
 
-// Dynamic import without loading fallback - let the component handle its own loading
+// No loading fallback - let MapApp handle all loading states with LoadingModal
 const MapPageClient = dynamic(() => import('@/components/MapPageClient'), {
   ssr: false,
 })

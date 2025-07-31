@@ -39,6 +39,7 @@ import { colorToRgba, getSymbolShape, getSymbolSize } from '@/utils/symbol-utils
 import { VisualizationResult as ChatVisualizationResult } from '@/types/geospatial-chat';
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
 import Color from '@arcgis/core/Color';
+import { LoadingModal } from '@/components/LoadingModal';
 
 console.log('[MAP_APP] MapApp component function body executing');
 
@@ -120,6 +121,36 @@ export const MapApp: React.FC = memo(() => {
   const [formattedLegendData, setFormattedLegendData] = useState<any>(null);
   const [visualizationResult, setVisualizationResult] = useState<any>(null);
 
+  // Loading state management
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [showLoading, setShowLoading] = useState(true);
+  const [loadingStages, setLoadingStages] = useState({
+    mounted: false,
+    mapInitialized: false,
+    layersLoaded: false,
+    analysisToolsReady: false,
+    widgetsReady: false
+  });
+
+  // Track loading progress based on stages
+  useEffect(() => {
+    const stages = Object.values(loadingStages);
+    const completedStages = stages.filter(Boolean).length;
+    const totalStages = stages.length;
+    const progress = Math.round((completedStages / totalStages) * 100);
+    
+    setLoadingProgress(progress);
+    
+    // Hide loading when all stages complete
+    if (progress === 100) {
+      setTimeout(() => setShowLoading(false), 500);
+    }
+  }, [loadingStages]);
+
+  useEffect(() => {
+    setMounted(true);
+    setLoadingStages(prev => ({ ...prev, mounted: true }));
+  }, []);
 
   // Sync formattedLegendData with mapLegend state
   useEffect(() => {
@@ -227,7 +258,10 @@ export const MapApp: React.FC = memo(() => {
   }
 
   return (
-    <>      
+    <>
+      {/* Loading Modal - blocks all interaction until everything loads */}
+      <LoadingModal progress={loadingProgress} show={showLoading} />
+      
       <div className="fixed inset-0 flex">
         {/* Left Toolbar */}
         <div className="w-16 bg-gray-100 flex flex-col z-[9999]">
