@@ -273,7 +273,6 @@ export const FIELD_ALIASES: Record<string, string> = {
   "area": "Shape__Area",
   "region": "DESCRIPTION",
   "location": "DESCRIPTION", 
-  "zip code": "DESCRIPTION",
   "zipcode": "DESCRIPTION",
   "postal code": "DESCRIPTION",
   "geographic": "Shape__Area",
