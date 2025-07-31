@@ -3,16 +3,26 @@
 import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
 
-// Test dynamic import with a simple component first
+// Immediate loading component to prevent FOUC
+const LoadingScreen = () => (
+  <div className="map-page-loading">
+    <div className="flex flex-col items-center space-y-4">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="text-lg text-gray-600">Loading map application...</div>
+    </div>
+  </div>
+)
+
+// Dynamic import with immediate loading fallback
 const MapPageClient = dynamic(() => import('@/components/MapPageClient'), {
   ssr: false,
-  loading: () => <div className="h-screen w-full flex items-center justify-center">Loading Map...</div>,
+  loading: LoadingScreen,
 })
 
 export default function MapPage() {
   return (
-      <Suspense fallback={<div className="h-screen w-full flex items-center justify-center">Loading...</div>}>
-        <MapPageClient />
-      </Suspense>
+    <Suspense fallback={<LoadingScreen />}>
+      <MapPageClient />
+    </Suspense>
   )
 }
