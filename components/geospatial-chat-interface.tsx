@@ -796,15 +796,30 @@ const EnhancedGeospatialChat = memo(({
   // Extract SHAP values from analysis data and create chart data
   const extractSHAPValues = (analysisData: any): Array<{name: string, value: number}> => {
     try {
-      // Get the features from the analysis data
-      const features = analysisData.features || [];
-      if (features.length === 0) return [];
+      // Check if there's already a featureImportance array
+      if (analysisData.featureImportance && analysisData.featureImportance.length > 0) {
+        console.log('[SHAP Extract] Using existing featureImportance data:', analysisData.featureImportance);
+        return analysisData.featureImportance
+          .sort((a: any, b: any) => b.value - a.value)
+          .slice(0, 10)
+          .filter((item: any) => item.value > 0);
+      }
 
-      // Aggregate SHAP values across all features
+      // Get the records from the analysis data (try both 'records' and 'features')
+      const records = analysisData.records || analysisData.features || [];
+      if (records.length === 0) {
+        console.log('[SHAP Extract] No records or features found');
+        return [];
+      }
+
+      console.log('[SHAP Extract] Processing', records.length, 'records for SHAP values');
+
+      // Aggregate SHAP values across all records
       const shapAggregation: Record<string, number[]> = {};
       
-      features.forEach((feature: any) => {
-        const properties = feature.properties || {};
+      records.forEach((record: any, index: number) => {
+        // Handle both feature.properties structure and direct record structure
+        const properties = record.properties || record;
         
         // Find all SHAP fields (fields starting with 'shap_')
         Object.keys(properties).forEach(key => {
@@ -819,7 +834,15 @@ const EnhancedGeospatialChat = memo(({
             shapAggregation[readableName].push(Math.abs(properties[key])); // Use absolute value for importance
           }
         });
+
+        // Log SHAP fields found in first few records for debugging
+        if (index < 3) {
+          const shapFields = Object.keys(properties).filter(k => k.startsWith('shap_'));
+          console.log(`[SHAP Extract] Record ${index} SHAP fields:`, shapFields);
+        }
       });
+
+      console.log('[SHAP Extract] Aggregated SHAP fields:', Object.keys(shapAggregation));
 
       // Calculate average importance for each field
       const shapValues = Object.entries(shapAggregation).map(([name, values]) => ({
