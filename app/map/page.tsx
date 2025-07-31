@@ -1,7 +1,6 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { Suspense } from 'react'
 
 // Immediate loading component to prevent FOUC
 const LoadingScreen = () => (
@@ -20,9 +19,5 @@ const MapPageClient = dynamic(() => import('@/components/MapPageClient'), {
 })
 
 export default function MapPage() {
-  return (
-    <Suspense fallback={<LoadingScreen />}>
-      <MapPageClient />
-    </Suspense>
-  )
+  return <MapPageClient />
 }
