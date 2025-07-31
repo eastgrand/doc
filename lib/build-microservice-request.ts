@@ -51,14 +51,14 @@ export function buildMicroserviceRequest(
     
     // This is a brand comparison query - add all mentioned brand fields
     const brandMap: Record<string, string> = {
-      'nike': 'MP30034A_B',
-      'adidas': 'MP30029A_B',
-      'jordan': 'MP30032A_B',
-      'converse': 'MP30031A_B',
-      'puma': 'MP30035A_B',
-      'reebok': 'MP30036A_B',
-      'new balance': 'MP30033A_B',
-      'asics': 'MP30030A_B'
+      'nike': 'MP30034A_B_P',
+      'adidas': 'MP30029A_B_P',
+      'jordan': 'MP30032A_B_P',
+      'converse': 'MP30031A_B_P',
+      'puma': 'MP30035A_B_P',
+      'reebok': 'MP30036A_B_P',
+      'new balance': 'MP30033A_B_P',
+      'asics': 'MP30030A_B_P'
     };
     
     Object.entries(brandMap).forEach(([brand, fieldCode]) => {

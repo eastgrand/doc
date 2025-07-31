@@ -183,7 +183,109 @@ export const FIELD_ALIASES: Record<string, string> = {
   "New Balance Athletic Shoes Purchases (%)": "MP30033A_B_P",
   "Puma Athletic Shoes Purchases (%)": "MP30035A_B_P",
   "Reebok Athletic Shoes Purchases (%)": "MP30036A_B_P",
-  "Skechers Athletic Shoes Purchases (%)": "MP30037A_B_P"
+  "Skechers Athletic Shoes Purchases (%)": "MP30037A_B_P",
+
+  // Natural language terms for common queries
+  // Population terms
+  "population": "TOTPOP_CY",
+  "total population": "TOTPOP_CY", 
+  "people": "TOTPOP_CY",
+  "residents": "TOTPOP_CY",
+  "demographic": "TOTPOP_CY",
+  "demographics": "TOTPOP_CY",
+  
+  // Income terms
+  "income": "MEDDI_CY",
+  "median income": "MEDDI_CY",
+  "disposable income": "MEDDI_CY", 
+  "household income": "MEDDI_CY",
+  "earnings": "MEDDI_CY",
+  "wages": "MEDDI_CY",
+  "salary": "MEDDI_CY",
+  "wealth": "MEDDI_CY",
+  
+  // Age and generation terms
+  "age": "Age",
+  "young": "GENZ_CY_P",
+  "younger": "GENZ_CY_P", 
+  "gen z": "GENZ_CY_P",
+  "generation z": "GENZ_CY_P",
+  "millennials": "MILLENN_CY_P",
+  "millennial": "MILLENN_CY_P",
+  "gen alpha": "GENALPHACY_P",
+  "generation alpha": "GENALPHACY_P",
+  
+  // Race and ethnicity terms  
+  "white": "WHITE_CY_P",
+  "caucasian": "WHITE_CY_P",
+  "black": "BLACK_CY_P", 
+  "african american": "BLACK_CY_P",
+  "hispanic": "HISPWHT_CY_P",
+  "latino": "HISPWHT_CY_P",
+  "asian": "ASIAN_CY_P",
+  "diversity": "DIVINDX_CY",
+  "diverse": "DIVINDX_CY",
+  "minority": "RACE2UP_CY_P",
+  "minorities": "RACE2UP_CY_P",
+  
+  // Sports and activity terms
+  "running": "MP30021A_B_P",
+  "jogging": "MP30021A_B_P", 
+  "runners": "MP30021A_B_P",
+  "basketball": "MP30018A_B_P",
+  "athletic shoes": "MP30016A_B_P",
+  "sneakers": "MP30016A_B_P",
+  "footwear": "MP30016A_B_P",
+  "shoes": "MP30016A_B_P",
+  "cross training": "MP30019A_B_P",
+  "workout": "MP07111A_B_P",
+  "exercise": "X9051_X",
+  "fitness": "X9051_X",
+  "sports": "X9051_X",
+  "athletic": "MP30016A_B_P",
+  
+  // Shopping and retail terms
+  "shopping": "MP31035A_B_P",
+  "retail": "MP31035A_B_P", 
+  "dicks sporting goods": "MP31035A_B_P",
+  "foot locker": "MP31042A_B_P",
+  "spending": "MP07109A_B_P",
+  "purchases": "MP30016A_B_P",
+  "buying": "MP30016A_B_P",
+  "consumers": "MP30016A_B_P",
+  
+  // Brand variations and common misspellings
+  "addidas": "MP30029A_B_P", // common misspelling
+  "nike": "MP30034A_B_P",
+  "adidas": "MP30029A_B_P", 
+  "asics": "MP30030A_B_P",
+  "converse": "MP30031A_B_P",
+  "jordan": "MP30032A_B_P",
+  "air jordan": "MP30032A_B_P",
+  "new balance": "MP30033A_B_P",
+  "newbalance": "MP30033A_B_P",
+  "puma": "MP30035A_B_P",
+  "reebok": "MP30036A_B_P",
+  "skechers": "MP30037A_B_P",
+  "sketchers": "MP30037A_B_P", // common misspelling
+  
+  // Geographic terms
+  "area": "Shape__Area",
+  "region": "DESCRIPTION",
+  "location": "DESCRIPTION", 
+  "zip code": "DESCRIPTION",
+  "zipcode": "DESCRIPTION",
+  "postal code": "DESCRIPTION",
+  "geographic": "Shape__Area",
+  "geography": "Shape__Area",
+  
+  // Housing terms
+  "housing": "thematic_value",
+  "homes": "thematic_value",
+  "households": "HHPOP_CY_P",
+  "families": "FAMPOP_CY_P",
+  "family": "FAMPOP_CY_P",
+  "household": "HHPOP_CY_P"
 };
 
 export const fieldAliases = FIELD_ALIASES;

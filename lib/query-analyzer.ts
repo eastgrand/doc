@@ -69,16 +69,16 @@ const demographicFields = [
  * Example for real estate: { 'luxury_homes': 'LUXURY_SALES_PCT', 'condos': 'CONDO_SALES_PCT' }
  */
 const BRAND_FIELD_CODES: Record<string, string> = {
-  'nike': 'MP30034A_B',
-  'jordan': 'MP30032A_B',
-  'converse': 'MP30031A_B',
-  'adidas': 'MP30029A_B',
-  'puma': 'MP30035A_B',
-  'reebok': 'MP30036A_B',
-  'newbalance': 'MP30033A_B',
-  'new balance': 'MP30033A_B',
-  'asics': 'MP30030A_B',
-  'skechers': 'MP30037A_B'
+  'nike': 'MP30034A_B_P',
+  'jordan': 'MP30032A_B_P',
+  'converse': 'MP30031A_B_P',
+  'adidas': 'MP30029A_B_P',
+  'puma': 'MP30035A_B_P',
+  'reebok': 'MP30036A_B_P',
+  'newbalance': 'MP30033A_B_P',
+  'new balance': 'MP30033A_B_P',
+  'asics': 'MP30030A_B_P',
+  'skechers': 'MP30037A_B_P'
 } as const;
 
 /**
