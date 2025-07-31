@@ -1011,23 +1011,12 @@ export default function InfographicsTab({
         params: JSON.stringify(params, null, 2)
       });
 
-      // Test direct HTTP request first to diagnose the issue
-      console.log('=== TESTING DIRECT HTTP REQUEST ===');
+      // Comprehensive API key and service testing
+      console.log('=== SERVICE AREA LICENSING & API DIAGNOSTICS ===');
       try {
-        const testUrl = `${serviceUrl}?f=json&token=${envApiKey}`;
-        console.log('Testing direct access to service URL:', testUrl);
-        
-        const testResponse = await fetch(testUrl);
-        const testResult = await testResponse.json();
-        console.log('Direct HTTP test result:', {
-          status: testResponse.status,
-          statusText: testResponse.statusText,
-          result: testResult
-        });
-        
-        // Also test without any parameters to see service info
+        // Test 1: Service info without authentication to understand requirements
         const infoUrl = `${serviceUrl}?f=json`;
-        console.log('Testing service info without token:', infoUrl);
+        console.log('Test 1: Service info (no auth):', infoUrl);
         const infoResponse = await fetch(infoUrl);
         const infoResult = await infoResponse.json();
         console.log('Service info result:', {
@@ -1035,12 +1024,112 @@ export default function InfographicsTab({
           statusText: infoResponse.statusText,
           result: infoResult
         });
+        
+        // Test 2: Direct access with API key as token
+        const testUrl = `${serviceUrl}?f=json&token=${envApiKey}`;
+        console.log('Test 2: Service access with API key token');
+        const testResponse = await fetch(testUrl);
+        const testResult = await testResponse.json();
+        console.log('API key test result:', {
+          status: testResponse.status,
+          statusText: testResponse.statusText,
+          error: testResult.error?.message,
+          details: testResult.error?.details
+        });
+        
+        // Test 3: Check account privileges
+        const tokenInfoUrl = `https://www.arcgis.com/sharing/rest/portals/self?f=json&token=${envApiKey}`;
+        console.log('Test 3: Account privileges check');
+        const tokenResponse = await fetch(tokenInfoUrl);
+        const tokenResult = await tokenResponse.json();
+        console.log('Account info result:', {
+          status: tokenResponse.status,
+          user: tokenResult.user,
+          privileges: tokenResult.user?.privileges,
+          hasNetworkAnalysis: tokenResult.user?.privileges?.includes('premium:user:networkanalysis:routing'),
+          hasOptimizedRouting: tokenResult.user?.privileges?.includes('premium:user:networkanalysis:optimizedrouting')
+        });
+        
+        // Test 4: Alternative service URL (route.arcgis.com)
+        const alternativeUrl = "https://route.arcgis.com/arcgis/rest/services/World/ServiceAreas/NAServer/ServiceArea_World/solveServiceArea";
+        console.log('Test 4: Alternative service endpoint');
+        const altResponse = await fetch(`${alternativeUrl}?f=json&token=${envApiKey}`);
+        const altResult = await altResponse.json();
+        console.log('Alternative endpoint result:', {
+          status: altResponse.status,
+          statusText: altResponse.statusText,
+          error: altResult.error?.message
+        });
+        
+        // Diagnostic summary
+        console.log('=== DIAGNOSTIC SUMMARY ===');
+        console.log('API Key Status:', {
+          present: !!envApiKey,
+          length: envApiKey?.length,
+          validFormat: envApiKey?.startsWith('AAPT') && envApiKey?.length > 400
+        });
+        console.log('Required Privileges for Service Areas:');
+        console.log('- premium:user:networkanalysis:routing OR');
+        console.log('- premium:user:networkanalysis:optimizedrouting');
+        console.log('Solution: Upgrade ArcGIS subscription or use approximation fallback');
+        
       } catch (testError) {
-        console.error('Direct HTTP test failed:', testError);
+        console.error('Diagnostic tests failed:', testError);
       }
-      console.log('=== END DIRECT HTTP TEST ===');
+      console.log('=== END DIAGNOSTICS ===');
 
-      const result = await serviceArea.solve(serviceUrl, params);
+      // Try different approaches to solve the service area issue
+      console.log('=== ATTEMPTING SERVICE AREA SOLVE ===');
+      
+      // Method 1: Standard solve with current URL
+      console.log('Method 1: Standard solve attempt');
+      let result;
+      try {
+        result = await serviceArea.solve(serviceUrl, params);
+        console.log('Method 1 SUCCESS: Standard solve worked');
+      } catch (method1Error) {
+        console.log('Method 1 FAILED:', method1Error);
+        
+        // Method 2: Try with different service URL
+        console.log('Method 2: Alternative service URL');
+        const altServiceUrl = "https://route.arcgis.com/arcgis/rest/services/World/ServiceAreas/NAServer/ServiceArea_World/solveServiceArea";
+        try {
+          result = await serviceArea.solve(altServiceUrl, params);
+          console.log('Method 2 SUCCESS: Alternative URL worked');
+        } catch (method2Error) {
+          console.log('Method 2 FAILED:', method2Error);
+          
+          // Method 3: Try with explicit RequestOptions
+          console.log('Method 3: Explicit authentication in request options');
+          try {
+            result = await serviceArea.solve(serviceUrl, params, {
+              requestOptions: {
+                query: { token: envApiKey }
+              }
+            });
+            console.log('Method 3 SUCCESS: Explicit auth in request options worked');
+          } catch (method3Error) {
+            console.log('Method 3 FAILED:', method3Error);
+            
+            // Method 4: Try without useHierarchy and with minimal params
+            console.log('Method 4: Simplified parameters');
+            const simplifiedParams = new ServiceAreaParameters({
+              facilities: params.facilities,
+              defaultBreaks: params.defaultBreaks,
+              outSpatialReference: params.outSpatialReference
+            });
+            try {
+              result = await serviceArea.solve(serviceUrl, simplifiedParams);
+              console.log('Method 4 SUCCESS: Simplified params worked');
+            } catch (method4Error) {
+              console.log('Method 4 FAILED:', method4Error);
+              throw method4Error; // Re-throw to trigger fallback
+            }
+          }
+        }
+      }
+      
+      console.log('=== SERVICE AREA SOLVE COMPLETED ===');
       
       // Add proper null checks for service area polygons
       if (result?.serviceAreaPolygons?.features && result.serviceAreaPolygons.features.length > 0) {
@@ -1081,8 +1170,8 @@ export default function InfographicsTab({
           (error.message as string).includes('permissions')) {
         console.log('Service area failed due to licensing requirements, using enhanced approximation');
         
-        // Set user-friendly notification about fallback
-        setError(`Using approximation: ${bufferType === 'drivetime' ? 'Drive-time' : 'Walk-time'} areas require premium licensing. Showing estimated ${bufferType === 'drivetime' ? 'driving' : 'walking'} range instead.`);
+        // Set user-friendly notification about licensing requirement
+        setError(`Service area requires premium license: The ArcGIS World ServiceAreas API requires 'premium:user:networkanalysis:routing' privileges. Using approximation instead.`);
         
         // Enhanced fallback with more realistic parameters
         let radiusInMeters = parseFloat(bufferValue);
