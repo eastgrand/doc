@@ -2333,34 +2333,43 @@ const EnhancedGeospatialChat = memo(({
       }] : [];
       
       // Call Claude API for contextual response
-      console.log('[Contextual Chat] Making API request with payload:', {
-        messagesCount: [...messages, userMessage].length,
-        analysisType: lastAnalysisEndpoint ? lastAnalysisEndpoint.replace('/', '').replace(/-/g, '_') : 'contextual_chat',
-        relevantLayers: [dataSource.layerId],
-        featureDataCount: processedLayersForClaude.length,
+      const requestPayload = {
+        messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
+        metadata: {
+          query,
+          analysisType: lastAnalysisEndpoint ? lastAnalysisEndpoint.replace('/', '').replace(/-/g, '_') : 'contextual_chat',
+          relevantLayers: [dataSource.layerId],
+          isContextualChat: true, // Flag to indicate this is contextual, not new analysis
+          contextualData // Include all the contextual analysis state
+        },
+        featureData: processedLayersForClaude,
         persona: selectedPersona,
-        hasContextualData: !!contextualData
+      };
+      
+      console.log('[Contextual Chat] Making API request with payload:', {
+        messagesCount: requestPayload.messages.length,
+        analysisType: requestPayload.metadata.analysisType,
+        relevantLayers: requestPayload.metadata.relevantLayers,
+        featureDataCount: requestPayload.featureData.length,
+        persona: requestPayload.persona,
+        hasContextualData: !!requestPayload.metadata.contextualData,
+        payloadSize: JSON.stringify(requestPayload).length
       });
+      
+      console.log('[Contextual Chat] Full request payload:', requestPayload);
       
       const claudeResp = await fetch('/api/claude/generate-response', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
-          metadata: {
-            query,
-            analysisType: lastAnalysisEndpoint ? lastAnalysisEndpoint.replace('/', '').replace(/-/g, '_') : 'contextual_chat',
-            relevantLayers: [dataSource.layerId],
-            isContextualChat: true, // Flag to indicate this is contextual, not new analysis
-            contextualData // Include all the contextual analysis state
-          },
-          featureData: processedLayersForClaude,
-          persona: selectedPersona,
-        }),
+        body: JSON.stringify(requestPayload),
       });
+      
+      console.log('[Contextual Chat] API Response status:', claudeResp.status, claudeResp.statusText);
       
       if (claudeResp.ok) {
         const claudeJson = await claudeResp.json();
+        console.log('[Contextual Chat] API Response JSON:', claudeJson);
+        
         const assistantContent = claudeJson?.content;
         
         if (assistantContent) {
@@ -2373,39 +2382,66 @@ const EnhancedGeospatialChat = memo(({
             metadata: { context: 'contextual_response', debugInfo: { persona: selectedPersona } }
           };
           setMessages(prev => [...prev, assistantMessage]);
-          console.log('[Contextual Chat] Successfully added contextual response');
+          console.log('[Contextual Chat] ✅ Successfully added contextual response, content length:', assistantContent.length);
         } else {
-          throw new Error('No content received from Claude API');
+          console.error('[Contextual Chat] ❌ No content in response:', claudeJson);
+          throw new Error('No content received from Claude API - response structure: ' + JSON.stringify(claudeJson));
         }
       } else {
-        const errorData = await claudeResp.json().catch(() => ({ error: 'Failed to parse error response' }));
-        console.error('[Contextual Chat] API Error Response:', {
-          status: claudeResp.status,
-          statusText: claudeResp.statusText,
-          errorData
-        });
-        throw new Error(errorData.error || `Claude API request failed: ${claudeResp.status} ${claudeResp.statusText}`);
+        console.error('[Contextual Chat] ❌ API Request failed with status:', claudeResp.status);
+        
+        let errorData;
+        try {
+          errorData = await claudeResp.json();
+          console.error('[Contextual Chat] Error response body:', errorData);
+        } catch (parseError) {
+          console.error('[Contextual Chat] Failed to parse error response:', parseError);
+          errorData = { error: 'Failed to parse error response' };
+        }
+        
+        const errorText = await claudeResp.text().catch(() => 'Could not read response text');
+        console.error('[Contextual Chat] Raw error response text:', errorText);
+        
+        throw new Error(errorData.error || `Claude API request failed: ${claudeResp.status} ${claudeResp.statusText}. Response: ${errorText}`);
       }
       
     } catch (error) {
-      console.error('[Contextual Chat] Error:', error);
-      toast({
-        title: "Chat Error",
-        description: "Failed to get contextual response. Please try again.",
-        variant: "destructive",
-        duration: 5000,
+      console.error('[Contextual Chat] ❌ FULL ERROR DETAILS:', {
+        error,
+        errorMessage: error instanceof Error ? error.message : String(error),
+        errorStack: error instanceof Error ? error.stack : undefined,
+        requestPayload: {
+          messagesCount: requestPayload?.messages?.length,
+          analysisType: requestPayload?.metadata?.analysisType,
+          hasFeatureData: !!requestPayload?.featureData?.length
+        },
+        contextState: {
+          featuresCount: features.length,
+          hasVisualization: !!currentVisualizationLayer.current,
+          lastEndpoint: lastAnalysisEndpoint
+        }
       });
       
-      // Add error message to chat
-      const errorMessage: ChatMessage = {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      
+      toast({
+        title: "Chat Error",
+        description: `Failed to get contextual response: ${errorMessage.substring(0, 100)}...`,
+        variant: "destructive",
+        duration: 8000,
+      });
+      
+      // Add detailed error message to chat
+      const chatErrorMessage: ChatMessage = {
         id: (Date.now() + 2).toString(),
         role: 'assistant',
-        content: "I'm sorry, I encountered an error while processing your question. Please try rephrasing your question or starting a new analysis.",
+        content: `I'm sorry, I encountered an error while processing your question: ${errorMessage}\n\nPlease try rephrasing your question or starting a new analysis.`,
         timestamp: new Date(),
-        metadata: { context: 'error_response' }
+        metadata: { context: 'error_response', error: errorMessage }
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages(prev => [...prev, chatErrorMessage]);
     } finally {
+      console.log('[Contextual Chat] 🏁 Setting isProcessing to false');
       setIsProcessing(false);
     }
   };
