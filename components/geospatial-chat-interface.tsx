@@ -2468,45 +2468,23 @@ const EnhancedGeospatialChat = memo(({
       return;
     }
 
-    // 🎯 IMPROVED: Query Classification for Chat Messages
+    // 🎯 SIMPLIFIED: Chat Mode Processing
     if (source === 'reply') {
-      console.log('[Chat Classification] Processing reply query:', query);
+      console.log('[Chat Mode] Processing chat query:', query);
       
       // Check if we have existing analysis context (features or visualization)
       const hasExistingContext = features.length > 0 || currentVisualizationLayer.current;
-      console.log('[Chat Classification] Existing context available:', hasExistingContext);
+      console.log('[Chat Mode] Existing context available:', hasExistingContext);
       
       if (hasExistingContext) {
-        // Get conversation history for classification
-        const conversationHistory = messages.map(m => `${m.role}: ${m.content}`).join('\n');
-        
-        try {
-          const classification = await classifyQuery(query, conversationHistory);
-          console.log('[Chat Classification] Query classified as:', classification);
-          
-          if (classification === 'follow-up') {
-            // Handle as contextual chat - call Claude API directly and return early
-            console.log('[Chat Classification] Handling as contextual follow-up with existing context');
-            return await handleContextualChat(query);
-          } else {
-            // Handle as new analysis - continue with full analysis pipeline
-            console.log('[Chat Classification] Handling as new analysis request');
-            // Continue with existing logic below (no return here)
-          }
-        } catch (error) {
-          console.error('[Chat Classification] Error classifying query:', error);
-          // Default to contextual chat if we have context, new analysis if we don't
-          if (hasExistingContext) {
-            console.log('[Chat Classification] Defaulting to contextual chat due to existing context');
-            return await handleContextualChat(query);
-          } else {
-            console.log('[Chat Classification] Defaulting to new analysis due to no context');
-            // Continue with existing logic below
-          }
-        }
+        // Always treat chat mode queries with existing context as contextual chat
+        console.log('[Chat Mode] ✅ Routing to contextual chat (preserving analysis context)');
+        console.log('[Chat Mode] Features count:', features.length);
+        console.log('[Chat Mode] Has visualization layer:', !!currentVisualizationLayer.current);
+        return await handleContextualChat(query);
       } else {
         // No existing context, treat as new analysis
-        console.log('[Chat Classification] No existing context, treating as new analysis');
+        console.log('[Chat Mode] ❌ No existing context, treating as new analysis');
         // Continue with existing logic below
       }
     }
@@ -4078,7 +4056,7 @@ const EnhancedGeospatialChat = memo(({
         </div>
 
         {inputMode === 'analysis' && (
-          <div className="h-[80vh] max-h-[80vh] overflow-y-auto">
+          <div className="min-h-[60vh] max-h-[80vh] overflow-y-auto">
             <form onSubmit={handleFormSubmit} className="flex flex-col h-full">
               <div className="flex-1">
                 <div className="flex flex-col gap-4 mb-4 pt-0">
@@ -4153,7 +4131,7 @@ const EnhancedGeospatialChat = memo(({
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                      <DialogContent className="max-w-2xl h-[80vh] max-h-[80vh] overflow-y-auto bg-white rounded-xl shadow-lg">
+                      <DialogContent className="max-w-2xl min-h-[60vh] max-h-[80vh] overflow-y-auto bg-white rounded-xl shadow-lg">
                         <QueryDialog
                           onQuestionSelect={(question) => {
                                       // Check if we have existing analysis context - if so, treat as chat
@@ -4540,7 +4518,7 @@ const EnhancedGeospatialChat = memo(({
         )}
 
         {inputMode === 'chat' && (
-          <div className="h-[80vh] max-h-[80vh] overflow-y-auto space-y-3">
+          <div className="min-h-[60vh] max-h-[80vh] overflow-y-auto space-y-3">
             {/* Smart Suggestions */}
             {(features.length > 0 || lastAnalysisEndpoint) && (
               <div className="space-y-2">

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, KeyboardEvent } from 'react';
-import { Send } from 'lucide-react';
+import { Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface ChatBarProps {
@@ -39,7 +39,11 @@ const ChatBar: React.FC<ChatBarProps> = ({ onSend, disabled = false, placeholder
         disabled={disabled}
       />
       <Button type="button" onClick={send} disabled={disabled || !text.trim()} size="icon" variant="default">
-        <Send className="w-4 h-4" />
+        {disabled ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <Send className="w-4 h-4" />
+        )}
       </Button>
     </div>
   );
