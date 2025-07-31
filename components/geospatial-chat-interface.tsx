@@ -4155,7 +4155,24 @@ const EnhancedGeospatialChat = memo(({
                       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-white rounded-xl shadow-lg">
                         <QueryDialog
                           onQuestionSelect={(question) => {
-                                      setInputQuery(question);
+                                      // Check if we have existing analysis context - if so, treat as chat
+                                      const hasExistingContext = features.length > 0 || currentVisualizationLayer.current;
+                                      console.log('[QueryDialog] Processing predefined question:', {
+                                        question,
+                                        hasExistingContext,
+                                        featuresCount: features.length,
+                                        hasVisualization: !!currentVisualizationLayer.current
+                                      });
+                                      
+                                      if (hasExistingContext) {
+                                        // Treat as contextual chat using existing analysis
+                                        console.log('[QueryDialog] → Routing to contextual chat (preserving current analysis)');
+                                        handleSubmit(question, 'reply');
+                                      } else {
+                                        // No existing context, treat as new analysis
+                                        console.log('[QueryDialog] → Routing to new analysis (no existing context)');
+                                        setInputQuery(question);
+                                      }
                                       setQuickstartDialogOpen(false);
                                     }}
                           title="quickstartIQ"
