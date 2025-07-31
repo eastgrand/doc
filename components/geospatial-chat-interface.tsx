@@ -854,6 +854,13 @@ const EnhancedGeospatialChat = memo(({
 
       const analysisData = message.metadata.analysisResult.data;
       console.log('[SHAP Chart] Creating feature importance chart for:', analysisData.type);
+      console.log('[SHAP Chart] Full analysis data structure:', analysisData);
+      console.log('[SHAP Chart] Features array:', analysisData.features);
+      
+      if (analysisData.features && analysisData.features.length > 0) {
+        console.log('[SHAP Chart] Sample feature properties:', analysisData.features[0]?.properties);
+        console.log('[SHAP Chart] SHAP fields in first feature:', Object.keys(analysisData.features[0]?.properties || {}).filter(k => k.startsWith('shap_')));
+      }
       
       // Extract SHAP values from the analysis data
       const shapData = extractSHAPValues(analysisData);
