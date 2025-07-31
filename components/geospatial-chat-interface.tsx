@@ -4078,9 +4078,10 @@ const EnhancedGeospatialChat = memo(({
         </div>
 
         {inputMode === 'analysis' && (
-          <form onSubmit={handleFormSubmit} className="flex flex-col">
-            <div className="flex-1">
-              <div className="flex flex-col gap-4 mb-4 pt-0">
+          <div className="h-[80vh] max-h-[80vh] overflow-y-auto">
+            <form onSubmit={handleFormSubmit} className="flex flex-col h-full">
+              <div className="flex-1">
+                <div className="flex flex-col gap-4 mb-4 pt-0">
                 {/* Main Container */}
                 <div className="bg-gray-50 p-2 rounded-lg space-y-2">
                   {/* Title */}
@@ -4152,7 +4153,7 @@ const EnhancedGeospatialChat = memo(({
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-white rounded-xl shadow-lg">
+                      <DialogContent className="max-w-2xl h-[80vh] max-h-[80vh] overflow-y-auto bg-white rounded-xl shadow-lg">
                         <QueryDialog
                           onQuestionSelect={(question) => {
                                       // Check if we have existing analysis context - if so, treat as chat
@@ -4535,10 +4536,11 @@ const EnhancedGeospatialChat = memo(({
               </div>
             </div> 
             </form>
+          </div>
         )}
 
         {inputMode === 'chat' && (
-          <div className="space-y-3">
+          <div className="h-[80vh] max-h-[80vh] overflow-y-auto space-y-3">
             {/* Smart Suggestions */}
             {(features.length > 0 || lastAnalysisEndpoint) && (
               <div className="space-y-2">
