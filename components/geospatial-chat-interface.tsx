@@ -796,19 +796,40 @@ const EnhancedGeospatialChat = memo(({
   // Extract SHAP values from analysis data and create chart data
   const extractSHAPValues = (analysisData: any): Array<{name: string, value: number}> => {
     try {
+      const analysisType = analysisData.type || analysisData.analysis_type;
+      console.log('[SHAP Extract] Processing analysis type:', analysisType);
+
+      // For strategic-analysis, use the component weights as feature importance
+      if (analysisType === 'strategic_analysis') {
+        console.log('[SHAP Extract] Strategic analysis detected - using component weights');
+        if (analysisData.methodology?.component_weights) {
+          const weights = analysisData.methodology.component_weights;
+          return Object.entries(weights).map(([key, value]: [string, any]) => ({
+            name: key.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()),
+            value: typeof value === 'number' ? value * 100 : 0 // Convert to percentage
+          }))
+          .sort((a, b) => b.value - a.value)
+          .filter(item => item.value > 0);
+        }
+      }
+
       // Check if there's already a featureImportance array
       if (analysisData.featureImportance && analysisData.featureImportance.length > 0) {
         console.log('[SHAP Extract] Using existing featureImportance data:', analysisData.featureImportance);
         return analysisData.featureImportance
+          .map((item: any) => ({
+            name: item.feature || item.name,
+            value: item.shap_mean_abs || item.importance || item.value
+          }))
           .sort((a: any, b: any) => b.value - a.value)
           .slice(0, 10)
           .filter((item: any) => item.value > 0);
       }
 
-      // Get the records from the analysis data (try both 'records' and 'features')
-      const records = analysisData.records || analysisData.features || [];
+      // For other endpoints, extract from records with shap_ fields
+      const records = analysisData.records || analysisData.results || analysisData.features || [];
       if (records.length === 0) {
-        console.log('[SHAP Extract] No records or features found');
+        console.log('[SHAP Extract] No records, results, or features found');
         return [];
       }
 
