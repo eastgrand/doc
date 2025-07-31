@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from 'react';
 // import { motion, AnimatePresence } from 'framer-motion';
@@ -37,7 +39,6 @@ interface AITabProps {
 const AITab: React.FC<AITabProps> = ({ 
   view,
   layerStates,
-  onLayerStateChange,
   setFormattedLegendData,
   setVisualizationResult,
   mapViewRefValue,
@@ -138,7 +139,7 @@ const AITab: React.FC<AITabProps> = ({
         <EnhancedGeospatialChat
           agentType="geospatial"
           dataSource={dataSource}
-          onFeaturesFound={(features: any[], isComposite?: boolean) => {
+          onFeaturesFound={(features: any[]) => {
             // Handle features found
             console.log('Features found:', features.length);
           }}

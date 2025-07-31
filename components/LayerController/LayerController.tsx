@@ -777,7 +777,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
                 >
                   {group.layerStates.map(layerState => (
                     <DraggableLayer
-                      key={layerState.id}
+                      key={`${group.id}-${layerState.id}`}
                       id={layerState.id}
                       title={layerState.name}
                       description={`Layer: ${layerState.name}`}
