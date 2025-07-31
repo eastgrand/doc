@@ -2315,7 +2315,16 @@ const EnhancedGeospatialChat = memo(({
         layerId: dataSource.layerId,
         layerName: 'Current Analysis Results',
         layerType: 'polygon',
+        layer: {
+          id: dataSource.layerId,
+          name: 'Current Analysis Results',
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: [] }
+        },
         features: features.slice(0, 50), // Limit features to keep payload manageable
+        extent: null,
+        fields: [],
+        geometryType: 'polygon',
         analysisContext: {
           endpoint: lastAnalysisEndpoint,
           totalFeatures: features.length,
@@ -3856,7 +3865,16 @@ const EnhancedGeospatialChat = memo(({
           layerId: dataSource.layerId,
           layerName: 'Analysis Results',
           layerType: 'polygon',
+          layer: {
+            id: dataSource.layerId,
+            name: 'Analysis Results',
+            type: 'geojson',
+            data: { type: 'FeatureCollection', features: [] }
+          },
           features: originalFeatures,
+          extent: null,
+          fields: [],
+          geometryType: 'polygon'
         }];
 
         // Map visualization type to analysisType if available
@@ -4070,10 +4088,9 @@ const EnhancedGeospatialChat = memo(({
         </div>
 
         {inputMode === 'analysis' && (
-          <div className="min-h-[60vh] max-h-[80vh] overflow-y-auto">
-            <form onSubmit={handleFormSubmit} className="flex flex-col h-full">
-              <div className="flex-1">
-                <div className="flex flex-col gap-4 mb-4 pt-0">
+          <form onSubmit={handleFormSubmit} className="flex flex-col">
+            <div className="flex-1">
+              <div className="flex flex-col gap-4 mb-4 pt-0">
                 {/* Main Container */}
                 <div className="bg-gray-50 p-2 rounded-lg space-y-2">
                   {/* Title */}
@@ -4528,7 +4545,6 @@ const EnhancedGeospatialChat = memo(({
               </div>
             </div> 
             </form>
-          </div>
         )}
 
         {inputMode === 'chat' && (
