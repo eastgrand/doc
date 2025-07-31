@@ -2324,6 +2324,15 @@ const EnhancedGeospatialChat = memo(({
       }] : [];
       
       // Call Claude API for contextual response
+      console.log('[Contextual Chat] Making API request with payload:', {
+        messagesCount: [...messages, userMessage].length,
+        analysisType: lastAnalysisEndpoint ? lastAnalysisEndpoint.replace('/', '').replace(/-/g, '_') : 'contextual_chat',
+        relevantLayers: [dataSource.layerId],
+        featureDataCount: processedLayersForClaude.length,
+        persona: selectedPersona,
+        hasContextualData: !!contextualData
+      });
+      
       const claudeResp = await fetch('/api/claude/generate-response', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -2360,8 +2369,13 @@ const EnhancedGeospatialChat = memo(({
           throw new Error('No content received from Claude API');
         }
       } else {
-        const errorData = await claudeResp.json();
-        throw new Error(errorData.error || 'Claude API request failed');
+        const errorData = await claudeResp.json().catch(() => ({ error: 'Failed to parse error response' }));
+        console.error('[Contextual Chat] API Error Response:', {
+          status: claudeResp.status,
+          statusText: claudeResp.statusText,
+          errorData
+        });
+        throw new Error(errorData.error || `Claude API request failed: ${claudeResp.status} ${claudeResp.statusText}`);
       }
       
     } catch (error) {
