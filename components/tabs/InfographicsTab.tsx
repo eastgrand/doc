@@ -39,6 +39,7 @@ import * as projection from "@arcgis/core/geometry/projection";
 import ReportSelectionDialog from '../ReportSelectionDialog';
 import Polygon from "@arcgis/core/geometry/Polygon";
 import Point from "@arcgis/core/geometry/Point";
+import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 
 // Debug utility for consistent logging
 const debugLog = (category: string, message: string, data?: any) => {
@@ -983,11 +984,63 @@ export default function InfographicsTab({
       });
 
       console.log('Service Area Parameters:', params);
+      
+      // Add detailed debugging for the request
+      const serviceUrl = "https://route-api.arcgis.com/arcgis/rest/services/World/ServiceAreas/NAServer/ServiceArea_World/solveServiceArea";
+      const envApiKey = process.env.NEXT_PUBLIC_ARCGIS_API_KEY;
+      
+      console.log('=== API KEY DIAGNOSTIC ===');
+      console.log('Environment API key present:', !!envApiKey);
+      console.log('Environment API key length:', envApiKey?.length);
+      console.log('EsriConfig API key present:', !!esriConfig.apiKey);
+      console.log('EsriConfig API key length:', esriConfig.apiKey?.length);
+      console.log('API keys match:', envApiKey === esriConfig.apiKey);
+      if (envApiKey) {
+        console.log('API key starts with:', envApiKey.substring(0, 15) + '...');
+        console.log('API key ends with:', '...' + envApiKey.substring(envApiKey.length - 15));
+      }
+      console.log('=== END API KEY DIAGNOSTIC ===');
+      
+      console.log('Service Area Request Details:', {
+        url: serviceUrl,
+        envApiKeyPresent: !!envApiKey,
+        envApiKeyLength: envApiKey?.length,
+        envApiKeyPrefix: envApiKey?.substring(0, 10) + '...',
+        esriConfigApiKey: !!esriConfig.apiKey,
+        esriConfigApiKeyLength: esriConfig.apiKey?.length,
+        params: JSON.stringify(params, null, 2)
+      });
 
-      const result = await serviceArea.solve(
-        "https://route-api.arcgis.com/arcgis/rest/services/World/ServiceAreas/NAServer/ServiceArea_World/solveServiceArea",
-        params
-      );
+      // Test direct HTTP request first to diagnose the issue
+      console.log('=== TESTING DIRECT HTTP REQUEST ===');
+      try {
+        const testUrl = `${serviceUrl}?f=json&token=${envApiKey}`;
+        console.log('Testing direct access to service URL:', testUrl);
+        
+        const testResponse = await fetch(testUrl);
+        const testResult = await testResponse.json();
+        console.log('Direct HTTP test result:', {
+          status: testResponse.status,
+          statusText: testResponse.statusText,
+          result: testResult
+        });
+        
+        // Also test without any parameters to see service info
+        const infoUrl = `${serviceUrl}?f=json`;
+        console.log('Testing service info without token:', infoUrl);
+        const infoResponse = await fetch(infoUrl);
+        const infoResult = await infoResponse.json();
+        console.log('Service info result:', {
+          status: infoResponse.status,
+          statusText: infoResponse.statusText,
+          result: infoResult
+        });
+      } catch (testError) {
+        console.error('Direct HTTP test failed:', testError);
+      }
+      console.log('=== END DIRECT HTTP TEST ===');
+
+      const result = await serviceArea.solve(serviceUrl, params);
       
       // Add proper null checks for service area polygons
       if (result?.serviceAreaPolygons?.features && result.serviceAreaPolygons.features.length > 0) {
@@ -1001,8 +1054,136 @@ export default function InfographicsTab({
         throw new Error("No service area returned");
       }
     } catch (error) {
-      console.error('Error creating service area:', error);
-      throw error; // Re-throw the error to be handled by the UI
+      // Enhanced error logging to understand the issue
+      console.error('=== SERVICE AREA ERROR DETAILS ===');
+      console.error('Error object:', error);
+      console.error('Error type:', typeof error);
+      console.error('Error constructor:', error?.constructor?.name);
+      
+      if (error && typeof error === 'object') {
+        console.error('Error properties:', {
+          name: (error as any).name,
+          message: (error as any).message,
+          details: (error as any).details,
+          code: (error as any).code,
+          httpStatus: (error as any).httpStatus,
+          requestOptions: (error as any).requestOptions,
+          url: (error as any).url
+        });
+        
+        // Log the full error object structure
+        console.error('Full error object:', JSON.stringify(error, null, 2));
+      }
+      console.error('=== END SERVICE AREA ERROR DETAILS ===');
+      
+      // Check if it's a permissions error and fallback to enhanced approximation
+      if (error && typeof error === 'object' && 'message' in error && 
+          (error.message as string).includes('permissions')) {
+        console.log('Service area failed due to licensing requirements, using enhanced approximation');
+        
+        // Set user-friendly notification about fallback
+        setError(`Using approximation: ${bufferType === 'drivetime' ? 'Drive-time' : 'Walk-time'} areas require premium licensing. Showing estimated ${bufferType === 'drivetime' ? 'driving' : 'walking'} range instead.`);
+        
+        // Enhanced fallback with more realistic parameters
+        let radiusInMeters = parseFloat(bufferValue);
+        
+        if (bufferType === "drivetime") {
+          // More realistic driving speeds based on context:
+          // Urban areas: ~25 mph average (accounting for traffic, stops)
+          // Suburban/rural: ~35 mph average
+          // Conservative estimate: 25 mph = 0.417 miles per minute
+          radiusInMeters = radiusInMeters * 0.417 * 1609.34;
+          
+          // Create a slightly irregular shape to better approximate road networks
+          const mainBuffer = geometryEngine.geodesicBuffer(geometry as __esri.Point, radiusInMeters, 'meters', false) as __esri.Polygon;
+          
+          // Add secondary buffers in cardinal directions to simulate road patterns
+          const cardinalDistances = [
+            radiusInMeters * 1.2, // North (highways often extend further)
+            radiusInMeters * 0.9,  // East 
+            radiusInMeters * 1.1,  // South
+            radiusInMeters * 0.85  // West
+          ];
+          
+          // Create offset points for directional buffers
+          const offsets = [
+            [0, radiusInMeters * 0.3],    // North offset
+            [radiusInMeters * 0.3, 0],    // East offset  
+            [0, -radiusInMeters * 0.3],   // South offset
+            [-radiusInMeters * 0.3, 0]    // West offset
+          ];
+          
+          let combinedGeometry = mainBuffer;
+          
+          offsets.forEach((offset, index) => {
+            const offsetPoint = new Point({
+              x: (geometry as __esri.Point).x + offset[0],
+              y: (geometry as __esri.Point).y + offset[1],
+              spatialReference: geometry.spatialReference
+            });
+            
+            const directionalBuffer = geometryEngine.geodesicBuffer(
+              offsetPoint as __esri.Point, 
+              cardinalDistances[index], 
+              'meters', 
+              false
+            ) as __esri.Polygon;
+            
+            if (directionalBuffer && combinedGeometry) {
+              try {
+                combinedGeometry = geometryEngine.union([combinedGeometry as __esri.Polygon, directionalBuffer]) as __esri.Polygon;
+              } catch (unionError) {
+                console.warn('Union operation failed, using main buffer:', unionError);
+              }
+            }
+          });
+          
+          if (combinedGeometry) {
+            createAndAddBuffer(combinedGeometry as __esri.Geometry, color);
+            console.log(`Created enhanced drive-time approximation: ${parseFloat(bufferValue)} ${bufferUnit} at ~25 mph average`);
+            // Clear error after 5 seconds to show success
+            setTimeout(() => setError(null), 5000);
+            return;
+          }
+          
+        } else if (bufferType === "walktime") {
+          // Walking speed varies by terrain and population:
+          // Urban areas: ~2.5 mph (slower due to crossings, crowds)
+          // Suburban: ~3.0 mph 
+          // Conservative estimate: 2.5 mph = 0.042 miles per minute
+          radiusInMeters = radiusInMeters * 0.042 * 1609.34;
+          
+          // Walking areas are more constrained by sidewalks and paths
+          // Create a more compact, realistic walking buffer
+          const walkingBuffer = geometryEngine.geodesicBuffer(geometry as __esri.Point, radiusInMeters, 'meters', false) as __esri.Polygon;
+          
+          // Reduce the buffer slightly to account for pedestrian-only areas
+          const realisticWalkBuffer = geometryEngine.geodesicBuffer(
+            geometry as __esri.Point, 
+            radiusInMeters * 0.85, // 15% reduction for realistic walking constraints
+            'meters', 
+            false
+          ) as __esri.Polygon;
+          
+          if (realisticWalkBuffer) {
+            createAndAddBuffer(realisticWalkBuffer as __esri.Geometry, color);
+            console.log(`Created enhanced walk-time approximation: ${parseFloat(bufferValue)} ${bufferUnit} at ~2.5 mph average`);
+            // Clear error after 5 seconds to show success
+            setTimeout(() => setError(null), 5000);
+            return;
+          }
+        }
+        
+        // Fallback to simple circular buffer if enhanced methods fail
+        const buffer = geometryEngine.geodesicBuffer(geometry as __esri.Point, radiusInMeters, 'meters', false) as __esri.Polygon;
+        if (buffer) {
+          createAndAddBuffer(buffer as __esri.Geometry, color);
+          console.log(`Created simple fallback radius buffer: ${radiusInMeters}m for ${bufferType}`);
+          return;
+        }
+      }
+      
+      throw error; // Re-throw the error if it's not a permissions issue or fallback failed
     }
   }, [geometry, bufferType, bufferValue, bufferUnit, view, createAndAddBuffer]);
 
