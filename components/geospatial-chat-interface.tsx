@@ -4108,9 +4108,11 @@ const EnhancedGeospatialChat = memo(({
               type="button"
               onClick={() => setInputMode('chat')}
               className={`flex-1 px-3 py-1 rounded-md border transition-all ${
-                inputMode === 'chat' 
-                  ? 'bg-[#33a852] text-white border-[#33a852] shadow-sm' 
-                  : 'bg-gray-50 hover:bg-gray-100 border-gray-200'
+                (!features.length && !lastAnalysisEndpoint) 
+                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' 
+                  : inputMode === 'chat' 
+                    ? 'bg-[#33a852] text-white border-[#33a852] shadow-sm' 
+                    : 'bg-gray-50 hover:bg-gray-100 border-gray-200'
               }`}
               disabled={!features.length && !lastAnalysisEndpoint}
             >
