@@ -2267,12 +2267,21 @@ const EnhancedGeospatialChat = memo(({
     }
   };
 
-  // 🎯 NEW: Handle contextual chat without triggering new analysis
+  // 🎯 IMPROVED: Handle contextual chat without triggering new analysis
   const handleContextualChat = async (query: string) => {
     console.log('[Contextual Chat] Starting contextual response for:', query);
+    console.log('[Contextual Chat] Using cached context:', {
+      featuresCount: features.length,
+      hasVisualization: !!currentVisualizationLayer.current,
+      lastEndpoint: lastAnalysisEndpoint,
+      messagesCount: messages.length
+    });
     
     try {
       setIsProcessing(true);
+      // Clear any previous errors since this is contextual
+      setError(null);
+      setProcessingError(null);
       
       // Add user message to chat
       const userMessage: ChatMessage = {
@@ -2284,12 +2293,34 @@ const EnhancedGeospatialChat = memo(({
       };
       setMessages(prev => [...prev, userMessage]);
       
-      // Prepare data for Claude - use existing features and analysis data
+      // Prepare comprehensive context for Claude - use existing features and analysis data
+      const contextualData = {
+        // Current analysis results
+        features: features.length > 0 ? features.slice(0, 50) : [], // Limit to prevent payload bloat
+        featuresCount: features.length,
+        
+        // Current visualization info
+        hasVisualization: !!currentVisualizationLayer.current,
+        visualizationType: currentVisualizationLayer.current?.type || null,
+        
+        // Analysis metadata
+        lastAnalysisEndpoint,
+        lastAnalysisType: lastAnalysisEndpoint ? lastAnalysisEndpoint.replace('/', '').replace(/-/g, '_') : null,
+        
+        // Legend data would be available through parent component context
+        hasLegendData: true // We assume legend exists if we have features
+      };
+      
       const processedLayersForClaude = features.length > 0 ? [{
         layerId: dataSource.layerId,
-        layerName: 'Analysis Results',
+        layerName: 'Current Analysis Results',
         layerType: 'polygon',
-        features: features,
+        features: features.slice(0, 50), // Limit features to keep payload manageable
+        analysisContext: {
+          endpoint: lastAnalysisEndpoint,
+          totalFeatures: features.length,
+          hasVisualization: !!currentVisualizationLayer.current
+        }
       }] : [];
       
       // Call Claude API for contextual response
@@ -2302,7 +2333,8 @@ const EnhancedGeospatialChat = memo(({
             query,
             analysisType: lastAnalysisEndpoint ? lastAnalysisEndpoint.replace('/', '').replace(/-/g, '_') : 'contextual_chat',
             relevantLayers: [dataSource.layerId],
-            isContextualChat: true // Flag to indicate this is contextual, not new analysis
+            isContextualChat: true, // Flag to indicate this is contextual, not new analysis
+            contextualData // Include all the contextual analysis state
           },
           featureData: processedLayersForClaude,
           persona: selectedPersona,
@@ -2436,30 +2468,46 @@ const EnhancedGeospatialChat = memo(({
       return;
     }
 
-    // 🎯 NEW: Query Classification for Chat Messages
+    // 🎯 IMPROVED: Query Classification for Chat Messages
     if (source === 'reply') {
-      console.log('[Chat Classification] Classifying reply query:', query);
+      console.log('[Chat Classification] Processing reply query:', query);
       
-      // Get conversation history for classification
-      const conversationHistory = messages.map(m => `${m.role}: ${m.content}`).join('\n');
+      // Check if we have existing analysis context (features or visualization)
+      const hasExistingContext = features.length > 0 || currentVisualizationLayer.current;
+      console.log('[Chat Classification] Existing context available:', hasExistingContext);
       
-      try {
-        const classification = await classifyQuery(query, conversationHistory);
-        console.log('[Chat Classification] Query classified as:', classification);
+      if (hasExistingContext) {
+        // Get conversation history for classification
+        const conversationHistory = messages.map(m => `${m.role}: ${m.content}`).join('\n');
         
-        if (classification === 'follow-up') {
-          // Handle as contextual chat - call Claude API directly
-          console.log('[Chat Classification] Handling as contextual follow-up');
-          return await handleContextualChat(query);
-        } else {
-          // Handle as new analysis - continue with full analysis pipeline
-          console.log('[Chat Classification] Handling as new analysis');
-          // Continue with existing logic below
+        try {
+          const classification = await classifyQuery(query, conversationHistory);
+          console.log('[Chat Classification] Query classified as:', classification);
+          
+          if (classification === 'follow-up') {
+            // Handle as contextual chat - call Claude API directly and return early
+            console.log('[Chat Classification] Handling as contextual follow-up with existing context');
+            return await handleContextualChat(query);
+          } else {
+            // Handle as new analysis - continue with full analysis pipeline
+            console.log('[Chat Classification] Handling as new analysis request');
+            // Continue with existing logic below (no return here)
+          }
+        } catch (error) {
+          console.error('[Chat Classification] Error classifying query:', error);
+          // Default to contextual chat if we have context, new analysis if we don't
+          if (hasExistingContext) {
+            console.log('[Chat Classification] Defaulting to contextual chat due to existing context');
+            return await handleContextualChat(query);
+          } else {
+            console.log('[Chat Classification] Defaulting to new analysis due to no context');
+            // Continue with existing logic below
+          }
         }
-      } catch (error) {
-        console.error('[Chat Classification] Error classifying query:', error);
-        // Default to new analysis on error
-        console.log('[Chat Classification] Defaulting to new analysis due to classification error');
+      } else {
+        // No existing context, treat as new analysis
+        console.log('[Chat Classification] No existing context, treating as new analysis');
+        // Continue with existing logic below
       }
     }
     
