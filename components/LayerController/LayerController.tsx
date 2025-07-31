@@ -546,19 +546,17 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
             const [layer, errors] = await createLayer(layerConfig, config, view, layerStatesRef);
             if (layer) {
               const shouldBeVisible = config.defaultVisibility?.[layerConfig.id] || false;
-              if (shouldBeVisible) {
-                view.map.add(layer);
-                layer.visible = true;
-              } else {
-                layer.visible = false;
-              }
+              // Add ALL layers to the map so they appear in LayerList widget
+              view.map.add(layer);
+              layer.visible = shouldBeVisible;
+              layer.opacity = 0.6;
               
               newLayerStates[layerConfig.id] = {
                 id: layerConfig.id,
                 name: layerConfig.name,
                 layer,
                 visible: shouldBeVisible,
-                opacity: 1,
+                opacity: 0.6,
                 order: 0,
                 group: group.id,
                 loading: false,
@@ -720,11 +718,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         newStates[layerId].visible = !newStates[layerId].visible;
         if (newStates[layerId].layer) {
           newStates[layerId].layer.visible = newStates[layerId].visible;
-          
-          // Add/remove from map based on visibility
-          if (newStates[layerId].visible && !view.map.layers.includes(newStates[layerId].layer)) {
-            view.map.add(newStates[layerId].layer);
-          }
         }
         handleLayerStatesChange(newStates);
       }
@@ -758,7 +751,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     return (
       <div className="layer-controller h-full overflow-y-auto">
         <div className="p-4">
-          <h3 className="text-lg font-semibold mb-4">Layers</h3>
           
           {/* Loading State */}
           {loadingState.status === 'loading' && (

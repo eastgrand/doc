@@ -684,6 +684,76 @@
     width: 100% !important;
 }
 
+/* Override all blue/purple components in print widget */
+.esri-print .esri-button,
+.esri-print button,
+.esri-print .esri-select,
+.esri-print select,
+.esri-print .calcite-button,
+.esri-print .calcite-tab-title,
+.esri-print .calcite-tab-title[aria-selected="true"],
+.esri-print .calcite-tab,
+.esri-print .calcite-tabs,
+.esri-print [role="tab"],
+.esri-print [role="tab"][aria-selected="true"] {
+    background-color: #33a852 !important;
+    color: white !important;
+    border-color: #33a852 !important;
+}
+
+.esri-print .esri-button:hover,
+.esri-print button:hover,
+.esri-print .calcite-button:hover,
+.esri-print .calcite-tab-title:hover,
+.esri-print [role="tab"]:hover {
+    background-color: #2d8a47 !important;
+    border-color: #2d8a47 !important;
+}
+
+/* Fix any focus states */
+.esri-print .esri-button:focus,
+.esri-print button:focus,
+.esri-print .calcite-button:focus,
+.esri-print .calcite-tab-title:focus,
+.esri-print [role="tab"]:focus {
+    outline-color: #33a852 !important;
+    box-shadow: 0 0 0 2px rgba(51, 168, 82, 0.3) !important;
+}
+
+/* Override any active states */
+.esri-print .esri-button.esri-button--active,
+.esri-print .calcite-button--active,
+.esri-print .calcite-tab-title--active {
+    background-color: #33a852 !important;
+    color: white !important;
+}
+
+/* Fix any checkboxes or form controls */
+.esri-print input[type="checkbox"]:checked,
+.esri-print .calcite-checkbox:checked {
+    background-color: #33a852 !important;
+    border-color: #33a852 !important;
+}
+
+/* Fix export button specifically */
+.esri-print__export-button,
+.esri-print__export-button .esri-button,
+.esri-print .esri-print__export-button,
+.esri-print [class*="export"] button,
+.esri-print button[class*="export"],
+.esri-print .esri-button[class*="export"] {
+    background-color: #33a852 !important;
+    color: white !important;
+    border-color: #33a852 !important;
+}
+
+/* Fix specific export widget elements only */
+.esri-print .esri-widget__loader {
+    color: #33a852 !important;
+}
+
+/* Keep more conservative overrides for export widget */
+
 /* Search Widget Styles - Green Theme */
 .esri-search {
     width: 100% !important;
@@ -785,6 +855,11 @@
 /* Widget Headers by Type */
 .widget-container[data-widget-type="layerList"]::before {
     content: "Layers" !important;
+    color: #33a852 !important;
+}
+
+.widget-container[data-widget-type="basemapGallery"]::before {
+    content: "Basemaps" !important;
     color: #33a852 !important;
 }
 
@@ -1512,11 +1587,7 @@
   display: none !important;
 }
 
-/* Bookmarks Widget Header */
-.widget-container[data-widget-type="bookmarks"]::before {
-    content: "Bookmarks" !important;
-    color: #33a852 !important;
-}
+/* Bookmarks Widget Header - already defined above */
 
 /* Bookmarks Widget Styles - Yellow Theme */
 .esri-bookmarks {

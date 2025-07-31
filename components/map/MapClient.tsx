@@ -343,7 +343,7 @@ const MapClient = memo(({
         // Create map with light grey basemap using string ID
         console.log('[MapClient] Creating map with light grey basemap...');
         const map = new Map({
-          basemap: "/arcgis/light-gray"
+          basemap: "gray-vector"
         });
         console.log('[MapClient] Map created successfully');
 

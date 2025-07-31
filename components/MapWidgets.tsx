@@ -23,8 +23,7 @@ import BasemapGallery from '@arcgis/core/widgets/BasemapGallery';
 import Bookmark from '@arcgis/core/webmap/Bookmark';
 import Extent from '@arcgis/core/geometry/Extent';
 import Collection from '@arcgis/core/core/Collection';
-
-// LayerController removed - handled by MapContainer to prevent duplicate initialization
+import LayerController from './LayerController/LayerController';
 
 
 // Type Definitions
@@ -45,6 +44,7 @@ interface MapWidgetsProps {
   showLoading?: boolean;
   visibleWidgets?: string[]; // Array of widget names that should be visible
   onCorrelationAnalysis: (layer: __esri.FeatureLayer, primaryField: string, comparisonField: string) => void;
+  onLayerStatesChange?: (states: any) => void;
 }
 
 // Define US City Bookmarks Data (Alphabetical Order)
@@ -71,6 +71,7 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
   // legend,
   showLoading = false,
   visibleWidgets = ['search', 'layerList', 'bookmarks', 'print', 'basemapGallery'], // Added 'basemapGallery' to default
+  onLayerStatesChange
 }: MapWidgetsProps) {
 
 
@@ -99,8 +100,8 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
   const [containersReady, setContainersReady] = useState(false);
   const widgetCleanupHandles = useRef<Map<string, __esri.Handle[]>>(new Map());
   
-  // LAZY LOADING: Track which widgets have been initialized
-  const [initializedWidgets, setInitializedWidgets] = useState<Set<string>>(new Set());
+  // Track which widgets have been initialized (no longer using lazy loading)
+  // const [initializedWidgets, setInitializedWidgets] = useState<Set<string>>(new Set());
 
   const layerListActionHandleRef = useRef<__esri.Handle | null>(null);
 
@@ -267,144 +268,14 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
     };
   }, [activeWidget, view]);
 
-  // LAZY LOADING: Initialize individual widget on-demand
+  // Widget initialization function (no longer used - keeping for reference)
+  /*
   const initializeWidget = useCallback(async (widgetType: string) => {
-    if (!view || !containersReady || initializedWidgets.has(widgetType)) {
-      return;
-    }
+    // Removed - widgets are now initialized immediately
+  }, []);
+  */
 
-    console.log(`[LAZY LOADING] Initializing widget on-demand: ${widgetType}`);
-
-    try {
-      await view.when();
-      const containers = containersRef.current;
-      const container = containers.get(widgetType);
-      
-      if (!container) {
-        console.warn(`[LAZY LOADING] No container found for widget: ${widgetType}`);
-        return;
-      }
-
-      // Check if widget already exists before creating
-      const widgets = widgetsRef.current;
-      const cleanupHandles = widgetCleanupHandles.current;
-
-      switch (widgetType) {
-        case 'search':
-          if (!widgets.search) {
-            const searchWidget = new Search({ view, container });
-            widgets.search = searchWidget;
-          }
-          break;
-          
-        case 'print':
-          if (!widgets.print) {
-            const printWidget = new Print({ 
-              view, 
-              container,
-              printServiceUrl: "https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
-              templateOptions: {
-                title: "Nesto Map Export",
-                author: "Nesto Maps",
-                copyright: "© 2024 Nesto",
-                format: "pdf",
-                layout: "a4-landscape"
-              }
-            });
-            widgets.print = printWidget;
-          }
-          break;
-          
-        case 'bookmarks':
-          if (!widgets.bookmarks) {
-            const bookmarksWidget = new Bookmarks({ view, container });
-            
-            // Create Bookmark instances from US city data
-            const cityBookmarks = new Collection(
-              CITY_BOOKMARKS_DATA.map(city => 
-                new Bookmark({
-                  name: city.name,
-                  viewpoint: {
-                    targetGeometry: new Extent({
-                      xmin: city.extent.xmin,
-                      ymin: city.extent.ymin,
-                      xmax: city.extent.xmax,
-                      ymax: city.extent.ymax,
-                      spatialReference: { wkid: 4326 }
-                    })
-                  }
-                })
-              )
-            );
-            
-            bookmarksWidget.bookmarks = cityBookmarks;
-            widgets.bookmarks = bookmarksWidget;
-          }
-          break;
-          
-        case 'layerList':
-          if (!widgets.layerList) {
-            const layerListWidget = new LayerList({ 
-              view, 
-              container,
-              listItemCreatedFunction: (event) => {
-                const item = event.item;
-                
-                if (item.layer && item.layer.type === 'feature') {
-                  item.panel = {
-                    content: ["legend"],
-                    open: false
-                  };
-                }
-              }
-            });
-            
-            // Set up LayerList action handlers
-            const handle = layerListWidget.on("trigger-action", (event) => {
-              const id = event.action.id;
-              if (id === "information") {
-                const target = event.item.layer as __esri.FeatureLayer;
-                if (target && typeof onLayerSelect === 'function') {
-                  onLayerSelect(target);
-                }
-              }
-            });
-            
-            // Store handle for cleanup
-            const handles = cleanupHandles.get('layerList') || [];
-            handles.push(handle);
-            cleanupHandles.set('layerList', handles);
-            
-            widgets.layerList = layerListWidget;
-          }
-          break;
-          
-        case 'basemapGallery':
-          if (!widgets.basemapGallery) {
-            const basemapGalleryWidget = new BasemapGallery({ 
-              view, 
-              container,
-              source: {
-                query: {
-                  title: "United States Basemaps",
-                  owner: "Esri_en"
-                }
-              }
-            });
-            widgets.basemapGallery = basemapGalleryWidget;
-          }
-          break;
-      }
-      
-      setInitializedWidgets(prev => new Set([...prev, widgetType]));
-      console.log(`[LAZY LOADING] ✅ Widget initialized: ${widgetType}`);
-      
-    } catch (error) {
-      console.error(`[LAZY LOADING] Failed to initialize widget ${widgetType}:`, error);
-    }
-  }, [view, containersReady, initializedWidgets, onLayerSelect]);
-
-  // Main Initialization Effect - now only sets up basic structure
+  // Main Initialization Effect - Initialize ALL widgets immediately
   useEffect(() => {
     if (!view || !containersReady) {
         return;
@@ -414,16 +285,87 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
           return;
         }
 
-    // LAZY LOADING: No widget initialization here - only basic setup
-    console.log('[LAZY LOADING] MapWidgets initialization - widgets will be created on-demand');
+    console.log('MapWidgets initialization - creating all widgets immediately');
     
     view.when(async () => {
-      // Just mark as initialized - no widget creation
-      isInitialized.current = true;
-      console.log('[LAZY LOADING] MapWidgets ready for on-demand widget creation');
+      const containers = containersRef.current;
+      const widgets = widgetsRef.current;
+      const cleanupHandles = widgetCleanupHandles.current;
+
+      try {
+        // Initialize Search widget
+        if (!widgets.search && containers.get('search')) {
+          const searchWidget = new Search({ view, container: containers.get('search') });
+          widgets.search = searchWidget;
+          console.log('Search widget initialized');
+        }
+
+        // Initialize Print widget
+        if (!widgets.print && containers.get('print')) {
+          const printWidget = new Print({ 
+            view, 
+            container: containers.get('print'),
+            printServiceUrl: "https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
+            templateOptions: {
+              title: "Map Export",
+              author: "",
+              copyright: "",
+              format: "pdf",
+              layout: "a4-landscape"
+            }
+          });
+          widgets.print = printWidget;
+          console.log('Print widget initialized');
+        }
+
+        // Initialize Bookmarks widget
+        if (!widgets.bookmarks && containers.get('bookmarks')) {
+          const bookmarksWidget = new Bookmarks({ view, container: containers.get('bookmarks') });
+          
+          // Create Bookmark instances from US city data
+          const cityBookmarks = new Collection(
+            CITY_BOOKMARKS_DATA.map(city => 
+              new Bookmark({
+                name: city.name,
+                viewpoint: {
+                  targetGeometry: new Extent({
+                    xmin: city.extent.xmin,
+                    ymin: city.extent.ymin,
+                    xmax: city.extent.xmax,
+                    ymax: city.extent.ymax,
+                    spatialReference: { wkid: 4326 }
+                  })
+                }
+              })
+            )
+          );
+          
+          bookmarksWidget.bookmarks = cityBookmarks;
+          widgets.bookmarks = bookmarksWidget;
+          console.log('Bookmarks widget initialized');
+        }
+
+        // LayerList is handled by React portal, not native widget
+
+        // Initialize BasemapGallery widget
+        if (!widgets.basemapGallery && containers.get('basemapGallery')) {
+          const basemapGalleryWidget = new BasemapGallery({ 
+            view, 
+            container: containers.get('basemapGallery')
+            // Use default Esri basemaps without custom source
+          });
+          widgets.basemapGallery = basemapGalleryWidget;
+          console.log('BasemapGallery widget initialized');
+        }
+
+        isInitialized.current = true;
+        console.log('All widgets initialized successfully');
+      } catch (error) {
+        console.error('Error initializing widgets:', error);
+      }
     }).catch(error => {
       if (error.name !== 'AbortError') {
-        console.error('[LAZY LOADING] Error waiting for view ready:', error);
+        console.error('Error waiting for view ready:', error);
       }
     });
     
@@ -440,14 +382,7 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
         }
       });
     };
-  }, [view, containersReady]);
-
-  // LAZY LOADING: Trigger widget initialization when activeWidget changes
-  useEffect(() => {
-    if (activeWidget && view && containersReady) {
-      initializeWidget(activeWidget);
-    }
-  }, [activeWidget, view, containersReady, initializeWidget]);
+  }, [view, containersReady, onLayerSelect]);
 
   // Container creation effect
   useEffect(() => {
@@ -461,8 +396,8 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
       let color = '#ccc'; // Default color
       if (widgetId === 'search') color = '#4285f4';
       else if (widgetId === 'layerList') color = '#33a852';
-      else if (widgetId === 'print') color = '#3269a8';
-      else if (widgetId === 'basemapGallery') color = '#666666'; // Dark gray for basemap
+      else if (widgetId === 'print') color = '#33a852';
+      else if (widgetId === 'basemapGallery') color = '#33a852'; // App green for basemap
       // Add other widget colors if needed
       
       const container = createWidgetContainer(widgetId, color);
@@ -476,11 +411,41 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
 
   }, [view, containersReady, visibleWidgets, createWidgetContainer]); // Dependencies
 
-  // Render logic - LayerController removed as it's handled by MapContainer
-  const layerControllerPortal = useMemo(() => {
-    // LayerController is now handled by MapContainer to prevent duplicate initialization
-    return null;
+  // Layer config state - needed for LayerController
+  const [layerConfig, setLayerConfig] = useState<any>(null);
+  
+  // Initialize layer config
+  useEffect(() => {
+    const initLayerConfig = async () => {
+      try {
+        const { createProjectConfig } = await import('@/adapters/layerConfigAdapter');
+        const config = createProjectConfig();
+        setLayerConfig(config);
+      } catch (error) {
+        console.error('Error creating layer config:', error);
+      }
+    };
+    initLayerConfig();
   }, []);
+
+  // Render logic - LayerController portal for layerList widget
+  const layerControllerPortal = useMemo(() => {
+    if (!containersReady || !view || !layerConfig) {
+      return null;
+    }
+    const container = containersRef.current?.get('layerList'); 
+    if (!container) return null;
+    
+    return createPortal(
+      <LayerController
+        view={view}
+        config={layerConfig}
+        onLayerStatesChange={onLayerStatesChange}
+        visible={activeWidget === 'layerList'} 
+      />,
+      container
+    );
+  }, [view, layerConfig, onLayerStatesChange, containersReady, activeWidget]);
 
   if (!view) return null;
 

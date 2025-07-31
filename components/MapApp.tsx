@@ -63,9 +63,9 @@ const WIDGET_BUTTONS = [
   { id: 'search', Icon: Search, label: 'Search', color: '#4285f4' },
   { id: 'bookmarks', Icon: Bookmark, label: 'Bookmarks', color: '#33a852' },
   { id: 'layerList', Icon: Layers, label: 'Layers', color: '#33a852' },
-  { id: 'basemapGallery', Icon: MapIcon, label: 'Basemaps', color: '#666666' },
+  { id: 'basemapGallery', Icon: MapIcon, label: 'Basemaps', color: '#33a852' },
   { id: 'filter', Icon: Filter, label: 'Filter', color: '#33a852' },
-  { id: 'print', Icon: FolderOutput, label: 'Export', color: '#3269a8' },
+  { id: 'print', Icon: FolderOutput, label: 'Export', color: '#33a852' },
   { id: 'index', Icon: Combine, label: 'Create Index', color: '#4285f4' },
   { id: 'table', Icon: TableIcon, label: 'Attribute Table', color: '#33a852' },
   { id: 'projects', Icon: Folder, label: 'Study Areas', color: '#a83269' }
@@ -243,6 +243,7 @@ export const MapApp: React.FC = memo(() => {
               onToggleWidget={handleToggleWidget}
               onCorrelationAnalysis={handleCorrelationAnalysis}
               visibleWidgets={memoizedVisibleWidgets}
+              onLayerStatesChange={handleLayerStatesChange}
             />
           )}
         </div>
