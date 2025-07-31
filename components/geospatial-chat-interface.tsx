@@ -26,7 +26,7 @@ import {
   Loader2,
   BarChart,
   X,
-  Brain,
+  MessageCircle,
   UserCog,
   Target,
 } from 'lucide-react';
@@ -4020,12 +4020,9 @@ const EnhancedGeospatialChat = memo(({
         {showChatNudge && inputMode === 'analysis' && (
           <div className="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg animate-fade-in">
             <div className="flex items-start gap-2">
-              <Brain className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+              <MessageCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
               <div className="flex-1 text-sm">
                 <div className="font-medium text-green-800">💬 Ask questions about your results!</div>
-                <div className="text-green-600 text-xs mt-1">
-                  Switch to "Ask Questions" mode to explore why certain areas scored high, what drives the patterns, and get deeper insights.
-                </div>
                 <button
                   onClick={() => setInputMode('chat')}
                   className="mt-2 text-xs px-2 py-1 bg-[#33a852] text-white rounded hover:bg-[#2d9748] transition-colors"
@@ -4072,20 +4069,12 @@ const EnhancedGeospatialChat = memo(({
               disabled={!features.length && !lastAnalysisEndpoint}
             >
               <div className="flex items-center justify-center gap-2">
-                <Brain className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4" />
                 <span className="font-medium text-xs">Ask Questions</span>
               </div>
             </button>
           </div>
           
-          {/* Mode Description */}
-          <div className="text-[10px] text-gray-600 px-1">
-            {inputMode === 'analysis' ? (
-              <span>🎯 Create visualization: "Compare Nike vs Adidas"</span>
-            ) : (
-              <span>💬 Ask about results: "What does this score mean?"</span>
-            )}
-          </div>
         </div>
 
         {inputMode === 'analysis' && (
@@ -4114,7 +4103,7 @@ const EnhancedGeospatialChat = memo(({
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <div className="flex items-center gap-1 px-2 py-0.5 bg-blue-50 border border-blue-200 rounded-full text-xs text-blue-700">
-                              <Brain className="h-3 w-3" />
+                              <MessageCircle className="h-3 w-3" />
                               <span>Context-Aware</span>
                             </div>
                           </TooltipTrigger>
@@ -4424,7 +4413,7 @@ const EnhancedGeospatialChat = memo(({
                       <div className="mb-2 p-2 bg-amber-50 border border-amber-200 rounded-md">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
-                            <Brain className="h-4 w-4 text-amber-600" />
+                            <MessageCircle className="h-4 w-4 text-amber-600" />
                             <span className="text-xs text-amber-800">
                               Suggested: {endpointSuggestions[0]?.name || 'General Analysis'}
                             </span>
