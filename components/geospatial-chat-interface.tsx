@@ -3823,11 +3823,11 @@ const EnhancedGeospatialChat = memo(({
 
     return (
       <Dialog open={!!message} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white">
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white" aria-describedby="analysis-details-description">
           <DialogHeader>
             <DialogTitle>Analysis Details</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
+          <div id="analysis-details-description" className="space-y-4">
             <div>
               <p className="whitespace-pre-wrap">{message.content}</p>
             </div>
@@ -4198,7 +4198,7 @@ const EnhancedGeospatialChat = memo(({
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                      <DialogContent className="max-w-2xl min-h-[60vh] max-h-[80vh] overflow-y-auto bg-white rounded-xl shadow-lg">
+                      <DialogContent className="max-w-2xl min-h-[60vh] max-h-[80vh] overflow-y-auto bg-white rounded-xl shadow-lg" aria-describedby="query-dialog-description">
                         <QueryDialog
                           onQuestionSelect={(question) => {
                                       // Check if we have existing analysis context - if so, treat as chat
@@ -4366,10 +4366,10 @@ const EnhancedGeospatialChat = memo(({
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                      <DialogContent className="max-w-lg bg-white">
+                      <DialogContent className="max-w-lg bg-white" aria-describedby="persona-dialog-description">
                         <DialogHeader>
                           <DialogTitle>Select AI Persona</DialogTitle>
-                          <p className="text-sm text-gray-600 mt-2">
+                          <p id="persona-dialog-description" className="text-sm text-gray-600 mt-2">
                             Choose an analytical perspective that matches your decision-making context.
                           </p>
                         </DialogHeader>
@@ -4425,9 +4425,10 @@ const EnhancedGeospatialChat = memo(({
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
+                      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white" aria-describedby="cluster-dialog-description">
                         <DialogHeader>
                           <DialogTitle>Clustering Configuration</DialogTitle>
+                          <p id="cluster-dialog-description" className="text-sm text-gray-600 mt-2">Configure clustering settings for your analysis.</p>
                         </DialogHeader>
                         <ClusterConfigPanel
                           config={clusterConfig}
@@ -4703,10 +4704,10 @@ const EnhancedGeospatialChat = memo(({
     
     {/* Reply Dialog Component */}
     <Dialog open={isReplyDialogOpen} onOpenChange={setIsReplyDialogOpen}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-lg" aria-describedby="reply-dialog-description">
         <DialogHeader>
           <DialogTitle>Reply to Assistant</DialogTitle>
-          <p className="text-sm text-gray-600">
+          <p id="reply-dialog-description" className="text-sm text-gray-600">
             Your reply will be added to the current conversation context.
           </p>
         </DialogHeader>
@@ -4829,11 +4830,14 @@ const EnhancedGeospatialChat = memo(({
 
     {/* Visualization Customization Panel */}
     <Dialog open={isVizPanelOpen} onOpenChange={setIsVizPanelOpen} modal={false}>
-      <DialogContent className="max-w-xl bg-white">
+      <DialogContent className="max-w-xl bg-white" aria-describedby="viz-panel-description">
         {/* Accessible title for screen readers */}
         <DialogHeader>
           <VisuallyHidden asChild>
             <DialogTitle>Custom Visualization</DialogTitle>
+          </VisuallyHidden>
+          <VisuallyHidden asChild>
+            <p id="viz-panel-description">Customize visualization settings and appearance.</p>
           </VisuallyHidden>
         </DialogHeader>
         {currentLayerConfigForViz && activeVizMessageId && (
