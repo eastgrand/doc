@@ -14,7 +14,7 @@ import HitTestOptions from '@arcgis/core/views/HitTestOptions';
 import { getLayerConfigById } from '../../config/layers';
 import { FIELD_ALIASES } from '../../utils/field-aliases';
 import { FieldMappingHelper } from '../../utils/visualizations/field-mapping-helper';
-import { determinePopupTitle } from '../../utils/popup-utils';
+import { determinePopupTitle, createStandardizedPopupTemplate, StandardizedPopupConfig } from '../../utils/popup-utils';
 import Graphic from '@arcgis/core/Graphic';
 import Handles from '@arcgis/core/core/Handles';
 
@@ -68,6 +68,48 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
   const [handles] = useState(new Handles());
   const popupRef = useRef<HTMLDivElement>(null);
 
+  // **NEW: Apply standardized popup template (same as AI analysis layers)**
+  const applyStandardizedPopup = (featureLayer: __esri.FeatureLayer) => {
+    if (!featureLayer) return;
+
+    try {
+      console.log('[CustomPopupManager] Applying standardized popup to layer:', featureLayer.title);
+      
+      // Get all numeric fields for bar chart display
+      const barChartFields = featureLayer.fields
+        ?.filter(field => 
+          ['double', 'single', 'integer', 'small-integer'].includes(field.type) &&
+          !['OBJECTID', 'FID', 'Shape__Area', 'Shape__Length'].includes(field.name)
+        )
+        .map(field => field.name)
+        .slice(0, 5) || []; // Limit to 5 fields for readability
+
+      // Get all other fields for list display
+      const listFields = featureLayer.fields
+        ?.filter(field => 
+          !['OBJECTID', 'FID', 'Shape__Area', 'Shape__Length'].includes(field.name) &&
+          !barChartFields.includes(field.name)
+        )
+        .map(field => field.name)
+        .slice(0, 8) || []; // Limit to 8 additional fields
+
+      const config: StandardizedPopupConfig = {
+        titleFields: ['DESCRIPTION', 'ID', 'FSA_ID', 'NAME', 'OBJECTID'],
+        barChartFields,
+        listFields,
+        visualizationType: 'custom-popup-manager'
+      };
+
+      const popupTemplate = createStandardizedPopupTemplate(config);
+      featureLayer.popupTemplate = popupTemplate;
+      
+      console.log('[CustomPopupManager] ✅ Successfully applied standardized popup');
+    } catch (error) {
+      console.error('[CustomPopupManager] ❌ Error applying standardized popup:', error);
+      // Layer will use default popup behavior
+    }
+  };
+
   // Main initialization effect
   useEffect(() => {
     if (!mapView || !layer) {
@@ -90,6 +132,9 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
     
     if (layer.type === 'feature') {
       featureLayerRef.current = layer as __esri.FeatureLayer;
+      
+      // **NEW: Apply standardized popup template**
+      applyStandardizedPopup(featureLayerRef.current);
       
       // Initialize popup only if it exists
       if (mapView.popup) {
@@ -524,8 +569,30 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
     };
     
     infoButton.onclick = () => {
-      // console.log('[CustomPopupManager] Infographics button clicked. Dispatching event and forcing step 3.');
+      console.log('[CustomPopupManager] Infographics button clicked!');
       const geometry = feature.geometry; // Get geometry first
+      console.log('[CustomPopupManager] Geometry object:', geometry);
+
+      if (geometry) {
+        console.log('[CustomPopupManager] Geometry type:', geometry.type);
+        
+        // Store geometry in localStorage for InfographicsTab to pick up
+        const geometryData = {
+          type: geometry.type,
+          rings: geometry.type === 'polygon' ? (geometry as __esri.Polygon).rings : undefined,
+          x: geometry.type === 'point' ? (geometry as __esri.Point).x : undefined,
+          y: geometry.type === 'point' ? (geometry as __esri.Point).y : undefined,
+          spatialReference: geometry.spatialReference.toJSON()
+        };
+        
+        console.log('[CustomPopupManager] Geometry data to store:', geometryData);
+        localStorage.setItem('emergencyGeometry', JSON.stringify(geometryData));
+        console.log('[CustomPopupManager] Stored geometry in localStorage');
+        
+        // Verify storage worked
+        const stored = localStorage.getItem('emergencyGeometry');
+        console.log('[CustomPopupManager] Verification - stored data exists:', !!stored);
+      }
 
       // 1. Dispatch event (Re-enabled)
       const infographicsEvent = new CustomEvent('openInfographics', {
@@ -700,19 +767,9 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
     }
   };
 
-  const showInfographicsHandler = (e: Event) => {
-    const customEvent = e as CustomEvent<__esri.Graphic>;
-    if (customEvent.detail && config?.actions) {
-      const infoAction = config.actions.find(a => a.label === 'Infographics');
-      if (infoAction) {
-        infoAction.onClick(customEvent.detail);
-      }
-    }
-  };
-
   // Add event listeners
   window.addEventListener('zoom-to-feature', zoomToFeatureHandler);
-  window.addEventListener('show-infographics', showInfographicsHandler);
+  // NOTE: show-infographics handler removed - now handled directly in popup button
   
   const view = mapView; // No casting needed since interface now specifies MapView
 

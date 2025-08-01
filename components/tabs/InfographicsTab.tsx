@@ -2044,6 +2044,47 @@ export default function InfographicsTab({
 
   }, [geometry, setGeometry, setActiveStep, setHasSelection, geometryRef]); // Use correct state setters and refs in dependency array
 
+  // Add a delayed check for emergency geometry to handle timing issues
+  useEffect(() => {
+    const delayedCheck = setTimeout(() => {
+      console.log('🔵 [Delayed LocalStorage Check] Running delayed check...');
+      try {
+        const storedEmergencyGeometry = window.localStorage.getItem('emergencyGeometry');
+        if (!geometry && storedEmergencyGeometry) {
+          console.log('🟢 [Delayed LocalStorage Check] Found emergency geometry after delay!');
+          const savedGeometry = JSON.parse(storedEmergencyGeometry);
+          
+          let recoveredGeometry: any;
+          if (savedGeometry.type === 'polygon' && savedGeometry.rings) {
+            recoveredGeometry = new Polygon({
+              rings: savedGeometry.rings,
+              spatialReference: savedGeometry.spatialReference
+            });
+          } else if (savedGeometry.type === 'point' && savedGeometry.x != null && savedGeometry.y != null) {
+            recoveredGeometry = new Point({
+              x: savedGeometry.x,
+              y: savedGeometry.y,
+              spatialReference: savedGeometry.spatialReference
+            });
+          }
+          
+          if (recoveredGeometry) {
+            setGeometry(recoveredGeometry);
+            geometryRef.current = recoveredGeometry;
+            setActiveStep('report');
+            setHasSelection(true);
+            window.localStorage.removeItem('emergencyGeometry');
+            console.log('🟢 [Delayed LocalStorage Check] ✅ Emergency geometry recovery complete');
+          }
+        }
+      } catch (error) {
+        console.warn('🟠 [Delayed LocalStorage Check] Error:', error);
+      }
+    }, 100); // 100ms delay
+    
+    return () => clearTimeout(delayedCheck);
+  }, []); // Only run once on mount
+
   // Helper function to update the geometry ref
 
   // Add a global window function to force reporting with test data

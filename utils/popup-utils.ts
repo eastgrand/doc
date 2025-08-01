@@ -689,10 +689,45 @@ export function createCustomStyledContent(content: any): any {
       infoButton.className = 'custom-popup-button custom-popup-button-secondary';
       infoButton.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21H3V3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 14L12 9L17 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Infographics';
       infoButton.addEventListener('click', () => {
-        // Dispatch custom event
-        window.dispatchEvent(new CustomEvent('show-infographics', { 
-          detail: { featureId: graphic.attributes.OBJECTID } 
-        }));
+        console.log('[Infographics Button] Button clicked!');
+        
+        try {
+          const geometry = graphic.geometry;
+          console.log('[Infographics Button] Geometry object:', geometry);
+          
+          if (!geometry) {
+            console.error('[Infographics Button] No geometry found');
+            return;
+          }
+
+          console.log('[Infographics Button] Geometry type:', geometry.type);
+
+          const geometryData = {
+            type: geometry.type,
+            rings: geometry.type === 'polygon' ? (geometry as __esri.Polygon).rings : undefined,
+            x: geometry.type === 'point' ? (geometry as __esri.Point).x : undefined,
+            y: geometry.type === 'point' ? (geometry as __esri.Point).y : undefined,
+            spatialReference: geometry.spatialReference.toJSON()
+          };
+          
+          console.log('[Infographics Button] Geometry data to store:', geometryData);
+          
+          localStorage.setItem('emergencyGeometry', JSON.stringify(geometryData));
+          console.log('[Infographics Button] Stored geometry in localStorage');
+          
+          // Verify storage worked
+          const stored = localStorage.getItem('emergencyGeometry');
+          console.log('[Infographics Button] Verification - stored data exists:', !!stored);
+          
+          // Add a small delay to ensure localStorage is written before opening panel
+          setTimeout(() => {
+            document.dispatchEvent(new CustomEvent('openInfographics'));
+            console.log('[Infographics Button] Event dispatched');
+          }, 50);
+          
+        } catch (error) {
+          console.error('[Infographics Button] Error:', error);
+        }
       });
       
       actions.appendChild(zoomButton);
