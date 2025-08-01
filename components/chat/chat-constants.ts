@@ -6,18 +6,17 @@ export const ANALYSIS_CATEGORIES = {
     'Compare Nike performance between Brooklyn and Philadelphia'
   ],
   'Competitive Analysis': [
-    'Show competitive positioning of Nike vs Adidas',
     'Show me the market share difference between Nike and Adidas'
   ],
   'Demographic Insights': [
     'Which areas have the best customer demographics for Nike?'
-  ],
-  'Customer Profile': [
-    'Show me areas with ideal customer personas for athletic brands'
   ]
 };
 
 export const DISABLED_ANALYSIS_CATEGORIES = {
+  'Customer Profile': [
+    'Show me areas with ideal customer personas for athletic brands'
+  ],
   'Multi-Endpoint': [
     'Analyze customer profiles and compare with strategic opportunities'
   ],
