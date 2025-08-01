@@ -3152,7 +3152,12 @@ const EnhancedGeospatialChat = memo(({
         conditionResult: analysisOptions.clusterConfig && analysisOptions.clusterConfig.enabled
       });
       
-      if (analysisOptions.clusterConfig && analysisOptions.clusterConfig.enabled) {
+      // Only allow clustering for strategic and demographic analyses (not competitive/comparative)
+      const supportsClusteringEndpoints = ['/strategic-analysis', '/demographic-insights'];
+      const currentEndpoint = finalAnalysisResult.endpoint;
+      const supportsClustering = supportsClusteringEndpoints.includes(currentEndpoint);
+      
+      if (analysisOptions.clusterConfig && analysisOptions.clusterConfig.enabled && supportsClustering) {
         console.log('🎯 [CLUSTERING] Applying clustering AFTER geometry join with real ZIP code geometries');
         console.log('🎯 [CLUSTERING] Config:', analysisOptions.clusterConfig);
         console.log('🎯 [CLUSTERING] Records before clustering:', {
@@ -3205,7 +3210,11 @@ const EnhancedGeospatialChat = memo(({
           // Continue with non-clustered result if clustering fails
         }
       } else {
-        console.log('🎯 [CLUSTERING] Skipping clustering - not enabled or configured');
+        if (!supportsClustering) {
+          console.log(`🎯 [CLUSTERING] Skipping clustering - endpoint '${currentEndpoint}' does not support clustering`);
+        } else {
+          console.log('🎯 [CLUSTERING] Skipping clustering - not enabled or configured');
+        }
       }
       console.log('🚨 [FLOW CHECK] First record targetVariable:', finalAnalysisResult.data.records[0]?.properties?.[finalAnalysisResult.data.targetVariable]);
       console.log('🚨 [FLOW CHECK] Data type:', finalAnalysisResult.data.type);
@@ -4488,42 +4497,60 @@ const EnhancedGeospatialChat = memo(({
                     </Dialog>
 
                     {/* Cluster Configuration button */}
-                    <Dialog open={clusterDialogOpen} onOpenChange={setClusterDialogOpen}>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <DialogTrigger asChild>
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                className="relative flex items-center justify-center gap-1 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-7"
-                              >
-                                <Target className="h-3 w-3 mr-1" />
-                                <span className="truncate">
-                                  {clusterConfig.enabled ? `${clusterConfig.numClusters} Clusters` : 'Clustering'}
-                                </span>
-                              </Button>
-                            </DialogTrigger>
-                          </TooltipTrigger>
-                          <TooltipContent side="top" className="bg-white">
-                            <p>Configure clustering</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white" aria-describedby="cluster-dialog-description">
-                        <DialogHeader>
-                          <DialogTitle>Clustering Configuration</DialogTitle>
-                          <p id="cluster-dialog-description" className="text-sm text-gray-600 mt-2">Configure clustering settings for your analysis.</p>
-                        </DialogHeader>
-                        <ClusterConfigPanel
-                          config={clusterConfig}
-                          onConfigChange={setClusterConfig}
-                          onSave={() => setClusterDialogOpen(false)}
-                          className="border-0 shadow-none"
-                        />
-                      </DialogContent>
-                    </Dialog>
+                    {(() => {
+                      // Check if current endpoint supports clustering
+                      const supportsClusteringEndpoints = ['strategic-analysis', 'demographic-insights'];
+                      const clusteringSupported = selectedEndpoint === 'auto' || supportsClusteringEndpoints.includes(selectedEndpoint);
+                      
+                      return (
+                        <Dialog open={clusterDialogOpen} onOpenChange={setClusterDialogOpen}>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <DialogTrigger asChild disabled={!clusteringSupported}>
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    disabled={!clusteringSupported}
+                                    className={`relative flex items-center justify-center gap-1 text-xs font-medium border-2 shadow-sm rounded-lg w-full h-7 ${
+                                      clusteringSupported 
+                                        ? 'hover:bg-gray-50 hover:text-black hover:border-gray-200 hover:shadow' 
+                                        : 'opacity-50 cursor-not-allowed bg-gray-100 text-gray-400 border-gray-300'
+                                    }`}
+                                  >
+                                    <Target className={`h-3 w-3 mr-1 ${!clusteringSupported ? 'text-gray-400' : ''}`} />
+                                    <span className="truncate">
+                                      {clusterConfig.enabled ? `${clusterConfig.numClusters} Clusters` : 'Clustering'}
+                                    </span>
+                                  </Button>
+                                </DialogTrigger>
+                              </TooltipTrigger>
+                              <TooltipContent side="top" className="bg-white">
+                                <p>
+                                  {clusteringSupported 
+                                    ? 'Configure clustering for territory analysis'
+                                    : 'Clustering not available for this analysis type. Use Strategic or Demographic analysis for territory clustering.'
+                                  }
+                                </p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white" aria-describedby="cluster-dialog-description">
+                            <DialogHeader>
+                              <DialogTitle>Clustering Configuration</DialogTitle>
+                              <p id="cluster-dialog-description" className="text-sm text-gray-600 mt-2">Configure clustering settings for your analysis.</p>
+                            </DialogHeader>
+                            <ClusterConfigPanel
+                              config={clusterConfig}
+                              onConfigChange={setClusterConfig}
+                              onSave={() => setClusterDialogOpen(false)}
+                              className="border-0 shadow-none"
+                            />
+                          </DialogContent>
+                        </Dialog>
+                      );
+                    })()}
                   </div>
 
                   {/* Filters summary chip */}

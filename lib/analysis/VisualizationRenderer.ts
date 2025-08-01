@@ -335,6 +335,12 @@ export class VisualizationRenderer {
       return 'choropleth';
     }
     
+    // For demographic analysis, use choropleth renderer (same as strategic analysis)
+    if (data.type === 'demographic_analysis') {
+      console.log('[VisualizationRenderer] 🎯 Using CHOROPLETH renderer for demographic analysis (same as strategic)');
+      return 'choropleth';
+    }
+    
     // For categorical data with few unique values, consider categorical renderer
     if (this.isCategoricalData(data)) {
       return 'categorical';
