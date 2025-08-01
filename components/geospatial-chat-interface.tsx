@@ -238,6 +238,20 @@ const EnhancedGeospatialChat = memo(({
     setArcgisModules({ GraphicsLayer, Graphic, geometryEngine });
   }, []);
 
+  // Listen for openInfographics event to open the infographics panel
+  useEffect(() => {
+    const handleOpenInfographics = () => {
+      console.log('[GeospatialChat] openInfographics event received - opening panel');
+      setIsInfographicsOpen(true);
+    };
+
+    document.addEventListener('openInfographics', handleOpenInfographics as EventListener);
+    
+    return () => {
+      document.removeEventListener('openInfographics', handleOpenInfographics as EventListener);
+    };
+  }, []);
+
   console.log('[EnhancedGeospatialChat] Component props:', {
     hasInitialMapView: !!initialMapView,
     initialMapViewState: initialMapView ? {
@@ -4844,7 +4858,7 @@ const EnhancedGeospatialChat = memo(({
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsInfographicsOpen(false)}
-                className="h-6 w-6 p-0 hover:bg-gray-100 rounded-full"
+                className="h-6 w-6 p-0 hover:bg-gray-100 rounded-full mr-[50px]"
               >
                 <X className="h-3 w-3" />
               </Button>
