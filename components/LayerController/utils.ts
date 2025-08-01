@@ -50,20 +50,7 @@ const createLayer = async (
       title: layerConfig.name,
       id: layerConfig.id,
       visible: false,
-      popupEnabled: true,
-      popupTemplate: {
-        title: layerConfig.name,
-        content: [
-          {
-            type: 'fields',
-            fieldInfos: (layerConfig as any).popupFields?.map((field: any) => ({
-              fieldName: field.name,
-              label: field.label,
-              visible: true
-            })) || []
-          }
-        ]
-      }
+      popupEnabled: false // Disable ArcGIS popups so CustomPopupManager can handle them
     });
 
     // Race between layer load and timeout
@@ -74,6 +61,9 @@ const createLayer = async (
       console.error(`[LC createLayer] Layer ${layerConfig.id} failed to load:`, loadError);
       return [null, [loadError instanceof Error ? loadError.message : 'Unknown load error']];
     }
+
+    // Note: Popups will be handled by CustomPopupManager component (green popup style)
+    console.log(`✅ Layer created for CustomPopupManager handling: ${layerConfig.id}`);
     
     if (layer.fields) {
       console.log(`[LC createLayer] Available fields for ${layerConfig.id}:`, layer.fields.map(f => f.name));

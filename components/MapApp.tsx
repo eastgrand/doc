@@ -197,6 +197,19 @@ export const MapApp: React.FC = memo(() => {
     setLayerStates(states);
   }, []);
 
+  // NEW: Handle LayerController layers for CustomPopupManager
+  const handleLayersCreated = useCallback((layers: __esri.FeatureLayer[]) => {
+    console.log('[MapApp] LayerController layers created for CustomPopupManager:', layers.length);
+    setFeatureLayers(prevLayers => {
+      // Remove any existing LayerController layers and add new ones
+      const nonLayerControllerLayers = prevLayers.filter(layer => 
+        !layer.id.includes('layer-controller') && 
+        !layers.some(newLayer => newLayer.id === layer.id)
+      );
+      return [...nonLayerControllerLayers, ...layers];
+    });
+  }, []);
+
   // Memoize layer state update handler for AITab
   const handleLayerStateChange = useCallback((layerId: string, state: any) => {
     setLayerStates(prev => ({ ...prev, [layerId]: state }));
@@ -244,6 +257,7 @@ export const MapApp: React.FC = memo(() => {
               onCorrelationAnalysis={handleCorrelationAnalysis}
               visibleWidgets={memoizedVisibleWidgets}
               onLayerStatesChange={handleLayerStatesChange}
+              onLayersCreated={handleLayersCreated}
             />
           )}
         </div>

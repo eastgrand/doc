@@ -45,6 +45,7 @@ interface MapWidgetsProps {
   visibleWidgets?: string[]; // Array of widget names that should be visible
   onCorrelationAnalysis: (layer: __esri.FeatureLayer, primaryField: string, comparisonField: string) => void;
   onLayerStatesChange?: (states: any) => void;
+  onLayersCreated?: (layers: __esri.FeatureLayer[]) => void; // NEW: For CustomPopupManager integration
 }
 
 // Define US City Bookmarks Data (Alphabetical Order)
@@ -71,7 +72,8 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
   // legend,
   showLoading = false,
   visibleWidgets = ['search', 'layerList', 'bookmarks', 'print', 'basemapGallery'], // Added 'basemapGallery' to default
-  onLayerStatesChange
+  onLayerStatesChange,
+  onLayersCreated
 }: MapWidgetsProps) {
 
 
@@ -441,11 +443,12 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
         view={view}
         config={layerConfig}
         onLayerStatesChange={onLayerStatesChange}
+        onLayersCreated={onLayersCreated}
         visible={activeWidget === 'layerList'} 
       />,
       container
     );
-  }, [view, layerConfig, onLayerStatesChange, containersReady, activeWidget]);
+  }, [view, layerConfig, onLayerStatesChange, onLayersCreated, containersReady, activeWidget]);
 
   if (!view) return null;
 

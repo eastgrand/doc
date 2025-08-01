@@ -76,6 +76,7 @@ interface LayerControllerProps {
   onLayerStatesChange?: (states: LayerStatesMap) => void;
   onLayerInitializationProgress?: (progress: { loaded: number; total: number }) => void;
   onInitializationComplete?: () => void;
+  onLayersCreated?: (layers: __esri.FeatureLayer[]) => void; // NEW: Callback for CustomPopupManager
   visible?: boolean;
 }
 
@@ -473,6 +474,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
   onLayerStatesChange,
   onLayerInitializationProgress,
   onInitializationComplete,
+  onLayersCreated,
   visible = true
 }, ref) => {
   // State
@@ -586,6 +588,12 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       setLayerStates(newLayerStates);
       
       onLayerStatesChange?.(newLayerStates);
+      
+      // NEW: Provide created layers for CustomPopupManager
+      const createdLayers = Object.values(newLayerStates)
+        .map(state => state.layer)
+        .filter((layer): layer is __esri.FeatureLayer => layer !== null);
+      onLayersCreated?.(createdLayers);
       
       if (view?.map) {
         reorderLayers(view.map.layers);
