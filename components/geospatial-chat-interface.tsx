@@ -2953,7 +2953,7 @@ const EnhancedGeospatialChat = memo(({
       }
       
       // Geographic join process for all data (clustered and non-clustered)
-      var joinedResults = analysisResult.data.records.map((record: any, index: number) => {
+      const joinedResults = analysisResult.data.records.map((record: any, index: number) => {
         // ENHANCED: Extract ZIP Code from AnalysisEngine record structure
         // Check multiple possible locations for the ID field
         const recordAreaId = (record as any).area_id;
