@@ -151,18 +151,20 @@ export class FieldMappingHelper {
     if (layerId) {
       const layer = this.getLayerConfigById(layerId);
       const field = layer?.fields?.find(f => f.name.toUpperCase() === actualFieldName.toUpperCase());
-      if (field?.alias && field.alias !== 'Internal') {
-        return field.alias;
+      if (field?.alias && field.alias.toLowerCase() !== 'internal') {
+        return this.cleanFieldLabel(field.alias);
       }
     }
 
     // 4. Try the general-purpose reverse mapping from FIELD_ALIASES
     const reverseMap = this.buildReverseMapping();
     if (reverseMap[actualFieldName]) {
-        return reverseMap[actualFieldName];
+        const cleaned = this.cleanFieldLabel(reverseMap[actualFieldName]);
+        return cleaned || this.prettifyFieldName(actualFieldName);
     }
     if (reverseMap[actualFieldName.toUpperCase()]) {
-        return reverseMap[actualFieldName.toUpperCase()];
+        const cleaned = this.cleanFieldLabel(reverseMap[actualFieldName.toUpperCase()]);
+        return cleaned || this.prettifyFieldName(actualFieldName);
     }
 
     // 5. As a last resort, prettify the raw field name
@@ -175,9 +177,30 @@ export class FieldMappingHelper {
    * @returns Cleaned field label
    */
   static cleanFieldLabel(label: string): string {
-    // This function is now just a pass-through to avoid breaking dependencies.
-    // The core logic is now in getFriendlyFieldName.
-    return label;
+    if (!label || typeof label !== 'string') {
+      return label;
+    }
+    
+    // Skip if it's "Internal" - return empty string to hide it
+    if (label.toLowerCase().trim() === 'internal') {
+      return '';
+    }
+    
+    let cleaned = label;
+    
+    // Remove (esri), (Esri), (ESRI) and similar patterns first
+    cleaned = cleaned.replace(/\s*\([Ee][Ss][Rr][Ii]\s*\d*\)/g, '');
+    
+    // Remove other common parenthetical qualifiers
+    cleaned = cleaned.replace(/\s*\([^)]*\)/g, '');
+    
+    // Remove percentage symbols
+    cleaned = cleaned.replace(/\s*%\s*/g, '');
+    
+    // Clean up extra whitespace
+    cleaned = cleaned.replace(/\s+/g, ' ').trim();
+    
+    return cleaned;
   }
 
   /**
