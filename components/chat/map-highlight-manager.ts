@@ -98,10 +98,10 @@ export const createHighlights = (
         }
 
         const totalShapValue = Object.values(shapValues).reduce(
-          (sum: number, val: any) => sum + Math.abs(val),
+          (sum: number, val: any) => sum + Math.abs(Number(val) || 0),
           0
         );
-        const intensity = Math.min(1, totalShapValue / 10);
+        const intensity = Math.min(1, (totalShapValue || 0) / 10);
         const color: [number, number, number, number] = [51, 168, 82, intensity * 0.4];
 
         const highlightGraphic = new Graphic({

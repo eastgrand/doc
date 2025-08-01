@@ -2521,7 +2521,7 @@ const EnhancedGeospatialChat = memo(({
         role: 'assistant',
         content: `I'm sorry, I encountered an error while processing your question: ${errorMessage}\n\nPlease try rephrasing your question or starting a new analysis.`,
         timestamp: new Date(),
-        metadata: { context: 'error_response', error: errorMessage }
+        metadata: { context: 'error_response', debugInfo: { error: errorMessage } }
       };
       setMessages(prev => [...prev, chatErrorMessage]);
     } finally {

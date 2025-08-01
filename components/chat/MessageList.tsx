@@ -74,6 +74,31 @@ const MessageList: React.FC<MessageListProps> = ({
   onCustomizeVisualization,
   onZoomToFeature
 }) => {
+  // Check if an endpoint supports SHAP feature importance charts
+  const shouldShowSHAPChart = (message: LocalChatMessage): boolean => {
+    if (!message.metadata?.analysisResult?.data) return false;
+    
+    // Get endpoint from various possible sources
+    const endpoint = message.metadata.analysisResult?.endpoint || 
+                    (message.metadata as any).endpoint || 
+                    message.metadata.analysisResult?.data?.type ||
+                    message.metadata.analysisResult?.data?.analysis_type || '';
+    
+    // Endpoints that don't use ML calculations and shouldn't have SHAP charts
+    const nonMLEndpoints = [
+      'brand-difference',
+      'market-share-difference', 
+      'spatial-clusters',
+      'difference',
+      '/brand-difference',
+      '/market-share-difference',
+      '/spatial-clusters', 
+      '/difference'
+    ];
+    
+    const cleanEndpoint = endpoint.replace('/', '');
+    return !nonMLEndpoints.includes(cleanEndpoint) && !nonMLEndpoints.includes(endpoint);
+  };
   const codeBlockRegex = /```(json|typescript|javascript|python|html|css|bash|sql)\n([\s\S]*?)```/g;
 
   // Helper function to detect and linkify FSA/ID patterns
@@ -403,8 +428,8 @@ const MessageList: React.FC<MessageListProps> = ({
                             </TooltipProvider>
                           )}
 
-                          {/* SHAP Feature Importance Chart */}
-                          {message.metadata?.analysisResult?.data && (
+                          {/* SHAP Feature Importance Chart - Only for ML-based analyses */}
+                          {shouldShowSHAPChart(message) && (
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger asChild>

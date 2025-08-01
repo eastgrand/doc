@@ -1481,7 +1481,7 @@ export async function POST(req: NextRequest) {
                   } else {
                       // Fallback to getRelevantFields if detected field doesn't exist in data
                       const relevantFields = getRelevantFields(firstFeatureProps, userQuery);
-                      primaryAnalysisField = relevantFields.length > 0 ? relevantFields[0] : null;
+                      primaryAnalysisField = relevantFields.length > 0 ? relevantFields[0] : undefined;
                   }
               } else {
                   // Fallback to basic field analysis if no fields detected
