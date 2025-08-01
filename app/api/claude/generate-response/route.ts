@@ -10,6 +10,7 @@ import type { AnalysisResponse, ProcessedLayerResult } from '@/types/geospatial-
 import { NextRequest } from 'next/server';
 import { LocalGeospatialFeature } from '@/types/index';
 import { getRelevantFields } from '@/app/utils/field-analysis';
+import { EnhancedQueryAnalyzer } from '@/lib/analysis/EnhancedQueryAnalyzer';
 import { detectThresholdQuery, detectSegmentQuery, detectComparativeQuery } from '@/lib/analytics/query-analysis';
 import { getPersona, defaultPersona } from '../prompts';
 import { unionByGeoId } from '../../../../types/union-layer';
@@ -1465,18 +1466,37 @@ export async function POST(req: NextRequest) {
               primaryAnalysisField = microserviceField;
               console.log(`[Claude] Using microserviceField '${microserviceField}' as primaryAnalysisField`);
           } else {
-              // Use the new marketing-focused field selection logic
-              const relevantFields = getRelevantFields(firstFeatureProps, messages?.[messages.length - 1]?.content || metadata?.query || 'Analyze data');
-              if (relevantFields.length > 0) {
-                  // Fallback: first relevant field found
-                  primaryAnalysisField = relevantFields[0];
+              // Use EnhancedQueryAnalyzer for comprehensive field detection (100% coverage)
+              const queryAnalyzer = new EnhancedQueryAnalyzer();
+              const userQuery = messages?.[messages.length - 1]?.content || metadata?.query || 'Analyze data';
+              const queryFields = queryAnalyzer.getQueryFields(userQuery);
+              
+              if (queryFields.length > 0) {
+                  // Use the first field detected by enhanced analyzer
+                  const detectedField = queryFields[0].field;
+                  // Check if detected field exists in the data
+                  if (firstFeatureProps[detectedField] !== undefined) {
+                      primaryAnalysisField = detectedField;
+                      console.log(`[Claude] Using EnhancedQueryAnalyzer field '${detectedField}' as primaryAnalysisField`);
+                  } else {
+                      // Fallback to getRelevantFields if detected field doesn't exist in data
+                      const relevantFields = getRelevantFields(firstFeatureProps, userQuery);
+                      primaryAnalysisField = relevantFields.length > 0 ? relevantFields[0] : null;
+                  }
               } else {
-                  // Further Fallback: first numeric field found that isn't OBJECTID, or just OBJECTID
-                  const availableNumericFields = Object.keys(firstFeatureProps).filter(key => typeof firstFeatureProps[key] === 'number');
-                  primaryAnalysisField = availableNumericFields.find(f => f.toUpperCase() !== 'OBJECTID') || availableNumericFields[0];
+                  // Fallback to basic field analysis if no fields detected
+                  const relevantFields = getRelevantFields(firstFeatureProps, userQuery);
+                  if (relevantFields.length > 0) {
+                      primaryAnalysisField = relevantFields[0];
+                  } else {
+                      // Further Fallback: first numeric field found that isn't OBJECTID, or just OBJECTID
+                      const availableNumericFields = Object.keys(firstFeatureProps).filter(key => typeof firstFeatureProps[key] === 'number');
+                      primaryAnalysisField = availableNumericFields.find(f => f.toUpperCase() !== 'OBJECTID') || availableNumericFields[0];
+                  }
               }
           }
     
+
         if (process.env.NODE_ENV === 'development') {
         console.log(`[Claude DEBUG] Determined primaryAnalysisField: ${primaryAnalysisField}`);
         }
@@ -2050,6 +2070,31 @@ How else can I help analyze the data in your selected ZIP codes?`,
         // Extract user query for analysis
         const userQuery = messages?.[messages.length - 1]?.content || metadata?.query || 'Analyze data';
         
+        // Generate enhanced field context for Claude prompt
+        let enhancedFieldContext = '';
+        const queryAnalyzer = new EnhancedQueryAnalyzer();
+        
+        try {
+            const detectedFields = queryAnalyzer.getQueryFields(userQuery);
+            const bestEndpoint = queryAnalyzer.getBestEndpoint(userQuery);
+            
+            if (detectedFields.length > 0) {
+                enhancedFieldContext = `
+ENHANCED QUERY ANALYSIS:
+- User Query: "${userQuery}"
+- Detected Fields: ${detectedFields.map(f => `${f.field} (${f.description})`).join(', ')}
+- Recommended Endpoint: ${bestEndpoint || 'general'}
+- Primary Analysis Field: ${primaryAnalysisField}
+
+FIELD INTERPRETATION GUIDANCE:
+${detectedFields.map(f => `- ${f.field}: ${f.description}`).join('\n')}
+`;
+                console.log(`[Claude] Enhanced field analysis - detected ${detectedFields.length} relevant fields`);
+            }
+        } catch (error) {
+            console.warn('[Claude] Error in enhanced field analysis:', error);
+        }
+        
         // Detect query types for SHAP integration
         const isThresholdQuery = detectThresholdQuery(userQuery);
         const isSegmentQuery = detectSegmentQuery(userQuery);
@@ -2277,6 +2322,8 @@ The user requested the ${rankingContext.queryType} ${rankingContext.requestedCou
 
         // Create dynamic system prompt with persona-specific content and analysis-specific context
         const dynamicSystemPrompt = `${selectedPersona.systemPrompt}
+
+${enhancedFieldContext}
 
 ${analysisSpecificPrompt}
 

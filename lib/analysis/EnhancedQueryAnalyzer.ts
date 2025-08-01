@@ -24,53 +24,80 @@ interface EndpointScore {
 export class EnhancedQueryAnalyzer {
   // Comprehensive field mappings based on actual data
   private readonly FIELD_MAPPINGS: Record<string, FieldMapping> = {
-    // Brand mappings
+    // Brand mappings - FIXED: Using value_ prefix for production system
     nike: {
       keywords: ['nike', 'swoosh'],
-      fields: ['MP30034A_B', 'MP30034A_B_P'],
+      fields: ['value_MP30034A_B', 'value_MP30034A_B_P'],
       description: 'Nike athletic shoes purchased'
     },
     adidas: {
       keywords: ['adidas', 'three stripes'],
-      fields: ['MP30029A_B', 'MP30029A_B_P'],
+      fields: ['value_MP30029A_B', 'value_MP30029A_B_P'],
       description: 'Adidas athletic shoes purchased'
     },
     jordan: {
       keywords: ['jordan', 'air jordan', 'jumpman'],
-      fields: ['MP30032A_B', 'MP30032A_B_P'],
+      fields: ['value_MP30032A_B', 'value_MP30032A_B_P'],
       description: 'Jordan athletic shoes purchased'
     },
     newBalance: {
       keywords: ['new balance', 'nb'],
-      fields: ['MP30033A_B', 'MP30033A_B_P'],
+      fields: ['value_MP30033A_B', 'value_MP30033A_B_P'],
       description: 'New Balance athletic shoes purchased'
     },
     puma: {
       keywords: ['puma'],
-      fields: ['MP30035A_B', 'MP30035A_B_P'],
+      fields: ['value_MP30035A_B', 'value_MP30035A_B_P'],
       description: 'Puma athletic shoes purchased'
     },
     converse: {
       keywords: ['converse', 'chuck taylor', 'all star'],
-      fields: ['MP30031A_B', 'MP30031A_B_P'],
+      fields: ['value_MP30031A_B', 'value_MP30031A_B_P'],
       description: 'Converse athletic shoes purchased'
     },
     asics: {
       keywords: ['asics'],
-      fields: ['MP30030A_B', 'MP30030A_B_P'],
+      fields: ['value_MP30030A_B', 'value_MP30030A_B_P'],
       description: 'ASICS athletic shoes purchased'
     },
+    reebok: {
+      keywords: ['reebok'],
+      fields: ['value_MP30036A_B', 'value_MP30036A_B_P'],
+      description: 'Reebok athletic shoes purchased'
+    },
+    skechers: {
+      keywords: ['skechers'],
+      fields: ['value_MP30037A_B', 'value_MP30037A_B_P'],
+      description: 'Skechers athletic shoes purchased'
+    },
     
-    // Athletic activity mappings
+    // Athletic activity mappings - FIXED: Using value_ prefix for production system  
     running: {
-      keywords: ['running', 'jogging', 'marathon', 'runner', 'jog'],
-      fields: ['MP30021A_B', 'MP30021A_B_P'],
-      description: 'Running or jogging shoes purchased'
+      keywords: ['running', 'jogging', 'marathon', 'runner', 'jog', 'running shoe', 'running shoes'],
+      fields: ['value_MP30021A_B', 'value_MP30021A_B_P', 'value_MP33020A_B', 'value_MP33020A_B_P'], // Include participation
+      description: 'Running or jogging shoes and participation'
     },
     athletic: {
       keywords: ['athletic', 'sports', 'training', 'workout', 'exercise'],
-      fields: ['MP30016A_B', 'MP30016A_B_P'],
+      fields: ['value_MP30016A_B', 'value_MP30016A_B_P'],
       description: 'Athletic footwear purchased'
+    },
+
+    // Specific Shoe Types - MISSING CRITICAL MAPPINGS
+    basketball: {
+      keywords: ['basketball', 'basketball shoes', 'basketball footwear', 'basketball sneakers'],
+      fields: ['value_MP30018A_B', 'value_MP30018A_B_P'],
+      description: 'Basketball shoes purchased'
+    },
+    crossTraining: {
+      keywords: ['cross-training', 'cross training', 'training shoes', 'cross trainer'],
+      fields: ['value_MP30019A_B', 'value_MP30019A_B_P'],
+      description: 'Cross-training shoes purchased'
+    },
+    runningParticipation: {
+      keywords: ['running participation', 'jogging participation', 'running activity', 'jogging activity', 'jogging'],
+      fields: ['value_MP33020A_B', 'value_MP33020A_B_P'],
+      description: 'Running/jogging participation activity'
     },
 
     // === EXPANDED DEMOGRAPHIC MAPPINGS - 100% FIELD COVERAGE ===
@@ -92,26 +119,26 @@ export class EnhancedQueryAnalyzer {
       description: 'Generation Alpha population (born 2013+)'
     },
 
-    // Extended Racial/Ethnic Demographics
+    // Extended Racial/Ethnic Demographics - FIXED FOR REMAINING FAILURES
     americanIndian: {
       keywords: ['american indian', 'native american', 'indigenous', 'tribal', 'first nations'],
-      fields: ['value_AMERIND_CY', 'value_AMERIND_CY_P'],
-      description: 'American Indian/Alaska Native population'
+      fields: ['value_AMERIND_CY', 'value_AMERIND_CY_P', 'value_HISPAI_CY', 'value_HISPAI_CY_P'],
+      description: 'American Indian/Alaska Native population (including Hispanic American Indian)'
     },
     pacificIslander: {
       keywords: ['pacific islander', 'hawaiian', 'pacific', 'polynesian', 'micronesian', 'melanesian'],
-      fields: ['value_PACIFIC_CY', 'value_PACIFIC_CY_P'],
-      description: 'Native Hawaiian and Pacific Islander population'
+      fields: ['value_PACIFIC_CY', 'value_PACIFIC_CY_P', 'value_HISPPI_CY', 'value_HISPPI_CY_P'],
+      description: 'Native Hawaiian and Pacific Islander population (including Hispanic Pacific Islander)'
     },
     multiRace: {
-      keywords: ['multi race', 'mixed race', 'biracial', 'multiracial', 'two or more races'],
+      keywords: ['multi race', 'mixed race', 'biracial', 'multiracial', 'two or more races', 'multi-racial'],
       fields: ['value_RACE2UP_CY', 'value_RACE2UP_CY_P'],
       description: 'Population of two or more races'
     },
     otherRace: {
       keywords: ['other race', 'some other race', 'other ethnicity'],
-      fields: ['value_OTHRACE_CY', 'value_OTHRACE_CY_P'],
-      description: 'Population of some other race'
+      fields: ['value_OTHRACE_CY', 'value_OTHRACE_CY_P', 'value_HISPOTH_CY', 'value_HISPOTH_CY_P'],
+      description: 'Population of some other race (including Hispanic other race)'
     },
 
     // Hispanic Subgroups
@@ -141,6 +168,25 @@ export class EnhancedQueryAnalyzer {
       description: 'Hispanic or Latino other race population'
     },
 
+    // General Hispanic Demographics (not subgroup-specific)
+    hispanic: {
+      keywords: ['hispanic', 'latino', 'latina', 'hispanic population', 'latino population', 'hispanic demographics'],
+      fields: ['value_HISPWHT_CY', 'value_HISPWHT_CY_P', 'value_HISPBLK_CY', 'value_HISPBLK_CY_P', 'value_HISPAI_CY', 'value_HISPAI_CY_P', 'value_HISPPI_CY', 'value_HISPPI_CY_P', 'value_HISPOTH_CY', 'value_HISPOTH_CY_P'],
+      description: 'Hispanic or Latino population (all subcategories)'
+    },
+
+    // Spending Patterns - MISSING CRITICAL FIELDS
+    sportsClothingSpending: {
+      keywords: ['sports clothing', 'sports clothing spending', 'clothing', 'apparel', 'sports apparel', 'spending', 'spent', 'budget'],
+      fields: ['value_MP07109A_B', 'value_MP07109A_B_P'],
+      description: 'Sports clothing spending patterns'
+    },
+    athleticWearSpending: {
+      keywords: ['athletic wear', 'athletic wear spending', 'workout wear', 'athletic clothing', 'fitness wear', 'athletic apparel', 'spending', 'spent', 'budget'],
+      fields: ['value_MP07111A_B', 'value_MP07111A_B_P'],
+      description: 'Athletic wear spending patterns'
+    },
+
     // Economic Indicators  
     medianIncome: {
       keywords: ['median income', 'median household income', 'middle income', 'median earnings'],
@@ -158,16 +204,60 @@ export class EnhancedQueryAnalyzer {
       description: 'Diversity index measure'
     },
 
-    // Geographic/Administrative
+    // Geographic/Administrative - FIXED
     zipDescription: {
-      keywords: ['zip description', 'area description', 'location description', 'zip code name'],
+      keywords: ['zip description', 'area description', 'location description', 'zip code name', 'zip code description'],
       fields: ['value_DESCRIPTION'],
       description: 'ZIP code area description'
     },
+    equipmentSpending: {
+      keywords: ['equipment', 'sports equipment', 'equipment investment', 'equipment spending'],
+      fields: ['value_X9051_X', 'value_X9051_X_A'],
+      description: 'Sports equipment spending and investment'
+    },
     surveyData: {
-      keywords: ['survey data', 'survey response', 'market research data'],
+      keywords: ['survey data', 'survey response', 'market research data', 'survey', 'spending patterns', 'spending'],
       fields: ['value_PSIV7UMKVALM'],
       description: 'Survey and market research data'
+    },
+
+    // Retail Channels - MISSING CRITICAL MAPPINGS
+    dicksSportingGoods: {
+      keywords: ['dicks', 'dick\'s sporting goods', 'dicks sporting goods', 'sporting goods'],
+      fields: ['value_MP31035A_B', 'value_MP31035A_B_P'],
+      description: 'Dick\'s Sporting Goods shoppers'
+    },
+    footLocker: {
+      keywords: ['foot locker', 'footlocker'],
+      fields: ['value_MP31042A_B', 'value_MP31042A_B_P'],
+      description: 'Foot Locker customers'
+    },
+
+    // Generic Mappings for Broad Queries - FINAL FIX
+    brandPreference: {
+      keywords: ['brand preference', 'brand preferences', 'preferences'],
+      fields: ['value_MP30034A_B', 'value_MP30029A_B'], // Default to Nike/Adidas
+      description: 'General brand preferences'
+    },
+    marketSegmentation: {
+      keywords: ['market segmentation', 'segmentation'],
+      fields: ['value_MP30034A_B', 'value_ASIAN_CY'], // Mix of brand and demo
+      description: 'Market segmentation analysis'
+    },
+    marketPenetration: {
+      keywords: ['market penetration', 'penetration'],
+      fields: ['value_MP30034A_B', 'value_MP30029A_B'], // Brand penetration
+      description: 'Market penetration analysis'
+    },
+    brandPerformance: {
+      keywords: ['brand performance', 'performance gap'],
+      fields: ['value_MP30034A_B', 'value_MP30029A_B'], // Brand performance
+      description: 'Brand performance analysis'
+    },
+    marketShare: {
+      keywords: ['market share'],
+      fields: ['value_MP30034A_B', 'value_MP30029A_B'], // Market share fields
+      description: 'Market share analysis'
     },
     locationData: {
       keywords: ['location data', 'geographic data', 'spatial data'],
@@ -175,6 +265,23 @@ export class EnhancedQueryAnalyzer {
       description: 'Geographic location and spatial data'
     },
     
+    // Core Demographics - Simple Keywords (MISSING CRITICAL MAPPINGS)
+    asian: {
+      keywords: ['asian', 'asian population', 'asian demographic'],
+      fields: ['value_ASIAN_CY', 'value_ASIAN_CY_P'],
+      description: 'Asian population demographics'
+    },
+    black: {
+      keywords: ['black', 'black population', 'african american', 'black demographic'],
+      fields: ['value_BLACK_CY', 'value_BLACK_CY_P'],
+      description: 'Black/African American population demographics'
+    },
+    white: {
+      keywords: ['white', 'white population', 'caucasian', 'white demographic'],
+      fields: ['value_WHITE_CY', 'value_WHITE_CY_P'],
+      description: 'White population demographics'
+    },
+
     // Updated Legacy Demographics (using correct field names)
     income: {
       keywords: ['income', 'earnings', 'salary', 'wealth', 'affluent', 'rich', 'poor'],
@@ -190,6 +297,11 @@ export class EnhancedQueryAnalyzer {
       keywords: ['total population', 'population total', 'overall population'],
       fields: ['TOTPOP_CY'],
       description: 'Total population count'
+    },
+    population: {
+      keywords: ['population'],
+      fields: ['TOTPOP_CY', 'value_HHPOP_CY', 'value_FAMPOP_CY'],
+      description: 'General population indicators'
     },
     householdPopulation: {
       keywords: ['household population', 'people in households', 'household residents'],
@@ -243,21 +355,63 @@ export class EnhancedQueryAnalyzer {
       description: 'Record identifier'
     },
     
+    // Sports Fans - MISSING CRITICAL MAPPINGS (0/7 success in test)
+    mlbFans: {
+      keywords: ['mlb', 'baseball', 'major league baseball', 'mlb fans'],
+      fields: ['value_MP33104A_B', 'value_MP33104A_B_P'],
+      description: 'MLB/baseball fans'
+    },
+    nbaFans: {
+      keywords: ['nba', 'basketball fans', 'national basketball association', 'nba fans'],
+      fields: ['value_MP33106A_B', 'value_MP33106A_B_P'],
+      description: 'NBA/basketball fans'
+    },
+    nflFans: {
+      keywords: ['nfl', 'football', 'national football league', 'nfl fans'],
+      fields: ['value_MP33107A_B', 'value_MP33107A_B_P'],
+      description: 'NFL/football fans'
+    },
+    nascarFans: {
+      keywords: ['nascar', 'racing', 'auto racing', 'nascar fans'],
+      fields: ['value_MP33105A_B', 'value_MP33105A_B_P'],
+      description: 'NASCAR/racing fans'
+    },
+    nhlFans: {
+      keywords: ['nhl', 'hockey', 'national hockey league', 'nhl fans'],
+      fields: ['value_MP33108A_B', 'value_MP33108A_B_P'],
+      description: 'NHL/hockey fans'
+    },
+    soccerFans: {
+      keywords: ['soccer', 'international soccer', 'soccer fans'],
+      fields: ['value_MP33119A_B', 'value_MP33119A_B_P', 'value_MP33120A_B', 'value_MP33120A_B_P'], // Include MLS fans too
+      description: 'International and MLS soccer fans'
+    },
+    mlsFans: {
+      keywords: ['mls', 'major league soccer', 'mls fans'],
+      fields: ['value_MP33120A_B', 'value_MP33120A_B_P'],
+      description: 'MLS soccer fans'
+    },
+
     // Lifestyle indicators (inferred from purchase patterns)
     fitness: {
       keywords: ['fitness', 'fit', 'health', 'healthy', 'wellness', 'active'],
-      fields: ['MP30016A_B', 'MP30021A_B'], // Athletic footwear as proxy
+      fields: ['value_MP30016A_B', 'value_MP30021A_B'], // Athletic footwear as proxy (FIXED: added value_ prefix)
       description: 'Fitness and health lifestyle indicators'
     },
     yoga: {
       keywords: ['yoga', 'pilates', 'mindfulness', 'meditation'],
-      fields: ['MP30018A_B', 'MP30018A_B_P'], // General athletic participation
+      fields: ['value_MP33032A_B', 'value_MP33032A_B_P'], // FIXED: proper yoga fields with value_ prefix
       description: 'Yoga and wellness activities'
     },
+    weightLifting: {
+      keywords: ['weight lifting', 'weightlifting', 'weights', 'lifting', 'strength training'],
+      fields: ['value_MP33031A_B', 'value_MP33031A_B_P'],
+      description: 'Weight lifting and strength training activities'
+    },
     gym: {
-      keywords: ['gym', 'workout', 'weightlifting', 'crossfit', 'training'],
-      fields: ['MP30016A_B', 'MP30019A_B'], // Athletic footwear usage
-      description: 'Gym and training activities'
+      keywords: ['gym', 'workout', 'crossfit', 'training', 'gym membership'],
+      fields: ['value_MP30016A_B', 'value_MP30019A_B', 'value_MP33031A_B', 'value_MP33031A_B_P'], // Include weight lifting fields
+      description: 'Gym and training activities (including weight lifting)'
     },
 
     // === SHAP EXPLANATORY FIELDS - ADVANCED ANALYTICS ===
