@@ -2359,6 +2359,8 @@ const EnhancedGeospatialChat = memo(({
       messagesCount: messages.length
     });
     
+    let requestPayload: any = null; // Declare at function scope for error handling
+    
     try {
       setIsProcessing(true);
       // Clear any previous errors since this is contextual
@@ -2415,7 +2417,7 @@ const EnhancedGeospatialChat = memo(({
       }] : [];
       
       // Call Claude API for contextual response
-      const requestPayload = {
+      requestPayload = {
         messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
         metadata: {
           query,
@@ -2492,11 +2494,11 @@ const EnhancedGeospatialChat = memo(({
         error,
         errorMessage: error instanceof Error ? error.message : String(error),
         errorStack: error instanceof Error ? error.stack : undefined,
-        requestPayload: {
+        requestPayload: requestPayload ? {
           messagesCount: requestPayload?.messages?.length,
           analysisType: requestPayload?.metadata?.analysisType,
           hasFeatureData: !!requestPayload?.featureData?.length
-        },
+        } : 'requestPayload not yet defined',
         contextState: {
           featuresCount: features.length,
           hasVisualization: !!currentVisualizationLayer.current,
