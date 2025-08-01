@@ -113,11 +113,11 @@ export async function applyAnalysisResults(
         symbol: layer.geometryType === 'polygon' ?
           new SimpleFillSymbol({
             color: new Color(color),
-            outline: { color: 'white', width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }) :
           new SimpleMarkerSymbol({
             color: new Color(color),
-            outline: { color: 'white', width: 0.5 },
+            outline: { color: [0, 0, 0, 0], width: 0 },
             size: 8
           }),
         label: String(value)
@@ -143,11 +143,11 @@ export async function applyAnalysisResults(
       defaultSymbol: layer.geometryType === 'polygon' ?
         new SimpleFillSymbol({
           color: new Color([200, 200, 200, 0.5]),
-          outline: { color: 'white', width: 0.5 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         }) :
         new SimpleMarkerSymbol({
           color: new Color([200, 200, 200, 0.5]),
-          outline: { color: 'white', width: 0.5 },
+          outline: { color: [0, 0, 0, 0], width: 0 },
           size: 8
         }),
       defaultLabel: 'Other'
@@ -175,11 +175,11 @@ export async function applyAnalysisResults(
         symbol: layer.geometryType === 'polygon' ?
           new SimpleFillSymbol({
             color: new Color(colors[i % colors.length]),
-            outline: { color: 'white', width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }) :
           new SimpleMarkerSymbol({
             color: new Color(colors[i % colors.length]),
-            outline: { color: 'white', width: 0.5 },
+            outline: { color: [0, 0, 0, 0], width: 0 },
             size: 8
           }),
         label: `${minValue.toFixed(2)} - ${maxValue.toFixed(2)}`
@@ -203,11 +203,11 @@ export async function applyAnalysisResults(
       defaultSymbol: layer.geometryType === 'polygon' ?
         new SimpleFillSymbol({
           color: new Color([200, 200, 200, 0.5]),
-          outline: { color: 'white', width: 0.5 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         }) :
         new SimpleMarkerSymbol({
           color: new Color([200, 200, 200, 0.5]),
-          outline: { color: 'white', width: 0.5 },
+          outline: { color: [0, 0, 0, 0], width: 0 },
           size: 8
         }),
       defaultLabel: 'No Data'
@@ -218,11 +218,11 @@ export async function applyAnalysisResults(
       symbol: layer.geometryType === 'polygon' ?
         new SimpleFillSymbol({
           color: new Color([0, 122, 194, 0.5]),
-          outline: { color: 'white', width: 1 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         }) :
         new SimpleMarkerSymbol({
           color: new Color([0, 122, 194, 0.5]),
-          outline: { color: 'white', width: 1 },
+          outline: { color: [0, 0, 0, 0], width: 0 },
           size: 8
         }),
     });

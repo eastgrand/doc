@@ -533,8 +533,8 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
         type: 'simple-fill', // Use polygon fills for basic competitive score
         color: color,
         outline: {
-          color: '#FFFFFF',
-          width: 0.5
+          color: [0, 0, 0, 0], // No border
+          width: 0
         }
       },
       label: `Level ${index + 1}`
@@ -548,8 +548,8 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
         type: 'simple-fill',
         color: [128, 128, 128, 0.3],
         outline: {
-          color: '#CCCCCC',
-          width: 0.5
+          color: [0, 0, 0, 0], // No border
+          width: 0
         }
       }
     };
@@ -961,13 +961,13 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
   }
 
   private createBrandStrengthColorStops(): any[] {
-    // Color progression for market share (0-1 range) from low (red) to high (blue)
+    // Color progression for market share (0-1 range) from low (red) to high (green) - standard scheme
     return [
       { value: 0, color: '#d73027' },      // Strong red - low market share
-      { value: 0.1, color: '#fc8d59' },    // Orange-red 
+      { value: 0.1, color: '#fdae61' },    // Orange
       { value: 0.2, color: '#fee08b' },    // Yellow - moderate
-      { value: 0.3, color: '#91cf60' },    // Light green
-      { value: 0.4, color: '#4575b4' }     // Strong blue - high market share
+      { value: 0.3, color: '#a6d96a' },    // Light green
+      { value: 0.4, color: '#1a9850' }     // Strong green - high market share
     ];
   }
 

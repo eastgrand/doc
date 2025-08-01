@@ -93,8 +93,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: -Infinity,
           maxValue: -20,
           symbol: new SimpleFillSymbol({
-            color: [204, 0, 0, DEFAULT_FILL_ALPHA], // Dark Red - Strong Secondary Advantage
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            color: [215, 48, 39, DEFAULT_FILL_ALPHA], // Standard red - Strong Secondary Advantage
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Secondary >20 higher"
         },
@@ -102,8 +102,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: -20,
           maxValue: -5,
           symbol: new SimpleFillSymbol({
-            color: [255, 102, 102, DEFAULT_FILL_ALPHA], // Light Red - Moderate Secondary Advantage
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            color: [253, 174, 97, DEFAULT_FILL_ALPHA], // Standard orange - Moderate Secondary Advantage
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Secondary 5-20 higher"
         },
@@ -111,8 +111,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: -5,
           maxValue: 5,
           symbol: new SimpleFillSymbol({
-            color: [240, 240, 240, DEFAULT_FILL_ALPHA], // Light Gray - Neutral/Tie
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            color: [255, 255, 191, DEFAULT_FILL_ALPHA], // Standard yellow - Neutral/Tie
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Similar (±5)"
         },
@@ -120,8 +120,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: 5,
           maxValue: 20,
           symbol: new SimpleFillSymbol({
-            color: [102, 178, 255, DEFAULT_FILL_ALPHA], // Light Blue - Moderate Primary Advantage
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            color: [166, 217, 106, DEFAULT_FILL_ALPHA], // Standard light green - Moderate Primary Advantage
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Primary 5-20 higher"
         },
@@ -129,8 +129,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: 20,
           maxValue: Infinity,
           symbol: new SimpleFillSymbol({
-            color: [0, 102, 204, DEFAULT_FILL_ALPHA], // Dark Blue - Strong Primary Advantage
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            color: [26, 152, 80, DEFAULT_FILL_ALPHA], // Standard dark green - Strong Primary Advantage
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Primary >20 higher"
         }
@@ -173,8 +173,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: -Infinity,
           maxValue: -breakPoint2,
           symbol: new SimpleFillSymbol({
-            color: [204, 0, 0, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            color: [215, 48, 39, DEFAULT_FILL_ALPHA],
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: `${secondaryLabel} >${breakPoint2}${unit} higher`
         },
@@ -182,8 +182,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: -breakPoint2,
           maxValue: -breakPoint1,
           symbol: new SimpleFillSymbol({
-            color: [255, 102, 102, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            color: [253, 174, 97, DEFAULT_FILL_ALPHA],
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: `${secondaryLabel} ${breakPoint1}-${breakPoint2}${unit} higher`
         },
@@ -191,8 +191,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: -breakPoint1,
           maxValue: breakPoint1,
           symbol: new SimpleFillSymbol({
-            color: [240, 240, 240, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            color: [255, 255, 191, DEFAULT_FILL_ALPHA],
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: `Similar (±${breakPoint1}${unit})`
         },
@@ -200,8 +200,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: breakPoint1,
           maxValue: breakPoint2,
           symbol: new SimpleFillSymbol({
-            color: [102, 178, 255, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            color: [166, 217, 106, DEFAULT_FILL_ALPHA], // Standard light green - Moderate Primary Advantage
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: `${primaryLabel} ${breakPoint1}-${breakPoint2}${unit} higher`
         },
@@ -209,8 +209,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: breakPoint2,
           maxValue: Infinity,
           symbol: new SimpleFillSymbol({
-            color: [0, 102, 204, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            color: [26, 152, 80, DEFAULT_FILL_ALPHA], // Standard dark green - Strong Primary Advantage
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: `${primaryLabel} >${breakPoint2}${unit} higher`
         }

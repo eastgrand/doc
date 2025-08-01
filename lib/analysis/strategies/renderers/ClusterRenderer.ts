@@ -1,5 +1,6 @@
 import { VisualizationRendererStrategy, ProcessedAnalysisData, VisualizationResult, VisualizationConfig } from '../../types';
 import { getQuintileColorScheme, calculateEqualCountQuintiles } from '../../utils/QuintileUtils';
+import { STANDARD_COLOR_SCHEME, STANDARD_OPACITY } from '../../../../utils/renderer-standardization';
 
 /**
  * ClusterRenderer - Advanced cluster visualization for spatial clustering
@@ -129,40 +130,24 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
   }
 
   private generateClusterColors(clusterCount: number): string[] {
-    // For 5 or fewer clusters, use standardized quintile colors for consistency
-    if (clusterCount <= 5) {
-      console.log('[ClusterRenderer] Using quintile colors for', clusterCount, 'clusters');
-      const quintileColors = getQuintileColorScheme();
-      return quintileColors.slice(0, clusterCount);
+    // Always use standard red-to-green color scheme for consistency
+    console.log('[ClusterRenderer] Using standard red-to-green colors for', clusterCount, 'clusters');
+    
+    // For 4 or fewer clusters, use the standard 4-color scheme
+    if (clusterCount <= 4) {
+      return STANDARD_COLOR_SCHEME.slice(0, clusterCount);
     }
     
-    // For more than 5 clusters, use distinctive categorical colors
-    const baseColors = [
-      '#1f77b4', // Blue
-      '#ff7f0e', // Orange  
-      '#2ca02c', // Green
-      '#d62728', // Red
-      '#9467bd', // Purple
-      '#8c564b', // Brown
-      '#e377c2', // Pink
-      '#7f7f7f', // Gray
-      '#bcbd22', // Olive
-      '#17becf', // Cyan
-      '#aec7e8', // Light Blue
-      '#ffbb78', // Light Orange
-      '#98df8a', // Light Green
-      '#ff9896', // Light Red
-      '#c5b0d5', // Light Purple
-      '#c49c94', // Light Brown
-      '#f7b6d3', // Light Pink
-      '#c7c7c7', // Light Gray
-      '#dbdb8d', // Light Olive
-      '#9edae5'  // Light Cyan
-    ];
+    // For 5 clusters, use the full quintile scheme (which is red-to-green)
+    if (clusterCount === 5) {
+      const quintileColors = getQuintileColorScheme();
+      return quintileColors;
+    }
     
+    // For more than 5 clusters, cycle through red-to-green scheme
     const colors = [];
     for (let i = 0; i < clusterCount; i++) {
-      colors.push(baseColors[i % baseColors.length]);
+      colors.push(STANDARD_COLOR_SCHEME[i % STANDARD_COLOR_SCHEME.length]);
     }
     
     return colors;
@@ -244,21 +229,20 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
             value: cluster.id,
             symbol: {
               type: 'simple-fill',
-              color: clusterColors[index], // Use same colors as legend
+              color: [...this.hexToRgbValues(clusterColors[index]), STANDARD_OPACITY], // Use standard opacity
               outline: {
-                color: this.darkenColor(clusterColors[index], 0.3), // Darker version of same color
-                width: 2,
-                style: 'solid'
+                color: [0, 0, 0, 0], // No border
+                width: 0
               }
             },
             label: cluster.label
           })),
           defaultSymbol: {
             type: 'simple-fill',
-            color: [200, 200, 200, 0.3],
+            color: [200, 200, 200, STANDARD_OPACITY],
             outline: {
-              color: [128, 128, 128, 0.8],
-              width: 1
+              color: [0, 0, 0, 0], // No border
+              width: 0
             }
           }
         };
@@ -426,40 +410,19 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
     return [sumLng / records.length, sumLat / records.length];
   }
 
-  private darkenColor(color: string, factor: number): string {
-    // Simple color darkening function
-    const hex = color.replace('#', '');
-    const r = parseInt(hex.substr(0, 2), 16);
-    const g = parseInt(hex.substr(2, 2), 16);
-    const b = parseInt(hex.substr(4, 2), 16);
-    
-    const newR = Math.floor(r * (1 - factor));
-    const newG = Math.floor(g * (1 - factor));
-    const newB = Math.floor(b * (1 - factor));
-    
-    return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+
+  private hexToRgbValues(hex: string): number[] {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (!result) {
+      return [0, 0, 0];
+    }
+    return [
+      parseInt(result[1], 16),
+      parseInt(result[2], 16),
+      parseInt(result[3], 16)
+    ];
   }
 
-  private hexToRgb(hex: string): { r: number; g: number; b: number } {
-    // Handle both hex and rgb colors
-    if (hex.startsWith('rgb')) {
-      const matches = hex.match(/\d+/g);
-      if (matches) {
-        return {
-          r: parseInt(matches[0]),
-          g: parseInt(matches[1]),
-          b: parseInt(matches[2])
-        };
-      }
-    }
-    
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : { r: 0, g: 0, b: 0 };
-  }
 
   private formatFieldLabel(field: string): string {
     return field
@@ -500,55 +463,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
     }));
   }
 
-  private getClusterFireflyColors(clusterCount: number): string[] {
-    // Firefly-inspired colors for cluster points
-    const fireflyColors = [
-      'rgba(255, 107, 107, 0.85)', // Bright Red
-      'rgba(78, 205, 196, 0.85)',  // Teal
-      'rgba(150, 206, 180, 0.85)', // Mint Green
-      'rgba(255, 238, 173, 0.85)', // Light Yellow
-      'rgba(255, 140, 0, 0.85)',   // Orange
-      'rgba(147, 112, 219, 0.85)', // Medium Purple
-      'rgba(255, 192, 203, 0.85)', // Pink
-      'rgba(64, 224, 208, 0.85)',  // Turquoise
-      'rgba(255, 165, 0, 0.85)',   // Orange
-      'rgba(106, 90, 205, 0.85)',  // Slate Blue
-      'rgba(152, 251, 152, 0.85)', // Pale Green
-      'rgba(255, 20, 147, 0.85)'   // Deep Pink
-    ];
-    
-    const colors = [];
-    for (let i = 0; i < clusterCount; i++) {
-      colors.push(fireflyColors[i % fireflyColors.length]);
-    }
-    return colors;
-  }
 
-  private getEnhancedPolygonColors(clusterCount: number): { fill: string; outline: string; edge: string }[] {
-    const baseColors = [
-      '#ff6b6b', // Red
-      '#4ecdc4', // Teal
-      '#96ceb4', // Mint
-      '#ffeead', // Yellow
-      '#ff8c00', // Orange
-      '#9370db', // Medium Purple
-      '#ffc0cb', // Pink
-      '#40e0d0', // Turquoise
-      '#ffa500', // Orange
-      '#6a5acd', // Slate Blue
-      '#98fb98', // Pale Green
-      '#ff1493'  // Deep Pink
-    ];
-    
-    const colors = [];
-    for (let i = 0; i < clusterCount; i++) {
-      const baseFill = baseColors[i % baseColors.length];
-      const baseOutline = this.darkenColor(baseFill, 0.3);
-      const baseEdge = this.darkenColor(baseFill, 0.5);
-      colors.push({ fill: baseFill, outline: baseOutline, edge: baseEdge });
-    }
-    return colors;
-  }
 }
 
 // ============================================================================

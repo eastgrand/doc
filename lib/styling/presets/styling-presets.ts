@@ -14,7 +14,7 @@ export const stylingPresets: Record<string, LayerStylingConfig> = {
     baseStyle: {
       color: '#3388ff',
       opacity: 0.8,
-      outline: { color: '#ffffff', width: 1 }
+      outline: { color: 'transparent', width: 0 }
     }
   },
   
@@ -22,7 +22,7 @@ export const stylingPresets: Record<string, LayerStylingConfig> = {
     baseStyle: {
       color: '#ffd700',
       opacity: 0.9,
-      outline: { color: '#ffffff', width: 2 }
+      outline: { color: 'transparent', width: 0 }
     },
     fireflyEffects: {
       enabled: true,

@@ -215,8 +215,8 @@ const createQuartileRenderer = async (
         type: "simple-fill" as const,
         color: new Color([...colorArray, opacity]),
         outline: {
-          width: 0.5,
-          color: [255, 255, 255, 0.5]
+          width: 0,
+          color: [0, 0, 0, 0]
         }
       };
     };

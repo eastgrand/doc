@@ -51,7 +51,7 @@ export class CrossGeographyCorrelationVisualization extends BaseVisualization<Cr
           maxValue: -0.5,
           symbol: new SimpleFillSymbol({
             color: [239, 59, 44, DEFAULT_FILL_ALPHA],  // red
-            outline: { color: [128, 128, 128, 0.5], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Strong Negative"
         },
@@ -60,7 +60,7 @@ export class CrossGeographyCorrelationVisualization extends BaseVisualization<Cr
           maxValue: 0,
           symbol: new SimpleFillSymbol({
             color: [255, 127, 0, DEFAULT_FILL_ALPHA],  // orange
-            outline: { color: [128, 128, 128, 0.5], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Weak Negative"
         },
@@ -69,7 +69,7 @@ export class CrossGeographyCorrelationVisualization extends BaseVisualization<Cr
           maxValue: 0.5,
           symbol: new SimpleFillSymbol({
             color: [158, 215, 152, DEFAULT_FILL_ALPHA],  // light green
-            outline: { color: [128, 128, 128, 0.5], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Weak Positive"
         },
@@ -78,7 +78,7 @@ export class CrossGeographyCorrelationVisualization extends BaseVisualization<Cr
           maxValue: 1,
           symbol: new SimpleFillSymbol({
             color: [49, 163, 84, DEFAULT_FILL_ALPHA],  // green
-            outline: { color: [128, 128, 128, 0.5], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Strong Positive"
         }
