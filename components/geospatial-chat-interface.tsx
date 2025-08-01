@@ -4844,7 +4844,7 @@ const EnhancedGeospatialChat = memo(({
       const viewToUse = currentMapView || initialMapView;
       console.log('[GeospatialChat] InfographicsTab viewToUse:', viewToUse, 'viewToUse?.map:', viewToUse?.map, 'initialMapView:', initialMapView, 'initialMapView?.map:', initialMapView?.map, 'mapViewRefValue:', mapViewRefValue, 'mapViewRefValue?.map:', mapViewRefValue?.map);
       return (
-        <div className="fixed right-0 top-0 w-[40vw] h-screen bg-white shadow-lg border-l rounded-l-xl z-50 animate-slide-in-right data-[state=closed]:animate-slide-out-right">
+        <div className="fixed right-0 top-0 w-[400px] h-screen bg-white shadow-lg border-l rounded-l-xl z-50 animate-slide-in-right data-[state=closed]:animate-slide-out-right">
           <div className="flex flex-col h-full">
             <div className="flex flex-row items-center justify-between px-4 py-3 border-b">
               <div className="flex items-center gap-2">
