@@ -230,6 +230,11 @@ export class GeoAwarenessEngine {
     geoQuery: GeoQuery
   ): Promise<GeoFilterResult> {
     
+    // PRE-FILTER: Remove street names and business names before any geographic matching
+    const geographicallyEligibleRecords = this.filterOutNonGeographicLocations(records);
+    
+    console.log(`[GeoAwarenessEngine] Pre-filtered records: ${records.length} -> ${geographicallyEligibleRecords.length} (removed street names/businesses)`);
+    
     const strategies = [
       { method: 'hierarchical', fn: this.filterByHierarchy.bind(this) },
       { method: 'description_pattern', fn: this.filterByDescriptionPattern.bind(this) },
@@ -243,7 +248,7 @@ export class GeoAwarenessEngine {
 
     for (const strategy of strategies) {
       try {
-        const result = await strategy.fn(records, geoQuery);
+        const result = await strategy.fn(geographicallyEligibleRecords, geoQuery);
         
         // Use this result if it found matches or if we don't have a result yet
         if (!bestResult || result.filteredRecords.length > 0) {
@@ -251,6 +256,7 @@ export class GeoAwarenessEngine {
             ...result,
             filterStats: {
               ...result.filterStats,
+              totalRecords: records.length, // Use original count for stats
               filterMethod: strategy.method
             }
           };
@@ -267,19 +273,19 @@ export class GeoAwarenessEngine {
       }
     }
 
-    // Final fallback - return all records if no strategy worked
+    // Final fallback - return pre-filtered records if no strategy worked
     if (!bestResult || bestResult.filteredRecords.length === 0) {
       bestResult = {
-        filteredRecords: records,
+        filteredRecords: geographicallyEligibleRecords,
         matchedEntities: geoQuery.entities,
         filterStats: {
-          totalRecords: records.length,
-          matchedRecords: records.length,
+          totalRecords: records.length, // Original count for stats
+          matchedRecords: geographicallyEligibleRecords.length,
           filterMethod: 'no_matches_fallback',
           processingTimeMs: 0
         },
         fallbackUsed: true,
-        warnings: ['No geographic matches found, showing all data']
+        warnings: ['No geographic matches found, showing pre-filtered data (street names excluded)']
       };
     }
 
@@ -301,6 +307,45 @@ export class GeoAwarenessEngine {
       fallbackUsed: true,
       warnings: ['Unexpected error in filtering strategies']
     };
+  }
+
+  /**
+   * Pre-filter to remove non-geographic locations (street names, businesses) before any matching
+   * This ensures street names like "Philadelphia Street" or "Brooklyn Avenue" don't get matched
+   */
+  private filterOutNonGeographicLocations(records: any[]): any[] {
+    const streetSuffixes = [
+      'street', 'st', 'avenue', 'ave', 'road', 'rd', 'lane', 'ln', 'drive', 'dr',
+      'boulevard', 'blvd', 'court', 'ct', 'place', 'pl', 'way', 'circle', 'cir',
+      'square', 'sq', 'plaza', 'pkwy', 'parkway', 'terrace', 'ter', 'highway', 'hwy'
+    ];
+    
+    const businessKeywords = [
+      'restaurant', 'diner', 'cafe', 'bar', 'grill', 'pizza', 'wings', 'store',
+      'shop', 'mall', 'center', 'hotel', 'motel', 'inn', 'club', 'gym', 'spa'
+    ];
+
+    return records.filter(record => {
+      const areaName = (record.area_name || '').toLowerCase();
+      const description = (record.DESCRIPTION || '').toLowerCase();
+      const fullText = `${areaName} ${description}`.toLowerCase();
+
+      // Check for street suffixes in the area name or description
+      const hasStreetSuffix = streetSuffixes.some(suffix => {
+        // Match street suffix as whole word or at end of phrase
+        const streetPattern = new RegExp(`\\b${suffix}\\b|${suffix}$`, 'i');
+        return streetPattern.test(fullText);
+      });
+
+      // Check for business names
+      const isBusinessName = businessKeywords.some(keyword => {
+        const businessPattern = new RegExp(`\\b${keyword}\\b`, 'i');
+        return businessPattern.test(fullText);
+      });
+
+      // Keep record only if it's NOT a street name and NOT a business
+      return !hasStreetSuffix && !isBusinessName;
+    });
   }
 
   /**
@@ -532,17 +577,29 @@ export class GeoAwarenessEngine {
    */
   private hasExplicitGeographicIntent(query: string): boolean {
     const explicitGeoIndicators = [
-      // Location prepositions and indicators
-      /\bin\s+[a-z]+/,           // "in Brooklyn", "in NYC"
-      /\bfrom\s+[a-z]+/,         // "from Manhattan"
-      /\bnear\s+[a-z]+/,         // "near Philadelphia"
-      /\baround\s+[a-z]+/,       // "around Boston"
-      /\bacross\s+[a-z]+/,       // "across New Jersey"
+      // Enhanced location prepositions with proper word boundaries
+      /\bin\s+([A-Z][a-z]+(\s+[A-Z][a-z]+)*)/,  // "in Brooklyn", "in New York"
+      /\bfrom\s+([A-Z][a-z]+(\s+[A-Z][a-z]+)*)/,  // "from Manhattan"
+      /\bnear\s+([A-Z][a-z]+(\s+[A-Z][a-z]+)*)/,  // "near Philadelphia"
+      /\baround\s+([A-Z][a-z]+(\s+[A-Z][a-z]+)*)/,  // "around Boston"
+      /\bacross\s+([A-Z][a-z]+(\s+[A-Z][a-z]+)*)/,  // "across New Jersey"
       
-      // Geographic comparison words
-      /\bcompare.*\b(cities|states|regions|areas|markets)\b/,
-      /\b(cities|states|regions|areas|markets).*\bcompare\b/,
-      /\bbetween\s+[a-z]+\s+and\s+[a-z]+/,  // "between NYC and LA"
+      // Geographic comparison words - improved patterns
+      /\bcompare.*\b(cities|states|regions|areas|markets|locations)\b/i,
+      /\b(cities|states|regions|areas|markets|locations).*\bcompare\b/i,
+      /\bbetween\s+[A-Z][a-z]+(\s+[A-Z][a-z]+)*\s+and\s+[A-Z][a-z]+(\s+[A-Z][a-z]+)*/,  // "between NYC and LA"
+      
+      // State/area-specific patterns
+      /\b(New York|Pennsylvania|New Jersey)\s+(athletic|shoe|brand|analysis|trends)/i,
+      /\b[A-Z][a-z]+\s+area\s+(demographics|analysis|trends)/i,  // "Philadelphia area demographics"
+      
+      // Known geographic entities (major tri-state cities and boroughs)
+      /\b(Brooklyn|Manhattan|Queens|Bronx|Staten Island)\b/i,
+      /\b(Philadelphia|Pittsburgh|Newark|Jersey City|Hoboken|Trenton|Atlantic City)\b/i,
+      /\b(Albany|Buffalo|Rochester|Syracuse|Yonkers|Schenectady|Troy|Utica)\b/i,
+      /\b(Paterson|Elizabeth|Edison|Camden|Bayonne|Union City|Plainfield)\b/i,
+      /\b(Allentown|Erie|Reading|Scranton|Bethlehem|Lancaster|Harrisburg)\b/i,
+      /\b(Park Slope|SoHo|Midtown|Center City|Old City|Strip District)\b/i,
       
       // Explicit location mentions
       /\bzip\s*code/i,
@@ -556,8 +613,8 @@ export class GeoAwarenessEngine {
       /\bneighborhood/i,
       /\bborough/i,
       /\bcounty/i,
-      /\bstate\s+(by|comparison|analysis)/i,
-      /\bcity\s+(by|comparison|analysis)/i,
+      /\bstate\s+(by|comparison|analysis|trends)/i,
+      /\bcity\s+(by|comparison|analysis|trends)/i,
       
       // Map/location specific terms
       /\bmap\s+of/i,
@@ -819,22 +876,119 @@ export class GeoAwarenessEngine {
         return true;
       }
       
-      // Check description match
+      // Check description match with validation
       const description = this.extractDescription(record);
       const patterns = this.createDescriptionPatterns(entity);
       if (patterns.some(pattern => pattern.test(description))) {
-        return true;
+        // Additional validation for description matches
+        if (this.isValidLocationMatch(description, entity.name, entity)) {
+          return true;
+        }
       }
       
-      // Check all text fields
+      // Check all text fields with context validation (prevent false positives)
       const allText = this.extractAllTextFields(record);
       const searchTerms = [entity.name, ...entity.aliases];
-      if (searchTerms.some(term => allText.toLowerCase().includes(term.toLowerCase()))) {
-        return true;
+      
+      for (const term of searchTerms) {
+        const termLower = term.toLowerCase();
+        const allTextLower = allText.toLowerCase();
+        
+        if (allTextLower.includes(termLower)) {
+          // Additional validation for common false positive cases
+          if (this.isValidLocationMatch(allText, term, entity)) {
+            return true;
+          }
+        }
       }
     }
     
     return false;
+  }
+
+  /**
+   * Validate if a location match is genuine and not a false positive - GENERALIZED
+   */
+  private isValidLocationMatch(text: string, locationName: string, entity: GeographicEntity): boolean {
+    const textLower = text.toLowerCase();
+    const locationLower = locationName.toLowerCase();
+    
+    // Get state information for this entity
+    const stateInfo = this.getStateInfo(entity);
+    const validStates = [...stateInfo.abbreviations, ...stateInfo.fullNames].map(s => s.toLowerCase());
+    
+    // Reject if it's clearly a street name or other geographic false positive
+    const streetSuffixes = ['avenue', 'street', 'road', 'boulevard', 'drive', 'lane', 'way', 'court', 'place'];
+    const rejectPatterns = streetSuffixes.map(suffix => 
+      new RegExp(`\\b${locationLower}\\s+${suffix}\\b`, 'i')
+    );
+    
+    // Also reject if it's the same city name in a different state or business name
+    const otherStateAbbrevs = ['al', 'ak', 'az', 'ar', 'ca', 'co', 'ct', 'de', 'fl', 'ga', 'hi', 'id', 'il', 'in', 'ia', 'ks', 'ky', 'la', 'me', 'md', 'ma', 'mi', 'mn', 'ms', 'mo', 'mt', 'ne', 'nv', 'nh', 'nm', 'nc', 'nd', 'oh', 'ok', 'or', 'ri', 'sc', 'sd', 'tn', 'tx', 'ut', 'vt', 'va', 'wa', 'wv', 'wi', 'wy'];
+    const invalidStatePatterns = otherStateAbbrevs
+      .filter(state => !validStates.includes(state))
+      .map(state => new RegExp(`\\b${locationLower}\\s*,\\s*(${state})\\b`, 'i'));
+    
+    // Reject business/restaurant names that just happen to include city names
+    const businessPatterns = [
+      new RegExp(`\\b${locationLower}\\s+(restaurant|diner|cafe|bar|grill|wild wings|pizza|burger|wings)\\b`, 'i'),
+      new RegExp(`\\b${locationLower}\\s+(hotel|motel|inn|lodge|resort)\\b`, 'i'),
+      new RegExp(`\\b${locationLower}\\s+(mall|shopping|outlet|center|plaza)\\b`, 'i')
+    ];
+    
+    // Check for obvious false positives
+    if (rejectPatterns.some(pattern => pattern.test(textLower)) ||
+        invalidStatePatterns.some(pattern => pattern.test(textLower)) ||
+        businessPatterns.some(pattern => pattern.test(textLower))) {
+      return false;
+    }
+    
+    // Accept if it has proper state context
+    const validStatePatterns = validStates.map(state => 
+      new RegExp(`\\b${locationLower}\\s*,\\s*${state}\\b`, 'i')
+    );
+    
+    if (validStatePatterns.some(pattern => pattern.test(textLower))) {
+      return true;
+    }
+    
+    // Accept if it appears with parenthetical or comma context indicating it's a place
+    const contextPatterns = [
+      new RegExp(`\\(${locationLower}\\)`, 'i'),  // (CityName)
+      new RegExp(`,\\s*${locationLower}(?!\\s+(avenue|street|road))`, 'i'),  // ", CityName" but not street
+      new RegExp(`\\b${locationLower}\\)`, 'i'),  // CityName)
+    ];
+    
+    if (contextPatterns.some(pattern => pattern.test(textLower))) {
+      return true;
+    }
+    
+    // For cities/boroughs, also check for neighborhood context
+    if (entity.type === 'city' || entity.type === 'borough') {
+      const neighborhoodContext = this.hasNeighborhoodContext(textLower, locationLower);
+      if (neighborhoodContext) {
+        return true;
+      }
+    }
+    
+    // Default: reject ambiguous matches without clear geographic context
+    return false;
+  }
+  
+  /**
+   * Check if text contains neighborhood context for a city
+   */
+  private hasNeighborhoodContext(text: string, cityName: string): boolean {
+    // Common neighborhood indicators
+    const neighborhoodWords = ['downtown', 'uptown', 'midtown', 'center city', 'old city', 'university city', 
+                               'heights', 'village', 'district', 'neighborhood', 'area'];
+    
+    return neighborhoodWords.some(word => 
+      text.includes(`${word} ${cityName}`) || 
+      text.includes(`${cityName} ${word}`) ||
+      text.includes(`${word}, ${cityName}`) ||
+      text.includes(`${cityName}, ${word}`)
+    );
   }
 
   /**
@@ -858,19 +1012,147 @@ export class GeoAwarenessEngine {
   private createDescriptionPatterns(entity: GeographicEntity): RegExp[] {
     const patterns: RegExp[] = [];
     
-    // Main name pattern
-    patterns.push(new RegExp(`\\b${this.escapeRegex(entity.name)}\\b`, 'i'));
+    // Context-aware patterns to prevent false positives - GENERALIZED for all tri-state locations
+    // Priority 1: Exact location with state/qualifier patterns (most precise)
+    if (entity.type === 'city' || entity.type === 'borough') {
+      const entityName = this.escapeRegex(entity.name);
+      
+      // Determine appropriate state abbreviations based on parent entity
+      const stateInfo = this.getStateInfo(entity);
+      
+      // Pattern like "CityName, ST" or "CityName, StateName"
+      if (stateInfo.abbreviations.length > 0) {
+        const abbrevPattern = stateInfo.abbreviations.join('|');
+        patterns.push(new RegExp(`\\b${entityName}\\s*,\\s*(${abbrevPattern})\\b`, 'i'));
+      }
+      
+      if (stateInfo.fullNames.length > 0) {
+        const fullNamePattern = stateInfo.fullNames.join('|');
+        patterns.push(new RegExp(`\\b${entityName}\\s*,\\s*(${fullNamePattern})\\b`, 'i'));
+      }
+      
+      // Pattern like "(CityName)" in descriptions
+      patterns.push(new RegExp(`\\(${entityName}\\)`, 'i'));
+      patterns.push(new RegExp(`${entityName}\\)`, 'i'));
+      
+      // Generalized patterns for any city/borough to avoid street name false positives
+      patterns.push(new RegExp(`\\b${entityName}(?!\\s+(Avenue|Street|Road|Boulevard|Drive|Lane|Way|Court|Place))\\b`, 'i'));
+      patterns.push(new RegExp(`,\\s*${entityName}(?!\\s+(Avenue|Street|Road|Boulevard|Drive|Lane|Way|Court|Place))`, 'i'));
+      
+      // For cities with known area/metro patterns
+      patterns.push(new RegExp(`\\b${entityName}\\s+(area|region|metro|metropolitan)\\b`, 'i'));
+      
+      // Add neighborhood/landmark patterns if this city has known sub-areas
+      const neighborhoodPatterns = this.getNeighborhoodPatterns(entity);
+      patterns.push(...neighborhoodPatterns);
+    }
     
-    // Alias patterns
-    entity.aliases.forEach(alias => {
-      patterns.push(new RegExp(`\\b${this.escapeRegex(alias)}\\b`, 'i'));
-    });
+    // Priority 2: Context-validated patterns for other entity types
+    if (patterns.length === 0) {
+      // Only use word boundary patterns for entities that are less likely to have false positives
+      if (entity.type === 'neighborhood' || entity.type === 'landmark' || entity.type === 'airport') {
+        patterns.push(new RegExp(`\\b${this.escapeRegex(entity.name)}\\b`, 'i'));
+        
+        // Alias patterns
+        entity.aliases.forEach(alias => {
+          patterns.push(new RegExp(`\\b${this.escapeRegex(alias)}\\b`, 'i'));
+        });
+      } else {
+        // For cities/boroughs without specific patterns, require stricter context
+        patterns.push(new RegExp(`\\b${this.escapeRegex(entity.name)}\\s*,\\s*[A-Z]{2}\\b`, 'i'));  // "City, ST"
+        patterns.push(new RegExp(`\\(${this.escapeRegex(entity.name)}\\)`, 'i'));  // "(City)"
+      }
+    }
     
-    // Description format patterns (like "(City)")
-    patterns.push(new RegExp(`\\(${this.escapeRegex(entity.name)}\\)`, 'i'));
-    entity.aliases.forEach(alias => {
-      patterns.push(new RegExp(`\\(${this.escapeRegex(alias)}\\)`, 'i'));
-    });
+    return patterns;
+  }
+
+  /**
+   * Get state information for a geographic entity
+   */
+  private getStateInfo(entity: GeographicEntity): { abbreviations: string[], fullNames: string[] } {
+    // Determine state based on parent entity or entity properties
+    let state = '';
+    
+    if (entity.parentEntity) {
+      const parentLower = entity.parentEntity.toLowerCase();
+      if (parentLower === 'new york' || parentLower === 'new york city') {
+        state = 'ny';
+      } else if (parentLower === 'new jersey') {
+        state = 'nj';
+      } else if (parentLower === 'pennsylvania') {
+        state = 'pa';
+      }
+    }
+    
+    // Also check if entity name contains state indicators
+    const entityLower = entity.name.toLowerCase();
+    if (!state) {
+      // Try to infer from common naming patterns or ZIP codes
+      if (entity.zipCodes && entity.zipCodes.length > 0) {
+        const firstZip = entity.zipCodes[0];
+        if (firstZip.startsWith('10') || firstZip.startsWith('11') || firstZip.startsWith('12') || 
+            firstZip.startsWith('13') || firstZip.startsWith('14')) {
+          state = 'ny';
+        } else if (firstZip.startsWith('07') || firstZip.startsWith('08')) {
+          state = 'nj';
+        } else if (firstZip.startsWith('15') || firstZip.startsWith('16') || firstZip.startsWith('17') || 
+                   firstZip.startsWith('18') || firstZip.startsWith('19')) {
+          state = 'pa';
+        }
+      }
+    }
+    
+    switch (state) {
+      case 'ny':
+        return {
+          abbreviations: ['NY'],
+          fullNames: ['New York']
+        };
+      case 'nj':
+        return {
+          abbreviations: ['NJ'],
+          fullNames: ['New Jersey']
+        };
+      case 'pa':
+        return {
+          abbreviations: ['PA'],
+          fullNames: ['Pennsylvania']
+        };
+      default:
+        return {
+          abbreviations: ['NY', 'NJ', 'PA'],
+          fullNames: ['New York', 'New Jersey', 'Pennsylvania']
+        };
+    }
+  }
+
+  /**
+   * Get neighborhood-specific patterns for major cities
+   */
+  private getNeighborhoodPatterns(entity: GeographicEntity): RegExp[] {
+    const patterns: RegExp[] = [];
+    const entityName = this.escapeRegex(entity.name);
+    
+    // Define known neighborhoods/landmarks for major cities
+    const cityNeighborhoods: Record<string, string[]> = {
+      'brooklyn': ['Heights', 'Park', 'Bridge', 'Navy Yard', 'Heights'],
+      'manhattan': ['Midtown', 'Downtown', 'Uptown', 'Village', 'SoHo', 'TriBeCa'],
+      'queens': ['Astoria', 'Flushing', 'Jamaica', 'Forest Hills'],
+      'bronx': ['South', 'North', 'East', 'West'],
+      'philadelphia': ['Center City', 'Old City', 'University City', 'Northern', 'South'],
+      'newark': ['Downtown', 'North', 'South', 'East', 'West'],
+      'jersey city': ['Downtown', 'Heights', 'Newport', 'Journal Square'],
+      'pittsburgh': ['Downtown', 'Strip District', 'Shadyside', 'Squirrel Hill']
+    };
+    
+    const neighborhoods = cityNeighborhoods[entity.name.toLowerCase()];
+    if (neighborhoods) {
+      neighborhoods.forEach(neighborhood => {
+        patterns.push(new RegExp(`\\b${neighborhood}.*${entityName}\\b`, 'i'));
+        patterns.push(new RegExp(`\\b${entityName}.*${neighborhood}\\b`, 'i'));
+      });
+    }
     
     return patterns;
   }
