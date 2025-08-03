@@ -381,13 +381,18 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
   }
 
   private createClusterLegend(clusterInfo: ClusterInfo, clusterColors: string[], data: ProcessedAnalysisData): any {
-    const legendItems = clusterInfo.clusters.map((cluster, index) => ({
-      label: `${cluster.label} (${cluster.size} areas)`,
-      color: this.hexToRgbaString(clusterColors[index], STANDARD_OPACITY), // Apply same opacity as map
-      value: cluster.id,
-      symbol: 'circle',
-      description: `Avg similarity: ${(cluster.avgSimilarity * 100).toFixed(1)}%`
-    }));
+    const numberEmojis = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩'];
+    
+    const legendItems = clusterInfo.clusters.map((cluster, index) => {
+      const numberIndicator = cluster.id < numberEmojis.length ? numberEmojis[cluster.id] : `(${cluster.id + 1})`;
+      return {
+        label: `${numberIndicator} ${cluster.label} (${cluster.size} areas)`,
+        color: this.hexToRgbaString(clusterColors[index], STANDARD_OPACITY), // Apply same opacity as map
+        value: cluster.id,
+        symbol: 'circle',
+        description: `Avg similarity: ${(cluster.avgSimilarity * 100).toFixed(1)}%`
+      };
+    });
 
     // Keep legend items in cluster ID order to match color assignment
     // DO NOT sort by size as it breaks the color mapping

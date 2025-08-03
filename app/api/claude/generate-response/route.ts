@@ -2373,7 +2373,7 @@ ONLY USE PROVIDED DATA:
 4. Copy ALL data EXACTLY as written - DO NOT modify numbers or locations
 
 SPECIFIC REQUIREMENTS:
-- Color indicators with emojis (🟥, 🟧, 🟨, 🟩) that match the map legend (60% opacity)
+- Numbered indicators (①, ②, ③, etc.) that match the map legend exactly
 - The specific top 5 ZIP codes with scores for each territory EXACTLY as provided
 - The exact market share percentages (Nike %, Adidas %, Jordan %, Market Gap %) EXACTLY as provided
 - The exact "Key Drivers" text for each territory EXACTLY as provided
@@ -2534,7 +2534,7 @@ YOUR TASK: Present the territory clustering analysis above in a clean, professio
    - All ZIP codes and scores EXACTLY as written (e.g., if it says "19320 (Coatesville: 73.1)", write exactly that)
    - All market share percentages EXACTLY as provided
    - All territory names EXACTLY as shown
-   - All color indicators EXACTLY as provided
+   - All numbered indicators EXACTLY as provided (①, ②, ③, etc.)
 5. IF MISSING DATA - If any data is incomplete or missing, write "Data not available" instead of generating fake data
 6. VERIFICATION - Before including any ZIP code or number, verify it appears in the analysis text above
 
