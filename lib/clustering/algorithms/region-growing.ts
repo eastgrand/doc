@@ -152,14 +152,63 @@ export class RegionGrowingAlgorithm {
    * Grow regions from seed points
    */
   private async growRegions(eligibleFeatures: ClusteringFeature[]): Promise<ClusterResult[]> {
-    const clusters: ClusterResult[] = [];
+    let clusters: ClusterResult[] = [];
+    let currentMinZipCodes = this.config.minZipCodes;
     
     // Sort features by score (descending) to use as seeds
     const seedCandidates = [...eligibleFeatures]
       .sort((a, b) => b.primaryScore - a.primaryScore);
     
     console.log(`[RegionGrowing] 🌱 Starting region growth from ${seedCandidates.length} seed candidates`);
+    console.log(`[RegionGrowing] 🎯 Target: ${this.config.numClusters} clusters, min size: ${currentMinZipCodes} ZIP codes`);
     
+    // Try with original minimum size first
+    clusters = await this.attemptClusterCreation(seedCandidates, eligibleFeatures, currentMinZipCodes);
+    
+    // If we didn't get enough clusters, try with progressively smaller minimum sizes
+    if (clusters.length < this.config.numClusters && currentMinZipCodes > 3) {
+      console.log(`[RegionGrowing] 🔄 Only created ${clusters.length}/${this.config.numClusters} clusters. Trying with smaller minimum sizes...`);
+      
+      // Reset and try again with more flexible sizing
+      this.assignedZipCodes.clear();
+      
+      // Try progressively smaller minimum cluster sizes
+      const sizesToTry = [Math.max(3, Math.floor(currentMinZipCodes * 0.7)), Math.max(3, Math.floor(currentMinZipCodes * 0.5)), 3];
+      
+      for (const minSize of sizesToTry) {
+        if (clusters.length >= this.config.numClusters) break;
+        
+        console.log(`[RegionGrowing] 🔄 Retrying with minimum size: ${minSize} ZIP codes`);
+        this.assignedZipCodes.clear();
+        clusters = await this.attemptClusterCreation(seedCandidates, eligibleFeatures, minSize);
+        
+        if (clusters.length >= this.config.numClusters) {
+          console.log(`[RegionGrowing] ✅ Successfully created ${clusters.length} clusters with minimum size ${minSize}`);
+          break;
+        }
+      }
+    }
+    
+    console.log(`[RegionGrowing] 📊 Final result: ${clusters.length} clusters created (target was ${this.config.numClusters})`);
+    
+    // Ensure cluster IDs are consecutive starting from 0 for consistent color mapping
+    clusters.forEach((cluster, index) => {
+      const oldId = cluster.clusterId;
+      cluster.clusterId = index;
+      if (oldId !== index) {
+        console.log(`[RegionGrowing] 🔄 Renumbered cluster ${oldId} → ${index} (${cluster.name})`);
+      }
+    });
+    
+    return clusters;
+  }
+
+  private async attemptClusterCreation(
+    seedCandidates: ClusteringFeature[], 
+    eligibleFeatures: ClusteringFeature[], 
+    minZipCodes: number
+  ): Promise<ClusterResult[]> {
+    const clusters: ClusterResult[] = [];
     let seedAttempts = 0;
     let regionsRejected = 0;
     
@@ -168,7 +217,6 @@ export class RegionGrowingAlgorithm {
       
       // Skip if already assigned to a cluster
       if (this.assignedZipCodes.has(seed.zipCode)) {
-        console.log(`[RegionGrowing] 🚫 Seed ${seed.zipCode} already assigned, skipping`);
         continue;
       }
       
@@ -181,24 +229,27 @@ export class RegionGrowingAlgorithm {
       console.log(`[RegionGrowing] 🌱 Attempting seed ${seedAttempts}: ${seed.zipCode} (score: ${seed.primaryScore.toFixed(2)})`);
       
       // Grow region from this seed
-      const clusterId = clusters.length;
-      console.log(`[RegionGrowing] 🆔 Assigning clusterId: ${clusterId} to seed ${seed.zipCode}`);
+      const clusterId = clusters.length; // This ensures consecutive cluster IDs: 0, 1, 2, 3, 4...
       const region = await this.growSingleRegion(seed, eligibleFeatures, clusterId);
       
-      console.log(`[RegionGrowing] 📏 Grown region size: ${region.zipCodes.length} ZIP codes (min required: ${this.config.minZipCodes})`);
-      console.log(`[RegionGrowing] 🆔 Region created with clusterId: ${region.clusterId}`);
+      console.log(`[RegionGrowing] 📏 Grown region size: ${region.zipCodes.length} ZIP codes (min required: ${minZipCodes})`);
       
       // Only keep regions that meet minimum size
-      if (region.zipCodes.length >= this.config.minZipCodes) {
+      if (region.zipCodes.length >= minZipCodes) {
         clusters.push(region);
         console.log(`[RegionGrowing] 🎯 Created territory ${region.name} with ${region.zipCodes.length} ZIP codes (cluster ${clusters.length}/${this.config.numClusters})`);
       } else {
         regionsRejected++;
-        console.log(`[RegionGrowing] ❌ Region too small (${region.zipCodes.length} < ${this.config.minZipCodes}), rejecting`);
+        console.log(`[RegionGrowing] ❌ Region too small (${region.zipCodes.length} < ${minZipCodes}), rejecting`);
+        
+        // Release the assigned ZIP codes so they can be reassigned later
+        region.zipCodes.forEach(zipCode => {
+          this.assignedZipCodes.delete(zipCode);
+        });
       }
     }
     
-    console.log(`[RegionGrowing] 📊 Final stats: ${clusters.length} clusters created, ${regionsRejected} regions rejected, ${seedAttempts} seeds attempted`);
+    console.log(`[RegionGrowing] 📊 Attempt stats: ${clusters.length} clusters created, ${regionsRejected} regions rejected, ${seedAttempts} seeds attempted`);
     
     return clusters;
   }
