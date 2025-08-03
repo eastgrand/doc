@@ -1097,7 +1097,7 @@ This ${config.focus} analysis has identified ${clusters.length} distinct market 
     const colorIndicator = this.getColorIndicatorForRank(rank, totalClusters);
     console.log(`🎯 [COLOR DEBUG] Rank ${rank}: ${colorIndicator} for ${cluster.name} (${totalClusters} total clusters)`);
     
-    return `**${rank}. [${colorIndicator}] ${cluster.name}** - ${cluster.zipCount} ZIP codes, Avg ${config.scoreName}: ${cluster.avgScore.toFixed(1)}
+    return `**${rank}. ${cluster.name}** [${colorIndicator}] - ${cluster.zipCount} ZIP codes, Avg ${config.scoreName}: ${cluster.avgScore.toFixed(1)}
 Population: ${cluster.totalPopulation.toLocaleString()} | Score Range: ${cluster.minScore.toFixed(1)}-${cluster.maxScore.toFixed(1)}
 Territory Profile: Comprehensive market area with ${consistencyText} across the region${zipDetails}${marketDetails}${keyDrivers}
 
@@ -1154,27 +1154,23 @@ Territory Profile: Comprehensive market area with ${consistencyText} across the 
    * Get color indicator for a cluster rank that matches the visualization colors
    */
   private getColorIndicatorForRank(rank: number, totalClusters: number): string {
-    // Color names that match the actual renderer colors (from ClusterRenderer logic)
-    // All colors are rendered at 0.6 opacity on the map, making them appear lighter/softer
-    // ≤4 clusters: STANDARD_COLOR_SCHEME (#d73027, #fdae61, #a6d96a, #1a9850)
-    // 5 clusters: quintile colors (#FF4444, #FF8800, #FFDD00, #88DD00, #00DD44)
-    // >5 clusters: cycling through standard colors
+    // For clarity, use rank numbers with descriptive color names
+    // This avoids confusion when colors cycle for >5 clusters
     
-    // Use lighter emoji indicators to better represent the 60% opacity appearance
-    const standardColorNames = ['🟥 RED', '🟧 ORANGE', '🟩 LIGHT GREEN', '🟩 DARK GREEN'];
-    const quintileColorNames = ['🟥 RED', '🟧 ORANGE', '🟨 YELLOW', '🟩 LIME', '🟩 GREEN'];
-    
-    // Match the exact logic from ClusterRenderer.generateClusterColors()
     if (totalClusters <= 4) {
-      // Using standard 4-color scheme
-      return standardColorNames[rank - 1] || '⬜ GRAY';
+      // Standard 4-color scheme: red, orange, light green, dark green
+      const colors = ['Red', 'Orange', 'Light Green', 'Dark Green'];
+      return `#${rank} ${colors[rank - 1] || 'Gray'}`;
     } else if (totalClusters === 5) {
-      // Exactly 5 clusters - use quintile scheme
-      return quintileColorNames[rank - 1] || '⬜ GRAY';
+      // Quintile scheme: red, orange, yellow, lime, green
+      const colors = ['Red', 'Orange', 'Yellow', 'Lime', 'Green'];
+      return `#${rank} ${colors[rank - 1] || 'Gray'}`;
     } else {
-      // More than 5 clusters - cycle through standard colors
-      const colorIndex = (rank - 1) % standardColorNames.length;
-      return `${standardColorNames[colorIndex]} (${rank})`;
+      // More than 5 clusters - show rank number with cycling color name
+      const standardColors = ['Red', 'Orange', 'Light Green', 'Dark Green'];
+      const colorIndex = (rank - 1) % standardColors.length;
+      const colorName = standardColors[colorIndex];
+      return `#${rank} ${colorName}`;
     }
   }
 }
