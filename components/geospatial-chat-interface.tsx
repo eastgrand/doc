@@ -3705,7 +3705,7 @@ const EnhancedGeospatialChat = memo(({
         console.log('[Claude API] Complete payload being sent:', {
           query: claudePayload.messages[0].content,
           totalFeatures: claudePayload.featureData[0].features.length,
-          firstThreeFeatures: claudePayload.featureData[0].features.slice(0, 3).map(f => ({
+          firstThreeFeatures: claudePayload.featureData[0].features.slice(0, 3).map((f: any) => ({
             area_name: f.properties.area_name,
             area_id: f.properties.area_id,
             analysis_score: f.properties.target_value
@@ -3732,7 +3732,7 @@ const EnhancedGeospatialChat = memo(({
         if (query.toLowerCase().includes('strategic')) {
           console.log('🚨🚨🚨 [STRATEGIC CLAUDE DEBUG] What Claude will receive:');
           const strategicFeatures = claudePayload.featureData[0].features.slice(0, 5);
-          strategicFeatures.forEach((feature, i) => {
+          strategicFeatures.forEach((feature: any, i: number) => {
             const tv = feature.properties.target_value;
             console.log(`🚨🚨🚨   ${i+1}. ${feature.properties.area_name}: target_value=${tv} (type: ${typeof tv}, exact: ${tv === 79.3 ? 'YES 79.3' : 'NO'})`);
             // Check if it's being stored as a float that displays as 79.3
@@ -3743,7 +3743,7 @@ const EnhancedGeospatialChat = memo(({
           });
           
           // Check if Claude receives all the same values
-          const claudeValues = strategicFeatures.map(f => f.properties.target_value);
+          const claudeValues = strategicFeatures.map((f: any) => f.properties.target_value);
           const uniqueClaudeValues = [...new Set(claudeValues)];
           if (uniqueClaudeValues.length === 1) {
             console.log('🚨🚨🚨 ❌ PROBLEM: Claude receives identical target_values!');
