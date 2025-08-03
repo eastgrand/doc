@@ -2506,6 +2506,15 @@ Performance Context:
           userMessage = `${userQuery}\n\n${dataSummary}`;
         }
         
+        // Debug what metadata we're receiving
+        console.log('🔍 [CLAUDE API] Metadata check:', {
+          hasMetadata: !!metadata,
+          isClustered: metadata?.isClustered,
+          hasClusterAnalysis: !!metadata?.clusterAnalysis,
+          clusterAnalysisLength: metadata?.clusterAnalysis?.length || 0,
+          metadataKeys: metadata ? Object.keys(metadata) : []
+        });
+        
         // CRITICAL: Handle cluster analysis if provided in metadata
         if (metadata?.isClustered && metadata?.clusterAnalysis) {
           console.log('🎯 [CLAUDE API] Detected cluster analysis in metadata');
@@ -2637,11 +2646,16 @@ Present this analysis in your professional ${selectedPersona.name} style while p
 
         // Validate response for hallucinated data
         if (metadata?.isClustered && metadata?.clusterAnalysis) {
+          console.log('🔍 [VALIDATION] Running hallucination check...');
           const validationResult = validateClusterResponse(responseContent, metadata.clusterAnalysis);
           if (!validationResult.isValid) {
             console.error('🚨 [HALLUCINATION DETECTED]', validationResult.issues);
+            console.error('🚨 [HALLUCINATION] Original had', metadata.clusterAnalysis.match(/\b\d{5}\b/g)?.length || 0, 'ZIP codes');
+            console.error('🚨 [HALLUCINATION] Response has', responseContent.match(/\b\d{5}\b/g)?.length || 0, 'ZIP codes');
             // Log the issue but don't fail - just warn for now
             console.warn('⚠️ [VALIDATION] Claude may have hallucinated data:', validationResult.issues);
+          } else {
+            console.log('✅ [VALIDATION] No hallucinations detected');
           }
         }
 
