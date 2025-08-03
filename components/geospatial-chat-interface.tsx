@@ -1231,7 +1231,7 @@ const EnhancedGeospatialChat = memo(({
       // Find the feature in our current features array
       const targetFeature = features.find((feature: GeospatialFeature) => {
         // Try multiple possible ID fields for different data sources
-        const featureIdValue = feature.properties?.FSA_ID || 
+        let featureIdValue = feature.properties?.FSA_ID || 
                          feature.properties?.ID || 
                          feature.properties?.OBJECTID ||
                          feature.properties?.id ||
@@ -1239,6 +1239,14 @@ const EnhancedGeospatialChat = memo(({
                          feature.properties?.zip_code ||
                          feature.properties?.ZIPCODE ||
                          feature.properties?.ZIP;
+        
+        // For clustered data, extract ZIP from area_name like "08701 (Lakewood)"
+        if (!featureIdValue && feature.area_name) {
+          const zipMatch = feature.area_name.match(/^\d{5}/);
+          if (zipMatch) {
+            featureIdValue = zipMatch[0];
+          }
+        }
         
         if (!featureIdValue) return false;
         
