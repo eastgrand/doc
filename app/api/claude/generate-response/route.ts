@@ -2510,20 +2510,25 @@ Performance Context:
         if (metadata?.isClustered && metadata?.clusterAnalysis) {
           console.log('🎯 [CLAUDE API] Detected cluster analysis in metadata');
           console.log('🎯 [CLAUDE API] Cluster analysis length:', metadata.clusterAnalysis.length);
-          console.log('🎯 [CLAUDE API] BYPASSING Claude - using cluster analysis directly to prevent hallucinations');
+          console.log('🎯 [CLAUDE API] Using structured approach to preserve data through Claude');
           
-          // BYPASS CLAUDE ENTIRELY - Claude cannot be trusted to preserve exact data
-          // Return the cluster analysis directly without any Claude processing
-          const analysisResponse: AnalysisResponse = {
-            content: metadata.clusterAnalysis,
-            validIdentifiers: [],
-            clickableFeatureType: 'cluster',
-            sourceLayerIdForClickable: undefined,
-            sourceIdentifierFieldForClickable: undefined,
-            clusters: metadata.clusters || []
-          };
+          // Use structured approach to pass data through Claude while preserving accuracy
+          userMessage = `${userQuery}
 
-          return NextResponse.json(analysisResponse);
+STRUCTURED CLUSTER ANALYSIS DATA:
+${metadata.clusterAnalysis}
+
+CRITICAL INSTRUCTIONS:
+You are a ${selectedPersona.name} analyst. Present the cluster analysis above using your expertise and tone.
+
+STRICT DATA PRESERVATION RULES:
+1. Use ONLY the ZIP codes, scores, and territory names provided above
+2. Do NOT generate any new ZIP codes or modify any numbers
+3. If you see a 4-digit ZIP code, add a leading zero (e.g., 1234 becomes 01234)
+4. Copy all percentages and scores exactly as written
+5. Maintain all numbered indicators (①, ②, ③, etc.) exactly as shown
+
+Present this analysis in your professional ${selectedPersona.name} style while preserving all data exactly.`;
         }
         
         // 🚨 DEBUG: For strategic analysis, check what's actually in the message

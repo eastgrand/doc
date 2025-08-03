@@ -217,11 +217,28 @@ export class ClusteringService {
   /**
    * Convert ProcessedAnalysisData to clustering AnalysisData format
    */
+  /**
+   * Ensure ZIP code has leading zero if it's 4 digits
+   */
+  private normalizeZipCode(zipCode: string): string {
+    // Extract just the numeric part if there's additional text
+    const match = zipCode.match(/\d{4,5}/);
+    if (!match) return zipCode;
+    
+    const numericZip = match[0];
+    // If it's 4 digits, add leading zero
+    if (numericZip.length === 4) {
+      return `0${numericZip}`;
+    }
+    return numericZip;
+  }
+
   private convertAnalysisToClusteringData(data: ProcessedAnalysisData): AnalysisData {
     console.log(`[ClusteringService] 📍 Converting ${data.records?.length || 0} records for clustering`);
     
     const features = (data.records || []).map((record, index) => {
-      const zipCode = record.properties?.geo_id || record.properties?.zip_code || record.area_name || `unknown_${index}`;
+      const rawZipCode = record.properties?.geo_id || record.properties?.zip_code || record.area_name || `unknown_${index}`;
+      const zipCode = this.normalizeZipCode(rawZipCode);
       const centroid = this.extractCentroid(record);
       
       // Debug first few records
@@ -900,21 +917,39 @@ export class ClusteringService {
     
     console.log(`🎯 [CLUSTER ANALYSIS] Generated cluster name: "${clusterName}" for cluster ${cluster.clusterId}`);
     
-    // Calculate cluster statistics
-    const scores = clusterZips.map(zip => zip.value || zip.properties?.[config.scoreField] || 0);
-    const avgScore = scores.reduce((sum, score) => sum + score, 0) / scores.length;
-    const maxScore = Math.max(...scores);
-    const minScore = Math.min(...scores);
+    // Calculate cluster statistics with better error handling
+    const scores = clusterZips.map(zip => {
+      const score = zip.value || zip.properties?.[config.scoreField] || zip.properties?.strategic_value_score || 0;
+      return isNaN(score) ? 0 : score;
+    }).filter(score => score > 0); // Remove zeros and invalid scores
+    
+    const avgScore = scores.length > 0 ? scores.reduce((sum, score) => sum + score, 0) / scores.length : 0;
+    const maxScore = scores.length > 0 ? Math.max(...scores) : 0;
+    const minScore = scores.length > 0 ? Math.min(...scores) : 0;
 
     // Get top 5 ZIP codes in this cluster for detailed description
     const topZips = clusterZips
-      .sort((a, b) => (b.value || 0) - (a.value || 0))
+      .filter(zip => {
+        const score = zip.value || zip.properties?.[config.scoreField] || zip.properties?.strategic_value_score || 0;
+        return !isNaN(score) && score > 0;
+      })
+      .sort((a, b) => {
+        const scoreA = a.value || a.properties?.[config.scoreField] || a.properties?.strategic_value_score || 0;
+        const scoreB = b.value || b.properties?.[config.scoreField] || b.properties?.strategic_value_score || 0;
+        return scoreB - scoreA;
+      })
       .slice(0, 5)
-      .map(zip => ({
-        code: zip.properties?.geo_id || zip.area_name?.match(/\d{5}/)?.[0] || 'Unknown',
-        name: zip.area_name || 'Unknown Area',
-        score: zip.value || 0
-      }));
+      .map(zip => {
+        const rawZipCode = zip.properties?.geo_id || zip.properties?.zip_code || zip.area_name?.match(/\d{4,5}/)?.[0] || 'Unknown';
+        const normalizedZipCode = this.normalizeZipCode(rawZipCode);
+        const score = zip.value || zip.properties?.[config.scoreField] || zip.properties?.strategic_value_score || 0;
+        
+        return {
+          code: normalizedZipCode,
+          name: zip.area_name || 'Unknown Area',
+          score: isNaN(score) ? 0 : score
+        };
+      });
     
     console.log(`🎯 [CLUSTER ANALYSIS] Top ZIP codes for cluster "${clusterName}":`, topZips);
     
@@ -1051,14 +1086,24 @@ This ${config.focus} analysis has identified ${clusters.length} distinct market 
           const match = areaName.match(/\((.*?)\)/);
           areaName = match ? match[1] : areaName;
         }
-        return `${zip.code} (${areaName}: ${zip.score.toFixed(1)})`;
+        
+        // Ensure score is valid and formatted properly
+        const score = zip.score || 0;
+        const formattedScore = isNaN(score) ? '0.0' : score.toFixed(1);
+        
+        return `${zip.code} (${areaName}: ${formattedScore})`;
       }).join(', ')}`;
     }
 
     // Add cluster-level market analysis if available
     let marketDetails = '';
     if (cluster.marketShares) {
-      marketDetails = `\nMarket Analysis: Nike ${cluster.marketShares.nike.toFixed(1)}%, Adidas ${cluster.marketShares.adidas.toFixed(1)}%, Jordan ${cluster.marketShares.jordan.toFixed(1)}% | Market Gap: ${cluster.marketShares.marketGap.toFixed(1)}%`;
+      const nike = isNaN(cluster.marketShares.nike) ? 0 : cluster.marketShares.nike;
+      const adidas = isNaN(cluster.marketShares.adidas) ? 0 : cluster.marketShares.adidas;
+      const jordan = isNaN(cluster.marketShares.jordan) ? 0 : cluster.marketShares.jordan;
+      const marketGap = isNaN(cluster.marketShares.marketGap) ? 0 : cluster.marketShares.marketGap;
+      
+      marketDetails = `\nMarket Analysis: Nike ${nike.toFixed(1)}%, Adidas ${adidas.toFixed(1)}%, Jordan ${jordan.toFixed(1)}% | Market Gap: ${marketGap.toFixed(1)}%`;
     }
 
     // Generate key drivers for this territory's high performance
@@ -1100,8 +1145,14 @@ This ${config.focus} analysis has identified ${clusters.length} distinct market 
     const colorIndicator = this.getColorIndicatorForCluster(cluster.originalClusterId, totalClusters);
     console.log(`🎯 [COLOR DEBUG] Cluster ID ${cluster.originalClusterId}, Rank ${rank}: ${colorIndicator} for ${cluster.name} (${totalClusters} total clusters)`);
     
-    return `**${rank}. ${cluster.name}** [${colorIndicator}] - ${cluster.zipCount} ZIP codes, Avg ${config.scoreName}: ${cluster.avgScore.toFixed(1)}
-Population: ${cluster.totalPopulation.toLocaleString()} | Score Range: ${cluster.minScore.toFixed(1)}-${cluster.maxScore.toFixed(1)}
+    // Ensure all numeric values are valid
+    const avgScore = isNaN(cluster.avgScore) ? 0 : cluster.avgScore;
+    const minScore = isNaN(cluster.minScore) ? 0 : cluster.minScore;
+    const maxScore = isNaN(cluster.maxScore) ? 0 : cluster.maxScore;
+    const population = isNaN(cluster.totalPopulation) ? 0 : cluster.totalPopulation;
+    
+    return `**${rank}. ${cluster.name}** [${colorIndicator}] - ${cluster.zipCount} ZIP codes, Avg ${config.scoreName}: ${avgScore.toFixed(1)}
+Population: ${population.toLocaleString()} | Score Range: ${minScore.toFixed(1)}-${maxScore.toFixed(1)}
 Territory Profile: Comprehensive market area with ${consistencyText} across the region${zipDetails}${marketDetails}${keyDrivers}
 
 `;
