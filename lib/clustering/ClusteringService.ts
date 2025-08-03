@@ -237,8 +237,8 @@ export class ClusteringService {
     console.log(`[ClusteringService] 📍 Converting ${data.records?.length || 0} records for clustering`);
     
     const features = (data.records || []).map((record, index) => {
-      // Extract ZIP code more reliably - try multiple approaches
-      let rawZipCode = record.properties?.geo_id || record.properties?.zip_code;
+      // Extract ZIP code more reliably - prefer zip_code over geo_id (geo_id often lacks leading zeros)
+      let rawZipCode = record.properties?.zip_code || record.properties?.geo_id;
       
       // If no direct ZIP code field, extract from area_name (e.g., "11234 (Brooklyn)" -> "11234")
       if (!rawZipCode && record.area_name) {
@@ -568,8 +568,8 @@ export class ClusteringService {
     
     // Transform each original ZIP code record to include cluster assignment
     (originalResult.data.records || []).forEach(record => {
-      // Extract ZIP code more reliably - try multiple approaches
-      let zipCode = record.properties?.geo_id || record.properties?.zip_code;
+      // Extract ZIP code more reliably - prefer zip_code over geo_id (geo_id often lacks leading zeros)
+      let zipCode = record.properties?.zip_code || record.properties?.geo_id;
       
       // If no direct ZIP code field, extract from area_name (e.g., "11234 (Brooklyn)" -> "11234")
       if (!zipCode && record.area_name) {
