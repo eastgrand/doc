@@ -1093,7 +1093,12 @@ This ${config.focus} analysis has identified ${clusters.length} distinct market 
     
     keyDrivers += drivers.join(', ') || 'Strategic market positioning';
 
-    return `**${rank}. ${cluster.name}** - ${cluster.zipCount} ZIP codes, Avg ${config.scoreName}: ${cluster.avgScore.toFixed(1)}
+    // Add color swatch for visualization legend matching
+    const clusterColors = ['#FF4444', '#FF8800', '#FFDD00', '#88DD00', '#00DD44']; // Standard quintile scheme
+    const colorSwatch = clusterColors[rank - 1] || '#999999';
+    const colorIndicator = `<span style="color: ${colorSwatch};">●</span>`;
+    
+    return `**${rank}. ${colorIndicator} ${cluster.name}** - ${cluster.zipCount} ZIP codes, Avg ${config.scoreName}: ${cluster.avgScore.toFixed(1)}
 Population: ${cluster.totalPopulation.toLocaleString()} | Score Range: ${cluster.minScore.toFixed(1)}-${cluster.maxScore.toFixed(1)}
 Territory Profile: Comprehensive market area with ${consistencyText} across the region${zipDetails}${marketDetails}${keyDrivers}
 
