@@ -1152,22 +1152,48 @@ Territory Profile: Comprehensive market area with ${consistencyText} across the 
   }
 
   /**
-   * Get color indicator for a cluster that matches the visualization colors
+   * Get color indicator for a cluster that matches the exact colors assigned by ClusterRenderer
    * Uses cluster ID (not rank) to match the exact colors shown in the map renderer
    */
   private getColorIndicatorForCluster(clusterId: number, totalClusters: number): string {
-    // Since emojis can't accurately represent all color variations and opacity,
-    // and colors may cycle for >5 clusters, the most reliable approach is to
-    // use a simple indicator that users can match to the legend
+    // Match the exact ClusterRenderer.generateClusterColors() logic
+    let assignedColorHex: string;
     
-    // Using a filled circle with cluster number for clear identification
-    const circleEmojis = ['⓪', '①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨'];
-    
-    if (clusterId < circleEmojis.length) {
-      return circleEmojis[clusterId];
+    if (totalClusters <= 4) {
+      // STANDARD_COLOR_SCHEME: ['#d73027', '#fdae61', '#a6d96a', '#1a9850']
+      const standardColors = ['#d73027', '#fdae61', '#a6d96a', '#1a9850'];
+      assignedColorHex = standardColors[clusterId] || '#808080';
+    } else if (totalClusters === 5) {
+      // Quintile scheme: ['#FF4444', '#FF8800', '#FFDD00', '#88DD00', '#00DD44']
+      const quintileColors = ['#FF4444', '#FF8800', '#FFDD00', '#88DD00', '#00DD44'];
+      assignedColorHex = quintileColors[clusterId] || '#808080';
     } else {
-      // For clusters beyond 9, use plain numbers
-      return `(${clusterId})`;
+      // For more than 5 clusters, cycle through STANDARD_COLOR_SCHEME
+      const standardColors = ['#d73027', '#fdae61', '#a6d96a', '#1a9850'];
+      assignedColorHex = standardColors[clusterId % 4];
     }
+    
+    // Map hex colors to appropriate emoji indicators
+    const colorToEmoji = {
+      '#d73027': '🔴', // red
+      '#fdae61': '🟠', // orange  
+      '#a6d96a': '🟢', // light green
+      '#1a9850': '🟢', // dark green
+      '#FF4444': '🔴', // bright red
+      '#FF8800': '🟠', // bright orange
+      '#FFDD00': '🟡', // yellow
+      '#88DD00': '🟢', // lime
+      '#00DD44': '🟢', // green
+    };
+    
+    let emoji = colorToEmoji[assignedColorHex as keyof typeof colorToEmoji] || '⚪';
+    
+    // For similar colors, add cluster ID to distinguish
+    if (assignedColorHex === '#a6d96a' || assignedColorHex === '#1a9850' || 
+        assignedColorHex === '#88DD00' || assignedColorHex === '#00DD44') {
+      emoji += `${clusterId}`;
+    }
+    
+    return emoji;
   }
 }
