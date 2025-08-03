@@ -1094,8 +1094,9 @@ This ${config.focus} analysis has identified ${clusters.length} distinct market 
     keyDrivers += drivers.join(', ') || 'Strategic market positioning';
 
     // Add color indicator for visualization legend matching
-    const colorIndicator = this.getColorIndicatorForRank(rank, totalClusters);
-    console.log(`🎯 [COLOR DEBUG] Rank ${rank}: ${colorIndicator} for ${cluster.name} (${totalClusters} total clusters)`);
+    // Use the actual cluster ID (not rank) to match the renderer's color assignment
+    const colorIndicator = this.getColorIndicatorForCluster(cluster.originalClusterId, totalClusters);
+    console.log(`🎯 [COLOR DEBUG] Cluster ID ${cluster.originalClusterId}, Rank ${rank}: ${colorIndicator} for ${cluster.name} (${totalClusters} total clusters)`);
     
     return `**${rank}. ${cluster.name}** [${colorIndicator}] - ${cluster.zipCount} ZIP codes, Avg ${config.scoreName}: ${cluster.avgScore.toFixed(1)}
 Population: ${cluster.totalPopulation.toLocaleString()} | Score Range: ${cluster.minScore.toFixed(1)}-${cluster.maxScore.toFixed(1)}
@@ -1151,26 +1152,29 @@ Territory Profile: Comprehensive market area with ${consistencyText} across the 
   }
 
   /**
-   * Get color indicator for a cluster rank that matches the visualization colors
+   * Get color indicator for a cluster that matches the visualization colors
+   * Uses cluster ID (not rank) to match the exact colors shown in the map renderer
    */
-  private getColorIndicatorForRank(rank: number, totalClusters: number): string {
-    // For clarity, use rank numbers with descriptive color names
-    // This avoids confusion when colors cycle for >5 clusters
+  private getColorIndicatorForCluster(clusterId: number, totalClusters: number): string {
+    // ClusterRenderer assigns colors based on cluster ID position in the array
+    // We need to match this exact logic to ensure consistency
+    
+    let colorEmoji: string;
     
     if (totalClusters <= 4) {
-      // Standard 4-color scheme: red, orange, light green, dark green
-      const colors = ['Red', 'Orange', 'Light Green', 'Dark Green'];
-      return `#${rank} ${colors[rank - 1] || 'Gray'}`;
+      // Standard 4-color scheme colors
+      const emojis = ['🟥', '🟧', '🟩', '🟢']; // red, orange, light green, dark green
+      colorEmoji = emojis[clusterId] || '⬜';
     } else if (totalClusters === 5) {
-      // Quintile scheme: red, orange, yellow, lime, green
-      const colors = ['Red', 'Orange', 'Yellow', 'Lime', 'Green'];
-      return `#${rank} ${colors[rank - 1] || 'Gray'}`;
+      // Quintile scheme colors
+      const emojis = ['🟥', '🟧', '🟨', '🟩', '🟢']; // red, orange, yellow, lime, green
+      colorEmoji = emojis[clusterId] || '⬜';
     } else {
-      // More than 5 clusters - show rank number with cycling color name
-      const standardColors = ['Red', 'Orange', 'Light Green', 'Dark Green'];
-      const colorIndex = (rank - 1) % standardColors.length;
-      const colorName = standardColors[colorIndex];
-      return `#${rank} ${colorName}`;
+      // More than 5 clusters - colors cycle through standard scheme
+      const standardEmojis = ['🟥', '🟧', '🟩', '🟢'];
+      colorEmoji = standardEmojis[clusterId % standardEmojis.length];
     }
+    
+    return colorEmoji;
   }
 }
