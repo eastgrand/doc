@@ -795,7 +795,7 @@ export class ClusteringService {
     
     // Add detailed cluster analysis
     validNamedClusters.forEach((cluster, index) => {
-      analysis += this.generateClusterDetails(cluster, index + 1, endpointConfig);
+      analysis += this.generateClusterDetails(cluster, index + 1, endpointConfig, validNamedClusters.length);
     });
 
     // Add strategic recommendations
@@ -1032,7 +1032,7 @@ This ${config.focus} analysis has identified ${clusters.length} distinct market 
   /**
    * Generate detailed analysis for each cluster
    */
-  private generateClusterDetails(cluster: any, rank: number, config: any): string {
+  private generateClusterDetails(cluster: any, rank: number, config: any, totalClusters: number): string {
     const scoreSpread = cluster.maxScore - cluster.minScore;
     const consistencyText = scoreSpread < 10 ? "highly consistent scores" : 
                            scoreSpread < 20 ? "moderately consistent scores" : 
@@ -1093,12 +1093,11 @@ This ${config.focus} analysis has identified ${clusters.length} distinct market 
     
     keyDrivers += drivers.join(', ') || 'Strategic market positioning';
 
-    // Add color swatch for visualization legend matching
-    const clusterColors = ['#FF4444', '#FF8800', '#FFDD00', '#88DD00', '#00DD44']; // Standard quintile scheme
-    const colorSwatch = clusterColors[rank - 1] || '#999999';
-    const colorIndicator = `<span style="color: ${colorSwatch};">●</span>`;
+    // Add color indicator for visualization legend matching
+    const colorIndicator = this.getColorIndicatorForRank(rank, totalClusters);
+    console.log(`🎯 [COLOR DEBUG] Rank ${rank}: ${colorIndicator} for ${cluster.name} (${totalClusters} total clusters)`);
     
-    return `**${rank}. ${colorIndicator} ${cluster.name}** - ${cluster.zipCount} ZIP codes, Avg ${config.scoreName}: ${cluster.avgScore.toFixed(1)}
+    return `**${rank}. [${colorIndicator}] ${cluster.name}** - ${cluster.zipCount} ZIP codes, Avg ${config.scoreName}: ${cluster.avgScore.toFixed(1)}
 Population: ${cluster.totalPopulation.toLocaleString()} | Score Range: ${cluster.minScore.toFixed(1)}-${cluster.maxScore.toFixed(1)}
 Territory Profile: Comprehensive market area with ${consistencyText} across the region${zipDetails}${marketDetails}${keyDrivers}
 
@@ -1149,5 +1148,31 @@ Territory Profile: Comprehensive market area with ${consistencyText} across the 
     recommendations += `- Q4: Scale successful initiatives across all ${clusters.length} territories\n`;
     
     return recommendations;
+  }
+
+  /**
+   * Get color indicator for a cluster rank that matches the visualization colors
+   */
+  private getColorIndicatorForRank(rank: number, totalClusters: number): string {
+    // Color names that match the actual renderer colors (from ClusterRenderer logic)
+    // ≤4 clusters: STANDARD_COLOR_SCHEME (#d73027, #fdae61, #a6d96a, #1a9850)
+    // 5 clusters: quintile colors (#FF4444, #FF8800, #FFDD00, #88DD00, #00DD44)
+    // >5 clusters: cycling through standard colors
+    
+    const standardColorNames = ['🔴 RED', '🟠 ORANGE', '🟢 LIGHT GREEN', '🟢 DARK GREEN'];
+    const quintileColorNames = ['🔴 RED', '🟠 ORANGE', '🟡 YELLOW', '🟢 LIME', '🟢 GREEN'];
+    
+    // Match the exact logic from ClusterRenderer.generateClusterColors()
+    if (totalClusters <= 4) {
+      // Using standard 4-color scheme
+      return standardColorNames[rank - 1] || '⚪ GRAY';
+    } else if (totalClusters === 5) {
+      // Exactly 5 clusters - use quintile scheme
+      return quintileColorNames[rank - 1] || '⚪ GRAY';
+    } else {
+      // More than 5 clusters - cycle through standard colors
+      const colorIndex = (rank - 1) % standardColorNames.length;
+      return `${standardColorNames[colorIndex]} (${rank})`;
+    }
   }
 }
