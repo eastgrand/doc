@@ -574,13 +574,16 @@ export class ClusteringService {
       // If no direct ZIP code field, extract from area_name (e.g., "11234 (Brooklyn)" -> "11234")
       if (!zipCode && record.area_name) {
         const match = record.area_name.match(/^\d{4,5}/);
-        zipCode = match ? this.normalizeZipCode(match[0]) : record.area_name;
+        zipCode = match ? match[0] : record.area_name;
       }
       
       // Fallback to area_name if still no match
       if (!zipCode) {
         zipCode = record.area_name;
       }
+      
+      // ALWAYS normalize the ZIP code to ensure leading zeros
+      zipCode = this.normalizeZipCode(zipCode);
       
       const clusterAssignment = zipToClusterMap.get(zipCode);
       

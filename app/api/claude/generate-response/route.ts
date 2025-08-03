@@ -2387,6 +2387,11 @@ ABSOLUTELY FORBIDDEN:
 ❌ Changing territory names or adding prefixes like "ZIP"
 ❌ Modifying any numbers, percentages, or geographic data
 
+GEOGRAPHIC CLARIFICATION:
+⚠️ "Corona Territory" refers to Corona, Queens, NY (ZIP codes starting with 11xxx) - NOT Corona, California
+⚠️ ALL data is from NY/NJ/PA tri-state area - NO California ZIP codes exist in this dataset
+⚠️ Valid ZIP code ranges: NY (10xxx-14xxx), NJ (07xxx-08xxx), PA (15xxx-19xxx)
+
 VERIFICATION: Before writing any ZIP code or number, confirm it appears in the provided analysis text.
 ` : '';
 
