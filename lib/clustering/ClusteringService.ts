@@ -555,7 +555,20 @@ export class ClusteringService {
     
     // Transform each original ZIP code record to include cluster assignment
     (originalResult.data.records || []).forEach(record => {
-      const zipCode = record.properties?.geo_id || record.properties?.zip_code || record.area_name;
+      // Extract ZIP code more reliably - try multiple approaches
+      let zipCode = record.properties?.geo_id || record.properties?.zip_code;
+      
+      // If no direct ZIP code field, extract from area_name (e.g., "11234 (Brooklyn)" -> "11234")
+      if (!zipCode && record.area_name) {
+        const match = record.area_name.match(/^\d{4,5}/);
+        zipCode = match ? this.normalizeZipCode(match[0]) : record.area_name;
+      }
+      
+      // Fallback to area_name if still no match
+      if (!zipCode) {
+        zipCode = record.area_name;
+      }
+      
       const clusterAssignment = zipToClusterMap.get(zipCode);
       
       if (clusterAssignment) {
@@ -590,7 +603,15 @@ export class ClusteringService {
         
         clusteredZipRecords.push(clusteredRecord);
       } else {
-        console.warn(`[ClusteringService] ZIP code ${zipCode} not assigned to any cluster`);
+        // Debug ZIP code matching issues
+        const debugInfo = {
+          extractedZipCode: zipCode,
+          area_name: record.area_name,
+          geo_id: record.properties?.geo_id,
+          zip_code: record.properties?.zip_code,
+          availableMapKeys: Array.from(zipToClusterMap.keys()).slice(0, 5) // Show first 5 keys for debugging
+        };
+        console.warn(`[ClusteringService] ZIP code ${zipCode} not assigned to any cluster:`, debugInfo);
       }
     });
 
