@@ -1248,18 +1248,26 @@ const EnhancedGeospatialChat = memo(({
           }
         }
         
+        // Also try area_name directly for non-clustered cases
+        if (!featureIdValue && feature.area_name) {
+          featureIdValue = feature.area_name;
+        }
+        
         if (!featureIdValue) return false;
         
         const normalizedFeatureId = normalizeId(featureIdValue.toString());
         const match = normalizedFeatureId === targetId;
         
-        // Debug the first few comparisons
-        if (features.indexOf(feature) < 3) {
+        // Debug the first few comparisons and any matches
+        if (features.indexOf(feature) < 3 || match) {
           console.log('[ZoomToFeature] Comparing:', {
+            featureIndex: features.indexOf(feature),
+            area_name: feature.area_name,
             featureId: featureIdValue,
             normalized: normalizedFeatureId,
             targetId,
-            match
+            match,
+            hasGeometry: !!feature.geometry
           });
         }
         
@@ -1267,15 +1275,21 @@ const EnhancedGeospatialChat = memo(({
       });
 
       if (!targetFeature) {
-        console.warn('[ZoomToFeature] Feature not found:', { targetId, availableFeatures: features.slice(0, 5).map(f => ({
-          FSA_ID: f.properties?.FSA_ID,
-          ID: f.properties?.ID,
-          OBJECTID: f.properties?.OBJECTID,
-          area_id: f.properties?.area_id,
-          zip_code: f.properties?.zip_code,
-          ZIPCODE: f.properties?.ZIPCODE,
-          allProperties: Object.keys(f.properties || {})
-        }))});
+        console.warn('[ZoomToFeature] Feature not found:', { 
+          targetId, 
+          totalFeatures: features.length,
+          first10Features: features.slice(0, 10).map(f => ({
+            FSA_ID: f.properties?.FSA_ID,
+            ID: f.properties?.ID,
+            OBJECTID: f.properties?.OBJECTID,
+            area_id: f.properties?.area_id,
+            zip_code: f.properties?.zip_code,
+            ZIPCODE: f.properties?.ZIPCODE,
+            area_name: f.area_name, // Show area_name for clustered data
+            cluster_id: f.cluster_id, // Show cluster_id for clustered data
+            allProperties: Object.keys(f.properties || {})
+          }))
+        });
         
         toast({
           title: "Feature Not Found",
