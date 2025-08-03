@@ -3965,11 +3965,9 @@ const EnhancedGeospatialChat = memo(({
       await refreshContextSummary();
       
       // CRITICAL FIX: Use FULL data for features context, not visualization-optimized data
-      // For clustered data, use cluster records instead of individual ZIP codes
+      // For clustered data, use individual ZIP records (not cluster summaries) so ZIP zoom works
       const isClusteredData = finalAnalysisResult.data.isClustered && finalAnalysisResult.data.clusters;
-      const sourceRecords = isClusteredData 
-        ? finalAnalysisResult.data.clusters 
-        : finalAnalysisResult.data.records;
+      const sourceRecords = finalAnalysisResult.data.records; // Always use individual records for zoom functionality
       
       if (!sourceRecords) {
         console.error('🚨 [DATA SOURCE] No source records available');
@@ -3978,29 +3976,28 @@ const EnhancedGeospatialChat = memo(({
       
       console.log('🎯 [DATA SOURCE] Using data source for Claude:', {
         isClusteredData,
-        usingClusters: isClusteredData,
+        usingIndividualRecords: true, // Always use individual records for zoom functionality
         sourceRecordCount: sourceRecords.length,
-        sourceType: isClusteredData ? 'clusters' : 'individual_zip_codes'
+        sourceType: 'individual_records' // Changed: always individual records, not cluster summaries
       });
       
-      // Convert finalAnalysisResult.data.records back to GeospatialFeature format for analysis/chat
+      // Convert individual records back to GeospatialFeature format for analysis/chat
       const fullDataFeatures = sourceRecords.map((record: any) => ({
         type: 'Feature' as const,
         geometry: record.geometry,
+        area_name: record.area_name, // Essential for ZIP code zoom (e.g., "11368 (Corona)")
+        cluster_id: record.cluster_id, // Essential for clustered data (e.g., 0, 1, 2, 3, 4)
+        cluster_name: record.cluster_name, // For display (e.g., "Corona Territory")
         properties: {
           ...record.properties,
-          // Handle both cluster records and individual ZIP code records
-          [finalAnalysisResult.data.targetVariable]: record.value || record.avgScore,
-          target_value: record.value || record.avgScore,
-          area_name: record.area_name || record.name,
-          area_id: record.area_id || record.id || record.properties?.ID,
-          // For clusters, add cluster-specific fields
-          ...(finalAnalysisResult.data.isClustered && record.zipCount ? {
-            cluster_id: record.id,
-            zip_count: record.zipCount,
-            total_population: record.totalPopulation,
-            avg_score: record.avgScore,
-            cluster_name: record.name
+          [finalAnalysisResult.data.targetVariable]: record.value,
+          target_value: record.value,
+          area_name: record.area_name,
+          area_id: record.area_id || record.properties?.ID,
+          // Preserve cluster information for clustered data
+          ...(isClusteredData ? {
+            cluster_id: record.cluster_id,
+            cluster_name: record.cluster_name
           } : {})
         }
       }));
