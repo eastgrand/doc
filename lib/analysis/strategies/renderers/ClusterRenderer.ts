@@ -389,12 +389,8 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
       description: `Avg similarity: ${(cluster.avgSimilarity * 100).toFixed(1)}%`
     }));
 
-    // Sort by cluster size (largest first)
-    legendItems.sort((a, b) => {
-      const clusterA = clusterInfo.clusters.find(c => c.id === a.value)!;
-      const clusterB = clusterInfo.clusters.find(c => c.id === b.value)!;
-      return clusterB.size - clusterA.size;
-    });
+    // Keep legend items in cluster ID order to match color assignment
+    // DO NOT sort by size as it breaks the color mapping
 
     return {
       title: `Spatial Clusters (${clusterInfo.clusterCount} groups)`,

@@ -1156,25 +1156,18 @@ Territory Profile: Comprehensive market area with ${consistencyText} across the 
    * Uses cluster ID (not rank) to match the exact colors shown in the map renderer
    */
   private getColorIndicatorForCluster(clusterId: number, totalClusters: number): string {
-    // ClusterRenderer assigns colors based on cluster ID position in the array
-    // We need to match this exact logic to ensure consistency
+    // Since emojis can't accurately represent all color variations and opacity,
+    // and colors may cycle for >5 clusters, the most reliable approach is to
+    // use a simple indicator that users can match to the legend
     
-    let colorEmoji: string;
+    // Using a filled circle with cluster number for clear identification
+    const circleEmojis = ['⓪', '①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨'];
     
-    if (totalClusters <= 4) {
-      // Standard 4-color scheme colors
-      const emojis = ['🟥', '🟧', '🟩', '🟢']; // red, orange, light green, dark green
-      colorEmoji = emojis[clusterId] || '⬜';
-    } else if (totalClusters === 5) {
-      // Quintile scheme colors
-      const emojis = ['🟥', '🟧', '🟨', '🟩', '🟢']; // red, orange, yellow, lime, green
-      colorEmoji = emojis[clusterId] || '⬜';
+    if (clusterId < circleEmojis.length) {
+      return circleEmojis[clusterId];
     } else {
-      // More than 5 clusters - colors cycle through standard scheme
-      const standardEmojis = ['🟥', '🟧', '🟩', '🟢'];
-      colorEmoji = standardEmojis[clusterId % standardEmojis.length];
+      // For clusters beyond 9, use plain numbers
+      return `(${clusterId})`;
     }
-    
-    return colorEmoji;
   }
 }
