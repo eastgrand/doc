@@ -2327,12 +2327,12 @@ The user requested the ${rankingContext.queryType} ${rankingContext.requestedCou
 CRITICAL CLUSTERING INSTRUCTIONS:
 You have been provided with a complete territory clustering analysis. You MUST:
 1. Use the EXACT territory descriptions provided, including:
-   - Color indicators with emojis (🔴, 🟠, 🟡, 🟢) that match the map legend
+   - Color indicators with emojis (🟥, 🟧, 🟨, 🟩) that match the map legend (60% opacity)
    - The specific top 5 ZIP codes with scores for each territory
    - The exact market share percentages (Nike %, Adidas %, Jordan %, Market Gap %)
    - The exact "Key Drivers" text for each territory
 2. Use the Strategic Recommendations section EXACTLY as provided
-3. PRESERVE ALL emoji color indicators - they are ESSENTIAL for matching the visual map
+3. PRESERVE ALL emoji color indicators (🟥🟧🟨🟩) - they are ESSENTIAL for matching the visual map
 4. DO NOT explain what strategic value scores mean generically
 5. DO NOT add your own recommendations about "developing tailored strategies" or "monitoring performance"
 6. Focus on the specific cluster analysis provided - do not generate generic content
@@ -2468,12 +2468,12 @@ ${metadata.clusterAnalysis}
 
 YOUR TASK: Present the territory clustering analysis above in a clean, professional format. You MUST:
 1. Include ALL territory descriptions EXACTLY as shown, preserving ALL formatting including:
-   - Color indicators with emojis (🔴, 🟠, 🟡, 🟢) that match the map legend
+   - Color indicators with emojis (🟥, 🟧, 🟨, 🟩) that match the map legend (60% opacity)
    - Top 5 ZIP codes and their scores
    - Market share percentages (Nike %, Adidas %, Jordan %, Market Gap %)
    - Key Drivers for each territory
 2. Include the Strategic Recommendations section in full
-3. CRITICAL: Preserve ALL color indicators and emoji symbols - they are essential for matching the visual map
+3. CRITICAL: Preserve ALL color indicators and emoji symbols (🟥🟧🟨🟩) - they are essential for matching the visual map with 60% opacity
 4. Do NOT add any generic explanations about scoring methodology
 5. Do NOT add any additional recommendations or suggestions
 6. Simply present the analysis provided above in a well-formatted response with ALL original formatting preserved`;

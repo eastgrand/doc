@@ -380,7 +380,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
   private createClusterLegend(clusterInfo: ClusterInfo, clusterColors: string[], data: ProcessedAnalysisData): any {
     const legendItems = clusterInfo.clusters.map((cluster, index) => ({
       label: `${cluster.label} (${cluster.size} areas)`,
-      color: clusterColors[index],
+      color: this.hexToRgbaString(clusterColors[index], STANDARD_OPACITY), // Apply same opacity as map
       value: cluster.id,
       symbol: 'circle',
       description: `Avg similarity: ${(cluster.avgSimilarity * 100).toFixed(1)}%`
@@ -421,6 +421,11 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
       parseInt(result[2], 16),
       parseInt(result[3], 16)
     ];
+  }
+
+  private hexToRgbaString(hex: string, opacity: number): string {
+    const rgb = this.hexToRgbValues(hex);
+    return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${opacity})`;
   }
 
 

@@ -1155,20 +1155,22 @@ Territory Profile: Comprehensive market area with ${consistencyText} across the 
    */
   private getColorIndicatorForRank(rank: number, totalClusters: number): string {
     // Color names that match the actual renderer colors (from ClusterRenderer logic)
+    // All colors are rendered at 0.6 opacity on the map, making them appear lighter/softer
     // ≤4 clusters: STANDARD_COLOR_SCHEME (#d73027, #fdae61, #a6d96a, #1a9850)
     // 5 clusters: quintile colors (#FF4444, #FF8800, #FFDD00, #88DD00, #00DD44)
     // >5 clusters: cycling through standard colors
     
-    const standardColorNames = ['🔴 RED', '🟠 ORANGE', '🟢 LIGHT GREEN', '🟢 DARK GREEN'];
-    const quintileColorNames = ['🔴 RED', '🟠 ORANGE', '🟡 YELLOW', '🟢 LIME', '🟢 GREEN'];
+    // Use lighter emoji indicators to better represent the 60% opacity appearance
+    const standardColorNames = ['🟥 RED', '🟧 ORANGE', '🟩 LIGHT GREEN', '🟩 DARK GREEN'];
+    const quintileColorNames = ['🟥 RED', '🟧 ORANGE', '🟨 YELLOW', '🟩 LIME', '🟩 GREEN'];
     
     // Match the exact logic from ClusterRenderer.generateClusterColors()
     if (totalClusters <= 4) {
       // Using standard 4-color scheme
-      return standardColorNames[rank - 1] || '⚪ GRAY';
+      return standardColorNames[rank - 1] || '⬜ GRAY';
     } else if (totalClusters === 5) {
       // Exactly 5 clusters - use quintile scheme
-      return quintileColorNames[rank - 1] || '⚪ GRAY';
+      return quintileColorNames[rank - 1] || '⬜ GRAY';
     } else {
       // More than 5 clusters - cycle through standard colors
       const colorIndex = (rank - 1) % standardColorNames.length;
