@@ -121,8 +121,11 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
         .map(member => member.area_name);
     });
     
+    // Sort clusters by ID to ensure consistent color assignment
+    const sortedClusters = Array.from(clusterMap.values()).sort((a, b) => a.id - b.id);
+    
     return {
-      clusters: Array.from(clusterMap.values()),
+      clusters: sortedClusters,
       clusterCount: clusterMap.size,
       totalMembers: data.records.length,
       avgClusterSize: data.records.length / clusterMap.size
