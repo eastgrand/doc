@@ -2510,39 +2510,20 @@ Performance Context:
         if (metadata?.isClustered && metadata?.clusterAnalysis) {
           console.log('🎯 [CLAUDE API] Detected cluster analysis in metadata');
           console.log('🎯 [CLAUDE API] Cluster analysis length:', metadata.clusterAnalysis.length);
-          console.log('🎯 [CLAUDE API] Using cluster analysis as primary content');
+          console.log('🎯 [CLAUDE API] BYPASSING Claude - using cluster analysis directly to prevent hallucinations');
           
-          // For clustered analysis, use the cluster analysis as the primary content
-          // and only include minimal ZIP code data for context
-          userMessage = `${userQuery}
+          // BYPASS CLAUDE ENTIRELY - Claude cannot be trusted to preserve exact data
+          // Return the cluster analysis directly without any Claude processing
+          const analysisResponse: AnalysisResponse = {
+            content: metadata.clusterAnalysis,
+            validIdentifiers: [],
+            clickableFeatureType: 'cluster',
+            sourceLayerIdForClickable: undefined,
+            sourceIdentifierFieldForClickable: undefined,
+            clusters: metadata.clusters || []
+          };
 
-=== COMPLETE TERRITORY CLUSTERING ANALYSIS ===
-${metadata.clusterAnalysis}
-=== END OF TERRITORY CLUSTERING ANALYSIS ===
-
-CRITICAL ANTI-HALLUCINATION INSTRUCTIONS:
-🚨 YOU MUST ONLY USE DATA FROM THE ANALYSIS ABOVE 🚨
-🚨 DO NOT GENERATE ANY ZIP CODES, NUMBERS, OR DATA NOT PROVIDED 🚨
-🚨 DO NOT CREATE EXAMPLE DATA OR PLACEHOLDER VALUES 🚨
-
-YOUR TASK: Present the territory clustering analysis above in a clean, professional format. You MUST:
-
-1. COPY EXACTLY - Use ONLY the ZIP codes, scores, and percentages provided in the analysis above
-2. NO GENERATION - Do NOT create any new ZIP codes, scores, percentages, or territory names
-3. NO EXAMPLES - Do NOT add example data if information is missing
-4. PRESERVE EXACTLY:
-   - All ZIP codes and scores EXACTLY as written (e.g., if it says "19320 (Coatesville: 73.1)", write exactly that)
-   - All market share percentages EXACTLY as provided
-   - All territory names EXACTLY as shown
-   - All numbered indicators EXACTLY as provided (①, ②, ③, etc.)
-5. IF MISSING DATA - If any data is incomplete or missing, write "Data not available" instead of generating fake data
-6. VERIFICATION - Before including any ZIP code or number, verify it appears in the analysis text above
-
-FORBIDDEN:
-❌ Creating new ZIP codes (like 92881, 92880 from California)
-❌ Generating example scores or percentages
-❌ Adding territories not listed in the analysis
-❌ Modifying any provided numbers or geographic locations`;
+          return NextResponse.json(analysisResponse);
         }
         
         // 🚨 DEBUG: For strategic analysis, check what's actually in the message

@@ -384,7 +384,9 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
     const numberEmojis = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩'];
     
     const legendItems = clusterInfo.clusters.map((cluster, index) => {
-      const numberIndicator = cluster.id < numberEmojis.length ? numberEmojis[cluster.id] : `(${cluster.id + 1})`;
+      // Use cluster ID + 1 to match analysis numbering (cluster ID 0 = ①, cluster ID 1 = ②, etc.)
+      const displayNumber = cluster.id + 1;
+      const numberIndicator = cluster.id < numberEmojis.length ? numberEmojis[cluster.id] : `(${displayNumber})`;
       return {
         label: `${numberIndicator} ${cluster.label} (${cluster.size} areas)`,
         color: this.hexToRgbaString(clusterColors[index], STANDARD_OPACITY), // Apply same opacity as map

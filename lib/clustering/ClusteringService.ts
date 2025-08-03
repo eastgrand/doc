@@ -795,7 +795,9 @@ export class ClusteringService {
     
     // Add detailed cluster analysis
     validNamedClusters.forEach((cluster, index) => {
-      analysis += this.generateClusterDetails(cluster, index + 1, endpointConfig, validNamedClusters.length);
+      // Use cluster ID + 1 to match legend numbering (cluster ID 0 = ①, cluster ID 1 = ②, etc.)
+      const displayNumber = cluster.originalClusterId + 1;
+      analysis += this.generateClusterDetails(cluster, displayNumber, endpointConfig, validNamedClusters.length);
     });
 
     // Add strategic recommendations
