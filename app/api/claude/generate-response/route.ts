@@ -17,6 +17,45 @@ import { unionByGeoId } from '../../../../types/union-layer';
 import { multiEndpointFormatting, strategicSynthesis } from '../shared/base-prompt';
 import { GeoAwarenessEngine } from '../../../../lib/geo/GeoAwarenessEngine';
 
+/**
+ * Validate cluster response for hallucinated data
+ */
+function validateClusterResponse(response: string, originalAnalysis: string): { isValid: boolean; issues: string[] } {
+  const issues: string[] = [];
+  
+  // Extract ZIP codes from both texts
+  const responseZips = response.match(/\b\d{5}\b/g) || [];
+  const originalZips = originalAnalysis.match(/\b\d{5}\b/g) || [];
+  
+  // Check for California ZIP codes (90xxx, 91xxx, 92xxx, 93xxx, 94xxx, 95xxx, 96xxx)
+  const californiaZips = responseZips.filter(zip => /^9[0-6]\d{3}$/.test(zip));
+  if (californiaZips.length > 0) {
+    issues.push(`California ZIP codes found: ${californiaZips.join(', ')}`);
+  }
+  
+  // Check for ZIP codes in response that aren't in original
+  const hallucinatedZips = responseZips.filter(zip => !originalZips.includes(zip));
+  if (hallucinatedZips.length > 0) {
+    issues.push(`Hallucinated ZIP codes: ${hallucinatedZips.join(', ')}`);
+  }
+  
+  // Check for suspicious score patterns (like scores ending in .2, .6, .1, .9 which might be generated)
+  const suspiciousScores = response.match(/\d+\.\d/g)?.filter(score => {
+    const decimal = parseFloat(score) % 1;
+    return Math.abs(decimal - 0.2) < 0.01 || Math.abs(decimal - 0.6) < 0.01 || 
+           Math.abs(decimal - 0.1) < 0.01 || Math.abs(decimal - 0.9) < 0.01;
+  }) || [];
+  
+  if (suspiciousScores.length > 3) {
+    issues.push(`Suspicious score pattern detected: ${suspiciousScores.slice(0, 5).join(', ')}`);
+  }
+  
+  return {
+    isValid: issues.length === 0,
+    issues
+  };
+}
+
 // --- Dynamic Field Alias Overrides ---
 // Will be populated per request based on metadata.fieldAliases sent from the frontend
 interface FieldAliasMap { [key: string]: string }
@@ -2324,24 +2363,39 @@ The user requested the ${rankingContext.queryType} ${rankingContext.requestedCou
         // Add cluster-specific instructions when clustering is detected
         const clusteringInstructions = metadata?.isClustered && metadata?.clusterAnalysis ? `
 
-CRITICAL CLUSTERING INSTRUCTIONS:
+🚨 CRITICAL CLUSTERING ANTI-HALLUCINATION INSTRUCTIONS 🚨
 You have been provided with a complete territory clustering analysis. You MUST:
-1. Use the EXACT territory descriptions provided, including:
-   - Color indicators with emojis (🟥, 🟧, 🟨, 🟩) that match the map legend (60% opacity)
-   - The specific top 5 ZIP codes with scores for each territory
-   - The exact market share percentages (Nike %, Adidas %, Jordan %, Market Gap %)
-   - The exact "Key Drivers" text for each territory
-2. Use the Strategic Recommendations section EXACTLY as provided
-3. PRESERVE ALL emoji color indicators (🟥🟧🟨🟩) - they are ESSENTIAL for matching the visual map
-4. DO NOT explain what strategic value scores mean generically
-5. DO NOT add your own recommendations about "developing tailored strategies" or "monitoring performance"
-6. Focus on the specific cluster analysis provided - do not generate generic content
-7. CRITICAL: When referencing territories, use the exact names without adding "ZIP" prefix
-   - Say "Corona Territory" NOT "ZIP Corona Territory"
-   - Say "West Chester Territory" NOT "ZIP West Chester Territory"
+
+ONLY USE PROVIDED DATA:
+1. Use ONLY the ZIP codes listed in the analysis - DO NOT generate new ones
+2. Use ONLY the scores and percentages provided - DO NOT create examples  
+3. Use ONLY the territory names given - DO NOT invent new territories
+4. Copy ALL data EXACTLY as written - DO NOT modify numbers or locations
+
+SPECIFIC REQUIREMENTS:
+- Color indicators with emojis (🟥, 🟧, 🟨, 🟩) that match the map legend (60% opacity)
+- The specific top 5 ZIP codes with scores for each territory EXACTLY as provided
+- The exact market share percentages (Nike %, Adidas %, Jordan %, Market Gap %) EXACTLY as provided
+- The exact "Key Drivers" text for each territory EXACTLY as provided
+- Strategic Recommendations section EXACTLY as provided
+
+ABSOLUTELY FORBIDDEN:
+❌ Generating ZIP codes not in the analysis (especially California ZIP codes like 92881, 92880)
+❌ Creating example scores or percentages
+❌ Adding generic explanations about scoring methodology
+❌ Adding your own recommendations beyond what's provided
+❌ Changing territory names or adding prefixes like "ZIP"
+❌ Modifying any numbers, percentages, or geographic data
+
+VERIFICATION: Before writing any ZIP code or number, confirm it appears in the provided analysis text.
 ` : '';
 
         const dynamicSystemPrompt = `${selectedPersona.systemPrompt}
+
+🚨 GLOBAL ANTI-HALLUCINATION RULE 🚨
+NEVER generate ZIP codes, scores, percentages, or geographic data not provided in the user's data.
+If data is missing, state "Data not available" instead of creating examples.
+Always verify numbers and locations appear in the provided dataset before including them.
 
 ${enhancedFieldContext}
 
@@ -2466,17 +2520,29 @@ Performance Context:
 ${metadata.clusterAnalysis}
 === END OF TERRITORY CLUSTERING ANALYSIS ===
 
+CRITICAL ANTI-HALLUCINATION INSTRUCTIONS:
+🚨 YOU MUST ONLY USE DATA FROM THE ANALYSIS ABOVE 🚨
+🚨 DO NOT GENERATE ANY ZIP CODES, NUMBERS, OR DATA NOT PROVIDED 🚨
+🚨 DO NOT CREATE EXAMPLE DATA OR PLACEHOLDER VALUES 🚨
+
 YOUR TASK: Present the territory clustering analysis above in a clean, professional format. You MUST:
-1. Include ALL territory descriptions EXACTLY as shown, preserving ALL formatting including:
-   - Color indicators with emojis (🟥, 🟧, 🟨, 🟩) that match the map legend (60% opacity)
-   - Top 5 ZIP codes and their scores
-   - Market share percentages (Nike %, Adidas %, Jordan %, Market Gap %)
-   - Key Drivers for each territory
-2. Include the Strategic Recommendations section in full
-3. CRITICAL: Preserve ALL color indicators and emoji symbols (🟥🟧🟨🟩) - they are essential for matching the visual map with 60% opacity
-4. Do NOT add any generic explanations about scoring methodology
-5. Do NOT add any additional recommendations or suggestions
-6. Simply present the analysis provided above in a well-formatted response with ALL original formatting preserved`;
+
+1. COPY EXACTLY - Use ONLY the ZIP codes, scores, and percentages provided in the analysis above
+2. NO GENERATION - Do NOT create any new ZIP codes, scores, percentages, or territory names
+3. NO EXAMPLES - Do NOT add example data if information is missing
+4. PRESERVE EXACTLY:
+   - All ZIP codes and scores EXACTLY as written (e.g., if it says "19320 (Coatesville: 73.1)", write exactly that)
+   - All market share percentages EXACTLY as provided
+   - All territory names EXACTLY as shown
+   - All color indicators EXACTLY as provided
+5. IF MISSING DATA - If any data is incomplete or missing, write "Data not available" instead of generating fake data
+6. VERIFICATION - Before including any ZIP code or number, verify it appears in the analysis text above
+
+FORBIDDEN:
+❌ Creating new ZIP codes (like 92881, 92880 from California)
+❌ Generating example scores or percentages
+❌ Adding territories not listed in the analysis
+❌ Modifying any provided numbers or geographic locations`;
         }
         
         // 🚨 DEBUG: For strategic analysis, check what's actually in the message
@@ -2582,6 +2648,16 @@ YOUR TASK: Present the territory clustering analysis above in a clean, professio
         const responseContent = anthropicResponse.content?.find(block => block.type === 'text')?.text || 'No text content received from AI.';
 
         console.log('[Claude] AI Response Start:', responseContent.substring(0, 200) + '...');
+
+        // Validate response for hallucinated data
+        if (metadata?.isClustered && metadata?.clusterAnalysis) {
+          const validationResult = validateClusterResponse(responseContent, metadata.clusterAnalysis);
+          if (!validationResult.isValid) {
+            console.error('🚨 [HALLUCINATION DETECTED]', validationResult.issues);
+            // Log the issue but don't fail - just warn for now
+            console.warn('⚠️ [VALIDATION] Claude may have hallucinated data:', validationResult.issues);
+          }
+        }
 
         // --- Extract Clickable Features ---
         console.log('[Claude] Extracting clickable identifiers from response...');
