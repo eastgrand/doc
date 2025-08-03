@@ -594,7 +594,8 @@ export class ClusteringService {
       ...originalResult.data,
       records: clusteredZipRecords, // Use individual ZIP codes with cluster assignments
       totalRecords: clusteredZipRecords.length, // Shows clustered ZIP count
-      clusters: clusteringResult.clusters,
+      clusters: clusteringResult.clusters, // Keep original for reference
+      namedClusters: undefined, // Will be set after cluster analysis
       clusteringSummary,
       // Add metadata indicating this is clustered ZIP data
       isClustered: true,
@@ -617,7 +618,7 @@ export class ClusteringService {
       originalSummaryLength: originalSummary.length
     });
     
-    const clusterAnalysis = this.generateEndpointSpecificClusterAnalysis(
+    const clusterAnalysisResult = this.generateEndpointSpecificClusterAnalysis(
       clusteringResult, 
       clusteredZipRecords, 
       originalResult.endpoint,
@@ -625,10 +626,15 @@ export class ClusteringService {
     );
     
     console.log('🎯 [CLUSTER ANALYSIS] Generated cluster analysis:', {
-      length: clusterAnalysis.length,
-      preview: clusterAnalysis.substring(0, 200) + '...'
+      length: clusterAnalysisResult.analysis.length,
+      namedClustersCount: clusterAnalysisResult.namedClusters.length,
+      preview: clusterAnalysisResult.analysis.substring(0, 200) + '...'
     });
-    const enhancedSummary = `${clusterAnalysis}\n\n**Territory Clustering Applied:** ${clusteringSummary}`;
+    
+    // Update enhancedData with named clusters
+    enhancedData.namedClusters = clusterAnalysisResult.namedClusters;
+    
+    const enhancedSummary = `${clusterAnalysisResult.analysis}\n\n**Territory Clustering Applied:** ${clusteringSummary}`;
     enhancedData.summary = enhancedSummary;
     
     console.log(`[ClusteringService] 📝 Enhanced summary with clustering:`, enhancedSummary);
@@ -735,7 +741,7 @@ export class ClusteringService {
     clusteredZipRecords: any[],
     endpoint: string,
     originalSummary: string
-  ): string {
+  ): { analysis: string; namedClusters: any[] } {
     console.log('🎯 [CLUSTER ANALYSIS METHOD] Starting cluster analysis generation');
     console.log('🎯 [CLUSTER ANALYSIS METHOD] Input validation:', {
       success: clusteringResult.success,
@@ -746,38 +752,62 @@ export class ClusteringService {
     
     if (!clusteringResult.success || clusteringResult.clusters.length === 0) {
       console.log('🎯 [CLUSTER ANALYSIS METHOD] Falling back to original summary - clustering failed or no clusters');
-      return originalSummary; // Fall back to original if clustering failed
+      return { analysis: originalSummary, namedClusters: [] }; // Fall back to original if clustering failed
     }
 
     // Extract endpoint-specific configuration
     const endpointConfig = this.getEndpointAnalysisConfig(endpoint);
     
     // Create named clusters with their top ZIP codes
+    console.log('🎯 [CLUSTER ANALYSIS] Processing clusters for analysis:', {
+      totalClusters: clusteringResult.clusters.length,
+      clusterIds: clusteringResult.clusters.map(c => ({ id: c.clusterId, name: c.name, zipCount: c.zipCodes.length }))
+    });
+    
     const namedClusters = clusteringResult.clusters.map(cluster => {
-      return this.createNamedCluster(cluster, clusteredZipRecords, endpointConfig);
+      const namedCluster = this.createNamedCluster(cluster, clusteredZipRecords, endpointConfig);
+      console.log(`🎯 [CLUSTER ANALYSIS] Created named cluster:`, {
+        originalClusterId: cluster.clusterId,
+        originalName: cluster.name,
+        finalClusterName: namedCluster?.name,
+        zipCount: namedCluster?.zipCount,
+        avgScore: namedCluster?.avgScore,
+        topZipsCount: namedCluster?.topZips?.length || 0
+      });
+      return namedCluster;
     });
 
-    // Sort clusters by their strategic importance (average score)
-    namedClusters.sort((a, b) => b.avgScore - a.avgScore);
-
+    // Filter out any null clusters and sort by strategic importance
+    const validNamedClusters = namedClusters.filter(cluster => cluster !== null);
+    validNamedClusters.sort((a, b) => b.avgScore - a.avgScore);
+    
+    console.log(`🎯 [CLUSTER ANALYSIS] Final clusters for text generation:`, {
+      totalClusters: validNamedClusters.length,
+      clusterSummary: validNamedClusters.map(c => ({ 
+        name: c.name, 
+        zipCount: c.zipCount, 
+        avgScore: c.avgScore.toFixed(1) 
+      }))
+    });
+    
     // Generate endpoint-specific cluster analysis
-    let analysis = this.generateClusterIntroduction(namedClusters, endpointConfig);
+    let analysis = this.generateClusterIntroduction(validNamedClusters, endpointConfig);
     
     // Add detailed cluster analysis
-    namedClusters.forEach((cluster, index) => {
+    validNamedClusters.forEach((cluster, index) => {
       analysis += this.generateClusterDetails(cluster, index + 1, endpointConfig);
     });
 
     // Add strategic recommendations
-    analysis += this.generateClusterRecommendations(namedClusters, endpointConfig);
+    analysis += this.generateClusterRecommendations(validNamedClusters, endpointConfig);
 
     console.log('🎯 [CLUSTER ANALYSIS METHOD] Successfully generated cluster analysis:', {
       analysisLength: analysis.length,
-      namedClustersCount: namedClusters.length,
+      namedClustersCount: validNamedClusters.length,
       preview: analysis.substring(0, 300) + '...'
     });
 
-    return analysis;
+    return { analysis, namedClusters: validNamedClusters };
   }
 
   /**
@@ -837,8 +867,17 @@ export class ClusteringService {
     const clusterZips = clusteredZipRecords.filter(record => 
       record.cluster_id === cluster.clusterId
     );
+    
+    console.log(`🎯 [CLUSTER ANALYSIS] Creating cluster ${cluster.clusterId} (original: ${cluster.name}):`, {
+      expectedZipCount: cluster.zipCodes?.length,
+      foundZipCount: clusterZips.length,
+      sampleZips: clusterZips.slice(0, 5).map(z => ({ area: z.area_name, clusterId: z.cluster_id, score: z.value }))
+    });
 
-    if (clusterZips.length === 0) return null;
+    if (clusterZips.length === 0) {
+      console.log(`🎯 [CLUSTER ANALYSIS] ❌ No ZIP codes found for cluster ${cluster.clusterId}`);
+      return null;
+    }
 
     // Find highest population ZIP for naming (using population or score as fallback)
     const leadZip = clusterZips.reduce((max, zip) => {
@@ -847,8 +886,17 @@ export class ClusteringService {
       return zipPop > maxPop ? zip : max;
     });
 
-    // Extract cluster name from lead ZIP's description/area_name
-    let clusterName = this.extractClusterName(leadZip);
+    // Extract cluster name - use largest ZIP code by population for meaningful geographic naming
+    let clusterName;
+    if (clusterZips.length === 1) {
+      clusterName = this.extractClusterName(leadZip);
+    } else {
+      // For multi-ZIP clusters, use the largest ZIP code to create a meaningful geographic name
+      clusterName = this.extractClusterName(leadZip);
+      console.log(`🎯 [CLUSTER ANALYSIS] Multi-ZIP cluster ${cluster.clusterId}: Using geographic name "${clusterName}" based on largest ZIP ${leadZip.area_name} (pop: ${leadZip.properties?.total_population || leadZip.properties?.totpop_cy || 0}) for ${clusterZips.length} ZIP codes`);
+    }
+    
+    console.log(`🎯 [CLUSTER ANALYSIS] Generated cluster name: "${clusterName}" for cluster ${cluster.clusterId}`);
     
     // Calculate cluster statistics
     const scores = clusterZips.map(zip => zip.value || zip.properties?.[config.scoreField] || 0);
@@ -856,16 +904,25 @@ export class ClusteringService {
     const maxScore = Math.max(...scores);
     const minScore = Math.min(...scores);
 
-    // Get top 3 ZIP codes in this cluster
+    // Get top 5 ZIP codes in this cluster for detailed description
     const topZips = clusterZips
       .sort((a, b) => (b.value || 0) - (a.value || 0))
-      .slice(0, 3)
+      .slice(0, 5)
       .map(zip => ({
         code: zip.properties?.geo_id || zip.area_name?.match(/\d{5}/)?.[0] || 'Unknown',
         name: zip.area_name || 'Unknown Area',
         score: zip.value || 0
       }));
-
+    
+    console.log(`🎯 [CLUSTER ANALYSIS] Top ZIP codes for cluster "${clusterName}":`, topZips);
+    
+    // Calculate population-weighted market shares for the cluster
+    const totalPopulation = clusterZips.reduce((sum, zip) => 
+      sum + (zip.properties?.total_population || zip.properties?.totpop_cy || 0), 0
+    );
+    
+    const clusterMarketShares = this.calculateClusterMarketShares(clusterZips, totalPopulation);
+    
     return {
       id: cluster.clusterId,
       name: clusterName,
@@ -873,10 +930,59 @@ export class ClusteringService {
       avgScore,
       maxScore,
       minScore,
-      topZips,
-      totalPopulation: clusterZips.reduce((sum, zip) => 
-        sum + (zip.properties?.total_population || zip.properties?.totpop_cy || 0), 0
-      )
+      topZips, // Include top 5 ZIP codes for description
+      totalPopulation,
+      // Add cluster-level market analysis
+      marketShares: clusterMarketShares
+    };
+  }
+
+  /**
+   * Calculate population-weighted market shares for a cluster
+   */
+  private calculateClusterMarketShares(clusterZips: any[], totalPopulation: number): any {
+    if (totalPopulation === 0) {
+      return {
+        nike: 0,
+        adidas: 0,
+        jordan: 0,
+        marketGap: 100
+      };
+    }
+
+    // Calculate population-weighted market shares
+    let weightedNikeShare = 0;
+    let weightedAdidasShare = 0;
+    let weightedJordanShare = 0;
+
+    clusterZips.forEach(zip => {
+      const population = zip.properties?.total_population || zip.properties?.totpop_cy || 0;
+      const weight = population / totalPopulation;
+      
+      const nikeShare = zip.properties?.mp30034a_b_p || zip.properties?.nike_market_share || 0;
+      const adidasShare = zip.properties?.mp30029a_b_p || zip.properties?.adidas_market_share || 0;
+      const jordanShare = zip.properties?.mp30032a_b_p || zip.properties?.jordan_market_share || 0;
+      
+      weightedNikeShare += nikeShare * weight;
+      weightedAdidasShare += adidasShare * weight;
+      weightedJordanShare += jordanShare * weight;
+    });
+
+    const marketGap = Math.max(0, 100 - weightedNikeShare - weightedAdidasShare - weightedJordanShare);
+
+    console.log(`🎯 [CLUSTER MARKET ANALYSIS] Calculated cluster market shares:`, {
+      nike: weightedNikeShare.toFixed(2),
+      adidas: weightedAdidasShare.toFixed(2),
+      jordan: weightedJordanShare.toFixed(2),
+      marketGap: marketGap.toFixed(2),
+      totalPopulation
+    });
+
+    return {
+      nike: weightedNikeShare,
+      adidas: weightedAdidasShare,
+      jordan: weightedJordanShare,
+      marketGap: marketGap
     };
   }
 
@@ -889,22 +995,22 @@ export class ClusteringService {
     
     // Try to extract neighborhood/area name from various fields
     if (description && description !== areaName) {
-      return description.replace(/\s+\(.*?\)/, '').trim(); // Remove parenthetical info
+      return `${description.replace(/\s+\(.*?\)/, '').trim()} Territory`; // Remove parenthetical info
     }
     
     if (areaName.includes('(') && areaName.includes(')')) {
       // Extract area name from format like "11234 (Brooklyn)"
       const match = areaName.match(/\((.*?)\)/);
-      if (match) return match[1];
+      if (match) return `${match[1]} Territory`;
     }
     
     // Extract borough/city name from area_name
     const cityMatch = areaName.match(/\b(Brooklyn|Queens|Manhattan|Bronx|Staten Island|Jersey City|Newark|Philadelphia|Boston|Chicago|Los Angeles)\b/i);
-    if (cityMatch) return `${cityMatch[1]} Region`;
+    if (cityMatch) return `${cityMatch[1]} Territory`;
     
-    // Fallback to ZIP-based naming - use first 3 digits + "xx Region" format
+    // Fallback to ZIP-based naming - use first 3 digits + "xx Territory" format
     const zipMatch = areaName.match(/(\d{5})/);
-    return zipMatch ? `${zipMatch[1].substring(0, 3)}xx Region` : `Territory ${leadZip.cluster_id + 1}`;
+    return zipMatch ? `${zipMatch[1].substring(0, 3)}xx Territory` : `Territory ${leadZip.cluster_id + 1}`;
   }
 
   /**
@@ -927,13 +1033,69 @@ This ${config.focus} analysis has identified ${clusters.length} distinct market 
    * Generate detailed analysis for each cluster
    */
   private generateClusterDetails(cluster: any, rank: number, config: any): string {
-    const topZipsText = cluster.topZips
-      .map((zip: any) => `${zip.code} (${zip.name}, score: ${zip.score.toFixed(1)})`)
-      .join(', ');
+    const scoreSpread = cluster.maxScore - cluster.minScore;
+    const consistencyText = scoreSpread < 10 ? "highly consistent scores" : 
+                           scoreSpread < 20 ? "moderately consistent scores" : 
+                           "varied performance across areas";
+
+    // Include top ZIP codes as requested
+    let zipDetails = '';
+    if (cluster.topZips && cluster.topZips.length > 0) {
+      zipDetails = `\nTop ZIP codes: ${cluster.topZips.map((zip: any) => {
+        // Extract area name from formats like "11234 (Brooklyn)" or "Brooklyn"
+        let areaName = zip.name || 'Unknown Area';
+        if (areaName.includes('(') && areaName.includes(')')) {
+          // Extract the part in parentheses: "11234 (Brooklyn)" -> "Brooklyn"
+          const match = areaName.match(/\((.*?)\)/);
+          areaName = match ? match[1] : areaName;
+        }
+        return `${zip.code} (${areaName}: ${zip.score.toFixed(1)})`;
+      }).join(', ')}`;
+    }
+
+    // Add cluster-level market analysis if available
+    let marketDetails = '';
+    if (cluster.marketShares) {
+      marketDetails = `\nMarket Analysis: Nike ${cluster.marketShares.nike.toFixed(1)}%, Adidas ${cluster.marketShares.adidas.toFixed(1)}%, Jordan ${cluster.marketShares.jordan.toFixed(1)}% | Market Gap: ${cluster.marketShares.marketGap.toFixed(1)}%`;
+    }
+
+    // Generate key drivers for this territory's high performance
+    let keyDrivers = '\nKey Drivers: ';
+    const drivers = [];
+    
+    // Market gap driver
+    if (cluster.marketShares?.marketGap > 70) {
+      drivers.push('Significant untapped market opportunity');
+    } else if (cluster.marketShares?.marketGap > 50) {
+      drivers.push('Strong growth potential');
+    }
+    
+    // Population driver
+    if (cluster.totalPopulation > 5000000) {
+      drivers.push('Large metropolitan population base');
+    } else if (cluster.totalPopulation > 1000000) {
+      drivers.push('Substantial population density');
+    }
+    
+    // Score consistency driver
+    if (scoreSpread < 10) {
+      drivers.push('Consistent high performance across territory');
+    } else if (cluster.maxScore > 70) {
+      drivers.push('Premium market segments');
+    }
+    
+    // Geographic advantage
+    if (cluster.zipCount > 100) {
+      drivers.push('Extensive geographic coverage');
+    } else if (cluster.zipCount < 20) {
+      drivers.push('Concentrated market for efficient operations');
+    }
+    
+    keyDrivers += drivers.join(', ') || 'Strategic market positioning';
 
     return `**${rank}. ${cluster.name}** - ${cluster.zipCount} ZIP codes, Avg ${config.scoreName}: ${cluster.avgScore.toFixed(1)}
 Population: ${cluster.totalPopulation.toLocaleString()} | Score Range: ${cluster.minScore.toFixed(1)}-${cluster.maxScore.toFixed(1)}
-Top ZIP codes: ${topZipsText}
+Territory Profile: Comprehensive market area with ${consistencyText} across the region${zipDetails}${marketDetails}${keyDrivers}
 
 `;
   }
@@ -945,10 +1107,42 @@ Top ZIP codes: ${topZipsText}
     const topCluster = clusters[0];
     const totalPopulation = clusters.reduce((sum, cluster) => sum + cluster.totalPopulation, 0);
     
-    return `**Strategic Recommendations:**
-
-Priority deployment should focus on **${topCluster.name}** (highest ${config.scoreName.toLowerCase()}: ${topCluster.avgScore.toFixed(1)}) containing ${topCluster.zipCount} ZIP codes. This territory offers the strongest ${config.focus} potential with ${topCluster.totalPopulation.toLocaleString()} population reach.
-
-The complete territory framework covers ${totalPopulation.toLocaleString()} total population across ${clusters.length} strategic markets, enabling systematic ${config.recommendations} with optimized resource allocation and market penetration strategies.`;
+    // Generate specific, actionable recommendations based on cluster characteristics
+    let recommendations = `**Strategic Recommendations:**\n\n`;
+    
+    // Priority territory recommendation
+    recommendations += `**1. Priority Territory Deployment:**\n`;
+    recommendations += `Focus immediate expansion efforts on **${topCluster.name}** (${config.scoreName}: ${topCluster.avgScore.toFixed(1)}):\n`;
+    recommendations += `- Population reach: ${topCluster.totalPopulation.toLocaleString()} across ${topCluster.zipCount} ZIP codes\n`;
+    if (topCluster.marketShares) {
+      recommendations += `- Current Nike share: ${topCluster.marketShares.nike.toFixed(1)}% with ${topCluster.marketShares.marketGap.toFixed(1)}% untapped market\n`;
+    }
+    recommendations += `- Deploy flagship stores in top ZIP codes: ${topCluster.topZips?.slice(0, 3).map(z => z.code).join(', ') || 'See territory details'}\n\n`;
+    
+    // Territory-specific strategies
+    recommendations += `**2. Territory-Specific Market Entry Strategies:**\n`;
+    clusters.slice(0, 3).forEach((cluster, index) => {
+      recommendations += `- **${cluster.name}**: `;
+      if (cluster.marketShares?.marketGap > 70) {
+        recommendations += `High market gap (${cluster.marketShares.marketGap.toFixed(1)}%) - aggressive store expansion and digital marketing campaigns\n`;
+      } else if (cluster.marketShares?.marketGap > 50) {
+        recommendations += `Moderate market gap (${cluster.marketShares.marketGap.toFixed(1)}%) - targeted pop-up stores and partnership opportunities\n`;
+      } else {
+        recommendations += `Lower market gap (${cluster.marketShares?.marketGap.toFixed(1)}%) - focus on market share capture from competitors\n`;
+      }
+    });
+    
+    recommendations += `\n**3. Resource Allocation Framework:**\n`;
+    recommendations += `- Allocate 40% of expansion budget to top territory (${topCluster.name})\n`;
+    recommendations += `- Distribute 35% across secondary territories based on market gap opportunities\n`;
+    recommendations += `- Reserve 25% for digital infrastructure and omnichannel capabilities\n`;
+    
+    recommendations += `\n**4. Implementation Timeline:**\n`;
+    recommendations += `- Q1: Establish presence in top 5 ZIP codes of priority territory\n`;
+    recommendations += `- Q2: Launch targeted campaigns in secondary territories\n`;
+    recommendations += `- Q3: Evaluate performance metrics and adjust territory strategies\n`;
+    recommendations += `- Q4: Scale successful initiatives across all ${clusters.length} territories\n`;
+    
+    return recommendations;
   }
 }

@@ -52,7 +52,9 @@ export const responseStyle = `RESPONSE STYLE:
 - State findings as definitive facts
 - Focus on actionable insights for decision-making
 - Use professional, confident tone as if briefing a business executive
-- NEVER use generic phrases like "consistent 0.00 value score" or "uniform market conditions" - always provide specific, meaningful analysis based on the actual data patterns`;
+- NEVER use generic phrases like "consistent 0.00 value score" or "uniform market conditions" - always provide specific, meaningful analysis based on the actual data patterns
+- AVOID recommending "further research" or "additional analysis" - provide concrete, implementable business actions instead
+- This application IS the research and analysis tool - focus on actionable recommendations based on the comprehensive data provided`;
 
 // Analysis type mappings for task-specific instructions
 export const analysisTypeInstructions = {

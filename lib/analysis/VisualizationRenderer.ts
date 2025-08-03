@@ -314,6 +314,11 @@ export class VisualizationRenderer {
     // For clustered data (new approach: ZIP codes with cluster assignments), always use cluster renderer
     if (data.isClustered) {
       console.log('[VisualizationRenderer] 🎯 Using CLUSTER renderer for clustered data (ZIP codes with cluster assignments)');
+      console.log('[VisualizationRenderer] 🎯 Clustered data details:', {
+        dataType: data.type,
+        recordCount: data.records?.length,
+        isClustered: data.isClustered
+      });
       return 'cluster';
     }
     
@@ -338,6 +343,12 @@ export class VisualizationRenderer {
     // For demographic analysis, use choropleth renderer (same as strategic analysis)
     if (data.type === 'demographic_analysis') {
       console.log('[VisualizationRenderer] 🎯 Using CHOROPLETH renderer for demographic analysis (same as strategic)');
+      console.log('[VisualizationRenderer] 🎯 Demographic analysis details:', {
+        dataType: data.type,
+        recordCount: data.records?.length,
+        isClustered: data.isClustered,
+        shouldHaveUsedClusterRenderer: !!data.isClustered
+      });
       return 'choropleth';
     }
     
@@ -415,36 +426,74 @@ export class VisualizationRenderer {
 
   private detectGeometryType(data: ProcessedAnalysisData): 'point' | 'polygon' | 'line' | 'unknown' {
     if (!data.records || data.records.length === 0) {
+      console.log('[VisualizationRenderer] 🔍 detectGeometryType: No records found, returning unknown');
       return 'unknown';
     }
+    
+    console.log('[VisualizationRenderer] 🔍 detectGeometryType: Analyzing', data.records.length, 'records for geometry type');
     
     // Check first few records for geometry type
     for (let i = 0; i < Math.min(5, data.records.length); i++) {
       const record = data.records[i];
+      console.log(`[VisualizationRenderer] 🔍 detectGeometryType: Record ${i} (${record.area_name}):`, {
+        hasProperties: !!record.properties,
+        hasGeometry: !!record.properties?.geometry,
+        geometryType: record.properties?.geometry?.type,
+        hasCoordinates: !!record.coordinates,
+        coordinatesType: Array.isArray(record.coordinates) ? 'array' : typeof record.coordinates,
+        hasActualGeometry: !!record.geometry,
+        actualGeometryType: record.geometry?.type
+      });
+      
       // Check in properties for geometry info, or infer from coordinates
       const geometry = record.properties?.geometry;
       if (geometry?.type) {
+        console.log(`[VisualizationRenderer] 🔍 detectGeometryType: Found geometry.type = ${geometry.type} in properties`);
         switch (geometry.type.toLowerCase()) {
           case 'point':
           case 'multipoint':
+            console.log('[VisualizationRenderer] 🔍 detectGeometryType: Returning POINT based on properties.geometry.type');
             return 'point';
           case 'polygon':
           case 'multipolygon':
+            console.log('[VisualizationRenderer] 🔍 detectGeometryType: Returning POLYGON based on properties.geometry.type');
             return 'polygon';
           case 'linestring':
           case 'multilinestring':
+            console.log('[VisualizationRenderer] 🔍 detectGeometryType: Returning LINE based on properties.geometry.type');
+            return 'line';
+        }
+      }
+      
+      // Check actual geometry field
+      if (record.geometry?.type) {
+        console.log(`[VisualizationRenderer] 🔍 detectGeometryType: Found geometry.type = ${record.geometry.type} in main geometry field`);
+        switch (record.geometry.type.toLowerCase()) {
+          case 'point':
+          case 'multipoint':
+            console.log('[VisualizationRenderer] 🔍 detectGeometryType: Returning POINT based on main geometry.type');
+            return 'point';
+          case 'polygon':
+          case 'multipolygon':
+            console.log('[VisualizationRenderer] 🔍 detectGeometryType: Returning POLYGON based on main geometry.type');
+            return 'polygon';
+          case 'linestring':
+          case 'multilinestring':
+            console.log('[VisualizationRenderer] 🔍 detectGeometryType: Returning LINE based on main geometry.type');
             return 'line';
         }
       }
       
       // If no explicit geometry, infer from coordinates
       if (record.coordinates && Array.isArray(record.coordinates)) {
+        console.log('[VisualizationRenderer] 🔍 detectGeometryType: Found coordinates array, inferring POINT');
         // Simple coordinates array suggests point data
         return 'point';
       }
     }
     
     // Default to polygon for geographic analysis
+    console.log('[VisualizationRenderer] 🔍 detectGeometryType: No geometry info found, defaulting to POLYGON');
     return 'polygon';
   }
 

@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
@@ -14,14 +15,10 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { 
   Eye, 
-  EyeOff, 
   Play, 
-  Pause, 
   RotateCcw, 
   Download, 
-  Upload, 
   RefreshCw, 
-  Settings, 
   BarChart3, 
   Map, 
   Database, 
@@ -29,18 +26,14 @@ import {
   AlertTriangle, 
   CheckCircle, 
   Info, 
-  Zap, 
   Globe, 
-  Layers, 
   Activity,
   TrendingUp,
-  TrendingDown,
   Maximize2,
   Minimize2,
   Split,
   GitCompare,
   Timer,
-  MonitorSpeaker,
   FileText,
   Share2,
   ZoomIn,
@@ -59,7 +52,6 @@ import {
   PreviewSettings,
   PreviewLayerData,
   PreviewGroupData,
-  DataQualityMetrics,
   ComparisonPreviewConfig,
   PerformanceAlert,
   PerformanceRecommendation
@@ -74,8 +66,6 @@ interface ProjectPreviewProps {
 
 export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
   config,
-  impactAnalysis,
-  onConfigurationChange,
   onPreviewModeChange
 }) => {
   // State Management
@@ -193,22 +183,6 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
     onPreviewModeChange?.(newMode);
   };
 
-  const handleComparisonSetup = (baseConfig: ProjectConfiguration, targetConfig: ProjectConfiguration) => {
-    const comparison: ComparisonPreviewConfig = {
-      baseConfiguration: baseConfig,
-      targetConfiguration: targetConfig,
-      comparisonType: 'side-by-side',
-      highlightDifferences: true,
-      showOnlyChanges: false,
-      diffAnalysis: generateMockDifferenceAnalysis(baseConfig, targetConfig)
-    };
-
-    setComparisonConfig(comparison);
-    handlePreviewModeChange({
-      type: 'comparison',
-      configuration: comparison
-    });
-  };
 
   const handleExportPreview = async (format: 'json' | 'pdf' | 'html') => {
     try {
@@ -494,7 +468,7 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
           </CardHeader>
           <CardContent>
             <ScrollArea className="h-80">
-              {previewState.previewData?.layers.map((layer, index) => (
+              {previewState.previewData?.layers.map((layer) => (
                 <div key={layer.layerId} className="mb-4 p-4 border rounded-lg">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-medium">{layer.name}</h4>
@@ -1024,7 +998,7 @@ async function generateMockPreviewData(config: ProjectConfiguration): Promise<Pr
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1000));
 
-  const layers: PreviewLayerData[] = Object.values(config.layers).map((layer, index) => ({
+  const layers: PreviewLayerData[] = Object.values(config.layers).map((layer) => ({
     layerId: layer.id,
     name: layer.name,
     recordCount: Math.floor(Math.random() * 10000) + 100,
@@ -1151,24 +1125,6 @@ async function generateMockValidationResults(config: ProjectConfiguration): Prom
   return results;
 }
 
-function generateMockDifferenceAnalysis(baseConfig: ProjectConfiguration, targetConfig: ProjectConfiguration): DifferenceAnalysis {
-  return {
-    layerChanges: [],
-    groupChanges: [],
-    conceptChanges: [],
-    settingChanges: [],
-    summary: {
-      totalChanges: 0,
-      layerChanges: 0,
-      groupChanges: 0,
-      conceptChanges: 0,
-      settingChanges: 0,
-      impactLevel: 'low',
-      riskAssessment: 'Low risk deployment',
-      recommendations: ['Review changes before deployment', 'Test in staging environment']
-    }
-  };
-}
 
 function generateMockPerformanceAlerts(): PerformanceAlert[] {
   return [

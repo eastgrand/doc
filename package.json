@@ -13,6 +13,8 @@
     "test:chat-queries": "jest test/chat-constants-queries.test.ts",
     "test:pipeline": "jest test/query-pipeline.test.ts",
     "test:classifications": "jest test/predefined-queries-classification.test.ts",
+    "test:query-system": "node run-query-test.js",
+    "test:query-dashboard": "node serve-dashboard.js",
     "migrate-to-blob": "ts-node scripts/migrate-to-blob.ts",
     "migrate-batch": "ts-node scripts/migrate-batch.ts",
     "deduplicate-endpoints": "ts-node scripts/deduplicate-endpoints.ts",

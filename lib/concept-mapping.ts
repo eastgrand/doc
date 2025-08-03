@@ -339,8 +339,17 @@ const ENHANCED_FIELD_MAPPINGS = {
   'BLACK_CY_P': ['black', 'african american', 'demographics', 'ethnicity', 'race'],
   'ASIAN_CY': ['asian', 'demographics', 'ethnicity', 'race'],
   'ASIAN_CY_P': ['asian', 'demographics', 'ethnicity', 'race'],
-  'HISPWHT_CY': ['hispanic', 'latino', 'demographics', 'ethnicity', 'race'],
-  'HISPWHT_CY_P': ['hispanic', 'latino', 'demographics', 'ethnicity', 'race'],
+  // Hispanic demographics - all subcategories
+  'HISPWHT_CY': ['hispanic', 'latino', 'latina', 'demographics', 'ethnicity', 'race'],
+  'HISPWHT_CY_P': ['hispanic', 'latino', 'latina', 'demographics', 'ethnicity', 'race'],
+  'HISPBLK_CY': ['hispanic', 'latino', 'latina', 'black', 'demographics', 'ethnicity', 'race'],
+  'HISPBLK_CY_P': ['hispanic', 'latino', 'latina', 'black', 'demographics', 'ethnicity', 'race'],
+  'HISPAI_CY': ['hispanic', 'latino', 'latina', 'american indian', 'demographics', 'ethnicity', 'race'],
+  'HISPAI_CY_P': ['hispanic', 'latino', 'latina', 'american indian', 'demographics', 'ethnicity', 'race'],
+  'HISPPI_CY': ['hispanic', 'latino', 'latina', 'pacific islander', 'demographics', 'ethnicity', 'race'],
+  'HISPPI_CY_P': ['hispanic', 'latino', 'latina', 'pacific islander', 'demographics', 'ethnicity', 'race'],
+  'HISPOTH_CY': ['hispanic', 'latino', 'latina', 'other race', 'demographics', 'ethnicity', 'race'],
+  'HISPOTH_CY_P': ['hispanic', 'latino', 'latina', 'other race', 'demographics', 'ethnicity', 'race'],
   
   // Sports participation - CRITICAL for sports queries
   'MP33020A_B': ['running', 'jogging', 'run', 'jog', 'participation', 'sports', 'exercise', 'fitness'],
@@ -361,6 +370,15 @@ const ENHANCED_FIELD_MAPPINGS = {
   'MP31035A_B_P': ['dicks', "dick's", 'sporting goods', 'retail', 'shopping'],
   'MP31042A_B': ['foot locker', 'footlocker', 'retail', 'shopping'],
   'MP31042A_B_P': ['foot locker', 'footlocker', 'retail', 'shopping'],
+  
+  // Spending patterns
+  'MP07109A_B': ['sports clothing', 'clothing', 'apparel', 'spending', 'spent', 'budget'],
+  'MP07109A_B_P': ['sports clothing', 'clothing', 'apparel', 'spending', 'spent', 'budget'],
+  'MP07111A_B': ['athletic wear', 'workout wear', 'athletic clothing', 'fitness wear', 'spending', 'spent', 'budget'],
+  'MP07111A_B_P': ['athletic wear', 'workout wear', 'athletic clothing', 'fitness wear', 'spending', 'spent', 'budget'],
+  'PSIV7UMKVALM': ['shoes', 'spending', 'spent', 'budget', 'investment', 'money'],
+  'X9051_X': ['sports equipment', 'equipment', 'gear', 'spending', 'spent'],
+  'X9051_X_A': ['sports equipment', 'equipment', 'gear', 'spending', 'spent'],
   
   // Athletic shoe types
   'MP30016A_B': ['athletic shoes', 'athletic shoe', 'sneakers', 'sneaker', 'overall', 'general'],
@@ -491,7 +509,6 @@ export async function conceptMapping(query: string, context?: string): Promise<C
   }
   
   // Extract keywords from query
-  const queryWords = lowerQuery.split(/\s+/);
   
   // Score-based matching for more intelligent layer selection
   Object.entries(LAYER_KEYWORDS).forEach(([layerId, layerKeywords]) => {
@@ -596,8 +613,6 @@ export async function conceptMapping(query: string, context?: string): Promise<C
   }
   
   // Calculate confidence based on scoring
-  const totalScore = Object.values(layerScores).reduce((sum, score) => sum + score, 0) +
-                    Object.values(fieldScores).reduce((sum, score) => sum + score, 0);
   const confidence = Math.min(1, (matchedLayers.size + matchedFields.size) / 5);
   
   // More aggressive keyword matching

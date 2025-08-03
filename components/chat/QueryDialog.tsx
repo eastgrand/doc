@@ -71,9 +71,9 @@ const QueryDialog: React.FC<QueryDialogProps> = ({
           >
             <h3 className="font-semibold text-sm text-gray-500 flex items-center gap-2">
               {category}
-              <span className="text-xs bg-gray-300 text-gray-600 px-2 py-1 rounded-full">
+            {/*  <span className="text-xs bg-gray-300 text-gray-600 px-2 py-1 rounded-full">
                 Coming Soon
-              </span>
+              </span> */}
             </h3>
             <div className="grid gap-1">
               {questions.map((question, index) => (

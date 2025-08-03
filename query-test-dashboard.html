@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query System Test Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #33a852 0%, #2d8f47 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center;
+            border-left: 4px solid #33a852;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #33a852;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+        
+        .upload-area:hover {
+            border-color: #33a852;
+            background: #f8fff9;
+        }
+        
+        .upload-area.dragover {
+            border-color: #33a852;
+            background: #f0fff4;
+            transform: scale(1.02);
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .results-table th {
+            background: #33a852;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .results-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .results-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .score-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .score-excellent { background: #d4edda; color: #155724; }
+        .score-good { background: #d1ecf1; color: #0c5460; }
+        .score-warning { background: #fff3cd; color: #856404; }
+        .score-danger { background: #f8d7da; color: #721c24; }
+        
+        .query-cell {
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+        
+        .query-cell:hover {
+            white-space: normal;
+            overflow: visible;
+        }
+        
+        .fields-list {
+            font-size: 0.8rem;
+            color: #6c757d;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .issues-list {
+            font-size: 0.8rem;
+            color: #dc3545;
+            max-width: 200px;
+        }
+        
+        .endpoint-badge {
+            padding: 4px 8px;
+            background: #e9ecef;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-family: monospace;
+        }
+        
+        .category-filter {
+            margin-bottom: 20px;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .filter-btn:hover {
+            border-color: #33a852;
+            background: #f8fff9;
+        }
+        
+        .filter-btn.active {
+            background: #33a852;
+            color: white;
+            border-color: #33a852;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .loading {
+            text-center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-table {
+                font-size: 0.9rem;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Query System Test Dashboard</h1>
+            <p>Comprehensive analysis of query processing pipeline performance</p>
+        </div>
+        
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalQueries">--</div>
+                <div class="stat-label">Total Queries</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="successRate">--%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgScore">--</div>
+                <div class="stat-label">Average Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgTime">--ms</div>
+                <div class="stat-label">Avg Processing Time</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <div class="section-title">
+                    📁 Load Test Results
+                </div>
+                <div class="upload-area" id="uploadArea">
+                    <div>
+                        <p style="font-size: 1.2rem; margin-bottom: 10px;">🗂️ Drop your test results JSON file here</p>
+                        <p style="color: #6c757d;">or click to browse for files</p>
+                        <input type="file" id="fileInput" accept=".json" style="display: none;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="resultsSection" style="display: none;">
+                <div class="section-title">
+                    📊 Test Results
+                </div>
+                
+                <div class="category-filter">
+                    <div class="filter-buttons" id="categoryFilters">
+                        <button class="filter-btn active" data-category="all">All Categories</button>
+                    </div>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table class="results-table" id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>Query</th>
+                                <th>Category</th>
+                                <th>Score</th>
+                                <th>Query Type</th>
+                                <th>Target Variable</th>
+                                <th>Fields Found</th>
+                                <th>Endpoint</th>
+                                <th>Time (ms)</th>
+                                <th>Issues</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let testData = null;
+        let filteredData = null;
+        
+        // File upload handling
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                loadFile(files[0]);
+            }
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                loadFile(e.target.files[0]);
+            }
+        });
+        
+        function loadFile(file) {
+            if (!file.name.endsWith('.json')) {
+                alert('Please select a JSON file');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    testData = JSON.parse(e.target.result);
+                    displayResults(testData);
+                } catch (error) {
+                    alert('Error parsing JSON file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        function displayResults(data) {
+            // Update stats
+            const stats = data.overallStats;
+            document.getElementById('totalQueries').textContent = stats.totalQueries;
+            document.getElementById('successRate').textContent = stats.successRate.toFixed(1) + '%';
+            document.getElementById('avgScore').textContent = stats.averageScore.toFixed(1);
+            document.getElementById('avgTime').textContent = stats.averageTime.toFixed(0) + 'ms';
+            
+            // Create category filters
+            const categories = [...new Set(data.detailedResults.map(r => r.category))];
+            const filtersContainer = document.getElementById('categoryFilters');
+            filtersContainer.innerHTML = '<button class="filter-btn active" data-category="all">All Categories</button>';
+            
+            categories.forEach(category => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.dataset.category = category;
+                btn.textContent = category;
+                btn.addEventListener('click', () => filterByCategory(category));
+                filtersContainer.appendChild(btn);
+            });
+            
+            // Add click handlers for existing "All" button
+            document.querySelector('[data-category="all"]').addEventListener('click', () => filterByCategory('all'));
+            
+            // Display results table
+            filteredData = data.detailedResults;
+            updateResultsTable();
+            
+            document.getElementById('resultsSection').style.display = 'block';
+        }
+        
+        function filterByCategory(category) {
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-category="${category}"]`).classList.add('active');
+            
+            // Filter data
+            if (category === 'all') {
+                filteredData = testData.detailedResults;
+            } else {
+                filteredData = testData.detailedResults.filter(r => r.category === category);
+            }
+            
+            updateResultsTable();
+        }
+        
+        function updateResultsTable() {
+            const tbody = document.getElementById('resultsBody');
+            tbody.innerHTML = '';
+            
+            filteredData.forEach(result => {
+                const row = document.createElement('tr');
+                
+                const scoreClass = 
+                    result.analysis.overallScore >= 90 ? 'score-excellent' :
+                    result.analysis.overallScore >= 70 ? 'score-good' :
+                    result.analysis.overallScore >= 50 ? 'score-warning' : 'score-danger';
+                
+                row.innerHTML = `
+                    <td class="query-cell" title="${result.query}">${result.query}</td>
+                    <td>${result.category}</td>
+                    <td><span class="score-badge ${scoreClass}">${result.analysis.overallScore}/100</span></td>
+                    <td>${result.queryAnalysis.queryType}</td>
+                    <td>${result.queryAnalysis.targetVariable || 'N/A'}</td>
+                    <td class="fields-list" title="${result.queryAnalysis.relevantFields.join(', ')}">${result.queryAnalysis.relevantFields.length} fields</td>
+                    <td><span class="endpoint-badge">${result.endpointSelection.selectedEndpoint}</span></td>
+                    <td>${result.performance.totalTime.toFixed(1)}</td>
+                    <td class="issues-list">${result.analysis.issues.length > 0 ? result.analysis.issues.join('; ') : 'None'}</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Auto-load most recent test results if available
+        window.addEventListener('load', async () => {
+            try {
+                // Try to load the most recent test results
+                const response = await fetch('./query-system-test-results-2025-07-31T23-12-15-501Z.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    testData = data;
+                    displayResults(data);
+                    // Update upload area to show file is loaded
+                    const uploadArea = document.getElementById('uploadArea');
+                    uploadArea.innerHTML = `
+                        <div>
+                            <p style="font-size: 1.2rem; margin-bottom: 10px; color: #33a852;">✅ Test results loaded automatically</p>
+                            <p style="color: #6c757d;">Showing results from: query-system-test-results-2025-07-31T23-12-15-501Z.json</p>
+                            <p style="color: #6c757d; font-size: 0.9rem; margin-top: 10px;">Drop a different JSON file here to load new results</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.log('No auto-load file found, showing upload interface');
+            }
+        });
+    </script>
+</body>
+</html>

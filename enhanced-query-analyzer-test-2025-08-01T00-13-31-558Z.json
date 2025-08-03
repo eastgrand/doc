@@ -1,0 +1,320 @@
+{
+  "timestamp": "2025-08-01T00:13:31.557Z",
+  "summary": {
+    "totalTests": 12,
+    "successfulTests": 9,
+    "successRate": 75,
+    "averageScore": 86.66666666666667
+  },
+  "results": [
+    {
+      "query": "Hispanic population athletic shoe preferences",
+      "category": "Hispanic Demographics",
+      "bestEndpoint": "/demographic-insights",
+      "mentionedFields": [
+        "MP30016A_B",
+        "MP30016A_B_P",
+        "value_HISPWHT_CY",
+        "value_HISPWHT_CY_P",
+        "value_HISPBLK_CY",
+        "value_HISPBLK_CY_P",
+        "value_HISPAI_CY",
+        "value_HISPAI_CY_P",
+        "value_HISPPI_CY",
+        "value_HISPPI_CY_P",
+        "value_HISPOTH_CY",
+        "value_HISPOTH_CY_P"
+      ],
+      "expectedFields": [
+        "value_HISPWHT_CY",
+        "value_HISPBLK_CY",
+        "value_HISPAI_CY",
+        "value_HISPPI_CY",
+        "value_HISPOTH_CY"
+      ],
+      "missingFields": [],
+      "score": 100,
+      "success": true,
+      "issues": []
+    },
+    {
+      "query": "Latino community brand preferences analysis",
+      "category": "Hispanic Demographics",
+      "bestEndpoint": "/strategic-analysis",
+      "mentionedFields": [
+        "value_HISPWHT_CY",
+        "value_HISPWHT_CY_P",
+        "value_HISPBLK_CY",
+        "value_HISPBLK_CY_P",
+        "value_HISPAI_CY",
+        "value_HISPAI_CY_P",
+        "value_HISPPI_CY",
+        "value_HISPPI_CY_P",
+        "value_HISPOTH_CY",
+        "value_HISPOTH_CY_P"
+      ],
+      "expectedFields": [
+        "value_HISPWHT_CY",
+        "value_HISPBLK_CY",
+        "value_HISPAI_CY",
+        "value_HISPPI_CY",
+        "value_HISPOTH_CY"
+      ],
+      "missingFields": [],
+      "score": 100,
+      "success": true,
+      "issues": []
+    },
+    {
+      "query": "Hispanic demographic correlation with athletic purchases",
+      "category": "Hispanic Demographics",
+      "bestEndpoint": "/demographic-insights",
+      "mentionedFields": [
+        "MP30016A_B",
+        "MP30016A_B_P",
+        "value_HISPWHT_CY",
+        "value_HISPWHT_CY_P",
+        "value_HISPBLK_CY",
+        "value_HISPBLK_CY_P",
+        "value_HISPAI_CY",
+        "value_HISPAI_CY_P",
+        "value_HISPPI_CY",
+        "value_HISPPI_CY_P",
+        "value_HISPOTH_CY",
+        "value_HISPOTH_CY_P"
+      ],
+      "expectedFields": [
+        "value_HISPWHT_CY",
+        "value_HISPBLK_CY",
+        "value_HISPAI_CY",
+        "value_HISPPI_CY",
+        "value_HISPOTH_CY"
+      ],
+      "missingFields": [],
+      "score": 100,
+      "success": true,
+      "issues": []
+    },
+    {
+      "query": "Hispanic white population vs shoe purchases",
+      "category": "Hispanic Demographics",
+      "bestEndpoint": "/demographic-insights",
+      "mentionedFields": [
+        "value_HISPWHT_CY",
+        "value_HISPWHT_CY_P",
+        "value_HISPWHT_CY",
+        "value_HISPWHT_CY_P",
+        "value_HISPBLK_CY",
+        "value_HISPBLK_CY_P",
+        "value_HISPAI_CY",
+        "value_HISPAI_CY_P",
+        "value_HISPPI_CY",
+        "value_HISPPI_CY_P",
+        "value_HISPOTH_CY",
+        "value_HISPOTH_CY_P"
+      ],
+      "expectedFields": [
+        "value_HISPWHT_CY",
+        "value_HISPBLK_CY",
+        "value_HISPAI_CY",
+        "value_HISPPI_CY",
+        "value_HISPOTH_CY"
+      ],
+      "missingFields": [],
+      "score": 100,
+      "success": true,
+      "issues": []
+    },
+    {
+      "query": "Latino millennials athletic footwear trends",
+      "category": "Hispanic Demographics",
+      "bestEndpoint": "/demographic-insights",
+      "mentionedFields": [
+        "MP30016A_B",
+        "MP30016A_B_P",
+        "value_MILLENN_CY",
+        "value_MILLENN_CY_P",
+        "value_HISPWHT_CY",
+        "value_HISPWHT_CY_P",
+        "value_HISPBLK_CY",
+        "value_HISPBLK_CY_P",
+        "value_HISPAI_CY",
+        "value_HISPAI_CY_P",
+        "value_HISPPI_CY",
+        "value_HISPPI_CY_P",
+        "value_HISPOTH_CY",
+        "value_HISPOTH_CY_P"
+      ],
+      "expectedFields": [
+        "value_HISPWHT_CY",
+        "value_HISPBLK_CY",
+        "value_HISPAI_CY",
+        "value_HISPPI_CY",
+        "value_HISPOTH_CY"
+      ],
+      "missingFields": [],
+      "score": 100,
+      "success": true,
+      "issues": []
+    },
+    {
+      "query": "Sports clothing spending correlation with shoe purchases",
+      "category": "Spending Analysis",
+      "bestEndpoint": "/customer-profile",
+      "mentionedFields": [
+        "MP30016A_B",
+        "MP30016A_B_P",
+        "value_MP07109A_B",
+        "value_MP07109A_B_P",
+        "value_MP07111A_B",
+        "value_MP07111A_B_P"
+      ],
+      "expectedFields": [
+        "value_MP07109A_B",
+        "value_MP07109A_B_P",
+        "value_MP07109A_B",
+        "value_MP07109A_B_P",
+        "value_MP07111A_B",
+        "value_MP07111A_B_P"
+      ],
+      "missingFields": [],
+      "score": 100,
+      "success": true,
+      "issues": []
+    },
+    {
+      "query": "Athletic wear spending vs brand preferences",
+      "category": "Spending Analysis",
+      "bestEndpoint": "/comparative-analysis",
+      "mentionedFields": [
+        "MP30016A_B",
+        "MP30016A_B_P",
+        "value_MP07109A_B",
+        "value_MP07109A_B_P",
+        "value_MP07111A_B",
+        "value_MP07111A_B_P"
+      ],
+      "expectedFields": [
+        "value_MP07111A_B",
+        "value_MP07111A_B_P",
+        "value_MP07109A_B",
+        "value_MP07109A_B_P",
+        "value_MP07111A_B",
+        "value_MP07111A_B_P"
+      ],
+      "missingFields": [],
+      "score": 100,
+      "success": true,
+      "issues": []
+    },
+    {
+      "query": "High sports equipment spenders shoe buying patterns",
+      "category": "Spending Analysis",
+      "bestEndpoint": "/customer-profile",
+      "mentionedFields": [
+        "MP30016A_B",
+        "MP30016A_B_P"
+      ],
+      "expectedFields": [],
+      "missingFields": [],
+      "score": 100,
+      "success": true,
+      "issues": []
+    },
+    {
+      "query": "Sports clothing budget correlation with footwear choices",
+      "category": "Spending Analysis",
+      "bestEndpoint": "/customer-profile",
+      "mentionedFields": [
+        "MP30016A_B",
+        "MP30016A_B_P",
+        "value_MP07109A_B",
+        "value_MP07109A_B_P",
+        "value_MP07111A_B",
+        "value_MP07111A_B_P"
+      ],
+      "expectedFields": [
+        "value_MP07109A_B",
+        "value_MP07109A_B_P"
+      ],
+      "missingFields": [],
+      "score": 100,
+      "success": true,
+      "issues": []
+    },
+    {
+      "query": "Nike vs Adidas market share analysis",
+      "category": "Brand Analysis",
+      "bestEndpoint": "/competitive-analysis",
+      "mentionedFields": [
+        "MP30034A_B",
+        "MP30034A_B_P",
+        "MP30029A_B",
+        "MP30029A_B_P"
+      ],
+      "expectedFields": [
+        "value_MP30034A_B",
+        "value_MP30034A_B_P",
+        "value_MP30029A_B",
+        "value_MP30029A_B_P"
+      ],
+      "missingFields": [
+        "value_MP30034A_B",
+        "value_MP30034A_B_P",
+        "value_MP30029A_B",
+        "value_MP30029A_B_P"
+      ],
+      "score": 20,
+      "success": false,
+      "issues": [
+        "Missing fields: value_MP30034A_B, value_MP30034A_B_P, value_MP30029A_B, value_MP30029A_B_P"
+      ]
+    },
+    {
+      "query": "Top performing regions for Nike shoes",
+      "category": "Brand Analysis",
+      "bestEndpoint": "/strategic-analysis",
+      "mentionedFields": [
+        "MP30034A_B",
+        "MP30034A_B_P"
+      ],
+      "expectedFields": [
+        "value_MP30034A_B",
+        "value_MP30034A_B_P"
+      ],
+      "missingFields": [
+        "value_MP30034A_B",
+        "value_MP30034A_B_P"
+      ],
+      "score": 60,
+      "success": false,
+      "issues": [
+        "Missing fields: value_MP30034A_B, value_MP30034A_B_P"
+      ]
+    },
+    {
+      "query": "Jordan athletic shoe purchase patterns",
+      "category": "Brand Analysis",
+      "bestEndpoint": "/customer-profile",
+      "mentionedFields": [
+        "MP30032A_B",
+        "MP30032A_B_P",
+        "MP30016A_B",
+        "MP30016A_B_P"
+      ],
+      "expectedFields": [
+        "value_MP30032A_B",
+        "value_MP30032A_B_P"
+      ],
+      "missingFields": [
+        "value_MP30032A_B",
+        "value_MP30032A_B_P"
+      ],
+      "score": 60,
+      "success": false,
+      "issues": [
+        "Missing fields: value_MP30032A_B, value_MP30032A_B_P"
+      ]
+    }
+  ]
+}

@@ -393,6 +393,42 @@ const EnhancedGeospatialChat = memo(({
   const [showEndpointSelector, setShowEndpointSelector] = useState<boolean>(false);
   const [selectedEndpoint, setSelectedEndpoint] = useState<string>('auto');
   const [endpointSuggestions, setEndpointSuggestions] = useState<any[]>([]);
+
+  // Debug selectedEndpoint and lastAnalysisEndpoint changes for clustering button state
+  useEffect(() => {
+    console.log('[ENDPOINT CHANGE] 🎯 Endpoint state changed:', {
+      selectedEndpoint,
+      lastAnalysisEndpoint,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Log what clustering button state would be
+    const supportsClusteringEndpoints = ['/strategic-analysis', '/demographic-insights'];
+    let clusteringSupported = true;
+    let disabledReason = '';
+    
+    if (selectedEndpoint !== 'auto') {
+      const selectedEndpointPath = `/${selectedEndpoint}`;
+      clusteringSupported = supportsClusteringEndpoints.includes(selectedEndpointPath);
+      if (!clusteringSupported) {
+        disabledReason = `Clustering not supported for ${selectedEndpoint.replace('-', ' ')} analysis`;
+      }
+    } else if (lastAnalysisEndpoint) {
+      clusteringSupported = supportsClusteringEndpoints.includes(lastAnalysisEndpoint);
+      if (!clusteringSupported) {
+        const endpointName = lastAnalysisEndpoint.replace('/', '').replace('-', ' ');
+        disabledReason = `Clustering not supported for ${endpointName} analysis (last used)`;
+      }
+    }
+    
+    console.log('[ENDPOINT CHANGE] 🎯 Clustering button should be:', {
+      clusteringSupported,
+      disabledReason,
+      buttonState: clusteringSupported ? 'ENABLED' : 'DISABLED',
+      decisionPath: selectedEndpoint !== 'auto' ? 'MANUAL_SELECTION' : 
+                   lastAnalysisEndpoint ? 'AUTO_WITH_HISTORY' : 'AUTO_NO_HISTORY'
+    });
+  }, [selectedEndpoint, lastAnalysisEndpoint]);
   
   // Cache comprehensive dataset summary for consistent follow-up chat
   const [cachedDatasetSummary, setCachedDatasetSummary] = useState<any>(null);
@@ -3472,25 +3508,44 @@ const EnhancedGeospatialChat = memo(({
               layerName: 'Analysis Results',  
               layerType: 'polygon',
               layer: {} as any,
-              features: finalAnalysisResult?.data?.records?.map((result: any, index: number) => {
-                // Debug area names to understand the issue
+              // CRITICAL FIX: Use cluster data when clustering is enabled, individual ZIP codes otherwise
+              features: (() => {
+                // Use namedClusters if available (with geographic names and proper scores), otherwise fall back to clusters
+                const dataWithClusters = finalAnalysisResult?.data as any;
+                const sourceData = hasClusterAnalysis && dataWithClusters?.namedClusters 
+                  ? dataWithClusters.namedClusters 
+                  : hasClusterAnalysis && dataWithClusters?.clusters 
+                    ? dataWithClusters.clusters 
+                    : dataWithClusters?.records;
+                
+                console.log(`🎯 [CLAUDE FEATUREDATA] Using ${hasClusterAnalysis ? 'CLUSTER' : 'ZIP CODE'} data for Claude:`, {
+                  hasClusterAnalysis,
+                  usingNamedClusters: hasClusterAnalysis && dataWithClusters?.namedClusters,
+                  usingClusters: hasClusterAnalysis && dataWithClusters?.clusters,
+                  recordCount: sourceData?.length || 0,
+                  dataType: hasClusterAnalysis && dataWithClusters?.namedClusters ? 'named_cluster_territories' : 
+                           hasClusterAnalysis ? 'cluster_territories' : 'individual_zip_codes'
+                });
+                
+                return sourceData?.map((result: any, index: number) => {
+                // Debug area names to understand the issue - handle both clusters and ZIP codes
                 if (index < 5) {
-                  console.log(`[Claude Data] Record ${index + 1} - DETAILED:`, {
-                    area_name: result.area_name,
-                    area_id: result.area_id,
-                    typeof_area_name: typeof result.area_name,
-                    typeof_area_id: typeof result.area_id,
-                    area_name_is_defined: result.area_name !== undefined,
-                    area_id_is_defined: result.area_id !== undefined,
-                    fallback_logic: result.area_name || result.area_id || 'Unknown Area',
+                  const isCluster = hasClusterAnalysis && result.zipCount;
+                  console.log(`[Claude Data] ${isCluster ? 'Cluster' : 'ZIP'} ${index + 1} - DETAILED:`, {
+                    area_name: result.area_name || result.name,
+                    area_id: result.area_id || result.id,
+                    typeof_area_name: typeof (result.area_name || result.name),
+                    typeof_area_id: typeof (result.area_id || result.id),
+                    is_cluster: isCluster,
+                    zip_count: result.zipCount || 1,
                     full_result_keys: Object.keys(result),
                     properties_keys: result.properties ? Object.keys(result.properties) : 'no properties'
                   });
                 }
-                // Extract brand market shares
-                const nikeShare = result.properties?.value_MP30034A_B_P || result.value_MP30034A_B_P || 0;
-                const adidasShare = result.properties?.value_MP30029A_B_P || result.value_MP30029A_B_P || 0;
-                const jordanShare = result.properties?.value_MP30032A_B_P || result.value_MP30032A_B_P || 0;
+                // Extract brand market shares - fix field name mapping
+                const nikeShare = result.properties?.mp30034a_b_p || result.properties?.value_MP30034A_B_P || result.value_MP30034A_B_P || result.mp30034a_b_p || 0;
+                const adidasShare = result.properties?.mp30029a_b_p || result.properties?.value_MP30029A_B_P || result.value_MP30029A_B_P || result.mp30029a_b_p || 0;
+                const jordanShare = result.properties?.mp30032a_b_p || result.properties?.value_MP30032A_B_P || result.value_MP30032A_B_P || result.mp30032a_b_p || 0;
                 
                 // Extract SHAP values for explanation
                 const nikeShap = result.properties?.shap_MP30034A_B_P || result.shap_MP30034A_B_P || 0;
@@ -3514,18 +3569,26 @@ const EnhancedGeospatialChat = memo(({
                 const scoreConfig = getScoreConfigForEndpoint(finalAnalysisResult.endpoint);
                 const scoreFieldName = scoreConfig.scoreFieldName;
                 
+                // Determine if this is a cluster record
+                const isClusterRecord = hasClusterAnalysis && result.zipCount;
+                const displayName = result.area_name || result.name || result.area_id || result.id || 'Unknown Area';
+                const displayId = result.area_id || result.id;
+                
                 // Generic approach: try to find the score field from the configuration
-                const targetValue = result.properties?.[scoreFieldName] || 
-                                   result[scoreFieldName] || 
-                                   result.value || 
-                                   0;
-                                   
-                console.log(`[Claude Data] ${finalAnalysisResult.endpoint} - using ${scoreFieldName}: ${targetValue} for ${result.area_name}`);
+                // For clusters, use avgScore; for individual records, use the configured field
+                const targetValue = isClusterRecord 
+                                   ? (result.avgScore || result.value || 0)
+                                   : (result.properties?.[scoreFieldName] || 
+                                      result[scoreFieldName] || 
+                                      result.value || 
+                                      0);
+                
+                console.log(`[Claude Data] ${finalAnalysisResult.endpoint} - using ${scoreFieldName}: ${targetValue} for ${displayName}${isClusterRecord ? ` (${result.zipCount} ZIP codes, avgScore=${result.avgScore})` : ''}`);
 
                 const claudeFeature = {
                   properties: {
-                    area_name: result.area_name || result.area_id || 'Unknown Area',
-                    area_id: result.area_id,
+                    area_name: displayName,
+                    area_id: displayId,
                     target_value: targetValue,
                     target_field: targetPretty,
                     score_field_name: scoreFieldName, // Add the correct score field name for Claude
@@ -3533,16 +3596,28 @@ const EnhancedGeospatialChat = memo(({
                     analysis_endpoint: finalAnalysisResult.endpoint,
                     total_areas_analyzed: finalAnalysisResult?.data?.records?.length || 0,
                     // Add clustering information if available
-                    cluster_id: result.cluster_id,
-                    cluster_name: result.cluster_name,
+                    cluster_id: result.cluster_id || result.id,
+                    cluster_name: result.cluster_name || result.name,
                     is_clustered: finalAnalysisResult?.data?.isClustered || false,
                     
-                    // Brand market shares
-                    nike_market_share: nikeShare,
-                    adidas_market_share: adidasShare, 
-                    jordan_market_share: jordanShare,
-                    market_gap: Math.max(0, 100 - nikeShare - adidasShare - jordanShare),
-                    competitive_advantage: nikeShare - adidasShare,
+                    // Cluster-specific properties when this is a cluster record
+                    ...(isClusterRecord ? {
+                      zip_count: result.zipCount,
+                      avg_score: result.avgScore,
+                      max_score: result.maxScore,
+                      min_score: result.minScore,
+                      total_population: result.totalPopulation,
+                      is_cluster_record: true
+                    } : {
+                      is_cluster_record: false
+                    }),
+                    
+                    // Brand market shares - use cluster aggregated data when available
+                    nike_market_share: isClusterRecord && result.marketShares ? result.marketShares.nike : nikeShare,
+                    adidas_market_share: isClusterRecord && result.marketShares ? result.marketShares.adidas : adidasShare, 
+                    jordan_market_share: isClusterRecord && result.marketShares ? result.marketShares.jordan : jordanShare,
+                    market_gap: isClusterRecord && result.marketShares ? result.marketShares.marketGap : Math.max(0, 100 - nikeShare - adidasShare - jordanShare),
+                    competitive_advantage: isClusterRecord && result.marketShares ? (result.marketShares.nike - result.marketShares.adidas) : (nikeShare - adidasShare),
                     
                     // Demographics
                     total_population: totalPop,
@@ -3610,7 +3685,8 @@ const EnhancedGeospatialChat = memo(({
                 }
                 
                 return claudeFeature;
-              }) || [{
+              });
+              })() || [{
                 properties: { 
                   area_name: 'No data available', 
                   target_field: targetPretty,
@@ -3636,6 +3712,21 @@ const EnhancedGeospatialChat = memo(({
           })),
           metadata: claudePayload.metadata
         });
+        
+        // Debug cluster analysis content
+        if (hasClusterAnalysis && claudePayload.metadata.clusterAnalysis) {
+          console.log('🎯 [CLUSTER ANALYSIS DEBUG] Cluster analysis being sent to Claude:');
+          console.log('🎯 Length:', claudePayload.metadata.clusterAnalysis.length);
+          console.log('🎯 Preview:', claudePayload.metadata.clusterAnalysis.substring(0, 500) + '...');
+          console.log('🎯 Contains "Top ZIP codes":', claudePayload.metadata.clusterAnalysis.includes('Top ZIP codes'));
+          console.log('🎯 Contains "Strategic Recommendations":', claudePayload.metadata.clusterAnalysis.includes('Strategic Recommendations'));
+        } else {
+          console.log('❌ [CLUSTER ANALYSIS DEBUG] No cluster analysis in payload!', {
+            hasClusterAnalysis,
+            hasMetadata: !!claudePayload.metadata,
+            clusterAnalysisValue: claudePayload.metadata?.clusterAnalysis
+          });
+        }
         
         // EXPLICIT DEBUG FOR STRATEGIC ANALYSIS CLAUDE PAYLOAD
         if (query.toLowerCase().includes('strategic')) {
@@ -3762,17 +3853,43 @@ const EnhancedGeospatialChat = memo(({
       await refreshContextSummary();
       
       // CRITICAL FIX: Use FULL data for features context, not visualization-optimized data
+      // For clustered data, use cluster records instead of individual ZIP codes
+      const isClusteredData = finalAnalysisResult.data.isClustered && finalAnalysisResult.data.clusters;
+      const sourceRecords = isClusteredData 
+        ? finalAnalysisResult.data.clusters 
+        : finalAnalysisResult.data.records;
+      
+      if (!sourceRecords) {
+        console.error('🚨 [DATA SOURCE] No source records available');
+        throw new Error('No data records available for analysis');
+      }
+      
+      console.log('🎯 [DATA SOURCE] Using data source for Claude:', {
+        isClusteredData,
+        usingClusters: isClusteredData,
+        sourceRecordCount: sourceRecords.length,
+        sourceType: isClusteredData ? 'clusters' : 'individual_zip_codes'
+      });
+      
       // Convert finalAnalysisResult.data.records back to GeospatialFeature format for analysis/chat
-      const fullDataFeatures = finalAnalysisResult.data.records.map((record: any) => ({
+      const fullDataFeatures = sourceRecords.map((record: any) => ({
         type: 'Feature' as const,
         geometry: record.geometry,
         properties: {
           ...record.properties,
-          // Ensure all analysis fields are preserved for chat context
-          [finalAnalysisResult.data.targetVariable]: record.value,
-          target_value: record.value,
-          area_name: record.area_name,
-          area_id: record.area_id || record.properties?.ID
+          // Handle both cluster records and individual ZIP code records
+          [finalAnalysisResult.data.targetVariable]: record.value || record.avgScore,
+          target_value: record.value || record.avgScore,
+          area_name: record.area_name || record.name,
+          area_id: record.area_id || record.id || record.properties?.ID,
+          // For clusters, add cluster-specific fields
+          ...(finalAnalysisResult.data.isClustered && record.zipCount ? {
+            cluster_id: record.id,
+            zip_count: record.zipCount,
+            total_population: record.totalPopulation,
+            avg_score: record.avgScore,
+            cluster_name: record.name
+          } : {})
         }
       }));
       
@@ -4499,8 +4616,53 @@ const EnhancedGeospatialChat = memo(({
                     {/* Cluster Configuration button */}
                     {(() => {
                       // Check if current endpoint supports clustering
-                      const supportsClusteringEndpoints = ['strategic-analysis', 'demographic-insights'];
-                      const clusteringSupported = selectedEndpoint === 'auto' || supportsClusteringEndpoints.includes(selectedEndpoint);
+                      const supportsClusteringEndpoints = ['/strategic-analysis', '/demographic-insights'];
+                      let clusteringSupported = true; // Default to supported
+                      let disabledReason = '';
+                      
+                      if (selectedEndpoint !== 'auto') {
+                        // User has manually selected an endpoint - check if it supports clustering
+                        const selectedEndpointPath = `/${selectedEndpoint}`;
+                        clusteringSupported = supportsClusteringEndpoints.includes(selectedEndpointPath);
+                        if (!clusteringSupported) {
+                          disabledReason = `Clustering not supported for ${selectedEndpoint.replace('-', ' ')} analysis`;
+                        }
+                      } else if (lastAnalysisEndpoint) {
+                        // In auto mode with previous analysis - check the last used endpoint
+                        clusteringSupported = supportsClusteringEndpoints.includes(lastAnalysisEndpoint);
+                        if (!clusteringSupported) {
+                          const endpointName = lastAnalysisEndpoint.replace('/', '').replace('-', ' ');
+                          disabledReason = `Clustering not supported for ${endpointName} analysis (last used)`;
+                        }
+                      } else {
+                        // In auto mode with no previous analysis - keep enabled
+                        clusteringSupported = true;
+                        disabledReason = '';
+                      }
+                      
+                      console.log('[CLUSTERING UI] Button state:', {
+                        selectedEndpoint,
+                        lastAnalysisEndpoint,
+                        clusteringSupported,
+                        disabledReason,
+                        supportsClusteringEndpoints,
+                        decisionPath: selectedEndpoint !== 'auto' ? 'MANUAL_SELECTION' : 
+                                     lastAnalysisEndpoint ? 'AUTO_WITH_HISTORY' : 'AUTO_NO_HISTORY'
+                      });
+                      
+                      // Quick test simulation for debugging
+                      if (selectedEndpoint === 'auto') {
+                        console.log('[CLUSTERING UI] 🧪 Test simulation - if competitive-analysis was selected:');
+                        const testEndpoint = 'competitive-analysis';
+                        const testPath = `/${testEndpoint}`;
+                        const testSupported = supportsClusteringEndpoints.includes(testPath);
+                        console.log('[CLUSTERING UI] 🧪 Test result:', {
+                          testEndpoint,
+                          testPath,
+                          testSupported,
+                          wouldBeDisabled: !testSupported
+                        });
+                      }
                       
                       return (
                         <Dialog open={clusterDialogOpen} onOpenChange={setClusterDialogOpen}>
@@ -4530,7 +4692,7 @@ const EnhancedGeospatialChat = memo(({
                                 <p>
                                   {clusteringSupported 
                                     ? 'Configure clustering for territory analysis'
-                                    : 'Clustering not available for this analysis type. Use Strategic or Demographic analysis for territory clustering.'
+                                    : disabledReason || 'Clustering not available for this analysis type'
                                   }
                                 </p>
                               </TooltipContent>
@@ -4576,8 +4738,21 @@ const EnhancedGeospatialChat = memo(({
                         <AnalysisEndpointSelector
                           selectedEndpoint={selectedEndpoint === 'auto' ? undefined : selectedEndpoint}
                           onEndpointSelect={(endpoint) => {
+                            console.log('[ENDPOINT SELECTION] 🎯 Endpoint selected:', {
+                              previousEndpoint: selectedEndpoint,
+                              newEndpoint: endpoint,
+                              timestamp: new Date().toISOString()
+                            });
                             setSelectedEndpoint(endpoint);
                             setShowEndpointSelector(false);
+                            
+                            // Force a small delay to ensure state update, then log clustering button state
+                            setTimeout(() => {
+                              console.log('[ENDPOINT SELECTION] 🎯 State after endpoint selection:', {
+                                selectedEndpoint: endpoint,
+                                stateUpdated: true
+                              });
+                            }, 100);
                           }}
                           compact={true}
                           showDescription={false}

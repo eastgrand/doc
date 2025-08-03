@@ -2321,13 +2321,31 @@ The user requested the ${rankingContext.queryType} ${rankingContext.requestedCou
 ` : '';
 
         // Create dynamic system prompt with persona-specific content and analysis-specific context
+        // Add cluster-specific instructions when clustering is detected
+        const clusteringInstructions = metadata?.isClustered && metadata?.clusterAnalysis ? `
+
+CRITICAL CLUSTERING INSTRUCTIONS:
+You have been provided with a complete territory clustering analysis. You MUST:
+1. Use the EXACT territory descriptions provided, including:
+   - The specific top 5 ZIP codes with scores for each territory
+   - The exact market share percentages (Nike %, Adidas %, Jordan %, Market Gap %)
+   - The exact "Key Drivers" text for each territory
+2. Use the Strategic Recommendations section EXACTLY as provided
+3. DO NOT explain what strategic value scores mean generically
+4. DO NOT add your own recommendations about "developing tailored strategies" or "monitoring performance"
+5. Focus on the specific cluster analysis provided - do not generate generic content
+6. CRITICAL: When referencing territories, use the exact names without adding "ZIP" prefix
+   - Say "Corona Territory" NOT "ZIP Corona Territory"
+   - Say "West Chester Territory" NOT "ZIP West Chester Territory"
+` : '';
+
         const dynamicSystemPrompt = `${selectedPersona.systemPrompt}
 
 ${enhancedFieldContext}
 
 ${analysisSpecificPrompt}
 
-${rankingContextPrompt}
+${rankingContextPrompt}${clusteringInstructions}
 
 CRITICAL FIELD DATA TYPE INSTRUCTIONS:
 When analyzing data, ALWAYS use the correct units and terminology based on the field type shown in brackets:
@@ -2436,23 +2454,25 @@ Performance Context:
         if (metadata?.isClustered && metadata?.clusterAnalysis) {
           console.log('🎯 [CLAUDE API] Detected cluster analysis in metadata');
           console.log('🎯 [CLAUDE API] Cluster analysis length:', metadata.clusterAnalysis.length);
-          console.log('🎯 [CLAUDE API] Adding cluster analysis to user message');
+          console.log('🎯 [CLAUDE API] Using cluster analysis as primary content');
           
+          // For clustered analysis, use the cluster analysis as the primary content
+          // and only include minimal ZIP code data for context
           userMessage = `${userQuery}
 
-IMPORTANT: This is a TERRITORY CLUSTERING analysis. Use the territory clustering analysis below as the primary source of information. Focus your response on territories/clusters rather than individual areas.
-
-=== TERRITORY CLUSTERING ANALYSIS ===
+=== COMPLETE TERRITORY CLUSTERING ANALYSIS ===
 ${metadata.clusterAnalysis}
+=== END OF TERRITORY CLUSTERING ANALYSIS ===
 
-=== DETAILED DATA (for reference only) ===
-${dataSummary}
-
-Your response should:
-1. Base the analysis primarily on the territory clustering results above
-2. Focus on territories/clusters as the main geographic units
-3. Use endpoint-specific terminology for the analysis type: ${metadata?.analysisType || 'analysis'}
-4. Provide strategic recommendations based on territory performance`;
+YOUR TASK: Present the territory clustering analysis above in a clean, professional format. You MUST:
+1. Include ALL territory descriptions EXACTLY as shown, with:
+   - Top 5 ZIP codes and their scores
+   - Market share percentages (Nike %, Adidas %, Jordan %, Market Gap %)
+   - Key Drivers for each territory
+2. Include the Strategic Recommendations section in full
+3. Do NOT add any generic explanations about scoring methodology
+4. Do NOT add any additional recommendations or suggestions
+5. Simply present the analysis provided above in a well-formatted response`;
         }
         
         // 🚨 DEBUG: For strategic analysis, check what's actually in the message

@@ -160,22 +160,45 @@ export class RegionGrowingAlgorithm {
     
     console.log(`[RegionGrowing] 🌱 Starting region growth from ${seedCandidates.length} seed candidates`);
     
+    let seedAttempts = 0;
+    let regionsRejected = 0;
+    
     for (const seed of seedCandidates) {
+      seedAttempts++;
+      
       // Skip if already assigned to a cluster
-      if (this.assignedZipCodes.has(seed.zipCode)) continue;
+      if (this.assignedZipCodes.has(seed.zipCode)) {
+        console.log(`[RegionGrowing] 🚫 Seed ${seed.zipCode} already assigned, skipping`);
+        continue;
+      }
       
       // Check if we've reached max clusters
-      if (clusters.length >= this.config.numClusters) break;
+      if (clusters.length >= this.config.numClusters) {
+        console.log(`[RegionGrowing] ✅ Reached target of ${this.config.numClusters} clusters, stopping`);
+        break;
+      }
+      
+      console.log(`[RegionGrowing] 🌱 Attempting seed ${seedAttempts}: ${seed.zipCode} (score: ${seed.primaryScore.toFixed(2)})`);
       
       // Grow region from this seed
-      const region = await this.growSingleRegion(seed, eligibleFeatures, clusters.length);
+      const clusterId = clusters.length;
+      console.log(`[RegionGrowing] 🆔 Assigning clusterId: ${clusterId} to seed ${seed.zipCode}`);
+      const region = await this.growSingleRegion(seed, eligibleFeatures, clusterId);
+      
+      console.log(`[RegionGrowing] 📏 Grown region size: ${region.zipCodes.length} ZIP codes (min required: ${this.config.minZipCodes})`);
+      console.log(`[RegionGrowing] 🆔 Region created with clusterId: ${region.clusterId}`);
       
       // Only keep regions that meet minimum size
       if (region.zipCodes.length >= this.config.minZipCodes) {
         clusters.push(region);
-        console.log(`[RegionGrowing] 🎯 Created territory ${region.name} with ${region.zipCodes.length} ZIP codes`);
+        console.log(`[RegionGrowing] 🎯 Created territory ${region.name} with ${region.zipCodes.length} ZIP codes (cluster ${clusters.length}/${this.config.numClusters})`);
+      } else {
+        regionsRejected++;
+        console.log(`[RegionGrowing] ❌ Region too small (${region.zipCodes.length} < ${this.config.minZipCodes}), rejecting`);
       }
     }
+    
+    console.log(`[RegionGrowing] 📊 Final stats: ${clusters.length} clusters created, ${regionsRejected} regions rejected, ${seedAttempts} seeds attempted`);
     
     return clusters;
   }
@@ -375,16 +398,36 @@ export class RegionGrowingAlgorithm {
   private async validateClusters(clusters: ClusterResult[]): Promise<ClusterResult[]> {
     const validatedClusters = [];
     
-    for (const cluster of clusters) {
+    console.log(`[RegionGrowing] 🔍 Validating ${clusters.length} clusters against requirements:`);
+    console.log(`[RegionGrowing] 🔍 Requirements: minZipCodes=${this.config.minZipCodes}, minPopulation=${this.config.minPopulation.toLocaleString()}, maxRadius=${this.config.maxRadiusMiles}mi`);
+    
+    for (let i = 0; i < clusters.length; i++) {
+      const cluster = clusters[i];
       const validation = validateCluster(cluster, this.config);
       cluster.isValid = validation.isValid;
       cluster.validationIssues = validation.issues;
       
+      console.log(`[RegionGrowing] 🔍 Cluster ${i+1} (${cluster.name}):`, {
+        zipCodes: cluster.zipCodes.length,
+        population: cluster.totalPopulation?.toLocaleString() || 'unknown',
+        radius: cluster.radiusMiles?.toFixed(1) + 'mi' || 'unknown',
+        hasMinZipCodes: validation.hasMinZipCodes,
+        hasMinPopulation: validation.hasMinPopulation,
+        withinMaxRadius: validation.withinMaxRadius,
+        isValid: validation.isValid,
+        issues: validation.issues
+      });
+      
       // Always include clusters that meet basic requirements
       if (validation.hasMinZipCodes && validation.hasMinPopulation) {
         validatedClusters.push(cluster);
+        console.log(`[RegionGrowing] ✅ Cluster ${i+1} ACCEPTED`);
+      } else {
+        console.log(`[RegionGrowing] ❌ Cluster ${i+1} REJECTED: ${validation.issues.join(', ')}`);
       }
     }
+    
+    console.log(`[RegionGrowing] 📊 Validation summary: ${validatedClusters.length}/${clusters.length} clusters accepted`);
     
     return validatedClusters;
   }

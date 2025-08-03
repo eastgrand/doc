@@ -739,6 +739,21 @@ ANALYSIS FOCUS:
 - Explain the underlying factors driving strategic advantages
 - Recommend strategic expansion priorities based on precise scoring
 - Preserve all decimal precision in score reporting for accuracy
+
+ACTIONABLE RECOMMENDATIONS REQUIRED:
+- Provide specific, implementable business actions rather than generic research suggestions
+- Focus on immediate deployment strategies, market entry tactics, and resource allocation
+- Suggest concrete next steps like store locations, marketing campaigns, or partnership opportunities
+- Avoid recommending "further research" or "additional analysis" - this app IS the analysis tool
+- Include specific geographic targeting, demographic segments, and competitive positioning strategies
+
+CLUSTERING-SPECIFIC INSTRUCTIONS:
+When territory clustering analysis is provided:
+- Use the EXACT cluster descriptions including all top 5 ZIP codes with scores
+- Include the EXACT market share percentages and Key Drivers for each territory
+- Use the Strategic Recommendations section AS PROVIDED
+- DO NOT explain what strategic value scores mean in general terms
+- DO NOT add generic business advice or monitoring suggestions
 `,
 
   general: `

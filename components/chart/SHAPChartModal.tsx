@@ -25,6 +25,7 @@ export const SHAPChartModal: React.FC<SHAPChartModalProps> = ({
   
   // Format analysis type for display
   const formattedAnalysisType = analysisType
+    .replace(/_/g, ' ')
     .replace(/-/g, ' ')
     .replace(/\b\w/g, l => l.toUpperCase());
 
@@ -36,12 +37,6 @@ export const SHAPChartModal: React.FC<SHAPChartModalProps> = ({
             <DialogTitle className="text-lg font-semibold">
               📊 Feature Importance - {formattedAnalysisType}
             </DialogTitle>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              <X className="h-5 w-5" />
-            </button>
           </div>
         </DialogHeader>
         
@@ -75,15 +70,9 @@ export const SHAPChartModal: React.FC<SHAPChartModalProps> = ({
                           className="h-full rounded-md transition-all duration-300 relative"
                           style={{
                             width: `${barWidth}%`,
-                            backgroundColor: `rgba(59, 130, 246, ${0.3 + intensity * 0.7})` // Blue with variable opacity
+                            backgroundColor: `rgba(51, 168, 82, ${0.3 + intensity * 0.7})` // Green (#33a852) with variable opacity
                           }}
                         >
-                          {/* Value label inside bar */}
-                          <div className="absolute inset-0 flex items-center justify-end pr-2">
-                            <span className="text-xs font-medium text-white drop-shadow-sm">
-                              {item.value.toFixed(3)}
-                            </span>
-                          </div>
                         </div>
                       </div>
                     </div>
