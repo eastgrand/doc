@@ -590,7 +590,7 @@ export class ClusteringService {
     console.log(`[ClusteringService] 📝 Generated clustering summary:`, clusteringSummary);
     
     // Enhanced data with clustered ZIP records
-    const enhancedData = {
+    const enhancedData: any = {
       ...originalResult.data,
       records: clusteredZipRecords, // Use individual ZIP codes with cluster assignments
       totalRecords: clusteredZipRecords.length, // Shows clustered ZIP count
@@ -1117,7 +1117,7 @@ Territory Profile: Comprehensive market area with ${consistencyText} across the 
     if (topCluster.marketShares) {
       recommendations += `- Current Nike share: ${topCluster.marketShares.nike.toFixed(1)}% with ${topCluster.marketShares.marketGap.toFixed(1)}% untapped market\n`;
     }
-    recommendations += `- Deploy flagship stores in top ZIP codes: ${topCluster.topZips?.slice(0, 3).map(z => z.code).join(', ') || 'See territory details'}\n\n`;
+    recommendations += `- Deploy flagship stores in top ZIP codes: ${topCluster.topZips?.slice(0, 3).map((z: any) => z.code).join(', ') || 'See territory details'}\n\n`;
     
     // Territory-specific strategies
     recommendations += `**2. Territory-Specific Market Entry Strategies:**\n`;
