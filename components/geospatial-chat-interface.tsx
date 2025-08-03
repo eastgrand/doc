@@ -1201,6 +1201,82 @@ const EnhancedGeospatialChat = memo(({
   };
 
   // Function to zoom to a specific feature by ID
+  // Debug function for testing ZIP code search - available in browser console as window.debugZipSearch
+  const debugZipSearch = useCallback((testZipCode: string) => {
+    console.log(`🔍 [DEBUG] Testing ZIP code search for: ${testZipCode}`);
+    
+    const normalizeId = (id: string): string => {
+      if (!id) return '';
+      if (/^\d{5}/.test(id)) {
+        return id.substring(0, 5).toUpperCase();
+      }
+      return id.toString().toUpperCase().trim();
+    };
+    
+    const targetId = normalizeId(testZipCode);
+    console.log(`🔍 [DEBUG] Normalized target: ${targetId}`);
+    
+    const matches = features.filter((feature: GeospatialFeature) => {
+      let featureIdValue = feature.properties?.FSA_ID || 
+                       feature.properties?.ID || 
+                       feature.properties?.OBJECTID ||
+                       feature.properties?.id ||
+                       feature.properties?.area_id ||
+                       feature.properties?.zip_code ||
+                       feature.properties?.ZIPCODE ||
+                       feature.properties?.ZIP;
+      
+      if (!featureIdValue && feature.area_name) {
+        const zipMatch = feature.area_name.match(/^\d{5}/);
+        if (zipMatch) {
+          featureIdValue = zipMatch[0];
+        }
+      }
+      
+      if (!featureIdValue && feature.area_name) {
+        featureIdValue = feature.area_name;
+      }
+      
+      if (!featureIdValue) return false;
+      
+      const normalizedFeatureId = normalizeId(featureIdValue.toString());
+      return normalizedFeatureId === targetId;
+    });
+    
+    console.log(`🔍 [DEBUG] Found ${matches.length} matches:`, matches.map(m => ({
+      area_name: m.area_name,
+      cluster_id: m.cluster_id,
+      hasGeometry: !!m.geometry,
+      properties: m.properties
+    })));
+    
+    // Sample some features that might be close
+    const sampleFeatures = features.slice(0, 20).map(f => {
+      let extractedId = null;
+      if (f.area_name) {
+        const zipMatch = f.area_name.match(/^\d{5}/);
+        if (zipMatch) extractedId = zipMatch[0];
+      }
+      return {
+        area_name: f.area_name,
+        extractedId,
+        normalized: extractedId ? normalizeId(extractedId) : null
+      };
+    });
+    
+    console.log(`🔍 [DEBUG] Sample of available data:`, sampleFeatures);
+    
+    return matches;
+  }, [features]);
+
+  // Make debug function available globally
+  useEffect(() => {
+    (window as any).debugZipSearch = debugZipSearch;
+    return () => {
+      delete (window as any).debugZipSearch;
+    };
+  }, [debugZipSearch]);
+
   const handleZoomToFeature = useCallback(async (featureId: string) => {
     if (!currentMapView || !features.length) {
       console.warn('[ZoomToFeature] Map view or features not available');
@@ -1227,6 +1303,20 @@ const EnhancedGeospatialChat = memo(({
 
       const targetId = normalizeId(featureId);
       console.log('[ZoomToFeature] Looking for feature:', { originalId: featureId, normalizedId: targetId });
+      
+      // Debug: What type of data are we working with?
+      console.log('[ZoomToFeature] Data analysis:', {
+        totalFeatures: features.length,
+        isClustered: features.some(f => f.cluster_id !== undefined),
+        hasAreaNames: features.some(f => f.area_name !== undefined),
+        dataTypes: features.slice(0, 3).map(f => ({
+          hasProperties: !!f.properties,
+          hasAreaName: !!f.area_name,
+          hasClusterId: f.cluster_id !== undefined,
+          areaNameSample: f.area_name,
+          propertiesKeys: Object.keys(f.properties || {}).slice(0, 5)
+        }))
+      });
 
       // Find the feature in our current features array
       const targetFeature = features.find((feature: GeospatialFeature) => {
