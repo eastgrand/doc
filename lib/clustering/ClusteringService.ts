@@ -237,7 +237,20 @@ export class ClusteringService {
     console.log(`[ClusteringService] 📍 Converting ${data.records?.length || 0} records for clustering`);
     
     const features = (data.records || []).map((record, index) => {
-      const rawZipCode = record.properties?.geo_id || record.properties?.zip_code || record.area_name || `unknown_${index}`;
+      // Extract ZIP code more reliably - try multiple approaches
+      let rawZipCode = record.properties?.geo_id || record.properties?.zip_code;
+      
+      // If no direct ZIP code field, extract from area_name (e.g., "11234 (Brooklyn)" -> "11234")
+      if (!rawZipCode && record.area_name) {
+        const match = record.area_name.match(/^\d{4,5}/);
+        rawZipCode = match ? match[0] : record.area_name;
+      }
+      
+      // Fallback to area_name or unknown
+      if (!rawZipCode) {
+        rawZipCode = record.area_name || `unknown_${index}`;
+      }
+      
       const zipCode = this.normalizeZipCode(rawZipCode);
       const centroid = this.extractCentroid(record);
       
