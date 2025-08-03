@@ -585,6 +585,11 @@ export class ClusteringService {
       // ALWAYS normalize the ZIP code to ensure leading zeros
       zipCode = this.normalizeZipCode(zipCode);
       
+      // Debug log to verify this code is running
+      if (record.area_name?.includes('070') || record.area_name?.includes('080')) {
+        console.log(`[ClusteringService] 🔍 NORMALIZED ZIP: ${zipCode} from area_name: ${record.area_name}`);
+      }
+      
       const clusterAssignment = zipToClusterMap.get(zipCode);
       
       if (clusterAssignment) {
@@ -833,7 +838,8 @@ export class ClusteringService {
 
     // Filter out any null clusters and sort by strategic importance
     const validNamedClusters = namedClusters.filter(cluster => cluster !== null);
-    validNamedClusters.sort((a, b) => b.avgScore - a.avgScore);
+    // Keep clusters in original ID order to match map legend - do NOT sort by score
+    validNamedClusters.sort((a, b) => a.originalClusterId - b.originalClusterId);
     
     console.log(`🎯 [CLUSTER ANALYSIS] Final clusters for text generation:`, {
       totalClusters: validNamedClusters.length,
@@ -999,6 +1005,7 @@ export class ClusteringService {
     
     return {
       id: cluster.clusterId,
+      originalClusterId: cluster.clusterId, // Preserve original cluster ID for numbering
       name: clusterName,
       zipCount: clusterZips.length,
       avgScore,
