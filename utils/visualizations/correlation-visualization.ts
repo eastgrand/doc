@@ -142,7 +142,7 @@ export class CorrelationVisualization extends BaseVisualization<CorrelationData>
           maxValue: 0.25,
           symbol: new SimpleFillSymbol({
             color: [255, 255, 178, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Low (0-25%)"
         },
@@ -151,7 +151,7 @@ export class CorrelationVisualization extends BaseVisualization<CorrelationData>
           maxValue: 0.5,
           symbol: new SimpleFillSymbol({
             color: [254, 204, 92, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Low-Medium (25-50%)"
         },
@@ -160,7 +160,7 @@ export class CorrelationVisualization extends BaseVisualization<CorrelationData>
           maxValue: 0.75,
           symbol: new SimpleFillSymbol({
             color: [253, 141, 60, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Medium-High (50-75%)"
         },
@@ -169,7 +169,7 @@ export class CorrelationVisualization extends BaseVisualization<CorrelationData>
           maxValue: 1,
           symbol: new SimpleFillSymbol({
             color: [240, 59, 32, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "High (75-100%)"
         }
@@ -665,31 +665,31 @@ export class CorrelationVisualization extends BaseVisualization<CorrelationData>
         {
           minValue: -maxAbsI,
           maxValue: -maxAbsI * 0.6,
-          symbol: new SimpleFillSymbol({ color: '#2166ac', outline: { color: '#FFFFFF', width: 0.2 } }),
+          symbol: new SimpleFillSymbol({ color: '#2166ac', outline: { color: [0, 0, 0, 0], width: 0 } }),
           label: '- High'
         },
         {
           minValue: -maxAbsI * 0.6,
           maxValue: -maxAbsI * 0.2,
-          symbol: new SimpleFillSymbol({ color: '#4393c3', outline: { color: '#FFFFFF', width: 0.2 } }),
+          symbol: new SimpleFillSymbol({ color: '#4393c3', outline: { color: [0, 0, 0, 0], width: 0 } }),
           label: '- Moderate'
         },
         {
           minValue: -maxAbsI * 0.2,
           maxValue: maxAbsI * 0.2,
-          symbol: new SimpleFillSymbol({ color: '#f7f7f7', outline: { color: '#FFFFFF', width: 0.2 } }),
+          symbol: new SimpleFillSymbol({ color: '#f7f7f7', outline: { color: [0, 0, 0, 0], width: 0 } }),
           label: 'No / Weak'
         },
         {
           minValue: maxAbsI * 0.2,
           maxValue: maxAbsI * 0.6,
-          symbol: new SimpleFillSymbol({ color: '#f4a582', outline: { color: '#FFFFFF', width: 0.2 } }),
+          symbol: new SimpleFillSymbol({ color: '#f4a582', outline: { color: [0, 0, 0, 0], width: 0 } }),
           label: '+ Moderate'
         },
         {
           minValue: maxAbsI * 0.6,
           maxValue: maxAbsI,
-          symbol: new SimpleFillSymbol({ color: '#b2182b', outline: { color: '#FFFFFF', width: 0.2 } }),
+          symbol: new SimpleFillSymbol({ color: '#b2182b', outline: { color: [0, 0, 0, 0], width: 0 } }),
           label: '+ High'
         }
       ],
@@ -815,7 +815,7 @@ export class CorrelationVisualization extends BaseVisualization<CorrelationData>
           maxValue: q1,
           symbol: new SimpleFillSymbol({
             color: [215, 25, 28, DEFAULT_FILL_ALPHA], // red (lowest quartile)
-            outline: { color: [255, 255, 255, 0.6], width: 0.6 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: `Low (${minScore.toFixed(2)} - ${q1.toFixed(2)})`
           },
@@ -824,7 +824,7 @@ export class CorrelationVisualization extends BaseVisualization<CorrelationData>
           maxValue: q2,
           symbol: new SimpleFillSymbol({
             color: [244, 109, 67, DEFAULT_FILL_ALPHA], // orange-red (second quartile)
-            outline: { color: [255, 255, 255, 0.6], width: 0.6 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: `Low-Medium (${q1.toFixed(2)} - ${q2.toFixed(2)})`
           },
@@ -833,7 +833,7 @@ export class CorrelationVisualization extends BaseVisualization<CorrelationData>
           maxValue: q3,
           symbol: new SimpleFillSymbol({
             color: [253, 174, 97, DEFAULT_FILL_ALPHA], // yellow-orange (third quartile)
-            outline: { color: [255, 255, 255, 0.6], width: 0.6 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: `Medium-High (${q2.toFixed(2)} - ${q3.toFixed(2)})`
           },
@@ -842,14 +842,14 @@ export class CorrelationVisualization extends BaseVisualization<CorrelationData>
           maxValue: maxScore,
           symbol: new SimpleFillSymbol({
             color: [35, 139, 69, DEFAULT_FILL_ALPHA], // green (highest quartile)
-            outline: { color: [255, 255, 255, 0.6], width: 0.6 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: `High (${q3.toFixed(2)} - ${maxScore.toFixed(2)})`
           }
         ],
       defaultSymbol: new SimpleFillSymbol({
         color: [220, 220, 220, DEFAULT_FILL_ALPHA],
-        outline: { color: [255, 255, 255, 0.6], width: 0.6 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }),
         defaultLabel: "No Data"
       });
@@ -979,12 +979,12 @@ export class CorrelationVisualization extends BaseVisualization<CorrelationData>
         return new SimpleMarkerSymbol({
             color: symbolColor,
             size: '8px',
-            outline: { color: [255, 255, 255, 0.8], width: 1 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
         });
     }
     return new SimpleFillSymbol({
         color: symbolColor,
-        outline: { color: [255, 255, 255, 0.8], width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
     });
   }
 

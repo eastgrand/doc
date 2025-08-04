@@ -26,10 +26,7 @@ export class ProximityVisualization extends BaseVisualization<ProximityData> {
     this.renderer = new SimpleRenderer({
       symbol: new SimpleFillSymbol({
         color: [0, 0, 0, 0],
-        outline: {
-          color: [128, 128, 128, 0.5],
-          width: 1
-        }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }),
       visualVariables: [
         new OpacityVariable({
@@ -66,7 +63,7 @@ export class ProximityVisualization extends BaseVisualization<ProximityData> {
         color: options?.symbolConfig?.color || [0, 122, 194, 0.8],
         outline: {
           color: options?.symbolConfig?.outline?.color || [255, 255, 255, 0.8],
-          width: options?.symbolConfig?.outline?.width || 1
+          width: 0
         }
       }),
       visualVariables: [opacityVariable]

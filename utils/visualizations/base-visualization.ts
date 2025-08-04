@@ -1056,8 +1056,8 @@ export abstract class BaseVisualization<T extends BaseVisualizationData> {
           color: filterOptions.highlightOutline.color,
           width: filterOptions.highlightOutline.width
         } : {
-          color: [255, 255, 255, 0.5],
-          width: 1
+          color: [0, 0, 0, 0], // No border
+          width: 0
         }
       });
 
@@ -1552,7 +1552,7 @@ export abstract class BaseVisualization<T extends BaseVisualizationData> {
     }
 
     // Default to white if parsing fails
-    return [255, 255, 255, 1];
+    return [0, 0, 0, 0]; // Transparent instead of white
   }
 
   /**

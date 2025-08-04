@@ -151,7 +151,7 @@ export class VisualizationIntegration {
           symbol: {
             type: 'simple-fill',
             color: [255, 0, 0, 0.7],
-            outline: { color: [255, 0, 0, 1], width: 1 }
+            outline: { color: [0, 0, 0, 0], width: 0 } // No border
           }
         },
         {
@@ -160,7 +160,7 @@ export class VisualizationIntegration {
           symbol: {
             type: 'simple-fill',
             color: [0, 0, 255, 0.7],
-            outline: { color: [0, 0, 255, 1], width: 1 }
+            outline: { color: [0, 0, 0, 0], width: 0 } // No border
           }
         }
       ]
@@ -185,7 +185,7 @@ export class VisualizationIntegration {
         symbol: {
           type: 'simple-fill',
           color: this.getColorForRank(index, 5),
-          outline: { color: [0, 0, 0, 1], width: 1 }
+          outline: { color: [0, 0, 0, 0], width: 0 } // No border
         }
       }))
     });
@@ -206,7 +206,7 @@ export class VisualizationIntegration {
       symbol: {
         type: 'simple-fill',
         color: this.getColorForDistribution(index, uniqueValues.length),
-        outline: { color: [0, 0, 0, 1], width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 } // No border
       }
     }));
 
@@ -221,7 +221,7 @@ export class VisualizationIntegration {
       symbol: {
         type: 'simple-fill',
         color: [128, 128, 128, 0.7],
-        outline: { color: [0, 0, 0, 1], width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 } // No border
       }
     });
   }

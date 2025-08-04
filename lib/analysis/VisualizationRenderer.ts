@@ -69,13 +69,13 @@ export class VisualizationRenderer {
         scale: 1.2,
         glow: {
           enabled: true,
-          color: '#FFFFFF',
+          color: 'transparent',
           size: 2,
           intensity: 0.8
         },
         ripple: {
           enabled: true,
-          color: '#FFFFFF',
+          color: 'transparent',
           maxRadius: 20,
           duration: 1000,
           opacity: 0.6
@@ -645,7 +645,7 @@ export class VisualizationRenderer {
         type: 'simple-fill',
         color: [100, 150, 200, 0.5],
         outline: {
-          color: '#FFFFFF',
+          color: 'transparent',
           width: 1
         }
       }
@@ -776,7 +776,7 @@ class DefaultVisualizationRenderer implements VisualizationRendererStrategy {
           type: 'simple-fill',
           color: colors[i],
           outline: {
-            color: '#FFFFFF',
+            color: 'transparent',
             width: config.strokeWidth || 0.5
           }
         },

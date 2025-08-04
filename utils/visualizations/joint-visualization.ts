@@ -69,7 +69,7 @@ export class JointHighVisualization extends BaseVisualization<JointHighData> {
           maxValue: 0.25,
           symbol: new SimpleFillSymbol({
             color: [255, 255, 178, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Low (0-25%)"
         },
@@ -78,7 +78,7 @@ export class JointHighVisualization extends BaseVisualization<JointHighData> {
           maxValue: 0.5,
           symbol: new SimpleFillSymbol({
             color: [254, 204, 92, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Low-Medium (25-50%)"
         },
@@ -87,7 +87,7 @@ export class JointHighVisualization extends BaseVisualization<JointHighData> {
           maxValue: 0.75,
           symbol: new SimpleFillSymbol({
             color: [253, 141, 60, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "Medium-High (50-75%)"
         },
@@ -96,7 +96,7 @@ export class JointHighVisualization extends BaseVisualization<JointHighData> {
           maxValue: 1,
           symbol: new SimpleFillSymbol({
             color: [240, 59, 32, DEFAULT_FILL_ALPHA],
-            outline: { color: [100, 100, 100, 0.3], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: "High (75-100%)"
         }

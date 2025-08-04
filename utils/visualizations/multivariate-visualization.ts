@@ -474,7 +474,7 @@ export class MultivariateVisualization extends BaseVisualization<MultivariateDat
           value: colorKey,
           symbol: new SimpleFillSymbol({
             color: new Color([parseInt(r), parseInt(g), parseInt(b), parseFloat(a || '0.6')]),
-            outline: { color: new Color([100, 100, 100, 0.5]), width: 0.7 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }),
           label: `${info.count} features` // Simple label showing count
         };
@@ -485,7 +485,7 @@ export class MultivariateVisualization extends BaseVisualization<MultivariateDat
         uniqueValueInfos: uniqueValueInfos,
         defaultSymbol: new SimpleFillSymbol({
           color: new Color([200, 200, 200, 0.5]),
-          outline: { color: new Color([150, 150, 150, 0.5]), width: 0.5 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         }),
         defaultLabel: "Other/No Data"
       });
@@ -505,7 +505,7 @@ export class MultivariateVisualization extends BaseVisualization<MultivariateDat
         value: profile,
         symbol: new SimpleFillSymbol({
           color: new Color([color.r, color.g, color.b, DEFAULT_FILL_ALPHA]),
-          outline: { color: new Color([100, 100, 100, 0.5]), width: 0.7 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         }),
         label: profile
       };
@@ -516,7 +516,7 @@ export class MultivariateVisualization extends BaseVisualization<MultivariateDat
       uniqueValueInfos: uniqueValueInfos,
       defaultSymbol: new SimpleFillSymbol({
         color: new Color([200, 200, 200, 0.5]),
-        outline: { color: new Color([150, 150, 150, 0.5]), width: 0.5 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }),
       defaultLabel: "Other/No Data",
       legendOptions: {

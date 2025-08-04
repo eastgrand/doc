@@ -49,7 +49,7 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
             style: 'glow',
             width: 2,
             animated: true,
-            color: '#FFFFFF'
+            color: 'transparent'
           },
           hover: {
             enabled: true,
@@ -147,8 +147,8 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
             color: [65, 105, 225, STANDARD_OPACITY],
             size: 12,
             outline: {
-              color: '#FFFFFF',
-              width: 1
+              color: [0, 0, 0, 0], // No border
+              width: 0
             }
           },
           _useCentroids: true
@@ -294,8 +294,8 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
         color: [65, 105, 225, 0.8], // Default blue
         size: 16,
         outline: {
-          color: '#FFFFFF',
-          width: 1
+          color: [0, 0, 0, 0], // No border
+          width: 0
         }
       },
       visualVariables: [
@@ -1036,28 +1036,28 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
         style: 'diamond',
         color: '#1a9850',
         size: 16,
-        outline: { color: '#FFFFFF', width: 2 }
+        outline: { color: [0, 0, 0, 0], width: 0 } // No border
       },
       'competitive': {
         type: 'simple-marker',
         style: 'circle',
         color: '#66bd63',
         size: 12,
-        outline: { color: '#FFFFFF', width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 } // No border
       },
       'challenged': {
         type: 'simple-marker',
         style: 'square',
         color: '#fdae61',
         size: 10,
-        outline: { color: '#FFFFFF', width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 } // No border
       },
       'underperforming': {
         type: 'simple-marker',
         style: 'triangle',
         color: '#d73027',
         size: 8,
-        outline: { color: '#FFFFFF', width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 } // No border
       }
     };
     

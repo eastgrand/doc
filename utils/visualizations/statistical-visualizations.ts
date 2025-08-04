@@ -38,7 +38,7 @@ export class StatisticalVisualizations {
           symbol: {
             type: 'simple-fill' as const,
             color: [200, 200, 200, DEFAULT_FILL_ALPHA],
-            outline: { color: [0, 0, 0, 1], width: 1 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }
         },
         {
@@ -47,7 +47,7 @@ export class StatisticalVisualizations {
           symbol: {
             type: 'simple-fill' as const,
             color: [150, 150, 150, DEFAULT_FILL_ALPHA],
-            outline: { color: [0, 0, 0, 1], width: 1 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }
         },
         {
@@ -56,7 +56,7 @@ export class StatisticalVisualizations {
           symbol: {
             type: 'simple-fill' as const,
             color: [100, 100, 100, DEFAULT_FILL_ALPHA],
-            outline: { color: [0, 0, 0, 1], width: 1 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }
         },
         {
@@ -65,7 +65,7 @@ export class StatisticalVisualizations {
           symbol: {
             type: 'simple-fill' as const,
             color: [50, 50, 50, DEFAULT_FILL_ALPHA],
-            outline: { color: [0, 0, 0, 1], width: 1 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }
         }
       ]
@@ -88,7 +88,7 @@ export class StatisticalVisualizations {
         symbol: {
           type: 'simple-fill' as const,
           color: this.getColorForBin(index, numBins, options.colorScheme),
-          outline: { color: [0, 0, 0, 1], width: 1 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         }
       }))
     });
@@ -103,7 +103,7 @@ export class StatisticalVisualizations {
         type: 'simple-marker' as const,
         size: 8,
         color: [0, 120, 212, DEFAULT_FILL_ALPHA],
-        outline: { color: [0, 0, 0, 1], width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }
     });
   }

@@ -92,7 +92,7 @@ export class FactorImportanceVisualization extends BaseVisualization<FactorImpor
           symbol: {
             type: 'simple-fill',
             color: [255, 245, 240, 0.8],
-            outline: { color: [255, 255, 255, 0.8], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           },
           label: 'Low Impact'
         },
@@ -102,7 +102,7 @@ export class FactorImportanceVisualization extends BaseVisualization<FactorImpor
           symbol: {
             type: 'simple-fill',
             color: [254, 224, 210, 0.8],
-            outline: { color: [255, 255, 255, 0.8], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           },
           label: 'Medium-Low Impact'
         },
@@ -112,7 +112,7 @@ export class FactorImportanceVisualization extends BaseVisualization<FactorImpor
           symbol: {
             type: 'simple-fill',
             color: [252, 187, 161, 0.8],
-            outline: { color: [255, 255, 255, 0.8], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           },
           label: 'Medium Impact'
         },
@@ -122,7 +122,7 @@ export class FactorImportanceVisualization extends BaseVisualization<FactorImpor
           symbol: {
             type: 'simple-fill',
             color: [252, 146, 114, 0.8],
-            outline: { color: [255, 255, 255, 0.8], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           },
           label: 'High Impact'
         },
@@ -132,7 +132,7 @@ export class FactorImportanceVisualization extends BaseVisualization<FactorImpor
           symbol: {
             type: 'simple-fill',
             color: [222, 45, 38, 0.8],
-            outline: { color: [255, 255, 255, 0.8], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           },
           label: 'Very High Impact'
         }

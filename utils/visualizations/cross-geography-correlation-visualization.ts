@@ -88,7 +88,7 @@ export class CrossGeographyCorrelationVisualization extends BaseVisualization<Cr
       },
       defaultSymbol: new SimpleFillSymbol({
         color: [128, 128, 128, 0.3],
-        outline: { color: [128, 128, 128, 0.5], width: 0.5 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }),
       defaultLabel: "No Data"
     });

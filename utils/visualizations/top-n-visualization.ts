@@ -61,7 +61,7 @@ export class TopNVisualization extends BaseVisualization<TopNData> {
     this.polygonRenderer = new SimpleRenderer({
       symbol: new SimpleFillSymbol({
         color: [49, 163, 84, 0.9],
-        outline: { color: [0, 0, 0, 0.8], width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       })
     });
 
@@ -69,7 +69,7 @@ export class TopNVisualization extends BaseVisualization<TopNData> {
       symbol: new SimpleMarkerSymbol({
         color: [49, 163, 84, 0.9],
         size: 10,
-        outline: { color: [0, 0, 0, 0.8], width: 1.5 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       })
     });
   }
@@ -87,7 +87,7 @@ export class TopNVisualization extends BaseVisualization<TopNData> {
     this.polygonRenderer = new SimpleRenderer({
       symbol: new SimpleFillSymbol({
         color: [49, 163, 84, 0.9],
-        outline: { color: [0, 0, 0, 0.8], width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }),
       visualVariables: [{
         type: "color" as const,
@@ -114,7 +114,7 @@ export class TopNVisualization extends BaseVisualization<TopNData> {
       symbol: new SimpleMarkerSymbol({
         color: [49, 163, 84, 0.9],
         size: 10,
-        outline: { color: [0, 0, 0, 0.8], width: 1.5 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }),
       visualVariables: [{
         type: "color" as const,

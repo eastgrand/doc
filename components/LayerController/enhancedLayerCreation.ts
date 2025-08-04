@@ -403,10 +403,7 @@ export function fixElectoralLayer(view: __esri.MapView | null, makeVisible: bool
       field: 'PARTY_1',
       defaultSymbol: new SimpleFillSymbol({
         color: [200, 200, 200, 0.6],
-        outline: { 
-          color: [0, 0, 0, 0.5],
-          width: 0.5
-        }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }),
     uniqueValueInfos: [
       {
@@ -414,7 +411,7 @@ export function fixElectoralLayer(view: __esri.MapView | null, makeVisible: bool
         label: "Liberal Party",
         symbol: new SimpleFillSymbol({
             color: [230, 0, 0, 0.7],
-            outline: { color: [230, 0, 0, 1.0], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
         })
       },
       {
@@ -422,7 +419,7 @@ export function fixElectoralLayer(view: __esri.MapView | null, makeVisible: bool
         label: "Conservative Party",
         symbol: new SimpleFillSymbol({
             color: [0, 0, 230, 0.7],
-            outline: { color: [0, 0, 230, 1.0], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
         })
       },
       {
@@ -430,7 +427,7 @@ export function fixElectoralLayer(view: __esri.MapView | null, makeVisible: bool
         label: "NDP",
         symbol: new SimpleFillSymbol({
             color: [255, 128, 0, 0.7],
-            outline: { color: [255, 128, 0, 1.0], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
         })
       },
       {
@@ -438,7 +435,7 @@ export function fixElectoralLayer(view: __esri.MapView | null, makeVisible: bool
         label: "Bloc Québécois",
         symbol: new SimpleFillSymbol({
             color: [0, 191, 255, 0.7],
-            outline: { color: [0, 191, 255, 1.0], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
         })
       },
       {
@@ -446,7 +443,7 @@ export function fixElectoralLayer(view: __esri.MapView | null, makeVisible: bool
         label: "Green Party",
         symbol: new SimpleFillSymbol({
             color: [0, 200, 0, 0.7],
-            outline: { color: [0, 200, 0, 1.0], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
         })
       }
     ],

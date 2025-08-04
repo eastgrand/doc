@@ -203,8 +203,8 @@ export class RendererOptimizer {
           size: 6,
           color: [0, 92, 230, 0.7],
           outline: {
-            color: [255, 255, 255, 1],
-            width: 1
+            color: [0, 0, 0, 0], // No border
+            width: 0
           }
         }
       };

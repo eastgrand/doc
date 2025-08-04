@@ -40,7 +40,7 @@ export class ChoroplethRenderer extends EnhancedRendererBase {
           style: 'solid',
           width: 1,
           animated: false,
-          color: '#FFFFFF'
+          color: 'transparent'
         },
         hover: {
           enabled: true,
@@ -277,9 +277,8 @@ export class ChoroplethRenderer extends EnhancedRendererBase {
           type: 'simple-fill',
           color: symbolColor, // Now in correct array format
           outline: {
-            color: this.enhanceColorForOutline(baseColor, intensity),
-            width: config.strokeWidth || 1.5,
-            style: 'solid'
+            color: [0, 0, 0, 0], // No border
+            width: 0
           },
           // POLYGON ENHANCEMENT PROPERTIES
           _polygonEffects: {
@@ -338,8 +337,8 @@ export class ChoroplethRenderer extends EnhancedRendererBase {
         type: 'simple-fill',
         color: [200, 200, 200, STANDARD_OPACITY],
         outline: {
-          color: '#CCCCCC',
-          width: 0.5
+          color: [0, 0, 0, 0], // No border
+          width: 0
         }
       },
       // CHOROPLETH ENHANCEMENT FLAGS

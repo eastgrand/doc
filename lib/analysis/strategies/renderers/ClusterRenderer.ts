@@ -461,8 +461,8 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
         color: clusterColors[index],
         size: Math.max(8, Math.min(16, cluster.size / 2)), // Size based on cluster size
         outline: {
-          color: '#FFFFFF',
-          width: 2
+          color: [0, 0, 0, 0], // No border
+          width: 0
         }
       },
       attributes: {

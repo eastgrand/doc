@@ -34,8 +34,8 @@ export class TemplateVisualization extends BaseVisualization<TemplateVisualizati
         symbol: new SimpleFillSymbol({
           color: options.symbolConfig?.color || [255, 140, 0, 0.8],
           outline: {
-            color: options.symbolConfig?.outline?.color || [255, 255, 255, 1],
-            width: options.symbolConfig?.outline?.width || 1
+            color: options.symbolConfig?.outline?.color || [0, 0, 0, 0],
+            width: options.symbolConfig?.outline?.width || 0
           }
         })
       });

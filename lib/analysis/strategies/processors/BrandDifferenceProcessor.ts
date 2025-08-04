@@ -437,12 +437,13 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
     // Use diverging color scheme: red (brand2 advantage) -> white -> blue (brand1 advantage)
+    // Use the exact same colors as strategic analysis (red-to-green)
     const differenceColors = [
-      [215, 48, 39, 0.7],    // Red - Strong brand2 advantage
-      [252, 141, 89, 0.6],   // Light red - Moderate brand2 advantage  
-      [255, 255, 191, 0.5],  // Light yellow - Competitive parity
-      [145, 191, 219, 0.6],  // Light blue - Moderate brand1 advantage
-      [69, 117, 180, 0.7]    // Blue - Strong brand1 advantage
+      [215, 48, 39, 0.6],   // #d73027 - Red (Strong brand2 advantage)
+      [253, 174, 97, 0.6],  // #fdae61 - Orange (Moderate brand2 advantage)
+      [254, 224, 144, 0.6], // #fee090 - Light yellow (Competitive parity)
+      [166, 217, 106, 0.6], // #a6d96a - Light green (Moderate brand1 advantage)
+      [26, 152, 80, 0.6]    // #1a9850 - Dark green (Strong brand1 advantage)
     ];
     
     return {
@@ -454,14 +455,14 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
         symbol: {
           type: 'simple-fill',
           color: differenceColors[i],
-          outline: { color: [255, 255, 255, 0.8], width: 1 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         },
         label: this.formatDifferenceLabel(i, quartileBreaks)
       })),
       defaultSymbol: {
         type: 'simple-fill',
         color: [200, 200, 200, 0.5],
-        outline: { color: [255, 255, 255, 0.8], width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }
     };
   }
@@ -470,12 +471,13 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
+    // Use exact same colors as strategic analysis in rgba format
     const colors = [
-      'rgba(215, 48, 39, 0.7)',    // Strong brand2 advantage
-      'rgba(252, 141, 89, 0.6)',   // Moderate brand2 advantage
-      'rgba(255, 255, 191, 0.5)',  // Competitive parity
-      'rgba(145, 191, 219, 0.6)',  // Moderate brand1 advantage  
-      'rgba(69, 117, 180, 0.7)'    // Strong brand1 advantage
+      'rgba(215, 48, 39, 0.6)',    // #d73027 - Red (Strong brand2 advantage)
+      'rgba(253, 174, 97, 0.6)',   // #fdae61 - Orange (Moderate brand2 advantage)
+      'rgba(254, 224, 144, 0.6)',  // #fee090 - Light yellow (Competitive parity)
+      'rgba(166, 217, 106, 0.6)',  // Light green - Moderate brand1 advantage  
+      'rgba(26, 152, 80, 0.6)'     // Dark green - Strong brand1 advantage
     ];
     
     const legendItems = [];

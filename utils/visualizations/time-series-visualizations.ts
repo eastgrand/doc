@@ -119,7 +119,7 @@ export class TimeSeriesVisualizations {
       symbol: {
         type: 'simple-fill' as const,
         color: this.getColorForBreak(i, numBreaks, colorScheme),
-        outline: { color: [0, 0, 0, 1], width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }
     }));
   }

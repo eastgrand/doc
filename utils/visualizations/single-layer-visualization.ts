@@ -489,14 +489,14 @@ export class SingleLayerVisualization extends BaseVisualization<SingleLayerData>
       field,
       defaultSymbol: new SimpleFillSymbol({
         color: [200, 200, 200, 0.6],
-        outline: { color: [128, 128, 128, 0.5], width: 0.5 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }),
       classBreakInfos: breaks.map((breakValue, index) => ({
         minValue: index === 0 ? Math.min(...values) : breaks[index - 1],
         maxValue: breakValue,
         symbol: new SimpleFillSymbol({
           color: [...colors[index], DEFAULT_FILL_ALPHA],
-          outline: { color: [128, 128, 128, 0.5], width: 0.5 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         })
       }))
     });
@@ -1031,7 +1031,7 @@ export class SingleLayerVisualization extends BaseVisualization<SingleLayerData>
             return new SimpleRenderer({
                 symbol: new SimpleFillSymbol({
                     color: [150, 150, 150, 0.6],
-                    outline: { color: [50, 50, 50, 0.8], width: 0.5 }
+                    outline: { color: [0, 0, 0, 0], width: 0 }
                 })
             });
         }
@@ -1040,7 +1040,7 @@ export class SingleLayerVisualization extends BaseVisualization<SingleLayerData>
         return new SimpleRenderer({
             symbol: new SimpleFillSymbol({
                 color: [150, 150, 150, 0.6],
-                outline: { color: [50, 50, 50, 0.8], width: 0.5 }
+                outline: { color: [0, 0, 0, 0], width: 0 }
             })
         });
       }
@@ -1050,7 +1050,7 @@ export class SingleLayerVisualization extends BaseVisualization<SingleLayerData>
       return new SimpleRenderer({
         symbol: new SimpleFillSymbol({
             color: [255, 0, 0, 0.5], // Red error color
-            outline: { color: [0, 0, 0, 1], width: 1 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
         })
       });
     }

@@ -119,7 +119,7 @@ export class JointHighVisualization extends BaseVisualization<JointHighData> {
     });
 
     const alpha = 0.6; // desired fill opacity
-    const outlineSym = new SimpleLineSymbol({ color: new Color([255, 255, 255, 1]), width: 0.6 });
+    const outlineSym = new SimpleLineSymbol({ color: new Color([0, 0, 0, 0]), width: 0 }); // No border
 
     // Create renderer for combined score
     this.renderer = new ClassBreaksRenderer({

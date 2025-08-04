@@ -91,7 +91,7 @@ export class Symbol3DVisualization extends BaseVisualization<Symbol3DData> {
     return new PointSymbol3D({
       symbolLayers: [
         new ObjectSymbol3DLayer({
-          material: { color: new Color([255, 255, 255, 0.8]) },
+          material: { color: new Color([0, 0, 0, 0]) }, // Transparent
           height: 100000,
           anchor: "bottom",
           width: 50000,

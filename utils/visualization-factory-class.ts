@@ -235,7 +235,7 @@ export class VisualizationFactory {
             items:
               (renderer as any).authoringInfo?.visualVariables?.map((vv: any) => ({
                 label: vv.label,
-                color: vv.color || '#FFFFFF',
+                color: vv.color || 'transparent',
               })) || [],
           };
         }

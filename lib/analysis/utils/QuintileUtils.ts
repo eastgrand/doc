@@ -104,7 +104,7 @@ export function createQuintileVisualizationConfig(
       classificationMethod: 'quintiles',
       opacity: 0.8,
       strokeWidth: 1,
-      strokeColor: '#FFFFFF',
+      strokeColor: 'transparent',
       valueField,
       labelField,
       popupFields: [labelField, valueField],

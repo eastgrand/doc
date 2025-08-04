@@ -292,7 +292,7 @@ export class HexbinVisualization extends BaseVisualization<HexbinData> {
         color: [0, 0, 0, 0],
         outline: {
           color: options?.symbolConfig?.outline?.color || [255, 255, 255, 0.5],
-          width: options?.symbolConfig?.outline?.width || 0.5
+          width: 0
         }
       }),
       visualVariables: [colorVariable]

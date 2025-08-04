@@ -614,14 +614,14 @@ Higher scores indicate markets where Nike has the strongest competitive position
         symbol: {
           type: 'simple-fill',
           color: competitiveColors[i], // Direct array format
-          outline: { color: [255, 255, 255, 0.8], width: 1 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         },
         label: this.formatClassLabel(i, quartileBreaks)
       })),
       defaultSymbol: {
         type: 'simple-fill',
         color: [200, 200, 200, 0.5],
-        outline: { color: [255, 255, 255, 0.8], width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }
     };
   }

@@ -427,8 +427,8 @@ export class ProportionalSymbolVisualization extends BaseVisualization<Proportio
         symbol: new SimpleMarkerSymbol({
           color: options?.symbolConfig?.color || [0, 122, 194, 0.8],
           outline: {
-            color: options?.symbolConfig?.outline?.color || [255, 255, 255, 0.8],
-            width: options?.symbolConfig?.outline?.width || 1
+            color: options?.symbolConfig?.outline?.color || [0, 0, 0, 0], // No border
+            width: 0
           }
         }),
         visualVariables: [

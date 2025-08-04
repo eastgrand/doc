@@ -58,7 +58,7 @@ export const getDefaultLayerRenderer = (
             maxValue: 25,
             symbol: new SimpleFillSymbol({
               color: [215, 48, 39, 0.6], // #d73027 - Strong red (lowest values)
-              outline: { color: [128, 128, 128, 0.5], width: 0.5 }
+              outline: { color: [0, 0, 0, 0], width: 0 }
             }),
             label: '0% - 25% (Lowest)'
           },
@@ -67,7 +67,7 @@ export const getDefaultLayerRenderer = (
             maxValue: 50,
             symbol: new SimpleFillSymbol({
               color: [253, 174, 97, 0.6], // #fdae61 - Orange
-              outline: { color: [128, 128, 128, 0.5], width: 0.5 }
+              outline: { color: [0, 0, 0, 0], width: 0 }
             }),
             label: '25% - 50% (Low)'
           },
@@ -76,7 +76,7 @@ export const getDefaultLayerRenderer = (
             maxValue: 75,
             symbol: new SimpleFillSymbol({
               color: [166, 217, 106, 0.6], // #a6d96a - Light green
-              outline: { color: [128, 128, 128, 0.5], width: 0.5 }
+              outline: { color: [0, 0, 0, 0], width: 0 }
             }),
             label: '50% - 75% (High)'
           },
@@ -85,7 +85,7 @@ export const getDefaultLayerRenderer = (
             maxValue: 100,
             symbol: new SimpleFillSymbol({
               color: [26, 152, 80, 0.6], // #1a9850 - Dark green (highest values)
-              outline: { color: [128, 128, 128, 0.5], width: 0.5 }
+              outline: { color: [0, 0, 0, 0], width: 0 }
             }),
             label: '75% - 100% (Highest)'
           }
@@ -96,7 +96,7 @@ export const getDefaultLayerRenderer = (
       return new SimpleRenderer({
         symbol: new SimpleFillSymbol({
           color: [0, 120, 255, 0.5],
-          outline: { color: [0, 0, 0, 0.5], width: 0.5 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         })
       });
   }

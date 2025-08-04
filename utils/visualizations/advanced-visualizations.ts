@@ -40,7 +40,7 @@ export class AdvancedVisualizations {
         symbol: {
           type: 'simple-fill',
           color: this.getColorForClass(index, numClasses, options.colorScheme || 'sequential'),
-          outline: { color: [0, 0, 0, 1], width: 1 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         }
       }))
     });
@@ -67,7 +67,7 @@ export class AdvancedVisualizations {
         symbol: {
           type: 'simple-fill',
           color: this.getColorForClass(index, breakPoints.length, 'diverging'),
-          outline: { color: [0, 0, 0, 1], width: 1 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         }
       }))
     });
@@ -93,7 +93,7 @@ export class AdvancedVisualizations {
           symbol: {
             type: 'simple-fill',
             color: [255, 0, 0, DEFAULT_FILL_ALPHA],
-            outline: { color: [0, 0, 0, 1], width: 1 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }
         },
         {
@@ -101,7 +101,7 @@ export class AdvancedVisualizations {
           symbol: {
             type: 'simple-fill',
             color: [255, 165, 0, DEFAULT_FILL_ALPHA],
-            outline: { color: [0, 0, 0, 1], width: 1 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }
         },
         {
@@ -109,7 +109,7 @@ export class AdvancedVisualizations {
           symbol: {
             type: 'simple-fill',
             color: [0, 165, 255, DEFAULT_FILL_ALPHA],
-            outline: { color: [0, 0, 0, 1], width: 1 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }
         },
         {
@@ -117,7 +117,7 @@ export class AdvancedVisualizations {
           symbol: {
             type: 'simple-fill',
             color: [0, 0, 255, DEFAULT_FILL_ALPHA],
-            outline: { color: [0, 0, 0, 1], width: 1 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           }
         }
       ]

@@ -178,8 +178,8 @@ export class AnalysisEngine {
                   color: [65, 105, 225, 0.8],
                   size: 12,
                   outline: {
-                    color: '#FFFFFF',
-                    width: 1
+                    color: [0, 0, 0, 0], // No border
+                    width: 0
                   }
                 },
                 _useCentroids: true
@@ -331,8 +331,8 @@ export class AnalysisEngine {
             color: [65, 105, 225, 0.8],
             size: 12,
             outline: {
-              color: '#FFFFFF',
-              width: 1
+              color: [0, 0, 0, 0], // No border
+              width: 0
             }
           },
           _useCentroids: true

@@ -157,8 +157,8 @@ const createDualVariableRenderer = async (
         color: new Color([65, 105, 225, opacity]), // Default blue
         size: 16,
         outline: {
-          color: new Color([255, 255, 255, 1]),
-          width: 1
+          color: new Color([0, 0, 0, 0]), // No border
+          width: 0
         }
       }),
       visualVariables: [

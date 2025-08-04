@@ -232,7 +232,7 @@ export class NetworkVisualizations {
         type: 'simple-marker' as const,
         size: Math.sqrt(node.degree) * 5 + 5,
         color: this.getNodeColor(node.degree, options.colorScheme),
-        outline: { color: [0, 0, 0, 1], width: 1 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }
     }));
 

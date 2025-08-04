@@ -130,10 +130,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         symbol: {
           type: 'simple-fill',
           color: strategicColors[i], // Direct array format
-          outline: {
-            color: [255, 255, 255, 0.8],
-            width: 1
-          }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         },
         label: this.formatClassLabel(i, quartileBreaks)
       });
@@ -146,7 +143,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       defaultSymbol: {
         type: 'simple-fill',
         color: [200, 200, 200, 0.5],
-        outline: { color: [150, 150, 150, 0.8], width: 0.5 }
+        outline: { color: [0, 0, 0, 0], width: 0 }
       }
     };
     

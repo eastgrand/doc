@@ -183,8 +183,8 @@ export class PointLayerVisualization extends BaseVisualization<PointVisualizatio
       color: symbolConfig?.color || [0, 122, 194, 0.8],
       size: symbolConfig?.size || 8,
       outline: {
-        color: symbolConfig?.outline?.color || [255, 255, 255, 0.8],
-        width: symbolConfig?.outline?.width || 1
+        color: symbolConfig?.outline?.color || [0, 0, 0, 0],
+        width: symbolConfig?.outline?.width || 0
       }
     });
 

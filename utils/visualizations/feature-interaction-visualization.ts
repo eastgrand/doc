@@ -250,7 +250,7 @@ export class FeatureInteractionVisualization extends BaseVisualization<FeatureIn
         symbol: {
           type: 'simple-fill',
           color: [200, 200, 200, 0.6],
-          outline: { color: [100, 100, 100, 0.8], width: 1 }
+          outline: { color: [0, 0, 0, 0], width: 0 }
         }
       } as any,
       title: options.title || 'Feature Interactions (Basic)',
@@ -292,7 +292,7 @@ export class FeatureInteractionVisualization extends BaseVisualization<FeatureIn
           symbol: {
             type: 'simple-fill',
             color: colors.minimal,
-            outline: { color: [255, 255, 255, 0.8], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           },
           label: `Minimal ${primaryInteraction.interaction_type}`
         },
@@ -302,7 +302,7 @@ export class FeatureInteractionVisualization extends BaseVisualization<FeatureIn
           symbol: {
             type: 'simple-fill',
             color: colors.weak,
-            outline: { color: [255, 255, 255, 0.8], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           },
           label: `Weak ${primaryInteraction.interaction_type}`
         },
@@ -312,7 +312,7 @@ export class FeatureInteractionVisualization extends BaseVisualization<FeatureIn
           symbol: {
             type: 'simple-fill',
             color: colors.moderate,
-            outline: { color: [255, 255, 255, 0.8], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           },
           label: `Moderate ${primaryInteraction.interaction_type}`
         },
@@ -322,7 +322,7 @@ export class FeatureInteractionVisualization extends BaseVisualization<FeatureIn
           symbol: {
             type: 'simple-fill',
             color: colors.strong,
-            outline: { color: [255, 255, 255, 0.8], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           },
           label: `Strong ${primaryInteraction.interaction_type}`
         },
@@ -332,7 +332,7 @@ export class FeatureInteractionVisualization extends BaseVisualization<FeatureIn
           symbol: {
             type: 'simple-fill',
             color: colors.veryStrong,
-            outline: { color: [255, 255, 255, 0.8], width: 0.5 }
+            outline: { color: [0, 0, 0, 0], width: 0 }
           },
           label: `Very Strong ${primaryInteraction.interaction_type}`
         }

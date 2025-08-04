@@ -15,6 +15,7 @@ import { LegendItem } from '@/components/MapLegend';
 import { optimizeAnalysisFeatures } from '../feature-optimization';
 import { FieldMappingHelper } from './field-mapping-helper';
 import { FIELD_ALIASES } from '../field-aliases';
+import { getQuintileColorScheme } from '@/lib/analysis/utils/QuintileUtils';
 
 // Define FieldType to match ArcGIS expected types
 type FieldType = "string" | "oid" | "small-integer" | "integer" | "single" | "double" | "long" | "date" | "big-integer" | "date-only" | "time-only" | "timestamp-offset" | "geometry" | "blob" | "raster" | "guid" | "global-id" | "xml";
@@ -83,9 +84,18 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
   }
 
   /**
-   * Creates the default diverging renderer for difference visualization
+   * Creates the default diverging renderer for difference visualization using the same colors as strategic analysis
    */
   private createDefaultRenderer(): ClassBreaksRenderer {
+    // Use the exact same colors as strategic analysis
+    const colors = [
+      '#d73027', // Red (lowest strategic value)
+      '#fdae61', // Orange  
+      '#fee090', // Light yellow
+      '#a6d96a', // Light Green
+      '#1a9850'  // Dark Green (highest strategic value)
+    ];
+
     return new ClassBreaksRenderer({
       field: "difference_value",
       classBreakInfos: [
@@ -93,8 +103,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: -Infinity,
           maxValue: -20,
           symbol: new SimpleFillSymbol({
-            color: [215, 48, 39, DEFAULT_FILL_ALPHA], // Standard red - Strong Secondary Advantage
-            outline: { color: [0, 0, 0, 0], width: 0 }
+            color: colors[0], // Uses color directly like VisualizationRenderer
+            outline: { color: 'transparent', width: 0 }
           }),
           label: "Secondary >20 higher"
         },
@@ -102,8 +112,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: -20,
           maxValue: -5,
           symbol: new SimpleFillSymbol({
-            color: [253, 174, 97, DEFAULT_FILL_ALPHA], // Standard orange - Moderate Secondary Advantage
-            outline: { color: [0, 0, 0, 0], width: 0 }
+            color: colors[1], // Uses color directly like VisualizationRenderer
+            outline: { color: 'transparent', width: 0 }
           }),
           label: "Secondary 5-20 higher"
         },
@@ -111,8 +121,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: -5,
           maxValue: 5,
           symbol: new SimpleFillSymbol({
-            color: [255, 255, 191, DEFAULT_FILL_ALPHA], // Standard yellow - Neutral/Tie
-            outline: { color: [0, 0, 0, 0], width: 0 }
+            color: colors[2], // Uses color directly like VisualizationRenderer
+            outline: { color: 'transparent', width: 0 }
           }),
           label: "Similar (±5)"
         },
@@ -120,8 +130,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: 5,
           maxValue: 20,
           symbol: new SimpleFillSymbol({
-            color: [166, 217, 106, DEFAULT_FILL_ALPHA], // Standard light green - Moderate Primary Advantage
-            outline: { color: [0, 0, 0, 0], width: 0 }
+            color: colors[3], // Uses color directly like VisualizationRenderer
+            outline: { color: 'transparent', width: 0 }
           }),
           label: "Primary 5-20 higher"
         },
@@ -129,8 +139,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: 20,
           maxValue: Infinity,
           symbol: new SimpleFillSymbol({
-            color: [26, 152, 80, DEFAULT_FILL_ALPHA], // Standard dark green - Strong Primary Advantage
-            outline: { color: [0, 0, 0, 0], width: 0 }
+            color: colors[4], // Uses color directly like VisualizationRenderer
+            outline: { color: 'transparent', width: 0 }
           }),
           label: "Primary >20 higher"
         }
@@ -166,6 +176,15 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
       breakPoint2 = 25;
     }
 
+    // Use the exact same colors as strategic analysis
+    const colors = [
+      '#d73027', // Red (lowest strategic value)
+      '#fdae61', // Orange  
+      '#fee090', // Light yellow
+      '#a6d96a', // Light Green
+      '#1a9850'  // Dark Green (highest strategic value)
+    ];
+
     return new ClassBreaksRenderer({
       field: "difference_value",
       classBreakInfos: [
@@ -173,8 +192,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: -Infinity,
           maxValue: -breakPoint2,
           symbol: new SimpleFillSymbol({
-            color: [215, 48, 39, DEFAULT_FILL_ALPHA],
-            outline: { color: [0, 0, 0, 0], width: 0 }
+            color: colors[0], // Uses color directly like VisualizationRenderer
+            outline: { color: 'transparent', width: 0 }
           }),
           label: `${secondaryLabel} >${breakPoint2}${unit} higher`
         },
@@ -182,8 +201,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: -breakPoint2,
           maxValue: -breakPoint1,
           symbol: new SimpleFillSymbol({
-            color: [253, 174, 97, DEFAULT_FILL_ALPHA],
-            outline: { color: [0, 0, 0, 0], width: 0 }
+            color: colors[1], // Uses color directly like VisualizationRenderer
+            outline: { color: 'transparent', width: 0 }
           }),
           label: `${secondaryLabel} ${breakPoint1}-${breakPoint2}${unit} higher`
         },
@@ -191,8 +210,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: -breakPoint1,
           maxValue: breakPoint1,
           symbol: new SimpleFillSymbol({
-            color: [255, 255, 191, DEFAULT_FILL_ALPHA],
-            outline: { color: [0, 0, 0, 0], width: 0 }
+            color: colors[2], // Uses color directly like VisualizationRenderer
+            outline: { color: 'transparent', width: 0 }
           }),
           label: `Similar (±${breakPoint1}${unit})`
         },
@@ -200,8 +219,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: breakPoint1,
           maxValue: breakPoint2,
           symbol: new SimpleFillSymbol({
-            color: [166, 217, 106, DEFAULT_FILL_ALPHA], // Standard light green - Moderate Primary Advantage
-            outline: { color: [0, 0, 0, 0], width: 0 }
+            color: colors[3], // Uses color directly like VisualizationRenderer
+            outline: { color: 'transparent', width: 0 }
           }),
           label: `${primaryLabel} ${breakPoint1}-${breakPoint2}${unit} higher`
         },
@@ -209,8 +228,8 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
           minValue: breakPoint2,
           maxValue: Infinity,
           symbol: new SimpleFillSymbol({
-            color: [26, 152, 80, DEFAULT_FILL_ALPHA], // Standard dark green - Strong Primary Advantage
-            outline: { color: [0, 0, 0, 0], width: 0 }
+            color: colors[4], // Uses color directly like VisualizationRenderer
+            outline: { color: 'transparent', width: 0 }
           }),
           label: `${primaryLabel} >${breakPoint2}${unit} higher`
         }
