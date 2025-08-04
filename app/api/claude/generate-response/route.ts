@@ -24,8 +24,8 @@ function validateClusterResponse(response: string, originalAnalysis: string): { 
   const issues: string[] = [];
   
   // Extract ZIP codes from both texts
-  const responseZips = response.match(/\b\d{5}\b/g) || [];
-  const originalZips = originalAnalysis.match(/\b\d{5}\b/g) || [];
+  const responseZips: string[] = response.match(/\b\d{5}\b/g) || [];
+  const originalZips: string[] = originalAnalysis.match(/\b\d{5}\b/g) || [];
   
   // Check for California ZIP codes (90xxx, 91xxx, 92xxx, 93xxx, 94xxx, 95xxx, 96xxx)
   const californiaZips = responseZips.filter(zip => /^9[0-6]\d{3}$/.test(zip));
