@@ -1,4 +1,4 @@
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics, ProcessingContext } from '../../types';
 import { calculateEqualCountQuintiles } from '../../utils/QuintileUtils';
 
 /**
@@ -13,37 +13,106 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
   private readonly BRAND_MAPPINGS = {
     'nike': 'MP30034A_B_P',
     'adidas': 'MP30029A_B_P', 
-    'jordan': 'MP30032A_B_P'
+    'jordan': 'MP30032A_B_P',
+    'puma': 'MP30035A_B_P',
+    'reebok': 'MP30036A_B_P',
+    'new balance': 'MP30033A_B_P',
+    'asics': 'MP30030A_B_P',
+    'converse': 'MP30031A_B_P',
+    'skechers': 'MP30037A_B_P'
   };
 
   validate(rawData: RawAnalysisResult): boolean {
-    if (!rawData || typeof rawData !== 'object') return false;
-    if (!rawData.success) return false;
-    if (!Array.isArray(rawData.results)) return false;
+    console.log('🔍 [BrandDifferenceProcessor] VALIDATE CALLED');
+    console.log('🔍 [BrandDifferenceProcessor] Raw data structure:', {
+      success: rawData?.success,
+      resultsLength: rawData?.results?.length,
+      firstRecordKeys: rawData?.results?.[0] ? Object.keys(rawData.results[0]) : []
+    });
+    
+    if (!rawData || typeof rawData !== 'object') {
+      console.log('❌ [BrandDifferenceProcessor] VALIDATION FAILED: Invalid rawData object');
+      return false;
+    }
+    if (!rawData.success) {
+      console.log('❌ [BrandDifferenceProcessor] VALIDATION FAILED: rawData.success is false');
+      return false;
+    }
+    if (!Array.isArray(rawData.results)) {
+      console.log('❌ [BrandDifferenceProcessor] VALIDATION FAILED: rawData.results is not an array');
+      return false;
+    }
     
     // Brand difference analysis requires brand market share data
     const hasBrandFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
         (record.area_id || record.id || record.ID) &&
-        (record.value_MP30034A_B_P !== undefined || // Nike
-         record.value_MP30029A_B_P !== undefined || // Adidas
-         record.value_MP30032A_B_P !== undefined)   // Jordan
+        // Look for any brand market share fields (MP300*A_B_P pattern)
+        Object.keys(record).some(key => 
+          key.includes('value_MP300') && key.endsWith('A_B_P')
+        )
       );
+    
+    console.log('🔍 [BrandDifferenceProcessor] Brand fields validation result:', hasBrandFields);
+    if (!hasBrandFields) {
+      console.log('❌ [BrandDifferenceProcessor] VALIDATION FAILED: No brand fields found');
+      if (rawData.results.length > 0) {
+        console.log('🔍 [BrandDifferenceProcessor] Available fields in first record:', Object.keys(rawData.results[0]));
+      }
+    } else {
+      console.log('✅ [BrandDifferenceProcessor] VALIDATION PASSED: Brand fields found');
+    }
     
     return hasBrandFields;
   }
 
-  process(rawData: RawAnalysisResult): ProcessedAnalysisData {
+  process(rawData: RawAnalysisResult, context?: ProcessingContext): ProcessedAnalysisData {
+    console.log(`[BrandDifferenceProcessor] ===== BRAND DIFFERENCE PROCESSOR CALLED =====`);
     console.log(`[BrandDifferenceProcessor] Processing ${rawData.results?.length || 0} records for brand difference analysis`);
+    console.log(`[BrandDifferenceProcessor] Context:`, context);
+    
+    // Debug: Show available fields in first record
+    if (rawData.results && rawData.results.length > 0) {
+      const firstRecord = rawData.results[0];
+      const brandFields = Object.keys(firstRecord).filter(key => key.includes('MP30') && key.includes('_P'));
+      console.log(`[BrandDifferenceProcessor] Available brand fields in data:`, brandFields);
+    }
     
     if (!this.validate(rawData)) {
       throw new Error('Invalid data format for BrandDifferenceProcessor');
     }
 
-    // Extract brand parameters from analysis (default to Nike vs Adidas)
-    const brand1 = 'nike'; // TODO: Extract from query/options
-    const brand2 = 'adidas'; // TODO: Extract from query/options
+    // Auto-detect which brand fields are available in the data
+    const availableBrandFields = this.detectAvailableBrandFields(rawData);
+    console.log(`[BrandDifferenceProcessor] Available brand fields:`, availableBrandFields);
+    
+    // Extract brand parameters from context if available
+    const extractedBrands = context?.extractedBrands || [];
+    console.log(`[BrandDifferenceProcessor] Context received:`, { 
+      hasContext: !!context,
+      extractedBrands,
+      query: context?.query
+    });
+    
+    let brand1 = extractedBrands[0]?.toLowerCase() || null;
+    let brand2 = extractedBrands[1]?.toLowerCase() || null;
+    
+    // If no brands from context, use the first two available brands from data
+    if (!brand1 || !brand2) {
+      const detectedBrands = availableBrandFields.slice(0, 2);
+      brand1 = brand1 || detectedBrands[0] || 'nike';
+      brand2 = brand2 || detectedBrands[1] || 'adidas';
+    }
+    
+    // Ensure brands are never null
+    brand1 = brand1 || 'nike';
+    brand2 = brand2 || 'adidas';
+    
+    console.log(`[BrandDifferenceProcessor] Comparing brands: ${brand1} vs ${brand2} (from ${extractedBrands.length > 0 ? 'query' : 'auto-detected from data'})`);
+    
+    // No need to validate mappings anymore since detectAvailableBrandFields handles unknown brands
+    console.log(`[BrandDifferenceProcessor] Processing comparison for: ${brand1} vs ${brand2}`);
 
     // Process records with brand difference calculations
     const records = this.processBrandDifferenceRecords(rawData.results, brand1, brand2);
@@ -70,18 +139,95 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       avgDifference: statistics.mean
     });
 
-    return {
+    // Extract the actual field codes used for the brands (capitalize for field lookup)
+    const brand1Field = this.extractBrandFieldCode(rawData, brand1.charAt(0).toUpperCase() + brand1.slice(1));
+    const brand2Field = this.extractBrandFieldCode(rawData, brand2.charAt(0).toUpperCase() + brand2.slice(1));
+    
+    // Create renderer and legend with brand names
+    const renderer = this.createBrandDifferenceRenderer(records, brand1, brand2);
+    const legend = this.createBrandDifferenceLegend(records, brand1, brand2);
+    
+    console.log(`🔥 [BrandDifferenceProcessor] Created renderer and legend:`, {
+      rendererType: renderer?.type,
+      rendererField: renderer?.field,
+      classBreakCount: renderer?.classBreakInfos?.length,
+      firstLabel: renderer?.classBreakInfos?.[0]?.label,
+      legendTitle: legend?.title,
+      legendItemCount: legend?.items?.length,
+      firstLegendLabel: legend?.items?.[0]?.label
+    });
+
+    const processedData = {
       type: 'brand_difference',
       records,
       summary,
       featureImportance,
       statistics,
       targetVariable: 'brand_difference_score',
-      renderer: this.createBrandDifferenceRenderer(records), 
-      legend: this.createBrandDifferenceLegend(records),
-      brandAnalysis,
-      brandComparison: { brand1, brand2 }
+      renderer,
+      legend,
+      brandAnalysis: {
+        ...brandAnalysis,
+        relevantFields: [brand1Field, brand2Field], // Add the actual fields being compared
+        brandComparison: { brand1, brand2 }
+      }
     };
+    
+    console.log(`[BrandDifferenceProcessor] ===== RETURNING PROCESSED DATA =====`);
+    console.log(`[BrandDifferenceProcessor] Brand comparison: ${brand1} (${brand1Field}) vs ${brand2} (${brand2Field})`);
+    console.log(`[BrandDifferenceProcessor] Relevant fields for visualization:`, [brand1Field, brand2Field]);
+    console.log(`[BrandDifferenceProcessor] Records generated:`, processedData.records?.length || 0);
+    
+    return processedData;
+  }
+
+  /**
+   * Extract the actual field code for a brand from the raw data
+   */
+  private extractBrandFieldCode(rawData: RawAnalysisResult, brandName: string): string {
+    // Check the first result record to find which field corresponds to the brand
+    if (!rawData.results || rawData.results.length === 0) {
+      // Fallback to known brand field mappings
+      const brandFieldMap: Record<string, string> = {
+        'Nike': 'MP30034A_B_P',
+        'Adidas': 'MP30029A_B_P',
+        'Puma': 'MP30035A_B_P',
+        'Reebok': 'MP30036A_B_P',
+        'New Balance': 'MP30033A_B_P',
+        'Asics': 'MP30030A_B_P',
+        'Converse': 'MP30031A_B_P',
+        'Jordan': 'MP30032A_B_P',
+        'Skechers': 'MP30037A_B_P'
+      };
+      return brandFieldMap[brandName] || 'MP30034A_B_P';
+    }
+    
+    // Look through the first record to find fields that might match the brand
+    const sampleRecord = rawData.results[0];
+    const brandUpper = brandName.toUpperCase();
+    
+    // Find fields that contain data and might be brand fields
+    for (const [key, value] of Object.entries(sampleRecord)) {
+      // Check if this is a percentage field for athletic shoes (prefer value_ fields over shap_)
+      if (key.includes('MP300') && key.endsWith('_P') && typeof value === 'number' && key.includes('value_')) {
+        // Extract just the base field code (e.g., MP30029A_B_P from value_MP30029A_B_P)
+        const baseField = key.replace('value_', '');
+        // Try to match based on known patterns
+        if (brandName === 'Nike' && key.includes('34A_B')) return baseField;
+        if (brandName === 'Adidas' && key.includes('29A_B')) return baseField;
+        if (brandName === 'Puma' && key.includes('35A_B')) return baseField;
+        if (brandName === 'Reebok' && key.includes('36A_B')) return baseField;
+        if (brandName === 'New Balance' && key.includes('33A_B')) return baseField;
+        if (brandName === 'Asics' && key.includes('30A_B')) return baseField;
+        if (brandName === 'Converse' && key.includes('31A_B')) return baseField;
+        if (brandName === 'Jordan' && key.includes('32A_B')) return baseField;
+        if (brandName === 'Skechers' && key.includes('37A_B')) return baseField;
+      }
+    }
+    
+    // Default fallback
+    console.warn(`[BrandDifferenceProcessor] Could not find field for brand: ${brandName}`);
+    return brandName === 'Nike' ? 'MP30034A_B_P' : 'MP30029A_B_P';
   }
 
   // ============================================================================
@@ -89,8 +235,14 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
   // ============================================================================
 
   private processBrandDifferenceRecords(rawRecords: any[], brand1: string, brand2: string): GeographicDataPoint[] {
-    const brand1Field = `value_${this.BRAND_MAPPINGS[brand1 as keyof typeof this.BRAND_MAPPINGS]}`;
-    const brand2Field = `value_${this.BRAND_MAPPINGS[brand2 as keyof typeof this.BRAND_MAPPINGS]}`;
+    // Get field codes - either from BRAND_MAPPINGS or detect from data
+    const brand1FieldCode = this.getBrandFieldCode(rawRecords[0], brand1);
+    const brand2FieldCode = this.getBrandFieldCode(rawRecords[0], brand2);
+    
+    const brand1Field = `value_${brand1FieldCode}`;
+    const brand2Field = `value_${brand2FieldCode}`;
+    
+    console.log(`[BrandDifferenceProcessor] Using fields: ${brand1Field} vs ${brand2Field}`);
 
     return rawRecords.map((record, index) => {
       const area_id = record.area_id || record.id || record.GEOID || `area_${index}`;
@@ -432,7 +584,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
   // RENDERING METHODS
   // ============================================================================
 
-  private createBrandDifferenceRenderer(records: any[]): any {
+  private createBrandDifferenceRenderer(records: any[], brand1: string, brand2: string): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
@@ -457,7 +609,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
           color: differenceColors[i],
           outline: { color: [0, 0, 0, 0], width: 0 }
         },
-        label: this.formatDifferenceLabel(i, quartileBreaks)
+        label: this.formatDifferenceLabel(i, quartileBreaks, brand1, brand2)
       })),
       defaultSymbol: {
         type: 'simple-fill',
@@ -467,7 +619,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     };
   }
 
-  private createBrandDifferenceLegend(records: any[]): any {
+  private createBrandDifferenceLegend(records: any[], brand1: string, brand2: string): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
@@ -483,7 +635,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const legendItems = [];
     for (let i = 0; i < quartileBreaks.length; i++) {
       legendItems.push({
-        label: this.formatDifferenceLabel(i, quartileBreaks),
+        label: this.formatDifferenceLabel(i, quartileBreaks, brand1, brand2),
         color: colors[i],
         minValue: quartileBreaks[i].min,
         maxValue: quartileBreaks[i].max
@@ -514,12 +666,100 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     ];
   }
 
-  private formatDifferenceLabel(classIndex: number, breaks: Array<{min: number, max: number}>): string {
+  private formatDifferenceLabel(classIndex: number, breaks: Array<{min: number, max: number}>, brand1: string, brand2: string): string {
     const range = breaks[classIndex];
-    if (range.max <= -20) return `${range.max.toFixed(0)}%+ Brand 2 Advantage`;
+    const brand1Name = brand1.charAt(0).toUpperCase() + brand1.slice(1);
+    const brand2Name = brand2.charAt(0).toUpperCase() + brand2.slice(1);
+    
+    if (range.max <= -20) return `${range.max.toFixed(0)}%+ ${brand2Name} Advantage`;
     if (range.max <= 0) return `${range.min.toFixed(0)}% to ${range.max.toFixed(0)}%`;
-    if (range.min >= 20) return `${range.min.toFixed(0)}%+ Brand 1 Advantage`;
+    if (range.min >= 20) return `${range.min.toFixed(0)}%+ ${brand1Name} Advantage`;
     if (range.min >= 0) return `${range.min.toFixed(0)}% to ${range.max.toFixed(0)}%`;
     return `${range.min.toFixed(0)}% to ${range.max.toFixed(0)}%`;
+  }
+
+  /**
+   * Detect which brand fields are actually available in the raw data
+   */
+  private detectAvailableBrandFields(rawData: RawAnalysisResult): string[] {
+    if (!rawData.results || rawData.results.length === 0) {
+      return [];
+    }
+
+    const brandFieldsFound = new Map<string, string>(); // brand name -> field code
+    const sampleRecord = rawData.results[0];
+    
+    // Look for ALL athletic shoe brand fields in the data (MP300XX_B_P pattern)
+    for (const [key, value] of Object.entries(sampleRecord)) {
+      if (key.includes('value_MP300') && key.endsWith('A_B_P') && typeof value === 'number') {
+        // Extract the field code (e.g., MP30034A_B_P from value_MP30034A_B_P)
+        const fieldCode = key.replace('value_', '');
+        
+        // Try to find a known brand name from our mappings
+        let brandName: string | null = null;
+        for (const [brand, code] of Object.entries(this.BRAND_MAPPINGS)) {
+          if (code === fieldCode) {
+            brandName = brand;
+            break;
+          }
+        }
+        
+        // If we don't know this brand, create a generic name from the field code
+        if (!brandName) {
+          // Extract the numeric part to create a generic brand name
+          const match = fieldCode.match(/MP300(\d+)A_B_P/);
+          if (match) {
+            brandName = `brand${match[1]}`;
+            console.log(`[BrandDifferenceProcessor] Found unknown brand field ${fieldCode}, naming it: ${brandName}`);
+          } else {
+            brandName = fieldCode; // Use field code as brand name if pattern doesn't match
+          }
+        }
+        
+        brandFieldsFound.set(brandName, fieldCode);
+      }
+    }
+    
+    const availableBrands = Array.from(brandFieldsFound.keys());
+    console.log(`[BrandDifferenceProcessor] Detected ${availableBrands.length} brands in data:`, availableBrands);
+    console.log(`[BrandDifferenceProcessor] Brand field mapping:`, Object.fromEntries(brandFieldsFound));
+    return availableBrands;
+  }
+
+  /**
+   * Get the field code for a brand, handling both known and unknown brands
+   */
+  private getBrandFieldCode(sampleRecord: any, brandName: string): string {
+    // First check if it's a known brand
+    const knownCode = this.BRAND_MAPPINGS[brandName as keyof typeof this.BRAND_MAPPINGS];
+    if (knownCode) {
+      return knownCode;
+    }
+    
+    // Otherwise, search for the field in the data
+    for (const [key, value] of Object.entries(sampleRecord)) {
+      if (key.includes('value_MP300') && key.endsWith('A_B_P') && typeof value === 'number') {
+        const fieldCode = key.replace('value_', '');
+        
+        // Check if this field matches any known brand
+        for (const [brand, code] of Object.entries(this.BRAND_MAPPINGS)) {
+          if (code === fieldCode && brand.toLowerCase() === brandName.toLowerCase()) {
+            return fieldCode;
+          }
+        }
+        
+        // If brandName looks like a field code pattern (e.g., "brand36" for Reebok), try to match it
+        if (brandName.startsWith('brand')) {
+          const brandNum = brandName.replace('brand', '');
+          if (fieldCode.includes(brandNum)) {
+            console.log(`[BrandDifferenceProcessor] Matched ${brandName} to field ${fieldCode}`);
+            return fieldCode;
+          }
+        }
+      }
+    }
+    
+    console.warn(`[BrandDifferenceProcessor] Could not find field code for brand: ${brandName}, using e as fallback`);
+    return 'MP30034A_B_P';
   }
 }

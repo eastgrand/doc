@@ -332,8 +332,15 @@ export interface AnalysisHistoryItem {
 // STRATEGY PATTERN INTERFACES
 // ============================================================================
 
+export interface ProcessingContext {
+  query?: string;
+  endpoint?: string;
+  extractedBrands?: string[];
+  analysisOptions?: AnalysisOptions;
+}
+
 export interface DataProcessorStrategy {
-  process(rawData: RawAnalysisResult): ProcessedAnalysisData;
+  process(rawData: RawAnalysisResult, context?: ProcessingContext): ProcessedAnalysisData;
   validate(rawData: RawAnalysisResult): boolean;
 }
 

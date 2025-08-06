@@ -46,7 +46,7 @@ export class DataProcessor {
    * Process raw results with geographic analysis support
    */
   async processResultsWithGeographicAnalysis(rawResults: RawAnalysisResult, endpoint: string, query: string = ''): Promise<ProcessedAnalysisData & { geoAnalysis?: any }> {
-    const processedData = this.processResults(rawResults, endpoint);
+    const processedData = this.processResults(rawResults, endpoint, query);
     
     // Perform geographic analysis if query contains geographic references
     if (query && query.trim().length > 2) {
@@ -146,11 +146,20 @@ export class DataProcessor {
   /**
    * Process raw results into standardized format using endpoint-specific processors
    */
-  processResults(rawResults: RawAnalysisResult, endpoint: string): ProcessedAnalysisData {
+  processResults(rawResults: RawAnalysisResult, endpoint: string, query?: string): ProcessedAnalysisData {
+    
+    console.log(`🔥 [DataProcessor] processResults called for endpoint: ${endpoint}, query: "${query || 'NO QUERY'}"`);
+    console.log(`🔥 [DataProcessor] Raw data structure:`, {
+      success: rawResults?.success,
+      resultsLength: rawResults?.results?.length,
+      firstRecordKeys: rawResults?.results?.[0] ? Object.keys(rawResults.results[0]).slice(0, 10) : []
+    });
     
     try {
       // Get the appropriate processor for this endpoint
       const processor = this.getProcessorForEndpoint(endpoint);
+      
+      console.log(`🔥 [DataProcessor] Using processor: ${processor.constructor.name} for endpoint: ${endpoint}`);
       
       
       // CRITICAL DEBUG: Show first record to confirm data structure
@@ -170,8 +179,15 @@ export class DataProcessor {
         throw new Error(`Data validation failed for ${endpoint}. The ${processor.constructor.name} processor could not validate the data structure. This endpoint requires specific data fields.`);
       }
 
-      // Process the data with specialized processor
-      const processedData = processor.process(rawResults);
+      // Process the data with specialized processor  
+      let processedData: ProcessedAnalysisData;
+      if (endpoint === '/brand-difference' && query) {
+        const extractedBrands = this.extractBrandsFromQuery(query);
+        console.log(`🔥 [DataProcessor] Brand-difference context created:`, { query, extractedBrands });
+        processedData = processor.process(rawResults, { query, endpoint, extractedBrands });
+      } else {
+        processedData = processor.process(rawResults);
+      }
       
       // Override targetVariable with ConfigurationManager setting
       const scoreConfig = this.configManager.getScoreConfig(endpoint);
@@ -295,6 +311,15 @@ export class DataProcessor {
       },
       targetVariable: rawResults.model_info?.target_variable || 'unknown'
     };
+  }
+
+  /**
+   * Extract brand names from query for brand-difference analysis
+   */
+  private extractBrandsFromQuery(query: string): string[] {
+    const lowerQuery = query.toLowerCase();
+    const brands = ['nike', 'adidas', 'puma', 'underarmour', 'newbalance', 'skechers', 'jordan', 'converse', 'vans', 'reebok'];
+    return brands.filter(brand => lowerQuery.includes(brand));
   }
 }
 

@@ -1,29 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prefer-const */
 /* eslint-disable no-case-declarations */
-import { LayerResult } from '../types/geospatial-ai-types';
-import { Symbol3DVisualization } from './visualizations/symbol3d-visualization';
 // OBSOLETE: TrendsCorrelationVisualization import removed
-import { getLayerMetadata } from '../config/layers';
-import Graphic from '@arcgis/core/Graphic';
-import { Polygon } from '@arcgis/core/geometry';
-import { BaseLayerConfig } from '../types/layers';
 import { VisualizationType, VisualizationConfig } from '@/types/visualization';
-import { layers } from '@/config/layers';
 import {
-  VisualizationOptions as BaseVisualizationOptions,
   VisualizationResult
 } from './visualizations/base-visualization';
-import { createPopupTemplateFromConfig, createSimplePopupConfigForLayer, createStandardizedPopupTemplate, StandardizedPopupConfig } from './popup-utils';
+import { createPopupTemplateFromConfig } from './popup-utils';
 import { PopupConfiguration } from '@/types/popup-config';
 // import PopupTemplate from "@arcgis/core/PopupTemplate";
-import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import { Renderer } from '@arcgis/core/renderers';
 import { VisualizationIntegration } from './visualization-integration';
 import { AdvancedVisualizations } from './visualizations/advanced-visualizations';
 import { AnalysisResult, EnhancedAnalysisResult } from '@/types/analysis';
 import { RankingVisualization } from './visualizations/ranking-visualization';
-import { createVisualization as createViz } from './visualizations';
-import { SingleLayerVisualization } from './visualizations/single-layer-visualization';
 import { createGeometry } from '@/utils/geometry';
 import { FIELD_ALIASES } from './field-aliases';
 import { CorrelationData } from './visualizations/correlation-visualization';
@@ -33,26 +24,8 @@ import PopupTemplate from '@arcgis/core/PopupTemplate';
 // Add FieldType type at the top of the file
 type FieldType = "string" | "oid" | "small-integer" | "integer" | "single" | "double" | "long" | "date" | "big-integer" | "date-only" | "time-only" | "timestamp-offset" | "geometry" | "blob" | "raster" | "guid" | "global-id" | "xml";
 
-interface CorrelationDataPoint {
-  attributes: {
-    OBJECTID: number;
-    primary_value: number;
-    comparison_value: number;
-    correlation_strength: number;
-  };
-}
 
-interface Symbol3DData {
-  features: any[];
-  layerName: string;
-  rendererField: string;
-}
 
-interface LayerField {
-  name: string;
-  type: string;
-  label?: string;
-}
 
 export interface LocalLayerResult {
   layer: {
@@ -108,9 +81,7 @@ export interface LayerConfig {
 
 export function determineVisualizationType(
   query: string,
-  relevantLayers: LayerFeatures[],
-  context: QueryContext
-): VisualizationType {
+  relevantLayers: LayerFeatures[]): VisualizationType {
   // Check for correlation queries (removed brand-specific limitation)
   const isCorrelationQuery = query.toLowerCase().includes('correlation') ||
     query.toLowerCase().includes('relationship') ||
@@ -225,6 +196,14 @@ export class VisualizationFactory {
     layerResults: any[],
     options: VisualizationOptions
   ): Promise<VisualizationResult> {
+    console.log('🎯🎯🎯 [VisualizationFactory] createVisualization called with:', {
+      layerCount: layerResults?.length,
+      query: options?.query,
+      visualizationMode: options?.visualizationMode,
+      analysisType: (this.visualizationIntegration?.analysisResult as any)?.type,
+      hasAnalysisResult: !!this.visualizationIntegration?.analysisResult
+    });
+    
     // Note: Enhanced styling will be applied after layer is created to preserve popup functionality
     const { visualizationMode } = options;
     
@@ -345,7 +324,6 @@ export class VisualizationFactory {
           const normalise = (s: string) => s.replace(/[\s_\-]+/g, '').toLowerCase();
 
           // Helper to convert CamelCase to snake_case then lower-case
-          const toSnake = (str: string) => str && str.replace(/([a-z0-9])([A-Z])/g, '$1_$2').replace(/[\s-]+/g, '_').toLowerCase();
 
           const { enhancedAnalysis } = this.visualizationIntegration;
           const relevantFields = enhancedAnalysis?.relevantFields || [];
@@ -517,27 +495,160 @@ export class VisualizationFactory {
         }
 
         case 'difference': {
-         // console.log('[VisualizationFactory DEBUG] Creating difference visualization');
+          console.log('🔥 [VisualizationFactory DEBUG] ENTERED DIFFERENCE CASE');
+          
+          // CRITICAL FIX: For brand-difference, ensure we use fresh processed data, not cached layer data
+          const analysisResult = this.visualizationIntegration?.analysisResult as any;
+          console.log('🔥 [VisualizationFactory DEBUG] analysisResult:', {
+            type: analysisResult?.type,
+            hasRenderer: !!analysisResult?.renderer,
+            hasLegend: !!analysisResult?.legend,
+            hasBrandAnalysis: !!analysisResult?.brandAnalysis
+          });
+          
+          // If this is a brand_difference analysis, force fresh data processing
+          if (analysisResult?.type === 'brand_difference') {
+            console.log('🎯 [VisualizationFactory] BRAND DIFFERENCE: Using fresh analysis data instead of cached layers');
+            
+            // Check if processor already provided renderer and legend
+            if (analysisResult?.renderer && analysisResult?.legend) {
+              console.log('[VisualizationFactory] Using pre-built renderer from BrandDifferenceProcessor');
+              result = {
+                layer: null, // Will be set by the renderer
+                extent: null,
+                renderer: analysisResult.renderer
+              } as any;
+              break;
+            }
+            
+            console.log('🎯 [VisualizationFactory] Creating fresh brand difference visualization from analysis data');
+            
+            // Use analysis records instead of cached layer features
+            if (analysisResult?.records && analysisResult.records.length > 0) {
+              // Convert analysis records to features format expected by DifferenceVisualization
+              const freshFeatures = analysisResult.records.map((record: any, index: number) => ({
+                properties: {
+                  ...record.properties,
+                  area_id: record.area_id,
+                  area_name: record.area_name,
+                  value: record.value,
+                  brand_difference_score: record.brand_difference_score || record.value
+                },
+                geometry: record.geometry || { type: 'Point', coordinates: record.coordinates || [0, 0] }
+              }));
+              
+              // Get brand fields from the analysis
+              const brandFields = analysisResult.brandAnalysis?.relevantFields || [];
+              if (brandFields.length >= 2) {
+                console.log('🎯 [VisualizationFactory] Using brand fields from analysis:', brandFields);
+                
+                const { DifferenceVisualization } = await import('./visualizations/difference-visualization');
+                const differenceViz = new DifferenceVisualization();
+                
+                // Create a mock layer result with fresh data
+                const freshLayerResult = {
+                  layer: { name: 'Brand Difference Analysis', id: 'brand-difference-fresh' },
+                  features: freshFeatures
+                };
+                
+                result = await differenceViz.create({
+                  features: freshFeatures,
+                  layerName: 'Brand Difference Analysis',
+                  layerConfig: { 
+                    name: 'Brand Difference Analysis',
+                    id: 'brand-difference-fresh',
+                    rendererField: 'brand_difference_score'
+                  },
+                  rendererField: 'brand_difference_score',
+                  primaryField: brandFields[0],
+                  secondaryField: brandFields[1],
+                  primaryLabel: this.getBrandNameFromField(brandFields[0]),
+                  secondaryLabel: this.getBrandNameFromField(brandFields[1]),
+                  differenceField: 'brand_difference_score',
+                  unitType: 'percentage'
+                });
+                
+                console.log('🎯 [VisualizationFactory] Fresh brand difference visualization created');
+                break;
+              }
+            }
+            
+            console.log('⚠️ [VisualizationFactory] Could not create fresh brand difference visualization, falling back to normal flow');
+          }
+          
           const { DifferenceVisualization } = await import('./visualizations/difference-visualization');
           const differenceViz = new DifferenceVisualization();
           
           // Get the relevant fields for the difference analysis
           const { enhancedAnalysis } = this.visualizationIntegration;
-          const relevantFields = enhancedAnalysis?.relevantFields || [];
+          // For brand difference, check multiple places for relevant fields
+          let relevantFields = [];
           
-          const primaryField = relevantFields[0] || options.primaryField || 'MP30034A_B';
-          const secondaryField = relevantFields[1] || 'MP30029A_B_P';
+          // First check if this is a brand_difference analysis result
+          // Use the same analysisResult variable instead of redeclaring
+          if (analysisResult?.type === 'brand_difference') {
+            relevantFields = analysisResult.brandAnalysis?.relevantFields || [];
+            console.log('[VisualizationFactory] Found brand_difference analysis with fields:', relevantFields);
+          }
           
-          /*console.log('[VisualizationFactory DEBUG] Field configuration:', {
+          // Fallback to other sources
+          if (!relevantFields || relevantFields.length === 0) {
+            const enhancedAnalysisAny = enhancedAnalysis as any;
+            relevantFields = enhancedAnalysisAny?.brandAnalysis?.relevantFields || 
+                           enhancedAnalysisAny?.relevantFields || 
+                           [];
+          }
+          
+          console.log('[VisualizationFactory] Difference visualization debug:', {
+            relevantFields,
+            brandAnalysis: (enhancedAnalysis as any)?.brandAnalysis,
+            enhancedAnalysisType: (enhancedAnalysis as any)?.type,
+            analysisResultType: (this.visualizationIntegration?.analysisResult as any)?.type,
+            hasAnalysisResult: !!this.visualizationIntegration?.analysisResult,
+            optionsPrimaryField: options.primaryField,
+            fallbackWouldBeUsed: !relevantFields[0] && !options.primaryField
+          });
+          
+          // CRITICAL FIX: Don't default to Nike/Adidas - require fields from analysis
+          if (!relevantFields || relevantFields.length < 2) {
+            console.error('[VisualizationFactory] Difference visualization requires 2 fields from analysis, got:', relevantFields);
+            throw new Error(`Difference visualization requires 2 brand fields from analysis. Got: ${relevantFields?.length || 0} fields. Please specify brands in your query.`);
+          }
+          
+          const primaryField = relevantFields[0] || options.primaryField;
+          const secondaryField = relevantFields[1];
+          
+          if (!primaryField || !secondaryField) {
+            throw new Error('Could not determine brand fields for difference visualization. Please specify two brands in your query.');
+          }
+          
+          console.log('[VisualizationFactory] Using fields for difference:', {
             relevantFields,
             primaryField,
             secondaryField,
             optionsPrimaryField: options.primaryField,
             enhancedAnalysisFields: enhancedAnalysis?.relevantFields
-          });*/
+          });
           
           // Prepare features with proper structure for DifferenceVisualization
           const primaryLayer = localLayerResults[0];
+          
+          // Debug: Check what fields are actually available in the data
+          if (primaryLayer.features && primaryLayer.features.length > 0) {
+            const sampleFeature = primaryLayer.features[0];
+            const availableFields = Object.keys(sampleFeature.properties || sampleFeature.attributes || {});
+            console.log('[VisualizationFactory] Available fields in features:', {
+              availableFields: availableFields.filter(f => f.includes('MP30')),
+              primaryFieldExists: availableFields.includes(primaryField),
+              secondaryFieldExists: availableFields.includes(secondaryField),
+              sampleData: availableFields.reduce((acc, field) => {
+                if (field.includes('MP30')) {
+                  acc[field] = (sampleFeature.properties || sampleFeature.attributes || {})[field];
+                }
+                return acc;
+              }, {} as any)
+            });
+          }
           
           // Debug the first few features to see what data we have
           /*  console.log('[VisualizationFactory DEBUG] Sample features:', {
@@ -556,8 +667,15 @@ export class VisualizationFactory {
               if (!feature) return null;
               
               const props = feature.properties || feature.attributes || {};
-              const primaryValue = this.getNumericValue(props[primaryField]) || 0;
-              const secondaryValue = this.getNumericValue(props[secondaryField]) || 0;
+              // Try multiple field name formats since field names might have different cases or prefixes
+              const primaryValue = this.getNumericValue(props[primaryField]) || 
+                                 this.getNumericValue(props[`value_${primaryField}`]) ||
+                                 this.getNumericValue(props[primaryField.toLowerCase()]) ||
+                                 this.getNumericValue(props[primaryField.toUpperCase()]) || 0;
+              const secondaryValue = this.getNumericValue(props[secondaryField]) || 
+                                   this.getNumericValue(props[`value_${secondaryField}`]) ||
+                                   this.getNumericValue(props[secondaryField.toLowerCase()]) ||
+                                   this.getNumericValue(props[secondaryField.toUpperCase()]) || 0;
               const differenceValue = primaryValue - secondaryValue;
               
               // Debug first few features
@@ -611,14 +729,45 @@ export class VisualizationFactory {
             return { layer: null, extent: null };
           }
           
+          // Extract brand names from field codes
+          const getBrandFromField = (field: string): string => {
+            const brandMap: Record<string, string> = {
+              'MP30034A_B': 'Nike',
+              'MP30034A_B_P': 'Nike',
+              'MP30029A_B': 'Adidas',
+              'MP30029A_B_P': 'Adidas',
+              'MP30030A_B': 'Asics',
+              'MP30030A_B_P': 'Asics',
+              'MP30031A_B': 'Converse',
+              'MP30031A_B_P': 'Converse',
+              'MP30032A_B': 'Jordan',
+              'MP30032A_B_P': 'Jordan',
+              'MP30033A_B': 'New Balance',
+              'MP30033A_B_P': 'New Balance',
+              'MP30035A_B': 'Puma',
+              'MP30035A_B_P': 'Puma',
+              'MP30036A_B': 'Reebok',
+              'MP30036A_B_P': 'Reebok',
+              'MP30037A_B': 'Skechers',
+              'MP30037A_B_P': 'Skechers'
+            };
+            
+            // Check both uppercase and original field format
+            const upperField = field.toUpperCase();
+            return brandMap[upperField] || brandMap[field] || 'Primary';
+          };
+
+          const primaryBrand = getBrandFromField(primaryField);
+          const secondaryBrand = getBrandFromField(secondaryField);
+
           result = await differenceViz.create({
             features: featuresForViz,
             layerName: primaryLayer.layer.name,
             rendererField: 'difference_value',
             primaryField: primaryField,
             secondaryField: secondaryField,
-            primaryLabel: 'Nike',
-            secondaryLabel: 'Adidas',
+            primaryLabel: primaryBrand,
+            secondaryLabel: secondaryBrand,
             differenceField: 'difference_value',
             unitType: 'percentage',
             layerConfig: {
@@ -707,37 +856,6 @@ export class VisualizationFactory {
     }
   }
 
-  private prepareSingleLayerData(layerResults: any[], options: VisualizationOptions) {
-        const layerResult = layerResults[0];
-    if (!layerResult) return null;
-        
-        const layerConfig = layerResult.layer || layerResult;
-        const layerName = layerConfig.name || 'Default Layer';
-        
-    // Always use thematic_value as the default renderer field
-    const rendererField = layerConfig.rendererField || 'thematic_value';
-
-    // Build field definitions and ensure we carry a friendly label for the renderer field.
-    // If the underlying layer config already supplies a label we honour it; otherwise
-    // we fall back to FieldMappingHelper which converts the raw code into a readable name.
-    const existingRendererFieldLabel = layerConfig.fields?.find((f: { name: string }) => f.name === rendererField)?.label;
-    const friendlyRendererLabel = existingRendererFieldLabel || FieldMappingHelper.getFriendlyFieldName(rendererField);
-
-    const fields = [
-      { name: 'OBJECTID', type: 'oid' as const, label: 'Object ID' },
-      { name: rendererField, type: 'double' as const, label: friendlyRendererLabel }
-    ];
-    
-    return {
-          features: layerResult.features || [],
-          layerName: layerName,
-      rendererField: rendererField,
-          layerConfig: {
-        fields,
-            sourceSR: 4326
-          }
-        };
-  }
 
   private prepareCorrelationData(layerResults: any[], options: VisualizationOptions) {
     const combinedFeatures = layerResults.flatMap(result => result.features || []);
@@ -980,67 +1098,37 @@ export class VisualizationFactory {
     } as any;
   }
 
-  private createAdvancedRenderer(): Renderer | null {
-    const { enhancedAnalysis, analysisResult } = this.visualizationIntegration;
-    
-    // Add comprehensive null checks for enhancedAnalysis and its properties
-    if (!enhancedAnalysis?.queryType || !enhancedAnalysis?.visualizationStrategy) {
-      console.warn('[VisualizationFactory] Missing required analysis properties for advanced renderer');
-      return null;
-    }
-    
-    const { queryType, visualizationStrategy } = enhancedAnalysis;
-    
-    const advancedOptions = {
-      features: [], // Required by AdvancedVisualizationOptions but not available from EnhancedAnalysisResult
-      field: visualizationStrategy.targetVariable,
-      ...this.advancedOptions
-    };
-
-    switch (queryType) {
-      case 'correlation':
-        if (!visualizationStrategy.correlationField) {
-          console.warn('[VisualizationFactory] Missing correlation field for correlation visualization');
-          return null;
-        }
-        return AdvancedVisualizations.createBivariateRenderer({
-          ...advancedOptions,
-          targetField: visualizationStrategy.correlationField
-        });
-
-      case 'ranking':
-        if (!visualizationStrategy.rankingField) {
-          console.warn('[VisualizationFactory] Missing ranking field for ranking visualization');
-          return null;
-        }
-        return AdvancedVisualizations.createQuantileRenderer({
-          ...advancedOptions,
-          field: visualizationStrategy.rankingField
-        });
-
-      case 'distribution':
-        if (!visualizationStrategy.distributionField) {
-          console.warn('[VisualizationFactory] Missing distribution field for distribution visualization');
-          return null;
-        }
-        return AdvancedVisualizations.createStandardDeviationRenderer({
-          ...advancedOptions,
-          field: visualizationStrategy.distributionField
-        });
-
-      default:
-        return AdvancedVisualizations.createHeatmapRenderer(advancedOptions);
-    }
-  }
 
   public getVisualizationConfig(): VisualizationConfig {
     return this.visualizationIntegration.getVisualizationConfig();
+  }
+
+  public updateAnalysisResult(analysisResult: any, enhancedAnalysis?: any): void {
+    console.log('🔥 [VisualizationFactory] Updating with fresh analysis result:', {
+      type: analysisResult?.type,
+      hasRenderer: !!analysisResult?.renderer,
+      hasLegend: !!analysisResult?.legend
+    });
+    
+    this.visualizationIntegration.updateAnalysisResult(analysisResult, enhancedAnalysis);
   }
 
   private determineVisualizationType(
     layerResults: LocalLayerResult[],
     options: VisualizationOptions
   ): 'correlation' | 'point-layer' | 'single-layer' | 'trends' | 'trends-correlation' | 'joint-high' | 'multivariate' | 'ranking' | 'choropleth' | 'factor-importance' | 'feature-interaction' | 'difference' | 'bivariate' | 'hotspot' {
+    
+    console.log('🔥 [VisualizationFactory] DEBUG: Determining visualization type');
+    console.log('🔥 [VisualizationFactory] Query:', options.query);
+    console.log('🔥 [VisualizationFactory] Options visualizationMode:', options.visualizationMode);
+    
+    const analysisResult = this.visualizationIntegration?.analysisResult as any;
+    console.log('🔥 [VisualizationFactory] Analysis result type:', analysisResult?.type);
+    
+    if (analysisResult?.type === 'brand_difference') {
+      console.log('🎯 [VisualizationFactory] FOUND brand_difference analysis - should use difference visualization');
+      return 'difference';
+    }
     /*console.log('Determining visualization type:', {
       query: options.query,
       layerCount: layerResults.length,
@@ -1226,26 +1314,6 @@ export class VisualizationFactory {
     return 'single-layer';
   }
 
-  private async createPointLayerVisualization(
-    layerResults: LocalLayerResult[],
-    options: VisualizationOptions
-  ): Promise<{ layer: __esri.FeatureLayer | null; extent: __esri.Extent | null }> {
-    try {
-      const { PointLayerVisualization } = await import('./visualizations/point-layer-visualization');
-      const pointViz = new PointLayerVisualization();
-      const result = await pointViz.create(
-        {
-          features: layerResults[0].features,
-          layerName: layerResults[0].layer.name
-        },
-        options
-      );
-      return result;
-    } catch (error) {
-      console.error('Error creating point layer visualization:', error);
-      return { layer: null, extent: null };
-    }
-  }
 
   private async createSingleLayerVisualization(
     layerResults: LocalLayerResult[],
@@ -2114,62 +2182,36 @@ export class VisualizationFactory {
     return 'thematic_value';
   }
 
-  private async createFeatureInteractionVisualization(
-    layerResults: LocalLayerResult[],
-    options: VisualizationOptions
-  ): Promise<VisualizationResult> {
-    try {
-      //console.log('[VisualizationFactory] Creating feature interaction visualization');
-      
-      if (!layerResults || layerResults.length === 0) {
-        throw new Error('[FeatureInteraction] No layer results provided');
-      }
-
-      const primaryLayer = layerResults[0];
-      const primaryField = options.primaryField || this.findPrimaryField(primaryLayer);
-
-      // Convert features to Graphics format expected by FeatureInteractionVisualization
-      const graphicsForViz = primaryLayer.features
-        .map((feature, index) => {
-          if (!feature || !feature.geometry) {
-            //console.warn(`[VisualizationFactory] Feature ${index} missing geometry, skipping`);
-            return null;
-          }
-          
-          return {
-            geometry: feature.geometry,
-            attributes: {
-              ...feature.attributes,
-              OBJECTID: index + 1
-            }
-          };
-        })
-        .filter(Boolean);
-
-      //console.log(`[VisualizationFactory] Converted ${graphicsForViz.length} features for feature interaction visualization`);
-
-      // Create visualization options with SHAP data if available
-      const visualizationOptions = {
-        primaryField: primaryField,
-        layerName: primaryLayer.layer.name,
-        title: options.title || `Feature Interactions: ${primaryField}`,
-        shapData: options.shapData // Include SHAP interaction data if available
-      };
-
-      // Import and create the visualization
-      const { FeatureInteractionVisualization } = await import('./visualizations/feature-interaction-visualization');
-      const interactionViz = new FeatureInteractionVisualization();
-      
-      const result = await interactionViz.createVisualization(graphicsForViz, visualizationOptions);
-      
-      //console.log('[VisualizationFactory] Feature interaction visualization created successfully');
-      return result;
-      
-    } catch (error) {
-      console.error('Error creating feature interaction visualization:', error);
-      return { layer: null, extent: null };
-    }
+  /**
+   * Extract brand name from field code for brand difference visualization
+   */
+  private getBrandNameFromField(field: string): string {
+    const brandMap: Record<string, string> = {
+      'MP30034A_B': 'Nike',
+      'MP30034A_B_P': 'Nike',
+      'MP30029A_B': 'Adidas',
+      'MP30029A_B_P': 'Adidas',
+      'MP30030A_B': 'Asics',
+      'MP30030A_B_P': 'Asics',
+      'MP30031A_B': 'Converse',
+      'MP30031A_B_P': 'Converse',
+      'MP30032A_B': 'Jordan',
+      'MP30032A_B_P': 'Jordan',
+      'MP30033A_B': 'New Balance',
+      'MP30033A_B_P': 'New Balance',
+      'MP30035A_B': 'Puma',
+      'MP30035A_B_P': 'Puma',
+      'MP30036A_B': 'Reebok',
+      'MP30036A_B_P': 'Reebok',
+      'MP30037A_B': 'Skechers',
+      'MP30037A_B_P': 'Skechers'
+    };
+    
+    // Check both uppercase and original field format
+    const upperField = field.toUpperCase();
+    return brandMap[upperField] || brandMap[field] || 'Brand';
   }
+
 }
 
 // Query type detection functions
@@ -2250,56 +2292,6 @@ export const isTopNQuery = (query: string): boolean => {
 };
 
 // Helper function to determine type from results
-function determineTypeFromResults(
-  relevantResults: LocalLayerResult[],
-  query: string
-): 'single' | 'point' | 'correlation' | '3d' {
-  // Check for 3D visualization first
-  if (is3DVisualizationQuery(query)) {
-    const hasPointLayer = relevantResults.some(lr => lr.layer.type === 'point');
-    const hasPolygonLayer = relevantResults.some(lr => lr.layer.type === 'polygon' || lr.layer.type === 'index');
-    
-    if (hasPointLayer && hasPolygonLayer) {
-      return '3d';
-    }
-  }
-
-  // Check for correlation analysis
-  if (isCorrelationQuery(query) && relevantResults.length >= 2) {
-    return 'correlation';
-  }
-
-  // Check visualization mode from layer results
-  const hasDistributionMode = relevantResults.some(lr => lr.layer.visualizationMode === 'distribution');
-  const hasPointMode = relevantResults.some(lr => lr.layer.visualizationMode === 'point');
-
-  /*console.log('Layer Mode Check:', {
-    hasDistributionMode,
-    hasPointMode
-  });*/
-
-  // If we have both point and distribution modes, prioritize point visualization
-  if (hasPointMode && hasDistributionMode) {
-    return 'point';
-  }
-
-  // Single mode cases
-  if (hasPointMode) {
-    return 'point';
-  }
-  if (hasDistributionMode) {
-    return 'single';
-  }
-
-  // If no visualization mode specified, fall back to type-based determination
-  const pointLayer = relevantResults.find(lr => lr.layer.type === 'point');
-  if (pointLayer) {
-    return 'point';
-  }
-
-  // Default to single layer visualization
-  return 'single';
-}
 
 // Helper functions
 export function createCorrelationData(
