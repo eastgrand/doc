@@ -4320,9 +4320,18 @@ const EnhancedGeospatialChat = memo(({
       return '/brand-difference';
     }
     
-    // Competitive analysis detection
+    // Comparative analysis detection (geographic area comparisons)
+    if (lowerQuery.includes('compare') && (
+        lowerQuery.includes('between') || lowerQuery.includes('performance') ||
+        lowerQuery.includes('brooklyn') || lowerQuery.includes('philadelphia') ||
+        lowerQuery.includes('area') || lowerQuery.includes('region')
+    )) {
+      return '/comparative-analysis';
+    }
+    
+    // Competitive analysis detection (business competition)
     if (lowerQuery.includes('competitor') || lowerQuery.includes('competitive') || 
-        lowerQuery.includes('comparative') || lowerQuery.includes('competition')) {
+        lowerQuery.includes('competition')) {
       return '/competitive-analysis';
     }
     
@@ -4343,7 +4352,7 @@ const EnhancedGeospatialChat = memo(({
 
   // Calculate clustering button state
   const clusteringButtonState = useMemo(() => {
-    const supportsClusteringEndpoints = ['/strategic-analysis', '/demographic-insights'];
+    const supportsClusteringEndpoints = ['/strategic-analysis', '/demographic-insights', '/comparative-analysis'];
     let clusteringSupported = true;
     let disabledReason = '';
     
