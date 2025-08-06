@@ -4307,6 +4307,40 @@ const EnhancedGeospatialChat = memo(({
     }
   }, [lastAnalysisEndpoint]);
 
+  // Function to detect query type based on current input
+  const detectQueryEndpoint = (query: string): string | null => {
+    if (!query || query.trim().length === 0) return null;
+    
+    const lowerQuery = query.toLowerCase();
+    
+    // Brand comparison detection
+    if (lowerQuery.includes(' vs ') || lowerQuery.includes(' versus ') || 
+        (lowerQuery.includes('difference') && (lowerQuery.includes('nike') || lowerQuery.includes('adidas') || 
+         lowerQuery.includes('brand') || lowerQuery.includes('market share')))) {
+      return '/brand-difference';
+    }
+    
+    // Competitive analysis detection
+    if (lowerQuery.includes('competitor') || lowerQuery.includes('competitive') || 
+        lowerQuery.includes('competition')) {
+      return '/competitive-analysis';
+    }
+    
+    // Strategic analysis detection (clustering supported)
+    if (lowerQuery.includes('where should') || lowerQuery.includes('expansion') || 
+        lowerQuery.includes('strategic') || lowerQuery.includes('market opportunity')) {
+      return '/strategic-analysis';
+    }
+    
+    // Demographic insights detection (clustering supported)  
+    if (lowerQuery.includes('demographic') || lowerQuery.includes('age') || 
+        lowerQuery.includes('income') || lowerQuery.includes('population')) {
+      return '/demographic-insights';
+    }
+    
+    return null;
+  };
+
   // Calculate clustering button state
   const clusteringButtonState = useMemo(() => {
     const supportsClusteringEndpoints = ['/strategic-analysis', '/demographic-insights'];
@@ -4314,22 +4348,36 @@ const EnhancedGeospatialChat = memo(({
     let disabledReason = '';
     
     if (selectedEndpoint !== 'auto') {
+      // Manual endpoint selection
       const selectedEndpointPath = `/${selectedEndpoint}`;
       clusteringSupported = supportsClusteringEndpoints.includes(selectedEndpointPath);
       if (!clusteringSupported) {
         disabledReason = `Clustering not supported for ${selectedEndpoint.replace(/-/g, ' ')} analysis`;
       }
-    } else if (lastAnalysisEndpoint) {
-      clusteringSupported = supportsClusteringEndpoints.includes(lastAnalysisEndpoint);
-      if (!clusteringSupported) {
-        const endpointName = lastAnalysisEndpoint.replace('/', '').replace(/-/g, ' ');
-        disabledReason = `Clustering not supported for ${endpointName} analysis (last used)`;
+    } else {
+      // Auto mode - check current query first, then fall back to last analysis
+      const currentQueryEndpoint = detectQueryEndpoint(inputQuery);
+      
+      if (currentQueryEndpoint) {
+        // Current query suggests a specific endpoint
+        clusteringSupported = supportsClusteringEndpoints.includes(currentQueryEndpoint);
+        if (!clusteringSupported) {
+          const endpointName = currentQueryEndpoint.replace('/', '').replace(/-/g, ' ');
+          disabledReason = `Clustering not supported for ${endpointName} analysis`;
+        }
+      } else if (lastAnalysisEndpoint) {
+        // No current query detected, use last analysis endpoint
+        clusteringSupported = supportsClusteringEndpoints.includes(lastAnalysisEndpoint);
+        if (!clusteringSupported) {
+          const endpointName = lastAnalysisEndpoint.replace('/', '').replace(/-/g, ' ');
+          disabledReason = `Clustering not supported for ${endpointName} analysis (last used)`;
+        }
       }
+      // If no query and no history, keep enabled (default)
     }
     
-    
     return { clusteringSupported, disabledReason };
-  }, [selectedEndpoint, lastAnalysisEndpoint]);
+  }, [selectedEndpoint, lastAnalysisEndpoint, inputQuery]);
 
   // Show gentle nudge to try chat mode after successful analysis
   useEffect(() => {
