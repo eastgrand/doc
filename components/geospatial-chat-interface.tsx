@@ -3305,6 +3305,14 @@ const EnhancedGeospatialChat = memo(({
       const currentEndpoint = finalAnalysisResult.endpoint;
       const supportsClustering = supportsClusteringEndpoints.includes(currentEndpoint);
       
+      console.log(`🔥 [CLUSTERING DEBUG] Checking clustering for endpoint: ${currentEndpoint}`, {
+        hasClusterConfig: !!analysisOptions.clusterConfig,
+        clusteringEnabled: analysisOptions.clusterConfig?.enabled,
+        supportsClustering,
+        supportsClusteringEndpoints,
+        willCluster: analysisOptions.clusterConfig && analysisOptions.clusterConfig.enabled && supportsClustering
+      });
+      
       if (analysisOptions.clusterConfig && analysisOptions.clusterConfig.enabled && supportsClustering) {
         console.log('🎯 [CLUSTERING] Applying clustering AFTER geometry join with real ZIP code geometries');
         console.log('🎯 [CLUSTERING] Config:', analysisOptions.clusterConfig);
@@ -3581,6 +3589,12 @@ const EnhancedGeospatialChat = memo(({
         ));
 
         // Save the endpoint for follow-up questions
+        console.log('[ENDPOINT UPDATE] 🎯 Setting lastAnalysisEndpoint:', {
+          previousEndpoint: lastAnalysisEndpoint,
+          newEndpoint: finalAnalysisResult.endpoint,
+          willClusteringBeDisabled: !['/strategic-analysis', '/demographic-insights'].includes(finalAnalysisResult.endpoint),
+          timestamp: new Date().toISOString()
+        });
         setLastAnalysisEndpoint(finalAnalysisResult.endpoint);
         
         // Use existing Claude integration with enhanced analysis result
@@ -4291,6 +4305,16 @@ const EnhancedGeospatialChat = memo(({
   });
   const [clusterDialogOpen, setClusterDialogOpen] = useState(false);
   
+  // Monitor lastAnalysisEndpoint changes for debugging clustering button
+  useEffect(() => {
+    console.log('[CLUSTERING DEBUG] 🔍 lastAnalysisEndpoint changed:', {
+      newEndpoint: lastAnalysisEndpoint,
+      supportsClusteringEndpoints: ['/strategic-analysis', '/demographic-insights'],
+      shouldClusteringBeEnabled: lastAnalysisEndpoint ? ['/strategic-analysis', '/demographic-insights'].includes(lastAnalysisEndpoint) : true,
+      timestamp: new Date().toISOString()
+    });
+  }, [lastAnalysisEndpoint]);
+
   // Show gentle nudge to try chat mode after successful analysis
   useEffect(() => {
     if (features.length > 0 && lastAnalysisEndpoint && inputMode === 'analysis' && !isProcessing) {
@@ -4756,7 +4780,9 @@ const EnhancedGeospatialChat = memo(({
                         disabledReason,
                         supportsClusteringEndpoints,
                         decisionPath: selectedEndpoint !== 'auto' ? 'MANUAL_SELECTION' : 
-                                     lastAnalysisEndpoint ? 'AUTO_WITH_HISTORY' : 'AUTO_NO_HISTORY'
+                                     lastAnalysisEndpoint ? 'AUTO_WITH_HISTORY' : 'AUTO_NO_HISTORY',
+                        buttonShouldBe: clusteringSupported ? '✅ ENABLED' : '❌ DISABLED',
+                        timestamp: new Date().toISOString()
                       });
                       
                       // Quick test simulation for debugging
