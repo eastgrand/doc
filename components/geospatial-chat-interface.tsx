@@ -4322,7 +4322,7 @@ const EnhancedGeospatialChat = memo(({
     
     // Competitive analysis detection
     if (lowerQuery.includes('competitor') || lowerQuery.includes('competitive') || 
-        lowerQuery.includes('competition')) {
+        lowerQuery.includes('comparative') || lowerQuery.includes('competition')) {
       return '/competitive-analysis';
     }
     
