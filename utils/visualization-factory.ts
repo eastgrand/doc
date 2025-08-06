@@ -1103,7 +1103,15 @@ export class VisualizationFactory {
 
 
   public getVisualizationConfig(): VisualizationConfig {
-    return this.visualizationIntegration.getVisualizationConfig();
+    if (this.visualizationIntegration) {
+      return this.visualizationIntegration.getVisualizationConfig();
+    }
+    // Return a default config if visualizationIntegration is not available
+    return {
+      type: 'choropleth' as VisualizationType,
+      legend: { position: 'bottom-right' },
+      popup: { enabled: true }
+    };
   }
 
   public updateAnalysisResult(analysisResult: any, enhancedAnalysis?: any): void {
@@ -1113,7 +1121,9 @@ export class VisualizationFactory {
       hasLegend: !!analysisResult?.legend
     });
     
-    this.visualizationIntegration.updateAnalysisResult(analysisResult, enhancedAnalysis);
+    if (this.visualizationIntegration) {
+      this.visualizationIntegration.updateAnalysisResult(analysisResult, enhancedAnalysis);
+    }
   }
 
   private determineVisualizationType(
