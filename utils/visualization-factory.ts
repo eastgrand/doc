@@ -1109,8 +1109,10 @@ export class VisualizationFactory {
     // Return a default config if visualizationIntegration is not available
     return {
       type: 'choropleth' as VisualizationType,
-      legend: { position: 'bottom-right' },
-      popup: { enabled: true }
+      title: 'Brand Difference Analysis',
+      description: 'Comparison visualization',
+      legendConfig: { position: 'bottom-right' } as any,
+      popupConfig: { enabled: true } as any
     };
   }
 
