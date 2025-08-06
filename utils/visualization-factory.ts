@@ -1104,7 +1104,7 @@ export class VisualizationFactory {
 
   public getVisualizationConfig(): VisualizationConfig {
     if (this.visualizationIntegration) {
-      return this.visualizationIntegration.getVisualizationConfig();
+      return (this.visualizationIntegration as any).getVisualizationConfig();
     }
     // Return a default config if visualizationIntegration is not available
     return {
@@ -1124,7 +1124,7 @@ export class VisualizationFactory {
     });
     
     if (this.visualizationIntegration) {
-      this.visualizationIntegration.updateAnalysisResult(analysisResult, enhancedAnalysis);
+      (this.visualizationIntegration as any).updateAnalysisResult(analysisResult, enhancedAnalysis);
     }
   }
 
