@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useRef, useEffect, useCallback, ReactElement, memo } from 'react';
+import React, { useState, useRef, useEffect, useCallback, ReactElement, memo, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { extractScoreValue } from '@/lib/analysis/utils/FieldMappingConfig';
@@ -3589,12 +3589,6 @@ const EnhancedGeospatialChat = memo(({
         ));
 
         // Save the endpoint for follow-up questions
-        console.log('[ENDPOINT UPDATE] 🎯 Setting lastAnalysisEndpoint:', {
-          previousEndpoint: lastAnalysisEndpoint,
-          newEndpoint: finalAnalysisResult.endpoint,
-          willClusteringBeDisabled: !['/strategic-analysis', '/demographic-insights'].includes(finalAnalysisResult.endpoint),
-          timestamp: new Date().toISOString()
-        });
         setLastAnalysisEndpoint(finalAnalysisResult.endpoint);
         
         // Use existing Claude integration with enhanced analysis result
@@ -4305,15 +4299,37 @@ const EnhancedGeospatialChat = memo(({
   });
   const [clusterDialogOpen, setClusterDialogOpen] = useState(false);
   
-  // Monitor lastAnalysisEndpoint changes for debugging clustering button
+  // Monitor lastAnalysisEndpoint changes for clustering button state
   useEffect(() => {
-    console.log('[CLUSTERING DEBUG] 🔍 lastAnalysisEndpoint changed:', {
-      newEndpoint: lastAnalysisEndpoint,
-      supportsClusteringEndpoints: ['/strategic-analysis', '/demographic-insights'],
-      shouldClusteringBeEnabled: lastAnalysisEndpoint ? ['/strategic-analysis', '/demographic-insights'].includes(lastAnalysisEndpoint) : true,
-      timestamp: new Date().toISOString()
-    });
+    if (lastAnalysisEndpoint) {
+      const isSupported = ['/strategic-analysis', '/demographic-insights'].includes(lastAnalysisEndpoint);
+      console.log(`[CLUSTERING] Endpoint changed to ${lastAnalysisEndpoint} - clustering ${isSupported ? 'enabled' : 'disabled'}`);
+    }
   }, [lastAnalysisEndpoint]);
+
+  // Calculate clustering button state
+  const clusteringButtonState = useMemo(() => {
+    const supportsClusteringEndpoints = ['/strategic-analysis', '/demographic-insights'];
+    let clusteringSupported = true;
+    let disabledReason = '';
+    
+    if (selectedEndpoint !== 'auto') {
+      const selectedEndpointPath = `/${selectedEndpoint}`;
+      clusteringSupported = supportsClusteringEndpoints.includes(selectedEndpointPath);
+      if (!clusteringSupported) {
+        disabledReason = `Clustering not supported for ${selectedEndpoint.replace(/-/g, ' ')} analysis`;
+      }
+    } else if (lastAnalysisEndpoint) {
+      clusteringSupported = supportsClusteringEndpoints.includes(lastAnalysisEndpoint);
+      if (!clusteringSupported) {
+        const endpointName = lastAnalysisEndpoint.replace('/', '').replace(/-/g, ' ');
+        disabledReason = `Clustering not supported for ${endpointName} analysis (last used)`;
+      }
+    }
+    
+    
+    return { clusteringSupported, disabledReason };
+  }, [selectedEndpoint, lastAnalysisEndpoint]);
 
   // Show gentle nudge to try chat mode after successful analysis
   useEffect(() => {
@@ -4748,56 +4764,9 @@ const EnhancedGeospatialChat = memo(({
 
                     {/* Cluster Configuration button */}
                     {(() => {
-                      // Check if current endpoint supports clustering
-                      const supportsClusteringEndpoints = ['/strategic-analysis', '/demographic-insights'];
-                      let clusteringSupported = true; // Default to supported
-                      let disabledReason = '';
+                      // Use the memoized clustering state
+                      const { clusteringSupported, disabledReason } = clusteringButtonState;
                       
-                      if (selectedEndpoint !== 'auto') {
-                        // User has manually selected an endpoint - check if it supports clustering
-                        const selectedEndpointPath = `/${selectedEndpoint}`;
-                        clusteringSupported = supportsClusteringEndpoints.includes(selectedEndpointPath);
-                        if (!clusteringSupported) {
-                          disabledReason = `Clustering not supported for ${selectedEndpoint.replace('-', ' ')} analysis`;
-                        }
-                      } else if (lastAnalysisEndpoint) {
-                        // In auto mode with previous analysis - check the last used endpoint
-                        clusteringSupported = supportsClusteringEndpoints.includes(lastAnalysisEndpoint);
-                        if (!clusteringSupported) {
-                          const endpointName = lastAnalysisEndpoint.replace('/', '').replace('-', ' ');
-                          disabledReason = `Clustering not supported for ${endpointName} analysis (last used)`;
-                        }
-                      } else {
-                        // In auto mode with no previous analysis - keep enabled
-                        clusteringSupported = true;
-                        disabledReason = '';
-                      }
-                      
-                      console.log('[CLUSTERING UI] Button state:', {
-                        selectedEndpoint,
-                        lastAnalysisEndpoint,
-                        clusteringSupported,
-                        disabledReason,
-                        supportsClusteringEndpoints,
-                        decisionPath: selectedEndpoint !== 'auto' ? 'MANUAL_SELECTION' : 
-                                     lastAnalysisEndpoint ? 'AUTO_WITH_HISTORY' : 'AUTO_NO_HISTORY',
-                        buttonShouldBe: clusteringSupported ? '✅ ENABLED' : '❌ DISABLED',
-                        timestamp: new Date().toISOString()
-                      });
-                      
-                      // Quick test simulation for debugging
-                      if (selectedEndpoint === 'auto') {
-                        console.log('[CLUSTERING UI] 🧪 Test simulation - if competitive-analysis was selected:');
-                        const testEndpoint = 'competitive-analysis';
-                        const testPath = `/${testEndpoint}`;
-                        const testSupported = supportsClusteringEndpoints.includes(testPath);
-                        console.log('[CLUSTERING UI] 🧪 Test result:', {
-                          testEndpoint,
-                          testPath,
-                          testSupported,
-                          wouldBeDisabled: !testSupported
-                        });
-                      }
                       
                       return (
                         <Dialog open={clusterDialogOpen} onOpenChange={setClusterDialogOpen}>
