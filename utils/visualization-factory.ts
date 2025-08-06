@@ -556,8 +556,11 @@ export class VisualizationFactory {
                   layerName: 'Brand Difference Analysis',
                   layerConfig: { 
                     name: 'Brand Difference Analysis',
-                    id: 'brand-difference-fresh',
-                    rendererField: 'brand_difference_score'
+                    fields: [
+                      { name: 'brand_difference_score', type: 'double' },
+                      { name: brandFields[0], type: 'double' },
+                      { name: brandFields[1], type: 'double' }
+                    ]
                   },
                   rendererField: 'brand_difference_score',
                   primaryField: brandFields[0],
