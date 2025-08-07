@@ -46,9 +46,63 @@ export class DataProcessor {
    * Process raw results with geographic analysis support
    */
   async processResultsWithGeographicAnalysis(rawResults: RawAnalysisResult, endpoint: string, query: string = ''): Promise<ProcessedAnalysisData & { geoAnalysis?: any }> {
-    const processedData = this.processResults(rawResults, endpoint, query);
+    let filteredRawResults = rawResults;
+    let geoResult: any = null;
     
-    // Perform geographic analysis if query contains geographic references
+    // For comparative analysis with geographic queries, filter BEFORE processing
+    if (endpoint === '/comparative-analysis' && this.isGeographicComparativeQuery(query, endpoint)) {
+      try {
+        const geoEngine = GeoAwarenessEngine.getInstance();
+        geoResult = await geoEngine.processGeoQuery(query, rawResults.results || [], endpoint);
+        
+        if (geoResult.matchedEntities.length > 0 && geoResult.filteredRecords.length > 0) {
+          console.log(`🌍 [DataProcessor] PRE-FILTERING for comparative analysis: ${rawResults.results?.length || 0} -> ${geoResult.filteredRecords.length} records`);
+          
+          // DEBUG: Log actual ZIP codes in filtered data
+          const zipCodes = geoResult.filteredRecords.map(r => r.ID || r.area_name || r.zipcode || r.id).filter(Boolean).slice(0, 20);
+          console.log(`🔍 [DataProcessor] DEBUGGING: First 20 ZIP codes in filtered data:`, zipCodes);
+          
+          // DEBUG: Check which cities these ZIP codes belong to
+          const cityGroups = geoResult.filteredRecords.reduce((acc, r) => {
+            const zip = r.area_name || r.zipcode;
+            const city = r.city || 'Unknown';
+            if (!acc[city]) acc[city] = [];
+            acc[city].push(zip);
+            return acc;
+          }, {} as Record<string, string[]>);
+          
+          console.log(`🔍 [DataProcessor] DEBUGGING: ZIP codes grouped by city:`, Object.keys(cityGroups).map(city => ({
+            city,
+            count: cityGroups[city].length,
+            sampleZips: cityGroups[city].slice(0, 5)
+          })));
+          
+          filteredRawResults = {
+            ...rawResults,
+            results: geoResult.filteredRecords
+          };
+        }
+      } catch (error) {
+        console.error('[DataProcessor] Pre-filtering failed, using original data:', error);
+      }
+    }
+    
+    const processedData = this.processResults(filteredRawResults, endpoint, query);
+    
+    // If we already did geo-filtering, return with that metadata
+    if (geoResult) {
+      return {
+        ...processedData,
+        geoAnalysis: {
+          entities: geoResult.matchedEntities,
+          filterStats: geoResult.filterStats,
+          warnings: geoResult.warnings,
+          fallbackUsed: geoResult.fallbackUsed
+        }
+      };
+    }
+    
+    // Otherwise, perform geographic analysis if query contains geographic references
     if (query && query.trim().length > 2) {
       try {
         const geoEngine = GeoAwarenessEngine.getInstance();
@@ -262,6 +316,26 @@ export class DataProcessor {
     this.processors.set('default', new CoreAnalysisProcessor());
     
     console.log(`[DataProcessor] Initialized ${this.processors.size} specialized processors`);
+  }
+
+  /**
+   * Detect if this is a geographic comparative query
+   */
+  private isGeographicComparativeQuery(query: string = '', endpoint: string): boolean {
+    if (endpoint !== '/comparative-analysis') return false;
+    if (!query || query.trim().length < 3) return false;
+    
+    const lowerQuery = query.toLowerCase();
+    
+    // Check for comparative + geographic patterns
+    const hasComparative = lowerQuery.includes('compare') || lowerQuery.includes('between') || 
+                           lowerQuery.includes('vs') || lowerQuery.includes('versus');
+    
+    const hasGeographic = /\b(brooklyn|philadelphia|manhattan|queens|bronx|newark|jersey city|pittsburgh)\b/i.test(query) ||
+                         /\b(new york|pennsylvania|new jersey)\b/i.test(query) ||
+                         /\bbetween\s+[A-Z][a-z]+(\s+[A-Z][a-z]+)*\s+and\s+[A-Z][a-z]+/i.test(query);
+    
+    return hasComparative && hasGeographic;
   }
 
   private getProcessorForEndpoint(endpoint: string): DataProcessorStrategy {

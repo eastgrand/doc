@@ -98,6 +98,12 @@ export class VisualizationRenderer {
   createVisualization(data: ProcessedAnalysisData, endpoint: string): VisualizationResult {
     try {
       console.log(`[VisualizationRenderer] Creating visualization for ${endpoint} with ${data.records.length} records`);
+      
+      // DEBUG: For comparative analysis, log received ZIP codes
+      if (endpoint === '/comparative-analysis' && data.records.length > 0) {
+        const zipCodes = data.records.map(r => r.area_name).slice(0, 20);
+        console.log(`🔍 [VisualizationRenderer] DEBUGGING: ZIP codes received for visualization:`, zipCodes);
+      }
       console.log(`[VisualizationRenderer] Data type: ${data.type}, target variable: ${data.targetVariable}`);
       console.log(`[VisualizationRenderer] Is clustered data:`, data.isClustered);
       console.log(`[VisualizationRenderer] Sample record:`, data.records[0] ? {

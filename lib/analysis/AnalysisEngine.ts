@@ -236,6 +236,21 @@ export class AnalysisEngine {
         } : 'No records'
       });
       
+      // DEBUG: For comparative analysis, log ZIP codes to verify filtering
+      if (selectedEndpoint === '/comparative-analysis' && processedData.records?.length > 0) {
+        const zipCodes = processedData.records.map(r => r.area_name).slice(0, 20);
+        console.log(`🔍 [AnalysisEngine] DEBUGGING: Final ZIP codes going to visualization:`, zipCodes);
+        
+        // Group by city to verify filtering
+        const cityGroups = processedData.records.reduce((acc, r) => {
+          const city = r.properties?.city || 'Unknown';
+          if (!acc[city]) acc[city] = 0;
+          acc[city]++;
+          return acc;
+        }, {} as Record<string, number>);
+        console.log(`🔍 [AnalysisEngine] DEBUGGING: Final city distribution:`, cityGroups);
+      }
+      
       // 🚨 DEBUG: Strategic analysis value check
       if (selectedEndpoint === '/strategic-analysis' && processedData.records?.length > 0) {
         console.log('🚨🚨🚨 [STRATEGIC DEBUG] AnalysisEngine processed data:');

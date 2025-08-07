@@ -8,8 +8,8 @@ import { ChatProvider } from '@/contexts/ChatContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Map Application',
-  description: 'Interactive map application with ArcGIS',
+  title: 'MPIQ',
+  description: '',
 }
 
 export default function RootLayout({

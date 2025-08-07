@@ -73,6 +73,20 @@ export class VisualizationIntegration {
     return VisualizationIntegration.instance;
   }
 
+  public updateAnalysisResult(analysisResult: AnalysisResult, enhancedAnalysis?: EnhancedAnalysisResult): void {
+    console.log('🔥 [VisualizationIntegration] Updating analysis result:', {
+      oldType: this.analysisResult?.type,
+      newType: (analysisResult as any)?.type,
+      hasRenderer: !!(analysisResult as any)?.renderer,
+      hasLegend: !!(analysisResult as any)?.legend
+    });
+    
+    this.analysisResult = analysisResult;
+    if (enhancedAnalysis) {
+      this.enhancedAnalysis = enhancedAnalysis;
+    }
+  }
+
   public createFeatureLayer(): ExtendedFeatureLayer {
     const layer = new FeatureLayer({
       source: this.features,

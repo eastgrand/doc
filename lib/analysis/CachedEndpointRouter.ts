@@ -154,7 +154,7 @@ export class CachedEndpointRouter {
       console.log(`[CachedEndpointRouter] Identified fields:`, fields);
     }
     
-    console.log(`[CachedEndpointRouter] Selected endpoint: ${bestEndpoint}`);
+    console.log(`🔥 [CachedEndpointRouter] ENDPOINT DECISION: ${bestEndpoint} for query: "${query}"`);
     return bestEndpoint;
   }
 
