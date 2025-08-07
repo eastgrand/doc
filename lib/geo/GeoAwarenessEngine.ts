@@ -236,9 +236,9 @@ export class GeoAwarenessEngine {
     console.log(`[GeoAwarenessEngine] Pre-filtered records: ${records.length} -> ${geographicallyEligibleRecords.length} (removed street names/businesses)`);
     
     const strategies = [
+      { method: 'zipcode_lookup', fn: this.filterByZipCode.bind(this) },
       { method: 'hierarchical', fn: this.filterByHierarchy.bind(this) },
       { method: 'description_pattern', fn: this.filterByDescriptionPattern.bind(this) },
-      { method: 'zipcode_lookup', fn: this.filterByZipCode.bind(this) },
       { method: 'field_scanning', fn: this.filterByFieldScanning.bind(this) },
       { method: 'fuzzy_matching', fn: this.filterByFuzzyMatching.bind(this) }
     ];

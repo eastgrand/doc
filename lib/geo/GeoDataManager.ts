@@ -15,6 +15,13 @@ export interface GeographicDatabase {
 
 import { GeographicEntity } from './GeoAwarenessEngine';
 
+interface MetroDefinition {
+  name: string;
+  aliases: string[];
+  zipPrefixes?: string[];
+  zipCodes?: string[];
+}
+
 export class GeoDataManager {
   private static instance: GeoDataManager | null = null;
   private database: GeographicDatabase;
@@ -49,6 +56,7 @@ export class GeoDataManager {
     this.loadNewYorkMetros();
     this.loadNewJerseyMetros();
     this.loadPennsylvaniaMetros();
+    this.loadMetroAreas(); // Load broader metro areas separately
     this.loadNYBoroughsAndNeighborhoods();
     
     // Points of Interest
@@ -99,77 +107,118 @@ export class GeoDataManager {
       {
         name: 'New York City',
         aliases: ['NYC', 'New York', 'NY', 'Big Apple', 'New York Metro'],
-        zipPrefixes: ['100', '101', '102', '103', '104', '105', '110', '111', '112', '113', '114', '116']
+        // Use all five boroughs' zip codes for NYC as a whole
+        zipCodes: [
+          // Manhattan (10001-10282)
+          '10001', '10002', '10003', '10004', '10005', '10006', '10007', '10009', '10010',
+          '10011', '10012', '10013', '10014', '10016', '10017', '10018', '10019', '10020',
+          '10021', '10022', '10023', '10024', '10025', '10026', '10027', '10028', '10029',
+          '10030', '10031', '10032', '10033', '10034', '10035', '10036', '10037', '10038',
+          '10039', '10040', '10044', '10065', '10069', '10075', '10128', '10280', '10282',
+          // Brooklyn (11201-11256)
+          '11201', '11203', '11204', '11205', '11206', '11207', '11208', '11209', '11210',
+          '11211', '11212', '11213', '11214', '11215', '11216', '11217', '11218', '11219',
+          '11220', '11221', '11222', '11223', '11224', '11225', '11226', '11228', '11229',
+          '11230', '11231', '11232', '11233', '11234', '11235', '11236', '11237', '11238',
+          '11239', '11249', '11251', '11252', '11256',
+          // Queens (11101-11697)
+          '11101', '11102', '11103', '11104', '11105', '11106', '11109', '11354', '11355',
+          '11356', '11357', '11358', '11359', '11360', '11361', '11362', '11363', '11364',
+          '11365', '11366', '11367', '11368', '11369', '11370', '11372', '11373', '11374',
+          '11375', '11377', '11378', '11379', '11385', '11411', '11412', '11413', '11414',
+          '11415', '11416', '11417', '11418', '11419', '11420', '11421', '11422', '11423',
+          '11426', '11427', '11428', '11429', '11430', '11432', '11433', '11434', '11435',
+          '11436', '11691', '11692', '11693', '11694', '11697',
+          // Bronx (10451-10475)
+          '10451', '10452', '10453', '10454', '10455', '10456', '10457', '10458', '10459',
+          '10460', '10461', '10462', '10463', '10464', '10465', '10466', '10467', '10468',
+          '10469', '10470', '10471', '10472', '10473', '10474', '10475',
+          // Staten Island (10301-10314)
+          '10301', '10302', '10303', '10304', '10305', '10306', '10307', '10308', '10309',
+          '10310', '10311', '10312', '10313', '10314'
+        ]
       },
       {
         name: 'Buffalo',
         aliases: ['Queen City', 'City of Good Neighbors', 'BUF'],
-        zipPrefixes: ['142']
+        // Buffalo city proper zip codes
+        zipCodes: ['14201', '14202', '14203', '14204', '14206', '14207', '14208', '14209',
+                   '14210', '14211', '14212', '14213', '14214', '14215', '14216', '14217',
+                   '14218', '14219', '14220', '14222', '14223', '14224', '14225', '14226', '14227']
       },
       {
         name: 'Rochester',
         aliases: ['Flower City', 'ROC'],
-        zipPrefixes: ['146']
+        // Rochester city proper zip codes
+        zipCodes: ['14604', '14605', '14606', '14607', '14608', '14609', '14610', '14611',
+                   '14612', '14613', '14614', '14615', '14616', '14617', '14618', '14619',
+                   '14620', '14621', '14622', '14623', '14624', '14625', '14626', '14627']
       },
       {
         name: 'Yonkers',
         aliases: ['City of Hills'],
-        zipPrefixes: ['107']
+        // Yonkers city proper zip codes
+        zipCodes: ['10701', '10702', '10703', '10704', '10705', '10706', '10707', '10708', '10710']
       },
       {
         name: 'Syracuse',
         aliases: ['Salt City', 'SYR'],
-        zipPrefixes: ['132']
+        // Syracuse city proper zip codes
+        zipCodes: ['13201', '13202', '13203', '13204', '13205', '13206', '13207', '13208',
+                   '13209', '13210', '13211', '13212', '13214', '13215', '13217', '13218',
+                   '13219', '13220', '13224']
       },
       {
         name: 'Albany',
         aliases: ['Capital City', 'ALB'],
-        zipPrefixes: ['122']
+        // Albany city proper zip codes
+        zipCodes: ['12201', '12202', '12203', '12204', '12205', '12206', '12207', '12208',
+                   '12209', '12210', '12211', '12212', '12214', '12220', '12222', '12223']
       },
       {
         name: 'New Rochelle',
         aliases: ['Home Town'],
-        zipPrefixes: ['108']
+        zipCodes: ['10801', '10802', '10803', '10804', '10805']
       },
       {
         name: 'Mount Vernon',
         aliases: ['City of Homes'],
-        zipPrefixes: ['105']
+        zipCodes: ['10550', '10551', '10552', '10553']
       },
       {
         name: 'Schenectady',
         aliases: ['Electric City'],
-        zipPrefixes: ['123']
+        zipCodes: ['12301', '12302', '12303', '12304', '12305', '12306', '12307', '12308', '12309']
       },
       {
         name: 'Utica',
         aliases: ['Handshake City'],
-        zipPrefixes: ['135']
+        zipCodes: ['13501', '13502', '13503', '13504', '13505']
       },
       {
         name: 'White Plains',
         aliases: ['WP'],
-        zipPrefixes: ['106']
+        zipCodes: ['10601', '10602', '10603', '10604', '10605', '10606', '10607']
       },
       {
         name: 'Troy',
         aliases: ['Collar City'],
-        zipPrefixes: ['121']
+        zipCodes: ['12180', '12181', '12182', '12183']
       },
       {
         name: 'Niagara Falls',
         aliases: ['Honeymoon Capital'],
-        zipPrefixes: ['143']
+        zipCodes: ['14301', '14302', '14303', '14304', '14305']
       },
       {
         name: 'Binghamton',
         aliases: ['Parlor City'],
-        zipPrefixes: ['139']
+        zipCodes: ['13901', '13902', '13903', '13904', '13905']
       },
       {
         name: 'Long Beach',
         aliases: ['City by the Sea'],
-        zipPrefixes: ['115']
+        zipCodes: ['11561']
       }
     ];
 
@@ -179,7 +228,7 @@ export class GeoDataManager {
         type: 'city',
         aliases: metro.aliases,
         parentEntity: 'new york',
-        zipCodes: this.generateZipCodesFromPrefixes(metro.zipPrefixes),
+        zipCodes: metro.zipCodes || [],
         confidence: 1.0
       };
 
@@ -197,137 +246,140 @@ export class GeoDataManager {
       {
         name: 'Newark',
         aliases: ['Brick City', 'EWR'],
-        zipPrefixes: ['071']
+        zipCodes: ['07101', '07102', '07103', '07104', '07105', '07106', '07107', '07108',
+                   '07112', '07114']
       },
       {
         name: 'Jersey City',
         aliases: ['JC', 'J.C.'],
-        zipPrefixes: ['073']
+        zipCodes: ['07302', '07303', '07304', '07305', '07306', '07307', '07308', '07310']
       },
       {
         name: 'Paterson',
         aliases: ['Silk City'],
-        zipPrefixes: ['075']
+        zipCodes: ['07501', '07502', '07503', '07504', '07505', '07506', '07507', '07508',
+                   '07509', '07510', '07511', '07512', '07513', '07514', '07522', '07524']
       },
       {
         name: 'Elizabeth',
         aliases: ['E-Town'],
-        zipPrefixes: ['072']
+        zipCodes: ['07201', '07202', '07206', '07208']
       },
       {
         name: 'Edison',
         aliases: ['Menlo Park'],
-        zipPrefixes: ['088']
+        zipCodes: ['08817', '08818', '08820', '08837', '08899']
       },
       {
         name: 'Woodbridge',
         aliases: ['Township of Woodbridge'],
-        zipPrefixes: ['078']
+        zipCodes: ['07095', '08830', '08840', '08863']
       },
       {
         name: 'Lakewood',
         aliases: ['Township of Lakewood'],
-        zipPrefixes: ['087']
+        zipCodes: ['08701']
       },
       {
         name: 'Toms River',
         aliases: ['TR', 'Dover Township'],
-        zipPrefixes: ['087']
+        zipCodes: ['08753', '08754', '08755', '08756', '08757']
       },
       {
         name: 'Hamilton',
         aliases: ['Hamilton Township'],
-        zipPrefixes: ['086']
+        zipCodes: ['08609', '08610', '08611', '08619', '08620', '08629', '08650', '08690', '08691']
       },
       {
         name: 'Trenton',
         aliases: ['Capital City'],
-        zipPrefixes: ['086']
+        zipCodes: ['08608', '08609', '08610', '08611', '08618', '08619', '08620', '08625',
+                   '08628', '08629', '08638', '08650']
       },
       {
         name: 'Clifton',
         aliases: ['City of Clifton'],
-        zipPrefixes: ['070']
+        zipCodes: ['07011', '07012', '07013', '07014']
       },
       {
         name: 'Camden',
         aliases: ['City of Camden'],
-        zipPrefixes: ['081']
+        zipCodes: ['08101', '08102', '08103', '08104', '08105']
       },
       {
         name: 'Passaic',
         aliases: ['City of Passaic'],
-        zipPrefixes: ['070']
+        zipCodes: ['07055']
       },
       {
         name: 'Union City',
         aliases: ['Embroidery Capital'],
-        zipPrefixes: ['070']
+        zipCodes: ['07087']
       },
       {
         name: 'Bayonne',
         aliases: ['Peninsula City'],
-        zipPrefixes: ['070']
+        zipCodes: ['07002']
       },
       {
         name: 'East Orange',
         aliases: ['EO'],
-        zipPrefixes: ['070']
+        zipCodes: ['07017', '07018', '07019']
       },
       {
         name: 'Vineland',
         aliases: ['Cumberland County'],
-        zipPrefixes: ['083']
+        zipCodes: ['08360', '08361', '08362']
       },
       {
         name: 'New Brunswick',
         aliases: ['Hub City', 'Healthcare City'],
-        zipPrefixes: ['089']
+        zipCodes: ['08901', '08902', '08903', '08904', '08905', '08906']
       },
       {
         name: 'Hoboken',
         aliases: ['Mile Square City'],
-        zipPrefixes: ['070']
+        zipCodes: ['07030']
       },
       {
         name: 'West New York',
         aliases: ['WNY'],
-        zipPrefixes: ['070']
+        zipCodes: ['07093']
       },
       {
         name: 'Perth Amboy',
         aliases: ['City by the Bay'],
-        zipPrefixes: ['088']
+        zipCodes: ['08861', '08862']
       },
       {
         name: 'Plainfield',
         aliases: ['Queen City'],
-        zipPrefixes: ['070']
+        zipCodes: ['07060', '07061', '07062', '07063']
       },
       {
         name: 'Sayreville',
         aliases: ['Borough of Sayreville'],
-        zipPrefixes: ['088']
+        zipCodes: ['08871', '08872']
       },
       {
         name: 'Hackensack',
         aliases: ['HK'],
-        zipPrefixes: ['076']
+        zipCodes: ['07601', '07602']
       },
       {
         name: 'Kearny',
         aliases: ['Soccer Town USA'],
-        zipPrefixes: ['070']
+        zipCodes: ['07032']
       },
       {
         name: 'Linden',
         aliases: ['City of Linden'],
-        zipPrefixes: ['070']
+        zipCodes: ['07036']
       },
       {
         name: 'Atlantic City',
         aliases: ['AC', 'America\'s Playground'],
-        zipPrefixes: ['084']
+        zipCodes: ['08401', '08404', '08405', '08406']
       }
     ];
 
@@ -337,7 +389,7 @@ export class GeoDataManager {
         type: 'city',
         aliases: metro.aliases,
         parentEntity: 'new jersey',
-        zipCodes: this.generateZipCodesFromPrefixes(metro.zipPrefixes),
+        zipCodes: metro.zipCodes || [],
         confidence: 1.0
       };
 
@@ -355,102 +407,129 @@ export class GeoDataManager {
       {
         name: 'Philadelphia',
         aliases: ['Philly', 'City of Brotherly Love', 'Phila', 'PHL'],
-        zipPrefixes: ['190', '191', '192', '193', '194']
+        // Use specific ZIP codes for Philadelphia city proper only
+        zipCodes: [
+          // Center City & Old City
+          '19102', '19103', '19106', '19107', '19109', '19110', 
+          // South Philadelphia
+          '19145', '19146', '19147', '19148',
+          // North Philadelphia  
+          '19121', '19122', '19123', '19125', '19130', '19132', '19133', '19134', '19140', '19141',
+          // West Philadelphia
+          '19104', '19131', '19139', '19143', '19151',
+          // Northeast Philadelphia
+          '19111', '19114', '19115', '19116', '19124', '19135', '19136', '19149', '19152', '19154',
+          // Northwest Philadelphia
+          '19118', '19119', '19120', '19126', '19127', '19128', '19129', '19138', '19144', '19150',
+          // Kensington/Port Richmond
+          '19124', '19125', '19134', '19137',
+          // Additional Philadelphia proper
+          '19101', '19105', '19108', '19112', '19113', '19142', '19153'
+        ]
       },
       {
         name: 'Pittsburgh',
         aliases: ['Steel City', 'PIT', 'Iron City', 'City of Bridges'],
-        zipPrefixes: ['152', '153', '154']
+        // Pittsburgh city proper zip codes
+        zipCodes: ['15201', '15202', '15203', '15204', '15205', '15206', '15207', '15208',
+                   '15210', '15211', '15212', '15213', '15214', '15215', '15216', '15217',
+                   '15218', '15219', '15220', '15221', '15222', '15223', '15224', '15225',
+                   '15226', '15227', '15228', '15229', '15230', '15231', '15232', '15233',
+                   '15234', '15235', '15236', '15237', '15238', '15239', '15240', '15241',
+                   '15242', '15243', '15244', '15260', '15261', '15262', '15264', '15265']
       },
       {
         name: 'Allentown',
         aliases: ['A-Town', 'ABE'],
-        zipPrefixes: ['181']
+        zipCodes: ['18101', '18102', '18103', '18104', '18105', '18106', '18109']
       },
       {
         name: 'Erie',
         aliases: ['Gem City', 'ERI'],
-        zipPrefixes: ['165']
+        zipCodes: ['16501', '16502', '16503', '16504', '16505', '16506', '16507', '16508',
+                   '16509', '16510', '16511', '16512', '16514', '16515']
       },
       {
         name: 'Reading',
         aliases: ['Pretzel City', 'RDG'],
-        zipPrefixes: ['195', '196']
+        zipCodes: ['19601', '19602', '19603', '19604', '19605', '19606', '19607', '19608',
+                   '19609', '19610', '19611', '19612']
       },
       {
         name: 'Scranton',
         aliases: ['Electric City', 'AVP'],
-        zipPrefixes: ['185']
+        zipCodes: ['18501', '18502', '18503', '18504', '18505', '18507', '18508', '18509', '18510']
       },
       {
         name: 'Bethlehem',
         aliases: ['Christmas City', 'Steel City'],
-        zipPrefixes: ['180']
+        zipCodes: ['18015', '18016', '18017', '18018', '18020', '18025']
       },
       {
         name: 'Lancaster',
         aliases: ['Red Rose City', 'LNS'],
-        zipPrefixes: ['175', '176']
+        zipCodes: ['17601', '17602', '17603', '17604', '17605', '17606', '17607', '17608']
       },
       {
         name: 'Harrisburg',
         aliases: ['Capital City', 'MDT'],
-        zipPrefixes: ['171']
+        zipCodes: ['17101', '17102', '17103', '17104', '17105', '17106', '17107', '17108',
+                   '17109', '17110', '17111', '17112', '17113', '17120']
       },
       {
         name: 'York',
         aliases: ['White Rose City'],
-        zipPrefixes: ['173', '174']
+        zipCodes: ['17401', '17402', '17403', '17404', '17405', '17406', '17407', '17408']
       },
       {
         name: 'Wilkes-Barre',
         aliases: ['Diamond City', 'WB'],
-        zipPrefixes: ['187']
+        zipCodes: ['18701', '18702', '18703', '18704', '18705', '18706', '18710', '18711']
       },
       {
         name: 'Chester',
         aliases: ['City of Chester'],
-        zipPrefixes: ['190']
+        zipCodes: ['19013', '19014', '19015', '19016']
       },
       {
         name: 'Easton',
         aliases: ['Forks of the Delaware'],
-        zipPrefixes: ['180']
+        zipCodes: ['18040', '18042', '18043', '18044', '18045']
       },
       {
         name: 'Lebanon',
         aliases: ['Lebanon County'],
-        zipPrefixes: ['170']
+        zipCodes: ['17042', '17046']
       },
       {
         name: 'Hazleton',
         aliases: ['Mountain City'],
-        zipPrefixes: ['182']
+        zipCodes: ['18201', '18202']
       },
       {
         name: 'New Castle',
         aliases: ['Fireworks Capital'],
-        zipPrefixes: ['161']
+        zipCodes: ['16101', '16102', '16103', '16105', '16107', '16108']
       },
       {
         name: 'Johnstown',
         aliases: ['Flood City'],
-        zipPrefixes: ['159']
+        zipCodes: ['15901', '15902', '15904', '15905', '15906', '15907', '15909']
       },
       {
         name: 'McKeesport',
         aliases: ['Tube City'],
-        zipPrefixes: ['151']
+        zipCodes: ['15131', '15132', '15133', '15134', '15135']
       },
       {
         name: 'Williamsport',
         aliases: ['Lumber Capital'],
-        zipPrefixes: ['177']
+        zipCodes: ['17701', '17702', '17703']
       },
       {
         name: 'State College',
         aliases: ['Happy Valley', 'PSU'],
-        zipPrefixes: ['168']
+        zipCodes: ['16801', '16802', '16803', '16804', '16805']
       }
     ];
 
@@ -460,7 +539,7 @@ export class GeoDataManager {
         type: 'city',
         aliases: metro.aliases,
         parentEntity: 'pennsylvania',
-        zipCodes: this.generateZipCodesFromPrefixes(metro.zipPrefixes),
+        zipCodes: metro.zipCodes || [],
         confidence: 1.0
       };
 
@@ -473,33 +552,133 @@ export class GeoDataManager {
     });
   }
 
+  private loadMetroAreas(): void {
+    // Define broader metropolitan areas that include surrounding suburbs
+    const metroAreas = [
+      {
+        name: 'Greater Philadelphia',
+        aliases: ['Philadelphia Metro', 'Philly Metro', 'Delaware Valley'],
+        // Include surrounding PA, NJ, and DE zip prefixes
+        zipPrefixes: ['190', '191', '192', '193', '194', '180', '181', '083', '084', '080', '081']
+      },
+      {
+        name: 'Greater New York',
+        aliases: ['NYC Metro', 'New York Metropolitan Area', 'Tri-State Area'],
+        // Include NYC + surrounding counties
+        zipPrefixes: ['100', '101', '102', '103', '104', '105', '110', '111', '112', '113', '114', '116',
+                      '106', '107', '108', '109', '070', '071', '072', '073', '074', '075', '076', '077']
+      },
+      {
+        name: 'Greater Pittsburgh',
+        aliases: ['Pittsburgh Metro', 'Steel City Metro'],
+        zipPrefixes: ['150', '151', '152', '153', '154', '156', '157', '158']
+      },
+      {
+        name: 'Greater Buffalo',
+        aliases: ['Buffalo-Niagara Metro', 'Buffalo Metro'],
+        zipPrefixes: ['140', '141', '142', '143']
+      },
+      {
+        name: 'Greater Rochester',
+        aliases: ['Rochester Metro'],
+        zipPrefixes: ['144', '145', '146']
+      },
+      {
+        name: 'Greater Newark',
+        aliases: ['Newark Metro'],
+        zipPrefixes: ['070', '071', '072', '073']
+      }
+    ];
+
+    metroAreas.forEach(metro => {
+      const entity: GeographicEntity = {
+        name: metro.name,
+        type: 'metro',
+        aliases: metro.aliases,
+        // For metro areas, generate full range of zip codes from prefixes
+        zipCodes: this.generateFullZipCodesFromPrefixes(metro.zipPrefixes),
+        confidence: 1.0
+      };
+
+      this.addEntity(entity);
+      
+      // Add ZIP code mappings for metro areas
+      entity.zipCodes?.forEach(zip => {
+        // Only add if not already mapped to a specific city
+        if (!this.database.zipCodeToCity.has(zip)) {
+          this.database.zipCodeToCity.set(zip, metro.name.toLowerCase());
+        }
+      });
+    });
+  }
+
+  private generateFullZipCodesFromPrefixes(prefixes: string[]): string[] {
+    const zipCodes: string[] = [];
+    
+    prefixes.forEach(prefix => {
+      // For metro areas, generate all 100 possible zip codes per prefix
+      for (let i = 0; i < 100; i++) {
+        zipCodes.push(prefix + i.toString().padStart(2, '0'));
+      }
+    });
+    
+    return zipCodes;
+  }
+
   private loadNYBoroughsAndNeighborhoods(): void {
     // NYC Boroughs
     const boroughs = [
       {
         name: 'Manhattan',
         aliases: ['New York County', 'The City'],
-        zipPrefixes: ['100', '101', '102', '103', '104']
+        zipCodes: [
+          '10001', '10002', '10003', '10004', '10005', '10006', '10007', '10009', '10010',
+          '10011', '10012', '10013', '10014', '10016', '10017', '10018', '10019', '10020',
+          '10021', '10022', '10023', '10024', '10025', '10026', '10027', '10028', '10029',
+          '10030', '10031', '10032', '10033', '10034', '10035', '10036', '10037', '10038',
+          '10039', '10040', '10044', '10065', '10069', '10075', '10128', '10280', '10282'
+        ]
       },
       {
         name: 'Brooklyn',
         aliases: ['Kings County', 'BK'],
-        zipPrefixes: ['112']
+        zipCodes: [
+          '11201', '11203', '11204', '11205', '11206', '11207', '11208', '11209', '11210',
+          '11211', '11212', '11213', '11214', '11215', '11216', '11217', '11218', '11219',
+          '11220', '11221', '11222', '11223', '11224', '11225', '11226', '11228', '11229',
+          '11230', '11231', '11232', '11233', '11234', '11235', '11236', '11237', '11238',
+          '11239', '11249', '11251', '11252', '11256'
+        ]
       },
       {
         name: 'Queens',
         aliases: ['Queens County', 'QNS'],
-        zipPrefixes: ['110', '111', '113', '114', '116']
+        zipCodes: [
+          '11101', '11102', '11103', '11104', '11105', '11106', '11109', '11354', '11355',
+          '11356', '11357', '11358', '11359', '11360', '11361', '11362', '11363', '11364',
+          '11365', '11366', '11367', '11368', '11369', '11370', '11372', '11373', '11374',
+          '11375', '11377', '11378', '11379', '11385', '11411', '11412', '11413', '11414',
+          '11415', '11416', '11417', '11418', '11419', '11420', '11421', '11422', '11423',
+          '11426', '11427', '11428', '11429', '11430', '11432', '11433', '11434', '11435',
+          '11436', '11691', '11692', '11693', '11694', '11697'
+        ]
       },
       {
         name: 'Bronx',
         aliases: ['Bronx County', 'BX', 'The Bronx'],
-        zipPrefixes: ['104', '105']
+        zipCodes: [
+          '10451', '10452', '10453', '10454', '10455', '10456', '10457', '10458', '10459',
+          '10460', '10461', '10462', '10463', '10464', '10465', '10466', '10467', '10468',
+          '10469', '10470', '10471', '10472', '10473', '10474', '10475'
+        ]
       },
       {
         name: 'Staten Island',
         aliases: ['Richmond County', 'SI'],
-        zipPrefixes: ['103']
+        zipCodes: [
+          '10301', '10302', '10303', '10304', '10305', '10306', '10307', '10308', '10309',
+          '10310', '10311', '10312', '10313', '10314'
+        ]
       }
     ];
 
@@ -509,7 +688,7 @@ export class GeoDataManager {
         type: 'borough',
         aliases: borough.aliases,
         parentEntity: 'new york city',
-        zipCodes: this.generateZipCodesFromPrefixes(borough.zipPrefixes),
+        zipCodes: borough.zipCodes,
         confidence: 1.0
       };
 
@@ -710,18 +889,6 @@ export class GeoDataManager {
     });
   }
 
-  private generateZipCodesFromPrefixes(prefixes: string[]): string[] {
-    const zipCodes: string[] = [];
-    
-    prefixes.forEach(prefix => {
-      // Generate representative ZIP codes for each prefix
-      for (let i = 0; i < 100; i += 10) { // Sample every 10th ZIP
-        zipCodes.push(prefix + i.toString().padStart(2, '0'));
-      }
-    });
-    
-    return zipCodes;
-  }
 
   // ===== POINTS OF INTEREST LOADERS =====
 

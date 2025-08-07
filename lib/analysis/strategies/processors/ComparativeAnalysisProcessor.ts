@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { GeoDataManager } from '../../../geo/GeoDataManager';
 
 /**
  * ComparativeAnalysisProcessor - Handles data processing for the /comparative-analysis endpoint
@@ -7,6 +9,35 @@ import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, Geogra
  * brands, regions, or market characteristics to identify competitive advantages and positioning opportunities.
  */
 export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
+  private geoDataManager: any = null;
+  
+  private getGeoDataManager() {
+    if (!this.geoDataManager) {
+      this.geoDataManager = GeoDataManager.getInstance();
+    }
+    return this.geoDataManager;
+  }
+  
+  private extractCityFromRecord(record: any): string {
+    // First check if there's an explicit city field
+    if (record.city) return record.city;
+    
+    // Extract ZIP code and map to city using GeoDataManager
+    const zipCode = record.ID || record.id || record.area_id || record.zipcode;
+    if (zipCode) {
+      const zipStr = String(zipCode);
+      const database = this.getGeoDataManager().getDatabase();
+      const city = database.zipCodeToCity.get(zipStr);
+      if (city) {
+        // Capitalize first letter of each word
+        return city.split(' ').map((word: string) => 
+          word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        ).join(' ');
+      }
+    }
+    
+    return 'Unknown';
+  }
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
@@ -33,6 +64,20 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
 
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {
     console.log(`⚖️ [COMPARATIVE ANALYSIS PROCESSOR] CALLED WITH ${rawData.results?.length || 0} RECORDS ⚖️`);
+    
+    // DEBUG: Log ALL ZIP codes received by processor
+    if (rawData.results && rawData.results.length > 0) {
+      const allZips = rawData.results.map(r => r.ID || r.area_name || r.zipcode || 'unknown');
+      console.log(`🔍 [COMPARATIVE PROCESSOR] DEBUGGING: ALL ${allZips.length} ZIP codes received:`, allZips);
+      
+      // Check which cities are represented
+      const cityCount = rawData.results.reduce((acc, r) => {
+        const city = this.extractCityFromRecord(r);
+        acc[city] = (acc[city] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+      console.log(`🔍 [COMPARATIVE PROCESSOR] DEBUGGING: City distribution:`, cityCount);
+    }
     
     if (!this.validate(rawData)) {
       throw new Error('Invalid data format for ComparativeAnalysisProcessor');
@@ -608,22 +653,24 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     if (record.NAME) return record.NAME;
     if (record.name) return record.name;
     
-    // Create name from ID and location data
+    // Create name from ID and location data with city context
     const id = record.ID || record.id || record.GEOID;
     if (id) {
-      // For ZIP codes, create format like "ZIP 12345"
+      const city = this.extractCityFromRecord(record);
+      
+      // For ZIP codes, create format like "12345 (Brooklyn)" 
       if (typeof id === 'string' && id.match(/^\d{5}$/)) {
-        return `ZIP ${id}`;
+        return city !== 'Unknown' ? `${id} (${city})` : `ZIP ${id}`;
       }
-      // For FSA codes, create format like "FSA M5V"  
+      // For FSA codes, create format like "M5V (Toronto)"
       if (typeof id === 'string' && id.match(/^[A-Z]\d[A-Z]$/)) {
-        return `FSA ${id}`;
+        return city !== 'Unknown' ? `${id} (${city})` : `FSA ${id}`;
       }
       // For numeric IDs, create descriptive name
       if (typeof id === 'number' || !isNaN(Number(id))) {
-        return `Area ${id}`;
+        return city !== 'Unknown' ? `${id} (${city})` : `Area ${id}`;
       }
-      return `Region ${id}`;
+      return city !== 'Unknown' ? `${id} (${city})` : `Region ${id}`;
     }
     
     return 'Unknown Area';
