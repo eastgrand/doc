@@ -190,30 +190,52 @@ interface WorkflowState {
 ### Phase 1: Foundation (Week 1)
 **Goal**: Create unified area selector without breaking existing functionality
 
-**Tasks**:
-1. Build `UnifiedAreaSelector` component
-2. Create shared geometry state management
-3. Add address/place search integration
-4. Maintain backward compatibility with existing interfaces
+**Status**: IN PROGRESS
 
-**Files to Create**:
-- `/components/unified-analysis/UnifiedAreaSelector.tsx`
-- `/hooks/useGeometryState.ts`
-- `/lib/geocoding/searchService.ts`
+**Tasks**:
+1. ✅ Build `UnifiedAreaSelector` component - COMPLETE
+   - Reused existing DrawingTools component
+   - Reused existing useDrawing hook  
+   - Reused existing LocationSearch component
+   - Combined all area selection methods in single interface
+2. ⏳ Create shared geometry state management - PENDING
+3. ✅ Add address/place search integration - COMPLETE (using existing LocationSearch)
+4. ✅ Maintain backward compatibility with existing interfaces - COMPLETE
+
+**Files Created**:
+- ✅ `/components/unified-analysis/UnifiedAreaSelector.tsx` - Created using existing components
+
+**Files Reused (No new functionality needed)**:
+- `/components/tabs/DrawingTools.tsx` - Drawing interface
+- `/hooks/useDrawing.ts` - Drawing logic and geometry management
+- `/components/location-search.tsx` - Address/place search with geocoding
+- No need for new `/lib/geocoding/searchService.ts` - LocationSearch handles this
 
 ### Phase 2: Analysis Engine (Week 2)
 **Goal**: Create single analysis engine that serves all formats
 
-**Tasks**:
-1. Build `UnifiedAnalysisEngine` class
-2. Consolidate data fetching logic from existing components
-3. Create standardized analysis results format
-4. Add caching layer for performance
+**Status**: COMPLETE
 
-**Files to Create**:
-- `/lib/analysis/UnifiedAnalysisEngine.ts`
-- `/lib/analysis/types.ts`
-- `/lib/caching/analysisCache.ts`
+**Tasks**:
+1. ✅ Build `UnifiedAnalysisEngine` class - COMPLETE (Created wrapper instead)
+   - Created UnifiedAnalysisWrapper to wrap existing AnalysisEngine
+   - Maintains backward compatibility
+   - Routes requests to appropriate analysis methods
+2. ✅ Consolidate data fetching logic from existing components - NOT NEEDED
+   - Existing AnalysisEngine already handles this perfectly
+3. ✅ Create standardized analysis results format - COMPLETE
+   - UnifiedAnalysisResponse format created
+4. ✅ Add caching layer for performance - ALREADY EXISTS
+   - AnalysisEngine already has CachedEndpointRouter
+
+**Files Created**:
+- ✅ `/components/unified-analysis/UnifiedAnalysisWrapper.tsx` - Wrapper for existing AnalysisEngine
+- ✅ `/components/unified-analysis/UnifiedAnalysisWorkflow.tsx` - Main orchestrator component
+
+**Files Reused**:
+- `/lib/analysis/AnalysisEngine.ts` - Existing comprehensive analysis engine
+- `/lib/analysis/types.ts` - Already has all needed types
+- `/lib/analysis/CachedEndpointRouter.ts` - Already handles caching
 
 ### Phase 3: Results Viewer (Week 3)
 **Goal**: Single results component that adapts to different view modes
