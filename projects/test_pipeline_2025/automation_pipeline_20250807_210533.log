@@ -1,0 +1,29 @@
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO - 🚀 Starting Complete ArcGIS to Microservice Automation Pipeline
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO - 📅 Project: test_pipeline_2025
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO - 🌐 Service: https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO - ================================================================================
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO - 
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO - ⚠️  WARNING: This pipeline will modify your existing files:
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO -    • config/layers.ts will be REPLACED (original backed up)
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO -    • 18 new endpoint files will be created in public/data/endpoints/
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO -    • Project files will be created in projects/test_pipeline_2025
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO - 
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO - 🔒 Safety: All original files are automatically backed up
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO - ================================================================================
+2025-08-07 21:05:33,460 - AutomationPipeline - INFO - 🔍 PHASE 1: Service Discovery & Analysis
+2025-08-07 21:05:33,461 - AutomationPipeline - INFO - --------------------------------------------------
+2025-08-07 21:05:33,461 - AutomationPipeline - INFO - 📊 Discovering service layers...
+2025-08-07 21:05:50,659 - AutomationPipeline - INFO - ⚙️  Generating extraction configuration...
+2025-08-07 21:05:50,671 - AutomationPipeline - INFO - ✅ Phase 1 Complete: Discovered 16 layers
+2025-08-07 21:05:50,671 - AutomationPipeline - INFO - 
+📊 PHASE 2: Data Extraction
+2025-08-07 21:05:50,671 - AutomationPipeline - INFO - --------------------------------------------------
+2025-08-07 21:05:50,671 - AutomationPipeline - INFO - ⬇️  Extracting data from all layers...
+2025-08-07 21:06:12,259 - AutomationPipeline - INFO - 🔄 Merging datasets...
+2025-08-07 21:06:12,347 - AutomationPipeline - INFO - ✅ Phase 2 Complete: Extracted 984 records with 53 fields
+2025-08-07 21:06:12,348 - AutomationPipeline - INFO - 
+🤖 PHASE 3: Intelligent Field Mapping
+2025-08-07 21:06:12,348 - AutomationPipeline - INFO - --------------------------------------------------
+2025-08-07 21:06:12,348 - AutomationPipeline - INFO - 🎯 Generating intelligent field mappings...
+2025-08-07 21:06:12,436 - AutomationPipeline - INFO - ✔️  Creating validation summary...
+2025-08-07 21:06:12,436 - AutomationPipeline - ERROR - ❌ Phase 3 Failed: Object of type int32 is not JSON serializable

@@ -1,0 +1,168 @@
+{
+  "layer_id": 5,
+  "layer_name": "Own Cryptocurrency Investment",
+  "description": "Business Analyst Layer: Own Cryptocurrency Investment",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-08-07T21:26:28.729098",
+  "record_count": 984,
+  "field_count": 12,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "32003 (Fleming Island)",
+        "32008 (Branford)",
+        "32009 (Bryceville)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ID",
+      "type": "esriFieldTypeString",
+      "alias": "ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "32003",
+        "32008",
+        "32009"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP10138A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Own Cryptocurrency Investment",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        817,
+        81,
+        84
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP10138A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Own Cryptocurrency Investment (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3.45,
+        1.72,
+        3.2
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3.45,
+        1.72,
+        3.2
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        55165000,
+        522930000,
+        313680000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        43146.45444871945,
+        186304.20316408772,
+        95473.99688899332
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1754588013551,
+        1754588013551,
+        1754588013551
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1754588013551,
+        1754588013551,
+        1754588013551
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_5_Own_Cryptocurrency_Investment.csv"
+}

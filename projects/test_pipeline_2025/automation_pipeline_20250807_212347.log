@@ -1,0 +1,70 @@
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO - 🚀 Starting Complete ArcGIS to Microservice Automation Pipeline
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO - 📅 Project: test_pipeline_2025
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO - 🌐 Service: https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO - ================================================================================
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO - 
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO - ⚠️  WARNING: This pipeline will modify your existing files:
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO -    • config/layers.ts will be REPLACED (original backed up)
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO -    • 18 new endpoint files will be created in public/data/endpoints/
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO -    • Project files will be created in projects/test_pipeline_2025
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO - 
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO - 🔒 Safety: All original files are automatically backed up
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO - ================================================================================
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO - 🔍 PHASE 1: Service Discovery & Analysis
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO - --------------------------------------------------
+2025-08-07 21:23:47,585 - AutomationPipeline - INFO - 📊 Discovering service layers...
+2025-08-07 21:24:04,309 - AutomationPipeline - INFO - ⚙️  Generating extraction configuration...
+2025-08-07 21:24:04,321 - AutomationPipeline - INFO - ✅ Phase 1 Complete: Discovered 16 layers
+2025-08-07 21:24:04,321 - AutomationPipeline - INFO - 
+📊 PHASE 2: Data Extraction
+2025-08-07 21:24:04,322 - AutomationPipeline - INFO - --------------------------------------------------
+2025-08-07 21:24:04,322 - AutomationPipeline - INFO - ⬇️  Extracting data from all layers...
+2025-08-07 21:24:22,949 - AutomationPipeline - INFO - 🔄 Merging datasets...
+2025-08-07 21:24:23,042 - AutomationPipeline - INFO - ✅ Phase 2 Complete: Extracted 984 records with 53 fields
+2025-08-07 21:24:23,043 - AutomationPipeline - INFO - 
+🤖 PHASE 3: Intelligent Field Mapping
+2025-08-07 21:24:23,043 - AutomationPipeline - INFO - --------------------------------------------------
+2025-08-07 21:24:23,043 - AutomationPipeline - INFO - 🎯 Generating intelligent field mappings...
+2025-08-07 21:24:23,141 - AutomationPipeline - INFO - ✔️  Creating validation summary...
+2025-08-07 21:24:23,142 - AutomationPipeline - INFO - ✅ Phase 3 Complete: Mapped 7 fields
+2025-08-07 21:24:23,142 - AutomationPipeline - INFO - 
+🎓 PHASE 4: Model Training & Microservice Package Creation
+2025-08-07 21:24:23,142 - AutomationPipeline - INFO - --------------------------------------------------
+2025-08-07 21:24:23,143 - AutomationPipeline - INFO - 🧠 Training comprehensive XGBoost models...
+2025-08-07 21:24:39,176 - AutomationPipeline - INFO - 📦 Creating microservice deployment package...
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - ✅ Phase 4 Complete: Model training successful
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 📦 Microservice package created: /Users/voldeck/code/mpiq-ai-chat/projects/test_pipeline_2025/microservice_package
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 
+================================================================================
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 🚨 PIPELINE PAUSE: Manual Microservice Deployment Required
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - ================================================================================
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 📦 Microservice package created at:
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO -    /Users/voldeck/code/mpiq-ai-chat/projects/test_pipeline_2025/microservice_package
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 🚀 NEXT STEPS (Manual):
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO -    1. Deploy microservice to Render using the package above
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO -    2. Get your new microservice URL from Render
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO -    3. Update your client code with the microservice URL
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 📋 Deployment Instructions:
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO -    Package README: /Users/voldeck/code/mpiq-ai-chat/projects/test_pipeline_2025/microservice_package/README.md
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO -    Complete Guide: scripts/automation/DEPLOYMENT_INSTRUCTIONS.md
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO -    Quick Guide: https://render.com/docs/deploy-python
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - ⏸️  The automation will continue with endpoint generation...
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO -    (The remaining steps don't require the live microservice)
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 🔄 Continue? The pipeline will now generate endpoints and configurations...
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - ================================================================================
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 
+📊 PHASE 5: Endpoint Generation
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - --------------------------------------------------
+2025-08-07 21:24:39,180 - AutomationPipeline - INFO - 🏗️  Generating endpoint configurations...
+2025-08-07 21:24:41,510 - AutomationPipeline - INFO - ✅ Phase 5 Complete: Generated 18 endpoints
+2025-08-07 21:24:41,510 - AutomationPipeline - INFO - 
+📈 PHASE 6: Score Calculation
+2025-08-07 21:24:41,510 - AutomationPipeline - INFO - --------------------------------------------------
+2025-08-07 21:24:41,511 - AutomationPipeline - INFO - 🧮 Calculating comprehensive scores...
+2025-08-07 21:24:41,511 - AutomationPipeline - INFO -   📊 Scoring strategic-analysis...
+2025-08-07 21:24:41,511 - AutomationPipeline - ERROR - ❌ Phase 6 Failed: 'AutomatedScoreCalculator' object has no attribute 'calculate_all_scores'

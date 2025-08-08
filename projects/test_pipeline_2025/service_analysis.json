@@ -1,0 +1,3105 @@
+{
+  "layers": [
+    {
+      "layer_id": 0,
+      "name": "Generation Alpha Pop",
+      "description": "Business Analyst Layer: Generation Alpha Pop",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003 (Fleming Island)",
+            "33308 (Fort Lauderdale)",
+            "32008 (Branford)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003",
+            "33308",
+            "32008"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "GENALPHACY",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Generation Alpha Population (Born 2017 or Later) (Esri)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            2349,
+            1452,
+            502
+          ],
+          "has_data": true
+        },
+        {
+          "name": "GENALPHACY_P",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Generation Alpha Population (Born 2017 or Later) (Esri) (%)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            7.97,
+            4.84,
+            8.7
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            7.97,
+            4.84,
+            8.7
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            55165000,
+            15811250,
+            522930000
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            43146.45444871945,
+            19390.05511158474,
+            186304.20316408772
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754587931757,
+            1754587931757,
+            1754587931757
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754587931757,
+            1754587931757,
+            1754587931757
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/0",
+      "priority": 45
+    },
+    {
+      "layer_id": 1,
+      "name": "Generation Z Pop",
+      "description": "Business Analyst Layer: Generation Z Pop",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33308 (Fort Lauderdale)",
+            "33309 (Fort Lauderdale)",
+            "33311 (Fort Lauderdale)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33308",
+            "33309",
+            "33311"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "GENZ_CY",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Generation Z Population (Born 1999 to 2016) (Esri)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            3149,
+            8328,
+            17399
+          ],
+          "has_data": true
+        },
+        {
+          "name": "GENZ_CY_P",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Generation Z Population (Born 1999 to 2016) (Esri) (%)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            10.49,
+            21.45,
+            24.47
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            10.49,
+            21.45,
+            24.47
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            15811250,
+            34082500,
+            34866250
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            19390.05511158474,
+            25278.01461278224,
+            24090.6179851779
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754587948259,
+            1754587948259,
+            1754587948259
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754587948259,
+            1754587948259,
+            1754587948259
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/1",
+      "priority": 45
+    },
+    {
+      "layer_id": 2,
+      "name": "Used Google Pay Digital Payment Svc",
+      "description": "Business Analyst Layer: Used Google Pay Digital Payment Svc",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003 (Fleming Island)",
+            "32008 (Branford)",
+            "32009 (Bryceville)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003",
+            "32008",
+            "32009"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10120A_B",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Used Google Pay Digital Payment Service Last 30 Days",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1725,
+            318,
+            194
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10120A_B_P",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Used Google Pay Digital Payment Service Last 30 Days (%)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            7.29,
+            6.75,
+            7.39
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            7.29,
+            6.75,
+            7.39
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            55165000,
+            522930000,
+            313680000
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            43146.45444871945,
+            186304.20316408772,
+            95473.99688899332
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754587961394,
+            1754587961394,
+            1754587961394
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754587961394,
+            1754587961394,
+            1754587961394
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/2",
+      "priority": 45
+    },
+    {
+      "layer_id": 3,
+      "name": "Used Apple Pay Digital Payment Svc",
+      "description": "Business Analyst Layer: Used Apple Pay Digital Payment Svc",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33306 (Fort Lauderdale)",
+            "33309 (Fort Lauderdale)",
+            "33311 (Fort Lauderdale)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33306",
+            "33309",
+            "33311"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10110A_B",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Used Apple Pay Digital Payment Service Last 30 Days",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            745,
+            6434,
+            9522
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10110A_B_P",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Used Apple Pay Digital Payment Service Last 30 Days (%)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            21.09,
+            20.77,
+            17.61
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            21.09,
+            20.77,
+            17.61
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            2742500,
+            34082500,
+            34866250
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            8159.581105997408,
+            25278.01461278224,
+            24090.6179851779
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754587977575,
+            1754587977575,
+            1754587977575
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754587977575,
+            1754587977575,
+            1754587977575
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/3",
+      "priority": 45
+    },
+    {
+      "layer_id": 4,
+      "name": "Used Bank of America Bank 12 Mo",
+      "description": "Business Analyst Layer: Used Bank of America Bank 12 Mo",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003 (Fleming Island)",
+            "32008 (Branford)",
+            "32009 (Bryceville)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003",
+            "32008",
+            "32009"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10002A_B",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Used Bank of America Bank Last 12 Mo",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            3665,
+            378,
+            311
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10002A_B_P",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Used Bank of America Bank Last 12 Mo (%)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            15.49,
+            8.03,
+            11.84
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            15.49,
+            8.03,
+            11.84
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            55165000,
+            522930000,
+            313680000
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            43146.45444871945,
+            186304.20316408772,
+            95473.99688899332
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754587995004,
+            1754587995004,
+            1754587995004
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754587995004,
+            1754587995004,
+            1754587995004
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/4",
+      "priority": 45
+    },
+    {
+      "layer_id": 5,
+      "name": "Own Cryptocurrency Investment",
+      "description": "Business Analyst Layer: Own Cryptocurrency Investment",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003 (Fleming Island)",
+            "32008 (Branford)",
+            "32009 (Bryceville)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003",
+            "32008",
+            "32009"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10138A_B",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Own Cryptocurrency Investment",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            817,
+            81,
+            84
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10138A_B_P",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Own Cryptocurrency Investment (%)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            3.45,
+            1.72,
+            3.2
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            3.45,
+            1.72,
+            3.2
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            55165000,
+            522930000,
+            313680000
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            43146.45444871945,
+            186304.20316408772,
+            95473.99688899332
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588013551,
+            1754588013551,
+            1754588013551
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588013551,
+            1754588013551,
+            1754588013551
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/5",
+      "priority": 45
+    },
+    {
+      "layer_id": 6,
+      "name": "Have Personal Line of Credit",
+      "description": "Business Analyst Layer: Have Personal Line of Credit",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003 (Fleming Island)",
+            "32008 (Branford)",
+            "32009 (Bryceville)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003",
+            "32008",
+            "32009"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10028A_B",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Have Personal Line of Credit",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1360,
+            297,
+            191
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10028A_B_P",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Have Personal Line of Credit (%)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            5.75,
+            6.31,
+            7.27
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            5.75,
+            6.31,
+            7.27
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            55165000,
+            522930000,
+            313680000
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            43146.45444871945,
+            186304.20316408772,
+            95473.99688899332
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588027104,
+            1754588027104,
+            1754588027104
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588027104,
+            1754588027104,
+            1754588027104
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/6",
+      "priority": 45
+    },
+    {
+      "layer_id": 7,
+      "name": "Have Savings Account",
+      "description": "Business Analyst Layer: Have Savings Account",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33308 (Fort Lauderdale)",
+            "33309 (Fort Lauderdale)",
+            "33311 (Fort Lauderdale)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33308",
+            "33309",
+            "33311"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10020A_B",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Have Savings Account",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            20875,
+            21504,
+            33150
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10020A_B_P",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Have Savings Account (%)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            76.96,
+            69.41,
+            61.32
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            76.96,
+            69.41,
+            61.32
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            15811250,
+            34082500,
+            34866250
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            19390.05511158474,
+            25278.01461278224,
+            24090.6179851779
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588043039,
+            1754588043039,
+            1754588043039
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588043039,
+            1754588043039,
+            1754588043039
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/7",
+      "priority": 45
+    },
+    {
+      "layer_id": 8,
+      "name": "Carry Credit Card Balance 3-Usually Always",
+      "description": "Business Analyst Layer: Carry Credit Card Balance 3-Usually Always",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33306 (Fort Lauderdale)",
+            "33309 (Fort Lauderdale)",
+            "33311 (Fort Lauderdale)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33306",
+            "33309",
+            "33311"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10116A_B",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Carry Credit Card Balance: 3-Usually or Always",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            591,
+            7016,
+            12070
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10116A_B_P",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Carry Credit Card Balance: 3-Usually or Always (%)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            16.73,
+            22.65,
+            22.33
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            16.73,
+            22.65,
+            22.33
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            2742500,
+            34082500,
+            34866250
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            8159.581105997408,
+            25278.01461278224,
+            24090.6179851779
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588058897,
+            1754588058897,
+            1754588058897
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588058897,
+            1754588058897,
+            1754588058897
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/8",
+      "priority": 45
+    },
+    {
+      "layer_id": 9,
+      "name": "Used TurboTax Online to Prepare Taxes",
+      "description": "Business Analyst Layer: Used TurboTax Online to Prepare Taxes",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33304 (Fort Lauderdale)",
+            "33308 (Fort Lauderdale)",
+            "33305 (Fort Lauderdale)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33304",
+            "33308",
+            "33305"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10104A_B",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Used TurboTax Online to Prepare Taxes",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            2301,
+            2758,
+            1261
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10104A_B_P",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Used TurboTax Online to Prepare Taxes (%)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            11.99,
+            10.17,
+            11.56
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            11.99,
+            10.17,
+            11.56
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            11147500,
+            15811250,
+            7420000
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            17806.857236690947,
+            19390.05511158474,
+            18428.033648652214
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588074696,
+            1754588074696,
+            1754588074696
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588074696,
+            1754588074696,
+            1754588074696
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/9",
+      "priority": 45
+    },
+    {
+      "layer_id": 10,
+      "name": "Used H&R Block Online to Prepare Taxes",
+      "description": "Business Analyst Layer: Used H&R Block Online to Prepare Taxes",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33308 (Fort Lauderdale)",
+            "33309 (Fort Lauderdale)",
+            "33311 (Fort Lauderdale)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33308",
+            "33309",
+            "33311"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10128A_B",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Used H&R Block Online to Prepare Taxes",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            685,
+            979,
+            1574
+          ],
+          "has_data": true
+        },
+        {
+          "name": "MP10128A_B_P",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Used H&R Block Online to Prepare Taxes (%)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            2.53,
+            3.16,
+            2.91
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            2.53,
+            3.16,
+            2.91
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            15811250,
+            34082500,
+            34866250
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            19390.05511158474,
+            25278.01461278224,
+            24090.6179851779
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588091004,
+            1754588091004,
+            1754588091004
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588091004,
+            1754588091004,
+            1754588091004
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/10",
+      "priority": 45
+    },
+    {
+      "layer_id": 11,
+      "name": "Value of Credit Card Debt",
+      "description": "Business Analyst Layer: Value of Credit Card Debt",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003 (Fleming Island)",
+            "32008 (Branford)",
+            "32009 (Bryceville)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003",
+            "32008",
+            "32009"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "X14068_X",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Value of Credit Card Debt",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            43987093,
+            4491286,
+            3442652
+          ],
+          "has_data": true
+        },
+        {
+          "name": "X14068_X_A",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Value of Credit Card Debt (Avg)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            3876.2,
+            1820.55,
+            2760.75
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            3876.2,
+            1820.55,
+            2760.75
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            55165000,
+            522930000,
+            313680000
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            43146.45444871945,
+            186304.20316408772,
+            95473.99688899332
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588103351,
+            1754588103351,
+            1754588103351
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588103351,
+            1754588103351,
+            1754588103351
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/11",
+      "priority": 45
+    },
+    {
+      "layer_id": 12,
+      "name": "Value of Checking Savings Money Mkt CD",
+      "description": "Business Analyst Layer: Value of Checking Savings Money Mkt CD",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33308 (Fort Lauderdale)",
+            "32963 (Vero Beach)",
+            "33309 (Fort Lauderdale)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "33308",
+            "32963",
+            "33309"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "X14060_X",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Value of Checking/Savings/Money Mkt/CDs",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            773692677,
+            607230183,
+            363718633
+          ],
+          "has_data": true
+        },
+        {
+          "name": "X14060_X_A",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Value of Checking/Savings/Money Mkt/CDs (Avg)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            45359.25,
+            68220.45,
+            23925.71
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            45359.25,
+            68220.45,
+            23925.71
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            15811250,
+            61271247.396484375,
+            34082500
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            19390.05511158474,
+            214977.10848296163,
+            25278.01461278224
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588118368,
+            1754588118368,
+            1754588118368
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588118368,
+            1754588118368,
+            1754588118368
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/12",
+      "priority": 45
+    },
+    {
+      "layer_id": 13,
+      "name": "Value of Stocks Bonds Mutual Funds",
+      "description": "Business Analyst Layer: Value of Stocks Bonds Mutual Funds",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32963 (Vero Beach)",
+            "32966 (Vero Beach)",
+            "32967 (Vero Beach)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32963",
+            "32966",
+            "32967"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "X14058_X",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Value of Stocks/Bonds/Mutual Funds",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1146176901,
+            564479656,
+            638276714
+          ],
+          "has_data": true
+        },
+        {
+          "name": "X14058_X_A",
+          "type": "esriFieldTypeDouble",
+          "alias": "2025 Value of Stocks/Bonds/Mutual Funds (Avg)",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            128769.45,
+            49533.14,
+            51283.68
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            128769.45,
+            49533.14,
+            51283.68
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            61271247.396484375,
+            516956250,
+            165332500
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            214977.10848296163,
+            189357.73518878367,
+            77538.28796622306
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588131082,
+            1754588131082,
+            1754588131082
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588131082,
+            1754588131082,
+            1754588131082
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/13",
+      "priority": 45
+    },
+    {
+      "layer_id": 14,
+      "name": "H&R Block by ZIP",
+      "description": "Business Analyst Layer: H&R Block by ZIP",
+      "geometry_type": "esriGeometryPolygon",
+      "record_count": 984,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESCRIPTION",
+          "type": "esriFieldTypeString",
+          "alias": "ZIP Code",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003 (Fleming Island)",
+            "32008 (Branford)",
+            "32009 (Bryceville)"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "ID",
+          "type": "esriFieldTypeString",
+          "alias": "ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32003",
+            "32008",
+            "32009"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "pointCount",
+          "type": "esriFieldTypeDouble",
+          "alias": "pointCount",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1,
+            1,
+            0
+          ],
+          "has_data": true
+        },
+        {
+          "name": "thematic_value",
+          "type": "esriFieldTypeDouble",
+          "alias": "thematic_value",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1,
+            1,
+            0
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Area",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Area",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            55165000,
+            522930000,
+            313680000
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Shape__Length",
+          "type": "esriFieldTypeDouble",
+          "alias": "Shape__Length",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            43146.45444871945,
+            186304.20316408772,
+            95473.99688899332
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588149331,
+            1754588149331,
+            1754588149331
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588149331,
+            1754588149331,
+            1754588149331
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/14",
+      "priority": 45
+    },
+    {
+      "layer_id": 15,
+      "name": "H&R Block points",
+      "description": "Business Analyst Layer: H&R Block points",
+      "geometry_type": "esriGeometryPoint",
+      "record_count": 520,
+      "fields": [
+        {
+          "name": "OBJECTID",
+          "type": "esriFieldTypeOID",
+          "alias": "Object ID",
+          "nullable": false,
+          "domain": null,
+          "sample_values": [
+            1,
+            2,
+            3
+          ],
+          "has_data": true
+        },
+        {
+          "name": "name",
+          "type": "esriFieldTypeString",
+          "alias": "POI Name",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "H&R Block",
+            "H&R Block",
+            "H&R Block"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "address",
+          "type": "esriFieldTypeString",
+          "alias": "Address",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "223 E Granada Blvd",
+            "2619 Thonotosassa Rd",
+            "6915 Taft St"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "locality",
+          "type": "esriFieldTypeString",
+          "alias": "Locality",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Ormond Beach",
+            "Plant City",
+            "Hollywood"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "region",
+          "type": "esriFieldTypeString",
+          "alias": "Region",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "FL",
+            "FL",
+            "FL"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "postcode",
+          "type": "esriFieldTypeString",
+          "alias": "Postcode",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "32176",
+            "33563",
+            "33024"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "country",
+          "type": "esriFieldTypeString",
+          "alias": "Country Abbreviation",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "US",
+            "US",
+            "US"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "fsq_category",
+          "type": "esriFieldTypeString",
+          "alias": "Foursquare Categories",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "63be6904847c3692a84b9b3d, 63be6904847c3692a84b9b6b",
+            "63be6904847c3692a84b9b3d, 63be6904847c3692a84b9b6b",
+            "63be6904847c3692a84b9b3d, 63be6904847c3692a84b9b6b"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "fsq_category_all",
+          "type": "esriFieldTypeString",
+          "alias": "All Foursquare Categories",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "4d4b7105d754a06375d81259, 63be6904847c3692a84b9b3d, 63be6904847c3692a84b9b6b",
+            "4d4b7105d754a06375d81259, 63be6904847c3692a84b9b3d, 63be6904847c3692a84b9b6b",
+            "4d4b7105d754a06375d81259, 63be6904847c3692a84b9b3d, 63be6904847c3692a84b9b6b"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "INDUSTRY_DESC",
+          "type": "esriFieldTypeString",
+          "alias": "Industry Description",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Business and Professional Services, Financial Service, Legal Service",
+            "Business and Professional Services, Financial Service, Legal Service",
+            "Business and Professional Services, Financial Service, Legal Service"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "source",
+          "type": "esriFieldTypeString",
+          "alias": "Source",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Foursquare",
+            "Foursquare",
+            "Foursquare"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "esri_pid",
+          "type": "esriFieldTypeString",
+          "alias": "Esri ID",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "e8c8e51494be5cec3cff39734d0afbec",
+            "4f157ece40b1f1d721998f8f24e39a34",
+            "73a3772b7a367378930c4f5dbb3f5ffb"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "DESC_",
+          "type": "esriFieldTypeString",
+          "alias": "Description",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "H&R Block, 223 E Granada Blvd, Ormond Beach, FL",
+            "H&R Block, 2619 Thonotosassa Rd, Plant City, FL",
+            "H&R Block, 6915 Taft St, Hollywood, FL"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "LATITUDE",
+          "type": "esriFieldTypeDouble",
+          "alias": "Latitude",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            29.292265869810393,
+            28.024615639983953,
+            26.025681070246957
+          ],
+          "has_data": true
+        },
+        {
+          "name": "LONGITUDE",
+          "type": "esriFieldTypeDouble",
+          "alias": "Longitude",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            -81.04123359092041,
+            -82.15120385596106,
+            -80.22683884698151
+          ],
+          "has_data": true
+        },
+        {
+          "name": "CreationDate",
+          "type": "esriFieldTypeDate",
+          "alias": "CreationDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588154609,
+            1754588154609,
+            1754588154609
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Creator",
+          "type": "esriFieldTypeString",
+          "alias": "Creator",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        },
+        {
+          "name": "EditDate",
+          "type": "esriFieldTypeDate",
+          "alias": "EditDate",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            1754588154609,
+            1754588154609,
+            1754588154609
+          ],
+          "has_data": true
+        },
+        {
+          "name": "Editor",
+          "type": "esriFieldTypeString",
+          "alias": "Editor",
+          "nullable": true,
+          "domain": null,
+          "sample_values": [
+            "Synapse54",
+            "Synapse54",
+            "Synapse54"
+          ],
+          "has_data": true
+        }
+      ],
+      "url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/15",
+      "priority": 45
+    }
+  ],
+  "extraction_config": {
+    "service_url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer",
+    "extraction_timestamp": "2025-08-07T21:26:13.071813",
+    "total_layers": 16,
+    "data_layers": [
+      {
+        "layer_id": 0,
+        "name": "Generation Alpha Pop",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "GENALPHACY",
+          "GENALPHACY_P",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 1,
+        "name": "Generation Z Pop",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "GENZ_CY",
+          "GENZ_CY_P",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 2,
+        "name": "Used Google Pay Digital Payment Svc",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "MP10120A_B",
+          "MP10120A_B_P",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 3,
+        "name": "Used Apple Pay Digital Payment Svc",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "MP10110A_B",
+          "MP10110A_B_P",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 4,
+        "name": "Used Bank of America Bank 12 Mo",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "MP10002A_B",
+          "MP10002A_B_P",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 5,
+        "name": "Own Cryptocurrency Investment",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "MP10138A_B",
+          "MP10138A_B_P",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 6,
+        "name": "Have Personal Line of Credit",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "MP10028A_B",
+          "MP10028A_B_P",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 7,
+        "name": "Have Savings Account",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "MP10020A_B",
+          "MP10020A_B_P",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 8,
+        "name": "Carry Credit Card Balance 3-Usually Always",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "MP10116A_B",
+          "MP10116A_B_P",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 9,
+        "name": "Used TurboTax Online to Prepare Taxes",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "MP10104A_B",
+          "MP10104A_B_P",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 10,
+        "name": "Used H&R Block Online to Prepare Taxes",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "MP10128A_B",
+          "MP10128A_B_P",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 11,
+        "name": "Value of Credit Card Debt",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "X14068_X",
+          "X14068_X_A",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 12,
+        "name": "Value of Checking Savings Money Mkt CD",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "X14060_X",
+          "X14060_X_A",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 13,
+        "name": "Value of Stocks Bonds Mutual Funds",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "X14058_X",
+          "X14058_X_A",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 14,
+        "name": "H&R Block by ZIP",
+        "record_count": 984,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "DESCRIPTION",
+          "ID",
+          "pointCount",
+          "thematic_value",
+          "Shape__Area",
+          "Shape__Length",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      },
+      {
+        "layer_id": 15,
+        "name": "H&R Block points",
+        "record_count": 520,
+        "priority": 45,
+        "fields_to_extract": [
+          "OBJECTID",
+          "name",
+          "address",
+          "locality",
+          "region",
+          "postcode",
+          "country",
+          "fsq_category",
+          "fsq_category_all",
+          "INDUSTRY_DESC",
+          "source",
+          "esri_pid",
+          "DESC_",
+          "LATITUDE",
+          "LONGITUDE",
+          "CreationDate",
+          "Creator",
+          "EditDate",
+          "Editor"
+        ]
+      }
+    ],
+    "field_mappings": {
+      "OBJECTID": "GEO_ID",
+      "DESCRIPTION": "GEO_ID",
+      "ID": "GEO_ID",
+      "GENALPHACY": "Total_Population",
+      "GENALPHACY_P": "Total_Population",
+      "GENZ_CY": "Total_Population",
+      "GENZ_CY_P": "Total_Population",
+      "esri_pid": "GEO_ID"
+    },
+    "metadata": {
+      "service_name": null,
+      "description": "Business Analyst Robert Palmer layers",
+      "layer_count": 16,
+      "discovered_at": "2025-08-07T21:25:55.650651",
+      "service_url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer"
+    }
+  },
+  "analysis_timestamp": "2025-08-07T21:26:13.072376"
+}

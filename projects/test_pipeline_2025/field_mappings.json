@@ -1,0 +1,257 @@
+{
+  "mappings": {
+    "mappings": {
+      "DESCRIPTION": "description",
+      "thematic_value": "strategic_value",
+      "name": "area_name",
+      "region": "region_id",
+      "postcode": "postal_code",
+      "DESC_": "description",
+      "LATITUDE": "latitude",
+      "LONGITUDE": "longitude"
+    },
+    "confidence_scores": {
+      "DESCRIPTION": 1,
+      "thematic_value": 0.8064428109486383,
+      "name": 0.6598864723754523,
+      "region": 0.9766482392034559,
+      "postcode": 0.524123656121112,
+      "DESC_": 0.5178395876855931,
+      "LATITUDE": 1,
+      "LONGITUDE": 1
+    },
+    "mapping_reasons": {
+      "DESCRIPTION": [
+        "Semantic similarity: 1.00",
+        "+0.15 (substring match)",
+        "+0.10 (category: descriptive)",
+        "+0.20 (synonym/abbreviation)",
+        "Final score: 1.00"
+      ],
+      "thematic_value": [
+        "Semantic similarity: 0.51",
+        "+0.10 (category: score)",
+        "+0.20 (synonym/abbreviation)",
+        "Final score: 0.81"
+      ],
+      "name": [
+        "Semantic similarity: 0.51",
+        "+0.15 (substring match)",
+        "Final score: 0.66"
+      ],
+      "region": [
+        "Semantic similarity: 0.73",
+        "+0.15 (substring match)",
+        "+0.10 (category: geographic)",
+        "Final score: 0.98"
+      ],
+      "postcode": [
+        "Semantic similarity: 0.47",
+        "+0.05 (type compatible)",
+        "Final score: 0.52"
+      ],
+      "DESC_": [
+        "Semantic similarity: 0.32",
+        "+0.20 (synonym/abbreviation)",
+        "Final score: 0.52"
+      ],
+      "LATITUDE": [
+        "Semantic similarity: 1.00",
+        "+0.15 (substring match)",
+        "+0.10 (category: unknown)",
+        "+0.05 (type compatible)",
+        "Final score: 1.00"
+      ],
+      "LONGITUDE": [
+        "Semantic similarity: 1.00",
+        "+0.15 (substring match)",
+        "+0.10 (category: unknown)",
+        "+0.05 (type compatible)",
+        "Final score: 1.00"
+      ]
+    },
+    "statistics": {
+      "total_fields": 53,
+      "mapped_fields": 8,
+      "unmapped_fields": 45,
+      "high_confidence": 5,
+      "medium_confidence": 1,
+      "low_confidence": 2
+    },
+    "unmapped_fields": [
+      "OBJECTID",
+      "ID",
+      "MP10104A_B",
+      "MP10104A_B_P",
+      "Shape__Area",
+      "Shape__Length",
+      "CreationDate",
+      "Creator",
+      "EditDate",
+      "Editor",
+      "X14060_X",
+      "X14060_X_A",
+      "pointCount",
+      "MP10002A_B",
+      "MP10002A_B_P",
+      "X14068_X",
+      "X14068_X_A",
+      "MP10116A_B",
+      "MP10116A_B_P",
+      "address",
+      "locality",
+      "country",
+      "fsq_category",
+      "fsq_category_all",
+      "INDUSTRY_DESC",
+      "source",
+      "esri_pid",
+      "MP10128A_B",
+      "MP10128A_B_P",
+      "MP10138A_B",
+      "MP10138A_B_P",
+      "MP10020A_B",
+      "MP10020A_B_P",
+      "X14058_X",
+      "X14058_X_A",
+      "GENZ_CY",
+      "GENZ_CY_P",
+      "MP10028A_B",
+      "MP10028A_B_P",
+      "MP10110A_B",
+      "MP10110A_B_P",
+      "MP10120A_B",
+      "MP10120A_B_P",
+      "GENALPHACY",
+      "GENALPHACY_P"
+    ],
+    "unmapped_analysis": {
+      "clusters": [
+        {
+          "cluster_id": "4",
+          "fields": [
+            "OBJECTID",
+            "ID",
+            "Creator",
+            "EditDate",
+            "Editor",
+            "pointCount",
+            "address",
+            "locality",
+            "country",
+            "fsq_category",
+            "fsq_category_all",
+            "INDUSTRY_DESC",
+            "esri_pid",
+            "GENZ_CY",
+            "GENZ_CY_P",
+            "GENALPHACY",
+            "GENALPHACY_P"
+          ],
+          "suggested_pattern": "similar_pattern: 17 fields"
+        },
+        {
+          "cluster_id": "1",
+          "fields": [
+            "MP10104A_B",
+            "MP10104A_B_P",
+            "MP10116A_B",
+            "MP10116A_B_P",
+            "MP10128A_B",
+            "MP10128A_B_P",
+            "MP10138A_B",
+            "MP10138A_B_P",
+            "MP10110A_B",
+            "MP10110A_B_P",
+            "MP10120A_B",
+            "MP10120A_B_P"
+          ],
+          "suggested_pattern": "prefix: MP101"
+        },
+        {
+          "cluster_id": "2",
+          "fields": [
+            "Shape__Area",
+            "Shape__Length",
+            "CreationDate",
+            "source"
+          ],
+          "suggested_pattern": "similar_pattern: 4 fields"
+        },
+        {
+          "cluster_id": "0",
+          "fields": [
+            "X14060_X",
+            "X14060_X_A",
+            "X14068_X",
+            "X14068_X_A",
+            "X14058_X",
+            "X14058_X_A"
+          ],
+          "suggested_pattern": "prefix: X140"
+        },
+        {
+          "cluster_id": "3",
+          "fields": [
+            "MP10002A_B",
+            "MP10002A_B_P",
+            "MP10020A_B",
+            "MP10020A_B_P",
+            "MP10028A_B",
+            "MP10028A_B_P"
+          ],
+          "suggested_pattern": "prefix: MP100"
+        }
+      ],
+      "suggestions": [
+        {
+          "source_field": "OBJECTID",
+          "suggested_target": "geo_objectidentifier",
+          "category": "geographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "ID",
+          "suggested_target": "geo_identifier",
+          "category": "geographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "Shape__Area",
+          "suggested_target": "geo_shape_area",
+          "category": "geographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "CreationDate",
+          "suggested_target": "temporal_creationdate",
+          "category": "temporal",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "EditDate",
+          "suggested_target": "temporal_editdate",
+          "category": "temporal",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "esri_pid",
+          "suggested_target": "geo_esri_pidentifier",
+          "category": "geographic",
+          "confidence": "manual_review"
+        }
+      ]
+    },
+    "quality_recommendations": [
+      "Review 2 low-confidence mappings manually: ['postcode', 'DESC_']",
+      "Check 1 targets with multiple mappings: ['description']"
+    ]
+  },
+  "validation": {
+    "total_fields": 53,
+    "mapped_fields": 8,
+    "unmapped_fields": 0,
+    "validation_passed": true
+  },
+  "mapping_timestamp": "2025-08-07T21:26:31.811460"
+}
