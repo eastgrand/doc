@@ -406,7 +406,7 @@ export default function UnifiedAreaSelector({
               placeholder="Enter address, city, or place..."
               className="w-full"
             />
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Search for a location to analyze. Cities and regions will create area boundaries. Point locations will enable buffer options.
             </p>
           </TabsContent>
@@ -524,7 +524,7 @@ export default function UnifiedAreaSelector({
 
         {selectedAreas.length > 0 && (
           <div className="mt-4 p-3 bg-muted rounded-lg">
-            <p className="text-sm font-medium">
+            <p className="text-xs font-medium">
               {allowMultipleSelection 
                 ? `${selectedAreas.length} areas selected`
                 : `Area selected: ${selectedAreas[0].displayName}`}

@@ -17,7 +17,7 @@ export const VisualizationWrapper: React.FC<VisualizationWrapperProps> = ({
   children,
   mapView,
   containerHeight = 600,
-  sidebarWidth = 400,
+  sidebarWidth = 600,
   visualizationResult
 }) => {
   const [visualizationData, setVisualizationData] = useState<UniversalData | null>(null);

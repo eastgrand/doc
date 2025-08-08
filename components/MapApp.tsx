@@ -107,7 +107,7 @@ export const MapApp: React.FC = memo(() => {
   const [activeWidget, setActiveWidget] = useState<string | null>(null);
   const [showTable, setShowTable] = useState(false);
   const [selectedLayer, setSelectedLayer] = useState<__esri.FeatureLayer | null>(null);
-  const [sidebarWidth, setSidebarWidth] = useState(400);
+  const [sidebarWidth, setSidebarWidth] = useState(600);
   const [showLabels, setShowLabels] = useState(false);
   const [featureLayers, setFeatureLayers] = useState<__esri.FeatureLayer[]>([]);
   const [mapLegend, setMapLegend] = useState<MapLegendState>({

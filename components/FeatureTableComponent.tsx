@@ -124,7 +124,7 @@ const FeatureTableComponent: React.FC<FeatureTableProps> = ({
     };
   }, [view, layer]);
 
-  const sidebarWidth = view.padding?.right || 400;
+  const sidebarWidth = view.padding?.right || 600;
 
   return (
     <div className="fixed bottom-0 bg-white shadow-lg border-t-2 border-gray-200 z-50"

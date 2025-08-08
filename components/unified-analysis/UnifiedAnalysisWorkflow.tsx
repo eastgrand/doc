@@ -205,7 +205,7 @@ export default function UnifiedAnalysisWorkflow({
                 ) : (
                   <Icon className="h-4 w-4" />
                 )}
-                <span className="font-medium text-sm">{step.label}</span>
+                <span className="font-medium text-xs">{step.label}</span>
               </button>
               {index < steps.length - 1 && (
                 <ChevronRight className="mx-2 text-gray-400 flex-shrink-0" />
@@ -233,7 +233,7 @@ export default function UnifiedAnalysisWorkflow({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Natural language or SQL queries for custom analysis
             </p>
             {workflowState.analysisType === 'query' && (
@@ -263,7 +263,7 @@ export default function UnifiedAnalysisWorkflow({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Pre-configured score-based reports and insights
             </p>
             {workflowState.analysisType === 'infographic' && (
@@ -295,7 +295,7 @@ export default function UnifiedAnalysisWorkflow({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Complete analysis with all available data and visualizations
             </p>
           </CardContent>
@@ -323,7 +323,7 @@ export default function UnifiedAnalysisWorkflow({
         <div className="flex justify-between items-center">
           <div>
             <h3 className="text-lg font-semibold">Analysis Results</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               {metadata.analysisType} • {new Date(metadata.timestamp).toLocaleString()} • 
               {(metadata.processingTime / 1000).toFixed(1)}s
             </p>
@@ -409,7 +409,7 @@ export default function UnifiedAnalysisWorkflow({
         {workflowState.isProcessing && (
           <div className="flex items-center justify-center py-8">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <span className="ml-3">Processing analysis...</span>
+            <span className="ml-3 text-xs">Processing analysis...</span>
           </div>
         )}
 
