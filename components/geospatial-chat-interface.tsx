@@ -51,6 +51,10 @@ import { personaMetadata } from '@/app/api/claude/prompts';
 import ChatBar from '@/components/chat/ChatBar';
 import { classifyQuery } from '@/lib/ai/query-classifier';
 
+// Import Unified Workflow Components
+import UnifiedAnalysisWorkflow from '@/components/unified-analysis/UnifiedAnalysisWorkflow';
+import { UnifiedAnalysisResponse } from '@/components/unified-analysis/UnifiedAnalysisWrapper';
+
 // AnalysisEngine Integration - Replace existing managers
 import { useAnalysisEngine, AnalysisOptions, AnalysisResult, VisualizationResult, ProcessedAnalysisData } from '@/lib/analysis';
 
@@ -301,6 +305,7 @@ const EnhancedGeospatialChat = memo(({
   const [chatInputOpen, setChatInputOpen] = useState(false);
   const [trendsInput, setTrendsInput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showUnifiedWorkflow, setShowUnifiedWorkflow] = useState(false);
   const [processingError, setProcessingError] = useState<string | null>(null);
   const [processingSteps, setProcessingSteps] = useState<GeoProcessingStep[]>([]);
   const [cancelRequested, setCancelRequested] = useState(false);
@@ -4067,6 +4072,36 @@ const EnhancedGeospatialChat = memo(({
     handleSubmit(inputQuery, 'main');
   };
 
+  // Handle unified workflow completion
+  const handleUnifiedAnalysisComplete = useCallback((result: UnifiedAnalysisResponse) => {
+    console.log('[UnifiedWorkflow] Analysis complete:', result);
+    
+    // Convert unified result to existing format for compatibility
+    const { analysisResult } = result;
+    
+    // Update features
+    if (analysisResult.data && 'features' in analysisResult.data) {
+      onFeaturesFound((analysisResult.data as any).features);
+    }
+    
+    // Update visualization
+    if (analysisResult.visualization && initialMapView) {
+      // Create visualization layer using existing logic
+      // This would need to be adapted based on your existing visualization creation
+      console.log('Creating visualization from unified workflow result');
+    }
+    
+    // Hide unified workflow and show chat mode for follow-up questions
+    setShowUnifiedWorkflow(false);
+    setInputMode('chat');
+    
+  }, [onFeaturesFound, initialMapView]);
+
+  const handleShowUnifiedWorkflow = useCallback(() => {
+    setShowUnifiedWorkflow(true);
+    setInputMode('analysis');
+  }, []);
+
   // --- Plain conversational chat ---
 
   // 🎯 AUTO-ZOOM: Helper methods for automatic map zooming
@@ -4541,8 +4576,25 @@ const EnhancedGeospatialChat = memo(({
           
         </div>
 
-        {inputMode === 'analysis' && (
-          <form onSubmit={handleFormSubmit} className="flex flex-col">
+        {inputMode === 'analysis' && !showUnifiedWorkflow && (
+          <div className="flex flex-col gap-4">
+            {/* Toggle to Unified Workflow */}
+            <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-blue-900">New: Guided Analysis Workflow</h3>
+                  <p className="text-sm text-blue-700">Start with area selection, then choose your analysis type</p>
+                </div>
+                <Button
+                  onClick={handleShowUnifiedWorkflow}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  Try New Workflow
+                </Button>
+              </div>
+            </div>
+          
+            <form onSubmit={handleFormSubmit} className="flex flex-col">
             <div className="flex-1">
               <div className="flex flex-col gap-4 mb-4 pt-0">
                 {/* Main Container */}
@@ -5031,6 +5083,29 @@ const EnhancedGeospatialChat = memo(({
               </div>
             </div> 
             </form>
+            </div>
+        )}
+
+        {/* Unified Analysis Workflow */}
+        {inputMode === 'analysis' && showUnifiedWorkflow && (
+          <div className="min-h-[60vh] space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Guided Analysis Workflow</h2>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowUnifiedWorkflow(false)}
+              >
+                Back to Text Input
+              </Button>
+            </div>
+            <UnifiedAnalysisWorkflow
+              view={initialMapView}
+              onAnalysisComplete={handleUnifiedAnalysisComplete}
+              enableChat={true}
+              defaultAnalysisType="query"
+            />
+          </div>
         )}
 
         {inputMode === 'chat' && (
