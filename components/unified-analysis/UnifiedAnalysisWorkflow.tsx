@@ -180,7 +180,7 @@ export default function UnifiedAnalysisWorkflow({
     const currentStepIndex = steps.findIndex(s => s.id === workflowState.currentStep);
 
     return (
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center mb-6 overflow-x-auto">
         {steps.map((step, index) => {
           const Icon = step.icon;
           const isActive = step.id === workflowState.currentStep;
@@ -188,11 +188,11 @@ export default function UnifiedAnalysisWorkflow({
           const isClickable = isCompleted || (index === 0);
 
           return (
-            <div key={step.id} className="flex items-center flex-1">
+            <div key={step.id} className="flex items-center min-w-0">
               <button
                 onClick={() => isClickable && goToStep(step.id as WorkflowStep)}
                 disabled={!isClickable}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                   isActive 
                     ? 'bg-primary text-primary-foreground' 
                     : isCompleted 
@@ -201,14 +201,14 @@ export default function UnifiedAnalysisWorkflow({
                 }`}
               >
                 {isCompleted ? (
-                  <CheckCircle className="h-5 w-5" />
+                  <CheckCircle className="h-4 w-4" />
                 ) : (
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-4 w-4" />
                 )}
-                <span className="font-medium">{step.label}</span>
+                <span className="font-medium text-sm">{step.label}</span>
               </button>
               {index < steps.length - 1 && (
-                <ChevronRight className="mx-2 text-gray-400" />
+                <ChevronRight className="mx-2 text-gray-400 flex-shrink-0" />
               )}
             </div>
           );

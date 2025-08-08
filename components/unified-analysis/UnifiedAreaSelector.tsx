@@ -25,7 +25,9 @@ import {
   FootprintsIcon as Walk,
   CircleIcon,
   ChevronRight,
-  AlertCircle
+  AlertCircle,
+  CheckCircle,
+  Loader2
 } from 'lucide-react';
 
 // Import existing components
@@ -36,7 +38,6 @@ import { useDrawing } from '@/hooks/useDrawing';
 // Import ArcGIS modules for service area generation
 import Circle from "@arcgis/core/geometry/Circle";
 import Graphic from "@arcgis/core/Graphic";
-import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
 import * as serviceArea from "@arcgis/core/rest/serviceArea";
 import ServiceAreaParameters from "@arcgis/core/rest/support/ServiceAreaParameters";
 import FeatureSet from "@arcgis/core/rest/support/FeatureSet";
@@ -93,7 +94,6 @@ export default function UnifiedAreaSelector({
     startDrawing,
     cancelDrawing,
     completeSelection,
-    targetGeometry,
     hasSelectedFeatures,
     selectedFeatureCount
   } = useDrawing({
@@ -113,6 +113,11 @@ export default function UnifiedAreaSelector({
 
   // Handle geometry creation from any source
   const handleGeometryCreated = useCallback((geometry: __esri.Geometry, source: 'draw' | 'search' | 'service-area') => {
+    // If it's a point from drawing, also set it as buffer center
+    if (source === 'draw' && geometry.type === 'point') {
+      setBufferCenter(geometry as __esri.Point);
+    }
+
     const area: AreaSelection = {
       geometry,
       method: source,
@@ -144,6 +149,21 @@ export default function UnifiedAreaSelector({
     startDrawing(mode);
   }, [startDrawing]);
 
+  // Handle map click for buffer center
+  const handleMapClickForBuffer = useCallback((event: any) => {
+    if (selectionMethod === 'buffer' && !bufferCenter && event.mapPoint) {
+      setBufferCenter(event.mapPoint);
+    }
+  }, [selectionMethod, bufferCenter]);
+
+  // Set up map click handler for buffer center selection
+  useEffect(() => {
+    if (view && selectionMethod === 'buffer' && !bufferCenter) {
+      const handle = view.on('click', handleMapClickForBuffer);
+      return () => handle.remove();
+    }
+  }, [view, selectionMethod, bufferCenter, handleMapClickForBuffer]);
+
   // Handle location search selection
   const handleLocationSelected = useCallback(async (location: LocationResult) => {
     try {
@@ -173,6 +193,25 @@ export default function UnifiedAreaSelector({
           latitude: location.latitude,
           spatialReference: { wkid: 4326 }
         });
+        // Set buffer center for point locations and add visual indicator
+        setBufferCenter(geometry as __esri.Point);
+        
+        // Add a graphic to show the point on the map
+        if (view) {
+          const pointGraphic = new Graphic({
+            geometry,
+            symbol: {
+              type: "simple-marker",
+              color: "red",
+              outline: {
+                color: "white",
+                width: 2
+              },
+              size: "12px"
+            }
+          });
+          view.graphics.add(pointGraphic);
+        }
       }
 
       // Zoom to location
@@ -225,13 +264,10 @@ export default function UnifiedAreaSelector({
         });
 
         const timeInMinutes = parseFloat(bufferValue);
-        const speedInKmh = bufferType === 'drivetime' ? 50 : 5;
-        const distanceInKm = (speedInKmh * timeInMinutes) / 60;
 
         const params = new ServiceAreaParameters({
           facilities: featureSet,
           defaultBreaks: [timeInMinutes],
-          travelMode: bufferType === 'drivetime' ? 'Driving Time' : 'Walking Distance',
           travelDirection: "from-facility",
           outSpatialReference: view.spatialReference,
           trimOuterPolygon: true
@@ -239,8 +275,8 @@ export default function UnifiedAreaSelector({
 
         const response = await serviceArea.solve(serviceAreaUrl, params);
         
-        if (response.serviceAreaPolygons?.length > 0) {
-          const serviceAreaGeometry = response.serviceAreaPolygons[0].geometry;
+        if (response.serviceAreaPolygons?.features && response.serviceAreaPolygons.features.length > 0) {
+          const serviceAreaGeometry = response.serviceAreaPolygons.features[0].geometry;
           handleGeometryCreated(serviceAreaGeometry, 'service-area');
         } else {
           throw new Error('No service area generated');
@@ -265,13 +301,13 @@ export default function UnifiedAreaSelector({
     return geometry.type === 'point' ? 'Selected Point' : 'Drawn Area';
   };
 
-  const calculateArea = (geometry: __esri.Geometry): number | undefined => {
+  const calculateArea = (_geometry: __esri.Geometry): number | undefined => {
     // This would use geometryEngine to calculate actual area
     // Placeholder for now
     return undefined;
   };
 
-  const getCentroid = (geometry: __esri.Geometry): __esri.Point | undefined => {
+  const getCentroid = (_geometry: __esri.Geometry): __esri.Point | undefined => {
     // This would use geometryEngine to get centroid
     // Placeholder for now
     return undefined;
@@ -283,7 +319,24 @@ export default function UnifiedAreaSelector({
     cancelDrawing();
     setBufferCenter(null);
     setError(null);
-  }, [cancelDrawing]);
+    
+    // Clear graphics from map view
+    if (view?.graphics) {
+      view.graphics.removeAll();
+    }
+  }, [cancelDrawing, view]);
+
+  // Clear current drawing/selection only
+  const clearCurrentDrawing = useCallback(() => {
+    cancelDrawing();
+    setDrawMode(null);
+    setError(null);
+    
+    // Clear graphics from map view
+    if (view?.graphics) {
+      view.graphics.removeAll();
+    }
+  }, [cancelDrawing, view]);
 
   return (
     <Card className="w-full">
@@ -312,22 +365,39 @@ export default function UnifiedAreaSelector({
               <Search className="h-4 w-4" />
               Search
             </TabsTrigger>
-            <TabsTrigger value="buffer" className="flex items-center gap-2">
+            <TabsTrigger 
+              value="buffer" 
+              className="flex items-center gap-2" 
+              disabled={selectedAreas.length === 0 && !bufferCenter}
+            >
               <CircleIcon className="h-4 w-4" />
-              Buffer
+              Buffer {bufferCenter && <span className="text-xs">(Point Set)</span>}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="draw" className="space-y-4">
-            <DrawingTools
-              drawMode={drawMode}
-              handleDrawButtonClick={handleDrawButtonClick}
-              isDrawing={isSelecting}
-              isSelectionMode={drawMode === 'click'}
-              onSelectionComplete={completeSelection}
-              hasSelectedFeature={hasSelectedFeatures}
-              selectedCount={selectedFeatureCount}
-            />
+            <div className="space-y-4">
+              <DrawingTools
+                drawMode={drawMode}
+                handleDrawButtonClick={handleDrawButtonClick}
+                isDrawing={isSelecting}
+                isSelectionMode={drawMode === 'click'}
+                onSelectionComplete={completeSelection}
+                hasSelectedFeature={hasSelectedFeatures}
+                selectedCount={selectedFeatureCount}
+                shouldShowNext={false}
+              />
+              {(isSelecting || drawMode) && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={clearCurrentDrawing}
+                  className="w-full"
+                >
+                  Clear Drawing
+                </Button>
+              )}
+            </div>
           </TabsContent>
 
           <TabsContent value="search" className="space-y-4">
@@ -337,93 +407,111 @@ export default function UnifiedAreaSelector({
               className="w-full"
             />
             <p className="text-sm text-muted-foreground">
-              Search for a location to analyze. Cities and regions will create area boundaries.
+              Search for a location to analyze. Cities and regions will create area boundaries. Point locations will enable buffer options.
             </p>
           </TabsContent>
 
           <TabsContent value="buffer" className="space-y-4">
-            <div className="space-y-4">
-              <div>
-                <Label>Buffer Type</Label>
-                <Select value={bufferType} onValueChange={(v: any) => setBufferType(v)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="radius">
-                      <div className="flex items-center gap-2">
-                        <CircleIcon className="h-4 w-4" />
-                        Radius
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="drivetime">
-                      <div className="flex items-center gap-2">
-                        <Car className="h-4 w-4" />
-                        Drive Time
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="walktime">
-                      <div className="flex items-center gap-2">
-                        <Walk className="h-4 w-4" />
-                        Walk Time
-                      </div>
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
+            {selectedAreas.length === 0 && !bufferCenter ? (
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  Please first select an area using Draw or Search, or click on the map to set a buffer center point.
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <div className="space-y-4">
                 <div>
-                  <Label>Value</Label>
-                  <Input
-                    type="number"
-                    value={bufferValue}
-                    onChange={(e) => setBufferValue(e.target.value)}
-                    min="0.1"
-                    step="0.1"
-                  />
-                </div>
-                <div>
-                  <Label>Unit</Label>
-                  <Select 
-                    value={bufferUnit} 
-                    onValueChange={(v: any) => setBufferUnit(v)}
-                  >
+                  <Label>Buffer Type</Label>
+                  <Select value={bufferType} onValueChange={(v: any) => setBufferType(v)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {bufferType === 'radius' ? (
-                        <>
-                          <SelectItem value="miles">Miles</SelectItem>
-                          <SelectItem value="kilometers">Kilometers</SelectItem>
-                        </>
-                      ) : (
-                        <SelectItem value="minutes">Minutes</SelectItem>
-                      )}
+                      <SelectItem value="radius">
+                        <div className="flex items-center gap-2">
+                          <CircleIcon className="h-4 w-4" />
+                          Radius
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="drivetime">
+                        <div className="flex items-center gap-2">
+                          <Car className="h-4 w-4" />
+                          Drive Time
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="walktime">
+                        <div className="flex items-center gap-2">
+                          <Walk className="h-4 w-4" />
+                          Walk Time
+                        </div>
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
 
-              {!bufferCenter ? (
-                <Alert>
-                  <MapPin className="h-4 w-4" />
-                  <AlertDescription>
-                    Click on the map to set the buffer center point
-                  </AlertDescription>
-                </Alert>
-              ) : (
-                <Button 
-                  onClick={generateServiceArea} 
-                  className="w-full"
-                  disabled={isSelecting}
-                >
-                  Generate {bufferType === 'radius' ? 'Buffer' : 'Service Area'}
-                  <ChevronRight className="ml-2 h-4 w-4" />
-                </Button>
-              )}
-            </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label>Value</Label>
+                    <Input
+                      type="number"
+                      value={bufferValue}
+                      onChange={(e) => setBufferValue(e.target.value)}
+                      min="0.1"
+                      step="0.1"
+                    />
+                  </div>
+                  <div>
+                    <Label>Unit</Label>
+                    <Select 
+                      value={bufferUnit} 
+                      onValueChange={(v: any) => setBufferUnit(v)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {bufferType === 'radius' ? (
+                          <>
+                            <SelectItem value="miles">Miles</SelectItem>
+                            <SelectItem value="kilometers">Kilometers</SelectItem>
+                          </>
+                        ) : (
+                          <SelectItem value="minutes">Minutes</SelectItem>
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {!bufferCenter ? (
+                  <Alert>
+                    <MapPin className="h-4 w-4" />
+                    <AlertDescription>
+                      Click on the map to set the buffer center point, or use Draw/Search to create a point first.
+                    </AlertDescription>
+                  </Alert>
+                ) : (
+                  <div className="space-y-2">
+                    <Alert>
+                      <CheckCircle className="h-4 w-4" />
+                      <AlertDescription>
+                        Buffer center point is set. Generate your buffer area below.
+                      </AlertDescription>
+                    </Alert>
+                    <Button 
+                      onClick={generateServiceArea} 
+                      className="w-full"
+                      disabled={isSelecting}
+                    >
+                      {isSelecting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                      Generate {bufferType === 'radius' ? 'Buffer' : 'Service Area'}
+                      <ChevronRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
 
