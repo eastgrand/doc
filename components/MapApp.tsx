@@ -304,9 +304,9 @@ export const MapApp: React.FC = memo(() => {
             key="main-sidebar"
             view={mapView}
             layerStates={layerStates}
-            defaultWidth={400}
+            defaultWidth={sidebarWidth}
             minWidth={300}
-            maxWidth={600}
+            maxWidth={800}
             onWidthChange={setSidebarWidth}
           onLayerStatesChange={setLayerStates}
             chatInterface={
