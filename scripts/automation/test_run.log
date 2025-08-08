@@ -1,0 +1,88 @@
+🚀 Starting Complete ArcGIS to Microservice Automation Pipeline
+2025-08-07 19:36:26,391 - INFO - 🚀 Starting Complete ArcGIS to Microservice Automation Pipeline
+📅 Project: test_pipeline_2025
+2025-08-07 19:36:26,391 - INFO - 📅 Project: test_pipeline_2025
+🌐 Service: https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer
+2025-08-07 19:36:26,391 - INFO - 🌐 Service: https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer
+================================================================================
+2025-08-07 19:36:26,391 - INFO - ================================================================================
+
+2025-08-07 19:36:26,391 - INFO - 
+⚠️  WARNING: This pipeline will modify your existing files:
+2025-08-07 19:36:26,391 - INFO - ⚠️  WARNING: This pipeline will modify your existing files:
+   • config/layers.ts will be REPLACED (original backed up)
+2025-08-07 19:36:26,391 - INFO -    • config/layers.ts will be REPLACED (original backed up)
+   • 18 new endpoint files will be created in public/data/endpoints/
+2025-08-07 19:36:26,391 - INFO -    • 18 new endpoint files will be created in public/data/endpoints/
+   • Project files will be created in projects/test_pipeline_2025
+2025-08-07 19:36:26,391 - INFO -    • Project files will be created in projects/test_pipeline_2025
+
+2025-08-07 19:36:26,391 - INFO - 
+🔒 Safety: All original files are automatically backed up
+2025-08-07 19:36:26,391 - INFO - 🔒 Safety: All original files are automatically backed up
+================================================================================
+2025-08-07 19:36:26,391 - INFO - ================================================================================
+🔍 PHASE 1: Service Discovery & Analysis
+2025-08-07 19:36:26,391 - INFO - 🔍 PHASE 1: Service Discovery & Analysis
+--------------------------------------------------
+2025-08-07 19:36:26,391 - INFO - --------------------------------------------------
+📊 Discovering service layers...
+2025-08-07 19:36:26,391 - INFO - 📊 Discovering service layers...
+2025-08-07 19:36:26,391 - INFO - 🔍 Discovering layers in service: https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer
+2025-08-07 19:36:26,814 - INFO - 📊 Service: None
+2025-08-07 19:36:26,815 - INFO - 📊 Found 16 layers to analyze
+2025-08-07 19:36:26,815 - INFO -    Analyzing layer 0: Generation Alpha Pop
+2025-08-07 19:36:27,824 - INFO -    Analyzing layer 1: Generation Z Pop
+2025-08-07 19:36:28,820 - INFO -    Analyzing layer 2: Used Google Pay Digital Payment Svc
+2025-08-07 19:36:29,831 - INFO -    Analyzing layer 3: Used Apple Pay Digital Payment Svc
+2025-08-07 19:36:30,907 - INFO -    Analyzing layer 4: Used Bank of America Bank 12 Mo
+2025-08-07 19:36:31,911 - INFO -    Analyzing layer 5: Own Cryptocurrency Investment
+2025-08-07 19:36:32,911 - INFO -    Analyzing layer 6: Have Personal Line of Credit
+2025-08-07 19:36:33,899 - INFO -    Analyzing layer 7: Have Savings Account
+2025-08-07 19:36:34,881 - INFO -    Analyzing layer 8: Carry Credit Card Balance 3-Usually Always
+2025-08-07 19:36:35,903 - INFO -    Analyzing layer 9: Used TurboTax Online to Prepare Taxes
+2025-08-07 19:36:36,899 - INFO -    Analyzing layer 10: Used H&R Block Online to Prepare Taxes
+2025-08-07 19:36:37,892 - INFO -    Analyzing layer 11: Value of Credit Card Debt
+2025-08-07 19:36:38,869 - INFO -    Analyzing layer 12: Value of Checking Savings Money Mkt CD
+2025-08-07 19:36:39,850 - INFO -    Analyzing layer 13: Value of Stocks Bonds Mutual Funds
+2025-08-07 19:36:40,830 - INFO -    Analyzing layer 14: H&R Block by ZIP
+2025-08-07 19:36:41,925 - INFO -    Analyzing layer 15: H&R Block points
+2025-08-07 19:36:42,917 - INFO - ✅ Successfully analyzed 16 layers
+⚙️  Generating extraction configuration...
+2025-08-07 19:36:42,918 - INFO - ⚙️  Generating extraction configuration...
+2025-08-07 19:36:42,918 - INFO - ⚙️ Generating extraction configuration...
+2025-08-07 19:36:42,918 - INFO - 🤖 Generating intelligent field mappings...
+2025-08-07 19:36:42,921 - INFO - 📋 Field mapping suggestions:
+2025-08-07 19:36:42,921 - INFO -    DESCRIPTION → GEO_ID (80.0% confidence)
+2025-08-07 19:36:42,921 - INFO -    GENALPHACY → Total_Population (80.0% confidence)
+2025-08-07 19:36:42,921 - INFO -    GENALPHACY_P → Total_Population (80.0% confidence)
+2025-08-07 19:36:42,921 - INFO -    GENZ_CY → Total_Population (80.0% confidence)
+2025-08-07 19:36:42,922 - INFO -    GENZ_CY_P → Total_Population (80.0% confidence)
+2025-08-07 19:36:42,922 - INFO -    ID → GEO_ID (100.0% confidence)
+2025-08-07 19:36:42,922 - INFO -    OBJECTID → GEO_ID (100.0% confidence)
+2025-08-07 19:36:42,922 - INFO -    esri_pid → GEO_ID (100.0% confidence)
+2025-08-07 19:36:42,922 - INFO - ✅ Configuration generated:
+2025-08-07 19:36:42,922 - INFO -    📊 16 data layers identified
+2025-08-07 19:36:42,922 - INFO -    🏷️ 8 field mappings suggested
+2025-08-07 19:36:42,922 - INFO -    📈 Top priority layers:
+2025-08-07 19:36:42,922 - INFO -       Generation Alpha Pop (Priority: 45, Records: 984)
+2025-08-07 19:36:42,922 - INFO -       Generation Z Pop (Priority: 45, Records: 984)
+2025-08-07 19:36:42,922 - INFO -       Used Google Pay Digital Payment Svc (Priority: 45, Records: 984)
+2025-08-07 19:36:42,922 - INFO -       Used Apple Pay Digital Payment Svc (Priority: 45, Records: 984)
+2025-08-07 19:36:42,922 - INFO -       Used Bank of America Bank 12 Mo (Priority: 45, Records: 984)
+✅ Phase 1 Complete: Discovered 16 layers
+2025-08-07 19:36:42,928 - INFO - ✅ Phase 1 Complete: Discovered 16 layers
+
+📊 PHASE 2: Data Extraction
+2025-08-07 19:36:42,928 - INFO - 
+📊 PHASE 2: Data Extraction
+--------------------------------------------------
+2025-08-07 19:36:42,928 - INFO - --------------------------------------------------
+⬇️  Extracting data from all layers...
+2025-08-07 19:36:42,928 - INFO - ⬇️  Extracting data from all layers...
+❌ Phase 2 Failed: 'ArcGISDataExtractor' object has no attribute 'extract_all_layers'
+2025-08-07 19:36:42,929 - ERROR - ❌ Phase 2 Failed: 'ArcGISDataExtractor' object has no attribute 'extract_all_layers'
+🚀 Starting Complete Automation Pipeline
+📋 Project: test_pipeline_2025
+🌐 Service: https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer
+================================================================================
