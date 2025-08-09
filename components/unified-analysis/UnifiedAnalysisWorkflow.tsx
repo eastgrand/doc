@@ -131,6 +131,10 @@ export default function UnifiedAnalysisWorkflow({
     setWorkflowState(prev => ({
       ...prev,
       areaSelection: area,
+      // Reset analysis type to query if project area is selected and user had infographic/comprehensive
+      analysisType: isProjectArea && (prev.analysisType === 'infographic' || prev.analysisType === 'comprehensive') 
+        ? undefined 
+        : prev.analysisType,
       // Skip buffer step for polygons and project area, go directly to analysis
       currentStep: isPoint && !isProjectArea ? 'buffer' : 'analysis'
     }));
@@ -449,10 +453,24 @@ export default function UnifiedAnalysisWorkflow({
   };
 
   // Render analysis type selection
-  const renderAnalysisTypeSelection = () => (
-    <div className="flex-1 flex flex-col space-y-6">
-      {/* Analysis Type Selection Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+  const renderAnalysisTypeSelection = () => {
+    const isProjectArea = workflowState.areaSelection?.method === 'project-area';
+    
+    return (
+      <div className="flex-1 flex flex-col space-y-6">
+        {/* Performance warning for project area */}
+        {isProjectArea && (
+          <Alert className="border-orange-200 bg-orange-50">
+            <AlertCircle className="h-4 w-4 text-orange-600" />
+            <AlertDescription className="text-xs text-orange-800">
+              <strong>Project Area Analysis:</strong> Analyzing the entire project area with potentially thousands of data points. 
+              Infographic and comprehensive analysis are disabled for performance reasons. Use query analysis for best results.
+            </AlertDescription>
+          </Alert>
+        )}
+        
+        {/* Analysis Type Selection Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* quickstartIQ */}
         <Card 
           className={`cursor-pointer transition-all h-28 ${
@@ -486,12 +504,14 @@ export default function UnifiedAnalysisWorkflow({
 
         {/* infographIQ */}
         <Card 
-          className={`cursor-pointer transition-all h-28 ${
-            workflowState.analysisType === 'infographic' 
-              ? 'border-green-500 bg-green-50 shadow-lg' 
-              : 'hover:shadow-lg'
+          className={`transition-all h-28 ${
+            isProjectArea 
+              ? 'opacity-50 cursor-not-allowed bg-gray-100' 
+              : workflowState.analysisType === 'infographic' 
+                ? 'border-green-500 bg-green-50 shadow-lg cursor-pointer' 
+                : 'hover:shadow-lg cursor-pointer'
           }`}
-          onClick={() => !workflowState.isProcessing && setWorkflowState(prev => ({ ...prev, analysisType: 'infographic' }))}
+          onClick={() => !workflowState.isProcessing && !isProjectArea && setWorkflowState(prev => ({ ...prev, analysisType: 'infographic' }))}
         >
           <CardHeader className="py-2">
             <CardTitle className="flex items-center gap-2 text-xs">
@@ -509,20 +529,22 @@ export default function UnifiedAnalysisWorkflow({
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-2">
-            <p className="text-xs text-muted-foreground">
-              Pre-configured score-based reports and insights
+            <p className={`text-xs ${isProjectArea ? 'text-gray-400' : 'text-muted-foreground'}`}>
+              {isProjectArea ? 'Disabled for large datasets (performance)' : 'Pre-configured score-based reports and insights'}
             </p>
           </CardContent>
         </Card>
 
         {/* reportIQ */}
         <Card 
-          className={`cursor-pointer transition-all h-28 ${
-            workflowState.analysisType === 'comprehensive' 
-              ? 'border-purple-500 bg-purple-50 shadow-lg' 
-              : 'hover:shadow-lg'
+          className={`transition-all h-28 ${
+            isProjectArea 
+              ? 'opacity-50 cursor-not-allowed bg-gray-100' 
+              : workflowState.analysisType === 'comprehensive' 
+                ? 'border-purple-500 bg-purple-50 shadow-lg cursor-pointer' 
+                : 'hover:shadow-lg cursor-pointer'
           }`}
-          onClick={() => !workflowState.isProcessing && setWorkflowState(prev => ({ ...prev, analysisType: 'comprehensive' }))}
+          onClick={() => !workflowState.isProcessing && !isProjectArea && setWorkflowState(prev => ({ ...prev, analysisType: 'comprehensive' }))}
         >
           <CardHeader className="py-2">
             <CardTitle className="flex items-center gap-2 text-xs">
@@ -540,8 +562,8 @@ export default function UnifiedAnalysisWorkflow({
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-2">
-            <p className="text-xs text-muted-foreground">
-              Complete analysis with all available data and visualizations
+            <p className={`text-xs ${isProjectArea ? 'text-gray-400' : 'text-muted-foreground'}`}>
+              {isProjectArea ? 'Disabled for large datasets (performance)' : 'Complete analysis with all available data and visualizations'}
             </p>
           </CardContent>
         </Card>
@@ -699,8 +721,9 @@ export default function UnifiedAnalysisWorkflow({
           <AlertDescription>{workflowState.error}</AlertDescription>
         </Alert>
       )}
-    </div>
-  );
+      </div>
+    );
+  };
 
   // Render buffer step
   const renderBufferStep = () => {
