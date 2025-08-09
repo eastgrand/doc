@@ -467,16 +467,7 @@ export default function UnifiedAnalysisWorkflow({
     
     return (
       <div className="flex-1 flex flex-col space-y-6">
-        {/* Performance warning for project area */}
-        {isProjectArea && (
-          <Alert className="border-orange-200 bg-orange-50">
-            <AlertCircle className="h-4 w-4 text-orange-600" />
-            <AlertDescription className="text-xs text-orange-800">
-              <strong>Project Area Analysis:</strong> Analyzing the entire project area with potentially thousands of data points. 
-              Infographic and comprehensive analysis are disabled for performance reasons. Use query analysis for best results.
-            </AlertDescription>
-          </Alert>
-        )}
+        {/* Performance warning for project area - Removed */}
         
         {/* Analysis Type Selection Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -506,7 +497,7 @@ export default function UnifiedAnalysisWorkflow({
           </CardHeader>
           <CardContent className="pb-2">
             <p className="text-xs text-muted-foreground">
-              Natural language or SQL queries for custom analysis
+              Natural language queries for custom analysis
             </p>
           </CardContent>
         </Card>
@@ -592,25 +583,6 @@ export default function UnifiedAnalysisWorkflow({
                     <div className="flex items-center justify-between mb-2">
                       <label className="block text-xs font-medium">Enter your query</label>
                       <div className="flex items-center gap-2">
-                        <Dialog open={clusterDialogOpen} onOpenChange={setClusterDialogOpen}>
-                          <DialogTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-xs h-6 flex items-center gap-1"
-                            >
-                              <Target className="h-3 w-3" />
-                              {clusterConfig.enabled ? `${clusterConfig.numClusters} Clusters` : 'Clustering'}
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                            <ClusterConfigPanel
-                              config={clusterConfig}
-                              onConfigChange={setClusterConfig}
-                              onSave={() => setClusterDialogOpen(false)}
-                            />
-                          </DialogContent>
-                        </Dialog>
                         <Dialog open={quickstartDialogOpen} onOpenChange={setQuickstartDialogOpen}>
                           <DialogTrigger asChild>
                             <Button
@@ -632,17 +604,36 @@ export default function UnifiedAnalysisWorkflow({
                             />
                           </DialogContent>
                         </Dialog>
+                        <Dialog open={clusterDialogOpen} onOpenChange={setClusterDialogOpen}>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-xs h-6 flex items-center gap-1"
+                            >
+                              <Target className="h-3 w-3" />
+                              {clusterConfig.enabled ? `${clusterConfig.numClusters} Clusters` : 'Clustering'}
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                            <ClusterConfigPanel
+                              config={clusterConfig}
+                              onConfigChange={setClusterConfig}
+                              onSave={() => setClusterDialogOpen(false)}
+                            />
+                          </DialogContent>
+                        </Dialog>
                       </div>
                     </div>
                     <textarea
-                      placeholder="Enter your natural language or SQL query..."
+                      placeholder="Enter your natural language query..."
                       className="flex-1 w-full p-3 border rounded-lg text-sm min-h-[120px] resize-none"
                       value={selectedQuery}
                       onChange={(e) => setSelectedQuery(e.target.value)}
                     />
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Examples: &ldquo;Show me all retail locations&rdquo;, &ldquo;What&rsquo;s the population density?&rdquo;, &ldquo;SELECT * FROM businesses WHERE type = &rsquo;restaurant&rsquo;&rdquo;
+                    Examples: &ldquo;Show me all retail locations&rdquo;, &ldquo;What&rsquo;s the population density?&rdquo;, &ldquo;Find areas with high foot traffic&rdquo;
                   </p>
                 </div>
               )}
