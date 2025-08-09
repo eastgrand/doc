@@ -4511,9 +4511,9 @@ const EnhancedGeospatialChat = memo(({
     </div>
     )}
 
-    {/* Input Section - fixed height, doesn't shrink */}
-    <div className="flex-1 overflow-y-auto min-h-0">
-      <div className="px-4 py-2 bg-white border-t border-gray-200">
+    {/* Input Section - full height container */}
+    <div className="flex-1 overflow-hidden min-h-0">
+      <div className="h-full bg-white">
 
         {/* Chat Nudge Notification */}
         {showChatNudge && inputMode === 'analysis' && (
@@ -5107,7 +5107,7 @@ const EnhancedGeospatialChat = memo(({
         )}
 
         {inputMode === 'chat' && (
-          <div className="min-h-[60vh] max-h-[80vh] overflow-y-auto space-y-3">
+          <div className="min-h-[60vh] max-h-[80vh] overflow-y-auto space-y-3 px-4 py-2">
             {/* Smart Suggestions */}
             {(features.length > 0 || lastAnalysisEndpoint) && (
               <div className="space-y-2">

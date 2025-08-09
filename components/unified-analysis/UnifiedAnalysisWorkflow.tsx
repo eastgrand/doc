@@ -991,7 +991,7 @@ export default function UnifiedAnalysisWorkflow({
                 height={16}
                 className="h-4 w-4" 
               />
-              <div className="flex text-xs font-bold">
+              <div className="flex text-sm font-bold">
                 <span className="text-[#33a852]">IQ</span>
                 <span className="text-black -ml-px">builder</span>
               </div>
