@@ -34,7 +34,6 @@ import { UnifiedAnalysisWrapper, UnifiedAnalysisRequest, UnifiedAnalysisResponse
 // Import existing components for analysis
 import { QueryInterface } from '@/components/QueryInterface';
 import EndpointScoreInfographic from '@/components/EndpointScoreInfographic';
-import { CustomVisualizationPanel } from '@/components/Visualization/CustomVisualizationPanel';
 
 // Import dialog and predefined queries
 import {
@@ -61,7 +60,7 @@ import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
 export interface UnifiedAnalysisWorkflowProps {
   view: __esri.MapView;
   onAnalysisComplete?: (result: UnifiedAnalysisResponse) => void;
-  onExport?: (format: string, data: any) => void;
+  onExport?: (format: string, data: unknown) => void;
   enableChat?: boolean;
   defaultAnalysisType?: 'query' | 'infographic' | 'comprehensive';
 }
@@ -192,7 +191,7 @@ export default function UnifiedAnalysisWorkflow({
         isProcessing: false
       }));
     }
-  }, [workflowState.areaSelection, selectedQuery, selectedEndpoint, selectedInfographicType, enableChat, analysisWrapper, onAnalysisComplete]);
+  }, [workflowState.areaSelection, selectedQuery, selectedEndpoint, selectedInfographicType, enableChat, analysisWrapper, onAnalysisComplete, clusterConfig]);
 
   // Handle export
   const handleExport = useCallback(async (format: string) => {
@@ -209,14 +208,12 @@ export default function UnifiedAnalysisWorkflow({
   // Apply buffer to geometry
   const createBufferedGeometry = useCallback(async (geometry: __esri.Geometry, distance: number, unit: string) => {
     try {
-      let bufferedGeometry: __esri.Geometry;
+      let bufferedGeometry: __esri.Geometry | null = null;
       
       if (bufferType === 'radius') {
-        // Convert distance to meters for geometryEngine
-        const distanceInMeters = unit === 'miles' ? distance * 1609.34 : distance * 1000;
-        
         if (geometry.type === 'point') {
           // For points, create a circle
+          const distanceInMeters = unit === 'miles' ? distance * 1609.34 : distance * 1000;
           bufferedGeometry = new Circle({
             center: geometry as __esri.Point,
             radius: distanceInMeters,
@@ -224,8 +221,13 @@ export default function UnifiedAnalysisWorkflow({
             spatialReference: view.spatialReference
           });
         } else {
-          // For polygons and other geometries, use geometryEngine.buffer
-          bufferedGeometry = geometryEngine.buffer(geometry, distance, unit as any) as __esri.Geometry;
+          // For polygons and other geometries, use geometryEngine.buffer with proper types
+          const bufferResult = geometryEngine.buffer(
+            geometry as __esri.Polygon | __esri.Polyline, 
+            distance, 
+            unit as "feet" | "meters" | "kilometers" | "miles"
+          );
+          bufferedGeometry = Array.isArray(bufferResult) ? bufferResult[0] : bufferResult;
         }
       } else if (bufferType === 'drivetime' || bufferType === 'walktime') {
         // Service area buffering - only works with points
@@ -236,6 +238,10 @@ export default function UnifiedAnalysisWorkflow({
         } else {
           throw new Error('Travel time buffering only works with point geometries');
         }
+      }
+      
+      if (!bufferedGeometry) {
+        throw new Error('Failed to create buffered geometry');
       }
       
       return bufferedGeometry;
@@ -304,7 +310,7 @@ export default function UnifiedAnalysisWorkflow({
                   width: 2
                 },
                 size: 8
-              } as any,
+              } as unknown as __esri.SimpleMarkerSymbol,
               attributes: { isPoint: true }
             });
             view.graphics.add(newPointGraphic);
@@ -351,7 +357,7 @@ export default function UnifiedAnalysisWorkflow({
         currentStep: 'analysis'
       }));
     }
-  }, [workflowState.areaSelection, bufferDistance, bufferUnit, bufferType, createBufferedGeometry]);
+  }, [workflowState.areaSelection, bufferDistance, bufferUnit, bufferType, createBufferedGeometry, view]);
 
   // Handle predefined query selection
   const handlePredefinedQuerySelect = useCallback((query: string) => {
@@ -604,7 +610,7 @@ export default function UnifiedAnalysisWorkflow({
                     />
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Examples: "Show me all retail locations", "What's the population density?", "SELECT * FROM businesses WHERE type = 'restaurant'"
+                    Examples: &ldquo;Show me all retail locations&rdquo;, &ldquo;What&rsquo;s the population density?&rdquo;, &ldquo;SELECT * FROM businesses WHERE type = &rsquo;restaurant&rsquo;&rdquo;
                   </p>
                 </div>
               )}
@@ -616,7 +622,7 @@ export default function UnifiedAnalysisWorkflow({
                     <select
                       className="w-full p-3 border rounded-lg text-sm"
                       value={selectedInfographicType}
-                      onChange={(e) => setSelectedInfographicType(e.target.value as any)}
+                      onChange={(e) => setSelectedInfographicType(e.target.value as 'strategic' | 'competitive' | 'demographic')}
                     >
                       <option value="strategic">Strategic Analysis</option>
                       <option value="competitive">Competitive Analysis</option>
@@ -624,7 +630,7 @@ export default function UnifiedAnalysisWorkflow({
                     </select>
                   </div>
                   <div className="bg-green-50 p-4 rounded-lg">
-                    <p className="text-xs text-green-800 font-medium mb-2">What you'll get:</p>
+                    <p className="text-xs text-green-800 font-medium mb-2">What you&rsquo;ll get:</p>
                     <ul className="text-xs text-green-700 space-y-1">
                       <li>• Comprehensive scoring across multiple data points</li>
                       <li>• Visual charts and infographic displays</li>
@@ -790,7 +796,7 @@ export default function UnifiedAnalysisWorkflow({
                       <select
                         className="w-full px-2 py-1 text-xs border rounded"
                         value={bufferUnit}
-                        onChange={(e) => setBufferUnit(e.target.value as any)}
+                        onChange={(e) => setBufferUnit(e.target.value as 'miles' | 'kilometers' | 'minutes')}
                       >
                         {bufferType === 'radius' ? (
                           <>
@@ -886,7 +892,7 @@ export default function UnifiedAnalysisWorkflow({
         </div>
 
         {/* Results content based on analysis type */}
-        <Tabs defaultValue="visualization" className="w-full">
+        <Tabs value="visualization" onValueChange={() => {}} className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="visualization">Visualization</TabsTrigger>
             <TabsTrigger value="data">Data</TabsTrigger>
@@ -895,10 +901,11 @@ export default function UnifiedAnalysisWorkflow({
 
           <TabsContent value="visualization" className="mt-4">
             {analysisResult.visualization && (
-              <CustomVisualizationPanel
-                data={analysisResult.data}
-                visualization={analysisResult.visualization}
-              />
+              <div className="max-h-96 overflow-auto">
+                <pre className="text-xs bg-gray-50 p-4 rounded">
+                  {JSON.stringify(analysisResult.visualization, null, 2)}
+                </pre>
+              </div>
             )}
           </TabsContent>
 
@@ -911,13 +918,11 @@ export default function UnifiedAnalysisWorkflow({
           </TabsContent>
 
           <TabsContent value="insights" className="mt-4">
-            {analysisResult.insights && (
+            {analysisResult.data?.summary && (
               <div className="space-y-2">
-                {analysisResult.insights.map((insight: any, index: number) => (
-                  <Alert key={index}>
-                    <AlertDescription>{insight}</AlertDescription>
-                  </Alert>
-                ))}
+                <Alert>
+                  <AlertDescription>{analysisResult.data.summary}</AlertDescription>
+                </Alert>
               </div>
             )}
           </TabsContent>
