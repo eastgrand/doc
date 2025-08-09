@@ -178,17 +178,21 @@ export default function UnifiedAreaSelector({
     try {
       setIsSelecting(true);
       
-      // Create point or polygon based on location type
-      let geometry: __esri.Geometry;
-      
       // Always create a point, never a polygon (per requirements)
-      geometry = new Point({
+      let geometry = new Point({
         longitude: location.longitude,
         latitude: location.latitude,
         spatialReference: { wkid: 4326 }
       });
       
-      // Set buffer center for point locations and add visual indicator
+      // Project the point to the map's spatial reference for proper display and buffering
+      if (view && geometry.spatialReference.wkid !== view.spatialReference.wkid) {
+        const projection = await import('@arcgis/core/geometry/projection');
+        await projection.load();
+        geometry = projection.project(geometry, view.spatialReference) as Point;
+      }
+      
+      // Set buffer center for point locations
       setBufferCenter(geometry as __esri.Point);
       
       // Add a graphic to show the point on the map (matching existing implementation)

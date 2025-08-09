@@ -219,8 +219,17 @@ export default function UnifiedAnalysisWorkflow({
         if (geometry.type === 'point') {
           // For points, create a circle
           const distanceInMeters = unit === 'miles' ? distance * 1609.34 : distance * 1000;
+          
+          // Project the point to the map's spatial reference if needed for proper circle rendering
+          let centerPoint = geometry as __esri.Point;
+          if (centerPoint.spatialReference.wkid !== view.spatialReference.wkid) {
+            const projection = await import('@arcgis/core/geometry/projection');
+            await projection.load();
+            centerPoint = projection.project(centerPoint, view.spatialReference) as __esri.Point;
+          }
+          
           bufferedGeometry = new Circle({
-            center: geometry as __esri.Point,
+            center: centerPoint,
             radius: distanceInMeters,
             radiusUnit: "meters",
             spatialReference: view.spatialReference
