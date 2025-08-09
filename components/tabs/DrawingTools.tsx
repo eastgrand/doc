@@ -63,21 +63,21 @@ const DrawingTools = ({
             disabled={isDrawing && tool.type !== 'click'}
             onClick={() => handleDrawButtonClick(tool.type as 'point' | 'polygon' | 'click')}
             className={`
-              flex flex-col items-center justify-center gap-2 h-24 w-full
+              flex flex-col items-center justify-center gap-1 h-16 w-full
               transition-colors duration-200 rounded-md
               ${drawMode === tool.type ? tool.classes.active : tool.classes.default}
               ${isDrawing && tool.type !== 'click' ? 'opacity-50 cursor-not-allowed' : ''}
             `}
             title={tool.tooltip}
           >
-            <tool.Icon className="h-6 w-6" />
-            <span className="text-sm font-medium">{tool.label}</span>
+            <tool.Icon className="h-3 w-3" />
+            <span className="text-xs font-medium">{tool.label}</span>
           </button>
         ))}
       </div>
 
       {/* Updated visibility condition based on actual state values */}
-      {isDrawing === true && hasSelectedFeature && selectedCount > 0 && (
+      {drawMode === 'click' && hasSelectedFeature && selectedCount > 0 && (
         <div className="mt-4 flex justify-end">
           <Button
             onClick={onSelectionComplete}

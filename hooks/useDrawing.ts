@@ -1,5 +1,4 @@
 import { useCallback, useRef, useState, useMemo, useEffect } from 'react';
-import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import Graphic from "@arcgis/core/Graphic";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 import Polygon from "@arcgis/core/geometry/Polygon";
@@ -110,7 +109,6 @@ export function useDrawing({
   graphicsLayer: externalGraphicsLayer
 }: UseDrawingProps) {
   // Refs for managing drawing state and graphics
-  const graphicsLayerRef = useRef<__esri.GraphicsLayer | null>(null);
   const clickHandlerRef = useRef<IHandle | null>(null);
   const moveHandlerRef = useRef<IHandle | null>(null);
   const pointsRef = useRef<__esri.Point[]>([]);
@@ -178,44 +176,21 @@ export function useDrawing({
     }
   }, [view]);
 
-  // Graphics layer management
+  // Graphics layer management - Use view.graphics directly like infographics
   const getGraphicsLayer = useCallback(() => {
     if (externalGraphicsLayer) {
         console.log('Using external graphics layer');
         return externalGraphicsLayer;
     }
     
-    if (!graphicsLayerRef.current) {
-        const layer = new GraphicsLayer({
-            id: "drawingLayer",
-            visible: true,
-            listMode: "show",
-            opacity: 1,
-            elevationInfo: { mode: "on-the-ground" }
-        });
-        
-        if (!view?.map) {
-            console.warn('View or map is null when creating graphics layer');
-            return null;
-        }
-        
-        view.map.add(layer);
-        console.log('Created new graphics layer:', layer.id);
-        graphicsLayerRef.current = layer;
-        
-        // Verify layer was added
-        console.log('Layer added to map:', view.map.layers.includes(layer));
+    // Use view.graphics directly instead of creating a separate layer
+    if (view?.graphics) {
+        console.log('Using view.graphics directly');
+        return view.graphics;
     }
     
-    // Check layer visibility
-    const layer = graphicsLayerRef.current;
-    console.log('Graphics layer state:', {
-        id: layer?.id,
-        visible: layer?.visible,
-        hasGraphics: layer?.graphics.length > 0
-    });
-    
-    return graphicsLayerRef.current;
+    console.warn('View or view.graphics is null');
+    return null;
 }, [view, externalGraphicsLayer]);
 
   // Combine selected geometries
@@ -241,8 +216,8 @@ export function useDrawing({
 
   // First declare all handlers
   const handlePolygonCreation = useCallback((mapPoint: __esri.Point) => {
-    const layer = getGraphicsLayer();
-    if (!layer) return;
+    const graphics = getGraphicsLayer();
+    if (!graphics) return;
 
     const pointToAdd = snapPointRef.current || mapPoint;
     pointsRef.current.push(pointToAdd);
@@ -252,8 +227,8 @@ export function useDrawing({
       symbol: POLYGON_VERTEX_SYMBOL
     });
 
-    // Add graphics to the collection
-    layer.graphics.add(vertexGraphic);
+    // Add graphics to view.graphics
+    graphics.add(vertexGraphic);
     vertexGraphicsRef.current.push(vertexGraphic);
 
     if (pointsRef.current.length > 1) {
@@ -268,7 +243,7 @@ export function useDrawing({
         symbol: POLYGON_LINE_SYMBOL
       });
 
-      layer.graphics.add(lineGraphic);
+      graphics.add(lineGraphic);
       lineGraphicsRef.current.push(lineGraphic);
     }
   }, [view, getGraphicsLayer]);
@@ -337,11 +312,11 @@ export function useDrawing({
         spatialReference: view.spatialReference
       });
 
-      const layer = getGraphicsLayer();
-      if (!layer) return;
+      const graphics = getGraphicsLayer();
+      if (!graphics) return;
 
       // Clear existing graphics
-      layer.removeAll();
+      graphics.removeAll();
 
       // Create and add polygon graphic
       const polygonGraphic = new Graphic({
@@ -356,8 +331,7 @@ export function useDrawing({
         attributes: { type: 'polygon' }
       });
 
-      layer.add(polygonGraphic);
-      layer.visible = true;
+      graphics.add(polygonGraphic);
 
       // Update state
       setTargetGeometry(polygon);
@@ -394,11 +368,11 @@ export function useDrawing({
 
   // Point creation handler
   const handlePointCreation = useCallback((mapPoint: __esri.Point) => {
-    const layer = getGraphicsLayer();
-    console.log('Point Creation - Layer:', layer?.id, 'Graphics count:', layer?.graphics.length);
+    const graphics = getGraphicsLayer();
+    console.log('Point Creation - Graphics collection:', !!graphics);
     
-    if (!layer) {
-        console.warn('Graphics layer is null in handlePointCreation');
+    if (!graphics) {
+        console.warn('Graphics collection is null in handlePointCreation');
         return;
     }
 
@@ -407,10 +381,9 @@ export function useDrawing({
         symbol: POINT_SYMBOL
     });
 
-    // Add graphic without clearing first
-    layer.graphics.add(pointGraphic);
-    console.log('After add - Graphics count:', layer.graphics.length);
-    console.log('Point graphic added:', pointGraphic.geometry?.type);
+    // Add graphic directly to view.graphics
+    graphics.add(pointGraphic);
+    console.log('Point graphic added to view.graphics');
 
     setTargetGeometry(mapPoint);
     callbacksRef.current.onGeometryCreated?.(mapPoint);
@@ -420,16 +393,10 @@ const handleFeatureSelection = useCallback(async (mapPoint: __esri.Point, event?
   if (!view) return;
 
   try {
-    const layer = getGraphicsLayer();
-    if (!layer) return;
+    const graphics = getGraphicsLayer();
+    if (!graphics) return;
     
-    // Ensure layer is visible
-    layer.visible = true;
-    console.log('Graphics layer state:', {
-      id: layer.id,
-      visible: layer.visible,
-      graphicsCount: layer.graphics.length
-    });
+    console.log('Graphics collection available:', !!graphics);
     
     const screenPoint = view.toScreen(mapPoint);
     if (!screenPoint) return;
@@ -462,12 +429,12 @@ const handleFeatureSelection = useCallback(async (mapPoint: __esri.Point, event?
         selectedFeaturesRef.current = selectedFeaturesRef.current.filter(
           g => !g.geometry || !geometryEngine.equals(g.geometry as any, hitFeature.geometry as any)
         );
-        // Remove corresponding graphic from the layer
-        const graphicsToRemove = layer.graphics.filter((g: __esri.Graphic) => 
+        // Remove corresponding graphic from the graphics collection
+        const graphicsToRemove = graphics.toArray().filter((g: __esri.Graphic) => 
             g.attributes?.id === 'selectionGraphic' && 
             !!g.geometry && geometryEngine.equals(g.geometry as any, hitFeature.geometry as any)
-        ).toArray();
-        layer.removeMany(graphicsToRemove);
+        );
+        graphics.removeMany(graphicsToRemove);
 
       } else {
         // If not already selected, add new selection
@@ -512,9 +479,9 @@ const handleFeatureSelection = useCallback(async (mapPoint: __esri.Point, event?
               attributes: { id: 'selectionGraphic' } 
             });
             
-            layer.graphics.add(selectionGraphic);
+            graphics.add(selectionGraphic);
             selectedFeaturesRef.current.push(selectionGraphic); 
-            console.log('Added selection graphic for', hitFeature.geometry.type, '; new layer.graphics count:', layer.graphics.length, '; selectedFeaturesRef count:', selectedFeaturesRef.current.length);
+            console.log('Added selection graphic for', hitFeature.geometry.type, '; selectedFeaturesRef count:', selectedFeaturesRef.current.length);
           }
         } else {
           console.log('Feature already selected, not adding duplicate.');
@@ -562,15 +529,9 @@ const handleFeatureSelection = useCallback(async (mapPoint: __esri.Point, event?
         modificationHandles: []
     }));
 
-    // Ensure graphics layer is visible and on top
-    const layer = getGraphicsLayer();
-    if (layer) {
-        layer.visible = true;
-        // Only reorder if view.map is available (not using fallback graphics)
-        if (view.map && layer.id !== "fallback-graphics") {
-            view.map.reorder(layer, view.map.layers.length - 1);
-        }
-    }
+    // Get graphics collection
+    const graphics = getGraphicsLayer();
+    console.log('Graphics available for drawing:', !!graphics);
 
     // Update cursor and polygon drawing state
     updateCursor(mode);
@@ -578,7 +539,7 @@ const handleFeatureSelection = useCallback(async (mapPoint: __esri.Point, event?
 
     // Set up event handlers based on mode
     if (mode === 'point') {
-      layer?.removeAll();
+      graphics?.removeAll();
       selectedFeaturesRef.current = [];
       setActivePoints([]);
       
@@ -589,7 +550,7 @@ const handleFeatureSelection = useCallback(async (mapPoint: __esri.Point, event?
     } else if (mode === 'polygon') {
       setupPolygonDrawing();
     } else if (mode === 'click') {
-      layer?.removeAll();
+      graphics?.removeAll();
       pointGraphicsRef.current = [];
       vertexGraphicsRef.current = [];
       lineGraphicsRef.current = [];
@@ -651,39 +612,18 @@ const resetDrawing = useCallback(() => {
   cleanup();
   
   // Then clear all graphics
-  const layer = getGraphicsLayer();
-  if (layer) {
-    layer.graphics.removeAll();
+  const graphics = getGraphicsLayer();
+  if (graphics) {
+    graphics.removeAll();
   }
 }, [cleanup, getGraphicsLayer]);
 
-  // Effect: Only create graphics layer when view and view.map are available
+  // Cleanup on unmount
   useEffect(() => {
-    if (!view || !view.map) {
-      // Clean up graphics layer if view becomes unavailable
-      if (graphicsLayerRef.current && graphicsLayerRef.current.removeAll) {
-        graphicsLayerRef.current.removeAll();
-      }
-      graphicsLayerRef.current = null;
-      return;
-    }
-    // Only create graphics layer if it doesn't exist
-    if (!graphicsLayerRef.current) {
-      graphicsLayerRef.current = new GraphicsLayer({
-        title: 'Drawing Layer',
-        listMode: 'hide',
-        elevationInfo: { mode: 'on-the-ground' }
-      });
-      view.map.add(graphicsLayerRef.current);
-    }
-    // Clean up on unmount or view change
     return () => {
-      if (graphicsLayerRef.current && view.map && view.map.remove) {
-        view.map.remove(graphicsLayerRef.current);
-      }
-      graphicsLayerRef.current = null;
+      cleanup();
     };
-  }, [view]);
+  }, [cleanup]);
 
   // Return hook methods and state
   return {

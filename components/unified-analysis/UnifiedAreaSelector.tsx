@@ -99,14 +99,18 @@ export default function UnifiedAreaSelector({
   } = useDrawing({
     view,
     onGeometryCreated: (geometry) => {
+      console.log('[UnifiedAreaSelector] Geometry created:', geometry?.type);
       handleGeometryCreated(geometry, 'draw');
+      setDrawMode(null); // Reset draw mode after successful creation
     },
     onDrawingStarted: () => {
       setIsSelecting(true);
       onSelectionStarted?.();
     },
     onDrawingCanceled: () => {
+      console.log('[UnifiedAreaSelector] Drawing canceled');
       setIsSelecting(false);
+      setDrawMode(null);
       onSelectionCanceled?.();
     }
   });
@@ -144,6 +148,8 @@ export default function UnifiedAreaSelector({
 
   // Handle drawing button click
   const handleDrawButtonClick = useCallback((mode: 'point' | 'polygon' | 'click') => {
+    console.log('[UnifiedAreaSelector] Starting drawing mode:', mode);
+    setError(null); // Clear any previous errors
     setDrawMode(mode);
     setIsSelecting(true);
     startDrawing(mode);
@@ -172,46 +178,31 @@ export default function UnifiedAreaSelector({
       // Create point or polygon based on location type
       let geometry: __esri.Geometry;
       
-      if (location.bbox) {
-        // Create polygon from bounding box
-        const [minX, minY, maxX, maxY] = location.bbox;
-        geometry = {
-          type: 'polygon',
-          rings: [[
-            [minX, minY],
-            [maxX, minY],
-            [maxX, maxY],
-            [minX, maxY],
-            [minX, minY]
-          ]],
-          spatialReference: { wkid: 4326 }
-        } as __esri.Polygon;
-      } else {
-        // Create point
-        geometry = new Point({
-          longitude: location.longitude,
-          latitude: location.latitude,
-          spatialReference: { wkid: 4326 }
+      // Always create a point, never a polygon (per requirements)
+      geometry = new Point({
+        longitude: location.longitude,
+        latitude: location.latitude,
+        spatialReference: { wkid: 4326 }
+      });
+      
+      // Set buffer center for point locations and add visual indicator
+      setBufferCenter(geometry as __esri.Point);
+      
+      // Add a graphic to show the point on the map
+      if (view) {
+        const pointGraphic = new Graphic({
+          geometry,
+          symbol: {
+            type: "simple-marker",
+            color: "red",
+            outline: {
+              color: "white",
+              width: 2
+            },
+            size: "12px"
+          }
         });
-        // Set buffer center for point locations and add visual indicator
-        setBufferCenter(geometry as __esri.Point);
-        
-        // Add a graphic to show the point on the map
-        if (view) {
-          const pointGraphic = new Graphic({
-            geometry,
-            symbol: {
-              type: "simple-marker",
-              color: "red",
-              outline: {
-                color: "white",
-                width: 2
-              },
-              size: "12px"
-            }
-          });
-          view.graphics.add(pointGraphic);
-        }
+        view.graphics.add(pointGraphic);
       }
 
       // Zoom to location
@@ -277,7 +268,11 @@ export default function UnifiedAreaSelector({
         
         if (response.serviceAreaPolygons?.features && response.serviceAreaPolygons.features.length > 0) {
           const serviceAreaGeometry = response.serviceAreaPolygons.features[0].geometry;
-          handleGeometryCreated(serviceAreaGeometry, 'service-area');
+          if (serviceAreaGeometry) {
+            handleGeometryCreated(serviceAreaGeometry, 'service-area');
+          } else {
+            throw new Error('Service area geometry is null');
+          }
         } else {
           throw new Error('No service area generated');
         }
@@ -339,43 +334,44 @@ export default function UnifiedAreaSelector({
   }, [cancelDrawing, view]);
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
+    <Card className="w-full h-full flex flex-col">
+      <CardHeader className="flex-shrink-0 py-2">
+        <CardTitle className="flex items-center justify-between text-xs">
           <span>Select Area for Analysis</span>
           {selectedAreas.length > 0 && (
             <Button 
               size="sm" 
               variant="outline"
               onClick={clearSelection}
+              className="text-xs h-7"
             >
               Clear Selection
             </Button>
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <Tabs value={selectionMethod} onValueChange={(v) => setSelectionMethod(v as any)}>
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="draw" className="flex items-center gap-2">
-              <Pencil className="h-4 w-4" />
+      <CardContent className="flex-1 flex flex-col py-3">
+        <Tabs value={selectionMethod} onValueChange={(v) => setSelectionMethod(v as any)} className="flex-1 flex flex-col">
+          <TabsList className="grid w-full grid-cols-3 flex-shrink-0">
+            <TabsTrigger value="draw" className="flex items-center gap-1 text-xs">
+              <Pencil className="h-3 w-3" />
               Draw
             </TabsTrigger>
-            <TabsTrigger value="search" className="flex items-center gap-2">
-              <Search className="h-4 w-4" />
+            <TabsTrigger value="search" className="flex items-center gap-1 text-xs">
+              <Search className="h-3 w-3" />
               Search
             </TabsTrigger>
             <TabsTrigger 
               value="buffer" 
-              className="flex items-center gap-2" 
+              className="flex items-center gap-1 text-xs" 
               disabled={selectedAreas.length === 0 && !bufferCenter}
             >
-              <CircleIcon className="h-4 w-4" />
+              <CircleIcon className="h-3 w-3" />
               Buffer {bufferCenter && <span className="text-xs">(Point Set)</span>}
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="draw" className="space-y-4">
+          <TabsContent value="draw" className="flex-1 flex flex-col space-y-4 mt-4">
             <div className="space-y-4">
               <DrawingTools
                 drawMode={drawMode}
@@ -385,14 +381,14 @@ export default function UnifiedAreaSelector({
                 onSelectionComplete={completeSelection}
                 hasSelectedFeature={hasSelectedFeatures}
                 selectedCount={selectedFeatureCount}
-                shouldShowNext={false}
+                shouldShowNext={drawMode === 'click' && hasSelectedFeatures && selectedFeatureCount > 0}
               />
               {(isSelecting || drawMode) && (
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={clearCurrentDrawing}
-                  className="w-full"
+                  className="w-full text-xs h-7"
                 >
                   Clear Drawing
                 </Button>
@@ -400,7 +396,7 @@ export default function UnifiedAreaSelector({
             </div>
           </TabsContent>
 
-          <TabsContent value="search" className="space-y-4">
+          <TabsContent value="search" className="flex-1 flex flex-col space-y-4 mt-4">
             <LocationSearch
               onLocationSelected={handleLocationSelected}
               placeholder="Enter address, city, or place..."
@@ -411,38 +407,38 @@ export default function UnifiedAreaSelector({
             </p>
           </TabsContent>
 
-          <TabsContent value="buffer" className="space-y-4">
+          <TabsContent value="buffer" className="flex-1 flex flex-col space-y-4 mt-4">
             {selectedAreas.length === 0 && !bufferCenter ? (
               <Alert>
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
+                <AlertCircle className="h-3 w-3" />
+                <AlertDescription className="text-xs">
                   Please first select an area using Draw or Search, or click on the map to set a buffer center point.
                 </AlertDescription>
               </Alert>
             ) : (
               <div className="space-y-4">
                 <div>
-                  <Label>Buffer Type</Label>
+                  <Label className="text-xs">Buffer Type</Label>
                   <Select value={bufferType} onValueChange={(v: any) => setBufferType(v)}>
-                    <SelectTrigger>
+                    <SelectTrigger className="text-xs h-8">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="radius">
-                        <div className="flex items-center gap-2">
-                          <CircleIcon className="h-4 w-4" />
+                      <SelectItem value="radius" className="text-xs">
+                        <div className="flex items-center gap-1">
+                          <CircleIcon className="h-3 w-3" />
                           Radius
                         </div>
                       </SelectItem>
-                      <SelectItem value="drivetime">
-                        <div className="flex items-center gap-2">
-                          <Car className="h-4 w-4" />
+                      <SelectItem value="drivetime" className="text-xs">
+                        <div className="flex items-center gap-1">
+                          <Car className="h-3 w-3" />
                           Drive Time
                         </div>
                       </SelectItem>
-                      <SelectItem value="walktime">
-                        <div className="flex items-center gap-2">
-                          <Walk className="h-4 w-4" />
+                      <SelectItem value="walktime" className="text-xs">
+                        <div className="flex items-center gap-1">
+                          <Walk className="h-3 w-3" />
                           Walk Time
                         </div>
                       </SelectItem>
@@ -452,32 +448,33 @@ export default function UnifiedAreaSelector({
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label>Value</Label>
+                    <Label className="text-xs">Value</Label>
                     <Input
                       type="number"
                       value={bufferValue}
                       onChange={(e) => setBufferValue(e.target.value)}
                       min="0.1"
                       step="0.1"
+                      className="text-xs h-8"
                     />
                   </div>
                   <div>
-                    <Label>Unit</Label>
+                    <Label className="text-xs">Unit</Label>
                     <Select 
                       value={bufferUnit} 
                       onValueChange={(v: any) => setBufferUnit(v)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="text-xs h-8">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         {bufferType === 'radius' ? (
                           <>
-                            <SelectItem value="miles">Miles</SelectItem>
-                            <SelectItem value="kilometers">Kilometers</SelectItem>
+                            <SelectItem value="miles" className="text-xs">Miles</SelectItem>
+                            <SelectItem value="kilometers" className="text-xs">Kilometers</SelectItem>
                           </>
                         ) : (
-                          <SelectItem value="minutes">Minutes</SelectItem>
+                          <SelectItem value="minutes" className="text-xs">Minutes</SelectItem>
                         )}
                       </SelectContent>
                     </Select>
@@ -486,27 +483,27 @@ export default function UnifiedAreaSelector({
 
                 {!bufferCenter ? (
                   <Alert>
-                    <MapPin className="h-4 w-4" />
-                    <AlertDescription>
+                    <MapPin className="h-3 w-3" />
+                    <AlertDescription className="text-xs">
                       Click on the map to set the buffer center point, or use Draw/Search to create a point first.
                     </AlertDescription>
                   </Alert>
                 ) : (
                   <div className="space-y-2">
                     <Alert>
-                      <CheckCircle className="h-4 w-4" />
-                      <AlertDescription>
+                      <CheckCircle className="h-3 w-3" />
+                      <AlertDescription className="text-xs">
                         Buffer center point is set. Generate your buffer area below.
                       </AlertDescription>
                     </Alert>
                     <Button 
                       onClick={generateServiceArea} 
-                      className="w-full"
+                      className="w-full text-xs h-9"
                       disabled={isSelecting}
                     >
-                      {isSelecting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                      {isSelecting && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
                       Generate {bufferType === 'radius' ? 'Buffer' : 'Service Area'}
-                      <ChevronRight className="ml-2 h-4 w-4" />
+                      <ChevronRight className="ml-2 h-3 w-3" />
                     </Button>
                   </div>
                 )}
@@ -517,8 +514,8 @@ export default function UnifiedAreaSelector({
 
         {error && (
           <Alert variant="destructive" className="mt-4">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
+            <AlertCircle className="h-3 w-3" />
+            <AlertDescription className="text-xs">{error}</AlertDescription>
           </Alert>
         )}
 

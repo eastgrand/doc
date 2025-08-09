@@ -4510,7 +4510,7 @@ const EnhancedGeospatialChat = memo(({
     </div>
 
     {/* Input Section - fixed height, doesn't shrink */}
-    <div className="flex-shrink-0 max-h-[50vh] overflow-y-auto">
+    <div className={`flex-shrink-0 overflow-y-auto ${inputMode === 'analysis' && showUnifiedWorkflow ? 'max-h-[85vh]' : 'max-h-[50vh]'}`}>
       <div className="px-4 py-2 bg-white border-t border-gray-200">
 
         {/* Chat Nudge Notification */}
@@ -4518,7 +4518,7 @@ const EnhancedGeospatialChat = memo(({
           <div className="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg animate-fade-in">
             <div className="flex items-start gap-2">
               <MessageCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-              <div className="flex-1 text-sm">
+              <div className="flex-1 text-xs">
                 <div className="font-medium text-green-800">💬 Ask questions about your results!</div>
                 <button
                   onClick={() => setInputMode('chat')}
@@ -4529,7 +4529,7 @@ const EnhancedGeospatialChat = memo(({
               </div>
               <button
                 onClick={() => setShowChatNudge(false)}
-                className="text-green-400 hover:text-green-600 text-sm flex-shrink-0"
+                className="text-green-400 hover:text-green-600 text-xs flex-shrink-0"
               >
                 ×
               </button>
@@ -4540,7 +4540,7 @@ const EnhancedGeospatialChat = memo(({
         {/* Mode Toggle */}
         <div className="mb-3 space-y-2">
           {/* Mode Toggle */}
-          <div className="flex gap-2 text-sm">
+          <div className="flex gap-2 text-xs">
             <button
               type="button"
               onClick={() => setInputMode('analysis')}
@@ -4583,7 +4583,7 @@ const EnhancedGeospatialChat = memo(({
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-medium text-blue-900">New: Guided Analysis Workflow</h3>
-                  <p className="text-sm text-blue-700">Start with area selection, then choose your analysis type</p>
+                  <p className="text-xs text-blue-700">Start with area selection, then choose your analysis type</p>
                 </div>
                 <Button
                   onClick={handleShowUnifiedWorkflow}
@@ -4608,7 +4608,7 @@ const EnhancedGeospatialChat = memo(({
                       height={14}
                       className="object-contain"
                     />
-                    <h2 className="text-lg font-semibold">
+                    <h2 className="text-xs font-semibold">
                       <span>
                         <span className='font-bold text-[#33a852]'>IQ</span>
                         <span className="text-black">builder</span>
@@ -4624,7 +4624,7 @@ const EnhancedGeospatialChat = memo(({
                             </div>
                           </TooltipTrigger>
                           <TooltipContent side="top" className="bg-white max-w-md">
-                            <p className="text-sm">{contextSummary}</p>
+                            <p className="text-xs">{contextSummary}</p>
                             <p className="text-xs text-gray-500 mt-1">
                               AI responses are aware of your conversation history
                             </p>
@@ -4765,7 +4765,7 @@ const EnhancedGeospatialChat = memo(({
                       <DialogContent className="max-w-lg bg-white">
                         <DialogHeader>
                           <DialogTitle>Select Target Variable</DialogTitle>
-                          <p className="text-sm text-gray-600 mt-2">
+                          <p className="text-xs text-gray-600 mt-2">
                             The target variable is the primary metric the
                             analysis will explain.
                           </p>
@@ -4839,7 +4839,7 @@ const EnhancedGeospatialChat = memo(({
                       <DialogContent className="max-w-lg bg-white" aria-describedby="persona-dialog-description">
                         <DialogHeader>
                           <DialogTitle>Select AI Persona</DialogTitle>
-                          <p id="persona-dialog-description" className="text-sm text-gray-600 mt-2">
+                          <p id="persona-dialog-description" className="text-xs text-gray-600 mt-2">
                             Choose an analytical perspective that matches your decision-making context.
                           </p>
                         </DialogHeader>
@@ -4860,7 +4860,7 @@ const EnhancedGeospatialChat = memo(({
                                 { className: 'h-4 w-4 flex-shrink-0 mt-0.5 text-[#33a852]' }
                               )}
                               <div className="flex-1 min-w-0">
-                                <div className="font-medium text-sm">{persona.name}</div>
+                                <div className="font-medium text-xs">{persona.name}</div>
                                 <div className="text-xs text-gray-600 mt-1 leading-relaxed">
                                   {persona.description}
                                 </div>
@@ -4914,7 +4914,7 @@ const EnhancedGeospatialChat = memo(({
                           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white" aria-describedby="cluster-dialog-description">
                             <DialogHeader>
                               <DialogTitle>Clustering Configuration</DialogTitle>
-                              <p id="cluster-dialog-description" className="text-sm text-gray-600 mt-2">Configure clustering settings for your analysis.</p>
+                              <p id="cluster-dialog-description" className="text-xs text-gray-600 mt-2">Configure clustering settings for your analysis.</p>
                             </DialogHeader>
                             <ClusterConfigPanel
                               config={clusterConfig}
@@ -5033,7 +5033,7 @@ const EnhancedGeospatialChat = memo(({
                               type="button"
                               variant="outline"
                               size="sm"
-                              className="flex items-center justify-center gap-2 px-4 text-sm font-medium border border-gray-300 hover:bg-gray-100 hover:text-gray-700 shadow-sm hover:shadow rounded-lg h-8"
+                              className="flex items-center justify-center gap-2 px-4 text-xs font-medium border border-gray-300 hover:bg-gray-100 hover:text-gray-700 shadow-sm hover:shadow rounded-lg h-8"
                               onClick={handleClear}
                             >
                               <X className="h-4 w-4 text-gray-500" />
@@ -5088,9 +5088,9 @@ const EnhancedGeospatialChat = memo(({
 
         {/* Unified Analysis Workflow */}
         {inputMode === 'analysis' && showUnifiedWorkflow && (
-          <div className="min-h-[60vh] space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Guided Analysis Workflow</h2>
+          <div className="h-[85vh] flex flex-col space-y-3">
+            <div className="flex items-center justify-between flex-shrink-0">
+              <h2 className="text-xs font-semibold">Guided Analysis Workflow</h2>
               <Button
                 variant="outline"
                 size="sm"
@@ -5099,12 +5099,16 @@ const EnhancedGeospatialChat = memo(({
                 Back to Text Input
               </Button>
             </div>
-            <UnifiedAnalysisWorkflow
-              view={initialMapView}
-              onAnalysisComplete={handleUnifiedAnalysisComplete}
-              enableChat={true}
-              defaultAnalysisType="query"
-            />
+            <div className="flex-1 min-h-0">
+              {initialMapView && (
+                <UnifiedAnalysisWorkflow
+                  view={initialMapView}
+                  onAnalysisComplete={handleUnifiedAnalysisComplete}
+                  enableChat={true}
+                  defaultAnalysisType="query"
+                />
+              )}
+            </div>
           </div>
         )}
 
@@ -5231,7 +5235,7 @@ const EnhancedGeospatialChat = memo(({
       <DialogContent className="max-w-lg" aria-describedby="reply-dialog-description">
         <DialogHeader>
           <DialogTitle>Reply to Assistant</DialogTitle>
-          <p id="reply-dialog-description" className="text-sm text-gray-600">
+          <p id="reply-dialog-description" className="text-xs text-gray-600">
             Your reply will be added to the current conversation context.
           </p>
         </DialogHeader>
@@ -5289,7 +5293,7 @@ const EnhancedGeospatialChat = memo(({
             <div className="flex flex-row items-center justify-between px-4 py-3 border-b">
               <div className="flex items-center gap-2">
                 <BarChart className="h-4 w-4 text-[#33a852]" />
-                <div className="text-sm font-medium">
+                <div className="text-xs font-medium">
                   <span className="text-black">infograph</span>
                   <span className='font-bold text-[#33a852]'>IQ</span>
                 </div>
