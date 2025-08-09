@@ -15,7 +15,7 @@ import { ClusterConfig } from '@/lib/clustering/types';
 export interface UnifiedAnalysisRequest {
   // Area selection from UnifiedAreaSelector
   geometry?: __esri.Geometry;
-  geometryMethod?: 'draw' | 'search' | 'service-area';
+  geometryMethod?: 'draw' | 'search' | 'service-area' | 'project-area';
   
   // Analysis type selection
   analysisType: 'query' | 'infographic' | 'comprehensive';

@@ -45,7 +45,7 @@ import Point from "@arcgis/core/geometry/Point";
 
 export interface AreaSelection {
   geometry: __esri.Geometry;
-  method: 'draw' | 'search' | 'service-area';
+  method: 'draw' | 'search' | 'service-area' | 'project-area';
   displayName: string;
   metadata: {
     area?: number;
@@ -62,7 +62,7 @@ interface UnifiedAreaSelectorProps {
   onAreaSelected: (area: AreaSelection) => void;
   onSelectionStarted?: () => void;
   onSelectionCanceled?: () => void;
-  defaultMethod?: 'draw' | 'search' | 'buffer';
+  defaultMethod?: 'draw' | 'search' | 'buffer' | 'project';
   allowMultipleSelection?: boolean;
 }
 
@@ -75,7 +75,10 @@ export default function UnifiedAreaSelector({
   allowMultipleSelection = false
 }: UnifiedAreaSelectorProps) {
   // State management
-  const [selectionMethod, setSelectionMethod] = useState<'draw' | 'search' | 'buffer'>(defaultMethod);
+  const [selectionMethod, setSelectionMethod] = useState<'draw' | 'search' | 'buffer' | 'project'>(
+    defaultMethod === 'project' ? defaultMethod : 
+    defaultMethod === 'draw' ? defaultMethod : 'project'
+  );
   const [drawMode, setDrawMode] = useState<'point' | 'polygon' | 'click' | null>(null);
   const [isSelecting, setIsSelecting] = useState(false);
   const [selectedAreas, setSelectedAreas] = useState<AreaSelection[]>([]);
@@ -116,7 +119,7 @@ export default function UnifiedAreaSelector({
   });
 
   // Handle geometry creation from any source
-  const handleGeometryCreated = useCallback((geometry: __esri.Geometry, source: 'draw' | 'search' | 'service-area') => {
+  const handleGeometryCreated = useCallback((geometry: __esri.Geometry, source: 'draw' | 'search' | 'service-area' | 'project-area') => {
     // If it's a point from drawing, also set it as buffer center
     if (source === 'draw' && geometry.type === 'point') {
       setBufferCenter(geometry as __esri.Point);
@@ -286,9 +289,59 @@ export default function UnifiedAreaSelector({
     }
   }, [bufferCenter, bufferType, bufferValue, bufferUnit, view, handleGeometryCreated]);
 
+  // Handle project area selection
+  const handleProjectAreaSelection = useCallback(async () => {
+    try {
+      setIsSelecting(true);
+      setError(null);
+      
+      // Create a geometry that represents the entire project area
+      // For now, we'll create a large extent around the current view
+      if (!view) {
+        throw new Error('Map view is not available');
+      }
+      
+      // Get the full extent of the view or use a default large area
+      let projectExtent = view.extent;
+      
+      // If no extent is available, create a default large area (US extent as example)
+      if (!projectExtent) {
+        projectExtent = {
+          xmin: -125,
+          ymin: 24,
+          xmax: -66,
+          ymax: 49,
+          spatialReference: { wkid: 4326 }
+        } as __esri.Extent;
+      }
+      
+      // Convert extent to polygon geometry
+      const projectGeometry = {
+        type: "polygon",
+        rings: [[
+          [projectExtent.xmin, projectExtent.ymin],
+          [projectExtent.xmax, projectExtent.ymin], 
+          [projectExtent.xmax, projectExtent.ymax],
+          [projectExtent.xmin, projectExtent.ymax],
+          [projectExtent.xmin, projectExtent.ymin]
+        ]],
+        spatialReference: projectExtent.spatialReference
+      } as __esri.Polygon;
+      
+      handleGeometryCreated(projectGeometry, 'project-area');
+      
+    } catch (err) {
+      console.error('Error selecting project area:', err);
+      setError('Failed to select project area');
+    } finally {
+      setIsSelecting(false);
+    }
+  }, [view, handleGeometryCreated]);
+
   // Helper functions
   const getDisplayName = (geometry: __esri.Geometry, source: string): string => {
     if (source === 'search') return 'Search Area';
+    if (source === 'project-area') return 'Entire Project Area';
     if (source === 'service-area') {
       if (bufferType === 'radius') return `${bufferValue} ${bufferUnit} radius`;
       if (bufferType === 'drivetime') return `${bufferValue} minute drive`;
@@ -353,7 +406,11 @@ export default function UnifiedAreaSelector({
       </CardHeader>
       <CardContent className="flex-1 flex flex-col py-3">
         <Tabs value={selectionMethod} onValueChange={(v) => setSelectionMethod(v as any)} className="flex-1 flex flex-col">
-          <TabsList className="grid w-full grid-cols-3 flex-shrink-0">
+          <TabsList className="grid w-full grid-cols-4 flex-shrink-0">
+            <TabsTrigger value="project" className="flex items-center gap-1 text-xs">
+              <MapPin className="h-3 w-3" />
+              Entire Project
+            </TabsTrigger>
             <TabsTrigger value="draw" className="flex items-center gap-1 text-xs">
               <Pencil className="h-3 w-3" />
               Draw
@@ -371,6 +428,26 @@ export default function UnifiedAreaSelector({
               Buffer {bufferCenter && <span className="text-xs">(Point Set)</span>}
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="project" className="flex-1 flex flex-col space-y-4 mt-4">
+            <div className="space-y-4">
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="text-xs font-medium text-blue-800 mb-2">Entire Project Area</h3>
+                <p className="text-xs text-blue-700 mb-3">
+                  Analyze all data within the full project extent. This will include all available data points across the entire geographic region.
+                </p>
+                <Button
+                  onClick={handleProjectAreaSelection}
+                  className="w-full text-xs h-9"
+                  disabled={isSelecting}
+                >
+                  {isSelecting && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
+                  Select Entire Project Area
+                  <ChevronRight className="ml-2 h-3 w-3" />
+                </Button>
+              </div>
+            </div>
+          </TabsContent>
 
           <TabsContent value="draw" className="flex-1 flex flex-col space-y-4 mt-4">
             <div className="space-y-4">

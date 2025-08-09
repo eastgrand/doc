@@ -126,12 +126,13 @@ export default function UnifiedAnalysisWorkflow({
   const handleAreaSelected = useCallback((area: AreaSelection) => {
     console.log('[UnifiedWorkflow] Area selected:', area);
     const isPoint = area.geometry.type === 'point';
+    const isProjectArea = area.method === 'project-area';
     
     setWorkflowState(prev => ({
       ...prev,
       areaSelection: area,
-      // Skip buffer step for polygons, go directly to analysis
-      currentStep: isPoint ? 'buffer' : 'analysis'
+      // Skip buffer step for polygons and project area, go directly to analysis
+      currentStep: isPoint && !isProjectArea ? 'buffer' : 'analysis'
     }));
   }, []);
 
@@ -973,7 +974,7 @@ export default function UnifiedAnalysisWorkflow({
                     key={`area-selector-${resetCounter}`}
                     view={view}
                     onAreaSelected={handleAreaSelected}
-                    defaultMethod="draw"
+                    defaultMethod="project"
                   />
                 </div>
               )}
