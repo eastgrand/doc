@@ -4487,7 +4487,8 @@ const EnhancedGeospatialChat = memo(({
 
   return (
   <div className="flex flex-col h-full">
-    {/* Message area - takes remaining space after input section */}
+    {/* Message area - Hidden when using unified workflow */}
+    {inputMode === 'chat' && (
     <div className="flex-1 min-h-0 overflow-hidden">
       <MessageList
         messages={messages}
@@ -4508,6 +4509,7 @@ const EnhancedGeospatialChat = memo(({
         onZoomToFeature={handleZoomToFeature}
       />
     </div>
+    )}
 
     {/* Input Section - fixed height, doesn't shrink */}
     <div className="flex-1 overflow-y-auto min-h-0">

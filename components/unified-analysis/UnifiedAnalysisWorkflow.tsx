@@ -983,7 +983,19 @@ export default function UnifiedAnalysisWorkflow({
       <Card className="flex-1 flex flex-col">
         <CardHeader className="flex-shrink-0 py-2">
           <CardTitle className="flex items-center justify-between text-xs">
-            <span>Unified Analysis Workflow</span>
+            <div className="flex items-center gap-2">
+              <Image 
+                src="/mpiq_pin2.png" 
+                alt="IQbuilder" 
+                width={16} 
+                height={16}
+                className="h-4 w-4" 
+              />
+              <div className="flex text-xs font-bold">
+                <span className="text-[#33a852]">IQ</span>
+                <span className="text-black -ml-px">builder</span>
+              </div>
+            </div>
             <Button
               variant="outline"
               size="sm"
