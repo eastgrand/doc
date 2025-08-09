@@ -137,6 +137,13 @@ const createQuartileRenderer = async (
     return null;
   }
 
+  // Skip system fields that shouldn't be used for statistical calculations
+  const systemFields = ['esri_pid', 'esri_oid', 'objectid', 'fid', 'shape_length', 'shape_area', 'shape__length', 'shape__area'];
+  if (systemFields.includes(field.toLowerCase())) {
+    console.warn(`[createQuartileRenderer] Skipping system field: ${field}`);
+    return null;
+  }
+
   try {
     if (!layer.loaded) {
       await layer.load();

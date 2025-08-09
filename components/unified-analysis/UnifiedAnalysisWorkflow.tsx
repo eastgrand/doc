@@ -22,7 +22,9 @@ import {
   AlertCircle,
   Target,
   Car,
-  FootprintsIcon as Walk
+  FootprintsIcon as Walk,
+  RotateCcw,
+  Sparkles
 } from 'lucide-react';
 
 // Import unified components
@@ -34,12 +36,27 @@ import { QueryInterface } from '@/components/QueryInterface';
 import EndpointScoreInfographic from '@/components/EndpointScoreInfographic';
 import { CustomVisualizationPanel } from '@/components/Visualization/CustomVisualizationPanel';
 
+// Import dialog and predefined queries
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import QueryDialog from '@/components/chat/QueryDialog';
+import { ANALYSIS_CATEGORIES, DISABLED_ANALYSIS_CATEGORIES } from '@/components/chat/chat-constants';
+
+// Clustering Components
+import { ClusterConfigPanel } from '@/components/clustering/ClusterConfigPanel';
+import { ClusterConfig, DEFAULT_CLUSTER_CONFIG } from '@/lib/clustering/types';
+
 // Import chat interface for contextual analysis
 import { useChatContext } from '@/components/chat-context-provider';
 
 // Import ArcGIS geometry engine for buffering
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 import Circle from "@arcgis/core/geometry/Circle";
+import Graphic from "@arcgis/core/Graphic";
+import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
 
 export interface UnifiedAnalysisWorkflowProps {
   view: __esri.MapView;
@@ -81,6 +98,19 @@ export default function UnifiedAnalysisWorkflow({
   const [bufferDistance, setBufferDistance] = useState<string>('1');
   const [bufferUnit, setBufferUnit] = useState<'miles' | 'kilometers' | 'minutes'>('miles');
   const [bufferType, setBufferType] = useState<'radius' | 'drivetime' | 'walktime'>('radius');
+  
+  // Reset counter to force component remount
+  const [resetCounter, setResetCounter] = useState(0);
+  
+  // QuickstartIQ dialog state
+  const [quickstartDialogOpen, setQuickstartDialogOpen] = useState(false);
+  
+  // Clustering configuration state
+  const [clusterConfig, setClusterConfig] = useState<ClusterConfig>({
+    ...DEFAULT_CLUSTER_CONFIG,
+    minScorePercentile: DEFAULT_CLUSTER_CONFIG.minScorePercentile ?? 70
+  });
+  const [clusterDialogOpen, setClusterDialogOpen] = useState(false);
 
   // Initialize analysis wrapper
   const [analysisWrapper] = useState(() => new UnifiedAnalysisWrapper());
@@ -132,7 +162,8 @@ export default function UnifiedAnalysisWorkflow({
         query: type === 'query' ? selectedQuery : undefined,
         endpoint: type === 'query' ? selectedEndpoint : undefined,
         infographicType: type === 'infographic' ? selectedInfographicType : undefined,
-        includeChat: enableChat
+        includeChat: enableChat,
+        clusterConfig: type === 'query' && clusterConfig.enabled ? clusterConfig : undefined
       };
 
       console.log('[UnifiedWorkflow] Starting analysis:', request);
@@ -231,6 +262,63 @@ export default function UnifiedAnalysisWorkflow({
           bufferUnit
         );
         
+        // Add buffered geometry as a graphic to the map (matching button colors)
+        if (view && bufferedGeometry) {
+          // Define buffer color to match button icon colors
+          const bufferColor = bufferType === 'radius' 
+            ? [59, 130, 246] // Blue for radius (matches text-blue-500)
+            : bufferType === 'drivetime' 
+              ? [34, 197, 94] // Green for drive time (matches text-green-500)
+              : [249, 115, 22]; // Orange for walk time (matches text-orange-500)
+          
+          // Create buffer graphic using SimpleFillSymbol (matching existing implementation)
+          const bufferGraphic = new Graphic({
+            geometry: bufferedGeometry,
+            symbol: new SimpleFillSymbol({
+              color: [...bufferColor, 0.2], // 20% opacity matching existing
+              outline: {
+                color: bufferColor,
+                width: 2
+              }
+            })
+          });
+          
+          // Find and preserve any existing point graphic
+          const pointGraphic = view.graphics.find(g => g.attributes?.isPoint);
+          
+          // Clear graphics and re-add in correct order
+          view.graphics.removeAll();
+          
+          // Re-add point graphic if it exists
+          if (pointGraphic) {
+            view.graphics.add(pointGraphic);
+          } else if (workflowState.areaSelection.geometry.type === 'point') {
+            // Create new point graphic if needed
+            const newPointGraphic = new Graphic({
+              geometry: workflowState.areaSelection.geometry,
+              symbol: {
+                type: "simple-marker",
+                color: [255, 0, 0],
+                outline: {
+                  color: [255, 255, 255],
+                  width: 2
+                },
+                size: 8
+              } as any,
+              attributes: { isPoint: true }
+            });
+            view.graphics.add(newPointGraphic);
+          }
+          
+          // Add buffer graphic
+          view.graphics.add(bufferGraphic);
+          
+          // Zoom to buffered extent (matching existing implementation)
+          if (bufferedGeometry?.extent) {
+            await view.goTo(bufferedGeometry.extent.expand(1.2));
+          }
+        }
+        
         // Create new area selection with buffered geometry
         const bufferedArea: AreaSelection = {
           ...workflowState.areaSelection,
@@ -265,23 +353,52 @@ export default function UnifiedAnalysisWorkflow({
     }
   }, [workflowState.areaSelection, bufferDistance, bufferUnit, bufferType, createBufferedGeometry]);
 
+  // Handle predefined query selection
+  const handlePredefinedQuerySelect = useCallback((query: string) => {
+    setSelectedQuery(query);
+    setQuickstartDialogOpen(false);
+  }, []);
+
   // Reset workflow
   const resetWorkflow = useCallback(() => {
+    // Clear all graphics from the map
+    if (view?.graphics) {
+      view.graphics.removeAll();
+    }
+    
+    // Reset all state
     setWorkflowState({
       currentStep: 'area',
-      isProcessing: false
+      isProcessing: false,
+      areaSelection: undefined,
+      analysisType: undefined,
+      analysisResult: undefined,
+      error: undefined
     });
     setSelectedQuery('');
     setSelectedEndpoint('');
-  }, []);
+    setSelectedInfographicType('strategic');
+    setBufferDistance('1');
+    setBufferUnit('miles');
+    setBufferType('radius');
+    
+    // Reset clustering config
+    setClusterConfig({
+      ...DEFAULT_CLUSTER_CONFIG,
+      minScorePercentile: DEFAULT_CLUSTER_CONFIG.minScorePercentile ?? 70
+    });
+    
+    // Increment reset counter to force component remount
+    setResetCounter(prev => prev + 1);
+  }, [view]);
 
   // Render workflow steps indicator
   const renderStepIndicator = () => {
     const steps = [
       { id: 'area', label: 'Select Area', icon: MapPin },
-      { id: 'buffer', label: 'Add Buffer', icon: Target },
-      { id: 'analysis', label: 'Choose Analysis', icon: BarChart3 },
-      { id: 'results', label: 'View Results', icon: FileText }
+      { id: 'buffer', label: 'Buffer', icon: Target },
+      { id: 'analysis', label: 'Analysis', icon: BarChart3 },
+      { id: 'results', label: 'Results', icon: FileText }
     ];
 
     const currentStepIndex = steps.findIndex(s => s.id === workflowState.currentStep);
@@ -341,7 +458,7 @@ export default function UnifiedAnalysisWorkflow({
           <CardHeader className="py-2">
             <CardTitle className="flex items-center gap-2 text-xs">
               <Image 
-                src="/icon.png" 
+                src="/mpiq_pin2.png" 
                 alt="quickstartIQ" 
                 width={16} 
                 height={16}
@@ -372,7 +489,7 @@ export default function UnifiedAnalysisWorkflow({
           <CardHeader className="py-2">
             <CardTitle className="flex items-center gap-2 text-xs">
               <Image 
-                src="/icon.png" 
+                src="/mpiq_pin2.png" 
                 alt="infographIQ" 
                 width={16} 
                 height={16}
@@ -403,7 +520,7 @@ export default function UnifiedAnalysisWorkflow({
           <CardHeader className="py-2">
             <CardTitle className="flex items-center gap-2 text-xs">
               <Image 
-                src="/icon.png" 
+                src="/mpiq_pin2.png" 
                 alt="reportIQ" 
                 width={16} 
                 height={16}
@@ -434,7 +551,51 @@ export default function UnifiedAnalysisWorkflow({
               {workflowState.analysisType === 'query' && (
                 <div className="space-y-3 h-full">
                   <div className="flex-1 flex flex-col">
-                    <label className="block text-xs font-medium mb-2">Enter your query</label>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-xs font-medium">Enter your query</label>
+                      <div className="flex items-center gap-2">
+                        <Dialog open={clusterDialogOpen} onOpenChange={setClusterDialogOpen}>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-xs h-6 flex items-center gap-1"
+                            >
+                              <Target className="h-3 w-3" />
+                              {clusterConfig.enabled ? `${clusterConfig.numClusters} Clusters` : 'Clustering'}
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                            <ClusterConfigPanel
+                              config={clusterConfig}
+                              onConfigChange={setClusterConfig}
+                              onSave={() => setClusterDialogOpen(false)}
+                            />
+                          </DialogContent>
+                        </Dialog>
+                        <Dialog open={quickstartDialogOpen} onOpenChange={setQuickstartDialogOpen}>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-xs h-6 flex items-center gap-1"
+                            >
+                              <Sparkles className="h-3 w-3" />
+                              Quick Start
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                            <QueryDialog
+                              onQuestionSelect={handlePredefinedQuerySelect}
+                              title="quickstartIQ"
+                              description="Choose from predefined demographic and analysis queries to get started quickly."
+                              categories={ANALYSIS_CATEGORIES}
+                              disabledCategories={DISABLED_ANALYSIS_CATEGORIES}
+                            />
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+                    </div>
                     <textarea
                       placeholder="Enter your natural language or SQL query..."
                       className="flex-1 w-full p-3 border rounded-lg text-sm min-h-[120px] resize-none"
@@ -551,14 +712,6 @@ export default function UnifiedAnalysisWorkflow({
           </CardHeader>
           <CardContent className="flex-1 flex flex-col justify-between space-y-3 py-3">
             <div className="space-y-3">
-              <div className="bg-blue-50 p-3 rounded-lg">
-                <p className="text-xs text-blue-800 font-medium mb-1">Current Selection:</p>
-                <p className="text-xs text-blue-700">{workflowState.areaSelection.displayName}</p>
-                <p className="text-xs text-blue-600">
-                  Type: {workflowState.areaSelection.geometry.type} • Method: {workflowState.areaSelection.method}
-                </p>
-              </div>
-
               <div className="space-y-4">
                 <h4 className="text-xs font-medium">Buffer Type:</h4>
                 <div className="grid grid-cols-3 gap-3">
@@ -668,18 +821,18 @@ export default function UnifiedAnalysisWorkflow({
             <div className="flex gap-3 flex-shrink-0">
               <Button 
                 variant="outline"
-                className="flex-1"
+                className="flex-1 text-xs"
                 onClick={() => handleBufferComplete(false)}
               >
                 Skip Buffer
               </Button>
               <Button 
-                className="flex-1"
+                className="flex-1 text-xs"
                 onClick={() => handleBufferComplete(true)}
                 disabled={!bufferDistance || parseFloat(bufferDistance) <= 0}
               >
                 Apply Buffer
-                <ChevronRight className="ml-2 h-4 w-4" />
+                <ChevronRight className="ml-2 h-3 w-3" />
               </Button>
             </div>
           </CardContent>
@@ -777,7 +930,18 @@ export default function UnifiedAnalysisWorkflow({
     <div className="w-full h-full flex flex-col">
       <Card className="flex-1 flex flex-col">
         <CardHeader className="flex-shrink-0 py-2">
-          <CardTitle className="text-xs">Unified Analysis Workflow</CardTitle>
+          <CardTitle className="flex items-center justify-between text-xs">
+            <span>Unified Analysis Workflow</span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={resetWorkflow}
+              className="text-xs h-7 flex items-center gap-1"
+            >
+              <RotateCcw className="h-3 w-3" />
+              Start Over
+            </Button>
+          </CardTitle>
         </CardHeader>
         <CardContent className="flex-1 flex flex-col py-3">
           {/* Step indicator */}
@@ -801,6 +965,7 @@ export default function UnifiedAnalysisWorkflow({
               {workflowState.currentStep === 'area' && (
                 <div className="flex-1">
                   <UnifiedAreaSelector
+                    key={`area-selector-${resetCounter}`}
                     view={view}
                     onAreaSelected={handleAreaSelected}
                     defaultMethod="draw"

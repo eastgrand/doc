@@ -1,44 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
-import React, { useEffect, useState, useCallback, useRef, useMemo, memo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, memo } from 'react';
 import dynamic from 'next/dynamic';
-import { Search, Layers, Home as HomeIcon, 
-  Table as TableIcon, FolderOutput, Folder, Filter, Type as TypeOutline, Combine, 
-  Bookmark, Map as MapIcon } from 'lucide-react';
 import '@/components/widget-styles.css';
-import MapLogo from './MapLogo';
 import '@/components/popup-styles.css';
-import LayerController from './LayerController/LayerController';
 import esriConfig from "@arcgis/core/config";
 import MapClient from '@/components/map/MapClient';
 import MapContainer from '@/components/MapContainer';
-import GraphicsManager from './GraphicsManager';
-import { createProjectConfig } from '@/adapters/layerConfigAdapter';
-import { enhanceExistingLayerPopups, applyLayerLabels } from '../utils/popupEnhancer';
-import { layers } from '@/config/layers';
 import CustomPopupManager from './popup/CustomPopupManager';
-import type { LayerState as AIToolsLayerState } from '@/types/aitools';
-import type { ProjectLayerConfig, LayerConfig } from '@/types/layers';
-import type { GeospatialFeature } from '@/types/geospatial-ai-types';
-import type { AILayerState } from '@/types/ai-layers';
-import type { LayerState } from '@/components/types';
-import AITab from '@/components/tabs/AITab';
-import Graphic from "@arcgis/core/Graphic";
-import Point from "@arcgis/core/geometry/Point";
-import { TextContent, FieldsContent } from "@arcgis/core/popup/content";
-import PopupTemplate from "@arcgis/core/PopupTemplate";
-import Home from '@arcgis/core/widgets/Home';
-import FeatureSet from "@arcgis/core/FeatureSet";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import CustomZoom from './CustomZoom';
-import { CorrelationAnalysis } from './CorrelationAnalysis';
 import { LegendItem } from '@/components/MapLegend';
-import { StandardizedLegendData, LegendType } from '@/types/legend';
-import { colorToRgba, getSymbolShape, getSymbolSize } from '@/utils/symbol-utils';
-import { VisualizationResult as ChatVisualizationResult } from '@/types/geospatial-chat';
-import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
-import Color from '@arcgis/core/Color';
+import { LegendType } from '@/types/legend';
 
 console.log('[MAP_APP] MapApp component function body executing');
 
@@ -59,17 +33,6 @@ const DynamicMapWidgets = dynamic(() => import('@/components/MapWidgets'), {
 });
 
 // Define widget buttons and visible widgets
-const WIDGET_BUTTONS = [
-  { id: 'search', Icon: Search, label: 'Search', color: '#4285f4' },
-  { id: 'bookmarks', Icon: Bookmark, label: 'Bookmarks', color: '#33a852' },
-  { id: 'layerList', Icon: Layers, label: 'Layers', color: '#33a852' },
-  { id: 'basemapGallery', Icon: MapIcon, label: 'Basemaps', color: '#33a852' },
-  { id: 'filter', Icon: Filter, label: 'Filter', color: '#33a852' },
-  { id: 'print', Icon: FolderOutput, label: 'Export', color: '#33a852' },
-  { id: 'index', Icon: Combine, label: 'Create Index', color: '#4285f4' },
-  { id: 'table', Icon: TableIcon, label: 'Attribute Table', color: '#33a852' },
-  { id: 'projects', Icon: Folder, label: 'Study Areas', color: '#a83269' }
-] as const;
 
 const VISIBLE_WIDGETS = ['search', 'bookmarks', 'layerList', 'print', 'basemapGallery'];
 
@@ -91,15 +54,6 @@ interface MapLegendState {
   }>;
 }
 
-// Use AnalysisEngine instead of deleted managers
-import { useAnalysisEngine } from '@/lib/analysis';
-
-// Type aliases for backward compatibility
-interface FilterConfig {
-  field: string;
-  operator: string;
-  value: any;
-}
 
 export const MapApp: React.FC = memo(() => {
   const [mapView, setMapView] = useState<__esri.MapView | null>(null);

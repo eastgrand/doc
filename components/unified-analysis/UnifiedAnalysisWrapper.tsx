@@ -10,6 +10,7 @@ import {
   ProcessedAnalysisData,
   VisualizationResult 
 } from '@/lib/analysis/types';
+import { ClusterConfig } from '@/lib/clustering/types';
 
 export interface UnifiedAnalysisRequest {
   // Area selection from UnifiedAreaSelector
@@ -29,6 +30,9 @@ export interface UnifiedAnalysisRequest {
   // Common options
   exportFormat?: 'pdf' | 'csv' | 'json';
   includeChat?: boolean;
+  
+  // Clustering options
+  clusterConfig?: ClusterConfig;
 }
 
 export interface UnifiedAnalysisResponse {
@@ -137,17 +141,11 @@ export class UnifiedAnalysisWrapper {
     }
     
     const options: AnalysisOptions = {
-      query: request.query,
       endpoint: request.endpoint,
-      spatialFilter: request.geometry ? {
-        geometry: request.geometry,
-        spatialRelationship: 'intersects'
-      } : undefined,
-      includeVisualization: true,
-      includeInsights: true
+      clusterConfig: request.clusterConfig
     };
     
-    return await this.analysisEngine.analyze(options);
+    return await this.analysisEngine.executeAnalysis(request.query, options);
   }
   
   /**
@@ -166,19 +164,13 @@ export class UnifiedAnalysisWrapper {
       ? endpointMap[request.infographicType] 
       : 'strategic-analysis';
     
+    const query = `Generate ${request.infographicType || 'strategic'} analysis`;
     const options: AnalysisOptions = {
-      query: `Generate ${request.infographicType || 'strategic'} analysis`,
       endpoint,
-      spatialFilter: request.geometry ? {
-        geometry: request.geometry,
-        spatialRelationship: 'intersects'
-      } : undefined,
-      includeVisualization: true,
-      includeInsights: true,
       visualizationType: 'scorecard' // Focus on scorecard visualization for infographics
     };
     
-    return await this.analysisEngine.analyze(options);
+    return await this.analysisEngine.executeAnalysis(query, options);
   }
   
   /**
@@ -187,19 +179,12 @@ export class UnifiedAnalysisWrapper {
    */
   private async processComprehensiveAnalysis(request: UnifiedAnalysisRequest): Promise<AnalysisResult> {
     // Use multi-endpoint capabilities of AnalysisEngine
+    const query = 'Comprehensive area analysis';
     const options: AnalysisOptions = {
-      query: request.query || 'Comprehensive area analysis',
-      endpoint: 'multi', // Triggers multi-endpoint analysis
-      spatialFilter: request.geometry ? {
-        geometry: request.geometry,
-        spatialRelationship: 'intersects'
-      } : undefined,
-      includeVisualization: true,
-      includeInsights: true,
-      includeAllEndpoints: true
+      endpoint: 'multi' // Triggers multi-endpoint analysis
     };
     
-    return await this.analysisEngine.analyze(options);
+    return await this.analysisEngine.executeAnalysis(query, options);
   }
   
   /**
@@ -212,7 +197,7 @@ export class UnifiedAnalysisWrapper {
       formats.push('pdf', 'png');
     }
     
-    if (result.data?.features?.length > 0) {
+    if (result.data?.records?.length > 0) {
       formats.push('csv', 'geojson');
     }
     

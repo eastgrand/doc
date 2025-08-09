@@ -188,19 +188,20 @@ export default function UnifiedAreaSelector({
       // Set buffer center for point locations and add visual indicator
       setBufferCenter(geometry as __esri.Point);
       
-      // Add a graphic to show the point on the map
+      // Add a graphic to show the point on the map (matching existing implementation)
       if (view) {
         const pointGraphic = new Graphic({
           geometry,
           symbol: {
             type: "simple-marker",
-            color: "red",
+            color: [255, 0, 0],
             outline: {
-              color: "white",
+              color: [255, 255, 255],
               width: 2
             },
-            size: "12px"
-          }
+            size: 12
+          } as any,
+          attributes: { isPoint: true } // Add isPoint attribute for consistency
         });
         view.graphics.add(pointGraphic);
       }
