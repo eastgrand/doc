@@ -921,6 +921,20 @@ export default function UnifiedAnalysisWorkflow({
             >
               New Analysis
             </Button>
+            {enableChat && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  // Switch to chat mode while preserving the analysis results
+                  // This would need to be passed up to the parent component
+                  console.log('Switch to chat mode for follow-up questions');
+                }}
+              >
+                <MessageSquare className="h-4 w-4 mr-2" />
+                Ask Questions
+              </Button>
+            )}
           </div>
         </div>
 

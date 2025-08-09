@@ -305,7 +305,7 @@ const EnhancedGeospatialChat = memo(({
   const [chatInputOpen, setChatInputOpen] = useState(false);
   const [trendsInput, setTrendsInput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [showUnifiedWorkflow, setShowUnifiedWorkflow] = useState(false);
+  const [showUnifiedWorkflow, setShowUnifiedWorkflow] = useState(true);
   const [processingError, setProcessingError] = useState<string | null>(null);
   const [processingSteps, setProcessingSteps] = useState<GeoProcessingStep[]>([]);
   const [cancelRequested, setCancelRequested] = useState(false);
@@ -4091,9 +4091,9 @@ const EnhancedGeospatialChat = memo(({
       console.log('Creating visualization from unified workflow result');
     }
     
-    // Hide unified workflow and show chat mode for follow-up questions
-    setShowUnifiedWorkflow(false);
-    setInputMode('chat');
+    // Keep user in unified workflow after analysis completion
+    // setShowUnifiedWorkflow(false);  // Keep workflow visible
+    // setInputMode('chat');  // Stay in analysis mode
     
   }, [onFeaturesFound, initialMapView]);
 
@@ -4510,7 +4510,7 @@ const EnhancedGeospatialChat = memo(({
     </div>
 
     {/* Input Section - fixed height, doesn't shrink */}
-    <div className={`flex-shrink-0 overflow-y-auto ${inputMode === 'analysis' && showUnifiedWorkflow ? 'max-h-[85vh]' : 'max-h-[50vh]'}`}>
+    <div className="flex-1 overflow-y-auto min-h-0">
       <div className="px-4 py-2 bg-white border-t border-gray-200">
 
         {/* Chat Nudge Notification */}
@@ -4537,7 +4537,8 @@ const EnhancedGeospatialChat = memo(({
           </div>
         )}
 
-        {/* Mode Toggle */}
+        {/* Mode Toggle - Hidden in unified workflow */}
+        {false && (
         <div className="mb-3 space-y-2">
           {/* Mode Toggle */}
           <div className="flex gap-2 text-xs">
@@ -4575,8 +4576,9 @@ const EnhancedGeospatialChat = memo(({
           </div>
           
         </div>
+        )}
 
-        {inputMode === 'analysis' && !showUnifiedWorkflow && (
+        {false && inputMode === 'analysis' && !showUnifiedWorkflow && (
           <div className="flex flex-col gap-4">
             {/* Toggle to Unified Workflow */}
             <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
@@ -5086,19 +5088,9 @@ const EnhancedGeospatialChat = memo(({
             </div>
         )}
 
-        {/* Unified Analysis Workflow */}
+        {/* Unified Analysis Workflow - Now the default UI */}
         {inputMode === 'analysis' && showUnifiedWorkflow && (
-          <div className="h-[85vh] flex flex-col space-y-3">
-            <div className="flex items-center justify-between flex-shrink-0">
-              <h2 className="text-xs font-semibold">Guided Analysis Workflow</h2>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowUnifiedWorkflow(false)}
-              >
-                Back to Text Input
-              </Button>
-            </div>
+          <div className="flex-1 flex flex-col min-h-0">
             <div className="flex-1 min-h-0">
               {initialMapView && (
                 <UnifiedAnalysisWorkflow
