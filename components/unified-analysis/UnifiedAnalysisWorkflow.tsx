@@ -541,7 +541,7 @@ export default function UnifiedAnalysisWorkflow({
             isProjectArea 
               ? 'opacity-50 cursor-not-allowed bg-gray-100' 
               : workflowState.analysisType === 'comprehensive' 
-                ? 'border-purple-500 bg-purple-50 shadow-lg cursor-pointer' 
+                ? 'border-green-500 bg-green-50 shadow-lg cursor-pointer' 
                 : 'hover:shadow-lg cursor-pointer'
           }`}
           onClick={() => !workflowState.isProcessing && !isProjectArea && setWorkflowState(prev => ({ ...prev, analysisType: 'comprehensive' }))}
@@ -666,9 +666,9 @@ export default function UnifiedAnalysisWorkflow({
 
               {workflowState.analysisType === 'comprehensive' && (
                 <div className="space-y-4">
-                  <div className="bg-purple-50 p-4 rounded-lg">
-                    <p className="text-xs text-purple-800 font-medium mb-3">Complete Analysis Includes:</p>
-                    <div className="grid grid-cols-2 gap-3 text-xs text-purple-700">
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <p className="text-xs text-green-800 font-medium mb-3">Complete Analysis Includes:</p>
+                    <div className="grid grid-cols-2 gap-3 text-xs text-green-700">
                       <div>
                         <p className="font-medium">Demographics</p>
                         <p>Population, age, income distribution</p>
