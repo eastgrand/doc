@@ -431,9 +431,9 @@ export default function UnifiedAreaSelector({
 
           <TabsContent value="project" className="flex-1 flex flex-col space-y-4 mt-4">
             <div className="space-y-4">
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-xs font-medium text-blue-800 mb-2">Entire Project Area</h3>
-                <p className="text-xs text-blue-700 mb-3">
+              <div className="bg-green-50 p-4 rounded-lg">
+                <h3 className="text-xs font-medium text-green-800 mb-2">Entire Project Area</h3>
+                <p className="text-xs text-green-700 mb-3">
                   Analyze all data within the full project extent. This will include all available data points across the entire geographic region.
                 </p>
                 <Button
@@ -481,7 +481,7 @@ export default function UnifiedAreaSelector({
               className="w-full"
             />
             <p className="text-xs text-muted-foreground">
-              Search for a location to analyze. Cities and regions will create area boundaries. Point locations will enable buffer options.
+              Search for a location to analyze. All searches create point locations that can be used with buffer options.
             </p>
           </TabsContent>
 

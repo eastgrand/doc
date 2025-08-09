@@ -277,7 +277,7 @@ export default function UnifiedAnalysisWorkflow({
         if (view && bufferedGeometry) {
           // Define buffer color to match button icon colors
           const bufferColor = bufferType === 'radius' 
-            ? [59, 130, 246] // Blue for radius (matches text-blue-500)
+            ? [34, 197, 94] // Green for radius (matches brand green)
             : bufferType === 'drivetime' 
               ? [34, 197, 94] // Green for drive time (matches text-green-500)
               : [249, 115, 22]; // Orange for walk time (matches text-orange-500)
@@ -475,7 +475,7 @@ export default function UnifiedAnalysisWorkflow({
         <Card 
           className={`cursor-pointer transition-all h-28 ${
             workflowState.analysisType === 'query' 
-              ? 'border-blue-500 bg-blue-50 shadow-lg' 
+              ? 'border-green-500 bg-green-50 shadow-lg' 
               : 'hover:shadow-lg'
           }`}
           onClick={() => !workflowState.isProcessing && setWorkflowState(prev => ({ ...prev, analysisType: 'query' }))}
@@ -748,7 +748,7 @@ export default function UnifiedAnalysisWorkflow({
                   <Card 
                     className={`cursor-pointer transition-all p-3 ${
                       bufferType === 'radius' 
-                        ? 'border-blue-500 bg-blue-50 shadow-md' 
+                        ? 'border-green-500 bg-green-50 shadow-md' 
                         : 'hover:shadow-md'
                     }`}
                     onClick={() => {
@@ -757,7 +757,7 @@ export default function UnifiedAnalysisWorkflow({
                     }}
                   >
                     <div className="text-center">
-                      <Target className="h-5 w-5 mx-auto mb-1 text-blue-500" />
+                      <Target className="h-5 w-5 mx-auto mb-1 text-green-500" />
                       <p className="text-xs font-medium">Radius</p>
                       <p className="text-xs text-muted-foreground">Fixed distance</p>
                     </div>
