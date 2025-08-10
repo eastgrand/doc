@@ -48,14 +48,13 @@ interface MapWidgetsProps {
   onLayersCreated?: (layers: __esri.FeatureLayer[]) => void; // NEW: For CustomPopupManager integration
 }
 
-// Define US City Bookmarks Data (Alphabetical Order)
+// Define Florida City Bookmarks Data (Alphabetical Order)
 const CITY_BOOKMARKS_DATA = [
-  { name: "Albany", extent: { xmin: -74.1, ymin: 42.45, xmax: -73.4, ymax: 42.85 } },
-  { name: "Buffalo", extent: { xmin: -79.2, ymin: 42.65, xmax: -78.6, ymax: 43.1 } },
-  { name: "New York", extent: { xmin: -74.3, ymin: 40.55, xmax: -73.7, ymax: 40.9 } },
-  { name: "Philadelphia", extent: { xmin: -75.4, ymin: 39.8, xmax: -74.9, ymax: 40.1 } },
-  { name: "Pittsburgh", extent: { xmin: -80.2, ymin: 40.2, xmax: -79.6, ymax: 40.7 } },
-  { name: "Trenton", extent: { xmin: -75.0, ymin: 40.05, xmax: -74.5, ymax: 40.4 } }
+  { name: "Jacksonville", extent: { xmin: -81.9, ymin: 30.1, xmax: -81.4, ymax: 30.5 } },
+  { name: "Miami", extent: { xmin: -80.5, ymin: 25.6, xmax: -80.0, ymax: 26.0 } },
+  { name: "Orlando", extent: { xmin: -81.6, ymin: 28.3, xmax: -81.1, ymax: 28.7 } },
+  { name: "St. Petersburg", extent: { xmin: -82.9, ymin: 27.6, xmax: -82.5, ymax: 28.0 } },
+  { name: "Tampa", extent: { xmin: -82.7, ymin: 27.8, xmax: -82.3, ymax: 28.2 } }
 ];
 
 // +++ REMOVE LEGEND GENERATION LOGIC +++

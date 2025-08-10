@@ -222,8 +222,23 @@ export class AnalysisEngine {
       // Process the cached data using the correct method name
       
       // Use the new geo-awareness system for geographic filtering
-      const processedData = await this.dataProcessor.processResultsWithGeographicAnalysis(analysisData, selectedEndpoint, query);
+      // Pass spatial filter IDs to data processor
+      const processedData = await this.dataProcessor.processResultsWithGeographicAnalysis(
+        analysisData, 
+        selectedEndpoint, 
+        query,
+        options.spatialFilterIds  // NEW: Pass spatial filter IDs
+      );
       
+      // Log spatial filtering impact
+      if (options.spatialFilterIds) {
+        console.log('[AnalysisEngine] Spatial filtering applied:', {
+          requestedFeatures: options.spatialFilterIds.length,
+          resultFeatures: processedData.records?.length || 0,
+          filterRate: `${((processedData.records?.length || 0) / options.spatialFilterIds.length * 100).toFixed(1)}%`
+        });
+      }
+
       console.log(`[AnalysisEngine] Processed data returned:`, {
         type: processedData.type,
         recordCount: processedData.records?.length || 0,

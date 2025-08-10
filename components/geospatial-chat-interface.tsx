@@ -1584,9 +1584,11 @@ const EnhancedGeospatialChat = memo(({
           totalRecords: data.records.length,
           recordsWithGeometry: recordsWithGeometry.length,
           sampleRecord: data.records[0] ? {
+            keys: Object.keys(data.records[0]),
             hasGeometry: !!(data.records[0] as any).geometry,
             geometryType: (data.records[0] as any).geometry?.type,
             hasCoordinates: !!(data.records[0] as any).geometry?.coordinates,
+            rawRecord: data.records[0],
             coordinatesLength: (data.records[0] as any).geometry?.coordinates?.length
           } : 'No first record'
         });
@@ -4073,22 +4075,153 @@ const EnhancedGeospatialChat = memo(({
   };
 
   // Handle unified workflow completion
-  const handleUnifiedAnalysisComplete = useCallback((result: UnifiedAnalysisResponse) => {
+  const handleUnifiedAnalysisComplete = useCallback(async (result: UnifiedAnalysisResponse) => {
     console.log('[UnifiedWorkflow] Analysis complete:', result);
+    console.log('[UnifiedWorkflow] Analysis result data:', {
+      hasData: !!result?.analysisResult?.data,
+      recordCount: result?.analysisResult?.data?.records?.length || 0,
+      firstRecord: result?.analysisResult?.data?.records?.[0],
+      dataStructure: result?.analysisResult?.data
+    });
     
     // Convert unified result to existing format for compatibility
     const { analysisResult } = result;
     
-    // Update features
-    if (analysisResult.data && 'features' in analysisResult.data) {
-      onFeaturesFound((analysisResult.data as any).features);
+    // CRITICAL FIX: Perform geometry join process like original UI
+    if (analysisResult.data?.records && analysisResult.data.records.length > 0) {
+      console.log('[UnifiedWorkflow] Performing geometry join process...');
+      
+      try {
+        // Load the cached ZIP Code polygon boundaries (same as original UI)
+        console.log('[UnifiedWorkflow] Loading ZIP Code polygon boundaries for visualization');
+        const geographicFeatures = await loadGeographicFeatures();
+        
+        if (geographicFeatures.length === 0) {
+          throw new Error('loadGeographicFeatures returned empty array');
+        }
+        
+        console.log('[UnifiedWorkflow] ✅ ZIP Code boundaries loaded:', {
+          count: geographicFeatures.length,
+          sampleFeature: geographicFeatures[0] ? {
+            hasGeometry: !!geographicFeatures[0].geometry,
+            sampleId: geographicFeatures[0].properties?.ID
+          } : null
+        });
+        
+        // Join analysis data with ZIP Code polygon boundaries (same logic as original UI)
+        const joinedResults = analysisResult.data.records.map((record: any, index: number) => {
+          // Extract ZIP Code using same logic as original UI
+          const recordAreaId = record.area_id;
+          const recordPropertiesID = record.properties?.ID;
+          const recordPropertiesId = record.properties?.id;
+          const recordDirectID = record.ID;
+          const recordDirectId = record.id;
+          
+          // Priority: properties.ID > area_id (unless area_id is numeric) > direct ID fields
+          let primaryId = recordPropertiesID || recordPropertiesId || recordDirectID || recordDirectId;
+          
+          // If area_id is numeric (not area_XXXX pattern), prefer it over fallback fields
+          if (recordAreaId && !String(recordAreaId).startsWith('area_')) {
+            primaryId = recordAreaId;
+          }
+          
+          const rawZip = String(primaryId || recordAreaId || `area_${index}`);
+          const recordZip = rawZip.padStart(5, '0'); // Pad to 5 digits with leading zeros
+          
+          // Find matching ZIP Code boundary by ZIP code (same logic as original UI)
+          const zipFeature = geographicFeatures.find(f => 
+            f?.properties && (
+              String(f.properties.ID).padStart(5, '0') === recordZip ||
+              String(f.properties.ZIP).padStart(5, '0') === recordZip ||
+              String(f.properties.ZIPCODE).padStart(5, '0') === recordZip ||
+              f.properties.DESCRIPTION?.match(/^(\d{5})/)?.[1] === recordZip ||
+              String(f.properties.OBJECTID).padStart(5, '0') === recordZip
+            )
+          );
+          
+          // Create record with actual ZIP Code polygon geometry
+          if (zipFeature) {
+            const zipDescription = zipFeature.properties?.DESCRIPTION || '';
+            const zipMatch = zipDescription.match(/^(\d{5})\s*\(([^)]+)\)/);
+            const zipCode = zipMatch?.[1] || recordZip;
+            const cityName = zipMatch?.[2] || 'Unknown City';
+            
+            return {
+              ...record,
+              geometry: zipFeature.geometry,
+              area_name: `${zipCode} (${cityName})`,
+              properties: {
+                ...record.properties,
+                ID: zipCode,
+                ZIP: zipCode,
+                city: cityName,
+                DESCRIPTION: zipDescription,
+              }
+            };
+          } else {
+            // No geometry match found
+            console.warn(`[UnifiedWorkflow] No geometry found for ZIP: ${recordZip}`);
+            return {
+              ...record,
+              geometry: null
+            };
+          }
+        });
+        
+        // Update analysis result with joined data (same as original UI)
+        analysisResult.data = {
+          ...analysisResult.data,
+          records: joinedResults
+        };
+        
+        console.log('[UnifiedWorkflow] ✅ Geometry join complete:', {
+          totalRecords: joinedResults.length,
+          recordsWithGeometry: joinedResults.filter(r => r.geometry).length
+        });
+        
+      } catch (error) {
+        console.error('[UnifiedWorkflow] ❌ Geometry join failed:', error);
+        // Continue without geometry data if join fails
+      }
     }
     
-    // Update visualization
-    if (analysisResult.visualization && initialMapView) {
-      // Create visualization layer using existing logic
-      // This would need to be adapted based on your existing visualization creation
-      console.log('Creating visualization from unified workflow result');
+    // Update features for chat context (after geometry join)
+    if (analysisResult.data?.records) {
+      const features = analysisResult.data.records.map((record, index) => ({
+        ...record,
+        id: record.area_id || `feature_${index}`,
+        geometry: record.geometry || null
+      }));
+      
+      onFeaturesFound(features);
+      console.log(`[UnifiedWorkflow] Updated features: ${features.length} records`);
+    }
+    
+    // Apply visualization to map using existing logic (now with geometry data)
+    if (analysisResult.visualization && analysisResult.data && initialMapView) {
+      try {
+        console.log('[UnifiedWorkflow] Applying visualization to map...');
+        
+        // Use the existing applyAnalysisEngineVisualization function
+        const visualizationLayer = await applyAnalysisEngineVisualization(
+          analysisResult.visualization,
+          analysisResult.data,
+          initialMapView
+        );
+        
+        if (visualizationLayer) {
+          console.log('[UnifiedWorkflow] ✅ Visualization applied successfully');
+          
+          // Zoom to features if requested
+          if (analysisResult.data.shouldZoom && analysisResult.data.extent) {
+            initialMapView.goTo(analysisResult.data.extent);
+          }
+        } else {
+          console.warn('[UnifiedWorkflow] ⚠️ Visualization layer not created');
+        }
+      } catch (error) {
+        console.error('[UnifiedWorkflow] ❌ Failed to apply visualization:', error);
+      }
     }
     
     // Keep user in unified workflow after analysis completion
@@ -5092,8 +5225,8 @@ const EnhancedGeospatialChat = memo(({
 
         {/* Unified Analysis Workflow - Now the default UI */}
         {inputMode === 'analysis' && showUnifiedWorkflow && (
-          <div className="flex-1 flex flex-col min-h-0">
-            <div className="flex-1 min-h-0">
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <div className="h-full overflow-hidden">
               {initialMapView && (
                 <UnifiedAnalysisWorkflow
                   view={initialMapView}

@@ -17,6 +17,10 @@ export interface UnifiedAnalysisRequest {
   geometry?: __esri.Geometry;
   geometryMethod?: 'draw' | 'search' | 'service-area' | 'project-area';
   
+  // NEW: Spatial filtering context
+  view?: __esri.MapView;           // Need view for spatial queries
+  dataSourceLayerId?: string;      // Layer ID for spatial queries
+  
   // Analysis type selection
   analysisType: 'query' | 'infographic' | 'comprehensive';
   
@@ -135,14 +139,96 @@ export class UnifiedAnalysisWrapper {
    * Process query-based analysis
    * Uses existing AnalysisEngine.analyze method
    */
+  /**
+   * Helper method to get spatial filter IDs from geometry selection
+   */
+  private async getSpatialFilterIds(request: UnifiedAnalysisRequest): Promise<string[] | undefined> {
+    if (!request.geometry || !request.view || !request.dataSourceLayerId) {
+      console.log('[UnifiedAnalysisWrapper] Spatial filter skipped - missing required parameters:', {
+        hasGeometry: !!request.geometry,
+        hasView: !!request.view,
+        hasDataSourceLayerId: !!request.dataSourceLayerId
+      });
+      return undefined;
+    }
+
+    try {
+      console.log('[UnifiedAnalysisWrapper] Applying spatial filter with geometry:', {
+        geometryType: request.geometry.type,
+        geometryMethod: request.geometryMethod,
+        layerId: request.dataSourceLayerId
+      });
+      
+      // Import SpatialFilterService
+      const { SpatialFilterService } = await import('@/lib/spatial/SpatialFilterService');
+      
+      // Determine spatial relationship based on geometry method
+      // All buffer types (radius, drive-time, walk-time) should use 'intersects'
+      // Only drawn polygons should use 'contains'
+      const spatialRelationship = (request.geometry.type === 'point' || 
+                                   request.geometryMethod === 'service-area')
+        ? 'intersects'  // Points and all buffer types use intersects
+        : 'contains';   // Only drawn polygons use contains (stricter)
+      
+      const spatialFilterIds = await SpatialFilterService.queryFeaturesByGeometry(
+        request.view,
+        request.geometry,
+        request.dataSourceLayerId,
+        { spatialRelationship }
+      );
+      
+      console.log(`[UnifiedAnalysisWrapper] Spatial filter found ${spatialFilterIds.length} features`);
+      
+      // If no features found in selection, diagnose the issue
+      if (spatialFilterIds.length === 0) {
+        console.warn('[UnifiedAnalysisWrapper] No features found in selected area - diagnosing...');
+        
+        // Log geometry details for debugging
+        console.log('[UnifiedAnalysisWrapper] Buffer geometry details:', {
+          type: request.geometry.type,
+          extent: request.geometry.extent ? {
+            xmin: request.geometry.extent.xmin,
+            ymin: request.geometry.extent.ymin,
+            xmax: request.geometry.extent.xmax,
+            ymax: request.geometry.extent.ymax
+          } : null,
+          spatialReference: {
+            wkid: request.geometry.spatialReference?.wkid
+          },
+          center: request.geometry.extent?.center ? {
+            x: request.geometry.extent.center.x,
+            y: request.geometry.extent.center.y
+          } : null
+        });
+        
+        // For service areas, this might be expected if buffer is outside data coverage
+        // But we should still try to continue with some spatial awareness
+        console.warn('[UnifiedAnalysisWrapper] Continuing without spatial filter - buffer may be outside data coverage');
+        return undefined;
+      }
+
+      return spatialFilterIds;
+    } catch (error) {
+      console.error('[UnifiedAnalysisWrapper] Spatial filter failed:', error);
+      // Continue without spatial filter on error
+      return undefined;
+    }
+  }
+
   private async processQueryAnalysis(request: UnifiedAnalysisRequest): Promise<AnalysisResult> {
     if (!request.query) {
       throw new Error('Query is required for query analysis');
     }
     
+    // Get spatial filter IDs if geometry is provided
+    const spatialFilterIds = await this.getSpatialFilterIds(request);
+    
     const options: AnalysisOptions = {
-      endpoint: request.endpoint,
-      clusterConfig: request.clusterConfig
+      // Remove explicit endpoint to allow intelligent classification like original UI
+      clusterConfig: request.clusterConfig,
+      spatialFilterIds,                          // Pass feature IDs
+      spatialFilterGeometry: request.geometry,   // Pass geometry for reference
+      spatialFilterMethod: request.geometryMethod // Track how it was selected
     };
     
     return await this.analysisEngine.executeAnalysis(request.query, options);
@@ -153,21 +239,16 @@ export class UnifiedAnalysisWrapper {
    * Focuses on score-based visualizations
    */
   private async processInfographicAnalysis(request: UnifiedAnalysisRequest): Promise<AnalysisResult> {
-    // Determine endpoint based on infographic type
-    const endpointMap = {
-      'strategic': 'strategic-analysis',
-      'competitive': 'competitive-analysis',
-      'demographic': 'demographic-insights'
-    };
-    
-    const endpoint = request.infographicType 
-      ? endpointMap[request.infographicType] 
-      : 'strategic-analysis';
+    // Get spatial filter IDs if geometry is provided
+    const spatialFilterIds = await this.getSpatialFilterIds(request);
     
     const query = `Generate ${request.infographicType || 'strategic'} analysis`;
     const options: AnalysisOptions = {
-      endpoint,
-      visualizationType: 'scorecard' // Focus on scorecard visualization for infographics
+      // Remove explicit endpoint to allow intelligent classification like original UI
+      visualizationType: 'scorecard', // Focus on scorecard visualization for infographics
+      spatialFilterIds,                          // Pass feature IDs
+      spatialFilterGeometry: request.geometry,   // Pass geometry for reference
+      spatialFilterMethod: request.geometryMethod // Track how it was selected
     };
     
     return await this.analysisEngine.executeAnalysis(query, options);
@@ -178,10 +259,16 @@ export class UnifiedAnalysisWrapper {
    * Runs multiple endpoints and combines results
    */
   private async processComprehensiveAnalysis(request: UnifiedAnalysisRequest): Promise<AnalysisResult> {
+    // Get spatial filter IDs if geometry is provided
+    const spatialFilterIds = await this.getSpatialFilterIds(request);
+    
     // Use multi-endpoint capabilities of AnalysisEngine
     const query = 'Comprehensive area analysis';
     const options: AnalysisOptions = {
-      endpoint: 'multi' // Triggers multi-endpoint analysis
+      // Remove explicit endpoint to allow intelligent classification like original UI
+      spatialFilterIds,                          // Pass feature IDs
+      spatialFilterGeometry: request.geometry,   // Pass geometry for reference
+      spatialFilterMethod: request.geometryMethod // Track how it was selected
     };
     
     return await this.analysisEngine.executeAnalysis(query, options);

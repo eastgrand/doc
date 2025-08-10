@@ -358,7 +358,7 @@ const MapClient = memo(({
           container: mapRef.current,
           map: map,
           zoom: 10,
-          center: [-80.0128, 40.4468],
+          center: [-81.6557, 30.3322], // Jacksonville, FL coordinates
           constraints: {
             rotationEnabled: false,
             minZoom: 1,
@@ -371,13 +371,15 @@ const MapClient = memo(({
 
         console.log('[MapClient] MapView created, waiting for it to be ready...');
 
-        // Set highlight options
-        view.highlightOptions = {
-          color: new Color([51, 168, 82, 0.3]),
-          fillOpacity: 0.3,
-          haloColor: new Color([51, 168, 82, 1]),
-          haloOpacity: 1
-        };
+        // Set highlight options (using newer API)
+        view.when(() => {
+          view.highlightOptions = {
+            color: new Color([51, 168, 82, 0.3]),
+            fillOpacity: 0.3,
+            haloColor: new Color([51, 168, 82, 1]),
+            haloOpacity: 1
+          };
+        });
 
         // Wait for view to be ready
         await view.when();

@@ -1729,6 +1729,9 @@ export const layers: { [key: string]: LayerConfig } = layerConfigs.reduce((acc, 
 // Export layer count for monitoring
 export const layerCount = layerConfigs.length;
 
+// Spatial filtering configuration
+export const SPATIAL_REFERENCE_LAYER_ID = 'Unknown_Service_layer_0';
+
 // Export generation metadata
 export const generationMetadata = {
   generatedAt: '2025-08-07T21:26:56.439808',

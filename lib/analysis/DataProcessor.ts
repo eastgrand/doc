@@ -45,10 +45,75 @@ export class DataProcessor {
   /**
    * Process raw results with geographic analysis support
    */
-  async processResultsWithGeographicAnalysis(rawResults: RawAnalysisResult, endpoint: string, query: string = ''): Promise<ProcessedAnalysisData & { geoAnalysis?: any }> {
+  async processResultsWithGeographicAnalysis(
+    rawResults: RawAnalysisResult, 
+    endpoint: string, 
+    query: string = '',
+    spatialFilterIds?: string[]  // NEW parameter
+  ): Promise<ProcessedAnalysisData & { geoAnalysis?: any }> {
     let filteredRawResults = rawResults;
+    let spatialFilterApplied = false;
     let geoResult: any = null;
     
+    // Apply spatial filtering FIRST if feature IDs provided
+    if (spatialFilterIds) {
+      // If spatialFilterIds is an empty array, it means spatial filtering was attempted but found no features
+      if (spatialFilterIds.length === 0) {
+        console.log('[DataProcessor] Spatial filtering found no features - returning empty result');
+        const emptyRawResult = { success: true, results: [] };
+        const emptyProcessedData = this.processResults(emptyRawResult, endpoint);
+        return {
+          ...emptyProcessedData,
+          metadata: {
+            ...emptyProcessedData.metadata,
+            spatialFilterApplied: true,
+            spatialFilterCount: 0,
+            noFeaturesInSelection: true
+          }
+        };
+      }
+      
+      // Apply spatial filtering with the provided feature IDs
+      console.log(`[DataProcessor] Applying spatial filter: ${spatialFilterIds.length} allowed features`);
+      
+      // Import IDFieldMapper
+      const { IDFieldMapper } = await import('@/lib/spatial/IDFieldMapper');
+      
+      const idSet = new Set(spatialFilterIds.map(id => String(id)));
+      const originalCount = rawResults.results?.length || 0;
+      
+      // Use IDFieldMapper for flexible ID extraction
+      filteredRawResults = {
+        ...rawResults,
+        results: rawResults.results?.filter(record => {
+          const recordId = IDFieldMapper.extractId(record);
+          if (!recordId) {
+            console.warn('[DataProcessor] Record has no identifiable ID:', record);
+            return false;
+          }
+          return idSet.has(recordId);
+        }) || []
+      };
+      
+      const filteredCount = filteredRawResults.results?.length || 0;
+      spatialFilterApplied = true;
+      
+      console.log(`[DataProcessor] Spatial filter applied:`, {
+        originalRecords: originalCount,
+        filteredRecords: filteredCount,
+        retainedPercentage: originalCount > 0 ? `${(filteredCount / originalCount * 100).toFixed(1)}%` : '0%',
+        matchedIds: filteredCount
+      });
+      
+      // Warn if very few matches
+      if (filteredCount === 0) {
+        console.error('[DataProcessor] No records matched spatial filter!');
+      } else if (filteredCount < spatialFilterIds.length * 0.5) {
+        console.warn(`[DataProcessor] Low match rate: ${filteredCount}/${spatialFilterIds.length} IDs matched`);
+      }
+    }
+    
+    // Continue with existing geographic analysis on filtered data
     // For comparative analysis with geographic queries, filter BEFORE processing
     if (endpoint === '/comparative-analysis' && this.isGeographicComparativeQuery(query, endpoint)) {
       try {
@@ -161,6 +226,15 @@ export class DataProcessor {
           };
         }
       }
+    }
+    
+    // Add spatial filter metadata to result
+    if (spatialFilterApplied) {
+      processedData.metadata = {
+        ...processedData.metadata,
+        spatialFilterApplied: true,
+        spatialFilterCount: spatialFilterIds?.length || 0
+      };
     }
     
     return processedData;

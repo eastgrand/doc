@@ -1,0 +1,160 @@
+import React, { useMemo } from 'react';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { BarChart, Download, TrendingUp, Info } from 'lucide-react';
+import { ProcessedAnalysisData } from '@/lib/analysis/types';
+
+interface UnifiedInsightsChartProps {
+  data: ProcessedAnalysisData;
+  onExportChart: () => void;
+}
+
+export default function UnifiedInsightsChart({ data, onExportChart }: UnifiedInsightsChartProps) {
+  const featureImportanceData = useMemo(() => {
+    if (!data?.featureImportance || data.featureImportance.length === 0) {
+      return null;
+    }
+
+    // Sort by importance and take top 10
+    return data.featureImportance
+      .sort((a, b) => b.importance - a.importance)
+      .slice(0, 10)
+      .map(item => ({
+        ...item,
+        normalizedImportance: item.importance * 100 // Convert to percentage for display
+      }));
+  }, [data?.featureImportance]);
+
+  const maxImportance = useMemo(() => {
+    if (!featureImportanceData) return 0;
+    return Math.max(...featureImportanceData.map(item => item.normalizedImportance));
+  }, [featureImportanceData]);
+
+  if (!data) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full text-gray-500">
+        <BarChart className="w-12 h-12 mb-4" />
+        <p className="text-sm">No analysis data available</p>
+      </div>
+    );
+  }
+
+  if (!featureImportanceData) {
+    return (
+      <div className="flex flex-col h-full p-4">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h3 className="text-sm font-semibold">Feature Importance</h3>
+            <p className="text-xs text-gray-600">Analysis insights and variable importance</p>
+          </div>
+        </div>
+        
+        <Alert className="mb-4">
+          <Info className="h-4 w-4" />
+          <AlertDescription className="text-xs">
+            Feature importance analysis is not available for this analysis type.
+          </AlertDescription>
+        </Alert>
+
+        {/* Show analysis summary instead */}
+        {data.summary && (
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold">Analysis Summary</h4>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-xs text-gray-700">{data.summary}</p>
+            </div>
+            
+            {data.statistics && (
+              <div className="space-y-2">
+                <h4 className="text-sm font-semibold">Key Statistics</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-blue-50 p-3 rounded">
+                    <div className="text-xs text-blue-600 font-semibold">Mean Value</div>
+                    <div className="text-sm font-mono">{data.statistics.mean?.toFixed(2)}</div>
+                  </div>
+                  <div className="bg-green-50 p-3 rounded">
+                    <div className="text-xs text-green-600 font-semibold">Total Records</div>
+                    <div className="text-sm font-mono">{data.statistics.total}</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <div className="flex justify-between items-center p-4 border-b">
+        <div>
+          <h3 className="text-sm font-semibold">Feature Importance</h3>
+          <p className="text-xs text-gray-600">
+            Top {featureImportanceData.length} most important variables
+          </p>
+        </div>
+        <Button onClick={onExportChart} size="sm" variant="outline">
+          <Download className="w-4 h-4 mr-2" />
+          Export Chart
+        </Button>
+      </div>
+
+      {/* Chart content */}
+      <div className="flex-1 p-4">
+        <div className="space-y-3">
+          {featureImportanceData.map((item, index) => (
+            <div key={index} className="space-y-1">
+              {/* Feature name and value */}
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-medium text-gray-700">
+                  {item.description || item.feature}
+                </span>
+                <span className="text-xs font-mono text-gray-600">
+                  {item.normalizedImportance.toFixed(1)}%
+                </span>
+              </div>
+              
+              {/* Progress bar */}
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-500"
+                  style={{
+                    width: `${(item.normalizedImportance / maxImportance) * 100}%`
+                  }}
+                />
+              </div>
+              
+              {/* Rank indicator */}
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-500">#{index + 1}</span>
+                {index === 0 && <TrendingUp className="w-3 h-3 text-green-500" />}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Summary info */}
+        <div className="mt-6 p-3 bg-gray-50 rounded-lg">
+          <h4 className="text-xs font-semibold mb-2">Interpretation</h4>
+          <p className="text-xs text-gray-600">
+            Feature importance shows which variables have the strongest influence on predicting{' '}
+            <strong>{data.targetVariable}</strong>. Higher values indicate greater predictive power.
+          </p>
+        </div>
+
+        {/* Analysis summary if available */}
+        {data.summary && (
+          <div className="mt-4">
+            <Alert>
+              <AlertDescription className="text-xs">
+                {data.summary}
+              </AlertDescription>
+            </Alert>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

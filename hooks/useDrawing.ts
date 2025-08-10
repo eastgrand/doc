@@ -369,7 +369,6 @@ export function useDrawing({
   // Point creation handler
   const handlePointCreation = useCallback((mapPoint: __esri.Point) => {
     const graphics = getGraphicsLayer();
-    console.log('Point Creation - Graphics collection:', !!graphics);
     
     if (!graphics) {
         console.warn('Graphics collection is null in handlePointCreation');
@@ -381,13 +380,11 @@ export function useDrawing({
         symbol: POINT_SYMBOL
     });
 
-    // Add graphic directly to view.graphics
     graphics.add(pointGraphic);
-    console.log('Point graphic added to view.graphics');
 
     setTargetGeometry(mapPoint);
     callbacksRef.current.onGeometryCreated?.(mapPoint);
-}, [getGraphicsLayer]);
+}, [getGraphicsLayer, view]);
 
 const handleFeatureSelection = useCallback(async (mapPoint: __esri.Point, event?: __esri.ViewClickEvent) => {
   if (!view) return;
@@ -545,6 +542,10 @@ const handleFeatureSelection = useCallback(async (mapPoint: __esri.Point, event?
       
       clickHandlerRef.current = view.on("click", (event: __esri.ViewClickEvent) => {
         event.stopPropagation();
+        
+        console.log('[Click Event] Point selected at coordinates:', 
+          `X: ${event.mapPoint.x}, Y: ${event.mapPoint.y}, WKID: ${event.mapPoint.spatialReference?.wkid}`);
+        
         handlePointCreation(event.mapPoint);
       });
     } else if (mode === 'polygon') {

@@ -17,6 +17,11 @@ export interface AnalysisOptions {
   // Clustering options
   clusterConfig?: ClusterConfig;
   
+  // Spatial filtering options (NEW)
+  spatialFilterIds?: string[];      // Feature IDs to include
+  spatialFilterGeometry?: any;      // Original geometry for reference
+  spatialFilterMethod?: string;     // How geometry was selected
+  
   // Multi-endpoint options
   endpoints?: string[];
   combinationStrategy?: 'overlay' | 'comparison' | 'sequential' | 'correlation';
@@ -120,6 +125,13 @@ export interface ProcessedAnalysisData {
   // Clustering-related fields
   isClustered?: boolean; // Whether this data has been processed by clustering
   clusters?: any[]; // Array of cluster information when available
+  
+  // Spatial filtering metadata
+  metadata?: {
+    spatialFilterApplied?: boolean;
+    spatialFilterCount?: number;
+    [key: string]: any;
+  };
 }
 
 export interface GeographicDataPoint {

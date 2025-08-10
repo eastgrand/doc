@@ -15,8 +15,11 @@ import {
   MapPin,
   FileText,
   BarChart3,
+  BarChart,
   Download,
   MessageSquare,
+  MessageCircle,
+  Table,
   Loader2,
   CheckCircle,
   AlertCircle,
@@ -30,6 +33,9 @@ import {
 // Import unified components
 import UnifiedAreaSelector, { AreaSelection } from './UnifiedAreaSelector';
 import { UnifiedAnalysisWrapper, UnifiedAnalysisRequest, UnifiedAnalysisResponse } from './UnifiedAnalysisWrapper';
+import UnifiedAnalysisChat from './UnifiedAnalysisChat';
+import UnifiedDataTable from './UnifiedDataTable';
+import UnifiedInsightsChart from './UnifiedInsightsChart';
 
 // Import existing components for analysis
 import { QueryInterface } from '@/components/QueryInterface';
@@ -124,7 +130,15 @@ export default function UnifiedAnalysisWorkflow({
 
   // Handle area selection
   const handleAreaSelected = useCallback((area: AreaSelection) => {
-    console.log('[UnifiedWorkflow] Area selected:', area);
+    if (area.geometry.type === 'point') {
+      const point = area.geometry as __esri.Point;
+      console.log('[UnifiedWorkflow] Point selected at coordinates:', 
+        `X: ${point.x}, Y: ${point.y}, WKID: ${point.spatialReference?.wkid}`);
+      console.log('[UnifiedWorkflow] Point extent:', point.extent ? 
+        `xmin: ${point.extent.xmin}, ymin: ${point.extent.ymin}, xmax: ${point.extent.xmax}, ymax: ${point.extent.ymax}` : 'null');
+    } else {
+      console.log('[UnifiedWorkflow] Non-point geometry selected:', area.geometry.type);
+    }
     const isPoint = area.geometry.type === 'point';
     const isProjectArea = area.method === 'project-area';
     
@@ -158,19 +172,47 @@ export default function UnifiedAnalysisWorkflow({
     }));
 
     try {
-      // Prepare analysis request
+      // Dynamically get the reference layer ID
+      const { SpatialFilterConfig } = await import('@/lib/spatial/SpatialFilterConfig');
+      const dataSourceLayerId = SpatialFilterConfig.getReferenceLayerId();
+      
+      // Log the configuration for debugging
+      console.log('[UnifiedWorkflow] Using spatial reference layer:', {
+        layerId: dataSourceLayerId,
+        geometryType: workflowState.areaSelection.geometry?.type,
+        method: workflowState.areaSelection.method
+      });
+      
+      // Skip spatial filtering for project-wide analysis
+      const shouldApplySpatialFilter = workflowState.areaSelection.method !== 'project-area';
+      
+      console.log('[UnifiedAnalysisWorkflow] Analysis request preparation:', {
+        shouldApplySpatialFilter,
+        areaSelectionMethod: workflowState.areaSelection.method,
+        hasGeometry: !!workflowState.areaSelection.geometry,
+        geometryType: workflowState.areaSelection.geometry?.type
+      });
+      
+      // Prepare analysis request with view and layer ID
       const request: UnifiedAnalysisRequest = {
-        geometry: workflowState.areaSelection.geometry,
+        geometry: shouldApplySpatialFilter ? workflowState.areaSelection.geometry : undefined,
         geometryMethod: workflowState.areaSelection.method,
         analysisType: type,
         query: type === 'query' ? selectedQuery : undefined,
         endpoint: type === 'query' ? selectedEndpoint : undefined,
         infographicType: type === 'infographic' ? selectedInfographicType : undefined,
         includeChat: enableChat,
-        clusterConfig: type === 'query' && clusterConfig.enabled ? clusterConfig : undefined
+        clusterConfig: type === 'query' && clusterConfig.enabled ? clusterConfig : undefined,
+        view: view,                          // NEW: Pass the map view
+        dataSourceLayerId: dataSourceLayerId // NEW: Pass the layer ID
       };
 
-      console.log('[UnifiedWorkflow] Starting analysis:', request);
+      console.log('[UnifiedWorkflow] Starting analysis with spatial context:', {
+        hasGeometry: !!request.geometry,
+        geometryType: request.geometry?.type,
+        hasView: !!request.view,
+        layerId: request.dataSourceLayerId
+      });
 
       // Execute analysis
       const result = await analysisWrapper.processUnifiedRequest(request);
@@ -210,23 +252,55 @@ export default function UnifiedAnalysisWorkflow({
     }
   }, [workflowState.analysisResult, analysisWrapper, onExport]);
 
+  // Handle chart export
+  const handleExportChart = useCallback(async () => {
+    if (!workflowState.analysisResult?.analysisResult?.data?.featureImportance) {
+      console.warn('[UnifiedWorkflow] No feature importance data to export');
+      return;
+    }
+
+    try {
+      // Export the feature importance chart as PNG or PDF
+      await handleExport('chart');
+    } catch (error) {
+      console.error('[UnifiedWorkflow] Chart export error:', error);
+    }
+  }, [workflowState.analysisResult, handleExport]);
+
   // Apply buffer to geometry
   const createBufferedGeometry = useCallback(async (geometry: __esri.Geometry, distance: number, unit: string) => {
     try {
+      console.log('[Buffer Creation] Starting buffer creation for geometry type:', geometry.type);
+      
       let bufferedGeometry: __esri.Geometry | null = null;
       
       if (bufferType === 'radius') {
         if (geometry.type === 'point') {
+          const originalPoint = geometry as __esri.Point;
+          console.log('[Buffer Creation] Original point coordinates:', 
+            `X: ${originalPoint.x}, Y: ${originalPoint.y}, WKID: ${originalPoint.spatialReference?.wkid}`);
+          
           // For points, create a circle
           const distanceInMeters = unit === 'miles' ? distance * 1609.34 : distance * 1000;
+          console.log('[Buffer Creation] Distance conversion:', `${distance} ${unit} = ${distanceInMeters} meters`);
           
           // Project the point to the map's spatial reference if needed for proper circle rendering
-          let centerPoint = geometry as __esri.Point;
+          let centerPoint = originalPoint;
+          console.log('[Buffer Creation] View spatial reference WKID:', view.spatialReference.wkid);
+          
           if (centerPoint.spatialReference.wkid !== view.spatialReference.wkid) {
+            console.log('[Buffer Creation] Point projection needed from', centerPoint.spatialReference.wkid, 'to', view.spatialReference.wkid);
             const projection = await import('@arcgis/core/geometry/projection');
             await projection.load();
             centerPoint = projection.project(centerPoint, view.spatialReference) as __esri.Point;
+            console.log('[Buffer Creation] Point after projection:', 
+              `X: ${centerPoint.x}, Y: ${centerPoint.y}, WKID: ${centerPoint.spatialReference?.wkid}`);
+          } else {
+            console.log('[Buffer Creation] No projection needed - coordinates match');
           }
+          
+          console.log('[Buffer Creation] Creating Circle with center:', 
+            `X: ${centerPoint.x}, Y: ${centerPoint.y}, radius: ${distanceInMeters}m`);
           
           bufferedGeometry = new Circle({
             center: centerPoint,
@@ -234,6 +308,9 @@ export default function UnifiedAnalysisWorkflow({
             radiusUnit: "meters",
             spatialReference: view.spatialReference
           });
+          
+          console.log('[Buffer Creation] Circle created with extent:', bufferedGeometry.extent ? 
+            `xmin: ${bufferedGeometry.extent.xmin}, ymin: ${bufferedGeometry.extent.ymin}, xmax: ${bufferedGeometry.extent.xmax}, ymax: ${bufferedGeometry.extent.ymax}` : 'null');
         } else {
           // For polygons and other geometries, use geometryEngine.buffer with proper types
           const bufferResult = geometryEngine.buffer(
@@ -269,6 +346,12 @@ export default function UnifiedAnalysisWorkflow({
   const handleBufferComplete = useCallback(async (applyBuffer: boolean = false) => {
     console.log('[UnifiedWorkflow] Buffer complete, apply:', applyBuffer);
     
+    if (applyBuffer && workflowState.areaSelection && workflowState.areaSelection.geometry.type === 'point') {
+      const point = workflowState.areaSelection.geometry as __esri.Point;
+      console.log('[UnifiedWorkflow] Original point before buffering:', 
+        `X: ${point.x}, Y: ${point.y}, WKID: ${point.spatialReference?.wkid}`);
+    }
+    
     if (applyBuffer && workflowState.areaSelection) {
       try {
         const distance = parseFloat(bufferDistance);
@@ -281,6 +364,15 @@ export default function UnifiedAnalysisWorkflow({
           distance,
           bufferUnit
         );
+        
+        console.log('[UnifiedWorkflow] Buffer created - Distance:', distance, bufferUnit, 'Type:', bufferType);
+        if (bufferedGeometry.extent) {
+          console.log('[UnifiedWorkflow] Buffer extent:', 
+            `xmin: ${bufferedGeometry.extent.xmin}, ymin: ${bufferedGeometry.extent.ymin}, xmax: ${bufferedGeometry.extent.xmax}, ymax: ${bufferedGeometry.extent.ymax}`);
+          console.log('[UnifiedWorkflow] Buffer center coordinates:', 
+            `X: ${bufferedGeometry.extent.center.x}, Y: ${bufferedGeometry.extent.center.y}`);
+        }
+        console.log('[UnifiedWorkflow] Buffer spatial reference:', bufferedGeometry.spatialReference?.wkid);
         
         // Add buffered geometry as a graphic to the map (matching button colors)
         if (view && bufferedGeometry) {
@@ -878,100 +970,79 @@ export default function UnifiedAnalysisWorkflow({
     const { analysisResult, metadata } = workflowState.analysisResult;
 
     return (
-      <div className="space-y-4">
-        {/* Results header with export options */}
-        <div className="flex justify-between items-center">
-          <div>
-            <h3 className="text-xs font-semibold">Analysis Results</h3>
-            <p className="text-xs text-muted-foreground">
-              {metadata.analysisType} • {new Date(metadata.timestamp).toLocaleString()} • 
-              {(metadata.processingTime / 1000).toFixed(1)}s
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => handleExport('pdf')}
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Export PDF
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => handleExport('csv')}
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Export Data
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={resetWorkflow}
-            >
-              New Analysis
-            </Button>
-            {enableChat && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => {
-                  // Switch to chat mode while preserving the analysis results
-                  // This would need to be passed up to the parent component
-                  console.log('Switch to chat mode for follow-up questions');
-                }}
-              >
-                <MessageSquare className="h-4 w-4 mr-2" />
-                Ask Questions
-              </Button>
-            )}
-          </div>
+      <div className="flex flex-col h-full max-h-full overflow-hidden">
+
+        {/* Results content with Analysis/Chat, Data Table, and Insights */}
+        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+          <Tabs value="analysis" onValueChange={() => {}} className="flex-1 flex flex-col min-h-0 overflow-hidden">
+            <TabsList className="grid w-full grid-cols-3 flex-shrink-0 bg-white">
+              <TabsTrigger value="analysis" className="flex items-center gap-2">
+                <MessageCircle className="h-3 w-3" />
+                Analysis
+                <Download className="h-3 w-3 opacity-70 hover:opacity-100 cursor-pointer" 
+                  onClick={(e) => { e.stopPropagation(); handleExport('txt'); }}
+                />
+              </TabsTrigger>
+              <TabsTrigger value="data" className="flex items-center gap-2">
+                <Table className="h-3 w-3" />
+                Data
+                <Download 
+                  className="h-3 w-3 opacity-70 hover:opacity-100 cursor-pointer" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleExport('csv');
+                  }}
+                />
+              </TabsTrigger>
+              <TabsTrigger value="chart" className="flex items-center gap-2">
+                <BarChart className="h-3 w-3" />
+                Chart
+                <BarChart 
+                  className="h-3 w-3 opacity-70 hover:opacity-100 cursor-pointer" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleExportChart();
+                  }}
+                />
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="analysis" className="flex-1 min-h-0">
+              {/* Analysis and Chat Interface */}
+              <UnifiedAnalysisChat 
+                analysisResult={workflowState.analysisResult}
+                onExportChart={handleExportChart}
+              />
+            </TabsContent>
+
+            <TabsContent value="data" className="flex-1 min-h-0">
+              {/* Data Table */}
+              <div className="h-full overflow-y-auto">
+                <UnifiedDataTable 
+                  data={analysisResult.data}
+                  onExport={() => handleExport('csv')}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="chart" className="flex-1 min-h-0">
+              {/* Feature Importance Chart */}
+              <div className="h-full overflow-y-auto">
+                <UnifiedInsightsChart 
+                  data={analysisResult.data}
+                  onExportChart={handleExportChart}
+                />
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
-
-        {/* Results content based on analysis type */}
-        <Tabs value="visualization" onValueChange={() => {}} className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="visualization">Visualization</TabsTrigger>
-            <TabsTrigger value="data">Data</TabsTrigger>
-            <TabsTrigger value="insights">Insights</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="visualization" className="mt-4">
-            {analysisResult.visualization && (
-              <div className="max-h-96 overflow-auto">
-                <pre className="text-xs bg-gray-50 p-4 rounded">
-                  {JSON.stringify(analysisResult.visualization, null, 2)}
-                </pre>
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="data" className="mt-4">
-            <div className="max-h-96 overflow-auto">
-              <pre className="text-xs bg-gray-50 p-4 rounded">
-                {JSON.stringify(analysisResult.data, null, 2)}
-              </pre>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="insights" className="mt-4">
-            {analysisResult.data?.summary && (
-              <div className="space-y-2">
-                <Alert>
-                  <AlertDescription>{analysisResult.data.summary}</AlertDescription>
-                </Alert>
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
       </div>
     );
   };
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <Card className="flex-1 flex flex-col">
+    <div className="w-full h-full flex flex-col overflow-hidden">
+      <Card className="flex-1 flex flex-col min-h-0 overflow-hidden">
         <CardHeader className="flex-shrink-0 py-2">
           <CardTitle className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-2">
@@ -998,7 +1069,7 @@ export default function UnifiedAnalysisWorkflow({
             </Button>
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex-1 flex flex-col py-3">
+        <CardContent className="flex-1 flex flex-col py-3 min-h-0 overflow-hidden">
           {/* Step indicator */}
           <div className="flex-shrink-0 mb-3">
             {renderStepIndicator()}
@@ -1016,7 +1087,7 @@ export default function UnifiedAnalysisWorkflow({
 
           {/* Step content */}
           {!workflowState.isProcessing && (
-            <div className="flex-1 flex flex-col min-h-0">
+            <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
               {workflowState.currentStep === 'area' && (
                 <div className="flex-1">
                   <UnifiedAreaSelector
@@ -1041,7 +1112,7 @@ export default function UnifiedAnalysisWorkflow({
               )}
 
               {workflowState.currentStep === 'results' && (
-                <div className="flex-1 overflow-auto">
+                <div className="flex-1 min-h-0 overflow-hidden">
                   {renderResults()}
                 </div>
               )}
