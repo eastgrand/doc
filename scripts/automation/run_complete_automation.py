@@ -33,6 +33,7 @@ from arcgis_data_extractor import ArcGISDataExtractor
 from intelligent_field_mapper import IntelligentFieldMapper
 from automated_model_trainer import AutomatedModelTrainer
 from endpoint_generator import EndpointGenerator
+from comprehensive_endpoint_generator import ComprehensiveEndpointGenerator
 from automated_score_calculator import AutomatedScoreCalculator
 from layer_config_generator import LayerConfigGenerator
 
@@ -46,6 +47,7 @@ class CompleteAutomationPipeline:
         self.project_name = project_name
         self.config = config or {}
         self.start_time = time.time()
+        self.target_variable = config.get('target_variable', 'MP10128A_B_P')  # Default to H&R Block Online usage
         
         # Setup project directories
         self.project_root = Path("/Users/voldeck/code/mpiq-ai-chat")
@@ -112,6 +114,7 @@ class CompleteAutomationPipeline:
             self.logger.info("🚀 Starting Complete ArcGIS to Microservice Automation Pipeline")
             self.logger.info(f"📅 Project: {self.project_name}")
             self.logger.info(f"🌐 Service: {self.service_url}")
+            self.logger.info(f"🎯 Target Variable: {self.target_variable} (Used H&R Block Online to Prepare Taxes)")
             self.logger.info("=" * 80)
             self.logger.info("")
             self.logger.info("⚠️  WARNING: This pipeline will modify your existing files:")
@@ -168,6 +171,9 @@ class CompleteAutomationPipeline:
             self.logger.info("🎉 AUTOMATION PIPELINE COMPLETED SUCCESSFULLY!")
             elapsed_time = (time.time() - self.start_time) / 60
             self.logger.info(f"⏱️  Total execution time: {elapsed_time:.1f} minutes")
+            
+            # Offer cleanup option
+            await self._offer_cleanup()
             
             return True
             
@@ -380,9 +386,10 @@ class CompleteAutomationPipeline:
             model_output_dir = self.output_dir / "trained_models"
             trainer = AutomatedModelTrainer(str(model_output_dir))
             
-            # Train comprehensive models
+            # Train comprehensive models with specified target variable
             self.logger.info("🧠 Training comprehensive XGBoost models...")
-            training_results = trainer.train_comprehensive_models(str(merged_path))
+            self.logger.info(f"🎯 Using target variable: {self.target_variable}")
+            training_results = trainer.train_comprehensive_models(str(merged_path), target_variable=self.target_variable)
             
             if not training_results:
                 self.logger.error("❌ Model training failed - no results returned")
@@ -434,21 +441,45 @@ class CompleteAutomationPipeline:
             return False
     
     async def _phase_5_endpoint_generation(self) -> bool:
-        """Phase 5: Endpoint Generation"""
-        self.logger.info("\n📊 PHASE 5: Endpoint Generation")
+        """Phase 5: Endpoint Generation (Standard + Comprehensive)"""
+        self.logger.info("\n📊 PHASE 5: Endpoint Generation (26 Total)")
         self.logger.info("-" * 50)
         
         self.pipeline_state['current_phase'] = 'endpoint_generation'
         
         try:
             merged_path = self.results['extracted_data']['merged_path']
+            models_dir = self.results.get('trained_models', {}).get('models_dir')
             
-            # Initialize endpoint generator
-            generator = EndpointGenerator(str(merged_path))
-            
-            # Generate all endpoints
-            self.logger.info("🏗️  Generating endpoint configurations...")
-            endpoints = generator.generate_all_endpoints(str(merged_path))
+            # Try to use ComprehensiveEndpointGenerator first for all 26 endpoints
+            try:
+                # Initialize comprehensive endpoint generator (19 standard + 7 new)
+                self.logger.info("🏗️  Generating 26 comprehensive endpoint configurations...")
+                self.logger.info("   📊 19 Standard endpoints")
+                self.logger.info("   🧠 7 Comprehensive model endpoints")
+                
+                if models_dir and Path(models_dir).exists():
+                    generator = ComprehensiveEndpointGenerator(models_dir=str(models_dir))
+                else:
+                    # Fallback with default models directory path
+                    default_models_dir = self.project_dir / "trained_models"
+                    generator = ComprehensiveEndpointGenerator(models_dir=str(default_models_dir))
+                
+                # Generate all 26 endpoints
+                endpoints = generator.generate_all_comprehensive_endpoints(str(merged_path))
+                
+                # Count successful endpoints
+                successful_endpoints = [e for e in endpoints.values() if e.get('success', True)]
+                
+                self.logger.info(f"   ✅ Successfully generated {len(successful_endpoints)}/26 endpoints")
+                
+            except Exception as e:
+                # Fallback to standard generator if comprehensive fails
+                self.logger.warning(f"⚠️ Comprehensive generator failed: {str(e)}")
+                self.logger.info("📊 Falling back to standard endpoint generation...")
+                
+                generator = EndpointGenerator(str(merged_path))
+                endpoints = generator.generate_all_endpoints(str(merged_path))
             
             if not endpoints:
                 self.logger.error("❌ No endpoints generated")
@@ -457,7 +488,9 @@ class CompleteAutomationPipeline:
             # Store results
             self.results['endpoints'] = {
                 'endpoints': endpoints,
-                'endpoint_count': len(endpoints)
+                'endpoint_count': len(endpoints),
+                'standard_count': 19,
+                'comprehensive_count': 7
             }
             
             self.logger.info(f"✅ Phase 5 Complete: Generated {len(endpoints)} endpoints")
@@ -873,6 +906,53 @@ The automation pipeline has successfully completed all phases and generated a pr
             'deployment_status': 'manual_deployment_required',
             'microservice_url_placeholder': f"https://{microservice_package['render_service_name']}.onrender.com"
         }
+    
+    async def _offer_cleanup(self):
+        """Offer cleanup option after successful automation"""
+        self.logger.info("\n" + "=" * 60)
+        self.logger.info("🧹 CLEANUP RECOMMENDATION")
+        self.logger.info("=" * 60)
+        
+        # Calculate approximate cleanup size from current project
+        project_size = 0
+        if self.output_dir.exists():
+            for item in self.output_dir.rglob('*'):
+                if item.is_file():
+                    try:
+                        project_size += item.stat().st_size
+                    except:
+                        pass
+        
+        def format_size(bytes):
+            for unit in ['B', 'KB', 'MB', 'GB']:
+                if bytes < 1024.0:
+                    return f"{bytes:.1f} {unit}"
+                bytes /= 1024.0
+            return f"{bytes:.1f} TB"
+        
+        self.logger.info(f"📊 Current project size: {format_size(project_size)}")
+        self.logger.info("🗂️  Intermediate files may accumulate over time")
+        self.logger.info("")
+        self.logger.info("💡 CLEANUP OPTIONS:")
+        self.logger.info("   1. Run cleanup now (dry-run first):")
+        self.logger.info("      python scripts/automation/cleanup_automation_artifacts.py --dry-run")
+        self.logger.info("")
+        self.logger.info("   2. Run cleanup with actual deletion:")
+        self.logger.info("      python scripts/automation/cleanup_automation_artifacts.py")
+        self.logger.info("")
+        self.logger.info("   3. Aggressive cleanup (keep only 1 day):")
+        self.logger.info("      python scripts/automation/cleanup_automation_artifacts.py --aggressive")
+        self.logger.info("")
+        self.logger.info("📝 What gets cleaned up:")
+        self.logger.info("   • Old project directories (>7 days)")
+        self.logger.info("   • Intermediate endpoint files")
+        self.logger.info("   • Duplicate files in scoring directory")
+        self.logger.info("   • Old backup files")
+        self.logger.info("   • Temporary files (.pyc, __pycache__, etc.)")
+        self.logger.info("   • Layer configuration backups")
+        self.logger.info("")
+        self.logger.info("⚠️  IMPORTANT: Always run with --dry-run first to see what will be deleted")
+        self.logger.info("=" * 60)
 
 
 async def main():
@@ -893,6 +973,8 @@ Examples:
     parser.add_argument("service_url", help="ArcGIS Feature Service URL")
     parser.add_argument("--project", default="automated_project", help="Project name")
     parser.add_argument("--config", help="Optional configuration file path")
+    parser.add_argument("--target", default="MP10128A_B_P", 
+                       help="Target variable for model training (default: MP10128A_B_P - Used H&R Block Online to Prepare Taxes)")
     
     args = parser.parse_args()
     
@@ -902,10 +984,14 @@ Examples:
         with open(args.config) as f:
             config = json.load(f)
     
+    # Add target variable to config
+    config['target_variable'] = args.target
+    
     # Initialize and run pipeline
     print(f"🚀 Starting Complete Automation Pipeline")
     print(f"📋 Project: {args.project}")
     print(f"🌐 Service: {args.service_url}")
+    print(f"🎯 Target Variable: {args.target}")
     print("=" * 80)
     
     pipeline = CompleteAutomationPipeline(args.service_url, args.project, config)
