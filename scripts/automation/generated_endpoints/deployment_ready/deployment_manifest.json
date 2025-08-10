@@ -1,36 +1,164 @@
 {
-  "deployment_version": "1.0",
-  "created_timestamp": "2025-08-07T21:26:50.049040",
-  "endpoints": [
-    "strategic-analysis",
-    "competitive-analysis",
-    "demographic-insights",
-    "comparative-analysis",
-    "spatial-clusters",
-    "correlation-analysis",
-    "trend-analysis",
-    "anomaly-detection",
-    "predictive-modeling",
-    "scenario-analysis",
-    "segment-profiling",
-    "sensitivity-analysis",
-    "feature-interactions",
-    "feature-importance-ranking",
-    "model-performance",
-    "outlier-detection",
-    "analyze",
-    "brand-difference"
-  ],
-  "total_endpoints": 18,
-  "deployment_instructions": {
-    "local_fallback": "Copy all files in endpoints/ to public/data/endpoints/",
-    "blob_storage": "Upload large files to Vercel Blob Storage and update blob-urls.json",
-    "client_config": "Update CachedEndpointRouter.ts with new endpoint mappings"
+  "deployment_version": "2.0-comprehensive",
+  "deployment_timestamp": "2025-08-10T18:49:37.320910",
+  "endpoints": {
+    "standard": [
+      {
+        "name": "strategic-analysis",
+        "records": 984,
+        "scoring_script": "strategic-analysis-scores.js"
+      },
+      {
+        "name": "competitive-analysis",
+        "records": 984,
+        "scoring_script": "competitive-analysis-scores.js"
+      },
+      {
+        "name": "demographic-insights",
+        "records": 984,
+        "scoring_script": "demographic-insights-scores.js"
+      },
+      {
+        "name": "correlation-analysis",
+        "records": 984,
+        "scoring_script": "correlation-analysis-scores.js"
+      },
+      {
+        "name": "predictive-modeling",
+        "records": 984,
+        "scoring_script": "predictive-modeling-scores.js"
+      },
+      {
+        "name": "trend-analysis",
+        "records": 984,
+        "scoring_script": "trend-analysis-scores.js"
+      },
+      {
+        "name": "spatial-clusters",
+        "records": 984,
+        "scoring_script": "spatial-clusters-scores.js"
+      },
+      {
+        "name": "anomaly-detection",
+        "records": 984,
+        "scoring_script": "anomaly-detection-scores.js"
+      },
+      {
+        "name": "scenario-analysis",
+        "records": 984,
+        "scoring_script": "scenario-analysis-scores.js"
+      },
+      {
+        "name": "segment-profiling",
+        "records": 984,
+        "scoring_script": "segment-profiling-scores.js"
+      },
+      {
+        "name": "sensitivity-analysis",
+        "records": 984,
+        "scoring_script": "sensitivity-analysis-scores.js"
+      },
+      {
+        "name": "feature-interactions",
+        "records": 984,
+        "scoring_script": "feature-interactions-scores.js"
+      },
+      {
+        "name": "feature-importance-ranking",
+        "records": 984,
+        "scoring_script": "feature-importance-ranking-scores.js"
+      },
+      {
+        "name": "model-performance",
+        "records": 984,
+        "scoring_script": "model-performance-scores.js"
+      },
+      {
+        "name": "outlier-detection",
+        "records": 984,
+        "scoring_script": "outlier-detection-scores.js"
+      },
+      {
+        "name": "analyze",
+        "records": 984,
+        "scoring_script": "analyze-scores.js"
+      },
+      {
+        "name": "comparative-analysis",
+        "records": 984,
+        "scoring_script": "comparative-analysis-scores.js"
+      },
+      {
+        "name": "brand-difference",
+        "records": 984,
+        "scoring_script": "brand-difference-scores.js"
+      },
+      {
+        "name": "customer-profile",
+        "records": 984,
+        "scoring_script": "customer-profile-scores.js"
+      }
+    ],
+    "comprehensive": [
+      {
+        "name": "algorithm-comparison",
+        "records": 984,
+        "scoring_script": "algorithm-comparison-scores.js"
+      },
+      {
+        "name": "ensemble-analysis",
+        "records": 984,
+        "scoring_script": "ensemble-analysis-scores.js"
+      },
+      {
+        "name": "model-selection",
+        "records": 984,
+        "scoring_script": "model-selection-scores.js"
+      },
+      {
+        "name": "anomaly-insights",
+        "records": 984,
+        "scoring_script": "anomaly-insights-scores.js"
+      },
+      {
+        "name": "dimensionality-insights",
+        "records": 984,
+        "scoring_script": "dimensionality-insights-scores.js"
+      },
+      {
+        "name": "consensus-analysis",
+        "records": 984,
+        "scoring_script": "consensus-analysis-scores.js"
+      }
+    ]
   },
-  "file_structure": {
-    "endpoints/": "Individual endpoint JSON files",
-    "all_endpoints.json": "Combined file with all endpoints",
-    "blob-urls.json": "Blob storage URL configuration",
-    "upload_endpoints.sh": "Automated upload script"
-  }
+  "model_architecture": "17-model-comprehensive",
+  "total_endpoints": 26,
+  "scoring_scripts": [
+    "strategic-analysis-scores.js",
+    "competitive-analysis-scores.js",
+    "demographic-insights-scores.js",
+    "correlation-analysis-scores.js",
+    "predictive-modeling-scores.js",
+    "trend-analysis-scores.js",
+    "spatial-clusters-scores.js",
+    "anomaly-detection-scores.js",
+    "scenario-analysis-scores.js",
+    "segment-profiling-scores.js",
+    "sensitivity-analysis-scores.js",
+    "feature-interactions-scores.js",
+    "feature-importance-ranking-scores.js",
+    "model-performance-scores.js",
+    "outlier-detection-scores.js",
+    "analyze-scores.js",
+    "comparative-analysis-scores.js",
+    "brand-difference-scores.js",
+    "customer-profile-scores.js",
+    "algorithm-comparison-scores.js",
+    "ensemble-analysis-scores.js",
+    "model-selection-scores.js",
+    "anomaly-insights-scores.js",
+    "dimensionality-insights-scores.js",
+    "consensus-analysis-scores.js"
+  ]
 }

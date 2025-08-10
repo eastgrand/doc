@@ -1,7 +1,7 @@
 # Layer Configuration Generation Report
 
-**Generated**: 2025-08-07T21:26:56.441706
-**Output File**: `layers_test_pipeline_2025.ts`
+**Generated**: 2025-08-10T18:48:14.592067
+**Output File**: `layers_HRB_v3.ts`
 
 ## Summary Statistics
 

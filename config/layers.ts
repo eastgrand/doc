@@ -1,5 +1,5 @@
 // Layer configuration with preserved structure
-// Auto-generated on 2025-08-07T21:26:56.439808
+// Auto-generated on 2025-08-10T18:48:14.589746
 // This file maintains compatibility with existing system components
 
 import { LayerConfig } from '../types/layers';
@@ -106,7 +106,8 @@ export const concepts = {
       'retail',
       'store',
       'shop',
-      'Dick\'s'
+      'Dick\'s Sporting Goods',
+      'retail store'
     ],
     weight: 15,
   },
@@ -296,6 +297,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -386,6 +406,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -476,6 +515,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -566,6 +624,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -656,6 +733,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -746,6 +842,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -836,6 +951,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -926,6 +1060,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -1016,6 +1169,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -1106,6 +1278,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -1132,7 +1323,7 @@ export const baseLayerConfigs: LayerConfig[] = [
     skipLayerList: false,
     rendererField: 'MP10128A_B_P',
     status: 'active',
-    geographicType: 'block',
+    geographicType: 'postal',
     geographicLevel: 'local',
     fields: [
       {
@@ -1196,6 +1387,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -1286,6 +1496,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -1376,6 +1605,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -1466,6 +1714,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -1551,6 +1818,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -1577,7 +1863,7 @@ export const baseLayerConfigs: LayerConfig[] = [
     skipLayerList: false,
     rendererField: 'esri_pid',
     status: 'active',
-    geographicType: 'block',
+    geographicType: 'postal',
     geographicLevel: 'local',
     fields: [
       {
@@ -1676,6 +1962,25 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Editor"
       },
     ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
     performance: {
       "timeoutMs": 30000
     },
@@ -1729,12 +2034,9 @@ export const layers: { [key: string]: LayerConfig } = layerConfigs.reduce((acc, 
 // Export layer count for monitoring
 export const layerCount = layerConfigs.length;
 
-// Spatial filtering configuration
-export const SPATIAL_REFERENCE_LAYER_ID = 'Unknown_Service_layer_0';
-
 // Export generation metadata
 export const generationMetadata = {
-  generatedAt: '2025-08-07T21:26:56.439808',
+  generatedAt: '2025-08-10T18:48:14.589746',
   layerCount: 16,
   groupCount: 1,
   automationVersion: '1.0.0'

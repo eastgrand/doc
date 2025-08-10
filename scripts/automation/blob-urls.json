@@ -1,0 +1,20 @@
+{
+  "strategic-analysis": "https://your-blob-storage.com/strategic-analysis.json",
+  "competitive-analysis": "https://your-blob-storage.com/competitive-analysis.json",
+  "demographic-insights": "https://your-blob-storage.com/demographic-insights.json",
+  "comparative-analysis": "https://your-blob-storage.com/comparative-analysis.json",
+  "spatial-clusters": "https://your-blob-storage.com/spatial-clusters.json",
+  "correlation-analysis": "https://your-blob-storage.com/correlation-analysis.json",
+  "trend-analysis": "https://your-blob-storage.com/trend-analysis.json",
+  "anomaly-detection": "https://your-blob-storage.com/anomaly-detection.json",
+  "predictive-modeling": "https://your-blob-storage.com/predictive-modeling.json",
+  "scenario-analysis": "https://your-blob-storage.com/scenario-analysis.json",
+  "segment-profiling": "https://your-blob-storage.com/segment-profiling.json",
+  "sensitivity-analysis": "https://your-blob-storage.com/sensitivity-analysis.json",
+  "feature-interactions": "https://your-blob-storage.com/feature-interactions.json",
+  "feature-importance-ranking": "https://your-blob-storage.com/feature-importance-ranking.json",
+  "model-performance": "https://your-blob-storage.com/model-performance.json",
+  "outlier-detection": "https://your-blob-storage.com/outlier-detection.json",
+  "analyze": "https://your-blob-storage.com/analyze.json",
+  "brand-difference": "https://your-blob-storage.com/brand-difference.json"
+}

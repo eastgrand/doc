@@ -46,8 +46,9 @@ class AutomatedScoreCalculator:
             'MP30036A_B_P': 'Reebok'
         }
         
-        # Scoring algorithms registry
+        # Scoring algorithms registry (19 standard + 7 comprehensive)
         self.scoring_algorithms = {
+            # Standard endpoints
             'strategic-analysis': self.calculate_strategic_value_scores,
             'competitive-analysis': self.calculate_competitive_scores,
             'demographic-insights': self.calculate_demographic_scores,
@@ -62,7 +63,16 @@ class AutomatedScoreCalculator:
             'feature-importance-ranking': self.calculate_feature_importance_scores,
             'scenario-analysis': self.calculate_scenario_scores,
             'segment-profiling': self.calculate_segment_scores,
-            'brand-difference': self.calculate_brand_difference_scores
+            'brand-difference': self.calculate_brand_difference_scores,
+            
+            # New comprehensive endpoints (7 additional)
+            'algorithm-comparison': self.calculate_algorithm_comparison_scores,
+            'ensemble-analysis': self.calculate_ensemble_analysis_scores,
+            'cluster-analysis': self.calculate_cluster_analysis_scores,
+            'anomaly-insights': self.calculate_anomaly_insights_scores,
+            'model-selection': self.calculate_model_selection_scores,
+            'dimensionality-insights': self.calculate_dimensionality_insights_scores,
+            'consensus-analysis': self.calculate_consensus_analysis_scores
         }
         
     def apply_all_scoring_algorithms(self) -> Dict[str, Any]:
@@ -813,6 +823,158 @@ class AutomatedScoreCalculator:
             'processing_errors': len(results['errors'])
         }
 
+
+    # Comprehensive endpoint scoring methods (7 new)
+    def calculate_algorithm_comparison_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate algorithm comparison scores based on model performance variance"""
+        results = []
+        
+        for record in endpoint_data['results']:
+            # Calculate variance across different model predictions
+            model_predictions = []
+            for key in record:
+                if key.startswith('pred_') or key.endswith('_prediction'):
+                    model_predictions.append(self._safe_float(record[key]))
+            
+            if model_predictions:
+                variance = np.var(model_predictions)
+                agreement = 100 * (1 - min(1, variance))  # Higher agreement = lower variance
+            else:
+                agreement = 50  # Default neutral score
+            
+            record_copy = record.copy()
+            record_copy['algorithm_agreement_score'] = round(agreement, 2)
+            results.append(record_copy)
+        
+        endpoint_data_copy = endpoint_data.copy()
+        endpoint_data_copy['results'] = results
+        return endpoint_data_copy
+    
+    def calculate_ensemble_analysis_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate ensemble analysis scores based on prediction confidence"""
+        results = []
+        
+        for record in endpoint_data['results']:
+            # Use ensemble prediction confidence
+            ensemble_pred = self._safe_float(record.get('ensemble_prediction', 
+                                                       record.get('prediction', 0)))
+            confidence = self._safe_float(record.get('confidence', 0.5))
+            
+            # Score combines prediction strength and confidence
+            ensemble_score = (abs(ensemble_pred) * confidence * 100)
+            
+            record_copy = record.copy()
+            record_copy['ensemble_strength_score'] = round(min(100, ensemble_score), 2)
+            results.append(record_copy)
+        
+        endpoint_data_copy = endpoint_data.copy()
+        endpoint_data_copy['results'] = results
+        return endpoint_data_copy
+    
+    def calculate_cluster_analysis_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate cluster analysis scores based on cluster characteristics"""
+        results = []
+        
+        for record in endpoint_data['results']:
+            cluster_id = record.get('cluster', 0)
+            distance_to_center = self._safe_float(record.get('distance_to_center', 1))
+            
+            # Score inversely proportional to distance from cluster center
+            cluster_score = 100 * (1 / (1 + distance_to_center))
+            
+            record_copy = record.copy()
+            record_copy['cluster_quality_score'] = round(cluster_score, 2)
+            results.append(record_copy)
+        
+        endpoint_data_copy = endpoint_data.copy()
+        endpoint_data_copy['results'] = results
+        return endpoint_data_copy
+    
+    def calculate_anomaly_insights_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate anomaly insights scores based on anomaly characteristics"""
+        results = []
+        
+        for record in endpoint_data['results']:
+            anomaly_score = self._safe_float(record.get('anomaly_score', 0))
+            isolation_score = self._safe_float(record.get('isolation_score', 0))
+            
+            # Combine multiple anomaly indicators
+            combined_anomaly = (anomaly_score + isolation_score) / 2
+            insight_score = min(100, combined_anomaly * 100)
+            
+            record_copy = record.copy()
+            record_copy['anomaly_insight_score'] = round(insight_score, 2)
+            results.append(record_copy)
+        
+        endpoint_data_copy = endpoint_data.copy()
+        endpoint_data_copy['results'] = results
+        return endpoint_data_copy
+    
+    def calculate_model_selection_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate model selection scores based on best performing model"""
+        results = []
+        
+        for record in endpoint_data['results']:
+            best_model = record.get('best_model', 'unknown')
+            model_performance = self._safe_float(record.get('best_model_score', 0))
+            
+            # Score based on how much better the best model is
+            selection_score = min(100, model_performance * 100)
+            
+            record_copy = record.copy()
+            record_copy['model_selection_score'] = round(selection_score, 2)
+            results.append(record_copy)
+        
+        endpoint_data_copy = endpoint_data.copy()
+        endpoint_data_copy['results'] = results
+        return endpoint_data_copy
+    
+    def calculate_dimensionality_insights_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate dimensionality insights scores based on PCA components"""
+        results = []
+        
+        for record in endpoint_data['results']:
+            # Get principal component values
+            pc1 = self._safe_float(record.get('pc1', record.get('component_1', 0)))
+            pc2 = self._safe_float(record.get('pc2', record.get('component_2', 0)))
+            explained_variance = self._safe_float(record.get('explained_variance', 0))
+            
+            # Score based on position in reduced dimensional space
+            dimension_score = min(100, (abs(pc1) + abs(pc2)) * 50 + explained_variance * 100)
+            
+            record_copy = record.copy()
+            record_copy['dimensionality_score'] = round(dimension_score, 2)
+            results.append(record_copy)
+        
+        endpoint_data_copy = endpoint_data.copy()
+        endpoint_data_copy['results'] = results
+        return endpoint_data_copy
+    
+    def calculate_consensus_analysis_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate consensus analysis scores based on model agreement"""
+        results = []
+        
+        for record in endpoint_data['results']:
+            # Count models that agree (within threshold)
+            predictions = []
+            for key in record:
+                if 'prediction' in key or key.startswith('pred_'):
+                    predictions.append(self._safe_float(record[key]))
+            
+            if len(predictions) > 1:
+                # Calculate standard deviation as measure of disagreement
+                std_dev = np.std(predictions)
+                consensus = 100 * (1 / (1 + std_dev))
+            else:
+                consensus = 50  # Default neutral score
+            
+            record_copy = record.copy()
+            record_copy['consensus_score'] = round(consensus, 2)
+            results.append(record_copy)
+        
+        endpoint_data_copy = endpoint_data.copy()
+        endpoint_data_copy['results'] = results
+        return endpoint_data_copy
 
 def main():
     """Main function for command-line usage"""

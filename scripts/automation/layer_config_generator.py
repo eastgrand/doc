@@ -51,7 +51,8 @@ class LayerConfigGenerator:
     def __init__(self, project_root: str = "/Users/voldeck/code/mpiq-ai-chat"):
         self.project_root = Path(project_root)
         self.output_dir = self.project_root / "config"
-        self.concepts_mapping = self._load_existing_concepts()
+        # Use default concepts instead of parsing broken existing ones
+        self.concepts_mapping = self._get_default_concepts()
         
         # Layer type mapping based on field patterns
         self.layer_type_patterns = {
@@ -140,7 +141,7 @@ class LayerConfigGenerator:
                 'weight': 25
             },
             'retail': {
-                'terms': ['retail', 'store', 'shop', "Dick's Sporting Goods", 'Foot Locker', 'outlet', 'mall'],
+                'terms': ['retail', 'store', 'shop', "Dick's Sporting Goods", 'retail store'],
                 'weight': 15
             },
             'clothing': {
@@ -474,7 +475,7 @@ export const generationMetadata = {{
         concepts_code = "{\n"
         
         for concept_name, concept_data in self.concepts_mapping.items():
-            terms_str = ",\n      ".join(f"'{term}'" for term in concept_data['terms'])
+            terms_str = ",\n      ".join(f"'{term.replace(chr(39), chr(92) + chr(39))}'" for term in concept_data['terms'])
             concepts_code += f"""  {concept_name}: {{
     terms: [
       {terms_str}
@@ -502,7 +503,12 @@ export const generationMetadata = {{
 """
             fields_code += "    ]"
             
-            # Generate layer configuration
+            # Generate layer configuration with all required properties
+            geographic_type = self._detect_geographic_type(layer.fields, layer.name)
+            # Fix invalid geographic types
+            if geographic_type == 'block':
+                geographic_type = 'postal'
+            
             config_code = f"""  {{
     id: '{layer.id}',
     name: '{layer.name}',
@@ -515,9 +521,28 @@ export const generationMetadata = {{
     skipLayerList: false,
     rendererField: '{layer.renderer_field}',
     status: 'active',
-    geographicType: '{self._detect_geographic_type(layer.fields, layer.name)}',
+    geographicType: '{geographic_type}',
     geographicLevel: 'local',
     fields: {fields_code},
+    metadata: {{
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "{geographic_type}",
+      "geographicLevel": "local"
+    }},
+    processing: {{
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    }},
+    caching: {{
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    }},
     performance: {{
       "timeoutMs": 30000
     }},
