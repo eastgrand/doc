@@ -1,0 +1,168 @@
+{
+  "layer_id": 0,
+  "layer_name": "Generation Alpha Pop",
+  "description": "Business Analyst Layer: Generation Alpha Pop",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-08-10T08:16:16.240961",
+  "record_count": 984,
+  "field_count": 12,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "32003 (Fleming Island)",
+        "33308 (Fort Lauderdale)",
+        "32008 (Branford)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ID",
+      "type": "esriFieldTypeString",
+      "alias": "ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "32003",
+        "33308",
+        "32008"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "GENALPHACY",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Generation Alpha Population (Born 2017 or Later) (Esri)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        2349,
+        1452,
+        502
+      ],
+      "has_data": true
+    },
+    {
+      "name": "GENALPHACY_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Generation Alpha Population (Born 2017 or Later) (Esri) (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        7.97,
+        4.84,
+        8.7
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        7.97,
+        4.84,
+        8.7
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        55165000,
+        15811250,
+        522930000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        43146.45444871945,
+        19390.05511158474,
+        186304.20316408772
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1754587931757,
+        1754587931757,
+        1754587931757
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1754587931757,
+        1754587931757,
+        1754587931757
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_0_Generation_Alpha_Pop.csv"
+}

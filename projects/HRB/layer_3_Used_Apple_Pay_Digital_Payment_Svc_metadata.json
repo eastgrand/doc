@@ -1,0 +1,168 @@
+{
+  "layer_id": 3,
+  "layer_name": "Used Apple Pay Digital Payment Svc",
+  "description": "Business Analyst Layer: Used Apple Pay Digital Payment Svc",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-08-10T08:16:17.499079",
+  "record_count": 984,
+  "field_count": 12,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "33306 (Fort Lauderdale)",
+        "33309 (Fort Lauderdale)",
+        "33311 (Fort Lauderdale)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ID",
+      "type": "esriFieldTypeString",
+      "alias": "ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "33306",
+        "33309",
+        "33311"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP10110A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Used Apple Pay Digital Payment Service Last 30 Days",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        745,
+        6434,
+        9522
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP10110A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Used Apple Pay Digital Payment Service Last 30 Days (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        21.09,
+        20.77,
+        17.61
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        21.09,
+        20.77,
+        17.61
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        2742500,
+        34082500,
+        34866250
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        8159.581105997408,
+        25278.01461278224,
+        24090.6179851779
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1754587977575,
+        1754587977575,
+        1754587977575
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1754587977575,
+        1754587977575,
+        1754587977575
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_3_Used_Apple_Pay_Digital_Payment_Svc.csv"
+}

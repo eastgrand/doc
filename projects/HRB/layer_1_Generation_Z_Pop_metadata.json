@@ -1,0 +1,168 @@
+{
+  "layer_id": 1,
+  "layer_name": "Generation Z Pop",
+  "description": "Business Analyst Layer: Generation Z Pop",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-08-10T08:16:17.621954",
+  "record_count": 984,
+  "field_count": 12,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "33308 (Fort Lauderdale)",
+        "33309 (Fort Lauderdale)",
+        "33311 (Fort Lauderdale)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ID",
+      "type": "esriFieldTypeString",
+      "alias": "ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "33308",
+        "33309",
+        "33311"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "GENZ_CY",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Generation Z Population (Born 1999 to 2016) (Esri)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3149,
+        8328,
+        17399
+      ],
+      "has_data": true
+    },
+    {
+      "name": "GENZ_CY_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Generation Z Population (Born 1999 to 2016) (Esri) (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        10.49,
+        21.45,
+        24.47
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        10.49,
+        21.45,
+        24.47
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        15811250,
+        34082500,
+        34866250
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        19390.05511158474,
+        25278.01461278224,
+        24090.6179851779
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1754587948259,
+        1754587948259,
+        1754587948259
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1754587948259,
+        1754587948259,
+        1754587948259
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_1_Generation_Z_Pop.csv"
+}

@@ -1,0 +1,168 @@
+{
+  "layer_id": 10,
+  "layer_name": "Used H&R Block Online to Prepare Taxes",
+  "description": "Business Analyst Layer: Used H&R Block Online to Prepare Taxes",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-08-10T18:47:50.899120",
+  "record_count": 984,
+  "field_count": 12,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "33308 (Fort Lauderdale)",
+        "33309 (Fort Lauderdale)",
+        "33311 (Fort Lauderdale)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ID",
+      "type": "esriFieldTypeString",
+      "alias": "ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "33308",
+        "33309",
+        "33311"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP10128A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Used H&R Block Online to Prepare Taxes",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        685,
+        979,
+        1574
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP10128A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Used H&R Block Online to Prepare Taxes (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        2.53,
+        3.16,
+        2.91
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        2.53,
+        3.16,
+        2.91
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        15811250,
+        34082500,
+        34866250
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        19390.05511158474,
+        25278.01461278224,
+        24090.6179851779
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1754588091004,
+        1754588091004,
+        1754588091004
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1754588091004,
+        1754588091004,
+        1754588091004
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_10_Used_H&R_Block_Online_to_Prepare_Taxes.csv"
+}

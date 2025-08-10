@@ -492,6 +492,35 @@ echo "Microservice URL: https://your-project-microservice.onrender.com" >> READM
 - [ ] Automated cleanup system reviewed and executed if needed
 - [ ] Storage usage optimized using cleanup recommendations
 
+## ☁️ **NEW: Automatic Blob Storage Upload**
+
+The automation pipeline now automatically uploads large endpoint files to Vercel Blob storage:
+
+### Blob Storage Features:
+- **Automatic Upload**: 26 endpoint files automatically uploaded during automation
+- **Smart Fallback**: Client applications automatically fallback to local files if blob storage fails
+- **URL Mapping**: blob-urls.json file maintains mappings between endpoints and blob URLs
+- **Large File Handling**: Avoids 100MB deployment limit by storing large files externally
+- **Production Ready**: No additional configuration required for client applications
+
+### Blob Storage Configuration:
+```bash
+# Set in your .env.local file to enable blob uploads
+BLOB_READ_WRITE_TOKEN=your_vercel_blob_token
+```
+
+### Manual Blob Upload (if needed):
+```bash
+# Upload all 26 comprehensive endpoints
+python scripts/automation/upload_comprehensive_endpoints.py
+
+# Upload specific endpoints only
+python scripts/automation/blob_uploader.py --endpoints strategic-analysis competitive-analysis
+
+# Force reupload all endpoints
+python scripts/automation/blob_uploader.py --force
+```
+
 ## 🧹 **NEW: Automated Cleanup System**
 
 The automation pipeline now includes intelligent cleanup recommendations:

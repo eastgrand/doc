@@ -1,0 +1,18 @@
+{
+  "project_name": "HRB",
+  "service_url": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer",
+  "pipeline_completed": "2025-08-10T08:16:52.966182",
+  "execution_time_minutes": 1.272358767191569,
+  "results_summary": {
+    "layers_discovered": 16,
+    "records_processed": 984,
+    "fields_mapped": 7,
+    "endpoints_generated": 18,
+    "layers_configured": 16
+  },
+  "deployment_files": {
+    "endpoints_copied": 18,
+    "layer_config_updated": true,
+    "ready_for_deployment": true
+  }
+}

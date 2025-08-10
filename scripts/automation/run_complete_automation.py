@@ -36,6 +36,7 @@ from endpoint_generator import EndpointGenerator
 from comprehensive_endpoint_generator import ComprehensiveEndpointGenerator
 from automated_score_calculator import AutomatedScoreCalculator
 from layer_config_generator import LayerConfigGenerator
+from blob_uploader import BlobUploader
 
 class CompleteAutomationPipeline:
     """
@@ -610,6 +611,30 @@ class CompleteAutomationPipeline:
                     json.dump(endpoint_data, f, indent=2, default=str)
                 copied_files += 1
             
+            # Upload endpoints to Vercel Blob storage
+            self.logger.info("☁️  Uploading endpoints to Vercel Blob storage...")
+            blob_uploader = BlobUploader(self.project_root)
+            
+            # Check if blob token is available
+            if blob_uploader.blob_token:
+                self.logger.info(f"📤 Uploading {len(endpoints)} endpoints to blob storage...")
+                successful_uploads, failed_uploads = blob_uploader.upload_endpoints(endpoints, force_reupload=False)
+                
+                if successful_uploads > 0:
+                    self.logger.info(f"✅ Successfully uploaded {successful_uploads} endpoints to blob storage")
+                    
+                if failed_uploads > 0:
+                    self.logger.warning(f"⚠️  {failed_uploads} endpoints failed to upload to blob storage")
+                    self.logger.info("💡 Endpoints are still available locally in public/data/endpoints/")
+                
+                # Log blob upload summary
+                if successful_uploads > 0 or failed_uploads > 0:
+                    self.logger.info("\n" + blob_uploader.generate_upload_summary())
+            else:
+                self.logger.warning("⚠️  BLOB_READ_WRITE_TOKEN not found - skipping blob upload")
+                self.logger.info("💡 Set BLOB_READ_WRITE_TOKEN in .env.local to enable blob storage upload")
+                self.logger.info("📁 Endpoints are available locally in public/data/endpoints/")
+            
             # Update layer configuration in main config
             self.logger.info("⚙️  Updating main layer configuration...")
             layer_config_file = self.project_root / "config" / "layers.ts"
@@ -629,7 +654,15 @@ class CompleteAutomationPipeline:
                 self.logger.info("⚠️  IMPORTANT: config/layers.ts has been replaced with auto-generated configuration")
                 self.logger.info("📋 To restore original: mv config/layers.ts.backup config/layers.ts")
             
-            # Generate deployment summary
+            # Generate deployment summary including blob upload results
+            blob_upload_info = {
+                'blob_token_available': blob_uploader.blob_token is not None,
+                'endpoints_uploaded': len(blob_uploader.uploaded_endpoints),
+                'failed_uploads': len(blob_uploader.failed_uploads),
+                'uploaded_endpoints': blob_uploader.uploaded_endpoints,
+                'failed_endpoints': blob_uploader.failed_uploads
+            }
+            
             deployment_summary = {
                 'project_name': self.project_name,
                 'service_url': self.service_url,
@@ -646,7 +679,8 @@ class CompleteAutomationPipeline:
                     'endpoints_copied': copied_files,
                     'layer_config_updated': layer_config_file.exists(),
                     'ready_for_deployment': True
-                }
+                },
+                'blob_storage': blob_upload_info
             }
             
             # Save deployment summary
@@ -663,12 +697,19 @@ class CompleteAutomationPipeline:
 Your microservice should now be deployed at:
 **{microservice_info.get('microservice_url_placeholder', 'https://your-project-microservice.onrender.com')}**
 
+## ☁️ BLOB STORAGE STATUS
+
+{f"✅ **{len(blob_uploader.uploaded_endpoints)} endpoints uploaded** to Vercel Blob storage" if blob_uploader.blob_token and blob_uploader.uploaded_endpoints else "⚠️  **Blob storage not configured** - endpoints available locally only"}
+{f"❌ **{len(blob_uploader.failed_uploads)} endpoints failed upload** - check logs above" if blob_uploader.blob_token and blob_uploader.failed_uploads else ""}
+{f"💡 **Set BLOB_READ_WRITE_TOKEN** in .env.local to enable blob storage upload" if not blob_uploader.blob_token else "🔗 **Large files automatically served** from blob storage"}
+
 ## Update Client Code
 
 ### 1. Environment Variables (Recommended)
 ```bash
 # Add to your .env file
 MICROSERVICE_URL={microservice_info.get('microservice_url_placeholder', 'https://your-project-microservice.onrender.com')}
+{f"BLOB_READ_WRITE_TOKEN=your_token_here  # For blob storage uploads" if not blob_uploader.blob_token else "# Blob storage already configured ✅"}
 ```
 
 ### 2. Configuration File
@@ -932,6 +973,15 @@ The automation pipeline has successfully completed all phases and generated a pr
         
         self.logger.info(f"📊 Current project size: {format_size(project_size)}")
         self.logger.info("🗂️  Intermediate files may accumulate over time")
+        
+        # Show blob storage info if available  
+        blob_uploader = BlobUploader(self.project_root)
+        if blob_uploader.blob_token and hasattr(blob_uploader, 'uploaded_endpoints'):
+            if blob_uploader.uploaded_endpoints:
+                self.logger.info(f"☁️  {len(blob_uploader.uploaded_endpoints)} endpoints uploaded to blob storage")
+            if blob_uploader.failed_uploads:
+                self.logger.info(f"⚠️  {len(blob_uploader.failed_uploads)} endpoints failed blob upload")
+        
         self.logger.info("")
         self.logger.info("💡 CLEANUP OPTIONS:")
         self.logger.info("   1. Run cleanup now (dry-run first):")

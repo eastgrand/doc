@@ -1,0 +1,168 @@
+{
+  "layer_id": 2,
+  "layer_name": "Used Google Pay Digital Payment Svc",
+  "description": "Business Analyst Layer: Used Google Pay Digital Payment Svc",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-08-10T18:47:47.970483",
+  "record_count": 984,
+  "field_count": 12,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "32003 (Fleming Island)",
+        "32008 (Branford)",
+        "32009 (Bryceville)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ID",
+      "type": "esriFieldTypeString",
+      "alias": "ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "32003",
+        "32008",
+        "32009"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP10120A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Used Google Pay Digital Payment Service Last 30 Days",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1725,
+        318,
+        194
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP10120A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Used Google Pay Digital Payment Service Last 30 Days (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        7.29,
+        6.75,
+        7.39
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        7.29,
+        6.75,
+        7.39
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        55165000,
+        522930000,
+        313680000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        43146.45444871945,
+        186304.20316408772,
+        95473.99688899332
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1754587961394,
+        1754587961394,
+        1754587961394
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1754587961394,
+        1754587961394,
+        1754587961394
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_2_Used_Google_Pay_Digital_Payment_Svc.csv"
+}
