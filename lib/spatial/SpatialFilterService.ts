@@ -91,7 +91,11 @@ export class SpatialFilterService {
     const query = layer.createQuery();
     query.geometry = queryGeometry;
     query.spatialRelationship = spatialRelationship as any;
-    query.outFields = [layer.objectIdField, ...includeAttributes];
+    
+    // For HRB data, we need to get the actual ZIP code IDs, not OBJECTIDs
+    // Try to get ID field that matches endpoint data
+    const idFields = ['ID', 'id', 'GEOID', 'ZIP_CODE', 'ZIP', layer.objectIdField];
+    query.outFields = [...idFields, ...includeAttributes];
     query.returnGeometry = false;
     query.num = 5000; // Handle large selections
 
@@ -111,11 +115,31 @@ export class SpatialFilterService {
 
     // Execute query
     const result = await layer.queryFeatures(query);
-    const featureIds = result.features.map(f => 
-      String(f.attributes[layer.objectIdField] || f.attributes.ID || f.attributes.id)
-    );
+    
+    // Try to extract the correct ID that matches endpoint data
+    const featureIds = result.features.map(f => {
+      const attrs = f.attributes;
+      
+      // Priority order: ID (ZIP code) > GEOID > OBJECTID
+      const id = attrs.ID || attrs.id || attrs.GEOID || attrs.ZIP_CODE || attrs.ZIP || attrs[layer.objectIdField];
+      
+      // Log first few features to debug ID mapping
+      if (result.features.indexOf(f) < 3) {
+        console.log(`[SpatialFilter] Feature ${result.features.indexOf(f)} attributes:`, {
+          ID: attrs.ID,
+          GEOID: attrs.GEOID, 
+          ZIP_CODE: attrs.ZIP_CODE,
+          ZIP: attrs.ZIP,
+          OBJECTID: attrs[layer.objectIdField],
+          selectedId: id
+        });
+      }
+      
+      return String(id);
+    });
 
     console.log(`[SpatialFilter] Found ${featureIds.length} features`);
+    console.log(`[SpatialFilter] Sample feature IDs:`, featureIds.slice(0, 5));
     
     // If no features found, try a broader search for debugging
     if (featureIds.length === 0) {

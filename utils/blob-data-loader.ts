@@ -23,7 +23,7 @@ async function loadBlobUrlMappings(): Promise<Record<string, string>> {
     // Check if we're running in browser or server context
     if (typeof window !== 'undefined') {
       // Browser context - use relative URL
-      const response = await fetch('/data/blob-urls.json');
+      const response = await fetch('/data/blob-urls-hrb.json');
       if (response.ok) {
         blobUrlMappings = await response.json();
         return blobUrlMappings!;
@@ -32,7 +32,7 @@ async function loadBlobUrlMappings(): Promise<Record<string, string>> {
       // Server context - load directly from file system
       const fs = await import('fs/promises');
       const path = await import('path');
-      const filePath = path.join(process.cwd(), 'public/data/blob-urls.json');
+      const filePath = path.join(process.cwd(), 'public/data/blob-urls-hrb.json');
       const fileContent = await fs.readFile(filePath, 'utf-8');
       blobUrlMappings = JSON.parse(fileContent);
       return blobUrlMappings!;

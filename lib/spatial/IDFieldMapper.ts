@@ -31,6 +31,16 @@ export class IDFieldMapper {
       }
     }
     
+    // Check for ZIP code in DESCRIPTION field (HRB specific)
+    if (record.DESCRIPTION && typeof record.DESCRIPTION === 'string') {
+      // Extract ZIP from format like "32792 (Winter Park)" or just "32792"
+      const zipMatch = record.DESCRIPTION.match(/^(\d{5})/);
+      if (zipMatch) {
+        console.log('[IDFieldMapper] Using ZIP from DESCRIPTION:', zipMatch[1]);
+        return zipMatch[1];
+      }
+    }
+    
     // Log warning if no ID found
     console.warn('[IDFieldMapper] No ID field found in record:', Object.keys(record).slice(0, 10));
     return null;

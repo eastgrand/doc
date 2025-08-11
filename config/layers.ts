@@ -2041,3 +2041,11 @@ export const generationMetadata = {
   groupCount: 1,
   automationVersion: '1.0.0'
 };
+
+// Missing function exports
+export function getLayerConfigById(layerId: string): LayerConfig | undefined {
+  return layers[layerId];
+}
+
+// Spatial reference layer ID - using first layer as default
+export const SPATIAL_REFERENCE_LAYER_ID = 'Unknown_Service_layer_0';

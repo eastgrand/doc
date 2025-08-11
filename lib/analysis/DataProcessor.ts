@@ -75,6 +75,7 @@ export class DataProcessor {
       
       // Apply spatial filtering with the provided feature IDs
       console.log(`[DataProcessor] Applying spatial filter: ${spatialFilterIds.length} allowed features`);
+      console.log('[DataProcessor] Spatial filter IDs sample:', spatialFilterIds.slice(0, 5));
       
       // Import IDFieldMapper
       const { IDFieldMapper } = await import('@/lib/spatial/IDFieldMapper');
@@ -82,16 +83,30 @@ export class DataProcessor {
       const idSet = new Set(spatialFilterIds.map(id => String(id)));
       const originalCount = rawResults.results?.length || 0;
       
+      // Debug: Check what IDs we have in the data
+      const sampleRecord = rawResults.results?.[0];
+      if (sampleRecord) {
+        console.log('[DataProcessor] Sample data record IDs:', {
+          ID: sampleRecord.ID,
+          OBJECTID: sampleRecord.OBJECTID,
+          allKeys: Object.keys(sampleRecord).filter(k => k.toLowerCase().includes('id'))
+        });
+      }
+      
       // Use IDFieldMapper for flexible ID extraction
       filteredRawResults = {
         ...rawResults,
         results: rawResults.results?.filter(record => {
           const recordId = IDFieldMapper.extractId(record);
           if (!recordId) {
-            console.warn('[DataProcessor] Record has no identifiable ID:', record);
+            console.warn('[DataProcessor] Record has no identifiable ID:', Object.keys(record).slice(0, 10));
             return false;
           }
-          return idSet.has(recordId);
+          const matches = idSet.has(recordId);
+          if (originalCount < 10) { // Debug for small datasets
+            console.log(`[DataProcessor] ID check: recordId=${recordId}, matches=${matches}`);
+          }
+          return matches;
         }) || []
       };
       

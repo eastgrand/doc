@@ -19,9 +19,14 @@ logger = logging.getLogger(__name__)
 class BlobUploader:
     """Upload endpoint files to Vercel Blob storage and manage URL mappings"""
     
-    def __init__(self, project_root: Path = None):
+    def __init__(self, project_root: Path = None, project_prefix: str = "hrb"):
         self.project_root = project_root or Path("/Users/voldeck/code/mpiq-ai-chat")
-        self.blob_urls_file = self.project_root / "public" / "data" / "blob-urls.json"
+        self.project_prefix = project_prefix
+        # Use project-specific blob URLs file
+        if project_prefix == "hrb":
+            self.blob_urls_file = self.project_root / "public" / "data" / f"blob-urls-{project_prefix}.json"
+        else:
+            self.blob_urls_file = self.project_root / "public" / "data" / "blob-urls.json"
         self.blob_token = os.getenv('BLOB_READ_WRITE_TOKEN')
         self.uploaded_endpoints = []
         self.failed_uploads = []
@@ -67,14 +72,11 @@ class BlobUploader:
             
             # Prepare the upload
             url = "https://blob.vercel-storage.com"
-            filename = f"endpoints/{endpoint_name}.json"
+            filename = f"hrb/{endpoint_name}.json"
             
             # Upload to Vercel Blob
             response = requests.put(
-                url,
-                params={
-                    'filename': filename
-                },
+                f"{url}/{filename}",
                 headers={
                     'Authorization': f'Bearer {self.blob_token}',
                     'Content-Type': 'application/json'
@@ -241,12 +243,14 @@ def main():
                        help="Force reupload even if endpoints already exist in blob storage")
     parser.add_argument("--project-root",
                        help="Project root directory (default: auto-detect)")
+    parser.add_argument("--project-prefix", default="hrb",
+                       help="Project prefix for blob storage paths (default: hrb)")
     
     args = parser.parse_args()
     
     # Initialize uploader
     project_root = Path(args.project_root) if args.project_root else None
-    uploader = BlobUploader(project_root)
+    uploader = BlobUploader(project_root, args.project_prefix)
     
     # Check for blob token
     if not uploader.blob_token:

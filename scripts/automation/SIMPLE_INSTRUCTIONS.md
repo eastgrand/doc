@@ -151,7 +151,63 @@ Now you need to tell your application where to find the microservice.
 3. **Look for any red error messages**
 4. **If you see microservice errors**, double-check your URL in Step 3
 
-## Step 5: Automation Continues Automatically (1 minute)
+## Step 5: Upload Endpoints to Blob Storage (5 minutes)
+
+**⚠️ CRITICAL STEP**: After generating endpoints, you must upload them to Vercel Blob storage to avoid deployment size limits and prevent conflicts with existing projects.
+
+### 5.1 Set Up Blob Token (one-time setup)
+
+1. **Check if token exists**:
+   ```bash
+   grep BLOB_READ_WRITE_TOKEN .env.local
+   ```
+
+2. **If not found, add it**:
+   ```bash
+   echo "BLOB_READ_WRITE_TOKEN=your_vercel_blob_token" >> .env.local
+   ```
+
+### 5.2 Upload Project-Specific Endpoints
+
+1. **Run the blob uploader** with project-specific paths:
+   ```bash
+   export BLOB_READ_WRITE_TOKEN=$(grep BLOB_READ_WRITE_TOKEN .env.local | cut -d= -f2)
+   python upload_comprehensive_endpoints.py
+   ```
+
+2. **Verify successful upload**:
+   - Look for: `✅ All endpoints successfully uploaded to blob storage!`
+   - Check created file: `public/data/blob-urls-{project_name}.json`
+
+### 5.3 Update Data Loader for New Project
+
+**CRITICAL**: Update the system to use your new project's blob URLs:
+
+1. **Edit** `utils/blob-data-loader.ts`
+2. **Change the blob URLs file path**:
+   ```typescript
+   // FROM (old project):
+   const response = await fetch('/data/blob-urls.json');
+   const filePath = path.join(process.cwd(), 'public/data/blob-urls.json');
+   
+   // TO (your new project):
+   const response = await fetch('/data/blob-urls-{project_name}.json');
+   const filePath = path.join(process.cwd(), 'public/data/blob-urls-{project_name}.json');
+   ```
+
+### 5.4 Why This Step is Critical
+
+- **Size Limits**: Prevents 100MB+ deployment failures
+- **Project Separation**: Keeps your data separate from other projects
+- **Data Integrity**: Ensures correct data loads for your analysis
+- **Performance**: Blob storage provides faster data access
+
+**🚨 WARNING**: Skipping this step will cause:
+- Wrong data to load (from previous projects)
+- Spatial filtering failures (ID mismatches)
+- Zero records returned from queries
+
+## Step 6: Automation Continues Automatically (1 minute)
 
 1. **The automation continues automatically** after the pause
 2. **It will complete all remaining phases**:

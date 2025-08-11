@@ -118,6 +118,102 @@ python scripts/automation/run_complete_automation.py "YOUR_ARCGIS_URL" --project
 - `public/data/blob-urls.json` - Links client to microservice data
 - `public/data/microservice-all-fields.json` - Field definitions
 - `lib/analysis/ConfigurationManager.ts` - Client-side endpoint configuration
+- `scripts/automation/blob_uploader.py` - **Blob storage management for project separation**
+- `utils/blob-data-loader.ts` - **Client-side blob data loading**
+
+## ⚠️ CRITICAL: Blob Storage Management
+
+**Project Separation and Data Integrity**
+
+When working with multiple projects, proper blob storage management is **CRITICAL** to prevent:
+- Data contamination between projects
+- Wrong data loading in visualizations  
+- Spatial filtering failures (ID mismatches)
+- Zero records returned from queries
+
+### Blob Storage Architecture
+
+```
+Vercel Blob Storage Structure:
+├── nike/                     # Nike project data (existing)
+│   ├── strategic-analysis.json
+│   ├── competitive-analysis.json
+│   └── ... (19 endpoints)
+├── hrb/                      # H&R Block project data  
+│   ├── strategic-analysis.json
+│   ├── competitive-analysis.json
+│   └── ... (25 endpoints)
+└── project-name/             # Your new project data
+    ├── strategic-analysis.json
+    └── ... (26 endpoints)
+
+Client Configuration:
+├── public/data/blob-urls.json         # Nike project URLs (original)
+├── public/data/blob-urls-hrb.json     # H&R Block project URLs
+├── public/data/blob-urls-{project}.json # Your project URLs
+```
+
+### Required Steps for New Projects
+
+#### 1. Generate Endpoints (Automated)
+```bash
+# Run automation - this creates endpoint files locally
+python run_complete_automation.py "YOUR_ARCGIS_URL" --project project_name --target TARGET_VARIABLE
+```
+
+#### 2. Upload to Blob Storage (CRITICAL - Manual Step)
+
+**Configure blob uploader for your project:**
+```bash
+# Modify blob_uploader.py constructor to use your project prefix
+# In upload_comprehensive_endpoints.py, change:
+uploader = BlobUploader(project_root, project_prefix="your_project_name")
+```
+
+**Upload with project-specific paths:**
+```bash
+export BLOB_READ_WRITE_TOKEN=$(grep BLOB_READ_WRITE_TOKEN .env.local | cut -d= -f2)
+python upload_comprehensive_endpoints.py
+```
+
+**Verify upload success:**
+- Look for: `✅ All endpoints successfully uploaded to blob storage!`
+- Check created: `public/data/blob-urls-{project_name}.json`
+- Verify URLs contain your project prefix: `hrb/strategic-analysis-xyz.json`
+
+#### 3. Update Data Loader (CRITICAL - Manual Step)
+
+**Edit `utils/blob-data-loader.ts`:**
+```typescript
+// Update both browser and server paths:
+const response = await fetch('/data/blob-urls-{project_name}.json');
+const filePath = path.join(process.cwd(), 'public/data/blob-urls-{project_name}.json');
+```
+
+### Project Isolation Benefits
+
+✅ **Data Integrity**: Each project loads its own data  
+✅ **Size Management**: Avoids 100MB+ deployment failures  
+✅ **Performance**: Blob storage provides faster access  
+✅ **Parallel Development**: Multiple projects can coexist  
+✅ **Safe Updates**: Changes don't affect other projects
+
+### Common Issues and Solutions
+
+**Problem**: Zero records returned, spatial filtering fails
+```bash
+# Check if wrong blob URLs file is being used
+curl -s "your-blob-url" | jq '.results | length'  # Should be > 0
+curl -s "your-blob-url" | jq '.results[0].ID'     # Should match your geographic area
+```
+
+**Solution**: Verify data loader points to correct project blob URLs file.
+
+**Problem**: Old project data loads instead of new project data
+**Solution**: Ensure `blob-data-loader.ts` references `blob-urls-{project_name}.json`, not `blob-urls.json`.
+
+**Problem**: Deployment size exceeds limits
+**Solution**: Ensure all endpoints are uploaded to blob storage and not included in deployment package.
 
 ## Migration Architecture
 
