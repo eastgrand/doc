@@ -184,24 +184,38 @@ const AITab: React.FC<AITabProps> = ({
               layer.visible = true;
               layer.opacity = 0.8;
               
-              // Notify that visualization is created
-              onVisualizationCreated?.();
-              
-              // Verify layer was added
-              setTimeout(() => {
-                const addedLayer = view.map.findLayerById(layer.id);
+              // Verify layer was added and notify after a short delay to ensure it's fully integrated
+              setTimeout(async () => {
+                const addedLayer = view.map.findLayerById(layer.id) as __esri.FeatureLayer;
                 console.log('[AITab] Layer verification after add:', {
                   layerFound: !!addedLayer,
+                  layerId: addedLayer?.id,
                   visible: addedLayer?.visible,
                   opacity: addedLayer?.opacity,
+                  loaded: addedLayer?.loaded,
+                  popupEnabled: addedLayer?.popupEnabled,
                   inMapLayerCount: view.map.layers.length
                 });
                 
-                if (addedLayer && !addedLayer.visible) {
-                  console.log('[AITab] Force-setting layer visibility');
-                  addedLayer.visible = true;
-                  addedLayer.opacity = 0.8;
+                if (addedLayer) {
+                  // Ensure layer is loaded
+                  if (!addedLayer.loaded) {
+                    console.log('[AITab] Waiting for layer to load...');
+                    await addedLayer.load();
+                    console.log('[AITab] Layer loaded successfully');
+                  }
+                  
+                  if (!addedLayer.visible) {
+                    console.log('[AITab] Force-setting layer visibility');
+                    addedLayer.visible = true;
+                    addedLayer.opacity = 0.8;
+                  }
                 }
+                
+                // Notify that visualization is created AFTER layer is confirmed loaded
+                // This ensures CustomPopupManager will see the fully ready layer
+                console.log('[AITab] Notifying visualization created for CustomPopupManager integration');
+                onVisualizationCreated?.();
               }, 100);
             } else {
               console.warn('[AITab] Cannot add layer - missing layer or view.map:', {

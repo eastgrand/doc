@@ -1,7 +1,4 @@
 import { LegendItem } from '@/types/geospatial-chat-component';
-import ClassBreaksRenderer from '@arcgis/core/renderers/ClassBreaksRenderer';
-import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
-import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
 
 /**
  * Extracts formatted legend data from a ClassBreaksRenderer

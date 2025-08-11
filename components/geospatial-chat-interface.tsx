@@ -1802,6 +1802,7 @@ const EnhancedGeospatialChat = memo(({
           area_name: record.area_name || 'Unknown Area',
           value: typeof record.value === 'number' ? record.value : 0,
           ID: String(record.properties?.ID || record.area_id || ''),
+          DESCRIPTION: record.area_name || record.properties?.DESCRIPTION || `Area ${record.area_id}`, // For popup title
           
           // Target variable field (dynamic based on analysis type)
           [data.targetVariable]: typeof record.value === 'number' ? record.value : 
@@ -1944,6 +1945,7 @@ const EnhancedGeospatialChat = memo(({
       let featureLayer;
       try {
         featureLayer = new FeatureLayer({
+          id: `analysis-layer-${Date.now()}`, // Ensure unique ID for CustomPopupManager
           source: arcgisFeatures,
           fields: essentialFields,
           objectIdField: 'OBJECTID',
@@ -1959,13 +1961,21 @@ const EnhancedGeospatialChat = memo(({
             });
             return data.renderer || visualization.renderer;
           })(), // Use direct processor renderer if available, otherwise fallback to complex chain
-          popupTemplate: visualization.popupTemplate,
+          // Don't set popupTemplate here - CustomPopupManager will handle popups
+          popupEnabled: false, // Explicitly disable default popups
           title: `AnalysisEngine - ${data.targetVariable || 'Analysis'}`,
           visible: true,
         opacity: 0.8
       });
 
-      console.log('[AnalysisEngine] FeatureLayer created successfully');
+      console.log('[AnalysisEngine] FeatureLayer created successfully:', {
+        layerId: featureLayer.id,
+        layerType: featureLayer.type,
+        layerTitle: featureLayer.title,
+        popupEnabled: featureLayer.popupEnabled,
+        hasSource: !!featureLayer.source,
+        sourceCount: (featureLayer.source as any)?.length
+      });
       
       } catch (featureLayerError) {
         console.error('[AnalysisEngine] Failed to create FeatureLayer:', featureLayerError);
@@ -2042,6 +2052,58 @@ const EnhancedGeospatialChat = memo(({
         layerInMap: mapView?.map?.layers?.includes(featureLayer),
         layerLoaded: featureLayer.loaded,
         layerLoadError: featureLayer.loadError
+      });
+
+      // 🎯 CRITICAL FIX: Create legend data from the actual renderer like the working system does
+      try {
+        const { formatLegendDataFromRenderer } = await import('@/utils/legend-formatter');
+        const renderer = featureLayer.renderer;
+        
+        if (renderer) {
+          console.log('[AnalysisEngine] 🎯 Creating legend from renderer:', {
+            rendererType: renderer.type,
+            hasRenderer: !!renderer
+          });
+          
+          const legendItems = formatLegendDataFromRenderer(renderer);
+          
+          if (legendItems && legendItems.length > 0) {
+            // Create proper title from targetVariable
+            const legendTitle = data.targetVariable ? 
+              data.targetVariable.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 
+              'Analysis Result';
+            
+            const legendData = {
+              title: legendTitle,
+              items: legendItems.map(item => ({
+                label: item.label,
+                color: item.color,
+                value: item.minValue
+              }))
+            };
+            
+            console.log('[AnalysisEngine] 🎯 Setting legend data from renderer:', {
+              title: legendTitle,
+              itemCount: legendItems.length,
+              firstItem: legendItems[0]
+            });
+            
+            setFormattedLegendData(legendData);
+          } else {
+            console.warn('[AnalysisEngine] 🚨 formatLegendDataFromRenderer returned empty array');
+          }
+        } else {
+          console.warn('[AnalysisEngine] 🚨 No renderer found on feature layer');
+        }
+      } catch (legendError) {
+        console.error('[AnalysisEngine] 🚨 Failed to create legend from renderer:', legendError);
+      }
+
+      // 🎯 CRITICAL: CustomPopupManager will be automatically attached when layer is added to featureLayers state
+      console.log('[AnalysisEngine] 🎯 Layer ready for CustomPopupManager integration:', {
+        layerId: featureLayer.id,
+        popupEnabled: featureLayer.popupEnabled,
+        title: featureLayer.title
       });
 
       // 🎯 AUTO-ZOOM: Zoom to fit displayed features when showing subset of data
@@ -3431,8 +3493,16 @@ const EnhancedGeospatialChat = memo(({
       const createdLayer = await applyAnalysisEngineVisualization(visualization, visualizationData, currentMapView);
       
       // Pass the created layer to the callback
+      console.log('[AnalysisEngine] Layer creation result:', {
+        hasLayer: !!createdLayer,
+        layerId: createdLayer?.id,
+        layerTitle: createdLayer?.title,
+        layerType: createdLayer?.type
+      });
+      
       if (createdLayer) {
         console.log('[AnalysisEngine] ✅ Visualization layer created successfully:', createdLayer.title);
+        console.log('[AnalysisEngine] Calling onVisualizationLayerCreated with layer:', createdLayer.id);
         onVisualizationLayerCreated(createdLayer, true);
         
         // CRITICAL FIX: Update features state with processed competitive scores
@@ -3472,11 +3542,13 @@ const EnhancedGeospatialChat = memo(({
 
 
       // Create legend from AnalysisEngine result
-      if (visualization.legend) {
-        console.log('[AnalysisEngine] Processing legend:', visualization.legend);
+      // Fix: Support both nested and top-level legend property from VisualizationRenderer
+      const legendSource = visualization.legend || (visualization as any).legend;
+      if (legendSource) {
+        console.log('[AnalysisEngine] Processing legend:', legendSource);
         
         let legendData;
-        if ((visualization.legend as any).components) {
+        if ((legendSource as any).components) {
           // Dual-variable format with components array
           legendData = {
             title: visualization.legend.title,
@@ -4227,6 +4299,10 @@ const EnhancedGeospatialChat = memo(({
         
         if (visualizationLayer) {
           console.log('[UnifiedWorkflow] ✅ Visualization applied successfully');
+          
+          // CRITICAL FIX: Call onVisualizationLayerCreated to trigger CustomPopupManager
+          console.log('[UnifiedWorkflow] Calling onVisualizationLayerCreated for CustomPopupManager integration');
+          onVisualizationLayerCreated(visualizationLayer, true);
           
           // Zoom to features if requested
           if (analysisResult.data.shouldZoom && analysisResult.data.extent) {

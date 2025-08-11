@@ -1,9 +1,9 @@
 {
-  "export_date": "2025-07-20 09:31:23",
-  "source_service": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Vetements_layers/FeatureServer/39",
+  "export_date": "2025-08-11 08:59:38",
+  "source_service": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/14",
   "output_file": "public/data/boundaries/zip_boundaries.json",
-  "file_size_mb": 15.7,
-  "total_features": 3983,
+  "file_size_mb": 6.2,
+  "total_features": 984,
   "geometry_type": "Polygon",
   "spatial_reference": "EPSG:4326"
 }

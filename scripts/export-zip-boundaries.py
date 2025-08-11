@@ -14,8 +14,8 @@ import requests
 import time
 from pathlib import Path
 
-# ZIP Code boundaries service URL (from AITab.tsx)
-ZIP_BOUNDARIES_SERVICE = "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Vetements_layers/FeatureServer/39"
+# ZIP Code boundaries service URL - Updated for HRB project 
+ZIP_BOUNDARIES_SERVICE = "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/14"
 
 def export_zip_boundaries():
     """Export ZIP Code polygon boundaries to local cache file"""

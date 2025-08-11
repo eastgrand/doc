@@ -1,24 +1,1413 @@
+Navigated to http://localhost:3000/
+vendors-node_modules_next_d.css?v=1754933497415:5 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_d.css?v=1754933497415:5:1)
+vendors-node_modules_next_dist_client_a.js?v=1754933497415:490 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_dist_client_a.js?v=1754933497415:490:29)
+Navigated to http://localhost:3000/map
+vendors-node_modules_next_d.css?v=1754933586240:5 Uncaught SyntaxError: Invalid or unexpected token (at vendors-node_modules_next_d.css?v=1754933586240:5:1)
+vendors-node_modules_next_dist_cl.js?v=1754933586240:242 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+MapClient.tsx:55 [MapClient MapLegend] Rendering legend: {title: '', type: 'simple', visible: false, itemCount: 0, sampleItems: Array(0)}
+MapClient.tsx:325 [MapClient] Starting map initialization...
+vendors-node_modules_c.js?v=1754933586240:2466 Using Calcite Components 3.2.1 [Date: 2025-05-29, Revision: 618973fec]
+MapClient.tsx:337 [MapClient] ArcGIS modules loaded successfully
+MapClient.tsx:341 [MapClient] API key set: true
+MapClient.tsx:344 [MapClient] Creating map with light grey basemap...
+MapClient.tsx:348 [MapClient] Map created successfully
+MapClient.tsx:356 [MapClient] Creating MapView...
+MapClient.tsx:372 [MapClient] MapView created, waiting for it to be ready...
+MapClient.tsx:386 [MapClient] MapView is ready
+MapClient.tsx:398 [MapClient] Calling onMapLoad...
+MapClient.tsx:400 [MapClient] Map initialization complete
+layerConfigAdapter.ts:91 [Adapter] Final generated config: {layerCount: 16, groupCount: 1, groups: {…}}
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 0, internalProgress: 0}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LayerController.tsx:638 [LayerController] View or config changed, resetting initialization state
+LayerController.tsx:658 [LayerController] Starting initialization for: -["population"]
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_0
+layerConfigAdapter.ts:91 [Adapter] Final generated config: {layerCount: 16, groupCount: 1, groups: {…}}
+LayerController.tsx:638 [LayerController] View or config changed, resetting initialization state
+LayerController.tsx:658 [LayerController] Starting initialization for: -["population"]
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_0
+MapWidgets.tsx:289 MapWidgets initialization - creating all widgets immediately
+MapWidgets.tsx:301 Search widget initialized
+MapWidgets.tsx:319 Print widget initialized
+MapWidgets.tsx:346 Bookmarks widget initialized
+MapWidgets.tsx:353 [esri.widgets.BasemapGallery] 🛑 DEPRECATED - This widget is deprecated. Use the Basemap Gallery component instead.
+	🛠️ Replacement: <arcgis-basemap-gallery></arcgis-basemap-gallery>
+	⚙️ Version: 4.32
+	🔗 See for more details:
+		Basemap Gallery component reference: https://www.esriurl.com/arcgis-basemap-gallery/
+		Esri's move to web components: https://www.esriurl.com/components-transition-plan/
+i @ Logger.js:136
+_log @ Logger.js:99
+warn @ Logger.js:37
+n @ deprecate.js:22
+p @ deprecate.js:79
+r @ deprecate.js:27
+w @ BasemapGallery.js:215
+BasemapGallery @ subclass.js:33
+eval @ MapWidgets.tsx:353
+Promise.then
+when @ Promise.js:77
+when @ View.js:324
+eval @ MapWidgets.tsx:291
+commitHookEffectListMount @ react-dom.development.js:21102
+commitHookPassiveMountEffects @ react-dom.development.js:23154
+commitPassiveMountOnFiber @ react-dom.development.js:23259
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23267
+commitPassiveMountEffects @ react-dom.development.js:23225
+flushPassiveEffectsImpl @ react-dom.development.js:26497
+flushPassiveEffects @ react-dom.development.js:26438
+eval @ react-dom.development.js:26172
+workLoop @ scheduler.development.js:256
+flushWork @ scheduler.development.js:225
+performWorkUntilDeadline @ scheduler.development.js:534
+MapWidgets.tsx:359 BasemapGallery widget initialized
+MapWidgets.tsx:363 All widgets initialized successfully
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_0
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_0
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_0: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_0, field: GENALPHACY_P
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_0
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_0
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_0: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_0, field: GENALPHACY_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'GENALPHACY_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'GENALPHACY_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ConfigurationManager.ts:35 [ConfigurationManager] Creating singleton instance...
+ConfigurationManager.ts:59 [ConfigurationManager] Loading configurations...
+ConfigurationManager.ts:69 [ConfigurationManager] ✅ Singleton loaded configurations for 16 endpoints
+AITab.tsx:47 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
+AITab.tsx:92 [AITab] DataSource configuration: {hasFirstLayer: false, firstLayerUrl: undefined, firstLayerId: undefined, extractedLayerNumber: null, constructedServiceUrl: null, …}
+geospatial-chat-interface.tsx:259 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:276 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+AnalysisEngine.ts:97 [AnalysisEngine] Creating singleton instance...
+CachedEndpointRouter.ts:24 [CachedEndpointRouter] Initialized with enhanced query analyzer
+DataProcessor.ts:410 [DataProcessor] Initialized 22 specialized processors
+VisualizationRenderer.ts:331 [VisualizationRenderer] Initialized 5 specialized renderers
+CachedEndpointRouter.ts:24 [CachedEndpointRouter] Initialized with enhanced query analyzer
+MultiEndpointRouter.ts:35 [MultiEndpointRouter] Initialized with multi-endpoint support
+MultiEndpointAnalysisEngine.ts:74 [MultiEndpointAnalysisEngine] Initialized with multi-endpoint capabilities
+AnalysisEngine.ts:74 [AnalysisEngine] Multi-endpoint system enabled
+AnalysisEngine.ts:79 [AnalysisEngine] Clustering system initialized
+AnalysisEngine.ts:84 [AnalysisEngine] Initialized with multi-endpoint support: {multiEndpointEnabled: true, config: {…}}
+geospatial-chat-interface.tsx:4414 [GeospatialChat] isInfographicsOpen: false
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'GENALPHACY_P' value: 7.97
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'GENALPHACY_P' value: 7.97
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+geospatial-chat-interface.tsx:404 [ENDPOINT CHANGE] 🎯 Endpoint state changed: {selectedEndpoint: 'auto', lastAnalysisEndpoint: null, timestamp: '2025-08-11T17:33:49.985Z'}
+geospatial-chat-interface.tsx:429 [ENDPOINT CHANGE] 🎯 Clustering button should be: {clusteringSupported: true, disabledReason: '', buttonState: 'ENABLED', decisionPath: 'AUTO_NO_HISTORY'}
+geospatial-chat-interface.tsx:444 [DEBUG] Features state changed: {count: 0, timestamp: '2025-08-11T17:33:49.988Z', firstFeatureKeys: 'no features', hasCachedSummary: false}
+geospatial-chat-interface.tsx:528 [DEBUG] Target button state changed: {currentTarget: 'MP30034A_B_P', targetIconName: 'SiNike', targetLabel: undefined, inputQuery: '', timestamp: '2025-08-11T17:33:49.988Z'}
+geospatial-chat-interface.tsx:544 [GeospatialChat] Features useEffect triggered: {featuresIsArray: true, featuresLength: 0, isProcessing: false, firstFeature: null}
+geospatial-chat-interface.tsx:259 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:276 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:4414 [GeospatialChat] isInfographicsOpen: false
+warn-once.js:16 Image with src "/mpiq_pin2.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+warnOnce @ warn-once.js:16
+eval @ image-component.js:112
+Promise.then
+handleLoading @ image-component.js:37
+onLoad @ image-component.js:198
+callCallback @ react-dom.development.js:20565
+invokeGuardedCallbackImpl @ react-dom.development.js:20614
+invokeGuardedCallback @ react-dom.development.js:20689
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
+executeDispatch @ react-dom.development.js:32128
+processDispatchQueueItemsInOrder @ react-dom.development.js:32160
+processDispatchQueue @ react-dom.development.js:32173
+dispatchEventsForPlugins @ react-dom.development.js:32184
+eval @ react-dom.development.js:32374
+batchedUpdates$1 @ react-dom.development.js:24953
+batchedUpdates @ react-dom.development.js:28844
+dispatchEventForPluginEventSystem @ react-dom.development.js:32373
+dispatchEvent @ react-dom.development.js:30141
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_0
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_1
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 6.25, internalProgress: 0}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 6.25, internalProgress: 6.25}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_0
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_1
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_1
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_1
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_1: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_1, field: GENZ_CY_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'GENZ_CY_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_1
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_1
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_1: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_1, field: GENZ_CY_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'GENZ_CY_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'GENZ_CY_P' value: 10.49
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'GENZ_CY_P' value: 10.49
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_1
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_2
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 12.5, internalProgress: 6.25}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 12.5, internalProgress: 12.5}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_1
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_2
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_2
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_2
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_2: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_2, field: MP10120A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10120A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_2
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_2
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_2: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_2, field: MP10120A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10120A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10120A_B_P' value: 7.29
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10120A_B_P' value: 7.29
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_2
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_3
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_2
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_3
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 18.75, internalProgress: 12.5}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 18.75, internalProgress: 18.75}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_3
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_3
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_3: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_3, field: MP10110A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10110A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_3
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_3
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_3: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_3, field: MP10110A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10110A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10110A_B_P' value: 21.09
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10110A_B_P' value: 21.09
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_3
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_4
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_3
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_4
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 25, internalProgress: 18.75}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 25, internalProgress: 25}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_4
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_4
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_4: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_4, field: MP10002A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10002A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_4
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_4
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_4: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_4, field: MP10002A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10002A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10002A_B_P' value: 15.49
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10002A_B_P' value: 15.49
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_4
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_5
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 31.25, internalProgress: 25}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 31.25, internalProgress: 31.25}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_4
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_5
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_5
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_5
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_5: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_5, field: MP10138A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10138A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_5
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_5
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_5: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_5, field: MP10138A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10138A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10138A_B_P' value: 3.45
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10138A_B_P' value: 3.45
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_5
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_6
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 37.5, internalProgress: 31.25}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 37.5, internalProgress: 37.5}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_5
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_6
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_6
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_6
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_6: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_6, field: MP10028A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10028A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_6
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_6
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_6: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_6, field: MP10028A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10028A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10028A_B_P' value: 5.75
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10028A_B_P' value: 5.75
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_6
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_7
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_6
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_7
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 43.75, internalProgress: 37.5}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 43.75, internalProgress: 43.75}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_7
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_7
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_7: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_7, field: MP10020A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10020A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_7
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_7
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_7: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_7, field: MP10020A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10020A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10020A_B_P' value: 76.96
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10020A_B_P' value: 76.96
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_7
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_8
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_7
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_8
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 50, internalProgress: 43.75}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 50, internalProgress: 50}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_8
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_8
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_8: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_8, field: MP10116A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10116A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_8
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_8
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_8: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_8, field: MP10116A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10116A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10116A_B_P' value: 16.73
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10116A_B_P' value: 16.73
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_8
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_9
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_8
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_9
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 56.25, internalProgress: 50}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 56.25, internalProgress: 56.25}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_9
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_9
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_9: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_9, field: MP10104A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10104A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_9
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_9
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_9: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_9, field: MP10104A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10104A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10104A_B_P' value: 11.99
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10104A_B_P' value: 11.99
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_9
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_10
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_9
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_10
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 62.5, internalProgress: 56.25}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 62.5, internalProgress: 62.5}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_10
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_10
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_10: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_10, field: MP10128A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10128A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_10
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_10
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_10: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_10, field: MP10128A_B_P
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10128A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10128A_B_P' value: 2.53
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10128A_B_P' value: 2.53
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_10
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_11
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 68.75, internalProgress: 62.5}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 68.75, internalProgress: 68.75}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_10
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_11
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_11
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_11
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_11: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_11, field: X14068_X
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14068_X'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_11
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_11
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_11: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_11, field: X14068_X
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14068_X'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14068_X' value: 43987093
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14068_X' value: 43987093
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_11
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_12
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_11
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_12
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 75, internalProgress: 68.75}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 75, internalProgress: 75}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_12
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_12
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_12: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_12, field: X14060_X
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14060_X'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_12
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_12
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_12: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_12, field: X14060_X
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14060_X'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14060_X' value: 773692677
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14060_X' value: 773692677
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_12
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_13
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_12
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_13
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 81.25, internalProgress: 75}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 81.25, internalProgress: 81.25}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_13
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_13
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_13: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_13, field: X14058_X
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14058_X'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_13
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_13
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_13: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_13, field: X14058_X
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14058_X'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14058_X' value: 1146176901
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14058_X' value: 1146176901
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_13
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_14
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 87.5, internalProgress: 81.25}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 87.5, internalProgress: 87.5}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_13
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_14
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_14
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_14
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_14: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'pointCount', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_14, field: pointCount
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'pointCount'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'pointCount', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_14
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_14
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_14: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'pointCount', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_14, field: pointCount
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'pointCount'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'pointCount', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'pointCount', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'pointCount' value: 1
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'pointCount', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'pointCount' value: 1
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_14
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_15
+utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_14
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_15
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 93.75, internalProgress: 87.5}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 93.75, internalProgress: 93.75}
+LoadingModal.tsx:27 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_15
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_15
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_15: (19) ['OBJECTID', 'name', 'address', 'locality', 'region', 'postcode', 'country', 'fsq_category', 'fsq_category_all', 'INDUSTRY_DESC', 'source', 'esri_pid', 'DESC_', 'LATITUDE', 'LONGITUDE', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_15, field: esri_pid
+createQuartileRenderer.ts:143 [createQuartileRenderer] Skipping system field: esri_pid
+createQuartileRenderer @ createQuartileRenderer.ts:143
+createLayer @ utils.ts:84
+await in createLayer
+eval @ LayerController.tsx:548
+await in eval
+eval @ LayerController.tsx:660
+commitHookEffectListMount @ react-dom.development.js:21102
+commitHookPassiveMountEffects @ react-dom.development.js:23154
+commitPassiveMountOnFiber @ react-dom.development.js:23259
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23267
+commitPassiveMountEffects @ react-dom.development.js:23225
+flushPassiveEffectsImpl @ react-dom.development.js:26497
+flushPassiveEffects @ react-dom.development.js:26438
+eval @ react-dom.development.js:26172
+workLoop @ scheduler.development.js:256
+flushWork @ scheduler.development.js:225
+performWorkUntilDeadline @ scheduler.development.js:534
+utils.ts:98 ⚠️ No renderer returned for layer: Unknown_Service_layer_15, using default styling
+createLayer @ utils.ts:98
+await in createLayer
+eval @ LayerController.tsx:548
+await in eval
+eval @ LayerController.tsx:660
+commitHookEffectListMount @ react-dom.development.js:21102
+commitHookPassiveMountEffects @ react-dom.development.js:23154
+commitPassiveMountOnFiber @ react-dom.development.js:23259
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23267
+commitPassiveMountEffects @ react-dom.development.js:23225
+flushPassiveEffectsImpl @ react-dom.development.js:26497
+flushPassiveEffects @ react-dom.development.js:26438
+eval @ react-dom.development.js:26172
+workLoop @ scheduler.development.js:256
+flushWork @ scheduler.development.js:225
+performWorkUntilDeadline @ scheduler.development.js:534
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_15
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_15
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_15: (19) ['OBJECTID', 'name', 'address', 'locality', 'region', 'postcode', 'country', 'fsq_category', 'fsq_category_all', 'INDUSTRY_DESC', 'source', 'esri_pid', 'DESC_', 'LATITUDE', 'LONGITUDE', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_15, field: esri_pid
+createQuartileRenderer.ts:143 [createQuartileRenderer] Skipping system field: esri_pid
+createQuartileRenderer @ createQuartileRenderer.ts:143
+createLayer @ utils.ts:84
+await in createLayer
+eval @ LayerController.tsx:548
+await in eval
+eval @ LayerController.tsx:660
+commitHookEffectListMount @ react-dom.development.js:21102
+commitHookPassiveMountEffects @ react-dom.development.js:23154
+commitPassiveMountOnFiber @ react-dom.development.js:23259
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23267
+commitPassiveMountEffects @ react-dom.development.js:23225
+flushPassiveEffectsImpl @ react-dom.development.js:26497
+flushPassiveEffects @ react-dom.development.js:26438
+performSyncWorkOnRoot @ react-dom.development.js:24870
+flushSyncWorkAcrossRoots_impl @ react-dom.development.js:7758
+flushSyncWorkOnAllRoots @ react-dom.development.js:7718
+commitRootImpl @ react-dom.development.js:26369
+commitRoot @ react-dom.development.js:26077
+commitRootWhenReady @ react-dom.development.js:24749
+finishConcurrentRender @ react-dom.development.js:24714
+performConcurrentWorkOnRoot @ react-dom.development.js:24559
+workLoop @ scheduler.development.js:256
+flushWork @ scheduler.development.js:225
+performWorkUntilDeadline @ scheduler.development.js:534
+utils.ts:98 ⚠️ No renderer returned for layer: Unknown_Service_layer_15, using default styling
+createLayer @ utils.ts:98
+await in createLayer
+eval @ LayerController.tsx:548
+await in eval
+eval @ LayerController.tsx:660
+commitHookEffectListMount @ react-dom.development.js:21102
+commitHookPassiveMountEffects @ react-dom.development.js:23154
+commitPassiveMountOnFiber @ react-dom.development.js:23259
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23267
+commitPassiveMountEffects @ react-dom.development.js:23225
+flushPassiveEffectsImpl @ react-dom.development.js:26497
+flushPassiveEffects @ react-dom.development.js:26438
+performSyncWorkOnRoot @ react-dom.development.js:24870
+flushSyncWorkAcrossRoots_impl @ react-dom.development.js:7758
+flushSyncWorkOnAllRoots @ react-dom.development.js:7718
+commitRootImpl @ react-dom.development.js:26369
+commitRoot @ react-dom.development.js:26077
+commitRootWhenReady @ react-dom.development.js:24749
+finishConcurrentRender @ react-dom.development.js:24714
+performConcurrentWorkOnRoot @ react-dom.development.js:24559
+workLoop @ scheduler.development.js:256
+flushWork @ scheduler.development.js:225
+performWorkUntilDeadline @ scheduler.development.js:534
+AITab.tsx:47 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
+AITab.tsx:92 [AITab] DataSource configuration: {hasFirstLayer: true, firstLayerUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…ervices/Synapse54__ca07eefffe5b4914/FeatureServer', firstLayerId: 'Unknown_Service_layer_0', extractedLayerNumber: '0', constructedServiceUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…vices/Synapse54__ca07eefffe5b4914/FeatureServer/0', …}
+geospatial-chat-interface.tsx:259 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:276 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:4414 [GeospatialChat] isInfographicsOpen: false
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Generation Alpha Pop
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Generation Z Pop
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Used Google Pay Digital Payment Svc
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Used Apple Pay Digital Payment Svc
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Used Bank of America Bank 12 Mo
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Own Cryptocurrency Investment
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Have Personal Line of Credit
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Have Savings Account
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Carry Credit Card Balance 3-Usually Always
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Used TurboTax Online to Prepare Taxes
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Used H&R Block Online to Prepare Taxes
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Value of Credit Card Debt
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Value of Checking Savings Money Mkt CD
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: Value of Stocks Bonds Mutual Funds
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: H&R Block by ZIP
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
+CustomPopupManager.tsx:76 [CustomPopupManager] Applying standardized popup to layer: H&R Block points
+CustomPopupManager.tsx:106 [CustomPopupManager] ✅ Successfully applied standardized popup
 UnifiedAreaSelector.tsx:154 [UnifiedAreaSelector] Starting drawing mode: point
 useDrawing.ts:188 Using view.graphics directly
 useDrawing.ts:531 Graphics available for drawing: true
-useDrawing.ts:546 [Click Event] Point selected at coordinates: X: -9102308.682064593, Y: 3544057.2853744025, WKID: 102100
+useDrawing.ts:546 [Click Event] Point selected at coordinates: X: -9102521.869713794, Y: 3544502.769929877, WKID: 102100
 useDrawing.ts:188 Using view.graphics directly
 UnifiedAreaSelector.tsx:105 [UnifiedAreaSelector] Geometry created: point
-UnifiedAnalysisWorkflow.tsx:135 [UnifiedWorkflow] Point selected at coordinates: X: -9102308.682064593, Y: 3544057.2853744025, WKID: 102100
-UnifiedAnalysisWorkflow.tsx:137 [UnifiedWorkflow] Point extent: null
-UnifiedAnalysisWorkflow.tsx:347 [UnifiedWorkflow] Buffer complete, apply: true
-UnifiedAnalysisWorkflow.tsx:351 [UnifiedWorkflow] Original point before buffering: X: -9102308.682064593, Y: 3544057.2853744025, WKID: 102100
-UnifiedAnalysisWorkflow.tsx:273 [Buffer Creation] Starting buffer creation for geometry type: point
-UnifiedAnalysisWorkflow.tsx:280 [Buffer Creation] Original point coordinates: X: -9102308.682064593, Y: 3544057.2853744025, WKID: 102100
-UnifiedAnalysisWorkflow.tsx:285 [Buffer Creation] Distance conversion: 10 miles = 16093.4 meters
-UnifiedAnalysisWorkflow.tsx:289 [Buffer Creation] View spatial reference WKID: 102100
-UnifiedAnalysisWorkflow.tsx:299 [Buffer Creation] No projection needed - coordinates match
-UnifiedAnalysisWorkflow.tsx:302 [Buffer Creation] Creating Circle with center: X: -9102308.682064593, Y: 3544057.2853744025, radius: 16093.4m
-UnifiedAnalysisWorkflow.tsx:312 [Buffer Creation] Circle created with extent: xmin: -9118402.082064593, ymin: 3527963.8853744026, xmax: -9086215.282064592, ymax: 3560150.6853744024
-UnifiedAnalysisWorkflow.tsx:368 [UnifiedWorkflow] Buffer created - Distance: 10 miles Type: radius
-UnifiedAnalysisWorkflow.tsx:370 [UnifiedWorkflow] Buffer extent: xmin: -9118402.082064593, ymin: 3527963.8853744026, xmax: -9086215.282064592, ymax: 3560150.6853744024
-UnifiedAnalysisWorkflow.tsx:372 [UnifiedWorkflow] Buffer center coordinates: X: -9102308.682064593, Y: 3544057.2853744025
-UnifiedAnalysisWorkflow.tsx:375 [UnifiedWorkflow] Buffer spatial reference: 102100
+UnifiedAnalysisWorkflow.tsx:136 [UnifiedWorkflow] Point selected at coordinates: X: -9102521.869713794, Y: 3544502.769929877, WKID: 102100
+UnifiedAnalysisWorkflow.tsx:138 [UnifiedWorkflow] Point extent: null
+UnifiedAnalysisWorkflow.tsx:365 [UnifiedWorkflow] Buffer complete, apply: true
+UnifiedAnalysisWorkflow.tsx:369 [UnifiedWorkflow] Original point before buffering: X: -9102521.869713794, Y: 3544502.769929877, WKID: 102100
+UnifiedAnalysisWorkflow.tsx:291 [Buffer Creation] Starting buffer creation for geometry type: point
+UnifiedAnalysisWorkflow.tsx:298 [Buffer Creation] Original point coordinates: X: -9102521.869713794, Y: 3544502.769929877, WKID: 102100
+UnifiedAnalysisWorkflow.tsx:303 [Buffer Creation] Distance conversion: 10 miles = 16093.4 meters
+UnifiedAnalysisWorkflow.tsx:307 [Buffer Creation] View spatial reference WKID: 102100
+UnifiedAnalysisWorkflow.tsx:317 [Buffer Creation] No projection needed - coordinates match
+UnifiedAnalysisWorkflow.tsx:320 [Buffer Creation] Creating Circle with center: X: -9102521.869713794, Y: 3544502.769929877, radius: 16093.4m
+UnifiedAnalysisWorkflow.tsx:330 [Buffer Creation] Circle created with extent: xmin: -9118615.269713795, ymin: 3528409.369929877, xmax: -9086428.469713794, ymax: 3560596.169929877
+UnifiedAnalysisWorkflow.tsx:386 [UnifiedWorkflow] Buffer created - Distance: 10 miles Type: radius
+UnifiedAnalysisWorkflow.tsx:388 [UnifiedWorkflow] Buffer extent: xmin: -9118615.269713795, ymin: 3528409.369929877, xmax: -9086428.469713794, ymax: 3560596.169929877
+UnifiedAnalysisWorkflow.tsx:390 [UnifiedWorkflow] Buffer center coordinates: X: -9102521.869713794, Y: 3544502.769929877
+UnifiedAnalysisWorkflow.tsx:393 [UnifiedWorkflow] Buffer spatial reference: 102100
 index.mjs:468 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
 eval @ index.mjs:468
 commitHookEffectListMount @ react-dom.development.js:21102
@@ -221,15 +1610,17 @@ commitPassiveMountOnFiber @ react-dom.development.js:23370
 recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
 commitPassiveMountOnFiber @ react-dom.development.js:23256
 SpatialFilterConfig.ts:11 [SpatialFilterConfig] Using configured spatial reference layer: Unknown_Service_layer_0
-UnifiedAnalysisWorkflow.tsx:180 [UnifiedWorkflow] Using spatial reference layer: {layerId: 'Unknown_Service_layer_0', geometryType: 'polygon', method: 'service-area'}
-UnifiedAnalysisWorkflow.tsx:189 [UnifiedAnalysisWorkflow] Analysis request preparation: {shouldApplySpatialFilter: true, areaSelectionMethod: 'service-area', hasGeometry: true, geometryType: 'polygon'}
-UnifiedAnalysisWorkflow.tsx:210 [UnifiedWorkflow] Starting analysis with spatial context: {hasGeometry: true, geometryType: 'polygon', hasView: true, layerId: 'Unknown_Service_layer_0'}
-UnifiedAnalysisWrapper.tsx:83 [UnifiedAnalysisWrapper] Processing request: {analysisType: 'query', hasGeometry: true, query: 'Show me the top strategic markets for H&R Block ta'}
-UnifiedAnalysisWrapper.tsx:156 [UnifiedAnalysisWrapper] Applying spatial filter with geometry: {geometryType: 'polygon', geometryMethod: 'service-area', layerId: 'Unknown_Service_layer_0'}
-SpatialFilterService.ts:64 [SpatialFilter] Spatial reference info: {queryGeometrySR: 102100, layerSR: 102100, viewSR: 102100}
-SpatialFilterService.ts:98 [SpatialFilter] Executing spatial query: {layerId: 'Unknown_Service_layer_0', geometryType: 'polygon', spatialRelationship: 'intersects', outFields: Array(1), geometryExtent: {…}, …}
-SpatialFilterService.ts:118 [SpatialFilter] Found 19 features
-UnifiedAnalysisWrapper.tsx:180 [UnifiedAnalysisWrapper] Spatial filter found 19 features
+UnifiedAnalysisWorkflow.tsx:181 [UnifiedWorkflow] Using spatial reference layer: {layerId: 'Unknown_Service_layer_0', geometryType: 'polygon', method: 'service-area'}
+UnifiedAnalysisWorkflow.tsx:190 [UnifiedAnalysisWorkflow] Analysis request preparation: {shouldApplySpatialFilter: true, areaSelectionMethod: 'service-area', hasGeometry: true, geometryType: 'polygon'}
+UnifiedAnalysisWorkflow.tsx:201 [UnifiedAnalysisWorkflow] Querying area IDs for spatial filtering...
+SpatialFilterService.ts:29 [SpatialFilter] Using reference layer: Unknown_Service_layer_0 -> https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/0
+SpatialFilterService.ts:55 [SpatialFilter] Querying area IDs from reference service: https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/0
+SpatialFilterService.ts:56 [SpatialFilter] Query geometry details: {type: 'polygon', spatialReference: 102100, geometryJSON: '{"spatialReference":{"latestWkid":3857,"wkid":1021…49116145,3541156.7639248706],[-9087216.1367744...'}
+SpatialFilterService.ts:87 [SpatialFilter] ArcGIS response: {success: true, error: undefined, featureCount: 19, responseKeys: Array(7)}
+SpatialFilterService.ts:100 [SpatialFilter] Found 19 area IDs in spatial selection: (10) ['32205', '32244', '32219', '32208', '32254', '32209', '32202', '32212', '32206', '32222']
+UnifiedAnalysisWorkflow.tsx:206 [UnifiedAnalysisWorkflow] Found 19 area IDs for spatial filter: (10) ['32205', '32244', '32219', '32208', '32254', '32209', '32202', '32212', '32206', '32222']
+UnifiedAnalysisWorkflow.tsx:228 [UnifiedWorkflow] Starting analysis with spatial context: {hasGeometry: true, geometryType: 'polygon', hasView: true, layerId: 'Unknown_Service_layer_0'}
+UnifiedAnalysisWrapper.tsx:84 [UnifiedAnalysisWrapper] Processing request: {analysisType: 'query', hasGeometry: true, query: 'Show me the top strategic markets for H&R Block ta'}
 AnalysisEngine.ts:119 [AnalysisEngine] Starting analysis: "Show me the top strategic markets for H&R Block tax service expansion"
 AnalysisEngine.ts:125 [AnalysisEngine] Using frontend cache as primary data source
 CachedEndpointRouter.ts:31 🔥 [CachedEndpointRouter] selectEndpoint called with query: "Show me the top strategic markets for H&R Block tax service expansion"
@@ -249,147 +1640,283 @@ CachedEndpointRouter.ts:230 [CachedEndpointRouter] Called with options: {cluster
 CachedEndpointRouter.ts:291 [CachedEndpointRouter] Looking for dataset with key: "strategic-analysis"
 blob-data-loader.ts:69 ✅ Loaded strategic-analysis from blob storage
 CachedEndpointRouter.ts:297 [CachedEndpointRouter] ✅ Loaded data for strategic-analysis from blob storage
-CachedEndpointRouter.ts:423 [CachedEndpointRouter] Processing wrapped format with 3983 records
-CachedEndpointRouter.ts:436 [CachedEndpointRouter] Processed 3983 cached records
-CachedEndpointRouter.ts:243 [CachedEndpointRouter] Loaded 3983 records from cache in 692ms
+CachedEndpointRouter.ts:423 [CachedEndpointRouter] Processing wrapped format with 984 records
+CachedEndpointRouter.ts:436 [CachedEndpointRouter] Processed 984 cached records
+CachedEndpointRouter.ts:243 [CachedEndpointRouter] Loaded 984 records from cache in 466ms
 DataProcessor.ts:77 [DataProcessor] Applying spatial filter: 19 allowed features
-DataProcessor.ts:78 [DataProcessor] Spatial filter IDs sample: (5) ['207', '208', '209', '210', '211']
-DataProcessor.ts:89 [DataProcessor] Sample data record IDs: {ID: '11234', OBJECTID: undefined, allKeys: Array(5)}
-DataProcessor.ts:116 [DataProcessor] Spatial filter applied: {originalRecords: 3983, filteredRecords: 0, retainedPercentage: '0.0%', matchedIds: 0}
-DataProcessor.ts:125 [DataProcessor] No records matched spatial filter!
-window.console.error @ app-index.js:33
-console.error @ hydration-error-info.js:63
-processResultsWithGeographicAnalysis @ DataProcessor.ts:125
-await in processResultsWithGeographicAnalysis
-executeAnalysis @ AnalysisEngine.ts:226
-await in executeAnalysis
-processQueryAnalysis @ UnifiedAnalysisWrapper.tsx:234
-await in processQueryAnalysis
-processUnifiedRequest @ UnifiedAnalysisWrapper.tsx:95
-eval @ UnifiedAnalysisWorkflow.tsx:218
-await in eval
-onClick @ UnifiedAnalysisWorkflow.tsx:789
-callCallback @ react-dom.development.js:20565
-invokeGuardedCallbackImpl @ react-dom.development.js:20614
-invokeGuardedCallback @ react-dom.development.js:20689
-invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
-executeDispatch @ react-dom.development.js:32128
-processDispatchQueueItemsInOrder @ react-dom.development.js:32160
-processDispatchQueue @ react-dom.development.js:32173
-dispatchEventsForPlugins @ react-dom.development.js:32184
-eval @ react-dom.development.js:32374
-batchedUpdates$1 @ react-dom.development.js:24953
-batchedUpdates @ react-dom.development.js:28844
-dispatchEventForPluginEventSystem @ react-dom.development.js:32373
-dispatchEvent @ react-dom.development.js:30141
-dispatchDiscreteEvent @ react-dom.development.js:30112
-DataProcessor.ts:294 🔥 [DataProcessor] processResults called for endpoint: /strategic-analysis, query: "Show me the top strategic markets for H&R Block tax service expansion"
-DataProcessor.ts:295 🔥 [DataProcessor] Raw data structure: {success: true, resultsLength: 0, firstRecordKeys: Array(0)}
-DataProcessor.ts:305 🔥 [DataProcessor] Using processor: StrategicAnalysisProcessor for endpoint: /strategic-analysis
-StrategicAnalysisProcessor.ts:30 🎯 [STRATEGIC ANALYSIS PROCESSOR] Processing 0 records for strategic expansion analysis
+DataProcessor.ts:78 [DataProcessor] Spatial filter IDs sample: (5) ['32205', '32244', '32219', '32208', '32254']
+DataProcessor.ts:90 [DataProcessor] Sample data record IDs: {ID: 33856, OBJECTID: 720, DESCRIPTION: '33856 (Nalcrest)', extractedId: '33856', allKeys: Array(3)}
+DataProcessor.ts:119 [DataProcessor] Spatial filter applied: {originalRecords: 984, filteredRecords: 19, retainedPercentage: '1.9%', matchedIds: 19}
+DataProcessor.ts:297 🔥 [DataProcessor] processResults called for endpoint: /strategic-analysis, query: "Show me the top strategic markets for H&R Block tax service expansion"
+DataProcessor.ts:298 🔥 [DataProcessor] Raw data structure: {success: true, resultsLength: 19, firstRecordKeys: Array(10)}
+DataProcessor.ts:308 🔥 [DataProcessor] Using processor: StrategicAnalysisProcessor for endpoint: /strategic-analysis
+StrategicAnalysisProcessor.ts:30 🎯 [STRATEGIC ANALYSIS PROCESSOR] Processing 19 records for strategic expansion analysis
 StrategicAnalysisProcessor.ts:75 🚨 [STRATEGIC PROCESSOR] First 5 processed values:
-StrategicAnalysisProcessor.ts:106 🎯 [STRATEGIC RENDERER] Creating direct renderer for 0 records
-StrategicAnalysisProcessor.ts:112 🎯 [STRATEGIC RENDERER] Quartile breaks: (2) [0, 1]
-StrategicAnalysisProcessor.ts:125 🎯 [STRATEGIC RENDERER] Class 1: 0 - 1 -> [215, 48, 39, 0.6]
-StrategicAnalysisProcessor.ts:150 🎯 [STRATEGIC RENDERER] Created renderer: {type: 'class-breaks', field: 'strategic_value_score', classCount: 1, firstClassMinValue: 0, firstClassMaxValue: 1, …}
-DataProcessor.ts:339 🚨🚨🚨 [DataProcessor] Set targetVariable from ConfigurationManager: strategic_value_score 🚨🚨🚨
-DataProcessor.ts:342 [DataProcessor] Successfully processed 0 records using /strategic-analysis processor
-DataProcessor.ts:343 🔥 [DataProcessor] First processed record value: undefined
-DataProcessor.ts:344 🔥 [DataProcessor] First processed record properties: undefined
+StrategicAnalysisProcessor.ts:77 🚨   1. 32212 (Jacksonville): value=84.32, strategic_value_score=84.32
+StrategicAnalysisProcessor.ts:77 🚨   2. 32210 (Jacksonville): value=77.28, strategic_value_score=77.28
+StrategicAnalysisProcessor.ts:77 🚨   3. 32204 (Jacksonville): value=72.52, strategic_value_score=72.52
+StrategicAnalysisProcessor.ts:77 🚨   4. 32202 (Jacksonville): value=69.81, strategic_value_score=69.81
+StrategicAnalysisProcessor.ts:77 🚨   5. 32234 (Jacksonville): value=67, strategic_value_score=67
+StrategicAnalysisProcessor.ts:106 🎯 [STRATEGIC RENDERER] Creating direct renderer for 19 records
+StrategicAnalysisProcessor.ts:112 🎯 [STRATEGIC RENDERER] Quartile breaks: (5) [45.51, 53.49, 58.12, 67, 84.32]
+StrategicAnalysisProcessor.ts:125 🎯 [STRATEGIC RENDERER] Class 1: 45.51 - 53.49 -> [215, 48, 39, 0.6]
+StrategicAnalysisProcessor.ts:125 🎯 [STRATEGIC RENDERER] Class 2: 53.49 - 58.12 -> [253, 174, 97, 0.6]
+StrategicAnalysisProcessor.ts:125 🎯 [STRATEGIC RENDERER] Class 3: 58.12 - 67 -> [166, 217, 106, 0.6]
+StrategicAnalysisProcessor.ts:125 🎯 [STRATEGIC RENDERER] Class 4: 67 - 84.32 -> [26, 152, 80, 0.6]
+StrategicAnalysisProcessor.ts:150 🎯 [STRATEGIC RENDERER] Created renderer: {type: 'class-breaks', field: 'strategic_value_score', classCount: 4, firstClassMinValue: 45.51, firstClassMaxValue: 53.49, …}
+DataProcessor.ts:342 🚨🚨🚨 [DataProcessor] Set targetVariable from ConfigurationManager: strategic_value_score 🚨🚨🚨
+DataProcessor.ts:345 [DataProcessor] Successfully processed 19 records using /strategic-analysis processor
+DataProcessor.ts:346 🔥 [DataProcessor] First processed record value: 84.32
+DataProcessor.ts:347 🔥 [DataProcessor] First processed record properties: {ID: 32212, DESCRIPTION: '32212 (Jacksonville)', OBJECTID: 102, MP10104A_B: 188, MP10104A_B_P: 16.48, …}
 GeoDataManager.ts:52 [GeoDataManager] Initializing comprehensive tri-state geographic database...
 GeoDataManager.ts:81 [GeoDataManager] Comprehensive database initialized with 1160 entities
 GeoAwarenessEngine.ts:561 [GeoAwarenessEngine] Loaded geographic data: {entities: 1160, zipCodes: 8001, aliases: 25}
 GeoAwarenessEngine.ts:105 [GeoAwarenessEngine] Processing geo query: Show me the top strategic markets for H&R Block tax service expansion
 GeoAwarenessEngine.ts:163 🔍 [GEO DEBUG] Parsing query: "Show me the top strategic markets for H&R Block tax service expansion"
 GeoAwarenessEngine.ts:169 🚫 [GEO DEBUG] Query lacks explicit geographic intent - skipping geographic filtering
-AnalysisEngine.ts:235 [AnalysisEngine] Spatial filtering applied: {requestedFeatures: 19, resultFeatures: 0, filterRate: '0.0%'}
-AnalysisEngine.ts:242 [AnalysisEngine] Processed data returned: {type: 'strategic_analysis', recordCount: 0, targetVariable: 'strategic_value_score', firstRecord: 'No records'}
-AnalysisEngine.ts:307 [AnalysisEngine] 🎯 About to create visualization (AFTER clustering): {endpoint: '/strategic-analysis', dataType: 'strategic_analysis', recordCount: 0, isClustered: undefined, hasGeometry: 'NO', …}
-VisualizationRenderer.ts:100 [VisualizationRenderer] Creating visualization for /strategic-analysis with 0 records
+AnalysisEngine.ts:235 [AnalysisEngine] Spatial filtering applied: {requestedFeatures: 19, resultFeatures: 19, filterRate: '100.0%'}
+AnalysisEngine.ts:242 [AnalysisEngine] Processed data returned: {type: 'strategic_analysis', recordCount: 19, targetVariable: 'strategic_value_score', firstRecord: {…}}
+AnalysisEngine.ts:271 🚨🚨🚨 [STRATEGIC DEBUG] AnalysisEngine processed data:
+AnalysisEngine.ts:272 🚨 First 5 processed record values:
+AnalysisEngine.ts:274 🚨   1. 32212 (Jacksonville): value=84.32
+AnalysisEngine.ts:274 🚨   2. 32210 (Jacksonville): value=77.28
+AnalysisEngine.ts:274 🚨   3. 32204 (Jacksonville): value=72.52
+AnalysisEngine.ts:274 🚨   4. 32202 (Jacksonville): value=69.81
+AnalysisEngine.ts:274 🚨   5. 32234 (Jacksonville): value=67
+AnalysisEngine.ts:283 🚨 ✅ AnalysisEngine has distinct values - corruption happens later
+AnalysisEngine.ts:307 [AnalysisEngine] 🎯 About to create visualization (AFTER clustering): {endpoint: '/strategic-analysis', dataType: 'strategic_analysis', recordCount: 19, isClustered: undefined, hasGeometry: 'NO', …}
+VisualizationRenderer.ts:100 [VisualizationRenderer] Creating visualization for /strategic-analysis with 19 records
 VisualizationRenderer.ts:107 [VisualizationRenderer] Data type: strategic_analysis, target variable: strategic_value_score
 VisualizationRenderer.ts:108 [VisualizationRenderer] Is clustered data: undefined
-VisualizationRenderer.ts:109 [VisualizationRenderer] Sample record: No records
-VisualizationRenderer.ts:345 [VisualizationRenderer] 🎯 Using CHOROPLETH renderer for strategic analysis
-VisualizationRenderer.ts:376 [VisualizationRenderer] 🎯 Getting renderer for type: choropleth
-VisualizationRenderer.ts:381 [VisualizationRenderer] ✅ Found specific renderer for choropleth: ChoroplethRenderer
-VisualizationRenderer.ts:435 [VisualizationRenderer] 🔍 detectGeometryType: No records found, returning unknown
-VisualizationRenderer.ts:525 [VisualizationRenderer] Using targetVariable for strategic_analysis: strategic_value_score
-VisualizationRenderer.ts:138 [VisualizationRenderer] 🎯 Using DIRECT RENDERING from processor
-VisualizationRenderer.ts:148 [VisualizationRenderer] Direct renderer result: {type: 'choropleth', hasRenderer: true, rendererType: 'class-breaks', hasPopupTemplate: true, hasLegend: true, …}
+VisualizationRenderer.ts:109 [VisualizationRenderer] Sample record: {area_id: 32212, area_name: '32212 (Jacksonville)', value: 84.32, hasProperties: true, propertyKeys: Array(5), …}
+VisualizationRenderer.ts:362 [VisualizationRenderer] 🎯 Using CHOROPLETH renderer for strategic analysis
+VisualizationRenderer.ts:393 [VisualizationRenderer] 🎯 Getting renderer for type: choropleth
+VisualizationRenderer.ts:398 [VisualizationRenderer] ✅ Found specific renderer for choropleth: ChoroplethRenderer
+VisualizationRenderer.ts:456 [VisualizationRenderer] 🔍 detectGeometryType: Analyzing 19 records for geometry type
+VisualizationRenderer.ts:461 [VisualizationRenderer] 🔍 detectGeometryType: Record 0 (32212 (Jacksonville)): {hasProperties: true, hasGeometry: false, geometryType: undefined, hasCoordinates: false, coordinatesType: 'undefined', …}
+VisualizationRenderer.ts:461 [VisualizationRenderer] 🔍 detectGeometryType: Record 1 (32210 (Jacksonville)): {hasProperties: true, hasGeometry: false, geometryType: undefined, hasCoordinates: false, coordinatesType: 'undefined', …}
+VisualizationRenderer.ts:461 [VisualizationRenderer] 🔍 detectGeometryType: Record 2 (32204 (Jacksonville)): {hasProperties: true, hasGeometry: false, geometryType: undefined, hasCoordinates: false, coordinatesType: 'undefined', …}
+VisualizationRenderer.ts:461 [VisualizationRenderer] 🔍 detectGeometryType: Record 3 (32202 (Jacksonville)): {hasProperties: true, hasGeometry: false, geometryType: undefined, hasCoordinates: false, coordinatesType: 'undefined', …}
+VisualizationRenderer.ts:461 [VisualizationRenderer] 🔍 detectGeometryType: Record 4 (32234 (Jacksonville)): {hasProperties: true, hasGeometry: false, geometryType: undefined, hasCoordinates: false, coordinatesType: 'undefined', …}
+VisualizationRenderer.ts:519 [VisualizationRenderer] 🔍 detectGeometryType: No geometry info found, defaulting to POLYGON
+VisualizationRenderer.ts:542 [VisualizationRenderer] Using targetVariable for strategic_analysis: strategic_value_score
+VisualizationRenderer.ts:137 [VisualizationRenderer] 🔍 Direct rendering condition check: {hasRenderer: true, hasLegend: true, isClustered: false, rendererType: 'class-breaks', legendTitle: 'Strategic Value Score', …}
+VisualizationRenderer.ts:148 [VisualizationRenderer] 🎯 Using DIRECT RENDERING from processor
+VisualizationRenderer.ts:158 [VisualizationRenderer] Direct renderer result: {type: 'choropleth', hasRenderer: true, rendererType: 'class-breaks', hasPopupTemplate: true, hasLegend: true, …}
 AnalysisEngine.ts:323 [AnalysisEngine] 🎯 Visualization created: {success: true, type: 'choropleth', hasRenderer: true, hasConfig: true, hasLegend: true}
-AnalysisEngine.ts:395 [AnalysisEngine] Cache-based analysis complete: {records: 0, endpoint: '/strategic-analysis', executionTime: 742}
-UnifiedAnalysisWrapper.tsx:125 [UnifiedAnalysisWrapper] Request completed: {processingTime: 1488, hasResults: true}
-UnifiedAnalysisWorkflow.tsx:220 [UnifiedWorkflow] Analysis complete: {analysisResult: {…}, metadata: {…}, exportOptions: {…}}
-geospatial-chat-interface.tsx:4079 [UnifiedWorkflow] Analysis complete: {analysisResult: {…}, metadata: {…}, exportOptions: {…}}
-geospatial-chat-interface.tsx:4080 [UnifiedWorkflow] Analysis result data: {hasData: true, recordCount: 0, firstRecord: undefined, dataStructure: {…}}
-AITab.tsx:144 Features found: 0
-geospatial-chat-interface.tsx:4197 [UnifiedWorkflow] Updated features: 0 records
-geospatial-chat-interface.tsx:4203 [UnifiedWorkflow] Applying visualization to map...
-geospatial-chat-interface.tsx:1516 [applyAnalysisEngineVisualization] Starting with: {visualizationType: 'choropleth', hasRenderer: true, rendererType: 'class-breaks', rendererKeys: Array(4), recordCount: 0, …}
-geospatial-chat-interface.tsx:1542 [applyAnalysisEngineVisualization] ❌ NO RECORDS PROVIDED TO VISUALIZATION
-window.console.error @ app-index.js:33
-console.error @ hydration-error-info.js:63
-applyAnalysisEngineVisualization @ geospatial-chat-interface.tsx:1542
-eval @ geospatial-chat-interface.tsx:4206
-eval @ UnifiedAnalysisWorkflow.tsx:231
-await in eval
-onClick @ UnifiedAnalysisWorkflow.tsx:789
-callCallback @ react-dom.development.js:20565
-invokeGuardedCallbackImpl @ react-dom.development.js:20614
-invokeGuardedCallback @ react-dom.development.js:20689
-invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
-executeDispatch @ react-dom.development.js:32128
-processDispatchQueueItemsInOrder @ react-dom.development.js:32160
-processDispatchQueue @ react-dom.development.js:32173
-dispatchEventsForPlugins @ react-dom.development.js:32184
-eval @ react-dom.development.js:32374
-batchedUpdates$1 @ react-dom.development.js:24953
-batchedUpdates @ react-dom.development.js:28844
-dispatchEventForPluginEventSystem @ react-dom.development.js:32373
-dispatchEvent @ react-dom.development.js:30141
-dispatchDiscreteEvent @ react-dom.development.js:30112
-geospatial-chat-interface.tsx:1543 [applyAnalysisEngineVisualization] Data structure: {type: 'strategic_analysis', records: Array(0), summary: '**🎯 Understanding Strategic Value Scores (0-100 s… programs in emerging markets scoring above 0.0. ', featureImportance: Array(0), statistics: {…}, …}
-window.console.error @ app-index.js:33
-console.error @ hydration-error-info.js:63
-applyAnalysisEngineVisualization @ geospatial-chat-interface.tsx:1543
-eval @ geospatial-chat-interface.tsx:4206
-eval @ UnifiedAnalysisWorkflow.tsx:231
-await in eval
-onClick @ UnifiedAnalysisWorkflow.tsx:789
-callCallback @ react-dom.development.js:20565
-invokeGuardedCallbackImpl @ react-dom.development.js:20614
-invokeGuardedCallback @ react-dom.development.js:20689
-invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
-executeDispatch @ react-dom.development.js:32128
-processDispatchQueueItemsInOrder @ react-dom.development.js:32160
-processDispatchQueue @ react-dom.development.js:32173
-dispatchEventsForPlugins @ react-dom.development.js:32184
-eval @ react-dom.development.js:32374
-batchedUpdates$1 @ react-dom.development.js:24953
-batchedUpdates @ react-dom.development.js:28844
-dispatchEventForPluginEventSystem @ react-dom.development.js:32373
-dispatchEvent @ react-dom.development.js:30141
-dispatchDiscreteEvent @ react-dom.development.js:30112
-geospatial-chat-interface.tsx:4220 [UnifiedWorkflow] ⚠️ Visualization layer not created
-eval @ geospatial-chat-interface.tsx:4220
-await in eval
-eval @ UnifiedAnalysisWorkflow.tsx:231
-await in eval
-onClick @ UnifiedAnalysisWorkflow.tsx:789
-callCallback @ react-dom.development.js:20565
-invokeGuardedCallbackImpl @ react-dom.development.js:20614
-invokeGuardedCallback @ react-dom.development.js:20689
-invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
-executeDispatch @ react-dom.development.js:32128
-processDispatchQueueItemsInOrder @ react-dom.development.js:32160
-processDispatchQueue @ react-dom.development.js:32173
-dispatchEventsForPlugins @ react-dom.development.js:32184
-eval @ react-dom.development.js:32374
-batchedUpdates$1 @ react-dom.development.js:24953
-batchedUpdates @ react-dom.development.js:28844
-dispatchEventForPluginEventSystem @ react-dom.development.js:32373
-dispatchEvent @ react-dom.development.js:30141
-dispatchDiscreteEvent @ react-dom.development.js:30112
+AnalysisEngine.ts:395 [AnalysisEngine] Cache-based analysis complete: {records: 19, endpoint: '/strategic-analysis', executionTime: 600}
+UnifiedAnalysisWrapper.tsx:126 [UnifiedAnalysisWrapper] Request completed: {processingTime: 640, hasResults: true}
+UnifiedAnalysisWorkflow.tsx:238 [UnifiedWorkflow] Analysis complete: {analysisResult: {…}, metadata: {…}, exportOptions: {…}}
+geospatial-chat-interface.tsx:4135 [UnifiedWorkflow] Analysis complete: {analysisResult: {…}, metadata: {…}, exportOptions: {…}}
+geospatial-chat-interface.tsx:4136 [UnifiedWorkflow] Analysis result data: {hasData: true, recordCount: 19, firstRecord: {…}, dataStructure: {…}}
+geospatial-chat-interface.tsx:4148 [UnifiedWorkflow] Performing geometry join process...
+geospatial-chat-interface.tsx:4152 [UnifiedWorkflow] Loading ZIP Code polygon boundaries for visualization
+geospatial-chat-interface.tsx:1095 [loadGeographicFeatures] 📥 Loading ZIP Code boundaries for first time...
 geospatial-chat-interface.tsx:259 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
 geospatial-chat-interface.tsx:276 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-geospatial-chat-interface.tsx:4342 [GeospatialChat] isInfographicsOpen: false
+geospatial-chat-interface.tsx:4414 [GeospatialChat] isInfographicsOpen: false
+geospatial-chat-interface.tsx:1129 [loadBoundariesFromFile] Fetch response: {status: 200, statusText: 'OK', ok: true, url: 'http://localhost:3000/data/boundaries/zip_boundaries.json'}
+geospatial-chat-interface.tsx:1142 [loadBoundariesFromFile] Boundaries data loaded: {hasFeatures: true, isArray: true, count: 984, sampleFeature: {…}}
+geospatial-chat-interface.tsx:1161 [loadBoundariesFromFile] 📁 ZIP Code boundaries loaded from file: {total: 984, fileSize: '16.6 MB', source: 'fresh_file_load'}
+geospatial-chat-interface.tsx:1187 [loadBoundariesFromFile] ✅ Converted to internal format: {totalFeatures: 984, validFeatures: 984, sampleFeature: {…}}
+geospatial-chat-interface.tsx:1108 [loadGeographicFeatures] ✅ Boundary features cached for session: 984
+geospatial-chat-interface.tsx:4159 [UnifiedWorkflow] ✅ ZIP Code boundaries loaded: {count: 984, sampleFeature: {…}}
+geospatial-chat-interface.tsx:4228 [UnifiedWorkflow] 🔍 BEFORE geometry join - checking renderer/legend:
+geospatial-chat-interface.tsx:4229 [UnifiedWorkflow] Has renderer: true
+geospatial-chat-interface.tsx:4230 [UnifiedWorkflow] Has legend: true
+geospatial-chat-interface.tsx:4231 [UnifiedWorkflow] Legend title: Strategic Value Score
+geospatial-chat-interface.tsx:4232 [UnifiedWorkflow] Legend items: 4
+geospatial-chat-interface.tsx:4239 [UnifiedWorkflow] 🔍 AFTER geometry join - checking renderer/legend:
+geospatial-chat-interface.tsx:4240 [UnifiedWorkflow] Has renderer: true
+geospatial-chat-interface.tsx:4241 [UnifiedWorkflow] Has legend: true
+geospatial-chat-interface.tsx:4242 [UnifiedWorkflow] Legend title: Strategic Value Score
+geospatial-chat-interface.tsx:4243 [UnifiedWorkflow] Legend items: 4
+geospatial-chat-interface.tsx:4245 [UnifiedWorkflow] 🔍 CHECKING VISUALIZATION OBJECT:
+geospatial-chat-interface.tsx:4246 [UnifiedWorkflow] Visualization has legend: true
+geospatial-chat-interface.tsx:4247 [UnifiedWorkflow] Visualization legend title: Strategic Value Score
+geospatial-chat-interface.tsx:4249 [UnifiedWorkflow] ✅ Geometry join complete: {totalRecords: 19, recordsWithGeometry: 19}
+AITab.tsx:144 Features found: 19
+geospatial-chat-interface.tsx:4269 [UnifiedWorkflow] Updated features: 19 records
+geospatial-chat-interface.tsx:4275 [UnifiedWorkflow] Applying visualization to map...
+geospatial-chat-interface.tsx:1516 [applyAnalysisEngineVisualization] Starting with: {visualizationType: 'choropleth', hasRenderer: true, rendererType: 'class-breaks', rendererKeys: Array(4), recordCount: 19, …}
+geospatial-chat-interface.tsx:1547 [applyAnalysisEngineVisualization] ✅ Records found, checking geometry...
+geospatial-chat-interface.tsx:1560 [applyAnalysisEngineVisualization] First record inspection: {hasRecord: true, recordKeys: Array(7), hasGeometry: true, geometryValue: {…}, isCluster: undefined}
+geospatial-chat-interface.tsx:1569 [applyAnalysisEngineVisualization] Geometry check: {totalRecords: 19, recordsWithGeometry: 19, geometryTypes: Array(1), sampleGeometry: {…}, isClustered: undefined}
+geospatial-chat-interface.tsx:1613 [applyAnalysisEngineVisualization] ✅ ArcGIS modules imported successfully: {hasFeatureLayer: true, hasGraphic: true}
+geospatial-chat-interface.tsx:1622 [AnalysisEngine] Creating features from data: {totalRecords: 19, recordsWithGeometry: 19, sampleRecord: {…}}
+geospatial-chat-interface.tsx:1646 [AnalysisEngine] VISUALIZATION-ONLY memory optimization: {originalRecords: 19, processedRecords: 19, coveragePercent: 100, limitApplied: false, strategy: 'Full dataset', …}
+geospatial-chat-interface.tsx:1656 [AnalysisEngine] 🔍 PRE-ARCGIS GEOMETRY CHECK:
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 1 (32212 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 2 (32210 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 3 (32204 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 4 (32202 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 5 (32234 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 6 (32244 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 7 (32218 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 8 (32221 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 9 (32219 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 10 (32208 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 11 (32206 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 12 (32214 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 13 (32222 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 14 (32254 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 15 (32207 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 16 (32217 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 17 (32209 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 18 (32220 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1658 [AnalysisEngine] 🔍 Record 19 (32205 (Jacksonville)) final geometry: {hasGeometry: true, geometryType: 'Polygon', hasCoordinates: true, geometryValid: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32212 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 2, firstRingLength: 54, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32212 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32212 (Jacksonville): {hasCoordinates: true, coordinatesLength: 2, firstRingLength: 54, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32212 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 2, firstRingPoints: 54, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32212 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32210 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 6, firstRingLength: 36, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32210 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32210 (Jacksonville): {hasCoordinates: true, coordinatesLength: 6, firstRingLength: 36, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32210 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 6, firstRingPoints: 36, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32210 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32204 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 24, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32204 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32204 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 24, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32204 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 24, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32204 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32202 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 78, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32202 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32202 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 78, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32202 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 78, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32202 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32234 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 209, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32234 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32234 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 209, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32234 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 209, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32234 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32244 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 47, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32244 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32244 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 47, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32244 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 47, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32244 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32218 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 341, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32218 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32218 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 341, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32218 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 341, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32218 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32221 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 79, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32221 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32221 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 79, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32221 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 79, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32221 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32219 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 116, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32219 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32219 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 116, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32219 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 116, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32219 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32208 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 176, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32208 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32208 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 176, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32208 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 176, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32208 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32206 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 74, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32206 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32206 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 74, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32206 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 74, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32206 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32214 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 32, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32214 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32214 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 32, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32214 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 32, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32214 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32222 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 30, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32222 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32222 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 30, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32222 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 30, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32222 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32254 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 61, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32254 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32254 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 61, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32254 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 61, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32254 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32207 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 95, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32207 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32207 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 95, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32207 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 95, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32207 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32217 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 41, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32217 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32217 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 41, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32217 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 41, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32217 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32209 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 69, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32209 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32209 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 69, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32209 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 69, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32209 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32220 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 98, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32220 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32220 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 98, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32220 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 98, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32220 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1690 [AnalysisEngine] 🟦 POLYGON CONVERSION for 32205 (Jacksonville): {isCluster: undefined, useCentroids: undefined, hasCoordinates: true, coordinatesLength: 1, firstRingLength: 46, …}
+geospatial-chat-interface.tsx:1699 [AnalysisEngine] Original polygon geometry check: {area: '32205 (Jacksonville)', hasRenderer: true, rendererType: 'class-breaks', useCentroids: undefined, rendererKeys: Array(4)}
+geospatial-chat-interface.tsx:1757 [AnalysisEngine] 🟦 Creating POLYGON geometry for 32205 (Jacksonville): {hasCoordinates: true, coordinatesLength: 1, firstRingLength: 46, isCluster: undefined, originalGeometry: {…}}
+geospatial-chat-interface.tsx:1772 [AnalysisEngine] ✅ POLYGON ArcGIS geometry created for 32205 (Jacksonville): {geometryType: 'polygon', hasRings: true, ringsCount: 1, firstRingPoints: 46, isCluster: undefined}
+geospatial-chat-interface.tsx:1858 [AnalysisEngine] ✅ ArcGIS Graphic created for 32205 (Jacksonville): {hasGraphic: true, hasGeometry: true, geometryType: 'polygon', hasAttributes: true, isCluster: undefined, …}
+geospatial-chat-interface.tsx:1870 [AnalysisEngine] Created features: {totalFeatures: 19, skippedFeatures: 0, geometryType: 'polygon'}
+geospatial-chat-interface.tsx:1886 [AnalysisEngine] Geometry type determination: {useCentroids: undefined, actualGeometryType: 'polygon', rendererType: 'class-breaks'}
+geospatial-chat-interface.tsx:1938 [AnalysisEngine] Memory-optimized field definitions: {totalFields: 8, fieldNames: Array(8)}
+geospatial-chat-interface.tsx:1954 [FeatureLayer] 🎯 Renderer selection: {hasDataRenderer: true, hasVisualizationRenderer: true, dataIsClustered: undefined, visualizationType: 'choropleth', rendererType: 'class-breaks'}
+geospatial-chat-interface.tsx:1970 [AnalysisEngine] FeatureLayer created successfully: {layerId: 'analysis-layer-1754933663029', layerType: 'feature', layerTitle: 'AnalysisEngine - strategic_value_score', popupEnabled: false, hasSource: true, …}
+geospatial-chat-interface.tsx:1989 [AnalysisEngine] 🎯 RENDERER SOURCE: {hasDirectRenderer: true, hasVisualizationRenderer: true, usingDirectRenderer: true, rendererSource: 'processor'}
+geospatial-chat-interface.tsx:1997 [AnalysisEngine] Renderer applied: {rendererType: 'class-breaks', rendererField: 'strategic_value_score', attributesAvailable: 8}
+geospatial-chat-interface.tsx:2004 [AnalysisEngine] 🏗️ FEATURELAYER CREATED: {layerId: 'analysis-layer-1754933663029', title: 'AnalysisEngine - strategic_value_score', loaded: false, visible: true, opacity: 0.8, …}
+geospatial-chat-interface.tsx:2037 [AnalysisEngine] Adding layer to map: {mapViewExists: true, mapExists: true, layerVisible: true, layerOpacity: 0.8, featureCount: 19, …}
+geospatial-chat-interface.tsx:2049 [AnalysisEngine] Layer added to map: {afterAddMapLayers: 33, layerInMap: true, layerLoaded: false, layerLoadError: null}
+geospatial-chat-interface.tsx:259 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:276 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:4414 [GeospatialChat] isInfographicsOpen: false
+geospatial-chat-interface.tsx:2062 [AnalysisEngine] 🎯 Creating legend from renderer: {rendererType: 'class-breaks', hasRenderer: true}
+geospatial-chat-interface.tsx:2078 [AnalysisEngine] 🎯 Setting legend data from renderer: {itemCount: 4, firstItem: {…}}
+geospatial-chat-interface.tsx:2095 [AnalysisEngine] 🎯 Layer ready for CustomPopupManager integration: {layerId: 'analysis-layer-1754933663029', popupEnabled: false, title: 'AnalysisEngine - strategic_value_score'}
+geospatial-chat-interface.tsx:4332 [AutoZoom] Zoom decision: {displayedFeatures: 19, totalPossibleFeatures: 3983, percentageShown: '0.5%', isComparativeQuery: false, isRankingQuery: false, …}
+geospatial-chat-interface.tsx:2104 [AnalysisEngine] Auto-zooming to fit displayed features
+geospatial-chat-interface.tsx:2109 🔥 [RENDERER LIFECYCLE] Initial renderer after layer creation: {hasRenderer: true, rendererType: 'class-breaks', rendererField: 'strategic_value_score', classBreakCount: 4}
+geospatial-chat-interface.tsx:2404 [AnalysisEngine] Attempting to zoom to features...
+geospatial-chat-interface.tsx:2455 [AnalysisEngine] First feature geometry type: polygon
+geospatial-chat-interface.tsx:2481 [AnalysisEngine] Advanced visualization layer applied to map: {layerId: 'analysis-layer-1754933663029', title: 'AnalysisEngine - strategic_value_score', featureCount: 19, visible: true, opacity: 0.8, …}
+geospatial-chat-interface.tsx:2499 [AnalysisEngine] 🔍 DEBUGGING RENDERER: {hasRenderer: true, rendererType: 'class-breaks', rendererField: 'strategic_value_score', rendererAuthoringInfo: undefined, fullRenderer: '{\n  "type": "class-breaks",\n  "field": "strategic_…,\n        0\n      ],\n      "width": 0\n    }\n  }\n}'}
+geospatial-chat-interface.tsx:2510 [AnalysisEngine] 🔍 SAMPLE FEATURE ATTRIBUTES: {attributeKeys: Array(8), targetVariable: 'strategic_value_score', strategic_value_score: 84.32, competitive_advantage_score: 0, value: 84.32}
+geospatial-chat-interface.tsx:4285 [UnifiedWorkflow] ✅ Visualization applied successfully
+AITab.tsx:47 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
+AITab.tsx:92 [AITab] DataSource configuration: {hasFirstLayer: true, firstLayerUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…ervices/Synapse54__ca07eefffe5b4914/FeatureServer', firstLayerId: 'Unknown_Service_layer_0', extractedLayerNumber: '0', constructedServiceUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…vices/Synapse54__ca07eefffe5b4914/FeatureServer/0', …}
+geospatial-chat-interface.tsx:259 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:276 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:4414 [GeospatialChat] isInfographicsOpen: false
+geospatial-chat-interface.tsx:2468 [AnalysisEngine] 🔍 LAYER STATUS CHECK (after 100ms): {layerId: 'analysis-layer-1754933663029', loaded: false, loadError: undefined, visible: true, opacity: 0.8, …}
+MapClient.tsx:55 [MapClient MapLegend] Rendering legend: {title: '', type: 'standard', visible: true, itemCount: 4, sampleItems: Array(4)}
+MapClient.tsx:70 [MapClient MapLegend] Size values check: (4) [{…}, {…}, {…}, {…}]
+AITab.tsx:47 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
+AITab.tsx:92 [AITab] DataSource configuration: {hasFirstLayer: true, firstLayerUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…ervices/Synapse54__ca07eefffe5b4914/FeatureServer', firstLayerId: 'Unknown_Service_layer_0', extractedLayerNumber: '0', constructedServiceUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…vices/Synapse54__ca07eefffe5b4914/FeatureServer/0', …}
+geospatial-chat-interface.tsx:259 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
+geospatial-chat-interface.tsx:276 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
+geospatial-chat-interface.tsx:4414 [GeospatialChat] isInfographicsOpen: false
+geospatial-chat-interface.tsx:2147 🔍 [ARCGIS FIELD ACCESS TEST] Layer loaded successfully - testing field access...
+geospatial-chat-interface.tsx:2153 🔍 [ARCGIS FIELD ACCESS TEST] Layer details: {layerId: 'analysis-layer-1754933663029', sourceCount: 19, rendererField: 'strategic_value_score', rendererType: 'class-breaks', firstFeatureExists: true, …}
+geospatial-chat-interface.tsx:2167 🔍 [ARCGIS FIELD ACCESS TEST] Field access verification: {rendererField: 'strategic_value_score', hasRendererField: true, fieldValue: 84.32, fieldValueType: 'number', isValidNumber: true, …}
+geospatial-chat-interface.tsx:2192 ✅ [ARCGIS FIELD ACCESS TEST] SUCCESS: Field access working correctly!
+geospatial-chat-interface.tsx:2193    ArcGIS should be able to render features properly with this field.
+geospatial-chat-interface.tsx:2194    The grey visualization issue must be caused by something else.
+geospatial-chat-interface.tsx:2197 🔍 [RENDERER CONFLICT CHECK] Investigating renderer conflicts...
+geospatial-chat-interface.tsx:2200 🔍 [RENDERER CONFLICT CHECK] Current renderer details: {type: 'class-breaks', field: 'strategic_value_score', hasClassBreakInfos: true, classBreakCount: 4, hasVisualVariables: false, …}
+geospatial-chat-interface.tsx:2230 🔍 [RENDERER CONFLICT CHECK] Class breaks analysis: {totalBreaks: 4, breakRanges: Array(4), symbolColors: Array(4)}
+geospatial-chat-interface.tsx:2242 🔍 [DETAILED SYMBOL INSPECTION] Examining each class break symbol:
+geospatial-chat-interface.tsx:2244    Class 1: {minValue: 45.51, maxValue: 53.49, symbolExists: true, symbolType: 'simple-fill', colorExists: true, …}
+geospatial-chat-interface.tsx:2244    Class 2: {minValue: 53.49, maxValue: 58.12, symbolExists: true, symbolType: 'simple-fill', colorExists: true, …}
+geospatial-chat-interface.tsx:2244    Class 3: {minValue: 58.12, maxValue: 67, symbolExists: true, symbolType: 'simple-fill', colorExists: true, …}
+geospatial-chat-interface.tsx:2244    Class 4: {minValue: 67, maxValue: 84.32, symbolExists: true, symbolType: 'simple-fill', colorExists: true, …}
+geospatial-chat-interface.tsx:2120 🔥 [RENDERER LIFECYCLE] After 500ms: {hasRenderer: true, rendererType: 'class-breaks', rendererField: 'strategic_value_score', layerVisible: true, layerOpacity: 0.8}
+geospatial-chat-interface.tsx:4364 [AutoZoom] Zooming to feature extent: {xmin: -82.1036813487855, ymin: 30.0546147974865, xmax: -81.5822093263542, ymax: 30.5861757332656}
+geospatial-chat-interface.tsx:2130 🔥 [RENDERER LIFECYCLE] After 2000ms: {hasRenderer: true, rendererType: 'class-breaks', rendererField: 'strategic_value_score', layerVisible: true, layerOpacity: 0.8, …}
+geospatial-chat-interface.tsx:2141 🔥 [RENDERER LIFECYCLE] Attempting layer refresh...
+geospatial-chat-interface.tsx:2300 🔍 [VISUAL VERIFICATION] Checking actual rendered appearance...
+geospatial-chat-interface.tsx:2303    Map surface found - layer should be visually rendered
+geospatial-chat-interface.tsx:2314 🔥 [VALUE DISTRIBUTION CHECK]: {fieldName: 'strategic_value_score', rendererType: 'class-breaks', totalFeatures: 19, featuresWithValues: 19, valueRange: {…}, …}
+geospatial-chat-interface.tsx:2330 🔥 [CLASS BREAK DISTRIBUTION]: (4) [{…}, {…}, {…}, {…}]

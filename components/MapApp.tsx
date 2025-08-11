@@ -175,6 +175,13 @@ export const MapApp: React.FC = memo(() => {
       const currentFeatureLayers = mapView.map.allLayers
         .filter(layer => layer.type === 'feature')
         .toArray() as __esri.FeatureLayer[];
+      
+      console.log('[MapApp] Updating featureLayers for CustomPopupManager:', {
+        totalLayers: currentFeatureLayers.length,
+        layerIds: currentFeatureLayers.map(l => l.id),
+        layerTitles: currentFeatureLayers.map(l => l.title)
+      });
+      
       setFeatureLayers(currentFeatureLayers);
     }
   }, [mapView]);
@@ -236,13 +243,21 @@ export const MapApp: React.FC = memo(() => {
           )}
           
           {/* Custom popup handler for each feature layer */}
-          {mapView && mapView.map && featureLayers.map(layer => (
-            <CustomPopupManager
-              key={layer.id}
-              mapView={mapView}
-              layer={layer}
-            />
-          ))}
+          {mapView && mapView.map && featureLayers.map(layer => {
+            console.log('[MapApp] Creating CustomPopupManager for layer:', {
+              layerId: layer.id,
+              layerTitle: layer.title,
+              layerType: layer.type,
+              popupEnabled: layer.popupEnabled
+            });
+            return (
+              <CustomPopupManager
+                key={layer.id}
+                mapView={mapView}
+                layer={layer}
+              />
+            );
+          })}
           
           {/* Custom zoom controls */}
           {mapView && (

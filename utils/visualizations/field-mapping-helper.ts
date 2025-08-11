@@ -7,6 +7,14 @@ import type { LayerConfig } from '../../types/layers';
  * This serves as the single source of truth for UI components like legends and popups.
  */
 const FIELD_CODE_TO_DISPLAY_NAME: Record<string, string> = {
+    // Analysis score fields
+    "strategic_value_score": "Strategic Value Score",
+    "competitive_advantage_score": "Competitive Advantage Score",
+    "market_opportunity_score": "Market Opportunity Score",
+    "risk_assessment_score": "Risk Assessment Score",
+    "demographic_alignment_score": "Demographic Alignment Score",
+    "value": "Value",
+    
     // Brand fields
     "MP30029AB": "Adidas Athletic Shoes",
     "MP30030AB": "ASICS Athletic Shoes",
@@ -124,18 +132,21 @@ export class FieldMappingHelper {
    * @returns Human-readable field name (e.g., "Nike Purchases")
    */
   static getFriendlyFieldName(fieldName: string, layerId?: string): string {
+    // First check the original field name (for strategic fields with underscores)
+    let actualFieldName = (fieldName.split('.').pop() || fieldName).replace(/^value_/, '');
+    if (FIELD_CODE_TO_DISPLAY_NAME[actualFieldName]) {
+      return FIELD_CODE_TO_DISPLAY_NAME[actualFieldName];
+    }
+    
     // Strip any 'value_' prefix or other artifacts and normalize
-    const lookupKey = (fieldName.split('.').pop() || fieldName)
-      .replace(/^value_/, '')
+    const lookupKey = actualFieldName
       .toUpperCase()
       .replace(/[_\s]/g, ''); // Remove both underscores and spaces
 
-    // 1. Check our definitive display name map
+    // Check our definitive display name map with normalized key
     if (FIELD_CODE_TO_DISPLAY_NAME[lookupKey]) {
       return FIELD_CODE_TO_DISPLAY_NAME[lookupKey];
     }
-    
-    let actualFieldName = (fieldName.split('.').pop() || fieldName).replace(/^value_/, '');
 
     // 2. Handle special correlation format
     if (actualFieldName.includes('_vs_') && actualFieldName.includes('_correlation')) {

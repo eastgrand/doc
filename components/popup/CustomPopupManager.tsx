@@ -959,17 +959,146 @@ const generateBarChart = (
   // Clear the container
   container.innerHTML = "";
   
-  // Special case for AI visualization layers
+  // Special case for AI visualization layers and analysis layers
   const isAiVisualizationLayer = feature.layer && 
     (typeof feature.layer.id === 'string' && 
      (feature.layer.id.startsWith('viz_') || feature.layer.id.includes('correlation')));
+  
+  const isAnalysisLayer = feature.layer && 
+    (typeof feature.layer.id === 'string' && 
+     feature.layer.id.startsWith('analysis-layer-'));
+
+  if (isAnalysisLayer) {
+    // Handle unified analysis layers with proper bar chart
+    const attrs = feature.attributes || {};
+    const metrics: Metric[] = [];
+    
+    // Find the main score field - look for strategic_value_score, value, etc.
+    const scoreFields = ['strategic_value_score', 'competitive_advantage_score', 'value'];
+    let mainScoreField: string | null = null;
+    let mainScoreValue: number = 0;
+    
+    for (const field of scoreFields) {
+      if (typeof attrs[field] === 'number') {
+        mainScoreField = field;
+        mainScoreValue = attrs[field];
+        break;
+      }
+    }
+    
+    if (mainScoreField && mainScoreValue > 0) {
+      // Get all features from the layer to calculate max value for percentage
+      const layer = feature.layer as __esri.FeatureLayer;
+      if (layer.source) {
+        const allFeatures = (layer.source as any).items || [];
+        const allValues = allFeatures.map((f: any) => f.attributes?.[mainScoreField] || 0).filter((v: number) => v > 0);
+        const maxValue = Math.max(...allValues);
+        const percentage = maxValue > 0 ? (mainScoreValue / maxValue) * 100 : 0;
+        
+        metrics.push({
+          label: FieldMappingHelper.getFriendlyFieldName(mainScoreField),
+          value: mainScoreValue,
+          color: '#33a852',
+          isPercent: false,
+          percentage: percentage
+        });
+      }
+    }
+    
+    // Add other available numeric fields
+    Object.keys(attrs).forEach(key => {
+      if (key !== mainScoreField && typeof attrs[key] === 'number' && attrs[key] > 0) {
+        metrics.push({
+          label: FieldMappingHelper.getFriendlyFieldName(key),
+          value: attrs[key],
+          color: '#4285f4'
+        });
+      }
+    });
+    
+    // Render metrics
+    if (metrics.length > 0) {
+      const chartTitle = document.createElement('h4');
+      chartTitle.textContent = 'Analysis Metrics';
+      chartTitle.style.fontSize = '14px';
+      chartTitle.style.fontWeight = 'bold';
+      chartTitle.style.margin = '0 0 12px 0';
+      chartTitle.style.color = '#343a40';
+      container.appendChild(chartTitle);
+      
+      metrics.forEach(metric => {
+        const row = document.createElement('div');
+        row.style.display = 'flex';
+        row.style.alignItems = 'center';
+        row.style.marginBottom = '8px';
+        row.style.padding = '4px 0';
+        
+        // Label
+        const label = document.createElement('div');
+        label.textContent = metric.label;
+        label.style.width = '140px';
+        label.style.fontSize = '12px';
+        label.style.fontWeight = '500';
+        label.style.color = '#495057';
+        label.style.flexShrink = '0';
+        
+        // Bar wrapper
+        const barWrapper = document.createElement('div');
+        barWrapper.style.flex = '1';
+        barWrapper.style.height = '18px';
+        barWrapper.style.backgroundColor = '#e9ecef';
+        barWrapper.style.borderRadius = '9px';
+        barWrapper.style.margin = '0 8px';
+        barWrapper.style.position = 'relative';
+        
+        const barFill = document.createElement('div');
+        let widthPercent = 0;
+        if ('percentage' in metric && metric.percentage !== undefined) {
+          widthPercent = Math.max(metric.percentage, 5); // Use calculated percentage
+        } else if (metric.isPercent || metric.value <= 1) {
+          widthPercent = Math.min(Math.abs(metric.value) * 100, 100);
+        } else {
+          widthPercent = Math.min((metric.value / 100) * 100, 100);
+        }
+        
+        barFill.style.width = `${widthPercent}%`;
+        barFill.style.height = '100%';
+        barFill.style.backgroundColor = metric.color;
+        barFill.style.borderRadius = '9px';
+        
+        // Value text
+        const valueText = document.createElement('div');
+        if ('percentage' in metric && metric.percentage !== undefined) {
+          valueText.textContent = `${metric.value.toFixed(1)} (${metric.percentage.toFixed(1)}%)`;
+        } else {
+          valueText.textContent = metric.value.toLocaleString(undefined, { maximumFractionDigits: 1 });
+        }
+        valueText.style.minWidth = '80px';
+        valueText.style.textAlign = 'right';
+        valueText.style.fontSize = '12px';
+        valueText.style.fontWeight = '600';
+        valueText.style.color = '#495057';
+        
+        barWrapper.appendChild(barFill);
+        row.appendChild(label);
+        row.appendChild(barWrapper);
+        row.appendChild(valueText);
+        container.appendChild(row);
+      });
+      
+      // Show chart
+      container.style.display = 'block';
+    }
+    
+    return;
+  }
 
   if (isAiVisualizationLayer) {
     // Prepare metrics for correlation visualization pop-up
     const attrs = feature.attributes || {};
 
     // Helper to push metric definition safely
-    interface Metric { label: string; value: number; color: string; isPercent?: boolean; }
+    interface Metric { label: string; value: number; color: string; isPercent?: boolean; percentage?: number; }
     const metrics: Metric[] = [];
 
     // 1) Correlation score (if available)
