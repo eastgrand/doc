@@ -659,30 +659,67 @@ export class VisualizationRenderer {
   }
 
   private createMinimalPopupTemplate(): any {
-    return {
-      title: '{area_name}',
-      content: [
-        {
-          type: 'fields',
-          fieldInfos: [
-            { fieldName: 'area_name', label: 'Area' },
-            { fieldName: 'value', label: 'Value' }
-          ]
-        }
-      ]
+    // Import standardized popup utils
+    const { createStandardizedPopupTemplate } = require('@/utils/popup-utils');
+    
+    // Create standardized popup with bar chart and proper title
+    const config = {
+      titleFields: ['DESCRIPTION', 'ID', 'FSA_ID', 'NAME', 'OBJECTID'],
+      barChartFields: ['mp30034a_b', 'mp30029a_b', 'strategic_value_score', 'value'],
+      listFields: ['RANK', 'mp30034a_b_p', 'mp30029a_b_p'],
+      visualizationType: 'unified-analysis'
     };
+    
+    return createStandardizedPopupTemplate(config);
   }
 
   private createMinimalLegend(data: ProcessedAnalysisData): any {
+    // Use working legend creation from StrategicAnalysisProcessor
+    const values = data.records.map(r => r.value).filter(v => !isNaN(v) && typeof v === 'number').sort((a, b) => a - b);
+    
+    if (values.length === 0) {
+      return {
+        title: data.targetVariable || 'Analysis Result',
+        items: [],
+        position: 'bottom-right'
+      };
+    }
+    
+    // Calculate quartile breaks like StrategicAnalysisProcessor
+    const min = values[0];
+    const max = values[values.length - 1];
+    const q1 = values[Math.floor(values.length * 0.25)];
+    const q2 = values[Math.floor(values.length * 0.5)];
+    const q3 = values[Math.floor(values.length * 0.75)];
+    const quartileBreaks = [min, q1, q2, q3, max];
+    
+    // Use strategic colors with 0.6 opacity like working code
+    const strategicColors = [
+      'rgba(215, 48, 39, 0.6)',   // #d73027 - Red (lowest)
+      'rgba(253, 174, 97, 0.6)',  // #fdae61 - Orange  
+      'rgba(166, 217, 106, 0.6)', // #a6d96a - Light Green
+      'rgba(26, 152, 80, 0.6)'    // #1a9850 - Dark Green (highest)
+    ];
+    
+    const legendItems = [];
+    for (let i = 0; i < quartileBreaks.length - 1; i++) {
+      const label = i === 0 
+        ? `< ${quartileBreaks[i + 1].toFixed(1)}`
+        : i === quartileBreaks.length - 2
+        ? `> ${quartileBreaks[i].toFixed(1)}`
+        : `${quartileBreaks[i].toFixed(1)} - ${quartileBreaks[i + 1].toFixed(1)}`;
+        
+      legendItems.push({
+        label: label,
+        color: strategicColors[i],
+        minValue: quartileBreaks[i],
+        maxValue: quartileBreaks[i + 1]
+      });
+    }
+    
     return {
-      title: data.targetVariable || 'Analysis Result',
-      items: [
-        {
-          label: 'Data',
-          color: 'rgb(100, 150, 200)',
-          value: 1
-        }
-      ],
+      title: data.targetVariable || 'Strategic Value Score',
+      items: legendItems,
       position: 'bottom-right'
     };
   }
