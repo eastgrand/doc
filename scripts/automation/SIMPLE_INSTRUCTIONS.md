@@ -167,17 +167,20 @@ Now you need to tell your application where to find the microservice.
    echo "BLOB_READ_WRITE_TOKEN=your_vercel_blob_token" >> .env.local
    ```
 
-### 5.2 Upload Project-Specific Endpoints
+### 5.2 Upload Project-Specific Files to Blob Storage (Optional - Automated)
 
-1. **Run the blob uploader** with project-specific paths:
+**⚠️ NOTE**: The automation pipeline (Phase 8) automatically uploads both endpoints and boundary files to blob storage if BLOB_READ_WRITE_TOKEN is configured. This step is **optional** for manual uploads.
+
+1. **Manual upload if needed**:
    ```bash
    export BLOB_READ_WRITE_TOKEN=$(grep BLOB_READ_WRITE_TOKEN .env.local | cut -d= -f2)
    python upload_comprehensive_endpoints.py
    ```
 
 2. **Verify successful upload**:
-   - Look for: `✅ All endpoints successfully uploaded to blob storage!`
+   - Look for: `✅ All endpoints and boundary files successfully uploaded to blob storage!`
    - Check created file: `public/data/blob-urls-{project_name}.json`
+   - Geographic visualizations will now load boundary data from blob storage
 
 ### 5.3 Update Data Loader for New Project
 
@@ -197,27 +200,33 @@ Now you need to tell your application where to find the microservice.
 
 ### 5.4 Why This Step is Critical
 
-- **Size Limits**: Prevents 100MB+ deployment failures
+- **Size Limits**: Prevents 100MB+ deployment failures (boundary files are typically 5-50MB)
 - **Project Separation**: Keeps your data separate from other projects
 - **Data Integrity**: Ensures correct data loads for your analysis
-- **Performance**: Blob storage provides faster data access
+- **Performance**: Blob storage provides faster data access for large boundary files
+- **Geographic Visualization**: Boundary files enable choropleth maps and spatial filtering
 
 **🚨 WARNING**: Skipping this step will cause:
 - Wrong data to load (from previous projects)
 - Spatial filtering failures (ID mismatches)
 - Zero records returned from queries
+- Broken geographic visualizations without boundary files
 
 ## Step 6: Automation Continues Automatically (1 minute)
 
 1. **The automation continues automatically** after the pause
 2. **It will complete all remaining phases**:
-   - Generate 26 analysis endpoints (19 standard + 7 comprehensive)
-   - Apply 22 comprehensive scoring algorithms
-   - **Update field mappings** with current project data (NEW)
-   - **Enable AI synonym expansion** for enhanced natural language queries (OPTIONAL)
-   - Create TypeScript layer configurations
-   - Deploy all files to your application
-   - Offer cleanup recommendations to optimize storage
+   - **Phase 6.5**: Update field mappings with current project data
+   - **Phase 6.6**: Verify boundary file requirements for spatial analysis
+   - **Phase 7**: Create TypeScript layer configurations  
+   - **Phase 8**: Final integration and deployment:
+     - Generate 26 analysis endpoints (19 standard + 7 comprehensive)
+     - Apply 22 comprehensive scoring algorithms
+     - **Upload endpoints and boundary files to blob storage** (if BLOB_READ_WRITE_TOKEN available)
+     - Deploy all files to your application
+     - Update layer configurations
+   - **Optional**: AI synonym expansion for enhanced natural language queries
+   - **Cleanup**: Offer storage optimization recommendations
 3. **You'll see**: `🎉 AUTOMATION PIPELINE COMPLETED SUCCESSFULLY!`
 
 ### 🗂️ New: Automatic Field Mapping Updates
@@ -390,6 +399,137 @@ After expansion, users can query with natural language based on your project's d
 - 🗣️ **Semantic understanding** of user intent
 - 🚀 **Dramatically improved UX** for non-technical users
 
+## Step 6.7: Boundary File Verification (Automatic)
+
+**⚠️ CRITICAL STEP**: Geographic boundary files are required for spatial analysis and choropleth mapping. The automation now includes **Phase 6.6: Boundary File Verification** which:
+
+- **Checks for existing boundary files** in `public/data/boundaries/`
+- **Looks for ZIP code and FSA boundaries** (`zip_boundaries.json`, `fsa_boundaries.json`)
+- **Reports file sizes** if boundary files are found
+- **Issues detailed alerts** if boundary files are missing
+- **Continues with warning** rather than failing the pipeline
+
+### What Are Boundary Files?
+
+**Boundary files contain GeoJSON data that defines geographic regions for spatial analysis:**
+
+- **ZIP Code Boundaries** (`zip_boundaries.json`): US postal code geographic boundaries
+- **FSA Boundaries** (`fsa_boundaries.json`): Canadian Forward Sortation Area boundaries
+- **Format**: GeoJSON with polygon geometries and postal/FSA code properties
+- **Purpose**: Enable choropleth mapping, spatial filtering, and geographic analysis
+
+### Why Are They Important?
+
+**Without boundary files, your application will:**
+- ❌ **Fail to render choropleth maps** (colored regions based on data values)
+- ❌ **Cannot perform spatial filtering** (e.g., "show data for specific ZIP codes")
+- ❌ **Show empty or broken visualizations** for geographic analysis
+- ❌ **Return zero results** for location-based queries
+
+### Automation Boundary Check
+
+**Phase 6.6 automatically:**
+
+1. **Scans boundary directory**: `public/data/boundaries/`
+2. **Checks for required files**:
+   - `zip_boundaries.json` (US ZIP codes)
+   - `fsa_boundaries.json` (Canadian FSAs)
+3. **Reports file status**:
+   ```
+   ✅ Found boundary file: zip_boundaries.json (15.2 MB)
+   ⚠️  Missing boundary file: fsa_boundaries.json
+   ```
+4. **Issues alerts with solutions** if files are missing
+
+### If Boundary Files Are Missing
+
+**When boundary files are missing, you'll see:**
+
+```
+🚨 BOUNDARY FILE ALERT: Critical geographic data missing
+
+❌ Missing: public/data/boundaries/zip_boundaries.json
+❌ Missing: public/data/boundaries/fsa_boundaries.json
+
+📋 BOUNDARY FILE REQUIREMENTS:
+   • ZIP Boundaries: Required for US postal code mapping
+   • FSA Boundaries: Required for Canadian postal code mapping
+   • Without these files, geographic visualizations will fail
+
+🔧 SOLUTIONS:
+   1. Download from Statistics Canada: https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm
+   2. Download US ZIP boundaries: https://www.census.gov/cgi-bin/geo/shapefiles/index.php
+   3. Contact your data provider for boundary files
+   4. Use third-party services like Natural Earth Data
+
+⚠️  Continuing automation with BOUNDARY FILE WARNING
+```
+
+### How to Obtain Boundary Files
+
+**For Canadian FSA Boundaries:**
+1. **Statistics Canada**: https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm
+2. **Download postal code boundary files**
+3. **Convert to GeoJSON format** if needed
+4. **Place in**: `public/data/boundaries/fsa_boundaries.json`
+
+**For US ZIP Code Boundaries:**
+1. **US Census Bureau**: https://www.census.gov/cgi-bin/geo/shapefiles/index.php
+2. **Download ZIP Code Tabulation Areas (ZCTA)**
+3. **Convert shapefiles to GeoJSON**
+4. **Place in**: `public/data/boundaries/zip_boundaries.json`
+
+**Third-party Sources:**
+- **Natural Earth Data**: Free vector and raster map data
+- **OpenStreetMap**: Community-generated boundary data
+- **Commercial providers**: Esri, MapBox, Google
+
+### File Format Requirements
+
+**Boundary files must be valid GeoJSON with:**
+
+```json
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "POSTAL_CODE": "M5V", // For FSA boundaries
+        "ZCTA5CE10": "10001"  // For ZIP boundaries
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[lat, lng], [lat, lng], ...]]
+      }
+    }
+  ]
+}
+```
+
+**Key requirements:**
+- **Valid GeoJSON structure** with FeatureCollection
+- **Polygon geometries** defining geographic boundaries  
+- **Postal code properties** for matching with analysis data
+- **Consistent property names** across all features
+- **File size**: Typically 5-50MB depending on detail level
+
+### Testing Boundary Integration
+
+**After adding boundary files:**
+
+1. **Restart your application**
+2. **Navigate to geographic analysis pages**
+3. **Verify choropleth maps render correctly**
+4. **Test spatial filtering functionality**
+5. **Check browser console for geographic errors**
+
+**Success indicators:**
+- ✅ **Colored regions appear** on maps based on data values
+- ✅ **Hover tooltips show** postal codes and data values
+- ✅ **Spatial filtering works** (e.g., "show only high-value areas")
+- ✅ **No console errors** related to missing boundary data
+
 ## Step 8: Optional Storage Cleanup (1 minute)
 
 After completion, you'll see cleanup recommendations:
@@ -497,6 +637,8 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
 - [ ] Data loads correctly in all analysis pages
 - [ ] Field mappings updated automatically (Phase 6.5)
 - [ ] AI synonym expansion applied (Optional Step 6.6)
+- [ ] Boundary file verification completed (Phase 6.6)
+- [ ] Geographic boundary files present or alerts addressed
 - [ ] Cleanup system reviewed and executed if needed
 
 **🎉 Congratulations! Your ArcGIS service is now a working microservice!**

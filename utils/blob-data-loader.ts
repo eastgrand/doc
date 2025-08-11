@@ -130,11 +130,80 @@ export async function uploadEndpointData(endpoint: string, data: any): Promise<b
 }
 
 /**
- * Clear the cache for a specific endpoint or all endpoints
+ * Load boundary data from Vercel Blob storage
+ * Falls back to local files if blob storage fails
+ */
+export async function loadBoundaryData(boundaryName: string): Promise<any | null> {
+  const cacheKey = `boundary_${boundaryName}`;
+  
+  // Check cache first
+  if (blobDataCache.has(cacheKey)) {
+    return blobDataCache.get(cacheKey);
+  }
+
+  try {
+    // Load blob URL mappings and get the actual URL for boundaries
+    const urlMappings = await loadBlobUrlMappings();
+    const boundaryKey = `boundaries/${boundaryName}`;
+    const actualBlobUrl = urlMappings[boundaryKey];
+    
+    if (actualBlobUrl) {
+      const response = await fetch(actualBlobUrl);
+      
+      if (response.ok) {
+        const data = await response.json();
+        blobDataCache.set(cacheKey, data);
+        console.log(`✅ Loaded ${boundaryName} boundary from blob storage`);
+        return data;
+      }
+    } else {
+      console.warn(`No blob URL mapping found for boundary: ${boundaryKey}`);
+    }
+  } catch (error) {
+    console.warn(`Failed to load ${boundaryName} boundary from blob storage:`, error);
+  }
+
+  try {
+    // Fallback to local file
+    if (typeof window !== 'undefined') {
+      // Browser context
+      const localResponse = await fetch(`/data/boundaries/${boundaryName}.json`);
+      if (localResponse.ok) {
+        const data = await localResponse.json();
+        blobDataCache.set(cacheKey, data);
+        console.log(`✅ Loaded ${boundaryName} boundary from local file`);
+        return data;
+      }
+    } else {
+      // Server context - load directly from file system
+      const fs = await import('fs/promises');
+      const path = await import('path');
+      const filePath = path.join(process.cwd(), 'public/data/boundaries', `${boundaryName}.json`);
+      try {
+        const fileContent = await fs.readFile(filePath, 'utf-8');
+        const data = JSON.parse(fileContent);
+        blobDataCache.set(cacheKey, data);
+        console.log(`✅ Loaded ${boundaryName} boundary from local file system`);
+        return data;
+      } catch (fsError) {
+        console.warn(`Local boundary file not found: ${filePath}`);
+      }
+    }
+  } catch (error) {
+    console.warn(`Failed to load ${boundaryName} boundary from local storage:`, error);
+  }
+
+  return null;
+}
+
+/**
+ * Clear the cache for a specific endpoint/boundary or all cached data
  */
 export function clearBlobDataCache(endpoint?: string): void {
   if (endpoint) {
     blobDataCache.delete(endpoint);
+    // Also clear boundary cache if it might be a boundary
+    blobDataCache.delete(`boundary_${endpoint}`);
   } else {
     blobDataCache.clear();
   }

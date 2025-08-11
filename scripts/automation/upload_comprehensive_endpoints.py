@@ -14,9 +14,9 @@ sys.path.append(str(Path(__file__).parent))
 from blob_uploader import BlobUploader
 
 def main():
-    """Upload all 26 comprehensive endpoints to blob storage"""
-    print("🚀 Uploading Comprehensive Endpoints to Blob Storage")
-    print("=" * 60)
+    """Upload all 26 comprehensive endpoints and boundary files to blob storage"""
+    print("🚀 Uploading Comprehensive Endpoints and Boundary Files to Blob Storage")
+    print("=" * 70)
     
     # Initialize blob uploader for HRB project
     project_root = Path("/Users/voldeck/code/mpiq-ai-chat")
@@ -69,18 +69,33 @@ def main():
         force_reupload=False  # Only upload new/changed endpoints
     )
     
+    # Upload boundary files
+    print(f"\n🗺️  UPLOADING BOUNDARY FILES")
+    print("-" * 40)
+    
+    boundary_successful, boundary_failed = uploader.upload_boundary_files(
+        force_reupload=False  # Only upload new/changed boundary files
+    )
+    
     # Print detailed summary
     print("\n" + uploader.generate_upload_summary())
     
     # Final status
-    if failed == 0:
-        print("🎉 All endpoints successfully uploaded to blob storage!")
-        print("✅ Client applications will now automatically use blob URLs for large files")
-    else:
-        print(f"⚠️  {failed} endpoints failed to upload, but {successful} succeeded")
-        print("💡 Failed endpoints are still available locally")
+    total_successful = successful + boundary_successful
+    total_failed = failed + boundary_failed
     
-    return 0 if failed == 0 else 1
+    if total_failed == 0:
+        print("🎉 All endpoints and boundary files successfully uploaded to blob storage!")
+        print("✅ Client applications will now automatically use blob URLs for large files")
+        if boundary_successful > 0:
+            print("🗺️  Geographic visualizations will now load boundary data from blob storage")
+    else:
+        print(f"⚠️  {total_failed} files failed to upload, but {total_successful} succeeded")
+        print("💡 Failed files are still available locally")
+        if boundary_failed > 0:
+            print("⚠️  Some boundary files failed to upload - geographic visualizations may be affected")
+    
+    return 0 if total_failed == 0 else 1
 
 if __name__ == "__main__":
     exit(main())

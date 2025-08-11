@@ -20,6 +20,7 @@ import asyncio
 import argparse
 import json
 import logging
+import os
 import subprocess
 import sys
 import time
@@ -158,6 +159,11 @@ class CompleteAutomationPipeline:
             
             # Phase 6.5: Field Mapping Update (NEW)
             success = await self._phase_6_5_field_mapping_update()
+            if not success:
+                return False
+            
+            # Phase 6.6: Boundary File Verification (NEW)
+            success = await self._phase_6_6_boundary_file_verification()
             if not success:
                 return False
             
@@ -654,6 +660,126 @@ class CompleteAutomationPipeline:
             self.pipeline_state['phases_failed'].append('field_mapping_update')
             return False
     
+    async def _phase_6_6_boundary_file_verification(self) -> bool:
+        """Phase 6.6: Boundary File Verification and Generation"""
+        self.logger.info("\n🗺️  PHASE 6.6: Boundary File Verification")
+        self.logger.info("-" * 50)
+        
+        self.pipeline_state['current_phase'] = 'boundary_verification'
+        
+        try:
+            # Check for existing boundary files
+            boundaries_dir = self.project_root / "public" / "data" / "boundaries"
+            zip_boundaries = boundaries_dir / "zip_boundaries.json"
+            fsa_boundaries = boundaries_dir / "fsa_boundaries.json"
+            
+            boundary_files_exist = False
+            existing_files = []
+            
+            # Check for ZIP code boundaries
+            if zip_boundaries.exists():
+                file_size = zip_boundaries.stat().st_size
+                self.logger.info(f"✅ Found ZIP boundaries file: {zip_boundaries.name} ({file_size / 1024 / 1024:.1f}MB)")
+                existing_files.append(f"ZIP codes ({file_size / 1024 / 1024:.1f}MB)")
+                boundary_files_exist = True
+            
+            # Check for FSA boundaries (Canadian postal codes)
+            if fsa_boundaries.exists():
+                file_size = fsa_boundaries.stat().st_size
+                self.logger.info(f"✅ Found FSA boundaries file: {fsa_boundaries.name} ({file_size / 1024 / 1024:.1f}MB)")
+                existing_files.append(f"FSA codes ({file_size / 1024 / 1024:.1f}MB)")
+                boundary_files_exist = True
+            
+            # Check for other boundary files
+            if boundaries_dir.exists():
+                other_boundaries = list(boundaries_dir.glob("*boundaries*.json"))
+                for boundary_file in other_boundaries:
+                    if boundary_file.name not in ["zip_boundaries.json", "fsa_boundaries.json"]:
+                        file_size = boundary_file.stat().st_size
+                        self.logger.info(f"✅ Found boundary file: {boundary_file.name} ({file_size / 1024 / 1024:.1f}MB)")
+                        existing_files.append(f"{boundary_file.stem} ({file_size / 1024 / 1024:.1f}MB)")
+                        boundary_files_exist = True
+            
+            if boundary_files_exist:
+                self.logger.info(f"🎯 Boundary files verified: {', '.join(existing_files)}")
+                
+                # Check if files should be uploaded to blob storage
+                self.logger.info("☁️  Checking blob storage for boundary files...")
+                
+                # Check if blob token is available for upload
+                blob_token = os.getenv('BLOB_READ_WRITE_TOKEN')
+                if blob_token:
+                    from .blob_uploader import BlobUploader
+                    uploader = BlobUploader(self.project_root, "hrb")
+                    
+                    # Check existing blob URLs
+                    blob_urls = uploader.load_existing_blob_urls()
+                    boundary_keys = [key for key in blob_urls.keys() if key.startswith('boundaries/')]
+                    
+                    if boundary_keys:
+                        self.logger.info(f"✅ Found {len(boundary_keys)} boundary files in blob storage")
+                        for key in boundary_keys:
+                            self.logger.info(f"   • {key}")
+                    else:
+                        self.logger.info("⚠️  No boundary files found in blob storage")
+                        self.logger.info("💡 RECOMMENDATION: Upload boundary files to blob storage")
+                        self.logger.info("   Run: python scripts/automation/upload_comprehensive_endpoints.py")
+                        self.logger.info("   This will upload both endpoints and boundary files to improve performance")
+                else:
+                    self.logger.info("💡 BLOB STORAGE: Set BLOB_READ_WRITE_TOKEN to enable boundary file cloud storage")
+                
+                # Store results
+                self.results['boundary_verification'] = {
+                    'status': 'verified',
+                    'existing_files': existing_files,
+                    'boundaries_directory': str(boundaries_dir),
+                    'blob_storage_available': bool(blob_token),
+                    'blob_boundary_count': len([key for key in (uploader.load_existing_blob_urls().keys() if blob_token else []) if key.startswith('boundaries/')])
+                }
+                
+                self.logger.info("✅ Phase 6.6 Complete: Geographic boundary files are available")
+                self.pipeline_state['phases_completed'].append('boundary_verification')
+                
+                return True
+            else:
+                # Alert about missing boundary files
+                self.logger.warning("⚠️  NO BOUNDARY FILES FOUND!")
+                self.logger.warning("🗺️  Geographic boundary files are required for spatial analysis")
+                self.logger.warning(f"📁 Expected location: {boundaries_dir}")
+                self.logger.warning("")
+                self.logger.warning("🚨 REQUIRED ACTION:")
+                self.logger.warning("1. Obtain boundary files for your geographic region:")
+                self.logger.warning("   • ZIP codes for US data: zip_boundaries.json")  
+                self.logger.warning("   • FSA codes for Canadian data: fsa_boundaries.json")
+                self.logger.warning("   • Other regional boundaries as needed")
+                self.logger.warning("2. Place boundary files in: public/data/boundaries/")
+                self.logger.warning("3. Ensure files are in GeoJSON format")
+                self.logger.warning("4. Re-run the automation pipeline")
+                self.logger.warning("")
+                self.logger.warning("📖 Common boundary sources:")
+                self.logger.warning("   • US Census Bureau (ZIP codes)")
+                self.logger.warning("   • Statistics Canada (FSA codes)")  
+                self.logger.warning("   • Natural Earth (countries/states)")
+                self.logger.warning("   • OpenStreetMap (various boundaries)")
+                
+                # Store alert results
+                self.results['boundary_verification'] = {
+                    'status': 'missing',
+                    'alert_issued': True,
+                    'required_location': str(boundaries_dir),
+                    'required_files': ['zip_boundaries.json', 'fsa_boundaries.json']
+                }
+                
+                self.logger.info("⚠️  Phase 6.6 Complete: Boundary file alert issued")
+                self.pipeline_state['phases_completed'].append('boundary_verification')
+                
+                return True  # Continue pipeline but with alert
+            
+        except Exception as e:
+            self.logger.error(f"❌ Phase 6.6 Failed: {str(e)}")
+            self.pipeline_state['phases_failed'].append('boundary_verification')
+            return False
+    
     async def _phase_7_layer_configuration(self) -> bool:
         """Phase 7: Layer Configuration Generation"""
         self.logger.info("\n🏗️  PHASE 7: Layer Configuration Generation")
@@ -737,13 +863,32 @@ class CompleteAutomationPipeline:
                     self.logger.warning(f"⚠️  {failed_uploads} endpoints failed to upload to blob storage")
                     self.logger.info("💡 Endpoints are still available locally in public/data/endpoints/")
                 
-                # Log blob upload summary
-                if successful_uploads > 0 or failed_uploads > 0:
+                # Upload boundary files to blob storage
+                self.logger.info("🗺️  Uploading boundary files to blob storage...")
+                boundary_successful, boundary_failed = blob_uploader.upload_boundary_files(force_reupload=False)
+                
+                if boundary_successful > 0:
+                    self.logger.info(f"✅ Successfully uploaded {boundary_successful} boundary files to blob storage")
+                elif boundary_failed > 0:
+                    self.logger.warning(f"⚠️  {boundary_failed} boundary files failed to upload to blob storage")
+                else:
+                    self.logger.info("📍 No boundary files found to upload")
+                
+                # Log combined upload summary
+                total_successful = successful_uploads + boundary_successful
+                total_failed = failed_uploads + boundary_failed
+                
+                if total_successful > 0 or total_failed > 0:
                     self.logger.info("\n" + blob_uploader.generate_upload_summary())
+                    
+                    if boundary_successful > 0:
+                        self.logger.info("🗺️  Geographic visualizations will now load boundary data from blob storage")
+                        
             else:
                 self.logger.warning("⚠️  BLOB_READ_WRITE_TOKEN not found - skipping blob upload")
                 self.logger.info("💡 Set BLOB_READ_WRITE_TOKEN in .env.local to enable blob storage upload")
                 self.logger.info("📁 Endpoints are available locally in public/data/endpoints/")
+                self.logger.info("🗺️  Boundary files are available locally in public/data/boundaries/")
             
             # Update layer configuration in main config
             self.logger.info("⚙️  Updating main layer configuration...")
@@ -768,9 +913,13 @@ class CompleteAutomationPipeline:
             blob_upload_info = {
                 'blob_token_available': blob_uploader.blob_token is not None,
                 'endpoints_uploaded': len(blob_uploader.uploaded_endpoints),
-                'failed_uploads': len(blob_uploader.failed_uploads),
+                'boundaries_uploaded': len(blob_uploader.uploaded_boundaries),
+                'failed_endpoint_uploads': len(blob_uploader.failed_uploads),
+                'failed_boundary_uploads': len(blob_uploader.failed_boundary_uploads),
                 'uploaded_endpoints': blob_uploader.uploaded_endpoints,
-                'failed_endpoints': blob_uploader.failed_uploads
+                'uploaded_boundaries': blob_uploader.uploaded_boundaries,
+                'failed_endpoints': blob_uploader.failed_uploads,
+                'failed_boundaries': blob_uploader.failed_boundary_uploads
             }
             
             deployment_summary = {
@@ -810,7 +959,9 @@ Your microservice should now be deployed at:
 ## ☁️ BLOB STORAGE STATUS
 
 {f"✅ **{len(blob_uploader.uploaded_endpoints)} endpoints uploaded** to Vercel Blob storage" if blob_uploader.blob_token and blob_uploader.uploaded_endpoints else "⚠️  **Blob storage not configured** - endpoints available locally only"}
+{f"🗺️  **{len(blob_uploader.uploaded_boundaries)} boundary files uploaded** to Vercel Blob storage" if blob_uploader.blob_token and blob_uploader.uploaded_boundaries else "📍 **No boundary files uploaded** - geographic visualizations will use local files"}
 {f"❌ **{len(blob_uploader.failed_uploads)} endpoints failed upload** - check logs above" if blob_uploader.blob_token and blob_uploader.failed_uploads else ""}
+{f"❌ **{len(blob_uploader.failed_boundary_uploads)} boundary files failed upload** - check logs above" if blob_uploader.blob_token and blob_uploader.failed_boundary_uploads else ""}
 {f"💡 **Set BLOB_READ_WRITE_TOKEN** in .env.local to enable blob storage upload" if not blob_uploader.blob_token else "🔗 **Large files automatically served** from blob storage"}
 
 ## Update Client Code
@@ -876,7 +1027,7 @@ Find any hardcoded microservice URLs in your code and replace with the new URL.
         elapsed_time = (time.time() - self.start_time) / 60
         
         # Calculate success metrics
-        total_phases = 8
+        total_phases = 9  # Updated for Phase 6.6: Boundary File Verification
         completed_phases = len(self.pipeline_state['phases_completed'])
         success_rate = (completed_phases / total_phases) * 100
         

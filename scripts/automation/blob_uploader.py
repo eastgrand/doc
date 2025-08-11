@@ -30,6 +30,8 @@ class BlobUploader:
         self.blob_token = os.getenv('BLOB_READ_WRITE_TOKEN')
         self.uploaded_endpoints = []
         self.failed_uploads = []
+        self.uploaded_boundaries = []
+        self.failed_boundary_uploads = []
         
         # Ensure blob-urls.json exists
         self.blob_urls_file.parent.mkdir(parents=True, exist_ok=True)
@@ -60,8 +62,8 @@ class BlobUploader:
             logger.error(f"❌ Failed to save blob URLs: {e}")
             return False
     
-    def upload_to_vercel_blob(self, endpoint_name: str, data: Dict) -> Optional[str]:
-        """Upload endpoint data to Vercel Blob storage"""
+    def upload_to_vercel_blob(self, file_name: str, data: Dict, file_type: str = "endpoint") -> Optional[str]:
+        """Upload data to Vercel Blob storage"""
         if not self.blob_token:
             logger.error("❌ BLOB_READ_WRITE_TOKEN environment variable not set")
             return None
@@ -72,7 +74,11 @@ class BlobUploader:
             
             # Prepare the upload
             url = "https://blob.vercel-storage.com"
-            filename = f"hrb/{endpoint_name}.json"
+            # Use different paths for different file types
+            if file_type == "boundary":
+                filename = f"hrb/boundaries/{file_name}.json"
+            else:
+                filename = f"hrb/{file_name}.json"
             
             # Upload to Vercel Blob
             response = requests.put(
@@ -90,17 +96,17 @@ class BlobUploader:
                 
                 if blob_url:
                     size_mb = len(json_data) / (1024 * 1024)
-                    logger.info(f"✅ Uploaded {endpoint_name} ({size_mb:.1f}MB) to blob storage")
+                    logger.info(f"✅ Uploaded {file_name} ({size_mb:.1f}MB) to blob storage")
                     return blob_url
                 else:
-                    logger.error(f"❌ No URL returned for {endpoint_name}")
+                    logger.error(f"❌ No URL returned for {file_name}")
                     return None
             else:
-                logger.error(f"❌ Failed to upload {endpoint_name}: {response.status_code} - {response.text}")
+                logger.error(f"❌ Failed to upload {file_name}: {response.status_code} - {response.text}")
                 return None
                 
         except Exception as e:
-            logger.error(f"❌ Error uploading {endpoint_name} to blob storage: {e}")
+            logger.error(f"❌ Error uploading {file_name} to blob storage: {e}")
             return None
     
     def upload_endpoints(self, endpoints_data: Dict[str, Dict], 
@@ -142,7 +148,7 @@ class BlobUploader:
             
             logger.info(f"📤 Uploading {endpoint_name} ({size_mb:.1f}MB)...")
             
-            blob_url = self.upload_to_vercel_blob(endpoint_name, data)
+            blob_url = self.upload_to_vercel_blob(endpoint_name, data, "endpoint")
             
             if blob_url:
                 updated_blob_urls[endpoint_name] = blob_url
@@ -200,13 +206,98 @@ class BlobUploader:
         
         return self.upload_endpoints(endpoints_data, force_reupload)
     
+    def upload_boundary_files(self, boundaries_dir: Path = None, 
+                             force_reupload: bool = False) -> Tuple[int, int]:
+        """
+        Upload boundary files from the boundaries directory
+        
+        Args:
+            boundaries_dir: Directory containing boundary JSON files
+            force_reupload: If True, reupload all files even if they exist
+            
+        Returns:
+            Tuple of (successful_uploads, failed_uploads)
+        """
+        if boundaries_dir is None:
+            boundaries_dir = self.project_root / "public" / "data" / "boundaries"
+        
+        if not boundaries_dir.exists():
+            logger.info("📍 No boundaries directory found - skipping boundary file upload")
+            return 0, 0
+        
+        # Load existing mappings
+        existing_blob_urls = self.load_existing_blob_urls()
+        updated_blob_urls = existing_blob_urls.copy()
+        
+        successful_uploads = 0
+        failed_uploads = 0
+        
+        # Find boundary files (excluding backup files)
+        boundary_files = []
+        for json_file in boundaries_dir.glob("*.json"):
+            if "backup" not in json_file.name.lower() and "summary" not in json_file.name.lower():
+                boundary_files.append(json_file)
+        
+        if not boundary_files:
+            logger.info("📍 No boundary files found to upload")
+            return 0, 0
+        
+        logger.info(f"🗺️  Found {len(boundary_files)} boundary files to upload")
+        
+        for json_file in boundary_files:
+            boundary_name = json_file.stem
+            
+            try:
+                with open(json_file, 'r') as f:
+                    data = json.load(f)
+                
+                size_mb = json_file.stat().st_size / (1024 * 1024)
+                
+                # Check if already uploaded (unless force reupload) - use boundary prefix
+                boundary_key = f"boundaries/{boundary_name}"
+                if not force_reupload and boundary_key in existing_blob_urls:
+                    logger.info(f"⏭️  Skipping {boundary_name} (already uploaded, {size_mb:.1f}MB)")
+                    continue
+                
+                logger.info(f"📤 Uploading boundary file {boundary_name} ({size_mb:.1f}MB)...")
+                
+                blob_url = self.upload_to_vercel_blob(boundary_name, data, "boundary")
+                
+                if blob_url:
+                    updated_blob_urls[boundary_key] = blob_url
+                    self.uploaded_boundaries.append(boundary_name)
+                    successful_uploads += 1
+                    logger.info(f"✅ Boundary file {boundary_name} uploaded successfully")
+                else:
+                    self.failed_boundary_uploads.append(boundary_name)
+                    failed_uploads += 1
+                    
+            except Exception as e:
+                logger.error(f"❌ Failed to process boundary file {json_file}: {e}")
+                self.failed_boundary_uploads.append(boundary_name)
+                failed_uploads += 1
+                continue
+        
+        # Save updated blob URLs
+        if successful_uploads > 0:
+            self.save_blob_urls(updated_blob_urls)
+        
+        return successful_uploads, failed_uploads
+    
     def generate_upload_summary(self) -> str:
         """Generate a summary of the upload process"""
+        total_uploaded = len(self.uploaded_endpoints) + len(self.uploaded_boundaries)
+        total_failed = len(self.failed_uploads) + len(self.failed_boundary_uploads)
+        
         summary = f"""
 📊 BLOB UPLOAD SUMMARY
 {"=" * 50}
-✅ Successfully uploaded: {len(self.uploaded_endpoints)}
-❌ Failed uploads: {len(self.failed_uploads)}
+✅ Successfully uploaded: {total_uploaded}
+   • Endpoints: {len(self.uploaded_endpoints)}
+   • Boundary files: {len(self.uploaded_boundaries)}
+❌ Failed uploads: {total_failed}
+   • Endpoints: {len(self.failed_uploads)}
+   • Boundary files: {len(self.failed_boundary_uploads)}
 📁 Blob URLs file: {self.blob_urls_file}
 
 """
@@ -216,14 +307,28 @@ class BlobUploader:
             for endpoint in self.uploaded_endpoints:
                 summary += f"   • {endpoint}\n"
             summary += "\n"
+            
+        if self.uploaded_boundaries:
+            summary += "🗺️  Uploaded boundary files:\n"
+            for boundary in self.uploaded_boundaries:
+                summary += f"   • {boundary}\n"
+            summary += "\n"
         
         if self.failed_uploads:
-            summary += "❌ Failed uploads:\n"
+            summary += "❌ Failed endpoint uploads:\n"
             for endpoint in self.failed_uploads:
                 summary += f"   • {endpoint}\n"
             summary += "\n"
+            
+        if self.failed_boundary_uploads:
+            summary += "❌ Failed boundary uploads:\n"
+            for boundary in self.failed_boundary_uploads:
+                summary += f"   • {boundary}\n"
+            summary += "\n"
         
         summary += "🔗 Endpoints are now accessible via blob storage URLs\n"
+        if self.uploaded_boundaries:
+            summary += "🗺️  Geographic visualizations will load boundary data from blob storage\n"
         summary += "📋 Client applications will automatically use blob storage for large files\n"
         
         return summary
@@ -241,6 +346,8 @@ def main():
                        help="Specific endpoints to upload (default: all)")
     parser.add_argument("--force", action="store_true",
                        help="Force reupload even if endpoints already exist in blob storage")
+    parser.add_argument("--include-boundaries", action="store_true", default=True,
+                       help="Include boundary files in upload (default: True)")
     parser.add_argument("--project-root",
                        help="Project root directory (default: auto-detect)")
     parser.add_argument("--project-prefix", default="hrb",
@@ -266,10 +373,21 @@ def main():
         args.force
     )
     
+    # Upload boundary files if requested
+    boundary_successful, boundary_failed = 0, 0
+    if args.include_boundaries:
+        logger.info("🗺️  Uploading boundary files...")
+        boundary_successful, boundary_failed = uploader.upload_boundary_files(
+            force_reupload=args.force
+        )
+    
     # Print summary
     print(uploader.generate_upload_summary())
     
-    return 0 if failed == 0 else 1
+    total_successful = successful + boundary_successful
+    total_failed = failed + boundary_failed
+    
+    return 0 if total_failed == 0 else 1
 
 
 if __name__ == "__main__":

@@ -1123,49 +1123,42 @@ const EnhancedGeospatialChat = memo(({
 
   // Separate function for actual file loading
   const loadBoundariesFromFile = async (): Promise<FeatureType[]> => {
-    // Load cached ZIP Code polygon boundaries (no cache busting - let browser cache handle it)
-    const response = await fetch('/data/boundaries/zip_boundaries.json');
+    // Load ZIP Code polygon boundaries from blob storage with fallback to local
+    const { loadBoundaryData } = await import('@/utils/blob-data-loader');
+    const boundaryData = await loadBoundaryData('zip_boundaries');
     
-    console.log('[loadBoundariesFromFile] Fetch response:', {
-      status: response.status,
-      statusText: response.statusText,
-      ok: response.ok,
-      url: response.url
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Failed to load cached boundaries: HTTP ${response.status} ${response.statusText}`);
+    if (!boundaryData) {
+      throw new Error('Failed to load ZIP code boundaries from both blob storage and local files');
     }
     
-    const boundariesData = await response.json();
-    
     console.log('[loadBoundariesFromFile] Boundaries data loaded:', {
-      hasFeatures: !!boundariesData.features,
-      isArray: Array.isArray(boundariesData.features),
-      count: boundariesData.features?.length || 0,
-      sampleFeature: boundariesData.features?.[0] ? {
-        hasProperties: !!boundariesData.features[0].properties,
-        hasGeometry: !!boundariesData.features[0].geometry,
-        sampleId: boundariesData.features[0].properties?.ID
-      } : null
+      hasFeatures: !!boundaryData.features,
+      isArray: Array.isArray(boundaryData.features),
+      count: boundaryData.features?.length || 0,
+      sampleFeature: boundaryData.features?.[0] ? {
+        hasProperties: !!boundaryData.features[0].properties,
+        hasGeometry: !!boundaryData.features[0].geometry,
+        sampleId: boundaryData.features[0].properties?.ID
+      } : null,
+      source: 'blob-data-loader'
     });
     
-    if (!boundariesData.features || !Array.isArray(boundariesData.features)) {
+    if (!boundaryData.features || !Array.isArray(boundaryData.features)) {
       throw new Error('Invalid boundaries data structure - no features array');
     }
     
-    if (boundariesData.features.length === 0) {
+    if (boundaryData.features.length === 0) {
       throw new Error('No features in boundaries data');
     }
     
     console.log('[loadBoundariesFromFile] 📁 ZIP Code boundaries loaded from file:', {
-      total: boundariesData.features.length,
-      fileSize: `${(16.6).toFixed(1)} MB`,
-      source: 'fresh_file_load'
+      total: boundaryData.features.length,
+      fileSize: `${(boundaryData.features.length * 0.0007).toFixed(1)} MB (estimated)`,
+      source: 'blob-data-loader'
     });
     
     // Convert GeoJSON features to internal FeatureType format
-    const features: FeatureType[] = boundariesData.features.map((feature: any, index: number) => {
+    const features: FeatureType[] = boundaryData.features.map((feature: any, index: number) => {
       if (!feature.geometry || !feature.properties) {
         console.warn(`[loadBoundariesFromFile] Invalid feature at index ${index}:`, feature);
         return null;
