@@ -212,17 +212,189 @@ Now you need to tell your application where to find the microservice.
 1. **The automation continues automatically** after the pause
 2. **It will complete all remaining phases**:
    - Generate 26 analysis endpoints (19 standard + 7 comprehensive)
-   - Apply 22 comprehensive scoring algorithms  
+   - Apply 22 comprehensive scoring algorithms
+   - **Update field mappings** with current project data (NEW)
+   - **Enable AI synonym expansion** for enhanced natural language queries (OPTIONAL)
    - Create TypeScript layer configurations
    - Deploy all files to your application
    - Offer cleanup recommendations to optimize storage
 3. **You'll see**: `🎉 AUTOMATION PIPELINE COMPLETED SUCCESSFULLY!`
 
-## Step 6: Optional Storage Cleanup (1 minute)
+### 🗂️ New: Automatic Field Mapping Updates
+
+The automation now includes **Phase 6.5: Field Mapping Update** which:
+
+- **Discovers all unique fields** from your endpoint data (132+ fields)
+- **Generates comprehensive aliases** for natural language queries
+- **Creates human-readable display names** for UI components
+- **Synchronizes mappings** with your actual project data
+- **Eliminates outdated references** from previous projects
+
+**Benefits:**
+
+- 🎯 **Accurate field resolution** - No more missing field errors
+- 🗣️ **Better natural language processing** - Users can type "population" and get results
+- 🎨 **Consistent UI labels** - All popups and legends show proper field names
+- 🔄 **Always current** - Mappings update automatically with your data
+- 🤖 **AI Enhancement Ready** - Optional 500+ synonym expansion for semantic queries
+
+📖 **For detailed information**, see the [Field Mapping Automation Documentation](../../docs/FIELD_MAPPING_AUTOMATION.md) which explains:
+
+- How the field discovery system works
+- Manual maintenance procedures
+- Field categorization and naming conventions
+- Troubleshooting common mapping issues
+
+### 🤖 Step 6.6: AI-Powered Synonym Expansion (Optional Enhancement)
+
+**⚠️ FOR AI ASSISTANTS**: This step dramatically improves natural language query capabilities by expanding field-aliases.ts with comprehensive synonyms.
+
+**When to perform this step:**
+- After Phase 6.5 (Field Mapping Update) completes
+- When users report difficulty finding fields with natural language queries
+- To enhance user experience with semantic field discovery
+
+**AI Instructions for Synonym Expansion:**
+
+#### 1. **Analyze Field Definitions** (Required Reading)
+```bash
+# Read the layers.ts file to understand what each field actually represents
+cat /config/layers.ts
+```
+
+**Key sections to examine:**
+- **Layer names** (lines ~226, 335, 444, etc.): "Generation Alpha Pop", "Used Google Pay Digital Payment Svc"
+- **Field aliases** in each layer's fields array: `"alias": "2025 Used Apple Pay Digital Payment Service Last 30 Days"`
+- **Field descriptions**: Full context of what each MP code, X code represents
+
+#### 2. **Field Categories and Meanings**
+Based on layers.ts analysis, you'll typically find:
+
+**Business/Consumer Behavior Fields:**
+- Service usage patterns (e.g., "Used [Service] Last 30 Days")
+- Financial product ownership (e.g., "Have [Product]", "Own [Investment]")
+- Consumer preferences and behaviors
+- Digital service adoption patterns
+
+**Asset/Economic Value Fields:**
+- Financial asset values (e.g., "Value of [Asset Type]")
+- Income and spending data
+- Investment portfolio information
+- Debt and liability amounts
+
+**Demographic Fields:**
+- Age groups and generations
+- Population segments
+- Geographic distributions
+- Household characteristics
+
+#### 3. **Implementation Process**
+
+**Step A: Open field-aliases.ts**
+```bash
+# Edit the field aliases file
+nano /utils/field-aliases.ts
+```
+
+**Step B: Expand Each Category with Natural Language Synonyms**
+
+For each field category, add 5-15 natural language variations. **Examples based on field meanings:**
+
+```typescript
+// Example: Digital Payment Service Field - ADD SYNONYMS LIKE:
+"[service name]": "[FIELD_CODE]",
+"used [service]": "[FIELD_CODE]", 
+"digital payment": "[FIELD_CODE]",
+"mobile payment": "[FIELD_CODE]",
+"contactless payment": "[FIELD_CODE]",
+"[service] wallet": "[FIELD_CODE]",
+"[device] payment": "[FIELD_CODE]",
+
+// Example: Investment/Asset Value Field - ADD SYNONYMS LIKE:
+"stocks": "[ASSET_FIELD]",
+"bonds": "[ASSET_FIELD]", 
+"mutual funds": "[ASSET_FIELD]",
+"investments": "[ASSET_FIELD]",
+"portfolio": "[ASSET_FIELD]",
+"retirement": "[ASSET_FIELD]",
+"wealth": "[ASSET_FIELD]",
+```
+
+**Step C: Add Cross-Category Natural Language Aliases**
+```typescript
+// === NATURAL LANGUAGE ALIASES ===
+// Map broad concepts to most relevant specific fields based on your data
+// Examples (adapt to your project's actual fields):
+
+// Financial concepts → relevant financial fields
+"wealth": "[INVESTMENT_FIELD]",     // → investment/asset values
+"money": "[CASH_FIELD]",            // → liquid asset fields  
+"debt": "[DEBT_FIELD]",             // → debt/liability fields
+"banking": "[BANKING_FIELD]",       // → banking service fields
+
+// Technology concepts → relevant tech adoption fields
+"digital": "[DIGITAL_SERVICE]",     // → digital service usage
+"mobile": "[MOBILE_SERVICE]",       // → mobile app/payment usage
+"tech": "[TECH_ADOPTION]",          // → technology adoption fields
+
+// Demographic concepts → relevant population fields
+"young": "[YOUNG_DEMO_FIELD]",      // → younger demographic field
+"population": "[PRIMARY_DEMO]",     // → primary population field
+"people": "[PRIMARY_DEMO]",         // → primary population field
+```
+
+#### 4. **Quality Guidelines**
+
+**✅ DO:**
+- Use the exact field meanings from layers.ts aliases
+- Add 5-15 synonyms per major field
+- Include common abbreviations (e.g., "boa" for Bank of America)
+- Add industry terms (e.g., "fintech" for digital payments)
+- Include related concepts (e.g., "portfolio" for investments)
+
+**❌ DON'T:**
+- Create duplicate keys (check for conflicts)
+- Add synonyms that don't match the field's actual meaning
+- Use overly broad terms that could map to multiple fields
+- Include offensive or inappropriate terms
+
+#### 5. **Testing and Validation**
+
+**Check for TypeScript errors:**
+```bash
+npm run typecheck
+```
+
+**Count your improvements:**
+```bash
+echo "Total aliases: $(grep -c '"[^"]*":' /utils/field-aliases.ts)"
+echo "Unique fields: $(grep -o '": "[^"]*"' /utils/field-aliases.ts | sort | uniq | wc -l)"
+```
+
+**Target metrics:**
+- **500+ total aliases** (vs ~30 original)
+- **90+ unique field mappings**
+- **No TypeScript duplicate key errors**
+
+#### 6. **Expected Impact**
+
+After expansion, users can query with natural language based on your project's data:
+- **"Show me [service/product] users"** → Service adoption fields
+- **"[Service A] users vs [Service B] accounts"** → Comparative analysis
+- **"Young people with [technology/service]"** → Demographic + behavioral fields
+- **"Wealth distribution analysis"** → Financial asset fields
+- **"[Financial metric] by area"** → Geographic distribution analysis
+
+**Success Criteria:**
+- 🎯 **17x improvement** in natural language query support
+- 🗣️ **Semantic understanding** of user intent
+- 🚀 **Dramatically improved UX** for non-technical users
+
+## Step 8: Optional Storage Cleanup (1 minute)
 
 After completion, you'll see cleanup recommendations:
 
-```
+```bash
 🧹 CLEANUP RECOMMENDATION
 📊 Current project size: 45.2 MB
 💡 CLEANUP OPTIONS:
@@ -249,7 +421,8 @@ After completing all steps, you'll have:
 
 Your microservice now includes **17 comprehensive AI models** with algorithm diversity, each trained specifically for different types of analysis:
 
-#### 🎯 Specialized Analysis Models (6):
+#### 🎯 Specialized Analysis Models (6)
+
 1. **Strategic Analysis Model** - Optimized for business strategy insights
 2. **Competitive Analysis Model** - Focused on market competition patterns
 3. **Demographic Analysis Model** - Specialized for population and demographic insights
@@ -257,7 +430,8 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
 5. **Predictive Modeling Model** - Advanced forecasting and predictions
 6. **Ensemble Model** - R² = 0.879 (87.9% accuracy) - Outstanding Performance!
 
-#### ⚙️ Algorithm Diversity Models (8):
+#### ⚙️ Algorithm Diversity Models (8)
+
 7. **XGBoost Model** - Gradient boosting baseline
 8. **Random Forest Model** - Ensemble tree method
 9. **Support Vector Regression** - High-performance alternative
@@ -267,12 +441,14 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
 13. **Ridge Regression** - Regularized linear model
 14. **Lasso Regression** - L1 regularized with feature selection
 
-#### 🔍 Unsupervised Models (3):
+#### 🔍 Unsupervised Models (3)
+
 15. **Anomaly Detection Model** - Outlier identification
 16. **Clustering Model** - Pattern grouping
 17. **Dimensionality Reduction Model** - Feature optimization
 
 **Benefits:**
+
 - 🎯 **Higher Accuracy**: Each model is fine-tuned for specific analysis types
 - ⚡ **Algorithm Diversity**: 8 different ML algorithms provide robust predictions
 - 🔍 **Outstanding Performance**: Ensemble model achieves R² = 0.879 (87.9% accuracy)
@@ -283,23 +459,29 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
 ## Troubleshooting
 
 **Problem**: Script won't run
+
 - **Solution**: Make sure you're in the right folder, activate the virtual environment with `source ../venv/bin/activate`, and have the required Python packages installed
 
 **Problem**: Target variable not found error
+
 - **Solution**: The target variable must match exactly the column name in your data. Check your data source documentation for available fields
 
 **Problem**: Render deployment fails
+
 - **Solution**: Check that all files were uploaded correctly to GitHub
 
 **Problem**: Application can't connect to microservice
+
 - **Solution**: Double-check the microservice URL in your configuration files
 
 **Problem**: Data doesn't load in your application
+
 - **Solution**: Wait a few minutes for Render to fully start up, then try again
 
 ## Getting Help
 
 **If you're stuck:**
+
 1. **Check** the error messages carefully
 2. **Look** at the automation logs in `projects/your_project_name/`
 3. **Verify** each step was completed correctly
@@ -313,6 +495,8 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
 - [ ] Client code updated with microservice URL
 - [ ] Application starts without errors
 - [ ] Data loads correctly in all analysis pages
+- [ ] Field mappings updated automatically (Phase 6.5)
+- [ ] AI synonym expansion applied (Optional Step 6.6)
 - [ ] Cleanup system reviewed and executed if needed
 
 **🎉 Congratulations! Your ArcGIS service is now a working microservice!**

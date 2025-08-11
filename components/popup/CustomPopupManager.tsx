@@ -986,32 +986,66 @@ const generateBarChart = (
       }
     }
     
-    if (mainScoreField && mainScoreValue > 0) {
-      // Get all features from the layer to calculate max value for percentage
+    if (mainScoreField && mainScoreValue >= 0) {
+      // Get all features from the layer to calculate statistics
       const layer = feature.layer as __esri.FeatureLayer;
       if (layer.source) {
         const allFeatures = (layer.source as any).items || [];
-        const allValues = allFeatures.map((f: any) => f.attributes?.[mainScoreField] || 0).filter((v: number) => v > 0);
+        const allValues = allFeatures.map((f: any) => f.attributes?.[mainScoreField]).filter((v: any) => typeof v === 'number');
         const maxValue = Math.max(...allValues);
-        const percentage = maxValue > 0 ? (mainScoreValue / maxValue) * 100 : 0;
+        const minValue = Math.min(...allValues);
+        const sortedValues = [...allValues].sort((a, b) => a - b);
+        const medianValue = sortedValues.length > 0 ? sortedValues[Math.floor(sortedValues.length / 2)] : 0;
         
         metrics.push({
           label: FieldMappingHelper.getFriendlyFieldName(mainScoreField),
           value: mainScoreValue,
           color: '#33a852',
           isPercent: false,
-          percentage: percentage
+          statistics: {
+            min: minValue,
+            max: maxValue,
+            median: medianValue
+          }
         });
       }
     }
     
-    // Add other available numeric fields
+    // Add contributing fields, excluding unwanted system fields
+    const excludedFields = ['OBJECTID', 'value', 'rank', 'ID', 'DESCRIPTION', 'area_name'];
+    
+    // Fields from other projects that should be excluded
+    const otherProjectFields = [
+      'nike_market_share', 'adidas_market_share', 'jordan_market_share',
+      'nike_purchases', 'adidas_purchases', 'footwear_sales',
+      'athletic_shoes', 'running_shoes', 'basketball_shoes'
+    ];
+    
+    // Get all available numeric fields that could be contributing factors
     Object.keys(attrs).forEach(key => {
-      if (key !== mainScoreField && typeof attrs[key] === 'number' && attrs[key] > 0) {
+      if (key !== mainScoreField && 
+          !excludedFields.includes(key) && 
+          !otherProjectFields.includes(key) && 
+          !key.toLowerCase().includes('nike') &&
+          !key.toLowerCase().includes('adidas') &&
+          !key.toLowerCase().includes('jordan') &&
+          typeof attrs[key] === 'number' && 
+          attrs[key] > 0) { // Only show fields with positive values
+        
+        // Determine color based on field type
+        let color = '#6c757d'; // Default gray
+        if (key.includes('score')) {
+          color = '#4285f4'; // Blue for scores
+        } else if (key.includes('population') || key.includes('income')) {
+          color = '#28a745'; // Green for demographics
+        } else if (key.includes('market') || key.includes('gap')) {
+          color = '#fd7e14'; // Orange for market metrics
+        }
+        
         metrics.push({
           label: FieldMappingHelper.getFriendlyFieldName(key),
           value: attrs[key],
-          color: '#4285f4'
+          color: color
         });
       }
     });
@@ -1053,8 +1087,14 @@ const generateBarChart = (
         
         const barFill = document.createElement('div');
         let widthPercent = 0;
-        if ('percentage' in metric && metric.percentage !== undefined) {
-          widthPercent = Math.max(metric.percentage, 5); // Use calculated percentage
+        if (metric.statistics) {
+          // Use relative position within the range for bar width
+          const range = metric.statistics.max - metric.statistics.min;
+          if (range > 0) {
+            widthPercent = Math.max(((metric.value - metric.statistics.min) / range) * 100, 5);
+          } else {
+            widthPercent = 50; // Default width if no range
+          }
         } else if (metric.isPercent || metric.value <= 1) {
           widthPercent = Math.min(Math.abs(metric.value) * 100, 100);
         } else {
@@ -1068,11 +1108,7 @@ const generateBarChart = (
         
         // Value text
         const valueText = document.createElement('div');
-        if ('percentage' in metric && metric.percentage !== undefined) {
-          valueText.textContent = `${metric.value.toFixed(1)} (${metric.percentage.toFixed(1)}%)`;
-        } else {
-          valueText.textContent = metric.value.toLocaleString(undefined, { maximumFractionDigits: 1 });
-        }
+        valueText.textContent = metric.value.toLocaleString(undefined, { maximumFractionDigits: 1 });
         valueText.style.minWidth = '80px';
         valueText.style.textAlign = 'right';
         valueText.style.fontSize = '12px';
@@ -1086,6 +1122,36 @@ const generateBarChart = (
         container.appendChild(row);
       });
       
+      // Add statistics summary if we have main score statistics
+      const mainMetric = metrics.find(m => m.statistics);
+      if (mainMetric && mainMetric.statistics) {
+        const statsContainer = document.createElement('div');
+        statsContainer.style.marginTop = '12px';
+        statsContainer.style.padding = '8px';
+        statsContainer.style.backgroundColor = '#f8f9fa';
+        statsContainer.style.borderRadius = '4px';
+        statsContainer.style.borderLeft = '3px solid #33a852';
+        
+        const statsTitle = document.createElement('div');
+        statsTitle.textContent = 'All Areas';
+        statsTitle.style.fontSize = '11px';
+        statsTitle.style.fontWeight = 'bold';
+        statsTitle.style.color = '#495057';
+        statsTitle.style.marginBottom = '4px';
+        
+        const statsText = document.createElement('div');
+        statsText.innerHTML = `
+          <div style="font-size: 10px; color: #6c757d; line-height: 1.4;">
+            <div>Median: <strong>${mainMetric.statistics.median.toFixed(1)}</strong></div>
+            <div>Range: <strong>${mainMetric.statistics.min.toFixed(1)} - ${mainMetric.statistics.max.toFixed(1)}</strong></div>
+          </div>
+        `;
+        
+        statsContainer.appendChild(statsTitle);
+        statsContainer.appendChild(statsText);
+        container.appendChild(statsContainer);
+      }
+      
       // Show chart
       container.style.display = 'block';
     }
@@ -1098,7 +1164,7 @@ const generateBarChart = (
     const attrs = feature.attributes || {};
 
     // Helper to push metric definition safely
-    interface Metric { label: string; value: number; color: string; isPercent?: boolean; percentage?: number; }
+    interface Metric { label: string; value: number; color: string; isPercent?: boolean; percentage?: number; statistics?: { min: number; max: number; median: number }; }
     const metrics: Metric[] = [];
 
     // 1) Correlation score (if available)

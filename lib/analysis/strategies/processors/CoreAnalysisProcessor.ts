@@ -164,11 +164,16 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       const marketGap = Math.max(0, 100 - nikeValue - adidasValue);
       const competitiveAdvantage = Math.max(0, nikeValue - adidasValue);
       
+      // Get top contributing fields for popup display
+      const topContributingFields = this.getTopContributingFields(record);
+      
       return {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100, // Use strategic score as primary value
         rank: 0, // Will be calculated after sorting
+        // Flatten top contributing fields to top level for popup access
+        ...topContributingFields,
         properties: {
           ...record, // Include ALL original fields in properties
           strategic_value_score: primaryScore,
@@ -594,6 +599,64 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       acc[record.category!] = (acc[record.category!] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
+  }
+
+  /**
+   * Identify top 5 fields that contribute most to the strategic value score
+   * Returns them as a flattened object for popup display
+   */
+  private getTopContributingFields(record: any): Record<string, number> {
+    const contributingFields: Array<{field: string, value: number, importance: number}> = [];
+    
+    // Define field importance weights based on core analysis factors
+    const fieldDefinitions = [
+      { field: 'strategic_value_score', source: 'strategic_value_score', importance: 30 },
+      { field: 'nike_market_share', source: ['mp30034a_b_p', 'value_MP30034A_B_P', 'nike_market_share'], importance: 25 },
+      { field: 'total_population', source: ['total_population', 'value_TOTPOP_CY'], importance: 20 },
+      { field: 'median_income', source: ['median_income', 'value_AVGHINC_CY'], importance: 15 },
+      { field: 'market_gap', source: 'market_gap', importance: 10, calculated: true }
+    ];
+    
+    fieldDefinitions.forEach(fieldDef => {
+      let value = 0;
+      const sources = Array.isArray(fieldDef.source) ? fieldDef.source : [fieldDef.source];
+      
+      // Find the first available source field
+      for (const source of sources) {
+        if (record[source] !== undefined && record[source] !== null) {
+          value = Number(record[source]);
+          break;
+        }
+      }
+      
+      // Handle calculated fields
+      if (fieldDef.calculated && fieldDef.field === 'market_gap') {
+        const nikeValue = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
+        const adidasValue = Number(record.value_MP30029A_B_P) || 0;
+        value = Math.max(0, 100 - nikeValue - adidasValue);
+      }
+      
+      // Only include fields with meaningful values
+      if (!isNaN(value) && value > 0) {
+        contributingFields.push({
+          field: fieldDef.field,
+          value: Math.round(value * 100) / 100,
+          importance: fieldDef.importance
+        });
+      }
+    });
+    
+    // Sort by importance and take top 5
+    const topFields = contributingFields
+      .sort((a, b) => b.importance - a.importance)
+      .slice(0, 5)
+      .reduce((acc, item) => {
+        acc[item.field] = item.value;
+        return acc;
+      }, {} as Record<string, number>);
+    
+    console.log(`[CoreAnalysisProcessor] Top contributing fields for ${record.ID}:`, topFields);
+    return topFields;
   }
 
   /**

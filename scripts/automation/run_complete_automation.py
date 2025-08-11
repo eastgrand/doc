@@ -156,6 +156,11 @@ class CompleteAutomationPipeline:
             if not success:
                 return False
             
+            # Phase 6.5: Field Mapping Update (NEW)
+            success = await self._phase_6_5_field_mapping_update()
+            if not success:
+                return False
+            
             # Phase 7: Layer Configuration Generation
             success = await self._phase_7_layer_configuration()
             if not success:
@@ -584,6 +589,69 @@ class CompleteAutomationPipeline:
         except Exception as e:
             self.logger.error(f"❌ Phase 6 Failed: {str(e)}")
             self.pipeline_state['phases_failed'].append('score_calculation')
+            return False
+    
+    async def _phase_6_5_field_mapping_update(self) -> bool:
+        """Phase 6.5: Update Field Mappings from Generated Endpoints"""
+        self.logger.info("\n🗂️  PHASE 6.5: Field Mapping Update")
+        self.logger.info("-" * 50)
+        
+        self.pipeline_state['current_phase'] = 'field_mapping_update'
+        
+        try:
+            # Path to the Node.js scripts
+            project_root = Path("/Users/voldeck/code/mpiq-ai-chat")
+            extract_script = project_root / "scripts" / "extract-all-fields.js"
+            generate_script = project_root / "scripts" / "generate-field-mappings.js"
+            
+            self.logger.info("🔍 Extracting all unique fields from endpoint data...")
+            
+            # Run field extraction script
+            extract_result = subprocess.run([
+                "node", str(extract_script)
+            ], cwd=str(project_root), capture_output=True, text=True)
+            
+            if extract_result.returncode != 0:
+                self.logger.error(f"❌ Field extraction failed: {extract_result.stderr}")
+                return False
+            
+            self.logger.info("📊 Field extraction completed successfully")
+            self.logger.info(extract_result.stdout.strip())
+            
+            # Run field mapping generator
+            self.logger.info("\n🔧 Generating updated field mapping files...")
+            generate_result = subprocess.run([
+                "node", str(generate_script)
+            ], cwd=str(project_root), capture_output=True, text=True)
+            
+            if generate_result.returncode != 0:
+                self.logger.error(f"❌ Field mapping generation failed: {generate_result.stderr}")
+                return False
+            
+            self.logger.info("✅ Field mapping files updated successfully")
+            self.logger.info(generate_result.stdout.strip())
+            
+            # Store results
+            self.results['field_mappings_update'] = {
+                'extraction_output': extract_result.stdout,
+                'generation_output': generate_result.stdout,
+                'updated_timestamp': datetime.now().isoformat()
+            }
+            
+            # Alert about synonym expansion
+            self.logger.info("\n⚠️  FIELD MAPPING ENHANCEMENT NEEDED:")
+            self.logger.info("🔍 Consider expanding field aliases with robust synonym lists")
+            self.logger.info("📝 See: docs/FIELD_MAPPING_AUTOMATION.md for guidance")
+            self.logger.info("🎯 This will improve natural language query processing")
+            
+            self.logger.info("✅ Phase 6.5 Complete: Field mappings synchronized with current data")
+            self.pipeline_state['phases_completed'].append('field_mapping_update')
+            
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"❌ Phase 6.5 Failed: {str(e)}")
+            self.pipeline_state['phases_failed'].append('field_mapping_update')
             return False
     
     async def _phase_7_layer_configuration(self) -> bool:

@@ -17,6 +17,9 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
       const competitiveScore = Number(record.competitive_advantage_score) || 0;
       const demographicScore = Number(record.demographic_opportunity_score) || 0;
 
+      // Get top contributing fields for popup display
+      const topContributingFields = this.getTopContributingFields(record);
+      
       return {
         area_id: record.area_id || record.ID || `area_${index}`,
         area_name: record.area_name || record.value_DESCRIPTION || record.DESCRIPTION || `Area ${index + 1}`,
@@ -24,6 +27,8 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
         rank: index + 1,
         category: this.categorizeBrandStrength(nikeShare),
         coordinates: this.extractCoordinates(record),
+        // Flatten top contributing fields to top level for popup access
+        ...topContributingFields,
         properties: {
           brand_analysis_score: brandScore,
           nike_market_share: nikeShare,
@@ -91,6 +96,57 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
     if (nikeShare < 15 && strategic >= 60) return 'Market Penetration';
     if (nikeShare >= 15 && strategic >= 50) return 'Brand Strengthening';
     return 'Brand Development';
+  }
+
+  /**
+   * Identify top 5 fields that contribute most to the brand analysis score
+   * Returns them as a flattened object for popup display
+   */
+  private getTopContributingFields(record: any): Record<string, number> {
+    const contributingFields: Array<{field: string, value: number, importance: number}> = [];
+    
+    // Define field importance weights based on brand analysis factors
+    const fieldDefinitions = [
+      { field: 'brand_analysis_score', source: 'brand_analysis_score', importance: 30 },
+      { field: 'nike_market_share', source: ['mp30034a_b_p', 'nike_market_share'], importance: 25 },
+      { field: 'strategic_value_score', source: 'strategic_value_score', importance: 20 },
+      { field: 'competitive_advantage_score', source: 'competitive_advantage_score', importance: 15 },
+      { field: 'demographic_opportunity_score', source: 'demographic_opportunity_score', importance: 10 }
+    ];
+    
+    fieldDefinitions.forEach(fieldDef => {
+      let value = 0;
+      const sources = Array.isArray(fieldDef.source) ? fieldDef.source : [fieldDef.source];
+      
+      // Find the first available source field
+      for (const source of sources) {
+        if (record[source] !== undefined && record[source] !== null) {
+          value = Number(record[source]);
+          break;
+        }
+      }
+      
+      // Only include fields with meaningful values
+      if (!isNaN(value) && value > 0) {
+        contributingFields.push({
+          field: fieldDef.field,
+          value: Math.round(value * 100) / 100,
+          importance: fieldDef.importance
+        });
+      }
+    });
+    
+    // Sort by importance and take top 5
+    const topFields = contributingFields
+      .sort((a, b) => b.importance - a.importance)
+      .slice(0, 5)
+      .reduce((acc, item) => {
+        acc[item.field] = item.value;
+        return acc;
+      }, {} as Record<string, number>);
+    
+    console.log(`[BrandAnalysisProcessor] Top contributing fields for ${record.ID}:`, topFields);
+    return topFields;
   }
 
   private extractCoordinates(record: any): [number, number] {

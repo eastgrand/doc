@@ -18,6 +18,9 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
       const demographicScore = Number(record.demographic_opportunity_score) || 0;
       const nikeShare = Number(record.mp30034a_b_p) || 0;
 
+      // Get top contributing fields for popup display
+      const topContributingFields = this.getTopContributingFields(record);
+      
       return {
         area_id: record.area_id || record.ID || `area_${index}`,
         area_name: record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || `Area ${index + 1}`,
@@ -25,6 +28,8 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
         rank: index + 1,
         category: this.categorizeRealEstateOpportunity(realEstateScore),
         coordinates: this.extractCoordinates(record),
+        // Flatten top contributing fields to top level for popup access
+        ...topContributingFields,
         properties: {
           real_estate_analysis_score: realEstateScore,
           location_quality: this.getLocationQuality(totalPop, strategicScore),
@@ -107,6 +112,57 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
     if (realEstateScore >= 60 || strategic >= 60) return 'Medium Priority';
     if (realEstateScore >= 50) return 'Low Priority';
     return 'Monitor Only';
+  }
+
+  /**
+   * Identify top 5 fields that contribute most to the real estate analysis score
+   * Returns them as a flattened object for popup display
+   */
+  private getTopContributingFields(record: any): Record<string, number> {
+    const contributingFields: Array<{field: string, value: number, importance: number}> = [];
+    
+    // Define field importance weights based on real estate analysis factors
+    const fieldDefinitions = [
+      { field: 'real_estate_analysis_score', source: 'real_estate_analysis_score', importance: 30 },
+      { field: 'total_population', source: ['total_population', 'population'], importance: 25 },
+      { field: 'strategic_value_score', source: 'strategic_value_score', importance: 20 },
+      { field: 'median_income', source: 'median_income', importance: 15 },
+      { field: 'nike_market_share', source: ['mp30034a_b_p', 'nike_presence'], importance: 10 }
+    ];
+    
+    fieldDefinitions.forEach(fieldDef => {
+      let value = 0;
+      const sources = Array.isArray(fieldDef.source) ? fieldDef.source : [fieldDef.source];
+      
+      // Find the first available source field
+      for (const source of sources) {
+        if (record[source] !== undefined && record[source] !== null) {
+          value = Number(record[source]);
+          break;
+        }
+      }
+      
+      // Only include fields with meaningful values
+      if (!isNaN(value) && value > 0) {
+        contributingFields.push({
+          field: fieldDef.field,
+          value: Math.round(value * 100) / 100,
+          importance: fieldDef.importance
+        });
+      }
+    });
+    
+    // Sort by importance and take top 5
+    const topFields = contributingFields
+      .sort((a, b) => b.importance - a.importance)
+      .slice(0, 5)
+      .reduce((acc, item) => {
+        acc[item.field] = item.value;
+        return acc;
+      }, {} as Record<string, number>);
+    
+    console.log(`[RealEstateAnalysisProcessor] Top contributing fields for ${record.ID}:`, topFields);
+    return topFields;
   }
 
   private extractCoordinates(record: any): [number, number] {

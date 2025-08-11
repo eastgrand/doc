@@ -45,12 +45,17 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       const areaName = this.generateAreaName(record);
       const recordId = record.ID || record.id || record.area_id || `area_${index + 1}`;
       
+      // Get top contributing fields for popup display
+      const topContributingFields = this.getTopContributingFields(record);
+      
       return {
         area_id: recordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
         strategic_value_score: Math.round(primaryScore * 100) / 100, // Add at top level for visualization
         rank: 0, // Will be calculated after sorting
+        // Flatten top contributing fields to top level for popup access
+        ...topContributingFields,
         properties: {
           ...record,
           strategic_value_score: primaryScore,
@@ -227,6 +232,64 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       // Middle classes: minValue - maxValue
       return `${quartileBreaks[classIndex].toFixed(1)} - ${quartileBreaks[classIndex + 1].toFixed(1)}`;
     }
+  }
+
+  /**
+   * Identify top 5 fields that contribute most to the strategic value score
+   * Returns them as a flattened object for popup display
+   */
+  private getTopContributingFields(record: any): Record<string, number> {
+    const contributingFields: Array<{field: string, value: number, importance: number}> = [];
+    
+    // Define field importance weights based on strategic analysis factors
+    const fieldDefinitions = [
+      { field: 'competitive_advantage_score', source: 'competitive_advantage_score', importance: 25 },
+      { field: 'total_population', source: ['total_population', 'value_TOTPOP_CY'], importance: 20 },
+      { field: 'median_income', source: ['median_income', 'value_AVGHINC_CY', 'value_MEDDI_CY'], importance: 18 },
+      { field: 'demographic_opportunity_score', source: 'demographic_opportunity_score', importance: 15 },
+      { field: 'market_gap', source: ['market_gap'], importance: 12, calculated: true },
+      { field: 'diversity_index', source: ['diversity_index', 'value_DIVINDX_CY'], importance: 10 }
+    ];
+    
+    fieldDefinitions.forEach(fieldDef => {
+      let value = 0;
+      const sources = Array.isArray(fieldDef.source) ? fieldDef.source : [fieldDef.source];
+      
+      // Find the first available source field
+      for (const source of sources) {
+        if (record[source] !== undefined && record[source] !== null) {
+          value = Number(record[source]);
+          break;
+        }
+      }
+      
+      // Handle calculated fields
+      if (fieldDef.calculated && fieldDef.field === 'market_gap') {
+        const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
+        value = this.calculateRealisticMarketGap(nikeShare);
+      }
+      
+      // Only include fields with meaningful values
+      if (!isNaN(value) && value > 0) {
+        contributingFields.push({
+          field: fieldDef.field,
+          value: Math.round(value * 100) / 100,
+          importance: fieldDef.importance
+        });
+      }
+    });
+    
+    // Sort by importance and take top 5
+    const topFields = contributingFields
+      .sort((a, b) => b.importance - a.importance)
+      .slice(0, 5)
+      .reduce((acc, item) => {
+        acc[item.field] = item.value;
+        return acc;
+      }, {} as Record<string, number>);
+    
+    console.log(`[StrategicAnalysisProcessor] Top contributing fields for ${record.ID}:`, topFields);
+    return topFields;
   }
 
   private generateAreaName(record: any): string {
