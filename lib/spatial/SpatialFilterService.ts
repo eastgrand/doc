@@ -1,5 +1,5 @@
 import Query from "@arcgis/core/rest/support/Query";
-import { layers } from '@/config/layers';
+import { layers, getLayerConfigById } from '@/config/layers';
 
 export interface SpatialFilterOptions {
   spatialRelationship?: "intersects" | "contains" | "within";
@@ -9,6 +9,136 @@ export interface SpatialFilterOptions {
 
 export class SpatialFilterService {
   private static cache = new Map<string, string[]>();
+
+  /**
+   * Get the reference FeatureService URL for spatial filtering from current project config
+   */
+  private static getReferenceServiceUrl(): string {
+    // Find a feature service layer from current project configuration
+    // Since all HRB layers are polygon-based ZIP boundaries, any feature service will work
+    const layerEntries = Object.entries(layers);
+    const featureServiceLayer = layerEntries.find(([_, config]) => 
+      config.url && config.type === 'feature-service'
+    );
+    
+    if (!featureServiceLayer) {
+      console.warn('[SpatialFilter] No feature service layer found in project config');
+      throw new Error('No feature service layers available in project configuration for spatial filtering');
+    }
+    
+    console.log(`[SpatialFilter] Using reference layer: ${featureServiceLayer[0]} -> ${featureServiceLayer[1].url}`);
+    return featureServiceLayer[1].url;
+  }
+
+  /**
+   * Query area IDs from the reference FeatureService using spatial geometry
+   */
+  static async queryAreaIdsByGeometry(
+    geometry: __esri.Geometry,
+    options: SpatialFilterOptions = {}
+  ): Promise<string[]> {
+    const {
+      spatialRelationship = "intersects",
+      useCache = true
+    } = options;
+
+    // Get reference service URL dynamically
+    const serviceUrl = this.getReferenceServiceUrl();
+    
+    // Check cache
+    const cacheKey = `reference-${JSON.stringify(geometry.toJSON())}-${spatialRelationship}`;
+    if (useCache && this.cache.has(cacheKey)) {
+      console.log('[SpatialFilter] Using cached area IDs');
+      return this.cache.get(cacheKey)!;
+    }
+
+    console.log('[SpatialFilter] Querying area IDs from reference service:', serviceUrl);
+    console.log('[SpatialFilter] Query geometry details:', {
+      type: geometry.type,
+      spatialReference: geometry.spatialReference?.wkid,
+      geometryJSON: JSON.stringify(geometry.toJSON()).substring(0, 200) + '...'
+    });
+
+    try {
+      // Build query URL
+      const queryUrl = `${serviceUrl}/query`;
+      
+      // Use POST for spatial queries to avoid URL length limits
+      const postData = new FormData();
+      postData.append('where', '1=1');
+      postData.append('outFields', 'ID');
+      postData.append('returnGeometry', 'false');
+      postData.append('spatialRel', this.getEsriSpatialRelationship(spatialRelationship));
+      postData.append('geometry', JSON.stringify(geometry.toJSON()));
+      postData.append('geometryType', this.getEsriGeometryType(geometry.type));
+      postData.append('inSR', geometry.spatialReference?.wkid?.toString() || '4326');
+      postData.append('f', 'json');
+
+      const response = await fetch(queryUrl, {
+        method: 'POST',
+        body: postData
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Spatial query failed: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('[SpatialFilter] ArcGIS response:', {
+        success: !result.error,
+        error: result.error,
+        featureCount: result.features?.length || 0,
+        responseKeys: Object.keys(result)
+      });
+      
+      if (result.error) {
+        throw new Error(`ArcGIS query error: ${JSON.stringify(result.error)}`);
+      }
+
+      const areaIds = result.features?.map((f: any) => f.attributes?.ID).filter(Boolean) || [];
+      
+      console.log(`[SpatialFilter] Found ${areaIds.length} area IDs in spatial selection:`, areaIds.slice(0, 10));
+      
+      // Cache the result
+      if (useCache) {
+        this.cache.set(cacheKey, areaIds);
+      }
+      
+      return areaIds;
+      
+    } catch (error) {
+      console.error('[SpatialFilter] Error querying area IDs:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Convert ArcGIS JS API geometry type to Esri REST geometry type
+   */
+  private static getEsriGeometryType(geometryType: string): string {
+    const typeMap: Record<string, string> = {
+      'point': 'esriGeometryPoint',
+      'polyline': 'esriGeometryPolyline', 
+      'polygon': 'esriGeometryPolygon',
+      'extent': 'esriGeometryEnvelope'
+    };
+    return typeMap[geometryType] || 'esriGeometryPolygon';
+  }
+
+  /**
+   * Convert spatial relationship to Esri REST API format
+   */
+  private static getEsriSpatialRelationship(relationship: string): string {
+    const relationshipMap: Record<string, string> = {
+      'intersects': 'esriSpatialRelIntersects',
+      'contains': 'esriSpatialRelContains',
+      'within': 'esriSpatialRelWithin',
+      'touches': 'esriSpatialRelTouches',
+      'crosses': 'esriSpatialRelCrosses',
+      'overlaps': 'esriSpatialRelOverlaps'
+    };
+    return relationshipMap[relationship] || 'esriSpatialRelIntersects';
+  }
 
   /**
    * Query feature IDs within a given geometry
@@ -71,11 +201,13 @@ export class SpatialFilterService {
     let queryGeometry = geometry;
     if (layerSpatialRef && geometry.spatialReference?.wkid !== layerSpatialRef.wkid) {
       try {
-        const projection = await import('@arcgis/core/geometry/projection');
-        await projection.default.load();
+        const projectionModule = await import('@arcgis/core/geometry/projection');
+        // @ts-ignore - ArcGIS module import structure
+        const projection = projectionModule.default || projectionModule;
+        await projection.load();
         
         console.log(`[SpatialFilter] Projecting geometry from WKID ${geometry.spatialReference?.wkid} to ${layerSpatialRef.wkid}`);
-        const projectedResult = projection.default.project(geometry as any, layerSpatialRef) as __esri.Geometry;
+        const projectedResult = projection.project(geometry as any, layerSpatialRef) as __esri.Geometry;
         
         if (projectedResult) {
           queryGeometry = projectedResult;

@@ -24,20 +24,19 @@ export class IDFieldMapper {
   static extractId(record: any): string | null {
     if (!record) return null;
     
-    // Try each possible field name
-    for (const fieldName of this.ID_FIELD_NAMES) {
-      if (record[fieldName] !== undefined && record[fieldName] !== null) {
-        return String(record[fieldName]);
-      }
-    }
-    
-    // Check for ZIP code in DESCRIPTION field (HRB specific)
+    // PRIORITY: Check for ZIP code in DESCRIPTION field first (HRB specific)
     if (record.DESCRIPTION && typeof record.DESCRIPTION === 'string') {
       // Extract ZIP from format like "32792 (Winter Park)" or just "32792"
       const zipMatch = record.DESCRIPTION.match(/^(\d{5})/);
       if (zipMatch) {
-        console.log('[IDFieldMapper] Using ZIP from DESCRIPTION:', zipMatch[1]);
         return zipMatch[1];
+      }
+    }
+    
+    // Fallback: Try each possible field name
+    for (const fieldName of this.ID_FIELD_NAMES) {
+      if (record[fieldName] !== undefined && record[fieldName] !== null) {
+        return String(record[fieldName]);
       }
     }
     

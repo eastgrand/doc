@@ -62,6 +62,7 @@ import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 import Circle from "@arcgis/core/geometry/Circle";
 import Graphic from "@arcgis/core/Graphic";
 import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
+import { SpatialFilterService } from '@/lib/spatial/SpatialFilterService';
 
 export interface UnifiedAnalysisWorkflowProps {
   view: __esri.MapView;
@@ -193,6 +194,22 @@ export default function UnifiedAnalysisWorkflow({
         geometryType: workflowState.areaSelection.geometry?.type
       });
       
+      // Get spatial filter IDs if applying spatial filtering
+      let spatialFilterIds: string[] | undefined;
+      if (shouldApplySpatialFilter && workflowState.areaSelection.geometry) {
+        try {
+          console.log('[UnifiedAnalysisWorkflow] Querying area IDs for spatial filtering...');
+          spatialFilterIds = await SpatialFilterService.queryAreaIdsByGeometry(
+            workflowState.areaSelection.geometry,
+            { spatialRelationship: 'intersects' }
+          );
+          console.log(`[UnifiedAnalysisWorkflow] Found ${spatialFilterIds.length} area IDs for spatial filter:`, spatialFilterIds.slice(0, 10));
+        } catch (error) {
+          console.warn('[UnifiedAnalysisWorkflow] Spatial ID lookup failed, proceeding without spatial filter:', error);
+          spatialFilterIds = undefined;
+        }
+      }
+      
       // Prepare analysis request with view and layer ID
       const request: UnifiedAnalysisRequest = {
         geometry: shouldApplySpatialFilter ? workflowState.areaSelection.geometry : undefined,
@@ -204,7 +221,8 @@ export default function UnifiedAnalysisWorkflow({
         includeChat: enableChat,
         clusterConfig: type === 'query' && clusterConfig.enabled ? clusterConfig : undefined,
         view: view,                          // NEW: Pass the map view
-        dataSourceLayerId: dataSourceLayerId // NEW: Pass the layer ID
+        dataSourceLayerId: dataSourceLayerId, // NEW: Pass the layer ID
+        spatialFilterIds: spatialFilterIds   // NEW: Pass the spatial filter IDs
       };
 
       console.log('[UnifiedWorkflow] Starting analysis with spatial context:', {

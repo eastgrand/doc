@@ -20,6 +20,7 @@ export interface UnifiedAnalysisRequest {
   // NEW: Spatial filtering context
   view?: __esri.MapView;           // Need view for spatial queries
   dataSourceLayerId?: string;      // Layer ID for spatial queries
+  spatialFilterIds?: string[];     // Area IDs from spatial selection
   
   // Analysis type selection
   analysisType: 'query' | 'infographic' | 'comprehensive';
@@ -143,6 +144,13 @@ export class UnifiedAnalysisWrapper {
    * Helper method to get spatial filter IDs from geometry selection
    */
   private async getSpatialFilterIds(request: UnifiedAnalysisRequest): Promise<string[] | undefined> {
+    // If spatial filter IDs are already provided, use them
+    if (request.spatialFilterIds) {
+      console.log(`[UnifiedAnalysisWrapper] Using pre-computed spatial filter IDs: ${request.spatialFilterIds.length} features`);
+      return request.spatialFilterIds;
+    }
+    
+    // Fallback: Only attempt spatial filtering if we have all required parameters
     if (!request.geometry || !request.view || !request.dataSourceLayerId) {
       console.log('[UnifiedAnalysisWrapper] Spatial filter skipped - missing required parameters:', {
         hasGeometry: !!request.geometry,
@@ -151,6 +159,8 @@ export class UnifiedAnalysisWrapper {
       });
       return undefined;
     }
+
+    console.log('[UnifiedAnalysisWrapper] Fallback: Computing spatial filter IDs (should have been done in workflow)');
 
     try {
       console.log('[UnifiedAnalysisWrapper] Applying spatial filter with geometry:', {
@@ -177,7 +187,7 @@ export class UnifiedAnalysisWrapper {
         { spatialRelationship }
       );
       
-      console.log(`[UnifiedAnalysisWrapper] Spatial filter found ${spatialFilterIds.length} features`);
+      console.log(`[UnifiedAnalysisWrapper] Fallback spatial filter found ${spatialFilterIds.length} features:`, spatialFilterIds.slice(0, 10));
       
       // If no features found in selection, diagnose the issue
       if (spatialFilterIds.length === 0) {
@@ -209,8 +219,7 @@ export class UnifiedAnalysisWrapper {
 
       return spatialFilterIds;
     } catch (error) {
-      console.error('[UnifiedAnalysisWrapper] Spatial filter failed:', error);
-      // Continue without spatial filter on error
+      console.warn('[UnifiedAnalysisWrapper] Fallback spatial filter failed:', error);
       return undefined;
     }
   }
@@ -220,8 +229,8 @@ export class UnifiedAnalysisWrapper {
       throw new Error('Query is required for query analysis');
     }
     
-    // Get spatial filter IDs if geometry is provided
-    const spatialFilterIds = await this.getSpatialFilterIds(request);
+    // Use pre-computed spatial filter IDs if available, otherwise compute them
+    const spatialFilterIds = request.spatialFilterIds || await this.getSpatialFilterIds(request);
     
     const options: AnalysisOptions = {
       // Remove explicit endpoint to allow intelligent classification like original UI
@@ -239,8 +248,8 @@ export class UnifiedAnalysisWrapper {
    * Focuses on score-based visualizations
    */
   private async processInfographicAnalysis(request: UnifiedAnalysisRequest): Promise<AnalysisResult> {
-    // Get spatial filter IDs if geometry is provided
-    const spatialFilterIds = await this.getSpatialFilterIds(request);
+    // Use pre-computed spatial filter IDs if available, otherwise compute them
+    const spatialFilterIds = request.spatialFilterIds || await this.getSpatialFilterIds(request);
     
     const query = `Generate ${request.infographicType || 'strategic'} analysis`;
     const options: AnalysisOptions = {
@@ -259,8 +268,8 @@ export class UnifiedAnalysisWrapper {
    * Runs multiple endpoints and combines results
    */
   private async processComprehensiveAnalysis(request: UnifiedAnalysisRequest): Promise<AnalysisResult> {
-    // Get spatial filter IDs if geometry is provided
-    const spatialFilterIds = await this.getSpatialFilterIds(request);
+    // Use pre-computed spatial filter IDs if available, otherwise compute them
+    const spatialFilterIds = request.spatialFilterIds || await this.getSpatialFilterIds(request);
     
     // Use multi-endpoint capabilities of AnalysisEngine
     const query = 'Comprehensive area analysis';

@@ -86,10 +86,13 @@ export class DataProcessor {
       // Debug: Check what IDs we have in the data
       const sampleRecord = rawResults.results?.[0];
       if (sampleRecord) {
+        const extractedId = IDFieldMapper.extractId(sampleRecord);
         console.log('[DataProcessor] Sample data record IDs:', {
           ID: sampleRecord.ID,
           OBJECTID: sampleRecord.OBJECTID,
-          allKeys: Object.keys(sampleRecord).filter(k => k.toLowerCase().includes('id'))
+          DESCRIPTION: sampleRecord.DESCRIPTION,
+          extractedId: extractedId,
+          allKeys: Object.keys(sampleRecord).filter(k => k.toLowerCase().includes('id') || k.includes('DESCRIPTION'))
         });
       }
       
