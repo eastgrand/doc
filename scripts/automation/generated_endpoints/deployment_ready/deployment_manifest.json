@@ -1,6 +1,6 @@
 {
   "deployment_version": "2.0-comprehensive",
-  "deployment_timestamp": "2025-08-10T18:49:37.320910",
+  "deployment_timestamp": "2025-08-10T20:44:15.616991",
   "endpoints": {
     "standard": [
       {
@@ -129,11 +129,41 @@
         "name": "consensus-analysis",
         "records": 984,
         "scoring_script": "consensus-analysis-scores.js"
+      },
+      {
+        "name": "nonlinear-analysis",
+        "records": 984,
+        "scoring_script": "nonlinear-analysis-scores.js"
+      },
+      {
+        "name": "similarity-analysis",
+        "records": 984,
+        "scoring_script": "similarity-analysis-scores.js"
+      },
+      {
+        "name": "feature-selection-analysis",
+        "records": 984,
+        "scoring_script": "feature-selection-analysis-scores.js"
+      },
+      {
+        "name": "interpretability-analysis",
+        "records": 984,
+        "scoring_script": "interpretability-analysis-scores.js"
+      },
+      {
+        "name": "neural-network-analysis",
+        "records": 984,
+        "scoring_script": "neural-network-analysis-scores.js"
+      },
+      {
+        "name": "speed-optimized-analysis",
+        "records": 984,
+        "scoring_script": "speed-optimized-analysis-scores.js"
       }
     ]
   },
   "model_architecture": "17-model-comprehensive",
-  "total_endpoints": 26,
+  "total_endpoints": 32,
   "scoring_scripts": [
     "strategic-analysis-scores.js",
     "competitive-analysis-scores.js",
@@ -159,6 +189,12 @@
     "model-selection-scores.js",
     "anomaly-insights-scores.js",
     "dimensionality-insights-scores.js",
-    "consensus-analysis-scores.js"
+    "consensus-analysis-scores.js",
+    "nonlinear-analysis-scores.js",
+    "similarity-analysis-scores.js",
+    "feature-selection-analysis-scores.js",
+    "interpretability-analysis-scores.js",
+    "neural-network-analysis-scores.js",
+    "speed-optimized-analysis-scores.js"
   ]
 }

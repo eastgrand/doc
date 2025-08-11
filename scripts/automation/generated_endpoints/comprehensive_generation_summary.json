@@ -1,10 +1,10 @@
 {
-  "generation_timestamp": "2025-08-10T18:49:37.320448",
-  "total_endpoints": 26,
+  "generation_timestamp": "2025-08-10T20:44:15.615690",
+  "total_endpoints": 32,
   "standard_endpoints": 19,
-  "comprehensive_endpoints": 6,
+  "comprehensive_endpoints": 12,
   "model_architecture": "17-model-comprehensive",
-  "successful_generations": 25,
+  "successful_generations": 31,
   "failed_generations": 1,
   "endpoint_summary": {
     "strategic-analysis": {
@@ -131,6 +131,36 @@
       "type": "comprehensive",
       "records": 984,
       "file_path": "generated_endpoints/consensus-analysis.json"
+    },
+    "nonlinear-analysis": {
+      "type": "comprehensive",
+      "records": 984,
+      "file_path": "generated_endpoints/nonlinear-analysis.json"
+    },
+    "similarity-analysis": {
+      "type": "comprehensive",
+      "records": 984,
+      "file_path": "generated_endpoints/similarity-analysis.json"
+    },
+    "feature-selection-analysis": {
+      "type": "comprehensive",
+      "records": 984,
+      "file_path": "generated_endpoints/feature-selection-analysis.json"
+    },
+    "interpretability-analysis": {
+      "type": "comprehensive",
+      "records": 984,
+      "file_path": "generated_endpoints/interpretability-analysis.json"
+    },
+    "neural-network-analysis": {
+      "type": "comprehensive",
+      "records": 984,
+      "file_path": "generated_endpoints/neural-network-analysis.json"
+    },
+    "speed-optimized-analysis": {
+      "type": "comprehensive",
+      "records": 984,
+      "file_path": "generated_endpoints/speed-optimized-analysis.json"
     }
   }
 }
