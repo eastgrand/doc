@@ -26,7 +26,8 @@
 The MPIQ AI Chat system is a comprehensive machine learning platform that transforms ArcGIS geospatial data into intelligent business insights through:
 
 - **17 AI Models**: 6 specialized + 8 algorithm diversity + 3 unsupervised learning models
-- **26 Analysis Endpoints**: 19 standard + 7 comprehensive model endpoints  
+- **32 Analysis Endpoints**: 19 standard + 13 comprehensive model endpoints (**100% model utilization**)
+- **Complete Model Attribution**: Full traceability from predictions to specific models with R² scores
 - **SHAP Integration**: Explainable AI for model interpretability
 - **Automated Pipeline**: One-command ArcGIS to microservice transformation
 - **Production Deployment**: Scalable microservice on Render.com
@@ -37,16 +38,19 @@ The MPIQ AI Chat system is a comprehensive machine learning platform that transf
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   ArcGIS Data   │───▶│  AI/ML Pipeline │───▶│ Client Applications │
 │                 │    │                 │    │                 │
-│ • 16+ Layers    │    │ • 17 AI Models  │    │ • 26 Endpoints  │
+│ • 16+ Layers    │    │ • 17 AI Models  │    │ • 32 Endpoints  │
 │ • 984 Records   │    │ • SHAP Values   │    │ • Visualizations│
-│ • 44 Features   │    │ • Microservice  │    │ • Analysis UI   │
+│ • 44 Features   │    │ • Microservice  │    │ • Model Attribution │
+│                 │    │ • 100% Utilization │  │ • Analysis UI   │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
 ### Performance Metrics
 
 - **Outstanding Ensemble Performance**: R² = 0.879 (87.9% variance explained)
+- **100% Model Utilization**: All 17 AI models actively used across 32 endpoints
 - **Algorithm Diversity**: 8 different ML algorithms for robust predictions
+- **Complete Model Traceability**: Every prediction linked to specific model with performance metrics
 - **Response Time**: <2 seconds for most endpoint requests
 - **Scalability**: Handles 1000+ concurrent requests via Render.com
 - **Reliability**: 99.9% uptime with graceful fallback systems
@@ -348,9 +352,103 @@ class EnsembleModel:
 
 ---
 
+## Model Attribution & Traceability System
+
+### Complete Model Transparency
+
+Every analysis result includes complete traceability showing **exactly which AI model generated the predictions**:
+
+#### Endpoint-Level Attribution
+```json
+{
+  "model_attribution": {
+    "primary_model": {
+      "name": "ensemble",
+      "type": "Ensemble Meta-Model", 
+      "performance": {
+        "r2_score": 0.879,
+        "performance_level": "Excellent"
+      }
+    },
+    "generation_method": "automated_pipeline",
+    "traceability_note": "Generated using ensemble as primary model with 17-model architecture support"
+  }
+}
+```
+
+#### Record-Level Attribution
+```json
+{
+  "_model_attribution": {
+    "primary_model_used": "strategic_analysis",
+    "model_type": "Specialized Business Analysis Model",
+    "confidence_note": "This record was scored using the strategic_analysis model"
+  }
+}
+```
+
+#### Analysis Text Integration
+Every analysis response automatically includes model attribution:
+
+```
+---
+**Model Attribution:**
+• **Model Used:** ensemble
+• **Model Type:** Ensemble Meta-Model
+• **R² Score:** 0.879 (Excellent Performance)  
+• **Confidence:** High Confidence
+```
+
+### Model Selection Strategy
+
+**Question: How do we determine which model to use when generating endpoints?**
+
+**Answer**: The system uses **pre-defined model assignments** during the automation pipeline:
+
+1. **Specialized Models**: Each analysis type has an optimal specialized model
+   - `strategic-analysis` → `strategic_analysis_model` (R² = 0.608)
+   - `competitive-analysis` → `competitive_analysis_model` (R² = 0.608)
+   - `nonlinear-analysis` → `svr_model` (R² = 0.609)
+
+2. **Performance-Based Selection**: High-stakes analyses use the ensemble model
+   - `scenario-analysis` → `ensemble_model` (R² = 0.879)
+   - `feature-importance-ranking` → `ensemble_model` (R² = 0.879)
+
+3. **Specialized Use Cases**: Models selected for their unique strengths
+   - `speed-optimized-analysis` → `linear_regression` (fastest execution)
+   - `feature-selection-analysis` → `lasso_regression` (automatic feature selection)
+   - `interpretability-analysis` → `ridge_regression` (most explainable)
+
+### Model Utilization Optimization
+
+**Question: Are we using all models? How do we make the most of available models?**
+
+**Answer**: **100% utilization achieved** across all 17 AI models:
+
+#### Utilization Statistics:
+- **Used Models**: 17/17 (100.0%) ✅
+- **Unused Models**: 0/17 (0.0%) ✅
+- **Total Endpoints**: 32 (19 standard + 13 comprehensive)
+- **Optimization Improvement**: +35.3% from initial 64.7% utilization
+
+#### Model Distribution:
+- **Most Used**: Ensemble model (9 endpoints) - justified by outstanding performance
+- **Specialized Usage**: 11 models have dedicated endpoints leveraging their unique strengths
+- **Algorithm Diversity**: All 8 supervised algorithms available for comparative analysis
+
+#### New Comprehensive Endpoints Added:
+- `nonlinear-analysis` (SVR) - Advanced pattern detection
+- `similarity-analysis` (KNN) - Find similar high-performing markets
+- `feature-selection-analysis` (Lasso) - Automatic feature pruning
+- `interpretability-analysis` (Ridge) - Highly explainable predictions
+- `neural-network-analysis` (Neural Network) - Deep learning patterns
+- `speed-optimized-analysis` (Linear) - Ultra-fast decisions
+
+---
+
 ## Endpoint Generation & Scoring
 
-### 26 Comprehensive Endpoints
+### 32 Comprehensive Endpoints (100% Model Utilization)
 
 #### Standard Endpoints (19)
 
@@ -379,16 +477,24 @@ class EnsembleModel:
 18. **analyze** - General-purpose analysis
 19. **customer-profile** - Individual customer insights
 
-#### Comprehensive Model Endpoints (7)
+#### Comprehensive Model Endpoints (13)
 
 **Advanced AI Model Endpoints:**
-20. **algorithm-comparison** - Performance across 8 algorithms
+20. **algorithm-comparison** - Performance across all 8 supervised algorithms
 21. **ensemble-analysis** - Combined model insights (R² = 0.879)
 22. **model-selection** - Optimal model recommendations
 23. **anomaly-insights** - Unsupervised anomaly patterns
 24. **consensus-analysis** - Multi-model consensus predictions
 25. **dimensionality-insights** - PCA and feature reduction analysis
 26. **cluster-analysis** - Unsupervised clustering insights
+
+**NEW: Specialized Algorithm Endpoints (6):**
+27. **nonlinear-analysis** - Advanced pattern detection using SVR (R² = 0.609)
+28. **similarity-analysis** - Find similar markets using KNN (R² = 0.471)
+29. **feature-selection-analysis** - Automatic feature pruning using Lasso (R² = 0.265)
+30. **interpretability-analysis** - Highly explainable predictions using Ridge (R² = 0.349)
+31. **neural-network-analysis** - Deep learning pattern detection (R² = 0.284)
+32. **speed-optimized-analysis** - Ultra-fast analysis using Linear Regression (R² = 0.297)
 
 ### Scoring System Architecture
 

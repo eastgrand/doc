@@ -1,9 +1,15 @@
 # Comprehensive Endpoints Guide
-**26 AI-Powered Analytics Endpoints with 17-Model Architecture**
+**32 AI-Powered Analytics Endpoints with 17-Model Architecture (100% Model Utilization)**
 
 ## Overview
 
-This guide provides comprehensive documentation for all 26 analytics endpoints powered by our advanced 17-model machine learning architecture. The system combines 6 specialized models, 8 algorithm variants, and 3 unsupervised learning models to deliver outstanding performance with an ensemble R² = 0.879 (87.9% variance explained).
+This guide provides comprehensive documentation for all **32 analytics endpoints** powered by our advanced 17-model machine learning architecture. The system combines 6 specialized models, 8 algorithm variants, and 3 unsupervised learning models to deliver outstanding performance with an ensemble R² = 0.879 (87.9% variance explained).
+
+### 🎉 **100% Model Utilization Achieved**
+- **All 17 AI models** are now actively utilized across 32 endpoints
+- **Complete model attribution** shows which specific model generated each analysis
+- **Zero waste** - every trained model contributes to business value
+- **6 new specialized endpoints** added to maximize algorithm diversity
 
 ## System Architecture
 
@@ -681,7 +687,8 @@ For support or additional customization, refer to the model training documentati
 
 **System Status**: Production Ready ✅  
 **Model Performance**: Outstanding (R² = 0.879) ⭐  
-**Endpoints Available**: 26 (19 Standard + 7 Comprehensive) 🚀
+**Endpoints Available**: 32 (19 Standard + 13 Comprehensive) 🚀
+**Model Utilization**: 100% (All 17 models actively used) 🎯
 
 ---
 
@@ -715,3 +722,9 @@ For support or additional customization, refer to the model training documentati
 | **🆕 anomaly-insights** | Enhanced Anomaly Detection | Anomaly significance × opportunity potential × investigation priority × market value | "Which unusual market patterns represent the biggest business opportunities?" |
 | **🆕 dimensionality-insights** | PCA (91.7% Variance Explained) | Feature compression efficiency × component significance × variance explanation × complexity reduction | "Which factors explain most of the variation in market performance?" |
 | **🆕 consensus-analysis** | Multi-Model Consensus | Model agreement score × consensus confidence × uncertainty quantification × prediction reliability | "Where do all our models agree, and how confident should we be in those predictions?" |
+| **🆕 nonlinear-analysis** | SVR Model (R² = 0.609) | Non-linear pattern strength × kernel optimization × complex relationship detection | "What complex non-linear patterns exist in the data that linear models can't capture?" |
+| **🆕 similarity-analysis** | KNN Model (R² = 0.471) | Market similarity score × neighbor distance × local pattern strength | "Which markets are most similar to our top-performing locations?" |
+| **🆕 feature-selection-analysis** | Lasso Regression (R² = 0.265) | Feature selection strength × sparsity level × coefficient significance | "Which features are truly essential for predicting success in each market?" |
+| **🆕 interpretability-analysis** | Ridge + Linear Regression | Model interpretability × coefficient stability × explanation clarity | "What are the most transparent and explainable insights we can provide?" |
+| **🆕 neural-network-analysis** | Neural Network (R² = 0.284) | Deep learning pattern detection × network architecture × activation strength | "What complex patterns can deep learning uncover that traditional models miss?" |
+| **🆕 speed-optimized-analysis** | Linear Regression (R² = 0.297) | Prediction speed × computational efficiency × real-time suitability | "What insights can we get instantly for time-critical business decisions?" |

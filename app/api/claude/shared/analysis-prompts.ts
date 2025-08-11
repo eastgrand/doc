@@ -836,7 +836,30 @@ When the query mentions specific cities (e.g., "NYC vs Philadelphia", "Boston ma
 - Highlight unique characteristics of each city's market environment
 - Use city names in analysis instead of individual ZIP codes for better readability
 
-SUPPORTED CITIES: New York (NYC), Philadelphia, Chicago, Los Angeles, Boston, Miami, Seattle, Denver, Atlanta, San Francisco, Washington DC, Dallas, Houston, Phoenix, Detroit, Minneapolis, Las Vegas, San Diego, Tampa, Orlando, and other major metropolitan areas.`;
+SUPPORTED CITIES: New York (NYC), Philadelphia, Chicago, Los Angeles, Boston, Miami, Seattle, Denver, Atlanta, San Francisco, Washington DC, Dallas, Houston, Phoenix, Detroit, Minneapolis, Las Vegas, San Diego, Tampa, Orlando, and other major metropolitan areas.
+
+MODEL ATTRIBUTION REQUIREMENTS:
+ALWAYS include model traceability information at the END of your analysis in this format:
+
+---
+**Model Attribution:**
+• **Model Used:** [Extract from model_attribution.primary_model.name or _model_attribution.primary_model_used]
+• **Model Type:** [Extract from model_attribution.primary_model.type or _model_attribution.model_type]
+• **R² Score:** [Extract from model_attribution.primary_model.performance.r2_score] ([Extract performance_level])
+• **Confidence:** [Map performance level: Excellent = High Confidence, Good = Strong Confidence, Moderate = Medium Confidence, Poor = Low Confidence]
+
+CRITICAL: This model attribution section must be included in EVERY analysis response. Look for these fields in the endpoint data:
+- model_attribution.primary_model.name (endpoint level)
+- model_attribution.primary_model.performance.r2_score 
+- model_attribution.primary_model.performance.performance_level
+- _model_attribution.primary_model_used (record level)
+- _model_attribution.model_type (record level)
+
+If model attribution data is not available in the endpoint, use:
+• **Model Used:** Attribution data not available (endpoint generated before model tracking)
+• **Model Type:** Legacy endpoint 
+• **R² Score:** Not recorded
+• **Confidence:** Model performance not tracked`;
 
   return basePrompt + cityAnalysisAddendum;
 }

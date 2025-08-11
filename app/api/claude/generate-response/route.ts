@@ -1664,6 +1664,46 @@ How else can I help analyze the data in your selected ZIP codes?`,
             });
           }
           
+          // Add model attribution information if available
+          if (originalSummary.model_attribution || (originalSummary.performanceAnalysis?.topPerformers?.[0]?._model_attribution)) {
+            dataSummary += `=== MODEL ATTRIBUTION ===\n`;
+            
+            // Check for endpoint-level attribution
+            if (originalSummary.model_attribution) {
+              const modelAttr = originalSummary.model_attribution;
+              dataSummary += `🤖 Model Used: ${modelAttr.primary_model?.name || 'Not specified'}\n`;
+              dataSummary += `📊 Model Type: ${modelAttr.primary_model?.type || 'Not specified'}\n`;
+              
+              if (modelAttr.primary_model?.performance?.r2_score) {
+                const r2Score = modelAttr.primary_model.performance.r2_score;
+                const perfLevel = modelAttr.primary_model.performance.performance_level || 'Unknown';
+                dataSummary += `🎯 R² Score: ${r2Score.toFixed(3)} (${perfLevel} Performance)\n`;
+                
+                // Map performance level to confidence
+                const confidenceMap: Record<string, string> = {
+                  'EXCELLENT': 'High Confidence',
+                  'GOOD': 'Strong Confidence', 
+                  'MODERATE': 'Medium Confidence',
+                  'POOR': 'Low Confidence'
+                };
+                const confidence = confidenceMap[perfLevel.toUpperCase()] || 'Unknown Confidence';
+                dataSummary += `✅ Model Confidence: ${confidence}\n`;
+              }
+              
+              if (modelAttr.traceability_note) {
+                dataSummary += `📝 Note: ${modelAttr.traceability_note}\n`;
+              }
+              dataSummary += `\n`;
+            }
+            // Check for record-level attribution from first performer
+            else if (originalSummary.performanceAnalysis?.topPerformers?.[0]?._model_attribution) {
+              const recordAttr = originalSummary.performanceAnalysis.topPerformers[0]._model_attribution;
+              dataSummary += `🤖 Model Used: ${recordAttr.primary_model_used || 'Not specified'}\n`;
+              dataSummary += `📊 Model Type: ${recordAttr.model_type || 'Not specified'}\n`;
+              dataSummary += `📝 Note: ${recordAttr.confidence_note || 'Model attribution available at record level'}\n\n`;
+            }
+          }
+
           // Add top performers
           if (originalSummary.performanceAnalysis?.topPerformers?.length > 0) {
             dataSummary += `=== TOP EXPANSION OPPORTUNITIES (ranked by competitive_advantage_score) ===\n`;
@@ -2288,6 +2328,53 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
         const normalizedPersonaAnalysisType = personaAnalysisType.replace(/-/g, '_');
         console.log(`[Claude] Normalized analysis type for persona: ${normalizedPersonaAnalysisType}`);
         
+        // Add model attribution information if available (for regular processing)
+        if (Array.isArray(featureData) && featureData.length > 0) {
+          // Check if endpoint data contains model attribution
+          let modelAttributionFound = false;
+          const endpointData = featureData[0];
+          
+          // Check for endpoint-level model attribution
+          if (endpointData.model_attribution) {
+            dataSummary += `\n=== MODEL ATTRIBUTION ===\n`;
+            const modelAttr = endpointData.model_attribution;
+            dataSummary += `🤖 Model Used: ${modelAttr.primary_model?.name || 'Not specified'}\n`;
+            dataSummary += `📊 Model Type: ${modelAttr.primary_model?.type || 'Not specified'}\n`;
+            
+            if (modelAttr.primary_model?.performance?.r2_score) {
+              const r2Score = modelAttr.primary_model.performance.r2_score;
+              const perfLevel = modelAttr.primary_model.performance.performance_level || 'Unknown';
+              dataSummary += `🎯 R² Score: ${r2Score.toFixed(3)} (${perfLevel} Performance)\n`;
+              
+              const confidenceMap: Record<string, string> = {
+                'EXCELLENT': 'High Confidence',
+                'GOOD': 'Strong Confidence', 
+                'MODERATE': 'Medium Confidence',
+                'POOR': 'Low Confidence'
+              };
+              const confidence = confidenceMap[perfLevel.toUpperCase()] || 'Unknown Confidence';
+              dataSummary += `✅ Model Confidence: ${confidence}\n`;
+            }
+            
+            if (modelAttr.traceability_note) {
+              dataSummary += `📝 Note: ${modelAttr.traceability_note}\n`;
+            }
+            dataSummary += `\n`;
+            modelAttributionFound = true;
+          }
+          // Check for record-level attribution from features
+          else if (endpointData.features && endpointData.features[0]?._model_attribution) {
+            dataSummary += `\n=== MODEL ATTRIBUTION ===\n`;
+            const recordAttr = endpointData.features[0]._model_attribution;
+            dataSummary += `🤖 Model Used: ${recordAttr.primary_model_used || 'Not specified'}\n`;
+            dataSummary += `📊 Model Type: ${recordAttr.model_type || 'Not specified'}\n`;
+            dataSummary += `📝 Note: ${recordAttr.confidence_note || 'Model attribution available at record level'}\n\n`;
+            modelAttributionFound = true;
+          }
+          
+          console.log(`[Model Attribution] Found attribution data: ${modelAttributionFound}`);
+        }
+
         // Add endpoint-specific enhanced metrics for AnalysisEngine results
         if (Array.isArray(featureData) && featureData.length > 0 && featureData[0].features) {
           console.log(`[Enhanced Metrics] Adding endpoint-specific metrics for ${personaAnalysisType}`);

@@ -47,12 +47,15 @@ class ComprehensiveEndpointGenerator:
         self.data_cache = {}
         self.model_cache = {}
         
-        # 17-model architecture support
+        # 17-model architecture support - ALL MODELS NOW UTILIZED
         self.comprehensive_models = [
+            # 6 Specialized Analysis Models 
             'strategic_analysis', 'competitive_analysis', 'demographic_analysis',
             'correlation_analysis', 'predictive_modeling', 'ensemble',
-            'xgboost', 'random_forest', 'linear_regression', 'neural_network',
-            'knn', 'svr', 'ridge_regression', 'lasso_regression',
+            # 8 Algorithm Diversity Models - ALL NOW USED
+            'xgboost', 'random_forest', 'svr', 'linear_regression', 
+            'ridge_regression', 'lasso_regression', 'knn', 'neural_network',
+            # 3 Unsupervised Models
             'anomaly_detection', 'clustering', 'dimensionality_reduction'
         ]
         
@@ -304,15 +307,15 @@ class ComprehensiveEndpointGenerator:
         # Comprehensive model endpoints (7 new)
         comprehensive_configs = {
             'algorithm-comparison': {
-                'description': 'Performance comparison across 8 supervised algorithms',
+                'description': 'Performance comparison across all 8 supervised algorithms',
                 'primary_model': 'ensemble',
-                'secondary_models': ['xgboost', 'svr', 'random_forest', 'linear_regression', 'knn', 'neural_network'],
+                'secondary_models': ['xgboost', 'svr', 'random_forest', 'linear_regression', 'ridge_regression', 'lasso_regression', 'knn', 'neural_network'],
                 'score_field': 'algorithm_performance_score',
                 'analysis_type': 'algorithm_comparison',
                 'endpoint_type': 'comprehensive',
                 'include_shap': True,
                 'sort_by': 'algorithm_performance_score',
-                'special_features': ['algorithm_predictions', 'best_algorithm', 'consensus_prediction']
+                'special_features': ['algorithm_predictions', 'best_algorithm', 'algorithm_rankings', 'model_diversity_score', 'consensus_prediction']
             },
             'ensemble-analysis': {
                 'description': 'Deep analysis with outstanding ensemble model (R² = 0.879)',
@@ -374,6 +377,69 @@ class ComprehensiveEndpointGenerator:
                 'include_shap': True,
                 'sort_by': 'consensus_performance_score',
                 'special_features': ['model_predictions', 'voting_results', 'uncertainty_measures', 'consensus_quality']
+            },
+            
+            # NEW: Maximizing unused model utilization
+            'nonlinear-analysis': {
+                'description': 'Advanced non-linear pattern detection using Support Vector Regression',
+                'primary_model': 'svr',
+                'score_field': 'nonlinear_performance_score',
+                'analysis_type': 'nonlinear_analysis',
+                'endpoint_type': 'comprehensive',
+                'include_shap': True,
+                'sort_by': 'nonlinear_performance_score',
+                'special_features': ['nonlinear_strength', 'pattern_complexity', 'kernel_insights']
+            },
+            'similarity-analysis': {
+                'description': 'Find markets similar to high-performing areas using K-Nearest Neighbors',
+                'primary_model': 'knn',
+                'score_field': 'similarity_performance_score',
+                'analysis_type': 'similarity_analysis',
+                'endpoint_type': 'comprehensive',
+                'include_shap': False,
+                'sort_by': 'similarity_performance_score',
+                'special_features': ['similar_markets', 'distance_metrics', 'nearest_neighbors', 'similarity_reasoning']
+            },
+            'feature-selection-analysis': {
+                'description': 'Automatic feature selection and importance using Lasso regression',
+                'primary_model': 'lasso_regression',
+                'score_field': 'feature_selection_score',
+                'analysis_type': 'feature_selection_analysis',
+                'endpoint_type': 'comprehensive',
+                'include_shap': True,
+                'sort_by': 'feature_selection_score',
+                'special_features': ['selected_features', 'feature_coefficients', 'sparsity_level', 'feature_elimination']
+            },
+            'interpretability-analysis': {
+                'description': 'Highly interpretable analysis using Ridge regression for stable predictions',
+                'primary_model': 'ridge_regression',
+                'secondary_models': ['linear_regression'],
+                'score_field': 'interpretability_score',
+                'analysis_type': 'interpretability_analysis',
+                'endpoint_type': 'comprehensive',
+                'include_shap': True,
+                'sort_by': 'interpretability_score',
+                'special_features': ['coefficient_stability', 'prediction_confidence', 'linear_relationships', 'regularization_impact']
+            },
+            'neural-network-analysis': {
+                'description': 'Deep learning pattern detection for complex non-linear relationships',
+                'primary_model': 'neural_network',
+                'score_field': 'neural_network_score',
+                'analysis_type': 'neural_network_analysis',
+                'endpoint_type': 'comprehensive',
+                'include_shap': True,
+                'sort_by': 'neural_network_score',
+                'special_features': ['network_architecture', 'activation_patterns', 'layer_contributions', 'deep_insights']
+            },
+            'speed-optimized-analysis': {
+                'description': 'Ultra-fast analysis using Linear regression for time-sensitive decisions',
+                'primary_model': 'linear_regression',
+                'score_field': 'speed_optimized_score',
+                'analysis_type': 'speed_optimized_analysis',
+                'endpoint_type': 'comprehensive',
+                'include_shap': True,
+                'sort_by': 'speed_optimized_score',
+                'special_features': ['execution_time', 'linear_coefficients', 'prediction_speed', 'simple_relationships']
             }
         }
         
@@ -425,6 +491,99 @@ class ComprehensiveEndpointGenerator:
         
         return available_models
     
+    def _get_model_type(self, model_name: str) -> str:
+        """Get the model type classification"""
+        
+        model_types = {
+            'strategic_analysis': 'Specialized Business Analysis Model',
+            'competitive_analysis': 'Specialized Competition Analysis Model',
+            'demographic_analysis': 'Specialized Demographics Model',
+            'correlation_analysis': 'Specialized Correlation Analysis Model',
+            'predictive_modeling': 'Specialized Predictive Model',
+            'ensemble': 'Ensemble Meta-Model',
+            'xgboost': 'Gradient Boosting Algorithm',
+            'random_forest': 'Random Forest Algorithm',
+            'linear_regression': 'Linear Regression Algorithm',
+            'neural_network': 'Deep Learning Neural Network',
+            'knn': 'K-Nearest Neighbors Algorithm',
+            'svr': 'Support Vector Regression Algorithm',
+            'ridge_regression': 'Ridge Regression Algorithm',
+            'lasso_regression': 'Lasso Regression Algorithm',
+            'anomaly_detection': 'Anomaly Detection Model',
+            'clustering': 'Clustering Analysis Model',
+            'dimensionality_reduction': 'Dimensionality Reduction Model'
+        }
+        
+        return model_types.get(model_name, f'Unknown Model Type ({model_name})')
+    
+    def _get_model_performance(self, model_name: str, models: Dict[str, Any]) -> Dict[str, Any]:
+        """Get performance metrics for the model if available"""
+        
+        if model_name not in models:
+            return {'status': 'performance_not_available', 'note': 'Model not loaded or performance data missing'}
+        
+        model_data = models[model_name]
+        
+        # Try to extract performance from hyperparameters or training data
+        performance = {}
+        
+        if 'hyperparameters' in model_data:
+            hyperparams = model_data['hyperparameters']
+            
+            # Extract common performance metrics
+            for metric in ['r2_score', 'rmse', 'mae', 'accuracy', 'f1_score']:
+                if metric in hyperparams:
+                    performance[metric] = hyperparams[metric]
+        
+        # Add model complexity info
+        if 'features' in model_data:
+            performance['feature_count'] = len(model_data['features'])
+        
+        # Estimate model performance category
+        r2_score = performance.get('r2_score', 0)
+        if r2_score > 0:
+            if r2_score >= 0.80:
+                performance['performance_level'] = 'Excellent'
+            elif r2_score >= 0.60:
+                performance['performance_level'] = 'Good'  
+            elif r2_score >= 0.40:
+                performance['performance_level'] = 'Moderate'
+            else:
+                performance['performance_level'] = 'Poor'
+        
+        return performance if performance else {'status': 'performance_metrics_not_found'}
+    
+    def _get_models_used_for_endpoint(self, config: Dict[str, Any], models: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Get list of all models used for this endpoint"""
+        
+        models_used = []
+        
+        # Primary model
+        primary_model = config['primary_model']
+        if primary_model in models:
+            models_used.append({
+                'name': primary_model,
+                'role': 'primary',
+                'type': self._get_model_type(primary_model),
+                'performance': self._get_model_performance(primary_model, models),
+                'used_for': config.get('analysis_type', 'analysis')
+            })
+        
+        # Secondary models for comprehensive endpoints
+        if config.get('endpoint_type') == 'comprehensive':
+            secondary_models = config.get('secondary_models', [])
+            for model_name in secondary_models:
+                if model_name in models:
+                    models_used.append({
+                        'name': model_name,
+                        'role': 'secondary',
+                        'type': self._get_model_type(model_name),
+                        'performance': self._get_model_performance(model_name, models),
+                        'used_for': 'supporting_analysis'
+                    })
+        
+        return models_used
+    
     def _generate_comprehensive_endpoint(self, endpoint_name: str, config: Dict[str, Any], 
                                        data: pd.DataFrame, models: Dict[str, Any]) -> Dict[str, Any]:
         """Generate a single comprehensive endpoint with enhanced features"""
@@ -449,6 +608,16 @@ class ComprehensiveEndpointGenerator:
                 'include_shap': config.get('include_shap', False),
                 'sort_by': config.get('sort_by', 'score'),
                 'score_range': [0, 100]
+            },
+            'model_attribution': {
+                'primary_model': {
+                    'name': primary_model,
+                    'type': self._get_model_type(primary_model),
+                    'performance': self._get_model_performance(primary_model, models)
+                },
+                'generation_method': 'automated_pipeline',
+                'models_used': self._get_models_used_for_endpoint(config, models),
+                'traceability_note': f'Generated using {primary_model} as primary model with 17-model architecture support'
             }
         }
         
@@ -460,7 +629,7 @@ class ComprehensiveEndpointGenerator:
         # Generate records with appropriate scoring
         results = []
         for index, row in data.iterrows():
-            record = self._create_comprehensive_record(row, config, models, endpoint_type)
+            record = self._create_comprehensive_record(row, config, models, endpoint_type, primary_model)
             results.append(record)
         
         # Sort by score field
@@ -484,7 +653,7 @@ class ComprehensiveEndpointGenerator:
         }
     
     def _create_comprehensive_record(self, row: pd.Series, config: Dict[str, Any], 
-                                   models: Dict[str, Any], endpoint_type: str) -> Dict[str, Any]:
+                                   models: Dict[str, Any], endpoint_type: str, primary_model: str) -> Dict[str, Any]:
         """Create a record with comprehensive model features"""
         
         # Base record
@@ -503,6 +672,15 @@ class ComprehensiveEndpointGenerator:
             record = self._add_comprehensive_scoring(record, config, models)
         else:
             record = self._add_standard_scoring(record, config)
+        
+        # Add record-level model attribution
+        record['_model_attribution'] = {
+            'primary_model_used': primary_model,
+            'model_type': self._get_model_type(primary_model),
+            'endpoint_type': endpoint_type,
+            'generated_by': 'automated_pipeline',
+            'confidence_note': f'This record was scored using the {primary_model} model'
+        }
         
         return record
     

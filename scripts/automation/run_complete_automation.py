@@ -404,6 +404,26 @@ class CompleteAutomationPipeline:
                 self.logger.error("❌ Model training failed - no successful models")
                 return False
             
+            # Generate comprehensive performance report
+            self.logger.info("📊 Generating model performance report...")
+            try:
+                from model_performance_reporter import ModelPerformanceReporter
+                
+                reporter = ModelPerformanceReporter(self.project_name, self.output_dir)
+                performance_report = reporter.generate_performance_report(training_results, self.target_variable)
+                
+                # Store performance report in results
+                self.results['performance_report'] = performance_report
+                
+                self.logger.info("✅ Model performance report generated successfully")
+                self.logger.info(f"📈 Dashboard saved: {self.output_dir}/MODEL_PERFORMANCE_DASHBOARD.html")
+                self.logger.info(f"📊 Report saved: {self.output_dir}/MODEL_PERFORMANCE_REPORT.json")
+                
+            except Exception as perf_error:
+                self.logger.warning(f"⚠️  Performance report generation failed: {perf_error}")
+                self.logger.info("📊 Continuing with pipeline despite performance report failure...")
+                self.results['performance_report'] = None
+            
             # Extract validation results
             validation_results = {
                 'passed': True,
@@ -495,6 +515,28 @@ class CompleteAutomationPipeline:
             }
             
             self.logger.info(f"✅ Phase 5 Complete: Generated {len(endpoints)} endpoints")
+            
+            # Generate model traceability report
+            self.logger.info("🔍 Generating model traceability report...")
+            try:
+                from model_traceability_viewer import ModelTraceabilityViewer
+                
+                viewer = ModelTraceabilityViewer(str(self.output_dir / "generated_endpoints"))
+                traceability_report = viewer.generate_model_traceability_report(
+                    str(self.output_dir / "MODEL_TRACEABILITY_REPORT.html")
+                )
+                
+                self.logger.info("✅ Model traceability report generated")
+                self.logger.info(f"📋 Report saved: {self.output_dir}/MODEL_TRACEABILITY_REPORT.html")
+                
+                # Store traceability summary in results
+                self.results['model_traceability'] = viewer.get_all_endpoint_models()
+                
+            except Exception as trace_error:
+                self.logger.warning(f"⚠️  Traceability report generation failed: {trace_error}")
+                self.logger.info("📊 Continuing with pipeline despite traceability report failure...")
+                self.results['model_traceability'] = None
+            
             self.pipeline_state['phases_completed'].append('endpoint_generation')
             
             return True
@@ -790,6 +832,9 @@ Find any hardcoded microservice URLs in your code and replace with the new URL.
 - **Endpoints Generated**: {self.results['endpoints']['endpoint_count'] if self.results['endpoints'] else 'N/A'}
 - **Layer Configurations**: {self.results['layer_configs']['layer_count'] if self.results['layer_configs'] else 'N/A'}
 
+## Model Performance Summary
+{self._format_performance_summary() if self.results.get('performance_report') else '- **Performance Report**: Not generated or failed'}
+
 ## Output Files
 - **Project Directory**: `{self.output_dir}`
 - **Service Analysis**: `service_analysis.json`
@@ -797,6 +842,12 @@ Find any hardcoded microservice URLs in your code and replace with the new URL.
 - **Field Mappings**: `field_mappings.json`
 - **Deployment Summary**: `deployment_summary.json`
 - **Layer Configuration**: `config/layers.ts`
+- **Performance Dashboard**: `MODEL_PERFORMANCE_DASHBOARD.html`
+- **Performance Report**: `MODEL_PERFORMANCE_REPORT.json`
+- **Model Traceability Report**: `MODEL_TRACEABILITY_REPORT.html`
+
+## Model Traceability
+{self._format_traceability_summary() if self.results.get('model_traceability') else '- **Model Traceability**: Report not generated'}
 
 ## Deployment Status
 ✅ **Ready for Production Deployment**
@@ -820,6 +871,64 @@ The automation pipeline has successfully completed all phases and generated a pr
         report_file.write_text(report_content)
         
         self.logger.info(f"📄 Final report saved: {report_file}")
+    
+    def _format_performance_summary(self) -> str:
+        """Format performance report summary for final report"""
+        if not self.results.get('performance_report'):
+            return "- **Performance Report**: Not available"
+        
+        perf_report = self.results['performance_report']
+        
+        # Extract key metrics
+        best_model = perf_report.get('performance_summary', {}).get('best_individual_model', {})
+        ensemble_perf = perf_report.get('performance_summary', {}).get('ensemble_performance', {})
+        total_models = perf_report.get('project_info', {}).get('total_models', 0)
+        
+        # Count performance levels
+        interpretations = perf_report.get('interpretations', {})
+        excellent_count = sum(1 for interp in interpretations.values() if interp.get('performance_level') == 'EXCELLENT')
+        good_count = sum(1 for interp in interpretations.values() if interp.get('performance_level') == 'GOOD')
+        moderate_count = sum(1 for interp in interpretations.values() if interp.get('performance_level') == 'MODERATE')
+        poor_count = sum(1 for interp in interpretations.values() if interp.get('performance_level') == 'POOR')
+        
+        summary = f"- **Total Models Trained**: {total_models}\n"
+        summary += f"- **Best Individual Model**: {best_model.get('model_name', 'N/A')} (R² = {best_model.get('r2_score', 0):.3f})\n"
+        
+        if ensemble_perf:
+            summary += f"- **Ensemble Performance**: R² = {ensemble_perf.get('r2_score', 0):.3f} ({ensemble_perf.get('performance_level', 'N/A')})\n"
+        
+        summary += f"- **Performance Distribution**: {excellent_count} Excellent, {good_count} Good, {moderate_count} Moderate, {poor_count} Poor\n"
+        summary += f"- **Dashboard Available**: MODEL_PERFORMANCE_DASHBOARD.html\n"
+        summary += f"- **Detailed Report**: MODEL_PERFORMANCE_REPORT.json"
+        
+        return summary
+    
+    def _format_traceability_summary(self) -> str:
+        """Format model traceability summary for final report"""
+        if not self.results.get('model_traceability'):
+            return "- **Model Traceability**: Not available"
+        
+        trace_data = self.results['model_traceability']
+        
+        summary = f"- **Endpoints Analyzed**: {trace_data.get('endpoints_analyzed', 0)}\n"
+        summary += f"- **Endpoints with Attribution**: {trace_data.get('endpoints_with_attribution', 0)}\n"
+        
+        attribution_coverage = 0
+        if trace_data.get('endpoints_analyzed', 0) > 0:
+            attribution_coverage = (trace_data.get('endpoints_with_attribution', 0) / trace_data['endpoints_analyzed']) * 100
+        summary += f"- **Attribution Coverage**: {attribution_coverage:.1f}%\n"
+        
+        model_usage = trace_data.get('model_usage_summary', {})
+        summary += f"- **Unique Models Used**: {len(model_usage)}\n"
+        
+        if model_usage:
+            # Find most used model
+            most_used_model = max(model_usage.items(), key=lambda x: len(x[1].get('endpoints_using', [])))
+            summary += f"- **Most Used Model**: {most_used_model[0]} (used by {len(most_used_model[1]['endpoints_using'])} endpoints)\n"
+        
+        summary += f"- **Full Report**: MODEL_TRACEABILITY_REPORT.html"
+        
+        return summary
     
     async def _create_microservice_package(self, merged_path: Path, field_mappings: Dict, validation_results: Dict) -> Dict:
         """Create a complete microservice deployment package"""

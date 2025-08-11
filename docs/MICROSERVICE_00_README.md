@@ -49,8 +49,9 @@ This directory contains comprehensive documentation for migrating and deploying 
 **Transform ArcGIS services into production microservices in 30-50 minutes**
 
 ### Key Features:
-- **26 Analysis Endpoints**: 19 standard + 7 comprehensive model endpoints
-- **17 AI Models**: 6 specialized + 8 algorithm diversity + 3 unsupervised
+- **32 Analysis Endpoints**: 19 standard + 13 comprehensive model endpoints (**100% model utilization**)
+- **17 AI Models**: 6 specialized + 8 algorithm diversity + 3 unsupervised (**all actively used**)
+- **Complete Model Attribution**: Full traceability from predictions to specific models with R² scores
 - **22 Scoring Algorithms**: Complete analysis coverage
 - **Intelligent Cleanup**: Automated storage optimization
 - **One-Command Deployment**: Fully automated pipeline with pause for manual deployment
