@@ -134,6 +134,16 @@ export class VisualizationRenderer {
       // Check for direct rendering (bypasses complex chain)
       // CRITICAL: Always skip direct rendering for clustered data to ensure ClusterRenderer is used
       // CRITICAL: Never use direct rendering for clustered data - always use cluster renderer
+      console.log(`[VisualizationRenderer] 🔍 Direct rendering condition check:`, {
+        hasRenderer: !!data.renderer,
+        hasLegend: !!data.legend,
+        isClustered: !!data.isClustered,
+        rendererType: data.renderer?.type,
+        legendTitle: data.legend?.title,
+        legendItems: data.legend?.items?.length,
+        willUseDirect: !!(data.renderer && data.legend && !data.isClustered)
+      });
+      
       if (data.renderer && data.legend && !data.isClustered) {
         console.log(`[VisualizationRenderer] 🎯 Using DIRECT RENDERING from processor`);
         const result = {
@@ -162,6 +172,13 @@ export class VisualizationRenderer {
         console.log(`[VisualizationRenderer] 🎯 Cluster details:`, {
           clusterCount: data.clusters?.length || 0,
           sampledClusterIds: data.records.slice(0, 3).map(r => ({ area: r.area_name, clusterId: r.cluster_id }))
+        });
+      } else {
+        console.log(`[VisualizationRenderer] 🚨 Direct rendering FAILED - missing renderer or legend:`, {
+          missingRenderer: !data.renderer,
+          missingLegend: !data.legend,
+          processorType: data.type,
+          endpoint: endpoint
         });
       }
       
