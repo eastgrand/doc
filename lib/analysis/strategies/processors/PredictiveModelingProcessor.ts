@@ -21,7 +21,7 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
 
     const records = rawData.results.map((record: any, index: number) => {
       // Extract the pre-calculated predictive modeling score
-      const predictiveScore = Number(record.predictive_modeling_score) || 0;
+      const predictiveScore = Number(record.predictive_modeling_score || record.predictive_score) || 0;
       
       // Extract related metrics for additional analysis (updated for actual dataset fields)
       const nikeShare = Number(record.value_MP30034A_B_P || record.mp30034a_b_p) || 0;

@@ -134,8 +134,9 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
     }
     
     // PRIORITY 2: Pre-calculated segment profiling score (for other datasets)
-    if (record.segment_profiling_score !== undefined && record.segment_profiling_score !== null) {
-      const preCalculatedScore = Number(record.segment_profiling_score);
+    if ((record.segment_profiling_score !== undefined && record.segment_profiling_score !== null) ||
+        (record.segment_score !== undefined && record.segment_score !== null)) {
+      const preCalculatedScore = Number(record.segment_profiling_score || record.segment_score);
       console.log(`🎯 [SegmentProfilingProcessor] Using pre-calculated segment score: ${preCalculatedScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
       return preCalculatedScore;
     }

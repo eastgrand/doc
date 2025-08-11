@@ -25,6 +25,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
          record.ID !== undefined ||                   // Area ID
          // Fallback demographic fields for other datasets
          record.demographic_opportunity_score !== undefined || 
+         record.demographic_score !== undefined ||    // HRB data field
          record.total_population !== undefined ||     
          record.median_income !== undefined ||        
          record.value_AVGHINC_CY !== undefined ||     
@@ -131,8 +132,9 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     }
     
     // PRIORITY 2: PRE-CALCULATED DEMOGRAPHIC OPPORTUNITY SCORE (for other datasets)
-    if (record.demographic_opportunity_score !== undefined && record.demographic_opportunity_score !== null) {
-      const preCalculatedScore = Number(record.demographic_opportunity_score);
+    if ((record.demographic_opportunity_score !== undefined && record.demographic_opportunity_score !== null) ||
+        (record.demographic_score !== undefined && record.demographic_score !== null)) {
+      const preCalculatedScore = Number(record.demographic_opportunity_score || record.demographic_score);
       console.log(`🎯 [DemographicDataProcessor] Using pre-calculated score: ${preCalculatedScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
       return preCalculatedScore;
     }
@@ -177,7 +179,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       }
     }
     
-    console.log('⚠️ [DemographicDataProcessor] No pre-calculated demographic_opportunity_score found, using fallback calculation');
+    console.log('⚠️ [DemographicDataProcessor] No pre-calculated demographic_opportunity_score or demographic_score found, using fallback calculation');
     return Math.max(0, Math.min(100, demographicScore));
   }
 

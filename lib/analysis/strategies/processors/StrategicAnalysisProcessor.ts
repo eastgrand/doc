@@ -15,12 +15,12 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Strategic analysis ONLY requires strategic_value_score
+    // Strategic analysis requires strategic_value_score OR strategic_score (HRB data)
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
         (record.area_id || record.id || record.ID) &&
-        record.strategic_value_score !== undefined
+        (record.strategic_value_score !== undefined || record.strategic_score !== undefined)
       );
     
     return hasRequiredFields;
@@ -34,11 +34,11 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     }
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
-      // Strategic analysis ONLY uses strategic_value_score - no fallbacks
-      const primaryScore = Number(record.strategic_value_score);
+      // Strategic analysis uses strategic_value_score OR strategic_score (HRB data)
+      const primaryScore = Number(record.strategic_value_score || record.strategic_score);
       
       if (isNaN(primaryScore)) {
-        throw new Error(`Strategic analysis record ${record.ID || index} is missing strategic_value_score`);
+        throw new Error(`Strategic analysis record ${record.ID || index} is missing strategic_value_score or strategic_score`);
       }
       
       // Generate area name

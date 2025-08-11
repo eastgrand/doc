@@ -14,12 +14,12 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Competitive analysis ONLY requires competitive_advantage_score
+    // Competitive analysis requires competitive_advantage_score OR competitive_score (HRB data)
     const hasCompetitiveFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
         (record.area_id || record.id || record.ID) &&
-        record.competitive_advantage_score !== undefined
+        (record.competitive_advantage_score !== undefined || record.competitive_score !== undefined)
       );
     
     return hasCompetitiveFields;
@@ -140,11 +140,11 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
   }
 
   private extractCompetitiveScore(record: any): number {
-    // Competitive analysis ONLY uses competitive_advantage_score - no fallbacks
-    const score = Number(record.competitive_advantage_score);
+    // Competitive analysis uses competitive_advantage_score OR competitive_score (HRB data)
+    const score = Number(record.competitive_advantage_score || record.competitive_score);
     
     if (isNaN(score)) {
-      throw new Error(`Competitive analysis record ${record.ID || 'unknown'} is missing competitive_advantage_score`);
+      throw new Error(`Competitive analysis record ${record.ID || 'unknown'} is missing competitive_advantage_score or competitive_score`);
     }
     
     return score;

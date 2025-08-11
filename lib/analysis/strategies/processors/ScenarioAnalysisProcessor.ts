@@ -21,7 +21,7 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
 
     const records = rawData.results.map((record: any, index: number) => {
       // Extract the pre-calculated scenario analysis score
-      const scenarioScore = Number(record.scenario_analysis_score) || 0;
+      const scenarioScore = Number(record.scenario_analysis_score || record.scenario_score) || 0;
       
       // Extract related metrics for additional analysis (updated for actual dataset fields)
       const nikeShare = Number(record.value_MP30034A_B_P || record.mp30034a_b_p) || 0;
