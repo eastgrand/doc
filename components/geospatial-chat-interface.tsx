@@ -4186,6 +4186,10 @@ const EnhancedGeospatialChat = memo(({
         console.log('[UnifiedWorkflow] Legend title:', analysisResult.data.legend?.title);
         console.log('[UnifiedWorkflow] Legend items:', analysisResult.data.legend?.items?.length);
         
+        console.log('[UnifiedWorkflow] 🔍 CHECKING VISUALIZATION OBJECT:');
+        console.log('[UnifiedWorkflow] Visualization has legend:', !!analysisResult.visualization?.legend);
+        console.log('[UnifiedWorkflow] Visualization legend title:', analysisResult.visualization?.legend?.title);
+        
         console.log('[UnifiedWorkflow] ✅ Geometry join complete:', {
           totalRecords: joinedResults.length,
           recordsWithGeometry: joinedResults.filter(r => r.geometry).length
