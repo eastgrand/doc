@@ -4169,10 +4169,22 @@ const EnhancedGeospatialChat = memo(({
         });
         
         // Update analysis result with joined data (same as original UI)
+        console.log('[UnifiedWorkflow] 🔍 BEFORE geometry join - checking renderer/legend:');
+        console.log('[UnifiedWorkflow] Has renderer:', !!analysisResult.data.renderer);
+        console.log('[UnifiedWorkflow] Has legend:', !!analysisResult.data.legend);
+        console.log('[UnifiedWorkflow] Legend title:', analysisResult.data.legend?.title);
+        console.log('[UnifiedWorkflow] Legend items:', analysisResult.data.legend?.items?.length);
+        
         analysisResult.data = {
           ...analysisResult.data,
           records: joinedResults
         };
+        
+        console.log('[UnifiedWorkflow] 🔍 AFTER geometry join - checking renderer/legend:');
+        console.log('[UnifiedWorkflow] Has renderer:', !!analysisResult.data.renderer);
+        console.log('[UnifiedWorkflow] Has legend:', !!analysisResult.data.legend);
+        console.log('[UnifiedWorkflow] Legend title:', analysisResult.data.legend?.title);
+        console.log('[UnifiedWorkflow] Legend items:', analysisResult.data.legend?.items?.length);
         
         console.log('[UnifiedWorkflow] ✅ Geometry join complete:', {
           totalRecords: joinedResults.length,
