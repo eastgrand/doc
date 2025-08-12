@@ -80,7 +80,7 @@ const createOrderedMetrics = (
       key="analysisType" 
       label="Analysis Type" 
       value={analysisType} 
-      color="blue" 
+      color="gray" 
     />
   );
 
@@ -90,7 +90,7 @@ const createOrderedMetrics = (
       key="model" 
       label="Model Used" 
       value={modelUsed} 
-      color="green" 
+      color="gray" 
     />
   );
 
@@ -101,7 +101,7 @@ const createOrderedMetrics = (
         key="r2" 
         label="Model R² Score" 
         value={r2Score} 
-        color="purple" 
+        color="gray" 
       />
     );
   }
@@ -113,7 +113,7 @@ const createOrderedMetrics = (
         key="rmse" 
         label="RMSE" 
         value={rmse} 
-        color="orange" 
+        color="gray" 
       />
     );
   }
@@ -125,7 +125,7 @@ const createOrderedMetrics = (
         key="mae" 
         label="MAE" 
         value={mae} 
-        color="red" 
+        color="gray" 
       />
     );
   }
@@ -155,12 +155,12 @@ export const renderPerformanceMetrics = (
         <MetricBadge 
           label="Analysis Type" 
           value="Multi-Endpoint Analysis" 
-          color="blue" 
+          color="gray" 
         />
         <MetricBadge 
           label="Model Used" 
           value={`${metadata.endpointsUsed.length} endpoints`} 
-          color="green" 
+          color="gray" 
         />
       </div>
     );
@@ -229,7 +229,7 @@ export const renderPerformanceMetrics = (
             key="silhouette" 
             label="Cluster Quality" 
             value={metadata.modelInfo.silhouette_score.toFixed(2)} 
-            color="purple" 
+            color="gray" 
           />
         );
       }
@@ -239,7 +239,7 @@ export const renderPerformanceMetrics = (
             key="clusters" 
             label="Clusters Found" 
             value={metadata.modelInfo.n_clusters} 
-            color="orange" 
+            color="gray" 
           />
         );
       }
@@ -260,7 +260,7 @@ export const renderPerformanceMetrics = (
             key="outliers" 
             label="Anomalies Detected" 
             value={`${(metadata.modelInfo.outlier_ratio * 100).toFixed(1)}%`} 
-            color="purple" 
+            color="gray" 
           />
         );
       }
@@ -270,7 +270,7 @@ export const renderPerformanceMetrics = (
             key="contamination" 
             label="Expected Rate" 
             value={`${(metadata.modelInfo.contamination * 100).toFixed(1)}%`} 
-            color="orange" 
+            color="gray" 
           />
         );
       }
