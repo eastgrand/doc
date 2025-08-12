@@ -219,6 +219,13 @@ Now you need to tell your application where to find the microservice.
    - **Phase 6.5**: Update field mappings with current project data
    - **Phase 6.6**: Verify boundary file requirements for spatial analysis
    - **Phase 7**: Create TypeScript layer configurations  
+   - **Phase 7.5**: Enhanced Layer Categorization (NEW):
+     - Apply semantic categorization to layers AFTER layers.ts generation
+     - Automatic point layer detection → 'Locations' category
+     - Custom category support with user-defined keywords
+     - Layer exclusion patterns for unwanted layers
+     - Fallback strategies for uncategorized layers
+     - Manual correction system for miscategorized layers
    - **Phase 8**: Final integration and deployment:
      - Generate 26 analysis endpoints (19 standard + 7 comprehensive)
      - Apply 22 comprehensive scoring algorithms
@@ -253,6 +260,51 @@ The automation now includes **Phase 6.5: Field Mapping Update** which:
 - Manual maintenance procedures
 - Field categorization and naming conventions
 - Troubleshooting common mapping issues
+
+### 🏷️ New: Enhanced Layer Categorization System (Phase 7.5)
+
+The automation now includes **Phase 7.5: Enhanced Layer Categorization** which applies intelligent semantic categorization AFTER layers.ts is generated. This addresses all operational requirements for production layer management.
+
+**What it does:**
+- **Semantic Analysis**: Categorizes layers based on field names, descriptions, and metadata
+- **Point Layer Detection**: Automatically assigns point layers to 'Locations' category
+- **Custom Categories**: Supports user-defined categories with custom keywords
+- **Layer Exclusions**: Skip layers using pattern matching (e.g., `test_*`, `*_backup`)
+- **Fallback Strategies**: Ensures all layers get categorized (no orphaned layers)
+- **Manual Corrections**: Interactive correction system for miscategorized layers
+
+**Enhanced Features:**
+- ✅ **Pipeline Safety**: Runs AFTER layers.ts exists (Phase 7.5 vs during Phase 7)
+- ✅ **Zero Uncategorized**: Comprehensive fallback ensures all layers get assigned
+- ✅ **Point Intelligence**: Automatically detects and categorizes point/location layers
+- ✅ **User Control**: Full custom category creation and correction system
+- ✅ **Flexible Exclusions**: Pattern-based layer exclusion for unwanted layers
+- ✅ **Persistent Corrections**: Corrections survive pipeline re-runs
+- ✅ **Detailed Reporting**: Full traceability of categorization decisions
+
+**Category Management Tools:**
+
+1. **Interactive Correction Tool** (manual layer corrections):
+   ```bash
+   python scripts/automation/correct_layer_categorization.py
+   ```
+
+2. **Standalone Post-Processing** (apply categorization to existing layers.ts):
+   ```bash
+   python scripts/automation/layer_categorization_post_processor.py
+   ```
+
+3. **View Current Categories** (analysis without changes):
+   ```bash
+   python scripts/automation/correct_layer_categorization.py --show-only
+   ```
+
+**Operational Benefits:**
+- 🏗️ **Production Ready**: Handles all edge cases (uncategorized, exclusions, corrections)
+- 🎯 **Accurate Categorization**: Semantic analysis with 10+ predefined categories
+- 📍 **Location Intelligence**: Automatic point layer detection and assignment
+- 🔧 **Easy Corrections**: Interactive tools for fine-tuning categorizations
+- 📊 **Comprehensive Reporting**: Detailed categorization reports and metrics
 
 ### 🤖 Step 6.6: AI-Powered Synonym Expansion (Optional Enhancement)
 
@@ -618,6 +670,30 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
 
 - **Solution**: Wait a few minutes for Render to fully start up, then try again
 
+**Problem**: Layers are miscategorized or in wrong groups
+
+- **Solution**: Use the correction tool to fix categorizations:
+
+  ```bash
+  python scripts/automation/correct_layer_categorization.py
+  ```
+
+**Problem**: Point layers not automatically assigned to 'Locations'
+
+- **Solution**: Re-run the categorization post-processor with point detection enabled:
+
+  ```bash
+  python scripts/automation/layer_categorization_post_processor.py
+  ```
+
+**Problem**: Want to exclude test/temporary layers from categorization
+
+- **Solution**: Configure exclusion patterns during category setup or use the correction tool to add exclusions
+
+**Problem**: Need custom categories not available in presets
+
+- **Solution**: Use the enhanced category selector to create custom categories with your own keywords
+
 ## Getting Help
 
 **If you're stuck:**
@@ -636,6 +712,13 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
 - [ ] Application starts without errors
 - [ ] Data loads correctly in all analysis pages
 - [ ] Field mappings updated automatically (Phase 6.5)
+- [ ] **Enhanced layer categorization applied (Phase 7.5)**:
+  - [ ] Layers semantically categorized (Demographics, Financial Services, etc.)
+  - [ ] Point layers automatically assigned to 'Locations' category
+  - [ ] No uncategorized layers (all have fallback assignments)
+  - [ ] Custom categories created if needed
+  - [ ] Layer exclusions configured if needed
+  - [ ] Manual corrections applied if needed
 - [ ] AI synonym expansion applied (Optional Step 6.6)
 - [ ] Boundary file verification completed (Phase 6.6)
 - [ ] Geographic boundary files present or alerts addressed

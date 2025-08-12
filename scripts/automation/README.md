@@ -73,7 +73,7 @@ After completion, you'll have a complete microservice with:
 
 ## 🏗️ Pipeline Architecture
 
-The automation pipeline consists of 8 phases:
+The automation pipeline consists of **10 phases** (enhanced for production):
 
 ### Phase 1: 🔍 Service Discovery & Analysis
 - Automatically discovers all layers in ArcGIS Feature Service
@@ -100,26 +100,49 @@ The automation pipeline consists of 8 phases:
 - **Component**: `automated_model_trainer.py`
 
 ### Phase 5: 📝 Endpoint Generation
-- Creates 18 different analysis endpoints
+- Creates 26 different analysis endpoints (19 standard + 7 comprehensive)
 - Optimized JSON structure
 - Comprehensive metadata inclusion
-- **Component**: `endpoint_generator.py`
+- **Component**: `comprehensive_endpoint_generator.py`
 
 ### Phase 6: 📈 Score Calculation
-- Applies 15 different scoring algorithms
+- Applies 22 different scoring algorithms
 - Strategic, competitive, and demographic scoring
 - SHAP-based normalization
 - **Component**: `automated_score_calculator.py`
 
-### Phase 7: 🏗️ Layer Configuration
+### Phase 6.5: 🗂️ Field Mapping Update (NEW)
+- Extracts all unique fields from generated endpoints
+- Creates comprehensive field aliases for natural language queries
+- Synchronizes mappings with actual project data
+- **Component**: Node.js field extraction scripts
+
+### Phase 6.6: 🗺️ Boundary File Verification (NEW)
+- Checks for required geographic boundary files
+- Verifies spatial analysis capabilities
+- Issues alerts if boundary files are missing
+- **Component**: Integrated boundary verification system
+
+### Phase 7: 🏗️ Layer Configuration Generation
 - TypeScript configuration generation
-- Intelligent layer categorization
-- Concept mapping integration
+- Basic layer structure creation
 - **Component**: `layer_config_generator.py`
+
+### Phase 7.5: 🏷️ Enhanced Layer Categorization (NEW)
+- **Runs AFTER layers.ts generation** for operational safety
+- Semantic categorization with 10+ predefined categories
+- Automatic point layer detection → 'Locations' category
+- Custom category creation with user-defined keywords
+- Layer exclusion patterns for unwanted layers
+- Comprehensive fallback strategies (zero uncategorized layers)
+- Manual correction system for miscategorized layers
+- Persistent correction storage for pipeline re-runs
+- **Components**: `layer_categorization_post_processor.py`, `enhanced_category_selector.py`, `correct_layer_categorization.py`
 
 ### Phase 8: 🚀 Final Integration
 - Deploys endpoints to application
-- Updates layer configurations
+- Updates layer configurations with enhanced categorization
+- Uploads files to Vercel Blob storage (if configured)
 - Generates comprehensive reports
 - **Component**: `run_complete_automation.py`
 
@@ -152,6 +175,18 @@ python3 automated_score_calculator.py endpoints/
 python3 layer_config_generator.py "SERVICE_URL" --output layers_generated.ts
 ```
 
+### Enhanced Layer Categorization (NEW)
+```bash
+# Apply enhanced categorization to existing layers.ts
+python3 layer_categorization_post_processor.py
+
+# Correct layer categorizations interactively
+python3 correct_layer_categorization.py
+
+# View current categorizations without changes
+python3 correct_layer_categorization.py --show-only
+```
+
 ## 📋 Requirements
 
 ### System Requirements
@@ -173,7 +208,9 @@ All dependencies are automatically installed by the pipeline:
 
 ### 🔮 Intelligent Automation
 - **AI-powered field detection** with 90%+ accuracy
-- **Brand recognition** for Nike, Adidas, Puma, etc.
+- **Semantic layer categorization** with 10+ predefined categories
+- **Point layer auto-detection** for automatic 'Locations' assignment
+- **Custom category creation** with user-defined keywords
 - **Demographic categorization** for population, income, age groups
 - **Geographic type detection** for ZIP codes, counties, states
 
@@ -188,6 +225,9 @@ All dependencies are automatically installed by the pipeline:
 - **Validation at every step** with confidence scoring
 - **Complete documentation** generation
 - **Integration testing** with validation steps
+- **Operational layer management** with corrections and exclusions
+- **Zero uncategorized layers** with comprehensive fallback strategies
+- **Persistent corrections** that survive pipeline re-runs
 
 ### 📊 Advanced Analytics
 - **15 scoring algorithms** covering strategic, competitive, and demographic analysis
@@ -205,6 +245,9 @@ projects/your_project_name/
 ├── service_analysis.json          # Service discovery results
 ├── merged_dataset.csv              # Extracted and merged data
 ├── field_mappings.json             # AI-generated field mappings
+├── layer_categorization_config.json # Enhanced categorization config
+├── layer_categorization_report.md   # Categorization analysis report
+├── layer_corrections.json           # Manual layer corrections
 ├── deployment_summary.json         # Deployment configuration
 └── automation_pipeline_*.log       # Detailed execution logs
 
@@ -293,11 +336,28 @@ This automation pipeline was built for the Nike MPIQ AI Chat project but is desi
 3. Test field detection accuracy
 4. Add validation rules
 
-### Extending Layer Categorization
-1. Update brand/category patterns in `layer_config_generator.py`
-2. Add new concept mappings
-3. Test categorization logic
-4. Update TypeScript types if needed
+### Extending Layer Categorization (Enhanced)
+1. **Add predefined categories** to `enhanced_category_selector.py`:
+   - Add new `CategoryConfig` objects with keywords and descriptions
+   - Test semantic matching with sample layer names
+   
+2. **Create custom categories** interactively:
+   - Run `python correct_layer_categorization.py`
+   - Add custom categories during the session
+   
+3. **Update categorization logic** in `layer_categorization_post_processor.py`:
+   - Modify fallback strategies for edge cases
+   - Add new point layer detection patterns
+   - Update exclusion pattern matching
+   
+4. **Test the complete categorization system**:
+   ```bash
+   # Test categorization without applying changes
+   python layer_categorization_post_processor.py --report-only
+   
+   # Apply categorization and generate reports
+   python layer_categorization_post_processor.py
+   ```
 
 ## 🆘 Troubleshooting
 
@@ -322,6 +382,13 @@ This automation pipeline was built for the Nike MPIQ AI Chat project but is desi
 - Ensure TypeScript types are up to date
 - Check if layer patterns match expectations
 - Validate concept mappings
+
+**Layer categorization issues:**
+- **Layers miscategorized**: Use `python correct_layer_categorization.py` to fix specific layers
+- **Point layers not auto-assigned**: Re-run `python layer_categorization_post_processor.py` 
+- **Need custom categories**: Run the categorization tool and add custom categories
+- **Want to exclude layers**: Configure exclusion patterns during category setup
+- **Categorizations lost**: Check that corrections are saved in `layer_corrections.json`
 
 ### Debug Mode
 ```bash

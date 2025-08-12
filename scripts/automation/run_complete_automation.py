@@ -172,6 +172,11 @@ class CompleteAutomationPipeline:
             if not success:
                 return False
             
+            # Phase 7.5: Enhanced Layer Categorization (NEW)
+            success = await self._phase_7_5_enhanced_layer_categorization()
+            if not success:
+                return False
+            
             # Phase 8: Final Integration & Deployment
             success = await self._phase_8_final_integration()
             if not success:
@@ -825,6 +830,70 @@ class CompleteAutomationPipeline:
             self.pipeline_state['phases_failed'].append('layer_configuration')
             return False
     
+    async def _phase_7_5_enhanced_layer_categorization(self) -> bool:
+        """Phase 7.5: Enhanced Layer Categorization Post-Processing"""
+        self.logger.info("\n🏷️  PHASE 7.5: Enhanced Layer Categorization")
+        self.logger.info("-" * 50)
+        
+        self.pipeline_state['current_phase'] = 'enhanced_layer_categorization'
+        
+        try:
+            from layer_categorization_post_processor import LayerCategorizationPostProcessor
+            
+            self.logger.info("🔄 Applying enhanced semantic categorization to layers.ts...")
+            self.logger.info("This phase runs AFTER layers.ts generation with operational enhancements:")
+            self.logger.info("  • Automatic point layer detection → 'Locations' category")
+            self.logger.info("  • Custom category support")
+            self.logger.info("  • Layer exclusion patterns")
+            self.logger.info("  • Fallback strategies for uncategorized layers")
+            self.logger.info("  • Manual correction system")
+            
+            # Initialize post-processor
+            processor = LayerCategorizationPostProcessor(str(self.project_root))
+            
+            # Run enhanced categorization
+            success = processor.run_complete_post_processing()
+            
+            if not success:
+                self.logger.error("❌ Enhanced categorization failed")
+                return False
+            
+            # Store results for reporting
+            self.results['enhanced_categorization'] = {
+                'total_layers': len(processor.categorization_results),
+                'excluded_layers': len(processor.excluded_layers),
+                'point_layers_found': len(processor.point_layers_found),
+                'corrections_applied': len(processor.corrections_applied),
+                'uncategorized_layers': len(processor.uncategorized_layers),
+                'categorization_results': processor.categorization_results
+            }
+            
+            # Log key metrics
+            results = self.results['enhanced_categorization']
+            self.logger.info("📊 Enhanced Categorization Results:")
+            self.logger.info(f"  ✅ Total layers processed: {results['total_layers']}")
+            self.logger.info(f"  📍 Point layers auto-assigned: {results['point_layers_found']}")
+            self.logger.info(f"  🚫 Layers excluded: {results['excluded_layers']}")
+            self.logger.info(f"  🔧 Manual corrections: {results['corrections_applied']}")
+            self.logger.info(f"  ❓ Uncategorized (fallback applied): {results['uncategorized_layers']}")
+            
+            if results['point_layers_found'] > 0:
+                self.logger.info(f"🎯 Point layers automatically assigned to 'Locations' category")
+            
+            if results['uncategorized_layers'] > 0:
+                self.logger.info(f"⚠️  {results['uncategorized_layers']} layers used fallback categorization")
+                self.logger.info("💡 Consider adding custom categories or corrections for better accuracy")
+            
+            self.logger.info("✅ Phase 7.5 Complete: Enhanced semantic categorization applied")
+            self.pipeline_state['phases_completed'].append('enhanced_layer_categorization')
+            
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"❌ Phase 7.5 Failed: {str(e)}")
+            self.pipeline_state['phases_failed'].append('enhanced_layer_categorization')
+            return False
+    
     async def _phase_8_final_integration(self) -> bool:
         """Phase 8: Final Integration & Deployment Preparation"""
         self.logger.info("\n🚀 PHASE 8: Final Integration & Deployment")
@@ -1027,7 +1096,7 @@ Find any hardcoded microservice URLs in your code and replace with the new URL.
         elapsed_time = (time.time() - self.start_time) / 60
         
         # Calculate success metrics
-        total_phases = 9  # Updated for Phase 6.6: Boundary File Verification
+        total_phases = 10  # Updated for Phase 7.5: Enhanced Layer Categorization
         completed_phases = len(self.pipeline_state['phases_completed'])
         success_rate = (completed_phases / total_phases) * 100
         

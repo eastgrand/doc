@@ -2004,25 +2004,70 @@ export const layerConfigs: LayerConfig[] = baseLayerConfigs
 
 // Group layers by category for easier management
 export const layerGroups = {
-  'general': [
-    'Unknown_Service_layer_0',
-    'Unknown_Service_layer_1',
-    'Unknown_Service_layer_2',
-    'Unknown_Service_layer_3',
-    'Unknown_Service_layer_4',
-    'Unknown_Service_layer_5',
-    'Unknown_Service_layer_6',
-    'Unknown_Service_layer_7',
-    'Unknown_Service_layer_8',
-    'Unknown_Service_layer_9',
-    'Unknown_Service_layer_10',
-    'Unknown_Service_layer_11',
-    'Unknown_Service_layer_12',
-    'Unknown_Service_layer_13',
-    'Unknown_Service_layer_14',
-    'Unknown_Service_layer_15'
-  ],
-
+  'tax_services': {
+    displayName: 'Tax Preparation Services',
+    description: 'Tax software, tax preparers, tax services',
+    layerCount: 4,
+    confidence: 1.00,
+    layers: [
+      'Unknown_Service_layer_9',
+      'Unknown_Service_layer_10',
+      'Unknown_Service_layer_14',
+      'Unknown_Service_layer_15'
+    ]
+  },
+  'financial_services': {
+    displayName: 'Financial Services & Banking',
+    description: 'Bank usage, financial accounts, credit services',
+    layerCount: 3,
+    confidence: 1.00,
+    layers: [
+      'Unknown_Service_layer_4',
+      'Unknown_Service_layer_7',
+      'Unknown_Service_layer_12'
+    ]
+  },
+  'credit_debt': {
+    displayName: 'Credit & Debt Management',
+    description: 'Credit cards, debt, credit behavior',
+    layerCount: 3,
+    confidence: 1.00,
+    layers: [
+      'Unknown_Service_layer_6',
+      'Unknown_Service_layer_8',
+      'Unknown_Service_layer_11'
+    ]
+  },
+  'demographics': {
+    displayName: 'Demographics & Population',
+    description: 'Age groups, generations, population characteristics',
+    layerCount: 2,
+    confidence: 1.00,
+    layers: [
+      'Unknown_Service_layer_0',
+      'Unknown_Service_layer_1'
+    ]
+  },
+  'digital_payments': {
+    displayName: 'Digital Payment Services',
+    description: 'Mobile payments, digital wallets, payment apps',
+    layerCount: 2,
+    confidence: 1.00,
+    layers: [
+      'Unknown_Service_layer_2',
+      'Unknown_Service_layer_3'
+    ]
+  },
+  'investments': {
+    displayName: 'Investments & Assets',
+    description: 'Stocks, bonds, crypto, investment accounts',
+    layerCount: 2,
+    confidence: 1.00,
+    layers: [
+      'Unknown_Service_layer_5',
+      'Unknown_Service_layer_13'
+    ]
+  },
 };
 
 // Export individual layers for direct access
