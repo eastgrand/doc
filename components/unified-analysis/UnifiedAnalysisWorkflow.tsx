@@ -27,8 +27,10 @@ import {
   Car,
   FootprintsIcon as Walk,
   RotateCcw,
-  Sparkles
+  Sparkles,
+  UserCog
 } from 'lucide-react';
+import { PiStrategy, PiLightning, PiLightbulb, PiWrench, PiHeart } from 'react-icons/pi';
 
 // Import unified components
 import UnifiedAreaSelector, { AreaSelection } from './UnifiedAreaSelector';
@@ -46,9 +48,12 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
+  DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog';
 import QueryDialog from '@/components/chat/QueryDialog';
 import { ANALYSIS_CATEGORIES, DISABLED_ANALYSIS_CATEGORIES } from '@/components/chat/chat-constants';
+import { personaMetadata } from '@/app/api/claude/prompts';
 
 // Clustering Components
 import { ClusterConfigPanel } from '@/components/clustering/ClusterConfigPanel';
@@ -64,6 +69,15 @@ import Graphic from "@arcgis/core/Graphic";
 import { SimpleFillSymbol, SimpleLineSymbol } from '@arcgis/core/symbols';
 import Polygon from '@arcgis/core/geometry/Polygon';
 import { SpatialFilterService } from '@/lib/spatial/SpatialFilterService';
+
+// Persona icons map
+const PERSONA_ICON_MAP: Record<string, React.ComponentType<any>> = {
+  'strategist': PiStrategy,
+  'tactician': PiLightning,
+  'creative': PiLightbulb,
+  'product-specialist': PiWrench,
+  'customer-advocate': PiHeart
+};
 
 export interface UnifiedAnalysisWorkflowProps {
   view: __esri.MapView;
@@ -111,6 +125,10 @@ export default function UnifiedAnalysisWorkflow({
   
   // QuickstartIQ dialog state
   const [quickstartDialogOpen, setQuickstartDialogOpen] = useState(false);
+  
+  // Persona state
+  const [selectedPersona, setSelectedPersona] = useState<string>('strategist');
+  const [isPersonaDialogOpen, setIsPersonaDialogOpen] = useState(false);
   
   // Clustering configuration state
   const [clusterConfig, setClusterConfig] = useState<ClusterConfig>({
@@ -223,7 +241,8 @@ export default function UnifiedAnalysisWorkflow({
         clusterConfig: type === 'query' && clusterConfig.enabled ? clusterConfig : undefined,
         view: view,                          // NEW: Pass the map view
         dataSourceLayerId: dataSourceLayerId, // NEW: Pass the layer ID
-        spatialFilterIds: spatialFilterIds   // NEW: Pass the spatial filter IDs
+        spatialFilterIds: spatialFilterIds,   // NEW: Pass the spatial filter IDs
+        persona: selectedPersona              // Pass the selected persona
       };
 
       console.log('[UnifiedWorkflow] Starting analysis with spatial context:', {
@@ -921,6 +940,59 @@ export default function UnifiedAnalysisWorkflow({
                             />
                           </DialogContent>
                         </Dialog>
+                        
+                        {/* Persona Selector */}
+                        <Dialog open={isPersonaDialogOpen} onOpenChange={setIsPersonaDialogOpen}>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-xs h-6 flex items-center gap-1"
+                            >
+                              {React.createElement(
+                                PERSONA_ICON_MAP[selectedPersona] || UserCog,
+                                { className: 'h-3 w-3' }
+                              )}
+                              <span className="truncate">
+                                {personaMetadata.find(p => p.id === selectedPersona)?.name || 'Strategist'}
+                              </span>
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-lg bg-white" aria-describedby="persona-dialog-description">
+                            <DialogHeader>
+                              <DialogTitle>Select AI Persona</DialogTitle>
+                              <p id="persona-dialog-description" className="text-xs text-gray-600 mt-2">
+                                Choose an analytical perspective that matches your decision-making context.
+                              </p>
+                            </DialogHeader>
+                            <div className="grid grid-cols-1 gap-3 mt-4">
+                              {personaMetadata.map((persona) => (
+                                <Button
+                                  key={persona.id}
+                                  variant={selectedPersona === persona.id ? 'default' : 'outline'}
+                                  size="sm"
+                                  className="flex items-start gap-3 p-4 h-auto text-left justify-start w-full whitespace-normal"
+                                  onClick={() => {
+                                    setSelectedPersona(persona.id);
+                                    setIsPersonaDialogOpen(false);
+                                  }}
+                                >
+                                  {React.createElement(
+                                    PERSONA_ICON_MAP[persona.id] || UserCog,
+                                    { className: 'h-4 w-4 flex-shrink-0 mt-0.5 text-[#33a852]' }
+                                  )}
+                                  <div className="flex-1 min-w-0">
+                                    <div className="font-medium text-xs">{persona.name}</div>
+                                    <div className="text-xs text-gray-600 mt-1 leading-relaxed">
+                                      {persona.description}
+                                    </div>
+                                  </div>
+                                </Button>
+                              ))}
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                        
                         <Dialog open={clusterDialogOpen} onOpenChange={setClusterDialogOpen}>
                           <DialogTrigger asChild>
                             <Button
@@ -949,9 +1021,6 @@ export default function UnifiedAnalysisWorkflow({
                       onChange={(e) => setSelectedQuery(e.target.value)}
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Examples: &ldquo;Show me all retail locations&rdquo;, &ldquo;What&rsquo;s the population density?&rdquo;, &ldquo;Find areas with high foot traffic&rdquo;
-                  </p>
                 </div>
               )}
 
@@ -1238,6 +1307,7 @@ export default function UnifiedAnalysisWorkflow({
                 analysisResult={workflowState.analysisResult}
                 onExportChart={handleExportChart}
                 onZipCodeClick={handleZipCodeClick}
+                persona={selectedPersona}
               />
             </TabsContent>
 

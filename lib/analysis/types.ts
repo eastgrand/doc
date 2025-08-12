@@ -22,6 +22,9 @@ export interface AnalysisOptions {
   spatialFilterGeometry?: any;      // Original geometry for reference
   spatialFilterMethod?: string;     // How geometry was selected
   
+  // AI Persona selection
+  persona?: string;                  // Selected AI persona for analysis
+  
   // Multi-endpoint options
   endpoints?: string[];
   combinationStrategy?: 'overlay' | 'comparison' | 'sequential' | 'correlation';
@@ -52,6 +55,15 @@ export interface AnalysisMetadata {
   confidenceScore?: number;
   timestamp: string;
   errorMessage?: string;
+  
+  // Model performance information
+  modelInfo?: {
+    target_variable: string;
+    feature_count: number;
+    accuracy?: number;
+    rmse?: number;
+    mae?: number;
+  };
   
   // Multi-endpoint metadata
   isMultiEndpoint?: boolean;
@@ -87,6 +99,8 @@ export interface RawAnalysisResult {
     target_variable: string;
     feature_count: number;
     accuracy?: number;
+    rmse?: number;
+    mae?: number;
   };
   summary?: string;
   error?: string;

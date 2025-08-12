@@ -38,6 +38,9 @@ export interface UnifiedAnalysisRequest {
   
   // Clustering options
   clusterConfig?: ClusterConfig;
+  
+  // Persona selection
+  persona?: string;
 }
 
 export interface UnifiedAnalysisResponse {
@@ -237,7 +240,8 @@ export class UnifiedAnalysisWrapper {
       clusterConfig: request.clusterConfig,
       spatialFilterIds,                          // Pass feature IDs
       spatialFilterGeometry: request.geometry,   // Pass geometry for reference
-      spatialFilterMethod: request.geometryMethod // Track how it was selected
+      spatialFilterMethod: request.geometryMethod, // Track how it was selected
+      persona: request.persona                   // Pass the selected persona
     };
     
     return await this.analysisEngine.executeAnalysis(request.query, options);
@@ -257,7 +261,8 @@ export class UnifiedAnalysisWrapper {
       visualizationType: 'scorecard', // Focus on scorecard visualization for infographics
       spatialFilterIds,                          // Pass feature IDs
       spatialFilterGeometry: request.geometry,   // Pass geometry for reference
-      spatialFilterMethod: request.geometryMethod // Track how it was selected
+      spatialFilterMethod: request.geometryMethod, // Track how it was selected
+      persona: request.persona                   // Pass the selected persona
     };
     
     return await this.analysisEngine.executeAnalysis(query, options);
@@ -277,7 +282,8 @@ export class UnifiedAnalysisWrapper {
       // Remove explicit endpoint to allow intelligent classification like original UI
       spatialFilterIds,                          // Pass feature IDs
       spatialFilterGeometry: request.geometry,   // Pass geometry for reference
-      spatialFilterMethod: request.geometryMethod // Track how it was selected
+      spatialFilterMethod: request.geometryMethod, // Track how it was selected
+      persona: request.persona                   // Pass the selected persona
     };
     
     return await this.analysisEngine.executeAnalysis(query, options);
