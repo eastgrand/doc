@@ -8,8 +8,9 @@ import {
   DialogHeader, 
   DialogTitle 
 } from '@/components/ui/dialog';
-import { Send, Bot, User, MessageCircle, Loader2 } from 'lucide-react';
+import { Send, Bot, User, Loader2 } from 'lucide-react';
 import { UnifiedAnalysisResponse } from './UnifiedAnalysisWrapper';
+import { renderPerformanceMetrics } from '@/lib/utils/performanceMetrics';
 
 interface UnifiedAnalysisChatProps {
   analysisResult: UnifiedAnalysisResponse;
@@ -24,6 +25,7 @@ interface ChatMessage {
 }
 
 export default function UnifiedAnalysisChat({ analysisResult, onExportChart }: UnifiedAnalysisChatProps) {
+
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: '1',
@@ -157,13 +159,11 @@ export default function UnifiedAnalysisChat({ analysisResult, onExportChart }: U
             <Send className="w-4 h-4" />
           </Button>
         </div>
-        <div className="flex justify-between items-center mt-2">
-          <div className="flex items-center gap-2">
-            <MessageCircle className="w-4 h-4 text-gray-500" />
-            <span className="text-xs text-gray-500">
-              {analysisResult.analysisResult.data.records.length} features analyzed
-            </span>
-          </div>
+        <div className="mt-2">
+          {renderPerformanceMetrics(
+            analysisResult.analysisResult,
+            "flex flex-wrap gap-2"
+          )}
         </div>
       </div>
 
