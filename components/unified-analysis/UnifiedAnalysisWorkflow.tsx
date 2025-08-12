@@ -61,7 +61,8 @@ import { useChatContext } from '@/components/chat-context-provider';
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 import Circle from "@arcgis/core/geometry/Circle";
 import Graphic from "@arcgis/core/Graphic";
-import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
+import { SimpleFillSymbol, SimpleLineSymbol } from '@arcgis/core/symbols';
+import Polygon from '@arcgis/core/geometry/Polygon';
 import { SpatialFilterService } from '@/lib/spatial/SpatialFilterService';
 
 export interface UnifiedAnalysisWorkflowProps {
@@ -284,6 +285,212 @@ export default function UnifiedAnalysisWorkflow({
       console.error('[UnifiedWorkflow] Chart export error:', error);
     }
   }, [workflowState.analysisResult, handleExport]);
+
+  // Handle ZIP code click to zoom to feature - using the exact same approach as CustomPopupManager
+  const handleZipCodeClick = useCallback(async (zipCode: string) => {
+    console.log(`[UnifiedAnalysisWorkflow] Zooming to ZIP code: ${zipCode}`);
+    
+    try {
+      // Find the feature with this ZIP code in the current analysis results
+      const analysisData = workflowState.analysisResult?.analysisResult?.data?.records;
+      if (!analysisData) {
+        console.warn('[UnifiedAnalysisWorkflow] No analysis data available for ZIP code zoom');
+        return;
+      }
+
+      // Find the feature matching this ZIP code
+      const targetFeature = analysisData.find((record: any) => 
+        record.area_id === zipCode || 
+        record.area_name?.includes(zipCode) ||
+        record.properties?.geoid === zipCode ||
+        record.properties?.area_id === zipCode ||
+        record.properties?.area_name?.includes(zipCode)
+      );
+
+      if (!targetFeature) {
+        console.warn(`[UnifiedAnalysisWorkflow] Feature not found for ZIP code: ${zipCode}`);
+        return;
+      }
+
+      console.log(`[UnifiedAnalysisWorkflow] Found target feature for ${zipCode}:`, {
+        hasGeometry: !!targetFeature.geometry,
+        hasProperties: !!targetFeature.properties,
+        geometryInProperties: !!targetFeature.properties?.geometry,
+        featureKeys: Object.keys(targetFeature),
+        propertiesKeys: targetFeature.properties ? Object.keys(targetFeature.properties) : null
+      });
+
+      // Get the geometry from the feature
+      const geometry = targetFeature.geometry;
+      if (!geometry) {
+        console.warn(`[UnifiedAnalysisWorkflow] No geometry found for ZIP code: ${zipCode}`);
+        return;
+      }
+
+      console.log(`[UnifiedAnalysisWorkflow] Geometry details:`, {
+        type: geometry.type,
+        hasExtent: !!geometry.extent,
+        hasCoordinates: !!(geometry as any).coordinates,
+        hasRings: !!(geometry as any).rings
+      });
+
+      // The geometry from the analysis data is a GeoJSON-style object with coordinates, not rings
+      // Convert it to the proper format for ArcGIS view.goTo()
+      if (geometry.type === 'point') {
+        console.log(`[UnifiedAnalysisWorkflow] Zooming to point geometry`);
+        await view.goTo({
+          target: geometry,
+          zoom: 15
+        }, { duration: 1000 });
+      } else if (geometry.type === 'Polygon' || geometry.type === 'polygon') {
+        // Convert GeoJSON coordinates to ArcGIS rings format for autocast
+        const coordinates = (geometry as any).coordinates;
+        if (coordinates && coordinates.length > 0) {
+          const autocastGeometry = {
+            type: 'polygon',
+            rings: coordinates, // GeoJSON coordinates are already in rings format
+            spatialReference: geometry.spatialReference || view.spatialReference
+          };
+          
+          console.log(`[UnifiedAnalysisWorkflow] Autocast geometry:`, {
+            type: autocastGeometry.type,
+            ringsCount: autocastGeometry.rings.length,
+            firstRingLength: autocastGeometry.rings[0]?.length,
+            spatialReference: autocastGeometry.spatialReference?.wkid,
+            sampleCoords: autocastGeometry.rings[0]?.slice(0, 2)
+          });
+          
+          console.log(`[UnifiedAnalysisWorkflow] View state before zoom:`, {
+            center: view.center ? [view.center.longitude, view.center.latitude] : null,
+            zoom: view.zoom,
+            scale: view.scale
+          });
+          
+          // Try calculating extent manually and using that instead
+          let xmin = Infinity, ymin = Infinity, xmax = -Infinity, ymax = -Infinity;
+          coordinates.forEach((ring: number[][]) => {
+            ring.forEach((coord: number[]) => {
+              xmin = Math.min(xmin, coord[0]);
+              ymin = Math.min(ymin, coord[1]);
+              xmax = Math.max(xmax, coord[0]);
+              ymax = Math.max(ymax, coord[1]);
+            });
+          });
+          
+          const calculatedExtent = {
+            xmin, ymin, xmax, ymax,
+            spatialReference: { wkid: 4326 }
+          };
+          
+          console.log(`[UnifiedAnalysisWorkflow] Calculated extent:`, calculatedExtent);
+          console.log(`[UnifiedAnalysisWorkflow] Calling view.goTo() with calculated extent`);
+          
+          try {
+            // Calculate center point of the feature
+            const centerX = (xmin + xmax) / 2;
+            const centerY = (ymin + ymax) / 2;
+            
+            // Calculate appropriate zoom level based on extent size
+            const extentWidth = Math.abs(xmax - xmin);
+            const extentHeight = Math.abs(ymax - ymin);
+            const maxExtent = Math.max(extentWidth, extentHeight);
+            
+            // Determine zoom level based on extent size (rough estimation)
+            let targetZoom = 10; // Default
+            if (maxExtent < 0.01) targetZoom = 16;      // Very small area
+            else if (maxExtent < 0.05) targetZoom = 14; // Small area  
+            else if (maxExtent < 0.1) targetZoom = 12;  // Medium area
+            else if (maxExtent < 0.2) targetZoom = 11;  // Large area
+            
+            console.log(`[UnifiedAnalysisWorkflow] Center: [${centerX}, ${centerY}], Target zoom: ${targetZoom}`);
+            
+            const goToResult = await view.goTo({
+              center: [centerX, centerY],
+              zoom: targetZoom
+            }, { 
+              duration: 1500,
+              easing: 'ease-in-out'
+            });
+            console.log(`[UnifiedAnalysisWorkflow] view.goTo() completed successfully, result:`, goToResult);
+            
+            // Add flash effect after zoom completes
+            setTimeout(() => {
+              try {
+                // Create a Polygon from the coordinates
+                const flashPolygon = new Polygon({
+                  rings: coordinates,
+                  spatialReference: { wkid: 4326 }
+                });
+                
+                const flashGraphic = new Graphic({
+                  geometry: flashPolygon,
+                  symbol: new SimpleFillSymbol({
+                    color: [255, 255, 255, 0.8], // White with transparency
+                    outline: {
+                      color: [255, 255, 255, 1], // White outline
+                      width: 4
+                    }
+                  })
+                });
+                
+                view.graphics.add(flashGraphic);
+                console.log(`[UnifiedAnalysisWorkflow] Flash effect added`);
+                
+                // Create pulsing effect
+                let opacity = 0.8;
+                let fadeOut = false;
+                const pulseInterval = setInterval(() => {
+                  if (!fadeOut) {
+                    opacity -= 0.15;
+                    if (opacity <= 0.2) fadeOut = true;
+                  } else {
+                    opacity += 0.15;
+                    if (opacity >= 0.8) fadeOut = false;
+                  }
+                  
+                  flashGraphic.symbol = new SimpleFillSymbol({
+                    color: [255, 255, 255, opacity],
+                    outline: {
+                      color: [255, 255, 255, 1],
+                      width: 4
+                    }
+                  });
+                }, 200);
+                
+                // Remove flash after animation
+                setTimeout(() => {
+                  clearInterval(pulseInterval);
+                  view.graphics.remove(flashGraphic);
+                  console.log(`[UnifiedAnalysisWorkflow] Flash effect removed`);
+                }, 3000);
+                
+              } catch (flashError) {
+                console.error(`[UnifiedAnalysisWorkflow] Flash effect failed:`, flashError);
+              }
+            }, 1600); // After zoom animation completes
+            
+            console.log(`[UnifiedAnalysisWorkflow] View state after zoom:`, {
+              center: view.center ? [view.center.longitude, view.center.latitude] : null,
+              zoom: view.zoom,
+              scale: view.scale
+            });
+            
+          } catch (goToError) {
+            console.error(`[UnifiedAnalysisWorkflow] view.goTo() failed:`, goToError);
+          }
+        } else {
+          console.warn(`[UnifiedAnalysisWorkflow] No coordinates available for polygon geometry`);
+        }
+      } else {
+        console.warn(`[UnifiedAnalysisWorkflow] Unsupported geometry type: ${geometry.type}`);
+      }
+      
+      console.log(`[UnifiedAnalysisWorkflow] Successfully zoomed to ZIP code: ${zipCode}`);
+    } catch (error) {
+      console.error(`[UnifiedAnalysisWorkflow] Error zooming to ZIP code ${zipCode}:`, error);
+    }
+  }, [view, workflowState.analysisResult]);
+
 
   // Apply buffer to geometry
   const createBufferedGeometry = useCallback(async (geometry: __esri.Geometry, distance: number, unit: string) => {
@@ -1030,6 +1237,7 @@ export default function UnifiedAnalysisWorkflow({
               <UnifiedAnalysisChat 
                 analysisResult={workflowState.analysisResult}
                 onExportChart={handleExportChart}
+                onZipCodeClick={handleZipCodeClick}
               />
             </TabsContent>
 

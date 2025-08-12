@@ -50,6 +50,7 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { personaMetadata } from '@/app/api/claude/prompts';
 import ChatBar from '@/components/chat/ChatBar';
 import { classifyQuery } from '@/lib/ai/query-classifier';
+import { renderPerformanceMetrics } from '@/lib/utils/performanceMetrics';
 
 // Import Unified Workflow Components
 import UnifiedAnalysisWorkflow from '@/components/unified-analysis/UnifiedAnalysisWorkflow';
@@ -4415,6 +4416,12 @@ const EnhancedGeospatialChat = memo(({
               <div>
                 <h4 className="font-semibold">Results:</h4>
                 <p>{message.metadata.totalFeatures} features found</p>
+                
+                {/* Dynamic Model Performance Information */}
+                {message.metadata?.analysisResult && renderPerformanceMetrics(
+                  message.metadata.analysisResult,
+                  "flex flex-wrap gap-4 mt-2 text-sm text-gray-700"
+                )}
               </div>
             )}
           </div>

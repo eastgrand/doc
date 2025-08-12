@@ -1782,7 +1782,13 @@ How else can I help analyze the data in your selected ZIP codes?`,
         // Skip regular feature processing if we have a comprehensive summary
         if (!hasComprehensiveSummary) {
         for (const layerResult of processedLayersData) {
-            console.log(`[Claude Prompt Gen] Processing layer ${layerResult.layerId} for prompt summary...`);
+            // 🔍 DEBUG: Check features in each layer
+            console.log(`🔍 [LAYER PROCESSING] Processing layer ${layerResult.layerId}:`, {
+              featureCount: layerResult.features?.length || 0,
+              hasFeatures: !!layerResult.features,
+              firstFeatureId: layerResult.features?.[0]?.properties?.geoid || layerResult.features?.[0]?.properties?.area_name,
+              spatialFilterActive: !!metadata?.spatialFilterIds
+            });
                  const layerConfig = layers[layerResult.layerId];
             const layerName = layerResult.layerName || layerConfig?.name || layerResult.layerId;
             const features = layerResult.features; // This should be the optimized FeatureProperties[] array
@@ -2446,6 +2452,17 @@ The user requested the ${rankingContext.queryType} ${rankingContext.requestedCou
 **Key Areas to Highlight:** The ${rankingContext.requestedCount} ${rankingContext.queryType === 'top' ? 'highest-scoring' : 'lowest-scoring'} areas by performance
 ` : '';
 
+        // 🔍 DEBUG: Log prompt construction for strategic analysis
+        console.log('🔍 [PROMPT DEBUG] Starting prompt construction:', {
+          analysisType: normalizedPersonaAnalysisType,
+          persona: selectedPersona.name,
+          hasClusterData: !!metadata?.isClustered,
+          hasRankingContext: !!rankingContext,
+          featureCount: processedLayersData[0]?.features?.length || 0,
+          spatialFilterApplied: metadata?.spatialFilterIds ? 'YES' : 'NO',
+          spatialFilterCount: metadata?.spatialFilterIds?.length || 0
+        });
+
         // Create dynamic system prompt with persona-specific content and analysis-specific context
         // Add cluster-specific instructions when clustering is detected
         const clusteringInstructions = metadata?.isClustered && metadata?.clusterAnalysis ? `
@@ -2482,6 +2499,14 @@ GEOGRAPHIC CLARIFICATION:
 VERIFICATION: Before writing any ZIP code or number, confirm it appears in the provided analysis text.
 ` : '';
 
+        // 🔍 DEBUG: Log each prompt component
+        console.log('🔍 [PROMPT COMPONENTS] Building dynamic system prompt:');
+        console.log('  1. Persona prompt length:', selectedPersona.systemPrompt.length);
+        console.log('  2. Field context length:', enhancedFieldContext.length);
+        console.log('  3. Analysis-specific prompt length:', analysisSpecificPrompt.length);
+        console.log('  4. Ranking context length:', rankingContextPrompt.length);
+        console.log('  5. Clustering instructions length:', clusteringInstructions.length);
+        
         const dynamicSystemPrompt = `${selectedPersona.systemPrompt}
 
 🚨 GLOBAL ANTI-HALLUCINATION RULE 🚨
@@ -2659,6 +2684,21 @@ Present this analysis in your professional ${selectedPersona.name} style while p
         }
         
         console.log('[Claude] System Prompt Length:', dynamicSystemPrompt.length);
+        
+        // 🔍 DEBUG: Log prompt sections for strategic analysis
+        if (normalizedPersonaAnalysisType === 'strategic_analysis' || normalizedPersonaAnalysisType === 'strategic') {
+          console.log('🔍 [STRATEGIC PROMPT DEBUG]');
+          console.log('  - Contains base system prompt:', dynamicSystemPrompt.includes('expert geospatial data analyst'));
+          console.log('  - Contains strategic perspective:', dynamicSystemPrompt.includes('STRATEGIC PERSPECTIVE'));
+          console.log('  - Contains strategic analysis context:', dynamicSystemPrompt.includes('STRATEGIC ANALYSIS TECHNICAL CONTEXT'));
+          console.log('  - Contains anti-hallucination rules:', dynamicSystemPrompt.includes('ANTI-HALLUCINATION'));
+          console.log('  - Contains formatting requirements:', dynamicSystemPrompt.includes('FORMATTING REQUIREMENTS'));
+          console.log('  - Contains model attribution section:', dynamicSystemPrompt.includes('Model Attribution'));
+          
+          // Log first 500 chars of each major section
+          const sections = dynamicSystemPrompt.split(/\n(?=[A-Z][A-Z ]+:)/);
+          console.log('🔍 [PROMPT SECTIONS] Found', sections.length, 'major sections');
+        }
         console.log('[Claude] User Message Length:', userMessage.length);
 
         console.log('[Claude] Making Anthropic API call...');
