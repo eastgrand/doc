@@ -17,6 +17,10 @@ interface UnifiedAnalysisChatProps {
   onExportChart: () => void;
   onZipCodeClick?: (zipCode: string) => void;
   persona?: string;
+  messages?: ChatMessage[];
+  setMessages?: (messages: ChatMessage[]) => void;
+  hasGeneratedNarrative?: boolean;
+  setHasGeneratedNarrative?: (value: boolean) => void;
 }
 
 interface ChatMessage {
@@ -26,18 +30,38 @@ interface ChatMessage {
   timestamp: Date;
 }
 
-export default function UnifiedAnalysisChat({ analysisResult, onExportChart, onZipCodeClick, persona = 'strategist' }: UnifiedAnalysisChatProps) {
+export default function UnifiedAnalysisChat({ 
+  analysisResult, 
+  onExportChart, 
+  onZipCodeClick, 
+  persona = 'strategist',
+  messages: externalMessages,
+  setMessages: externalSetMessages,
+  hasGeneratedNarrative: externalHasGeneratedNarrative,
+  setHasGeneratedNarrative: externalSetHasGeneratedNarrative
+}: UnifiedAnalysisChatProps) {
 
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  // Use external state if provided, otherwise fall back to local state
+  const [localMessages, setLocalMessages] = useState<ChatMessage[]>([]);
+  const [localHasGeneratedNarrative, setLocalHasGeneratedNarrative] = useState(false);
+  
+  const messages = externalMessages || localMessages;
+  const setMessages = externalSetMessages || setLocalMessages;
+  const hasGeneratedNarrative = externalHasGeneratedNarrative ?? localHasGeneratedNarrative;
+  const setHasGeneratedNarrative = externalSetHasGeneratedNarrative || setLocalHasGeneratedNarrative;
+
   const [inputValue, setInputValue] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState<ChatMessage | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [hasGeneratedNarrative, setHasGeneratedNarrative] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
 
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'end',
+      inline: 'nearest'
+    });
   }, []);
 
   const handleMessageClick = useCallback((message: ChatMessage) => {
@@ -282,7 +306,7 @@ You can ask specific questions about the data in the chat below.`,
     } finally {
       setIsProcessing(false);
     }
-  }, [analysisResult]);
+  }, [analysisResult, persona, setMessages, setHasGeneratedNarrative]);
 
   // Auto-generate AI narrative when analysisResult is available
   React.useEffect(() => {
@@ -317,7 +341,7 @@ You can ask specific questions about the data in the chat below.`,
       setMessages(prev => [...prev, aiMessage]);
       setIsProcessing(false);
     }, 1500);
-  }, [inputValue, isProcessing, analysisResult]);
+  }, [inputValue, isProcessing, analysisResult, setMessages]);
 
   const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -327,9 +351,9 @@ You can ask specific questions about the data in the chat below.`,
   }, [handleSendMessage]);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full max-h-[calc(100vh-200px)] overflow-hidden">
       {/* Chat messages */}
-      <div className="flex-1 min-h-0 max-h-[60vh] overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 min-h-0 max-h-[calc(100vh-420px)] overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
           <div
             key={message.id}
@@ -400,7 +424,7 @@ You can ask specific questions about the data in the chat below.`,
       </div>
 
       {/* Input area */}
-      <div className="flex-shrink-0 p-4 border-t">
+      <div className="flex-shrink-0 p-4 border-t max-h-[200px] overflow-y-auto">
         <div className="flex gap-2">
           <Textarea
             value={inputValue}
@@ -419,7 +443,7 @@ You can ask specific questions about the data in the chat below.`,
             <Send className="w-4 h-4" />
           </Button>
         </div>
-        <div className="mt-2">
+        <div className="mt-2 pb-2">
           {renderPerformanceMetrics(
             analysisResult.analysisResult,
             "flex flex-wrap gap-2"

@@ -130,6 +130,13 @@ export default function UnifiedAnalysisWorkflow({
   const [selectedPersona, setSelectedPersona] = useState<string>('strategist');
   const [isPersonaDialogOpen, setIsPersonaDialogOpen] = useState(false);
   
+  // Results tab state
+  const [activeResultsTab, setActiveResultsTab] = useState<string>('analysis');
+  
+  // Chat state to persist across tab switches
+  const [chatMessages, setChatMessages] = useState<any[]>([]);
+  const [hasGeneratedNarrative, setHasGeneratedNarrative] = useState(false);
+  
   // Clustering configuration state
   const [clusterConfig, setClusterConfig] = useState<ClusterConfig>({
     ...DEFAULT_CLUSTER_CONFIG,
@@ -1264,12 +1271,11 @@ export default function UnifiedAnalysisWorkflow({
     const { analysisResult, metadata } = workflowState.analysisResult;
 
     return (
-      <div className="flex flex-col h-full max-h-full overflow-hidden">
-
+      <div className="flex flex-col h-full">
         {/* Results content with Analysis/Chat, Data Table, and Insights */}
-        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-          <Tabs value="analysis" onValueChange={() => {}} className="flex-1 flex flex-col min-h-0 overflow-hidden">
-            <TabsList className="grid w-full grid-cols-3 flex-shrink-0 bg-white">
+        <div className="flex-1 flex flex-col min-h-0">
+          <Tabs value={activeResultsTab} onValueChange={setActiveResultsTab} className="flex-1 flex flex-col min-h-0">
+            <TabsList className="grid w-full grid-cols-3 flex-shrink-0 bg-white border-b mb-2">
               <TabsTrigger value="analysis" className="flex items-center gap-2">
                 <MessageCircle className="h-3 w-3" />
                 Analysis
@@ -1301,34 +1307,34 @@ export default function UnifiedAnalysisWorkflow({
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="analysis" className="flex-1 min-h-0">
+            <TabsContent value="analysis" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-hidden">
               {/* Analysis and Chat Interface */}
               <UnifiedAnalysisChat 
                 analysisResult={workflowState.analysisResult}
                 onExportChart={handleExportChart}
                 onZipCodeClick={handleZipCodeClick}
                 persona={selectedPersona}
+                messages={chatMessages}
+                setMessages={setChatMessages}
+                hasGeneratedNarrative={hasGeneratedNarrative}
+                setHasGeneratedNarrative={setHasGeneratedNarrative}
               />
             </TabsContent>
 
-            <TabsContent value="data" className="flex-1 min-h-0">
+            <TabsContent value="data" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-y-auto">
               {/* Data Table */}
-              <div className="h-full overflow-y-auto">
-                <UnifiedDataTable 
-                  data={analysisResult.data}
-                  onExport={() => handleExport('csv')}
-                />
-              </div>
+              <UnifiedDataTable 
+                analysisResult={analysisResult}
+                onExport={() => handleExport('csv')}
+              />
             </TabsContent>
 
-            <TabsContent value="chart" className="flex-1 min-h-0">
+            <TabsContent value="chart" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-y-auto">
               {/* Feature Importance Chart */}
-              <div className="h-full overflow-y-auto">
-                <UnifiedInsightsChart 
-                  data={analysisResult.data}
-                  onExportChart={handleExportChart}
-                />
-              </div>
+              <UnifiedInsightsChart 
+                analysisResult={analysisResult}
+                onExportChart={handleExportChart}
+              />
             </TabsContent>
           </Tabs>
         </div>
@@ -1337,8 +1343,8 @@ export default function UnifiedAnalysisWorkflow({
   };
 
   return (
-    <div className="w-full h-full flex flex-col overflow-hidden">
-      <Card className="flex-1 flex flex-col min-h-0 overflow-hidden">
+    <div className="w-full h-full flex flex-col">
+      <Card className="flex-1 flex flex-col min-h-0">
         <CardHeader className="flex-shrink-0 py-2">
           <CardTitle className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-2">
@@ -1365,7 +1371,7 @@ export default function UnifiedAnalysisWorkflow({
             </Button>
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex-1 flex flex-col py-3 min-h-0 overflow-hidden">
+        <CardContent className="flex-1 flex flex-col py-3 min-h-0">
           {/* Step indicator */}
           <div className="flex-shrink-0 mb-3">
             {renderStepIndicator()}
@@ -1408,7 +1414,7 @@ export default function UnifiedAnalysisWorkflow({
               )}
 
               {workflowState.currentStep === 'results' && (
-                <div className="flex-1 min-h-0 overflow-hidden">
+                <div className="flex-1 min-h-0">
                   {renderResults()}
                 </div>
               )}

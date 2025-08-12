@@ -2,14 +2,15 @@ import React, { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { BarChart, Download, TrendingUp, Info } from 'lucide-react';
-import { ProcessedAnalysisData } from '@/lib/analysis/types';
+import { AnalysisResult } from '@/lib/analysis/types';
 
 interface UnifiedInsightsChartProps {
-  data: ProcessedAnalysisData;
+  analysisResult: AnalysisResult;
   onExportChart: () => void;
 }
 
-export default function UnifiedInsightsChart({ data, onExportChart }: UnifiedInsightsChartProps) {
+export default function UnifiedInsightsChart({ analysisResult, onExportChart }: UnifiedInsightsChartProps) {
+  const data = analysisResult?.data;
   const featureImportanceData = useMemo(() => {
     if (!data?.featureImportance || data.featureImportance.length === 0) {
       return null;
@@ -56,31 +57,6 @@ export default function UnifiedInsightsChart({ data, onExportChart }: UnifiedIns
           </AlertDescription>
         </Alert>
 
-        {/* Show analysis summary instead */}
-        {data.summary && (
-          <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Analysis Summary</h4>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-xs text-gray-700">{data.summary}</p>
-            </div>
-            
-            {data.statistics && (
-              <div className="space-y-2">
-                <h4 className="text-sm font-semibold">Key Statistics</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-blue-50 p-3 rounded">
-                    <div className="text-xs text-blue-600 font-semibold">Mean Value</div>
-                    <div className="text-sm font-mono">{data.statistics.mean?.toFixed(2)}</div>
-                  </div>
-                  <div className="bg-green-50 p-3 rounded">
-                    <div className="text-xs text-green-600 font-semibold">Total Records</div>
-                    <div className="text-sm font-mono">{data.statistics.total}</div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
       </div>
     );
   }
@@ -144,16 +120,6 @@ export default function UnifiedInsightsChart({ data, onExportChart }: UnifiedIns
           </p>
         </div>
 
-        {/* Analysis summary if available */}
-        {data.summary && (
-          <div className="mt-4">
-            <Alert>
-              <AlertDescription className="text-xs">
-                {data.summary}
-              </AlertDescription>
-            </Alert>
-          </div>
-        )}
       </div>
     </div>
   );

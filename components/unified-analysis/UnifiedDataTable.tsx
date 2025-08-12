@@ -1,48 +1,36 @@
 import React, { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Table } from 'lucide-react';
-import { ProcessedAnalysisData } from '@/lib/analysis/types';
+import { AnalysisResult } from '@/lib/analysis/types';
 
 interface UnifiedDataTableProps {
-  data: ProcessedAnalysisData;
+  analysisResult: AnalysisResult;
   onExport: () => void;
 }
 
-export default function UnifiedDataTable({ data, onExport }: UnifiedDataTableProps) {
-  // Prepare table data in same format as CSV export from original UI
+export default function UnifiedDataTable({ analysisResult, onExport }: UnifiedDataTableProps) {
+  const data = analysisResult?.data;
+  // Prepare table data with only essential columns
   const tableData = useMemo(() => {
     if (!data?.records || data.records.length === 0) {
       return { headers: [], rows: [] };
     }
 
-    // Create headers from the first record's properties
-    const firstRecord = data.records[0];
+    // Create headers - only essential columns
     const headers = [
       'Area ID',
       'Area Name', 
-      data.targetVariable || 'Value',
-      'Rank',
-      ...Object.keys(firstRecord.properties || {}).filter(key => 
-        !['area_id', 'area_name', 'value', 'rank'].includes(key.toLowerCase())
-      )
+      data.targetVariable || 'Score',
+      'Rank'
     ];
 
-    // Create rows from records
+    // Create rows from records - only essential data
     const rows = data.records.map((record, index) => {
       const row = [
         record.area_id || '',
         record.area_name || '',
         record.value?.toFixed(2) || '',
-        (record.rank || index + 1).toString(),
-        ...Object.keys(firstRecord.properties || {})
-          .filter(key => !['area_id', 'area_name', 'value', 'rank'].includes(key.toLowerCase()))
-          .map(key => {
-            const value = record.properties[key];
-            if (typeof value === 'number') {
-              return value.toFixed(2);
-            }
-            return String(value || '');
-          })
+        (record.rank || index + 1).toString()
       ];
       return row;
     });
