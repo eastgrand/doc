@@ -12,7 +12,9 @@ export const loadArcGISModules = async () => {
     PopupTemplate,
     FeatureLayer,
     Home,
-    Zoom
+    Zoom,
+    Extent,
+    SpatialReference
   ] = await Promise.all([
     import('@arcgis/core/Map'),
     import('@arcgis/core/views/MapView'),
@@ -25,7 +27,9 @@ export const loadArcGISModules = async () => {
     import('@arcgis/core/PopupTemplate'),
     import('@arcgis/core/layers/FeatureLayer'),
     import('@arcgis/core/widgets/Home'),
-    import('@arcgis/core/widgets/Zoom')
+    import('@arcgis/core/widgets/Zoom'),
+    import('@arcgis/core/geometry/Extent'),
+    import('@arcgis/core/geometry/SpatialReference')
   ]);
 
   return {
@@ -40,6 +44,8 @@ export const loadArcGISModules = async () => {
     PopupTemplate: PopupTemplate.default,
     FeatureLayer: FeatureLayer.default,
     Home: Home.default,
-    Zoom: Zoom.default
+    Zoom: Zoom.default,
+    Extent: Extent.default,
+    SpatialReference: SpatialReference.default
   };
 }; 

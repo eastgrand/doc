@@ -5,7 +5,7 @@ import React, { useEffect, useRef, memo, useCallback } from 'react';
 import { loadArcGISModules } from '@/lib/arcgis-imports';
 import { LegendType } from '@/types/legend';
 import { LegendItem } from '@/components/MapLegend';
-import { MAP_CONSTRAINTS, DATA_EXTENT, applyMapConstraints, zoomToDataExtent } from '@/config/mapConstraints';
+import { MAP_CONSTRAINTS, DATA_EXTENT, applyMapConstraints } from '@/config/mapConstraints';
 
 // Legend props interface
 
@@ -358,21 +358,35 @@ const MapClient = memo(({
         const view = new MapView({
           container: mapRef.current,
           map: map,
-          // Initial extent will be set to data extent after view is ready
-          extent: DATA_EXTENT,
+          zoom: 10,
+          center: [-81.6557, 30.3322], // Jacksonville, FL coordinates
           ui: {
             components: []
           }
         });
 
-        // Apply dynamic map constraints based on project data extent
+        // Apply dynamic map constraints after view is ready
         // This prevents panning outside the project area while preserving zoom functionality
-        console.log('[MapClient] Applying dynamic map constraints...', {
-          constraintsExtent: MAP_CONSTRAINTS.geometry,
-          dataExtent: DATA_EXTENT,
-          rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
+        view.when(() => {
+          console.log('[MapClient] View is ready, applying dynamic map constraints...', {
+            constraintsExtent: MAP_CONSTRAINTS.geometry,
+            dataExtent: DATA_EXTENT,
+            rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
+          });
+          
+          // Add a small delay to ensure basemap is loaded
+          setTimeout(() => {
+            try {
+              console.log('[MapClient] Applying feature service extent constraints with spatial reference...');
+              applyMapConstraints(view);
+              console.log('[MapClient] Map constraints applied successfully');
+            } catch (error) {
+              console.error('[MapClient] Error applying constraints:', error);
+            }
+          }, 1000);
+        }).catch(error => {
+          console.error('[MapClient] MapView failed to initialize:', error);
         });
-        applyMapConstraints(view);
 
         console.log('[MapClient] MapView created, waiting for it to be ready...');
 

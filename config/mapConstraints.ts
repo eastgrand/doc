@@ -1,5 +1,5 @@
 // Map Constraints Configuration
-// Auto-generated on 2025-08-13T14:54:02.245Z
+// Auto-generated on 2025-08-13T15:05:19.029Z
 // This file defines geographic constraints to prevent panning outside project area
 
 export interface MapConstraintsConfig {
@@ -48,36 +48,74 @@ export const DATA_EXTENT = {
 };
 
 // Helper function to apply constraints to a MapView
+// Note: This only constrains panning boundaries, does not change initial map center
 export function applyMapConstraints(view: __esri.MapView): void {
   if (!view) {
     console.warn('[MapConstraints] No MapView provided');
     return;
   }
   
-  view.constraints = {
-    geometry: MAP_CONSTRAINTS.geometry,
-    minZoom: MAP_CONSTRAINTS.minZoom,
-    maxZoom: MAP_CONSTRAINTS.maxZoom,
-    snapToZoom: MAP_CONSTRAINTS.snapToZoom,
-    rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
-  };
-  
-  console.log('[MapConstraints] Applied geographic constraints to MapView', {
-    extent: MAP_CONSTRAINTS.geometry,
-    rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
-  });
+  try {
+    console.log('[MapConstraints] Applying feature service extent constraints...');
+    
+    // Use proper ArcGIS constraint format with spatial reference
+    view.constraints = {
+      geometry: {
+        type: "extent",
+        xmin: MAP_CONSTRAINTS.geometry.xmin,
+        ymin: MAP_CONSTRAINTS.geometry.ymin,
+        xmax: MAP_CONSTRAINTS.geometry.xmax,
+        ymax: MAP_CONSTRAINTS.geometry.ymax,
+        spatialReference: {
+          wkid: MAP_CONSTRAINTS.geometry.spatialReference.wkid
+        }
+      },
+      rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
+    };
+    
+    console.log('[MapConstraints] Applied constraints to feature service extents:', {
+      extent: MAP_CONSTRAINTS.geometry,
+      rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
+    });
+    
+  } catch (error) {
+    console.error('[MapConstraints] Failed to apply constraints:', error);
+  }
 }
 
 // Helper function to zoom to data extent
-export function zoomToDataExtent(view: __esri.MapView, options?: __esri.MapViewGoToOptions): Promise<any> {
+export async function zoomToDataExtent(view: __esri.MapView, options?: any): Promise<any> {
   if (!view) {
     console.warn('[MapConstraints] No MapView provided');
     return Promise.resolve();
   }
   
-  return view.goTo(DATA_EXTENT, {
-    duration: 1000,
-    easing: 'ease-in-out',
-    ...options
-  });
+  try {
+    // Dynamically import ArcGIS classes
+    const { loadArcGISModules } = await import('@/lib/arcgis-imports');
+    const { Extent, SpatialReference } = await loadArcGISModules();
+    
+    // Create proper SpatialReference object
+    const spatialRef = new SpatialReference({
+      wkid: DATA_EXTENT.spatialReference.wkid
+    });
+    
+    // Create proper ArcGIS Extent object for zoom
+    const dataExtent = new Extent({
+      xmin: DATA_EXTENT.xmin,
+      ymin: DATA_EXTENT.ymin,
+      xmax: DATA_EXTENT.xmax,
+      ymax: DATA_EXTENT.ymax,
+      spatialReference: spatialRef
+    });
+    
+    return view.goTo(dataExtent, {
+      duration: 1000,
+      easing: 'ease-in-out',
+      ...options
+    });
+  } catch (error) {
+    console.error('[MapConstraints] Failed to zoom to data extent:', error);
+    return Promise.resolve();
+  }
 }
