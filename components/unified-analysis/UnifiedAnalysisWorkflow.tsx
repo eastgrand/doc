@@ -959,10 +959,10 @@ export default function UnifiedAnalysisWorkflow({
         {/* Performance warning for project area - Removed */}
         
         {/* Analysis Type Selection Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
         {/* quickstartIQ */}
         <Card 
-          className={`cursor-pointer transition-all h-28 ${
+          className={`cursor-pointer transition-all h-32 ${
             workflowState.analysisType === 'query' 
               ? 'border-green-500 bg-green-50 shadow-lg' 
               : 'hover:shadow-lg'
@@ -993,7 +993,7 @@ export default function UnifiedAnalysisWorkflow({
 
         {/* infographIQ */}
         <Card 
-          className={`transition-all h-28 ${
+          className={`transition-all h-32 ${
             isProjectArea 
               ? 'opacity-50 cursor-not-allowed bg-gray-100' 
               : workflowState.analysisType === 'infographic' 
@@ -1021,13 +1021,13 @@ export default function UnifiedAnalysisWorkflow({
           </CardHeader>
           <CardContent className="pb-2">
             <p className={`text-xs ${isProjectArea ? 'text-gray-400' : 'text-muted-foreground'}`}>
-              {isProjectArea ? 'Disabled for large datasets (performance)' : 'Pre-configured score-based reports and insights'}
+              {isProjectArea ? 'Not available for all areas at once. Make a selection first' : 'Pre-configured reports and insights'}
             </p>
           </CardContent>
         </Card>
 
-        {/* reportIQ */}
-        <Card 
+        {/* reportIQ - Hidden for now */}
+        {/* <Card 
           className={`transition-all h-28 ${
             isProjectArea 
               ? 'opacity-50 cursor-not-allowed bg-gray-100' 
@@ -1056,10 +1056,10 @@ export default function UnifiedAnalysisWorkflow({
           </CardHeader>
           <CardContent className="pb-2">
             <p className={`text-xs ${isProjectArea ? 'text-gray-400' : 'text-muted-foreground'}`}>
-              {isProjectArea ? 'Disabled for large datasets (performance)' : 'Complete analysis with all available data and visualizations'}
+              {isProjectArea ? 'Not available for all areas at once. Make a selection first' : 'Complete analysis with all available data and visualizations'}
             </p>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Configuration Section - Only show when analysis type is selected */}
