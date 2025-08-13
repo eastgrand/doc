@@ -332,7 +332,7 @@ const MessageList: React.FC<MessageListProps> = ({
                         <h2 className="text-lg font-semibold">
                           <span>
                             <span className='font-bold text-[#33a852]'>IQ</span>
-                            <span className="text-black">builder</span>
+                            <span className="theme-text-primary">builder</span>
                           </span>
                         </h2>
                       </div>

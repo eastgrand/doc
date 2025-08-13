@@ -1001,10 +1001,10 @@ export default function UnifiedAnalysisWorkflow({
                 disabled={!isClickable}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all whitespace-nowrap ${
                   isActive 
-                    ? 'bg-primary text-primary-foreground' 
+                    ? 'theme-bg-accent theme-text-accent-foreground' 
                     : isCompleted 
-                      ? 'bg-green-100 text-green-700 cursor-pointer hover:bg-green-200' 
-                      : 'bg-gray-100 text-gray-400'
+                      ? 'theme-bg-success theme-text-success cursor-pointer hover:bg-green-200' 
+                      : 'theme-bg-secondary theme-text-secondary'
                 }`}
               >
                 {isCompleted ? (
@@ -1069,9 +1069,9 @@ export default function UnifiedAnalysisWorkflow({
         <Card 
           className={`transition-all h-32 ${
             isProjectArea 
-              ? 'opacity-50 cursor-not-allowed bg-gray-100' 
+              ? 'opacity-50 cursor-not-allowed theme-bg-secondary' 
               : workflowState.analysisType === 'infographic' 
-                ? 'border-green-500 bg-green-50 shadow-lg cursor-pointer' 
+                ? 'border-green-500 theme-bg-success-light shadow-lg cursor-pointer' 
                 : 'hover:shadow-lg cursor-pointer'
           }`}
           onClick={() => !workflowState.isProcessing && !isProjectArea && setWorkflowState(prev => ({ ...prev, analysisType: 'infographic' }))}
@@ -1094,7 +1094,7 @@ export default function UnifiedAnalysisWorkflow({
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-2">
-            <p className={`text-xs ${isProjectArea ? 'text-gray-400' : 'text-muted-foreground'}`}>
+            <p className={`text-xs ${isProjectArea ? 'theme-text-secondary' : 'text-muted-foreground'}`}>
               {isProjectArea ? 'Not available for all areas at once. Make a selection first' : 'Pre-configured reports and insights'}
             </p>
           </CardContent>
@@ -1129,7 +1129,7 @@ export default function UnifiedAnalysisWorkflow({
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-2">
-            <p className={`text-xs ${isProjectArea ? 'text-gray-400' : 'text-muted-foreground'}`}>
+            <p className={`text-xs ${isProjectArea ? 'theme-text-secondary' : 'text-muted-foreground'}`}>
               {isProjectArea ? 'Not available for all areas at once. Make a selection first' : 'Complete analysis with all available data and visualizations'}
             </p>
           </CardContent>
@@ -1590,7 +1590,7 @@ export default function UnifiedAnalysisWorkflow({
               />
               <div className="flex text-sm font-bold">
                 <span className="text-[#33a852]">IQ</span>
-                <span className="text-black -ml-px">builder</span>
+                <span className="theme-text-primary -ml-px">builder</span>
               </div>
             </div>
             <Button

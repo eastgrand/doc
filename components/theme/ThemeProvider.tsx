@@ -46,6 +46,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     if (mounted) {
       document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('theme', theme);
+      
+      // Notify widgets about theme change
+      window.dispatchEvent(new CustomEvent('theme-changed', { 
+        detail: { theme, timestamp: Date.now() }
+      }));
     }
   }, [theme, mounted]);
 

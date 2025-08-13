@@ -435,9 +435,9 @@ export default function UnifiedAreaSelector({
 
           <TabsContent value="project" className="flex-1 flex flex-col space-y-4 mt-4">
             <div className="space-y-4">
-              <div className="bg-green-50 p-4 rounded-lg">
-                <h3 className="text-xs font-medium text-green-800 mb-2">Entire Project Area</h3>
-                <p className="text-xs text-green-700 mb-3">
+              <div className="theme-bg-success-light p-4 rounded-lg border border-green-200">
+                <h3 className="text-xs font-medium theme-text-success mb-2">Entire Project Area</h3>
+                <p className="text-xs theme-text-success mb-3">
                   Analyze all data within the full project extent. This will include all available data points across the entire geographic region.
                 </p>
                 <Button

@@ -33,25 +33,26 @@
   width: 48px;
   height: 48px;
   border: none;
-  background: white;
+  background: var(--theme-bg-primary);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #666;
+  color: var(--theme-text-secondary);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--theme-border-primary);
 }
 
 .widget-icon:hover {
-  background: #f5f5f5;
-  color: #333;
+  background: var(--theme-bg-tertiary);
+  color: var(--theme-text-primary);
   transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 6px var(--theme-shadow-light);
 }
 
 .widget-icon.active {
-  background: #e8f5e8;
-  color: #33a852;
-  box-shadow: 0 2px 6px rgba(51, 168, 82, 0.2);
+  background: var(--theme-accent-bg);
+  color: var(--theme-accent-text);
+  box-shadow: 0 2px 6px var(--theme-accent-shadow);
 }
 
 .widget-icon svg {
@@ -63,9 +64,9 @@
 .widget-container {
     position: absolute !important;
     top: 0px !important; /* Changed from 8px to remove the gap */
-    background-color: white !important;
+    background-color: var(--theme-bg-primary) !important;
     border-radius: 12px !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: var(--theme-shadow-primary) !important;
     z-index: 999 !important;
     width: 320px !important;
     max-height: calc(100vh - 40px) !important;
@@ -76,6 +77,7 @@
     margin-right: 0 !important;
     margin-bottom: 0 !important;
     padding: 0 !important;
+    border: 1px solid var(--theme-border-primary) !important;
 }
 
 .widget-container.visible {
@@ -89,9 +91,10 @@
     padding: 12px 16px !important;
     font-size: 14px !important;
     font-weight: 600 !important;
-    border-bottom: 1px solid #e5e7eb !important;
+    border-bottom: 1px solid var(--theme-border-primary) !important;
     font-family: "Helvetica Neue", sans-serif !important;
-    background-color: white !important;
+    background-color: var(--theme-bg-primary) !important;
+    color: var(--theme-text-primary) !important;
 }
 
 /* Widget Content */
@@ -2097,4 +2100,76 @@ div[role="tooltip"],
     background-color: white !important;
     border-radius: 4px !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+/* ========================================
+   COMPREHENSIVE DARK THEME SUPPORT
+   ======================================== */
+
+/* ESRI Widget Dark Theme Support */
+.widget-container .esri-widget,
+.widget-container .esri-widget__content,
+.widget-container .esri-widget__panel,
+.widget-container .esri-menu,
+.widget-container .esri-list,
+.widget-container .esri-bookmarks,
+.widget-container .esri-layer-list,
+.widget-container .esri-search,
+.widget-container .esri-print {
+    background-color: var(--theme-bg-primary) !important;
+    color: var(--theme-text-primary) !important;
+    border-color: var(--theme-border-primary) !important;
+}
+
+/* ESRI Input Elements */
+.widget-container .esri-input,
+.widget-container .esri-search__input,
+.widget-container .esri-select,
+.widget-container .esri-text-input {
+    background-color: var(--theme-bg-secondary) !important;
+    color: var(--theme-text-primary) !important;
+    border-color: var(--theme-border-primary) !important;
+}
+
+.widget-container .esri-input:focus,
+.widget-container .esri-search__input:focus,
+.widget-container .esri-select:focus,
+.widget-container .esri-text-input:focus {
+    border-color: var(--theme-accent) !important;
+    box-shadow: 0 0 0 2px var(--theme-accent-shadow) !important;
+}
+
+/* ESRI Buttons */
+.widget-container .esri-button,
+.widget-container .esri-menu__list-item,
+.widget-container .esri-layer-list__item,
+.widget-container .esri-bookmarks__bookmark {
+    background-color: var(--theme-bg-secondary) !important;
+    color: var(--theme-text-primary) !important;
+    border-color: var(--theme-border-primary) !important;
+}
+
+.widget-container .esri-button:hover,
+.widget-container .esri-menu__list-item:hover,
+.widget-container .esri-layer-list__item:hover,
+.widget-container .esri-bookmarks__bookmark:hover {
+    background-color: var(--theme-bg-tertiary) !important;
+    color: var(--theme-text-primary) !important;
+}
+
+/* ESRI Icons */
+.widget-container .esri-icon,
+.widget-container .esri-widget__icon,
+.widget-container .esri-search__clear-button,
+.widget-container .esri-search__submit-button {
+    color: var(--theme-text-secondary) !important;
+}
+
+.widget-container .esri-icon:hover,
+.widget-container .esri-widget__icon:hover {
+    color: var(--theme-text-primary) !important;
+}
+
+/* Mode switching fix - ensure widgets update when theme changes */
+.widget-container * {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
 }

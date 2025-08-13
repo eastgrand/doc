@@ -1122,6 +1122,12 @@ export async function POST(req: NextRequest) {
 
         const { messages, metadata, featureData, persona } = body;
         
+        // 🎯 CHAT OPTIMIZATION: Handle contextual follow-up questions efficiently
+        const isContextualChat = metadata?.isContextualChat || false;
+        if (isContextualChat) {
+            console.log('[CONTEXTUAL CHAT] Optimized follow-up question processing');
+        }
+        
         // 🎯 NEW: Extract ranking context for unified ranking system
         const rankingContext = metadata?.rankingContext;
         console.log('🎯 [CLAUDE API] Received ranking context:', rankingContext);
@@ -1173,7 +1179,30 @@ export async function POST(req: NextRequest) {
 
         let processedLayersData: ProcessedLayerResult[] = [];
 
-        if (featureData) {
+        // 🎯 FAST PATH: For contextual chat, use simplified data processing
+        if (isContextualChat && featureData) {
+            console.log('[CONTEXTUAL CHAT] Using fast-path data processing');
+            
+            // For contextual follow-ups, use simplified processing without heavy analysis
+            if (Array.isArray(featureData) && featureData.length > 0) {
+                processedLayersData = featureData as ProcessedLayerResult[];
+                console.log('[CONTEXTUAL CHAT] Processed lightweight feature data:', processedLayersData.length, 'layers');
+            } else if (typeof featureData === 'object' && !Array.isArray(featureData)) {
+                // Handle comprehensive summary format but simplified
+                const summary = featureData as any;
+                processedLayersData = [{
+                    layerId: 'contextual_chat',
+                    layerName: 'Analysis Context', 
+                    layerType: 'polygon',
+                    layer: null as any, // Simplified for contextual chat
+                    features: summary.records?.slice(0, 10) || [], // Even fewer features for context
+                    extent: null
+                }];
+                console.log('[CONTEXTUAL CHAT] Created lightweight context layer');
+            }
+        }
+        // 🎯 FULL PATH: For initial questions, use complete data processing
+        else if (featureData) {
           console.log('[Claude] Processing featureData from request body');
           console.log('[Claude DEBUG] featureData structure:', {
             isArray: Array.isArray(featureData),

@@ -595,9 +595,22 @@ Use \`/help\` for available commands.`,
       
       const { analysisResult: result, metadata } = analysisResult;
       
-      // Build comprehensive request payload with all data fields
-      const requestPayload = {
-        messages: [
+      // Smart payload optimization for follow-up questions
+      const isFollowUpQuestion = messages.length > 1;
+      
+      // For follow-ups, keep only recent context to avoid token limits
+      const optimizedMessages = isFollowUpQuestion ? 
+        [
+          ...messages.slice(-3).map(msg => ({ // Keep last 3 messages for context
+            role: msg.role,
+            content: msg.content
+          })),
+          {
+            role: 'user' as const,
+            content: userMessage.content
+          }
+        ] :
+        [
           ...messages.map(msg => ({
             role: msg.role,
             content: msg.content
@@ -606,7 +619,11 @@ Use \`/help\` for available commands.`,
             role: 'user' as const,
             content: userMessage.content
           }
-        ],
+        ];
+
+      // Build optimized request payload
+      const requestPayload = {
+        messages: optimizedMessages,
         metadata: {
           query: userMessage.content,
           analysisType: result.endpoint?.replace('/', '').replace(/-/g, '_') || 'strategic_analysis',
@@ -615,24 +632,30 @@ Use \`/help\` for available commands.`,
           filterType: (metadata as any)?.filterType,
           rankingContext: (metadata as any)?.rankingContext,
           isClustered: result.data?.isClustered,
-          clusterAnalysis: (result.data as any)?.clusterAnalysis,
+          clusterAnalysis: isFollowUpQuestion ? undefined : (result.data as any)?.clusterAnalysis, // Skip heavy cluster data on follow-ups
           targetVariable: result.data?.targetVariable,
-          endpoint: result.endpoint
+          endpoint: result.endpoint,
+          isContextualChat: isFollowUpQuestion // Flag for API to handle differently
         },
         featureData: [{
           layerId: 'unified_analysis',
           layerName: 'Analysis Results',
           layerType: 'polygon',
-          features: result.data?.records?.slice(0, 50) || [] // Include all feature data with properties
+          features: isFollowUpQuestion ? 
+            result.data?.records?.slice(0, 15) || [] : // Fewer features for follow-ups
+            result.data?.records?.slice(0, 50) || []   // Full data for initial questions
         }],
-        persona: persona // Use the selected persona
+        persona: persona
       };
 
       console.log('[UnifiedAnalysisChat] Request payload prepared:', {
         endpoint: result.endpoint,
         recordCount: result.data?.records?.length,
         hasFeatureData: !!(result.data?.records?.length),
-        messageCount: requestPayload.messages.length
+        messageCount: requestPayload.messages.length,
+        isFollowUpQuestion,
+        optimizedFeatureCount: requestPayload.featureData[0].features.length,
+        payloadSize: JSON.stringify(requestPayload).length
       });
 
       // Use the chat abort controller for cancellation

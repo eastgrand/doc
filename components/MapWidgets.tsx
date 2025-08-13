@@ -412,6 +412,27 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
     initLayerConfig();
   }, []);
 
+  // Handle theme changes for widgets
+  useEffect(() => {
+    const handleThemeChange = () => {
+      // Force widget containers to re-render their styles
+      setTimeout(() => {
+        const containers = document.querySelectorAll('.widget-container');
+        containers.forEach(container => {
+          const element = container as HTMLElement;
+          // Trigger a style recalculation by temporarily changing a property
+          const originalDisplay = element.style.display;
+          element.style.display = 'none';
+          element.offsetHeight; // Force reflow
+          element.style.display = originalDisplay || 'block';
+        });
+      }, 50); // Small delay to ensure theme has been applied
+    };
+
+    window.addEventListener('theme-changed', handleThemeChange);
+    return () => window.removeEventListener('theme-changed', handleThemeChange);
+  }, []);
+
   // Render logic - LayerController portal for layerList widget
   const layerControllerPortal = useMemo(() => {
     if (!containersReady || !view || !layerConfig) {

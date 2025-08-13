@@ -205,7 +205,10 @@ export const MapApp: React.FC = memo(() => {
     <>      
       <div className="fixed inset-0 flex">
         {/* Left Toolbar */}
-        <div className="w-16 theme-bg-secondary theme-border-primary flex flex-col z-[9999]" style={{ borderRight: '1px solid var(--theme-border)' }}>
+        <div className="w-16 flex flex-col z-[9999]" style={{ 
+          backgroundColor: 'var(--theme-bg-secondary)',
+          borderRight: '1px solid var(--theme-border)'
+        }}>
           {/* Home button hidden */}
           
           {/* Widget Icons */}
