@@ -3,7 +3,7 @@
 // Main orchestrator component that unifies the entire analysis workflow
 // Combines area selection, analysis type selection, and results viewing
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -89,6 +89,7 @@ export interface UnifiedAnalysisWorkflowProps {
   onExport?: (format: string, data: unknown) => void;
   enableChat?: boolean;
   defaultAnalysisType?: 'query' | 'infographic' | 'comprehensive';
+  setFormattedLegendData?: React.Dispatch<React.SetStateAction<any>>;
 }
 
 type WorkflowStep = 'area' | 'buffer' | 'analysis' | 'results';
@@ -107,7 +108,8 @@ export default function UnifiedAnalysisWorkflow({
   onAnalysisComplete,
   onExport,
   enableChat = true,
-  defaultAnalysisType = 'query'
+  defaultAnalysisType = 'query',
+  setFormattedLegendData
 }: UnifiedAnalysisWorkflowProps) {
   // State management
   const [workflowState, setWorkflowState] = useState<WorkflowState>({
@@ -126,6 +128,27 @@ export default function UnifiedAnalysisWorkflow({
   
   // Reset counter to force component remount
   const [resetCounter, setResetCounter] = useState(0);
+  
+  // Abort controller for cancelling ongoing analysis
+  const abortControllerRef = useRef<AbortController | null>(null);
+  
+  // Stop analysis function
+  const stopAnalysis = useCallback(() => {
+    console.log('[UnifiedWorkflow] Stopping analysis...');
+    
+    // Abort any ongoing requests
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    
+    // Reset processing state
+    setWorkflowState(prev => ({
+      ...prev,
+      isProcessing: false,
+      error: 'Analysis cancelled by user'
+    }));
+  }, []);
   
   // QuickstartIQ dialog state
   const [quickstartDialogOpen, setQuickstartDialogOpen] = useState(false);
@@ -301,6 +324,10 @@ export default function UnifiedAnalysisWorkflow({
       error: undefined
     }));
 
+    // Create new abort controller for this analysis
+    abortControllerRef.current = new AbortController();
+    const signal = abortControllerRef.current.signal;
+
     try {
       // Dynamically get the reference layer ID
       const { SpatialFilterConfig } = await import('@/lib/spatial/SpatialFilterConfig');
@@ -380,11 +407,25 @@ export default function UnifiedAnalysisWorkflow({
 
     } catch (error) {
       console.error('[UnifiedWorkflow] Analysis error:', error);
-      setWorkflowState(prev => ({
-        ...prev,
-        error: error instanceof Error ? error.message : 'Analysis failed',
-        isProcessing: false
-      }));
+      
+      // Check if the error is due to cancellation
+      if (signal.aborted || (error as Error)?.name === 'AbortError') {
+        console.log('[UnifiedWorkflow] Analysis was cancelled');
+        setWorkflowState(prev => ({
+          ...prev,
+          error: 'Analysis cancelled',
+          isProcessing: false
+        }));
+      } else {
+        setWorkflowState(prev => ({
+          ...prev,
+          error: error instanceof Error ? error.message : 'Analysis failed',
+          isProcessing: false
+        }));
+      }
+    } finally {
+      // Clean up abort controller
+      abortControllerRef.current = null;
     }
   }, [workflowState.areaSelection, selectedQuery, selectedEndpoint, selectedInfographicType, enableChat, analysisWrapper, onAnalysisComplete, clusterConfig]);
 
@@ -870,9 +911,38 @@ export default function UnifiedAnalysisWorkflow({
 
   // Reset workflow
   const resetWorkflow = useCallback(() => {
-    // Clear all graphics from the map
-    if (view?.graphics) {
+    if (view) {
+      // Clear all graphics from the map
       view.graphics.removeAll();
+      
+      // Clear all dynamically added layers (analysis visualizations)
+      // Find and remove any FeatureLayers that were added for analysis results
+      const layersToRemove = view.map.layers.filter(layer => {
+        // Remove layers that are likely analysis results based on:
+        // 1. Layer ID pattern from applyAnalysisEngineVisualization
+        // 2. Layer type being 'feature' (FeatureLayer)
+        // 3. Client-side layers with source graphics (analysis results)
+        const hasAnalysisId = layer.id?.includes('analysis-layer-');
+        const isAnalysisLayer = layer.type === 'feature' && 
+               (hasAnalysisId || 
+                layer.title?.includes('Analysis') || 
+                layer.title?.includes('Visualization') ||
+                (layer as __esri.FeatureLayer).source?.length > 0); // Client-side layers
+        
+        return isAnalysisLayer;
+      });
+      
+      layersToRemove.forEach(layer => {
+        view.map.remove(layer);
+      });
+      
+      console.log(`[UnifiedWorkflow] Cleared ${layersToRemove.length} analysis layers from map`);
+    }
+    
+    // Clear legend data
+    if (setFormattedLegendData) {
+      setFormattedLegendData(null);
+      console.log('[UnifiedWorkflow] Cleared legend data');
     }
     
     // Reset all state
@@ -897,9 +967,13 @@ export default function UnifiedAnalysisWorkflow({
       minScorePercentile: DEFAULT_CLUSTER_CONFIG.minScorePercentile ?? 70
     });
     
+    // Reset chat state
+    setChatMessages([]);
+    setHasGeneratedNarrative(false);
+    
     // Increment reset counter to force component remount
     setResetCounter(prev => prev + 1);
-  }, [view]);
+  }, [view, setFormattedLegendData]);
 
   // Render workflow steps indicator
   const renderStepIndicator = () => {
@@ -1541,7 +1615,18 @@ export default function UnifiedAnalysisWorkflow({
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
-                <span className="text-sm">Processing analysis...</span>
+                <span className="text-sm mb-4 block">Processing analysis...</span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={stopAnalysis}
+                  className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                    Stop Analysis
+                  </div>
+                </Button>
               </div>
             </div>
           )}

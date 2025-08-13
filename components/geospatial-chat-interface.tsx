@@ -5325,6 +5325,7 @@ const EnhancedGeospatialChat = memo(({
                   onAnalysisComplete={handleUnifiedAnalysisComplete}
                   enableChat={true}
                   defaultAnalysisType="query"
+                  setFormattedLegendData={setFormattedLegendData}
                 />
               )}
             </div>

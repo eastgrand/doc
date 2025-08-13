@@ -570,8 +570,8 @@ export function formatStatsForChat(stats: BasicStats): string {
   
   lines.push('📊 **Quick Statistics**');
   lines.push(`• Areas analyzed: **${stats.count}**`);
-  lines.push(`• Average score: **${stats.mean.toFixed(2)}**/10`);
-  lines.push(`• Median score: **${stats.median.toFixed(2)}**/10`);
+  lines.push(`• Average score: **${stats.mean.toFixed(2)}/10**`);
+  lines.push(`• Median score: **${stats.median.toFixed(2)}/10**`);
   lines.push(`• Standard deviation: **${stats.stdDev.toFixed(2)}**`);
   lines.push(`• Score range: **${stats.min.score.toFixed(1)}** to **${stats.max.score.toFixed(1)}**`);
   

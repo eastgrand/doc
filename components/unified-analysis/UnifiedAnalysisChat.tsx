@@ -8,7 +8,7 @@ import {
   DialogHeader, 
   DialogTitle 
 } from '@/components/ui/dialog';
-import { Send, Bot, User, Loader2, Copy, Check } from 'lucide-react';
+import { Send, Bot, User, Loader2, Copy, Check, X } from 'lucide-react';
 import { UnifiedAnalysisResponse } from './UnifiedAnalysisWrapper';
 import { renderPerformanceMetrics } from '@/lib/utils/performanceMetrics';
 import { 
@@ -64,6 +64,23 @@ export default function UnifiedAnalysisChat({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const [analysisMode, setAnalysisMode] = useState<'full' | 'stats-only'>('full');
+  
+  // Abort controller for cancelling chat requests
+  const chatAbortControllerRef = useRef<AbortController | null>(null);
+  
+  // Stop chat processing function
+  const stopChatProcessing = useCallback(() => {
+    console.log('[UnifiedAnalysisChat] Stopping chat processing...');
+    
+    // Abort any ongoing requests
+    if (chatAbortControllerRef.current) {
+      chatAbortControllerRef.current.abort();
+      chatAbortControllerRef.current = null;
+    }
+    
+    // Reset processing state
+    setIsProcessing(false);
+  }, []);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ 
@@ -212,10 +229,12 @@ Use \`/help\` for available commands.`,
       const isBulletPoint = line.trim().startsWith('•') || line.trim().startsWith('-');
       const isNumberedItem = /^\d+\.\s/.test(line.trim());
       
-      // Process ZIP codes in the line to make them clickable
+      // Process ZIP codes and markdown formatting in the line
       const processLine = (text: string) => {
-        const parts = text.split(/\b(\d{5})\b/);
-        return parts.map((part, partIndex) => {
+        // First, split by ZIP codes
+        const zipParts = text.split(/\b(\d{5})\b/);
+        
+        return zipParts.map((part, partIndex) => {
           if (/^\d{5}$/.test(part)) {
             // This is a ZIP code - make it clickable
             return (
@@ -232,7 +251,21 @@ Use \`/help\` for available commands.`,
               </button>
             );
           }
-          return part;
+          
+          // Process markdown bold formatting (**text**)
+          const boldParts = part.split(/(\*\*[^*]+\*\*)/);
+          return boldParts.map((boldPart, boldIndex) => {
+            if (boldPart.startsWith('**') && boldPart.endsWith('**')) {
+              // Remove ** and make bold
+              const boldText = boldPart.slice(2, -2);
+              return (
+                <strong key={`${lineIndex}-${partIndex}-${boldIndex}`}>
+                  {boldText}
+                </strong>
+              );
+            }
+            return boldPart;
+          });
         });
       };
       
@@ -392,8 +425,9 @@ Use \`/help\` for available commands.`,
         isClustered: !!result.data?.isClustered
       });
 
-      // Call the Claude API with timeout
-      const controller = new AbortController();
+      // Use the chat abort controller for cancellation
+      chatAbortControllerRef.current = new AbortController();
+      const controller = chatAbortControllerRef.current;
       const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout
 
       const response = await fetch('/api/claude/generate-response', {
@@ -474,7 +508,9 @@ Use \`/help\` for available commands.`,
       let errorMessage = 'Failed to generate AI analysis.';
       if (error instanceof Error) {
         if (error.name === 'AbortError') {
-          errorMessage = 'AI analysis timed out. Please try asking a specific question instead.';
+          errorMessage = chatAbortControllerRef.current === null ? 
+            'Analysis was cancelled.' : 
+            'AI analysis timed out. Please try asking a specific question instead.';
         } else if (error.message.includes('429')) {
           errorMessage = 'Too many requests. Please wait a moment before trying again.';
         } else if (error.message.includes('401')) {
@@ -499,6 +535,8 @@ Use \`/help\` for available commands.`,
       };
       setMessages([fallbackMessage]);
     } finally {
+      // Clean up abort controller
+      chatAbortControllerRef.current = null;
       setIsProcessing(false);
     }
   }, [analysisResult, persona, setMessages, setHasGeneratedNarrative, analysisMode]);
@@ -597,8 +635,9 @@ Use \`/help\` for available commands.`,
         messageCount: requestPayload.messages.length
       });
 
-      // Call the Claude API
-      const controller = new AbortController();
+      // Use the chat abort controller for cancellation
+      chatAbortControllerRef.current = new AbortController();
+      const controller = chatAbortControllerRef.current;
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
       const response = await fetch('/api/claude/generate-response', {
@@ -637,7 +676,9 @@ Use \`/help\` for available commands.`,
       let errorMessage = 'Sorry, I encountered an error processing your question.';
       if (error instanceof Error) {
         if (error.name === 'AbortError') {
-          errorMessage = 'Request timed out. Please try a simpler question.';
+          errorMessage = chatAbortControllerRef.current === null ? 
+            'Request was cancelled.' : 
+            'Request timed out. Please try a simpler question.';
         } else if (error.message.includes('429')) {
           errorMessage = 'Too many requests. Please wait a moment before trying again.';
         }
@@ -651,6 +692,8 @@ Use \`/help\` for available commands.`,
       };
       setMessages((prev: ChatMessage[]) => [...prev, errorResponse]);
     } finally {
+      // Clean up abort controller
+      chatAbortControllerRef.current = null;
       setIsProcessing(false);
     }
   }, [inputValue, isProcessing, analysisResult, messages, persona, setMessages, processCommand]);
@@ -725,8 +768,18 @@ Use \`/help\` for available commands.`,
               <Bot className="w-4 h-4" />
             </div>
             <div className="flex-1">
-              <div className="inline-block p-3 rounded-lg bg-gray-100">
+              <div className="inline-flex items-center gap-3 p-3 rounded-lg bg-gray-100">
                 <Loader2 className="w-4 h-4 animate-spin" />
+                <span className="text-sm text-gray-600">Generating response...</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={stopChatProcessing}
+                  className="h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                  title="Stop generation"
+                >
+                  <X className="w-3 h-3" />
+                </Button>
               </div>
             </div>
           </div>
@@ -771,7 +824,9 @@ Use \`/help\` for available commands.`,
           </DialogHeader>
           <div id="analysis-details-description" className="space-y-4">
             <div>
-              <p className="whitespace-pre-wrap">{selectedMessage?.content}</p>
+              <div className="text-sm leading-relaxed">
+                {selectedMessage?.content && renderFormattedMessage(selectedMessage.content)}
+              </div>
             </div>
             {analysisResult.analysisResult.data.records && (
               <div>
