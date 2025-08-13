@@ -18,6 +18,7 @@
     "migrate-to-blob": "ts-node scripts/migrate-to-blob.ts",
     "migrate-batch": "ts-node scripts/migrate-batch.ts",
     "deduplicate-endpoints": "ts-node scripts/deduplicate-endpoints.ts",
+    "generate-map-constraints": "node scripts/generate-map-constraints.js",
     "nike-optimize": "ts-node scripts/nike-focused-optimization.ts",
     "remove-gis-metadata": "ts-node scripts/remove-gis-metadata.ts"
   },

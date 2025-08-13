@@ -306,6 +306,44 @@ The automation now includes **Phase 7.5: Enhanced Layer Categorization** which a
 - 🔧 **Easy Corrections**: Interactive tools for fine-tuning categorizations
 - 📊 **Comprehensive Reporting**: Detailed categorization reports and metrics
 
+---
+
+## 🗺️ **POST-AUTOMATION STEP: Update Map Constraints**
+
+**IMPORTANT**: After the automation pipeline completes, you'll see this alert:
+
+```
+🗺️  IMPORTANT: UPDATE MAP CONSTRAINTS
+==================================================
+⚠️  The layer configuration has been updated with new data.
+   Run either of the following commands to update map constraints:
+
+   npm run generate-map-constraints
+   OR
+   node scripts/generate-map-constraints.js
+==================================================
+```
+
+**What this does:**
+- Fetches the geographic extent from your polygon layers
+- Generates dynamic map constraints to prevent panning outside project area
+- Preserves full zoom functionality while constraining the viewable area
+- Creates `config/mapConstraints.ts` with TypeScript definitions
+
+**Why it's important:**
+- Improves user experience by keeping them focused on relevant geographic areas
+- Prevents accidental navigation to irrelevant map regions
+- Based on your actual project data extents (not static coordinates)
+
+**Run the command:**
+```bash
+npm run generate-map-constraints
+```
+
+**Documentation**: See `scripts/MAP_CONSTRAINTS_README.md` for full technical details.
+
+---
+
 ### 🤖 Step 6.6: AI-Powered Synonym Expansion (Optional Enhancement)
 
 **⚠️ FOR AI ASSISTANTS**: This step dramatically improves natural language query capabilities by expanding field-aliases.ts with comprehensive synonyms.
@@ -719,6 +757,11 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
   - [ ] Custom categories created if needed
   - [ ] Layer exclusions configured if needed
   - [ ] Manual corrections applied if needed
+- [ ] **Map constraints updated (POST-AUTOMATION)**:
+  - [ ] `npm run generate-map-constraints` executed successfully
+  - [ ] `config/mapConstraints.ts` generated with project extent
+  - [ ] Map view constrained to project geographic area
+  - [ ] Full zoom functionality preserved
 - [ ] AI synonym expansion applied (Optional Step 6.6)
 - [ ] Boundary file verification completed (Phase 6.6)
 - [ ] Geographic boundary files present or alerts addressed
@@ -730,5 +773,5 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
 
 **Time to complete**: 20-30 minutes total
 **Automation time**: 2-5 minutes (much faster than expected!)
-**Manual steps**: 2 (deploy microservice + update client code)
+**Manual steps**: 3 (deploy microservice + update client code + generate map constraints)
 **Technical knowledge required**: Minimal

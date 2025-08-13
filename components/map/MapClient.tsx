@@ -5,6 +5,7 @@ import React, { useEffect, useRef, memo, useCallback } from 'react';
 import { loadArcGISModules } from '@/lib/arcgis-imports';
 import { LegendType } from '@/types/legend';
 import { LegendItem } from '@/components/MapLegend';
+import { MAP_CONSTRAINTS, DATA_EXTENT, applyMapConstraints, zoomToDataExtent } from '@/config/mapConstraints';
 
 // Legend props interface
 
@@ -357,17 +358,21 @@ const MapClient = memo(({
         const view = new MapView({
           container: mapRef.current,
           map: map,
-          zoom: 10,
-          center: [-81.6557, 30.3322], // Jacksonville, FL coordinates
-          constraints: {
-            rotationEnabled: false,
-            minZoom: 1,
-            maxZoom: 20
-          },
+          // Initial extent will be set to data extent after view is ready
+          extent: DATA_EXTENT,
           ui: {
             components: []
           }
         });
+
+        // Apply dynamic map constraints based on project data extent
+        // This prevents panning outside the project area while preserving zoom functionality
+        console.log('[MapClient] Applying dynamic map constraints...', {
+          constraintsExtent: MAP_CONSTRAINTS.geometry,
+          dataExtent: DATA_EXTENT,
+          rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
+        });
+        applyMapConstraints(view);
 
         console.log('[MapClient] MapView created, waiting for it to be ready...');
 

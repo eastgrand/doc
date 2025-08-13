@@ -189,6 +189,24 @@ class CompleteAutomationPipeline:
             elapsed_time = (time.time() - self.start_time) / 60
             self.logger.info(f"⏱️  Total execution time: {elapsed_time:.1f} minutes")
             
+            # Alert for map constraints generation
+            self.logger.info("")
+            self.logger.info("🗺️  IMPORTANT: UPDATE MAP CONSTRAINTS")
+            self.logger.info("=" * 50)
+            self.logger.info("⚠️  The layer configuration has been updated with new data.")
+            self.logger.info("   Run either of the following commands to update map constraints:")
+            self.logger.info("")
+            self.logger.info("   npm run generate-map-constraints")
+            self.logger.info("   OR")
+            self.logger.info("   node scripts/generate-map-constraints.js")
+            self.logger.info("")
+            self.logger.info("   This will:")
+            self.logger.info("   • Fetch the extent from your polygon layers")
+            self.logger.info("   • Generate dynamic map constraints")
+            self.logger.info("   • Prevent users from panning outside project area")
+            self.logger.info("   • Preserve full zoom functionality")
+            self.logger.info("=" * 50)
+            
             # Offer cleanup option
             await self._offer_cleanup()
             
