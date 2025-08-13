@@ -818,7 +818,7 @@ Use \`/help\` for available commands.`,
 
       {/* MessageDialog for expanded message viewing - same as original UI */}
       <Dialog open={!!selectedMessage} onOpenChange={() => setSelectedMessage(null)}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white" aria-describedby="analysis-details-description">
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto theme-dialog" aria-describedby="analysis-details-description">
           <DialogHeader>
             <DialogTitle>Analysis Details</DialogTitle>
           </DialogHeader>

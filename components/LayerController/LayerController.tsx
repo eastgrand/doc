@@ -102,7 +102,7 @@ const Switch = ({ checked, onCheckedChange, disabled }: {
   >
     <span
       className={`
-        pointer-events-none block h-4 w-4 rounded-full bg-white shadow-lg ring-0 
+        pointer-events-none block h-4 w-4 rounded-full theme-bg-primary shadow-lg ring-0 
         transition-transform duration-200 ease-in-out
         ${checked ? 'translate-x-4' : 'translate-x-0'}
         ${disabled ? 'animate-pulse' : ''}
@@ -297,7 +297,7 @@ const DraggableGroup: React.FC<DraggableGroupProps> = ({
       style={style} 
       className={`
         layer-group mb-4 
-        ${isDragging ? 'z-50 bg-white shadow-lg rounded-lg p-4' : ''}
+        ${isDragging ? 'z-50 theme-bg-primary shadow-lg rounded-lg p-4' : ''}
       `}
     >
       <div className="flex items-center gap-2 mb-2">

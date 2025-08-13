@@ -33,7 +33,7 @@ export default function UnifiedInsightsChart({ analysisResult, onExportChart }: 
 
   if (!data) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-gray-500">
+      <div className="flex flex-col items-center justify-center h-full theme-text-secondary">
         <BarChart className="w-12 h-12 mb-4" />
         <p className="text-sm">No analysis data available</p>
       </div>
@@ -46,7 +46,7 @@ export default function UnifiedInsightsChart({ analysisResult, onExportChart }: 
         <div className="flex justify-between items-center mb-4">
           <div>
             <h3 className="text-sm font-semibold">Feature Importance</h3>
-            <p className="text-xs text-gray-600">Analysis insights and variable importance</p>
+            <p className="text-xs theme-text-secondary">Analysis insights and variable importance</p>
           </div>
         </div>
         
@@ -67,7 +67,7 @@ export default function UnifiedInsightsChart({ analysisResult, onExportChart }: 
       <div className="flex justify-between items-center p-4 border-b">
         <div>
           <h3 className="text-sm font-semibold">Feature Importance</h3>
-          <p className="text-xs text-gray-600">
+          <p className="text-xs theme-text-secondary">
             Top {featureImportanceData.length} most important variables
           </p>
         </div>
@@ -84,10 +84,10 @@ export default function UnifiedInsightsChart({ analysisResult, onExportChart }: 
             <div key={index} className="space-y-1">
               {/* Feature name and value */}
               <div className="flex justify-between items-center">
-                <span className="text-xs font-medium text-gray-700">
+                <span className="text-xs font-medium theme-text-primary">
                   {item.description || item.feature}
                 </span>
-                <span className="text-xs font-mono text-gray-600">
+                <span className="text-xs font-mono theme-text-secondary">
                   {item.normalizedImportance.toFixed(1)}%
                 </span>
               </div>
@@ -104,7 +104,7 @@ export default function UnifiedInsightsChart({ analysisResult, onExportChart }: 
               
               {/* Rank indicator */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500">#{index + 1}</span>
+                <span className="text-xs theme-text-secondary">#{index + 1}</span>
                 {index === 0 && <TrendingUp className="w-3 h-3 text-green-500" />}
               </div>
             </div>
@@ -112,9 +112,9 @@ export default function UnifiedInsightsChart({ analysisResult, onExportChart }: 
         </div>
 
         {/* Summary info */}
-        <div className="mt-6 p-3 bg-gray-50 rounded-lg">
+        <div className="mt-6 p-3 theme-bg-secondary rounded-lg">
           <h4 className="text-xs font-semibold mb-2">Interpretation</h4>
-          <p className="text-xs text-gray-600">
+          <p className="text-xs theme-text-secondary">
             Feature importance shows which variables have the strongest influence on predicting{' '}
             <strong>{data.targetVariable}</strong>. Higher values indicate greater predictive power.
           </p>

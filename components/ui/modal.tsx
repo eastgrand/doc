@@ -21,7 +21,7 @@ export function Modal({ isOpen, onClose, children, title }: ModalProps) {
       />
       
       {/* Modal */}
-      <div className="relative z-50 w-[90vw] h-[90vh] bg-white rounded-lg shadow-lg">
+      <div className="relative z-50 w-[90vw] h-[90vh] theme-dialog rounded-lg theme-shadow-primary">
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-2 border-b">
           <h2 className="text-lg font-semibold">{title}</h2>

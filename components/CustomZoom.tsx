@@ -36,17 +36,17 @@ const CustomZoom: React.FC<CustomZoomProps> = ({ view, sidebarWidth }) => {
     <div className="custom-zoom-control">
       <button
         onClick={handleZoomIn}
-        className="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 rounded-t-md hover:bg-gray-50 focus:outline-none focus:ring-0 focus:border-gray-200"
+        className="w-8 h-8 flex items-center justify-center theme-bg-primary border theme-border-primary rounded-t-md hover:theme-bg-tertiary focus:outline-none focus:ring-0 focus:theme-border-primary"
         aria-label="Zoom in"
       >
-        <Plus className="h-4 w-4 text-gray-600" />
+        <Plus className="h-4 w-4 theme-text-primary" />
       </button>
       <button
         onClick={handleZoomOut}
-        className="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 rounded-b-md hover:bg-gray-50 focus:outline-none focus:ring-0 focus:border-gray-200"
+        className="w-8 h-8 flex items-center justify-center theme-bg-primary border theme-border-primary rounded-b-md hover:theme-bg-tertiary focus:outline-none focus:ring-0 focus:theme-border-primary"
         aria-label="Zoom out"
       >
-        <Minus className="h-4 w-4 text-gray-600" />
+        <Minus className="h-4 w-4 theme-text-primary" />
       </button>
       <style jsx>{`
         .custom-zoom-control {

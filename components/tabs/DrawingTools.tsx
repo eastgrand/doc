@@ -29,7 +29,7 @@ const DrawingTools = ({
       tooltip: 'Drop Point on Map',
       classes: {
         active: 'bg-blue-50 text-blue-600 border border-blue-200',
-        default: 'hover:bg-gray-50 hover:text-blue-600'
+        default: 'theme-draw-button hover:text-blue-600'
       }
     },
     {
@@ -39,7 +39,7 @@ const DrawingTools = ({
       tooltip: 'Draw Polygon Area',
       classes: {
         active: 'bg-green-50 text-green-600 border border-green-200',
-        default: 'hover:bg-gray-50 hover:text-green-600'
+        default: 'theme-draw-button hover:text-green-600'
       }
     },
     {
@@ -49,7 +49,7 @@ const DrawingTools = ({
       tooltip: 'Select Existing Feature',
       classes: {
         active: 'bg-purple-50 text-purple-600 border border-purple-200',
-        default: 'hover:bg-gray-50 hover:text-purple-600'
+        default: 'theme-draw-button hover:text-purple-600'
       }
     }
   ] as const;
