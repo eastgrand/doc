@@ -293,7 +293,10 @@ export class AnalysisEngine {
         metadata: {
           executionTime: Date.now() - startTime,
           dataPointCount: processedData.records?.length || 0,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          // Add model performance information from analysisData if available
+          confidenceScore: analysisData?.model_info?.accuracy || undefined,
+          modelInfo: analysisData?.model_info || undefined
         }
       };
 
@@ -509,7 +512,9 @@ export class AnalysisEngine {
           endpointsUsed: multiResult.endpointsUsed,
           mergeStrategy: multiResult.mergeStrategy,
           strategicInsights: multiResult.strategicInsights,
-          performanceMetrics: multiResult.performanceMetrics
+          performanceMetrics: multiResult.performanceMetrics,
+          // Multi-endpoint doesn't have single model accuracy, use analysis confidence
+          confidenceScore: multiResult.qualityMetrics?.analysisConfidence || undefined
         }
       };
 
@@ -586,7 +591,9 @@ export class AnalysisEngine {
         executionTime: Date.now() - analysisStartTime,
         dataPointCount: processedData.records.length,
         timestamp: new Date().toISOString(),
-        isMultiEndpoint: false
+        isMultiEndpoint: false,
+        confidenceScore: rawResults?.model_info?.accuracy || undefined,
+        modelInfo: rawResults?.model_info || undefined
       }
     };
 

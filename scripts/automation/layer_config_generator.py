@@ -17,6 +17,10 @@ from urllib.parse import urlparse, parse_qs
 from dataclasses import dataclass
 import logging
 
+# Import intelligent grouping system
+from intelligent_layer_grouping import IntelligentLayerGrouping
+from interactive_category_selector import InteractiveCategorySelector
+
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -48,42 +52,54 @@ class LayerConfigGenerator:
     Automatically generates TypeScript layer configurations from ArcGIS services
     """
     
-    def __init__(self, project_root: str = "/Users/voldeck/code/mpiq-ai-chat"):
+    def __init__(self, project_root: str = "/Users/voldeck/code/mpiq-ai-chat", 
+                 selected_categories: Dict = None, interactive_categories: bool = False):
         self.project_root = Path(project_root)
         self.output_dir = self.project_root / "config"
         # Use default concepts instead of parsing broken existing ones
         self.concepts_mapping = self._get_default_concepts()
         
-        # Layer type mapping based on field patterns
-        self.layer_type_patterns = {
-            'percentage': ['_P$', '_PCT$', '_PERCENT$', 'RATE$'],
-            'amount': ['_CY$', '_COUNT$', '_TOTAL$', '_NUM$', '_QTY$'],
-            'index': ['INDEX$', '_IDX$', '_SCORE$', '_RANK$'],
-            'point': []  # Default fallback
+        # Initialize category selection
+        self.selected_categories = selected_categories
+        if interactive_categories and not selected_categories:
+            self.selected_categories = self._interactive_category_selection()
+        
+        # Initialize intelligent grouping system with selected categories
+        self.intelligent_grouping = IntelligentLayerGrouping(self.selected_categories)
+        
+    def _interactive_category_selection(self) -> Dict[str, Dict]:
+        """Interactive category selection for layer grouping"""
+        print("\n🏷️  LAYER GROUPING SETUP")
+        print("=" * 50)
+        print("Choose semantic categories for intelligent layer grouping.")
+        
+        selector = InteractiveCategorySelector()
+        
+        # Show quick preset options first
+        print("\n🚀 QUICK PRESETS:")
+        presets = {
+            '1': ('comprehensive', 'All major categories (recommended)'),
+            '2': ('financial_focused', 'Financial and investment focused'),
+            '3': ('consumer_focused', 'Consumer behavior and demographics'),
+            '4': ('minimal', 'Basic categories only'),
+            '5': ('interactive', 'Custom interactive selection')
         }
         
-        # Geographic type detection patterns
-        self.geographic_patterns = {
-            'postal': ['ZIP', 'POSTAL', 'FSA'],
-            'county': ['COUNTY', 'CNTY'],
-            'state': ['STATE', 'PROV'],
-            'dma': ['DMA', 'MARKET'],
-            'tract': ['TRACT', 'CENSUS'],
-            'block': ['BLOCK', 'BLK']
-        }
+        for key, (preset, description) in presets.items():
+            print(f"   {key}. {preset.replace('_', ' ').title()} - {description}")
         
-        # Brand detection patterns for Nike project
-        self.brand_patterns = {
-            'nike': ['NIKE', 'NKE', 'SWOOSH', 'JORDAN', 'MP30034'],
-            'adidas': ['ADIDAS', 'ADI', 'THREE_STRIPES', 'MP30029'],
-            'puma': ['PUMA', 'MP30035'],
-            'newbalance': ['NEW_BALANCE', 'NEWBALANCE', 'MP30033'],
-            'asics': ['ASICS', 'MP30030'],
-            'reebok': ['REEBOK', 'MP30036'],
-            'converse': ['CONVERSE', 'MP30031'],
-            'skechers': ['SKECHERS', 'MP30037'],
-            'jordan': ['JORDAN', 'MP30032']
-        }
+        while True:
+            choice = input(f"\nSelect preset (1-5): ").strip()
+            if choice in presets:
+                preset_name, _ = presets[choice]
+                if preset_name == 'interactive':
+                    return selector.interactive_selection()
+                else:
+                    selected = selector.quick_selection(preset_name)
+                    print(f"\n✅ Using '{preset_name}' preset with {len(selected)} categories")
+                    return selected
+            else:
+                print("Please enter a number from 1-5")
         
     def _load_existing_concepts(self) -> Dict[str, Any]:
         """Load existing concept mappings from layers.ts"""
@@ -229,7 +245,7 @@ class LayerConfigGenerator:
                         record_count=layer_details.get('record_count', 0),
                         geometry_type=layer_details.get('geometryType', 'esriGeometryPolygon'),
                         renderer_field=self._determine_renderer_field(layer_details.get('fields', [])),
-                        group=self._categorize_layer(layer_name, layer_details.get('fields', []))
+                        group=self._categorize_layer_intelligent(layer_name, layer_details)
                     )
                     
                     layers.append(config_info)
@@ -324,40 +340,53 @@ class LayerConfigGenerator:
         # Default fallback
         return 'thematic_value'
     
-    def _categorize_layer(self, layer_name: str, fields: List[Dict]) -> str:
-        """Categorize layer into appropriate groups"""
-        layer_name_upper = layer_name.upper()
-        
-        # Check for brand-specific layers
-        for brand, patterns in self.brand_patterns.items():
-            if any(pattern in layer_name_upper for pattern in patterns):
-                return f"brands_{brand}"
-        
-        # Check field patterns for categorization
-        field_names = [f.get('name', '').upper() for f in fields]
-        all_field_text = ' '.join(field_names + [layer_name_upper])
-        
-        if any(pattern in all_field_text for pattern in ['INCOME', 'WEALTH', 'SALARY', 'EARNINGS']):
-            return "demographics_income"
-        elif any(pattern in all_field_text for pattern in ['AGE', 'POPULATION', 'DEMOGRAPHIC']):
-            return "demographics_population"
-        elif any(pattern in all_field_text for pattern in ['RACE', 'ETHNICITY', 'DIVERSITY']):
-            return "demographics_diversity"
-        elif any(pattern in all_field_text for pattern in ['SPORT', 'ATHLETIC', 'EXERCISE']):
-            return "lifestyle_sports"
-        elif any(pattern in all_field_text for pattern in ['RETAIL', 'SHOPPING', 'STORE']):
-            return "retail_spending"
-        else:
-            return "general"
+    def _categorize_layer_intelligent(self, layer_name: str, layer_details: Dict) -> str:
+        """Use intelligent grouping system to categorize layers"""
+        try:
+            # Extract relevant information from layer details
+            fields = layer_details.get('fields', [])
+            description = layer_details.get('description', '')
+            
+            # Build metadata dict from available information
+            metadata = {
+                'type': layer_details.get('type', ''),
+                'geometryType': layer_details.get('geometryType', ''),
+                'displayField': layer_details.get('displayField', ''),
+                'tags': layer_details.get('tags', ''),
+                'categories': layer_details.get('categories', ''),
+                'typeKeywords': layer_details.get('typeKeywords', ''),
+                'copyrightText': layer_details.get('copyrightText', '')
+            }
+            
+            # Use intelligent grouping system
+            group_name, confidence = self.intelligent_grouping.categorize_layer(
+                layer_name, fields, description, metadata
+            )
+            
+            logger.info(f"📊 Layer '{layer_name}' categorized as '{group_name}' (confidence: {confidence:.2f})")
+            
+            return group_name
+            
+        except Exception as e:
+            logger.warning(f"Failed to categorize layer '{layer_name}' intelligently: {e}")
+            # Fallback to old method
+            return self._categorize_layer_fallback(layer_name, layer_details.get('fields', []))
+    
+    def _categorize_layer_fallback(self, layer_name: str, fields: List[Dict]) -> str:
+        """Fallback categorization method - uses general grouping"""
+        return "general"
     
     def _detect_layer_type(self, fields: List[LayerFieldInfo]) -> str:
         """Detect the layer type based on field patterns"""
         field_names = [f.name.upper() for f in fields]
         
-        # Check each type pattern
-        for layer_type, patterns in self.layer_type_patterns.items():
-            if any(re.search(pattern, name) for pattern in patterns for name in field_names):
-                return layer_type
+        # Simple pattern detection without hardcoded rules
+        if any(name.endswith('_P') or '_PCT' in name or 'PERCENT' in name for name in field_names):
+            return 'percentage'
+        elif any(name.endswith('_CY') or '_COUNT' in name or '_TOTAL' in name for name in field_names):
+            return 'amount'
+        elif any('INDEX' in name or '_IDX' in name or '_SCORE' in name for name in field_names):
+            return 'index'
         
         return 'feature-service'  # Default
     
@@ -365,9 +394,19 @@ class LayerConfigGenerator:
         """Detect the geographic type of the layer"""
         all_text = ' '.join([f.name.upper() for f in fields] + [layer_name.upper()])
         
-        for geo_type, patterns in self.geographic_patterns.items():
-            if any(pattern in all_text for pattern in patterns):
-                return geo_type
+        # Simple geographic type detection without hardcoded rules
+        if 'ZIP' in all_text or 'POSTAL' in all_text or 'FSA' in all_text:
+            return 'postal'
+        elif 'COUNTY' in all_text or 'CNTY' in all_text:
+            return 'county'
+        elif 'STATE' in all_text or 'PROV' in all_text:
+            return 'state'
+        elif 'DMA' in all_text or 'MARKET' in all_text:
+            return 'dma'
+        elif 'TRACT' in all_text or 'CENSUS' in all_text:
+            return 'tract'
+        elif 'BLOCK' in all_text or 'BLK' in all_text:
+            return 'postal'  # Convert block to postal as fallback
         
         return 'postal'  # Default fallback
     
@@ -563,7 +602,59 @@ export const generationMetadata = {{
         return ",\n".join(configs)
     
     def _generate_layer_groups_typescript(self, layers: List[LayerConfigInfo]) -> str:
-        """Generate TypeScript code for layer groups"""
+        """Generate TypeScript code for dynamically learned layer groups"""
+        try:
+            # Prepare layer data for intelligent grouping
+            layer_data = []
+            for layer in layers:
+                layer_dict = {
+                    'id': layer.id,
+                    'name': layer.name,
+                    'fields': [{'name': f.name, 'type': f.type, 'alias': f.alias} for f in layer.fields],
+                    'description': layer.description,
+                    'metadata': {}
+                }
+                layer_data.append(layer_dict)
+            
+            # Get dynamically learned group structure
+            hierarchy = self.intelligent_grouping.get_group_hierarchy(layer_data)
+            groups = hierarchy['groups']
+            metadata = hierarchy['metadata']
+            
+            # Generate TypeScript code
+            group_code = ""
+            
+            # Sort groups by average confidence (highest first)
+            sorted_groups = sorted(groups.keys(), 
+                                 key=lambda g: metadata.get(g, {}).get('avg_confidence', 0), 
+                                 reverse=True)
+            
+            for group_name in sorted_groups:
+                layer_ids = groups[group_name]
+                group_meta = metadata.get(group_name, {})
+                
+                if layer_ids:  # Only add non-empty groups
+                    layer_ids_str = ",\n    ".join(f"'{layer_id}'" for layer_id in layer_ids)
+                    
+                    group_code += f"""  '{group_name}': {{
+    displayName: '{group_meta.get("display_name", group_name)}',
+    description: '{group_meta.get("description", "Data layer group")}',
+    layerCount: {group_meta.get('layer_count', len(layer_ids))},
+    confidence: {group_meta.get('avg_confidence', 0.0):.2f},
+    layers: [
+      {layer_ids_str}
+    ]
+  }},
+"""
+            
+            return group_code
+            
+        except Exception as e:
+            logger.warning(f"Failed to generate dynamic groups, falling back to simple groups: {e}")
+            return self._generate_simple_layer_groups_typescript(layers)
+    
+    def _generate_simple_layer_groups_typescript(self, layers: List[LayerConfigInfo]) -> str:
+        """Fallback: Generate simple TypeScript code for layer groups"""
         groups = {}
         
         # Group layers by category

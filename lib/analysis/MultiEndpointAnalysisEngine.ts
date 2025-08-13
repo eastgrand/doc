@@ -46,6 +46,11 @@ export interface MultiEndpointAnalysisResult extends AnalysisResult {
     visualizationTime: number;
     endpointLoadTimes: Record<string, number>;
   };
+  qualityMetrics?: {
+    analysisConfidence?: number;
+    dataQuality?: number;
+    mergeEfficiency?: number;
+  };
 }
 
 export class MultiEndpointAnalysisEngine {
@@ -174,7 +179,9 @@ export class MultiEndpointAnalysisEngine {
         metadata: {
           executionTime: totalAnalysisTime,
           dataPointCount: compositeData.totalRecords || 0,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          // Add confidence score from composite analysis
+          confidenceScore: compositeData.overallConfidence || queryAnalysis.confidence
         },
         
         // Multi-endpoint specific
@@ -189,6 +196,11 @@ export class MultiEndpointAnalysisEngine {
           processingTime,
           visualizationTime,
           endpointLoadTimes: multiEndpointResult.loadingStats.endpointLoadTimes
+        },
+        qualityMetrics: {
+          analysisConfidence: compositeData.overallConfidence || queryAnalysis.confidence,
+          dataQuality: compositeData.dataQualityScore || 0.8,
+          mergeEfficiency: totalAnalysisTime > 0 ? Math.min(1.0, 10000 / totalAnalysisTime) : 0.5
         }
       };
 
@@ -320,7 +332,8 @@ export class MultiEndpointAnalysisEngine {
       metadata: {
         executionTime: Date.now() - (startTime || 0),
         dataPointCount: singleResult.results?.length || 0,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        confidenceScore: singleResult.model_info?.accuracy || undefined
       },
       isMultiEndpoint: false,
       endpointsUsed: [queryAnalysis.primaryEndpoint],
@@ -333,6 +346,11 @@ export class MultiEndpointAnalysisEngine {
         processingTime: 0,
         visualizationTime: 0,
         endpointLoadTimes: { [queryAnalysis.primaryEndpoint]: 0 }
+      },
+      qualityMetrics: {
+        analysisConfidence: singleResult.model_info?.accuracy || 0.7,
+        dataQuality: 0.8,
+        mergeEfficiency: 1.0
       }
     };
   }

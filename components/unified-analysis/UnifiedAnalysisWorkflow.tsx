@@ -43,6 +43,10 @@ import UnifiedInsightsChart from './UnifiedInsightsChart';
 import { QueryInterface } from '@/components/QueryInterface';
 import EndpointScoreInfographic from '@/components/EndpointScoreInfographic';
 
+// Import infographics components
+import ReportSelectionDialog from '@/components/ReportSelectionDialog';
+import Infographics from '@/components/Infographics';
+
 // Import dialog and predefined queries
 import {
   Dialog,
@@ -150,9 +154,108 @@ export default function UnifiedAnalysisWorkflow({
   // Chat context for contextual analysis
   const chatContext = useChatContext();
 
+  // Infographics dialog state (independent of workflow)
+  const [infographicsDialog, setInfographicsDialog] = useState({
+    open: false,
+    geometry: null as __esri.Geometry | null,
+    selectedReport: null as string | null,
+    showInfographics: false
+  });
+
+  // State for available reports
+  const [infographicsReports, setInfographicsReports] = useState<any[]>([]);
+
   // Step navigation
   const goToStep = useCallback((step: WorkflowStep) => {
     setWorkflowState(prev => ({ ...prev, currentStep: step }));
+  }, []);
+
+  // Add event listener for popup infographics
+  useEffect(() => {
+    const handleOpenInfographics = (event: CustomEvent) => {
+      console.log('[UnifiedWorkflow] Infographics popup event received', event.detail);
+      
+      // Open report selection dialog immediately with popup geometry
+      setInfographicsDialog({
+        open: true,
+        geometry: event.detail?.geometry || null,
+        selectedReport: null,
+        showInfographics: false
+      });
+    };
+
+    document.addEventListener('openInfographics', handleOpenInfographics as EventListener);
+    return () => {
+      document.removeEventListener('openInfographics', handleOpenInfographics as EventListener);
+    };
+  }, []);
+
+  // Load infographics reports on component mount (same logic as InfographicsTab)
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        console.log('[UnifiedWorkflow] Loading infographics reports...');
+        
+        const reportApiKey = process.env.NEXT_PUBLIC_ARCGIS_API_KEY_2;
+        const token = reportApiKey || 'AAPTxy8BH1VEsoebNVZXo8HurEs9TD-3BH9IvorrjVWQR4uGhbHZOyV9S-QJcwJfNyPyN6IDTc6dX1pscXuVgb4-GEQ70Mrk6FUuIcuO2Si45rlSIepAJkP92iyuw5nBPxpTjI0ga_Aau9Cr6xaQ2DJnJfzaCkTor0cB9UU6pcNyFqxJlYt_26boxHYqnnu7vWlqt7SVFcWKmYq6kh8anIAmEi0hXY1ThVhKIupAS_Mure0.AT1_VqzOv0Y5';
+        
+        const endpointsToTry = [
+          {
+            name: 'Report Template Search',
+            url: `https://www.arcgis.com/sharing/rest/search?q=owner:Synapse54 AND type:"Report Template"&f=pjson&token=${token}&num=100`
+          }
+        ];
+
+        let allItems: any[] = [];
+        
+        for (const endpoint of endpointsToTry) {
+          try {
+            const response = await fetch(endpoint.url);
+            if (!response.ok) continue;
+            
+            const data = await response.json();
+            let items: any[] = [];
+            
+            if (data.results && Array.isArray(data.results)) {
+              items = data.results;
+            } else if (data.items && Array.isArray(data.items)) {
+              items = data.items;
+            }
+            
+            allItems = allItems.concat(items);
+            break; // Use first successful endpoint
+          } catch (error) {
+            console.warn(`[UnifiedWorkflow] ${endpoint.name} failed:`, error);
+          }
+        }
+
+        // Filter and format reports (same logic as InfographicsTab)
+        const exclusionList = [
+          '2023 Community Portrait', 'Community Profile 2023', 'Executive Summary 2023',
+          'Community Health', 'Health Profile', 'Market Potential for Restaurant',
+          'Business Summary', 'Site Analysis', 'Shopping Centers Summary',
+          'Demographic and Income Comparison', 'Locator'
+        ];
+
+        const finalReports = allItems
+          .filter(item => !exclusionList.some(excluded => item.title?.includes(excluded)))
+          .map(item => ({
+            id: item.id,
+            title: item.title || 'Untitled Report',
+            description: item.snippet || item.description || '',
+            thumbnail: item.thumbnail || '',
+            categories: ['Summary Reports'] // Default category
+          }));
+
+        console.log('[UnifiedWorkflow] Loaded', finalReports.length, 'infographics reports');
+        setInfographicsReports(finalReports);
+      } catch (error) {
+        console.error('[UnifiedWorkflow] Failed to load infographics reports:', error);
+        setInfographicsReports([]);
+      }
+    };
+    
+    fetchReports();
   }, []);
 
   // Handle area selection
@@ -722,6 +825,49 @@ export default function UnifiedAnalysisWorkflow({
     setQuickstartDialogOpen(false);
   }, []);
 
+  // Handle infographics report selection
+  const handleInfographicsReportSelect = useCallback((reportId: string) => {
+    console.log('[UnifiedWorkflow] Report selected:', reportId);
+    
+    // Check if this is from the UI workflow (has area selection) or from popup
+    const isFromUIWorkflow = workflowState.analysisType === 'infographic' && workflowState.areaSelection;
+    
+    if (isFromUIWorkflow) {
+      // Update dialog state and keep it open for confirmation
+      setInfographicsDialog(prev => ({
+        ...prev,
+        selectedReport: reportId,
+        open: false
+      }));
+    } else {
+      // This is from popup - show infographic immediately
+      setInfographicsDialog(prev => ({
+        ...prev,
+        selectedReport: reportId,
+        open: false,
+        showInfographics: true
+      }));
+    }
+  }, [workflowState.analysisType, workflowState.areaSelection]);
+
+  // Handle infographics dialog close
+  const handleInfographicsDialogClose = useCallback(() => {
+    setInfographicsDialog(prev => ({
+      ...prev,
+      open: false
+    }));
+  }, []);
+
+  // Handle infographics completion
+  const handleInfographicsComplete = useCallback(() => {
+    setInfographicsDialog({
+      open: false,
+      geometry: null,
+      selectedReport: null,
+      showInfographics: false
+    });
+  }, []);
+
   // Reset workflow
   const resetWorkflow = useCallback(() => {
     // Clear all graphics from the map
@@ -1038,16 +1184,27 @@ export default function UnifiedAnalysisWorkflow({
               {workflowState.analysisType === 'infographic' && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-xs font-medium mb-2">Select infographic type</label>
-                    <select
-                      className="w-full p-3 border rounded-lg text-sm"
-                      value={selectedInfographicType}
-                      onChange={(e) => setSelectedInfographicType(e.target.value as 'strategic' | 'competitive' | 'demographic')}
+                    <label className="block text-xs font-medium mb-2">Select Report Template</label>
+                    <Button
+                      onClick={() => {
+                        // Open report selection dialog when infographIQ is chosen
+                        setInfographicsDialog(prev => ({
+                          ...prev,
+                          open: true,
+                          geometry: workflowState.areaSelection?.geometry || null,
+                          selectedReport: null,
+                          showInfographics: false
+                        }));
+                      }}
+                      className="w-full bg-[#33a852] hover:bg-[#2d8f47] text-white"
                     >
-                      <option value="strategic">Strategic Analysis</option>
-                      <option value="competitive">Competitive Analysis</option>
-                      <option value="demographic">Demographic Analysis</option>
-                    </select>
+                      Choose a Report Template
+                    </Button>
+                    {infographicsDialog.selectedReport && (
+                      <div className="mt-2 p-2 bg-gray-50 rounded">
+                        <span className="text-sm">Selected: {infographicsReports.find(r => r.id === infographicsDialog.selectedReport)?.title || 'Unknown'}</span>
+                      </div>
+                    )}
                   </div>
                   <div className="bg-green-50 p-4 rounded-lg">
                     <p className="text-xs text-green-800 font-medium mb-2">What you&rsquo;ll get:</p>
@@ -1091,15 +1248,30 @@ export default function UnifiedAnalysisWorkflow({
             {/* Action Button */}
             <div className="flex-shrink-0 pt-4">
               <Button 
-                onClick={() => handleAnalysisTypeSelected(workflowState.analysisType!)}
+                onClick={() => {
+                  if (workflowState.analysisType === 'infographic' && infographicsDialog.selectedReport) {
+                    // Generate the infographic report
+                    setInfographicsDialog(prev => ({
+                      ...prev,
+                      showInfographics: true,
+                      geometry: workflowState.areaSelection?.geometry || null
+                    }));
+                  } else if (workflowState.analysisType !== 'infographic') {
+                    handleAnalysisTypeSelected(workflowState.analysisType!);
+                  }
+                }}
                 className="w-full h-12"
-                disabled={workflowState.isProcessing || (workflowState.analysisType === 'query' && !selectedQuery.trim())}
+                disabled={workflowState.isProcessing || 
+                  (workflowState.analysisType === 'query' && !selectedQuery.trim()) ||
+                  (workflowState.analysisType === 'infographic' && !infographicsDialog.selectedReport)}
               >
                 {workflowState.isProcessing ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Processing...
                   </>
+                ) : workflowState.analysisType === 'infographic' ? (
+                  infographicsDialog.selectedReport ? 'Generate Report' : 'Select a Report First'
                 ) : (
                   <>
                     Start Analysis
@@ -1409,6 +1581,49 @@ export default function UnifiedAnalysisWorkflow({
           )}
         </CardContent>
       </Card>
+
+      {/* Infographics Report Selection Dialog */}
+      {infographicsDialog.open && (
+        <ReportSelectionDialog
+          open={infographicsDialog.open}
+          reports={infographicsReports}
+          onClose={handleInfographicsDialogClose}
+          onSelect={handleInfographicsReportSelect as any}
+        />
+      )}
+
+      {/* Infographics Display */}
+      {infographicsDialog.showInfographics && infographicsDialog.geometry && infographicsDialog.selectedReport && (
+        <Dialog
+          open={infographicsDialog.showInfographics}
+          onOpenChange={(open) => {
+            if (!open) {
+              handleInfographicsComplete();
+            }
+          }}
+        >
+          <DialogContent className="max-w-7xl max-h-[90vh] overflow-auto">
+            <DialogHeader>
+              <DialogTitle>Infographic Report</DialogTitle>
+            </DialogHeader>
+            <div className="w-full">
+              <Infographics
+                geometry={infographicsDialog.geometry}
+                reportTemplate={infographicsDialog.selectedReport}
+                onReportTemplateChange={(template) => {
+                  setInfographicsDialog(prev => ({
+                    ...prev,
+                    selectedReport: template
+                  }));
+                }}
+                view={view}
+                layerStates={{}}
+                onExportPDF={() => {}}
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }

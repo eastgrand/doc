@@ -1,0 +1,2718 @@
+{
+  "service": {
+    "name": "Unknown",
+    "description": "Business Analyst Robert Palmer layers",
+    "serviceDescription": "",
+    "tags": "",
+    "categories": [],
+    "typeKeywords": [],
+    "copyrightText": "",
+    "layers_count": 16
+  },
+  "layers": [
+    {
+      "id": 0,
+      "name": "Generation Alpha Pop",
+      "description": "Business Analyst Layer: Generation Alpha Pop",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "0% - 4.25%",
+              "classMaxValue": 4.26,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 4.25% - 7.31%",
+              "classMaxValue": 7.32,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 7.31% - 9.67%",
+              "classMaxValue": 9.68,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 9.67% - 16.51%",
+              "classMaxValue": 16.52,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 16.51% - 33.33%",
+              "classMaxValue": 33.33,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "GENALPHACY",
+        "GENALPHACY_P",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 1,
+      "name": "Generation Z Pop",
+      "description": "Business Analyst Layer: Generation Z Pop",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "0% - 13.91%",
+              "classMaxValue": 13.92,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 13.91% - 20.98%",
+              "classMaxValue": 20.99,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 20.98% - 37.45%",
+              "classMaxValue": 37.46,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 37.45% - 71%",
+              "classMaxValue": 71.01,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 71% - 100%",
+              "classMaxValue": 100,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "GENZ_CY",
+        "GENZ_CY_P",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 2,
+      "name": "Used Google Pay Digital Payment Svc",
+      "description": "Business Analyst Layer: Used Google Pay Digital Payment Svc",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "0% - 1.48%",
+              "classMaxValue": 1.49,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 1.48% - 5.09%",
+              "classMaxValue": 5.1,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 5.09% - 6.8%",
+              "classMaxValue": 6.81,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 6.8% - 8.23%",
+              "classMaxValue": 8.24,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 8.23% - 14.29%",
+              "classMaxValue": 14.29,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "MP10120A_B",
+        "MP10120A_B_P",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 3,
+      "name": "Used Apple Pay Digital Payment Svc",
+      "description": "Business Analyst Layer: Used Apple Pay Digital Payment Svc",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "0% - 4.13%",
+              "classMaxValue": 4.14,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 4.13% - 14.96%",
+              "classMaxValue": 14.97,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 14.96% - 18.98%",
+              "classMaxValue": 18.99,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 18.98% - 25.4%",
+              "classMaxValue": 25.41,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 25.4% - 30.86%",
+              "classMaxValue": 30.86,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "MP10110A_B",
+        "MP10110A_B_P",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 4,
+      "name": "Used Bank of America Bank 12 Mo",
+      "description": "Business Analyst Layer: Used Bank of America Bank 12 Mo",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "0% - 2.47%",
+              "classMaxValue": 2.48,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 2.47% - 10.72%",
+              "classMaxValue": 10.73,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 10.72% - 14.43%",
+              "classMaxValue": 14.44,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 14.43% - 17.97%",
+              "classMaxValue": 17.98,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 17.97% - 25.75%",
+              "classMaxValue": 25.75,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "MP10002A_B",
+        "MP10002A_B_P",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 5,
+      "name": "Own Cryptocurrency Investment",
+      "description": "Business Analyst Layer: Own Cryptocurrency Investment",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "0% - 0.55%",
+              "classMaxValue": 0.56,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 0.55% - 2.56%",
+              "classMaxValue": 2.57,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 2.56% - 3.43%",
+              "classMaxValue": 3.44,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 3.43% - 5.13%",
+              "classMaxValue": 5.14,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 5.13% - 8.7%",
+              "classMaxValue": 8.7,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "MP10138A_B",
+        "MP10138A_B_P",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 6,
+      "name": "Have Personal Line of Credit",
+      "description": "Business Analyst Layer: Have Personal Line of Credit",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "0% - 1.98%",
+              "classMaxValue": 1.99,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 1.98% - 5.9%",
+              "classMaxValue": 5.91,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 5.9% - 6.46%",
+              "classMaxValue": 6.47,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 6.46% - 8.51%",
+              "classMaxValue": 8.52,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 8.51% - 14.29%",
+              "classMaxValue": 14.29,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "MP10028A_B",
+        "MP10028A_B_P",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 7,
+      "name": "Have Savings Account",
+      "description": "Business Analyst Layer: Have Savings Account",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "0% - 22.02%",
+              "classMaxValue": 22.03,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 22.02% - 63.02%",
+              "classMaxValue": 63.03,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 63.02% - 69.18%",
+              "classMaxValue": 69.19,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 69.18% - 74.68%",
+              "classMaxValue": 74.69,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 74.68% - 82.61%",
+              "classMaxValue": 82.61,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "MP10020A_B",
+        "MP10020A_B_P",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 8,
+      "name": "Carry Credit Card Balance 3-Usually Always",
+      "description": "Business Analyst Layer: Carry Credit Card Balance 3-Usually Always",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "0% - 4.55%",
+              "classMaxValue": 4.56,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 4.55% - 15.08%",
+              "classMaxValue": 15.09,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 15.08% - 19%",
+              "classMaxValue": 19.01,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 19% - 22.76%",
+              "classMaxValue": 22.77,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 22.76% - 33.33%",
+              "classMaxValue": 33.33,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "MP10116A_B",
+        "MP10116A_B_P",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 9,
+      "name": "Used TurboTax Online to Prepare Taxes",
+      "description": "Business Analyst Layer: Used TurboTax Online to Prepare Taxes",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "0% - 3.67%",
+              "classMaxValue": 3.68,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 3.67% - 10.92%",
+              "classMaxValue": 10.93,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 10.92% - 12.26%",
+              "classMaxValue": 12.27,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 12.26% - 14.48%",
+              "classMaxValue": 14.49,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 14.48% - 17.39%",
+              "classMaxValue": 17.39,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "MP10104A_B",
+        "MP10104A_B_P",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 10,
+      "name": "Used H&R Block Online to Prepare Taxes",
+      "description": "Business Analyst Layer: Used H&R Block Online to Prepare Taxes",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "0% - 0.91%",
+              "classMaxValue": 0.92,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 0.91% - 2.62%",
+              "classMaxValue": 2.63,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 2.62% - 3.13%",
+              "classMaxValue": 3.14,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 3.13% - 3.87%",
+              "classMaxValue": 3.88,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 3.87% - 5.88%",
+              "classMaxValue": 5.88,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "MP10128A_B",
+        "MP10128A_B_P",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 11,
+      "name": "Value of Credit Card Debt",
+      "description": "Business Analyst Layer: Value of Credit Card Debt",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "$0 - $2,265",
+              "classMaxValue": 2266,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> $2,265 - $3,325",
+              "classMaxValue": 3326,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> $3,325 - $4,727",
+              "classMaxValue": 4728,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> $4,727 - $14,651",
+              "classMaxValue": 14652,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> $14,651 - $19,688",
+              "classMaxValue": 19688.39,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "X14068_X",
+        "X14068_X_A",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 12,
+      "name": "Value of Checking Savings Money Mkt CD",
+      "description": "Business Analyst Layer: Value of Checking Savings Money Mkt CD",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "$0 - $23,822",
+              "classMaxValue": 23823,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> $23,822 - $36,621",
+              "classMaxValue": 36622,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> $36,621 - $54,584",
+              "classMaxValue": 54585,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> $54,584 - $175,402",
+              "classMaxValue": 175403,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> $175,402 - $234,665",
+              "classMaxValue": 234665.24,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "X14060_X",
+        "X14060_X_A",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 13,
+      "name": "Value of Stocks Bonds Mutual Funds",
+      "description": "Business Analyst Layer: Value of Stocks Bonds Mutual Funds",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "$0 - $35,790",
+              "classMaxValue": 35791,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> $35,790 - $58,821",
+              "classMaxValue": 58822,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> $58,821 - $93,846",
+              "classMaxValue": 93847,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  253,
+                  141,
+                  60,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> $93,846 - $335,056",
+              "classMaxValue": 335057,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> $335,056 - $450,092",
+              "classMaxValue": 450091.79,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 12,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "X14058_X",
+        "X14058_X_A",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 14,
+      "name": "H&R Block by ZIP",
+      "description": "Business Analyst Layer: H&R Block by ZIP",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPolygon",
+      "displayField": "DESCRIPTION",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9755440,
+        "ymin": 2817022,
+        "xmax": -8909040,
+        "ymax": 3632872,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "classBreaks",
+          "visualVariables": [],
+          "classBreakInfos": [
+            {
+              "label": "0 - 0",
+              "classMaxValue": 1,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  255,
+                  255,
+                  178,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 0 - 1",
+              "classMaxValue": 2,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  254,
+                  204,
+                  92,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 1 - 2",
+              "classMaxValue": 3,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  240,
+                  59,
+                  32,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            },
+            {
+              "label": "> 2 - 4",
+              "classMaxValue": 4,
+              "symbol": {
+                "type": "esriSFS",
+                "color": [
+                  189,
+                  0,
+                  38,
+                  179
+                ],
+                "outline": {
+                  "type": "esriSLS",
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    179
+                  ],
+                  "width": 0.375,
+                  "style": "esriSLSSolid"
+                },
+                "style": "esriSFSSolid"
+              }
+            }
+          ],
+          "field": "thematic_value",
+          "minValue": 0
+        }
+      },
+      "fields_count": 11,
+      "fields_sample": [
+        "OBJECTID",
+        "DESCRIPTION",
+        "ID",
+        "pointCount",
+        "thematic_value",
+        "Shape__Area",
+        "Shape__Length",
+        "CreationDate",
+        "Creator",
+        "EditDate"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 4000,
+      "standardMaxRecordCount": 4000
+    },
+    {
+      "id": 15,
+      "name": "H&R Block points",
+      "description": "Business Analyst Layer: H&R Block points",
+      "type": "Feature Layer",
+      "geometryType": "esriGeometryPoint",
+      "displayField": "name",
+      "tags": "",
+      "categories": "",
+      "typeKeywords": [],
+      "copyrightText": "",
+      "extent": {
+        "xmin": -9725101.4723,
+        "ymin": 2840800.2622000016,
+        "xmax": -8911500.128699997,
+        "ymax": 3605551.4881,
+        "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+        }
+      },
+      "spatialReference": {
+        "wkid": 102100,
+        "latestWkid": 3857
+      },
+      "drawingInfo": {
+        "renderer": {
+          "type": "simple",
+          "symbol": {
+            "type": "esriPMS",
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0,
+            "contentType": "image/svg+xml",
+            "imageData": "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDE2IDE2IiB4PSIwIiB5PSIwIj48ZGVmcz48c3R5bGU+LnN5bWJvbFNlcnZpY2UtZmlsbHtmaWxsOiNlYzU2MDA7fTwvc3R5bGU+PC9kZWZzPjxjaXJjbGUgY2xhc3M9InN5bWJvbFNlcnZpY2UtZmlsbCIgY3g9IjgiIGN5PSI4IiByPSI3LjUiLz48L3N2Zz4=",
+            "url": "image:standard/Circle.ec5600",
+            "height": 10.5,
+            "width": 10.5
+          }
+        }
+      },
+      "fields_count": 19,
+      "fields_sample": [
+        "OBJECTID",
+        "name",
+        "address",
+        "locality",
+        "region",
+        "postcode",
+        "country",
+        "fsq_category",
+        "fsq_category_all",
+        "INDUSTRY_DESC"
+      ],
+      "hasAttachments": false,
+      "capabilities": "Query",
+      "maxRecordCount": 10000,
+      "standardMaxRecordCount": 32000
+    }
+  ]
+}

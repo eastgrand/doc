@@ -717,6 +717,37 @@ ANALYSIS FOCUS:
 STRATEGIC ANALYSIS TECHNICAL CONTEXT:
 You are analyzing strategic value data with pre-calculated scores for market expansion opportunities.
 
+REQUIRED RESPONSE FORMAT:
+You MUST structure your response with these sections:
+
+STRATEGIC EXPANSION OPPORTUNITIES
+[Opening analysis statement]
+
+Top Strategic Markets:
+1. [Area] (Strategic Score: [exact decimal])
+   • Market Gap: [%]
+   • Nike Share: [%]
+   • Demographics: [key insight]
+
+2. [Next area with details...]
+
+Strategic Analysis:
+[Detailed analysis paragraph explaining why these markets are strategic]
+
+Market Dynamics:
+[Paragraph about competitive landscape and opportunities]
+
+Implementation Priorities:
+• [Specific action 1]
+• [Specific action 2]
+• [Specific action 3]
+
+---
+**Model Attribution:**
+• **Model Used:** [From data]
+• **R² Score:** [From data]
+• **Confidence:** [Level]
+
 DATA STRUCTURE:
 - strategic_value_score: Primary ranking metric (precise decimal values like 79.34, 79.17)
 - market_gap: Untapped market potential percentages

@@ -1603,6 +1603,28 @@ How else can I help analyze the data in your selected ZIP codes?`,
         dataSummary = "";
         processedLayersForPrompt = [];
     
+        // 🔍 DEBUG: Check spatial filtering
+        let spatialFilterInstructions = '';
+        if (metadata?.spatialFilterIds) {
+          console.log('🔍 [SPATIAL FILTER APPLIED] Before processing:');
+          console.log('  - Filter IDs count:', metadata.spatialFilterIds.length);
+          console.log('  - Total features before filter:', processedLayersData[0]?.features?.length || 0);
+          console.log('  - Filter type:', metadata.filterType || 'selection');
+          console.log('  - Sample filter IDs:', metadata.spatialFilterIds.slice(0, 3));
+          
+          // Add critical instructions for spatial filtering
+          spatialFilterInstructions = `
+
+🚨 CRITICAL SPATIAL FILTER INSTRUCTIONS 🚨
+A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilterIds.length} selected areas.
+- ONLY analyze the ${processedLayersData[0]?.features?.length || 0} features provided in the data
+- DO NOT reference or discuss areas outside this selection
+- DO NOT make statements about "all areas" or "entire dataset"
+- Focus your analysis on the ${metadata.filterType === 'buffer' ? 'buffer zone' : 'selected areas'} only
+- This is a SUBSET of the full dataset - treat it as the complete universe for your analysis
+`;
+        }
+    
         console.log('[Claude Prompt Gen] Starting to prepare data summary for prompt...');
         
         // Check if we have a comprehensive summary to process
@@ -2518,7 +2540,7 @@ ${enhancedFieldContext}
 
 ${analysisSpecificPrompt}
 
-${rankingContextPrompt}${clusteringInstructions}
+${rankingContextPrompt}${clusteringInstructions}${spatialFilterInstructions}
 
 CRITICAL FIELD DATA TYPE INSTRUCTIONS:
 When analyzing data, ALWAYS use the correct units and terminology based on the field type shown in brackets:

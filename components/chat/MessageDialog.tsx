@@ -6,6 +6,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ChatMessage } from '@/lib/analytics/types';
+import { renderPerformanceMetrics } from '@/lib/utils/performanceMetrics';
 
 type LocalChatMessage = ChatMessage & {
   role: 'user' | 'assistant' | 'system';
@@ -43,6 +44,12 @@ const MessageDialog: React.FC<MessageDialogProps> = ({ message, onClose }) => {
             <div>
               <h4 className="font-semibold">Results:</h4>
               <p>{message.metadata.totalFeatures} features found</p>
+              
+              {/* Dynamic Model Performance Information */}
+              {message.metadata?.analysisResult && renderPerformanceMetrics(
+                message.metadata.analysisResult,
+                "flex flex-wrap gap-4 mt-2 text-sm text-gray-700"
+              )}
             </div>
           )}
         </div>
