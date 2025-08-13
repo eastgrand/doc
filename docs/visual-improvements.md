@@ -166,15 +166,22 @@ This document outlines the systematic implementation of a light/dark mode switch
 
 ### **Color Palette Usage**
 
+**IMPORTANT COLOR UPDATE (Phase 5.1)**:
+To maintain consistency with the existing brand identity (previous green #33a852), the color scheme has been adjusted:
+- **Primary Accent**: Changed from Cyan (Firefly-11) to **Green (Firefly-13/14)** - closest match to #33a852
+- **Secondary Accent**: Changed from Chartreuse (Firefly-15) to **Orange (Firefly-19)** - complementary color
+- **Warning**: Remains **Yellow (Firefly-18)**
+- **Error**: Remains **Deep Pink (Firefly-1)**
+
 **Dark Mode (Primary Colors)**:
-- Primary Accent: `#00ffff` (Cyan - Firefly Color 11)
-- Secondary Accent: `#40ff00` (Chartreuse - Firefly Color 15) 
+- Primary Accent: `#00ff80` (Bright Green - Firefly Color 13) or `#00ff40` (Lime Green - Firefly Color 14)
+- Secondary Accent: `#ffbf00` (Orange - Firefly Color 19)
 - Warning: `#ffff00` (Yellow - Firefly Color 18)
 - Error: `#ff0040` (Deep Pink - Firefly Color 1)
 
 **Light Mode (Adapted Colors)**:
-- Primary Accent: `#00cccc` (Darker Cyan - Firefly Light Color 11)
-- Secondary Accent: `#33cc00` (Darker Chartreuse - Firefly Light Color 15)
+- Primary Accent: `#00cc66` (Darker Bright Green - Firefly Light Color 13) or `#00cc33` (Darker Lime Green - Firefly Light Color 14)
+- Secondary Accent: `#cc9900` (Darker Orange - Firefly Light Color 19)
 - Warning: `#cccc00` (Darker Yellow - Firefly Light Color 18)
 - Error: `#cc0033` (Darker Deep Pink - Firefly Light Color 1)
 

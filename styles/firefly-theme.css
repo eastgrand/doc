@@ -1,6 +1,19 @@
 /* ===== FIREFLY THEME SYSTEM ===== */
 /* Complete CSS implementation with Dark & Light Mode support */
 
+/* 
+ * COLOR SELECTION RATIONALE (Updated Phase 5.1)
+ * ============================================
+ * Primary Accent: Green (Firefly-14) - Maintains brand consistency with original #33a852
+ * Secondary Accent: Orange (Firefly-19) - Complementary color to green on color wheel
+ * Warning: Yellow (Firefly-18) - Universal warning color
+ * Error: Deep Pink (Firefly-1) - High contrast for critical alerts
+ * Success: Bright Green (Firefly-13) - Positive feedback, variation of primary
+ * 
+ * This maintains visual continuity with the existing brand while leveraging
+ * the Firefly color system for enhanced visual effects and consistency.
+ */
+
 :root {
   /* Dark Mode Colors (Original Firefly) */
   --firefly-1: #ff0040;   /* Deep Pink/Red */
@@ -56,11 +69,11 @@
   --theme-text-secondary: #cccccc;
   --theme-text-muted: #999999;
   --theme-border: #444444;
-  --theme-accent-primary: var(--firefly-11);    /* Cyan */
-  --theme-accent-secondary: var(--firefly-15);  /* Chartreuse */
+  --theme-accent-primary: var(--firefly-14);    /* Lime Green - closest to #33a852 */
+  --theme-accent-secondary: var(--firefly-19);  /* Orange - complementary to green */
   --theme-warning: var(--firefly-18);           /* Yellow */
   --theme-error: var(--firefly-1);              /* Deep Pink */
-  --theme-success: var(--firefly-14);           /* Lime Green */
+  --theme-success: var(--firefly-13);           /* Bright Green */
   
   /* Map Basemap */
   --theme-basemap: "dark-gray-vector";
@@ -75,11 +88,11 @@
   --theme-text-secondary: #666666;
   --theme-text-muted: #999999;
   --theme-border: #e0e0e0;
-  --theme-accent-primary: var(--firefly-light-11);    /* Darker Cyan */
-  --theme-accent-secondary: var(--firefly-light-15);  /* Darker Chartreuse */
+  --theme-accent-primary: var(--firefly-light-14);    /* Darker Lime Green - closest to #33a852 */
+  --theme-accent-secondary: var(--firefly-light-19);  /* Darker Orange - complementary to green */
   --theme-warning: var(--firefly-light-18);           /* Darker Yellow */
   --theme-error: var(--firefly-light-1);              /* Darker Deep Pink */
-  --theme-success: var(--firefly-light-14);           /* Darker Lime Green */
+  --theme-success: var(--firefly-light-13);           /* Darker Bright Green */
   
   /* Map Basemap */
   --theme-basemap: "gray-vector";
