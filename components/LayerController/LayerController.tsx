@@ -203,13 +203,13 @@ const DraggableLayer: React.FC<DraggableLayerProps> = ({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div className="flex-1 cursor-default select-none min-w-0">
-                    <span className="text-sm font-medium truncate block" title={title}>
+                    <span className="text-sm font-medium block leading-tight line-clamp-2">
                       {title}
                     </span>
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="max-w-xs">{description}</p>
+                  <p className="max-w-xs">{title}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

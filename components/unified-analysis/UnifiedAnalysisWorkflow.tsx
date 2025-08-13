@@ -828,11 +828,11 @@ export default function UnifiedAnalysisWorkflow({
               <Image 
                 src="/mpiq_pin2.png" 
                 alt="quickstartIQ" 
-                width={16} 
-                height={16}
-                className="h-4 w-4" 
+                width={20} 
+                height={20}
+                className="h-5 w-5" 
               />
-              <div className="flex text-xs font-bold">
+              <div className="flex text-sm font-bold">
                 <span className="text-[#33a852]">quickstart</span>
                 <span className="text-black -ml-px">IQ</span>
               </div>
@@ -858,16 +858,18 @@ export default function UnifiedAnalysisWorkflow({
         >
           <CardHeader className="py-2">
             <CardTitle className="flex items-center gap-2 text-xs">
-              <Image 
-                src="/mpiq_pin2.png" 
-                alt="infographIQ" 
-                width={16} 
-                height={16}
-                className="h-4 w-4" 
-              />
-              <div className="flex text-xs font-bold">
-                <span className="text-[#33a852]">infograph</span>
-                <span className="text-black -ml-px">IQ</span>
+              <div className="flex items-center gap-2">
+                <Image 
+                  src="/mpiq_pin2.png" 
+                  alt="infographIQ" 
+                  width={20} 
+                  height={20}
+                  className="h-5 w-5" 
+                />
+                <div className="flex text-sm font-bold">
+                  <span className="text-[#33a852]">infograph</span>
+                  <span className="text-black -ml-px">IQ</span>
+                </div>
               </div>
             </CardTitle>
           </CardHeader>
@@ -891,16 +893,18 @@ export default function UnifiedAnalysisWorkflow({
         >
           <CardHeader className="py-2">
             <CardTitle className="flex items-center gap-2 text-xs">
-              <Image 
-                src="/mpiq_pin2.png" 
-                alt="reportIQ" 
-                width={16} 
-                height={16}
-                className="h-4 w-4" 
-              />
-              <div className="flex text-xs font-bold">
-                <span className="text-[#33a852]">report</span>
-                <span className="text-black -ml-px">IQ</span>
+              <div className="flex items-center gap-2">
+                <Image 
+                  src="/mpiq_pin2.png" 
+                  alt="reportIQ" 
+                  width={20} 
+                  height={20}
+                  className="h-5 w-5" 
+                />
+                <div className="flex text-sm font-bold">
+                  <span className="text-[#33a852]">report</span>
+                  <span className="text-black -ml-px">IQ</span>
+                </div>
               </div>
             </CardTitle>
           </CardHeader>
