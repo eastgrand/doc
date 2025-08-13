@@ -103,6 +103,36 @@ This document outlines the systematic implementation of a light/dark mode switch
 - [ ] Theme progress bars and loading states
 - [ ] Ensure data readability in both light and dark modes
 
+### **5.5 Map Widgets and Controls**
+- [ ] Theme zoom controls and map navigation widgets
+- [ ] Apply Firefly styling to scale bar and attribution
+- [ ] Update compass and orientation controls
+- [ ] Theme home button and map toolbar widgets
+- [ ] Style layer list widget (if used)
+
+### **5.6 Custom Map Popups (CustomPopupManager)**
+- [ ] Theme custom popup containers with Firefly backgrounds
+- [ ] Apply Firefly colors to popup titles and text hierarchy
+- [ ] Style bar charts in popups with Firefly color palette
+- [ ] Theme action buttons (Zoom to, Infographics) in popups
+- [ ] Update popup borders, shadows, and positioning
+- [ ] Style close button with Firefly hover effects
+
+### **5.7 Legend System Integration**
+- [ ] Theme legend containers with Firefly backgrounds and borders
+- [ ] Apply consistent color schemes to legend items
+- [ ] Update legend text colors for proper contrast
+- [ ] Style legend symbols with Firefly glow effects
+- [ ] Theme legend headers and labels
+- [ ] Ensure legend visibility in both light/dark modes
+
+### **5.8 Loading and Progress States**
+- [ ] Theme loading spinners and progress indicators
+- [ ] Apply Firefly colors to analysis progress bars
+- [ ] Style data loading states with consistent theming
+- [ ] Update skeleton loaders with theme colors
+- [ ] Theme error states and retry buttons
+
 ## **Phase 6: Advanced Features**
 
 ### **6.1 Animation and Transitions**
@@ -187,6 +217,12 @@ This document outlines the systematic implementation of a light/dark mode switch
 - `/utils/visualization-factory.ts` - Dynamic visualization creation
 - `/components/Visualization/` - All visualization components
 - `/lib/analysis/strategies/renderers/effects/FireflyEffect.ts` - Firefly effects integration
+- `/components/popup/CustomPopupManager.tsx` - Custom popup implementation with Firefly theming
+- `/components/LayerController/LayerLegend.tsx` - Real-time legend updates with theme support
+- `/utils/legend-formatter.ts` - Core legend extraction utility with color theming
+- `/utils/popup-utils.ts` - Popup helper utilities with Firefly styling
+- `/components/MapWidgets.tsx` - Map control widgets theming
+- `/styles/map-widgets.css` - Dedicated CSS for map widget styling
 
 ## **Performance Considerations**
 
