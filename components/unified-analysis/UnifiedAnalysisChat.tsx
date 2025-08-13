@@ -326,22 +326,112 @@ You can ask specific questions about the data in the chat below.`,
       timestamp: new Date()
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev: ChatMessage[]) => [...prev, userMessage]);
     setInputValue('');
     setIsProcessing(true);
 
-    // Simulate AI response (in real implementation, this would call the analysis API)
-    setTimeout(() => {
-      const aiMessage: ChatMessage = {
+    try {
+      console.log('[UnifiedAnalysisChat] Sending chat message to Claude API');
+      
+      const { analysisResult: result, metadata } = analysisResult;
+      
+      // Build comprehensive request payload with all data fields
+      const requestPayload = {
+        messages: [
+          ...messages.map(msg => ({
+            role: msg.role,
+            content: msg.content
+          })),
+          {
+            role: 'user' as const,
+            content: userMessage.content
+          }
+        ],
+        metadata: {
+          query: userMessage.content,
+          analysisType: result.endpoint?.replace('/', '').replace(/-/g, '_') || 'strategic_analysis',
+          relevantLayers: ['unified_analysis'],
+          spatialFilterIds: (metadata as any)?.spatialFilterIds,
+          filterType: (metadata as any)?.filterType,
+          rankingContext: (metadata as any)?.rankingContext,
+          isClustered: result.data?.isClustered,
+          clusterAnalysis: (result.data as any)?.clusterAnalysis,
+          targetVariable: result.data?.targetVariable,
+          endpoint: result.endpoint
+        },
+        featureData: [{
+          layerId: 'unified_analysis',
+          layerName: 'Analysis Results',
+          layerType: 'polygon',
+          features: result.data?.records?.slice(0, 50) || [] // Include all feature data with properties
+        }],
+        persona: persona // Use the selected persona
+      };
+
+      console.log('[UnifiedAnalysisChat] Request payload prepared:', {
+        endpoint: result.endpoint,
+        recordCount: result.data?.records?.length,
+        hasFeatureData: !!(result.data?.records?.length),
+        messageCount: requestPayload.messages.length
+      });
+
+      // Call the Claude API
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+      const response = await fetch('/api/claude/generate-response', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestPayload),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('[UnifiedAnalysisChat] API Error Response:', errorText);
+        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      }
+
+      const claudeResponse = await response.json();
+      
+      if (claudeResponse.content) {
+        const aiMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: claudeResponse.content,
+          timestamp: new Date()
+        };
+        setMessages((prev: ChatMessage[]) => [...prev, aiMessage]);
+        console.log('[UnifiedAnalysisChat] Chat response received successfully');
+      } else {
+        throw new Error('No content in API response');
+      }
+    } catch (error) {
+      console.error('[UnifiedAnalysisChat] Failed to get chat response:', error);
+      
+      // Provide a helpful error message
+      let errorMessage = 'Sorry, I encountered an error processing your question.';
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          errorMessage = 'Request timed out. Please try a simpler question.';
+        } else if (error.message.includes('429')) {
+          errorMessage = 'Too many requests. Please wait a moment before trying again.';
+        }
+      }
+      
+      const errorResponse: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: `Based on your analysis results, I can help you understand the ${analysisResult.analysisResult.data.targetVariable} patterns. What specific aspect would you like to explore?`,
+        content: errorMessage,
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, aiMessage]);
+      setMessages((prev: ChatMessage[]) => [...prev, errorResponse]);
+    } finally {
       setIsProcessing(false);
-    }, 1500);
-  }, [inputValue, isProcessing, analysisResult, setMessages]);
+    }
+  }, [inputValue, isProcessing, analysisResult, messages, persona, setMessages]);
 
   const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {

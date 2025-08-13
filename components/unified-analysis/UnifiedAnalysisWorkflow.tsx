@@ -1283,31 +1283,14 @@ export default function UnifiedAnalysisWorkflow({
               <TabsTrigger value="analysis" className="flex items-center gap-2">
                 <MessageCircle className="h-3 w-3" />
                 Analysis
-                <Download className="h-3 w-3 opacity-70 hover:opacity-100 cursor-pointer" 
-                  onClick={(e) => { e.stopPropagation(); handleExport('txt'); }}
-                />
               </TabsTrigger>
               <TabsTrigger value="data" className="flex items-center gap-2">
                 <Table className="h-3 w-3" />
                 Data
-                <Download 
-                  className="h-3 w-3 opacity-70 hover:opacity-100 cursor-pointer" 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleExport('csv');
-                  }}
-                />
               </TabsTrigger>
               <TabsTrigger value="chart" className="flex items-center gap-2">
                 <BarChart className="h-3 w-3" />
                 Chart
-                <BarChart 
-                  className="h-3 w-3 opacity-70 hover:opacity-100 cursor-pointer" 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleExportChart();
-                  }}
-                />
               </TabsTrigger>
             </TabsList>
 
