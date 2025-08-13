@@ -13,6 +13,7 @@ import CustomPopupManager from './popup/CustomPopupManager';
 import CustomZoom from './CustomZoom';
 import { LegendItem } from '@/components/MapLegend';
 import { LegendType } from '@/types/legend';
+import ThemeSwitcher from '@/components/theme/ThemeSwitcher';
 
 console.log('[MAP_APP] MapApp component function body executing');
 
@@ -233,6 +234,18 @@ export const MapApp: React.FC = memo(() => {
             showLabels={showLabels}
             legend={mapLegend}
           />
+          
+          {/* Theme Switcher - positioned where basemap gallery used to be */}
+          <div 
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              zIndex: 1000
+            }}
+          >
+            <ThemeSwitcher />
+          </div>
           
           {/* Layer Controller and Management */}
           {mapView && (

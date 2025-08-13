@@ -7,7 +7,7 @@ import React, {
   useState,
   useMemo
 } from 'react';
-import { X, Map as MapIcon, Folder, Table as TableIcon } from 'lucide-react';
+import { X, Folder, Table as TableIcon } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import './widget-styles.css';
 // LayerState import removed - not needed without layer management
@@ -19,7 +19,6 @@ import LayerList from '@arcgis/core/widgets/LayerList';
 import Search from '@arcgis/core/widgets/Search';
 import Print from '@arcgis/core/widgets/Print';
 import Bookmarks from '@arcgis/core/widgets/Bookmarks';
-import BasemapGallery from '@arcgis/core/widgets/BasemapGallery';
 import Bookmark from '@arcgis/core/webmap/Bookmark';
 import Extent from '@arcgis/core/geometry/Extent';
 import Collection from '@arcgis/core/core/Collection';
@@ -32,7 +31,6 @@ interface WidgetState {
   search: __esri.widgetsSearch | null;
   bookmarks: Bookmarks | null;
   layerList: LayerList | null;
-  basemapGallery: BasemapGallery | null;
 }
 
 interface MapWidgetsProps {
@@ -70,7 +68,7 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
   onToggleWidget,
   // legend,
   showLoading = false,
-  visibleWidgets = ['search', 'layerList', 'bookmarks', 'print', 'basemapGallery'], // Added 'basemapGallery' to default
+  visibleWidgets = ['search', 'layerList', 'bookmarks', 'print'], // Removed basemapGallery
   onLayerStatesChange,
   onLayersCreated
 }: MapWidgetsProps) {
@@ -82,7 +80,6 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
     search: null,
     bookmarks: null,
     layerList: null,
-    basemapGallery: null
   });
   
   const containersRef = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -128,9 +125,6 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
         break;
       case 'bookmarks':
         container.classList.add('esri-bookmarks');
-        break;
-      case 'basemapGallery':
-        container.classList.add('esri-basemap-gallery');
         break;
       case 'filter':
         container.classList.add('esri-filter');
@@ -348,16 +342,6 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
 
         // LayerList is handled by React portal, not native widget
 
-        // Initialize BasemapGallery widget
-        if (!widgets.basemapGallery && containers.get('basemapGallery')) {
-          const basemapGalleryWidget = new BasemapGallery({ 
-            view, 
-            container: containers.get('basemapGallery')
-            // Use default Esri basemaps without custom source
-          });
-          widgets.basemapGallery = basemapGalleryWidget;
-          console.log('BasemapGallery widget initialized');
-        }
 
         isInitialized.current = true;
         console.log('All widgets initialized successfully');
@@ -389,7 +373,7 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
   useEffect(() => {
     if (!view || containersReady) return; // Only run once when view is ready and containers aren't
 
-    const allowedWidgets = visibleWidgets || ['search', 'layerList', 'bookmarks', 'print', 'basemapGallery'];
+    const allowedWidgets = visibleWidgets || ['search', 'layerList', 'bookmarks', 'print'];
     const createdContainers = new Map<string, HTMLDivElement>();
 
     allowedWidgets.forEach(widgetId => {
@@ -398,7 +382,6 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
       if (widgetId === 'search') color = '#4285f4';
       else if (widgetId === 'layerList') color = '#33a852';
       else if (widgetId === 'print') color = '#33a852';
-      else if (widgetId === 'basemapGallery') color = '#33a852'; // App green for basemap
       // Add other widget colors if needed
       
       const container = createWidgetContainer(widgetId, color);
@@ -520,16 +503,6 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
               <path d="M6,18H4a2,2,0,0,1-2-2V11a2,2,0,0,1,2-2H20a2,2,0,0,1,2,2v5a2,2,0,0,1-2,2H18"/>
               <polyline points="6,14 6,18 18,18 18,14"/>
             </svg>
-          </button>
-        )}
-        
-        {visibleWidgets?.includes('basemapGallery') && (
-          <button
-            onClick={() => onToggleWidget('basemapGallery')}
-            className={`widget-icon ${activeWidget === 'basemapGallery' ? 'active' : ''}`}
-            title="Basemaps"
-          >
-            <MapIcon width="16" height="16" />
           </button>
         )}
         

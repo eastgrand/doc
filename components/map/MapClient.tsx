@@ -6,6 +6,7 @@ import { loadArcGISModules } from '@/lib/arcgis-imports';
 import { LegendType } from '@/types/legend';
 import { LegendItem } from '@/components/MapLegend';
 import { MAP_CONSTRAINTS, DATA_EXTENT, applyMapConstraints } from '@/config/mapConstraints';
+import { useTheme } from '@/components/theme/ThemeProvider';
 
 // Legend props interface
 
@@ -298,6 +299,7 @@ const MapClient = memo(({
   showLabels = false,
   legend
 }: MapClientProps) => {
+  const { theme } = useTheme();
   const mapRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<__esri.MapView | null>(null);
   const isInitialized = useRef(false);
@@ -341,12 +343,13 @@ const MapClient = memo(({
         esriConfig.apiKey = process.env.NEXT_PUBLIC_ARCGIS_API_KEY || '';
         console.log('[MapClient] API key set:', !!esriConfig.apiKey);
 
-        // Create map with light grey basemap using string ID
-        console.log('[MapClient] Creating map with light grey basemap...');
+        // Create map with theme-appropriate basemap
+        const basemapId = theme === 'light' ? "gray-vector" : "dark-gray-vector";
+        console.log(`[MapClient] Creating map with ${theme} mode basemap: ${basemapId}`);
         const map = new Map({
-          basemap: "gray-vector"
+          basemap: basemapId
         });
-        console.log('[MapClient] Map created successfully');
+        console.log('[MapClient] Map created successfully with theme-appropriate basemap');
 
         // Create view
         if (!mapRef.current) {
@@ -432,7 +435,21 @@ const MapClient = memo(({
         isInitialized.current = false;
       }
     };
-  }, [onMapLoad, onError]);
+  }, [onMapLoad, onError, theme]);
+
+  // Handle theme changes for existing map
+  useEffect(() => {
+    if (!viewRef.current || !isInitialized.current) return;
+
+    const view = viewRef.current;
+    const basemapId = theme === 'light' ? "gray-vector" : "dark-gray-vector";
+    
+    console.log(`[MapClient] Theme changed to ${theme}, updating basemap to: ${basemapId}`);
+    
+    // Update basemap when theme changes
+    view.map.basemap = basemapId;
+    
+  }, [theme]);
 
   // Handle sidebar width changes
   useEffect(() => {
