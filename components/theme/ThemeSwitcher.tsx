@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from './ThemeProvider';
 
 interface ThemeSwitcherProps {
@@ -10,6 +10,20 @@ interface ThemeSwitcherProps {
 
 export function ThemeSwitcher({ className = '', style = {} }: ThemeSwitcherProps) {
   const { theme, toggleTheme } = useTheme();
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    // Check for reduced motion preference
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   return (
     <button
@@ -77,8 +91,8 @@ export function ThemeSwitcher({ className = '', style = {} }: ThemeSwitcherProps
         )}
       </div>
       
-      {/* Glow effect for dark mode */}
-      {theme === 'dark' && (
+      {/* Glow effect for dark mode (respects reduced motion preference) */}
+      {theme === 'dark' && !prefersReducedMotion && (
         <div
           style={{
             position: 'absolute',

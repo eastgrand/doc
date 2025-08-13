@@ -104,6 +104,178 @@
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
+/* ===== PHASE 6: ADVANCED FEATURES ===== */
+
+/* 6.1 - Smooth Theme Transitions */
+body, 
+.theme-popup-container,
+.theme-legend-container,
+.theme-dialog-content,
+.theme-sidebar {
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Faster transitions for interactive elements */
+button, a, input, textarea, select,
+.theme-button-primary,
+.theme-button-secondary,
+.theme-popup-button,
+.theme-tab-active,
+.theme-tab-inactive {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 6.2 - Firefly Glow Effects */
+@keyframes firefly-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--theme-accent-primary),
+                0 0 40px var(--theme-accent-primary),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px var(--theme-accent-primary),
+                0 0 60px var(--theme-accent-primary),
+                inset 0 0 15px rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Apply glow to primary buttons on hover */
+.theme-button-primary:hover {
+  animation: firefly-glow-pulse 2s ease-in-out infinite;
+}
+
+/* Glow effect for active elements */
+.firefly-glow {
+  box-shadow: 0 0 20px var(--theme-accent-primary),
+              0 0 40px var(--theme-accent-primary);
+  animation: firefly-glow-pulse 3s ease-in-out infinite;
+}
+
+/* Subtle glow for focus states */
+.theme-input:focus,
+.theme-textarea:focus,
+.theme-select:focus {
+  box-shadow: 0 0 0 2px var(--theme-accent-primary),
+              0 0 20px rgba(0, 255, 64, 0.2) !important;
+}
+
+/* 6.3 - Subtle Animations */
+@keyframes firefly-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes firefly-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Apply fade-in to popups and dialogs */
+.theme-popup-container,
+.theme-dialog-content {
+  animation: firefly-fade-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Apply slide-in to legend items */
+.theme-legend-item {
+  animation: firefly-slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Button press effect */
+.theme-button-primary:active,
+.theme-button-secondary:active,
+.theme-popup-button:active {
+  transform: scale(0.98);
+}
+
+/* 6.4 - Accessibility Features */
+
+/* Reduced motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .firefly-glow,
+  .theme-button-primary:hover {
+    animation: none !important;
+  }
+  
+  .theme-skeleton {
+    animation: none !important;
+    background: var(--theme-bg-tertiary) !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --theme-accent-primary: #00ff00;
+    --theme-accent-secondary: #ff8800;
+    --theme-border: #ffffff;
+  }
+  
+  [data-theme="light"] {
+    --theme-accent-primary: #008800;
+    --theme-accent-secondary: #cc6600;
+    --theme-border: #000000;
+  }
+  
+  .theme-button-primary,
+  .theme-popup-button {
+    border: 2px solid var(--theme-text-primary) !important;
+  }
+  
+  .theme-input,
+  .theme-textarea,
+  .theme-select {
+    border-width: 2px !important;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+.theme-button-primary:focus-visible,
+.theme-button-secondary:focus-visible,
+.theme-popup-button:focus-visible,
+.theme-tab-active:focus-visible,
+.theme-tab-inactive:focus-visible,
+.theme-link:focus-visible {
+  outline: 3px solid var(--theme-accent-primary) !important;
+  outline-offset: 2px !important;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 body {
   background-color: var(--theme-bg-primary);
   color: var(--theme-text-primary);
@@ -399,16 +571,58 @@ body {
   }
 }
 
-/* Mobile Optimizations */
+/* Mobile Optimizations - Enhanced for Phase 6 */
 @media (max-width: 768px) {
-  .firefly-point-shimmer {
+  /* Disable complex animations on mobile */
+  .firefly-point-shimmer,
+  .firefly-glow,
+  .theme-button-primary:hover {
     animation: none;
   }
   
+  /* Simplify shadows for performance */
   .firefly-point-standard {
     box-shadow: 
       0 0 5px currentColor,
       0 0 10px currentColor;
+  }
+  
+  /* Reduce glow effects */
+  .theme-popup-container,
+  .theme-legend-container {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  /* Faster transitions on mobile */
+  * {
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Optimize touch targets */
+  .theme-button-primary,
+  .theme-button-secondary,
+  .theme-popup-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Performance optimizations for low-powered devices */
+@media (max-width: 768px) and (hover: none) {
+  /* Remove hover effects on touch devices */
+  .theme-button-primary:hover,
+  .theme-button-secondary:hover,
+  .theme-tab-inactive:hover {
+    animation: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Optimize for slow connections */
+@media (prefers-reduced-data: reduce) {
+  .firefly-point-shimmer,
+  .firefly-glow {
+    animation: none !important;
   }
 }
 
@@ -416,6 +630,37 @@ body {
 .firefly-point, .firefly-polygon {
   transform: translateZ(0);
   will-change: transform;
+}
+
+/* Phase 6 - Enhanced Map Element Animations */
+@keyframes firefly-map-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* Animate map points on hover */
+.firefly-point:hover {
+  animation: firefly-map-pulse 1s ease-in-out infinite;
+  cursor: pointer;
+}
+
+/* Glow effect for active map elements */
+.firefly-polygon-active {
+  filter: drop-shadow(0 0 20px var(--theme-accent-primary));
+  animation: firefly-glow-pulse 2s ease-in-out infinite;
+}
+
+/* Smooth transitions for map element state changes */
+.firefly-point,
+.firefly-polygon,
+.firefly-line {
+  transition: filter 0.3s ease, opacity 0.3s ease, transform 0.2s ease;
 }
 
 /* ===== TAB SYSTEM ===== */
