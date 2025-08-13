@@ -297,47 +297,67 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
 
         // Initialize Print widget
         if (!widgets.print && containers.get('print')) {
-          const printWidget = new Print({ 
-            view, 
-            container: containers.get('print'),
-            printServiceUrl: "https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
-            templateOptions: {
-              title: "Map Export",
-              author: "",
-              copyright: "",
-              format: "pdf",
-              layout: "a4-landscape"
-            }
-          });
-          widgets.print = printWidget;
-          console.log('Print widget initialized');
+          try {
+            const printWidget = new Print({ 
+              view, 
+              container: containers.get('print'),
+              printServiceUrl: "https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+            });
+            
+            // Wait for widget to load
+            printWidget.when(() => {
+              console.log('Print widget loaded and ready');
+            }).catch((error) => {
+              console.error('Print widget failed to load:', error);
+            });
+            
+            widgets.print = printWidget;
+            console.log('Print widget initialized');
+          } catch (error) {
+            console.error('Error initializing print widget:', error);
+          }
         }
 
         // Initialize Bookmarks widget
         if (!widgets.bookmarks && containers.get('bookmarks')) {
-          const bookmarksWidget = new Bookmarks({ view, container: containers.get('bookmarks') });
-          
-          // Create Bookmark instances from US city data
-          const cityBookmarks = new Collection(
-            CITY_BOOKMARKS_DATA.map(city => 
-              new Bookmark({
-                name: city.name,
-                viewpoint: {
-                  targetGeometry: new Extent({
-                    xmin: city.extent.xmin,
-                    ymin: city.extent.ymin,
-                    xmax: city.extent.xmax,
-                    ymax: city.extent.ymax,
-                    spatialReference: { wkid: 4326 }
+          try {
+            const bookmarksWidget = new Bookmarks({ 
+              view, 
+              container: containers.get('bookmarks')
+            });
+            
+            // Wait for view to be ready before setting bookmarks
+            view.when(() => {
+              try {
+                // Create Bookmark instances from Florida city data
+                const cityBookmarks = new Collection(
+                  CITY_BOOKMARKS_DATA.map(city => {
+                    return new Bookmark({
+                      name: city.name,
+                      viewpoint: {
+                        targetGeometry: new Extent({
+                          xmin: city.extent.xmin,
+                          ymin: city.extent.ymin,
+                          xmax: city.extent.xmax,
+                          ymax: city.extent.ymax,
+                          spatialReference: { wkid: 4326 }
+                        })
+                      }
+                    });
                   })
-                }
-              })
-            )
-          );
-          
-          bookmarksWidget.bookmarks = cityBookmarks;
-          widgets.bookmarks = bookmarksWidget;
-          console.log('Bookmarks widget initialized');
+                );
+                
+                bookmarksWidget.bookmarks = cityBookmarks;
+                console.log('Bookmarks widget initialized with', cityBookmarks.length, 'bookmarks');
+              } catch (bookmarkError) {
+                console.error('Error creating bookmarks:', bookmarkError);
+              }
+            });
+            
+            widgets.bookmarks = bookmarksWidget;
+          } catch (error) {
+            console.error('Error initializing bookmarks widget:', error);
+          }
         }
 
         // LayerList is handled by React portal, not native widget
