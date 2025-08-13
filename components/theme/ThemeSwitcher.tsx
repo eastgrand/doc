@@ -42,9 +42,9 @@ export function ThemeSwitcher({ className = '', style = {} }: ThemeSwitcherProps
       className={`theme-switcher ${className}`}
       style={{
         position: 'relative',
-        width: '48px',
-        height: '48px',
-        border: '2px solid var(--theme-border)',
+        width: '24px',
+        height: '24px',
+        border: '1px solid var(--theme-border)',
         borderRadius: '50%',
         backgroundColor: 'var(--theme-bg-tertiary)',
         cursor: 'pointer',
@@ -53,8 +53,8 @@ export function ThemeSwitcher({ className = '', style = {} }: ThemeSwitcherProps
         justifyContent: 'center',
         transition: 'all 0.3s ease',
         boxShadow: theme === 'dark' 
-          ? '0 0 15px var(--theme-accent-primary)' 
-          : '0 2px 8px rgba(0,0,0,0.2)',
+          ? '0 0 8px var(--theme-accent-primary)' 
+          : '0 1px 4px rgba(0,0,0,0.2)',
         ...style
       }}
       title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
@@ -63,8 +63,8 @@ export function ThemeSwitcher({ className = '', style = {} }: ThemeSwitcherProps
       {/* Icon Container */}
       <div
         style={{
-          width: '24px',
-          height: '24px',
+          width: '12px',
+          height: '12px',
           position: 'relative',
           transition: 'transform 0.3s ease',
           transform: theme === 'light' ? 'rotate(180deg)' : 'rotate(0deg)'
@@ -73,8 +73,8 @@ export function ThemeSwitcher({ className = '', style = {} }: ThemeSwitcherProps
         {theme === 'dark' ? (
           // Moon icon for dark mode
           <svg
-            width="24"
-            height="24"
+            width="12"
+            height="12"
             viewBox="0 0 24 24"
             fill="none"
             stroke="var(--theme-accent-primary)"
@@ -87,8 +87,8 @@ export function ThemeSwitcher({ className = '', style = {} }: ThemeSwitcherProps
         ) : (
           // Sun icon for light mode
           <svg
-            width="24"
-            height="24"
+            width="12"
+            height="12"
             viewBox="0 0 24 24"
             fill="none"
             stroke="var(--theme-accent-primary)"

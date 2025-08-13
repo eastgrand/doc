@@ -115,7 +115,7 @@ const LoadingStateBase: React.FC<LoadingStateProps> = ({
       exit={{ opacity: 0, y: -20 }}
       className={`${containerClasses[type]} ${className}`}
     >
-      <Card className="bg-white rounded-lg shadow-lg p-6">
+      <Card className="theme-card rounded-lg theme-shadow-primary p-6">
         <div className="flex flex-col items-center space-y-4">
           {showSpinner && (
             <motion.div
@@ -129,7 +129,7 @@ const LoadingStateBase: React.FC<LoadingStateProps> = ({
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-gray-600 text-sm"
+            className="theme-text-secondary text-sm"
           >
             {message}
           </motion.p>
@@ -203,7 +203,7 @@ const LoadingStateBase: React.FC<LoadingStateProps> = ({
                       <Loader2 className="w-3 h-3 text-white animate-spin" />
                     )}
                   </div>
-                  <span className="text-sm text-gray-600">{step.label}</span>
+                  <span className="text-sm theme-text-secondary">{step.label}</span>
                 </motion.div>
               ))}
             </div>

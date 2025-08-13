@@ -4404,7 +4404,7 @@ const EnhancedGeospatialChat = memo(({
 
     return (
       <Dialog open={!!message} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white" aria-describedby="analysis-details-description">
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto theme-bg-primary" aria-describedby="analysis-details-description">
           <DialogHeader>
             <DialogTitle>Analysis Details</DialogTitle>
           </DialogHeader>
@@ -4738,7 +4738,7 @@ const EnhancedGeospatialChat = memo(({
 
     {/* Input Section - full height container */}
     <div className="flex-1 overflow-hidden min-h-0">
-      <div className="h-full bg-white">
+      <div className="h-full theme-bg-primary">
 
         {/* Chat Nudge Notification */}
         {showChatNudge && inputMode === 'analysis' && (
@@ -4852,7 +4852,7 @@ const EnhancedGeospatialChat = memo(({
                               <span>Context-Aware</span>
                             </div>
                           </TooltipTrigger>
-                          <TooltipContent side="top" className="bg-white max-w-md">
+                          <TooltipContent side="top" className="theme-bg-primary max-w-md">
                             <p className="text-xs">{contextSummary}</p>
                             <p className="text-xs text-gray-500 mt-1">
                               AI responses are aware of your conversation history
@@ -4892,12 +4892,12 @@ const EnhancedGeospatialChat = memo(({
                               </Button>
                             </DialogTrigger>
                           </TooltipTrigger>
-                          <TooltipContent side="top" className="bg-white">
+                          <TooltipContent side="top" className="theme-bg-primary">
                             <p>Choose a query</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                      <DialogContent className="max-w-2xl min-h-[60vh] max-h-[80vh] overflow-y-auto bg-white rounded-xl shadow-lg" aria-describedby="query-dialog-description">
+                      <DialogContent className="max-w-2xl min-h-[60vh] max-h-[80vh] overflow-y-auto theme-bg-primary rounded-xl shadow-lg" aria-describedby="query-dialog-description">
                         <QueryDialog
                           onQuestionSelect={(question) => {
                                       // Check if we have existing analysis context - if so, treat as chat
@@ -4953,7 +4953,7 @@ const EnhancedGeospatialChat = memo(({
                             </span>
                           </Button>
                         </TooltipTrigger>
-                        <TooltipContent side="top" className="bg-white">
+                        <TooltipContent side="top" className="theme-bg-primary">
                           <p>Create an infographic</p>
                         </TooltipContent>
                       </Tooltip>
@@ -4986,12 +4986,12 @@ const EnhancedGeospatialChat = memo(({
                               </Button>
                             </DialogTrigger>
                           </TooltipTrigger>
-                          <TooltipContent side="top" className="bg-white">
+                          <TooltipContent side="top" className="theme-bg-primary">
                             <p>Select model target variable</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                      <DialogContent className="max-w-lg bg-white">
+                      <DialogContent className="max-w-lg theme-bg-primary">
                         <DialogHeader>
                           <DialogTitle>Select Target Variable</DialogTitle>
                           <p className="text-xs text-gray-600 mt-2">
@@ -5060,12 +5060,12 @@ const EnhancedGeospatialChat = memo(({
                               </Button>
                             </DialogTrigger>
                           </TooltipTrigger>
-                          <TooltipContent side="top" className="bg-white">
+                          <TooltipContent side="top" className="theme-bg-primary">
                             <p>Select AI persona: {personaMetadata.find(p => p.id === selectedPersona)?.name || 'Strategist'}</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                      <DialogContent className="max-w-lg bg-white" aria-describedby="persona-dialog-description">
+                      <DialogContent className="max-w-lg theme-bg-primary" aria-describedby="persona-dialog-description">
                         <DialogHeader>
                           <DialogTitle>Select AI Persona</DialogTitle>
                           <p id="persona-dialog-description" className="text-xs text-gray-600 mt-2">
@@ -5130,7 +5130,7 @@ const EnhancedGeospatialChat = memo(({
                                   </Button>
                                 </DialogTrigger>
                               </TooltipTrigger>
-                              <TooltipContent side="top" className="bg-white">
+                              <TooltipContent side="top" className="theme-bg-primary">
                                 <p>
                                   {clusteringSupported 
                                     ? 'Configure clustering for territory analysis'
@@ -5140,7 +5140,7 @@ const EnhancedGeospatialChat = memo(({
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
-                          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white" aria-describedby="cluster-dialog-description">
+                          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto theme-bg-primary" aria-describedby="cluster-dialog-description">
                             <DialogHeader>
                               <DialogTitle>Clustering Configuration</DialogTitle>
                               <p id="cluster-dialog-description" className="text-xs text-gray-600 mt-2">Configure clustering settings for your analysis.</p>
@@ -5269,7 +5269,7 @@ const EnhancedGeospatialChat = memo(({
                               <span>clear</span>
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent side="top" className="bg-white">
+                          <TooltipContent side="top" className="theme-bg-primary">
                             <p>Clear all messages</p>
                           </TooltipContent>
                         </Tooltip>
@@ -5301,7 +5301,7 @@ const EnhancedGeospatialChat = memo(({
                               )}
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent side="top" className="bg-white">
+                          <TooltipContent side="top" className="theme-bg-primary">
                             <p>Analyze your query</p>
                           </TooltipContent>
                         </Tooltip>
@@ -5508,7 +5508,7 @@ const EnhancedGeospatialChat = memo(({
       const viewToUse = currentMapView || initialMapView;
       console.log('[GeospatialChat] InfographicsTab viewToUse:', viewToUse, 'viewToUse?.map:', viewToUse?.map, 'initialMapView:', initialMapView, 'initialMapView?.map:', initialMapView?.map, 'mapViewRefValue:', mapViewRefValue, 'mapViewRefValue?.map:', mapViewRefValue?.map);
       return (
-        <div className="fixed right-0 top-0 w-[400px] h-screen bg-white shadow-lg border-l rounded-l-xl z-50 animate-slide-in-right data-[state=closed]:animate-slide-out-right">
+        <div className="fixed right-0 top-0 w-[400px] h-screen theme-bg-primary shadow-lg border-l rounded-l-xl z-50 animate-slide-in-right data-[state=closed]:animate-slide-out-right">
           <div className="flex flex-col h-full">
             <div className="flex flex-row items-center justify-between px-4 py-3 border-b">
               <div className="flex items-center gap-2">
@@ -5560,7 +5560,7 @@ const EnhancedGeospatialChat = memo(({
         };
 
         return (
-          <div className="fixed right-0 top-0 h-screen w-[30vw] bg-white shadow-lg z-50 overflow-y-auto">
+          <div className="fixed right-0 top-0 h-screen w-[30vw] theme-bg-primary shadow-lg z-50 overflow-y-auto">
             <CustomVisualizationPanel
               layer={layerConfigForPanel as any} // Casting as the panel's internal type isn't exported.
               onClose={() => setIsVizPanelOpen(false)}
@@ -5578,7 +5578,7 @@ const EnhancedGeospatialChat = memo(({
 
     {/* Visualization Customization Panel */}
     <Dialog open={isVizPanelOpen} onOpenChange={setIsVizPanelOpen} modal={false}>
-      <DialogContent className="max-w-xl bg-white" aria-describedby="viz-panel-description">
+      <DialogContent className="max-w-xl theme-bg-primary" aria-describedby="viz-panel-description">
         {/* Accessible title for screen readers */}
         <DialogHeader>
           <VisuallyHidden asChild>

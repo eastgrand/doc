@@ -1053,8 +1053,8 @@ export default function UnifiedAnalysisWorkflow({
                 className="h-5 w-5" 
               />
               <div className="flex text-sm font-bold">
-                <span className="text-[#33a852]">quickstart</span>
-                <span className="text-black -ml-px">IQ</span>
+                <span className="firefly-accent-primary">quickstart</span>
+                <span className="theme-text-primary -ml-px">IQ</span>
               </div>
             </CardTitle>
           </CardHeader>
@@ -1087,8 +1087,8 @@ export default function UnifiedAnalysisWorkflow({
                   className="h-5 w-5" 
                 />
                 <div className="flex text-sm font-bold">
-                  <span className="text-[#33a852]">infograph</span>
-                  <span className="text-black -ml-px">IQ</span>
+                  <span className="firefly-accent-primary">infograph</span>
+                  <span className="theme-text-primary -ml-px">IQ</span>
                 </div>
               </div>
             </CardTitle>
@@ -1189,7 +1189,7 @@ export default function UnifiedAnalysisWorkflow({
                               </span>
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="max-w-lg bg-white" aria-describedby="persona-dialog-description">
+                          <DialogContent className="max-w-lg theme-bg-primary" aria-describedby="persona-dialog-description">
                             <DialogHeader>
                               <DialogTitle>Select AI Persona</DialogTitle>
                               <p id="persona-dialog-description" className="text-xs text-gray-600 mt-2">
@@ -1525,7 +1525,7 @@ export default function UnifiedAnalysisWorkflow({
         {/* Results content with Analysis/Chat, Data Table, and Insights */}
         <div className="flex-1 flex flex-col min-h-0">
           <Tabs value={activeResultsTab} onValueChange={setActiveResultsTab} className="flex-1 flex flex-col min-h-0">
-            <TabsList className="grid w-full grid-cols-3 flex-shrink-0 bg-white border-b mb-2">
+            <TabsList className="grid w-full grid-cols-3 flex-shrink-0 theme-bg-primary border-b mb-2">
               <TabsTrigger value="analysis" className="flex items-center gap-2">
                 <MessageCircle className="h-3 w-3" />
                 Analysis

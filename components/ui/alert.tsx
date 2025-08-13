@@ -3,13 +3,13 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 const alertVariants = cva(
-  "relative w-full rounded-lg border px-4 py-3 text-sm [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg~*]:pl-7",
+  "relative w-full rounded-lg theme-border-primary px-4 py-3 text-sm [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:theme-text-primary [&>svg~*]:pl-7",
   {
     variants: {
       variant: {
-        default: "bg-white text-gray-900",
+        default: "theme-bg-tertiary theme-text-primary",
         destructive:
-          "border-red-500/50 text-red-600 dark:border-red-500 [&>svg]:text-red-600 bg-red-50",
+          "theme-border-destructive theme-text-destructive [&>svg]:theme-text-destructive theme-bg-destructive-subtle",
       },
     },
     defaultVariants: {
