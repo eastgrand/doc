@@ -11,6 +11,14 @@ import {
 import { Send, Bot, User, Loader2, Copy, Check } from 'lucide-react';
 import { UnifiedAnalysisResponse } from './UnifiedAnalysisWrapper';
 import { renderPerformanceMetrics } from '@/lib/utils/performanceMetrics';
+import { 
+  calculateBasicStats, 
+  calculateDistribution, 
+  detectPatterns,
+  formatStatsForChat,
+  formatDistributionForChat,
+  formatPatternsForChat
+} from '@/lib/analysis/statsCalculator';
 
 interface UnifiedAnalysisChatProps {
   analysisResult: UnifiedAnalysisResponse;
@@ -55,6 +63,7 @@ export default function UnifiedAnalysisChat({
   const [selectedMessage, setSelectedMessage] = useState<ChatMessage | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+  const [analysisMode, setAnalysisMode] = useState<'full' | 'stats-only'>('full');
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ 
@@ -63,6 +72,112 @@ export default function UnifiedAnalysisChat({
       inline: 'nearest'
     });
   }, []);
+
+  // Command processing
+  const processCommand = useCallback((input: string): { isCommand: boolean; response?: string; action?: string } => {
+    if (!input.startsWith('/')) {
+      return { isCommand: false };
+    }
+
+    const [command, ...args] = input.slice(1).split(' ');
+    const lowerCommand = command.toLowerCase();
+
+    switch (lowerCommand) {
+      case 'quick':
+      case 'stats':
+        setAnalysisMode('stats-only');
+        return { 
+          isCommand: true, 
+          response: '📊 **Stats-Only Mode Enabled**\n\nFuture analysis will show statistics only without AI insights. This is faster and uses fewer resources.\n\nUse `/full` to re-enable AI analysis.',
+          action: 'mode-change'
+        };
+
+      case 'full':
+      case 'ai':
+        setAnalysisMode('full');
+        return { 
+          isCommand: true, 
+          response: '🤖 **Full Analysis Mode Enabled**\n\nFuture analysis will include comprehensive AI insights along with statistics.\n\nUse `/quick` for stats-only mode.',
+          action: 'mode-change'
+        };
+
+      case 'export':
+        try {
+          const latestMessage = messages.find(m => m.role === 'assistant');
+          if (latestMessage) {
+            navigator.clipboard.writeText(latestMessage.content);
+            return { 
+              isCommand: true, 
+              response: '✅ **Analysis Exported**\n\nThe latest analysis has been copied to your clipboard.',
+              action: 'export'
+            };
+          } else {
+            return { 
+              isCommand: true, 
+              response: '❌ **Export Failed**\n\nNo analysis found to export. Please run an analysis first.',
+              action: 'export'
+            };
+          }
+        } catch (error) {
+          return { 
+            isCommand: true, 
+            response: '❌ **Export Failed**\n\nUnable to copy to clipboard. Please try selecting and copying manually.',
+            action: 'export'
+          };
+        }
+
+      case 'help':
+      case 'commands':
+        return { 
+          isCommand: true, 
+          response: `🔧 **Available Commands**
+
+**Analysis Modes:**
+• \`/quick\` or \`/stats\` - Stats-only mode (faster, no AI)
+• \`/full\` or \`/ai\` - Full analysis with AI insights (default)
+
+**Utilities:**
+• \`/export\` - Copy current analysis to clipboard
+• \`/help\` - Show this command list
+
+**Tips:**
+- Commands work anywhere in the chat
+- Current mode: **${analysisMode === 'full' ? 'Full Analysis' : 'Stats Only'}**
+- Stats always appear within 3 seconds
+- Full AI analysis takes 5-10 seconds`,
+          action: 'help'
+        };
+
+      case 'status':
+        const { analysisResult: result } = analysisResult;
+        const recordCount = result.data?.records?.length || 0;
+        return { 
+          isCommand: true, 
+          response: `📊 **Analysis Status**
+
+**Current Dataset:**
+• Areas analyzed: ${recordCount}
+• Analysis type: ${result.endpoint?.replace('/', '').replace(/-/g, ' ') || 'Unknown'}
+• Mode: ${analysisMode === 'full' ? 'Full Analysis' : 'Stats Only'}
+
+**Available Data:**
+• Basic statistics ✅
+• Distribution analysis ✅
+• Pattern detection ✅
+• AI insights ${analysisMode === 'full' ? '✅' : '⚠️ Disabled'}
+
+Use \`/help\` for available commands.`,
+          action: 'status'
+        };
+
+      default:
+        return { 
+          isCommand: true, 
+          response: `❓ **Unknown Command: "${command}"**\n\nUse \`/help\` to see available commands.`,
+          action: 'unknown'
+        };
+    }
+  }, [analysisMode, messages, analysisResult]);
 
   const handleMessageClick = useCallback((message: ChatMessage) => {
     setSelectedMessage(message);
@@ -160,20 +275,90 @@ export default function UnifiedAnalysisChat({
     setHasGeneratedNarrative(true);
     setIsProcessing(true);
 
-    // Add initial loading message
-    const loadingMessage: ChatMessage = {
-      id: 'loading',
+    // Get the analysis data
+    const { analysisResult: result, metadata } = analysisResult;
+    const analysisData = result.data?.records || [];
+    
+    // Start with analyzing message  
+    let messageContent = `📊 Analyzing ${analysisData.length} areas...`;
+    
+    // Declare at top level so it's accessible in error handler
+    const messageId = Date.now().toString();
+    const messageTimestamp = new Date();
+    
+    const initialMessage: ChatMessage = {
+      id: messageId,
       role: 'assistant',
-      content: 'Analyzing your data and generating insights...',
-      timestamp: new Date()
+      content: messageContent,
+      timestamp: messageTimestamp
     };
-    setMessages([loadingMessage]);
+    setMessages([initialMessage]);
+    
+    // Calculate and append basic stats immediately (Phase 1)
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500)); // Small delay for UX
+      
+      const basicStats = calculateBasicStats(analysisData);
+      messageContent += '\n\n' + formatStatsForChat(basicStats);
+      
+      setMessages([{
+        ...initialMessage,
+        content: messageContent
+      }]);
+      
+      // Calculate and append distribution (Phase 2)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const distribution = calculateDistribution(analysisData);
+      messageContent += '\n\n' + formatDistributionForChat(distribution);
+      
+      setMessages([{
+        ...initialMessage,
+        content: messageContent
+      }]);
+      
+      // Calculate and append patterns (Phase 3)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const patterns = detectPatterns(analysisData);
+      messageContent += '\n\n' + formatPatternsForChat(patterns);
+      
+      setMessages([{
+        ...initialMessage,
+        content: messageContent
+      }]);
+      
+      // Only proceed with AI if in full mode
+      if (analysisMode === 'stats-only') {
+        messageContent += '\n\n✅ **Analysis Complete**\n\n*Stats-only mode - use `/full` to enable AI insights, or ask specific questions below.*';
+        
+        setMessages([{
+          id: messageId,
+          role: 'assistant',
+          content: messageContent,
+          timestamp: messageTimestamp
+        }]);
+        return; // Exit early for stats-only mode
+      }
+
+      // Add AI analysis loading indicator for full mode
+      messageContent += '\n\n🤖 **AI Analysis**\n*Generating comprehensive insights...*';
+      
+      setMessages([{
+        ...initialMessage,
+        content: messageContent
+      }]);
+      
+    } catch (statsError) {
+      console.error('[UnifiedAnalysisChat] Error calculating stats:', statsError);
+      // Continue with AI analysis even if stats fail (in full mode only)
+    }
+
+    // Only generate AI analysis in full mode
+    if (analysisMode !== 'full') return;
 
     try {
       console.log('[UnifiedAnalysisChat] Generating initial AI narrative...');
-      
-      // Prepare the request to generate AI narrative
-      const { analysisResult: result, metadata } = analysisResult;
       
       // Build the request payload
       const requestPayload = {
@@ -262,14 +447,22 @@ export default function UnifiedAnalysisChat({
           console.log('[UnifiedAnalysisChat] Removed leaked prompt instructions from response');
         }
         
-        // Replace loading message with actual narrative
-        const narrativeMessage: ChatMessage = {
-          id: '1',
+        // Remove the loading indicator and append AI analysis
+        const statsEndIndex = messageContent.lastIndexOf('🤖 **AI Analysis**');
+        if (statsEndIndex > -1) {
+          messageContent = messageContent.substring(0, statsEndIndex);
+        }
+        
+        // Append the AI analysis to the existing message with stats
+        messageContent += '\n\n🤖 **AI Analysis**\n' + cleanContent;
+        
+        const completeMessage: ChatMessage = {
+          id: messageId,
           role: 'assistant',
-          content: cleanContent,
-          timestamp: new Date()
+          content: messageContent,
+          timestamp: messageTimestamp
         };
-        setMessages([narrativeMessage]);
+        setMessages([completeMessage]);
         console.log('[UnifiedAnalysisChat] AI narrative generated successfully');
       } else {
         throw new Error('No content in API response');
@@ -291,22 +484,24 @@ export default function UnifiedAnalysisChat({
         }
       }
       
-      // Fallback to simple summary with error info
+      // Keep the stats and show error for AI portion
+      const statsEndIndex = messageContent.lastIndexOf('🤖 **AI Analysis**');
+      if (statsEndIndex > -1) {
+        messageContent = messageContent.substring(0, statsEndIndex);
+      }
+      messageContent += `\n\n⚠️ ${errorMessage}\n\nYou can ask specific questions about the data in the chat below.`;
+      
       const fallbackMessage: ChatMessage = {
-        id: '1',
+        id: messageId,
         role: 'assistant',
-        content: `Analysis completed! ${analysisResult.analysisResult.data.summary}
-
-⚠️ ${errorMessage}
-
-You can ask specific questions about the data in the chat below.`,
-        timestamp: new Date()
+        content: messageContent,
+        timestamp: messageTimestamp
       };
       setMessages([fallbackMessage]);
     } finally {
       setIsProcessing(false);
     }
-  }, [analysisResult, persona, setMessages, setHasGeneratedNarrative]);
+  }, [analysisResult, persona, setMessages, setHasGeneratedNarrative, analysisMode]);
 
   // Auto-generate AI narrative when analysisResult is available
   React.useEffect(() => {
@@ -319,10 +514,37 @@ You can ask specific questions about the data in the chat below.`,
   const handleSendMessage = useCallback(async () => {
     if (!inputValue.trim() || isProcessing) return;
 
+    const trimmedInput = inputValue.trim();
+    
+    // Check if this is a command
+    const commandResult = processCommand(trimmedInput);
+    if (commandResult.isCommand) {
+      // Add user command message
+      const userMessage: ChatMessage = {
+        id: Date.now().toString(),
+        role: 'user',
+        content: trimmedInput,
+        timestamp: new Date()
+      };
+      
+      // Add command response
+      const commandResponse: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: commandResult.response || 'Command processed.',
+        timestamp: new Date()
+      };
+      
+      setMessages((prev: ChatMessage[]) => [...prev, userMessage, commandResponse]);
+      setInputValue('');
+      return; // Don't process as regular message
+    }
+
+    // Regular message processing
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       role: 'user',
-      content: inputValue.trim(),
+      content: trimmedInput,
       timestamp: new Date()
     };
 
@@ -431,7 +653,7 @@ You can ask specific questions about the data in the chat below.`,
     } finally {
       setIsProcessing(false);
     }
-  }, [inputValue, isProcessing, analysisResult, messages, persona, setMessages]);
+  }, [inputValue, isProcessing, analysisResult, messages, persona, setMessages, processCommand]);
 
   const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -520,7 +742,7 @@ You can ask specific questions about the data in the chat below.`,
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyPress}
-            placeholder="Ask questions about your analysis results..."
+            placeholder={`Ask questions about your analysis results... (or try /help for commands, current mode: ${analysisMode === 'full' ? 'Full' : 'Stats-only'})`}
             className="flex-1 min-h-[60px] text-xs"
             disabled={isProcessing}
           />
