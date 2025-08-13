@@ -6,6 +6,9 @@
 @import './firefly-effects.css';
 @import './polygon-effects.css';
 
+/* Import Firefly theme system */
+@import './firefly-theme.css';
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

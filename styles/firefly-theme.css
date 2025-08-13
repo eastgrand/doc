@@ -1,0 +1,406 @@
+/* ===== FIREFLY THEME SYSTEM ===== */
+/* Complete CSS implementation with Dark & Light Mode support */
+
+:root {
+  /* Dark Mode Colors (Original Firefly) */
+  --firefly-1: #ff0040;   /* Deep Pink/Red */
+  --firefly-2: #ff0080;   /* Hot Pink */
+  --firefly-3: #ff00bf;   /* Magenta */
+  --firefly-4: #ff00ff;   /* Fuchsia */
+  --firefly-5: #bf00ff;   /* Purple */
+  --firefly-6: #8000ff;   /* Blue Violet */
+  --firefly-7: #4000ff;   /* Indigo */
+  --firefly-8: #0040ff;   /* Blue */
+  --firefly-9: #0080ff;   /* Dodger Blue */
+  --firefly-10: #00bfff;  /* Deep Sky Blue */
+  --firefly-11: #00ffff;  /* Cyan */
+  --firefly-12: #00ffbf;  /* Spring Green */
+  --firefly-13: #00ff80;  /* Bright Green */
+  --firefly-14: #00ff40;  /* Lime Green */
+  --firefly-15: #40ff00;  /* Chartreuse */
+  --firefly-16: #80ff00;  /* Yellow Green */
+  --firefly-17: #bfff00;  /* Light Yellow */
+  --firefly-18: #ffff00;  /* Yellow */
+  --firefly-19: #ffbf00;  /* Orange */
+  --firefly-20: #ff8000;  /* Dark Orange */
+  --firefly-neutral: #ffffff;
+
+  /* Light Mode Colors */
+  --firefly-light-1: #cc0033;   /* Darker Deep Pink */
+  --firefly-light-2: #cc0066;   /* Darker Hot Pink */
+  --firefly-light-3: #cc0099;   /* Darker Magenta */
+  --firefly-light-4: #cc00cc;   /* Darker Fuchsia */
+  --firefly-light-5: #9900cc;   /* Darker Purple */
+  --firefly-light-6: #6600cc;   /* Darker Blue Violet */
+  --firefly-light-7: #3300cc;   /* Darker Indigo */
+  --firefly-light-8: #0033cc;   /* Darker Blue */
+  --firefly-light-9: #0066cc;   /* Darker Dodger Blue */
+  --firefly-light-10: #0099cc;  /* Darker Deep Sky Blue */
+  --firefly-light-11: #00cccc;  /* Darker Cyan */
+  --firefly-light-12: #00cc99;  /* Darker Spring Green */
+  --firefly-light-13: #00cc66;  /* Darker Bright Green */
+  --firefly-light-14: #00cc33;  /* Darker Lime Green */
+  --firefly-light-15: #33cc00;  /* Darker Chartreuse */
+  --firefly-light-16: #66cc00;  /* Darker Yellow Green */
+  --firefly-light-17: #99cc00;  /* Darker Light Yellow */
+  --firefly-light-18: #cccc00;  /* Darker Yellow */
+  --firefly-light-19: #cc9900;  /* Darker Orange */
+  --firefly-light-20: #cc6600;  /* Darker Dark Orange */
+  --firefly-light-neutral: #333333;
+
+  /* Theme Variables - Default to Dark Mode */
+  --theme-bg-primary: #1a1a1a;
+  --theme-bg-secondary: #2a2a2a;
+  --theme-bg-tertiary: #333333;
+  --theme-text-primary: #ffffff;
+  --theme-text-secondary: #cccccc;
+  --theme-text-muted: #999999;
+  --theme-border: #444444;
+  --theme-accent-primary: var(--firefly-11);    /* Cyan */
+  --theme-accent-secondary: var(--firefly-15);  /* Chartreuse */
+  --theme-warning: var(--firefly-18);           /* Yellow */
+  --theme-error: var(--firefly-1);              /* Deep Pink */
+  --theme-success: var(--firefly-14);           /* Lime Green */
+  
+  /* Map Basemap */
+  --theme-basemap: "dark-gray-vector";
+}
+
+/* Light Mode Theme Variables */
+[data-theme="light"] {
+  --theme-bg-primary: #f8f8f8;
+  --theme-bg-secondary: #f0f0f0;
+  --theme-bg-tertiary: #ffffff;
+  --theme-text-primary: #333333;
+  --theme-text-secondary: #666666;
+  --theme-text-muted: #999999;
+  --theme-border: #e0e0e0;
+  --theme-accent-primary: var(--firefly-light-11);    /* Darker Cyan */
+  --theme-accent-secondary: var(--firefly-light-15);  /* Darker Chartreuse */
+  --theme-warning: var(--firefly-light-18);           /* Darker Yellow */
+  --theme-error: var(--firefly-light-1);              /* Darker Deep Pink */
+  --theme-success: var(--firefly-light-14);           /* Darker Lime Green */
+  
+  /* Map Basemap */
+  --theme-basemap: "gray-vector";
+}
+
+/* ===== BASE THEME STYLES ===== */
+
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+  background-color: var(--theme-bg-primary);
+  color: var(--theme-text-primary);
+}
+
+/* ===== FIREFLY POINT STYLES ===== */
+
+.firefly-point {
+  position: relative;
+  border-radius: 50%;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.firefly-point-standard {
+  background: radial-gradient(circle, currentColor 0%, currentColor 40%, transparent 70%);
+  box-shadow: 
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 40px currentColor,
+    inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.firefly-point-shimmer {
+  background: radial-gradient(circle, currentColor 0%, currentColor 30%, transparent 60%);
+  box-shadow: 
+    0 0 5px currentColor,
+    0 0 15px currentColor,
+    0 0 30px currentColor,
+    0 0 60px currentColor,
+    inset 0 0 15px rgba(255, 255, 255, 0.4);
+  animation: firefly-twinkle 2s ease-in-out infinite alternate;
+}
+
+@keyframes firefly-twinkle {
+  0% {
+    box-shadow: 
+      0 0 5px currentColor,
+      0 0 15px currentColor,
+      0 0 30px currentColor,
+      0 0 60px currentColor,
+      inset 0 0 15px rgba(255, 255, 255, 0.4);
+    transform: scale(1);
+  }
+  100% {
+    box-shadow: 
+      0 0 10px currentColor,
+      0 0 25px currentColor,
+      0 0 50px currentColor,
+      0 0 100px currentColor,
+      inset 0 0 20px rgba(255, 255, 255, 0.6);
+    transform: scale(1.1);
+  }
+}
+
+/* Point Sizes */
+.firefly-point-xs { width: 4px; height: 4px; }
+.firefly-point-sm { width: 8px; height: 8px; }
+.firefly-point-md { width: 12px; height: 12px; }
+.firefly-point-lg { width: 20px; height: 20px; }
+.firefly-point-xl { width: 32px; height: 32px; }
+
+/* ===== FIREFLY POLYGON STYLES ===== */
+
+.firefly-polygon {
+  position: relative;
+  z-index: 5;
+  transition: all 0.3s ease;
+}
+
+.firefly-polygon-standard {
+  background: rgba(0, 0, 0, 0.1);
+  border: 2px solid currentColor;
+  box-shadow: 
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    inset 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.firefly-polygon-inner {
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 100%
+  );
+  border: 1px solid currentColor;
+  box-shadow: 
+    inset 0 0 15px currentColor,
+    inset 0 0 30px currentColor;
+}
+
+/* ===== FIREFLY LINE STYLES ===== */
+
+.firefly-line {
+  position: relative;
+  height: 2px;
+  background: currentColor;
+  box-shadow: 
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 20px currentColor;
+}
+
+/* ===== LIGHT MODE ADAPTATIONS ===== */
+
+[data-theme="light"] .firefly-point-standard {
+  background: radial-gradient(circle, currentColor 0%, currentColor 50%, rgba(255,255,255,0.8) 80%, transparent 100%);
+  box-shadow: 
+    0 0 8px rgba(0,0,0,0.3),
+    0 0 15px currentColor,
+    0 0 25px rgba(0,0,0,0.1),
+    inset 0 0 8px rgba(0,0,0,0.2),
+    inset 0 0 15px rgba(255,255,255,0.6);
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+[data-theme="light"] .firefly-polygon-standard {
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid currentColor;
+  box-shadow: 
+    0 0 8px rgba(0,0,0,0.2),
+    0 0 15px currentColor,
+    inset 0 0 10px rgba(255,255,255,0.6),
+    inset 0 0 20px rgba(0,0,0,0.1);
+}
+
+[data-theme="light"] .firefly-line {
+  height: 3px;
+  box-shadow: 
+    0 0 5px rgba(0,0,0,0.3),
+    0 0 10px currentColor,
+    0 0 15px rgba(0,0,0,0.2);
+  border-radius: 1px;
+}
+
+/* ===== COLOR CLASSES ===== */
+
+/* Primary Theme Colors */
+.firefly-accent-primary { color: var(--theme-accent-primary); }
+.firefly-accent-secondary { color: var(--theme-accent-secondary); }
+.firefly-warning { color: var(--theme-warning); }
+.firefly-error { color: var(--theme-error); }
+.firefly-success { color: var(--theme-success); }
+
+/* Full Palette - Dark Mode */
+.firefly-color-1 { color: var(--firefly-1); }
+.firefly-color-2 { color: var(--firefly-2); }
+.firefly-color-3 { color: var(--firefly-3); }
+.firefly-color-4 { color: var(--firefly-4); }
+.firefly-color-5 { color: var(--firefly-5); }
+.firefly-color-6 { color: var(--firefly-6); }
+.firefly-color-7 { color: var(--firefly-7); }
+.firefly-color-8 { color: var(--firefly-8); }
+.firefly-color-9 { color: var(--firefly-9); }
+.firefly-color-10 { color: var(--firefly-10); }
+.firefly-color-11 { color: var(--firefly-11); }
+.firefly-color-12 { color: var(--firefly-12); }
+.firefly-color-13 { color: var(--firefly-13); }
+.firefly-color-14 { color: var(--firefly-14); }
+.firefly-color-15 { color: var(--firefly-15); }
+.firefly-color-16 { color: var(--firefly-16); }
+.firefly-color-17 { color: var(--firefly-17); }
+.firefly-color-18 { color: var(--firefly-18); }
+.firefly-color-19 { color: var(--firefly-19); }
+.firefly-color-20 { color: var(--firefly-20); }
+
+/* Full Palette - Light Mode */
+[data-theme="light"] .firefly-color-1 { color: var(--firefly-light-1); }
+[data-theme="light"] .firefly-color-2 { color: var(--firefly-light-2); }
+[data-theme="light"] .firefly-color-3 { color: var(--firefly-light-3); }
+[data-theme="light"] .firefly-color-4 { color: var(--firefly-light-4); }
+[data-theme="light"] .firefly-color-5 { color: var(--firefly-light-5); }
+[data-theme="light"] .firefly-color-6 { color: var(--firefly-light-6); }
+[data-theme="light"] .firefly-color-7 { color: var(--firefly-light-7); }
+[data-theme="light"] .firefly-color-8 { color: var(--firefly-light-8); }
+[data-theme="light"] .firefly-color-9 { color: var(--firefly-light-9); }
+[data-theme="light"] .firefly-color-10 { color: var(--firefly-light-10); }
+[data-theme="light"] .firefly-color-11 { color: var(--firefly-light-11); }
+[data-theme="light"] .firefly-color-12 { color: var(--firefly-light-12); }
+[data-theme="light"] .firefly-color-13 { color: var(--firefly-light-13); }
+[data-theme="light"] .firefly-color-14 { color: var(--firefly-light-14); }
+[data-theme="light"] .firefly-color-15 { color: var(--firefly-light-15); }
+[data-theme="light"] .firefly-color-16 { color: var(--firefly-light-16); }
+[data-theme="light"] .firefly-color-17 { color: var(--firefly-light-17); }
+[data-theme="light"] .firefly-color-18 { color: var(--firefly-light-18); }
+[data-theme="light"] .firefly-color-19 { color: var(--firefly-light-19); }
+[data-theme="light"] .firefly-color-20 { color: var(--firefly-light-20); }
+
+/* ===== UI COMPONENT THEME STYLES ===== */
+
+/* Buttons */
+.theme-button {
+  background-color: var(--theme-bg-tertiary);
+  color: var(--theme-text-primary);
+  border: 1px solid var(--theme-border);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.theme-button:hover {
+  background-color: var(--theme-accent-primary);
+  box-shadow: 0 0 10px var(--theme-accent-primary);
+}
+
+.theme-button-primary {
+  background-color: var(--theme-accent-primary);
+  color: var(--theme-bg-primary);
+  box-shadow: 0 0 10px var(--theme-accent-primary);
+}
+
+/* Inputs */
+.theme-input {
+  background-color: var(--theme-bg-tertiary);
+  color: var(--theme-text-primary);
+  border: 1px solid var(--theme-border);
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.theme-input:focus {
+  outline: none;
+  border-color: var(--theme-accent-primary);
+  box-shadow: 0 0 5px var(--theme-accent-primary);
+}
+
+/* Cards/Panels */
+.theme-card {
+  background-color: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+/* Sidebars */
+.theme-sidebar {
+  background-color: var(--theme-bg-secondary);
+  border-right: 1px solid var(--theme-border);
+}
+
+/* Tabs */
+.theme-tab {
+  background-color: var(--theme-bg-secondary);
+  color: var(--theme-text-secondary);
+  border-bottom: 2px solid transparent;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.theme-tab-active {
+  color: var(--theme-accent-primary);
+  border-bottom-color: var(--theme-accent-primary);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.theme-tab:hover:not(.theme-tab-active) {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-bg-tertiary);
+}
+
+/* Dialogs */
+.theme-dialog {
+  background-color: var(--theme-bg-primary);
+  border: 1px solid var(--theme-border);
+  border-radius: 12px;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    0 0 20px var(--theme-accent-primary);
+}
+
+[data-theme="light"] .theme-dialog {
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    0 0 20px var(--theme-accent-primary);
+}
+
+/* ===== ACCESSIBILITY & PERFORMANCE ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  .firefly-point-shimmer {
+    animation: none;
+  }
+  
+  * {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .firefly-point, .firefly-polygon {
+    filter: contrast(1.5) brightness(1.2);
+  }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .firefly-point-shimmer {
+    animation: none;
+  }
+  
+  .firefly-point-standard {
+    box-shadow: 
+      0 0 5px currentColor,
+      0 0 10px currentColor;
+  }
+}
+
+/* Hardware Acceleration */
+.firefly-point, .firefly-polygon {
+  transform: translateZ(0);
+  will-change: transform;
+}

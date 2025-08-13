@@ -1,0 +1,120 @@
+'use client';
+
+import React from 'react';
+import { useTheme } from './ThemeProvider';
+
+interface ThemeSwitcherProps {
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+export function ThemeSwitcher({ className = '', style = {} }: ThemeSwitcherProps) {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    <button
+      onClick={toggleTheme}
+      className={`theme-switcher ${className}`}
+      style={{
+        position: 'relative',
+        width: '48px',
+        height: '48px',
+        border: '2px solid var(--theme-border)',
+        borderRadius: '50%',
+        backgroundColor: 'var(--theme-bg-tertiary)',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'all 0.3s ease',
+        boxShadow: theme === 'dark' 
+          ? '0 0 15px var(--theme-accent-primary)' 
+          : '0 2px 8px rgba(0,0,0,0.2)',
+        ...style
+      }}
+      title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+    >
+      {/* Icon Container */}
+      <div
+        style={{
+          width: '24px',
+          height: '24px',
+          position: 'relative',
+          transition: 'transform 0.3s ease',
+          transform: theme === 'light' ? 'rotate(180deg)' : 'rotate(0deg)'
+        }}
+      >
+        {theme === 'dark' ? (
+          // Moon icon for dark mode
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="var(--theme-accent-primary)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        ) : (
+          // Sun icon for light mode
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="var(--theme-accent-primary)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="12" cy="12" r="5" />
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+        )}
+      </div>
+      
+      {/* Glow effect for dark mode */}
+      {theme === 'dark' && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: '-4px',
+            borderRadius: '50%',
+            background: `radial-gradient(circle, var(--theme-accent-primary) 0%, transparent 70%)`,
+            opacity: 0.3,
+            animation: 'firefly-glow 2s ease-in-out infinite alternate',
+            pointerEvents: 'none'
+          }}
+        />
+      )}
+      
+      <style jsx>{`
+        @keyframes firefly-glow {
+          0% {
+            opacity: 0.2;
+            transform: scale(1);
+          }
+          100% {
+            opacity: 0.4;
+            transform: scale(1.1);
+          }
+        }
+        
+        .theme-switcher:hover {
+          transform: scale(1.05);
+          border-color: var(--theme-accent-primary);
+        }
+        
+        .theme-switcher:active {
+          transform: scale(0.95);
+        }
+      `}</style>
+    </button>
+  );
+}
+
+export default ThemeSwitcher;
