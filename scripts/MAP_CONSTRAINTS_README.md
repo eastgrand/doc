@@ -18,8 +18,9 @@ This system dynamically constrains the map view to the project's data extents, p
 
 ### 3. **Map Integration**
 - `MapClient.tsx` automatically applies constraints on map creation
+- **Preserves original map center** (Jacksonville, FL) - does not change initial view
 - Uses Web Mercator projection (EPSG:102100) for accurate extent calculation
-- Preserves all zoom levels while restricting panning
+- Preserves all zoom levels while restricting panning only
 
 ## Usage
 
@@ -58,6 +59,8 @@ zoomToDataExtent(mapView);
 ✅ **Dynamic Generation**: Based on actual project data extents
 ✅ **Smart Buffering**: 10% buffer prevents edge cases
 ✅ **Zoom Preservation**: Full zoom in/out capability maintained
+✅ **Center Preservation**: Keeps original map center (Jacksonville, FL)
+✅ **Panning Constraints**: Only restricts panning boundaries
 ✅ **Rotation Disabled**: Prevents accidental map rotation
 ✅ **TypeScript Support**: Full type definitions included
 ✅ **Automation Integration**: Alerts when constraints need updating

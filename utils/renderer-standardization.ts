@@ -5,12 +5,12 @@
  * the competitive analysis renderer's red-yellow-green color scheme and 0.6 opacity.
  */
 
-// Standard quartile color scheme (red-to-green, 4 classes)
+// Standard quartile color scheme (Firefly colors, 4 classes)
 export const STANDARD_COLOR_SCHEME = [
-  '#d73027', // Strong red (lowest values)
-  '#fdae61', // Orange
-  '#a6d96a', // Light green
-  '#1a9850'  // Dark green (highest values)
+  '#ff0040', // Firefly Deep Pink (lowest values)
+  '#ffbf00', // Firefly Orange 
+  '#00ff40', // Firefly Lime Green
+  '#00ff80'  // Firefly Bright Green (highest values)
 ];
 
 // Standard opacity for all renderers

@@ -87,13 +87,13 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
    * Creates the default diverging renderer for difference visualization using the same colors as strategic analysis
    */
   private createDefaultRenderer(): ClassBreaksRenderer {
-    // Use the exact same colors as strategic analysis
+    // Use Firefly colors for strategic analysis
     const colors = [
-      '#d73027', // Red (lowest strategic value)
-      '#fdae61', // Orange  
-      '#fee090', // Light yellow
-      '#a6d96a', // Light Green
-      '#1a9850'  // Dark Green (highest strategic value)
+      '#ff0040', // Firefly Deep Pink (lowest strategic value)
+      '#ffbf00', // Firefly Orange  
+      '#ffff80', // Firefly Light Yellow
+      '#00ff40', // Firefly Lime Green
+      '#00ff80'  // Firefly Bright Green (highest strategic value)
     ];
 
     return new ClassBreaksRenderer({
@@ -176,13 +176,13 @@ export class DifferenceVisualization extends BaseVisualization<DifferenceVisuali
       breakPoint2 = 25;
     }
 
-    // Use the exact same colors as strategic analysis
+    // Use Firefly colors for strategic analysis
     const colors = [
-      '#d73027', // Red (lowest strategic value)
-      '#fdae61', // Orange  
-      '#fee090', // Light yellow
-      '#a6d96a', // Light Green
-      '#1a9850'  // Dark Green (highest strategic value)
+      '#ff0040', // Firefly Deep Pink (lowest strategic value)
+      '#ffbf00', // Firefly Orange  
+      '#ffff80', // Firefly Light Yellow
+      '#00ff40', // Firefly Lime Green
+      '#00ff80'  // Firefly Bright Green (highest strategic value)
     ];
 
     return new ClassBreaksRenderer({

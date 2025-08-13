@@ -705,10 +705,10 @@ export class ChoroplethRenderer extends EnhancedRendererBase {
   private generateEnhancedColorScheme(data: ProcessedAnalysisData, config: EnhancedVisualizationConfig, numClasses: number): string[] {
     // Use quartile colors (4 classes) to match static layers: red -> orange -> light green -> dark green
     const quartileColors = [
-      '#d73027', // Strong red (lowest values)
-      '#fdae61', // Orange
-      '#a6d96a', // Light green
-      '#1a9850'  // Dark green (highest values)
+      '#ff0040', // Strong red (lowest values)
+      '#ffbf00', // Orange
+      '#00ff40', // Light green
+      '#00ff80'  // Dark green (highest values)
     ];
     
     console.log(`[ChoroplethRenderer] Generating quartile color scheme for ${numClasses} classes`);

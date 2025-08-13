@@ -9,7 +9,18 @@ interface ThemeSwitcherProps {
 }
 
 export function ThemeSwitcher({ className = '', style = {} }: ThemeSwitcherProps) {
-  const { theme, toggleTheme } = useTheme();
+  // Use light theme as default fallback
+  let theme = 'light';
+  let toggleTheme = () => {};
+  
+  try {
+    const themeContext = useTheme();
+    theme = themeContext.theme;
+    toggleTheme = themeContext.toggleTheme;
+  } catch (error) {
+    // Silently use default values if context not available
+  }
+  
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {

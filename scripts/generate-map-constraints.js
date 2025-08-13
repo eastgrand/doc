@@ -165,22 +165,33 @@ export const DATA_EXTENT = {
 };
 
 // Helper function to apply constraints to a MapView
+// Note: This only constrains panning boundaries, does not change initial map center
 export function applyMapConstraints(view: __esri.MapView): void {
   if (!view) {
     console.warn('[MapConstraints] No MapView provided');
     return;
   }
   
+  // Create proper Extent object for constraints
+  const constraintExtent = {
+    type: "extent" as const,
+    xmin: MAP_CONSTRAINTS.geometry.xmin,
+    ymin: MAP_CONSTRAINTS.geometry.ymin,
+    xmax: MAP_CONSTRAINTS.geometry.xmax,
+    ymax: MAP_CONSTRAINTS.geometry.ymax,
+    spatialReference: MAP_CONSTRAINTS.geometry.spatialReference
+  };
+  
   view.constraints = {
-    geometry: MAP_CONSTRAINTS.geometry,
+    geometry: constraintExtent,
     minZoom: MAP_CONSTRAINTS.minZoom,
     maxZoom: MAP_CONSTRAINTS.maxZoom,
     snapToZoom: MAP_CONSTRAINTS.snapToZoom,
     rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
   };
   
-  console.log('[MapConstraints] Applied geographic constraints to MapView', {
-    extent: MAP_CONSTRAINTS.geometry,
+  console.log('[MapConstraints] Applied geographic constraints to MapView (panning boundaries only)', {
+    extent: constraintExtent,
     rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
   });
 }
@@ -192,7 +203,17 @@ export function zoomToDataExtent(view: __esri.MapView, options?: __esri.MapViewG
     return Promise.resolve();
   }
   
-  return view.goTo(DATA_EXTENT, {
+  // Create proper Extent object for zoom
+  const dataExtent = {
+    type: "extent" as const,
+    xmin: DATA_EXTENT.xmin,
+    ymin: DATA_EXTENT.ymin,
+    xmax: DATA_EXTENT.xmax,
+    ymax: DATA_EXTENT.ymax,
+    spatialReference: DATA_EXTENT.spatialReference
+  };
+  
+  return view.goTo(dataExtent, {
     duration: 1000,
     easing: 'ease-in-out',
     ...options

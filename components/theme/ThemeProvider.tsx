@@ -25,7 +25,7 @@ interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>('dark');
+  const [theme, setThemeState] = useState<Theme>('light');
   const [mounted, setMounted] = useState(false);
 
   // Initialize theme on mount
@@ -35,19 +35,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     if (savedTheme) {
       setThemeState(savedTheme);
     } else {
-      // Fall back to system preference
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
-      setThemeState(mediaQuery.matches ? 'light' : 'dark');
-      
-      // Listen for system theme changes
-      const handleChange = (e: MediaQueryListEvent) => {
-        if (!localStorage.getItem('theme')) {
-          setThemeState(e.matches ? 'light' : 'dark');
-        }
-      };
-      
-      mediaQuery.addEventListener('change', handleChange);
-      return () => mediaQuery.removeEventListener('change', handleChange);
+      // Default to light theme
+      setThemeState('light');
     }
     setMounted(true);
   }, []);

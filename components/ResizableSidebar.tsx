@@ -93,11 +93,17 @@ const ResizableSidebar = memo(({
     <>
       <div 
         ref={containerRef}
-        className="fixed right-0 top-0 bottom-0 bg-white shadow-lg"
-        style={{ width: `${defaultWidth}px`, zIndex: 10 }}
+        className="fixed right-0 top-0 bottom-0 theme-sidebar shadow-lg"
+        style={{ 
+          width: `${defaultWidth}px`, 
+          zIndex: 10,
+          backgroundColor: 'var(--theme-bg-secondary)',
+          borderLeft: '1px solid var(--theme-border)',
+          color: 'var(--theme-text-primary)'
+        }}
       >
-        <div className="h-full flex flex-col border-l border-gray-200">
-          <div className="p-2 border-b border-gray-200">
+        <div className="h-full flex flex-col" style={{ borderLeft: '1px solid var(--theme-border)' }}>
+          <div className="p-2" style={{ borderBottom: '1px solid var(--theme-border)' }}>
             <div className="flex items-center gap-2 pl-4 p-4">
               <Image 
                 src="/mpiq_pin2.png" 
@@ -107,8 +113,8 @@ const ResizableSidebar = memo(({
                 priority
               />
               <div className="flex text-xl font-bold">
-                <span className="text-[#33a852]">IQ</span>
-                <span className="text-black -ml-px">center</span>
+                <span className="firefly-accent-primary">IQ</span>
+                <span className="-ml-px" style={{ color: 'var(--theme-text-primary)' }}>center</span>
               </div>
             </div>
           </div>
@@ -133,11 +139,17 @@ const ResizableSidebar = memo(({
 const ChatLoadingState: React.FC = () => {
   return (
     <div className="p-4">
-      <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+      <div 
+        className="theme-card rounded-lg p-4"
+        style={{
+          backgroundColor: 'var(--theme-bg-tertiary)',
+          border: '1px solid var(--theme-border)'
+        }}
+      >
         <div className="flex items-center gap-2">
-          <Bot className="h-4 w-4 text-green-500" />
-          <span className="text-xs text-gray-600">Initializing AI...</span>
-          <Loader2 className="h-3 w-3 animate-spin text-green-500" />
+          <Bot className="h-4 w-4 firefly-accent-primary" />
+          <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Initializing AI...</span>
+          <Loader2 className="h-3 w-3 animate-spin firefly-accent-primary" />
         </div>
       </div>
     </div>

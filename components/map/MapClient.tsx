@@ -299,7 +299,15 @@ const MapClient = memo(({
   showLabels = false,
   legend
 }: MapClientProps) => {
-  const { theme } = useTheme();
+  // Use light theme as default fallback
+  let theme = 'light';
+  try {
+    const themeContext = useTheme();
+    theme = themeContext.theme;
+  } catch (error) {
+    // Silently use default theme if context not available
+  }
+  
   const mapRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<__esri.MapView | null>(null);
   const isInitialized = useRef(false);

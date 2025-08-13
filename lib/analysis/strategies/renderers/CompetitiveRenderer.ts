@@ -396,10 +396,10 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
     
     // Use standardized quartile colors to match static layers: red -> orange -> light green -> dark green
     const colors = [
-      '#d73027', // Strong red (lowest values)
-      '#fdae61', // Orange
-      '#a6d96a', // Light green
-      '#1a9850'  // Dark green (highest values)
+      '#ff0040', // Strong red (lowest values)
+      '#ffbf00', // Orange
+      '#00ff40', // Light green
+      '#00ff80'  // Dark green (highest values)
     ];
     
     return quartiles.map((value, index) => ({
@@ -771,7 +771,7 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
                 : index === competitiveQuartiles.length - 1
                   ? `> ${competitiveQuartiles[index - 1].toFixed(1)}`
                   : `${competitiveQuartiles[index - 1].toFixed(1)} - ${quartile.toFixed(1)}`,
-              color: ['#d73027', '#fdae61', '#a6d96a', '#1a9850'][index],
+              color: ['#ff0040', '#ffbf00', '#00ff40', '#00ff80'][index],
               value: quartile,
               quartile: index + 1
             }))
@@ -963,11 +963,11 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
   private createBrandStrengthColorStops(): any[] {
     // Color progression for market share (0-1 range) from low (red) to high (green) - standard scheme
     return [
-      { value: 0, color: '#d73027' },      // Strong red - low market share
-      { value: 0.1, color: '#fdae61' },    // Orange
+      { value: 0, color: '#ff0040' },      // Strong red - low market share
+      { value: 0.1, color: '#ffbf00' },    // Orange
       { value: 0.2, color: '#fee08b' },    // Yellow - moderate
-      { value: 0.3, color: '#a6d96a' },    // Light green
-      { value: 0.4, color: '#1a9850' }     // Strong green - high market share
+      { value: 0.3, color: '#00ff40' },    // Light green
+      { value: 0.4, color: '#00ff80' }     // Strong green - high market share
     ];
   }
 
@@ -1006,13 +1006,13 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
   private getCompetitiveColors(numClasses: number): string[] {
     // Red-Yellow-Green color scheme for competitive analysis
     const colors = [
-      '#d73027', // Strong red
+      '#ff0040', // Strong red
       '#f46d43', // Red-orange
-      '#fdae61', // Orange
+      '#ffbf00', // Orange
       '#fee08b', // Yellow
-      '#a6d96a', // Light green
+      '#00ff40', // Light green
       '#66bd63', // Green
-      '#1a9850'  // Dark green
+      '#00ff80'  // Dark green
     ];
     
     return colors.slice(0, numClasses);
@@ -1034,7 +1034,7 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
       'dominant': {
         type: 'simple-marker',
         style: 'diamond',
-        color: '#1a9850',
+        color: '#00ff80',
         size: 16,
         outline: { color: [0, 0, 0, 0], width: 0 } // No border
       },
@@ -1048,14 +1048,14 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
       'challenged': {
         type: 'simple-marker',
         style: 'square',
-        color: '#fdae61',
+        color: '#ffbf00',
         size: 10,
         outline: { color: [0, 0, 0, 0], width: 0 } // No border
       },
       'underperforming': {
         type: 'simple-marker',
         style: 'triangle',
-        color: '#d73027',
+        color: '#ff0040',
         size: 8,
         outline: { color: [0, 0, 0, 0], width: 0 } // No border
       }
@@ -1066,13 +1066,13 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
 
   private getPositionColor(position: string): string {
     const colorMap: Record<string, string> = {
-      'dominant': '#1a9850',
+      'dominant': '#00ff80',
       'competitive': '#66bd63',
-      'challenged': '#fdae61',
-      'underperforming': '#d73027'
+      'challenged': '#ffbf00',
+      'underperforming': '#ff0040'
     };
     
-    return colorMap[position] || '#fdae61';
+    return colorMap[position] || '#ffbf00';
   }
 
   private getPositionSymbolType(position: string): string {
@@ -1097,11 +1097,11 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
   private getColorForRange(index: number, totalClasses: number): string {
     // Color palette for competitive analysis (low to high)
     const colors = [
-      '#d73027', // Red - low competitive advantage
+      '#ff0040', // Red - low competitive advantage
       '#f46d43', // Orange-red
-      '#fdae61', // Orange  
-      '#a6d96a', // Light green
-      '#1a9850'  // Green - high competitive advantage
+      '#ffbf00', // Orange  
+      '#00ff40', // Light green
+      '#00ff80'  // Green - high competitive advantage
     ];
     
     return colors[Math.min(index, colors.length - 1)];
