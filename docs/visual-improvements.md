@@ -75,19 +75,33 @@ This document outlines the systematic implementation of a light/dark mode switch
 - [ ] Apply Firefly colors to links and interactive text
 - [ ] Ensure focus states are visible in both modes
 
-## **Phase 5: Data Visualization Integration**
+## **Phase 5: Firefly Map Layer and Visualization Integration**
 
-### **5.1 Chart and Graph Theming**
-- [ ] Apply Firefly color palette to data visualizations
-- [ ] Update chart backgrounds and gridlines
-- [ ] Ensure data points and lines are visible in both modes
-- [ ] Theme tooltips and data labels
+### **5.1 Map Layer Rendering with Firefly**
+- [ ] Integrate Firefly colors into FeatureLayer rendering
+- [ ] Apply Firefly point styles to all map points (standard, shimmer variants)
+- [ ] Theme polygon layers with Firefly glow effects
+- [ ] Update line/polyline rendering with Firefly line styles
+- [ ] Ensure proper theme switching for existing map layers
 
-### **5.2 Analysis Components**
-- [ ] Update analysis results styling
+### **5.2 Dynamic Visualization Rendering**
+- [ ] Apply Firefly color palette to analysis visualizations
+- [ ] Update clustering visualizations with Firefly effects
+- [ ] Theme statistical overlays with appropriate Firefly colors
+- [ ] Implement theme-aware renderer switching
+- [ ] Ensure Firefly effects work with large datasets
+
+### **5.3 Chart and Graph Theming**
+- [ ] Apply Firefly color palette to data visualizations in sidebars
+- [ ] Update chart backgrounds and gridlines for theme consistency
+- [ ] Ensure data points and lines use Firefly colors
+- [ ] Theme tooltips and data labels with Firefly styling
+
+### **5.4 Analysis Components**
+- [ ] Update analysis results with Firefly color schemes
 - [ ] Apply Firefly colors to statistical displays
 - [ ] Theme progress bars and loading states
-- [ ] Ensure data readability in both modes
+- [ ] Ensure data readability in both light and dark modes
 
 ## **Phase 6: Advanced Features**
 
@@ -166,6 +180,14 @@ This document outlines the systematic implementation of a light/dark mode switch
 - `/components/[various]` - Component-specific theming
 - `/app/layout.tsx` - Theme provider integration
 
+### **Phase 5 Visualization Files**
+- `/lib/analysis/strategies/renderers/` - All renderer files for Firefly integration
+- `/components/LayerController/` - Layer creation and styling
+- `/lib/analysis/AnalysisEngine.ts` - Analysis result rendering
+- `/utils/visualization-factory.ts` - Dynamic visualization creation
+- `/components/Visualization/` - All visualization components
+- `/lib/analysis/strategies/renderers/effects/FireflyEffect.ts` - Firefly effects integration
+
 ## **Performance Considerations**
 
 ### **Optimization Strategies**
@@ -230,3 +252,27 @@ This document outlines the systematic implementation of a light/dark mode switch
 4. **Test and Iterate**: Push frequently and test thoroughly
 
 This implementation will transform the application with a cohesive, professional appearance while maintaining all existing functionality and improving accessibility.
+
+---
+
+## **Phase 5 Firefly Integration Notes**
+
+### **Map Layer Integration Strategy**
+- **Point Features**: Use `.firefly-point-standard` with automatic size variants based on feature importance
+- **Polygon Features**: Apply `.firefly-polygon-standard` with theme-appropriate glow effects
+- **Line Features**: Implement `.firefly-line` with dynamic shadow rendering
+- **Clustering**: Enhanced shimmer effects using `.firefly-point-shimmer` for grouped features
+
+### **Visualization Color Assignment**  
+- **Thematic Data**: Use consecutive Firefly colors (e.g., colors 8-13 for blue-green gradients)
+- **Categorical Data**: Use contrasting colors (e.g., color 8 + color 18 for binary classifications)
+- **Statistical Analysis**: Rotate through Firefly palette based on data ranges
+- **Theme Switching**: Automatic conversion between dark/light color variants
+
+### **Performance Optimization for Large Datasets**
+- **Viewport Culling**: Only render Firefly effects for visible features
+- **LOD (Level of Detail)**: Simplified effects at higher zoom levels
+- **Hardware Acceleration**: CSS `transform: translateZ(0)` for glow effects
+- **Mobile Optimization**: Reduced Firefly complexity on small screens
+
+This comprehensive integration will make all map visualizations and analysis results follow the Firefly aesthetic while maintaining optimal performance.
