@@ -395,26 +395,18 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
   const createCustomPopup = (feature: __esri.Graphic, location: __esri.Point) => {
     // Create the popup container
     const popupContainer = document.createElement('div');
-    popupContainer.className = 'custom-popup';
+    popupContainer.className = 'custom-popup theme-popup-container';
     
     // Create the popup header
     const popupHeader = document.createElement('div');
+    popupHeader.className = 'theme-popup-title';
     popupHeader.style.display = 'flex';
     popupHeader.style.justifyContent = 'space-between';
     popupHeader.style.alignItems = 'center';
-    popupHeader.style.padding = '12px 16px';
-    popupHeader.style.borderBottom = '1px solid rgba(0,0,0,0.05)';
-    popupHeader.style.backgroundColor = '#33a852';
-    popupHeader.style.color = 'white';
-    popupHeader.style.borderTopLeftRadius = '8px';
-    popupHeader.style.borderTopRightRadius = '8px';
     
     // Create title
     const title = document.createElement('h3');
     title.style.margin = '0';
-    title.style.fontSize = '12px';
-    title.style.fontWeight = 'bold';
-    title.style.color = 'white';
     
     // Determine title from feature attributes, prioritizing DESCRIPTION field
     let titleText = 'Feature Information';
@@ -432,19 +424,8 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
     
     // Create close button
     const closeButton = document.createElement('button');
+    closeButton.className = 'theme-popup-close';
     closeButton.innerHTML = '&times;';
-    closeButton.style.background = 'none';
-    closeButton.style.border = 'none';
-    closeButton.style.fontSize = '24px';
-    closeButton.style.cursor = 'pointer';
-    closeButton.style.color = 'white';
-    closeButton.style.width = '24px';
-    closeButton.style.height = '24px';
-    closeButton.style.display = 'flex';
-    closeButton.style.justifyContent = 'center';
-    closeButton.style.alignItems = 'center';
-    closeButton.style.padding = '0';
-    closeButton.style.marginLeft = '8px';
     // Close button handler: remove popup and cleanup listener
     closeButton.onclick = () => {
       // Safely remove popup if still attached
@@ -464,53 +445,31 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
     
     // Create popup content
     const popupContent = document.createElement('div');
-    popupContent.style.padding = '16px';
+    popupContent.className = 'theme-popup-content';
     popupContent.style.maxHeight = '400px';
     popupContent.style.overflow = 'auto';
     
     // Create chart container
     const chartContainer = document.createElement('div');
+    chartContainer.className = 'theme-popup-chart';
     // Hide chart until data is loaded to avoid blank overlay
     chartContainer.style.display = 'none';
     chartContainer.style.marginBottom = '16px';
     
     // Add action buttons
     const actionsContainer = document.createElement('div');
-    actionsContainer.style.display = 'flex';
-    actionsContainer.style.justifyContent = 'space-between';
-    actionsContainer.style.alignItems = 'center';
-    actionsContainer.style.width = '100%';
-    actionsContainer.style.gap = '4px';
-    actionsContainer.style.margin = '16px 0';
+    actionsContainer.className = 'theme-popup-actions';
     
     // Create Zoom to button (green, with icon)
     const zoomButton = document.createElement('button');
+    zoomButton.className = 'theme-popup-button';
     zoomButton.innerHTML = '';
     const zoomIconNode = document.createElement('span');
     const zoomRoot = createRoot(zoomIconNode);
-    zoomRoot.render(<ZoomIn size={16} color="white" />);
+    zoomRoot.render(<ZoomIn size={16} />);
     zoomIconNode.style.marginRight = '4px';
     zoomButton.appendChild(zoomIconNode);
     zoomButton.appendChild(document.createTextNode('Zoom to'));
-    zoomButton.style.flex = '1';
-    zoomButton.style.display = 'flex';
-    zoomButton.style.alignItems = 'center';
-    zoomButton.style.justifyContent = 'center';
-    zoomButton.style.color = 'white';
-    zoomButton.style.fontSize = '12px';
-    zoomButton.style.fontWeight = '500';
-    zoomButton.style.cursor = 'pointer';
-    zoomButton.style.backgroundColor = '#33a852';
-    zoomButton.style.border = 'none';
-    zoomButton.style.borderRadius = '4px';
-    
-    zoomButton.onmouseover = () => {
-      zoomButton.style.backgroundColor = '#2a7e42';
-    };
-    
-    zoomButton.onmouseout = () => {
-      zoomButton.style.backgroundColor = '#33a852';
-    };
     
     zoomButton.onclick = () => {
       // Check if the feature has a geometry
@@ -541,32 +500,14 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
     
     // Create Infographics button (with icon)
     const infoButton = document.createElement('button');
+    infoButton.className = 'theme-popup-button';
     infoButton.innerHTML = '';
     const infoIconNode = document.createElement('span');
     const infoRoot = createRoot(infoIconNode);
-    infoRoot.render(<BarChartBig size={16} color="white" />);
+    infoRoot.render(<BarChartBig size={16} />);
     infoIconNode.style.marginRight = '4px';
     infoButton.appendChild(infoIconNode);
     infoButton.appendChild(document.createTextNode('Infographics'));
-    infoButton.style.flex = '1';
-    infoButton.style.display = 'flex';
-    infoButton.style.alignItems = 'center';
-    infoButton.style.justifyContent = 'center';
-    infoButton.style.color = 'white';
-    infoButton.style.fontSize = '12px';
-    infoButton.style.fontWeight = '500';
-    infoButton.style.cursor = 'pointer';
-    infoButton.style.backgroundColor = '#33a852';
-    infoButton.style.border = 'none';
-    infoButton.style.borderRadius = '4px';
-    
-    infoButton.onmouseover = () => {
-      infoButton.style.backgroundColor = '#2a7e42';
-    };
-    
-    infoButton.onmouseout = () => {
-      infoButton.style.backgroundColor = '#33a852';
-    };
     
     infoButton.onclick = () => {
       console.log('[CustomPopupManager] Infographics button clicked!');
@@ -681,7 +622,7 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
         const barFill = document.createElement('div');
         barFill.style.width = `${(Math.abs(item.importance) / (maxVal || 1)) * 100}%`;
         barFill.style.height = '100%';
-        barFill.style.background = '#fbbc04';
+        barFill.style.background = 'var(--firefly-18)';
         barFill.style.borderRadius = '3px';
         barBg.appendChild(barFill);
 
@@ -910,11 +851,11 @@ const generateBarChart = (
   container: HTMLElement, 
   view: __esri.MapView
 ) => {
-  // Define bar colors
+  // Define Firefly bar colors using CSS custom properties
   const colors = [
-    '#33a852', '#4285f4', '#fbbc05', '#ea4335', 
-    '#5f6bfb', '#28b5f5', '#8e44ad', '#16a085',
-    '#f39c12', '#2c3e50', '#7f8c8d', '#e74c3c'
+    'var(--firefly-11)', 'var(--firefly-8)', 'var(--firefly-15)', 'var(--firefly-1)', 
+    'var(--firefly-5)', 'var(--firefly-10)', 'var(--firefly-6)', 'var(--firefly-13)',
+    'var(--firefly-18)', 'var(--firefly-20)', 'var(--firefly-19)', 'var(--firefly-2)'
   ];
   
   // Helper function to clean layer names for display purposes only
@@ -1369,12 +1310,10 @@ const generateBarChart = (
         barWrapper.style.borderRadius = '4px';
         barWrapper.style.margin = '0 8px';
         const bar = document.createElement('div');
+        bar.className = 'theme-popup-chart-bar';
         const range = stat.max - stat.min;
         const percent = range > 0 ? ((stat.value - stat.min) / range) * 100 : 0;
         bar.style.width = `${percent}%`;
-        bar.style.height = '100%';
-        bar.style.backgroundColor = stat.color;
-        bar.style.borderRadius = '4px';
         // Append
         barWrapper.appendChild(bar);
         barContainer.appendChild(label);

@@ -39,7 +39,7 @@ const Skeleton: React.FC<SkeletonProps> = ({ type, lines = 1, className = '' }) 
           {Array.from({ length: lines }).map((_, i) => (
             <div
               key={i}
-              className={`h-4 bg-gray-200 rounded animate-pulse ${
+              className={`h-4 theme-skeleton rounded ${
                 i === lines - 1 ? 'w-4/5' : 'w-full'
               } ${className}`}
             />
@@ -50,12 +50,12 @@ const Skeleton: React.FC<SkeletonProps> = ({ type, lines = 1, className = '' }) 
     case 'card':
       return (
         <Card className={`p-4 space-y-4 ${className}`}>
-          <div className="h-6 bg-gray-200 rounded w-3/4 animate-pulse" />
+          <div className="h-6 theme-skeleton rounded w-3/4" />
           <div className="space-y-2">
             {Array.from({ length: 3 }).map((_, i) => (
               <div
                 key={i}
-                className="h-4 bg-gray-200 rounded animate-pulse"
+                className="h-4 theme-skeleton rounded"
                 style={{ width: `${85 - i * 10}%` }}
               />
             ))}
@@ -66,11 +66,11 @@ const Skeleton: React.FC<SkeletonProps> = ({ type, lines = 1, className = '' }) 
     case 'chart':
       return (
         <div className={`w-full h-64 relative ${className}`}>
-          <div className="absolute inset-0 bg-gray-100 rounded animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-16 h-full bg-gray-200" />
-          <div className="absolute bottom-0 left-16 right-0 h-8 bg-gray-200" />
+          <div className="absolute inset-0 theme-skeleton rounded" />
+          <div className="absolute bottom-0 left-0 w-16 h-full theme-skeleton" />
+          <div className="absolute bottom-0 left-16 right-0 h-8 theme-skeleton" />
           <div className="absolute inset-16 flex items-center justify-center">
-            <div className="w-32 h-32 rounded-full bg-gray-200 animate-pulse" />
+            <div className="w-32 h-32 rounded-full theme-skeleton" />
           </div>
         </div>
       );
@@ -122,7 +122,7 @@ const LoadingStateBase: React.FC<LoadingStateProps> = ({
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             >
-              <Loader2 className={`${sizeClasses[size]} text-primary`} />
+              <Loader2 className={`${sizeClasses[size]} theme-loading-spinner`} />
             </motion.div>
           )}
           
@@ -136,14 +136,17 @@ const LoadingStateBase: React.FC<LoadingStateProps> = ({
 
           {typeof progress === 'number' && (
             <div className="w-full max-w-xs">
-              <Progress 
-                value={progress} 
-                className="h-2 transition-all duration-300 ease-out"
-              />
+              <div className="theme-progress-bar">
+                <div 
+                  className="theme-progress-fill"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-xs text-gray-500 text-center mt-1"
+                className="text-xs text-center mt-1"
+                style={{ color: 'var(--theme-text-secondary)' }}
               >
                 {Math.round(progress)}%
               </motion.p>
@@ -164,9 +167,14 @@ const LoadingStateBase: React.FC<LoadingStateProps> = ({
                     w-5 h-5 rounded-full flex items-center justify-center
                     ${step.status === 'complete' ? 'bg-green-500' :
                       step.status === 'error' ? 'bg-red-500' :
-                      step.status === 'processing' ? 'bg-blue-500 animate-pulse' :
-                      'bg-gray-200'}
-                  `}>
+                      step.status === 'processing' ? 'animate-pulse' : 
+                      ''}
+                  `}
+                  style={{
+                    backgroundColor: step.status === 'processing' ? 'var(--theme-accent-primary)' :
+                                   step.status === 'pending' ? 'var(--theme-bg-tertiary)' :
+                                   undefined
+                  }}>
                     {step.status === 'complete' && (
                       <motion.svg
                         initial={{ scale: 0 }}

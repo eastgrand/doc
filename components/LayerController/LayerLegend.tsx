@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from 'react';
 import Color from "@arcgis/core/Color";
 import { StandardizedLegendData, LegendType, colorToRgba, getSymbolShape, getSymbolSize } from '@/types/legend';
 import { LegendItem } from '@/components/MapLegend';
-import { Card } from '@mui/material';
 import { useMap } from '../MapContext';
 import './LayerLegend.css';
 
@@ -37,10 +36,10 @@ const LayerLegend: React.FC<LayerLegendProps> = ({ layer, isVisible }) => {
         const symbol = simpleRenderer.symbol;
         if (symbol && symbol.color) {
           const legendItem = document.createElement('div');
-          legendItem.className = 'legend-item';
+          legendItem.className = 'legend-item theme-legend-item';
           legendItem.innerHTML = `
-            <div class="legend-symbol" style="background-color: ${symbol.color.toCss()}"></div>
-            <div class="legend-label">${layer.title || 'Layer'}</div>
+            <div class="legend-symbol theme-legend-symbol" style="background-color: ${symbol.color.toCss()}"></div>
+            <div class="legend-label theme-legend-label">${layer.title || 'Layer'}</div>
           `;
           container.appendChild(legendItem);
         }
@@ -50,10 +49,10 @@ const LayerLegend: React.FC<LayerLegendProps> = ({ layer, isVisible }) => {
           uniqueValueRenderer.uniqueValueInfos.forEach((info: __esri.UniqueValueInfo) => {
             if (info.symbol && info.symbol.color) {
               const legendItem = document.createElement('div');
-              legendItem.className = 'legend-item';
+              legendItem.className = 'legend-item theme-legend-item';
               legendItem.innerHTML = `
-                <div class="legend-symbol" style="background-color: ${info.symbol.color.toCss()}"></div>
-                <div class="legend-label">${info.label || info.value}</div>
+                <div class="legend-symbol theme-legend-symbol" style="background-color: ${info.symbol.color.toCss()}"></div>
+                <div class="legend-label theme-legend-label">${info.label || info.value}</div>
               `;
               container.appendChild(legendItem);
             }
@@ -65,10 +64,10 @@ const LayerLegend: React.FC<LayerLegendProps> = ({ layer, isVisible }) => {
           classBreaksRenderer.classBreakInfos.forEach((info: __esri.ClassBreakInfo) => {
             if (info.symbol && info.symbol.color) {
               const legendItem = document.createElement('div');
-              legendItem.className = 'legend-item';
+              legendItem.className = 'legend-item theme-legend-item';
               legendItem.innerHTML = `
-                <div class="legend-symbol" style="background-color: ${info.symbol.color.toCss()}"></div>
-                <div class="legend-label">${info.label || `${info.minValue} - ${info.maxValue}`}</div>
+                <div class="legend-symbol theme-legend-symbol" style="background-color: ${info.symbol.color.toCss()}"></div>
+                <div class="legend-label theme-legend-label">${info.label || `${info.minValue} - ${info.maxValue}`}</div>
               `;
               container.appendChild(legendItem);
             }
@@ -93,9 +92,10 @@ const LayerLegend: React.FC<LayerLegendProps> = ({ layer, isVisible }) => {
   if (!layer || !isVisible) return null;
 
   return (
-    <Card className="layer-legend-card" style={{ padding: '8px', margin: '4px' }}>
+    <div className="layer-legend-card theme-legend-container">
+      <div className="theme-legend-title">{layer.title || 'Legend'}</div>
       <div ref={legendContainerRef} className="layer-legend-container" />
-    </Card>
+    </div>
   );
 };
 
