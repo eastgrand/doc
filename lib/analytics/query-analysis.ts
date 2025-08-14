@@ -1,6 +1,7 @@
 /* eslint-disable prefer-const */
 import { AnalysisResult } from './types';
-import { concepts, layers as layerConfigsObject, LayerConfig } from '../../config/layers'; // Import concepts and LayerConfig directly
+import { concepts, layers as layerConfigsObject } from '../../config/layers'; // Import concepts
+import type { LayerConfig } from '../../types/layers'; // Import LayerConfig from types
 import { ConceptMap } from './concept-map-utils';
 
 // Define the type for the keys of layerConcepts explicitly
