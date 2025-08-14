@@ -767,7 +767,7 @@ export class CorrelationVisualization extends BaseVisualization<CorrelationData>
       return uniq[lower] + (uniq[upper] - uniq[lower]) * (idx - lower);
     };
 
-    let q1 = pickPercentile(0.25);
+    const q1 = pickPercentile(0.25);
     let q2 = pickPercentile(0.5);
     let q3 = pickPercentile(0.75);
 
