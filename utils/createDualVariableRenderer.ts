@@ -64,7 +64,7 @@ const calculateQuintiles = async (
     }
 
     // Extract values, filter out null and undefined
-    let values = featureSet.features
+    const values = featureSet.features
       .map(f => f.attributes[field])
       .filter((val): val is number => val !== null && val !== undefined && !isNaN(val));
     
