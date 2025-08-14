@@ -1,5 +1,5 @@
 // types/geospatial-ai-types.ts
-import { getLayerConstraints, LayerConfig } from '../config/layers';
+import type { LayerConfig } from '../types/layers';
 import type FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import type Extent from '@arcgis/core/geometry/Extent';
 export type { LayerConfig };
@@ -76,7 +76,7 @@ export interface LayerMatch {
 
 export interface LayerQueryConfig {
   layer: LayerConfig;
-  constraints: ReturnType<typeof getLayerConstraints>;
+  constraints?: Record<string, any>;
 }
 
 export interface EnhancedGeospatialChatProps {
