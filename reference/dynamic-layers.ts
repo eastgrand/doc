@@ -1,4 +1,5 @@
-import { baseLayerConfigs, LayerConfig, VirtualLayer } from '../config/layers';
+import { baseLayerConfigs } from '../config/layers';
+import type { LayerConfig, VirtualLayer } from '../types/layers';
 import { Extent } from '@arcgis/core/geometry';
 
 /**
