@@ -1,7 +1,9 @@
 // pages/api/layer-matching.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Anthropic } from '@anthropic-ai/sdk';
-import { layers, concepts, LayerConfig, LayerMatch } from '../../../config/layers';
+import { layers, concepts } from '../../../config/layers';
+import type { LayerConfig } from '../../../types/layers';
+import type { LayerMatch } from '../../../types/geospatial-ai-types';
 import { QueryBuilder } from '../../../utils/query-builder';
 
 interface CompositeFeature {
