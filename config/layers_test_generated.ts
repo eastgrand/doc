@@ -106,10 +106,7 @@ export const concepts = {
       'retail',
       'store',
       'shop',
-      'Dick\',
-      ', ',
-      ', ',
-      ', '
+      "Dick's"
     ],
     weight: 15,
   },
