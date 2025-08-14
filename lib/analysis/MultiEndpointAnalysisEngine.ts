@@ -17,7 +17,7 @@ import {
 } from './types';
 
 import { MultiEndpointQueryDetector, MultiEndpointQuery } from './MultiEndpointQueryDetector';
-import { MultiEndpointRouter, MultiEndpointResult } from './MultiEndpointRouter';
+import { MultiEndpointRouter } from './MultiEndpointRouter';
 import { DatasetMerger, MergedDataset, MergeOptions } from './DatasetMerger';
 import { CompositeDataProcessor, CompositeAnalysisResult } from './CompositeDataProcessor';
 import { MultiEndpointVisualizationRenderer, MultiEndpointVisualizationConfig } from './MultiEndpointVisualizationRenderer';
@@ -88,7 +88,7 @@ export class MultiEndpointAnalysisEngine {
   ): Promise<MultiEndpointAnalysisResult> {
     
     const startTime = Date.now();
-    const analysisId = this.generateAnalysisId();
+    // const analysisId = this.generateAnalysisId(); // Reserved for future use
 
     try {
       console.log(`[MultiEndpointAnalysisEngine] Starting analysis: "${query}"`);
@@ -181,7 +181,7 @@ export class MultiEndpointAnalysisEngine {
           dataPointCount: compositeData.totalRecords || 0,
           timestamp: new Date().toISOString(),
           // Add confidence score from composite analysis
-          confidenceScore: compositeData.overallConfidence || queryAnalysis.confidence
+          confidenceScore: compositeData.qualityMetrics?.analysisConfidence || queryAnalysis.confidence
         },
         
         // Multi-endpoint specific
@@ -198,8 +198,8 @@ export class MultiEndpointAnalysisEngine {
           endpointLoadTimes: multiEndpointResult.loadingStats.endpointLoadTimes
         },
         qualityMetrics: {
-          analysisConfidence: compositeData.overallConfidence || queryAnalysis.confidence,
-          dataQuality: compositeData.dataQualityScore || 0.8,
+          analysisConfidence: compositeData.qualityMetrics?.analysisConfidence || queryAnalysis.confidence,
+          dataQuality: compositeData.qualityMetrics?.dataCompleteness || 0.8,
           mergeEfficiency: totalAnalysisTime > 0 ? Math.min(1.0, 10000 / totalAnalysisTime) : 0.5
         }
       };
