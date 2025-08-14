@@ -427,11 +427,12 @@ const handleFeatureSelection = useCallback(async (mapPoint: __esri.Point, event?
           g => !g.geometry || !geometryEngine.equals(g.geometry as any, hitFeature.geometry as any)
         );
         // Remove corresponding graphic from the graphics collection
-        const graphicsToRemove = graphics.toArray().filter((g: __esri.Graphic) => 
+        const graphicsCollection = 'toArray' in graphics ? graphics : graphics.graphics;
+        const graphicsToRemove = graphicsCollection.toArray().filter((g: __esri.Graphic) => 
             g.attributes?.id === 'selectionGraphic' && 
             !!g.geometry && geometryEngine.equals(g.geometry as any, hitFeature.geometry as any)
         );
-        graphics.removeMany(graphicsToRemove);
+        graphicsCollection.removeMany(graphicsToRemove);
 
       } else {
         // If not already selected, add new selection
