@@ -1,6 +1,9 @@
+import type FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+import type ClassBreaksRenderer from '@arcgis/core/renderers/ClassBreaksRenderer';
+
 declare module '@/utils/createQuartileRenderer' {
     export function createQuartileRenderer(
-      layer: __esri.FeatureLayer,
+      layer: FeatureLayer,
       field: string
-    ): Promise<__esri.ClassBreaksRenderer | null>;
+    ): Promise<ClassBreaksRenderer | null>;
   }
