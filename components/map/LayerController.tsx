@@ -1,6 +1,6 @@
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import UniqueValueRenderer from "@arcgis/core/renderers/UniqueValueRenderer";
-import { LayerConfig } from "@/config/layers";
+import { LayerConfig } from "@/types/layers";
 import { LayerGroup } from "@/types/layers";
 import { VisualizationType } from "@/config/dynamic-layers";
 import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol";
