@@ -39,7 +39,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { queryAnalyzer, QueryOptions, QueryResult } from '../utils/query-analyzer';
-import { layers, LayerConfig } from '../config/layers';
+import { layers } from '../config/layers';
+import type { LayerConfig } from '../types/layers';
 import { layerStateManager } from '../utils/layer-state-manager';
 
 interface MapRef {
