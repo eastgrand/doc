@@ -7,9 +7,7 @@ interface QueryTabProps {
 export default function QueryTab({ view }: QueryTabProps) {
   return (
     <ChatInterface 
-      view={view}
-      showQueryBuilder={true}
-      queryBuilderOnly={true}
+      analysisResult={{} as any}
     />
   );
 } 
