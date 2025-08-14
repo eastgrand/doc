@@ -1,4 +1,4 @@
-import type { LayerConfig } from '@/config/layers';
+import type { LayerConfig } from '@/types/layers';
 import type { LayerMatch } from '@/types/geospatial-ai-types';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Extent from '@arcgis/core/geometry/Extent';
