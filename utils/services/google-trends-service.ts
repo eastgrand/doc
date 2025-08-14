@@ -1,4 +1,5 @@
-import { layers, LayerConfig } from '../../config/layers';
+import { layers } from '../../config/layers';
+import type { LayerConfig } from '../../types/layers';
 
 interface TrendsDataOptions {
   region?: 'ON' | 'BC' | 'ALL';
