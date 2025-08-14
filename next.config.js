@@ -31,7 +31,7 @@ const nextConfig = {
       },
     ]
   },
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, dev }) => {
 
     if (!isServer) {
       config.resolve.fallback = {
@@ -45,33 +45,55 @@ const nextConfig = {
       };
     }
     
-    // Handle Kepler.gl and other large modules
-    config.optimization = {
-      ...config.optimization,
-      splitChunks: {
-        ...config.optimization.splitChunks,
-        chunks: 'all',
-        maxSize: 2000000, // 2MB max chunk size
-        cacheGroups: {
-          ...config.optimization.splitChunks?.cacheGroups,
-          kepler: {
-            test: /[\\/]node_modules[\\/]@kepler\.gl[\\/]/,
-            name: 'kepler',
-            chunks: 'all',
-            priority: 10,
-            maxSize: 3000000, // 3MB for Kepler.gl
-          },
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            priority: 5,
-            maxSize: 2000000,
-            enforce: true,
+    // Handle Kepler.gl and other large modules - but simplify for development
+    if (dev) {
+      // Simplified chunking for development to avoid Fast Refresh module conflicts
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'async', // Only async chunks in development
+          cacheGroups: {
+            default: false,
+            vendors: false, // Disable vendor chunking in development
           },
         },
-      },
-    };
+      };
+    } else {
+      // Full chunking optimization for production
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          ...config.optimization.splitChunks,
+          chunks: 'all',
+          maxSize: 2000000,
+          cacheGroups: {
+            ...config.optimization.splitChunks?.cacheGroups,
+            anthropic: {
+              test: /[\\/]node_modules[\\/]@anthropic-ai[\\/]/,
+              name: 'anthropic',
+              chunks: 'all',
+              priority: 15,
+              enforce: false,
+            },
+            kepler: {
+              test: /[\\/]node_modules[\\/]@kepler\.gl[\\/]/,
+              name: 'kepler',
+              chunks: 'all',
+              priority: 10,
+              maxSize: 3000000,
+            },
+            vendor: {
+              test: /[\\/]node_modules[\\/](?!(@anthropic-ai|@kepler\.gl))/,
+              name: 'vendors',
+              chunks: 'all',
+              priority: 5,
+              maxSize: 2000000,
+              enforce: false,
+            },
+          },
+        },
+      };
+    }
     
     // Increase timeout for large modules
     config.experiments = {

@@ -20,6 +20,12 @@ import {
   formatPatternsForChat
 } from '@/lib/analysis/statsCalculator';
 
+// Wrapper component for performance metrics
+const PerformanceMetrics = ({ analysisResult, className }: { analysisResult: any, className: string }) => {
+  if (!analysisResult) return null;
+  return renderPerformanceMetrics(analysisResult, className);
+};
+
 interface UnifiedAnalysisChatProps {
   analysisResult: UnifiedAnalysisResponse;
   onExportChart: () => void;
@@ -407,7 +413,8 @@ Use \`/help\` for available commands.`,
           filterType: (metadata as any)?.filterType,
           rankingContext: (metadata as any)?.rankingContext,
           isClustered: result.data?.isClustered,
-          clusterAnalysis: (result.data as any)?.clusterAnalysis
+          clusterAnalysis: (result.data as any)?.clusterAnalysis,
+          isContextualChat: false // This is an analysis request, not a chat request
         },
         featureData: [{
           layerId: 'unified_analysis',
@@ -428,7 +435,7 @@ Use \`/help\` for available commands.`,
       // Use the chat abort controller for cancellation
       chatAbortControllerRef.current = new AbortController();
       const controller = chatAbortControllerRef.current;
-      const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 second timeout
 
       const response = await fetch('/api/claude/generate-response', {
         method: 'POST',
@@ -541,15 +548,16 @@ Use \`/help\` for available commands.`,
     }
   }, [analysisResult, persona, setMessages, setHasGeneratedNarrative, analysisMode]);
 
-  // Auto-generate AI narrative when analysisResult is available
+  // Auto-generate AI narrative when analysisResult is available (only once initially)
   React.useEffect(() => {
     if (!hasGeneratedNarrative && analysisResult) {
       console.log('[UnifiedAnalysisChat] Starting auto-generation of AI narrative');
       generateInitialNarrative();
     }
-  }, [hasGeneratedNarrative, analysisResult, generateInitialNarrative]);
+  }, [hasGeneratedNarrative, analysisResult]);
 
   const handleSendMessage = useCallback(async () => {
+    console.log('🧪 [CRITICAL TEST] handleSendMessage START - checking for Fast Refresh');
     if (!inputValue.trim() || isProcessing) return;
 
     const trimmedInput = inputValue.trim();
@@ -573,12 +581,14 @@ Use \`/help\` for available commands.`,
         timestamp: new Date()
       };
       
-      setMessages((prev: ChatMessage[]) => [...prev, userMessage, commandResponse]);
+      const newMessages = [...messages, userMessage, commandResponse];
+      setMessages(newMessages);
       setInputValue('');
       return; // Don't process as regular message
     }
 
     // Regular message processing
+    console.log('🔥 [DEBUG] Creating user message');
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       role: 'user',
@@ -586,12 +596,13 @@ Use \`/help\` for available commands.`,
       timestamp: new Date()
     };
 
-    setMessages((prev: ChatMessage[]) => [...prev, userMessage]);
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
     setInputValue('');
     setIsProcessing(true);
 
     try {
-      console.log('[UnifiedAnalysisChat] Sending chat message to Claude API');
+      console.log('[UnifiedAnalysisChat] Sending chat message via service');
       
       const { analysisResult: result, metadata } = analysisResult;
       
@@ -635,7 +646,7 @@ Use \`/help\` for available commands.`,
           clusterAnalysis: isFollowUpQuestion ? undefined : (result.data as any)?.clusterAnalysis, // Skip heavy cluster data on follow-ups
           targetVariable: result.data?.targetVariable,
           endpoint: result.endpoint,
-          isContextualChat: isFollowUpQuestion // Flag for API to handle differently
+          isContextualChat: true // All user chat interactions should be treated as contextual chat
         },
         featureData: [{
           layerId: 'unified_analysis',
@@ -648,34 +659,61 @@ Use \`/help\` for available commands.`,
         persona: persona
       };
 
-      console.log('[UnifiedAnalysisChat] Request payload prepared:', {
-        endpoint: result.endpoint,
-        recordCount: result.data?.records?.length,
-        hasFeatureData: !!(result.data?.records?.length),
-        messageCount: requestPayload.messages.length,
-        isFollowUpQuestion,
-        optimizedFeatureCount: requestPayload.featureData[0].features.length,
-        payloadSize: JSON.stringify(requestPayload).length
+      console.log('[UnifiedAnalysisChat] Request payload prepared - MINIMAL LOG');
+
+      // TEST: Is it the JSON.stringify?
+      console.log('🧪 [TEST] About to stringify...');
+      try {
+        const stringified = JSON.stringify(requestPayload);
+        console.log('🧪 [TEST] Stringify success, length:', stringified.length);
+      } catch (e) {
+        console.error('🧪 [TEST] Stringify failed:', e);
+      }
+      
+      // TEST: Is it ANY fetch from this component to our API routes?
+      console.log('🧪 [COMPONENT TEST] Testing if issue is component-specific...');
+      
+      // Test 1: External URL from this component
+      console.log('🧪 [TEST 1] External fetch from UnifiedAnalysisChat...');
+      try {
+        const ext = await fetch('https://jsonplaceholder.typicode.com/posts/1');
+        console.log('🧪 [TEST 1] External fetch SUCCESS - no Fast Refresh?');
+      } catch (e) {
+        console.log('🧪 [TEST 1] External fetch failed');
+      }
+      
+      // Test 2: Different internal endpoint
+      console.log('🧪 [TEST 2] Fetching different internal endpoint...');
+      try {
+        const int = await fetch('/api/blob/upload', { method: 'GET' }).catch(() => null);
+        console.log('🧪 [TEST 2] Internal endpoint completed - Fast Refresh?');
+      } catch (e) {
+        console.log('🧪 [TEST 2] Internal endpoint failed');
+      }
+      
+      // Test 3: Our problematic endpoint
+      console.log('🧪 [TEST 3] Fetching /api/claude/generate-response...');
+      const response = await fetch('/api/claude/generate-response', {
+        method: 'POST',
+        body: new FormData()
       });
+      console.log('🧪 [TEST 3] Claude endpoint completed - definitely Fast Refresh?');
+      
+      setIsProcessing(false);
+      return;
 
-      // Use the chat abort controller for cancellation
-      chatAbortControllerRef.current = new AbortController();
-      const controller = chatAbortControllerRef.current;
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-
+      // TODO: Re-enable this code after testing
+      /*
       const response = await fetch('/api/claude/generate-response', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestPayload),
-        signal: controller.signal
+        body: JSON.stringify(requestPayload)
       });
-
-      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errorText = await response.text();
         console.error('[UnifiedAnalysisChat] API Error Response:', errorText);
-        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+        throw new Error(`API request failed: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
       const claudeResponse = await response.json();
@@ -687,11 +725,13 @@ Use \`/help\` for available commands.`,
           content: claudeResponse.content,
           timestamp: new Date()
         };
-        setMessages((prev: ChatMessage[]) => [...prev, aiMessage]);
+        const finalMessages = [...messages, aiMessage];
+        setMessages(finalMessages);
         console.log('[UnifiedAnalysisChat] Chat response received successfully');
       } else {
         throw new Error('No content in API response');
       }
+      */
     } catch (error) {
       console.error('[UnifiedAnalysisChat] Failed to get chat response:', error);
       
@@ -713,7 +753,8 @@ Use \`/help\` for available commands.`,
         content: errorMessage,
         timestamp: new Date()
       };
-      setMessages((prev: ChatMessage[]) => [...prev, errorResponse]);
+      const errorMessages = [...messages, errorResponse];
+      setMessages(errorMessages);
     } finally {
       // Clean up abort controller
       chatAbortControllerRef.current = null;
@@ -832,10 +873,10 @@ Use \`/help\` for available commands.`,
           </Button>
         </div>
         <div className="mt-2 pb-2">
-          {renderPerformanceMetrics(
-            analysisResult.analysisResult,
-            "flex flex-wrap gap-2"
-          )}
+          <PerformanceMetrics 
+            analysisResult={analysisResult.analysisResult}
+            className="flex flex-wrap gap-2"
+          />
         </div>
       </div>
 

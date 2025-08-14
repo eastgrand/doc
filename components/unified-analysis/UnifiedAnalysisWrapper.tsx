@@ -3,7 +3,7 @@
 // A wrapper around the existing AnalysisEngine that adds unified workflow capabilities
 // without breaking existing functionality
 
-import { AnalysisEngine } from '@/lib/analysis/AnalysisEngine';
+// AnalysisEngine will be dynamically imported to avoid Fast Refresh issues
 import { 
   AnalysisOptions, 
   AnalysisResult,
@@ -68,12 +68,19 @@ export interface UnifiedAnalysisResponse {
  * while maintaining backward compatibility
  */
 export class UnifiedAnalysisWrapper {
-  private analysisEngine: AnalysisEngine;
+  private analysisEngine: any = null;
   private currentRequest: UnifiedAnalysisRequest | null = null;
   
   constructor() {
-    // Use existing singleton AnalysisEngine
-    this.analysisEngine = AnalysisEngine.getInstance();
+    // AnalysisEngine will be loaded dynamically
+  }
+
+  private async getAnalysisEngine() {
+    if (!this.analysisEngine) {
+      const { AnalysisEngine } = await import('@/lib/analysis/AnalysisEngine');
+      this.analysisEngine = AnalysisEngine.getInstance();
+    }
+    return this.analysisEngine;
   }
   
   /**
@@ -244,7 +251,8 @@ export class UnifiedAnalysisWrapper {
       persona: request.persona                   // Pass the selected persona
     };
     
-    return await this.analysisEngine.executeAnalysis(request.query, options);
+    const analysisEngine = await this.getAnalysisEngine();
+    return await analysisEngine.executeAnalysis(request.query, options);
   }
   
   /**
@@ -265,7 +273,8 @@ export class UnifiedAnalysisWrapper {
       persona: request.persona                   // Pass the selected persona
     };
     
-    return await this.analysisEngine.executeAnalysis(query, options);
+    const analysisEngine = await this.getAnalysisEngine();
+    return await analysisEngine.executeAnalysis(query, options);
   }
   
   /**
@@ -286,7 +295,8 @@ export class UnifiedAnalysisWrapper {
       persona: request.persona                   // Pass the selected persona
     };
     
-    return await this.analysisEngine.executeAnalysis(query, options);
+    const analysisEngine = await this.getAnalysisEngine();
+    return await analysisEngine.executeAnalysis(query, options);
   }
   
   /**
@@ -323,14 +333,16 @@ export class UnifiedAnalysisWrapper {
   /**
    * Get current analysis state
    */
-  getCurrentState() {
-    return this.analysisEngine.getState();
+  async getCurrentState() {
+    const analysisEngine = await this.getAnalysisEngine();
+    return analysisEngine.getState();
   }
   
   /**
    * Subscribe to analysis state changes
    */
-  subscribe(callback: (state: any) => void) {
-    return this.analysisEngine.subscribe(callback);
+  async subscribe(callback: (state: any) => void) {
+    const analysisEngine = await this.getAnalysisEngine();
+    return analysisEngine.subscribe(callback);
   }
 }

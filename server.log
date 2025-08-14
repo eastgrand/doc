@@ -1,0 +1,421 @@
+
+> aitest@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.29
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.3s
+ ✓ Compiled /middleware in 202ms (72 modules)
+ ✓ Compiled /api/claude/generate-response in 374ms (154 modules)
+[Claude] POST request received
+[Claude] API key is present, length: 108
+[Claude] Request body parsed successfully
+[Claude] Messages count: 1
+[Claude] Has featureData: true
+[Claude] Persona: default
+[CONTEXTUAL CHAT] Optimized follow-up question processing
+🎯 [CLAUDE API] Received ranking context: undefined
+🚨 [CLAUDE API CALLED] Route accessed with metadata keys: [ 'isContextualChat' ]
+🚨 [CLAUDE API] Query/message: test
+🚨 [CLAUDE API] FeatureData type: object array
+[GeoDataManager] Initializing comprehensive tri-state geographic database...
+[GeoDataManager] Comprehensive database initialized with 1160 entities
+[GeoAwarenessEngine] Loaded geographic data: { entities: 1160, zipCodes: 8001, aliases: 25 }
+[GeoAwarenessEngine] Processing geo query: test
+🔍 [GEO DEBUG] Parsing query: "test"
+🚫 [GEO DEBUG] Query lacks explicit geographic intent - skipping geographic filtering
+[Claude] Field alias overrides: {}
+[Claude] Received POST request
+[Claude] Metadata: { isContextualChat: true }
+[Claude] Persona: default
+[CHAT BYPASS] Pure chat request - skipping all data validation and going directly to AI
+(node:78698) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ POST /api/claude/generate-response 200 in 2203ms
+ ⨯ Error [ReferenceError]: exports is not defined
+    at <unknown> (file:///Users/voldeck/code/mpiq-ai-chat/.next/server/vendors.js:9)
+    at <unknown> (file:///Users/voldeck/code/mpiq-ai-chat/.next/server/vendors.js:9:1)
+    at Script.runInContext (node:vm:149:12)
+    at runInContext (node:vm:301:6)
+    at evaluateInContext (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/web/sandbox/context.js:398:38)
+    at getRuntimeContext (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/web/sandbox/sandbox.js:72:9)
+    at async runWithTaggedErrors (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/web/sandbox/sandbox.js:78:21)
+    at async DevServer.runMiddleware (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/next-server.js:1068:24)
+    at async DevServer.runMiddleware (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/dev/next-dev-server.js:268:28)
+    at async NextNodeServer.handleCatchallMiddlewareRequest (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/next-server.js:322:26)
+    at async DevServer.handleRequestImpl (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/base-server.js:824:28)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 2.3s (463 modules)
+ ✓ Compiled in 600ms (409 modules)
+ ⨯ Error [ReferenceError]: exports is not defined
+    at <unknown> (file:///Users/voldeck/code/mpiq-ai-chat/.next/server/vendors.js:10)
+    at <unknown> (file:///Users/voldeck/code/mpiq-ai-chat/.next/server/vendors.js:10:1)
+    at Script.runInContext (node:vm:149:12)
+    at runInContext (node:vm:301:6)
+    at evaluateInContext (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/web/sandbox/context.js:398:38)
+    at getRuntimeContext (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/web/sandbox/sandbox.js:72:9)
+    at async runWithTaggedErrors (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/web/sandbox/sandbox.js:78:21)
+    at async DevServer.runMiddleware (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/next-server.js:1068:24)
+    at async DevServer.runMiddleware (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/dev/next-dev-server.js:268:28)
+    at async NextNodeServer.handleCatchallMiddlewareRequest (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/next-server.js:322:26)
+    at async DevServer.handleRequestImpl (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/base-server.js:824:28)
+ ✓ Compiled /_error in 87ms (463 modules)
+ ✓ Compiled in 461ms (410 modules)
+ ✓ Compiled in 468ms (409 modules)
+ ✓ Compiled in 432ms (409 modules)
+ ✓ Compiled in 393ms (409 modules)
+ ⨯ Error [ReferenceError]: exports is not defined
+    at <unknown> (file:///Users/voldeck/code/mpiq-ai-chat/.next/server/vendors.js:10)
+    at <unknown> (file:///Users/voldeck/code/mpiq-ai-chat/.next/server/vendors.js:10:1)
+    at Script.runInContext (node:vm:149:12)
+    at runInContext (node:vm:301:6)
+    at evaluateInContext (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/web/sandbox/context.js:398:38)
+    at getRuntimeContext (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/web/sandbox/sandbox.js:72:9)
+    at async runWithTaggedErrors (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/web/sandbox/sandbox.js:78:21)
+    at async DevServer.runMiddleware (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/next-server.js:1068:24)
+    at async DevServer.runMiddleware (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/dev/next-dev-server.js:268:28)
+    at async NextNodeServer.handleCatchallMiddlewareRequest (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/next-server.js:322:26)
+    at async DevServer.handleRequestImpl (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/base-server.js:824:28)
+ ✓ Compiled /_error in 50ms (463 modules)
+ ✓ Compiled in 550ms (409 modules)
+ ✓ Compiled in 312ms (409 modules)
+ ✓ Compiled in 301ms (409 modules)
+ ✓ Compiled in 361ms (409 modules)
+ ✓ Compiled in 504ms (409 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 3.3s (863 modules)
+ GET / 200 in 3507ms
+ ✓ Compiled /_not-found in 197ms (841 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 293ms
+ GET /_next/static/chunks/vendors-node_modules_r.js?v=1755124718440 404 in 39ms
+ ✓ Compiled /favicon.ico in 178ms (381 modules)
+ GET /favicon.ico 200 in 243ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/api'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/api/claude/generate-response/route' in /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server for build dependencies doesn't lead to expected result '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/api/claude/generate-response/route.js', but to 'Error: Can't resolve '../../../../.next/server/app/api/claude/generate-response/route' in '/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/api/claude/generate-response/route (expected /Users/voldeck/code/mpiq-ai-chat/.next/server/app/api/claude/generate-response/route.js)
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at resolve commonjs /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+ ○ Compiling /map ...
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/api'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/api/claude/generate-response/route' in /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server for build dependencies doesn't lead to expected result '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/api/claude/generate-response/route.js', but to 'Error: Can't resolve '../../../../.next/server/app/api/claude/generate-response/route' in '/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/api/claude/generate-response/route (expected /Users/voldeck/code/mpiq-ai-chat/.next/server/app/api/claude/generate-response/route.js)
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at resolve commonjs /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+ ✓ Compiled /map in 61.7s (12872 modules)
+ GET /map 200 in 53751ms
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 70ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/api'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/api/claude/generate-response/route' in /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server for build dependencies doesn't lead to expected result '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/api/claude/generate-response/route.js', but to 'Error: Can't resolve '../../../../.next/server/app/api/claude/generate-response/route' in '/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/api/claude/generate-response/route (expected /Users/voldeck/code/mpiq-ai-chat/.next/server/app/api/claude/generate-response/route.js)
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at resolve commonjs /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+ GET /favicon.ico 200 in 38ms
+ ⨯ Error [ReferenceError]: exports is not defined
+    at <unknown> (file:///Users/voldeck/code/mpiq-ai-chat/.next/server/vendors.js:9)
+    at <unknown> (file:///Users/voldeck/code/mpiq-ai-chat/.next/server/vendors.js:9:1)
+    at Script.runInContext (node:vm:149:12)
+    at runInContext (node:vm:301:6)
+    at evaluateInContext (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/web/sandbox/context.js:398:38)
+    at getRuntimeContext (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/web/sandbox/sandbox.js:72:9)
+    at async runWithTaggedErrors (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/web/sandbox/sandbox.js:78:21)
+    at async DevServer.runMiddleware (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/next-server.js:1068:24)
+    at async DevServer.runMiddleware (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/dev/next-dev-server.js:268:28)
+    at async NextNodeServer.handleCatchallMiddlewareRequest (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/next-server.js:322:26)
+    at async DevServer.handleRequestImpl (file:///Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/base-server.js:824:28)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 3s (12776 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/api'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/api/claude/generate-response/route' in /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server for build dependencies doesn't lead to expected result '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/api/claude/generate-response/route.js', but to 'Error: Can't resolve '../../../../.next/server/app/api/claude/generate-response/route' in '/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/api/claude/generate-response/route (expected /Users/voldeck/code/mpiq-ai-chat/.next/server/app/api/claude/generate-response/route.js)
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at resolve commonjs /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/api'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/api/claude/generate-response/route' in /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server for build dependencies doesn't lead to expected result '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/api/claude/generate-response/route.js', but to 'Error: Can't resolve '../../../../.next/server/app/api/claude/generate-response/route' in '/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/api/claude/generate-response/route (expected /Users/voldeck/code/mpiq-ai-chat/.next/server/app/api/claude/generate-response/route.js)
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at resolve commonjs /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+ ✓ Compiled in 3.6s (6425 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/api'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/api/claude/generate-response/route' in /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server for build dependencies doesn't lead to expected result '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/api/claude/generate-response/route.js', but to 'Error: Can't resolve '../../../../.next/server/app/api/claude/generate-response/route' in '/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/api/claude/generate-response/route (expected /Users/voldeck/code/mpiq-ai-chat/.next/server/app/api/claude/generate-response/route.js)
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at resolve commonjs /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+ ○ Compiling / ...
+ ✓ Compiled / in 1366ms (6389 modules)
+ ⨯ TypeError: Cannot read properties of undefined (reading 'clientModules')
+    at /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:39:25703
+    at /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/lib/trace/tracer.js:191:62
+    at /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/lib/trace/tracer.js:191:31
+    at r3 (/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:41:1678)
+    at async doRender (/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/base-server.js:1427:30)
+    at async cacheEntry.responseCache.get.routeKind (/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/base-server.js:1588:28) {
+  page: '/'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 4.7s (12800 modules)
+ GET / 500 in 6415ms
+ GET / 200 in 92ms
+ ○ Compiling /_not-found ...
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/favicon.ico'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/favicon.ico/route' in /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server for build dependencies doesn't lead to expected result '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/favicon.ico/route.js', but to 'Error: Can't resolve '../../../../.next/server/app/favicon.ico/route' in '/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/favicon.ico/route (expected /Users/voldeck/code/mpiq-ai-chat/.next/server/app/favicon.ico/route.js)
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at resolve commonjs /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../.next/server/app/_not-found/page' in /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server for build dependencies doesn't lead to expected result '/Users/voldeck/code/mpiq-ai-chat/.next/server/app/_not-found/page.js', but to 'Error: Can't resolve '../../../../.next/server/app/_not-found/page' in '/Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../.next/server/app/_not-found/page (expected /Users/voldeck/code/mpiq-ai-chat/.next/server/app/_not-found/page.js)
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/require.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/plugins/define-env-plugin.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/swc/index.js
+<w>  at file dependencies /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at file /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+<w>  at resolve commonjs /Users/voldeck/code/mpiq-ai-chat/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js
+ ✓ Compiled /_not-found in 2.6s (12803 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 2802ms
+ GET /_next/static/media/e4af272ccee01ff0-s.p.woff2 404 in 2757ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_com.js?v=1755125105999 404 in 2338ms
+ GET /_next/static/css/vendors-node_modules_next_font_google_target_css-2.css?v=1755125105999 404 in 2764ms
+ GET /_next/static/css/app/layout.css?v=1755125105999 404 in 2763ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_P.js?v=1755125105999 404 in 2307ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_an.js?v=1755125105999 404 in 39ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_chunks_B.js?v=1755125105999 404 in 32ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_chunks_O.js?v=1755125105999 404 in 32ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_assets_js-6c0f9652.js?v=1755125105999 404 in 37ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_chunks_L.js?v=1755125105999 404 in 32ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_chunks_T.js?v=1755125105999 404 in 29ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_chunks_Zlib_js-a01799ab.js?v=1755125105999 404 in 26ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_chunks_a.js?v=1755125105999 404 in 27ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_chunks__commonjsHelpers_js-2006399b.js?v=1755125105999 404 in 27ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_chunks_e.js?v=1755125105999 404 in 28ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_chunks_i.js?v=1755125105999 404 in 28ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_c.js?v=1755125105999 404 in 13ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_layers_I.js?v=1755125105999 404 in 17ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_layers_B.js?v=1755125105999 404 in 19ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_layers_T.js?v=1755125105999 404 in 18ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_layers_R.js?v=1755125105999 404 in 19ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_layers_K.js?v=1755125105999 404 in 21ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_layers_g.js?v=1755125105999 404 in 26ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_layers_o.js?v=1755125105999 404 in 19ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_lib.js?v=1755125105999 404 in 19ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_n.js?v=1755125105999 404 in 18ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_libs_b.js?v=1755125105999 404 in 20ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_layers_vi.js?v=1755125105999 404 in 22ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_po.js?v=1755125105999 404 in 24ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_time_T.js?v=1755125105999 404 in 20ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_r.js?v=1755125105999 404 in 22ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_s.js?v=1755125105999 404 in 21ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_t.js?v=1755125105999 404 in 21ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_views_2d_A.js?v=1755125105999 404 in 21ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_views_2d_ar.js?v=1755125105999 404 in 18ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_views_2d_i.js?v=1755125105999 404 in 20ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_views_2d_viewS.js?v=1755125105999 404 in 20ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_views_3d_i.js?v=1755125105999 404 in 22ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_views_2d_webglDeps_js-656987f8.js?v=1755125105999 404 in 22ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_views_3d_a.js?v=1755125105999 404 in 22ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_views_3d_webgl-.js?v=1755125105999 404 in 24ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_views_S.js?v=1755125105999 404 in 18ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_views_PopupView_js-7338e7be.js?v=1755125105999 404 in 19ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_views_B.js?v=1755125105999 404 in 21ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_c.js?v=1755125105999 404 in 20ms
+ GET /_next/static/chunks/vendors-node_modules_arcgis_core_views_V.js?v=1755125105999 404 in 20ms
+ GET /_next/static/chunks/vendors-node_modules_aria-hidden_dist_es2015_index_js-ab37c7ff.js?v=1755125105999 404 in 21ms
+ GET /_next/static/chunks/vendors-node_modules_clsx_dist_clsx_mjs-54b28cb8.js?v=1755125105999 404 in 17ms
+ GET /_next/static/chunks/vendors-node_modules_a.js?v=1755125105999 404 in 19ms
+ GET /_next/static/chunks/vendors-node_modules_ha.js?v=1755125105999 404 in 19ms
+ GET /_next/static/chunks/vendors-node_modules_c.js?v=1755125105999 404 in 19ms
+ GET /_next/static/chunks/vendors-node_modules_i.js?v=1755125105999 404 in 21ms
+ GET /_next/static/chunks/vendors-node_modules_lucide-react_dist_esm_c.js?v=1755125105999 404 in 14ms
+ GET /_next/static/chunks/vendors-node_modules_luxon_src_d.js?v=1755125105999 404 in 23ms
+ GET /_next/static/chunks/vendors-node_modules_mui_i.js?v=1755125105999 404 in 23ms
+ GET /_next/static/chunks/vendors-node_modules_next_dist_api_a.js?v=1755125105999 404 in 24ms
+ GET /_next/static/chunks/vendors-node_modules_next_dist_build_d.js?v=1755125105999 404 in 25ms
+ GET /_next/static/chunks/vendors-node_modules_next_dist_compiled_a.js?v=1755125105999 404 in 17ms
+ GET /_next/static/chunks/vendors-node_modules_next_dist_lib_c.js?v=1755125105999 404 in 17ms
+ GET /_next/static/chunks/vendors-node_modules_next_dist_p.js?v=1755125105999 404 in 19ms
+ GET /_next/static/css/vendors-node_modules_next_font_google_target_css-2.css?v=1755125105999 404 in 24ms
+ GET /_next/static/chunks/vendors-node_modules_next_font_google_target_css-2.js?v=1755125105999 404 in 25ms
+ GET /_next/static/chunks/vendors-node_modules_performance-now_lib_performance-now_js-7bfb4876.js?v=1755125105999 404 in 37ms
+ GET /_next/static/chunks/vendors-node_modules_react-icons_fa_index_mjs-4b6f67e4.js?v=1755125105999 404 in 24ms
+ GET /_next/static/chunks/vendors-node_modules_raf_index_js-6137b604.js?v=1755125105999 404 in 26ms
+ GET /_next/static/chunks/vendors-node_modules_p.js?v=1755125105999 404 in 26ms
+ GET /_next/static/chunks/vendors-node_modules_react-dom_c.js?v=1755125105999 404 in 27ms
+ GET /_next/static/chunks/vendors-node_modules_react-icons_gi_index_mjs-90fa9303.js?v=1755125105999 404 in 18ms
+ GET /_next/static/chunks/vendors-node_modules_react-icons_l.js?v=1755125105999 404 in 24ms
+ GET /_next/static/chunks/vendors-node_modules_react-icons_go_index_mjs-26659d83.js?v=1755125105999 404 in 25ms
+ GET /_next/static/chunks/vendors-node_modules_react-icons_pi_index_mjs-b61ca3f5.js?v=1755125105999 404 in 25ms
+ GET /_next/static/chunks/vendors-node_modules_react-icons_si_index_mjs-eeed2d59.js?v=1755125105999 404 in 25ms
+ GET /_next/static/chunks/vendors-node_modules_react-is_cjs_react-is_development_js-74dafb0a.js?v=1755125105999 404 in 21ms
+ GET /_next/static/chunks/vendors-node_modules_react-.js?v=1755125105999 404 in 31ms
+ GET /_next/static/chunks/vendors-node_modules_react_index_js-1fb2b362.js?v=1755125105999 404 in 32ms
+ GET /_next/static/chunks/vendors-node_modules_react_jsx-d.js?v=1755125105999 404 in 34ms
+ GET /_next/static/chunks/vendors-node_modules_refractor_c.js?v=1755125105999 404 in 34ms
+ GET /_next/static/chunks/vendors-node_modules_retry_i.js?v=1755125105999 404 in 25ms
+ GET /_next/static/chunks/vendors-node_modules_s.js?v=1755125105999 404 in 39ms
+ GET /_next/static/chunks/vendors-node_modules_rgbcolor_index_js-74605f28.js?v=1755125105999 404 in 40ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 39ms
+ GET /_next/static/chunks/main-app.js?v=1755125105999 404 in 41ms
+ GET /_next/static/chunks/app/page.js 404 in 43ms
+ GET /_next/static/chunks/_app-pages-browser_components_theme_ThemeProvider_tsx-_app-pages-browser_lib_utils_ts.js 404 in 66ms
+ GET /_next/static/chunks/app/layout.js 404 in 83ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 682ms (6423 modules)
+ GET /favicon.ico 200 in 779ms

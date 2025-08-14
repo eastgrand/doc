@@ -16,6 +16,7 @@ import { getPersona, defaultPersona } from '../prompts';
 import { unionByGeoId } from '../../../../types/union-layer';
 import { multiEndpointFormatting, strategicSynthesis } from '../shared/base-prompt';
 import { GeoAwarenessEngine } from '../../../../lib/geo/GeoAwarenessEngine';
+import { getAnalysisPrompt } from '../shared/analysis-prompts';
 
 /**
  * Validate cluster response for hallucinated data
@@ -1077,22 +1078,78 @@ export async function POST(req: NextRequest) {
     console.log('[Claude] API key is present, length:', apiKey.length);
 
     try {
-        // Enhanced error handling for request parsing
+        // Enhanced error handling for request parsing - Support both JSON and FormData
         let body: RequestBody;
+        let isFormDataRequest = false;
+        
         try {
-            body = await req.json();
-        console.log('[Claude] Request body parsed successfully');
-        console.log('[Claude] Messages count:', body.messages?.length);
-        console.log('[Claude] Has featureData:', !!body.featureData);
-        console.log('[Claude] Persona:', body.persona);
+            // Check Content-Type to determine request format
+            const contentType = req.headers.get('content-type') || '';
             
-            // Validate request structure
-            if (!body.messages || !Array.isArray(body.messages)) {
-                throw new Error('Invalid request: messages array is required');
-            }
-            
-            if (body.messages.length === 0) {
-                throw new Error('Invalid request: messages array cannot be empty');
+            if (contentType.includes('multipart/form-data') || contentType.includes('application/x-www-form-urlencoded')) {
+                // Handle FormData request (Analysis requests)
+                console.log('[Claude] Parsing FormData request (Analysis)');
+                isFormDataRequest = true;
+                
+                const formData = await req.formData();
+                const blobPath = formData.get('blobPath') as string;
+                const query = formData.get('query') as string;
+                
+                // Check if this is a chat FormData request (has messages field)
+                const messagesData = formData.get('messages') as string;
+                const metadataData = formData.get('metadata') as string;
+                const featureDataField = formData.get('featureData') as string;
+                const personaData = formData.get('persona') as string;
+                
+                if (messagesData) {
+                    // Chat FormData request
+                    console.log('[Claude] FormData Chat request detected');
+                    try {
+                        body = {
+                            messages: JSON.parse(messagesData),
+                            metadata: metadataData ? JSON.parse(metadataData) : {},
+                            featureData: featureDataField ? JSON.parse(featureDataField) : [],
+                            persona: personaData || 'strategist'
+                        };
+                        console.log('[Claude] Chat FormData parsed successfully');
+                    } catch (parseError) {
+                        console.error('[Claude] Error parsing chat FormData:', parseError);
+                        throw new Error('Invalid chat FormData format');
+                    }
+                } else {
+                    // Analysis FormData request (original logic)
+                    console.log('[Claude] FormData Analysis request detected');
+                    console.log('[Claude] FormData parsed:', { blobPath: !!blobPath, query: !!query });
+                    
+                    body = {
+                        messages: [{ role: 'user', content: query || '' }],
+                        metadata: { 
+                            blobUrl: blobPath,
+                            query: query,
+                            isFormDataRequest: true
+                        },
+                        featureData: undefined, // Will be loaded from blob
+                        persona: 'strategist' // Default for analysis requests
+                    };
+                }
+                
+            } else {
+                // Handle JSON request (Chat requests)
+                console.log('[Claude] Parsing JSON request (Chat)');
+                body = await req.json();
+                console.log('[Claude] JSON request body parsed successfully');
+                console.log('[Claude] Messages count:', body.messages?.length);
+                console.log('[Claude] Has featureData:', !!body.featureData);
+                console.log('[Claude] Persona:', body.persona);
+                
+                // Validate JSON request structure
+                if (!body.messages || !Array.isArray(body.messages)) {
+                    throw new Error('Invalid request: messages array is required');
+                }
+                
+                if (body.messages.length === 0) {
+                    throw new Error('Invalid request: messages array cannot be empty');
+                }
             }
             
         } catch (parseError) {
@@ -1181,11 +1238,25 @@ export async function POST(req: NextRequest) {
 
         // 🎯 FAST PATH: For contextual chat, use simplified data processing
         if (isContextualChat && featureData) {
-            console.log('[CONTEXTUAL CHAT] Using fast-path data processing');
+            console.log('🎯 [CHAT STEP 1] Using fast-path data processing');
             
             // For contextual follow-ups, use simplified processing without heavy analysis
             if (Array.isArray(featureData) && featureData.length > 0) {
-                processedLayersData = featureData as ProcessedLayerResult[];
+                // Chat sends featureData as [{layerId, features: [...]}] format
+                // Extract features from the layer objects for contextual chat
+                if (featureData[0]?.features) {
+                    processedLayersData = featureData.map(layer => ({
+                        layerId: layer.layerId || 'contextual_chat',
+                        layerName: layer.layerName || 'Chat Context',
+                        layerType: layer.layerType || 'polygon',
+                        layer: null as any,
+                        features: layer.features || [],
+                        extent: null
+                    }));
+                } else {
+                    // Fallback: treat as direct processed layer results
+                    processedLayersData = featureData as ProcessedLayerResult[];
+                }
                 console.log('[CONTEXTUAL CHAT] Processed lightweight feature data:', processedLayersData.length, 'layers');
             } else if (typeof featureData === 'object' && !Array.isArray(featureData)) {
                 // Handle comprehensive summary format but simplified
@@ -1267,11 +1338,21 @@ export async function POST(req: NextRequest) {
           // Explicitly log blobUrl value RIGHT BEFORE the check
           console.log(`[Claude Pre-Check] blobUrl value: ${blobUrl}, type: ${typeof blobUrl}`);
 
-          // Validate blobUrl presence if inline data not provided
-          if (!blobUrl) {
-            console.error('[Claude Error] Neither blobUrl nor inline featureData provided.');
-            return NextResponse.json({ error: 'blobUrl or featureData must be provided' }, { status: 400 });
+          // For chat requests, allow proceeding without blobUrl or featureData
+          if (isContextualChat) {
+            console.log('[Claude] Chat request - proceeding without feature data');
+            processedLayersData = []; // Empty data for pure chat
+          } else {
+            // For analysis requests, require blobUrl or featureData
+            if (!blobUrl) {
+              console.error('[Claude Error] Analysis request requires blobUrl or featureData.');
+              return NextResponse.json({ error: 'Analysis requests require blobUrl or featureData' }, { status: 400 });
+            }
           }
+        }
+
+        // Only proceed with blob download if we have a blobUrl and no processed data yet
+        if (blobUrl && processedLayersData.length === 0) {
           // --- Download and parse feature data from Blob ---
           console.log(`[Claude] Attempting to download blob from URL: ${blobUrl}`);
           const blobResponse = await fetch(blobUrl);
@@ -1479,57 +1560,77 @@ export async function POST(req: NextRequest) {
     
           // --- Simplified Data Processing (Focus on prompt relevant info) ---
               if (!processedLayersData || processedLayersData.length === 0) {
-          console.error("[Claude API] No processed layer data available for analysis");
-          return NextResponse.json({ error: "No processed layer data available for analysis" }, { status: 400 });
+          // For chat requests, allow proceeding without processed data
+          if (isContextualChat) {
+            console.log("[Claude API] Chat request proceeding without processed layer data");
+          } else {
+            console.error("[Claude API] No processed layer data available for analysis");
+            return NextResponse.json({ error: "No processed layer data available for analysis" }, { status: 400 });
+          }
         }
         
         const primaryLayerResult = processedLayersData[0]; // Assume first layer is primary
-        if (!primaryLayerResult) {
+        if (!primaryLayerResult && !isContextualChat) {
           console.error("[Claude API] Primary layer result is undefined");
           return NextResponse.json({ error: "Primary layer result is undefined" }, { status: 400 });
         }
         
-          const primaryLayerConfig = layers[primaryLayerResult.layerId];
-          const primaryLayerName = primaryLayerResult.layerName || primaryLayerResult.layerId;
+          const primaryLayerConfig = primaryLayerResult ? layers[primaryLayerResult.layerId] : null;
+          const primaryLayerName = primaryLayerResult ? (primaryLayerResult.layerName || primaryLayerResult.layerId) : 'chat';
     
           // --- Determine Primary Field using updated logic ---
-          if (!primaryLayerResult.features || primaryLayerResult.features.length === 0) {
-          console.error(`[Claude API] Primary layer ${primaryLayerResult.layerId} has no features`);
-          return NextResponse.json({ error: `Primary layer ${primaryLayerResult.layerId} has no features` }, { status: 400 });
+          if (primaryLayerResult && (!primaryLayerResult.features || primaryLayerResult.features.length === 0)) {
+          // For chat requests, allow proceeding without features
+          if (isContextualChat) {
+            console.log(`[Claude API] Chat request with empty features - proceeding anyway`);
+          } else {
+            console.error(`[Claude API] Primary layer ${primaryLayerResult.layerId} has no features`);
+            return NextResponse.json({ error: `Primary layer ${primaryLayerResult.layerId} has no features` }, { status: 400 });
+          }
         }
         
-          const firstFeature = primaryLayerResult.features[0];
+          const firstFeature = primaryLayerResult?.features?.[0];
           const firstFeatureProps = firstFeature?.properties;
-          if (!firstFeatureProps || typeof firstFeatureProps !== 'object' || Object.keys(firstFeatureProps).length === 0) {
-            console.error('[Claude ERROR] First feature properties are missing or empty for layer', primaryLayerConfig?.id);
-            return NextResponse.json({
-              error: `No properties found in the first feature for layer ${primaryLayerConfig?.id}. Check the exported blob structure.`
-            }, { status: 500 });
+          if (primaryLayerResult && (!firstFeatureProps || typeof firstFeatureProps !== 'object' || Object.keys(firstFeatureProps).length === 0)) {
+            // For chat requests, allow proceeding without feature properties
+            if (isContextualChat) {
+              console.log('[Claude API] Chat request with empty feature properties - proceeding anyway');
+            } else {
+              console.error('[Claude ERROR] First feature properties are missing or empty for layer', primaryLayerConfig?.id);
+              return NextResponse.json({
+                error: `No properties found in the first feature for layer ${primaryLayerConfig?.id}. Check the exported blob structure.`
+              }, { status: 500 });
+            }
           }
 
           let primaryAnalysisField: string | undefined = undefined;
           const rendererField = primaryLayerConfig?.rendererField;
           const microserviceField = primaryLayerConfig?.microserviceField;
 
+          // Skip field detection for chat requests without features
+          if (isContextualChat && !firstFeatureProps) {
+              console.log('🎯 [CHAT STEP 2] Chat request - skipping field detection');
+              primaryAnalysisField = 'chat_context';
+          }
           // First check if this is a joint visualization
-          if (firstFeatureProps.joint_score !== undefined) {
+          else if (firstFeatureProps?.joint_score !== undefined) {
               primaryAnalysisField = 'joint_score';
               console.log('[Claude] Detected joint visualization, using joint_score as primary field');
-          } else if (metadata?.primaryField && firstFeatureProps[metadata.primaryField] !== undefined) {
+          } else if (metadata?.primaryField && firstFeatureProps?.[metadata.primaryField] !== undefined) {
               // PRIORITY: Use metadata.primaryField if explicitly set (for SHAP analysis)
               primaryAnalysisField = metadata.primaryField;
               console.log(`[Claude] Using metadata.primaryField '${metadata.primaryField}' as primaryAnalysisField (SHAP analysis)`);
-          } else if (metadata?.targetVariable && firstFeatureProps[metadata.targetVariable] !== undefined) {
+          } else if (metadata?.targetVariable && firstFeatureProps?.[metadata.targetVariable] !== undefined) {
               // HIGH PRIORITY: Use metadata.targetVariable if explicitly set (for analysis routing)
               primaryAnalysisField = metadata.targetVariable;
               console.log(`[Claude] Using metadata.targetVariable '${metadata.targetVariable}' as primaryAnalysisField (analysis routing)`);
           } else if (
-            rendererField && firstFeatureProps[rendererField] !== undefined
+            rendererField && firstFeatureProps?.[rendererField] !== undefined
           ) {
               primaryAnalysisField = rendererField;
               console.log(`[Claude] Using rendererField '${rendererField}' as primaryAnalysisField`);
           } else if (
-            microserviceField && firstFeatureProps[microserviceField] !== undefined
+            microserviceField && firstFeatureProps?.[microserviceField] !== undefined
           ) {
               primaryAnalysisField = microserviceField;
               console.log(`[Claude] Using microserviceField '${microserviceField}' as primaryAnalysisField`);
@@ -1543,12 +1644,12 @@ export async function POST(req: NextRequest) {
                   // Use the first field detected by enhanced analyzer
                   const detectedField = queryFields[0].field;
                   // Check if detected field exists in the data
-                  if (firstFeatureProps[detectedField] !== undefined) {
+                  if (firstFeatureProps?.[detectedField] !== undefined) {
                       primaryAnalysisField = detectedField;
                       console.log(`[Claude] Using EnhancedQueryAnalyzer field '${detectedField}' as primaryAnalysisField`);
                   } else {
                       // Fallback to getRelevantFields if detected field doesn't exist in data
-                      const relevantFields = getRelevantFields(firstFeatureProps, userQuery);
+                      const relevantFields = firstFeatureProps ? getRelevantFields(firstFeatureProps, userQuery) : [];
                       primaryAnalysisField = relevantFields.length > 0 ? relevantFields[0] : undefined;
                   }
               } else {
@@ -2175,7 +2276,7 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
               location: locationName,
               zipCode,
               jointScore: jointScore.toFixed(2),
-              valueA: formatFieldValue(valueA, varA, primaryLayerConfig),
+              valueA: formatFieldValue(valueA, varA, primaryLayerConfig || undefined),
               valueB: formatFieldValue(valueB, varB, layers[processedLayersData[1]?.layerId])
             };
           });
@@ -2392,9 +2493,9 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
           const endpointData = featureData[0];
           
           // Check for endpoint-level model attribution
-          if (endpointData.model_attribution) {
+          if ((endpointData as any).model_attribution) {
             dataSummary += `\n=== MODEL ATTRIBUTION ===\n`;
-            const modelAttr = endpointData.model_attribution;
+            const modelAttr = (endpointData as any).model_attribution;
             dataSummary += `🤖 Model Used: ${modelAttr.primary_model?.name || 'Not specified'}\n`;
             dataSummary += `📊 Model Type: ${modelAttr.primary_model?.type || 'Not specified'}\n`;
             
@@ -2420,9 +2521,9 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
             modelAttributionFound = true;
           }
           // Check for record-level attribution from features
-          else if (endpointData.features && endpointData.features[0]?._model_attribution) {
+          else if (endpointData.features && (endpointData.features[0] as any)?._model_attribution) {
             dataSummary += `\n=== MODEL ATTRIBUTION ===\n`;
-            const recordAttr = endpointData.features[0]._model_attribution;
+            const recordAttr = (endpointData.features[0] as any)._model_attribution;
             dataSummary += `🤖 Model Used: ${recordAttr.primary_model_used || 'Not specified'}\n`;
             dataSummary += `📊 Model Type: ${recordAttr.model_type || 'Not specified'}\n`;
             dataSummary += `📝 Note: ${recordAttr.confidence_note || 'Model attribution available at record level'}\n\n`;
@@ -2484,7 +2585,6 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
         console.log(`[Claude] Selected persona task instructions for '${normalizedPersonaAnalysisType}':`, personaTaskInstructions ? 'FOUND' : 'USING DEFAULT');
         
         // Get analysis-specific technical prompt
-        const { getAnalysisPrompt } = await import('../shared/analysis-prompts');
         const analysisSpecificPrompt = getAnalysisPrompt(normalizedPersonaAnalysisType);
         console.log(`[Claude] Analysis-specific prompt length:`, analysisSpecificPrompt.length);
         
@@ -2870,9 +2970,10 @@ Present this analysis in your professional ${selectedPersona.name} style while p
         return NextResponse.json(analysisResponse);
     
         } catch (error) {
-          console.error('[Claude] Error in POST handler:', error);
-        return NextResponse.json({ error: error instanceof Error ? error.message : 'Internal server error' }, { status: 500 });
-      }
+          console.error('🚨 [CLAUDE CRITICAL ERROR] Error in POST handler:', error);
+          console.error('🚨 [CLAUDE CRITICAL ERROR] Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+          return NextResponse.json({ error: error instanceof Error ? error.message : 'Internal server error' }, { status: 500 });
+        }
     }
 
     // --- OPTIONS Handler ---

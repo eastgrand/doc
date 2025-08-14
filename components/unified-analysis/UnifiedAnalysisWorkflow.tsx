@@ -35,12 +35,13 @@ import { PiStrategy, PiLightning, PiLightbulb, PiWrench, PiHeart } from 'react-i
 // Import unified components
 import UnifiedAreaSelector, { AreaSelection } from './UnifiedAreaSelector';
 import { UnifiedAnalysisWrapper, UnifiedAnalysisRequest, UnifiedAnalysisResponse } from './UnifiedAnalysisWrapper';
-import UnifiedAnalysisChat from './UnifiedAnalysisChat';
+// import UnifiedAnalysisChat from './UnifiedAnalysisChat'; // Replaced with ChatInterface
 import UnifiedDataTable from './UnifiedDataTable';
 import UnifiedInsightsChart from './UnifiedInsightsChart';
 
 // Import existing components for analysis
 import { QueryInterface } from '@/components/QueryInterface';
+import { ChatInterface } from '@/components/ChatInterface'; // New chat component following QueryInterface pattern
 import EndpointScoreInfographic from '@/components/EndpointScoreInfographic';
 
 // Import infographics components
@@ -1542,13 +1543,12 @@ export default function UnifiedAnalysisWorkflow({
 
             <TabsContent value="analysis" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-hidden">
               {/* Analysis and Chat Interface */}
-              <UnifiedAnalysisChat 
+              <ChatInterface 
                 analysisResult={workflowState.analysisResult}
-                onExportChart={handleExportChart}
-                onZipCodeClick={handleZipCodeClick}
                 persona={selectedPersona}
                 messages={chatMessages}
                 setMessages={setChatMessages}
+                onZipCodeClick={handleZipCodeClick}
                 hasGeneratedNarrative={hasGeneratedNarrative}
                 setHasGeneratedNarrative={setHasGeneratedNarrative}
               />
