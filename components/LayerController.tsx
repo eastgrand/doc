@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import {
   Box,
@@ -26,7 +27,6 @@ import {
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
   Edit as EditIcon,
-  Delete as DeleteIcon,
   DragIndicator as DragIndicatorIcon
 } from '@mui/icons-material';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -141,24 +141,6 @@ export const LayerController: React.FC<LayerControllerProps> = ({
     }
   };
 
-  const handleBookmarkSelect = (layerIds: string[]) => {
-    // Update visibility for all layers
-    const allLayers = projectLayerConfig.groups.reduce((acc: Record<string, LayerConfig>, group: LayerGroup) => {
-      if (group.layers) {
-        group.layers.forEach((layer: LayerConfig) => {
-          acc[layer.id] = layer;
-        });
-      }
-      return acc;
-    }, {} as Record<string, LayerConfig>);
-
-    Object.values(allLayers).forEach(layer => {
-      const shouldBeVisible = layerIds.includes(layer.id);
-      if (layerStates[layer.id]?.visible !== shouldBeVisible) {
-        handleLayerVisibilityToggle(layer.id);
-      }
-    });
-  };
 
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;
