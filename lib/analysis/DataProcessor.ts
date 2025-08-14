@@ -142,11 +142,11 @@ export class DataProcessor {
           console.log(`🌍 [DataProcessor] PRE-FILTERING for comparative analysis: ${rawResults.results?.length || 0} -> ${geoResult.filteredRecords.length} records`);
           
           // DEBUG: Log actual ZIP codes in filtered data
-          const zipCodes = geoResult.filteredRecords.map(r => r.ID || r.area_name || r.zipcode || r.id).filter(Boolean).slice(0, 20);
+          const zipCodes = geoResult.filteredRecords.map((r: any) => r.ID || r.area_name || r.zipcode || r.id).filter(Boolean).slice(0, 20);
           console.log(`🔍 [DataProcessor] DEBUGGING: First 20 ZIP codes in filtered data:`, zipCodes);
           
           // DEBUG: Check which cities these ZIP codes belong to
-          const cityGroups = geoResult.filteredRecords.reduce((acc, r) => {
+          const cityGroups = geoResult.filteredRecords.reduce((acc: any, r: any) => {
             const zip = r.area_name || r.zipcode;
             const city = r.city || 'Unknown';
             if (!acc[city]) acc[city] = [];
