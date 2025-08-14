@@ -1,4 +1,4 @@
-import type { LayerConfig } from '@/config/layers';
+import type { LayerConfig } from '@/types/layers';
 import type { Visualization, GeospatialFeature } from '@/types/geospatial-ai-types';
 
 interface DataCharacteristics {
@@ -81,7 +81,7 @@ export class SmartVisualizationSelector {
     layer: LayerConfig
   ): DataCharacteristics['dataType'] {
     if (layer.rendererField) {
-      const field = layer.fields.find(f => f.name === layer.rendererField);
+      const field = layer.fields.find((f: any) => f.name === layer.rendererField);
       if (field?.type && ['small-integer', 'integer', 'single', 'double', 'long', 'big-integer'].includes(field.type)) return 'numeric';
       if (field?.type === 'string') return 'categorical';
       if (field?.type === 'date') return 'temporal';
