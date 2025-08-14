@@ -1,4 +1,4 @@
-import { LayerConfig } from '../../config/layers';
+import type { LayerConfig } from '../../types/layers';
 
 /**
  * Interface for layer providers that can create and handle different types of layers

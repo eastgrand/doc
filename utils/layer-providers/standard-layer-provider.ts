@@ -1,4 +1,4 @@
-import { LayerConfig, VirtualLayer } from '../../config/layers';
+import type { LayerConfig, VirtualLayer } from '../../types/layers';
 import { LayerProvider } from './base-layer-provider';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Layer from '@arcgis/core/layers/Layer';
