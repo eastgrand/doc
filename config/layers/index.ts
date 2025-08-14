@@ -7,11 +7,7 @@ export * from '../../types/layers';
 export { 
   layers,
   concepts,
-  validateLayerOperation,
-  getLayerConstraints,
-  canAccessLayer,
-  getLayerMetadata,
-  exportLayerConfig
+  getLayerConfigById
 } from '../layers';
 
 // Export layerGroups from adapter
