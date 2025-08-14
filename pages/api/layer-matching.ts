@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { Anthropic } from '@anthropic-ai/sdk';
 import type { LayerMatch } from '@/types/geospatial-ai-types';
 import { layers, concepts } from '@/config/layers';
-import type { LayerConfig } from '@/config/layers';
+import type { LayerConfig } from '@/types/layers';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Extent from '@arcgis/core/geometry/Extent';
 import { GoogleTrendsService } from '@/utils/services/google-trends-service';
