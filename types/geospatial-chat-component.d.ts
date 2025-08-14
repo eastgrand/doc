@@ -1,4 +1,4 @@
-import { LayerConfig } from '../config/layers';
+import type { LayerConfig } from './layers';
 import { ProcessedLayerResult as BaseProcessedLayerResult } from './geospatial-chat';
 
 /**
