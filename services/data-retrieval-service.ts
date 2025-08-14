@@ -262,7 +262,7 @@ export class ArcGISDataRetrieval implements DataRetrievalService {
         // Validate numeric fields for trends data
         const validatedAttributes = { ...feature.attributes };
         if (layer.fields) {
-          layer.fields.forEach(field => {
+          layer.fields.forEach((field: any) => {
             if (
               field.type === 'single' ||
               field.type === 'double' ||
