@@ -777,7 +777,7 @@ export default function UnifiedAnalysisWorkflow({
             ? [34, 197, 94] // Green for radius (matches brand green)
             : bufferType === 'drivetime' 
               ? [34, 197, 94] // Green for drive time (matches text-green-500)
-              : [249, 115, 22]; // Orange for walk time (matches text-orange-500)
+              : [34, 197, 94]; // Green for walk time (matches text-green-500)
           
           // Create buffer graphic using SimpleFillSymbol (matching existing implementation)
           const bufferGraphic = new Graphic({
@@ -1426,7 +1426,7 @@ export default function UnifiedAnalysisWorkflow({
                   <Card 
                     className={`cursor-pointer transition-all p-3 ${
                       bufferType === 'walktime' 
-                        ? 'border-orange-500 bg-orange-50 shadow-md' 
+                        ? 'border-green-500 bg-green-50 shadow-md' 
                         : 'hover:shadow-md'
                     }`}
                     onClick={() => {
@@ -1435,7 +1435,7 @@ export default function UnifiedAnalysisWorkflow({
                     }}
                   >
                     <div className="text-center">
-                      <Walk className="h-5 w-5 mx-auto mb-1 text-orange-500" />
+                      <Walk className="h-5 w-5 mx-auto mb-1 text-green-500" />
                       <p className="text-xs font-medium">Walk Time</p>
                       <p className="text-xs text-muted-foreground">Travel on foot</p>
                     </div>

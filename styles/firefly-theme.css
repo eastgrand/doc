@@ -70,7 +70,7 @@
   --theme-text-muted: #999999;
   --theme-border: #444444;
   --theme-accent-primary: var(--firefly-14);    /* Lime Green - closest to #33a852 */
-  --theme-accent-secondary: var(--firefly-19);  /* Orange - complementary to green */
+  --theme-accent-secondary: var(--firefly-13);  /* Bright Green - darker green from primary */
   --theme-warning: var(--firefly-18);           /* Yellow */
   --theme-error: var(--firefly-1);              /* Deep Pink */
   --theme-success: var(--firefly-13);           /* Bright Green */
@@ -89,7 +89,7 @@
   --theme-text-muted: #999999;
   --theme-border: #e0e0e0;
   --theme-accent-primary: var(--firefly-light-14);    /* Darker Lime Green - closest to #33a852 */
-  --theme-accent-secondary: var(--firefly-light-19);  /* Darker Orange - complementary to green */
+  --theme-accent-secondary: var(--firefly-light-13);  /* Darker Bright Green - darker green from primary */
   --theme-warning: var(--firefly-light-18);           /* Darker Yellow */
   --theme-error: var(--firefly-light-1);              /* Darker Deep Pink */
   --theme-success: var(--firefly-light-13);           /* Darker Bright Green */

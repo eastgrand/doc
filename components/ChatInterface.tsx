@@ -777,7 +777,7 @@ Use \`/help\` for available commands.`,
   return (
     <div className="flex flex-col h-full max-h-[calc(100vh-200px)] overflow-hidden">
       {/* Chat messages */}
-      <div className="flex-1 min-h-0 max-h-[calc(100vh-420px)] overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 min-h-0 max-h-[calc(100vh-440px)] overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
           <div
             key={message.id}
@@ -799,7 +799,7 @@ Use \`/help\` for available commands.`,
                 <div 
                   className={`inline-block p-3 rounded-lg text-xs cursor-pointer transition-all hover:shadow-md ${
                     message.role === 'user'
-                      ? 'bg-blue-500 text-white hover:bg-blue-600'
+                      ? 'bg-[var(--firefly-19)] text-white hover:bg-[var(--firefly-20)]'
                       : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                   }`}
                   onClick={() => handleMessageClick(message)}
@@ -813,7 +813,7 @@ Use \`/help\` for available commands.`,
                   variant="ghost"
                   size="sm"
                   className={`absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 ${
-                    message.role === 'user' ? 'text-white hover:bg-blue-600' : 'text-gray-500 hover:bg-gray-300'
+                    message.role === 'user' ? 'text-white hover:bg-[var(--firefly-20)]' : 'text-gray-500 hover:bg-gray-300'
                   }`}
                   onClick={() => handleCopyMessage(message)}
                 >

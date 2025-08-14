@@ -1449,10 +1449,10 @@ export default function InfographicsTab({
         type: 'drivetime',
         icon: Car,
         label: 'Drive Time',
-        activeColor: 'text-orange-600',
-        hoverColor: 'hover:text-orange-600',
-        activeBg: 'bg-orange-50',
-        borderColor: 'border-orange-200'
+        activeColor: 'text-green-600',
+        hoverColor: 'hover:text-green-600',
+        activeBg: 'bg-green-50',
+        borderColor: 'border-green-200'
       },
       {
         type: 'walktime',
