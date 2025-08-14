@@ -1,5 +1,6 @@
 /* eslint-disable prefer-const */
-import { LayerMatch, layers } from '../config/layers';
+import { layers } from '../config/layers';
+import type { LayerMatch } from '../types/layer-matching';
 import { GoogleTrendsService } from '../utils/services/google-trends-service';
 
 export async function findRelevantLayers(
@@ -161,7 +162,7 @@ function findVisualizationLayers(question: string): LayerMatch[] {
         relevance: 95,
         matchMethod: 'rules',
         confidence: 0.95,
-        reasons: [`Correlation analysis for ${layer.name}`],
+        reasoning: `Correlation analysis for ${layer.name}`,
         field: layer.rendererField,
         visualizationMode: 'correlation'
       });
@@ -322,7 +323,7 @@ function rulesBasedFieldMatching(requiredFields: string[]): LayerMatch[] {
         relevance: isBrandLayer ? 90 : 100,
         matchMethod: 'rules',
         confidence: isBrandLayer ? 0.85 : 0.9,
-        reasons,
+        reasoning: reasons.join('; '),
         field: layer.rendererField
       });
     }
