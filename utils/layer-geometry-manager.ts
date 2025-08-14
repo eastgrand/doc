@@ -1,4 +1,4 @@
-import { LayerConfig } from '@/config/layers';
+import type { LayerConfig } from '@/types/layers';
 
 /**
  * Layer types that typically have large/complex geometries
