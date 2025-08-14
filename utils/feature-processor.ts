@@ -1,6 +1,6 @@
 import Graphic from '@arcgis/core/Graphic';
 import Extent from '@arcgis/core/geometry/Extent';
-import type { LayerConfig } from '@/config/layers';
+import type { LayerConfig } from '@/types/layers';
 import type { GeometryObject } from '@/types/geospatial-ai-types';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Query from '@arcgis/core/rest/support/Query';
