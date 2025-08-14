@@ -3,7 +3,7 @@ import type MapView from '@arcgis/core/views/MapView';
 import type FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import type Extent from '@arcgis/core/geometry/Extent';
 import type SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
-import type { LayerConfig } from '@/config/layers';
+import type { LayerConfig } from '@/types/layers';
 import type { LocalGeospatialFeature } from './index';
 // import type { getLayerConstraints } from '@/config/layers';
 
