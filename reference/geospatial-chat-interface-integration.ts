@@ -16,7 +16,8 @@ import {
   VisualizationType, 
   initializeLayerRegistry 
 } from '../config/dynamic-layers';
-import { baseLayerConfigs, LayerConfig } from '../config/layers';
+import { baseLayerConfigs } from '../config/layers';
+import type { LayerConfig } from '../types/layers';
 import { AnalysisResult } from '../lib/analytics/types';
 
 // --------------------------------------------------------------------
