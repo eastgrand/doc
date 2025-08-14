@@ -561,7 +561,6 @@ export const FIELD_ALIASES: Record<string, string> = {
   "tax": "MP10128A_B_P",
   "taxes": "MP10128A_B_P",
   "tax preparation": "MP10128A_B_P",
-  "tax software": "MP10128A_B_P",
   "tax filing": "MP10128A_B_P",
   "accountant": "MP10128A_B_P",
   "accounting": "MP10128A_B_P",
