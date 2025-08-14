@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { Anthropic } from '@anthropic-ai/sdk';
 import { layers, concepts } from '../../../config/layers';
 import type { LayerConfig } from '../../../types/layers';
-import type { LayerMatch } from '../../../types/geospatial-ai-types';
+import type { LayerMatch } from '../../../types/layer-matching';
 import { QueryBuilder } from '../../../utils/query-builder';
 
 interface CompositeFeature {
@@ -230,7 +230,7 @@ function performRulesBasedMatching(question: string): LayerMatch[] {
         relevance: 100,
         confidence: 1.0,
         matchMethod: 'rules',
-        reasons: [`${layer.name} locations based on metadata match`]
+        reasoning: `${layer.name} locations based on metadata match`
       });
 
       // Add demographic layers for filtering if query mentions areas or demographics
@@ -258,7 +258,7 @@ function performRulesBasedMatching(question: string): LayerMatch[] {
             matchMethod: 'rules',
             field: demoLayer.rendererField || '',
             threshold: 'top10percent',
-            reasons: [`Areas with high ${demoLayer.name?.toLowerCase()}`]
+            reasoning: `Areas with high ${demoLayer.name?.toLowerCase()}`
           });
         });
       }
@@ -279,7 +279,7 @@ function performRulesBasedMatching(question: string): LayerMatch[] {
         relevance: 80,
         confidence: 0.8,
         matchMethod: 'rules',
-        reasons: [`General retail location query matching ${layer.name}`]
+        reasoning: `General retail location query matching ${layer.name}`
       });
     });
   }
