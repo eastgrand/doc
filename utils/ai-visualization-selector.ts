@@ -1,5 +1,5 @@
 import { LayerResult, LayerField } from '../types/geospatial-ai-types';
-import { getLayerConfigById, getLayerMetadata } from '../config/layers';
+import { getLayerConfigById } from '../config/layers';
 import * as geometryEngine from '@arcgis/core/geometry/geometryEngine';
 import Point from '@arcgis/core/geometry/Point';
 import Polygon from '@arcgis/core/geometry/Polygon';
@@ -586,7 +586,7 @@ export class AIVisualizationSelector {
     // Check layer types
     const hasHeightData = layers.some(l => {
       const config = getLayerConfigById(l.layer.id);
-      const metadata = getLayerMetadata(l.layer.id);
+      const metadata = config?.metadata;
       return metadata?.tags?.some((tag: string) => 
         tag.toLowerCase().includes('elevation') || 
         tag.toLowerCase().includes('height') ||
