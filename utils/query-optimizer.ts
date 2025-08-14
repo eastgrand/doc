@@ -1,5 +1,4 @@
-import type { LayerConfig } from '@/config/layers';
-import type { LayerType } from '@/config/layers';
+import type { LayerConfig, LayerType } from '@/types/layers';
 
 interface OptimizedQuery {
   originalQuery: string;
@@ -143,9 +142,9 @@ export class QueryOptimizer {
 
       // Score based on field availability
       const requiredFields = this.getRequiredFieldsForIntent(intent);
-      const availableFields = layer.fields.map(f => f.name.toLowerCase());
+      const availableFields = layer.fields.map((f: any) => f.name.toLowerCase());
       requiredFields.forEach(field => {
-        if (availableFields.some(f => f.includes(field))) {
+        if (availableFields.some((f: any) => f.includes(field))) {
           score += 0.5;
         }
       });
@@ -163,9 +162,9 @@ export class QueryOptimizer {
       case 'hotspot':
         return layer.type === 'point' as LayerType;
       case 'correlation':
-        return layer.fields.some(f => ['small-integer', 'integer', 'single', 'double', 'long', 'big-integer'].includes(f.type));
+        return layer.fields.some((f: any) => ['small-integer', 'integer', 'single', 'double', 'long', 'big-integer'].includes(f.type));
       case 'trend':
-        return layer.fields.some(f => f.type === 'date');
+        return layer.fields.some((f: any) => f.type === 'date');
       default:
         return true;
     }
@@ -195,7 +194,7 @@ export class QueryOptimizer {
     const requiredTypes = this.getRequiredFieldTypes(intent);
 
     layers.forEach(layer => {
-      layer.fields.forEach(field => {
+      layer.fields.forEach((field: any) => {
         // Check if field type matches requirements
         if (requiredTypes.includes(field.type)) {
           // Check if field name is relevant to query
