@@ -97,6 +97,7 @@ const EndpointScoreInfographic: React.FC<EndpointScoreInfographicProps> = ({
           if (!point.LATITUDE || !point.LONGITUDE) return false;
           
           // Simple bounds check (you'd use proper geometry contains in production)
+          if (!bounds) return true;
           return point.LATITUDE >= bounds.ymin && 
                  point.LATITUDE <= bounds.ymax &&
                  point.LONGITUDE >= bounds.xmin && 
