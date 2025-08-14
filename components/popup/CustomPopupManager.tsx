@@ -47,6 +47,19 @@ interface HitTestResult {
   layer?: __esri.Layer;
 }
 
+interface Metric { 
+  label: string; 
+  value: number; 
+  color: string; 
+  isPercent?: boolean; 
+  percentage?: number; 
+  statistics?: { 
+    min: number; 
+    max: number; 
+    median: number; 
+  }; 
+}
+
 const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
   mapView,
   layer,
@@ -1105,7 +1118,6 @@ const generateBarChart = (
     const attrs = feature.attributes || {};
 
     // Helper to push metric definition safely
-    interface Metric { label: string; value: number; color: string; isPercent?: boolean; percentage?: number; statistics?: { min: number; max: number; median: number }; }
     const metrics: Metric[] = [];
 
     // 1) Correlation score (if available)
