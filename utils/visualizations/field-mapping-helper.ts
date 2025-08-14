@@ -208,7 +208,7 @@ export class FieldMappingHelper {
     }
     
     // Then try without any prefixes
-    let actualFieldName = (fieldName.split('.').pop() || fieldName).replace(/^value_/, '');
+    const actualFieldName = (fieldName.split('.').pop() || fieldName).replace(/^value_/, '');
     if (FIELD_CODE_TO_DISPLAY_NAME[actualFieldName]) {
       return FIELD_CODE_TO_DISPLAY_NAME[actualFieldName];
     }
