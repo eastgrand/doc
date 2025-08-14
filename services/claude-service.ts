@@ -7,7 +7,7 @@ import {
   Visualization,
   SQLConversionResult
 } from '../types/geospatial-ai-types';
-import { LayerConfig } from '@/config/layers';
+import type { LayerConfig } from '@/types/layers';
 import { upload } from '@vercel/blob/client';
 
 export interface ClaudeServiceOptions {
