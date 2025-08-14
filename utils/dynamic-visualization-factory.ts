@@ -21,7 +21,6 @@ import type { CorrelationData } from './visualizations/correlation-visualization
 import { LayerField } from '../types/geospatial-ai-types';
 import { TopNVisualization } from './visualizations/top-n-visualization';
 import { TopNData } from './visualizations/top-n-visualization';
-import { exportLayerConfig } from '../config/layers';
 import { CorrelationService } from '../services/correlation-service';
 import { createGeometry } from "@/utils/geometry";
 import { layers } from '../config/layers';
