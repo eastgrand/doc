@@ -75,7 +75,7 @@ export class VisualizationIntegration {
 
   public updateAnalysisResult(analysisResult: AnalysisResult, enhancedAnalysis?: EnhancedAnalysisResult): void {
     console.log('🔥 [VisualizationIntegration] Updating analysis result:', {
-      oldType: this.analysisResult?.type,
+      oldType: (this.analysisResult as any)?.type,
       newType: (analysisResult as any)?.type,
       hasRenderer: !!(analysisResult as any)?.renderer,
       hasLegend: !!(analysisResult as any)?.legend
