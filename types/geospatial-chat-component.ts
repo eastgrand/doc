@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import type { LocalGeospatialFeature } from '@/types/index';
 import type { Visualization, LayerMatch } from '@/types/geospatial-chat';
 import type { LayerMetadata as ImportedLayerMetadata } from '@/types/layers';
-import type { LayerConfig } from '@/config/layers';
+import type { LayerConfig } from '@/types/layers';
 
 export type ArcGISGeometryType = "point" | "multipoint" | "polyline" | "polygon" | "mesh" | "extent";
 
