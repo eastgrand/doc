@@ -1,4 +1,4 @@
-import { LayerConfig } from '@/config/layers';
+import type { LayerConfig } from '@/types/layers';
 import MapView from '@arcgis/core/views/MapView';
 
 export interface TestQuery {
