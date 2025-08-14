@@ -24,7 +24,6 @@ import {
   Analytics
 } from '@mui/icons-material';
 import { LayerConfig } from '@/types/layers';
-import { getLayerMetadata } from '@/config/layers';
 import { LayerErrorHandler } from '@/utils/layer-error-handler';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import { layerMetricsTracker } from '@/utils/layer-metrics';
@@ -64,7 +63,7 @@ export const LayerStats: React.FC<LayerStatsProps> = ({ layer, onClose }) => {
       const countResult = await featureLayer.queryFeatureCount();
       
       // Get layer metadata
-      const metadata = getLayerMetadata(layer.id);
+      const metadata = layer.metadata || {};
 
       // Track load time
       const loadTime = performance.now() - startTime;
