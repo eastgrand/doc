@@ -9,78 +9,78 @@
 export const analysisPrompts = {
   competitive_analysis: `
 COMPETITIVE ANALYSIS TECHNICAL CONTEXT:
-You are analyzing competitive positioning data to identify Nike's strategic advantages versus competitors like Adidas, Jordan, and other athletic brands across different geographic markets.
+You are analyzing competitive positioning data to identify strategic advantages between competing brands across different geographic markets.
 
 SCORING METHODOLOGY:
-The competitive_advantage_score (1-10 scale) represents Nike's overall competitive strength in each market, calculated by combining:
-• Market Share Dominance: Nike's market share relative to competitors (25% weight)
-• Demographic Alignment: How well local demographics match Nike's target customer profile (25% weight) 
+The competitive_advantage_score (1-10 scale) represents overall competitive strength in each market, calculated by combining:
+• Market Share Dominance: Primary brand's market share relative to competitors (25% weight)
+• Demographic Alignment: How well local demographics match target customer profiles (25% weight) 
 • Competitive Pressure: Inverse of competitor strength and market saturation (25% weight)
-• Brand Category Strength: Nike's performance in key categories like footwear, apparel, and lifestyle (25% weight)
+• Brand Category Strength: Performance in key product categories and market segments (25% weight)
 
-Higher scores indicate markets where Nike has stronger competitive positioning for expansion or investment.
+Higher scores indicate markets where there are stronger competitive positioning opportunities for expansion or investment.
 
 DATA STRUCTURE:
 - competitive_advantage_score: Primary ranking metric (1-10 scale, precise decimals)
-- nike_market_share: Nike's current market share percentage
-- adidas_market_share: Adidas competitor market share percentage  
-- jordan_market_share: Jordan brand market share percentage
-- demographic_fit_score: How well demographics align with Nike's target customers
+- brand_a_share: Primary brand's current market share percentage
+- brand_b_share: Competitor brand market share percentage  
+- brand_c_share: Additional competitor brand market share percentage (if available)
+- demographic_fit_score: How well demographics align with target customers
 - competitive_pressure_index: Level of competition from other brands
-- brand_category_strength: Nike's relative strength across product categories
+- brand_category_strength: Relative strength across product categories
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS rank and prioritize by competitive_advantage_score (1-10 scale)
-2. Discuss specific competitors (Adidas, Jordan, etc.) and market share dynamics in analysis
+2. Discuss specific brand comparisons and market share dynamics in analysis
 3. Explain HOW the scoring methodology creates competitive advantages in each market
-4. Compare Nike's performance versus named competitors using market share data
+4. Compare brand performance using available market share data
 5. Focus on strategic competitive positioning, not just current market dominance
 6. Use competitor data to explain competitive dynamics and opportunities
 
 ANALYSIS FOCUS:
-- Identify markets where Nike has strongest competitive advantages versus Adidas, Jordan, and other rivals
+- Identify markets with strongest competitive positioning opportunities
 - Explain competitive positioning factors: market share gaps, demographic advantages, brand strength
-- Analyze competitor dynamics and how Nike can leverage competitive advantages for expansion
-- Recommend competitive strategies based on Nike's positioning relative to specific competitors
-- Discuss market share trends and competitive threats/opportunities by competitor
+- Analyze competitive dynamics and strategic leverage opportunities for expansion
+- Recommend competitive strategies based on relative positioning between brands
+- Discuss market share trends and competitive threats/opportunities
 `,
 
   demographic_insights: `
 DEMOGRAPHIC ANALYSIS TECHNICAL CONTEXT:
-You are analyzing demographic data to identify market opportunities based on population characteristics and demographic alignment with Nike's target customer profiles.
+You are analyzing demographic data to identify market opportunities based on population characteristics and demographic alignment with target customer profiles.
 
 SCORING METHODOLOGY:
-The demographic_insights_score (0-100 scale) measures how well each market's demographics align with Nike's ideal customer profile, calculated by analyzing:
-• Target Demographics Match: Alignment with Nike's core age groups (18-45) and active lifestyle indicators (40% weight)
-• Income Compatibility: Income levels that support athletic footwear and apparel purchasing (25% weight)
-• Lifestyle Indicators: Active lifestyle, sports participation, and fitness engagement levels (20% weight)
+The demographic_insights_score (0-100 scale) measures how well each market's demographics align with ideal customer profiles, calculated by analyzing:
+• Target Demographics Match: Alignment with core age groups and lifestyle indicators (40% weight)
+• Income Compatibility: Income levels that support product purchasing power (25% weight)
+• Lifestyle Indicators: Active lifestyle, engagement levels, and relevant consumer behaviors (20% weight)
 • Demographic Growth Trends: Population growth in target segments and demographic momentum (15% weight)
 
-Higher scores indicate markets where demographics strongly align with Nike's target customers and provide optimal expansion opportunities.
+Higher scores indicate markets where demographics strongly align with target customers and provide optimal expansion opportunities.
 
 DATA STRUCTURE:
 - demographic_insights_score: Primary ranking metric (0-100 scale)
 - total_population: Market size and reach potential
 - median_income: Purchasing power indicators
 - age_distribution: Age group breakdowns and target segment concentration
-- lifestyle_indicators: Active lifestyle and sports participation data
+- lifestyle_indicators: Active lifestyle and engagement data
 - demographic_trends: Population growth and demographic shift patterns
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS start analysis by explaining how demographic scores are calculated
-2. Focus on population segments that align with Nike's target customer profiles (active, 18-45, middle+ income)
-3. Analyze income levels and their impact on Nike product purchasing power
-4. Identify demographic trends that create market opportunities for athletic brands
-5. Connect demographic characteristics to Nike brand affinity and market potential
+2. Focus on population segments that align with target customer profiles
+3. Analyze income levels and their impact on product purchasing power
+4. Identify demographic trends that create market opportunities
+5. Connect demographic characteristics to market potential and brand affinity
 
 ANALYSIS FOCUS:
 - Begin with clear explanation of demographic scoring methodology in business terms
-- Identify markets with optimal demographic alignment for Nike's target customers
-- Analyze income distributions and purchasing power for athletic footwear/apparel
-- Explain age group concentrations and active lifestyle indicators
+- Identify markets with optimal demographic alignment for target customers
+- Analyze income distributions and purchasing power for relevant product categories
+- Explain age group concentrations and lifestyle indicators
 - Assess demographic trends and growth patterns in target segments
 - Recommend demographic-based targeting strategies for market expansion
-- Connect population characteristics to Nike brand positioning and market opportunity
+- Connect population characteristics to market positioning and opportunity
 `,
 
   trend_analysis: `
@@ -237,11 +237,11 @@ ANALYSIS FOCUS:
 
   comparative_analysis: `
 COMPARATIVE ANALYSIS TECHNICAL CONTEXT:
-You are analyzing comparative performance across different dimensions: geographic regions, market segments, time periods, or data metrics. This analysis focuses on comparing Nike's performance between different areas, demographics, or market conditions rather than competitor analysis.
+You are analyzing comparative performance across different dimensions: geographic regions, market segments, time periods, or data metrics. This analysis focuses on comparing performance between different areas, demographics, or market conditions rather than competitor analysis.
 
 SCORING METHODOLOGY:
 The comparative_analysis_score (0-100 scale) measures comparative performance differences across selected dimensions, calculated by analyzing:
-• Performance Gap: Difference in Nike performance between compared groups or regions (35% weight)
+• Performance Gap: Difference in performance between compared groups or regions (35% weight)
 • Market Characteristics: Demographic, economic, and market differences driving performance variations (30% weight)
 • Consistency Patterns: How reliable performance differences are across multiple metrics (20% weight)
 • Strategic Implications: Business significance of identified performance gaps (15% weight)
@@ -283,7 +283,7 @@ ANALYSIS FOCUS:
 
   spatial_clusters: `
 SPATIAL CLUSTERING TECHNICAL CONTEXT:
-You are analyzing spatial clustering results to identify geographic markets with similar characteristics and patterns that create distinct business opportunities for Nike.
+You are analyzing spatial clustering results to identify geographic markets with similar characteristics and patterns that create distinct business opportunities.
 
 SCORING METHODOLOGY:
 The spatial_clusters_score (0-100 scale) measures the quality and business value of geographic clustering patterns, calculated by analyzing:
@@ -305,16 +305,16 @@ DATA STRUCTURE:
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS start analysis by explaining how spatial clustering scores are calculated
-2. Describe what each cluster represents in actionable business terms for Nike
+2. Describe what each cluster represents in actionable business terms
 3. Identify which clusters offer the highest market opportunities and revenue potential
 4. Analyze geographic concentration patterns and their strategic implications
-5. Connect cluster characteristics to Nike's target market and brand positioning
+5. Connect cluster characteristics to target market and brand positioning
 6. Explain how cluster-based strategies can improve marketing efficiency and ROI
 
 ANALYSIS FOCUS:
 - Begin with clear explanation of spatial clustering methodology and scoring
 - Describe distinct cluster profiles with demographics, income levels, and market characteristics
-- Identify high-value clusters with optimal Nike target customer concentrations
+- Identify high-value clusters with optimal target customer concentrations
 - Analyze geographic boundaries and concentration patterns for operational efficiency
 - Explain cluster distinctiveness and opportunities for differentiated marketing approaches
 - Recommend cluster-specific strategies for market penetration and expansion
@@ -323,12 +323,12 @@ ANALYSIS FOCUS:
 
   correlation_analysis: `
 CORRELATION ANALYSIS TECHNICAL CONTEXT:
-You are analyzing statistical relationships between market variables to identify key drivers of Nike's performance and market opportunities across different geographic areas.
+You are analyzing statistical relationships between market variables to identify key drivers of performance and market opportunities across different geographic areas.
 
 SCORING METHODOLOGY:
 The correlation_analysis_score (0-100 scale) measures the strength and business value of statistical relationships between market variables, calculated by analyzing:
 • Correlation Strength: Statistical significance and strength of relationships between variables (35% weight)
-• Business Relevance: How actionable and valuable the correlations are for Nike's strategy (30% weight)
+• Business Relevance: How actionable and valuable the correlations are for strategic decision-making (30% weight)
 • Predictive Power: How well the correlations predict market performance and opportunities (20% weight)
 • Strategic Consistency: How well correlations align with known business drivers and market dynamics (15% weight)
 
@@ -346,14 +346,14 @@ CRITICAL REQUIREMENTS:
 1. ALWAYS start analysis by explaining how correlation scores are calculated and what they mean
 2. Explain correlation strength in practical business terms (strong, moderate, weak)
 3. Distinguish clearly between correlation and causation in all analysis
-4. Focus on actionable relationships that inform Nike's strategic decisions
+4. Focus on actionable relationships that inform strategic decisions
 5. Identify key market drivers and quantify their impacts on performance
-6. Connect correlations to Nike's business objectives and market opportunities
+6. Connect correlations to business objectives and market opportunities
 
 ANALYSIS FOCUS:
 - Begin with clear explanation of correlation analysis methodology and statistical significance
 - Identify strongest market relationships and their practical business implications
-- Explain which demographic, economic, or competitive factors drive Nike's performance
+- Explain which demographic, economic, or competitive factors drive performance
 - Distinguish between causation and correlation, emphasizing actionable insights
 - Quantify the impact of key drivers on market success and opportunity
 - Recommend strategies based on correlation insights and relationship patterns
@@ -362,7 +362,7 @@ ANALYSIS FOCUS:
 
   risk_assessment: `
 RISK ASSESSMENT TECHNICAL CONTEXT:
-You are analyzing market risk factors to identify potential threats and opportunities for Nike's expansion and investment decisions across different geographic markets.
+You are analyzing market risk factors to identify potential threats and opportunities for expansion and investment decisions across different geographic markets.
 
 SCORING METHODOLOGY:
 The risk_assessment_score (0-100 scale, where higher scores indicate LOWER risk) measures market stability and investment safety, calculated by analyzing:
@@ -371,7 +371,7 @@ The risk_assessment_score (0-100 scale, where higher scores indicate LOWER risk)
 • Economic Risk: Income volatility, economic downturns, and purchasing power stability (25% weight)
 • Operational Risk: Supply chain, regulatory, and operational challenges in the market (15% weight)
 
-Higher scores indicate markets with lower overall risk profiles that are safer for Nike's strategic investments and expansion efforts.
+Higher scores indicate markets with lower overall risk profiles that are safer for strategic investments and expansion efforts.
 
 DATA STRUCTURE:
 - risk_assessment_score: Primary ranking metric (0-100 scale, higher = lower risk)
@@ -383,7 +383,7 @@ DATA STRUCTURE:
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS start analysis by explaining how risk scores are calculated (higher scores = lower risk)
-2. Clearly explain risk levels and their specific business impact on Nike
+2. Clearly explain risk levels and their specific business impact
 3. Identify both threats to avoid and calculated risks worth taking for strategic advantage
 4. Provide specific risk mitigation strategies for each identified risk factor
 5. Balance risk assessment against opportunity potential and market attractiveness
@@ -391,7 +391,7 @@ CRITICAL REQUIREMENTS:
 
 ANALYSIS FOCUS:
 - Begin with clear explanation of risk assessment methodology and scoring interpretation
-- Categorize risk levels (low, moderate, high) and their strategic implications for Nike
+- Categorize risk levels (low, moderate, high) and their strategic implications
 - Identify specific risk factors by category and assess their business impact
 - Distinguish between risks that can be mitigated versus those that should be avoided
 - Recommend risk-adjusted opportunity prioritization and investment strategies
@@ -462,7 +462,7 @@ The segment_profiling_score (0-100 scale) measures how well-defined and actionab
 • Demographic Distinctiveness: How clearly different customer groups can be identified (30% weight)
 • Behavioral Clustering: Strength of behavioral patterns that group customers naturally (25% weight)
 • Segment Size Viability: Whether segments are large enough for targeted marketing (25% weight)
-• Nike Brand Affinity: How well segments align with Nike's brand and target customers (20% weight)
+• Brand Affinity: How well segments align with brand and target customers (20% weight)
 
 Higher scores indicate markets with clear, actionable customer segments that are ideal for targeted marketing strategies and personalized approaches.
 
@@ -471,9 +471,9 @@ DATA STRUCTURE:
 - demographic_distinctiveness: How distinct demographic characteristics are (Very High/High/Moderate/Low)
 - behavioral_clustering_strength: Strength of behavioral patterns for grouping (Strong/Moderate/Weak/Limited)
 - market_segment_strength: Natural market segments and clustering potential (Excellent/Good/Fair/Limited)  
-- primary_segment_type: Identified segment category (Premium Nike Loyalists, Affluent Nike Consumers, etc.)
+- primary_segment_type: Identified segment category (Premium Brand Loyalists, Affluent Consumers, etc.)
 - segment_size: Market size category (Large/Medium-Large/Medium/Small-Medium/Small)
-- nike_segment_affinity: Nike brand affinity level (Very High/High/Moderate/Low Affinity)
+- brand_segment_affinity: Brand affinity level (Very High/High/Moderate/Low Affinity)
 - recommended_segment_strategy: Strategic approach for this segment type
 
 CRITICAL REQUIREMENTS:
@@ -564,51 +564,51 @@ ANALYSIS FOCUS:
 
   brand_analysis: `
 BRAND ANALYSIS TECHNICAL CONTEXT:
-You are analyzing brand analysis data to identify markets with strongest Nike brand opportunities and competitive positioning.
+You are analyzing brand analysis data to identify markets with strongest brand opportunities and competitive positioning.
 
 SCORING METHODOLOGY:
-The brand_analysis_score (0-100 scale) measures Nike's brand strength and growth potential in each market, combining:
-• Current Brand Position: Nike's existing market presence and brand recognition (30% weight)
-• Market Share Opportunity: Potential for Nike brand growth and expansion (25% weight)
-• Competitive Landscape: How favorable the competitive environment is for Nike (25% weight)
-• Brand-Market Fit: How well Nike's brand positioning matches local market preferences (20% weight)
+The brand_analysis_score (0-100 scale) measures brand strength and growth potential in each market, combining:
+• Current Brand Position: Existing market presence and brand recognition (30% weight)
+• Market Share Opportunity: Potential for brand growth and expansion (25% weight)
+• Competitive Landscape: How favorable the competitive environment is for the brand (25% weight)
+• Brand-Market Fit: How well brand positioning matches local market preferences (20% weight)
 
-Higher scores indicate markets where Nike's brand has the strongest foundation and greatest growth potential for strategic brand investment.
+Higher scores indicate markets where the brand has the strongest foundation and greatest growth potential for strategic brand investment.
 
 DATA STRUCTURE:
 - brand_analysis_score: Primary ranking metric (0-100 scale)
-- nike_market_share: Current Nike market share percentage
-- brand_strength_level: Nike brand position (Market Leader/Strong Position/Established/Emerging/Developing)
+- brand_market_share: Current brand market share percentage
+- brand_strength_level: Brand position (Market Leader/Strong Position/Established/Emerging/Developing)
 - market_position: Overall market positioning strength (Premium/Strong/Moderate/Developing)
 - competitive_landscape: Competition level (Highly Competitive/Competitive/Moderately Competitive/Low Competition)
 - brand_opportunity: Growth strategy type (Brand Expansion/Market Penetration/Brand Strengthening/Brand Development)
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS rank and prioritize by brand_analysis_score (0-100)
-2. Focus on Nike brand strength, market positioning, and competitive landscape analysis
-3. Identify markets with strongest brand opportunities for Nike investment and growth
-4. Explain brand factors: current Nike presence, market position quality, competitive dynamics
+2. Focus on brand strength, market positioning, and competitive landscape analysis
+3. Identify markets with strongest brand opportunities for investment and growth
+4. Explain brand factors: current presence, market position quality, competitive dynamics
 5. Distinguish between strong brand markets vs emerging brand development opportunities
 
 ANALYSIS FOCUS:
-- Identify markets with strongest Nike brand potential for strategic brand investment
+- Identify markets with strongest brand potential for strategic brand investment
 - Explain brand positioning factors and competitive landscape characteristics
-- Recommend brand strategies based on current Nike presence and market position strength
+- Recommend brand strategies based on current presence and market position strength
 - Highlight dominant brand markets vs emerging brand development opportunities
 `,
 
   real_estate_analysis: `
 REAL ESTATE ANALYSIS TECHNICAL CONTEXT:
-You are analyzing real estate analysis data to identify optimal retail locations for Nike store placement and property investment.
+You are analyzing real estate analysis data to identify optimal retail locations for store placement and property investment.
 
 SCORING METHODOLOGY:
-The real_estate_analysis_score (0-100 scale) measures location suitability for Nike retail investment, combining:
+The real_estate_analysis_score (0-100 scale) measures location suitability for retail investment, combining:
 • Location Quality: Premium location characteristics and retail environment appeal (35% weight)
-• Demographic Fit: How well the location's customer base matches Nike's target demographics (25% weight)
+• Demographic Fit: How well the location's customer base matches target demographics (25% weight)
 • Accessibility & Traffic: Foot traffic potential and customer accessibility (25% weight)
 • Market Opportunity: Local market size and retail growth potential (15% weight)
 
-Higher scores indicate locations with the best combination of premium positioning, target demographics, and high customer traffic for successful Nike retail investment.
+Higher scores indicate locations with the best combination of premium positioning, target demographics, and high customer traffic for successful retail investment.
 
 DATA STRUCTURE:
 - real_estate_analysis_score: Primary ranking metric (0-100 scale)
@@ -622,12 +622,12 @@ DATA STRUCTURE:
 CRITICAL REQUIREMENTS:
 1. ALWAYS rank and prioritize by real_estate_analysis_score (0-100)
 2. Focus on location quality, demographic fit, market accessibility, and retail suitability
-3. Identify optimal real estate locations for Nike retail store placement and investment
+3. Identify optimal real estate locations for retail store placement and investment
 4. Explain location factors: quality assessment, demographic alignment, accessibility, foot traffic
 5. Distinguish between prime real estate opportunities vs limited location potential
 
 ANALYSIS FOCUS:
-- Identify locations with strongest real estate potential for Nike retail investment
+- Identify locations with strongest real estate potential for retail investment
 - Explain location quality factors and demographic fit characteristics
 - Recommend real estate strategies based on location assessment and retail suitability
 - Highlight prime flagship locations vs standard store opportunities vs limited potential areas
@@ -639,16 +639,16 @@ You are analyzing market penetration opportunities to identify underserved marke
 
 SCORING METHODOLOGY:
 The market_penetration_score (0-100 scale) measures market entry opportunity potential and penetration feasibility, calculated by analyzing:
-• Market Saturation Gap: How underserved the market is relative to Nike's target demographics (30% weight)
+• Market Saturation Gap: How underserved the market is relative to target demographics (30% weight)
 • Entry Barriers: Ease of market entry including competitive barriers, regulatory constraints, and operational challenges (25% weight)
-• Growth Velocity Potential: Speed at which Nike can realistically penetrate and scale in the market (25% weight)
+• Growth Velocity Potential: Speed at which brands can realistically penetrate and scale in the market (25% weight)
 • Revenue Conversion Opportunity: Potential for converting market penetration into sustainable revenue growth (20% weight)
 
-Higher scores indicate markets with optimal penetration opportunities where Nike can rapidly achieve meaningful market share with strong revenue conversion.
+Higher scores indicate markets with optimal penetration opportunities where brands can rapidly achieve meaningful market share with strong revenue conversion.
 
 DATA STRUCTURE:
 - market_penetration_score: Primary ranking metric (0-100 scale)
-- current_penetration_level: Nike's existing market presence and penetration
+- current_penetration_level: Current market presence and penetration
 - saturation_gap: Underserved market opportunity size
 - market_accessibility: Ease of market entry and expansion
 - penetration_velocity_potential: Speed of achievable market penetration
@@ -658,7 +658,7 @@ DATA STRUCTURE:
 CRITICAL REQUIREMENTS:
 1. ALWAYS start analysis by explaining how market penetration scores are calculated
 2. Focus on penetration opportunity potential, not current penetration levels
-3. Identify underserved markets with optimal growth potential for Nike expansion
+3. Identify underserved markets with optimal growth potential for expansion
 4. Explain market entry barriers and enablers affecting penetration success
 5. Analyze penetration velocity and sustainable revenue conversion opportunities
 6. Distinguish between easy entry markets versus high-barrier but high-reward opportunities
@@ -670,43 +670,43 @@ ANALYSIS FOCUS:
 - Explain penetration velocity factors and realistic expansion timelines
 - Assess competitive barriers and market entry challenges requiring strategic planning
 - Recommend penetration strategies based on market accessibility and revenue potential
-- Connect penetration opportunities to Nike's expansion capabilities and strategic priorities
+- Connect penetration opportunities to expansion capabilities and strategic priorities
 `,
 
   customer_profile: `
 CUSTOMER PROFILING TECHNICAL CONTEXT:
-You are analyzing customer profiling data to develop comprehensive customer personas and identify high-value customer segments with optimal Nike brand alignment and revenue potential.
+You are analyzing customer profiling data to develop comprehensive customer personas and identify high-value customer segments with optimal brand alignment and revenue potential.
 
 SCORING METHODOLOGY:
-The customer_profile_score (0-100 scale) measures customer segment value and Nike brand alignment potential, calculated by analyzing:
-• Nike Brand Affinity: How well customer characteristics align with Nike's brand values and target positioning (35% weight)
+The customer_profile_score (0-100 scale) measures customer segment value and brand alignment potential, calculated by analyzing:
+• Brand Affinity: How well customer characteristics align with brand values and target positioning (35% weight)
 • Revenue Potential: Customer segment's purchasing power, spending patterns, and lifetime value potential (30% weight)
-• Engagement Propensity: Likelihood of active engagement with Nike products, services, and brand experiences (20% weight)
+• Engagement Propensity: Likelihood of active engagement with products, services, and brand experiences (20% weight)
 • Market Influence: Customer segment's influence on broader market trends and brand advocacy potential (15% weight)
 
-Higher scores indicate customer segments with optimal Nike brand alignment, high revenue potential, and strong engagement capabilities for strategic targeting.
+Higher scores indicate customer segments with optimal brand alignment, high revenue potential, and strong engagement capabilities for strategic targeting.
 
 DATA STRUCTURE:
 - customer_profile_score: Primary ranking metric (0-100 scale)
 - demographic_characteristics: Age, income, lifestyle, and geographic distribution
 - purchasing_behavior_patterns: Buying frequency, spending levels, and product preferences
-- brand_affinity_indicators: Nike brand alignment and competitive brand preferences
-- lifestyle_profile: Activity levels, interests, and values alignment with Nike
+- brand_affinity_indicators: Brand alignment and competitive brand preferences
+- lifestyle_profile: Activity levels, interests, and values alignment with brand
 - engagement_potential: Digital engagement, community participation, and brand advocacy
 - revenue_value_potential: Customer lifetime value and spending capacity
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS start analysis by explaining how customer profile scores are calculated
 2. Develop comprehensive customer personas with demographic, behavioral, and psychographic insights
-3. Focus on customer segments with highest Nike brand alignment and revenue potential
+3. Focus on customer segments with highest brand alignment and revenue potential
 4. Analyze purchasing behavior patterns and brand preference drivers
-5. Connect customer characteristics to Nike's target market and brand positioning
+5. Connect customer characteristics to target market and brand positioning
 6. Identify engagement opportunities and customer relationship building strategies
 
 ANALYSIS FOCUS:
 - Begin with clear explanation of customer profiling methodology and scoring approach
 - Develop detailed customer personas highlighting demographics, behaviors, and preferences
-- Identify high-value customer segments with optimal Nike brand fit and revenue potential
+- Identify high-value customer segments with optimal brand fit and revenue potential
 - Analyze purchasing patterns, brand loyalty factors, and engagement preferences
 - Explain customer motivations, lifestyle alignment, and brand affinity drivers
 - Recommend customer-centric targeting strategies and personalized engagement approaches
@@ -726,7 +726,7 @@ STRATEGIC EXPANSION OPPORTUNITIES
 Top Strategic Markets:
 1. [Area] (Strategic Score: [exact decimal])
    • Market Gap: [%]
-   • Nike Share: [%]
+   • Brand Share: [%]
    • Demographics: [key insight]
 
 2. [Next area with details...]

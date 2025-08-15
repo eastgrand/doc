@@ -233,6 +233,161 @@ process(rawData: RawAnalysisResult): ProcessedAnalysisData {
 }
 ```
 
+### Step 5.5: Dynamic Brand Naming Process
+
+**Component**: `lib/analysis/utils/BrandNameResolver.ts`
+
+For brand-related analysis endpoints (like comparative analysis), the system now dynamically extracts actual brand names instead of using generic "Brand A/B" terminology:
+
+```typescript
+// 1. Initialize BrandNameResolver with field aliases
+const processor = new ComparativeAnalysisProcessor(fieldAliases);
+// fieldAliases = {
+//   'mp30034a_b_p': 'Nike Market Share (%)',
+//   'brand_satisfaction': 'Acme Corporation Satisfaction Score',
+//   'competitor_share': 'GlobalTech Market Penetration'
+// }
+
+// 2. Extract brand metrics with dynamic naming
+const brandAMetric = this.extractBrandMetric(record, 'brand_a');
+const brandBMetric = this.extractBrandMetric(record, 'brand_b');
+
+// Returns BrandMetric objects like:
+// {
+//   value: 25.5,
+//   fieldName: 'mp30034a_b_p', 
+//   brandName: 'Nike'  // Extracted from "Nike Market Share (%)"
+// }
+```
+
+#### Brand Name Extraction Strategies
+
+The `BrandNameResolver` uses multiple strategies to extract brand names:
+
+```typescript
+// Strategy 1: Field Alias Parsing
+'Nike Market Share (%)' → 'Nike'
+'Brand Affinity - Acme' → 'Acme'  
+'Market Share: GlobalTech' → 'GlobalTech'
+'Starbucks Customer Loyalty Index' → 'Starbucks'
+
+// Strategy 2: Dynamic Brand Detection from Project Data
+// Scans all field aliases to identify brand-like words
+const brands = this.getKnownBrandNames(); // Extracts from current project only
+// Returns: ['Nike', 'Acme', 'GlobalTech', 'Starbucks'] // Project-specific
+
+// Strategy 3: Legacy Pattern Fallback (only when no field aliases)
+'mp30034a_b_p' → 'Legacy_Brand_A'
+'mp30029a_b_p' → 'Legacy_Brand_B'
+
+// Strategy 4: Ultimate Fallback
+'unknown_field' → 'Brand A' / 'Brand B'
+```
+
+#### Brand Name Heuristics
+
+The system identifies brand names using intelligent filtering:
+
+```typescript
+private looksLikeBrandName(word: string): boolean {
+  // Must be capitalized (proper noun)
+  if (!/^[A-Z]/.test(word)) return false;
+  
+  // Skip common market research terms
+  const commonTerms = [
+    'Market', 'Share', 'Brand', 'Purchase', 'Loyalty', 'Affinity',
+    'Overall', 'Satisfaction', 'Performance', 'Strategic', 'Analysis'
+  ];
+  
+  return !commonTerms.includes(word);
+}
+
+// Examples:
+'Nike' → ✅ Brand name
+'Acme' → ✅ Brand name  
+'GlobalTech' → ✅ Brand name
+'Market' → ❌ Common term
+'Overall' → ❌ Common term
+'Performance' → ❌ Common term
+```
+
+#### Analysis Output Transformation
+
+The processor uses extracted brand names throughout the analysis:
+
+```typescript
+// Before (Generic):
+let summary = `
+• Brand Performance Gap (35% weight): Brand A vs competitors performance differential
+• Market dominance: 15 Brand A-dominant markets (18.3%), 42 balanced markets (51.2%)
+• Brand A holds average 7.3% market share advantage across analyzed markets
+`;
+
+// After (Project-Specific):
+let summary = `  
+• Brand Performance Gap (35% weight): Nike vs competitors performance differential
+• Market dominance: 15 Nike-dominant markets (18.3%), 42 balanced markets (51.2%) 
+• Nike holds average 7.3% market share advantage across analyzed markets
+`;
+
+// Or for a different project:
+let summary = `
+• Brand Performance Gap (35% weight): Acme vs competitors performance differential  
+• Market dominance: 15 Acme-dominant markets (18.3%), 42 balanced markets (51.2%)
+• Acme holds average 7.3% market share advantage across analyzed markets
+`;
+```
+
+#### Field Aliases Integration
+
+The system integrates with project-specific field-aliases configuration:
+
+```typescript
+// Example field-aliases for different projects:
+
+// Athletic Footwear Project:
+{
+  'mp30034a_b_p': 'Nike Market Share (%)',
+  'mp30029a_b_p': 'Adidas Market Share (%)', 
+  'mp30032a_b_p': 'Jordan Brand Loyalty Score'
+}
+
+// Technology Project:
+{
+  'tech_share_001': 'Apple Market Penetration',
+  'competitor_metric': 'Samsung Brand Preference Score',
+  'brand_loyalty_x': 'Google Customer Satisfaction Index'  
+}
+
+// Retail Project:
+{
+  'retail_a': 'Walmart Store Performance',
+  'retail_b': 'Target Brand Affinity Score',
+  'satisfaction': 'Amazon Customer Experience Rating'
+}
+```
+
+#### Project-Agnostic Design
+
+Key benefits of this approach:
+
+1. **No Hardcoded Brands**: System works with any industry/project
+2. **Dynamic Adaptation**: Automatically uses brands from current project's data
+3. **Graceful Fallbacks**: Still works when field-aliases unavailable  
+4. **Maintained Compatibility**: Legacy data still processes correctly
+5. **Professional Output**: Stakeholder-ready analysis with real brand names
+
+```typescript
+// Same processor code works for any project:
+
+// Healthcare Project → "Johnson & Johnson vs competitors"
+// Automotive Project → "Toyota vs competitors"  
+// Food & Beverage Project → "Coca-Cola vs competitors"
+// Technology Project → "Apple vs competitors"
+
+// All without changing a single line of processor code!
+```
+
 ### Step 6: Renderer Configuration
 
 **Generated Renderer Structure**:
@@ -313,9 +468,18 @@ map.add(featureLayer);
 | `ID` or `id` or `area_id` | `area_id` | Geographic identifier |
 | `value_DESCRIPTION` or `DESCRIPTION` | `area_name` | Display name |
 | `comparative_score` or `thematic_value` | `comparison_score` | Primary score for visualization |
-| `mp30034a_b_p` or `value_MP30034A_B_P` | `nike_market_share` | Nike market share percentage |
+| `mp30034a_b_p` or `value_MP30034A_B_P` | `brand_a_share` | First brand market share percentage |
+| `mp30029a_b_p` or `value_MP30029A_B_P` | `brand_b_share` | Second brand market share percentage |
 | `value_TOTPOP_CY` | `total_population` | Population data |
 | `value_AVGHINC_CY` | `median_income` | Income data |
+
+### Dynamic Brand Name Fields (New)
+
+| Processed Field | Source | Usage |
+|---------------|---------|-------|
+| `brand_a_name` | Extracted from field-aliases via `BrandNameResolver` | Actual name of first brand (e.g., "Nike", "Acme") |
+| `brand_b_name` | Extracted from field-aliases via `BrandNameResolver` | Actual name of second brand (e.g., "Adidas", "GlobalTech") |
+| `brand_dominance` | Calculated: `brand_a_share - brand_b_share` | Brand performance differential |
 
 ## Geographic Integration Points
 
@@ -433,6 +597,32 @@ console.log(processor.validate(endpointResponse))
 # Map should show colored polygons with legend
 ```
 
+### 5. Test Dynamic Brand Naming
+```bash
+# Test brand name extraction from field aliases
+const resolver = new BrandNameResolver({
+  'mp30034a_b_p': 'Nike Market Share (%)',
+  'brand_satisfaction': 'Acme Corporation Satisfaction'
+});
+
+console.log(resolver.extractBrandName('mp30034a_b_p')); 
+// Should return: "Nike"
+
+console.log(resolver.extractBrandName('brand_satisfaction'));
+// Should return: "Acme"
+
+# Test processor integration
+const processor = new ComparativeAnalysisProcessor(fieldAliases);
+const result = processor.process(mockData);
+
+console.log(result.records[0].properties.brand_a_name);
+// Should return actual brand name, not "Brand A"
+
+console.log(result.summary);
+// Should contain actual brand names like "Nike vs competitors" 
+# not "Brand A vs competitors"
+```
+
 ## Summary
 
 The query-to-visualization flow involves:
@@ -440,8 +630,9 @@ The query-to-visualization flow involves:
 2. **Geographic awareness** to identify and filter locations
 3. **Intelligent routing** to appropriate analysis endpoints
 4. **Flexible data processing** with fallbacks and validation
-5. **Field mapping** to ensure consistency
-6. **Renderer generation** for visualization
-7. **ArcGIS integration** for interactive maps
+5. **Dynamic brand naming** from project-specific field-aliases
+6. **Field mapping** to ensure consistency
+7. **Renderer generation** for visualization
+8. **ArcGIS integration** for interactive maps
 
-The system is designed to be robust, with multiple fallback mechanisms and flexible field handling to accommodate various data formats from different endpoints.
+The system is designed to be robust, with multiple fallback mechanisms and flexible field handling to accommodate various data formats from different endpoints. The new dynamic brand naming capability ensures that analysis outputs show actual brand names from the current project instead of generic "Brand A/B" terminology, making reports more professional and actionable for stakeholders.

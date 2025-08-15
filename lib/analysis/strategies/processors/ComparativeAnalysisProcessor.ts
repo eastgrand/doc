@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { GeoDataManager } from '../../../geo/GeoDataManager';
+import { BrandNameResolver, BrandMetric } from '../../utils/BrandNameResolver';
 
 /**
  * ComparativeAnalysisProcessor - Handles data processing for the /comparative-analysis endpoint
@@ -10,6 +11,19 @@ import { GeoDataManager } from '../../../geo/GeoDataManager';
  */
 export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   private geoDataManager: any = null;
+  private brandNameResolver: BrandNameResolver;
+  
+  constructor(fieldAliases?: Record<string, string>) {
+    this.brandNameResolver = new BrandNameResolver(fieldAliases);
+  }
+
+  /**
+   * Update field aliases for dynamic brand naming
+   * This allows processors to be updated with new field aliases at runtime
+   */
+  updateFieldAliases(fieldAliases?: Record<string, string>): void {
+    this.brandNameResolver = new BrandNameResolver(fieldAliases);
+  }
   
   private getGeoDataManager() {
     if (!this.geoDataManager) {
@@ -160,9 +174,9 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
         });
       }
       
-      // Extract comparative-relevant metrics for properties
-      const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-      const adidasShare = Number(record.value_MP30029A_B_P) || 0;
+      // Extract comparative-relevant metrics for properties (generic approach)
+      const brandAMetric = this.extractBrandMetric(record, 'brand_a');
+      const brandBMetric = this.extractBrandMetric(record, 'brand_b');
       const strategicScore = Number(record.strategic_value_score) || 0;
       const competitiveScore = Number(record.competitive_advantage_score) || 0;
       const demographicScore = Number(record.demographic_opportunity_score) || 0;
@@ -176,9 +190,9 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       const competitiveDynamicsLevel = this.calculateCompetitiveDynamicsLevel(record);
       const growthDifferential = this.calculateGrowthDifferential(record);
       
-      // Calculate brand dominance and market metrics
-      const nikeDominance = nikeShare - adidasShare;
-      const totalBrandShare = nikeShare + adidasShare;
+      // Calculate brand dominance and market metrics (generic)
+      const brandDominance = brandAMetric.value - brandBMetric.value;
+      const totalBrandShare = brandAMetric.value + brandBMetric.value;
       const marketGap = Math.max(0, 100 - totalBrandShare);
       
       return {
@@ -193,9 +207,9 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
           competitive_advantage_score: comparativeScore, // Primary field for competitive analysis
           comparative_analysis_score: comparativeScore, // Keep for compatibility
           strategic_value_score: comparativeScore, // Keep for compatibility
-          nike_market_share: nikeShare,
-          adidas_market_share: adidasShare,
-          nike_dominance: nikeDominance,
+          nike_market_share: brandAMetric.value, // Legacy field for compatibility
+          adidas_market_share: brandBMetric.value, // Legacy field for compatibility
+          nike_dominance: brandDominance, // Legacy field for compatibility
           total_brand_share: totalBrandShare,
           market_gap: marketGap,
           strategic_score: strategicScore,
@@ -210,8 +224,13 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
           competitive_dynamics_level: competitiveDynamicsLevel,
           growth_differential: growthDifferential,
           comparative_category: this.getComparativeCategory(comparativeScore),
-          dominant_brand: this.identifyDominantBrand(record),
-          competitive_advantage_type: this.identifyCompetitiveAdvantageType(record)
+          dominant_brand: this.identifyDominantBrand(brandAMetric.value, brandBMetric.value),
+          competitive_advantage_type: this.identifyCompetitiveAdvantageType(record),
+          brand_a_share: brandAMetric.value,
+          brand_b_share: brandBMetric.value,
+          brand_a_name: brandAMetric.brandName,
+          brand_b_name: brandBMetric.brandName,
+          brand_dominance: brandDominance
         }
       };
     });
@@ -225,8 +244,13 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     // Extract feature importance with comparative focus
     const featureImportance = this.processComparativeFeatureImportance(rawData.feature_importance || []);
     
+    // Get brand names from first record (all records should have same brand names)
+    const firstRecord = rankedRecords[0];
+    const brandAName = firstRecord?.properties?.brand_a_name || 'Brand A';
+    const brandBName = firstRecord?.properties?.brand_b_name || 'Brand B';
+
     // Generate comparative-focused summary
-    const summary = this.generateComparativeSummary(rankedRecords, statistics, rawData.summary);
+    const summary = this.generateComparativeSummary(rankedRecords, statistics, rawData.summary, brandAName, brandBName);
 
     return {
       type: 'competitive_analysis', // Use correct competitive analysis type
@@ -351,31 +375,99 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   // ============================================================================
 
   /**
+   * Extract brand metric from record using flexible field detection
+   */
+  private extractBrandMetric(record: any, brandType: 'brand_a' | 'brand_b'): BrandMetric {
+    // Look for any brand-related fields in the data
+    const allFields = Object.keys(record);
+    
+    // Find fields that might contain brand share data
+    const brandFields = allFields.filter(field => {
+      const fieldLower = field.toLowerCase();
+      return (fieldLower.includes('share') || 
+              fieldLower.includes('market') || 
+              fieldLower.includes('brand') ||
+              fieldLower.includes('mp30') || // Legacy Nike/Adidas fields
+              fieldLower.includes('value_mp')) && 
+             typeof record[field] === 'number';
+    });
+    
+    let fieldName: string | undefined;
+    let value = 0;
+    
+    // If we have exactly 2 brand fields, assign them to brand_a and brand_b
+    if (brandFields.length >= 2) {
+      const sortedFields = brandFields.sort(); // Consistent ordering
+      if (brandType === 'brand_a') {
+        fieldName = sortedFields[0];
+        value = Number(record[sortedFields[0]]) || 0;
+      } else {
+        fieldName = sortedFields[1];
+        value = Number(record[sortedFields[1]]) || 0;
+      }
+    }
+    
+    // If we only have one brand field, use it for brand_a
+    else if (brandFields.length === 1 && brandType === 'brand_a') {
+      fieldName = brandFields[0];
+      value = Number(record[brandFields[0]]) || 0;
+    }
+    
+    // Extract brand name using BrandNameResolver
+    const brandName = fieldName 
+      ? this.brandNameResolver.extractBrandName(fieldName) || `Brand ${brandType === 'brand_a' ? 'A' : 'B'}`
+      : `Brand ${brandType === 'brand_a' ? 'A' : 'B'}`;
+    
+    return {
+      value,
+      fieldName: fieldName || '',
+      brandName
+    };
+  }
+
+  /**
    * Extract comparative analysis score from record with fallback calculation
    */
   private extractComparativeScore(record: any): number {
-    // PRIORITY 1: Use comparative_score if available (this is the field in our data)
+    // DEBUG: Log all fields to identify the issue
+    const recordId = record.ID || record.id || record.area_id || 'unknown';
+    console.log(`🔍 [ComparativeAnalysisProcessor] DEBUG - Record ${recordId} fields:`, {
+      comparison_score: record.comparison_score,
+      comparative_score: record.comparative_score,
+      thematic_value: record.thematic_value,
+      value: record.value,
+      allNumericFields: Object.keys(record).filter(k => typeof record[k] === 'number').slice(0, 10)
+    });
+    
+    // PRIORITY 1: Use comparison_score if available (this is the ACTUAL field in our data)
+    if (record.comparison_score !== undefined && record.comparison_score !== null) {
+      const comparisonScore = Number(record.comparison_score);
+      console.log(`⚖️ [ComparativeAnalysisProcessor] Using comparison_score: ${comparisonScore}`);
+      return comparisonScore;
+    }
+    
+    // PRIORITY 2: Use comparative_score if available (alternative field name)
     if (record.comparative_score !== undefined && record.comparative_score !== null) {
       const comparativeScore = Number(record.comparative_score);
       console.log(`⚖️ [ComparativeAnalysisProcessor] Using comparative_score: ${comparativeScore}`);
       return comparativeScore;
     }
     
-    // PRIORITY 2: Use thematic_value as fallback (common field in endpoint data)
+    // PRIORITY 3: Use thematic_value as fallback (common field in endpoint data)
     if (record.thematic_value !== undefined && record.thematic_value !== null) {
       const thematicScore = Number(record.thematic_value);
       console.log(`⚖️ [ComparativeAnalysisProcessor] Using thematic_value: ${thematicScore}`);
       return thematicScore;
     }
     
-    // PRIORITY 3: Use value field if available
+    // PRIORITY 4: Use value field if available
     if (record.value !== undefined && record.value !== null) {
       const valueScore = Number(record.value);
       console.log(`⚖️ [ComparativeAnalysisProcessor] Using value: ${valueScore}`);
       return valueScore;
     }
     
-    // PRIORITY 4: Use competitive advantage score if available (scale from 1-10 to 0-100)
+    // PRIORITY 5: Use competitive advantage score if available (scale from 1-10 to 0-100)
     if (record.competitive_advantage_score !== undefined && record.competitive_advantage_score !== null) {
       const competitiveScore = Number(record.competitive_advantage_score);
       const scaledScore = competitiveScore * 10; // Scale 1-10 to 10-100
@@ -420,7 +512,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     }
     
     // Ultimate fallback: return a default score
-    console.log('⚠️ [ComparativeAnalysisProcessor] No suitable numeric fields found, using default score');
+    console.log(`⚠️ [ComparativeAnalysisProcessor] Record ${recordId} has no suitable numeric fields, using default score`);
     return 50; // Neutral comparative score
   }
 
@@ -428,29 +520,29 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    * Calculate brand performance gap metrics
    */
   private calculateBrandPerformanceGap(record: any): number {
-    const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-    const adidasShare = Number(record.value_MP30029A_B_P) || 0;
+    const brandAMetric = this.extractBrandMetric(record, 'brand_a');
+    const brandBMetric = this.extractBrandMetric(record, 'brand_b');
     
-    if (nikeShare === 0 && adidasShare === 0) {
+    if (brandAMetric.value === 0 && brandBMetric.value === 0) {
       return 0; // No brand presence to compare
     }
     
-    const nikeDominance = nikeShare - adidasShare;
-    const totalBrandShare = nikeShare + adidasShare;
+    const brandDominance = brandAMetric.value - brandBMetric.value;
+    const totalBrandShare = brandAMetric.value + brandBMetric.value;
     
     let gapScore = 0;
     
-    // Nike dominance scoring
-    if (nikeDominance >= 15) {
-      gapScore += 40; // Very strong Nike lead
-    } else if (nikeDominance >= 10) {
-      gapScore += 35; // Strong Nike lead
-    } else if (nikeDominance >= 5) {
-      gapScore += 25; // Moderate Nike lead
-    } else if (nikeDominance >= 0) {
-      gapScore += 15; // Slight Nike lead
+    // Brand dominance scoring
+    if (brandDominance >= 15) {
+      gapScore += 40; // Very strong brand A lead
+    } else if (brandDominance >= 10) {
+      gapScore += 35; // Strong brand A lead
+    } else if (brandDominance >= 5) {
+      gapScore += 25; // Moderate brand A lead
+    } else if (brandDominance >= 0) {
+      gapScore += 15; // Slight brand A lead
     } else {
-      gapScore += 5; // Nike disadvantage
+      gapScore += 5; // Brand A disadvantage
     }
     
     // Market share magnitude bonus
@@ -462,13 +554,13 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       gapScore += 15; // Developing competitive market
     }
     
-    // Nike absolute performance
-    if (nikeShare >= 35) {
-      gapScore += 15; // Very high Nike performance
-    } else if (nikeShare >= 25) {
-      gapScore += 10; // High Nike performance
-    } else if (nikeShare >= 15) {
-      gapScore += 5; // Moderate Nike performance
+    // Brand A absolute performance
+    if (brandAMetric.value >= 35) {
+      gapScore += 15; // Very high brand A performance
+    } else if (brandAMetric.value >= 25) {
+      gapScore += 10; // High brand A performance
+    } else if (brandAMetric.value >= 15) {
+      gapScore += 5; // Moderate brand A performance
     }
     
     return Math.min(100, gapScore);
@@ -532,10 +624,10 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    * Calculate competitive dynamics level
    */
   private calculateCompetitiveDynamicsLevel(record: any): number {
-    const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-    const adidasShare = Number(record.value_MP30029A_B_P) || 0;
+    const brandAMetric = this.extractBrandMetric(record, 'brand_a');
+    const brandBMetric = this.extractBrandMetric(record, 'brand_b');
     
-    const totalBrandShare = nikeShare + adidasShare;
+    const totalBrandShare = brandAMetric.value + brandBMetric.value;
     const marketGap = Math.max(0, 100 - totalBrandShare);
     
     let dynamicsLevel = 0;
@@ -553,20 +645,20 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       dynamicsLevel += 15; // Early stage market
     }
     
-    // Nike competitive position in market
-    if (nikeShare > 0 && adidasShare > 0) {
-      const nikeRatio = nikeShare / (nikeShare + adidasShare);
-      if (nikeRatio >= 0.7) {
-        dynamicsLevel += 25; // Nike dominance
-      } else if (nikeRatio >= 0.6) {
-        dynamicsLevel += 20; // Nike advantage
-      } else if (nikeRatio >= 0.5) {
+    // Brand competitive position in market
+    if (brandAMetric.value > 0 && brandBMetric.value > 0) {
+      const brandARatio = brandAMetric.value / (brandAMetric.value + brandBMetric.value);
+      if (brandARatio >= 0.7) {
+        dynamicsLevel += 25; // Brand A dominance
+      } else if (brandARatio >= 0.6) {
+        dynamicsLevel += 20; // Brand A advantage
+      } else if (brandARatio >= 0.5) {
         dynamicsLevel += 15; // Balanced competition
       } else {
-        dynamicsLevel += 10; // Nike disadvantage but competitive
+        dynamicsLevel += 10; // Brand A disadvantage but competitive
       }
-    } else if (nikeShare > 0) {
-      dynamicsLevel += 20; // Nike presence without Adidas competition
+    } else if (brandAMetric.value > 0) {
+      dynamicsLevel += 20; // Brand A presence without Brand B competition
     }
     
     // Market gap opportunity
@@ -579,11 +671,11 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     }
     
     // Competitive pressure assessment
-    if (adidasShare >= 25) {
+    if (brandBMetric.value >= 25) {
       dynamicsLevel += 5; // High competitive pressure (competitive advantage)
-    } else if (adidasShare >= 15) {
+    } else if (brandBMetric.value >= 15) {
       dynamicsLevel += 8; // Moderate competitive pressure
-    } else if (adidasShare >= 5) {
+    } else if (brandBMetric.value >= 5) {
       dynamicsLevel += 10; // Low competitive pressure
     }
     
@@ -657,23 +749,20 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   /**
    * Identify the dominant brand in the market
    */
-  private identifyDominantBrand(record: any): string {
-    const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-    const adidasShare = Number(record.value_MP30029A_B_P) || 0;
-    
-    if (nikeShare === 0 && adidasShare === 0) {
+  private identifyDominantBrand(brandAShare: number, brandBShare: number): string {
+    if (brandAShare === 0 && brandBShare === 0) {
       return 'No Brand Presence';
     }
     
-    const nikeDominance = nikeShare - adidasShare;
+    const brandDominance = brandAShare - brandBShare;
     
-    if (nikeDominance >= 15) return 'Nike Strong Dominance';
-    if (nikeDominance >= 8) return 'Nike Moderate Dominance';
-    if (nikeDominance >= 3) return 'Nike Slight Lead';
-    if (nikeDominance >= -3) return 'Balanced Competition';
-    if (nikeDominance >= -8) return 'Adidas Slight Lead';
-    if (nikeDominance >= -15) return 'Adidas Moderate Dominance';
-    return 'Adidas Strong Dominance';
+    if (brandDominance >= 15) return 'Brand A Strong Dominance';
+    if (brandDominance >= 8) return 'Brand A Moderate Dominance';
+    if (brandDominance >= 3) return 'Brand A Slight Lead';
+    if (brandDominance >= -3) return 'Balanced Competition';
+    if (brandDominance >= -8) return 'Brand B Slight Lead';
+    if (brandDominance >= -15) return 'Brand B Moderate Dominance';
+    return 'Brand B Strong Dominance';
   }
 
   /**
@@ -765,7 +854,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     // Add comparative-specific synthetic features if none provided
     if (comparativeFeatures.length === 0) {
       return [
-        { feature: 'brand_performance_gap', importance: 0.35, description: 'Nike vs competitors performance differential' },
+        { feature: 'brand_performance_gap', importance: 0.35, description: 'Brand A vs competitors performance differential' },
         { feature: 'market_position_strength', importance: 0.30, description: 'Relative market positioning and dominance' },
         { feature: 'competitive_dynamics', importance: 0.25, description: 'Competitive pressure and market share dynamics' },
         { feature: 'growth_differential', importance: 0.10, description: 'Relative growth potential and trend momentum' }
@@ -790,8 +879,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       'performance': 'Performance comparison metrics',
       'gap': 'Performance gap analysis',
       'differential': 'Growth and performance differentials',
-      'nike': 'Nike brand comparative performance',
-      'adidas': 'Adidas competitive comparison',
+      'brand_a': 'Brand A comparative performance',
+      'brand_b': 'Brand B competitive comparison',
       'strategic': 'Strategic comparative advantages',
       'demographic': 'Demographic comparative factors',
       'growth': 'Growth differential analysis'
@@ -866,11 +955,13 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   private generateComparativeSummary(
     records: GeographicDataPoint[], 
     statistics: AnalysisStatistics, 
-    rawSummary?: string
+    rawSummary?: string,
+    brandAName: string = 'Brand A',
+    brandBName: string = 'Brand B'
   ): string {
-    // Start with comparative scoring explanation
+    // Start with comparative scoring explanation using actual brand names
     let summary = `**⚖️ Comparative Analysis Formula (0-100 scale):**
-• **Brand Performance Gap (35% weight):** Nike vs competitors performance differential\n• **Market Position Strength (30% weight):** Relative market positioning and dominance\n• **Competitive Dynamics (25% weight):** Competitive pressure and market share dynamics\n• **Growth Differential (10% weight):** Relative growth potential and trend momentum\n\nHigher scores indicate stronger competitive advantages and superior market positioning.\n
+• **Brand Performance Gap (35% weight):** ${brandAName} vs competitors performance differential\n• **Market Position Strength (30% weight):** Relative market positioning and dominance\n• **Competitive Dynamics (25% weight):** Competitive pressure and market share dynamics\n• **Growth Differential (10% weight):** Relative growth potential and trend momentum\n\nHigher scores indicate stronger competitive advantages and superior market positioning.\n
 `;
     
     // Comparative statistics and baseline metrics
@@ -878,13 +969,13 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     summary += `Average comparative advantage: ${statistics.mean.toFixed(1)} (range: ${statistics.min.toFixed(1)}-${statistics.max.toFixed(1)}). `;
     
     // Calculate brand dominance patterns
-    const nikeDominantMarkets = records.filter(r => (r.properties.nike_dominance || 0) > 5).length;
-    const balancedMarkets = records.filter(r => Math.abs(r.properties.nike_dominance || 0) <= 5).length;
-    const adidasDominantMarkets = records.filter(r => (r.properties.nike_dominance || 0) < -5).length;
+    const brandADominantMarkets = records.filter(r => (r.properties.brand_dominance || 0) > 5).length;
+    const balancedMarkets = records.filter(r => Math.abs(r.properties.brand_dominance || 0) <= 5).length;
+    const brandBDominantMarkets = records.filter(r => (r.properties.brand_dominance || 0) < -5).length;
     
-    summary += `Brand dominance: ${nikeDominantMarkets} Nike-dominant markets (${(nikeDominantMarkets/records.length*100).toFixed(1)}%), `;
+    summary += `Brand dominance: ${brandADominantMarkets} ${brandAName}-dominant markets (${(brandADominantMarkets/records.length*100).toFixed(1)}%), `;
     summary += `${balancedMarkets} balanced markets (${(balancedMarkets/records.length*100).toFixed(1)}%), `;
-    summary += `${adidasDominantMarkets} Adidas-dominant markets (${(adidasDominantMarkets/records.length*100).toFixed(1)}%). `;
+    summary += `${brandBDominantMarkets} ${brandBName}-dominant markets (${(brandBDominantMarkets/records.length*100).toFixed(1)}%). `;
     
     // Market competitive intensity
     const avgTotalBrandShare = records.reduce((sum, r) => sum + (r.properties.total_brand_share || 0), 0) / records.length;
@@ -913,8 +1004,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       if (strongCompetitive.length > 0) {
         summary += `**Strongest Competitive Advantages:** `;
         const competitiveNames = strongCompetitive.slice(0, 6).map(r => {
-          const nikeDom = r.properties.nike_dominance || 0;
-          return `${r.area_name} (${r.value.toFixed(1)}, +${nikeDom.toFixed(1)}% Nike lead)`;
+          const brandDom = r.properties.brand_dominance || 0;
+          return `${r.area_name} (${r.value.toFixed(1)}, +${brandDom.toFixed(1)}% brand lead)`;
         });
         summary += `${competitiveNames.join(', ')}. `;
         
@@ -932,9 +1023,9 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       if (brandLeaders.length > 0) {
         summary += `**Brand Performance Leaders:** `;
         const leaderNames = brandLeaders.map(r => {
-          const nikeShare = r.properties.nike_market_share || 0;
-          const adidasShare = r.properties.adidas_market_share || 0;
-          return `${r.area_name} (Nike ${nikeShare.toFixed(1)}% vs Adidas ${adidasShare.toFixed(1)}%)`;
+          const brandAShare = r.properties.brand_a_share || 0;
+          const brandBShare = r.properties.brand_b_share || 0;
+          return `${r.area_name} (${brandAName} ${brandAShare.toFixed(1)}% vs ${brandBName} ${brandBShare.toFixed(1)}%)`;
         });
         summary += `${leaderNames.join(', ')}. `;
         summary += `These markets demonstrate superior brand performance differentials. `;
@@ -975,11 +1066,11 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     // Strategic insights
     summary += `**Competitive Insights:** ${statistics.total} geographic areas analyzed for comparative brand performance and market positioning. `;
     
-    const avgNikeDominance = records.reduce((sum, r) => sum + (r.properties.nike_dominance || 0), 0) / records.length;
-    if (avgNikeDominance > 0) {
-      summary += `Nike holds average ${avgNikeDominance.toFixed(1)}% market share advantage across analyzed markets. `;
+    const avgBrandDominance = records.reduce((sum, r) => sum + (r.properties.brand_dominance || 0), 0) / records.length;
+    if (avgBrandDominance > 0) {
+      summary += `${brandAName} holds average ${avgBrandDominance.toFixed(1)}% market share advantage across analyzed markets. `;
     } else {
-      summary += `Nike faces competitive challenges with ${Math.abs(avgNikeDominance).toFixed(1)}% disadvantage on average. `;
+      summary += `${brandAName} faces competitive challenges with ${Math.abs(avgBrandDominance).toFixed(1)}% disadvantage on average. `;
     }
     
     // Opportunity assessment
@@ -996,8 +1087,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     if (goodPosition > 0) {
       summary += `Strengthen position in ${goodPosition} markets with good competitive standings. `;
     }
-    if (nikeDominantMarkets > adidasDominantMarkets) {
-      summary += `Capitalize on Nike's overall market dominance while defending against competitive threats. `;
+    if (brandADominantMarkets > brandBDominantMarkets) {
+      summary += `Capitalize on ${brandAName}'s overall market dominance while defending against competitive threats. `;
     } else {
       summary += `Develop strategies to overcome competitive disadvantages and improve market positioning. `;
     }

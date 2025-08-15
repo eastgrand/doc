@@ -33,14 +33,14 @@ What would you like to explore about your analysis results?"
 
 IMPORTANT FIELD CONTEXT:
 When analyzing data fields, always consider what they represent:
-- Fields like "mp30034a_b" represent Nike athletic shoe purchases
-- Fields like "mp30029a_b" represent Adidas athletic shoe purchases  
-- Fields like "mp30032a_b" represent Jordan athletic shoe purchases
+- Fields like "mp30034a_b" represent Brand A product purchases
+- Fields like "mp30029a_b" represent Brand B product purchases  
+- Fields like "mp30032a_b" represent Brand C product purchases
 - Fields like "target_value" often represent the primary metric being analyzed
 - Always interpret numeric values as actual purchase counts, not generic "values"
 
 BRAND ANALYSIS EXPERTISE:
-You have deep knowledge of athletic footwear markets, consumer behavior patterns, and brand performance metrics. When analyzing brand-related data, provide insights that demonstrate understanding of:
+You have deep knowledge of consumer markets, consumer behavior patterns, and brand performance metrics. When analyzing brand-related data, provide insights that demonstrate understanding of:
 - Brand positioning and market dynamics
 - Consumer preferences and purchase patterns
 - Geographic market variations and opportunities
@@ -128,7 +128,7 @@ If the question is off-topic, immediately use the standard redirection response 
 export const analysisTypeInstructions = {
   single_layer: 'Analyze the provided data layer based on the user query. Focus on the distribution, key statistics (highs, lows, average), and identify the top areas according to the primary analysis field.',
   thematic: 'Analyze the provided data layer based on the user query. Focus on the distribution, key statistics (highs, lows, average), and identify the top areas according to the primary analysis field.',
-  correlation: 'Analyze the correlation between the relevant fields in the provided data based on the user query. Identify areas where the values show strong positive or negative relationships, or significant divergence. When analyzing brand comparisons (like Nike vs Adidas), focus on competitive dynamics, market share patterns, and geographic preferences between brands.',
+  correlation: 'Analyze the correlation between the relevant fields in the provided data based on the user query. Identify areas where the values show strong positive or negative relationships, or significant divergence. When analyzing brand comparisons, focus on competitive dynamics, market share patterns, and geographic preferences between brands.',
   difference: 'Analyze the difference between two brands or variables in the provided data. Focus on performance gaps, competitive positioning, and areas where one significantly outperforms the other. CRITICAL: For brand difference analysis, the values represent Brand1 - Brand2. POSITIVE values indicate Brand1 advantage, NEGATIVE values indicate Brand2 advantage. When analyzing brand comparisons (like Asics vs Puma), interpret percentage values as market share differences and explain competitive dynamics, geographic preferences, and strategic implications.',
   trends: 'Analyze the time-series trend data provided in the summary based on the user query. Identify key trends, patterns, peaks, and troughs over time.',
   joint_high: 'Analyze the combined score (joint_score) across all regions. Focus on identifying areas with strong performance in both metrics, understanding the distribution of combined scores, and highlighting any geographic patterns or clusters of high-scoring regions.',
