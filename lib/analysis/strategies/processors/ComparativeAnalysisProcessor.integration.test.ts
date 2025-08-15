@@ -12,7 +12,8 @@ describe('ComparativeAnalysisProcessor Integration', () => {
     const processor = new ComparativeAnalysisProcessor(fieldAliases);
 
     const mockRawData: RawAnalysisResult = {
-      data: [
+      success: true,
+      results: [
         {
           ID: 'area_001',
           area_name: 'Miami, FL',
@@ -60,7 +61,8 @@ describe('ComparativeAnalysisProcessor Integration', () => {
     const processor = new ComparativeAnalysisProcessor(); // No field aliases
 
     const mockRawData: RawAnalysisResult = {
-      data: [
+      success: true,
+      results: [
         {
           ID: 'area_001',
           area_name: 'Test Area',
@@ -90,7 +92,8 @@ describe('ComparativeAnalysisProcessor Integration', () => {
     const processor = new ComparativeAnalysisProcessor(fieldAliases);
 
     const mockRawData: RawAnalysisResult = {
-      data: [
+      success: true,
+      results: [
         {
           ID: 'area_001',
           area_name: 'Test Area',
@@ -122,7 +125,8 @@ describe('ComparativeAnalysisProcessor Integration', () => {
     const processor = new ComparativeAnalysisProcessor(fieldAliases);
 
     const mockRawData: RawAnalysisResult = {
-      data: [
+      success: true,
+      results: [
         {
           ID: 'area_001',
           area_name: 'Test Area',
