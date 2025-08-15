@@ -25,15 +25,15 @@ export class EnhancedQueryAnalyzer {
   // Comprehensive field mappings based on actual data
   private readonly FIELD_MAPPINGS: Record<string, FieldMapping> = {
     // Brand mappings - FIXED: Using value_ prefix for production system
-    nike: {
-      keywords: ['nike', 'swoosh'],
+    hrblock: {
+      keywords: ['h&r block', 'hr block', 'h and r block'],
       fields: ['value_MP30034A_B', 'value_MP30034A_B_P'],
-      description: 'Nike athletic shoes purchased'
+      description: 'H&R Block tax service usage'
     },
-    adidas: {
-      keywords: ['adidas', 'three stripes'],
+    turbotax: {
+      keywords: ['turbotax', 'turbo tax'],
       fields: ['value_MP30029A_B', 'value_MP30029A_B_P'],
-      description: 'Adidas athletic shoes purchased'
+      description: 'TurboTax tax service usage'
     },
     jordan: {
       keywords: ['jordan', 'air jordan', 'jumpman'],
@@ -236,7 +236,7 @@ export class EnhancedQueryAnalyzer {
     // Generic Mappings for Broad Queries - FINAL FIX
     brandPreference: {
       keywords: ['brand preference', 'brand preferences', 'preferences'],
-      fields: ['value_MP30034A_B', 'value_MP30029A_B'], // Default to Nike/Adidas
+      fields: ['value_MP30034A_B', 'value_MP30029A_B'], // Default to H&R Block/TurboTax
       description: 'General brand preferences'
     },
     marketSegmentation: {
@@ -315,15 +315,15 @@ export class EnhancedQueryAnalyzer {
     },
     
     // Brand fields with value_ prefix
-    nikeBrand: {
-      keywords: ['nike brand data', 'nike value', 'nike field'],
+    hrblockBrand: {
+      keywords: ['h&r block brand data', 'hr block value', 'h&r block field'],
       fields: ['value_MP30034A_B', 'value_MP30034A_B_P'],
-      description: 'Nike brand purchase data (value fields)'
+      description: 'H&R Block brand usage data (value fields)'
     },
-    adidasBrand: {
-      keywords: ['adidas brand data', 'adidas value', 'adidas field'],
+    turbotaxBrand: {
+      keywords: ['turbotax brand data', 'turbotax value', 'turbotax field'],
       fields: ['value_MP30029A_B', 'value_MP30029A_B_P'],
-      description: 'Adidas brand purchase data (value fields)'
+      description: 'TurboTax brand usage data (value fields)'
     },
     jordanBrand: {
       keywords: ['jordan brand data', 'jordan value', 'jordan field'],
@@ -490,15 +490,15 @@ export class EnhancedQueryAnalyzer {
     },
 
     // SHAP Brand Explanations  
-    shapNike: {
-      keywords: ['shap nike', 'nike influence', 'nike factor', 'nike impact', 'nike shap values'],
+    shapHRBlock: {
+      keywords: ['shap h&r block', 'hr block influence', 'h&r block factor', 'hr block impact', 'h&r block shap values'],
       fields: ['shap_MP30034A_B', 'shap_MP30034A_B_P'],
-      description: 'SHAP values for Nike brand influence on predictions'
+      description: 'SHAP values for H&R Block brand influence on predictions'
     },
-    shapAdidas: {
-      keywords: ['shap adidas', 'adidas influence', 'adidas factor', 'adidas impact'],
+    shapTurboTax: {
+      keywords: ['shap turbotax', 'turbotax influence', 'turbotax factor', 'turbotax impact'],
       fields: ['shap_MP30029A_B', 'shap_MP30029A_B_P'],
-      description: 'SHAP values for Adidas brand influence'
+      description: 'SHAP values for TurboTax brand influence'
     },
     shapJordan: {
       keywords: ['shap jordan', 'jordan influence', 'air jordan factor', 'jordan impact'],
@@ -606,19 +606,19 @@ export class EnhancedQueryAnalyzer {
   private readonly ENDPOINT_CONFIGS = {
     '/strategic-analysis': {
       primaryKeywords: ['strategic', 'strategy', 'expansion', 'invest', 'investment', 'growth', 'opportunity', 'best markets', 'top markets'],
-      contextKeywords: ['nike expansion', 'market opportunity', 'strategic value'],
+      contextKeywords: ['h&r block expansion', 'market opportunity', 'strategic value'],
       avoidTerms: [],
       weight: 1.0
     },
     '/competitive-analysis': {
       primaryKeywords: ['competitive', 'competition', 'compete', 'market share', 'brand position', 'dominance'],
-      contextKeywords: ['nike vs', 'versus', 'against', 'compare to'],
+      contextKeywords: ['h&r block vs', 'versus', 'against', 'compare to'],
       avoidTerms: ['difference', 'percent'],
       weight: 0.9
     },
     '/brand-difference': {
       primaryKeywords: ['difference', 'percent difference', 'gap', 'lead', 'delta'],
-      contextKeywords: ['nike vs adidas', 'brand difference', 'market share difference'],
+      contextKeywords: ['h&r block vs turbotax', 'brand difference', 'market share difference'],
       avoidTerms: [],
       weight: 1.1
     },
@@ -738,7 +738,7 @@ export class EnhancedQueryAnalyzer {
    * Identify mentioned brands
    */
   private identifyBrands(query: string): string[] {
-    const brands = ['nike', 'adidas', 'jordan', 'puma', 'newBalance', 'converse', 'asics'];
+    const brands = ['hrblock', 'turbotax', 'jordan', 'puma', 'newBalance', 'converse', 'asics'];
     return brands.filter(brand => 
       this.FIELD_MAPPINGS[brand].keywords.some(kw => query.includes(kw))
     );

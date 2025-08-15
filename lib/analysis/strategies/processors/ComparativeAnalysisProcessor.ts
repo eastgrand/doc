@@ -40,26 +40,82 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   }
   
   validate(rawData: RawAnalysisResult): boolean {
-    if (!rawData || typeof rawData !== 'object') return false;
-    if (!rawData.success) return false;
-    if (!Array.isArray(rawData.results)) return false;
+    console.log(`🔍 [ComparativeAnalysisProcessor] Validating data:`, {
+      hasRawData: !!rawData,
+      isObject: typeof rawData === 'object',
+      hasSuccess: rawData?.success,
+      hasResults: Array.isArray(rawData?.results),
+      resultsLength: rawData?.results?.length,
+      firstRecordKeys: rawData?.results?.[0] ? Object.keys(rawData.results[0]).slice(0, 15) : []
+    });
+
+    if (!rawData || typeof rawData !== 'object') {
+      console.log(`❌ [ComparativeAnalysisProcessor] Validation failed: Invalid rawData structure`);
+      return false;
+    }
+    if (!rawData.success) {
+      console.log(`❌ [ComparativeAnalysisProcessor] Validation failed: success=false`);
+      return false;
+    }
+    if (!Array.isArray(rawData.results)) {
+      console.log(`❌ [ComparativeAnalysisProcessor] Validation failed: results not array`);
+      return false;
+    }
     
-    // Validate that we have expected fields for comparative analysis
-    const hasRequiredFields = rawData.results.length === 0 || 
-      rawData.results.some(record => 
-        record && 
-        (record.area_id || record.id || record.ID) &&
-        (record.comparative_score !== undefined || 
-         record.value !== undefined || 
-         record.score !== undefined ||
-         // Check for comparative-relevant fields
-         record.mp30034a_b_p !== undefined || // Nike market share for comparison
-         record.value_MP30029A_B_P !== undefined || // Adidas market share for comparison
-         record.strategic_value_score !== undefined ||
-         record.competitive_advantage_score !== undefined)
+    // Empty results are valid
+    if (rawData.results.length === 0) {
+      console.log(`✅ [ComparativeAnalysisProcessor] Validation passed: Empty results`);
+      return true;
+    }
+
+    // Check first few records for required fields - be more flexible with ID fields
+    const sampleSize = Math.min(5, rawData.results.length);
+    const sampleRecords = rawData.results.slice(0, sampleSize);
+    
+    for (let i = 0; i < sampleRecords.length; i++) {
+      const record = sampleRecords[i];
+      
+      // Check for ID field (flexible naming)
+      const hasIdField = record && (
+        record.area_id !== undefined || 
+        record.id !== undefined || 
+        record.ID !== undefined ||
+        record.GEOID !== undefined ||
+        record.zipcode !== undefined ||
+        record.area_name !== undefined
       );
+      
+      // Check for at least one scoring/value field
+      const hasScoringField = record && (
+        record.comparative_score !== undefined || 
+        record.value !== undefined || 
+        record.score !== undefined ||
+        record.thematic_value !== undefined ||
+        // Be more flexible - accept any field that looks like it contains numeric data
+        Object.keys(record).some(key => 
+          typeof record[key] === 'number' && 
+          !key.toLowerCase().includes('date') &&
+          !key.toLowerCase().includes('time') &&
+          !key.toLowerCase().includes('area') &&
+          !key.toLowerCase().includes('length') &&
+          !key.toLowerCase().includes('objectid')
+        )
+      );
+      
+      console.log(`🔍 [ComparativeAnalysisProcessor] Record ${i} validation:`, {
+        hasIdField,
+        hasScoringField,
+        recordKeys: Object.keys(record).slice(0, 10)
+      });
+      
+      if (hasIdField && hasScoringField) {
+        console.log(`✅ [ComparativeAnalysisProcessor] Validation passed: Found valid record structure`);
+        return true;
+      }
+    }
     
-    return hasRequiredFields;
+    console.log(`❌ [ComparativeAnalysisProcessor] Validation failed: No records with both ID and scoring fields found`);
+    return false;
   }
 
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {
@@ -298,21 +354,28 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    * Extract comparative analysis score from record with fallback calculation
    */
   private extractComparativeScore(record: any): number {
-    // PRIORITY 1: Use new comparative_analysis_score from regenerated data
-    if (record.comparative_analysis_score !== undefined && record.comparative_analysis_score !== null) {
-      const comparativeScore = Number(record.comparative_analysis_score);
-      console.log(`⚖️ [ComparativeAnalysisProcessor] Using comparative_analysis_score: ${comparativeScore}`);
+    // PRIORITY 1: Use comparative_score if available (this is the field in our data)
+    if (record.comparative_score !== undefined && record.comparative_score !== null) {
+      const comparativeScore = Number(record.comparative_score);
+      console.log(`⚖️ [ComparativeAnalysisProcessor] Using comparative_score: ${comparativeScore}`);
       return comparativeScore;
     }
     
-    // PRIORITY 2: Use legacy comparative_score if available
-    if (record.comparative_score !== undefined && record.comparative_score !== null) {
-      const preCalculatedScore = Number(record.comparative_score);
-      console.log(`⚖️ [ComparativeAnalysisProcessor] Using legacy comparative_score: ${preCalculatedScore}`);
-      return preCalculatedScore;
+    // PRIORITY 2: Use thematic_value as fallback (common field in endpoint data)
+    if (record.thematic_value !== undefined && record.thematic_value !== null) {
+      const thematicScore = Number(record.thematic_value);
+      console.log(`⚖️ [ComparativeAnalysisProcessor] Using thematic_value: ${thematicScore}`);
+      return thematicScore;
     }
     
-    // PRIORITY 2: Use competitive advantage score if available (scale from 1-10 to 0-100)
+    // PRIORITY 3: Use value field if available
+    if (record.value !== undefined && record.value !== null) {
+      const valueScore = Number(record.value);
+      console.log(`⚖️ [ComparativeAnalysisProcessor] Using value: ${valueScore}`);
+      return valueScore;
+    }
+    
+    // PRIORITY 4: Use competitive advantage score if available (scale from 1-10 to 0-100)
     if (record.competitive_advantage_score !== undefined && record.competitive_advantage_score !== null) {
       const competitiveScore = Number(record.competitive_advantage_score);
       const scaledScore = competitiveScore * 10; // Scale 1-10 to 10-100
@@ -320,54 +383,45 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       return scaledScore;
     }
     
-    // FALLBACK: Calculate comparative score from available data
-    console.log('⚠️ [ComparativeAnalysisProcessor] No direct scores found, calculating from raw data');
+    // FALLBACK: Use any available numeric field as comparative score
+    console.log('⚠️ [ComparativeAnalysisProcessor] No direct scores found, using first available numeric field');
     
-    const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-    const adidasShare = Number(record.value_MP30029A_B_P) || 0;
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const competitiveScore = Number(record.competitive_advantage_score) || 0;
+    // Find the first numeric field that's not an ID, date, or geometric field
+    const numericFields = Object.keys(record).filter(key => {
+      const value = record[key];
+      const keyLower = key.toLowerCase();
+      return typeof value === 'number' && 
+             !isNaN(value) &&
+             !keyLower.includes('id') &&
+             !keyLower.includes('date') &&
+             !keyLower.includes('time') &&
+             !keyLower.includes('area') &&
+             !keyLower.includes('length') &&
+             !keyLower.includes('objectid') &&
+             !keyLower.includes('shape') &&
+             !keyLower.includes('creation') &&
+             !keyLower.includes('edit') &&
+             !keyLower.includes('point');
+    });
     
-    // Simple comparative calculation based on brand performance and positioning
-    let comparativeScore = 0;
-    
-    // Brand performance gap (Nike vs Adidas)
-    const nikeDominance = nikeShare - adidasShare;
-    if (nikeDominance >= 10) {
-      comparativeScore += 25; // Strong Nike advantage
-    } else if (nikeDominance >= 5) {
-      comparativeScore += 20; // Moderate Nike advantage
-    } else if (nikeDominance >= 0) {
-      comparativeScore += 15; // Slight Nike advantage
-    } else {
-      comparativeScore += 5; // Nike disadvantage but present
+    if (numericFields.length > 0) {
+      // Use the first suitable numeric field
+      const fieldName = numericFields[0];
+      const fieldValue = Number(record[fieldName]);
+      console.log(`⚖️ [ComparativeAnalysisProcessor] Using fallback field '${fieldName}': ${fieldValue}`);
+      
+      // Normalize to 0-100 range if needed
+      if (fieldValue > 100) {
+        return Math.min(100, fieldValue / 10); // Scale down large values
+      } else if (fieldValue < 0) {
+        return 0; // Floor negative values
+      }
+      return fieldValue;
     }
     
-    // Market position strength
-    if (strategicScore > 60) {
-      comparativeScore += 20; // Strong strategic position
-    } else if (strategicScore > 45) {
-      comparativeScore += 15; // Good strategic position
-    } else if (strategicScore > 0) {
-      comparativeScore += 10; // Basic strategic position
-    }
-    
-    // Competitive dynamics
-    const totalBrandShare = nikeShare + adidasShare;
-    if (totalBrandShare >= 30) {
-      comparativeScore += 15; // High competitive market
-    } else if (totalBrandShare >= 15) {
-      comparativeScore += 20; // Developing competitive market
-    } else if (totalBrandShare > 0) {
-      comparativeScore += 10; // Early stage market
-    }
-    
-    // Competitive advantage bonus
-    if (competitiveScore > 0) {
-      comparativeScore += Math.min(competitiveScore * 2, 15); // Up to 15 points for competitive advantage
-    }
-    
-    return Math.min(100, comparativeScore);
+    // Ultimate fallback: return a default score
+    console.log('⚠️ [ComparativeAnalysisProcessor] No suitable numeric fields found, using default score');
+    return 50; // Neutral comparative score
   }
 
   /**
@@ -646,15 +700,24 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    * Generate meaningful area name from available data
    */
   private generateAreaName(record: any): string {
-    // Try explicit name fields first (updated for correlation_analysis format)
-    if (record.value_DESCRIPTION) return record.value_DESCRIPTION;
-    if (record.DESCRIPTION) return record.DESCRIPTION;
-    if (record.area_name) return record.area_name;
-    if (record.NAME) return record.NAME;
-    if (record.name) return record.name;
+    // Try explicit name/description fields first - be flexible with naming
+    const nameFields = ['DESCRIPTION', 'value_DESCRIPTION', 'area_name', 'NAME', 'name', 'label', 'title'];
+    for (const field of nameFields) {
+      if (record[field] && typeof record[field] === 'string') {
+        return record[field];
+      }
+    }
     
     // Create name from ID and location data with city context
-    const id = record.ID || record.id || record.GEOID;
+    const idFields = ['ID', 'id', 'GEOID', 'area_id', 'zipcode', 'zip'];
+    let id = null;
+    for (const field of idFields) {
+      if (record[field] !== undefined && record[field] !== null) {
+        id = record[field];
+        break;
+      }
+    }
+    
     if (id) {
       const city = this.extractCityFromRecord(record);
       

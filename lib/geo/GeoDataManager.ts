@@ -1,26 +1,22 @@
 /**
- * Geographic Data Manager - Tri-State Area Edition (NY, NJ, PA)
+ * Geographic Data Manager - Florida Edition
  * 
- * Manages geographic data for New York, New Jersey, and Pennsylvania only.
+ * Manages geographic data for Florida.
  * Optimized for the project's specific geographic scope.
  */
 
 export interface GeographicDatabase {
   entities: Map<string, GeographicEntity>;
   zipCodeToCity: Map<string, string>;
+  zipCodeToCounty: Map<string, string>;
+  zipCodeToMetro: Map<string, string>;
+  zipCodeToState: Map<string, string>;
   aliasMap: Map<string, string>;
   stateAbbreviations: Map<string, string>;
   regionalGroups: Map<string, string[]>;
 }
 
 import { GeographicEntity } from './GeoAwarenessEngine';
-
-interface MetroDefinition {
-  name: string;
-  aliases: string[];
-  zipPrefixes?: string[];
-  zipCodes?: string[];
-}
 
 export class GeoDataManager {
   private static instance: GeoDataManager | null = null;
@@ -30,6 +26,9 @@ export class GeoDataManager {
     this.database = {
       entities: new Map(),
       zipCodeToCity: new Map(),
+      zipCodeToCounty: new Map(),
+      zipCodeToMetro: new Map(),
+      zipCodeToState: new Map(),
       aliasMap: new Map(),
       stateAbbreviations: new Map(),
       regionalGroups: new Map()
@@ -49,44 +48,22 @@ export class GeoDataManager {
   }
 
   private initializeDatabase(): void {
-    console.log('[GeoDataManager] Initializing comprehensive tri-state geographic database...');
+    console.log('[GeoDataManager] Initializing comprehensive Florida geographic database...');
     
     // Core geographic entities
     this.loadStates();
-    this.loadNewYorkMetros();
-    this.loadNewJerseyMetros();
-    this.loadPennsylvaniaMetros();
-    this.loadMetroAreas(); // Load broader metro areas separately
-    this.loadNYBoroughsAndNeighborhoods();
+    this.loadFloridaCounties();
+    this.loadFloridaCities();
+    this.loadFloridaMetros();
+    this.aggregateZipCodesForHigherLevels();
     
-    // Points of Interest
-    this.loadAirports();
-    this.loadUniversities();
-    this.loadHospitals();
-    this.loadSportsVenues();
-    this.loadLandmarks();
-    this.loadTransportation();
-    this.loadShoppingCenters();
-    this.loadParks();
-    this.loadBusinessDistricts();
-    this.loadInfrastructure();
-    this.loadMuseumsAndTheaters();
-    this.loadGovernmentBuildings();
-    
-    // Regional data
-    this.loadCommonAliases();
-    this.loadRegionalGroups();
-    this.loadZipCodePrefixes();
-    
-    console.log(`[GeoDataManager] Comprehensive database initialized with ${this.database.entities.size} entities`);
+    console.log(`[GeoDataManager] Comprehensive Florida database initialized with ${this.database.entities.size} entities`);
   }
 
   private loadStates(): void {
-    // Project covers NY, NJ, PA only
+    // Project covers Florida only
     const states = [
-      { name: 'New York', abbr: 'NY', aliases: ['NY', 'NY State', 'Empire State', 'New York State'] },
-      { name: 'New Jersey', abbr: 'NJ', aliases: ['NJ', 'Jersey', 'Garden State'] },
-      { name: 'Pennsylvania', abbr: 'PA', aliases: ['PA', 'Penn', 'Keystone State', 'Commonwealth of Pennsylvania'] }
+      { name: 'Florida', abbr: 'FL', aliases: ['FL', 'Sunshine State', 'Fla', 'Flordia'] }
     ];
 
     states.forEach(state => {
@@ -102,133 +79,230 @@ export class GeoDataManager {
     });
   }
 
-  private loadNewYorkMetros(): void {
-    const nyMetros = [
+  private loadFloridaCounties(): void {
+    const flCounties = [
       {
-        name: 'New York City',
-        aliases: ['NYC', 'New York', 'NY', 'Big Apple', 'New York Metro'],
-        // Use all five boroughs' zip codes for NYC as a whole
+        name: 'Miami-Dade County',
+        aliases: ['Miami-Dade', 'Dade County', 'Dade', 'Miami Dade Co'],
+        cities: ['Miami', 'Hialeah', 'Miami Beach', 'Coral Gables', 'Homestead', 'Aventura', 'Miami Gardens']
+      },
+      {
+        name: 'Broward County',
+        aliases: ['Broward', 'Broward Co'],
+        cities: ['Fort Lauderdale', 'Hollywood', 'Pembroke Pines', 'Coral Springs', 'Pompano Beach', 'Davie', 'Plantation']
+      },
+      {
+        name: 'Palm Beach County',
+        aliases: ['Palm Beach', 'Palm Beach Co'],
+        cities: ['West Palm Beach', 'Boca Raton', 'Boynton Beach', 'Delray Beach', 'Jupiter', 'Wellington']
+      },
+      {
+        name: 'Hillsborough County',
+        aliases: ['Hillsborough', 'Hillsborough Co'],
+        cities: ['Tampa', 'Brandon', 'Riverview', 'Plant City']
+      },
+      {
+        name: 'Pinellas County',
+        aliases: ['Pinellas', 'Pinellas Co'],
+        cities: ['St. Petersburg', 'Clearwater', 'Largo', 'Pinellas Park']
+      },
+      {
+        name: 'Orange County',
+        aliases: ['Orange', 'Orange Co'],
+        cities: ['Orlando', 'Winter Park', 'Apopka', 'Ocoee']
+      },
+      {
+        name: 'Duval County',
+        aliases: ['Duval', 'Duval Co'],
+        cities: ['Jacksonville'] // Jacksonville is consolidated with Duval County
+      },
+      {
+        name: 'Alachua County',
+        aliases: ['Alachua', 'Alachua Co'],
+        cities: ['Gainesville', 'Alachua', 'Newberry', 'High Springs']
+      },
+      {
+        name: 'Leon County',
+        aliases: ['Leon', 'Leon Co'],
+        cities: ['Tallahassee']
+      },
+      {
+        name: 'Lee County',
+        aliases: ['Lee', 'Lee Co'],
+        cities: ['Cape Coral', 'Fort Myers', 'Bonita Springs']
+      },
+      {
+        name: 'Collier County',
+        aliases: ['Collier', 'Collier Co'],
+        cities: ['Naples', 'Marco Island']
+      },
+      {
+        name: 'St. Lucie County',
+        aliases: ['St. Lucie', 'St Lucie', 'Saint Lucie'],
+        cities: ['Port St. Lucie', 'Fort Pierce']
+      }
+    ];
+
+    flCounties.forEach(county => {
+      const entity: GeographicEntity = {
+        name: county.name,
+        type: 'county',
+        aliases: county.aliases,
+        parentEntity: 'florida',
+        childEntities: county.cities.map(city => city.toLowerCase()),
+        confidence: 1.0
+      };
+
+      this.addEntity(entity);
+      
+      // Counties will get their ZIP codes aggregated from cities
+    });
+  }
+
+  private loadFloridaCities(): void {
+    const flCities = [
+      {
+        name: 'Miami',
+        aliases: ['Magic City', 'MIA', 'The 305'],
+        parentCounty: 'miami-dade county',
+        // Miami city proper zip codes
         zipCodes: [
-          // Manhattan (10001-10282)
-          '10001', '10002', '10003', '10004', '10005', '10006', '10007', '10009', '10010',
-          '10011', '10012', '10013', '10014', '10016', '10017', '10018', '10019', '10020',
-          '10021', '10022', '10023', '10024', '10025', '10026', '10027', '10028', '10029',
-          '10030', '10031', '10032', '10033', '10034', '10035', '10036', '10037', '10038',
-          '10039', '10040', '10044', '10065', '10069', '10075', '10128', '10280', '10282',
-          // Brooklyn (11201-11256)
-          '11201', '11203', '11204', '11205', '11206', '11207', '11208', '11209', '11210',
-          '11211', '11212', '11213', '11214', '11215', '11216', '11217', '11218', '11219',
-          '11220', '11221', '11222', '11223', '11224', '11225', '11226', '11228', '11229',
-          '11230', '11231', '11232', '11233', '11234', '11235', '11236', '11237', '11238',
-          '11239', '11249', '11251', '11252', '11256',
-          // Queens (11101-11697)
-          '11101', '11102', '11103', '11104', '11105', '11106', '11109', '11354', '11355',
-          '11356', '11357', '11358', '11359', '11360', '11361', '11362', '11363', '11364',
-          '11365', '11366', '11367', '11368', '11369', '11370', '11372', '11373', '11374',
-          '11375', '11377', '11378', '11379', '11385', '11411', '11412', '11413', '11414',
-          '11415', '11416', '11417', '11418', '11419', '11420', '11421', '11422', '11423',
-          '11426', '11427', '11428', '11429', '11430', '11432', '11433', '11434', '11435',
-          '11436', '11691', '11692', '11693', '11694', '11697',
-          // Bronx (10451-10475)
-          '10451', '10452', '10453', '10454', '10455', '10456', '10457', '10458', '10459',
-          '10460', '10461', '10462', '10463', '10464', '10465', '10466', '10467', '10468',
-          '10469', '10470', '10471', '10472', '10473', '10474', '10475',
-          // Staten Island (10301-10314)
-          '10301', '10302', '10303', '10304', '10305', '10306', '10307', '10308', '10309',
-          '10310', '10311', '10312', '10313', '10314'
+          '33101', '33102', '33109', '33111', '33112', '33114', '33116', '33119', '33122',
+          '33124', '33125', '33126', '33127', '33128', '33129', '33130', '33131', '33132',
+          '33133', '33134', '33135', '33136', '33137', '33138', '33139', '33140', '33141',
+          '33142', '33143', '33144', '33145', '33146', '33147', '33149', '33150', '33151',
+          '33152', '33153', '33154', '33155', '33156', '33157', '33158', '33160', '33161',
+          '33162', '33163', '33164', '33165', '33166', '33167', '33168', '33169', '33170',
+          '33172', '33173', '33174', '33175', '33176', '33177', '33178', '33179', '33180',
+          '33181', '33182', '33183', '33184', '33185', '33186', '33187', '33188', '33189',
+          '33190', '33193', '33194', '33195', '33196', '33197'
         ]
       },
       {
-        name: 'Buffalo',
-        aliases: ['Queen City', 'City of Good Neighbors', 'BUF'],
-        // Buffalo city proper zip codes
-        zipCodes: ['14201', '14202', '14203', '14204', '14206', '14207', '14208', '14209',
-                   '14210', '14211', '14212', '14213', '14214', '14215', '14216', '14217',
-                   '14218', '14219', '14220', '14222', '14223', '14224', '14225', '14226', '14227']
+        name: 'Tampa',
+        aliases: ['Cigar City', 'TPA', 'Tampa Bay', 'The Big Guava'],
+        parentCounty: 'hillsborough county',
+        // Tampa city proper zip codes
+        zipCodes: ['33602', '33603', '33604', '33605', '33606', '33607', '33608', '33609',
+                   '33610', '33611', '33612', '33613', '33614', '33615', '33616', '33617',
+                   '33618', '33619', '33620', '33621', '33622', '33623', '33624', '33625',
+                   '33626', '33629', '33630', '33631', '33634', '33635', '33637', '33647']
       },
       {
-        name: 'Rochester',
-        aliases: ['Flower City', 'ROC'],
-        // Rochester city proper zip codes
-        zipCodes: ['14604', '14605', '14606', '14607', '14608', '14609', '14610', '14611',
-                   '14612', '14613', '14614', '14615', '14616', '14617', '14618', '14619',
-                   '14620', '14621', '14622', '14623', '14624', '14625', '14626', '14627']
+        name: 'Orlando',
+        aliases: ['The City Beautiful', 'O-Town', 'MCO', 'Orlando Metro'],
+        parentCounty: 'orange county',
+        // Orlando city proper zip codes
+        zipCodes: ['32801', '32802', '32803', '32804', '32805', '32806', '32807', '32808',
+                   '32809', '32810', '32811', '32812', '32814', '32815', '32816', '32817',
+                   '32818', '32819', '32820', '32821', '32822', '32824', '32825', '32826',
+                   '32827', '32828', '32829', '32830', '32831', '32832', '32833', '32834',
+                   '32835', '32836', '32837', '32839']
       },
       {
-        name: 'Yonkers',
-        aliases: ['City of Hills'],
-        // Yonkers city proper zip codes
-        zipCodes: ['10701', '10702', '10703', '10704', '10705', '10706', '10707', '10708', '10710']
+        name: 'Jacksonville',
+        aliases: ['Jax', 'JAX', 'The River City', 'Bold City'],
+        parentCounty: 'duval county',
+        // Jacksonville city proper zip codes
+        zipCodes: ['32099', '32201', '32202', '32203', '32204', '32205', '32206', '32207',
+                   '32208', '32209', '32210', '32211', '32212', '32214', '32216', '32217',
+                   '32218', '32219', '32220', '32221', '32222', '32223', '32224', '32225',
+                   '32226', '32227', '32228', '32229', '32231', '32232', '32233', '32234',
+                   '32235', '32236', '32237', '32238', '32239', '32240', '32241', '32244',
+                   '32245', '32246', '32247', '32250', '32254', '32255', '32256', '32257',
+                   '32258', '32259', '32260', '32266', '32267', '32277']
       },
       {
-        name: 'Syracuse',
-        aliases: ['Salt City', 'SYR'],
-        // Syracuse city proper zip codes
-        zipCodes: ['13201', '13202', '13203', '13204', '13205', '13206', '13207', '13208',
-                   '13209', '13210', '13211', '13212', '13214', '13215', '13217', '13218',
-                   '13219', '13220', '13224']
+        name: 'Gainesville',
+        aliases: ['GNV', 'Gville', 'The Swamp', 'Hogtown'],
+        parentCounty: 'alachua county',
+        // Gainesville city proper zip codes
+        zipCodes: ['32601', '32602', '32603', '32604', '32605', '32606', '32607', '32608',
+                   '32609', '32610', '32611', '32612', '32613', '32614', '32627', '32635',
+                   '32640', '32641', '32653']
       },
       {
-        name: 'Albany',
-        aliases: ['Capital City', 'ALB'],
-        // Albany city proper zip codes
-        zipCodes: ['12201', '12202', '12203', '12204', '12205', '12206', '12207', '12208',
-                   '12209', '12210', '12211', '12212', '12214', '12220', '12222', '12223']
+        name: 'Fort Lauderdale',
+        aliases: ['Fort Liquordale', 'FLL', 'Venice of America'],
+        parentCounty: 'broward county',
+        // Fort Lauderdale city proper zip codes
+        zipCodes: ['33301', '33302', '33303', '33304', '33305', '33306', '33307', '33308',
+                   '33309', '33310', '33311', '33312', '33313', '33314', '33315', '33316',
+                   '33317', '33318', '33319', '33320', '33321', '33322', '33323', '33324',
+                   '33325', '33326', '33327', '33328', '33329', '33330', '33331', '33332',
+                   '33334', '33335', '33336', '33337', '33338', '33339', '33340', '33345',
+                   '33346', '33348', '33349', '33351', '33355', '33359', '33388', '33394']
       },
       {
-        name: 'New Rochelle',
-        aliases: ['Home Town'],
-        zipCodes: ['10801', '10802', '10803', '10804', '10805']
+        name: 'St. Petersburg',
+        aliases: ['St. Pete', 'The Sunshine City'],
+        parentCounty: 'pinellas county',
+        zipCodes: ['33701', '33702', '33703', '33704', '33705', '33706', '33707', '33708',
+                   '33709', '33710', '33711', '33712', '33713', '33714', '33715', '33716']
       },
       {
-        name: 'Mount Vernon',
-        aliases: ['City of Homes'],
-        zipCodes: ['10550', '10551', '10552', '10553']
+        name: 'Hialeah',
+        aliases: ['The City of Progress'],
+        parentCounty: 'miami-dade county',
+        zipCodes: ['33010', '33011', '33012', '33013', '33014', '33015', '33016', '33017', '33018']
       },
       {
-        name: 'Schenectady',
-        aliases: ['Electric City'],
-        zipCodes: ['12301', '12302', '12303', '12304', '12305', '12306', '12307', '12308', '12309']
+        name: 'Tallahassee',
+        aliases: ['Tally', 'TLH', 'Florida Capital'],
+        parentCounty: 'leon county',
+        zipCodes: ['32301', '32302', '32303', '32304', '32305', '32306', '32307', '32308',
+                   '32309', '32310', '32311', '32312', '32313', '32314', '32315', '32316',
+                   '32317', '32318', '32395', '32399']
       },
       {
-        name: 'Utica',
-        aliases: ['Handshake City'],
-        zipCodes: ['13501', '13502', '13503', '13504', '13505']
+        name: 'Port St. Lucie',
+        aliases: ['PSL'],
+        parentCounty: 'st. lucie county',
+        zipCodes: ['34952', '34953', '34954', '34955', '34956', '34957', '34958', '34983',
+                   '34984', '34985', '34986', '34987', '34988']
       },
       {
-        name: 'White Plains',
-        aliases: ['WP'],
-        zipCodes: ['10601', '10602', '10603', '10604', '10605', '10606', '10607']
+        name: 'Cape Coral',
+        aliases: ['The Cape', 'Cape Coma'],
+        parentCounty: 'lee county',
+        zipCodes: ['33904', '33909', '33910', '33913', '33914', '33915', '33990', '33991', '33993']
       },
       {
-        name: 'Troy',
-        aliases: ['Collar City'],
-        zipCodes: ['12180', '12181', '12182', '12183']
+        name: 'West Palm Beach',
+        aliases: ['WPB', 'West Palm'],
+        parentCounty: 'palm beach county',
+        zipCodes: ['33401', '33402', '33403', '33404', '33405', '33406', '33407', '33408',
+                   '33409', '33410', '33411', '33412', '33413', '33414', '33415', '33416',
+                   '33417', '33418', '33419', '33420', '33421', '33422']
       },
       {
-        name: 'Niagara Falls',
-        aliases: ['Honeymoon Capital'],
-        zipCodes: ['14301', '14302', '14303', '14304', '14305']
+        name: 'Coral Springs',
+        aliases: ['City in the Country'],
+        parentCounty: 'broward county',
+        zipCodes: ['33065', '33067', '33071', '33073', '33075', '33076', '33077']
       },
       {
-        name: 'Binghamton',
-        aliases: ['Parlor City'],
-        zipCodes: ['13901', '13902', '13903', '13904', '13905']
+        name: 'Pembroke Pines',
+        aliases: ['PP'],
+        parentCounty: 'broward county',
+        zipCodes: ['33023', '33024', '33025', '33026', '33027', '33028', '33029', '33082', '33084']
       },
       {
-        name: 'Long Beach',
-        aliases: ['City by the Sea'],
-        zipCodes: ['11561']
+        name: 'Hollywood',
+        aliases: ['Hollywood FL'],
+        parentCounty: 'broward county',
+        zipCodes: ['33019', '33020', '33021', '33022', '33023', '33024', '33025', '33026',
+                   '33027', '33028', '33029', '33081', '33083', '33084']
       }
     ];
 
-    nyMetros.forEach(metro => {
+    flCities.forEach(city => {
       const entity: GeographicEntity = {
-        name: metro.name,
+        name: city.name,
         type: 'city',
-        aliases: metro.aliases,
-        parentEntity: 'new york',
-        zipCodes: metro.zipCodes || [],
+        aliases: city.aliases,
+        parentEntity: city.parentCounty || 'florida',
+        zipCodes: city.zipCodes || [],
         confidence: 1.0
       };
 
@@ -236,515 +310,42 @@ export class GeoDataManager {
       
       // Add ZIP code mappings
       entity.zipCodes?.forEach(zip => {
-        this.database.zipCodeToCity.set(zip, metro.name.toLowerCase());
+        this.database.zipCodeToCity.set(zip, city.name.toLowerCase());
       });
     });
   }
 
-  private loadNewJerseyMetros(): void {
-    const njMetros = [
+  private loadFloridaMetros(): void {
+    const flMetros = [
       {
-        name: 'Newark',
-        aliases: ['Brick City', 'EWR'],
-        zipCodes: ['07101', '07102', '07103', '07104', '07105', '07106', '07107', '07108',
-                   '07112', '07114']
+        name: 'Miami Metro',
+        aliases: ['Greater Miami', 'South Florida', 'Miami-Fort Lauderdale-West Palm Beach'],
+        childEntities: ['Miami-Dade County', 'Broward County', 'Palm Beach County']
       },
       {
-        name: 'Jersey City',
-        aliases: ['JC', 'J.C.'],
-        zipCodes: ['07302', '07303', '07304', '07305', '07306', '07307', '07308', '07310']
+        name: 'Tampa Bay Area',
+        aliases: ['Tampa-St. Petersburg-Clearwater', 'Tampa Bay'],
+        childEntities: ['Hillsborough County', 'Pinellas County']
       },
       {
-        name: 'Paterson',
-        aliases: ['Silk City'],
-        zipCodes: ['07501', '07502', '07503', '07504', '07505', '07506', '07507', '07508',
-                   '07509', '07510', '07511', '07512', '07513', '07514', '07522', '07524']
+        name: 'Central Florida',
+        aliases: ['Orlando Metro', 'Greater Orlando'],
+        childEntities: ['Orange County']
       },
       {
-        name: 'Elizabeth',
-        aliases: ['E-Town'],
-        zipCodes: ['07201', '07202', '07206', '07208']
-      },
-      {
-        name: 'Edison',
-        aliases: ['Menlo Park'],
-        zipCodes: ['08817', '08818', '08820', '08837', '08899']
-      },
-      {
-        name: 'Woodbridge',
-        aliases: ['Township of Woodbridge'],
-        zipCodes: ['07095', '08830', '08840', '08863']
-      },
-      {
-        name: 'Lakewood',
-        aliases: ['Township of Lakewood'],
-        zipCodes: ['08701']
-      },
-      {
-        name: 'Toms River',
-        aliases: ['TR', 'Dover Township'],
-        zipCodes: ['08753', '08754', '08755', '08756', '08757']
-      },
-      {
-        name: 'Hamilton',
-        aliases: ['Hamilton Township'],
-        zipCodes: ['08609', '08610', '08611', '08619', '08620', '08629', '08650', '08690', '08691']
-      },
-      {
-        name: 'Trenton',
-        aliases: ['Capital City'],
-        zipCodes: ['08608', '08609', '08610', '08611', '08618', '08619', '08620', '08625',
-                   '08628', '08629', '08638', '08650']
-      },
-      {
-        name: 'Clifton',
-        aliases: ['City of Clifton'],
-        zipCodes: ['07011', '07012', '07013', '07014']
-      },
-      {
-        name: 'Camden',
-        aliases: ['City of Camden'],
-        zipCodes: ['08101', '08102', '08103', '08104', '08105']
-      },
-      {
-        name: 'Passaic',
-        aliases: ['City of Passaic'],
-        zipCodes: ['07055']
-      },
-      {
-        name: 'Union City',
-        aliases: ['Embroidery Capital'],
-        zipCodes: ['07087']
-      },
-      {
-        name: 'Bayonne',
-        aliases: ['Peninsula City'],
-        zipCodes: ['07002']
-      },
-      {
-        name: 'East Orange',
-        aliases: ['EO'],
-        zipCodes: ['07017', '07018', '07019']
-      },
-      {
-        name: 'Vineland',
-        aliases: ['Cumberland County'],
-        zipCodes: ['08360', '08361', '08362']
-      },
-      {
-        name: 'New Brunswick',
-        aliases: ['Hub City', 'Healthcare City'],
-        zipCodes: ['08901', '08902', '08903', '08904', '08905', '08906']
-      },
-      {
-        name: 'Hoboken',
-        aliases: ['Mile Square City'],
-        zipCodes: ['07030']
-      },
-      {
-        name: 'West New York',
-        aliases: ['WNY'],
-        zipCodes: ['07093']
-      },
-      {
-        name: 'Perth Amboy',
-        aliases: ['City by the Bay'],
-        zipCodes: ['08861', '08862']
-      },
-      {
-        name: 'Plainfield',
-        aliases: ['Queen City'],
-        zipCodes: ['07060', '07061', '07062', '07063']
-      },
-      {
-        name: 'Sayreville',
-        aliases: ['Borough of Sayreville'],
-        zipCodes: ['08871', '08872']
-      },
-      {
-        name: 'Hackensack',
-        aliases: ['HK'],
-        zipCodes: ['07601', '07602']
-      },
-      {
-        name: 'Kearny',
-        aliases: ['Soccer Town USA'],
-        zipCodes: ['07032']
-      },
-      {
-        name: 'Linden',
-        aliases: ['City of Linden'],
-        zipCodes: ['07036']
-      },
-      {
-        name: 'Atlantic City',
-        aliases: ['AC', 'America\'s Playground'],
-        zipCodes: ['08401', '08404', '08405', '08406']
+        name: 'Southwest Florida',
+        aliases: ['Fort Myers-Naples', 'SWFL'],
+        childEntities: ['Lee County', 'Collier County']
       }
     ];
 
-    njMetros.forEach(metro => {
-      const entity: GeographicEntity = {
-        name: metro.name,
-        type: 'city',
-        aliases: metro.aliases,
-        parentEntity: 'new jersey',
-        zipCodes: metro.zipCodes || [],
-        confidence: 1.0
-      };
-
-      this.addEntity(entity);
-      
-      // Add ZIP code mappings
-      entity.zipCodes?.forEach(zip => {
-        this.database.zipCodeToCity.set(zip, metro.name.toLowerCase());
-      });
-    });
-  }
-
-  private loadPennsylvaniaMetros(): void {
-    const paMetros = [
-      {
-        name: 'Philadelphia',
-        aliases: ['Philly', 'City of Brotherly Love', 'Phila', 'PHL'],
-        // Use specific ZIP codes for Philadelphia city proper only
-        zipCodes: [
-          // Center City & Old City
-          '19102', '19103', '19106', '19107', '19109', '19110', 
-          // South Philadelphia
-          '19145', '19146', '19147', '19148',
-          // North Philadelphia  
-          '19121', '19122', '19123', '19125', '19130', '19132', '19133', '19134', '19140', '19141',
-          // West Philadelphia
-          '19104', '19131', '19139', '19143', '19151',
-          // Northeast Philadelphia
-          '19111', '19114', '19115', '19116', '19124', '19135', '19136', '19149', '19152', '19154',
-          // Northwest Philadelphia
-          '19118', '19119', '19120', '19126', '19127', '19128', '19129', '19138', '19144', '19150',
-          // Kensington/Port Richmond
-          '19124', '19125', '19134', '19137',
-          // Additional Philadelphia proper
-          '19101', '19105', '19108', '19112', '19113', '19142', '19153'
-        ]
-      },
-      {
-        name: 'Pittsburgh',
-        aliases: ['Steel City', 'PIT', 'Iron City', 'City of Bridges'],
-        // Pittsburgh city proper zip codes
-        zipCodes: ['15201', '15202', '15203', '15204', '15205', '15206', '15207', '15208',
-                   '15210', '15211', '15212', '15213', '15214', '15215', '15216', '15217',
-                   '15218', '15219', '15220', '15221', '15222', '15223', '15224', '15225',
-                   '15226', '15227', '15228', '15229', '15230', '15231', '15232', '15233',
-                   '15234', '15235', '15236', '15237', '15238', '15239', '15240', '15241',
-                   '15242', '15243', '15244', '15260', '15261', '15262', '15264', '15265']
-      },
-      {
-        name: 'Allentown',
-        aliases: ['A-Town', 'ABE'],
-        zipCodes: ['18101', '18102', '18103', '18104', '18105', '18106', '18109']
-      },
-      {
-        name: 'Erie',
-        aliases: ['Gem City', 'ERI'],
-        zipCodes: ['16501', '16502', '16503', '16504', '16505', '16506', '16507', '16508',
-                   '16509', '16510', '16511', '16512', '16514', '16515']
-      },
-      {
-        name: 'Reading',
-        aliases: ['Pretzel City', 'RDG'],
-        zipCodes: ['19601', '19602', '19603', '19604', '19605', '19606', '19607', '19608',
-                   '19609', '19610', '19611', '19612']
-      },
-      {
-        name: 'Scranton',
-        aliases: ['Electric City', 'AVP'],
-        zipCodes: ['18501', '18502', '18503', '18504', '18505', '18507', '18508', '18509', '18510']
-      },
-      {
-        name: 'Bethlehem',
-        aliases: ['Christmas City', 'Steel City'],
-        zipCodes: ['18015', '18016', '18017', '18018', '18020', '18025']
-      },
-      {
-        name: 'Lancaster',
-        aliases: ['Red Rose City', 'LNS'],
-        zipCodes: ['17601', '17602', '17603', '17604', '17605', '17606', '17607', '17608']
-      },
-      {
-        name: 'Harrisburg',
-        aliases: ['Capital City', 'MDT'],
-        zipCodes: ['17101', '17102', '17103', '17104', '17105', '17106', '17107', '17108',
-                   '17109', '17110', '17111', '17112', '17113', '17120']
-      },
-      {
-        name: 'York',
-        aliases: ['White Rose City'],
-        zipCodes: ['17401', '17402', '17403', '17404', '17405', '17406', '17407', '17408']
-      },
-      {
-        name: 'Wilkes-Barre',
-        aliases: ['Diamond City', 'WB'],
-        zipCodes: ['18701', '18702', '18703', '18704', '18705', '18706', '18710', '18711']
-      },
-      {
-        name: 'Chester',
-        aliases: ['City of Chester'],
-        zipCodes: ['19013', '19014', '19015', '19016']
-      },
-      {
-        name: 'Easton',
-        aliases: ['Forks of the Delaware'],
-        zipCodes: ['18040', '18042', '18043', '18044', '18045']
-      },
-      {
-        name: 'Lebanon',
-        aliases: ['Lebanon County'],
-        zipCodes: ['17042', '17046']
-      },
-      {
-        name: 'Hazleton',
-        aliases: ['Mountain City'],
-        zipCodes: ['18201', '18202']
-      },
-      {
-        name: 'New Castle',
-        aliases: ['Fireworks Capital'],
-        zipCodes: ['16101', '16102', '16103', '16105', '16107', '16108']
-      },
-      {
-        name: 'Johnstown',
-        aliases: ['Flood City'],
-        zipCodes: ['15901', '15902', '15904', '15905', '15906', '15907', '15909']
-      },
-      {
-        name: 'McKeesport',
-        aliases: ['Tube City'],
-        zipCodes: ['15131', '15132', '15133', '15134', '15135']
-      },
-      {
-        name: 'Williamsport',
-        aliases: ['Lumber Capital'],
-        zipCodes: ['17701', '17702', '17703']
-      },
-      {
-        name: 'State College',
-        aliases: ['Happy Valley', 'PSU'],
-        zipCodes: ['16801', '16802', '16803', '16804', '16805']
-      }
-    ];
-
-    paMetros.forEach(metro => {
-      const entity: GeographicEntity = {
-        name: metro.name,
-        type: 'city',
-        aliases: metro.aliases,
-        parentEntity: 'pennsylvania',
-        zipCodes: metro.zipCodes || [],
-        confidence: 1.0
-      };
-
-      this.addEntity(entity);
-      
-      // Add ZIP code mappings
-      entity.zipCodes?.forEach(zip => {
-        this.database.zipCodeToCity.set(zip, metro.name.toLowerCase());
-      });
-    });
-  }
-
-  private loadMetroAreas(): void {
-    // Define broader metropolitan areas that include surrounding suburbs
-    const metroAreas = [
-      {
-        name: 'Greater Philadelphia',
-        aliases: ['Philadelphia Metro', 'Philly Metro', 'Delaware Valley'],
-        // Include surrounding PA, NJ, and DE zip prefixes
-        zipPrefixes: ['190', '191', '192', '193', '194', '180', '181', '083', '084', '080', '081']
-      },
-      {
-        name: 'Greater New York',
-        aliases: ['NYC Metro', 'New York Metropolitan Area', 'Tri-State Area'],
-        // Include NYC + surrounding counties
-        zipPrefixes: ['100', '101', '102', '103', '104', '105', '110', '111', '112', '113', '114', '116',
-                      '106', '107', '108', '109', '070', '071', '072', '073', '074', '075', '076', '077']
-      },
-      {
-        name: 'Greater Pittsburgh',
-        aliases: ['Pittsburgh Metro', 'Steel City Metro'],
-        zipPrefixes: ['150', '151', '152', '153', '154', '156', '157', '158']
-      },
-      {
-        name: 'Greater Buffalo',
-        aliases: ['Buffalo-Niagara Metro', 'Buffalo Metro'],
-        zipPrefixes: ['140', '141', '142', '143']
-      },
-      {
-        name: 'Greater Rochester',
-        aliases: ['Rochester Metro'],
-        zipPrefixes: ['144', '145', '146']
-      },
-      {
-        name: 'Greater Newark',
-        aliases: ['Newark Metro'],
-        zipPrefixes: ['070', '071', '072', '073']
-      }
-    ];
-
-    metroAreas.forEach(metro => {
+    flMetros.forEach(metro => {
       const entity: GeographicEntity = {
         name: metro.name,
         type: 'metro',
         aliases: metro.aliases,
-        // For metro areas, generate full range of zip codes from prefixes
-        zipCodes: this.generateFullZipCodesFromPrefixes(metro.zipPrefixes),
-        confidence: 1.0
-      };
-
-      this.addEntity(entity);
-      
-      // Add ZIP code mappings for metro areas
-      entity.zipCodes?.forEach(zip => {
-        // Only add if not already mapped to a specific city
-        if (!this.database.zipCodeToCity.has(zip)) {
-          this.database.zipCodeToCity.set(zip, metro.name.toLowerCase());
-        }
-      });
-    });
-  }
-
-  private generateFullZipCodesFromPrefixes(prefixes: string[]): string[] {
-    const zipCodes: string[] = [];
-    
-    prefixes.forEach(prefix => {
-      // For metro areas, generate all 100 possible zip codes per prefix
-      for (let i = 0; i < 100; i++) {
-        zipCodes.push(prefix + i.toString().padStart(2, '0'));
-      }
-    });
-    
-    return zipCodes;
-  }
-
-  private loadNYBoroughsAndNeighborhoods(): void {
-    // NYC Boroughs
-    const boroughs = [
-      {
-        name: 'Manhattan',
-        aliases: ['New York County', 'The City'],
-        zipCodes: [
-          '10001', '10002', '10003', '10004', '10005', '10006', '10007', '10009', '10010',
-          '10011', '10012', '10013', '10014', '10016', '10017', '10018', '10019', '10020',
-          '10021', '10022', '10023', '10024', '10025', '10026', '10027', '10028', '10029',
-          '10030', '10031', '10032', '10033', '10034', '10035', '10036', '10037', '10038',
-          '10039', '10040', '10044', '10065', '10069', '10075', '10128', '10280', '10282'
-        ]
-      },
-      {
-        name: 'Brooklyn',
-        aliases: ['Kings County', 'BK'],
-        zipCodes: [
-          '11201', '11203', '11204', '11205', '11206', '11207', '11208', '11209', '11210',
-          '11211', '11212', '11213', '11214', '11215', '11216', '11217', '11218', '11219',
-          '11220', '11221', '11222', '11223', '11224', '11225', '11226', '11228', '11229',
-          '11230', '11231', '11232', '11233', '11234', '11235', '11236', '11237', '11238',
-          '11239', '11249', '11251', '11252', '11256'
-        ]
-      },
-      {
-        name: 'Queens',
-        aliases: ['Queens County', 'QNS'],
-        zipCodes: [
-          '11101', '11102', '11103', '11104', '11105', '11106', '11109', '11354', '11355',
-          '11356', '11357', '11358', '11359', '11360', '11361', '11362', '11363', '11364',
-          '11365', '11366', '11367', '11368', '11369', '11370', '11372', '11373', '11374',
-          '11375', '11377', '11378', '11379', '11385', '11411', '11412', '11413', '11414',
-          '11415', '11416', '11417', '11418', '11419', '11420', '11421', '11422', '11423',
-          '11426', '11427', '11428', '11429', '11430', '11432', '11433', '11434', '11435',
-          '11436', '11691', '11692', '11693', '11694', '11697'
-        ]
-      },
-      {
-        name: 'Bronx',
-        aliases: ['Bronx County', 'BX', 'The Bronx'],
-        zipCodes: [
-          '10451', '10452', '10453', '10454', '10455', '10456', '10457', '10458', '10459',
-          '10460', '10461', '10462', '10463', '10464', '10465', '10466', '10467', '10468',
-          '10469', '10470', '10471', '10472', '10473', '10474', '10475'
-        ]
-      },
-      {
-        name: 'Staten Island',
-        aliases: ['Richmond County', 'SI'],
-        zipCodes: [
-          '10301', '10302', '10303', '10304', '10305', '10306', '10307', '10308', '10309',
-          '10310', '10311', '10312', '10313', '10314'
-        ]
-      }
-    ];
-
-    boroughs.forEach(borough => {
-      const entity: GeographicEntity = {
-        name: borough.name,
-        type: 'borough',
-        aliases: borough.aliases,
-        parentEntity: 'new york city',
-        zipCodes: borough.zipCodes,
-        confidence: 1.0
-      };
-
-      this.addEntity(entity);
-      
-      // Add ZIP code mappings
-      entity.zipCodes?.forEach(zip => {
-        this.database.zipCodeToCity.set(zip, borough.name.toLowerCase());
-      });
-    });
-
-    // Major NYC Neighborhoods
-    const neighborhoods = [
-      // Manhattan
-      { name: 'Midtown', parent: 'manhattan', aliases: ['Midtown Manhattan'] },
-      { name: 'Upper East Side', parent: 'manhattan', aliases: ['UES'] },
-      { name: 'Upper West Side', parent: 'manhattan', aliases: ['UWS'] },
-      { name: 'Lower East Side', parent: 'manhattan', aliases: ['LES'] },
-      { name: 'Greenwich Village', parent: 'manhattan', aliases: ['The Village', 'West Village'] },
-      { name: 'SoHo', parent: 'manhattan', aliases: ['South of Houston'] },
-      { name: 'TriBeCa', parent: 'manhattan', aliases: ['Triangle Below Canal'] },
-      { name: 'Chelsea', parent: 'manhattan', aliases: ['Chelsea Manhattan'] },
-      { name: 'Harlem', parent: 'manhattan', aliases: ['Central Harlem'] },
-      { name: 'Financial District', parent: 'manhattan', aliases: ['FiDi', 'Wall Street'] },
-      
-      // Brooklyn
-      { name: 'Williamsburg', parent: 'brooklyn', aliases: ['Billyburg'] },
-      { name: 'Park Slope', parent: 'brooklyn', aliases: ['The Slope'] },
-      { name: 'Brooklyn Heights', parent: 'brooklyn', aliases: ['The Heights'] },
-      { name: 'DUMBO', parent: 'brooklyn', aliases: ['Down Under the Manhattan Bridge Overpass'] },
-      { name: 'Bushwick', parent: 'brooklyn', aliases: ['East Williamsburg'] },
-      { name: 'Bed-Stuy', parent: 'brooklyn', aliases: ['Bedford-Stuyvesant'] },
-      
-      // Queens
-      { name: 'Astoria', parent: 'queens', aliases: ['Astoria Queens'] },
-      { name: 'Long Island City', parent: 'queens', aliases: ['LIC'] },
-      { name: 'Flushing', parent: 'queens', aliases: ['Downtown Flushing'] },
-      { name: 'Jamaica', parent: 'queens', aliases: ['Jamaica Queens'] },
-      { name: 'Forest Hills', parent: 'queens', aliases: ['Forest Hills Queens'] },
-      
-      // Bronx
-      { name: 'Riverdale', parent: 'bronx', aliases: ['Riverdale Bronx'] },
-      { name: 'Fordham', parent: 'bronx', aliases: ['Fordham Bronx'] },
-      { name: 'Pelham Bay', parent: 'bronx', aliases: ['Pelham Bay Bronx'] },
-      
-      // Staten Island
-      { name: 'St. George', parent: 'staten island', aliases: ['Downtown Staten Island'] },
-      { name: 'Tottenville', parent: 'staten island', aliases: ['Tottenville SI'] }
-    ];
-
-    neighborhoods.forEach(neighborhood => {
-      const entity: GeographicEntity = {
-        name: neighborhood.name,
-        type: 'neighborhood',
-        aliases: neighborhood.aliases,
-        parentEntity: neighborhood.parent,
+        parentEntity: 'florida',
+        childEntities: metro.childEntities?.map(child => child.toLowerCase()) || [],
         confidence: 1.0
       };
 
@@ -752,887 +353,71 @@ export class GeoDataManager {
     });
   }
 
-  private loadCommonAliases(): void {
-    const aliases = [
-      // Tri-state specific aliases
-      ['nyc', 'new york city'],
-      ['ny', 'new york'],
-      ['philly', 'philadelphia'],
-      ['phl', 'philadelphia'],
-      ['pit', 'pittsburgh'],
-      ['pitt', 'pittsburgh'],
-      ['jersey', 'new jersey'],
-      ['ac', 'atlantic city'],
-      ['alb', 'albany'],
-      ['buf', 'buffalo'],
-      ['roc', 'rochester'],
-      ['syr', 'syracuse'],
-      
-      // Regional terms
-      ['tri-state', 'tri-state area'],
-      ['tristate', 'tri-state area'],
-      ['metro ny', 'new york city'],
-      ['metro nyc', 'new york city'],
-      ['greater philadelphia', 'philadelphia'],
-      ['greater philly', 'philadelphia'],
-      ['south jersey', 'southern new jersey'],
-      ['north jersey', 'northern new jersey'],
-      ['central jersey', 'central new jersey'],
-      ['upstate', 'upstate new york'],
-      ['western ny', 'western new york'],
-      ['eastern pa', 'eastern pennsylvania'],
-      ['western pa', 'western pennsylvania']
-    ];
+  private aggregateZipCodesForHigherLevels(): void {
+    console.log('[GeoDataManager] Aggregating ZIP codes for counties, metros, and state...');
 
-    aliases.forEach(([alias, canonical]) => {
-      this.database.aliasMap.set(alias, canonical);
-    });
-  }
+    // Aggregate ZIP codes for counties from their child cities
+    for (const [entityName, entity] of this.database.entities) {
+      if (entity.type === 'county' && entity.childEntities) {
+        const countyZipCodes = new Set<string>();
+        
+        entity.childEntities.forEach(cityName => {
+          const cityEntity = this.database.entities.get(cityName.toLowerCase());
+          if (cityEntity && cityEntity.zipCodes) {
+            cityEntity.zipCodes.forEach(zip => {
+              countyZipCodes.add(zip);
+              // Map ZIP to county
+              this.database.zipCodeToCounty.set(zip, entity.name.toLowerCase());
+            });
+          }
+        });
 
-  private loadRegionalGroups(): void {
-    const regions = [
-      {
-        name: 'tri-state area',
-        cities: ['new york city', 'newark', 'jersey city', 'philadelphia', 'yonkers', 
-                 'paterson', 'elizabeth', 'new rochelle', 'mount vernon', 'white plains']
-      },
-      {
-        name: 'new york metro',
-        cities: ['manhattan', 'brooklyn', 'queens', 'bronx', 'staten island',
-                 'yonkers', 'new rochelle', 'mount vernon', 'white plains']
-      },
-      {
-        name: 'northern new jersey',
-        cities: ['newark', 'jersey city', 'paterson', 'elizabeth', 'edison',
-                 'woodbridge', 'clifton', 'passaic', 'union city', 'bayonne']
-      },
-      {
-        name: 'southern new jersey',
-        cities: ['atlantic city', 'vineland', 'camden', 'toms river']
-      },
-      {
-        name: 'central new jersey',
-        cities: ['trenton', 'new brunswick', 'princeton', 'edison', 'woodbridge']
-      },
-      {
-        name: 'eastern pennsylvania',
-        cities: ['philadelphia', 'allentown', 'reading', 'bethlehem', 'lancaster',
-                 'scranton', 'wilkes-barre', 'easton']
-      },
-      {
-        name: 'western pennsylvania',
-        cities: ['pittsburgh', 'erie', 'johnstown', 'new castle', 'mckeesport']
-      },
-      {
-        name: 'upstate new york',
-        cities: ['buffalo', 'rochester', 'syracuse', 'albany', 'utica',
-                 'schenectady', 'troy', 'binghamton', 'niagara falls']
-      },
-      {
-        name: 'philadelphia metro',
-        cities: ['philadelphia', 'camden', 'chester', 'trenton']
-      },
-      {
-        name: 'lehigh valley',
-        cities: ['allentown', 'bethlehem', 'easton']
+        // Store aggregated ZIP codes on the county entity
+        entity.zipCodes = Array.from(countyZipCodes);
       }
-    ];
+    }
 
-    regions.forEach(region => {
-      this.database.regionalGroups.set(region.name, region.cities);
-    });
-  }
+    // Aggregate ZIP codes for metros from their constituent counties/cities
+    for (const [entityName, entity] of this.database.entities) {
+      if (entity.type === 'metro' && entity.childEntities) {
+        const metroZipCodes = new Set<string>();
+        
+        entity.childEntities.forEach(childName => {
+          const childEntity = this.database.entities.get(childName.toLowerCase());
+          if (childEntity && childEntity.zipCodes) {
+            childEntity.zipCodes.forEach(zip => {
+              metroZipCodes.add(zip);
+              // Map ZIP to metro
+              this.database.zipCodeToMetro.set(zip, entity.name.toLowerCase());
+            });
+          }
+        });
 
-  private loadZipCodePrefixes(): void {
-    // Tri-state ZIP code prefix patterns
-    const prefixMappings = [
-      // New York - NYC
-      ['100', 'manhattan'], ['101', 'manhattan'], ['102', 'manhattan'],
-      ['103', 'staten island'], ['104', 'bronx'], ['105', 'bronx'],
-      ['110', 'queens'], ['111', 'queens'], ['112', 'brooklyn'],
-      ['113', 'queens'], ['114', 'queens'], ['116', 'queens'],
-      
-      // New York - Other cities
-      ['107', 'yonkers'], ['108', 'new rochelle'], ['106', 'white plains'],
-      ['142', 'buffalo'], ['143', 'niagara falls'], ['146', 'rochester'],
-      ['132', 'syracuse'], ['122', 'albany'], ['121', 'troy'],
-      ['123', 'schenectady'], ['135', 'utica'], ['139', 'binghamton'],
-      
-      // New Jersey
-      ['070', 'northern nj'], ['071', 'newark'], ['072', 'elizabeth'],
-      ['073', 'jersey city'], ['074', 'northern nj'], ['075', 'paterson'],
-      ['076', 'hackensack'], ['077', 'northern nj'], ['078', 'central nj'],
-      ['079', 'central nj'], ['080', 'southern nj'], ['081', 'camden'],
-      ['082', 'southern nj'], ['083', 'southern nj'], ['084', 'atlantic city'],
-      ['085', 'central nj'], ['086', 'trenton'], ['087', 'central nj'],
-      ['088', 'central nj'], ['089', 'new brunswick'],
-      
-      // Pennsylvania
-      ['150', 'pittsburgh'], ['151', 'pittsburgh'], ['152', 'pittsburgh'],
-      ['153', 'pittsburgh'], ['154', 'pittsburgh'], ['159', 'johnstown'],
-      ['161', 'new castle'], ['165', 'erie'], ['168', 'state college'],
-      ['170', 'lebanon'], ['171', 'harrisburg'], ['173', 'york'],
-      ['174', 'york'], ['175', 'lancaster'], ['176', 'lancaster'],
-      ['177', 'williamsport'], ['180', 'lehigh valley'], ['181', 'allentown'],
-      ['182', 'hazleton'], ['185', 'scranton'], ['187', 'wilkes-barre'],
-      ['190', 'philadelphia'], ['191', 'philadelphia'], ['192', 'philadelphia'],
-      ['193', 'philadelphia'], ['194', 'philadelphia'], ['195', 'reading'],
-      ['196', 'reading']
-    ];
-
-    prefixMappings.forEach(([prefix, city]) => {
-      // Generate all ZIP codes for this prefix (00-99)
-      for (let i = 0; i < 100; i++) {
-        const zipCode = prefix + i.toString().padStart(2, '0');
-        this.database.zipCodeToCity.set(zipCode, city);
+        // Store aggregated ZIP codes on the metro entity
+        entity.zipCodes = Array.from(metroZipCodes);
       }
-    });
-  }
-
-
-  // ===== POINTS OF INTEREST LOADERS =====
-
-  private loadAirports(): void {
-    const airports = [
-      // New York
-      { name: 'John F. Kennedy International Airport', aliases: ['JFK', 'JFK Airport', 'Kennedy Airport'], state: 'New York', city: 'queens', code: 'JFK' },
-      { name: 'LaGuardia Airport', aliases: ['LGA', 'LaGuardia', 'LGA Airport'], state: 'New York', city: 'queens', code: 'LGA' },
-      { name: 'Newark Liberty International Airport', aliases: ['EWR', 'Newark Airport', 'Liberty Airport'], state: 'New Jersey', city: 'newark', code: 'EWR' },
-      { name: 'Teterboro Airport', aliases: ['TEB', 'Teterboro'], state: 'New Jersey', city: 'teterboro', code: 'TEB' },
-      { name: 'Westchester County Airport', aliases: ['HPN', 'White Plains Airport'], state: 'New York', city: 'white plains', code: 'HPN' },
-      { name: 'Long Island MacArthur Airport', aliases: ['ISP', 'MacArthur Airport'], state: 'New York', city: 'islip', code: 'ISP' },
-      { name: 'Stewart International Airport', aliases: ['SWF', 'Stewart Airport'], state: 'New York', city: 'newburgh', code: 'SWF' },
-      { name: 'Buffalo Niagara International Airport', aliases: ['BUF', 'Buffalo Airport'], state: 'New York', city: 'buffalo', code: 'BUF' },
-      { name: 'Greater Rochester International Airport', aliases: ['ROC', 'Rochester Airport'], state: 'New York', city: 'rochester', code: 'ROC' },
-      { name: 'Syracuse Hancock International Airport', aliases: ['SYR', 'Syracuse Airport'], state: 'New York', city: 'syracuse', code: 'SYR' },
-      { name: 'Albany International Airport', aliases: ['ALB', 'Albany Airport'], state: 'New York', city: 'albany', code: 'ALB' },
-      
-      // Pennsylvania
-      { name: 'Philadelphia International Airport', aliases: ['PHL', 'Philly Airport', 'Philadelphia Airport'], state: 'Pennsylvania', city: 'philadelphia', code: 'PHL' },
-      { name: 'Pittsburgh International Airport', aliases: ['PIT', 'Pittsburgh Airport'], state: 'Pennsylvania', city: 'pittsburgh', code: 'PIT' },
-      { name: 'Lehigh Valley International Airport', aliases: ['ABE', 'Allentown Airport'], state: 'Pennsylvania', city: 'allentown', code: 'ABE' },
-      { name: 'Erie International Airport', aliases: ['ERI', 'Erie Airport'], state: 'Pennsylvania', city: 'erie', code: 'ERI' },
-      { name: 'Harrisburg International Airport', aliases: ['MDT', 'Harrisburg Airport'], state: 'Pennsylvania', city: 'harrisburg', code: 'MDT' },
-      { name: 'University Park Airport', aliases: ['SCE', 'State College Airport'], state: 'Pennsylvania', city: 'state college', code: 'SCE' },
-      { name: 'Wilkes Barre Scranton International Airport', aliases: ['AVP', 'Scranton Airport'], state: 'Pennsylvania', city: 'scranton', code: 'AVP' },
-      
-      // New Jersey (additional)
-      { name: 'Atlantic City International Airport', aliases: ['ACY', 'Atlantic City Airport'], state: 'New Jersey', city: 'atlantic city', code: 'ACY' },
-      { name: 'Trenton Mercer Airport', aliases: ['TTN', 'Trenton Airport'], state: 'New Jersey', city: 'trenton', code: 'TTN' }
-    ];
-
-    airports.forEach(airport => {
-      const entity: GeographicEntity = {
-        name: airport.name,
-        type: 'airport',
-        aliases: [...airport.aliases, airport.code],
-        parentEntity: airport.city,
-        confidence: 1.0,
-        category: 'transportation'
-      };
-
-      this.addEntity(entity);
-    });
-  }
-
-  private loadUniversities(): void {
-    const universities = [
-      // New York
-      { name: 'Columbia University', aliases: ['Columbia', 'CU'], city: 'manhattan', category: 'ivy_league' },
-      { name: 'New York University', aliases: ['NYU'], city: 'manhattan', category: 'private' },
-      { name: 'Fordham University', aliases: ['Fordham'], city: 'bronx', category: 'private' },
-      { name: 'The New School', aliases: ['New School', 'Parsons'], city: 'manhattan', category: 'private' },
-      { name: 'Brooklyn College', aliases: ['CUNY Brooklyn'], city: 'brooklyn', category: 'public' },
-      { name: 'Queens College', aliases: ['CUNY Queens'], city: 'queens', category: 'public' },
-      { name: 'Hunter College', aliases: ['CUNY Hunter'], city: 'manhattan', category: 'public' },
-      { name: 'Baruch College', aliases: ['CUNY Baruch'], city: 'manhattan', category: 'public' },
-      { name: 'City College of New York', aliases: ['CCNY', 'City College'], city: 'manhattan', category: 'public' },
-      { name: 'Brooklyn Law School', aliases: ['BLS'], city: 'brooklyn', category: 'law' },
-      { name: 'Yeshiva University', aliases: ['YU'], city: 'manhattan', category: 'private' },
-      { name: 'St. John\'s University', aliases: ['St. Johns'], city: 'queens', category: 'private' },
-      { name: 'Pace University', aliases: ['Pace'], city: 'manhattan', category: 'private' },
-      { name: 'University at Buffalo', aliases: ['SUNY Buffalo', 'UB'], city: 'buffalo', category: 'public' },
-      { name: 'University at Albany', aliases: ['SUNY Albany', 'UAlbany'], city: 'albany', category: 'public' },
-      { name: 'Syracuse University', aliases: ['SU', 'Cuse'], city: 'syracuse', category: 'private' },
-      { name: 'University of Rochester', aliases: ['U of R'], city: 'rochester', category: 'private' },
-      { name: 'Rochester Institute of Technology', aliases: ['RIT'], city: 'rochester', category: 'private' },
-      { name: 'Cornell University', aliases: ['Cornell'], city: 'ithaca', category: 'ivy_league' },
-      { name: 'Rensselaer Polytechnic Institute', aliases: ['RPI'], city: 'troy', category: 'private' },
-      { name: 'Skidmore College', aliases: ['Skidmore'], city: 'saratoga springs', category: 'private' },
-      { name: 'Colgate University', aliases: ['Colgate'], city: 'hamilton', category: 'private' },
-      { name: 'Vassar College', aliases: ['Vassar'], city: 'poughkeepsie', category: 'private' },
-      { name: 'Marist College', aliases: ['Marist'], city: 'poughkeepsie', category: 'private' },
-      { name: 'Iona College', aliases: ['Iona'], city: 'new rochelle', category: 'private' },
-
-      // New Jersey
-      { name: 'Princeton University', aliases: ['Princeton'], city: 'princeton', category: 'ivy_league' },
-      { name: 'Rutgers University', aliases: ['Rutgers', 'RU'], city: 'new brunswick', category: 'public' },
-      { name: 'Stevens Institute of Technology', aliases: ['Stevens Tech', 'Stevens'], city: 'hoboken', category: 'private' },
-      { name: 'New Jersey Institute of Technology', aliases: ['NJIT'], city: 'newark', category: 'public' },
-      { name: 'Seton Hall University', aliases: ['Seton Hall'], city: 'south orange', category: 'private' },
-      { name: 'Montclair State University', aliases: ['Montclair State', 'MSU'], city: 'montclair', category: 'public' },
-      { name: 'Fairleigh Dickinson University', aliases: ['FDU'], city: 'teaneck', category: 'private' },
-      { name: 'Rowan University', aliases: ['Rowan'], city: 'glassboro', category: 'public' },
-      { name: 'Rider University', aliases: ['Rider'], city: 'lawrenceville', category: 'private' },
-      { name: 'The College of New Jersey', aliases: ['TCNJ'], city: 'ewing', category: 'public' },
-      { name: 'Stockton University', aliases: ['Stockton'], city: 'galloway', category: 'public' },
-      { name: 'Kean University', aliases: ['Kean'], city: 'union', category: 'public' },
-      { name: 'William Paterson University', aliases: ['William Paterson', 'WPU'], city: 'wayne', category: 'public' },
-      { name: 'Monmouth University', aliases: ['Monmouth'], city: 'west long branch', category: 'private' },
-      { name: 'Saint Peter\'s University', aliases: ['Saint Peters'], city: 'jersey city', category: 'private' },
-
-      // Pennsylvania
-      { name: 'University of Pennsylvania', aliases: ['UPenn', 'Penn'], city: 'philadelphia', category: 'ivy_league' },
-      { name: 'Temple University', aliases: ['Temple', 'TU'], city: 'philadelphia', category: 'public' },
-      { name: 'Drexel University', aliases: ['Drexel'], city: 'philadelphia', category: 'private' },
-      { name: 'Villanova University', aliases: ['Villanova', 'Nova'], city: 'villanova', category: 'private' },
-      { name: 'University of Pittsburgh', aliases: ['Pitt', 'University of Pittsburgh'], city: 'pittsburgh', category: 'public' },
-      { name: 'Carnegie Mellon University', aliases: ['CMU', 'Carnegie Mellon'], city: 'pittsburgh', category: 'private' },
-      { name: 'Pennsylvania State University', aliases: ['Penn State', 'PSU'], city: 'state college', category: 'public' },
-      { name: 'Duquesne University', aliases: ['Duquesne'], city: 'pittsburgh', category: 'private' },
-      { name: 'Lehigh University', aliases: ['Lehigh'], city: 'bethlehem', category: 'private' },
-      { name: 'Lafayette College', aliases: ['Lafayette'], city: 'easton', category: 'private' },
-      { name: 'Swarthmore College', aliases: ['Swarthmore'], city: 'swarthmore', category: 'private' },
-      { name: 'Haverford College', aliases: ['Haverford'], city: 'haverford', category: 'private' },
-      { name: 'Bryn Mawr College', aliases: ['Bryn Mawr'], city: 'bryn mawr', category: 'private' },
-      { name: 'Franklin & Marshall College', aliases: ['F&M', 'Franklin Marshall'], city: 'lancaster', category: 'private' },
-      { name: 'Dickinson College', aliases: ['Dickinson'], city: 'carlisle', category: 'private' },
-      { name: 'Bucknell University', aliases: ['Bucknell'], city: 'lewisburg', category: 'private' },
-      { name: 'Gettysburg College', aliases: ['Gettysburg'], city: 'gettysburg', category: 'private' },
-      { name: 'Muhlenberg College', aliases: ['Muhlenberg'], city: 'allentown', category: 'private' },
-      { name: 'West Chester University', aliases: ['West Chester'], city: 'west chester', category: 'public' },
-      { name: 'La Salle University', aliases: ['La Salle'], city: 'philadelphia', category: 'private' }
-    ];
-
-    universities.forEach(university => {
-      const entity: GeographicEntity = {
-        name: university.name,
-        type: 'university',
-        aliases: university.aliases,
-        parentEntity: university.city,
-        confidence: 1.0,
-        category: university.category
-      };
-
-      this.addEntity(entity);
-    });
-  }
-
-  private loadHospitals(): void {
-    const hospitals = [
-      // New York
-      { name: 'Mount Sinai Hospital', aliases: ['Mount Sinai', 'Sinai'], city: 'manhattan', category: 'major_medical_center' },
-      { name: 'NewYork-Presbyterian Hospital', aliases: ['NYP', 'Presbyterian'], city: 'manhattan', category: 'major_medical_center' },
-      { name: 'NYU Langone Health', aliases: ['NYU Langone', 'Langone'], city: 'manhattan', category: 'major_medical_center' },
-      { name: 'Memorial Sloan Kettering Cancer Center', aliases: ['Sloan Kettering', 'MSKCC'], city: 'manhattan', category: 'specialty' },
-      { name: 'Hospital for Special Surgery', aliases: ['HSS'], city: 'manhattan', category: 'specialty' },
-      { name: 'Lenox Hill Hospital', aliases: ['Lenox Hill'], city: 'manhattan', category: 'hospital' },
-      { name: 'Mount Sinai Beth Israel', aliases: ['Beth Israel'], city: 'manhattan', category: 'hospital' },
-      { name: 'Weill Cornell Medical Center', aliases: ['Cornell Medical'], city: 'manhattan', category: 'medical_center' },
-      { name: 'Brooklyn Methodist Hospital', aliases: ['Methodist Brooklyn'], city: 'brooklyn', category: 'hospital' },
-      { name: 'Maimonides Medical Center', aliases: ['Maimonides'], city: 'brooklyn', category: 'medical_center' },
-      { name: 'NewYork-Presbyterian Brooklyn Methodist', aliases: ['NYP Brooklyn'], city: 'brooklyn', category: 'hospital' },
-      { name: 'Montefiore Medical Center', aliases: ['Montefiore'], city: 'bronx', category: 'medical_center' },
-      { name: 'Bronx-Lebanon Hospital', aliases: ['Bronx-Lebanon'], city: 'bronx', category: 'hospital' },
-      { name: 'Jamaica Hospital Medical Center', aliases: ['Jamaica Hospital'], city: 'queens', category: 'medical_center' },
-      { name: 'Elmhurst Hospital Center', aliases: ['Elmhurst Hospital'], city: 'queens', category: 'hospital' },
-      { name: 'Staten Island University Hospital', aliases: ['SIUH'], city: 'staten island', category: 'hospital' },
-      { name: 'Buffalo General Medical Center', aliases: ['Buffalo General'], city: 'buffalo', category: 'medical_center' },
-      { name: 'Rochester General Hospital', aliases: ['Rochester General'], city: 'rochester', category: 'hospital' },
-      { name: 'Strong Memorial Hospital', aliases: ['Strong Memorial'], city: 'rochester', category: 'medical_center' },
-      { name: 'Syracuse University Hospital', aliases: ['Syracuse Hospital'], city: 'syracuse', category: 'hospital' },
-      { name: 'Albany Medical Center', aliases: ['Albany Medical'], city: 'albany', category: 'medical_center' },
-
-      // New Jersey
-      { name: 'Newark Beth Israel Medical Center', aliases: ['Beth Israel Newark'], city: 'newark', category: 'medical_center' },
-      { name: 'University Hospital Newark', aliases: ['University Hospital'], city: 'newark', category: 'hospital' },
-      { name: 'Jersey City Medical Center', aliases: ['JCMC'], city: 'jersey city', category: 'medical_center' },
-      { name: 'Hackensack University Medical Center', aliases: ['Hackensack Medical'], city: 'hackensack', category: 'medical_center' },
-      { name: 'Robert Wood Johnson University Hospital', aliases: ['RWJ', 'Robert Wood Johnson'], city: 'new brunswick', category: 'hospital' },
-      { name: 'Saint Barnabas Medical Center', aliases: ['Saint Barnabas'], city: 'livingston', category: 'medical_center' },
-      { name: 'Morristown Medical Center', aliases: ['Morristown Medical'], city: 'morristown', category: 'medical_center' },
-      { name: 'Overlook Medical Center', aliases: ['Overlook Medical'], city: 'summit', category: 'medical_center' },
-      { name: 'Cooper University Hospital', aliases: ['Cooper Hospital'], city: 'camden', category: 'hospital' },
-      { name: 'AtlantiCare Regional Medical Center', aliases: ['AtlantiCare'], city: 'atlantic city', category: 'medical_center' },
-      { name: 'Capital Health Medical Center', aliases: ['Capital Health'], city: 'trenton', category: 'medical_center' },
-      { name: 'Chilton Medical Center', aliases: ['Chilton Medical'], city: 'pompton plains', category: 'medical_center' },
-      { name: 'Valley Hospital', aliases: ['Valley Hospital'], city: 'ridgewood', category: 'hospital' },
-      { name: 'Englewood Hospital', aliases: ['Englewood Hospital'], city: 'englewood', category: 'hospital' },
-      { name: 'Holy Name Medical Center', aliases: ['Holy Name'], city: 'teaneck', category: 'medical_center' },
-
-      // Pennsylvania
-      { name: 'Penn Medicine', aliases: ['Penn Medicine', 'HUP'], city: 'philadelphia', category: 'major_medical_center' },
-      { name: 'Jefferson Health', aliases: ['Jefferson Hospital', 'Thomas Jefferson'], city: 'philadelphia', category: 'major_medical_center' },
-      { name: 'Children\'s Hospital of Philadelphia', aliases: ['CHOP'], city: 'philadelphia', category: 'specialty' },
-      { name: 'Temple University Hospital', aliases: ['Temple Hospital'], city: 'philadelphia', category: 'hospital' },
-      { name: 'Hahnemann University Hospital', aliases: ['Hahnemann'], city: 'philadelphia', category: 'hospital' },
-      { name: 'Einstein Medical Center', aliases: ['Einstein Medical'], city: 'philadelphia', category: 'medical_center' },
-      { name: 'Fox Chase Cancer Center', aliases: ['Fox Chase'], city: 'philadelphia', category: 'specialty' },
-      { name: 'UPMC Presbyterian', aliases: ['UPMC', 'Presbyterian Pittsburgh'], city: 'pittsburgh', category: 'major_medical_center' },
-      { name: 'Allegheny General Hospital', aliases: ['Allegheny General', 'AGH'], city: 'pittsburgh', category: 'hospital' },
-      { name: 'UPMC Children\'s Hospital of Pittsburgh', aliases: ['Children\'s Pittsburgh'], city: 'pittsburgh', category: 'specialty' },
-      { name: 'Penn State Hershey Medical Center', aliases: ['Hershey Medical'], city: 'hershey', category: 'medical_center' },
-      { name: 'Lehigh Valley Hospital', aliases: ['LVH'], city: 'allentown', category: 'hospital' },
-      { name: 'St. Christopher\'s Hospital for Children', aliases: ['St. Christophers'], city: 'philadelphia', category: 'specialty' },
-      { name: 'Geisinger Medical Center', aliases: ['Geisinger'], city: 'danville', category: 'medical_center' },
-      { name: 'WellSpan York Hospital', aliases: ['York Hospital'], city: 'york', category: 'hospital' },
-      { name: 'Lancaster General Hospital', aliases: ['Lancaster General'], city: 'lancaster', category: 'hospital' },
-      { name: 'Reading Hospital', aliases: ['Reading Hospital'], city: 'reading', category: 'hospital' },
-      { name: 'Scranton Regional Medical Center', aliases: ['Scranton Medical'], city: 'scranton', category: 'medical_center' }
-    ];
-
-    hospitals.forEach(hospital => {
-      const entity: GeographicEntity = {
-        name: hospital.name,
-        type: 'hospital',
-        aliases: hospital.aliases,
-        parentEntity: hospital.city,
-        confidence: 1.0,
-        category: hospital.category
-      };
-
-      this.addEntity(entity);
-    });
-  }
-
-  private loadSportsVenues(): void {
-    const venues = [
-      // New York
-      { name: 'Madison Square Garden', aliases: ['MSG', 'The Garden'], city: 'manhattan', category: 'arena', teams: ['Knicks', 'Rangers'] },
-      { name: 'Yankee Stadium', aliases: ['The Stadium', 'New Yankee Stadium'], city: 'bronx', category: 'stadium', teams: ['Yankees'] },
-      { name: 'Citi Field', aliases: ['Citi', 'Shea Stadium replacement'], city: 'queens', category: 'stadium', teams: ['Mets'] },
-      { name: 'Barclays Center', aliases: ['Barclays'], city: 'brooklyn', category: 'arena', teams: ['Nets', 'Islanders'] },
-      { name: 'UBS Arena', aliases: ['UBS', 'Belmont Arena'], city: 'elmont', category: 'arena', teams: ['Islanders'] },
-      { name: 'Red Bull Arena', aliases: ['Red Bull Stadium'], city: 'harrison', category: 'stadium', teams: ['Red Bulls'] },
-      { name: 'KeyBank Center', aliases: ['Buffalo Arena', 'First Niagara Center'], city: 'buffalo', category: 'arena', teams: ['Sabres'] },
-      { name: 'Highmark Stadium', aliases: ['Bills Stadium', 'New Era Field'], city: 'orchard park', category: 'stadium', teams: ['Bills'] },
-      { name: 'Blue Cross Arena', aliases: ['Rochester Arena'], city: 'rochester', category: 'arena', teams: [] },
-      { name: 'MVP Arena', aliases: ['Times Union Center', 'Albany Arena'], city: 'albany', category: 'arena', teams: [] },
-
-      // New Jersey  
-      { name: 'MetLife Stadium', aliases: ['MetLife', 'New Meadowlands'], city: 'east rutherford', category: 'stadium', teams: ['Giants', 'Jets'] },
-      { name: 'Prudential Center', aliases: ['The Rock'], city: 'newark', category: 'arena', teams: ['Devils'] },
-      { name: 'SHI Stadium', aliases: ['Rutgers Stadium'], city: 'piscataway', category: 'stadium', teams: ['Rutgers'] },
-
-      // Pennsylvania
-      { name: 'Lincoln Financial Field', aliases: ['The Linc', 'Lincoln Financial'], city: 'philadelphia', category: 'stadium', teams: ['Eagles'] },
-      { name: 'Citizens Bank Park', aliases: ['Citizens Bank', 'CBP'], city: 'philadelphia', category: 'stadium', teams: ['Phillies'] },
-      { name: 'Wells Fargo Center', aliases: ['Wells Fargo', 'The Center'], city: 'philadelphia', category: 'arena', teams: ['76ers', 'Flyers'] },
-      { name: 'Subaru Park', aliases: ['Talen Energy Stadium'], city: 'chester', category: 'stadium', teams: ['Union'] },
-      { name: 'Heinz Field', aliases: ['Acrisure Stadium'], city: 'pittsburgh', category: 'stadium', teams: ['Steelers'] },
-      { name: 'PNC Park', aliases: ['PNC'], city: 'pittsburgh', category: 'stadium', teams: ['Pirates'] },
-      { name: 'PPG Paints Arena', aliases: ['PPG Arena', 'Consol Energy Center'], city: 'pittsburgh', category: 'arena', teams: ['Penguins'] },
-      { name: 'Beaver Stadium', aliases: ['Penn State Stadium'], city: 'state college', category: 'stadium', teams: ['Penn State'] },
-      { name: 'PPL Park', aliases: ['Chester Stadium'], city: 'chester', category: 'stadium', teams: [] },
-      { name: 'Giant Center', aliases: ['Hershey Arena'], city: 'hershey', category: 'arena', teams: ['Bears'] }
-    ];
-
-    venues.forEach(venue => {
-      const entity: GeographicEntity = {
-        name: venue.name,
-        type: venue.category as any,
-        aliases: venue.aliases,
-        parentEntity: venue.city,
-        confidence: 1.0,
-        category: 'sports'
-      };
-
-      this.addEntity(entity);
-    });
-  }
-
-  private loadLandmarks(): void {
-    const landmarks = [
-      // New York
-      { name: 'Statue of Liberty', aliases: ['Liberty Statue', 'Lady Liberty'], city: 'new york harbor', type: 'monument' },
-      { name: 'Empire State Building', aliases: ['ESB'], city: 'manhattan', type: 'landmark' },
-      { name: 'One World Trade Center', aliases: ['Freedom Tower', '1 WTC'], city: 'manhattan', type: 'landmark' },
-      { name: 'Brooklyn Bridge', aliases: ['Brooklyn Bridge'], city: 'manhattan', type: 'bridge' },
-      { name: 'Times Square', aliases: ['Times Sq', 'Crossroads of the World'], city: 'manhattan', type: 'attraction' },
-      { name: 'Central Park', aliases: ['The Park'], city: 'manhattan', type: 'park' },
-      { name: 'High Line', aliases: ['High Line Park'], city: 'manhattan', type: 'park' },
-      { name: 'Rockefeller Center', aliases: ['Rock Center', '30 Rock'], city: 'manhattan', type: 'landmark' },
-      { name: 'Chrysler Building', aliases: ['Chrysler'], city: 'manhattan', type: 'landmark' },
-      { name: 'Flatiron Building', aliases: ['Flatiron'], city: 'manhattan', type: 'landmark' },
-      { name: '9/11 Memorial', aliases: ['World Trade Center Memorial', 'Ground Zero'], city: 'manhattan', type: 'monument' },
-      { name: 'Wall Street', aliases: ['Financial District'], city: 'manhattan', type: 'business_district' },
-      { name: 'Coney Island', aliases: ['Coney'], city: 'brooklyn', type: 'attraction' },
-      { name: 'Prospect Park', aliases: ['Prospect'], city: 'brooklyn', type: 'park' },
-      { name: 'Flushing Meadows Corona Park', aliases: ['Flushing Meadows'], city: 'queens', type: 'park' },
-      { name: 'Niagara Falls', aliases: ['The Falls'], city: 'niagara falls', type: 'attraction' },
-      { name: 'Finger Lakes', aliases: ['Finger Lakes Region'], city: 'finger lakes', type: 'attraction' },
-
-      // New Jersey
-      { name: 'Atlantic City Boardwalk', aliases: ['AC Boardwalk', 'The Boardwalk'], city: 'atlantic city', type: 'attraction' },
-      { name: 'Steel Pier', aliases: ['AC Pier'], city: 'atlantic city', type: 'attraction' },
-      { name: 'Liberty State Park', aliases: ['Liberty Park'], city: 'jersey city', type: 'park' },
-      { name: 'Princeton University Campus', aliases: ['Princeton Campus'], city: 'princeton', type: 'landmark' },
-      { name: 'Grounds For Sculpture', aliases: ['Hamilton Sculpture'], city: 'hamilton', type: 'attraction' },
-      { name: 'Delaware Water Gap', aliases: ['Water Gap'], city: 'delaware water gap', type: 'attraction' },
-      { name: 'Island Beach State Park', aliases: ['Island Beach'], city: 'seaside park', type: 'park' },
-      { name: 'Palisades Interstate Park', aliases: ['Palisades'], city: 'fort lee', type: 'park' },
-
-      // Pennsylvania  
-      { name: 'Independence Hall', aliases: ['Independence'], city: 'philadelphia', type: 'monument' },
-      { name: 'Liberty Bell', aliases: ['The Bell'], city: 'philadelphia', type: 'monument' },
-      { name: 'Philadelphia Museum of Art', aliases: ['Art Museum', 'Rocky Steps'], city: 'philadelphia', type: 'museum' },
-      { name: 'Reading Terminal Market', aliases: ['Reading Market'], city: 'philadelphia', type: 'market' },
-      { name: 'Eastern State Penitentiary', aliases: ['Eastern State'], city: 'philadelphia', type: 'landmark' },
-      { name: 'Betsy Ross House', aliases: ['Betsy Ross'], city: 'philadelphia', type: 'landmark' },
-      { name: 'Philly City Hall', aliases: ['City Hall Philadelphia'], city: 'philadelphia', type: 'government_building' },
-      { name: 'Love Park', aliases: ['LOVE Statue'], city: 'philadelphia', type: 'park' },
-      { name: 'Point State Park', aliases: ['The Point'], city: 'pittsburgh', type: 'park' },
-      { name: 'Carnegie Museums', aliases: ['Carnegie Museum'], city: 'pittsburgh', type: 'museum' },
-      { name: 'Phipps Conservatory', aliases: ['Phipps'], city: 'pittsburgh', type: 'attraction' },
-      { name: 'Fallingwater', aliases: ['Frank Lloyd Wright House'], city: 'mill run', type: 'landmark' },
-      { name: 'Gettysburg National Military Park', aliases: ['Gettysburg Battlefield'], city: 'gettysburg', type: 'monument' },
-      { name: 'Valley Forge National Historical Park', aliases: ['Valley Forge'], city: 'valley forge', type: 'monument' },
-      { name: 'Hersheypark', aliases: ['Hershey Park'], city: 'hershey', type: 'attraction' },
-      { name: 'Presque Isle State Park', aliases: ['Presque Isle'], city: 'erie', type: 'park' },
-      { name: 'Bushkill Falls', aliases: ['Niagara of Pennsylvania'], city: 'bushkill', type: 'attraction' }
-    ];
-
-    landmarks.forEach(landmark => {
-      const entity: GeographicEntity = {
-        name: landmark.name,
-        type: landmark.type as any,
-        aliases: landmark.aliases,
-        parentEntity: landmark.city,
-        confidence: 1.0,
-        category: 'landmark'
-      };
-
-      this.addEntity(entity);
-    });
-  }
-
-  private loadTransportation(): void {
-    const transportation = [
-      // New York Train Stations
-      { name: 'Penn Station', aliases: ['Pennsylvania Station', 'NY Penn'], city: 'manhattan', type: 'train_station' },
-      { name: 'Grand Central Terminal', aliases: ['Grand Central', 'GCT'], city: 'manhattan', type: 'train_station' },
-      { name: 'Jamaica Station', aliases: ['Jamaica LIRR'], city: 'queens', type: 'train_station' },
-      { name: 'Atlantic Terminal', aliases: ['Atlantic Ave'], city: 'brooklyn', type: 'train_station' },
-      { name: 'Union Station Buffalo', aliases: ['Buffalo Central'], city: 'buffalo', type: 'train_station' },
-      { name: 'Syracuse Regional Transportation Center', aliases: ['Syracuse Station'], city: 'syracuse', type: 'train_station' },
-      { name: 'Albany-Rensselaer Station', aliases: ['Albany Station'], city: 'rensselaer', type: 'train_station' },
-
-      // Bus Terminals
-      { name: 'Port Authority Bus Terminal', aliases: ['Port Authority', 'PABT'], city: 'manhattan', type: 'bus_terminal' },
-      { name: 'George Washington Bridge Bus Terminal', aliases: ['GWB Terminal'], city: 'manhattan', type: 'bus_terminal' },
-
-      // Ferry Terminals
-      { name: 'Staten Island Ferry Terminal', aliases: ['SI Ferry'], city: 'manhattan', type: 'ferry_terminal' },
-      { name: 'NY Waterway Terminal', aliases: ['Waterway Ferry'], city: 'manhattan', type: 'ferry_terminal' },
-
-      // New Jersey Transportation
-      { name: 'Newark Penn Station', aliases: ['Newark Penn'], city: 'newark', type: 'train_station' },
-      { name: '30th Street Station', aliases: ['Philadelphia 30th Street'], city: 'philadelphia', type: 'train_station' },
-      { name: 'Trenton Transit Center', aliases: ['Trenton Station'], city: 'trenton', type: 'train_station' },
-      { name: 'Hoboken Terminal', aliases: ['Hoboken Train'], city: 'hoboken', type: 'train_station' },
-      { name: 'Secaucus Junction', aliases: ['Secaucus'], city: 'secaucus', type: 'train_station' },
-
-      // Pennsylvania Transportation
-      { name: 'Union Station Pittsburgh', aliases: ['Pittsburgh Station'], city: 'pittsburgh', type: 'train_station' },
-      { name: 'Harrisburg Transportation Center', aliases: ['Harrisburg Station'], city: 'harrisburg', type: 'train_station' },
-      { name: 'Lancaster Amtrak Station', aliases: ['Lancaster Station'], city: 'lancaster', type: 'train_station' },
-
-      // Ports
-      { name: 'Port of New York and New Jersey', aliases: ['NY NJ Port', 'Port Newark'], city: 'newark', type: 'port' },
-      { name: 'Port of Philadelphia', aliases: ['Philly Port'], city: 'philadelphia', type: 'port' },
-      { name: 'Port of Pittsburgh', aliases: ['Pittsburgh Port'], city: 'pittsburgh', type: 'port' }
-    ];
-
-    transportation.forEach(transport => {
-      const entity: GeographicEntity = {
-        name: transport.name,
-        type: transport.type as any,
-        aliases: transport.aliases,
-        parentEntity: transport.city,
-        confidence: 1.0,
-        category: 'transportation'
-      };
-
-      this.addEntity(entity);
-    });
-  }
-
-  private loadShoppingCenters(): void {
-    const shopping = [
-      // New York
-      { name: 'Herald Square', aliases: ['Macy\'s Herald Square'], city: 'manhattan', type: 'shopping_center' },
-      { name: 'Union Square', aliases: ['Union Sq'], city: 'manhattan', type: 'shopping_center' },
-      { name: 'SoHo Shopping District', aliases: ['SoHo Shopping'], city: 'manhattan', type: 'shopping_center' },
-      { name: 'Fifth Avenue Shopping', aliases: ['Fifth Ave Shopping'], city: 'manhattan', type: 'shopping_center' },
-      { name: 'Brooklyn Bridge Park', aliases: ['BBP'], city: 'brooklyn', type: 'shopping_center' },
-      { name: 'Atlantic Terminal Mall', aliases: ['Atlantic Mall'], city: 'brooklyn', type: 'shopping_center' },
-      { name: 'Queens Center', aliases: ['Queens Mall'], city: 'queens', type: 'shopping_center' },
-      { name: 'Staten Island Mall', aliases: ['SI Mall'], city: 'staten island', type: 'shopping_center' },
-      { name: 'Walden Galleria', aliases: ['Buffalo Mall'], city: 'buffalo', type: 'shopping_center' },
-      { name: 'Eastview Mall', aliases: ['Rochester Mall'], city: 'rochester', type: 'shopping_center' },
-      { name: 'Destiny USA', aliases: ['Syracuse Mall'], city: 'syracuse', type: 'shopping_center' },
-      { name: 'Crossgates Mall', aliases: ['Albany Mall'], city: 'albany', type: 'shopping_center' },
-
-      // New Jersey
-      { name: 'American Dream', aliases: ['American Dream Mall', 'Meadowlands Mall'], city: 'east rutherford', type: 'shopping_center' },
-      { name: 'Newport Centre', aliases: ['Newport Mall'], city: 'jersey city', type: 'shopping_center' },
-      { name: 'Garden State Plaza', aliases: ['GSP Mall'], city: 'paramus', type: 'shopping_center' },
-      { name: 'Willowbrook Mall', aliases: ['Willowbrook'], city: 'wayne', type: 'shopping_center' },
-      { name: 'Short Hills Mall', aliases: ['Short Hills'], city: 'short hills', type: 'shopping_center' },
-      { name: 'Freehold Raceway Mall', aliases: ['Freehold Mall'], city: 'freehold', type: 'shopping_center' },
-      { name: 'Ocean County Mall', aliases: ['Ocean Mall'], city: 'toms river', type: 'shopping_center' },
-      { name: 'Hamilton Marketplace', aliases: ['Hamilton Mall'], city: 'hamilton', type: 'shopping_center' },
-      { name: 'Cherry Hill Mall', aliases: ['Cherry Hill'], city: 'cherry hill', type: 'shopping_center' },
-
-      // Pennsylvania
-      { name: 'King of Prussia Mall', aliases: ['KOP Mall', 'King of Prussia'], city: 'king of prussia', type: 'shopping_center' },
-      { name: 'Liberty Place', aliases: ['Shops at Liberty Place'], city: 'philadelphia', type: 'shopping_center' },
-      { name: 'Fashion District Philadelphia', aliases: ['Fashion District'], city: 'philadelphia', type: 'shopping_center' },
-      { name: 'Franklin Mills', aliases: ['Philadelphia Mills'], city: 'philadelphia', type: 'shopping_center' },
-      { name: 'The Waterfront', aliases: ['Waterfront Pittsburgh'], city: 'pittsburgh', type: 'shopping_center' },
-      { name: 'SouthSide Works', aliases: ['SouthSide'], city: 'pittsburgh', type: 'shopping_center' },
-      { name: 'Ross Park Mall', aliases: ['Ross Park'], city: 'pittsburgh', type: 'shopping_center' },
-      { name: 'Lehigh Valley Mall', aliases: ['LV Mall'], city: 'allentown', type: 'shopping_center' },
-      { name: 'Park City Center', aliases: ['Lancaster Mall'], city: 'lancaster', type: 'shopping_center' },
-      { name: 'Wyoming Valley Mall', aliases: ['Wilkes-Barre Mall'], city: 'wilkes-barre', type: 'shopping_center' },
-      { name: 'Capital City Mall', aliases: ['Harrisburg Mall'], city: 'harrisburg', type: 'shopping_center' }
-    ];
-
-    shopping.forEach(shop => {
-      const entity: GeographicEntity = {
-        name: shop.name,
-        type: 'shopping_center',
-        aliases: shop.aliases,
-        parentEntity: shop.city,
-        confidence: 1.0,
-        category: 'retail'
-      };
-
-      this.addEntity(entity);
-    });
-  }
-
-  private loadParks(): void {
-    const parks = [
-      // New York Parks (already added some in landmarks, adding more)
-      { name: 'Bryant Park', aliases: ['Bryant'], city: 'manhattan', type: 'park' },
-      { name: 'Washington Square Park', aliases: ['Washington Square'], city: 'manhattan', type: 'park' },
-      { name: 'Madison Square Park', aliases: ['Madison Square'], city: 'manhattan', type: 'park' },
-      { name: 'Riverside Park', aliases: ['Riverside'], city: 'manhattan', type: 'park' },
-      { name: 'Battery Park', aliases: ['The Battery'], city: 'manhattan', type: 'park' },
-      { name: 'Carl Schurz Park', aliases: ['Carl Schurz'], city: 'manhattan', type: 'park' },
-      { name: 'Tompkins Square Park', aliases: ['Tompkins Square'], city: 'manhattan', type: 'park' },
-      { name: 'Fort Tryon Park', aliases: ['Fort Tryon'], city: 'manhattan', type: 'park' },
-      { name: 'Van Cortlandt Park', aliases: ['Van Cortlandt'], city: 'bronx', type: 'park' },
-      { name: 'Pelham Bay Park', aliases: ['Pelham Bay'], city: 'bronx', type: 'park' },
-      { name: 'Bronx Zoo', aliases: ['The Zoo'], city: 'bronx', type: 'attraction' },
-      { name: 'New York Botanical Garden', aliases: ['Botanical Garden'], city: 'bronx', type: 'attraction' },
-      { name: 'McCarren Park', aliases: ['McCarren'], city: 'brooklyn', type: 'park' },
-      { name: 'Fort Greene Park', aliases: ['Fort Greene'], city: 'brooklyn', type: 'park' },
-      { name: 'Marine Park', aliases: ['Marine'], city: 'brooklyn', type: 'park' },
-      { name: 'Astoria Park', aliases: ['Astoria'], city: 'queens', type: 'park' },
-      { name: 'Forest Park', aliases: ['Forest Park Queens'], city: 'queens', type: 'park' },
-      { name: 'Clove Lakes Park', aliases: ['Clove Lakes'], city: 'staten island', type: 'park' },
-      { name: 'Great Kills Park', aliases: ['Great Kills'], city: 'staten island', type: 'park' },
-      { name: 'Delaware Park', aliases: ['Delaware Park Buffalo'], city: 'buffalo', type: 'park' },
-      { name: 'Highland Park', aliases: ['Highland Park Rochester'], city: 'rochester', type: 'park' },
-      { name: 'Onondaga Lake Park', aliases: ['Onondaga Lake'], city: 'syracuse', type: 'park' },
-      { name: 'Washington Park', aliases: ['Washington Park Albany'], city: 'albany', type: 'park' },
-
-      // New Jersey Parks
-      { name: 'Branch Brook Park', aliases: ['Branch Brook'], city: 'newark', type: 'park' },
-      { name: 'Liberty Science Center', aliases: ['Liberty Science'], city: 'jersey city', type: 'attraction' },
-      { name: 'Duke Farms', aliases: ['Duke Estate'], city: 'hillsborough', type: 'park' },
-      { name: 'Great Adventure', aliases: ['Six Flags Great Adventure'], city: 'jackson', type: 'attraction' },
-      { name: 'Cape Henlopen State Park', aliases: ['Cape Henlopen'], city: 'lewes', type: 'park' },
-      { name: 'High Point State Park', aliases: ['High Point'], city: 'sussex', type: 'park' },
-      { name: 'Battleship New Jersey', aliases: ['Battleship'], city: 'camden', type: 'attraction' },
-      { name: 'Adventure Aquarium', aliases: ['Camden Aquarium'], city: 'camden', type: 'attraction' },
-
-      // Pennsylvania Parks
-      { name: 'Fairmount Park', aliases: ['Fairmount'], city: 'philadelphia', type: 'park' },
-      { name: 'Rittenhouse Square', aliases: ['Rittenhouse'], city: 'philadelphia', type: 'park' },
-      { name: 'Penn\'s Landing', aliases: ['Penns Landing'], city: 'philadelphia', type: 'attraction' },
-      { name: 'Franklin Square', aliases: ['Franklin Sq'], city: 'philadelphia', type: 'park' },
-      { name: 'Schuylkill River Trail', aliases: ['Schuylkill Trail'], city: 'philadelphia', type: 'park' },
-      { name: 'Frick Park', aliases: ['Frick'], city: 'pittsburgh', type: 'park' },
-      { name: 'Schenley Park', aliases: ['Schenley'], city: 'pittsburgh', type: 'park' },
-      { name: 'Riverview Park', aliases: ['Riverview'], city: 'pittsburgh', type: 'park' },
-      { name: 'Ohiopyle State Park', aliases: ['Ohiopyle'], city: 'ohiopyle', type: 'park' },
-      { name: 'Ricketts Glen State Park', aliases: ['Ricketts Glen'], city: 'benton', type: 'park' },
-      { name: 'Dorney Park', aliases: ['Dorney'], city: 'allentown', type: 'attraction' },
-      { name: 'Knoebels Amusement Resort', aliases: ['Knoebels'], city: 'elysburg', type: 'attraction' }
-    ];
-
-    parks.forEach(park => {
-      const entity: GeographicEntity = {
-        name: park.name,
-        type: park.type as any,
-        aliases: park.aliases,
-        parentEntity: park.city,
-        confidence: 1.0,
-        category: 'recreation'
-      };
-
-      this.addEntity(entity);
-    });
-  }
-
-  private loadBusinessDistricts(): void {
-    const districts = [
-      // New York
-      { name: 'Financial District', aliases: ['FiDi', 'Wall Street'], city: 'manhattan', type: 'business_district' },
-      { name: 'Midtown Manhattan', aliases: ['Midtown'], city: 'manhattan', type: 'business_district' },
-      { name: 'Midtown East', aliases: ['Midtown E'], city: 'manhattan', type: 'business_district' },
-      { name: 'Midtown West', aliases: ['Midtown W'], city: 'manhattan', type: 'business_district' },
-      { name: 'Hudson Yards', aliases: ['Hudson Yards District'], city: 'manhattan', type: 'business_district' },
-      { name: 'Long Island City Business District', aliases: ['LIC Business'], city: 'queens', type: 'business_district' },
-      { name: 'Brooklyn Heights Promenade', aliases: ['Brooklyn Heights'], city: 'brooklyn', type: 'business_district' },
-      { name: 'Downtown Buffalo', aliases: ['Buffalo Downtown'], city: 'buffalo', type: 'business_district' },
-      { name: 'Downtown Rochester', aliases: ['Rochester Downtown'], city: 'rochester', type: 'business_district' },
-      { name: 'Downtown Syracuse', aliases: ['Syracuse Downtown'], city: 'syracuse', type: 'business_district' },
-      { name: 'Downtown Albany', aliases: ['Albany Downtown'], city: 'albany', type: 'business_district' },
-
-      // New Jersey
-      { name: 'Newark Downtown', aliases: ['Downtown Newark'], city: 'newark', type: 'business_district' },
-      { name: 'Jersey City Financial District', aliases: ['Newport Financial'], city: 'jersey city', type: 'business_district' },
-      { name: 'Hoboken Waterfront', aliases: ['Hoboken Business'], city: 'hoboken', type: 'business_district' },
-      { name: 'Princeton Business Park', aliases: ['Princeton Business'], city: 'princeton', type: 'business_district' },
-      { name: 'Paramus Business District', aliases: ['Paramus Business'], city: 'paramus', type: 'business_district' },
-      { name: 'Camden Waterfront', aliases: ['Camden Business'], city: 'camden', type: 'business_district' },
-      { name: 'Atlantic City Casino District', aliases: ['AC Casinos'], city: 'atlantic city', type: 'business_district' },
-      { name: 'Trenton Government District', aliases: ['Trenton Government'], city: 'trenton', type: 'business_district' },
-
-      // Pennsylvania
-      { name: 'Center City Philadelphia', aliases: ['Center City', 'Center City Philly'], city: 'philadelphia', type: 'business_district' },
-      { name: 'University City', aliases: ['University City Philadelphia'], city: 'philadelphia', type: 'business_district' },
-      { name: 'Northern Liberties', aliases: ['NoLibs'], city: 'philadelphia', type: 'business_district' },
-      { name: 'Old City Philadelphia', aliases: ['Old City'], city: 'philadelphia', type: 'business_district' },
-      { name: 'Golden Triangle Pittsburgh', aliases: ['Golden Triangle'], city: 'pittsburgh', type: 'business_district' },
-      { name: 'Strip District', aliases: ['The Strip'], city: 'pittsburgh', type: 'business_district' },
-      { name: 'Lawrenceville', aliases: ['Lawrenceville Pittsburgh'], city: 'pittsburgh', type: 'business_district' },
-      { name: 'Shadyside', aliases: ['Shadyside Pittsburgh'], city: 'pittsburgh', type: 'business_district' },
-      { name: 'Squirrel Hill', aliases: ['Squirrel Hill Pittsburgh'], city: 'pittsburgh', type: 'business_district' },
-      { name: 'Downtown Harrisburg', aliases: ['Harrisburg Downtown'], city: 'harrisburg', type: 'business_district' },
-      { name: 'Downtown Lancaster', aliases: ['Lancaster Downtown'], city: 'lancaster', type: 'business_district' },
-      { name: 'Downtown Allentown', aliases: ['Allentown Downtown'], city: 'allentown', type: 'business_district' }
-    ];
-
-    districts.forEach(district => {
-      const entity: GeographicEntity = {
-        name: district.name,
-        type: 'business_district',
-        aliases: district.aliases,
-        parentEntity: district.city,
-        confidence: 1.0,
-        category: 'commercial'
-      };
-
-      this.addEntity(entity);
-    });
-  }
-
-  private loadInfrastructure(): void {
-    const infrastructure = [
-      // Bridges
-      { name: 'George Washington Bridge', aliases: ['GW Bridge', 'GWB'], city: 'manhattan', type: 'bridge' },
-      { name: 'Manhattan Bridge', aliases: ['Manhattan Br'], city: 'manhattan', type: 'bridge' },
-      { name: 'Williamsburg Bridge', aliases: ['Williamsburg Br'], city: 'manhattan', type: 'bridge' },
-      { name: 'Queensboro Bridge', aliases: ['59th Street Bridge', 'Ed Koch Bridge'], city: 'manhattan', type: 'bridge' },
-      { name: 'Triborough Bridge', aliases: ['RFK Bridge'], city: 'manhattan', type: 'bridge' },
-      { name: 'Verrazzano-Narrows Bridge', aliases: ['Verrazzano', 'VZ Bridge'], city: 'brooklyn', type: 'bridge' },
-      { name: 'Ben Franklin Bridge', aliases: ['Ben Franklin'], city: 'philadelphia', type: 'bridge' },
-      { name: 'Betsy Ross Bridge', aliases: ['Betsy Ross'], city: 'philadelphia', type: 'bridge' },
-      { name: 'Walt Whitman Bridge', aliases: ['Walt Whitman'], city: 'philadelphia', type: 'bridge' },
-      { name: 'Tacony-Palmyra Bridge', aliases: ['Tacony Palmyra'], city: 'philadelphia', type: 'bridge' },
-      { name: 'Roberto Clemente Bridge', aliases: ['6th Street Bridge'], city: 'pittsburgh', type: 'bridge' },
-      { name: 'Andy Warhol Bridge', aliases: ['7th Street Bridge'], city: 'pittsburgh', type: 'bridge' },
-      { name: 'Rachel Carson Bridge', aliases: ['9th Street Bridge'], city: 'pittsburgh', type: 'bridge' },
-      { name: 'Peace Bridge', aliases: ['Buffalo Peace Bridge'], city: 'buffalo', type: 'bridge' },
-      { name: 'Outerbridge Crossing', aliases: ['Outerbridge'], city: 'staten island', type: 'bridge' },
-      { name: 'Goethals Bridge', aliases: ['Goethals'], city: 'staten island', type: 'bridge' },
-      { name: 'Bayonne Bridge', aliases: ['Bayonne'], city: 'bayonne', type: 'bridge' },
-
-      // Tunnels
-      { name: 'Lincoln Tunnel', aliases: ['Lincoln'], city: 'manhattan', type: 'tunnel' },
-      { name: 'Holland Tunnel', aliases: ['Holland'], city: 'manhattan', type: 'tunnel' },
-      { name: 'Queens-Midtown Tunnel', aliases: ['Queens Midtown'], city: 'manhattan', type: 'tunnel' },
-      { name: 'Brooklyn-Battery Tunnel', aliases: ['Battery Tunnel', 'Hugh Carey Tunnel'], city: 'manhattan', type: 'tunnel' },
-      { name: 'Lehigh Tunnel', aliases: ['PA Turnpike Tunnel'], city: 'lehigh valley', type: 'tunnel' },
-      { name: 'Fort Pitt Tunnel', aliases: ['Fort Pitt'], city: 'pittsburgh', type: 'tunnel' },
-      { name: 'Squirrel Hill Tunnel', aliases: ['Squirrel Hill'], city: 'pittsburgh', type: 'tunnel' },
-
-      // Highway Interchanges
-      { name: 'Spaghetti Bowl', aliases: ['I-78 I-287 Interchange'], city: 'newark', type: 'highway_interchange' },
-      { name: 'Schuylkill Expressway', aliases: ['I-76 Philadelphia', 'Sure-Kill Expressway'], city: 'philadelphia', type: 'highway_interchange' },
-      { name: 'Cross Bronx Expressway', aliases: ['I-95 Bronx'], city: 'bronx', type: 'highway_interchange' },
-      { name: 'Long Island Expressway', aliases: ['LIE', 'I-495'], city: 'queens', type: 'highway_interchange' },
-      { name: 'BQE', aliases: ['Brooklyn Queens Expressway', 'I-278'], city: 'brooklyn', type: 'highway_interchange' },
-      { name: 'FDR Drive', aliases: ['FDR Highway'], city: 'manhattan', type: 'highway_interchange' },
-      { name: 'West Side Highway', aliases: ['West Side'], city: 'manhattan', type: 'highway_interchange' },
-
-      // Transit Hubs (major subway/rail intersections)
-      { name: 'Times Square-42nd Street', aliases: ['Times Square Station'], city: 'manhattan', type: 'transit_hub' },
-      { name: '14th Street-Union Square', aliases: ['Union Square Station'], city: 'manhattan', type: 'transit_hub' },
-      { name: '59th Street-Columbus Circle', aliases: ['Columbus Circle Station'], city: 'manhattan', type: 'transit_hub' },
-      { name: 'Atlantic Avenue-Barclays Center', aliases: ['Atlantic Terminal Station'], city: 'brooklyn', type: 'transit_hub' },
-      { name: 'Roosevelt Avenue-Jackson Heights', aliases: ['Roosevelt Jackson Heights'], city: 'queens', type: 'transit_hub' },
-      { name: 'Fulton Street', aliases: ['Fulton Center'], city: 'manhattan', type: 'transit_hub' }
-    ];
-
-    infrastructure.forEach(infra => {
-      const entity: GeographicEntity = {
-        name: infra.name,
-        type: infra.type as any,
-        aliases: infra.aliases,
-        parentEntity: infra.city,
-        confidence: 1.0,
-        category: 'infrastructure'
-      };
-
-      this.addEntity(entity);
-    });
-  }
-
-  private loadMuseumsAndTheaters(): void {
-    const cultural = [
-      // New York Museums
-      { name: 'Metropolitan Museum of Art', aliases: ['The Met', 'Met Museum'], city: 'manhattan', type: 'museum' },
-      { name: 'Museum of Modern Art', aliases: ['MoMA'], city: 'manhattan', type: 'museum' },
-      { name: 'Guggenheim Museum', aliases: ['Guggenheim'], city: 'manhattan', type: 'museum' },
-      { name: 'Whitney Museum', aliases: ['Whitney'], city: 'manhattan', type: 'museum' },
-      { name: 'Brooklyn Museum', aliases: ['Brooklyn Museum'], city: 'brooklyn', type: 'museum' },
-      { name: 'Queens Museum', aliases: ['Queens Museum'], city: 'queens', type: 'museum' },
-      { name: 'Frick Collection', aliases: ['Frick'], city: 'manhattan', type: 'museum' },
-      { name: 'Tenement Museum', aliases: ['Tenement'], city: 'manhattan', type: 'museum' },
-      { name: 'Intrepid Sea, Air & Space Museum', aliases: ['Intrepid Museum'], city: 'manhattan', type: 'museum' },
-      { name: 'American Museum of Natural History', aliases: ['Natural History Museum', 'AMNH'], city: 'manhattan', type: 'museum' },
-      { name: 'Albright-Knox Art Gallery', aliases: ['Albright Knox'], city: 'buffalo', type: 'museum' },
-      { name: 'Strong National Museum of Play', aliases: ['Strong Museum'], city: 'rochester', type: 'museum' },
-      { name: 'Everson Museum of Art', aliases: ['Everson Museum'], city: 'syracuse', type: 'museum' },
-      { name: 'New York State Museum', aliases: ['State Museum'], city: 'albany', type: 'museum' },
-
-      // New York Theaters
-      { name: 'Broadway Theater District', aliases: ['Broadway', 'Theater District'], city: 'manhattan', type: 'theater' },
-      { name: 'Lincoln Center', aliases: ['Lincoln Center'], city: 'manhattan', type: 'theater' },
-      { name: 'Radio City Music Hall', aliases: ['Radio City'], city: 'manhattan', type: 'theater' },
-      { name: 'Apollo Theater', aliases: ['Apollo'], city: 'manhattan', type: 'theater' },
-      { name: 'Brooklyn Academy of Music', aliases: ['BAM'], city: 'brooklyn', type: 'theater' },
-      { name: 'Shea\'s Performing Arts Center', aliases: ['Sheas Theater'], city: 'buffalo', type: 'theater' },
-      { name: 'Eastman Theatre', aliases: ['Eastman'], city: 'rochester', type: 'theater' },
-      { name: 'Landmark Theatre', aliases: ['Landmark Syracuse'], city: 'syracuse', type: 'theater' },
-      { name: 'Palace Theatre Albany', aliases: ['Palace Albany'], city: 'albany', type: 'theater' },
-
-      // New Jersey Cultural
-      { name: 'Newark Museum', aliases: ['Newark Museum'], city: 'newark', type: 'museum' },
-      { name: 'New Jersey Performing Arts Center', aliases: ['NJPAC'], city: 'newark', type: 'theater' },
-      { name: 'Princeton University Art Museum', aliases: ['Princeton Art Museum'], city: 'princeton', type: 'museum' },
-      { name: 'Grounds For Sculpture', aliases: ['Sculpture Gardens'], city: 'hamilton', type: 'museum' },
-      { name: 'Montclair Art Museum', aliases: ['Montclair Museum'], city: 'montclair', type: 'museum' },
-      { name: 'Paper Mill Playhouse', aliases: ['Paper Mill'], city: 'millburn', type: 'theater' },
-      { name: 'Count Basie Center', aliases: ['Count Basie Theater'], city: 'red bank', type: 'theater' },
-      { name: 'State Theatre New Jersey', aliases: ['State Theatre NJ'], city: 'new brunswick', type: 'theater' },
-
-      // Pennsylvania Cultural
-      { name: 'Philadelphia Museum of Art', aliases: ['Philly Art Museum', 'Rocky Steps'], city: 'philadelphia', type: 'museum' },
-      { name: 'Barnes Foundation', aliases: ['Barnes'], city: 'philadelphia', type: 'museum' },
-      { name: 'Franklin Institute', aliases: ['Franklin Institute'], city: 'philadelphia', type: 'museum' },
-      { name: 'Pennsylvania Academy of Fine Arts', aliases: ['PAFA'], city: 'philadelphia', type: 'museum' },
-      { name: 'Rodin Museum', aliases: ['Rodin'], city: 'philadelphia', type: 'museum' },
-      { name: 'National Constitution Center', aliases: ['Constitution Center'], city: 'philadelphia', type: 'museum' },
-      { name: 'Kimmel Center', aliases: ['Kimmel'], city: 'philadelphia', type: 'theater' },
-      { name: 'Academy of Music', aliases: ['Academy'], city: 'philadelphia', type: 'theater' },
-      { name: 'Walnut Street Theatre', aliases: ['Walnut Street'], city: 'philadelphia', type: 'theater' },
-      { name: 'Carnegie Museums of Pittsburgh', aliases: ['Carnegie Museums'], city: 'pittsburgh', type: 'museum' },  
-      { name: 'Andy Warhol Museum', aliases: ['Warhol Museum'], city: 'pittsburgh', type: 'museum' },
-      { name: 'Heinz History Center', aliases: ['History Center'], city: 'pittsburgh', type: 'museum' },
-      { name: 'Benedum Center', aliases: ['Benedum'], city: 'pittsburgh', type: 'theater' },
-      { name: 'Heinz Hall', aliases: ['Heinz Hall'], city: 'pittsburgh', type: 'theater' },
-      { name: 'Allentown Art Museum', aliases: ['Allentown Museum'], city: 'allentown', type: 'museum' },
-      { name: 'Hershey Theatre', aliases: ['Hershey Theater'], city: 'hershey', type: 'theater' }
-    ];
-
-    cultural.forEach(venue => {
-      const entity: GeographicEntity = {
-        name: venue.name,
-        type: venue.type as any,
-        aliases: venue.aliases,
-        parentEntity: venue.city,
-        confidence: 1.0,
-        category: 'cultural'
-      };
-
-      this.addEntity(entity);
-    });
-  }
-
-  private loadGovernmentBuildings(): void {
-    const government = [
-      // New York
-      { name: 'New York City Hall', aliases: ['NYC City Hall'], city: 'manhattan', type: 'government_building' },
-      { name: 'New York State Capitol', aliases: ['NY State Capitol'], city: 'albany', type: 'capitol' },
-      { name: 'Federal Hall', aliases: ['Federal Hall'], city: 'manhattan', type: 'government_building' },
-      { name: 'Brooklyn Borough Hall', aliases: ['Brooklyn City Hall'], city: 'brooklyn', type: 'government_building' },
-      { name: 'Queens Borough Hall', aliases: ['Queens City Hall'], city: 'queens', type: 'government_building' },
-      { name: 'Bronx Borough Hall', aliases: ['Bronx City Hall'], city: 'bronx', type: 'government_building' },
-      { name: 'Staten Island Borough Hall', aliases: ['SI City Hall'], city: 'staten island', type: 'government_building' },
-      { name: 'Buffalo City Hall', aliases: ['Buffalo City Hall'], city: 'buffalo', type: 'government_building' },
-      { name: 'Rochester City Hall', aliases: ['Rochester City Hall'], city: 'rochester', type: 'government_building' },
-      { name: 'Syracuse City Hall', aliases: ['Syracuse City Hall'], city: 'syracuse', type: 'government_building' },
-      { name: 'Albany City Hall', aliases: ['Albany City Hall'], city: 'albany', type: 'government_building' },
-
-      // New Jersey
-      { name: 'New Jersey State House', aliases: ['NJ State Capitol'], city: 'trenton', type: 'capitol' },
-      { name: 'Newark City Hall', aliases: ['Newark City Hall'], city: 'newark', type: 'government_building' },
-      { name: 'Jersey City Hall', aliases: ['JC City Hall'], city: 'jersey city', type: 'government_building' },
-      { name: 'Paterson City Hall', aliases: ['Paterson City Hall'], city: 'paterson', type: 'government_building' },
-      { name: 'Elizabeth City Hall', aliases: ['Elizabeth City Hall'], city: 'elizabeth', type: 'government_building' },
-      { name: 'Trenton City Hall', aliases: ['Trenton City Hall'], city: 'trenton', type: 'government_building' },
-      { name: 'Camden City Hall', aliases: ['Camden City Hall'], city: 'camden', type: 'government_building' },
-
-      // Pennsylvania
-      { name: 'Pennsylvania State Capitol', aliases: ['PA State Capitol'], city: 'harrisburg', type: 'capitol' },
-      { name: 'Philadelphia City Hall', aliases: ['Philly City Hall'], city: 'philadelphia', type: 'government_building' },
-      { name: 'Pittsburgh City Hall', aliases: ['Pittsburgh City Hall'], city: 'pittsburgh', type: 'government_building' },
-      { name: 'Allentown City Hall', aliases: ['Allentown City Hall'], city: 'allentown', type: 'government_building' },
-      { name: 'Erie City Hall', aliases: ['Erie City Hall'], city: 'erie', type: 'government_building' },
-      { name: 'Reading City Hall', aliases: ['Reading City Hall'], city: 'reading', type: 'government_building' },
-      { name: 'Scranton City Hall', aliases: ['Scranton City Hall'], city: 'scranton', type: 'government_building' },
-      { name: 'Harrisburg City Hall', aliases: ['Harrisburg City Hall'], city: 'harrisburg', type: 'government_building' },
-      { name: 'Lancaster City Hall', aliases: ['Lancaster City Hall'], city: 'lancaster', type: 'government_building' },
-      { name: 'York City Hall', aliases: ['York City Hall'], city: 'york', type: 'government_building' },
-
-      // Federal Buildings & Courts
-      { name: 'United States District Court SDNY', aliases: ['Federal Court Manhattan'], city: 'manhattan', type: 'government_building' },
-      { name: 'Federal Building Newark', aliases: ['Federal Building NJ'], city: 'newark', type: 'government_building' },
-      { name: 'Federal Building Philadelphia', aliases: ['Federal Building Philly'], city: 'philadelphia', type: 'government_building' },
-      { name: 'Federal Building Pittsburgh', aliases: ['Federal Building Pittsburgh'], city: 'pittsburgh', type: 'government_building' },
-
-      // UN & International
-      { name: 'United Nations Headquarters', aliases: ['UN', 'United Nations'], city: 'manhattan', type: 'embassy' }
-    ];
-
-    government.forEach(building => {
-      const entity: GeographicEntity = {
-        name: building.name,
-        type: building.type as any,
-        aliases: building.aliases,
-        parentEntity: building.city,
-        confidence: 1.0,
-        category: 'government'
-      };
-
-      this.addEntity(entity);
+    }
+
+    // Map all ZIP codes to Florida state
+    for (const [zip, city] of this.database.zipCodeToCity) {
+      this.database.zipCodeToState.set(zip, 'florida');
+    }
+
+    console.log(`[GeoDataManager] ZIP code mappings created:`, {
+      cities: this.database.zipCodeToCity.size,
+      counties: this.database.zipCodeToCounty.size,
+      metros: this.database.zipCodeToMetro.size,
+      state: this.database.zipCodeToState.size
     });
   }
 
   private addEntity(entity: GeographicEntity): void {
-    // Add primary name
-    this.database.entities.set(entity.name.toLowerCase(), entity);
+    const key = entity.name.toLowerCase();
+    this.database.entities.set(key, entity);
     
-    // Add all aliases
-    entity.aliases.forEach(alias => {
-      this.database.entities.set(alias.toLowerCase(), entity);
+    // Add alias mappings
+    entity.aliases?.forEach(alias => {
+      this.database.aliasMap.set(alias.toLowerCase(), entity.name.toLowerCase());
     });
   }
 }

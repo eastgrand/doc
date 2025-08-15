@@ -1,3 +1,8 @@
+// Testing utilities for analysis types:
+// - test-brand-context.js: Tests EnhancedQueryAnalyzer brand context and routing
+// - test-data-loading.js: Tests endpoint JSON data loading and field availability
+// Use these when adding/enabling new query types or updating brand context
+
 export const ANALYSIS_CATEGORIES = {
   'Strategic Analysis': [
     'Show me the top strategic markets for H&R Block tax service expansion'

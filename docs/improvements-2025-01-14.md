@@ -13,7 +13,7 @@
 ### UI/UX Layout & Design
 - [ ] **Map container is centered on screen, but needs to be centered between sidebars** - Adjust layout positioning
 - [ ] **Remove "data completeness" and "data quality" from pre-analysis stats** - Clean up stats display
-- [ ] **Slider handles still missing** - Fix slider component styling
+- [ ] **Slider handles still missing for layer widget toggles** - Fix slider component styling
 - [ ] **Seems to be using Canada infographics, no thumbnails** - Update infographic content and add thumbnails
 - [ ] **Remove "what you'll get" box from infographicQ view** - Clean up infographic interface
 - [ ] **Scrolling not working in infographicsQ view** - Fix scrolling functionality

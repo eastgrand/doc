@@ -212,6 +212,144 @@ Now you need to tell your application where to find the microservice.
 - Zero records returned from queries
 - Broken geographic visualizations without boundary files
 
+### 5.5 Update Geographic Data for New Project Locations
+
+**🗺️ CRITICAL**: When your project covers different geographic areas, you MUST update the geo-awareness system with the correct locations.
+
+#### Why This Is Important
+- **Geographic filtering** relies on accurate location data for queries like "Compare Miami vs Tampa"
+- **Comparative analysis** needs proper ZIP code mapping to filter data correctly
+- **Spatial analysis** requires matching geographic entities in your data
+
+#### Update Process
+
+1. **Edit** `lib/geo/GeoDataManager.ts`
+2. **Replace the current Florida data** with your project's geographic locations
+3. **Maintain the same hierarchical structure**:
+   ```
+   State → Metro Areas → Counties → Cities → ZIP Codes
+   ```
+
+#### Implementation Steps
+
+**📖 Reference Documentation**: See `/docs/geo-awareness-system.md` for the complete Phase 1 implementation guide.
+
+**Step 1: Update States**
+```typescript
+// Replace 'Florida' with your project's state(s)
+const states = [
+  { name: 'YourState', abbr: 'XX', aliases: ['XX', 'State Nickname'] }
+];
+```
+
+**Step 2: Replace Counties**
+```typescript
+// Replace Florida counties with your project's counties
+const counties = [
+  {
+    name: 'Your County',
+    aliases: ['County Nickname', 'County Co'],
+    cities: ['City1', 'City2', 'City3'] // Cities within this county
+  }
+];
+```
+
+**Step 3: Replace Cities with ZIP Codes**
+```typescript
+// Replace Florida cities with your project's cities
+const cities = [
+  {
+    name: 'Your City',
+    aliases: ['City Nickname', 'City Abbrev'],
+    parentCounty: 'your county',  // Links to county
+    zipCodes: ['12345', '12346', '12347'] // Actual ZIP codes for this city
+  }
+];
+```
+
+**Step 4: Update Metro Areas**
+```typescript
+// Replace Florida metros with your project's metro areas
+const metros = [
+  {
+    name: 'Your Metro Area',
+    aliases: ['Greater YourCity', 'Metro Region'],
+    childEntities: ['County1', 'County2'] // Counties within this metro
+  }
+];
+```
+
+#### Data Structure Requirements
+
+**✅ MUST maintain:**
+- Hierarchical parent-child relationships
+- Automatic ZIP code aggregation function
+- Multi-level mapping (city→county→metro→state)
+- Proper entity types ('state', 'metro', 'county', 'city')
+
+**✅ MUST include:**
+- Real ZIP codes for your geographic area
+- Accurate city names that match your data
+- County names that correspond to your cities
+- Metro areas that encompass related counties
+
+#### Example: Switching from Florida to Texas
+
+```typescript
+// BEFORE (Florida):
+{ name: 'Miami', parentCounty: 'miami-dade county', zipCodes: ['33101', '33102'] }
+
+// AFTER (Texas):
+{ name: 'Houston', parentCounty: 'harris county', zipCodes: ['77001', '77002'] }
+```
+
+#### How to Find Your Geographic Data
+
+1. **ZIP Codes**: Use USPS ZIP code lookup or your data source documentation
+2. **Counties**: Reference your state's official county list
+3. **Metro Areas**: Use Bureau of Labor Statistics MSA definitions
+4. **City Names**: Match exactly with how they appear in your dataset
+
+#### Testing Your Updates
+
+After updating `GeoDataManager.ts`:
+
+1. **Restart your application**
+2. **Test geographic queries**: "Compare [YourCity1] and [YourCity2]"
+3. **Verify county queries**: "Show [YourCounty] data"
+4. **Check metro queries**: "Analyze [YourMetroArea]"
+5. **Monitor console** for geographic matching errors
+
+### 5.6 Update Brand Context in Query Analyzer
+
+**CRITICAL**: When switching between different project domains/datasets, update brand references in the Enhanced Query Analyzer:
+
+1. **Edit** `lib/analysis/EnhancedQueryAnalyzer.ts`
+2. **Update brand mappings** in FIELD_MAPPINGS section:
+   - Change brand keywords to match your project context
+   - Update context keywords in ENDPOINT_CONFIGS
+   - Modify identifyBrands() method brand list
+3. **Example**: Athletic shoe project → Tax services project:
+   ```typescript
+   // FROM (athletic brands):
+   nike: { keywords: ['nike', 'swoosh'], ... }
+   adidas: { keywords: ['adidas', 'three stripes'], ... }
+   
+   // TO (tax service brands):
+   hrblock: { keywords: ['h&r block', 'hr block'], ... }
+   turbotax: { keywords: ['turbotax', 'turbo tax'], ... }
+   ```
+4. **Update context keywords** to match new domain:
+   ```typescript
+   contextKeywords: ['h&r block vs turbotax', 'brand difference', 'market share difference']
+   ```
+
+**Why this matters:**
+- Query routing uses brand context for endpoint selection
+- Chat constants use project-specific brands in example queries
+- Analysis results will be more relevant to your domain
+- Natural language processing will understand your project's brands
+
 ## Step 6: Automation Continues Automatically (1 minute)
 
 1. **The automation continues automatically** after the pause

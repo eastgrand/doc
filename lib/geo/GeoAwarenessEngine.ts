@@ -63,6 +63,9 @@ export class GeoAwarenessEngine {
   // Geographic hierarchy and lookup maps
   private geographicHierarchy: Map<string, GeographicEntity> = new Map();
   private zipCodeToCity: Map<string, string> = new Map();
+  private zipCodeToCounty: Map<string, string> = new Map();
+  private zipCodeToMetro: Map<string, string> = new Map();
+  private zipCodeToState: Map<string, string> = new Map();
   private aliasMap: Map<string, string> = new Map();
   
   // Field priority for different data sources
@@ -434,11 +437,46 @@ export class GeoAwarenessEngine {
     const matchedRecords: any[] = [];
     const matchedEntities: GeographicEntity[] = [];
 
-    // Build target ZIP codes from entities
+    // Build target ZIP codes from entities using Phase 1 multi-level mapping
     const targetZipCodes = new Set<string>();
+    
     for (const entity of geoQuery.entities) {
+      // Direct ZIP codes from entity (cities)
       entity.zipCodes?.forEach(zip => targetZipCodes.add(zip));
+      
+      // Phase 1: Multi-level ZIP code mapping
+      const entityName = entity.name.toLowerCase();
+      
+      // If this is a county, get all ZIP codes for that county
+      if (entity.type === 'county') {
+        for (const [zipCode, countyName] of this.zipCodeToCounty) {
+          if (countyName === entityName) {
+            targetZipCodes.add(zipCode);
+          }
+        }
+      }
+      
+      // If this is a metro area, get all ZIP codes for that metro
+      if (entity.type === 'metro') {
+        for (const [zipCode, metroName] of this.zipCodeToMetro) {
+          if (metroName === entityName) {
+            targetZipCodes.add(zipCode);
+          }
+        }
+      }
+      
+      // If this is a state, get all ZIP codes for that state
+      if (entity.type === 'state') {
+        for (const [zipCode, stateName] of this.zipCodeToState) {
+          if (stateName === entityName) {
+            targetZipCodes.add(zipCode);
+          }
+        }
+      }
     }
+    
+    console.log(`[GeoAwarenessEngine] Phase 1 ZIP filtering: Found ${targetZipCodes.size} target ZIP codes for entities:`, 
+                geoQuery.entities.map(e => `${e.name} (${e.type})`));
 
     if (targetZipCodes.size === 0) {
       return {
@@ -556,11 +594,17 @@ export class GeoAwarenessEngine {
       
       this.geographicHierarchy = database.entities;
       this.zipCodeToCity = database.zipCodeToCity;
+      this.zipCodeToCounty = database.zipCodeToCounty;
+      this.zipCodeToMetro = database.zipCodeToMetro;
+      this.zipCodeToState = database.zipCodeToState;
       this.aliasMap = database.aliasMap;
       
-      console.log('[GeoAwarenessEngine] Loaded geographic data:', {
+      console.log('[GeoAwarenessEngine] Loaded Phase 1 multi-level geographic data:', {
         entities: this.geographicHierarchy.size,
-        zipCodes: this.zipCodeToCity.size,
+        zipToCity: this.zipCodeToCity.size,
+        zipToCounty: this.zipCodeToCounty.size,
+        zipToMetro: this.zipCodeToMetro.size,
+        zipToState: this.zipCodeToState.size,
         aliases: this.aliasMap.size
       });
     } catch (error) {
@@ -568,6 +612,9 @@ export class GeoAwarenessEngine {
       // Initialize with empty maps to prevent crashes
       this.geographicHierarchy = new Map();
       this.zipCodeToCity = new Map();
+      this.zipCodeToCounty = new Map();
+      this.zipCodeToMetro = new Map();
+      this.zipCodeToState = new Map();
       this.aliasMap = new Map();
     }
   }
