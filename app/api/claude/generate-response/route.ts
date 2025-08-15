@@ -418,6 +418,44 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       });
       break;
       
+    case 'brand_difference':
+    case 'brand-difference':
+      metricsSection += 'Brand Difference Analysis - Market share comparison between brands:\n\n';
+      topFeatures.forEach((feature: any, index: number) => {
+        const props = feature.properties;
+        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        
+        // Use brand_difference_score as primary metric
+        const brandDifferenceScore = props?.brand_difference_score || props?.target_value;
+        metricsSection += `   Brand Difference: ${brandDifferenceScore !== undefined ? brandDifferenceScore.toFixed(2) + '%' : 'N/A'}\n`;
+        
+        // Add individual brand market shares
+        if (props?.turbotax_market_share !== undefined) {
+          metricsSection += `   TurboTax Market Share: ${props.turbotax_market_share.toFixed(1)}%\n`;
+        } else if (props?.MP10104A_B_P !== undefined) {
+          metricsSection += `   TurboTax Market Share: ${props.MP10104A_B_P.toFixed(1)}%\n`;
+        }
+        
+        if (props?.['h&r block_market_share'] !== undefined) {
+          metricsSection += `   H&R Block Market Share: ${props['h&r block_market_share'].toFixed(1)}%\n`;
+        } else if (props?.MP10128A_B_P !== undefined) {
+          metricsSection += `   H&R Block Market Share: ${props.MP10128A_B_P.toFixed(1)}%\n`;
+        }
+        
+        // Add demographic context relevant to tax services
+        if (props?.GENZ_CY_P !== undefined) {
+          metricsSection += `   Generation Z Population: ${props.GENZ_CY_P.toFixed(1)}%\n`;
+        }
+        if (props?.GENALPHACY_P !== undefined) {
+          metricsSection += `   Generation Alpha Population: ${props.GENALPHACY_P.toFixed(1)}%\n`;
+        }
+        if (props?.total_population) {
+          metricsSection += `   Population: ${(props.total_population / 1000).toFixed(1)}K\n`;
+        }
+        metricsSection += '\n';
+      });
+      break;
+      
     default:
       // For other analysis types, provide basic enhanced info
       metricsSection += `${analysisType} Analysis - Enhanced metrics:\n\n`;
@@ -574,14 +612,14 @@ ENDPOINT-SPECIFIC INTERPRETATION:
   * Provide performance scores and demographic context for each example
   * Include strategic insights about what drives performance differences
   * Add actionable recommendations for each performance tier
-- Competitive Analysis: ⚠️ EXPANSION OPPORTUNITY ANALYSIS - NOT Current Nike Dominance ⚠️
+- Competitive Analysis: ⚠️ EXPANSION OPPORTUNITY ANALYSIS - NOT Current Brand Dominance ⚠️
   * 🚨 CRITICAL RANKING INSTRUCTION: RANK AREAS BY 'competitive_advantage_score' ONLY - IGNORE ALL PERCENTAGES! 🚨
   * The ONLY ranking metric is: competitive_advantage_score (1-10 scale)
   * ⚠️ PERCENTAGES (like 27.0%, 25.0%) are market share context data - DO NOT use for ranking!
-  * ⚠️ Nike market share % = existing dominance (OPPOSITE of expansion opportunity)
+  * ⚠️ Brand market share % = existing dominance (OPPOSITE of expansion opportunity)
   * ✅ competitive_advantage_score = expansion opportunity metric (USE THIS for ranking)
   * HIGH competitive_advantage_score (7.0+) = UNDERSERVED markets with growth potential
-  * LOW competitive_advantage_score (1.0-3.0) = Markets where Nike already dominates OR poor demographics  
+  * LOW competitive_advantage_score (1.0-3.0) = Markets where brands already dominate OR poor demographics  
   * RANK BY competitive_advantage_score ONLY - highest competitive_advantage_score first
   * When referencing scores, ONLY use the exact competitive_advantage_score values provided (never calculate or modify them)
   * MUST include 8-10 specific location examples ranked by competitive_advantage_score (highest first)
@@ -2307,6 +2345,17 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
         // Extract user query for analysis
         const userQuery = messages?.[messages.length - 1]?.content || metadata?.query || 'Analyze data';
         
+        // Extract brand names from the data for comparative analysis
+        let brandAName = 'Brand A';
+        let brandBName = 'Brand B';
+        
+        // Look for brand names in the first layer's first feature
+        if (processedLayersData.length > 0 && processedLayersData[0].features && processedLayersData[0].features.length > 0) {
+          const firstFeature = processedLayersData[0].features[0];
+          if (firstFeature.properties?.brand_a_name) brandAName = firstFeature.properties.brand_a_name;
+          if (firstFeature.properties?.brand_b_name) brandBName = firstFeature.properties.brand_b_name;
+        }
+        
         // Generate enhanced field context for Claude prompt
         let enhancedFieldContext = '';
         const queryAnalyzer = new EnhancedQueryAnalyzer();
@@ -2630,7 +2679,7 @@ ONLY USE PROVIDED DATA:
 SPECIFIC REQUIREMENTS:
 - Numbered indicators (①, ②, ③, etc.) that match the map legend exactly
 - The specific top 5 ZIP codes with scores for each territory EXACTLY as provided
-- The exact market share percentages (Nike %, Adidas %, Jordan %, Market Gap %) EXACTLY as provided
+- The exact market share percentages (${brandAName} %, ${brandBName} %, Market Gap %) EXACTLY as provided
 - The exact "Key Drivers" text for each territory EXACTLY as provided
 - Strategic Recommendations section EXACTLY as provided
 
@@ -2675,7 +2724,7 @@ CRITICAL FIELD DATA TYPE INSTRUCTIONS:
 When analyzing data, ALWAYS use the correct units and terminology based on the field type shown in brackets:
 
 - [percentage]: Values are percentages (0-100%). ALWAYS say "X%" not "X purchases" or "X units"
-  Example: "Nike has 22.6% market share" NOT "Nike has 22.6 purchases"
+  Example: "${brandAName} has 22.6% market share" NOT "${brandAName} has 22.6 purchases"
   
 - [currency]: Values are dollar amounts. ALWAYS use "$" prefix
   Example: "$45,000 income" NOT "45,000 income units"
@@ -2699,16 +2748,16 @@ MANDATORY FIELD TYPE RECOGNITION:
 4. If data type shows [count] → VALUES ARE PEOPLE/HOUSEHOLD COUNTS
 
 WRONG vs RIGHT examples:
-❌ WRONG: "Nike has 22.6 purchases" (when field is "Nike Athletic Shoes (%)")
-✅ RIGHT: "Nike has 22.6% market share"
+❌ WRONG: "${brandAName} has 22.6 purchases" (when field is "${brandAName} (%)")
+✅ RIGHT: "${brandAName} has 22.6% market share"
 
-❌ WRONG: "New Balance holds 9.44 purchases" (when field shows [percentage])
-✅ RIGHT: "New Balance holds 9.44% of the market"
+❌ WRONG: "${brandBName} holds 9.44 purchases" (when field shows [percentage])
+✅ RIGHT: "${brandBName} holds 9.44% of the market"
 
-❌ WRONG: "Puma with 3.95 purchases" (when analyzing percentage data)
-✅ RIGHT: "Puma with 3.95% market share"
+❌ WRONG: "Brand C with 3.95 purchases" (when analyzing percentage data)
+✅ RIGHT: "Brand C with 3.95% market share"
 
-CRITICAL: Athletic shoe brand fields ending in "%" or with [percentage] indicator represent MARKET SHARE PERCENTAGES, not purchase counts!
+CRITICAL: Brand fields ending in "%" or with [percentage] indicator represent MARKET SHARE PERCENTAGES, not purchase counts!
 
 ${hasComprehensiveSummary ? 
 `

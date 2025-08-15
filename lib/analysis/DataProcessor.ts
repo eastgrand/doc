@@ -484,8 +484,44 @@ export class DataProcessor {
    */
   private extractBrandsFromQuery(query: string): string[] {
     const lowerQuery = query.toLowerCase();
-    const brands = ['nike', 'adidas', 'puma', 'underarmour', 'newbalance', 'skechers', 'jordan', 'converse', 'vans', 'reebok'];
-    return brands.filter(brand => lowerQuery.includes(brand));
+    
+    // Tax service brands for brand difference analysis
+    const taxBrands = ['turbotax', 'turbo tax', 'h&r block', 'hrblock', 'hr block'];
+    
+    // Athletic shoe brands (legacy support)
+    const athleticBrands = ['nike', 'adidas', 'puma', 'underarmour', 'newbalance', 'skechers', 'jordan', 'converse', 'vans', 'reebok'];
+    
+    // Combine both lists
+    const allBrands = [...taxBrands, ...athleticBrands];
+    
+    const foundBrands: Array<{brand: string, position: number}> = [];
+    
+    // Find brands and their positions in the query
+    for (const brand of allBrands) {
+      const position = lowerQuery.indexOf(brand);
+      if (position !== -1) {
+        // Normalize the brand name
+        let normalizedBrand = brand;
+        if (brand.includes('turbo')) {
+          normalizedBrand = 'turbotax';
+        } else if (brand.includes('h&r') || brand.includes('hr')) {
+          normalizedBrand = 'h&r block';
+        }
+        
+        // Only add if not already found
+        if (!foundBrands.some(f => f.brand === normalizedBrand)) {
+          foundBrands.push({ brand: normalizedBrand, position });
+        }
+      }
+    }
+    
+    // Sort by position in query and return just the brand names
+    const orderedBrands = foundBrands
+      .sort((a, b) => a.position - b.position)
+      .map(f => f.brand);
+    
+    console.log(`[DataProcessor] Extracted brands from query "${query}":`, orderedBrands);
+    return orderedBrands;
   }
 }
 

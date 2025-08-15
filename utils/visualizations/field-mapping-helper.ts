@@ -29,7 +29,7 @@ const FIELD_CODE_TO_DISPLAY_NAME: Record<string, string> = {
     "anomaly_insight_score": "Anomaly Insight Score",
     "anomaly_performance_score": "Anomaly Performance Score", 
     "anomaly_score": "Anomaly Score",
-    "brand_difference_score": "Brand Difference Score",
+    "brand_difference_score": "Brand Difference",
     "cluster_performance_score": "Cluster Performance Score",
     "cluster_score": "Cluster Score",
     "comparative_score": "Comparative Score", 

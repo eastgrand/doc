@@ -37,12 +37,27 @@ CRITICAL REQUIREMENTS:
 5. Focus on strategic competitive positioning, not just current market dominance
 6. Use competitor data to explain competitive dynamics and opportunities
 
+NEXT STEPS REQUIREMENTS:
+Do NOT recommend generic activities like:
+- "Gather additional demographic data" (demographics are already in the dataset)
+- "Conduct customer surveys" (market data is available)
+- "Analyze competitor strategies" (competitive data is provided)
+- "Create a pilot program" (analysis provides strategic direction)
+
+INSTEAD, provide specific actionable recommendations such as:
+- Resource reallocation to high-advantage markets identified in the analysis
+- Targeted competitive positioning in specific ZIP codes with confirmed opportunities
+- Market share growth strategies in areas showing competitive gaps
+- Investment prioritization based on calculated competitive advantage scores
+- Defensive strategies in markets with competitive threats
+
 ANALYSIS FOCUS:
 - Identify markets with strongest competitive positioning opportunities
 - Explain competitive positioning factors: market share gaps, demographic advantages, brand strength
 - Analyze competitive dynamics and strategic leverage opportunities for expansion
 - Recommend competitive strategies based on relative positioning between brands
 - Discuss market share trends and competitive threats/opportunities
+- Provide immediate actionable insights rather than suggesting additional data collection
 `,
 
   demographic_insights: `
@@ -73,6 +88,20 @@ CRITICAL REQUIREMENTS:
 4. Identify demographic trends that create market opportunities
 5. Connect demographic characteristics to market potential and brand affinity
 
+NEXT STEPS REQUIREMENTS:
+Do NOT recommend generic activities like:
+- "Gather additional demographic data" (demographics are already in the dataset)
+- "Conduct market research surveys" (demographic data is provided)
+- "Analyze population trends" (demographic analysis is provided)
+- "Create demographic profiles" (analysis provides demographic insights)
+
+INSTEAD, provide specific actionable recommendations such as:
+- Targeted marketing campaigns in specific ZIP codes with optimal demographics
+- Product positioning strategies based on income and lifestyle indicators
+- Resource allocation prioritization using demographic alignment scores
+- Market entry timing in areas with demographic growth patterns
+- Customer acquisition strategies tailored to specific age groups and income levels
+
 ANALYSIS FOCUS:
 - Begin with clear explanation of demographic scoring methodology in business terms
 - Identify markets with optimal demographic alignment for target customers
@@ -81,6 +110,7 @@ ANALYSIS FOCUS:
 - Assess demographic trends and growth patterns in target segments
 - Recommend demographic-based targeting strategies for market expansion
 - Connect population characteristics to market positioning and opportunity
+- Provide immediate actionable insights rather than suggesting additional data collection
 `,
 
   trend_analysis: `
@@ -131,6 +161,20 @@ ANALYSIS FOCUS:
 - Recommend markets showing indicators of momentum (even without historical data)
 - Highlight markets with sustainable growth characteristics vs volatile indicators
 - ALWAYS acknowledge that these are proxy-based insights, not measured historical trends
+
+NEXT STEPS REQUIREMENTS:
+Do NOT recommend generic activities like:
+- "Gather historical time-series data" (analysis uses current proxy indicators)
+- "Conduct trend validation surveys" (market indicators are provided)
+- "Analyze seasonal patterns" (trend analysis provides momentum insights)
+- "Create predictive models" (trend scoring provides forward-looking insights)
+
+INSTEAD, provide specific actionable recommendations such as:
+- Investment timing strategies based on momentum indicators in specific markets
+- Resource allocation to markets showing strong trend indicators
+- Market entry prioritization using calculated trend strength scores
+- Expansion strategies tailored to growth momentum patterns
+- Competitive positioning in markets with favorable trend dynamics
 `,
 
   anomaly_detection: `
@@ -237,48 +281,55 @@ ANALYSIS FOCUS:
 
   comparative_analysis: `
 COMPARATIVE ANALYSIS TECHNICAL CONTEXT:
-You are analyzing comparative performance across different dimensions: geographic regions, market segments, time periods, or data metrics. This analysis focuses on comparing performance between different areas, demographics, or market conditions rather than competitor analysis.
+You are analyzing comparative data to identify markets with the strongest performance differences and strategic positioning opportunities between competing brands or business segments.
 
 SCORING METHODOLOGY:
-The comparative_analysis_score (0-100 scale) measures comparative performance differences across selected dimensions, calculated by analyzing:
-• Performance Gap: Difference in performance between compared groups or regions (35% weight)
-• Market Characteristics: Demographic, economic, and market differences driving performance variations (30% weight)
-• Consistency Patterns: How reliable performance differences are across multiple metrics (20% weight)
-• Strategic Implications: Business significance of identified performance gaps (15% weight)
+The comparative_analysis_score (0-100 scale) measures the significance and strategic value of performance differences in each market, combining:
+• Performance Gap: Quantitative difference in performance between compared groups or brands (35% weight)
+• Market Characteristics: Demographic and economic factors driving performance variations (30% weight)
+• Consistency Patterns: Reliability and predictability of performance differences across metrics (20% weight)
+• Strategic Implications: Business significance and actionability of identified gaps (15% weight)
 
 Higher scores indicate markets with significant, meaningful performance differences that provide strategic insights for targeted approaches.
 
-CITY-SPECIFIC ANALYSIS:
-When comparing cities (e.g., NYC vs Philadelphia), focus on:
-- City-level aggregated performance across all ZIP codes
-- Urban market characteristics and demographics
-- City-specific market dynamics and opportunities
-- Metropolitan area strategic implications
-- Regional expansion and investment priorities
-
 DATA STRUCTURE:
-- comparative_analysis_score: Primary ranking metric (0-100 scale)
-- performance_gap: Magnitude of performance difference between compared groups
-- demographic_differences: Key demographic variations driving performance gaps
-- market_dynamics: Economic and market factors explaining differences
-- strategic_significance: Business importance of identified gaps
-- comparison_reliability: Statistical confidence in observed differences
+- comparative_analysis_score: Primary ranking metric (0-100 scale, may use alternative scoring fields like comparison_score)
+- brand_a_share: Primary brand/segment market share or performance percentage
+- brand_b_share: Comparison brand/segment market share or performance percentage
+- brand_performance_gap: Calculated difference between brand performances
+- competitive_advantage_type: Type of advantage (Market Share Lead/Demographic Advantage/Geographic Strength/etc.)
+- market_position_strength: Overall positioning strength in the market
+- competitive_dynamics_level: Level of competitive activity and market dynamics
 
 CRITICAL REQUIREMENTS:
-1. ALWAYS start analysis by explaining the scoring methodology in simple business terms
-2. ALWAYS rank and prioritize by comparative_analysis_score (0-100)
-3. Focus on comparing different geographic regions, cities, market segments, or dimensions
-4. For city comparisons, aggregate ZIP code data to city level and explain urban market dynamics
-5. Identify specific factors driving performance differences between compared groups
-6. Provide actionable insights for targeting different market segments or regions
+1. ALWAYS rank and prioritize by comparative_analysis_score (0-100 scale) or comparison_score 
+2. Focus on meaningful performance differences and strategic positioning opportunities
+3. Identify markets where comparative advantages are strongest and most actionable
+4. Explain performance gaps using available brand share and competitive data
+5. Provide specific strategic recommendations based on identified performance differences
+6. Use actual area names (ZIP codes with cities) rather than generic "Unknown Area" labels
+7. Focus on actionable insights that leverage existing data rather than suggesting data collection
+
+NEXT STEPS REQUIREMENTS:
+Do NOT recommend generic activities like:
+- "Gather additional demographic data" (demographics are already in the dataset)
+- "Conduct customer surveys" (market data is available)
+- "Analyze competitor strategies" (competitive data is provided)
+- "Create a pilot program" (analysis provides strategic direction)
+
+INSTEAD, provide specific actionable recommendations such as:
+- Resource reallocation to high-performing markets identified in the analysis
+- Targeted marketing campaigns in specific ZIP codes with confirmed advantages
+- Competitive strategy adjustments in markets showing specific performance gaps
+- Investment prioritization based on calculated comparative advantage scores
+- Market entry/expansion timing in areas with identified opportunities
 
 ANALYSIS FOCUS:
-- Begin with clear explanation of how comparative analysis scores are calculated
-- Identify significant performance differences between compared dimensions (regions, cities, segments)
-- Analyze underlying factors causing performance variations (demographics, economics, market conditions)
-- Explain practical business implications of identified performance gaps
-- Recommend differentiated strategies for different market segments or geographic areas
-- Highlight opportunities to replicate successful approaches from high-performing areas to lower-performing ones
+- Identify markets with strongest comparative advantages for strategic investment and resource allocation
+- Explain specific performance differences using brand share data and competitive metrics
+- Recommend targeted strategies based on calculated performance gaps and market positioning
+- Highlight geographic areas with confirmed competitive advantages using actual area names
+- Provide immediate actionable insights rather than suggesting additional data collection
 `,
 
   spatial_clusters: `
@@ -451,6 +502,20 @@ ANALYSIS FOCUS:
 - Recommend markets where statistical relationships suggest positive outcomes
 - Highlight confidence levels based on correlation strength, not temporal patterns
 - ALWAYS clarify these are statistical projections, not time-based forecasts
+
+NEXT STEPS REQUIREMENTS:
+Do NOT recommend generic activities like:
+- "Gather historical performance data" (analysis uses current market indicators)
+- "Build time-series forecasting models" (predictive scoring provides forward-looking insights)
+- "Validate predictions with actual outcomes" (model confidence is provided)
+- "Create prediction tracking systems" (analysis provides predictive reliability scores)
+
+INSTEAD, provide specific actionable recommendations such as:
+- Strategic planning prioritization based on predictive confidence scores
+- Resource allocation to markets with high forecasting reliability
+- Risk management strategies for markets with lower prediction confidence
+- Investment timing based on statistical correlation strength
+- Market entry strategies tailored to prediction reliability levels
 `,
 
   segment_profiling: `
@@ -562,6 +627,76 @@ ANALYSIS FOCUS:
 - Highlight mega market opportunities vs smaller niche market potential
 `,
 
+  brand_difference: `
+BRAND DIFFERENCE ANALYSIS TECHNICAL CONTEXT:
+You are analyzing brand difference data to identify markets with the largest competitive gaps between specific brands, calculated as direct market share differences (Brand A % - Brand B %).
+
+⚠️ CRITICAL UNDERSTANDING: This analysis calculates BRAND DIFFERENCE, not market dominance or performance ranking.
+
+SCORING METHODOLOGY:
+The brand_difference_score represents the percentage point difference in market share between two brands:
+• Positive values: Brand A has higher market share than Brand B in that market
+• Negative values: Brand B has higher market share than Brand A in that market  
+• Zero values: Both brands have equal market share (competitive parity)
+• Values are in percentage points (e.g., +15.5 means Brand A has 15.5 percentage points higher market share)
+
+CRITICAL INTERPRETATION RULES:
+1. 0% difference = COMPETITIVE PARITY, not "top performance"
+2. Large positive differences = Brand A strongholds (Brand A dominance)
+3. Large negative differences = Brand B strongholds (Brand B dominance)
+4. Small differences (-5% to +5%) = Competitive battleground markets
+5. NEVER describe 0% difference areas as "top performers" or "leading markets"
+
+DATA STRUCTURE:
+- brand_difference_score: Market share difference in percentage points (Brand A - Brand B)
+- [brand_a]_market_share: Brand A's actual market share percentage
+- [brand_b]_market_share: Brand B's actual market share percentage
+- area_name: Geographic area (ZIP code with city/state)
+- difference_category: Competitive position category
+
+REQUIRED ANALYSIS STRUCTURE:
+1. **Brand Difference Overview**: Explain this measures market share gaps, not performance
+2. **Brand A Strongholds**: Markets where Brand A has significantly higher share (+10% or more)
+3. **Brand B Strongholds**: Markets where Brand B has significantly higher share (-10% or less)
+4. **Competitive Battlegrounds**: Markets with small differences (-5% to +5%)
+5. **Strategic Insights**: Expansion opportunities and competitive threats
+
+TERMINOLOGY REQUIREMENTS:
+- Use "market share difference" NOT "market share disparity"
+- Use "Brand A advantage/disadvantage" NOT "performance levels"
+- Use "competitive gap" NOT "performance gap" 
+- Use "brand stronghold" NOT "top performing area"
+- Use "competitive parity" for 0% differences
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS explain that 0% difference = equal market share, not strong performance
+2. Distinguish between market share % and difference in percentage points
+3. Identify Brand A strongholds (large positive differences)
+4. Identify Brand B strongholds (large negative differences)  
+5. Analyze competitive battleground markets (small differences)
+6. Focus on competitive positioning, not absolute performance
+
+NEXT STEPS REQUIREMENTS:
+Do NOT recommend generic activities like:
+- "Gather additional market data" (brand share data is provided)
+- "Conduct competitive analysis" (brand difference analysis is complete)
+- "Research market positioning" (competitive gaps are identified)
+
+INSTEAD, provide specific actionable recommendations such as:
+- Defend Brand A strongholds with loyalty programs and market presence
+- Target Brand B strongholds for competitive conversion campaigns
+- Invest heavily in competitive battlegrounds to tip market share
+- Resource allocation based on competitive gap analysis
+- Market entry strategies for underperforming brand territories
+
+ANALYSIS FOCUS:
+- Identify the largest competitive gaps for strategic targeting
+- Explain why certain markets favor one brand over another
+- Recommend competitive strategies based on market share differences
+- Highlight expansion opportunities in competitor strongholds
+- Provide battleground market investment priorities
+`,
+
   brand_analysis: `
 BRAND ANALYSIS TECHNICAL CONTEXT:
 You are analyzing brand analysis data to identify markets with strongest brand opportunities and competitive positioning.
@@ -590,11 +725,26 @@ CRITICAL REQUIREMENTS:
 4. Explain brand factors: current presence, market position quality, competitive dynamics
 5. Distinguish between strong brand markets vs emerging brand development opportunities
 
+NEXT STEPS REQUIREMENTS:
+Do NOT recommend generic activities like:
+- "Conduct brand awareness surveys" (brand positioning data is provided)
+- "Analyze competitor brand strategies" (competitive landscape data is available)
+- "Gather brand perception data" (brand strength metrics are provided)
+- "Create brand tracking systems" (brand analysis provides positioning insights)
+
+INSTEAD, provide specific actionable recommendations such as:
+- Brand investment prioritization in markets with highest brand scores
+- Competitive brand positioning strategies in specific high-opportunity ZIP codes
+- Brand strengthening initiatives in markets with development potential
+- Resource allocation based on calculated brand opportunity scores
+- Market entry timing for brand expansion in optimal markets
+
 ANALYSIS FOCUS:
 - Identify markets with strongest brand potential for strategic brand investment
 - Explain brand positioning factors and competitive landscape characteristics
 - Recommend brand strategies based on current presence and market position strength
 - Highlight dominant brand markets vs emerging brand development opportunities
+- Provide immediate actionable insights rather than suggesting additional data collection
 `,
 
   real_estate_analysis: `
@@ -637,6 +787,8 @@ ANALYSIS FOCUS:
 MARKET PENETRATION TECHNICAL CONTEXT:
 You are analyzing market penetration opportunities to identify underserved markets with strong expansion potential and optimal market entry strategies.
 
+⚠️ IMPORTANT: This analyzes MARKET PENETRATION OPPORTUNITIES (growth potential), not brand difference analysis (competitive gaps).
+
 SCORING METHODOLOGY:
 The market_penetration_score (0-100 scale) measures market entry opportunity potential and penetration feasibility, calculated by analyzing:
 • Market Saturation Gap: How underserved the market is relative to target demographics (30% weight)
@@ -657,11 +809,12 @@ DATA STRUCTURE:
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS start analysis by explaining how market penetration scores are calculated
-2. Focus on penetration opportunity potential, not current penetration levels
+2. Focus on penetration opportunity potential, not current penetration levels or brand differences
 3. Identify underserved markets with optimal growth potential for expansion
 4. Explain market entry barriers and enablers affecting penetration success
 5. Analyze penetration velocity and sustainable revenue conversion opportunities
 6. Distinguish between easy entry markets versus high-barrier but high-reward opportunities
+7. DO NOT confuse with brand difference analysis - this analyzes growth opportunities, not competitive gaps
 
 ANALYSIS FOCUS:
 - Begin with clear explanation of market penetration scoring methodology
@@ -848,6 +1001,8 @@ export function getAnalysisPrompt(analysisType: string): string {
     'strategy': 'strategic_analysis',
     'customer': 'customer_profile',
     'profile': 'customer_profile',
+    'brand': 'brand_difference',
+    'difference': 'brand_difference',
     'analyze': 'general',
     'analysis': 'general'
   };

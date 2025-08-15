@@ -1,1724 +1,28 @@
-Navigated to http://localhost:3000/
-main-app.js?v=1755213260942:1836 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
-hot-reloader-client.js:187 [Fast Refresh] rebuilding
-hot-reloader-client.js:44 [Fast Refresh] done in 67763ms
-MapClient.tsx:57 [MapClient MapLegend] Rendering legend: {title: '', type: 'simple', visible: false, itemCount: 0, sampleItems: Array(0)}
-MapClient.tsx:336 [MapClient] Starting map initialization...
-vendors-_app-pages-browser_node_modules_arcgis_core_widgets_Widget_js-_app-pages-browser_node-321f07.js:238 Using Calcite Components 3.2.1 [Date: 2025-05-29, Revision: 618973fec]
-MapClient.tsx:348 [MapClient] ArcGIS modules loaded successfully
-MapClient.tsx:352 [MapClient] API key set: true
-MapClient.tsx:356 [MapClient] Creating map with light mode basemap: gray-vector
-MapClient.tsx:360 [MapClient] Map created successfully with theme-appropriate basemap
-MapClient.tsx:368 [MapClient] Creating MapView...
-MapClient.tsx:402 [MapClient] MapView created, waiting for it to be ready...
-warn-once.js:16 Image with src "/mpiq_pin2.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
-warnOnce @ warn-once.js:16
-eval @ image-component.js:112
-Promise.then
-handleLoading @ image-component.js:37
-onLoad @ image-component.js:198
-callCallback @ react-dom.development.js:20565
-invokeGuardedCallbackImpl @ react-dom.development.js:20614
-invokeGuardedCallback @ react-dom.development.js:20689
-invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
-executeDispatch @ react-dom.development.js:32128
-processDispatchQueueItemsInOrder @ react-dom.development.js:32160
-processDispatchQueue @ react-dom.development.js:32173
-dispatchEventsForPlugins @ react-dom.development.js:32184
-eval @ react-dom.development.js:32374
-batchedUpdates$1 @ react-dom.development.js:24953
-batchedUpdates @ react-dom.development.js:28844
-dispatchEventForPluginEventSystem @ react-dom.development.js:32373
-dispatchEvent @ react-dom.development.js:30141
-MapClient.tsx:382 [MapClient] View is ready, applying dynamic map constraints... {constraintsExtent: {…}, dataExtent: {…}, rotationEnabled: false}
-MapClient.tsx:416 [MapClient] MapView is ready
-MapClient.tsx:428 [MapClient] Calling onMapLoad...
-MapClient.tsx:430 [MapClient] Map initialization complete
-layerConfigAdapter.ts:91 [Adapter] Final generated config: {layerCount: 16, groupCount: 1, groups: {…}}
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 0, internalProgress: 0}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LayerController.tsx:638 [LayerController] View or config changed, resetting initialization state
-LayerController.tsx:658 [LayerController] Starting initialization for: -["population"]
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_0
-layerConfigAdapter.ts:91 [Adapter] Final generated config: {layerCount: 16, groupCount: 1, groups: {…}}
-LayerController.tsx:638 [LayerController] View or config changed, resetting initialization state
-LayerController.tsx:658 [LayerController] Starting initialization for: -["population"]
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_0
-MapWidgets.tsx:283 MapWidgets initialization - creating all widgets immediately
-MapWidgets.tsx:295 Search widget initialized
-MapWidgets.tsx:315 Print widget initialized
-MapWidgets.tsx:367 All widgets initialized successfully
-MapWidgets.tsx:351 Bookmarks widget initialized with 5 bookmarks
-MapClient.tsx:391 [MapClient] Applying feature service extent constraints with spatial reference...
-mapConstraints.ts:59 [MapConstraints] Applying feature service extent constraints...
-mapConstraints.ts:76 [MapConstraints] Applied constraints to feature service extents: {extent: {…}, rotationEnabled: false}
-MapClient.tsx:393 [MapClient] Map constraints applied successfully
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_0
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_0
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_0: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_0, field: GENALPHACY_P
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_0
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_0
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_0: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_0, field: GENALPHACY_P
-MapWidgets.tsx:309 Print widget loaded and ready
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'GENALPHACY_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'GENALPHACY_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'GENALPHACY_P' value: 7.97
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'GENALPHACY_P' value: 7.97
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_0
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_1
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 6.25, internalProgress: 0}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 6.25, internalProgress: 6.25}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_0
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_1
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_1
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_1
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_1: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_1, field: GENZ_CY_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'GENZ_CY_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_1
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_1
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_1: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_1, field: GENZ_CY_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'GENZ_CY_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'GENZ_CY_P' value: 10.49
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'GENZ_CY_P' value: 10.49
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_1
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_2
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_1
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_2
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 12.5, internalProgress: 6.25}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 12.5, internalProgress: 12.5}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_2
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_2
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_2: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_2, field: MP10120A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10120A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_2
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_2
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_2: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_2, field: MP10120A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10120A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-MapWidgets.tsx:301 The specified value "null" cannot be parsed, or is out of range.
-warnAboutInvalidNumberValue @ customElement.js:523
-valueWatcher @ customElement.js:223
-set value @ customElement.js:135
-set @ reactive-element.js:331
-set @ index.js:372
-y @ projection.js:94
-w @ projection.js:106
-x @ projection.js:126
-b @ projection.js:104
-w @ projection.js:106
-x @ projection.js:126
-b @ projection.js:104
-w @ projection.js:106
-x @ projection.js:126
-b @ projection.js:104
-w @ projection.js:106
-x @ projection.js:126
-b @ projection.js:104
-w @ projection.js:106
-x @ projection.js:126
-b @ projection.js:104
-w @ projection.js:106
-x @ projection.js:126
-b @ projection.js:104
-w @ projection.js:106
-x @ projection.js:126
-b @ projection.js:104
-w @ projection.js:106
-x @ projection.js:126
-b @ projection.js:104
-w @ projection.js:106
-x @ projection.js:126
-b @ projection.js:104
-w @ projection.js:106
-x @ projection.js:126
-b @ projection.js:104
-w @ projection.js:106
-x @ projection.js:126
-b @ projection.js:104
-w @ projection.js:106
-x @ projection.js:126
-S @ projection.js:173
-N @ projection.js:192
-update @ projection.js:206
-v @ projector.js:62
-requestAnimationFrame
-scheduleRender @ projector.js:74
-scheduleRender @ Widget.js:167
-eval @ Widget.js:224
-onCommitted @ SimpleTrackingTarget.js:26
-onCommitted @ Property.js:52
-commit @ Property.js:41
-_setAtOrigin @ Properties.js:157
-_internalSet @ Properties.js:153
-set @ Properties.js:131
-set @ subclass.js:95
-t @ set.js:24
-t @ set.js:17
-set @ Accessor.js:161
-applyTemplate @ TemplateOptions.js:45
-applyTemplate @ PrintViewModel.js:277
-_processTemplateOptions @ PrintViewModel.js:316
-_loadResources @ PrintViewModel.js:292
-await in _loadResources
-load @ PrintViewModel.js:182
-load @ Loadable.js:57
-initialize @ Print.js:260
-value @ subclass.js:38
-postscript @ Accessor.js:128
-Print @ subclass.js:60
-eval @ MapWidgets.tsx:301
-Promise.then
-when @ Promise.js:77
-when @ View.js:324
-eval @ MapWidgets.tsx:285
-commitHookEffectListMount @ react-dom.development.js:21102
-commitHookPassiveMountEffects @ react-dom.development.js:23154
-commitPassiveMountOnFiber @ react-dom.development.js:23259
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23267
-commitPassiveMountEffects @ react-dom.development.js:23225
-flushPassiveEffectsImpl @ react-dom.development.js:26497
-flushPassiveEffects @ react-dom.development.js:26438
-eval @ react-dom.development.js:26172
-workLoop @ scheduler.development.js:256
-flushWork @ scheduler.development.js:225
-performWorkUntilDeadline @ scheduler.development.js:534
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10120A_B_P' value: 7.29
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10120A_B_P' value: 7.29
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_2
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_3
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_2
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_3
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 18.75, internalProgress: 12.5}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 18.75, internalProgress: 18.75}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_3
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_3
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_3: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_3, field: MP10110A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10110A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_3
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_3
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_3: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_3, field: MP10110A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10110A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10110A_B_P' value: 21.09
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10110A_B_P' value: 21.09
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_3
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_4
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_3
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_4
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 25, internalProgress: 18.75}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 25, internalProgress: 25}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_4
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_4
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_4: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_4, field: MP10002A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10002A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_4
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_4
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_4: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_4, field: MP10002A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10002A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10002A_B_P' value: 15.49
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10002A_B_P' value: 15.49
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_4
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_5
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_4
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_5
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 31.25, internalProgress: 25}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 31.25, internalProgress: 31.25}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_5
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_5
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_5: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_5, field: MP10138A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10138A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_5
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_5
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_5: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_5, field: MP10138A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10138A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10138A_B_P' value: 3.45
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10138A_B_P' value: 3.45
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_5
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_6
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_5
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_6
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 37.5, internalProgress: 31.25}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 37.5, internalProgress: 37.5}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_6
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_6
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_6: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_6, field: MP10028A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10028A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_6
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_6
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_6: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_6, field: MP10028A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10028A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10028A_B_P' value: 5.75
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10028A_B_P' value: 5.75
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_6
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_7
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_6
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_7
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 43.75, internalProgress: 37.5}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 43.75, internalProgress: 43.75}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_7
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_7
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_7: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_7, field: MP10020A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10020A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_7
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_7
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_7: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_7, field: MP10020A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10020A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10020A_B_P' value: 76.96
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10020A_B_P' value: 76.96
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_7
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_8
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 50, internalProgress: 43.75}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 50, internalProgress: 50}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_7
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_8
-ConfigurationManager.ts:35 [ConfigurationManager] Creating singleton instance...
-ConfigurationManager.ts:59 [ConfigurationManager] Loading configurations...
-ConfigurationManager.ts:69 [ConfigurationManager] ✅ Singleton loaded configurations for 16 endpoints
-AITab.tsx:47 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
-AITab.tsx:92 [AITab] DataSource configuration: {hasFirstLayer: false, firstLayerUrl: undefined, firstLayerId: undefined, extractedLayerNumber: null, constructedServiceUrl: null, …}
-geospatial-chat-interface.tsx:260 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:277 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-AnalysisEngine.ts:97 [AnalysisEngine] Creating singleton instance...
-CachedEndpointRouter.ts:24 [CachedEndpointRouter] Initialized with enhanced query analyzer
-DataProcessor.ts:410 [DataProcessor] Initialized 22 specialized processors
-VisualizationRenderer.ts:331 [VisualizationRenderer] Initialized 5 specialized renderers
-CachedEndpointRouter.ts:24 [CachedEndpointRouter] Initialized with enhanced query analyzer
-MultiEndpointRouter.ts:35 [MultiEndpointRouter] Initialized with multi-endpoint support
-MultiEndpointAnalysisEngine.ts:79 [MultiEndpointAnalysisEngine] Initialized with multi-endpoint capabilities
-AnalysisEngine.ts:74 [AnalysisEngine] Multi-endpoint system enabled
-AnalysisEngine.ts:79 [AnalysisEngine] Clustering system initialized
-AnalysisEngine.ts:84 [AnalysisEngine] Initialized with multi-endpoint support: {multiEndpointEnabled: true, config: {…}}
-geospatial-chat-interface.tsx:4434 [GeospatialChat] isInfographicsOpen: false
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_8
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_8
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_8: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_8, field: MP10116A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10116A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_8
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_8
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_8: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_8, field: MP10116A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10116A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-UnifiedAnalysisWorkflow.tsx:221 [UnifiedWorkflow] Loading infographics reports...
-geospatial-chat-interface.tsx:405 [ENDPOINT CHANGE] 🎯 Endpoint state changed: {selectedEndpoint: 'auto', lastAnalysisEndpoint: null, timestamp: '2025-08-14T23:16:03.953Z'}
-geospatial-chat-interface.tsx:430 [ENDPOINT CHANGE] 🎯 Clustering button should be: {clusteringSupported: true, disabledReason: '', buttonState: 'ENABLED', decisionPath: 'AUTO_NO_HISTORY'}
-geospatial-chat-interface.tsx:445 [DEBUG] Features state changed: {count: 0, timestamp: '2025-08-14T23:16:03.963Z', firstFeatureKeys: 'no features', hasCachedSummary: false}
-geospatial-chat-interface.tsx:529 [DEBUG] Target button state changed: {currentTarget: 'MP30034A_B_P', targetIconName: 'SiNike', targetLabel: undefined, inputQuery: '', timestamp: '2025-08-14T23:16:03.963Z'}
-geospatial-chat-interface.tsx:545 [GeospatialChat] Features useEffect triggered: {featuresIsArray: true, featuresLength: 0, isProcessing: false, firstFeature: null}
-geospatial-chat-interface.tsx:260 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:277 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-geospatial-chat-interface.tsx:4434 [GeospatialChat] isInfographicsOpen: false
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10116A_B_P' value: 16.73
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10116A_B_P' value: 16.73
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_8
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_9
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 56.25, internalProgress: 50}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 56.25, internalProgress: 56.25}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_8
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_9
-UnifiedAnalysisWorkflow.tsx:274 [UnifiedWorkflow] Loaded 98 infographics reports
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_9
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_9
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_9: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_9, field: MP10104A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10104A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_9
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_9
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_9: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_9, field: MP10104A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10104A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10104A_B_P' value: 11.99
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10104A_B_P' value: 11.99
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_9
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_10
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_9
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_10
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 62.5, internalProgress: 56.25}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 62.5, internalProgress: 62.5}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_10
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_10
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_10: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_10, field: MP10128A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10128A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_10
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_10
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_10: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_10, field: MP10128A_B_P
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10128A_B_P'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10128A_B_P' value: 2.53
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10128A_B_P' value: 2.53
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_10
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_11
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 68.75, internalProgress: 62.5}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 68.75, internalProgress: 68.75}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_10
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_11
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_11
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_11
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_11: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_11, field: X14068_X
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14068_X'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_11
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_11
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_11: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_11, field: X14068_X
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14068_X'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14068_X' value: 43987093
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14068_X' value: 43987093
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_11
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_12
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_11
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_12
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 75, internalProgress: 68.75}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 75, internalProgress: 75}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_12
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_12
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_12: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_12, field: X14060_X
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14060_X'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_12
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_12
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_12: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_12, field: X14060_X
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14060_X'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14060_X' value: 773692677
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14060_X' value: 773692677
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_12
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_13
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 81.25, internalProgress: 75}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 81.25, internalProgress: 81.25}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_12
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_13
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_13
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_13
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_13: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_13, field: X14058_X
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14058_X'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_13
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_13
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_13: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_13, field: X14058_X
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14058_X'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14058_X' value: 1146176901
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14058_X' value: 1146176901
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_13
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_14
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_13
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_14
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 87.5, internalProgress: 81.25}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 87.5, internalProgress: 87.5}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_14
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_14
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_14: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'pointCount', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_14, field: pointCount
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'pointCount'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'pointCount', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_14
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_14
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_14: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'pointCount', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_14, field: pointCount
-createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'pointCount'
-createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'pointCount', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'pointCount', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'pointCount' value: 1
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (11) ['OBJECTID', 'DESCRIPTION', 'ID', 'pointCount', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'pointCount' value: 1
-createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_14
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_15
-utils.ts:96 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_14
-utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_15
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 93.75, internalProgress: 87.5}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-LoadingModal.tsx:13 [LoadingModal] Render: {show: true, externalProgress: 93.75, internalProgress: 93.75}
-LoadingModal.tsx:27 [LoadingModal] Showing modal
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_15
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_15
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_15: (19) ['OBJECTID', 'name', 'address', 'locality', 'region', 'postcode', 'country', 'fsq_category', 'fsq_category_all', 'INDUSTRY_DESC', 'source', 'esri_pid', 'DESC_', 'LATITUDE', 'LONGITUDE', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_15, field: esri_pid
-createQuartileRenderer.ts:143 [createQuartileRenderer] Skipping system field: esri_pid
-createQuartileRenderer @ createQuartileRenderer.ts:143
-createLayer @ utils.ts:84
-await in createLayer
-eval @ LayerController.tsx:548
-await in eval
-eval @ LayerController.tsx:660
-commitHookEffectListMount @ react-dom.development.js:21102
-commitHookPassiveMountEffects @ react-dom.development.js:23154
-commitPassiveMountOnFiber @ react-dom.development.js:23259
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23267
-commitPassiveMountEffects @ react-dom.development.js:23225
-flushPassiveEffectsImpl @ react-dom.development.js:26497
-flushPassiveEffects @ react-dom.development.js:26438
-eval @ react-dom.development.js:26172
-workLoop @ scheduler.development.js:256
-flushWork @ scheduler.development.js:225
-performWorkUntilDeadline @ scheduler.development.js:534
-utils.ts:98 ⚠️ No renderer returned for layer: Unknown_Service_layer_15, using default styling
-createLayer @ utils.ts:98
-await in createLayer
-eval @ LayerController.tsx:548
-await in eval
-eval @ LayerController.tsx:660
-commitHookEffectListMount @ react-dom.development.js:21102
-commitHookPassiveMountEffects @ react-dom.development.js:23154
-commitPassiveMountOnFiber @ react-dom.development.js:23259
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23267
-commitPassiveMountEffects @ react-dom.development.js:23225
-flushPassiveEffectsImpl @ react-dom.development.js:26497
-flushPassiveEffects @ react-dom.development.js:26438
-eval @ react-dom.development.js:26172
-workLoop @ scheduler.development.js:256
-flushWork @ scheduler.development.js:225
-performWorkUntilDeadline @ scheduler.development.js:534
-utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_15
-utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_15
-utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_15: (19) ['OBJECTID', 'name', 'address', 'locality', 'region', 'postcode', 'country', 'fsq_category', 'fsq_category_all', 'INDUSTRY_DESC', 'source', 'esri_pid', 'DESC_', 'LATITUDE', 'LONGITUDE', 'CreationDate', 'Creator', 'EditDate', 'Editor']
-utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_15, field: esri_pid
-createQuartileRenderer.ts:143 [createQuartileRenderer] Skipping system field: esri_pid
-createQuartileRenderer @ createQuartileRenderer.ts:143
-createLayer @ utils.ts:84
-await in createLayer
-eval @ LayerController.tsx:548
-await in eval
-eval @ LayerController.tsx:660
-commitHookEffectListMount @ react-dom.development.js:21102
-commitHookPassiveMountEffects @ react-dom.development.js:23154
-commitPassiveMountOnFiber @ react-dom.development.js:23259
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23267
-commitPassiveMountEffects @ react-dom.development.js:23225
-flushPassiveEffectsImpl @ react-dom.development.js:26497
-flushPassiveEffects @ react-dom.development.js:26438
-performSyncWorkOnRoot @ react-dom.development.js:24870
-flushSyncWorkAcrossRoots_impl @ react-dom.development.js:7758
-flushSyncWorkOnAllRoots @ react-dom.development.js:7718
-commitRootImpl @ react-dom.development.js:26369
-commitRoot @ react-dom.development.js:26077
-commitRootWhenReady @ react-dom.development.js:24749
-finishConcurrentRender @ react-dom.development.js:24714
-performConcurrentWorkOnRoot @ react-dom.development.js:24559
-workLoop @ scheduler.development.js:256
-flushWork @ scheduler.development.js:225
-performWorkUntilDeadline @ scheduler.development.js:534
-utils.ts:98 ⚠️ No renderer returned for layer: Unknown_Service_layer_15, using default styling
-createLayer @ utils.ts:98
-await in createLayer
-eval @ LayerController.tsx:548
-await in eval
-eval @ LayerController.tsx:660
-commitHookEffectListMount @ react-dom.development.js:21102
-commitHookPassiveMountEffects @ react-dom.development.js:23154
-commitPassiveMountOnFiber @ react-dom.development.js:23259
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23267
-commitPassiveMountEffects @ react-dom.development.js:23225
-flushPassiveEffectsImpl @ react-dom.development.js:26497
-flushPassiveEffects @ react-dom.development.js:26438
-performSyncWorkOnRoot @ react-dom.development.js:24870
-flushSyncWorkAcrossRoots_impl @ react-dom.development.js:7758
-flushSyncWorkOnAllRoots @ react-dom.development.js:7718
-commitRootImpl @ react-dom.development.js:26369
-commitRoot @ react-dom.development.js:26077
-commitRootWhenReady @ react-dom.development.js:24749
-finishConcurrentRender @ react-dom.development.js:24714
-performConcurrentWorkOnRoot @ react-dom.development.js:24559
-workLoop @ scheduler.development.js:256
-flushWork @ scheduler.development.js:225
-performWorkUntilDeadline @ scheduler.development.js:534
-AITab.tsx:47 [AITab] Render, view prop: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} view?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …} mapViewRefValue: l {_promiseProps: h, _emitter: c, _cursor: null, handles: r, updatingHandles: l, …} mapViewRefValue?.map: l {_emitter: c, _basemapCache: {…}, __accessor__: u, initialize: ƒ, destroy: ƒ, …}
-AITab.tsx:92 [AITab] DataSource configuration: {hasFirstLayer: true, firstLayerUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…ervices/Synapse54__ca07eefffe5b4914/FeatureServer', firstLayerId: 'Unknown_Service_layer_0', extractedLayerNumber: '0', constructedServiceUrl: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcg…vices/Synapse54__ca07eefffe5b4914/FeatureServer/0', …}
-geospatial-chat-interface.tsx:260 [EnhancedGeospatialChat] Component props: {hasInitialMapView: true, initialMapViewState: {…}, hasMapViewRefValue: true, mapViewRefValueState: {…}}
-geospatial-chat-interface.tsx:277 [EnhancedGeospatialChat] Current map view: {hasCurrentMapView: true, currentMapViewState: {…}}
-geospatial-chat-interface.tsx:4434 [GeospatialChat] isInfographicsOpen: false
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Generation Alpha Pop
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Generation Z Pop
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Used Google Pay Digital Payment Svc
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Used Apple Pay Digital Payment Svc
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Used Bank of America Bank 12 Mo
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Own Cryptocurrency Investment
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Have Personal Line of Credit
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Have Savings Account
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Carry Credit Card Balance 3-Usually Always
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Used TurboTax Online to Prepare Taxes
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Used H&R Block Online to Prepare Taxes
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Value of Credit Card Debt
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Value of Checking Savings Money Mkt CD
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: Value of Stocks Bonds Mutual Funds
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: H&R Block by ZIP
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-CustomPopupManager.tsx:89 [CustomPopupManager] Applying standardized popup to layer: H&R Block points
-CustomPopupManager.tsx:119 [CustomPopupManager] ✅ Successfully applied standardized popup
-UnifiedAnalysisWorkflow.tsx:294 [UnifiedWorkflow] Non-point geometry selected: polygon
-index.mjs:468 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-eval @ index.mjs:468
-commitHookEffectListMount @ react-dom.development.js:21102
-commitHookPassiveMountEffects @ react-dom.development.js:23154
-commitPassiveMountOnFiber @ react-dom.development.js:23259
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-SpatialFilterConfig.ts:11 [SpatialFilterConfig] Using configured spatial reference layer: Unknown_Service_layer_0
-UnifiedAnalysisWorkflow.tsx:338 [UnifiedWorkflow] Using spatial reference layer: {layerId: 'Unknown_Service_layer_0', geometryType: 'polygon', method: 'project-area'}
-UnifiedAnalysisWorkflow.tsx:347 [UnifiedAnalysisWorkflow] Analysis request preparation: {shouldApplySpatialFilter: false, areaSelectionMethod: 'project-area', hasGeometry: true, geometryType: 'polygon'}
-UnifiedAnalysisWorkflow.tsx:386 [UnifiedWorkflow] Starting analysis with spatial context: {hasGeometry: false, geometryType: undefined, hasView: true, layerId: 'Unknown_Service_layer_0'}
-UnifiedAnalysisWrapper.tsx:94 [UnifiedAnalysisWrapper] Processing request: {analysisType: 'query', hasGeometry: false, query: 'Compare H&R Block usage between Alachua County and'}
-UnifiedAnalysisWrapper.tsx:165 [UnifiedAnalysisWrapper] Spatial filter skipped - missing required parameters: {hasGeometry: false, hasView: true, hasDataSourceLayerId: true}
-AnalysisEngine.ts:119 [AnalysisEngine] Starting analysis: "Compare H&R Block usage between Alachua County and Miami-Dade County"
-AnalysisEngine.ts:125 [AnalysisEngine] Using frontend cache as primary data source
-CachedEndpointRouter.ts:31 🔥 [CachedEndpointRouter] selectEndpoint called with query: "Compare H&R Block usage between Alachua County and Miami-Dade County"
-CachedEndpointRouter.ts:32 🔥 [CachedEndpointRouter] Options: {clusterConfig: undefined, spatialFilterIds: undefined, spatialFilterGeometry: undefined, spatialFilterMethod: 'project-area', persona: 'strategist'}
-CachedEndpointRouter.ts:96 [CachedEndpointRouter] Multi-endpoint detection: {query: 'Compare H&R Block usage between Alachua County and...', hasMultiPattern: false, endpointMentions: 0, shouldRoute: false}
-CachedEndpointRouter.ts:137 [CachedEndpointRouter] Using enhanced query analyzer for: "Compare H&R Block usage between Alachua County and Miami-Dade County"
-CachedEndpointRouter.ts:145 [CachedEndpointRouter] Top 3 endpoint scores:
-CachedEndpointRouter.ts:147   1. /comparative-analysis: 5.699999999999999 - Primary keywords: compare, between
-CachedEndpointRouter.ts:147   2. /demographic-insights: 5 - Intent bonus: relationship (+3); Demographic fields mentioned
-CachedEndpointRouter.ts:147   3. /strategic-analysis: 2 - Intent bonus: relationship (+2)
-CachedEndpointRouter.ts:154 [CachedEndpointRouter] Identified fields: (3) [{…}, {…}, {…}]
-CachedEndpointRouter.ts:157 🔥 [CachedEndpointRouter] ENDPOINT DECISION: /comparative-analysis for query: "Compare H&R Block usage between Alachua County and Miami-Dade County"
-CachedEndpointRouter.ts:48 [CachedEndpointRouter] Auto-selected endpoint: /comparative-analysis for query: "Compare H&R Block usage between Alachua County and Miami-Dade County"
-AnalysisEngine.ts:129 [AnalysisEngine] Selected endpoint: /comparative-analysis
-CachedEndpointRouter.ts:228 [CachedEndpointRouter] Loading cached data for /comparative-analysis
-CachedEndpointRouter.ts:229 [CachedEndpointRouter] Called with query: "Compare H&R Block usage between Alachua County and Miami-Dade County"
+🔥 [CachedEndpointRouter] ENDPOINT DECISION: /brand-difference for query: "Show me the market share difference between H&R Block and TurboTax"
+CachedEndpointRouter.ts:48 [CachedEndpointRouter] Auto-selected endpoint: /brand-difference for query: "Show me the market share difference between H&R Block and TurboTax"
+AnalysisEngine.ts:129 [AnalysisEngine] Selected endpoint: /brand-difference
+CachedEndpointRouter.ts:228 [CachedEndpointRouter] Loading cached data for /brand-difference
+CachedEndpointRouter.ts:229 [CachedEndpointRouter] Called with query: "Show me the market share difference between H&R Block and TurboTax"
 CachedEndpointRouter.ts:230 [CachedEndpointRouter] Called with options: {clusterConfig: undefined, spatialFilterIds: undefined, spatialFilterGeometry: undefined, spatialFilterMethod: 'project-area', persona: 'strategist'}
-CachedEndpointRouter.ts:291 [CachedEndpointRouter] Looking for dataset with key: "comparative-analysis"
-blob-data-loader.ts:69 ✅ Loaded comparative-analysis from blob storage
-CachedEndpointRouter.ts:297 [CachedEndpointRouter] ✅ Loaded data for comparative-analysis from blob storage
+CachedEndpointRouter.ts:291 [CachedEndpointRouter] Looking for dataset with key: "brand-difference"
+blob-data-loader.ts:69 ✅ Loaded brand-difference from blob storage
+CachedEndpointRouter.ts:297 [CachedEndpointRouter] ✅ Loaded data for brand-difference from blob storage
 CachedEndpointRouter.ts:423 [CachedEndpointRouter] Processing wrapped format with 984 records
 CachedEndpointRouter.ts:436 [CachedEndpointRouter] Processed 984 cached records
-CachedEndpointRouter.ts:243 [CachedEndpointRouter] Loaded 984 records from cache in 485ms
-GeoDataManager.ts:52 [GeoDataManager] Initializing comprehensive tri-state geographic database...
-GeoDataManager.ts:81 [GeoDataManager] Comprehensive database initialized with 1160 entities
-GeoAwarenessEngine.ts:561 [GeoAwarenessEngine] Loaded geographic data: {entities: 1160, zipCodes: 8001, aliases: 25}
-GeoAwarenessEngine.ts:105 [GeoAwarenessEngine] Processing geo query: Compare H&R Block usage between Alachua County and Miami-Dade County
-GeoAwarenessEngine.ts:163 🔍 [GEO DEBUG] Parsing query: "Compare H&R Block usage between Alachua County and Miami-Dade County"
-GeoAwarenessEngine.ts:180 ✅ [GEO DEBUG] Query has explicit geographic intent - proceeding with matching
-GeoAwarenessEngine.ts:184 🔍 [GEO DEBUG] Direct matches: []
-GeoAwarenessEngine.ts:189 🔍 [GEO DEBUG] ZIP matches: []
-GeoAwarenessEngine.ts:194 🔍 [GEO DEBUG] Regional matches: []
-GeoAwarenessEngine.ts:203 🚫 [GEO DEBUG] No geographic entities found and no strong geographic signals - treating as non-geographic query
-DataProcessor.ts:297 🔥 [DataProcessor] processResults called for endpoint: /comparative-analysis, query: "Compare H&R Block usage between Alachua County and Miami-Dade County"
+CachedEndpointRouter.ts:243 [CachedEndpointRouter] Loaded 984 records from cache in 468ms
+DataProcessor.ts:297 🔥 [DataProcessor] processResults called for endpoint: /brand-difference, query: "Show me the market share difference between H&R Block and TurboTax"
 DataProcessor.ts:298 🔥 [DataProcessor] Raw data structure: {success: true, resultsLength: 984, firstRecordKeys: Array(10)}
-DataProcessor.ts:308 🔥 [DataProcessor] Using processor: ComparativeAnalysisProcessor for endpoint: /comparative-analysis
-DataProcessor.ts:324 🚨🚨🚨 [DataProcessor] VALIDATION FAILED for /comparative-analysis using ComparativeAnalysisProcessor 🚨🚨🚨
+DataProcessor.ts:308 🔥 [DataProcessor] Using processor: BrandDifferenceProcessor for endpoint: /brand-difference
+BrandDifferenceProcessor.ts:21 🔍 [BrandDifferenceProcessor] VALIDATE CALLED
+BrandDifferenceProcessor.ts:22 🔍 [BrandDifferenceProcessor] Raw data structure: {success: true, resultsLength: 984, firstRecordKeys: Array(54)}
+BrandDifferenceProcessor.ts:51 🔍 [BrandDifferenceProcessor] Brand fields validation result: false
+BrandDifferenceProcessor.ts:53 ❌ [BrandDifferenceProcessor] VALIDATION FAILED: No brand fields found
+BrandDifferenceProcessor.ts:55 🔍 [BrandDifferenceProcessor] Available fields in first record: (54) ['ID', 'DESCRIPTION', 'OBJECTID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor', 'X14060_X', 'X14060_X_A', 'pointCount', 'MP10002A_B', 'MP10002A_B_P', 'X14068_X', 'X14068_X_A', 'MP10116A_B', 'MP10116A_B_P', 'name', 'address', 'locality', 'region', 'postcode', 'country', 'fsq_category', 'fsq_category_all', 'INDUSTRY_DESC', 'source', 'esri_pid', 'DESC_', 'LATITUDE', 'LONGITUDE', 'MP10128A_B', 'MP10128A_B_P', 'MP10138A_B', 'MP10138A_B_P', 'MP10020A_B', 'MP10020A_B_P', 'X14058_X', 'X14058_X_A', 'GENZ_CY', 'GENZ_CY_P', 'MP10028A_B', 'MP10028A_B_P', 'MP10110A_B', 'MP10110A_B_P', 'MP10120A_B', 'MP10120A_B_P', 'GENALPHACY', 'GENALPHACY_P', 'brand_difference_score']
+DataProcessor.ts:324 🚨🚨🚨 [DataProcessor] VALIDATION FAILED for /brand-difference using BrandDifferenceProcessor 🚨🚨🚨
 window.console.error @ app-index.js:33
 console.error @ hydration-error-info.js:63
 processResults @ DataProcessor.ts:324
 processResultsWithGeographicAnalysis @ DataProcessor.ts:173
-await in processResultsWithGeographicAnalysis
 executeAnalysis @ AnalysisEngine.ts:226
 await in executeAnalysis
 processQueryAnalysis @ UnifiedAnalysisWrapper.tsx:255
@@ -1740,11 +44,11 @@ batchedUpdates$1 @ react-dom.development.js:24953
 batchedUpdates @ react-dom.development.js:28844
 dispatchEventForPluginEventSystem @ react-dom.development.js:32373
 dispatchEvent @ react-dom.development.js:30141
-dispatchDiscreteEvent @ react-dom.development.js:30112
-DataProcessor.ts:352 [DataProcessor] Error processing /comparative-analysis: Error: Data validation failed for /comparative-analysis. The ComparativeAnalysisProcessor processor could not validate the data structure. This endpoint requires specific data fields.
+dispatchDiscreteEvent @ react-dom.development.js:30112Understand this error
+DataProcessor.ts:352 [DataProcessor] Error processing /brand-difference: Error: Data validation failed for /brand-difference. The BrandDifferenceProcessor processor could not validate the data structure. This endpoint requires specific data fields.
     at DataProcessor.processResults (DataProcessor.ts:325:15)
     at DataProcessor.processResultsWithGeographicAnalysis (DataProcessor.ts:173:32)
-    at async AnalysisEngine.executeAnalysis (AnalysisEngine.ts:226:29)
+    at AnalysisEngine.executeAnalysis (AnalysisEngine.ts:226:54)
     at async UnifiedAnalysisWrapper.processQueryAnalysis (UnifiedAnalysisWrapper.tsx:255:12)
     at async UnifiedAnalysisWrapper.processUnifiedRequest (UnifiedAnalysisWrapper.tsx:106:28)
     at async eval (UnifiedAnalysisWorkflow.tsx:394:22)
@@ -1752,7 +56,6 @@ window.console.error @ app-index.js:33
 console.error @ hydration-error-info.js:63
 processResults @ DataProcessor.ts:352
 processResultsWithGeographicAnalysis @ DataProcessor.ts:173
-await in processResultsWithGeographicAnalysis
 executeAnalysis @ AnalysisEngine.ts:226
 await in executeAnalysis
 processQueryAnalysis @ UnifiedAnalysisWrapper.tsx:255
@@ -1774,11 +77,11 @@ batchedUpdates$1 @ react-dom.development.js:24953
 batchedUpdates @ react-dom.development.js:28844
 dispatchEventForPluginEventSystem @ react-dom.development.js:32373
 dispatchEvent @ react-dom.development.js:30141
-dispatchDiscreteEvent @ react-dom.development.js:30112
-AnalysisEngine.ts:408 🚨🚨🚨 [ANALYSIS ENGINE ERROR] Cache-based analysis failed: Error: Failed to process /comparative-analysis data: Data validation failed for /comparative-analysis. The ComparativeAnalysisProcessor processor could not validate the data structure. This endpoint requires specific data fields.
+dispatchDiscreteEvent @ react-dom.development.js:30112Understand this error
+AnalysisEngine.ts:408 🚨🚨🚨 [ANALYSIS ENGINE ERROR] Cache-based analysis failed: Error: Failed to process /brand-difference data: Data validation failed for /brand-difference. The BrandDifferenceProcessor processor could not validate the data structure. This endpoint requires specific data fields.
     at DataProcessor.processResults (DataProcessor.ts:356:13)
     at DataProcessor.processResultsWithGeographicAnalysis (DataProcessor.ts:173:32)
-    at async AnalysisEngine.executeAnalysis (AnalysisEngine.ts:226:29)
+    at AnalysisEngine.executeAnalysis (AnalysisEngine.ts:226:54)
     at async UnifiedAnalysisWrapper.processQueryAnalysis (UnifiedAnalysisWrapper.tsx:255:12)
     at async UnifiedAnalysisWrapper.processUnifiedRequest (UnifiedAnalysisWrapper.tsx:106:28)
     at async eval (UnifiedAnalysisWorkflow.tsx:394:22)
@@ -1805,8 +108,8 @@ batchedUpdates$1 @ react-dom.development.js:24953
 batchedUpdates @ react-dom.development.js:28844
 dispatchEventForPluginEventSystem @ react-dom.development.js:32373
 dispatchEvent @ react-dom.development.js:30141
-dispatchDiscreteEvent @ react-dom.development.js:30112
-AnalysisEngine.ts:409 🚨 [ANALYSIS ENGINE ERROR] Error details: {message: 'Failed to process /comparative-analysis data: Data…ure. This endpoint requires specific data fields.', stack: 'Error: Failed to process /comparative-analysis dat…fied-analysis/UnifiedAnalysisWorkflow.tsx:347:28)', query: 'Compare H&R Block usage between Alachua County and Miami-Dade County', options: {…}}
+dispatchDiscreteEvent @ react-dom.development.js:30112Understand this error
+AnalysisEngine.ts:409 🚨 [ANALYSIS ENGINE ERROR] Error details: {message: 'Failed to process /brand-difference data: Data val…ure. This endpoint requires specific data fields.', stack: 'Error: Failed to process /brand-difference data: D…fied-analysis/UnifiedAnalysisWorkflow.tsx:347:28)', query: 'Show me the market share difference between H&R Block and TurboTax', options: {…}}
 window.console.error @ app-index.js:33
 console.error @ hydration-error-info.js:63
 executeAnalysis @ AnalysisEngine.ts:409
@@ -1830,8 +133,8 @@ batchedUpdates$1 @ react-dom.development.js:24953
 batchedUpdates @ react-dom.development.js:28844
 dispatchEventForPluginEventSystem @ react-dom.development.js:32373
 dispatchEvent @ react-dom.development.js:30141
-dispatchDiscreteEvent @ react-dom.development.js:30112
-UnifiedAnalysisWrapper.tsx:136 [UnifiedAnalysisWrapper] Request completed: {processingTime: 508, hasResults: true}
+dispatchDiscreteEvent @ react-dom.development.js:30112Understand this error
+UnifiedAnalysisWrapper.tsx:136 [UnifiedAnalysisWrapper] Request completed: {processingTime: 472, hasResults: true}
 UnifiedAnalysisWorkflow.tsx:396 [UnifiedWorkflow] Analysis complete: {analysisResult: {…}, metadata: {…}, exportOptions: {…}}
 geospatial-chat-interface.tsx:4145 [UnifiedWorkflow] Analysis complete: {analysisResult: {…}, metadata: {…}, exportOptions: {…}}
 geospatial-chat-interface.tsx:4146 [UnifiedWorkflow] Analysis result data: {hasData: true, recordCount: 0, firstRecord: undefined, dataStructure: {…}}
@@ -1860,7 +163,7 @@ batchedUpdates$1 @ react-dom.development.js:24953
 batchedUpdates @ react-dom.development.js:28844
 dispatchEventForPluginEventSystem @ react-dom.development.js:32373
 dispatchEvent @ react-dom.development.js:30141
-dispatchDiscreteEvent @ react-dom.development.js:30112
+dispatchDiscreteEvent @ react-dom.development.js:30112Understand this error
 geospatial-chat-interface.tsx:1537 [applyAnalysisEngineVisualization] Data structure: {type: 'error', records: Array(0), summary: 'Analysis failed', statistics: {…}, targetVariable: 'error'}
 window.console.error @ app-index.js:33
 console.error @ hydration-error-info.js:63
@@ -1882,7 +185,7 @@ batchedUpdates$1 @ react-dom.development.js:24953
 batchedUpdates @ react-dom.development.js:28844
 dispatchEventForPluginEventSystem @ react-dom.development.js:32373
 dispatchEvent @ react-dom.development.js:30141
-dispatchDiscreteEvent @ react-dom.development.js:30112
+dispatchDiscreteEvent @ react-dom.development.js:30112Understand this error
 geospatial-chat-interface.tsx:4306 [UnifiedWorkflow] ⚠️ Visualization layer not created
 eval @ geospatial-chat-interface.tsx:4306
 await in eval
@@ -1902,11 +205,214 @@ batchedUpdates$1 @ react-dom.development.js:24953
 batchedUpdates @ react-dom.development.js:28844
 dispatchEventForPluginEventSystem @ react-dom.development.js:32373
 dispatchEvent @ react-dom.development.js:30141
-dispatchDiscreteEvent @ react-dom.development.js:30112
+dispatchDiscreteEvent @ react-dom.development.js:30112Understand this warning
 ChatInterface.tsx:578 [ChatInterface] Starting auto-generation of AI narrative
 ChatInterface.tsx:408 [ChatInterface] Generating initial AI narrative...
 ChatInterface.tsx:464 [ChatInterface] Request payload prepared: {endpoint: '/analyze', recordCount: 0, spatialFilter: false, isClustered: false}
 chat-service.ts:16 [ChatService] Sending chat message to API using JSON format with all required data
-chat-service.ts:54 [ChatService] Chat response received successfully
-ChatInterface.tsx:531 [ChatInterface] AI narrative generated successfully
-
+chat-service.ts:20  POST http://localhost:3000/api/claude/generate-response net::ERR_CONNECTION_REFUSED
+sendChatMessage @ chat-service.ts:20
+eval @ ChatInterface.tsx:477
+await in eval
+eval @ ChatInterface.tsx:579
+commitHookEffectListMount @ react-dom.development.js:21102
+commitHookPassiveMountEffects @ react-dom.development.js:23154
+commitPassiveMountOnFiber @ react-dom.development.js:23259
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23334
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23256
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
+commitPassiveMountOnFiber @ react-dom.development.js:23370
+recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237Understand this error
+ChatInterface.tsx:536 [ChatInterface] Failed to generate AI narrative: TypeError: Failed to fetch
+    at sendChatMessage (chat-service.ts:20:26)
+    at eval (ChatInterface.tsx:477:51)

@@ -15,6 +15,55 @@
 - **GitHub account** (free at github.com)
 - **Render account** (free at render.com)
 
+## ⚠️ CRITICAL CONFIGURATION FOR NEW PROJECTS ⚠️
+
+### Brand Fields for Comparative Analysis
+**YOU MUST UPDATE THESE FIELDS WHEN SWITCHING PROJECTS OR DATA SOURCES**
+
+The comparative analysis processor needs to know which fields represent competing brands/services.
+These are currently hardcoded and MUST be updated in:
+`/lib/analysis/strategies/processors/ComparativeAnalysisProcessor.ts`
+
+**Current Configuration (Tax Preparation Services):**
+- Brand A: `MP10104A_B_P` (TurboTax Users %)
+- Brand B: `MP10128A_B_P` (H&R Block Users %)
+
+**To Update for Your Project:**
+1. Identify the 2 main competing brands/services in your data
+2. Find their field codes (e.g., MP codes)
+3. Update the `BRAND_FIELD_MAPPINGS` object in `extractBrandMetric` method:
+   ```typescript
+   const BRAND_FIELD_MAPPINGS = {
+     brand_a: 'YOUR_BRAND_A_FIELD', // Primary brand/service
+     brand_b: 'YOUR_BRAND_B_FIELD'  // Competing brand/service
+   };
+   ```
+
+**Examples for Different Industries:**
+- Athletic Shoes: `MP30034A_B_P` (Nike) vs `MP30029A_B_P` (Adidas)
+- Banking: `MP10002A_B_P` (Bank of America) vs `MP10028A_B_P` (Wells Fargo)
+- Tax Services: `MP10104A_B_P` (TurboTax) vs `MP10128A_B_P` (H&R Block)
+
+**Without this update, comparative analysis will show incorrect results with 0 values and constant scores of 15.00**
+
+### Brand Fields for Brand Difference Analysis
+**ALSO UPDATE THESE FIELDS WHEN SWITCHING PROJECTS OR DATA SOURCES**
+
+The brand difference processor also needs manual updates for proper validation.
+These are currently hardcoded and MUST be updated in:
+`/lib/analysis/strategies/processors/BrandDifferenceProcessor.ts`
+
+**Current Configuration (Tax Preparation Services):**
+- TurboTax: `MP10104A_B_P`
+- H&R Block: `MP10128A_B_P`
+
+**To Update for Your Project:**
+1. Update the `BRAND_MAPPINGS` object (lines 13-18)
+2. Update the validation method brand field checks (lines 47-48)
+3. Replace brand field names with your project's actual field names
+
+**Note:** This processor validates data by checking for specific brand field names. When switching projects, you must update both the brand mappings and the validation logic to match your new data structure.
+
 ## Step 1: Run the Automation (2-5 minutes)
 
 1. **Open Terminal/Command Prompt**

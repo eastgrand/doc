@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { GeoDataManager } from '../../../geo/GeoDataManager';
-import { BrandNameResolver, BrandMetric } from '../../utils/BrandNameResolver';
+interface BrandMetric {
+  value: number;
+  fieldName: string;
+  brandName: string;
+}
 
 /**
  * ComparativeAnalysisProcessor - Handles data processing for the /comparative-analysis endpoint
@@ -11,18 +15,16 @@ import { BrandNameResolver, BrandMetric } from '../../utils/BrandNameResolver';
  */
 export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   private geoDataManager: any = null;
-  private brandNameResolver: BrandNameResolver;
   
-  constructor(fieldAliases?: Record<string, string>) {
-    this.brandNameResolver = new BrandNameResolver(fieldAliases);
+  constructor() {
+    // No longer using BrandNameResolver since we're using hardcoded fields
   }
 
   /**
-   * Update field aliases for dynamic brand naming
-   * This allows processors to be updated with new field aliases at runtime
+   * Update field aliases for dynamic brand naming (now unused)
    */
-  updateFieldAliases(fieldAliases?: Record<string, string>): void {
-    this.brandNameResolver = new BrandNameResolver(fieldAliases);
+  updateFieldAliases(): void {
+    // No longer using BrandNameResolver since we're using hardcoded fields
   }
   
   private getGeoDataManager() {
@@ -44,9 +46,10 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       const city = database.zipCodeToCity.get(zipStr);
       if (city) {
         // Capitalize first letter of each word
-        return city.split(' ').map((word: string) => 
+        const formattedCity = city.split(' ').map((word: string) => 
           word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
         ).join(' ');
+        return formattedCity;
       }
     }
     
@@ -207,9 +210,9 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
           competitive_advantage_score: comparativeScore, // Primary field for competitive analysis
           comparative_analysis_score: comparativeScore, // Keep for compatibility
           strategic_value_score: comparativeScore, // Keep for compatibility
-          nike_market_share: brandAMetric.value, // Legacy field for compatibility
-          adidas_market_share: brandBMetric.value, // Legacy field for compatibility
-          nike_dominance: brandDominance, // Legacy field for compatibility
+          turbotax_market_share: brandAMetric.value, // Legacy field for compatibility
+          hrblock_market_share: brandBMetric.value, // Legacy field for compatibility
+          brand_dominance: brandDominance, // Legacy field for compatibility
           total_brand_share: totalBrandShare,
           market_gap: marketGap,
           strategic_score: strategicScore,
@@ -230,7 +233,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
           brand_b_share: brandBMetric.value,
           brand_a_name: brandAMetric.brandName,
           brand_b_name: brandBMetric.brandName,
-          brand_dominance: brandDominance
+          dominance_score: brandDominance
         }
       };
     });
@@ -375,48 +378,35 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   // ============================================================================
 
   /**
-   * Extract brand metric from record using flexible field detection
+   * Extract brand metric from record using hardcoded TurboTax/H&R Block fields
    */
   private extractBrandMetric(record: any, brandType: 'brand_a' | 'brand_b'): BrandMetric {
-    // Look for any brand-related fields in the data
-    const allFields = Object.keys(record);
+    // Use hardcoded TurboTax and H&R Block field mappings
+    const turbotaxField = record.value_TURBOTAX_P !== undefined ? 'value_TURBOTAX_P' : 'TURBOTAX_P';
+    const hrblockField = record.value_HRBLOCK_P !== undefined ? 'value_HRBLOCK_P' : 'HRBLOCK_P';
     
-    // Find fields that might contain brand share data
-    const brandFields = allFields.filter(field => {
-      const fieldLower = field.toLowerCase();
-      return (fieldLower.includes('share') || 
-              fieldLower.includes('market') || 
-              fieldLower.includes('brand') ||
-              fieldLower.includes('mp30') || // Legacy Nike/Adidas fields
-              fieldLower.includes('value_mp')) && 
-             typeof record[field] === 'number';
-    });
-    
-    let fieldName: string | undefined;
+    let fieldName = '';
     let value = 0;
+    let brandName = '';
     
-    // If we have exactly 2 brand fields, assign them to brand_a and brand_b
-    if (brandFields.length >= 2) {
-      const sortedFields = brandFields.sort(); // Consistent ordering
-      if (brandType === 'brand_a') {
-        fieldName = sortedFields[0];
-        value = Number(record[sortedFields[0]]) || 0;
-      } else {
-        fieldName = sortedFields[1];
-        value = Number(record[sortedFields[1]]) || 0;
-      }
+    if (brandType === 'brand_a') {
+      // Brand A = TurboTax
+      fieldName = turbotaxField;
+      value = Number(record[turbotaxField]) || 0;
+      brandName = 'TurboTax';
+    } else {
+      // Brand B = H&R Block
+      fieldName = hrblockField;
+      value = Number(record[hrblockField]) || 0;
+      brandName = 'H&R Block';
     }
     
-    // If we only have one brand field, use it for brand_a
-    else if (brandFields.length === 1 && brandType === 'brand_a') {
-      fieldName = brandFields[0];
-      value = Number(record[brandFields[0]]) || 0;
-    }
-    
-    // Extract brand name using BrandNameResolver
-    const brandName = fieldName 
-      ? this.brandNameResolver.extractBrandName(fieldName) || `Brand ${brandType === 'brand_a' ? 'A' : 'B'}`
-      : `Brand ${brandType === 'brand_a' ? 'A' : 'B'}`;
+    console.log(`🔍 [extractBrandMetric] ${brandType} result:`, {
+      fieldName,
+      value,
+      brandName,
+      recordHasField: record[fieldName] !== undefined
+    });
     
     return {
       value,
@@ -791,9 +781,11 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   private generateAreaName(record: any): string {
     // Try explicit name/description fields first - be flexible with naming
     const nameFields = ['DESCRIPTION', 'value_DESCRIPTION', 'area_name', 'NAME', 'name', 'label', 'title'];
+    
     for (const field of nameFields) {
-      if (record[field] && typeof record[field] === 'string') {
-        return record[field];
+      const value = record[field];
+      if (value && typeof value === 'string' && value.trim() !== '' && value.toLowerCase() !== 'unknown') {
+        return value.trim();
       }
     }
     
@@ -820,9 +812,23 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       }
       // For numeric IDs, create descriptive name
       if (typeof id === 'number' || !isNaN(Number(id))) {
+        const numericId = typeof id === 'number' ? id : Number(id);
+        // For ZIP-like 5-digit numbers, format as ZIP
+        if (numericId >= 10000 && numericId <= 99999) {
+          return city !== 'Unknown' ? `${numericId} (${city})` : `ZIP ${numericId}`;
+        }
         return city !== 'Unknown' ? `${id} (${city})` : `Area ${id}`;
       }
       return city !== 'Unknown' ? `${id} (${city})` : `Region ${id}`;
+    }
+    
+    // Final fallback - try to extract any meaningful identifier
+    const backupFields = ['address', 'location', 'place', 'district', 'neighborhood'];
+    for (const field of backupFields) {
+      const value = record[field];
+      if (value && typeof value === 'string' && value.trim() !== '') {
+        return value.trim();
+      }
     }
     
     return 'Unknown Area';

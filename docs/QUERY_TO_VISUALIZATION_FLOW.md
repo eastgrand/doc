@@ -156,6 +156,21 @@ const endpointConfig = {
 }
 ```
 
+**For Brand Difference Analysis**:
+```json
+{
+  "query": "TurboTax vs H&R Block market share difference",
+  "filters": {
+    "geographic": {
+      "zipCodes": ["32601", "32602", "33101", "33102", ...],
+      "entities": ["nationwide", "all markets"]
+    }
+  },
+  "analysisType": "brand_difference",
+  "extractedBrands": ["turbotax", "h&r block"]
+}
+```
+
 **Response Structure** (from endpoint):
 ```json
 {
@@ -177,11 +192,59 @@ const endpointConfig = {
 }
 ```
 
+**For Brand Difference Analysis Response**:
+```json
+{
+  "success": true,
+  "results": [
+    {
+      "ID": "32601",
+      "DESCRIPTION": "Gainesville",
+      "MP10104A_B_P": 35.2,  // TurboTax market share %
+      "MP10128A_B_P": 28.7,  // H&R Block market share %
+      "value_TOTPOP_CY": 15420,
+      "value_AVGHINC_CY": 52000
+    },
+    // ... more records
+  ],
+  "feature_importance": [...],
+  "summary": "Brand difference analysis complete"
+}
+```
+
 ### Step 5: Data Processing
 
-**Component**: `lib/analysis/strategies/processors/ComparativeAnalysisProcessor.ts`
+**Component**: `lib/analysis/strategies/processors/ComparativeAnalysisProcessor.ts` or `lib/analysis/strategies/processors/BrandDifferenceProcessor.ts`
 
 The processor transforms raw endpoint data:
+
+#### For Brand Difference Analysis
+
+**Component**: `lib/analysis/strategies/processors/BrandDifferenceProcessor.ts`
+
+The BrandDifferenceProcessor specializes in calculating market share differences between brands:
+
+```typescript
+// Brand field auto-detection from available data
+const availableBrandFields = this.detectAvailableBrandFields(rawData);
+// Returns: ['turbotax', 'h&r block'] based on MP10104A_B_P and MP10128A_B_P fields
+
+// Extract brands from query context or use detected brands
+let brand1 = extractedBrands[0]?.toLowerCase() || availableBrandFields[0] || 'turbotax';
+let brand2 = extractedBrands[1]?.toLowerCase() || availableBrandFields[1] || 'h&r block';
+
+// Calculate brand difference: brand1_share - brand2_share
+const brand1Share = record[brand1FieldCode] || 0; // e.g., MP10104A_B_P: 35.2%
+const brand2Share = record[brand2FieldCode] || 0; // e.g., MP10128A_B_P: 28.7%
+const difference = brand1Share - brand2Share;     // Result: 6.5% (TurboTax advantage)
+```
+
+**Brand Field Mappings**:
+- TurboTax: `MP10104A_B_P`
+- H&R Block: `MP10128A_B_P`
+- Athletic brands: `MP30034A_B_P` (Nike), `MP30029A_B_P` (Adidas), etc.
+
+#### For Comparative Analysis
 
 ```typescript
 process(rawData: RawAnalysisResult): ProcessedAnalysisData {
@@ -473,6 +536,17 @@ map.add(featureLayer);
 | `value_TOTPOP_CY` | `total_population` | Population data |
 | `value_AVGHINC_CY` | `median_income` | Income data |
 
+### Brand Difference Processor Field Mappings
+
+| Endpoint Field | Brand | Processed Field | Usage |
+|---------------|-------|-----------------|-------|
+| `MP10104A_B_P` | TurboTax | `turbotax_market_share` | TurboTax market share percentage |
+| `MP10128A_B_P` | H&R Block | `h&r block_market_share` | H&R Block market share percentage |
+| `MP30034A_B_P` | Nike | `nike_market_share` | Nike market share percentage |
+| `MP30029A_B_P` | Adidas | `adidas_market_share` | Adidas market share percentage |
+| `calculated` | N/A | `brand_difference_score` | Primary difference value (brand1 - brand2) |
+| `calculated` | N/A | `difference_category` | Categorized advantage level |
+
 ### Dynamic Brand Name Fields (New)
 
 | Processed Field | Source | Usage |
@@ -623,6 +697,41 @@ console.log(result.summary);
 # not "Brand A vs competitors"
 ```
 
+### 6. Test Brand Difference Analysis
+```bash
+# Test BrandDifferenceProcessor with TurboTax vs H&R Block
+const brandProcessor = new BrandDifferenceProcessor();
+const mockBrandData = {
+  success: true,
+  results: [
+    {
+      ID: "32601",
+      DESCRIPTION: "Gainesville",
+      MP10104A_B_P: 35.2,  // TurboTax share
+      MP10128A_B_P: 28.7   // H&R Block share
+    }
+  ]
+};
+
+const result = brandProcessor.process(mockBrandData, {
+  extractedBrands: ['turbotax', 'h&r block']
+});
+
+console.log(result.records[0].brand_difference_score);
+// Should return: 6.5 (35.2 - 28.7)
+
+console.log(result.records[0].category);
+// Should return: "brand1_leading" (TurboTax leading)
+
+console.log(result.renderer.field);
+// Should return: "brand_difference_score"
+
+# Test auto-detection when no brands specified
+const autoResult = brandProcessor.process(mockBrandData);
+console.log(autoResult.brandAnalysis.brandComparison);
+// Should return: { brand1: 'turbotax', brand2: 'h&r block' }
+```
+
 ## Summary
 
 The query-to-visualization flow involves:
@@ -631,8 +740,18 @@ The query-to-visualization flow involves:
 3. **Intelligent routing** to appropriate analysis endpoints
 4. **Flexible data processing** with fallbacks and validation
 5. **Dynamic brand naming** from project-specific field-aliases
-6. **Field mapping** to ensure consistency
-7. **Renderer generation** for visualization
-8. **ArcGIS integration** for interactive maps
+6. **Brand difference calculation** for competitive analysis
+7. **Field mapping** to ensure consistency
+8. **Renderer generation** for visualization
+9. **ArcGIS integration** for interactive maps
 
 The system is designed to be robust, with multiple fallback mechanisms and flexible field handling to accommodate various data formats from different endpoints. The new dynamic brand naming capability ensures that analysis outputs show actual brand names from the current project instead of generic "Brand A/B" terminology, making reports more professional and actionable for stakeholders.
+
+**Brand Difference Analysis Features**:
+
+- **Auto-detection** of available brand fields in data (MP10104A_B_P, MP10128A_B_P, etc.)
+- **Flexible brand mapping** supporting TurboTax/H&R Block and athletic brands
+- **Percentage difference calculation** (Brand1% - Brand2%) with proper categorization
+- **Diverging color visualization** (red for Brand2 advantage, green for Brand1 advantage)
+- **Contextual analysis** including market dominance patterns and competitive balance
+- **Professional reporting** with brand-specific insights and strategic recommendations

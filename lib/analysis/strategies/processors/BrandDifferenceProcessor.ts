@@ -11,15 +11,10 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
   
   // Brand code mappings for market share data
   private readonly BRAND_MAPPINGS = {
-    'nike': 'MP30034A_B_P',
-    'adidas': 'MP30029A_B_P', 
-    'jordan': 'MP30032A_B_P',
-    'puma': 'MP30035A_B_P',
-    'reebok': 'MP30036A_B_P',
-    'new balance': 'MP30033A_B_P',
-    'asics': 'MP30030A_B_P',
-    'converse': 'MP30031A_B_P',
-    'skechers': 'MP30037A_B_P'
+    'turbotax': 'MP10104A_B_P',
+    'h&r block': 'MP10128A_B_P',
+    'hrblock': 'MP10128A_B_P',
+    'hr block': 'MP10128A_B_P'
   };
 
   validate(rawData: RawAnalysisResult): boolean {
@@ -47,11 +42,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const hasBrandFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
-        (record.area_id || record.id || record.ID) &&
-        // Look for any brand market share fields (MP300*A_B_P pattern)
-        Object.keys(record).some(key => 
-          key.includes('value_MP300') && key.endsWith('A_B_P')
-        )
+        (record.ID || record.area_id || record.id || record.GEOID) &&
+        // Look for TurboTax and H&R Block market share fields
+        (record.MP10104A_B_P !== undefined || record.MP10128A_B_P !== undefined)
       );
     
     console.log('🔍 [BrandDifferenceProcessor] Brand fields validation result:', hasBrandFields);
@@ -110,6 +103,8 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     brand2 = brand2 || 'adidas';
     
     console.log(`[BrandDifferenceProcessor] Comparing brands: ${brand1} vs ${brand2} (from ${extractedBrands.length > 0 ? 'query' : 'auto-detected from data'})`);
+    console.log(`[BrandDifferenceProcessor] Calculation will be: ${brand1} - ${brand2}`);
+    console.log(`[BrandDifferenceProcessor] Positive values = ${brand1} advantage, Negative values = ${brand2} advantage`);
     
     // No need to validate mappings anymore since detectAvailableBrandFields handles unknown brands
     console.log(`[BrandDifferenceProcessor] Processing comparison for: ${brand1} vs ${brand2}`);
@@ -119,6 +114,21 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     
     console.log(`[BrandDifferenceProcessor] Processed ${records.length} records for ${brand1} vs ${brand2}`);
     console.log(`[BrandDifferenceProcessor] Sample difference: ${records[0]?.value}%`);
+    
+    // Debug: Show range of differences
+    const differences = records.map(r => r.value).filter(v => !isNaN(v));
+    const minDiff = Math.min(...differences);
+    const maxDiff = Math.max(...differences);
+    const negativeCount = differences.filter(d => d < 0).length;
+    const positiveCount = differences.filter(d => d > 0).length;
+    const zeroCount = differences.filter(d => d === 0).length;
+    
+    console.log(`[BrandDifferenceProcessor] Difference range: ${minDiff.toFixed(2)}% to ${maxDiff.toFixed(2)}%`);
+    console.log(`[BrandDifferenceProcessor] Distribution: ${negativeCount} negative, ${zeroCount} zero, ${positiveCount} positive`);
+    
+    if (negativeCount === 0) {
+      console.warn(`[BrandDifferenceProcessor] ⚠️ NO NEGATIVE VALUES FOUND - This suggests ${brand2} never has higher market share than ${brand1}`);
+    }
     
     // Calculate difference statistics
     const statistics = this.calculateDifferenceStatistics(records);
@@ -239,18 +249,23 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const brand1FieldCode = this.getBrandFieldCode(rawRecords[0], brand1);
     const brand2FieldCode = this.getBrandFieldCode(rawRecords[0], brand2);
     
-    const brand1Field = `value_${brand1FieldCode}`;
-    const brand2Field = `value_${brand2FieldCode}`;
+    const brand1Field = brand1FieldCode;
+    const brand2Field = brand2FieldCode;
     
     console.log(`[BrandDifferenceProcessor] Using fields: ${brand1Field} vs ${brand2Field}`);
 
     return rawRecords.map((record, index) => {
-      const area_id = record.area_id || record.id || record.GEOID || `area_${index}`;
-      const area_name = record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || record.name || record.NAME || `Area ${index + 1}`;
+      const area_id = record.ID || record.area_id || record.id || record.GEOID || `area_${index}`;
+      const area_name = record.DESCRIPTION || record.value_DESCRIPTION || record.area_name || record.name || record.NAME || `Area ${index + 1}`;
       
       // Extract brand market shares
-      const brand1Share = Number(record[brand1Field]) || 0; // Already in percentage format
-      const brand2Share = Number(record[brand2Field]) || 0; // Already in percentage format
+      const brand1Share = record[brand1Field] !== undefined && record[brand1Field] !== null ? Number(record[brand1Field]) : 0;
+      const brand2Share = record[brand2Field] !== undefined && record[brand2Field] !== null ? Number(record[brand2Field]) : 0;
+      
+      // Debug logging for first few records
+      if (index < 3) {
+        console.log(`[BrandDifferenceProcessor] Record ${index}: ${area_name || 'Unknown'} - ${brand1}:${brand1Share}% vs ${brand2}:${brand2Share}% = ${brand1Share - brand2Share}%`);
+      }
       
       // Calculate simple difference: brand1 - brand2 (both already in percentage format)
       const difference = brand1Share - brand2Share;
@@ -519,63 +534,80 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     
     let summary = `**📊 ${brand1Name} vs ${brand2Name} Market Share Difference Analysis**\n\n`;
     
-    summary += `**Methodology:** Calculated market share difference between ${brand1Name} and ${brand2Name} across ${recordCount} markets (${brand1Name} % - ${brand2Name} %). `;
-    summary += `Positive values indicate ${brand1Name} advantage, negative values indicate ${brand2Name} advantage.\n\n`;
+    summary += `**Methodology:** This analysis calculates MARKET SHARE DIFFERENCES, not performance rankings. `;
+    summary += `Values represent percentage point gaps between ${brand1Name} and ${brand2Name} market share (${brand1Name} % - ${brand2Name} %). `;
+    summary += `Positive values = ${brand1Name} competitive advantage, Negative values = ${brand2Name} competitive advantage, Zero values = competitive parity.\n\n`;
     
-    // Overall market comparison
-    summary += `**Overall Market Position:** `;
+    // Overall competitive landscape
+    summary += `**Overall Competitive Landscape:** `;
     if (avgDifference > 10) {
-      summary += `${brand1Name} holds a significant market advantage with an average ${avgDifference.toFixed(1)}% higher market share than ${brand2Name}. `;
-    } else if (avgDifference > 0) {
-      summary += `${brand1Name} slightly leads with an average ${avgDifference.toFixed(1)}% market share advantage. `;
+      summary += `${brand1Name} holds a significant competitive advantage with an average ${avgDifference.toFixed(1)} percentage point market share gap over ${brand2Name}. `;
+    } else if (avgDifference > 2) {
+      summary += `${brand1Name} maintains a moderate competitive advantage with an average ${avgDifference.toFixed(1)} percentage point gap. `;
+    } else if (avgDifference > -2) {
+      summary += `Highly competitive markets with near-parity (${Math.abs(avgDifference).toFixed(1)} percentage point average difference). `;
     } else if (avgDifference > -10) {
-      summary += `${brand2Name} slightly leads with an average ${Math.abs(avgDifference).toFixed(1)}% market share advantage. `;
+      summary += `${brand2Name} maintains a moderate competitive advantage with an average ${Math.abs(avgDifference).toFixed(1)} percentage point gap. `;
     } else {
-      summary += `${brand2Name} holds a significant market advantage with an average ${Math.abs(avgDifference).toFixed(1)}% higher market share than ${brand1Name}. `;
+      summary += `${brand2Name} holds a significant competitive advantage with an average ${Math.abs(avgDifference).toFixed(1)} percentage point market share gap over ${brand1Name}. `;
     }
     
-    // Brand leadership distribution
+    // Market distribution analysis
     const leadership = brandAnalysis.brandLeadership;
-    summary += `Market distribution: ${brand1Name} leads in ${leadership.brand1Leading} markets (${leadership.brand1LeadingPct.toFixed(1)}%), `;
-    summary += `${brand2Name} leads in ${leadership.brand2Leading} markets (${leadership.brand2LeadingPct.toFixed(1)}%), `;
-    summary += `with ${leadership.competitive} competitive markets (${leadership.competitivePct.toFixed(1)}%).\n\n`;
+    summary += `Market distribution: ${brand1Name} has competitive advantage in ${leadership.brand1Leading} markets (${leadership.brand1LeadingPct.toFixed(1)}%), `;
+    summary += `${brand2Name} has competitive advantage in ${leadership.brand2Leading} markets (${leadership.brand2LeadingPct.toFixed(1)}%), `;
+    summary += `with ${leadership.competitive} markets in competitive parity (${leadership.competitivePct.toFixed(1)}%).\n\n`;
     
-    // Top performance areas
-    const topBrand1Markets = records.filter(r => r.value > 20).slice(0, 5);
-    const topBrand2Markets = records.filter(r => r.value < -20).slice(0, 5);
+    // Brand strongholds (>10% advantage for clarity)
+    const brand1Strongholds = records.filter(r => r.value > 10).slice(0, 5);
+    const brand2Strongholds = records.filter(r => r.value < -10).slice(0, 5);
+    const competitiveBattlegrounds = records.filter(r => Math.abs(r.value) <= 5).slice(0, 5);
     
-    if (topBrand1Markets.length > 0) {
-      summary += `**${brand1Name} Strongholds** (>20% advantage): `;
-      topBrand1Markets.forEach((record, index) => {
+    if (brand1Strongholds.length > 0) {
+      summary += `**${brand1Name} Strongholds** (>10 percentage point advantage): `;
+      brand1Strongholds.forEach((record, index) => {
         const brand1Share = record.properties[`${brand1}_market_share`];
         const brand2Share = record.properties[`${brand2}_market_share`];
-        summary += `${record.area_name} (${brand1Share.toFixed(1)}% vs ${brand2Share.toFixed(1)}%), `;
+        const gap = record.value;
+        summary += `${record.area_name} (+${gap.toFixed(1)}pp gap: ${brand1Share.toFixed(1)}% vs ${brand2Share.toFixed(1)}%), `;
       });
       summary = summary.slice(0, -2) + '.\n\n';
     }
     
-    if (topBrand2Markets.length > 0) {
-      summary += `**${brand2Name} Strongholds** (>20% advantage): `;
-      topBrand2Markets.forEach((record, index) => {
+    if (brand2Strongholds.length > 0) {
+      summary += `**${brand2Name} Strongholds** (>10 percentage point advantage): `;
+      brand2Strongholds.forEach((record, index) => {
         const brand1Share = record.properties[`${brand1}_market_share`];
         const brand2Share = record.properties[`${brand2}_market_share`];
-        summary += `${record.area_name} (${brand2Share.toFixed(1)}% vs ${brand1Share.toFixed(1)}%), `;
+        const gap = Math.abs(record.value);
+        summary += `${record.area_name} (+${gap.toFixed(1)}pp gap: ${brand2Share.toFixed(1)}% vs ${brand1Share.toFixed(1)}%), `;
       });
       summary = summary.slice(0, -2) + '.\n\n';
     }
     
-    // Competitive insights
-    summary += `**Strategic Insights:** `;
+    if (competitiveBattlegrounds.length > 0) {
+      summary += `**Competitive Battlegrounds** (≤5 percentage point difference): `;
+      competitiveBattlegrounds.forEach((record, index) => {
+        const brand1Share = record.properties[`${brand1}_market_share`];
+        const brand2Share = record.properties[`${brand2}_market_share`];
+        const gap = record.value;
+        summary += `${record.area_name} (${gap >= 0 ? '+' : ''}${gap.toFixed(1)}pp: ${brand1Share.toFixed(1)}% vs ${brand2Share.toFixed(1)}%), `;
+      });
+      summary = summary.slice(0, -2) + '.\n\n';
+    }
+    
+    // Strategic recommendations based on competitive gaps
+    summary += `**Strategic Recommendations:** `;
     const competitiveBalance = brandAnalysis.competitiveBalance;
     if (competitiveBalance === 'balanced_competition') {
-      summary += `Markets show balanced competition with opportunities for both brands to gain share through targeted strategies. `;
+      summary += `Focus on competitive battlegrounds where small investments can tip market share. `;
     } else if (competitiveBalance.includes('brand1')) {
-      summary += `${brand1Name} shows market dominance with opportunities to defend and expand leading positions. `;
+      summary += `${brand1Name}: Defend strongholds and target ${brand2Name} territories for expansion. `;
     } else if (competitiveBalance.includes('brand2')) {
-      summary += `${brand2Name} shows market dominance with ${brand1Name} needing strategic repositioning to compete effectively. `;
+      summary += `${brand1Name}: Aggressive expansion needed in ${brand2Name} strongholds with differentiated positioning. `;
     }
     
-    summary += `Focus on markets with moderate differences for highest growth potential and competitive conversion opportunities.`;
+    summary += `Prioritize markets with moderate competitive gaps (5-15 percentage points) for highest conversion potential and ROI.`;
     
     return summary;
   }
@@ -623,13 +655,13 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
-    // Use exact same colors as strategic analysis in rgba format
+    // Colors for negative to positive values (TurboTax advantage to H&R Block advantage)
     const colors = [
-      'rgba(215, 48, 39, 0.6)',    // #d73027 - Red (Strong brand2 advantage)
-      'rgba(253, 174, 97, 0.6)',   // #fdae61 - Orange (Moderate brand2 advantage)
-      'rgba(254, 224, 144, 0.6)',  // #fee090 - Light yellow (Competitive parity)
-      'rgba(166, 217, 106, 0.6)',  // Light green - Moderate brand1 advantage  
-      'rgba(26, 152, 80, 0.6)'     // Dark green - Strong brand1 advantage
+      'rgba(215, 48, 39, 0.6)',    // Red - Strongest TurboTax advantage (most negative)
+      'rgba(253, 174, 97, 0.6)',   // Orange - Moderate TurboTax advantage  
+      'rgba(254, 224, 144, 0.6)',  // Light yellow - Competitive parity
+      'rgba(166, 217, 106, 0.6)',  // Light green - Moderate H&R Block advantage
+      'rgba(26, 152, 80, 0.6)'     // Dark green - Strongest H&R Block advantage (most positive)
     ];
     
     const legendItems = [];
@@ -643,7 +675,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     }
     
     return {
-      title: 'Brand Market Share Difference (%)',
+      title: 'Brand Difference (%)',
       items: legendItems,
       position: 'bottom-right'
     };
@@ -652,17 +684,49 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
   private calculateQuartileBreaks(values: number[]): Array<{min: number, max: number}> {
     if (values.length === 0) return [];
     
-    const q1 = values[Math.floor(values.length * 0.2)];
-    const q2 = values[Math.floor(values.length * 0.4)];
-    const q3 = values[Math.floor(values.length * 0.6)];
-    const q4 = values[Math.floor(values.length * 0.8)];
+    // Use natural breaks for brand difference data that can span negative to positive
+    const min = values[0];
+    const max = values[values.length - 1];
+    const range = max - min;
+    
+    console.log(`[BrandDifferenceProcessor] Value range for breaks: ${min.toFixed(2)} to ${max.toFixed(2)} (range: ${range.toFixed(2)})`);
+    
+    // If range is very small, create equal intervals
+    if (range < 0.1) {
+      const step = Math.max(0.01, range / 5);
+      return [
+        { min: min, max: min + step },
+        { min: min + step, max: min + 2 * step },
+        { min: min + 2 * step, max: min + 3 * step },
+        { min: min + 3 * step, max: min + 4 * step },
+        { min: min + 4 * step, max: max }
+      ];
+    }
+    
+    // Use quintiles (20th percentiles) but ensure meaningful breaks
+    let q1 = values[Math.floor(values.length * 0.2)];
+    let q2 = values[Math.floor(values.length * 0.4)];
+    let q3 = values[Math.floor(values.length * 0.6)];
+    let q4 = values[Math.floor(values.length * 0.8)];
+    
+    // Ensure breaks are meaningful and non-overlapping
+    const minStep = 0.1; // Minimum step between breaks
+    
+    // Adjust breaks to ensure minimum differences
+    if (q1 - min < minStep) q1 = min + minStep;
+    if (q2 - q1 < minStep) q2 = q1 + minStep;
+    if (q3 - q2 < minStep) q3 = q2 + minStep;
+    if (q4 - q3 < minStep) q4 = q3 + minStep;
+    if (max - q4 < minStep && q4 < max) q4 = max - minStep;
+    
+    console.log(`[BrandDifferenceProcessor] Adjusted breaks: ${min.toFixed(2)} | ${q1.toFixed(2)} | ${q2.toFixed(2)} | ${q3.toFixed(2)} | ${q4.toFixed(2)} | ${max.toFixed(2)}`);
     
     return [
-      { min: values[0], max: q1 },
+      { min: min, max: q1 },
       { min: q1, max: q2 },
       { min: q2, max: q3 },
       { min: q3, max: q4 },
-      { min: q4, max: values[values.length - 1] }
+      { min: q4, max: max }
     ];
   }
 
@@ -671,11 +735,30 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const brand1Name = brand1.charAt(0).toUpperCase() + brand1.slice(1);
     const brand2Name = brand2.charAt(0).toUpperCase() + brand2.slice(1);
     
-    if (range.max <= -20) return `${range.max.toFixed(0)}%+ ${brand2Name} Advantage`;
-    if (range.max <= 0) return `${range.min.toFixed(0)}% to ${range.max.toFixed(0)}%`;
-    if (range.min >= 20) return `${range.min.toFixed(0)}%+ ${brand1Name} Advantage`;
-    if (range.min >= 0) return `${range.min.toFixed(0)}% to ${range.max.toFixed(0)}%`;
-    return `${range.min.toFixed(0)}% to ${range.max.toFixed(0)}%`;
+    // Handle edge case where min equals max
+    if (Math.abs(range.max - range.min) < 0.01) {
+      if (range.min >= 10) return `${range.min.toFixed(1)}pp+ ${brand1Name} Stronghold`;
+      if (range.min >= 5) return `${range.min.toFixed(1)}pp ${brand1Name} Advantage`;
+      if (range.min >= 0) return `${range.min.toFixed(1)}pp ${brand1Name} Edge`;
+      if (range.min >= -5) return `${Math.abs(range.min).toFixed(1)}pp ${brand2Name} Edge`;
+      if (range.min >= -10) return `${Math.abs(range.min).toFixed(1)}pp ${brand2Name} Advantage`;
+      return `${Math.abs(range.min).toFixed(1)}pp+ ${brand2Name} Stronghold`;
+    }
+    
+    // Normal range formatting with "pp" (percentage points) for clarity
+    if (range.max <= -10) return `${Math.abs(range.max).toFixed(0)}pp+ ${brand2Name} Stronghold`;
+    if (range.max <= -5) return `${Math.abs(range.max).toFixed(1)}pp to ${Math.abs(range.min).toFixed(1)}pp ${brand2Name} Advantage`;
+    if (range.max <= 0) return `${Math.abs(range.max).toFixed(1)}pp to ${Math.abs(range.min).toFixed(1)}pp ${brand2Name} Edge`;
+    if (range.min >= 10) return `${range.min.toFixed(0)}pp+ ${brand1Name} Stronghold`;
+    if (range.min >= 5) return `${range.min.toFixed(1)}pp to ${range.max.toFixed(1)}pp ${brand1Name} Advantage`;
+    if (range.min >= 0) return `${range.min.toFixed(1)}pp to ${range.max.toFixed(1)}pp ${brand1Name} Edge`;
+    
+    // Cross-zero ranges (competitive battlegrounds)
+    if (Math.abs(range.min) <= 5 && Math.abs(range.max) <= 5) {
+      return `Competitive Parity (±${Math.max(Math.abs(range.min), Math.abs(range.max)).toFixed(1)}pp)`;
+    }
+    
+    return `${range.min.toFixed(1)}pp to ${range.max.toFixed(1)}pp`;
   }
 
   /**
@@ -689,11 +772,11 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const brandFieldsFound = new Map<string, string>(); // brand name -> field code
     const sampleRecord = rawData.results[0];
     
-    // Look for ALL athletic shoe brand fields in the data (MP300XX_B_P pattern)
+    // Look for brand fields in the data (TurboTax and H&R Block)
     for (const [key, value] of Object.entries(sampleRecord)) {
-      if (key.includes('value_MP300') && key.endsWith('A_B_P') && typeof value === 'number') {
-        // Extract the field code (e.g., MP30034A_B_P from value_MP30034A_B_P)
-        const fieldCode = key.replace('value_', '');
+      if ((key === 'MP10104A_B_P' || key === 'MP10128A_B_P') && typeof value === 'number') {
+        // Use the field code as-is
+        const fieldCode = key;
         
         // Try to find a known brand name from our mappings
         let brandName: string | null = null;
@@ -704,16 +787,16 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
           }
         }
         
-        // If we don't know this brand, create a generic name from the field code
+        // If we don't know this brand, create a name from the field code
         if (!brandName) {
-          // Extract the numeric part to create a generic brand name
-          const match = fieldCode.match(/MP300(\d+)A_B_P/);
-          if (match) {
-            brandName = `brand${match[1]}`;
-            console.log(`[BrandDifferenceProcessor] Found unknown brand field ${fieldCode}, naming it: ${brandName}`);
+          if (key === 'MP10104A_B_P') {
+            brandName = 'turbotax';
+          } else if (key === 'MP10128A_B_P') {
+            brandName = 'h&r block';
           } else {
-            brandName = fieldCode; // Use field code as brand name if pattern doesn't match
+            brandName = key; // Use field name as brand name if pattern doesn't match
           }
+          console.log(`[BrandDifferenceProcessor] Found brand field ${fieldCode}, naming it: ${brandName}`);
         }
         
         brandFieldsFound.set(brandName, fieldCode);
@@ -738,28 +821,17 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     
     // Otherwise, search for the field in the data
     for (const [key, value] of Object.entries(sampleRecord)) {
-      if (key.includes('value_MP300') && key.endsWith('A_B_P') && typeof value === 'number') {
-        const fieldCode = key.replace('value_', '');
-        
+      if ((key === 'MP10104A_B_P' || key === 'MP10128A_B_P') && typeof value === 'number') {
         // Check if this field matches any known brand
         for (const [brand, code] of Object.entries(this.BRAND_MAPPINGS)) {
-          if (code === fieldCode && brand.toLowerCase() === brandName.toLowerCase()) {
-            return fieldCode;
-          }
-        }
-        
-        // If brandName looks like a field code pattern (e.g., "brand36" for Reebok), try to match it
-        if (brandName.startsWith('brand')) {
-          const brandNum = brandName.replace('brand', '');
-          if (fieldCode.includes(brandNum)) {
-            console.log(`[BrandDifferenceProcessor] Matched ${brandName} to field ${fieldCode}`);
-            return fieldCode;
+          if (code === key && brand.toLowerCase() === brandName.toLowerCase()) {
+            return key;
           }
         }
       }
     }
     
-    console.warn(`[BrandDifferenceProcessor] Could not find field code for brand: ${brandName}, using e as fallback`);
-    return 'MP30034A_B_P';
+    console.warn(`[BrandDifferenceProcessor] Could not find field code for brand: ${brandName}, using fallback`);
+    return 'MP10104A_B_P';
   }
 }
