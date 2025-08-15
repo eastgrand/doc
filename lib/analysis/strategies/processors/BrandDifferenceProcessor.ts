@@ -643,31 +643,29 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
 
   private createBrandDifferenceRenderer(records: any[], brand1: string, brand2: string): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
-    const quartileBreaks = this.calculateQuartileBreaks(values);
     
-    // Use diverging color scheme: red (brand2 advantage) -> white -> blue (brand1 advantage)
-    // Use the exact same colors as strategic analysis (red-to-green)
-    const differenceColors = [
-      [215, 48, 39, 0.6],   // #d73027 - Red (Strong brand2 advantage)
-      [253, 174, 97, 0.6],  // #fdae61 - Orange (Moderate brand2 advantage)
-      [254, 224, 144, 0.6], // #fee090 - Light yellow (Competitive parity)
-      [166, 217, 106, 0.6], // #a6d96a - Light green (Moderate brand1 advantage)
-      [26, 152, 80, 0.6]    // #1a9850 - Dark green (Strong brand1 advantage)
-    ];
+    // Create competitive-focused breaks
+    const breaks = this.createCompetitiveBreaks(values);
+    
+    // Map breaks to appropriate colors based on competitive positioning
+    const classBreakInfos = breaks.map(breakInfo => {
+      const { range, color, label } = breakInfo;
+      return {
+        minValue: range.min,
+        maxValue: range.max,
+        symbol: {
+          type: 'simple-fill',
+          color: color,
+          outline: { color: [0, 0, 0, 0], width: 0 }
+        },
+        label: label
+      };
+    });
     
     return {
       type: 'class-breaks',
       field: 'brand_difference_score',
-      classBreakInfos: quartileBreaks.map((breakRange, i) => ({
-        minValue: breakRange.min,
-        maxValue: breakRange.max,
-        symbol: {
-          type: 'simple-fill',
-          color: differenceColors[i],
-          outline: { color: [0, 0, 0, 0], width: 0 }
-        },
-        label: this.formatDifferenceLabel(i, quartileBreaks, brand1, brand2)
-      })),
+      classBreakInfos,
       defaultSymbol: {
         type: 'simple-fill',
         color: [200, 200, 200, 0.5],
@@ -675,116 +673,168 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       }
     };
   }
-
-  private createBrandDifferenceLegend(records: any[], brand1: string, brand2: string): any {
-    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
-    const quartileBreaks = this.calculateQuartileBreaks(values);
+  
+  private createCompetitiveBreaks(values: number[]): Array<{range: {min: number, max: number}, color: number[], label: string}> {
+    if (values.length === 0) return [];
     
-    // Colors for negative to positive values (TurboTax advantage to H&R Block advantage)
-    const colors = [
-      'rgba(215, 48, 39, 0.6)',    // Red - Strongest TurboTax advantage (most negative)
-      'rgba(253, 174, 97, 0.6)',   // Orange - Moderate TurboTax advantage  
-      'rgba(254, 224, 144, 0.6)',  // Light yellow - Competitive parity
-      'rgba(166, 217, 106, 0.6)',  // Light green - Moderate H&R Block advantage
-      'rgba(26, 152, 80, 0.6)'     // Dark green - Strongest H&R Block advantage (most positive)
-    ];
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const breaks: Array<{range: {min: number, max: number}, color: number[], label: string}> = [];
     
-    const legendItems = [];
-    for (let i = 0; i < quartileBreaks.length; i++) {
-      legendItems.push({
-        label: this.formatDifferenceLabel(i, quartileBreaks, brand1, brand2),
-        color: colors[i],
-        minValue: quartileBreaks[i].min,
-        maxValue: quartileBreaks[i].max
+    // Define competitive zones with H&R Block as primary (positive = H&R Block advantage)
+    // Since H&R Block is the target variable, we want to show their advantages prominently
+    
+    // Strong TurboTax advantage (very negative)
+    if (min < -10) {
+      breaks.push({
+        range: { min: min, max: Math.min(-10, max) },
+        color: [215, 48, 39, 0.6], // Dark red
+        label: `${Math.abs(Math.min(-10, max)).toFixed(0)}pp+ TurboTax Advantage`
       });
     }
     
+    // Moderate TurboTax advantage
+    if (min < -2 && max > -10) {
+      const rangeMin = Math.max(min, -10);
+      const rangeMax = Math.min(-2, max);
+      breaks.push({
+        range: { min: rangeMin, max: rangeMax },
+        color: [253, 174, 97, 0.6], // Orange
+        label: `${Math.abs(rangeMax).toFixed(0)}pp to ${Math.abs(rangeMin).toFixed(0)}pp TurboTax Advantage`
+      });
+    }
+    
+    // Competitive parity zone
+    if (min < 2 && max > -2) {
+      const rangeMin = Math.max(min, -2);
+      const rangeMax = Math.min(2, max);
+      breaks.push({
+        range: { min: rangeMin, max: rangeMax },
+        color: [254, 224, 144, 0.6], // Light yellow
+        label: `Competitive Parity (±2pp)`
+      });
+    }
+    
+    // Moderate H&R Block advantage
+    if (max > 2 && min < 10) {
+      const rangeMin = Math.max(2, min);
+      const rangeMax = Math.min(10, max);
+      breaks.push({
+        range: { min: rangeMin, max: rangeMax },
+        color: [166, 217, 106, 0.6], // Light green
+        label: `${rangeMin.toFixed(0)}pp to ${rangeMax.toFixed(0)}pp H&R Block Advantage`
+      });
+    }
+    
+    // Strong H&R Block advantage
+    if (max > 10) {
+      breaks.push({
+        range: { min: Math.max(10, min), max: max },
+        color: [26, 152, 80, 0.6], // Dark green
+        label: `${Math.max(10, min).toFixed(0)}pp+ H&R Block Advantage`
+      });
+    }
+    
+    // If we don't have enough breaks, subdivide existing ones
+    while (breaks.length < 5 && breaks.length > 0) {
+      // Find the break with the largest range
+      let largestIndex = 0;
+      let largestRange = 0;
+      for (let i = 0; i < breaks.length; i++) {
+        const range = breaks[i].range.max - breaks[i].range.min;
+        if (range > largestRange) {
+          largestRange = range;
+          largestIndex = i;
+        }
+      }
+      
+      const oldBreak = breaks[largestIndex];
+      const midpoint = (oldBreak.range.min + oldBreak.range.max) / 2;
+      
+      // Create gradient colors for subdivision
+      const newColor1 = [...oldBreak.color];
+      const newColor2 = [...oldBreak.color];
+      newColor1[3] = oldBreak.color[3] * 0.8; // Slightly lighter
+      
+      breaks.splice(largestIndex, 1,
+        {
+          range: { min: oldBreak.range.min, max: midpoint },
+          color: newColor1,
+          label: this.formatRangeLabel(oldBreak.range.min, midpoint)
+        },
+        {
+          range: { min: midpoint, max: oldBreak.range.max },
+          color: newColor2,
+          label: this.formatRangeLabel(midpoint, oldBreak.range.max)
+        }
+      );
+    }
+    
+    // Ensure exactly 5 breaks by merging if necessary
+    while (breaks.length > 5) {
+      // Merge the two smallest adjacent ranges
+      let smallestIndex = 0;
+      let smallestRange = Infinity;
+      for (let i = 0; i < breaks.length - 1; i++) {
+        const combinedRange = (breaks[i].range.max - breaks[i].range.min) + 
+                             (breaks[i + 1].range.max - breaks[i + 1].range.min);
+        if (combinedRange < smallestRange) {
+          smallestRange = combinedRange;
+          smallestIndex = i;
+        }
+      }
+      
+      const merged = {
+        range: { min: breaks[smallestIndex].range.min, max: breaks[smallestIndex + 1].range.max },
+        color: breaks[smallestIndex].color, // Keep first color
+        label: this.formatRangeLabel(breaks[smallestIndex].range.min, breaks[smallestIndex + 1].range.max)
+      };
+      
+      breaks.splice(smallestIndex, 2, merged);
+    }
+    
+    return breaks;
+  }
+  
+  private formatRangeLabel(min: number, max: number): string {
+    // H&R Block is the target, so positive = H&R Block advantage
+    if (min >= 10) {
+      return `${min.toFixed(0)}pp+ H&R Block Advantage`;
+    } else if (min >= 2) {
+      return `${min.toFixed(0)}pp to ${max.toFixed(0)}pp H&R Block Advantage`;
+    } else if (max <= -10) {
+      return `${Math.abs(max).toFixed(0)}pp+ TurboTax Advantage`;
+    } else if (max <= -2) {
+      return `${Math.abs(max).toFixed(0)}pp to ${Math.abs(min).toFixed(0)}pp TurboTax Advantage`;
+    } else if (min >= -2 && max <= 2) {
+      return `Competitive Parity (±2pp)`;
+    } else {
+      // Mixed range
+      return `${min.toFixed(1)}pp to ${max.toFixed(1)}pp`;
+    }
+  }
+
+  private createBrandDifferenceLegend(records: any[], brand1: string, brand2: string): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    
+    // Use the same competitive breaks as the renderer
+    const breaks = this.createCompetitiveBreaks(values);
+    
+    const legendItems = breaks.map(breakInfo => ({
+      label: breakInfo.label,
+      color: `rgba(${breakInfo.color[0]}, ${breakInfo.color[1]}, ${breakInfo.color[2]}, ${breakInfo.color[3]})`,
+      minValue: breakInfo.range.min,
+      maxValue: breakInfo.range.max
+    }));
+    
+    // H&R Block is the target variable, emphasize in title
     return {
-      title: 'Brand Difference (%)',
+      title: 'H&R Block Market Share Advantage',
       items: legendItems,
       position: 'bottom-right'
     };
   }
 
-  private calculateQuartileBreaks(values: number[]): Array<{min: number, max: number}> {
-    if (values.length === 0) return [];
-    
-    // Use natural breaks for brand difference data that can span negative to positive
-    const min = values[0];
-    const max = values[values.length - 1];
-    const range = max - min;
-    
-    console.log(`[BrandDifferenceProcessor] Value range for breaks: ${min.toFixed(2)} to ${max.toFixed(2)} (range: ${range.toFixed(2)})`);
-    
-    // If range is very small, create equal intervals
-    if (range < 0.1) {
-      const step = Math.max(0.01, range / 5);
-      return [
-        { min: min, max: min + step },
-        { min: min + step, max: min + 2 * step },
-        { min: min + 2 * step, max: min + 3 * step },
-        { min: min + 3 * step, max: min + 4 * step },
-        { min: min + 4 * step, max: max }
-      ];
-    }
-    
-    // Use quintiles (20th percentiles) but ensure meaningful breaks
-    let q1 = values[Math.floor(values.length * 0.2)];
-    let q2 = values[Math.floor(values.length * 0.4)];
-    let q3 = values[Math.floor(values.length * 0.6)];
-    let q4 = values[Math.floor(values.length * 0.8)];
-    
-    // Ensure breaks are meaningful and non-overlapping
-    const minStep = 0.1; // Minimum step between breaks
-    
-    // Adjust breaks to ensure minimum differences
-    if (q1 - min < minStep) q1 = min + minStep;
-    if (q2 - q1 < minStep) q2 = q1 + minStep;
-    if (q3 - q2 < minStep) q3 = q2 + minStep;
-    if (q4 - q3 < minStep) q4 = q3 + minStep;
-    if (max - q4 < minStep && q4 < max) q4 = max - minStep;
-    
-    console.log(`[BrandDifferenceProcessor] Adjusted breaks: ${min.toFixed(2)} | ${q1.toFixed(2)} | ${q2.toFixed(2)} | ${q3.toFixed(2)} | ${q4.toFixed(2)} | ${max.toFixed(2)}`);
-    
-    return [
-      { min: min, max: q1 },
-      { min: q1, max: q2 },
-      { min: q2, max: q3 },
-      { min: q3, max: q4 },
-      { min: q4, max: max }
-    ];
-  }
-
-  private formatDifferenceLabel(classIndex: number, breaks: Array<{min: number, max: number}>, brand1: string, brand2: string): string {
-    const range = breaks[classIndex];
-    const brand1Name = brand1.charAt(0).toUpperCase() + brand1.slice(1);
-    const brand2Name = brand2.charAt(0).toUpperCase() + brand2.slice(1);
-    
-    // Handle edge case where min equals max
-    if (Math.abs(range.max - range.min) < 0.01) {
-      if (range.min >= 10) return `${range.min.toFixed(1)}pp+ ${brand1Name} Stronghold`;
-      if (range.min >= 5) return `${range.min.toFixed(1)}pp ${brand1Name} Advantage`;
-      if (range.min >= 0) return `${range.min.toFixed(1)}pp ${brand1Name} Edge`;
-      if (range.min >= -5) return `${Math.abs(range.min).toFixed(1)}pp ${brand2Name} Edge`;
-      if (range.min >= -10) return `${Math.abs(range.min).toFixed(1)}pp ${brand2Name} Advantage`;
-      return `${Math.abs(range.min).toFixed(1)}pp+ ${brand2Name} Stronghold`;
-    }
-    
-    // Normal range formatting with "pp" (percentage points) for clarity
-    if (range.max <= -10) return `${Math.abs(range.max).toFixed(0)}pp+ ${brand2Name} Stronghold`;
-    if (range.max <= -5) return `${Math.abs(range.max).toFixed(1)}pp to ${Math.abs(range.min).toFixed(1)}pp ${brand2Name} Advantage`;
-    if (range.max <= 0) return `${Math.abs(range.max).toFixed(1)}pp to ${Math.abs(range.min).toFixed(1)}pp ${brand2Name} Edge`;
-    if (range.min >= 10) return `${range.min.toFixed(0)}pp+ ${brand1Name} Stronghold`;
-    if (range.min >= 5) return `${range.min.toFixed(1)}pp to ${range.max.toFixed(1)}pp ${brand1Name} Advantage`;
-    if (range.min >= 0) return `${range.min.toFixed(1)}pp to ${range.max.toFixed(1)}pp ${brand1Name} Edge`;
-    
-    // Cross-zero ranges (competitive battlegrounds)
-    if (Math.abs(range.min) <= 5 && Math.abs(range.max) <= 5) {
-      return `Competitive Parity (±${Math.max(Math.abs(range.min), Math.abs(range.max)).toFixed(1)}pp)`;
-    }
-    
-    return `${range.min.toFixed(1)}pp to ${range.max.toFixed(1)}pp`;
-  }
 
   /**
    * Detect which brand fields are actually available in the raw data
