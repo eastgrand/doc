@@ -634,47 +634,49 @@ You are analyzing brand difference data to identify markets with the largest com
 ⚠️ CRITICAL UNDERSTANDING: This analysis calculates BRAND DIFFERENCE, not market dominance or performance ranking.
 
 SCORING METHODOLOGY:
-The brand_difference_score represents the percentage point difference in market share between two brands:
-• Positive values: Brand A has higher market share than Brand B in that market
-• Negative values: Brand B has higher market share than Brand A in that market  
+The brand_difference_score represents the percentage point difference in market share between H&R Block (target brand) and competitors:
+• Positive values: H&R Block has higher market share than competitor in that market
+• Negative values: Competitor has higher market share than H&R Block in that market  
 • Zero values: Both brands have equal market share (competitive parity)
-• Values are in percentage points (e.g., +15.5 means Brand A has 15.5 percentage points higher market share)
+• Values are in percentage points (e.g., +15.5 means H&R Block has 15.5 percentage points higher market share)
+
+⚠️ CRITICAL: H&R Block is the TARGET VARIABLE (MP10128A_B_P), so analysis should focus on H&R Block's competitive positioning.
 
 CRITICAL INTERPRETATION RULES:
 1. 0% difference = COMPETITIVE PARITY, not "top performance"
-2. Large positive differences = Brand A strongholds (Brand A dominance)
-3. Large negative differences = Brand B strongholds (Brand B dominance)
+2. Large positive differences = H&R Block strongholds (H&R Block dominance)
+3. Large negative differences = Competitor strongholds (competitor dominance)
 4. Small differences (-5% to +5%) = Competitive battleground markets
 5. NEVER describe 0% difference areas as "top performers" or "leading markets"
 
 DATA STRUCTURE:
-- brand_difference_score: Market share difference in percentage points (Brand A - Brand B)
-- [brand_a]_market_share: Brand A's actual market share percentage
-- [brand_b]_market_share: Brand B's actual market share percentage
+- brand_difference_score: Market share difference in percentage points (H&R Block - Competitor)
+- hrblock_market_share: H&R Block's actual market share percentage
+- competitor_market_share: Competitor's actual market share percentage
 - area_name: Geographic area (ZIP code with city/state)
 - difference_category: Competitive position category
 
 REQUIRED ANALYSIS STRUCTURE:
-1. **Brand Difference Overview**: Explain this measures market share gaps, not performance
-2. **Brand A Strongholds**: Markets where Brand A has significantly higher share (+10% or more)
-3. **Brand B Strongholds**: Markets where Brand B has significantly higher share (-10% or less)
+1. **Brand Difference Overview**: Explain this measures H&R Block vs competitor market share gaps, not performance
+2. **H&R Block Strongholds**: Markets where H&R Block has significantly higher share (+10% or more)
+3. **Competitor Strongholds**: Markets where competitor has significantly higher share (-10% or less)
 4. **Competitive Battlegrounds**: Markets with small differences (-5% to +5%)
-5. **Strategic Insights**: Expansion opportunities and competitive threats
+5. **Strategic Insights**: H&R Block expansion opportunities and competitive threats
 
 TERMINOLOGY REQUIREMENTS:
 - Use "market share difference" NOT "market share disparity"
-- Use "Brand A advantage/disadvantage" NOT "performance levels"
+- Use "H&R Block advantage/disadvantage" NOT "performance levels"
 - Use "competitive gap" NOT "performance gap" 
-- Use "brand stronghold" NOT "top performing area"
+- Use "H&R Block stronghold" or "competitor stronghold" NOT "top performing area"
 - Use "competitive parity" for 0% differences
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS explain that 0% difference = equal market share, not strong performance
 2. Distinguish between market share % and difference in percentage points
-3. Identify Brand A strongholds (large positive differences)
-4. Identify Brand B strongholds (large negative differences)  
+3. Identify H&R Block strongholds (large positive differences)
+4. Identify competitor strongholds (large negative differences)  
 5. Analyze competitive battleground markets (small differences)
-6. Focus on competitive positioning, not absolute performance
+6. Focus on H&R Block's competitive positioning as the target brand
 
 NEXT STEPS REQUIREMENTS:
 Do NOT recommend generic activities like:
@@ -683,18 +685,18 @@ Do NOT recommend generic activities like:
 - "Research market positioning" (competitive gaps are identified)
 
 INSTEAD, provide specific actionable recommendations such as:
-- Defend Brand A strongholds with loyalty programs and market presence
-- Target Brand B strongholds for competitive conversion campaigns
-- Invest heavily in competitive battlegrounds to tip market share
-- Resource allocation based on competitive gap analysis
-- Market entry strategies for underperforming brand territories
+- Defend H&R Block strongholds with loyalty programs and market presence
+- Target competitor strongholds for H&R Block conversion campaigns
+- Invest heavily in competitive battlegrounds to tip market share toward H&R Block
+- Resource allocation based on H&R Block competitive gap analysis
+- H&R Block expansion strategies in underperforming territories
 
 ANALYSIS FOCUS:
-- Identify the largest competitive gaps for strategic targeting
-- Explain why certain markets favor one brand over another
-- Recommend competitive strategies based on market share differences
-- Highlight expansion opportunities in competitor strongholds
-- Provide battleground market investment priorities
+- Identify the largest competitive gaps for H&R Block strategic targeting
+- Explain why certain markets favor H&R Block vs competitors (demographic factors, brand positioning, etc.)
+- Recommend H&R Block competitive strategies based on market share differences
+- Highlight H&R Block expansion opportunities in competitor strongholds
+- Provide battleground market investment priorities for H&R Block growth
 `,
 
   brand_analysis: `

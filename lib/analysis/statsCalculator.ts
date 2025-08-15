@@ -565,7 +565,12 @@ function detectScoreClustering(data: any[]): Patterns['trends'][0] | null {
 /**
  * Format statistics for display in chat
  */
-export function formatStatsForChat(stats: BasicStats): string {
+export function formatStatsForChat(stats: BasicStats, analysisType?: string): string {
+  // Use specialized formatter for brand difference analysis
+  if (analysisType === 'brand_difference') {
+    return formatBrandDifferenceStatsForChat(stats);
+  }
+  
   const lines: string[] = [];
   
   lines.push('📊 **Quick Statistics**');
@@ -587,6 +592,57 @@ export function formatStatsForChat(stats: BasicStats): string {
     lines.push('**Top Performers:**');
     stats.top5.forEach((area, i) => {
       lines.push(`**${i + 1}.** ${area.area} (**${area.score.toFixed(2)}**)`);
+    });
+  }
+  
+  return lines.join('\n');
+}
+
+/**
+ * Format brand difference statistics for display in chat
+ */
+export function formatBrandDifferenceStatsForChat(stats: BasicStats): string {
+  const lines: string[] = [];
+  
+  lines.push('📊 **Brand Difference Statistics**');
+  lines.push(`• Markets analyzed: **${stats.count}**`);
+  lines.push(`• Average difference: **${stats.mean.toFixed(2)}pp**`);
+  lines.push(`• Median difference: **${stats.median.toFixed(2)}pp**`);
+  lines.push(`• Standard deviation: **${stats.stdDev.toFixed(2)}pp**`);
+  lines.push(`• Difference range: **${stats.min.score.toFixed(1)}pp** to **${stats.max.score.toFixed(1)}pp**`);
+  
+  if (stats.coverage?.totalPopulation) {
+    lines.push(`• Total population: **${(stats.coverage.totalPopulation / 1000000).toFixed(1)}M**`);
+  }
+  
+  lines.push('');
+  
+  // For brand difference, show largest advantages instead of "top performers"
+  const allAreas = [...stats.top5, ...stats.bottom5].sort((a, b) => b.score - a.score);
+  const hrBlockAdvantages = allAreas.filter(item => item.score > 2).slice(0, 3);
+  const turboTaxAdvantages = allAreas.filter(item => item.score < -2).slice(-3).reverse();
+  const competitiveParity = allAreas.filter(item => Math.abs(item.score) <= 2).slice(0, 3);
+  
+  if (hrBlockAdvantages.length > 0) {
+    lines.push('**H&R Block Strongholds** (largest advantages):');
+    hrBlockAdvantages.forEach((item, index) => {
+      lines.push(`**${index + 1}.** ${item.area} (**+${item.score.toFixed(1)}pp**)`);
+    });
+    lines.push('');
+  }
+  
+  if (turboTaxAdvantages.length > 0) {
+    lines.push('**TurboTax Strongholds** (competitor advantages):');
+    turboTaxAdvantages.forEach((item, index) => {
+      lines.push(`**${index + 1}.** ${item.area} (**${item.score.toFixed(1)}pp**)`);
+    });
+    lines.push('');
+  }
+  
+  if (competitiveParity.length > 0) {
+    lines.push('**Competitive Battlegrounds** (near parity):');
+    competitiveParity.forEach((item, index) => {
+      lines.push(`**${index + 1}.** ${item.area} (**${item.score >= 0 ? '+' : ''}${item.score.toFixed(1)}pp**)`);
     });
   }
   
@@ -630,7 +686,12 @@ export function formatDistributionForChat(dist: Distribution): string {
 /**
  * Format patterns for display in chat
  */
-export function formatPatternsForChat(patterns: Patterns): string {
+export function formatPatternsForChat(patterns: Patterns, analysisType?: string): string {
+  // Use specialized formatter for brand difference analysis
+  if (analysisType === 'brand_difference') {
+    return formatBrandDifferencePatternsForChat(patterns);
+  }
+  
   const lines: string[] = [];
   
   lines.push('🎯 **Key Patterns**');
@@ -662,6 +723,40 @@ export function formatPatternsForChat(patterns: Patterns): string {
       lines.push(`• **${trend.pattern}** (${trend.strength})`);
       if (trend.areas.length > 0) {
         lines.push(`  Areas: ${trend.areas.slice(0, 3).join(', ')}`);
+      }
+    });
+  }
+  
+  return lines.join('\n');
+}
+
+/**
+ * Format brand difference patterns for display in chat
+ */
+export function formatBrandDifferencePatternsForChat(patterns: Patterns): string {
+  const lines: string[] = [];
+  
+  lines.push('🎯 **Competitive Patterns**');
+  lines.push('');
+  
+  // Skip market clusters for brand difference - not meaningful for competitive analysis
+  
+  if (patterns.correlations.length > 0) {
+    lines.push('**Brand Success Drivers:**');
+    patterns.correlations.slice(0, 5).forEach(corr => {
+      const sign = corr.correlation > 0 ? '+' : '';
+      const direction = corr.correlation > 0 ? 'favors H&R Block' : 'favors competitor';
+      lines.push(`• **${corr.factor}**: **${sign}${(corr.correlation * 100).toFixed(0)}%** correlation (${direction})`);
+    });
+    lines.push('');
+  }
+  
+  if (patterns.trends.length > 0) {
+    lines.push('**Competitive Trends:**');
+    patterns.trends.forEach(trend => {
+      lines.push(`• **${trend.pattern}** (${trend.strength})`);
+      if (trend.areas.length > 0) {
+        lines.push(`  Key markets: ${trend.areas.slice(0, 3).join(', ')}`);
       }
     });
   }

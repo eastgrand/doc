@@ -346,7 +346,8 @@ Use \`/help\` for available commands.`,
       await new Promise(resolve => setTimeout(resolve, 500)); // Small delay for UX
       
       const basicStats = calculateBasicStats(analysisData);
-      messageContent += '\n\n' + formatStatsForChat(basicStats);
+      const analysisType = result.endpoint?.replace('/', '') || result.data?.type;
+      messageContent += '\n\n' + formatStatsForChat(basicStats, analysisType);
       
       setMessages([{
         ...initialMessage,
@@ -368,7 +369,7 @@ Use \`/help\` for available commands.`,
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const patterns = detectPatterns(analysisData);
-      messageContent += '\n\n' + formatPatternsForChat(patterns);
+      messageContent += '\n\n' + formatPatternsForChat(patterns, analysisType);
       
       setMessages([{
         ...initialMessage,

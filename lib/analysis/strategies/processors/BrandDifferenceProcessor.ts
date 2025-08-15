@@ -88,21 +88,46 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       query: context?.query
     });
     
-    let brand1 = extractedBrands[0]?.toLowerCase() || null;
-    let brand2 = extractedBrands[1]?.toLowerCase() || null;
+    let brand1: string;
+    let brand2: string;
     
-    // If no brands from context, use the first two available brands from data
-    if (!brand1 || !brand2) {
-      const detectedBrands = availableBrandFields.slice(0, 2);
-      brand1 = brand1 || detectedBrands[0] || 'nike';
-      brand2 = brand2 || detectedBrands[1] || 'adidas';
+    // CRITICAL: H&R Block is the target variable (MP10128A_B_P), so it should always be brand1 (primary subject)
+    const targetBrand = 'h&r block'; // H&R Block is our target variable
+    const competitorBrand = 'turbotax'; // TurboTax is the main competitor
+    
+    // Determine brand order - H&R Block should always be first (target variable)
+    if (extractedBrands.length >= 2) {
+      const brands = extractedBrands.map(b => b.toLowerCase());
+      if (brands.includes(targetBrand) && brands.includes(competitorBrand)) {
+        brand1 = targetBrand; // H&R Block first (target)
+        brand2 = competitorBrand; // TurboTax second (competitor)
+      } else {
+        // Use extracted brands in order, but prefer H&R Block as brand1
+        brand1 = brands.includes(targetBrand) ? targetBrand : brands[0];
+        brand2 = brands.includes(competitorBrand) ? competitorBrand : brands[1] || brands[0];
+      }
+    } else if (extractedBrands.length === 1) {
+      const extractedBrand = extractedBrands[0].toLowerCase();
+      if (extractedBrand === targetBrand) {
+        brand1 = targetBrand;
+        brand2 = competitorBrand;
+      } else {
+        brand1 = targetBrand; // Default to H&R Block as primary
+        brand2 = extractedBrand;
+      }
+    } else {
+      // No brands from context, use detected brands but prioritize H&R Block
+      const detectedBrands = availableBrandFields;
+      if (detectedBrands.includes(targetBrand)) {
+        brand1 = targetBrand;
+        brand2 = detectedBrands.find(b => b !== targetBrand) || competitorBrand;
+      } else {
+        brand1 = detectedBrands[0] || targetBrand;
+        brand2 = detectedBrands[1] || competitorBrand;
+      }
     }
     
-    // Ensure brands are never null
-    brand1 = brand1 || 'nike';
-    brand2 = brand2 || 'adidas';
-    
-    console.log(`[BrandDifferenceProcessor] Comparing brands: ${brand1} vs ${brand2} (from ${extractedBrands.length > 0 ? 'query' : 'auto-detected from data'})`);
+    console.log(`[BrandDifferenceProcessor] Target-oriented comparison: ${brand1} vs ${brand2} (${brand1} is target variable)`);
     console.log(`[BrandDifferenceProcessor] Calculation will be: ${brand1} - ${brand2}`);
     console.log(`[BrandDifferenceProcessor] Positive values = ${brand1} advantage, Negative values = ${brand2} advantage`);
     
