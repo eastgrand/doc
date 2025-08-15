@@ -566,10 +566,15 @@ function detectScoreClustering(data: any[]): Patterns['trends'][0] | null {
  * Format statistics for display in chat
  */
 export function formatStatsForChat(stats: BasicStats, analysisType?: string): string {
+  console.log(`[formatStatsForChat] Called with analysisType: "${analysisType}"`);
+  
   // Use specialized formatter for brand difference analysis
-  if (analysisType === 'brand_difference') {
+  if (analysisType === 'brand_difference' || analysisType === 'brand-difference') {
+    console.log(`[formatStatsForChat] Using brand difference formatter`);
     return formatBrandDifferenceStatsForChat(stats);
   }
+  
+  console.log(`[formatStatsForChat] Using generic formatter`);
   
   const lines: string[] = [];
   
@@ -687,10 +692,15 @@ export function formatDistributionForChat(dist: Distribution): string {
  * Format patterns for display in chat
  */
 export function formatPatternsForChat(patterns: Patterns, analysisType?: string): string {
+  console.log(`[formatPatternsForChat] Called with analysisType: "${analysisType}"`);
+  
   // Use specialized formatter for brand difference analysis
-  if (analysisType === 'brand_difference') {
+  if (analysisType === 'brand_difference' || analysisType === 'brand-difference') {
+    console.log(`[formatPatternsForChat] Using brand difference patterns formatter`);
     return formatBrandDifferencePatternsForChat(patterns);
   }
+  
+  console.log(`[formatPatternsForChat] Using generic patterns formatter`);
   
   const lines: string[] = [];
   

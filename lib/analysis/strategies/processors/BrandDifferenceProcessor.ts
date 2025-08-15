@@ -684,53 +684,53 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     // Define competitive zones with H&R Block as primary (positive = H&R Block advantage)
     // Since H&R Block is the target variable, we want to show their advantages prominently
     
-    // Strong TurboTax advantage (very negative)
+    // Strong TurboTax advantage (very negative) - RED
     if (min < -10) {
       breaks.push({
         range: { min: min, max: Math.min(-10, max) },
-        color: [215, 48, 39, 0.6], // Dark red
+        color: [215, 48, 39, 0.8], // Dark red (stronger opacity)
         label: `${Math.abs(Math.min(-10, max)).toFixed(0)}pp+ TurboTax Advantage`
       });
     }
     
-    // Moderate TurboTax advantage
+    // Moderate TurboTax advantage - LIGHT RED/ORANGE
     if (min < -2 && max > -10) {
       const rangeMin = Math.max(min, -10);
       const rangeMax = Math.min(-2, max);
       breaks.push({
         range: { min: rangeMin, max: rangeMax },
-        color: [253, 174, 97, 0.6], // Orange
+        color: [252, 141, 89, 0.7], // Light red/orange
         label: `${Math.abs(rangeMax).toFixed(0)}pp to ${Math.abs(rangeMin).toFixed(0)}pp TurboTax Advantage`
       });
     }
     
-    // Competitive parity zone
+    // Competitive parity zone - NEUTRAL YELLOW
     if (min < 2 && max > -2) {
       const rangeMin = Math.max(min, -2);
       const rangeMax = Math.min(2, max);
       breaks.push({
         range: { min: rangeMin, max: rangeMax },
-        color: [254, 224, 144, 0.6], // Light yellow
+        color: [255, 255, 178, 0.6], // Neutral yellow
         label: `Competitive Parity (±2pp)`
       });
     }
     
-    // Moderate H&R Block advantage
+    // Moderate H&R Block advantage - LIGHT GREEN
     if (max > 2 && min < 10) {
       const rangeMin = Math.max(2, min);
       const rangeMax = Math.min(10, max);
       breaks.push({
         range: { min: rangeMin, max: rangeMax },
-        color: [166, 217, 106, 0.6], // Light green
+        color: [145, 207, 96, 0.7], // Light green
         label: `${rangeMin.toFixed(0)}pp to ${rangeMax.toFixed(0)}pp H&R Block Advantage`
       });
     }
     
-    // Strong H&R Block advantage
+    // Strong H&R Block advantage - DARK GREEN
     if (max > 10) {
       breaks.push({
         range: { min: Math.max(10, min), max: max },
-        color: [26, 152, 80, 0.6], // Dark green
+        color: [37, 139, 47, 0.8], // Dark green (stronger opacity)
         label: `${Math.max(10, min).toFixed(0)}pp+ H&R Block Advantage`
       });
     }

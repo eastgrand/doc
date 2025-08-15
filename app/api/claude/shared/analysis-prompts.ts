@@ -642,6 +642,8 @@ The brand_difference_score represents the percentage point difference in market 
 
 ⚠️ CRITICAL: H&R Block is the TARGET VARIABLE (MP10128A_B_P), so analysis should focus on H&R Block's competitive positioning.
 
+⚠️ DATA ACCURACY: Base ALL analysis on the provided data. Do NOT make assumptions about data coverage, market size, or missing information. The dataset represents the complete analysis scope.
+
 CRITICAL INTERPRETATION RULES:
 1. 0% difference = COMPETITIVE PARITY, not "top performance"
 2. Large positive differences = H&R Block strongholds (H&R Block dominance)
@@ -677,12 +679,20 @@ CRITICAL REQUIREMENTS:
 4. Identify competitor strongholds (large negative differences)  
 5. Analyze competitive battleground markets (small differences)
 6. Focus on H&R Block's competitive positioning as the target brand
+7. NEVER state data limitations that don't exist - if 984 areas are analyzed, acknowledge the comprehensive scope
+8. Base gap analysis on actual data range provided, not assumptions about individual market examples
 
 NEXT STEPS REQUIREMENTS:
 Do NOT recommend generic activities like:
 - "Gather additional market data" (brand share data is provided)
 - "Conduct competitive analysis" (brand difference analysis is complete)
 - "Research market positioning" (competitive gaps are identified)
+- "Expand data collection" (comprehensive data set is already provided)
+
+Do NOT make statements about:
+- "Limited data coverage" when analyzing hundreds or thousands of areas
+- "Need for broader analysis" when comprehensive geographic coverage exists
+- Individual market examples as representative of "largest gaps" when full range data is available
 
 INSTEAD, provide specific actionable recommendations such as:
 - Defend H&R Block strongholds with loyalty programs and market presence

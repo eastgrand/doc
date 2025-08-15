@@ -339,6 +339,7 @@ Use \`/help\` for available commands.`,
       
       const basicStats = calculateBasicStats(analysisData);
       const analysisType = result.endpoint?.replace('/', '') || result.data?.type;
+      console.log(`[UnifiedAnalysisChat] Analysis type for stats: "${analysisType}" (from endpoint: "${result.endpoint}")`);
       messageContent += '\n\n' + formatStatsForChat(basicStats, analysisType);
       
       setMessages([{
