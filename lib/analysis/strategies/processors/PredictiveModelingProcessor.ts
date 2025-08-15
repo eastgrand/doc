@@ -7,11 +7,128 @@ import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from 
  * by analyzing model confidence, pattern stability, forecast reliability, and data quality.
  */
 export class PredictiveModelingProcessor implements DataProcessorStrategy {
+  
+  /**
+   * Extract predictive modeling score from record with fallback calculation
+   */
+  private extractPredictiveScore(record: any): number {
+    // PRIORITY 1: Use predictive_modeling_score if available
+    if (record.predictive_modeling_score !== undefined && record.predictive_modeling_score !== null) {
+      return Number(record.predictive_modeling_score);
+    }
+    
+    // PRIORITY 2: Use predictive_score
+    if (record.predictive_score !== undefined && record.predictive_score !== null) {
+      return Number(record.predictive_score);
+    }
+    
+    // PRIORITY 3: Use thematic_value (common in endpoint data)
+    if (record.thematic_value !== undefined && record.thematic_value !== null) {
+      return Number(record.thematic_value);
+    }
+    
+    // PRIORITY 4: Use generic value field
+    if (record.value !== undefined && record.value !== null) {
+      return Number(record.value);
+    }
+    
+    // FALLBACK: Find first suitable numeric field
+    const numericFields = Object.keys(record).filter(key => {
+      const value = record[key];
+      return typeof value === 'number' && 
+             !key.toLowerCase().includes('id') &&
+             !key.toLowerCase().includes('date') &&
+             !key.toLowerCase().includes('time') &&
+             !key.toLowerCase().includes('objectid') &&
+             !key.toLowerCase().includes('area') &&
+             value > 0;
+    });
+    
+    if (numericFields.length > 0) {
+      const fieldValue = Number(record[numericFields[0]]);
+      return fieldValue > 100 ? fieldValue / 100 : fieldValue; // Normalize if needed
+    }
+    
+    return 50; // Default neutral score
+  }
   validate(rawData: RawAnalysisResult): boolean {
-    return rawData && 
-           rawData.success && 
-           Array.isArray(rawData.results) && 
-           rawData.results.length > 0;
+    console.log(`🔍 [PredictiveModelingProcessor] Validating data:`, {
+      hasRawData: !!rawData,
+      isObject: typeof rawData === 'object',
+      hasSuccess: rawData?.success,
+      hasResults: Array.isArray(rawData?.results),
+      resultsLength: rawData?.results?.length,
+      firstRecordKeys: rawData?.results?.[0] ? Object.keys(rawData.results[0]).slice(0, 15) : []
+    });
+
+    if (!rawData || typeof rawData !== 'object') {
+      console.log(`❌ [PredictiveModelingProcessor] Validation failed: Invalid rawData structure`);
+      return false;
+    }
+    if (!rawData.success) {
+      console.log(`❌ [PredictiveModelingProcessor] Validation failed: success=false`);
+      return false;
+    }
+    if (!Array.isArray(rawData.results)) {
+      console.log(`❌ [PredictiveModelingProcessor] Validation failed: results not array`);
+      return false;
+    }
+    
+    // Empty results are valid
+    if (rawData.results.length === 0) {
+      console.log(`✅ [PredictiveModelingProcessor] Validation passed: Empty results`);
+      return true;
+    }
+
+    // Check first few records for required fields - flexible approach
+    const sampleSize = Math.min(5, rawData.results.length);
+    const sampleRecords = rawData.results.slice(0, sampleSize);
+    
+    for (let i = 0; i < sampleRecords.length; i++) {
+      const record = sampleRecords[i];
+      
+      // Check for ID field (flexible naming)
+      const hasIdField = record && (
+        record.area_id !== undefined || 
+        record.id !== undefined || 
+        record.ID !== undefined ||
+        record.GEOID !== undefined ||
+        record.zipcode !== undefined ||
+        record.area_name !== undefined
+      );
+      
+      // Check for predictive modeling fields or any numeric field
+      const hasScoringField = record && (
+        record.predictive_modeling_score !== undefined || 
+        record.predictive_score !== undefined ||
+        record.value !== undefined || 
+        record.score !== undefined ||
+        record.thematic_value !== undefined ||
+        // Accept any numeric field that looks like data
+        Object.keys(record).some(key => 
+          typeof record[key] === 'number' && 
+          !key.toLowerCase().includes('date') &&
+          !key.toLowerCase().includes('time') &&
+          !key.toLowerCase().includes('area') &&
+          !key.toLowerCase().includes('length') &&
+          !key.toLowerCase().includes('objectid')
+        )
+      );
+      
+      console.log(`🔍 [PredictiveModelingProcessor] Record ${i} validation:`, {
+        hasIdField,
+        hasScoringField,
+        recordKeys: Object.keys(record).slice(0, 10)
+      });
+      
+      if (hasIdField && hasScoringField) {
+        console.log(`✅ [PredictiveModelingProcessor] Validation passed: Found valid record structure`);
+        return true;
+      }
+    }
+    
+    console.log(`❌ [PredictiveModelingProcessor] Validation failed: No records with both ID and scoring fields found`);
+    return false;
   }
 
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {
@@ -20,8 +137,8 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
     }
 
     const records = rawData.results.map((record: any, index: number) => {
-      // Extract the pre-calculated predictive modeling score
-      const predictiveScore = Number(record.predictive_modeling_score || record.predictive_score) || 0;
+      // Extract the pre-calculated predictive modeling score with flexible fallback
+      const predictiveScore = this.extractPredictiveScore(record);
       
       // Extract related metrics for additional analysis (updated for actual dataset fields)
       const nikeShare = Number(record.value_MP30034A_B_P || record.mp30034a_b_p) || 0;

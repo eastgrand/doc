@@ -64,7 +64,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'value_MP30034A_B_P', // Nike market share percentage
+      targetVariable: 'demographic_opportunity_score', // Changed to match actual field
       renderer: this.createDemographicRenderer(records), // Add direct renderer
       legend: this.createDemographicLegend(records), // Add direct legend
       demographicAnalysis // Additional metadata for demographic visualization
@@ -595,7 +595,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'value_MP30034A_B_P', // Nike market share percentage
+      field: 'demographic_opportunity_score', // Changed to match actual field in records
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,
