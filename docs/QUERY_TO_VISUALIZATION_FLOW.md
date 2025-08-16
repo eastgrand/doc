@@ -732,6 +732,166 @@ console.log(autoResult.brandAnalysis.brandComparison);
 // Should return: { brand1: 'turbotax', brand2: 'h&r block' }
 ```
 
+## Recent Enhancements (2025)
+
+### Progressive Analysis Chat System
+
+**Components**: `components/ChatInterface.tsx`, `components/unified-analysis/UnifiedAnalysisChat.tsx`
+
+The system now features a sophisticated chat interface that provides progressive analysis with immediate feedback:
+
+#### Progressive Statistics Display
+```typescript
+// Phase 1: Initial analysis message (0.5s)
+let messageContent = `${getIconString('analyzing')} Analyzing ${analysisData.length} areas...`;
+
+// Phase 2: Quick Statistics (1s)
+const basicStats = calculateBasicStats(analysisData);
+messageContent += '\n\n' + formatStatsForChat(basicStats, analysisType);
+
+// Phase 3: Distribution Analysis (2s) 
+const distribution = calculateDistribution(analysisData);
+messageContent += '\n\n' + formatDistributionForChat(distribution);
+
+// Phase 4: Key Patterns (3s)
+const patterns = detectPatterns(analysisData);
+messageContent += '\n\n' + formatPatternsForChat(patterns);
+
+// Phase 5: Full AI Analysis (5-10s)
+const aiResponse = await sendChatMessage(context, query);
+```
+
+#### Statistics with Info Tooltips
+
+**Component**: `components/stats/StatsWithInfo.tsx`
+
+Statistics now include interactive info icons with explanations:
+
+```typescript
+// Enhanced stats display with tooltips
+const statDefinitions = {
+  'Average difference': {
+    description: 'The mean difference in market share between brands',
+    formula: 'Σ(brand1_share - brand2_share) / n',
+    example: '-8.37% means competitor has 8.37% higher average market share'
+  },
+  'Standard deviation': {
+    description: 'Measures spread of values from the mean',
+    formula: '√(Σ(x - μ)² / n)',
+    example: '1.31% means most values are within ±1.31% of average'
+  }
+  // ... more definitions
+};
+```
+
+#### Interactive Message Features
+
+**Copy Functionality**:
+- **Top copy button**: Appears on hover in top-right of message
+- **Bottom copy button**: Appears on hover in bottom-right of message
+- **Visual feedback**: Shows checkmark when copied, reverts after 2 seconds
+
+**Export Conversation**:
+```typescript
+const handleExportConversation = useCallback(() => {
+  const conversationText = messages.map(message => {
+    const timestamp = message.timestamp.toLocaleString();
+    const role = message.role === 'user' ? 'User' : 'AI Assistant';
+    return `## ${role} (${timestamp})\n\n${message.content}\n\n---\n`;
+  }).join('\n');
+
+  const fullExport = `# Analysis Conversation Export
+Generated on: ${new Date().toLocaleString()}
+Analysis Type: ${analysisType}
+Total Messages: ${messages.length}
+
+---
+
+${conversationText}
+
+*Exported from MPIQ AI Chat Interface*`;
+
+  // Download as markdown file
+  const blob = new Blob([fullExport], { type: 'text/markdown' });
+  // ... download logic
+}, [messages, analysisResult]);
+```
+
+### Modern Icon System
+
+**Component**: `lib/utils/iconMapping.tsx`
+
+Replaced dated emojis with configurable icon system:
+
+#### Icon Configuration Options
+```typescript
+export type IconType = 'emoji' | 'lucide' | 'modern-emoji';
+
+const iconMappings = {
+  analyzing: {
+    emoji: '📊',        // Classic
+    modernEmoji: '📈',  // Modern
+    lucideIcon: BarChart3, // Professional
+    ariaLabel: 'Analyzing data'
+  },
+  statistics: {
+    emoji: '📊',
+    modernEmoji: '📈', 
+    lucideIcon: BarChart3,
+    ariaLabel: 'Statistics'
+  },
+  patterns: {
+    emoji: '🎯',
+    modernEmoji: '🔍',
+    lucideIcon: Target,
+    ariaLabel: 'Key patterns'
+  }
+  // ... more mappings
+};
+
+// Easy configuration
+export const currentIconType: IconType = 'modern-emoji';
+```
+
+#### Icon Usage
+```typescript
+// In stats calculator
+lines.push(`${getIconString('statistics')} **Quick Statistics**`);
+lines.push(`${getIconString('distribution')} **Distribution Analysis**`);
+lines.push(`${getIconString('patterns')} **Key Patterns**`);
+
+// In chat interfaces
+let messageContent = `${getIconString('analyzing')} Analyzing ${analysisData.length} areas...`;
+```
+
+#### Settings Component
+**Component**: `components/settings/IconStyleSelector.tsx`
+
+Provides UI for users to change icon preferences:
+- **Classic Emojis**: Original style (📊📈🎯)
+- **Modern Emojis**: Updated selection (📈📊🔍)
+- **Lucide Icons**: Professional icon set (matching UI)
+
+### Enhanced User Experience
+
+#### Visual Improvements
+- **Grey project area button** in light mode (instead of green)
+- **Subtle green glow effects** (reduced intensity by 60-70%)
+- **Consistent button styling** across components
+- **Professional color palette** for better business appeal
+
+#### Performance Optimizations
+- **Removed duplicate badges** (model attribution info now only in message content)
+- **Streamlined stats display** with enhanced readability
+- **Efficient icon rendering** with configurable system
+- **Optimized chat message rendering** for large conversations
+
+#### Accessibility Features
+- **ARIA labels** for all icons and interactive elements
+- **Keyboard navigation** support for copy buttons
+- **High contrast** color schemes for better readability
+- **Screen reader friendly** stat explanations
+
 ## Summary
 
 The query-to-visualization flow involves:
@@ -744,11 +904,22 @@ The query-to-visualization flow involves:
 7. **Field mapping** to ensure consistency
 8. **Renderer generation** for visualization
 9. **ArcGIS integration** for interactive maps
+10. **Progressive chat analysis** with real-time statistics *(New)*
+11. **Interactive tooltips and explanations** *(New)*
+12. **Conversation export and management** *(New)*
+13. **Modern configurable icon system** *(New)*
 
-The system is designed to be robust, with multiple fallback mechanisms and flexible field handling to accommodate various data formats from different endpoints. The new dynamic brand naming capability ensures that analysis outputs show actual brand names from the current project instead of generic "Brand A/B" terminology, making reports more professional and actionable for stakeholders.
+The system is designed to be robust, with multiple fallback mechanisms and flexible field handling to accommodate various data formats from different endpoints. The new progressive chat system provides immediate feedback while full analysis processes, making the experience more responsive and informative.
+
+**Recent Chat System Features**:
+- **Progressive statistics display** with 5-phase loading
+- **Interactive info tooltips** explaining statistical concepts and formulas
+- **Dual copy buttons** (top and bottom of messages) for easy content copying
+- **Conversation export** functionality generating markdown files
+- **Modern icon system** with 3 style options (classic, modern, professional)
+- **Enhanced UX** with improved visual design and accessibility
 
 **Brand Difference Analysis Features**:
-
 - **Auto-detection** of available brand fields in data (MP10104A_B_P, MP10128A_B_P, etc.)
 - **Flexible brand mapping** supporting TurboTax/H&R Block and athletic brands
 - **Percentage difference calculation** (Brand1% - Brand2%) with proper categorization

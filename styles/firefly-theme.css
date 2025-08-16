@@ -130,14 +130,14 @@ button, a, input, textarea, select,
 /* 6.2 - Firefly Glow Effects */
 @keyframes firefly-glow-pulse {
   0%, 100% {
-    box-shadow: 0 0 20px var(--theme-accent-primary),
-                0 0 40px var(--theme-accent-primary),
-                inset 0 0 10px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.2),
+                0 0 12px rgba(34, 197, 94, 0.15),
+                inset 0 0 4px rgba(255, 255, 255, 0.05);
   }
   50% {
-    box-shadow: 0 0 30px var(--theme-accent-primary),
-                0 0 60px var(--theme-accent-primary),
-                inset 0 0 15px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.25),
+                0 0 16px rgba(34, 197, 94, 0.2),
+                inset 0 0 6px rgba(255, 255, 255, 0.08);
   }
 }
 
@@ -146,10 +146,23 @@ button, a, input, textarea, select,
   animation: firefly-glow-pulse 2s ease-in-out infinite;
 }
 
+/* Subtle glow on hover for specific elements */
+.firefly-glow-on-hover:hover {
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.15),
+              0 2px 8px rgba(34, 197, 94, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Very subtle glow for links and minor elements */
+.firefly-glow-subtle:hover {
+  text-shadow: 0 0 4px rgba(34, 197, 94, 0.2);
+  transition: text-shadow 0.2s ease;
+}
+
 /* Glow effect for active elements */
 .firefly-glow {
-  box-shadow: 0 0 20px var(--theme-accent-primary),
-              0 0 40px var(--theme-accent-primary);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.2),
+              0 0 12px rgba(34, 197, 94, 0.15);
   animation: firefly-glow-pulse 3s ease-in-out infinite;
 }
 
@@ -158,7 +171,7 @@ button, a, input, textarea, select,
 .theme-textarea:focus,
 .theme-select:focus {
   box-shadow: 0 0 0 2px var(--theme-accent-primary),
-              0 0 20px rgba(0, 255, 64, 0.2) !important;
+              0 0 8px rgba(0, 255, 64, 0.15) !important;
 }
 
 /* 6.3 - Subtle Animations */
@@ -652,7 +665,7 @@ body {
 
 /* Glow effect for active map elements */
 .firefly-polygon-active {
-  filter: drop-shadow(0 0 20px var(--theme-accent-primary));
+  filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.3));
   animation: firefly-glow-pulse 2s ease-in-out infinite;
 }
 

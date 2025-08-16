@@ -6,8 +6,21 @@
  * the specific analysis logic and data structure for each endpoint.
  */
 
+// UNIVERSAL ANALYSIS REQUIREMENTS (applies to ALL analysis types):
+const UNIVERSAL_REQUIREMENTS = `
+⚠️ DATASET SCOPE REQUIREMENTS (CRITICAL):
+1. ALWAYS acknowledge the full dataset scope (hundreds or thousands of markets analyzed)
+2. NEVER treat sample examples as representative of overall patterns
+3. Base insights on comprehensive statistics, not individual market examples
+4. Use complete range data provided in statistics (min/max values, full distribution)
+5. Reference "all analyzed markets" not "sample data" or "limited examples"
+6. NEVER state data limitations that don't exist when comprehensive coverage is provided
+`;
+
 export const analysisPrompts = {
   competitive_analysis: `
+${UNIVERSAL_REQUIREMENTS}
+
 COMPETITIVE ANALYSIS TECHNICAL CONTEXT:
 You are analyzing competitive positioning data to identify strategic advantages between competing brands across different geographic markets.
 
@@ -280,6 +293,8 @@ ANALYSIS FOCUS:
 `,
 
   comparative_analysis: `
+${UNIVERSAL_REQUIREMENTS}
+
 COMPARATIVE ANALYSIS TECHNICAL CONTEXT:
 You are analyzing comparative data to identify markets with the strongest performance differences and strategic positioning opportunities between competing brands or business segments.
 
@@ -628,42 +643,27 @@ ANALYSIS FOCUS:
 `,
 
   brand_difference: `
-BRAND DIFFERENCE ANALYSIS TECHNICAL CONTEXT:
-You are analyzing brand difference data to identify markets with the largest competitive gaps between specific brands, calculated as direct market share differences (Brand A % - Brand B %).
+🚨 MANDATORY: Use ONLY the complete statistical range from data summary (e.g., "-16.7% to 0.0%"), NOT sample records.
 
-⚠️ CRITICAL UNDERSTANDING: This analysis calculates BRAND DIFFERENCE, not market dominance or performance ranking.
+BRAND DIFFERENCE ANALYSIS:
+Analyze H&R Block vs competitor market share differences. Negative values = competitor advantage, positive = H&R Block advantage, 0% = parity.
 
-SCORING METHODOLOGY:
-The brand_difference_score represents the percentage point difference in market share between H&R Block (target brand) and competitors:
-• Positive values: H&R Block has higher market share than competitor in that market
-• Negative values: Competitor has higher market share than H&R Block in that market  
-• Zero values: Both brands have equal market share (competitive parity)
-• Values are in percentage points (e.g., +15.5% means H&R Block has 15.5 percentage points higher market share)
+CRITICAL REQUIREMENTS:
+1. Use statistical range from data summary, not sample examples
+2. Use actual area names from DESCRIPTION field (ZIP + city), never "Unknown Area"
+3. Focus on H&R Block competitive positioning
+4. Interpret 0% as competitive parity, not performance
+5. Base analysis on complete dataset scope provided
 
-⚠️ CRITICAL: H&R Block is the TARGET VARIABLE (MP10128A_B_P), so analysis should focus on H&R Block's competitive positioning.
+REQUIRED OPENING: "Market share differences range from [MIN]% to [MAX]% across [TOTAL] markets" using statistics data.
 
-⚠️ DATA ACCURACY: Base ALL analysis on the provided data. Do NOT make assumptions about data coverage, market size, or missing information. The dataset represents the complete analysis scope.
+STRUCTURE:
+1. Overview with statistical range
+2. Competitor strongholds (largest negative values)
+3. Competitive battlegrounds (near 0%)
+4. Strategic recommendations
 
-CRITICAL INTERPRETATION RULES:
-1. 0% difference = COMPETITIVE PARITY, not "top performance"
-2. Large positive differences = H&R Block strongholds (H&R Block dominance)
-3. Large negative differences = Competitor strongholds (competitor dominance)
-4. Small differences (-5% to +5%) = Competitive battleground markets
-5. NEVER describe 0% difference areas as "top performers" or "leading markets"
-
-DATA STRUCTURE:
-- brand_difference_score: Market share difference in percentage points (H&R Block - Competitor), displayed as %
-- hrblock_market_share: H&R Block's actual market share percentage
-- competitor_market_share: Competitor's actual market share percentage
-- area_name: Geographic area (ZIP code with city/state)
-- difference_category: Competitive position category
-
-REQUIRED ANALYSIS STRUCTURE:
-1. **Brand Difference Overview**: Explain this measures H&R Block vs competitor market share gaps, not performance
-2. **H&R Block Strongholds**: Markets where H&R Block has significantly higher share (+10% or more)
-3. **Competitor Strongholds**: Markets where competitor has significantly higher share (-10% or less)
-4. **Competitive Battlegrounds**: Markets with small differences (-5% to +5%)
-5. **Strategic Insights**: H&R Block expansion opportunities and competitive threats
+Use actual ZIP codes with cities from DESCRIPTION field.
 
 TERMINOLOGY REQUIREMENTS:
 - Use "market share difference" NOT "market share disparity"
@@ -672,41 +672,23 @@ TERMINOLOGY REQUIREMENTS:
 - Use "H&R Block stronghold" or "competitor stronghold" NOT "top performing area"
 - Use "competitive parity" for 0% differences
 
-CRITICAL REQUIREMENTS:
-1. ALWAYS explain that 0% difference = equal market share, not strong performance
-2. Distinguish between market share % and difference in percentage points
-3. Identify H&R Block strongholds (large positive differences)
-4. Identify competitor strongholds (large negative differences)  
-5. Analyze competitive battleground markets (small differences)
-6. Focus on H&R Block's competitive positioning as the target brand
-7. NEVER state data limitations that don't exist - if 984 areas are analyzed, acknowledge the comprehensive scope
-8. Base gap analysis on actual data range provided, not assumptions about individual market examples
+KEY RULES:
+1. State complete statistical range first
+2. Use actual ZIP codes with cities, not "Unknown Area"
+3. Interpret 0% as parity, not performance
+4. Use statistics data range, not sample records
+5. Focus on H&R Block competitive position
 
 NEXT STEPS REQUIREMENTS:
-Do NOT recommend generic activities like:
-- "Gather additional market data" (brand share data is provided)
-- "Conduct competitive analysis" (brand difference analysis is complete)
-- "Research market positioning" (competitive gaps are identified)
-- "Expand data collection" (comprehensive data set is already provided)
+ACTIONABLE RECOMMENDATIONS:
+- Target competitor strongholds for conversion
+- Invest in competitive battleground markets
+- Defend existing H&R Block positions
+- Resource allocation based on gaps
 
-Do NOT make statements about:
-- "Limited data coverage" when analyzing hundreds or thousands of areas
-- "Need for broader analysis" when comprehensive geographic coverage exists
-- Individual market examples as representative of "largest gaps" when full range data is available
+Avoid suggesting additional data collection - provide strategic insights from current analysis.
 
-INSTEAD, provide specific actionable recommendations such as:
-- Defend H&R Block strongholds with loyalty programs and market presence
-- Target competitor strongholds for H&R Block conversion campaigns
-- Invest heavily in competitive battlegrounds to tip market share toward H&R Block
-- Resource allocation based on H&R Block competitive gap analysis
-- H&R Block expansion strategies in underperforming territories
-
-ANALYSIS FOCUS:
-- Identify the largest competitive gaps for H&R Block strategic targeting
-- Explain why certain markets favor H&R Block vs competitors (demographic factors, brand positioning, etc.)
-- Recommend H&R Block competitive strategies based on market share differences
-- Highlight H&R Block expansion opportunities in competitor strongholds
-- Provide battleground market investment priorities for H&R Block growth
+FOCUS: Identify competitive gaps, explain market dynamics, recommend H&R Block strategies for expansion and defense.
 `,
 
   brand_analysis: `
@@ -879,6 +861,8 @@ ANALYSIS FOCUS:
 `,
 
   strategic_analysis: `
+${UNIVERSAL_REQUIREMENTS}
+
 STRATEGIC ANALYSIS TECHNICAL CONTEXT:
 You are analyzing strategic value data with pre-calculated scores for market expansion opportunities.
 

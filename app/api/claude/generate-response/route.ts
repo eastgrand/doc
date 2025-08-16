@@ -67,7 +67,46 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
   if (!features || features.length === 0) return '';
   
   let metricsSection = '\n=== ENDPOINT-SPECIFIC ENHANCED METRICS ===\n';
-  const topFeatures = features.slice(0, 10);
+  
+  // Provide representative sample across the full range for ALL analysis types
+  let topFeatures;
+  
+  // Get the primary scoring field for different analysis types
+  const getScoreField = (type: string) => {
+    const normalized = type.toLowerCase().replace(/-/g, '_');
+    switch (normalized) {
+      case 'strategic_analysis':
+      case 'strategic':
+        return 'strategic_value_score';
+      case 'competitive_analysis':
+      case 'competitive':
+        return 'competitive_advantage_score';
+      case 'comparative_analysis':
+      case 'comparative':
+        return 'comparative_score';
+      case 'brand_difference':
+      case 'brand_analysis':
+        return 'brand_difference_score';
+      default:
+        return 'value'; // Generic fallback
+    }
+  };
+  
+  const scoreField = getScoreField(analysisType);
+  
+  // Sort by the appropriate score field to get full range representation
+  const sorted = [...features].sort((a, b) => {
+    const scoreA = a.properties?.[scoreField] ?? a[scoreField] ?? a.value ?? 0;
+    const scoreB = b.properties?.[scoreField] ?? b[scoreField] ?? b.value ?? 0;
+    return scoreB - scoreA; // Highest scores first
+  });
+  
+  // Take representative sampling: top 4, middle 3, bottom 3 for strategic analysis view
+  topFeatures = [
+    ...sorted.slice(0, 4), // Top performers
+    ...sorted.slice(Math.floor(sorted.length * 0.45), Math.floor(sorted.length * 0.45) + 3), // Middle range
+    ...sorted.slice(-3) // Bottom range for context
+  ];
   
   // Normalize analysis type
   const normalizedType = analysisType.toLowerCase().replace(/-/g, '_');
@@ -78,7 +117,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Strategic Analysis - Enhanced with market expansion metrics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use strategic_value_score directly instead of target_value for strategic analysis
         const strategicScore = props?.strategic_value_score || feature?.strategic_value_score || props?.target_value;
@@ -113,7 +153,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Competitive Analysis - Enhanced with market share context:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use competitive_advantage_score directly instead of target_value for competitive analysis
         const competitiveScore = props?.competitive_advantage_score || feature?.competitive_advantage_score || props?.target_value;
@@ -138,7 +179,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Demographic Analysis - Enhanced with population characteristics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Demographic Score: ${props?.target_value || 'N/A'}\n`;
         
         if (props?.total_population) {
@@ -158,7 +200,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Market Sizing Analysis - Enhanced with opportunity metrics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Market Sizing Score: ${props?.target_value || 'N/A'}\n`;
         
         if (props?.total_population) {
@@ -178,7 +221,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Brand Analysis - Enhanced with competitive positioning:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Brand Analysis Score: ${props?.target_value || 'N/A'}\n`;
         
         if (props?.nike_market_share) {
@@ -197,7 +241,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Comparative Analysis - Brand vs competitor performance:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use comparative_analysis_score as primary metric
         const comparativeScore = props?.comparative_analysis_score || props?.target_value;
@@ -244,7 +289,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Spatial Clusters Analysis - Geographic clustering patterns:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Cluster Score: ${props?.target_value || 'N/A'}\n`;
         
         if (props?.cluster_id !== undefined) {
@@ -266,7 +312,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Correlation Analysis - Statistical relationships:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Correlation Score: ${props?.target_value || 'N/A'}\n`;
         
         if (props?.correlation_strength) {
@@ -284,7 +331,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Segment Profiling Analysis - Customer segmentation:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Segment Profiling Score: ${props?.target_value || 'N/A'}\n`;
         
         if (props?.primary_segment_type) {
@@ -306,7 +354,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Trend Analysis - Temporal patterns and growth:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Trend Strength Score: ${props?.target_value || 'N/A'}\n`;
         
         if (props?.growth_potential) {
@@ -327,7 +376,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Anomaly Detection Analysis - Unusual market patterns:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Anomaly Detection Score: ${props?.target_value || 'N/A'}\n`;
         
         if (props?.anomaly_type) {
@@ -345,7 +395,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Feature Interactions Analysis - Multi-variable relationships:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Feature Interaction Score: ${props?.target_value || 'N/A'}\n`;
         
         if (props?.correlation_strength) {
@@ -363,7 +414,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Outlier Detection Analysis - Exceptional market characteristics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Outlier Detection Score: ${props?.target_value || 'N/A'}\n`;
         
         if (props?.outlier_type) {
@@ -381,7 +433,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Scenario Analysis - Market adaptability and flexibility:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Scenario Analysis Score: ${props?.target_value || 'N/A'}\n`;
         
         if (props?.scenario_adaptability_level) {
@@ -402,7 +455,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Predictive Modeling Analysis - Forecasting reliability:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Predictive Modeling Score: ${props?.target_value || 'N/A'}\n`;
         
         if (props?.model_confidence_level) {
@@ -426,7 +480,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use brand_difference_score as primary metric with proper notation
         const brandDifferenceScore = props?.brand_difference_score || props?.target_value;
@@ -464,7 +519,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += `${analysisType} Analysis - Enhanced metrics:\n\n`;
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
+        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Analysis Score: ${props?.target_value || 'N/A'}\n`;
         
         // Add any available context metrics
@@ -573,7 +629,7 @@ interface ClusterOptions {
 // --- Configuration ---
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-export const maxDuration = 60;
+export const maxDuration = 120;
 export const fetchCache = 'force-no-store';
 export const revalidate = 0;
 
@@ -1438,9 +1494,9 @@ export async function POST(req: NextRequest) {
               group: 'claude-generated-group',
               fields: [{ name: 'response', label: 'Response', type: 'string', format: { digitSeparator: true } }],
               metadata: {},
-              processing: { strategy: 'batch', timeout: 30000 },
+              processing: { strategy: 'batch', timeout: 60000 },
               caching: { enabled: true, ttl: 3600, strategy: 'memory' },
-              performance: { maxFeatures: 1000, timeoutMs: 30000 },
+              performance: { maxFeatures: 1000, timeoutMs: 60000 },
               security: {
                 requiresAuthentication: false,
                 accessLevels: ['read'],
@@ -1532,7 +1588,7 @@ export async function POST(req: NextRequest) {
                 },
                 processing: {
                   strategy: 'batch',
-                  timeout: 30000
+                  timeout: 60000
                 },
                 caching: {
                   enabled: true,
@@ -1541,7 +1597,7 @@ export async function POST(req: NextRequest) {
                 },
                 performance: {
                   maxFeatures: 1000,
-                  timeoutMs: 30000
+                  timeoutMs: 60000
                 },
                 security: {
                   requiresAuthentication: true,
@@ -1840,6 +1896,37 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
             });
           }
           
+          // Add brand difference statistics for brand difference analysis
+          const analysisType = metadata?.analysisType || '';
+          if (analysisType === 'brand_difference' || analysisType === 'brand-difference') {
+            // Calculate brand difference statistics from the processed data
+            if (processedLayersData.length > 0 && processedLayersData[0].features.length > 0) {
+              const brandDiffValues = processedLayersData[0].features
+                .map(f => f.properties?.brand_difference_score || f.properties?.value || 0)
+                .filter(v => typeof v === 'number' && !isNaN(v));
+              
+              if (brandDiffValues.length > 0) {
+                const sortedValues = brandDiffValues.sort((a, b) => a - b);
+                const count = sortedValues.length;
+                const mean = sortedValues.reduce((a, b) => a + b, 0) / count;
+                const median = count % 2 === 0 
+                  ? (sortedValues[Math.floor(count / 2) - 1] + sortedValues[Math.floor(count / 2)]) / 2
+                  : sortedValues[Math.floor(count / 2)];
+                const variance = sortedValues.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / count;
+                const stdDev = Math.sqrt(variance);
+                
+                dataSummary += `\n=== BRAND DIFFERENCE STATISTICS (CRITICAL FOR RANGE) ===\n`;
+                dataSummary += `🚨 MANDATORY: Use these statistics for your analysis range, NOT individual examples\n`;
+                dataSummary += `• Markets analyzed: ${count}\n`;
+                dataSummary += `• Average difference: ${mean.toFixed(2)}%\n`;
+                dataSummary += `• Median difference: ${median.toFixed(2)}%\n`;
+                dataSummary += `• Standard deviation: ${stdDev.toFixed(2)}%\n`;
+                dataSummary += `• COMPLETE RANGE: ${sortedValues[0].toFixed(1)}% to ${sortedValues[count - 1].toFixed(1)}%\n`;
+                dataSummary += `🎯 CRITICAL: Your analysis MUST start with this complete range\n\n`;
+              }
+            }
+          }
+          
           // Add brand analysis for context but emphasize competitive ranking
           if (originalSummary.brandAnalysis && Object.keys(originalSummary.brandAnalysis).length > 0) {
             dataSummary += `=== BRAND MARKET SHARE CONTEXT (DO NOT USE FOR RANKING) ===\n`;
@@ -2089,7 +2176,14 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 const sortedFeatures = sortAttributesByField(features, currentLayerPrimaryField);
                 console.log(`[Claude Prompt Gen] Sorted ${sortedFeatures.length} features for layer ${layerName} by ${currentLayerPrimaryField}.`);
 
-                topFeatures = sortedFeatures.slice(0, 10).map((f: FeatureProperties): TopFeature => {
+                // Use representative sampling instead of just top 10
+                const sampleFeatures = [
+                    ...sortedFeatures.slice(0, 4), // Top performers
+                    ...sortedFeatures.slice(Math.floor(sortedFeatures.length * 0.45), Math.floor(sortedFeatures.length * 0.45) + 3), // Middle range
+                    ...sortedFeatures.slice(-3) // Bottom range
+                ];
+                
+                topFeatures = sampleFeatures.map((f: FeatureProperties): TopFeature => {
                     // *** FIX: Access nested properties for getZIPCode ***
                     // Assuming 'f' has the structure { properties: { actual_attributes } }
                     const actualProperties = f.properties || f; // Use f.properties if it exists, else f itself

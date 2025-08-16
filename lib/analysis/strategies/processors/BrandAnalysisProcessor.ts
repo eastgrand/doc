@@ -11,31 +11,30 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
     }
 
     const records = rawData.results.map((record: any, index: number) => {
-      const brandScore = Number(record.brand_analysis_score) || 0;
-      const nikeShare = Number(record.mp30034a_b_p) || 0;
+      const brandScore = Number(record.brand_analysis_score) || Number(record.brand_difference_score) || 0;
+      const hrBlockShare = Number(record.MP10128A_B_P) || 0;
+      const turboTaxShare = Number(record.MP10104A_B_P) || 0;
+      const brandDifference = hrBlockShare - turboTaxShare;
       const strategicScore = Number(record.strategic_value_score) || 0;
       const competitiveScore = Number(record.competitive_advantage_score) || 0;
       const demographicScore = Number(record.demographic_opportunity_score) || 0;
 
-      // Get top contributing fields for popup display
-      const topContributingFields = this.getTopContributingFields(record);
-      
       return {
         area_id: record.area_id || record.ID || `area_${index}`,
-        area_name: record.area_name || record.value_DESCRIPTION || record.DESCRIPTION || `Area ${index + 1}`,
-        value: brandScore,
+        area_name: record.area_name || record.DESCRIPTION || `Area ${index + 1}`,
+        value: brandScore || brandDifference,
         rank: index + 1,
-        category: this.categorizeBrandStrength(nikeShare),
+        category: this.categorizeBrandStrength(hrBlockShare, turboTaxShare),
         coordinates: this.extractCoordinates(record),
-        // Flatten top contributing fields to top level for popup access
-        ...topContributingFields,
         properties: {
           brand_analysis_score: brandScore,
-          nike_market_share: nikeShare,
-          brand_strength_level: this.getBrandStrengthLevel(nikeShare),
+          brand_difference_score: brandDifference,
+          hr_block_market_share: hrBlockShare,
+          turbotax_market_share: turboTaxShare,
+          brand_strength_level: this.getBrandStrengthLevel(hrBlockShare, turboTaxShare),
           market_position: this.getMarketPosition(strategicScore, demographicScore),
           competitive_landscape: this.getCompetitiveLandscape(competitiveScore),
-          brand_opportunity: this.getBrandOpportunity(nikeShare, strategicScore),
+          brand_opportunity: this.getBrandOpportunity(hrBlockShare, turboTaxShare, strategicScore),
           strategic_value: strategicScore,
           demographic_alignment: demographicScore
         },
@@ -60,19 +59,22 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
     };
   }
 
-  private categorizeBrandStrength(nikeShare: number): string {
-    if (nikeShare >= 35) return 'Dominant Brand Presence';
-    if (nikeShare >= 25) return 'Strong Brand Presence';
-    if (nikeShare >= 15) return 'Moderate Brand Presence';
-    if (nikeShare >= 5) return 'Limited Brand Presence';
-    return 'Minimal Brand Presence';
+  private categorizeBrandStrength(hrBlockShare: number, turboTaxShare: number): string {
+    const difference = hrBlockShare - turboTaxShare;
+    if (difference >= 10) return 'H&R Block Advantage';
+    if (difference >= 5) return 'H&R Block Leading';
+    if (difference <= -10) return 'TurboTax Advantage';
+    if (difference <= -5) return 'TurboTax Leading';
+    return 'Competitive Parity';
   }
 
-  private getBrandStrengthLevel(nikeShare: number): string {
-    if (nikeShare >= 30) return 'Market Leader';
-    if (nikeShare >= 20) return 'Strong Position';
-    if (nikeShare >= 10) return 'Established Presence';
-    if (nikeShare >= 5) return 'Emerging Presence';
+  private getBrandStrengthLevel(hrBlockShare: number, turboTaxShare: number): string {
+    const totalShare = hrBlockShare + turboTaxShare;
+    const difference = hrBlockShare - turboTaxShare;
+    if (totalShare >= 30 && Math.abs(difference) >= 10) return 'Clear Market Leader';
+    if (totalShare >= 20 && Math.abs(difference) >= 5) return 'Strong Position';
+    if (totalShare >= 15) return 'Established Presence';
+    if (totalShare >= 10) return 'Emerging Presence';
     return 'Developing Market';
   }
 
@@ -91,62 +93,13 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
     return 'Low Competition';
   }
 
-  private getBrandOpportunity(nikeShare: number, strategic: number): string {
-    if (nikeShare >= 25 && strategic >= 70) return 'Brand Expansion';
-    if (nikeShare < 15 && strategic >= 60) return 'Market Penetration';
-    if (nikeShare >= 15 && strategic >= 50) return 'Brand Strengthening';
+  private getBrandOpportunity(hrBlockShare: number, turboTaxShare: number, strategic: number): string {
+    const difference = hrBlockShare - turboTaxShare;
+    if (difference >= 10 && strategic >= 70) return 'Defend Leadership';
+    if (difference <= -10 && strategic >= 60) return 'Market Penetration';
+    if (Math.abs(difference) <= 5 && strategic >= 50) return 'Competitive Battle';
+    if (difference >= 5) return 'Brand Strengthening';
     return 'Brand Development';
-  }
-
-  /**
-   * Identify top 5 fields that contribute most to the brand analysis score
-   * Returns them as a flattened object for popup display
-   */
-  private getTopContributingFields(record: any): Record<string, number> {
-    const contributingFields: Array<{field: string, value: number, importance: number}> = [];
-    
-    // Define field importance weights based on brand analysis factors
-    const fieldDefinitions = [
-      { field: 'brand_analysis_score', source: 'brand_analysis_score', importance: 30 },
-      { field: 'nike_market_share', source: ['mp30034a_b_p', 'nike_market_share'], importance: 25 },
-      { field: 'strategic_value_score', source: 'strategic_value_score', importance: 20 },
-      { field: 'competitive_advantage_score', source: 'competitive_advantage_score', importance: 15 },
-      { field: 'demographic_opportunity_score', source: 'demographic_opportunity_score', importance: 10 }
-    ];
-    
-    fieldDefinitions.forEach(fieldDef => {
-      let value = 0;
-      const sources = Array.isArray(fieldDef.source) ? fieldDef.source : [fieldDef.source];
-      
-      // Find the first available source field
-      for (const source of sources) {
-        if (record[source] !== undefined && record[source] !== null) {
-          value = Number(record[source]);
-          break;
-        }
-      }
-      
-      // Only include fields with meaningful values
-      if (!isNaN(value) && value > 0) {
-        contributingFields.push({
-          field: fieldDef.field,
-          value: Math.round(value * 100) / 100,
-          importance: fieldDef.importance
-        });
-      }
-    });
-    
-    // Sort by importance and take top 5
-    const topFields = contributingFields
-      .sort((a, b) => b.importance - a.importance)
-      .slice(0, 5)
-      .reduce((acc, item) => {
-        acc[item.field] = item.value;
-        return acc;
-      }, {} as Record<string, number>);
-    
-    console.log(`[BrandAnalysisProcessor] Top contributing fields for ${record.ID}:`, topFields);
-    return topFields;
   }
 
   private extractCoordinates(record: any): [number, number] {
@@ -160,13 +113,14 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
 
   private generateBrandSummary(records: any[], statistics: any): string {
     const topBrands = records.slice(0, 5);
-    const dominantCount = records.filter(r => r.properties.nike_market_share >= 25).length;
-    const strongCount = records.filter(r => r.properties.nike_market_share >= 15 && r.properties.nike_market_share < 25).length;
+    const hrBlockAdvantage = records.filter(r => r.properties.brand_difference_score >= 5).length;
+    const turboTaxAdvantage = records.filter(r => r.properties.brand_difference_score <= -5).length;
+    const competitive = records.filter(r => Math.abs(r.properties.brand_difference_score) < 5).length;
     const avgScore = statistics.mean.toFixed(1);
 
     const topNames = topBrands.map(r => `${r.area_name} (${r.value.toFixed(1)})`).join(', ');
 
-    return `Brand analysis of ${records.length} markets identified ${dominantCount} markets with dominant Nike presence (25%+) and ${strongCount} with strong brand presence (15-24%). Average brand analysis score: ${avgScore}. Top brand markets: ${topNames}. Analysis considers Nike brand strength, market positioning, competitive landscape, and brand growth potential to identify optimal brand investment opportunities.`;
+    return `Brand analysis of ${records.length} markets identified ${hrBlockAdvantage} markets with H&R Block advantage, ${turboTaxAdvantage} with TurboTax advantage, and ${competitive} competitive markets. Average brand difference score: ${avgScore}. Top markets: ${topNames}. Analysis considers H&R Block vs TurboTax market share differences, competitive positioning, and strategic opportunities for tax software market leadership.`;
   }
 
   private calculateStatistics(values: number[]) {

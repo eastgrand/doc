@@ -435,14 +435,14 @@ export default function UnifiedAreaSelector({
 
           <TabsContent value="project" className="flex-1 flex flex-col space-y-4 mt-4">
             <div className="space-y-4">
-              <div className="theme-bg-success-light p-4 rounded-lg border border-green-200">
-                <h3 className="text-xs font-medium theme-text-success mb-2">Entire Project Area</h3>
-                <p className="text-xs theme-text-success mb-3">
+              <div className="bg-gray-100 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-300 dark:border-gray-600">
+                <h3 className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Entire Project Area</h3>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">
                   Analyze all data within the full project extent. This will include all available data points across the entire geographic region.
                 </p>
                 <Button
                   onClick={handleProjectAreaSelection}
-                  className="w-full text-xs h-9"
+                  className="w-full text-xs h-9 hover:shadow-sm hover:shadow-green-400/30 transition-all duration-200"
                   disabled={isSelecting}
                 >
                   {isSelecting && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}

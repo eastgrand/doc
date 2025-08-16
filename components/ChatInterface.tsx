@@ -9,8 +9,8 @@ import {
   DialogHeader, 
   DialogTitle 
 } from '@/components/ui/dialog';
-import { Send, Bot, User, Loader2, Copy, Check, X } from 'lucide-react';
-import { renderPerformanceMetrics } from '@/lib/utils/performanceMetrics';
+import { Send, Bot, User, Loader2, Copy, Check, X, Download } from 'lucide-react';
+// import { renderPerformanceMetrics } from '@/lib/utils/performanceMetrics'; // Commented out - badges no longer displayed
 import { 
   calculateBasicStats, 
   calculateDistribution, 
@@ -21,12 +21,14 @@ import {
 } from '@/lib/analysis/statsCalculator';
 import { ErrorBoundary } from './ErrorBoundary';
 import { sendChatMessage } from '@/services/chat-service';
+import { StatsWithInfo } from '@/components/stats/StatsWithInfo';
+import { getIconString } from '@/lib/utils/iconMapping';
 
-// Wrapper component for performance metrics
-const PerformanceMetrics = ({ analysisResult, className }: { analysisResult: any, className: string }) => {
-  if (!analysisResult) return null;
-  return renderPerformanceMetrics(analysisResult, className);
-};
+// Wrapper component for performance metrics - commented out as badges are no longer displayed
+// const PerformanceMetrics = ({ analysisResult, className }: { analysisResult: any, className: string }) => {
+//   if (!analysisResult) return null;
+//   return renderPerformanceMetrics(analysisResult, className);
+// };
 
 interface UnifiedAnalysisResponse {
   analysisResult: any;
@@ -224,6 +226,47 @@ Use \`/help\` for available commands.`,
     }
   }, []);
 
+  const handleExportConversation = useCallback(() => {
+    try {
+      // Format the conversation as markdown
+      const conversationText = messages.map(message => {
+        const timestamp = message.timestamp.toLocaleString();
+        const role = message.role === 'user' ? 'User' : 'AI Assistant';
+        return `## ${role} (${timestamp})
+
+${message.content}
+
+---
+`;
+      }).join('\n');
+
+      const fullExport = `# Analysis Conversation Export
+
+Generated on: ${new Date().toLocaleString()}
+Analysis Type: ${analysisResult.analysisResult.endpoint?.replace('/', '').replace(/-/g, ' ') || 'Unknown'}
+Total Messages: ${messages.length}
+
+---
+
+${conversationText}
+
+*Exported from MPIQ AI Chat Interface*`;
+
+      // Create and download the file
+      const blob = new Blob([fullExport], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `analysis-conversation-${new Date().toISOString().split('T')[0]}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to export conversation:', error);
+    }
+  }, [messages, analysisResult]);
+
   const handleZipCodeClick = useCallback((zipCode: string) => {
     console.log(`[ChatInterface] ZIP code ${zipCode} clicked - zooming to feature`);
     if (onZipCodeClick) {
@@ -234,6 +277,15 @@ Use \`/help\` for available commands.`,
   }, [onZipCodeClick]);
 
   const renderFormattedMessage = useCallback((content: string) => {
+    // Check if this is a stats section that should be enhanced
+    const statsKeywords = ['Quick Statistics', 'Brand Difference Statistics'];
+    const hasStats = statsKeywords.some(keyword => content.includes(`📊 **${keyword}**`));
+    
+    // For stats sections, use enhanced rendering with info tooltips
+    if (hasStats) {
+      return <StatsWithInfo content={content} className="space-y-2" onZipCodeClick={handleZipCodeClick} />;
+    }
+    
     // Split content into lines to preserve formatting
     const lines = content.split('\n');
     
@@ -327,7 +379,7 @@ Use \`/help\` for available commands.`,
     const analysisData = result.data?.records || [];
     
     // Start with analyzing message  
-    let messageContent = `📊 Analyzing ${analysisData.length} areas...`;
+    let messageContent = `${getIconString('analyzing')} Analyzing ${analysisData.length} areas...`;
     
     // Declare at top level so it's accessible in error handler
     const messageId = Date.now().toString();
@@ -825,8 +877,26 @@ Use \`/help\` for available commands.`,
                   )}
                 </Button>
               </div>
-              <div className="text-xs text-gray-500 mt-1">
-                {message.timestamp.toLocaleTimeString()}
+              
+              {/* Bottom area with timestamp and copy button */}
+              <div className="flex items-center justify-between mt-1">
+                <div className="text-xs text-gray-500">
+                  {message.timestamp.toLocaleTimeString()}
+                </div>
+                {/* Bottom copy button */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 text-gray-400 hover:text-gray-600 hover:bg-gray-200"
+                  onClick={() => handleCopyMessage(message)}
+                  title="Copy message"
+                >
+                  {copiedMessageId === message.id ? (
+                    <Check className="w-3 h-3" />
+                  ) : (
+                    <Copy className="w-3 h-3" />
+                  )}
+                </Button>
               </div>
             </div>
           </div>
@@ -878,11 +948,18 @@ Use \`/help\` for available commands.`,
             <Send className="w-4 h-4" />
           </Button>
         </div>
-        <div className="mt-2 pb-2">
-          <PerformanceMetrics 
-            analysisResult={analysisResult.analysisResult}
-            className="flex flex-wrap gap-2"
-          />
+        {/* Export conversation button (replacing the performance metrics badges) */}
+        <div className="mt-2 pb-2 flex justify-end">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExportConversation}
+            className="text-xs h-8 px-3 gap-2"
+            title="Export entire conversation as markdown file"
+          >
+            <Download className="w-3 h-3" />
+            Export Conversation
+          </Button>
         </div>
       </div>
 

@@ -3,6 +3,44 @@
  * Provides fast statistical computations for immediate user feedback
  */
 
+import { getIconString } from '@/lib/utils/iconMapping';
+
+// Shared function to extract score from various field names
+function extractScore(record: any): number {
+  // Check for all known score field names used by different processors
+  // Listed in priority order based on specificity
+  
+  // Analysis-specific scores (highest priority)
+  if (record.brand_difference_score !== undefined) return record.brand_difference_score;
+  if (record.anomaly_detection_score !== undefined) return record.anomaly_detection_score;
+  if (record.brand_analysis_score !== undefined) return record.brand_analysis_score;
+  if (record.cluster_performance_score !== undefined) return record.cluster_performance_score;
+  if (record.comparison_score !== undefined) return record.comparison_score;
+  if (record.correlation_strength_score !== undefined) return record.correlation_strength_score;
+  if (record.customer_profile_score !== undefined) return record.customer_profile_score;
+  if (record.demographic_opportunity_score !== undefined) return record.demographic_opportunity_score;
+  if (record.expansion_opportunity_score !== undefined) return record.expansion_opportunity_score;
+  if (record.feature_interaction_score !== undefined) return record.feature_interaction_score;
+  if (record.market_sizing_score !== undefined) return record.market_sizing_score;
+  if (record.outlier_detection_score !== undefined) return record.outlier_detection_score;
+  if (record.predictive_modeling_score !== undefined) return record.predictive_modeling_score;
+  if (record.real_estate_analysis_score !== undefined) return record.real_estate_analysis_score;
+  if (record.risk_adjusted_score !== undefined) return record.risk_adjusted_score;
+  if (record.scenario_analysis_score !== undefined) return record.scenario_analysis_score;
+  if (record.trend_strength_score !== undefined) return record.trend_strength_score;
+  if (record.trend_strength !== undefined) return record.trend_strength;
+  
+  // Generic scores (medium priority)
+  if (record.strategic_value_score !== undefined) return record.strategic_value_score;
+  if (record.competitive_advantage_score !== undefined) return record.competitive_advantage_score;
+  
+  // Fallback to generic fields
+  return record.score || 
+         record.demographic_score ||
+         record.value ||
+         0;
+}
+
 export interface BasicStats {
   count: number;
   mean: number;
@@ -70,15 +108,8 @@ export function calculateBasicStats(data: any[]): BasicStats {
     };
   }
 
-  // Extract scores and handle various score field names
-  const getScore = (record: any): number => {
-    return record.score || 
-           record.strategic_value_score || 
-           record.competitive_advantage_score || 
-           record.demographic_score ||
-           record.value ||
-           0;
-  };
+  // Use shared score extraction function
+  const getScore = extractScore;
 
   const getAreaName = (record: any): string => {
     return record.area_name || 
@@ -161,14 +192,7 @@ export function calculateDistribution(data: any[]): Distribution {
     };
   }
 
-  const getScore = (record: any): number => {
-    return record.score || 
-           record.strategic_value_score || 
-           record.competitive_advantage_score || 
-           record.demographic_score ||
-           record.value ||
-           0;
-  };
+  const getScore = extractScore;
 
   const getAreaName = (record: any): string => {
     return record.area_name || 
@@ -273,15 +297,6 @@ export function detectPatterns(data: any[]): Patterns {
     };
   }
 
-  const getScore = (record: any): number => {
-    return record.score || 
-           record.strategic_value_score || 
-           record.competitive_advantage_score || 
-           record.demographic_score ||
-           record.value ||
-           0;
-  };
-
   // Simple clustering by score ranges
   const clusters = identifyClusters(data);
   
@@ -327,19 +342,10 @@ function detectBimodal(scores: number[]): boolean {
 }
 
 function identifyClusters(data: any[]): Patterns['clusters'] {
-  const getScore = (record: any): number => {
-    return record.score || 
-           record.strategic_value_score || 
-           record.competitive_advantage_score || 
-           record.demographic_score ||
-           record.value ||
-           0;
-  };
-
   // Simple clustering by score ranges
-  const high = data.filter(d => getScore(d) >= 8);
-  const medium = data.filter(d => getScore(d) >= 6 && getScore(d) < 8);
-  const low = data.filter(d => getScore(d) < 6);
+  const high = data.filter(d => extractScore(d) >= 8);
+  const medium = data.filter(d => extractScore(d) >= 6 && extractScore(d) < 8);
+  const low = data.filter(d => extractScore(d) < 6);
   
   const clusters: Patterns['clusters'] = [];
   
@@ -347,7 +353,7 @@ function identifyClusters(data: any[]): Patterns['clusters'] {
     clusters.push({
       name: 'High Performers',
       size: high.length,
-      avgScore: high.reduce((sum, d) => sum + getScore(d), 0) / high.length,
+      avgScore: high.reduce((sum, d) => sum + extractScore(d), 0) / high.length,
       characteristics: ['Strong market position', 'High growth potential']
     });
   }
@@ -356,7 +362,7 @@ function identifyClusters(data: any[]): Patterns['clusters'] {
     clusters.push({
       name: 'Steady Markets',
       size: medium.length,
-      avgScore: medium.reduce((sum, d) => sum + getScore(d), 0) / medium.length,
+      avgScore: medium.reduce((sum, d) => sum + extractScore(d), 0) / medium.length,
       characteristics: ['Stable performance', 'Moderate opportunity']
     });
   }
@@ -365,7 +371,7 @@ function identifyClusters(data: any[]): Patterns['clusters'] {
     clusters.push({
       name: 'Emerging Areas',
       size: low.length,
-      avgScore: low.reduce((sum, d) => sum + getScore(d), 0) / low.length,
+      avgScore: low.reduce((sum, d) => sum + extractScore(d), 0) / low.length,
       characteristics: ['Development potential', 'Higher risk']
     });
   }
@@ -378,17 +384,7 @@ function findCorrelations(data: any[]): Patterns['correlations'] {
   
   if (data.length === 0) return correlations;
   
-  // Get score using the same method as other functions
-  const getScore = (record: any): number => {
-    return record.score || 
-           record.strategic_value_score || 
-           record.competitive_advantage_score || 
-           record.demographic_score ||
-           record.value ||
-           0;
-  };
-  
-  const scores = data.map(d => getScore(d)).filter(s => s > 0);
+  const scores = data.map(d => extractScore(d)).filter(s => s > 0);
   if (scores.length === 0) return correlations;
   
   // Check multiple population field possibilities
@@ -578,7 +574,7 @@ export function formatStatsForChat(stats: BasicStats, analysisType?: string): st
   
   const lines: string[] = [];
   
-  lines.push('📊 **Quick Statistics**');
+  lines.push(`${getIconString('statistics')} **Quick Statistics**`);
   lines.push(`• Areas analyzed: **${stats.count}**`);
   lines.push(`• Average score: **${stats.mean.toFixed(2)}/10**`);
   lines.push(`• Median score: **${stats.median.toFixed(2)}/10**`);
@@ -609,7 +605,7 @@ export function formatStatsForChat(stats: BasicStats, analysisType?: string): st
 export function formatBrandDifferenceStatsForChat(stats: BasicStats): string {
   const lines: string[] = [];
   
-  lines.push('📊 **Brand Difference Statistics**');
+  lines.push(`${getIconString('statistics')} **Brand Difference Statistics**`);
   lines.push(`• Markets analyzed: **${stats.count}**`);
   lines.push(`• Average difference: **${stats.mean.toFixed(2)}%**`);
   lines.push(`• Median difference: **${stats.median.toFixed(2)}%**`);
@@ -668,7 +664,7 @@ export function formatDistributionForChat(dist: Distribution, analysisType?: str
   
   const lines: string[] = [];
   
-  lines.push('📈 **Distribution Analysis**');
+  lines.push(`${getIconString('distribution')} **Distribution Analysis**`);
   lines.push('');
   lines.push('**Score Distribution:**');
   
@@ -702,7 +698,7 @@ export function formatDistributionForChat(dist: Distribution, analysisType?: str
 export function formatBrandDifferenceDistributionForChat(dist: Distribution): string {
   const lines: string[] = [];
   
-  lines.push('📈 **Competitive Distribution Analysis**');
+  lines.push(`${getIconString('distribution')} **Competitive Distribution Analysis**`);
   lines.push('');
   
   // Skip technical distribution details for brand difference
@@ -749,7 +745,7 @@ export function formatPatternsForChat(patterns: Patterns, analysisType?: string)
   
   const lines: string[] = [];
   
-  lines.push('🎯 **Key Patterns**');
+  lines.push(`${getIconString('patterns')} **Key Patterns**`);
   lines.push('');
   
   if (patterns.clusters.length > 0) {
@@ -791,7 +787,7 @@ export function formatPatternsForChat(patterns: Patterns, analysisType?: string)
 export function formatBrandDifferencePatternsForChat(patterns: Patterns): string {
   const lines: string[] = [];
   
-  lines.push('🎯 **Competitive Patterns**');
+  lines.push(`${getIconString('patterns')} **Competitive Patterns**`);
   lines.push('');
   
   // Skip market clusters for brand difference - not meaningful for competitive analysis
