@@ -420,26 +420,29 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       
     case 'brand_difference':
     case 'brand-difference':
-      metricsSection += 'Brand Difference Analysis - Market share comparison between brands:\n\n';
+      metricsSection += 'H&R Block vs TurboTax Market Share Difference Analysis:\n';
+      metricsSection += 'Methodology: H&R Block market share (%) - TurboTax market share (%) = Market share difference (%)\n';
+      metricsSection += 'Positive values = H&R Block advantage, Negative values = TurboTax advantage\n\n';
+      
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
         metricsSection += `${index + 1}. ${props?.area_name || props?.area_id || 'Unknown Area'}:\n`;
         
-        // Use brand_difference_score as primary metric
+        // Use brand_difference_score as primary metric with proper notation
         const brandDifferenceScore = props?.brand_difference_score || props?.target_value;
-        metricsSection += `   Brand Difference: ${brandDifferenceScore !== undefined ? brandDifferenceScore.toFixed(2) + '%' : 'N/A'}\n`;
+        const diffText = brandDifferenceScore !== undefined ? 
+          `${brandDifferenceScore >= 0 ? '+' : ''}${brandDifferenceScore.toFixed(1)}%` : 'N/A';
+        metricsSection += `   Market Share Difference: ${diffText}\n`;
         
-        // Add individual brand market shares
-        if (props?.turbotax_market_share !== undefined) {
-          metricsSection += `   TurboTax Market Share: ${props.turbotax_market_share.toFixed(1)}%\n`;
-        } else if (props?.MP10104A_B_P !== undefined) {
-          metricsSection += `   TurboTax Market Share: ${props.MP10104A_B_P.toFixed(1)}%\n`;
+        // Add individual brand market shares with clear labeling
+        const hrblockShare = props?.['h&r block_market_share'] || props?.MP10128A_B_P;
+        const turbotaxShare = props?.turbotax_market_share || props?.MP10104A_B_P;
+        
+        if (hrblockShare !== undefined) {
+          metricsSection += `   H&R Block Market Share: ${hrblockShare.toFixed(1)}%\n`;
         }
-        
-        if (props?.['h&r block_market_share'] !== undefined) {
-          metricsSection += `   H&R Block Market Share: ${props['h&r block_market_share'].toFixed(1)}%\n`;
-        } else if (props?.MP10128A_B_P !== undefined) {
-          metricsSection += `   H&R Block Market Share: ${props.MP10128A_B_P.toFixed(1)}%\n`;
+        if (turbotaxShare !== undefined) {
+          metricsSection += `   TurboTax Market Share: ${turbotaxShare.toFixed(1)}%\n`;
         }
         
         // Add demographic context relevant to tax services

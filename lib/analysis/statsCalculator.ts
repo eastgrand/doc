@@ -611,10 +611,10 @@ export function formatBrandDifferenceStatsForChat(stats: BasicStats): string {
   
   lines.push('📊 **Brand Difference Statistics**');
   lines.push(`• Markets analyzed: **${stats.count}**`);
-  lines.push(`• Average difference: **${stats.mean.toFixed(2)}pp**`);
-  lines.push(`• Median difference: **${stats.median.toFixed(2)}pp**`);
-  lines.push(`• Standard deviation: **${stats.stdDev.toFixed(2)}pp**`);
-  lines.push(`• Difference range: **${stats.min.score.toFixed(1)}pp** to **${stats.max.score.toFixed(1)}pp**`);
+  lines.push(`• Average difference: **${stats.mean.toFixed(2)}%**`);
+  lines.push(`• Median difference: **${stats.median.toFixed(2)}%**`);
+  lines.push(`• Standard deviation: **${stats.stdDev.toFixed(2)}%**`);
+  lines.push(`• Difference range: **${stats.min.score.toFixed(1)}%** to **${stats.max.score.toFixed(1)}%**`);
   
   if (stats.coverage?.totalPopulation) {
     lines.push(`• Total population: **${(stats.coverage.totalPopulation / 1000000).toFixed(1)}M**`);
@@ -631,7 +631,7 @@ export function formatBrandDifferenceStatsForChat(stats: BasicStats): string {
   if (hrBlockAdvantages.length > 0) {
     lines.push('**H&R Block Strongholds** (largest advantages):');
     hrBlockAdvantages.forEach((item, index) => {
-      lines.push(`**${index + 1}.** ${item.area} (**+${item.score.toFixed(1)}pp**)`);
+      lines.push(`**${index + 1}.** ${item.area} (**+${item.score.toFixed(1)}%**)`);
     });
     lines.push('');
   }
@@ -639,7 +639,7 @@ export function formatBrandDifferenceStatsForChat(stats: BasicStats): string {
   if (turboTaxAdvantages.length > 0) {
     lines.push('**TurboTax Strongholds** (competitor advantages):');
     turboTaxAdvantages.forEach((item, index) => {
-      lines.push(`**${index + 1}.** ${item.area} (**${item.score.toFixed(1)}pp**)`);
+      lines.push(`**${index + 1}.** ${item.area} (**${item.score.toFixed(1)}%**)`);
     });
     lines.push('');
   }
@@ -647,7 +647,7 @@ export function formatBrandDifferenceStatsForChat(stats: BasicStats): string {
   if (competitiveParity.length > 0) {
     lines.push('**Competitive Battlegrounds** (near parity):');
     competitiveParity.forEach((item, index) => {
-      lines.push(`**${index + 1}.** ${item.area} (**${item.score >= 0 ? '+' : ''}${item.score.toFixed(1)}pp**)`);
+      lines.push(`**${index + 1}.** ${item.area} (**${item.score >= 0 ? '+' : ''}${item.score.toFixed(1)}%**)`);
     });
   }
   

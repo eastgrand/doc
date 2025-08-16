@@ -689,7 +689,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       breaks.push({
         range: { min: min, max: Math.min(-10, max) },
         color: [215, 48, 39, 0.8], // Dark red (stronger opacity)
-        label: `${Math.abs(Math.min(-10, max)).toFixed(0)}pp+ TurboTax Advantage`
+        label: `${Math.abs(Math.min(-10, max)).toFixed(0)}%+ TurboTax Advantage`
       });
     }
     
@@ -700,7 +700,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       breaks.push({
         range: { min: rangeMin, max: rangeMax },
         color: [252, 141, 89, 0.7], // Light red/orange
-        label: `${Math.abs(rangeMax).toFixed(0)}pp to ${Math.abs(rangeMin).toFixed(0)}pp TurboTax Advantage`
+        label: `${Math.abs(rangeMax).toFixed(0)}% to ${Math.abs(rangeMin).toFixed(0)}% TurboTax Advantage`
       });
     }
     
@@ -711,7 +711,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       breaks.push({
         range: { min: rangeMin, max: rangeMax },
         color: [255, 255, 178, 0.6], // Neutral yellow
-        label: `Competitive Parity (±2pp)`
+        label: `Competitive Parity (±2%)`
       });
     }
     
@@ -722,7 +722,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       breaks.push({
         range: { min: rangeMin, max: rangeMax },
         color: [145, 207, 96, 0.7], // Light green
-        label: `${rangeMin.toFixed(0)}pp to ${rangeMax.toFixed(0)}pp H&R Block Advantage`
+        label: `${rangeMin.toFixed(0)}% to ${rangeMax.toFixed(0)}% H&R Block Advantage`
       });
     }
     
@@ -731,7 +731,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       breaks.push({
         range: { min: Math.max(10, min), max: max },
         color: [37, 139, 47, 0.8], // Dark green (stronger opacity)
-        label: `${Math.max(10, min).toFixed(0)}pp+ H&R Block Advantage`
+        label: `${Math.max(10, min).toFixed(0)}%+ H&R Block Advantage`
       });
     }
     
@@ -799,18 +799,18 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
   private formatRangeLabel(min: number, max: number): string {
     // H&R Block is the target, so positive = H&R Block advantage
     if (min >= 10) {
-      return `${min.toFixed(0)}pp+ H&R Block Advantage`;
+      return `${min.toFixed(0)}%+ H&R Block Advantage`;
     } else if (min >= 2) {
-      return `${min.toFixed(0)}pp to ${max.toFixed(0)}pp H&R Block Advantage`;
+      return `${min.toFixed(0)}% to ${max.toFixed(0)}% H&R Block Advantage`;
     } else if (max <= -10) {
-      return `${Math.abs(max).toFixed(0)}pp+ TurboTax Advantage`;
+      return `${Math.abs(max).toFixed(0)}%+ TurboTax Advantage`;
     } else if (max <= -2) {
-      return `${Math.abs(max).toFixed(0)}pp to ${Math.abs(min).toFixed(0)}pp TurboTax Advantage`;
+      return `${Math.abs(max).toFixed(0)}% to ${Math.abs(min).toFixed(0)}% TurboTax Advantage`;
     } else if (min >= -2 && max <= 2) {
-      return `Competitive Parity (±2pp)`;
+      return `Competitive Parity (±2%)`;
     } else {
       // Mixed range
-      return `${min.toFixed(1)}pp to ${max.toFixed(1)}pp`;
+      return `${min.toFixed(1)}% to ${max.toFixed(1)}%`;
     }
   }
 

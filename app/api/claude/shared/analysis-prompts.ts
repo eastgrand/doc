@@ -638,7 +638,7 @@ The brand_difference_score represents the percentage point difference in market 
 • Positive values: H&R Block has higher market share than competitor in that market
 • Negative values: Competitor has higher market share than H&R Block in that market  
 • Zero values: Both brands have equal market share (competitive parity)
-• Values are in percentage points (e.g., +15.5 means H&R Block has 15.5 percentage points higher market share)
+• Values are in percentage points (e.g., +15.5% means H&R Block has 15.5 percentage points higher market share)
 
 ⚠️ CRITICAL: H&R Block is the TARGET VARIABLE (MP10128A_B_P), so analysis should focus on H&R Block's competitive positioning.
 
@@ -652,7 +652,7 @@ CRITICAL INTERPRETATION RULES:
 5. NEVER describe 0% difference areas as "top performers" or "leading markets"
 
 DATA STRUCTURE:
-- brand_difference_score: Market share difference in percentage points (H&R Block - Competitor)
+- brand_difference_score: Market share difference in percentage points (H&R Block - Competitor), displayed as %
 - hrblock_market_share: H&R Block's actual market share percentage
 - competitor_market_share: Competitor's actual market share percentage
 - area_name: Geographic area (ZIP code with city/state)
