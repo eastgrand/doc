@@ -358,7 +358,7 @@ Use \`/help\` for available commands.`,
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const distribution = calculateDistribution(analysisData);
-      messageContent += '\n\n' + formatDistributionForChat(distribution);
+      messageContent += '\n\n' + formatDistributionForChat(distribution, analysisType);
       
       setMessages([{
         ...initialMessage,

@@ -657,7 +657,15 @@ export function formatBrandDifferenceStatsForChat(stats: BasicStats): string {
 /**
  * Format distribution for display in chat
  */
-export function formatDistributionForChat(dist: Distribution): string {
+export function formatDistributionForChat(dist: Distribution, analysisType?: string): string {
+  // Use specialized formatter for brand difference analysis
+  if (analysisType === 'brand_difference' || analysisType === 'brand-difference') {
+    console.log(`[formatDistributionForChat] Using brand difference distribution formatter`);
+    return formatBrandDifferenceDistributionForChat(dist);
+  }
+  
+  console.log(`[formatDistributionForChat] Using generic distribution formatter`);
+  
   const lines: string[] = [];
   
   lines.push('📈 **Distribution Analysis**');
@@ -684,6 +692,43 @@ export function formatDistributionForChat(dist: Distribution): string {
   }
   
   lines.push(`**Distribution shape:** **${dist.shape}**`);
+  
+  return lines.join('\n');
+}
+
+/**
+ * Format brand difference distribution for display in chat
+ */
+export function formatBrandDifferenceDistributionForChat(dist: Distribution): string {
+  const lines: string[] = [];
+  
+  lines.push('📈 **Competitive Distribution Analysis**');
+  lines.push('');
+  
+  // Skip technical distribution details for brand difference
+  // Focus on competitive landscape summary instead
+  const avgDiff = (dist.quartiles.q1 + dist.quartiles.q2 + dist.quartiles.q3) / 3;
+  if (avgDiff < -5) {
+    lines.push('**Competitive Landscape:** TurboTax holds significant advantages across most markets');
+  } else if (avgDiff < -2) {
+    lines.push('**Competitive Landscape:** TurboTax maintains moderate competitive leads');
+  } else if (avgDiff > 2) {
+    lines.push('**Competitive Landscape:** H&R Block shows competitive strength');
+  } else {
+    lines.push('**Competitive Landscape:** Highly competitive markets with mixed brand performance');
+  }
+  
+  lines.push('');
+  
+  // Show meaningful competitive ranges instead of technical quartiles
+  const competitiveSpread = dist.quartiles.q3 - dist.quartiles.q1;
+  if (competitiveSpread > 5) {
+    lines.push('**Market Variation:** High variability in competitive positioning across markets');
+  } else if (competitiveSpread > 2) {
+    lines.push('**Market Variation:** Moderate differences in brand performance by market');
+  } else {
+    lines.push('**Market Variation:** Consistent competitive landscape across markets');
+  }
   
   return lines.join('\n');
 }
