@@ -646,6 +646,120 @@ export class EnhancedQueryAnalyzer {
       avoidTerms: [],
       weight: 0.9
     },
+    '/correlation-analysis': {
+      primaryKeywords: ['correlation', 'correlate', 'relationship', 'factors predict', 'statistical relationship'],
+      contextKeywords: ['demographic factors', 'economic factors', 'most strongly predict'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/predictive-modeling': {
+      primaryKeywords: ['predict', 'prediction', 'forecast', 'future', 'demand', 'likely to grow'],
+      contextKeywords: ['next year', 'next 2 years', 'future demand', 'will look like'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/spatial-clusters': {
+      primaryKeywords: ['segment', 'segmentation', 'clusters', 'clustering', 'geographic clusters', 'group'],
+      contextKeywords: ['marketing campaigns', 'targeted marketing', 'similar markets'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/anomaly-detection': {
+      primaryKeywords: ['anomaly', 'anomalies', 'unexpected', 'performing unexpectedly', 'outlier'],
+      contextKeywords: ['unexpectedly well', 'unexpectedly poorly', 'compared to predictions'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/scenario-analysis': {
+      primaryKeywords: ['scenario', 'scenarios', 'what if', 'economic scenarios', 'different conditions'],
+      contextKeywords: ['economic scenarios', 'affect performance', 'different economic scenarios'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/segment-profiling': {
+      primaryKeywords: ['segment', 'segments', 'customer segments', 'profitable segments'],
+      contextKeywords: ['key characteristics', 'most profitable', 'customer segments'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/sensitivity-analysis': {
+      primaryKeywords: ['sensitivity', 'sensitive', 'impact', 'biggest impact', 'factors impact'],
+      contextKeywords: ['adoption rates', 'biggest impact on', 'which factors have'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/feature-interactions': {
+      primaryKeywords: ['interaction', 'interactions', 'interact', 'combine'],
+      contextKeywords: ['income level and age', 'how do', 'interact to influence'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/feature-importance-ranking': {
+      primaryKeywords: ['important', 'importance', 'most important', 'factors', 'predicting'],
+      contextKeywords: ['most important factors', 'for predicting', 'what are the most'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/model-performance': {
+      primaryKeywords: ['reliable', 'reliability', 'accurate', 'accuracy', 'predictions'],
+      contextKeywords: ['how reliable', 'how accurate', 'prediction accuracy'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/outlier-detection': {
+      primaryKeywords: ['outlier', 'outliers', 'statistical outliers', 'unusual'],
+      contextKeywords: ['deserve investigation', 'statistical outliers', 'special investigation'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/analyze': {
+      primaryKeywords: ['analyze', 'analysis', 'analytical', 'overview', 'comprehensive'],
+      contextKeywords: ['complete overview', 'analytical overview', 'comprehensive analysis'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/algorithm-comparison': {
+      primaryKeywords: ['algorithm', 'algorithms', 'ml algorithm', 'accurate predictions'],
+      contextKeywords: ['most accurate', 'which algorithm', 'ml algorithm gives'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/ensemble-analysis': {
+      primaryKeywords: ['ensemble', 'confidence', 'highest confidence', 'best model'],
+      contextKeywords: ['highest-confidence predictions', 'best available model', 'ensemble confidence'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/model-selection': {
+      primaryKeywords: ['optimal', 'optimal algorithm', 'best algorithm', 'algorithm to use'],
+      contextKeywords: ['optimal ml algorithm', 'best to use', 'geographic area'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/cluster-analysis': {
+      primaryKeywords: ['cluster', 'clusters', 'clustering', 'segment', 'groups'],
+      contextKeywords: ['customer groups', 'targeted strategies', 'distinct groups'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/anomaly-insights': {
+      primaryKeywords: ['unusual', 'patterns', 'business opportunities', 'anomaly insights'],
+      contextKeywords: ['unusual patterns', 'biggest opportunities', 'business opportunities'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/dimensionality-insights': {
+      primaryKeywords: ['factors explain', 'variation', 'variance', 'dimensionality'],
+      contextKeywords: ['explain most variation', 'market performance', 'factors explain most'],
+      avoidTerms: [],
+      weight: 1.0
+    },
+    '/consensus-analysis': {
+      primaryKeywords: ['consensus', 'models agree', 'all models', 'confident'],
+      contextKeywords: ['where do all models agree', 'how confident', 'all our models'],
+      avoidTerms: [],
+      weight: 1.0
+    }
   };
 
   /**

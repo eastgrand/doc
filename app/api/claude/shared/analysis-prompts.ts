@@ -949,6 +949,382 @@ When territory clustering analysis is provided:
 - DO NOT add generic business advice or monitoring suggestions
 `,
 
+  sensitivity_analysis: `
+SENSITIVITY ANALYSIS TECHNICAL CONTEXT:
+You are analyzing sensitivity analysis data powered by Random Forest Model to answer the key business question: "Which factors have the biggest impact on service or product adoption rates?"
+
+SCORING METHODOLOGY:
+The sensitivity_analysis_score (0-100 scale) uses Parameter impact magnitude × sensitivity coefficient × business criticality to measure how responsive each market is to changes in key business variables:
+• Parameter Impact Magnitude: How much change in key variables affects adoption rates and market performance (35% weight)
+• Sensitivity Coefficient: Statistical sensitivity to variable changes and strategic levers (30% weight)
+• Business Criticality: Strategic importance of variables for business objectives (25% weight)
+• Response Amplification: How changes cascade across related market variables (10% weight)
+
+Higher scores indicate markets where strategic parameter adjustments have strong, measurable impacts on adoption rates and business outcomes.
+
+DATA STRUCTURE:
+- sensitivity_analysis_score: Primary ranking metric (0-100 scale)
+- parameter_impact_levels: Magnitude of variable impacts on adoption rates
+- sensitivity_coefficients: Statistical responsiveness to strategic changes
+- business_criticality_factors: Most strategically important variables
+- adoption_rate_drivers: Key factors influencing service/product adoption
+- strategic_leverage_variables: Parameters offering maximum control over outcomes
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS rank and prioritize by sensitivity_analysis_score (0-100)
+2. Focus specifically on factors that impact service or product adoption rates
+3. Identify markets where parameter adjustments will have the most measurable impact on adoption
+4. Explain sensitivity patterns: which factors drive adoption rates and how changes affect outcomes
+5. Distinguish between high-sensitivity markets where small changes produce big results vs stable markets
+
+BUSINESS QUESTION FOCUS:
+Address the core question: "Which factors have the biggest impact on service or product adoption rates?" by:
+- Identifying markets where adoption rate sensitivity is highest for strategic advantage
+- Explaining which business parameters have the strongest impact on customer adoption
+- Recommending parameter optimization strategies based on sensitivity patterns
+- Highlighting markets where strategic adjustments to key factors can significantly boost adoption rates
+`,
+
+  model_performance: `
+MODEL PERFORMANCE TECHNICAL CONTEXT:
+You are analyzing model performance data powered by Ensemble Model to answer the key business question: "How reliable are our predictions for each market segment?"
+
+SCORING METHODOLOGY:
+The model_performance_score (0-100 scale) uses R² score × prediction accuracy × cross-validation performance × model stability to measure how reliably our predictive models perform in each market:
+• R² Score Performance: Statistical measure of how well predictions match actual outcomes (35% weight)
+• Prediction Accuracy: Actual vs predicted performance alignment across market segments (30% weight)
+• Cross-Validation Performance: Model consistency across different data samples and validation methods (20% weight)
+• Model Stability: Reliability and consistency of model performance across different conditions (15% weight)
+
+Higher scores indicate market segments where predictive models achieve the highest reliability and accuracy for strategic decision-making.
+
+DATA STRUCTURE:
+- model_performance_score: Primary ranking metric (0-100 scale)
+- r_squared_performance: R² statistical performance measurement
+- prediction_accuracy_level: Model accuracy assessment by market segment (Excellent/Good/Fair/Limited)
+- cross_validation_strength: Validation reliability across different samples
+- model_stability_rating: Consistency across market conditions (Very Stable/Stable/Variable)
+- segment_prediction_reliability: Prediction reliability by specific market segments
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS rank and prioritize by model_performance_score (0-100)
+2. Focus specifically on prediction reliability for each market segment
+3. Identify market segments where models provide the most reliable strategic guidance
+4. Explain model performance factors: R² scores, accuracy levels, cross-validation strength, stability measures
+5. Distinguish between high-reliability segments ready for model-driven decisions vs uncertain prediction segments
+
+BUSINESS QUESTION FOCUS:
+Address the core question: "How reliable are our predictions for each market segment?" by:
+- Identifying market segments with highest prediction reliability for confident strategic planning
+- Explaining R² performance and prediction accuracy factors by segment
+- Recommending confidence-weighted strategies based on model performance insights by segment
+- Highlighting segments where models provide reliable guidance vs those requiring conservative approaches
+`,
+
+  algorithm_comparison: `
+ALGORITHM COMPARISON TECHNICAL CONTEXT:
+You are analyzing algorithm comparison data powered by Ensemble + All 8 Algorithms to answer the key business question: "Which ML algorithm gives the most accurate predictions for each specific market?"
+
+SCORING METHODOLOGY:
+The algorithm_comparison_score (0-100 scale) uses Algorithm performance weighted average × consensus strength × prediction reliability to measure which algorithms provide the best predictions in each market:
+• Algorithm Performance Weighted Average: Performance across all 8 algorithms weighted by their effectiveness (35% weight)
+• Consensus Strength: How strongly multiple algorithms agree on optimal predictions (30% weight)
+• Prediction Reliability: Overall prediction reliability when using the best-performing algorithm (25% weight)
+• Performance Delta: Advantage of optimal algorithm over baseline approaches (10% weight)
+
+Higher scores indicate markets where optimal algorithm selection provides significant prediction advantages and consensus for strategic decision-making.
+
+DATA STRUCTURE:
+- algorithm_comparison_score: Primary ranking metric (0-100 scale)
+- best_algorithm_type: Optimal algorithm for this specific market (XGBoost/Random Forest/Ensemble/Neural Networks/etc.)
+- algorithm_consensus_strength: How strongly all 8 algorithms agree on predictions
+- prediction_reliability_best: Prediction reliability when using optimal algorithm
+- performance_advantage_delta: Performance gain from optimal vs baseline algorithms
+- algorithm_ranking_by_market: Performance ranking of all 8 algorithms for this market
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS rank and prioritize by algorithm_comparison_score (0-100)
+2. Focus specifically on which ML algorithm gives the most accurate predictions for each market
+3. Identify markets where algorithm selection has the biggest impact on prediction accuracy
+4. Explain algorithm advantages: why specific algorithms work best in each market context
+5. Distinguish between markets where algorithm choice matters significantly vs algorithm-agnostic environments
+
+BUSINESS QUESTION FOCUS:
+Address the core question: "Which ML algorithm gives the most accurate predictions for each specific market?" by:
+- Identifying the optimal algorithm for each market based on performance across all 8 algorithms
+- Explaining why specific algorithms outperform others in different market contexts
+- Recommending algorithm-specific strategies based on performance advantages by market
+- Highlighting markets where advanced algorithm selection provides significant competitive intelligence advantages
+`,
+
+  ensemble_analysis: `
+ENSEMBLE ANALYSIS TECHNICAL CONTEXT:
+You are analyzing ensemble modeling data powered by Ensemble Model (R² = 0.879) to answer the key business question: "What are our highest-confidence predictions with the best available model?"
+
+SCORING METHODOLOGY:
+The ensemble_analysis_score (0-100 scale) uses Ensemble confidence × component model agreement × prediction interval accuracy to measure prediction confidence using our best combined models:
+• Ensemble Confidence: Statistical confidence in combined model predictions with proven R² = 0.879 performance (35% weight)
+• Component Model Agreement: How well different component models agree on predictions (30% weight)
+• Prediction Interval Accuracy: Accuracy of confidence intervals and uncertainty quantification (25% weight)
+• Model Consensus Strength: Overall consensus across all component models in the ensemble (10% weight)
+
+Higher scores indicate markets where ensemble models with R² = 0.879 provide the most confident and reliable predictions for strategic planning.
+
+DATA STRUCTURE:
+- ensemble_analysis_score: Primary ranking metric (0-100 scale)
+- ensemble_confidence_level: Statistical confidence with R² = 0.879 model (Very High/High/Moderate/Limited)
+- component_model_agreement: Agreement between component models (Strong/Moderate/Weak)
+- prediction_interval_accuracy: Accuracy of confidence intervals and uncertainty bounds
+- model_consensus_strength: Overall consensus across all ensemble components
+- highest_confidence_predictions: Markets with strongest ensemble prediction confidence
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS rank and prioritize by ensemble_analysis_score (0-100)
+2. Focus specifically on highest-confidence predictions using the best available ensemble model
+3. Emphasize the proven R² = 0.879 performance when discussing ensemble reliability
+4. Identify markets where ensemble models provide the most confident strategic guidance
+5. Distinguish between high-confidence predictions ready for strategic investment vs uncertain predictions
+
+BUSINESS QUESTION FOCUS:
+Address the core question: "What are our highest-confidence predictions with the best available model?" by:
+- Identifying markets with highest ensemble prediction confidence using R² = 0.879 model
+- Explaining ensemble confidence factors and component model agreement patterns
+- Recommending high-confidence strategic decisions based on proven ensemble performance
+- Highlighting markets where the best available ensemble model provides superior predictive certainty
+`,
+
+  model_selection: `
+MODEL SELECTION TECHNICAL CONTEXT:
+You are analyzing model selection data powered by Ensemble + Performance Analysis to answer the key business question: "What's the optimal ML algorithm to use for predictions in each geographic area?"
+
+SCORING METHODOLOGY:
+The model_selection_score (0-100 scale) uses Algorithm suitability × expected performance × interpretability × data characteristics to determine the optimal algorithms for each geographic area:
+• Algorithm Suitability: How well market characteristics match algorithm strengths for geographic prediction (35% weight)
+• Expected Performance: Predicted accuracy based on algorithm-geographic area fit (30% weight)
+• Model Interpretability: How easily algorithm results can be explained for geographic business decisions (20% weight)
+• Data Characteristics Alignment: How well geographic data patterns match algorithm requirements (15% weight)
+
+Higher scores indicate geographic areas where optimal algorithm selection can maximize prediction accuracy and business value.
+
+DATA STRUCTURE:
+- model_selection_score: Primary ranking metric (0-100 scale)
+- optimal_algorithm_geographic: Best algorithm for this specific geographic area
+- algorithm_geographic_suitability: Algorithm fit assessment for geographic characteristics
+- expected_performance_by_area: Predicted accuracy with optimal algorithm by geographic area
+- interpretability_level_geographic: Business explanation capability for geographic decisions
+- geographic_data_characteristics: How geographic data patterns align with algorithm requirements
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS rank and prioritize by model_selection_score (0-100)
+2. Focus specifically on optimal ML algorithm selection for each geographic area
+3. Identify geographic areas where algorithm selection has the biggest impact on prediction accuracy
+4. Explain algorithm selection rationale: why specific algorithms work best in each geographic context
+5. Distinguish between geographic areas with clear optimal algorithm choices vs complex selection environments
+
+BUSINESS QUESTION FOCUS:
+Address the core question: "What's the optimal ML algorithm to use for predictions in each geographic area?" by:
+- Identifying the optimal algorithm for each geographic area based on suitability and performance analysis
+- Explaining algorithm selection rationale specific to geographic characteristics and data patterns
+- Recommending algorithm-specific strategies based on geographic market characteristics
+- Highlighting geographic areas where proper algorithm selection provides significant competitive advantages
+`,
+
+  dimensionality_insights: `
+DIMENSIONALITY INSIGHTS TECHNICAL CONTEXT:
+You are analyzing dimensionality reduction data powered by PCA (91.7% Variance Explained) to answer the key business question: "Which factors explain most of the variation in market performance?"
+
+SCORING METHODOLOGY:
+The dimensionality_insights_score (0-100 scale) uses Feature compression efficiency × component significance × variance explanation × complexity reduction to identify which factors explain market performance variation:
+• Feature Compression Efficiency: How effectively complex market data can be simplified while retaining 91.7% variance (35% weight)
+• Component Significance: Importance and business relevance of principal components explaining market variation (30% weight)
+• Variance Explanation Power: How much market performance variation is captured by key factors (25% weight)
+• Complexity Reduction Value: Business value of simplified market understanding through dimensionality reduction (10% weight)
+
+Higher scores indicate markets where complex performance patterns can be effectively explained by key factors with proven 91.7% variance retention.
+
+DATA STRUCTURE:
+- dimensionality_insights_score: Primary ranking metric (0-100 scale)
+- variance_explained_total: 91.7% total variance explanation through PCA
+- principal_components_performance: Most important factors explaining market performance variation
+- feature_compression_efficiency: Effectiveness of complexity reduction while retaining variance
+- component_business_significance: Business relevance of factors explaining performance variation
+- market_performance_drivers: Key factors that drive most variation in market performance
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS rank and prioritize by dimensionality_insights_score (0-100)
+2. Focus specifically on which factors explain most of the variation in market performance
+3. Emphasize the proven 91.7% variance explanation capability of the PCA analysis
+4. Identify key factors that drive the majority of market performance variation
+5. Distinguish between markets where few factors explain most variation vs complex multi-factor environments
+
+BUSINESS QUESTION FOCUS:
+Address the core question: "Which factors explain most of the variation in market performance?" by:
+- Identifying the key factors that explain the majority of market performance variation using 91.7% variance PCA
+- Explaining which principal components capture the most significant drivers of market performance
+- Recommending factor-focused strategies based on the most important performance variation drivers
+- Highlighting markets where dimensionality reduction reveals the clearest performance drivers for strategic focus
+`,
+
+  consensus_analysis: `
+CONSENSUS ANALYSIS TECHNICAL CONTEXT:
+You are analyzing multi-model consensus data powered by Multi-Model Consensus to answer the key business question: "Where do all our models agree, and how confident should we be in those predictions?"
+
+SCORING METHODOLOGY:
+The consensus_analysis_score (0-100 scale) uses Model agreement score × consensus confidence × uncertainty quantification × prediction reliability to identify where all models agree:
+• Model Agreement Score: How closely all different models agree on predictions (35% weight)
+• Consensus Confidence: Statistical confidence when all models reach agreement (30% weight)
+• Uncertainty Quantification: How well disagreement areas are identified and uncertainty measured (20% weight)
+• Prediction Reliability: Overall reliability when models reach consensus across all analyses (15% weight)
+
+Higher scores indicate markets where all models strongly agree, providing the highest confidence for strategic decision-making.
+
+DATA STRUCTURE:
+- consensus_analysis_score: Primary ranking metric (0-100 scale)
+- all_models_agreement_level: Strength of agreement across all models (Strong/Moderate/Weak)
+- consensus_confidence_when_agreed: Confidence level when all models agree (Very High/High/Moderate/Limited)
+- uncertainty_quantification: Measurement of disagreement areas and prediction uncertainty
+- reliability_during_consensus: Prediction reliability when all models reach consensus
+- model_disagreement_patterns: Patterns in where models disagree and implications
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS rank and prioritize by consensus_analysis_score (0-100)
+2. Focus specifically on where all models agree and quantify confidence in those predictions
+3. Identify markets where all models agree for highest-confidence strategic decisions
+4. Explain consensus patterns: where all models agree vs disagree and confidence implications
+5. Distinguish between high-consensus markets ready for investment vs uncertain prediction environments
+
+BUSINESS QUESTION FOCUS:
+Address the core question: "Where do all our models agree, and how confident should we be in those predictions?" by:
+- Identifying markets where all models reach strong agreement for highest strategic confidence
+- Quantifying confidence levels when all models agree and explaining reliability implications
+- Recommending consensus-based strategies prioritizing markets with all-model agreement
+- Highlighting areas of model disagreement requiring additional consideration or conservative strategic approaches
+`,
+
+  anomaly_insights: `
+ANOMALY INSIGHTS TECHNICAL CONTEXT:
+You are analyzing enhanced anomaly detection data to identify unusual market patterns that represent significant business opportunities.
+
+SCORING METHODOLOGY:
+The anomaly_insights_score (0-100 scale) measures the business opportunity potential of anomalous market patterns, calculated by analyzing:
+• Anomaly Significance: Statistical significance and magnitude of unusual patterns (35% weight)
+• Opportunity Potential: Business value and revenue opportunity from anomalous characteristics (30% weight)
+• Investigation Priority: Strategic importance of understanding these anomalies (20% weight)
+• Market Value Impact: Potential market value from leveraging anomalous patterns (15% weight)
+
+Higher scores indicate anomalies with the highest business opportunity potential that warrant immediate strategic investigation.
+
+DATA STRUCTURE:
+- anomaly_insights_score: Primary ranking metric (0-100 scale)
+- anomaly_significance: Statistical importance of unusual patterns
+- opportunity_assessment: Business opportunity evaluation
+- investigation_priority: Strategic investigation importance
+- market_value_potential: Revenue opportunity from anomalous patterns
+- anomaly_type: Category of unusual pattern (Performance/Demographic/Competitive/etc.)
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS rank and prioritize by anomaly_insights_score (0-100)
+2. Focus on business opportunity potential from anomalous patterns
+3. Identify anomalies with highest strategic value for investigation and leveraging
+4. Explain anomaly significance: what makes patterns unusual and valuable
+5. Distinguish between opportunity-rich anomalies vs statistical curiosities
+
+ANALYSIS FOCUS:
+- Identify markets with most valuable anomalous patterns for business opportunity exploitation
+- Explain what makes patterns unusual and why they represent opportunities
+- Recommend investigation and strategy approaches for high-value anomalies
+- Highlight exceptional markets that break normal patterns in strategically valuable ways
+`,
+
+  cluster_analysis: `
+CLUSTER_ANALYSIS TECHNICAL CONTEXT:
+You are analyzing enhanced clustering data powered by Enhanced Clustering (8 Clusters) to answer the key business question: "How should we segment markets into distinct customer groups for targeted strategies?"
+
+SCORING METHODOLOGY:
+The cluster_analysis_score (0-100 scale) uses Cluster quality × segment distinctiveness × business value × market opportunity to determine optimal market segmentation:
+• Cluster Quality: Statistical quality of Enhanced Clustering (8 Clusters) and segment distinctiveness (35% weight)
+• Segment Distinctiveness: How different each of the 8 clusters is from others for targeted strategies (25% weight)
+• Business Value Potential: Revenue opportunity and strategic value within each cluster segment (25% weight)
+• Market Opportunity Size: Scale and scope of opportunity within each of the 8 distinct segments (15% weight)
+
+Higher scores indicate clusters with the strongest internal similarity, clear differentiation among 8 segments, and highest business value for targeted strategies.
+
+DATA STRUCTURE:
+- cluster_analysis_score: Primary ranking metric (0-100 scale)
+- cluster_assignment_8segments: Which of the 8 segments each market belongs to
+- cluster_characteristics_enhanced: Defining features of each of the 8 enhanced clusters
+- segment_distinctiveness_level: How unique each cluster is within the 8-cluster framework
+- business_value_by_cluster: Strategic value within each of the 8 cluster segments
+- targeted_strategy_by_cluster: Optimal targeted strategy for each cluster type
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS rank and prioritize by cluster_analysis_score (0-100)
+2. Focus specifically on how to segment markets into distinct customer groups using 8 clusters for targeted strategies
+3. Identify which of the 8 clusters have highest strategic value for targeted marketing and expansion
+4. Explain cluster characteristics: what defines each of the 8 segments and their strategic value for targeting
+5. Distinguish between high-value clusters ready for targeted investment vs maintenance clusters
+
+BUSINESS QUESTION FOCUS:
+Address the core question: "How should we segment markets into distinct customer groups for targeted strategies?" by:
+- Identifying optimal market segmentation using Enhanced Clustering (8 Clusters) for distinct customer groups
+- Explaining what defines each of the 8 customer group segments and their targeting characteristics
+- Recommending cluster-specific targeted strategies based on distinct customer group characteristics and value potential
+- Highlighting high-opportunity customer group clusters ready for focused targeted investment vs standard approach clusters
+`,
+
+  analyze: `
+${UNIVERSAL_REQUIREMENTS}
+
+COMPREHENSIVE ANALYSIS TECHNICAL CONTEXT:
+You are performing comprehensive market analysis combining multiple analytical perspectives to provide complete strategic insights.
+
+SCORING METHODOLOGY:
+The analyze_score (0-100 scale) represents a comprehensive analysis score combining multiple model outputs with business weights, calculated by analyzing:
+• Strategic Value: Market expansion and investment potential (25% weight)
+• Competitive Position: Brand positioning and competitive advantages (25% weight)
+• Market Dynamics: Growth trends, demographic alignment, and market characteristics (25% weight)
+• Risk-Adjusted Opportunity: Market opportunity balanced against risk factors (25% weight)
+
+Higher scores indicate markets with the strongest overall strategic opportunity across multiple analytical dimensions.
+
+DATA STRUCTURE:
+- analyze_score: Primary ranking metric (0-100 scale)
+- strategic_factors: Key strategic opportunity drivers
+- competitive_landscape: Competitive positioning and advantages
+- market_characteristics: Demographics, growth, and market dynamics
+- risk_opportunity_balance: Risk-adjusted market potential
+- comprehensive_insights: Multi-dimensional market analysis
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS rank and prioritize by analyze_score (0-100)
+2. Provide comprehensive analysis covering strategic, competitive, demographic, and risk dimensions
+3. Integrate insights from multiple analytical perspectives into unified strategic recommendations
+4. Focus on markets with strongest overall opportunity across all analytical dimensions
+5. Balance opportunity potential against risk factors and market characteristics
+
+NEXT STEPS REQUIREMENTS:
+Do NOT recommend generic activities like:
+- "Gather additional market data" (comprehensive analysis is provided)
+- "Conduct detailed market research" (multi-dimensional insights are available)
+- "Analyze competitive landscape" (competitive analysis is included)
+- "Assess market potential" (comprehensive opportunity assessment is provided)
+
+INSTEAD, provide specific actionable recommendations such as:
+- Priority market entry strategies based on comprehensive opportunity scores
+- Resource allocation recommendations across multiple high-scoring markets
+- Integrated strategic approaches leveraging competitive, demographic, and strategic insights
+- Risk-adjusted investment strategies based on comprehensive market analysis
+- Multi-channel expansion plans tailored to comprehensive market characteristics
+
+ANALYSIS FOCUS:
+- Provide comprehensive strategic overview integrating multiple analytical perspectives
+- Identify markets with strongest overall opportunity across all dimensions
+- Explain how strategic, competitive, demographic, and risk factors combine to create market opportunities
+- Recommend integrated strategies leveraging comprehensive market insights
+- Balance multiple analytical dimensions to prioritize highest-value strategic actions
+- Provide immediate actionable insights rather than suggesting additional analysis
+`,
+
   general: `
 GENERAL ANALYSIS TECHNICAL CONTEXT:
 You are analyzing geographic data patterns to identify market opportunities and insights.
