@@ -659,9 +659,11 @@ REQUIRED OPENING: "Market share differences range from [MIN]% to [MAX]% across [
 
 STRUCTURE:
 1. Overview with statistical range
-2. Competitor strongholds (largest negative values)
-3. Competitive battlegrounds (near 0%)
-4. Strategic recommendations
+2. H&R Block strongholds (largest positive values) - demographics and characteristics
+3. Competitor strongholds (largest negative values) - demographics and characteristics  
+4. Competitive battlegrounds (near 0%)
+5. Comparative analysis: H&R Block vs competitor stronghold characteristics
+6. Strategic recommendations
 
 Use actual ZIP codes with cities from DESCRIPTION field.
 
@@ -682,9 +684,16 @@ KEY RULES:
 NEXT STEPS REQUIREMENTS:
 ACTIONABLE RECOMMENDATIONS:
 - Target competitor strongholds for conversion
-- Invest in competitive battleground markets
+- Invest in competitive battleground markets  
 - Defend existing H&R Block positions
 - Resource allocation based on gaps
+- Leverage demographic insights from stronghold comparisons
+
+DATA HANDLING:
+- If demographic data is missing/zero, note "limited demographic data available"
+- If market share data is missing/zero, focus on brand difference scores
+- If both are available, provide full demographic and market share analysis
+- Always show BOTH H&R Block AND competitor strongholds for comparison
 
 Avoid suggesting additional data collection - provide strategic insights from current analysis.
 

@@ -1248,7 +1248,7 @@ export default function UnifiedAnalysisWorkflow({
                     </div>
                     <textarea
                       placeholder="Enter your natural language query..."
-                      className="flex-1 w-full p-3 border rounded-lg text-sm min-h-[120px] resize-none"
+                      className="flex-1 w-full p-3 border rounded-lg text-xs min-h-[120px] resize-none"
                       value={selectedQuery}
                       onChange={(e) => setSelectedQuery(e.target.value)}
                     />

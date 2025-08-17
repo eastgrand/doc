@@ -101,12 +101,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     return scoreB - scoreA; // Highest scores first
   });
   
-  // Take representative sampling: top 4, middle 3, bottom 3 for strategic analysis view
-  topFeatures = [
-    ...sorted.slice(0, 4), // Top performers
-    ...sorted.slice(Math.floor(sorted.length * 0.45), Math.floor(sorted.length * 0.45) + 3), // Middle range
-    ...sorted.slice(-3) // Bottom range for context
-  ];
+  // Use FULL dataset for accurate analysis - no sampling limits
+  topFeatures = sorted; // Use all features for comprehensive analysis
   
   // Normalize analysis type
   const normalizedType = analysisType.toLowerCase().replace(/-/g, '_');
@@ -1363,7 +1359,7 @@ export async function POST(req: NextRequest) {
                     layerName: 'Analysis Context', 
                     layerType: 'polygon',
                     layer: null as any, // Simplified for contextual chat
-                    features: summary.records?.slice(0, 10) || [], // Even fewer features for context
+                    features: summary.records || [], // Use full dataset for accurate context
                     extent: null
                 }];
                 console.log('[CONTEXTUAL CHAT] Created lightweight context layer');
@@ -1898,16 +1894,66 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
           
           // Add brand difference statistics for brand difference analysis
           const analysisType = metadata?.analysisType || '';
+          console.log(`🔍 [DEBUG] analysisType check: "${analysisType}" (type: ${typeof analysisType})`);
           if (analysisType === 'brand_difference' || analysisType === 'brand-difference') {
-            // Calculate brand difference statistics from the processed data
+            console.log(`🔍 [DEBUG] Brand difference condition matched!`);
+            // FIXED: Use the SAME data source as Quick Stats to ensure consistency
             if (processedLayersData.length > 0 && processedLayersData[0].features.length > 0) {
-              const brandDiffValues = processedLayersData[0].features
-                .map(f => f.properties?.brand_difference_score || f.properties?.value || 0)
+              // Use the same extractScore function and calculation method as Quick Stats
+              const features = processedLayersData[0].features;
+              console.log(`🔍 [AI Analysis Debug] Features received: ${features.length}`);
+              
+              // Use EXACT same extractScore logic as statsCalculator.ts (lines 9-42)
+              const extractScore = (record: any): number => {
+                // Analysis-specific scores (highest priority)
+                if (record.brand_difference_score !== undefined) return record.brand_difference_score;
+                if (record.anomaly_detection_score !== undefined) return record.anomaly_detection_score;
+                if (record.brand_analysis_score !== undefined) return record.brand_analysis_score;
+                if (record.cluster_performance_score !== undefined) return record.cluster_performance_score;
+                if (record.comparison_score !== undefined) return record.comparison_score;
+                if (record.correlation_strength_score !== undefined) return record.correlation_strength_score;
+                if (record.customer_profile_score !== undefined) return record.customer_profile_score;
+                if (record.demographic_opportunity_score !== undefined) return record.demographic_opportunity_score;
+                if (record.expansion_opportunity_score !== undefined) return record.expansion_opportunity_score;
+                if (record.feature_interaction_score !== undefined) return record.feature_interaction_score;
+                if (record.market_sizing_score !== undefined) return record.market_sizing_score;
+                if (record.outlier_detection_score !== undefined) return record.outlier_detection_score;
+                if (record.predictive_modeling_score !== undefined) return record.predictive_modeling_score;
+                if (record.real_estate_analysis_score !== undefined) return record.real_estate_analysis_score;
+                if (record.risk_adjusted_score !== undefined) return record.risk_adjusted_score;
+                if (record.scenario_analysis_score !== undefined) return record.scenario_analysis_score;
+                if (record.trend_strength_score !== undefined) return record.trend_strength_score;
+                if (record.trend_strength !== undefined) return record.trend_strength;
+                
+                // Generic scores (medium priority)
+                if (record.strategic_value_score !== undefined) return record.strategic_value_score;
+                if (record.competitive_advantage_score !== undefined) return record.competitive_advantage_score;
+                
+                // Fallback to generic fields
+                return record.score || 
+                       record.demographic_score ||
+                       record.value ||
+                       0;
+              };
+              
+              // Use SAME method as calculateBasicStats from statsCalculator
+              const brandDiffValues = features
+                .map(extractScore)
                 .filter(v => typeof v === 'number' && !isNaN(v));
+              
+              console.log(`🔍 [AI Analysis Debug] Extracted ${brandDiffValues.length} brand difference values using statsCalculator method`);
+              console.log(`🔍 [AI Analysis Debug] Sample values:`, brandDiffValues.slice(0, 5));
               
               if (brandDiffValues.length > 0) {
                 const sortedValues = brandDiffValues.sort((a, b) => a - b);
                 const count = sortedValues.length;
+                console.log(`🔍 [AI Analysis Debug] AI Analysis Range: ${sortedValues[0].toFixed(1)}% to ${sortedValues[count - 1].toFixed(1)}% (${count} markets)`);
+                console.log(`🔍 [AI Analysis Debug] Expected: -16.7% to 0.0% (984 markets)`);
+                if (count !== 984 || sortedValues[0] > -16.7) {
+                  console.error(`⚠️ [AI Analysis Debug] DATA MISMATCH DETECTED!`);
+                  console.error(`🔍 [AI Analysis Debug] First 10 feature keys:`, Object.keys(features[0] || {}));
+                  console.error(`🔍 [AI Analysis Debug] First feature sample:`, features[0]);
+                }
                 const mean = sortedValues.reduce((a, b) => a + b, 0) / count;
                 const median = count % 2 === 0 
                   ? (sortedValues[Math.floor(count / 2) - 1] + sortedValues[Math.floor(count / 2)]) / 2
@@ -2058,6 +2104,7 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
           console.log('[Claude API] New clustering system is active, skipping legacy cluster information generation');
         }
 
+
         // Loop through layers to create detailed summary (or use optimized data)
         // Skip regular feature processing if we have a comprehensive summary
         if (!hasComprehensiveSummary) {
@@ -2176,14 +2223,8 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 const sortedFeatures = sortAttributesByField(features, currentLayerPrimaryField);
                 console.log(`[Claude Prompt Gen] Sorted ${sortedFeatures.length} features for layer ${layerName} by ${currentLayerPrimaryField}.`);
 
-                // Use representative sampling instead of just top 10
-                const sampleFeatures = [
-                    ...sortedFeatures.slice(0, 4), // Top performers
-                    ...sortedFeatures.slice(Math.floor(sortedFeatures.length * 0.45), Math.floor(sortedFeatures.length * 0.45) + 3), // Middle range
-                    ...sortedFeatures.slice(-3) // Bottom range
-                ];
-                
-                topFeatures = sampleFeatures.map((f: FeatureProperties): TopFeature => {
+                // Use FULL dataset for accurate analysis - no artificial limits
+                topFeatures = sortedFeatures.map((f: FeatureProperties): TopFeature => {
                     // *** FIX: Access nested properties for getZIPCode ***
                     // Assuming 'f' has the structure { properties: { actual_attributes } }
                     const actualProperties = f.properties || f; // Use f.properties if it exists, else f itself

@@ -509,7 +509,7 @@ ${conversationText}
           layerId: 'unified_analysis',
           layerName: 'Analysis Results',
           layerType: 'polygon',
-          features: sanitizeFeatureData(result.data?.records?.slice(0, 50) || [])
+          features: sanitizeFeatureData(result.data?.records || [])
         }],
         persona: persona
       };
@@ -521,10 +521,18 @@ ${conversationText}
         isClustered: !!result.data?.isClustered
       });
 
-      // Use the chat abort controller for cancellation
+      // Clean up any existing abort controller
+      if (chatAbortControllerRef.current) {
+        chatAbortControllerRef.current.abort();
+      }
+      
+      // Create new abort controller for this request
       chatAbortControllerRef.current = new AbortController();
       const controller = chatAbortControllerRef.current;
-      const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 second timeout
+      const timeoutId = setTimeout(() => {
+        console.log('[ChatInterface] AI analysis timeout reached (120s)');
+        controller.abort();
+      }, 120000); // Increase to 120 second timeout
 
       // Use external service with FormData format (same as analysis)
       const claudeResponse = await sendChatMessage(requestPayload, { signal: controller.signal });
@@ -763,11 +771,7 @@ ${conversationText}
           layerId: 'unified_analysis',
           layerName: 'Analysis Results',
           layerType: 'polygon',
-          features: sanitizeFeatureData(
-            isFollowUpQuestion ? 
-              result.data?.records?.slice(0, 15) || [] : // Fewer features for follow-ups
-              result.data?.records?.slice(0, 50) || []   // Full data for initial questions
-          )
+          features: sanitizeFeatureData(result.data?.records || [])
         }],
         persona: persona
       };
@@ -910,7 +914,7 @@ ${conversationText}
             <div className="flex-1">
               <div className="inline-flex items-center gap-3 p-3 rounded-lg bg-gray-100">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span className="text-sm text-gray-600">Generating response...</span>
+                <span className="text-xs text-gray-600">Running Full Analysis…</span>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -936,7 +940,7 @@ ${conversationText}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder={`Ask questions about your analysis results... (or try /help for commands, current mode: ${analysisMode === 'full' ? 'Full' : 'Stats-only'})`}
-            className="flex-1 min-h-[60px] text-xs"
+            className="flex-1 min-h-[60px] !text-xs"
             disabled={isProcessing}
           />
           <Button

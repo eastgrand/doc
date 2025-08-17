@@ -464,7 +464,10 @@ ${conversationText}
           layerId: 'unified_analysis',
           layerName: 'Analysis Results',
           layerType: 'polygon',
-          features: result.data?.records?.slice(0, 50) || [] // Limit to 50 for performance
+          features: (() => {
+            const records = result.data?.records || [];
+            return records;
+          })()
         }],
         persona: persona // Use the selected persona
       };
@@ -476,10 +479,18 @@ ${conversationText}
         isClustered: !!result.data?.isClustered
       });
 
-      // Use the chat abort controller for cancellation
+      // Clean up any existing abort controller
+      if (chatAbortControllerRef.current) {
+        chatAbortControllerRef.current.abort();
+      }
+      
+      // Create new abort controller for this request
       chatAbortControllerRef.current = new AbortController();
       const controller = chatAbortControllerRef.current;
-      const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 second timeout
+      const timeoutId = setTimeout(() => {
+        console.log('[UnifiedAnalysisChat] AI analysis timeout reached (120s)');
+        controller.abort();
+      }, 120000); // Increase to 120 second timeout
 
       const response = await fetch('/api/claude/generate-response', {
         method: 'POST',
@@ -696,9 +707,11 @@ ${conversationText}
           layerId: 'unified_analysis',
           layerName: 'Analysis Results',
           layerType: 'polygon',
-          features: isFollowUpQuestion ? 
-            result.data?.records?.slice(0, 15) || [] : // Fewer features for follow-ups
-            result.data?.records?.slice(0, 50) || []   // Full data for initial questions
+          features: (() => {
+            // ALWAYS use full dataset for accurate analysis - no artificial limits
+            const records = result.data?.records || [];
+            return records;
+          })()
         }],
         persona: persona
       };
@@ -847,6 +860,21 @@ ${conversationText}
                     {renderFormattedMessage(message.content)}
                   </div>
                 </div>
+                
+                {/* End-of-content copy button - positioned at bottom right */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 text-gray-400 hover:text-gray-600 hover:bg-gray-200"
+                  onClick={() => handleCopyMessage(message)}
+                  title="Copy message"
+                >
+                  {copiedMessageId === message.id ? (
+                    <Check className="w-3 h-3" />
+                  ) : (
+                    <Copy className="w-3 h-3" />
+                  )}
+                </Button>
                 {/* Copy button */}
                 <Button
                   variant="ghost"
@@ -896,7 +924,7 @@ ${conversationText}
             <div className="flex-1">
               <div className="inline-flex items-center gap-3 p-3 rounded-lg bg-gray-100">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span className="text-sm text-gray-600">Generating response...</span>
+                <span className="text-xs text-gray-600">Running Full Analysis…</span>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -922,7 +950,7 @@ ${conversationText}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder={`Ask questions about your analysis results... (or try /help for commands, current mode: ${analysisMode === 'full' ? 'Full' : 'Stats-only'})`}
-            className="flex-1 min-h-[60px] text-xs"
+            className="flex-1 min-h-[60px] !text-xs"
             disabled={isProcessing}
           />
           <Button

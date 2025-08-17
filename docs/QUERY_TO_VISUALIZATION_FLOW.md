@@ -203,7 +203,9 @@ const endpointConfig = {
       "MP10104A_B_P": 35.2,  // TurboTax market share %
       "MP10128A_B_P": 28.7,  // H&R Block market share %
       "value_TOTPOP_CY": 15420,
-      "value_AVGHINC_CY": 52000
+      "value_AVGHINC_CY": 52000,
+      "value_MILLENN_CY_P": 28.5,  // Millennial percentage
+      "value_GENZ_CY_P": 18.2       // Gen Z percentage
     },
     // ... more records
   ],
@@ -211,6 +213,8 @@ const endpointConfig = {
   "summary": "Brand difference analysis complete"
 }
 ```
+
+**Note**: The raw response contains field codes. The BrandDifferenceProcessor transforms these into enriched data with calculated fields.
 
 ### Step 5: Data Processing
 
@@ -542,10 +546,12 @@ map.add(featureLayer);
 |---------------|-------|-----------------|-------|
 | `MP10104A_B_P` | TurboTax | `turbotax_market_share` | TurboTax market share percentage |
 | `MP10128A_B_P` | H&R Block | `h&r block_market_share` | H&R Block market share percentage |
-| `MP30034A_B_P` | Nike | `nike_market_share` | Nike market share percentage |
+| `MP30034A_B_P` | Nike | `nike_market_share` | Nike market share percentage (Note: Athletic brands use MP300XX codes) |
 | `MP30029A_B_P` | Adidas | `adidas_market_share` | Adidas market share percentage |
 | `calculated` | N/A | `brand_difference_score` | Primary difference value (brand1 - brand2) |
 | `calculated` | N/A | `difference_category` | Categorized advantage level |
+
+**Important Note**: Tax service brands (H&R Block, TurboTax) use `MP101XX` field codes, while athletic brands use `MP300XX` field codes. The EnhancedQueryAnalyzer must map these correctly for proper brand detection and routing to `/brand-difference` endpoint.
 
 ### Dynamic Brand Name Fields (New)
 
@@ -641,6 +647,21 @@ if (this.geographicHierarchy.size === 0) {
 **Problem**: Valid data rejected due to rigid field requirements
 **Solution**: Implement flexible validation with multiple field name options
 
+### Issue 5: Brand Difference Analysis Not Working
+**Problem**: Brand difference queries not producing enriched data with `brand_difference_score`
+**Root Cause**: EnhancedQueryAnalyzer field mappings incorrect for tax service brands
+**Solution**: 
+1. Ensure EnhancedQueryAnalyzer maps correct field codes:
+   - H&R Block: `MP10128A_B_P` (NOT `MP30034A_B_P`)
+   - TurboTax: `MP10104A_B_P` (NOT `MP30029A_B_P`)
+2. Verify brand detection in `identifyBrands()` method
+3. Confirm routing to `/brand-difference` endpoint
+4. Check BrandDifferenceProcessor enriches data with:
+   - `brand_difference_score`
+   - `[brand]_market_share` fields
+   - `difference_category`
+   - Demographic context
+
 ## Testing the Flow
 
 ### 1. Test Query Analysis
@@ -699,6 +720,16 @@ console.log(result.summary);
 
 ### 6. Test Brand Difference Analysis
 ```bash
+# Test EnhancedQueryAnalyzer brand detection
+const analyzer = new EnhancedQueryAnalyzer();
+const query = "Compare H&R Block vs TurboTax market share";
+
+console.log(analyzer.identifyBrands(query));
+// Should return: ['hrblock', 'turbotax']
+
+console.log(analyzer.getBestEndpoint(query));
+// Should return: '/brand-difference'
+
 # Test BrandDifferenceProcessor with TurboTax vs H&R Block
 const brandProcessor = new BrandDifferenceProcessor();
 const mockBrandData = {
@@ -707,8 +738,8 @@ const mockBrandData = {
     {
       ID: "32601",
       DESCRIPTION: "Gainesville",
-      MP10104A_B_P: 35.2,  // TurboTax share
-      MP10128A_B_P: 28.7   // H&R Block share
+      MP10104A_B_P: 35.2,  // TurboTax share (correct field code)
+      MP10128A_B_P: 28.7   // H&R Block share (correct field code)
     }
   ]
 };
@@ -717,8 +748,14 @@ const result = brandProcessor.process(mockBrandData, {
   extractedBrands: ['turbotax', 'h&r block']
 });
 
-console.log(result.records[0].brand_difference_score);
+console.log(result.records[0].properties.brand_difference_score);
 // Should return: 6.5 (35.2 - 28.7)
+
+console.log(result.records[0].properties['turbotax_market_share']);
+// Should return: 35.2
+
+console.log(result.records[0].properties['h&r block_market_share']);
+// Should return: 28.7
 
 console.log(result.records[0].category);
 // Should return: "brand1_leading" (TurboTax leading)

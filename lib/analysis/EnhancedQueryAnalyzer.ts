@@ -27,12 +27,12 @@ export class EnhancedQueryAnalyzer {
     // Brand mappings - FIXED: Using value_ prefix for production system
     hrblock: {
       keywords: ['h&r block', 'hr block', 'h and r block'],
-      fields: ['value_MP30034A_B', 'value_MP30034A_B_P'],
+      fields: ['MP10128A_B', 'MP10128A_B_P'],
       description: 'H&R Block tax service usage'
     },
     turbotax: {
       keywords: ['turbotax', 'turbo tax'],
-      fields: ['value_MP30029A_B', 'value_MP30029A_B_P'],
+      fields: ['MP10104A_B', 'MP10104A_B_P'],
       description: 'TurboTax tax service usage'
     },
     jordan: {

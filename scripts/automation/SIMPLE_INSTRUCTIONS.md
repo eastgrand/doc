@@ -17,12 +17,63 @@
 
 ## ⚠️ CRITICAL CONFIGURATION FOR NEW PROJECTS ⚠️
 
-### Brand Fields for Comparative Analysis
-**YOU MUST UPDATE THESE FIELDS WHEN SWITCHING PROJECTS OR DATA SOURCES**
+### 🎯 Brand Analysis Configuration
+**YOU MUST UPDATE THESE COMPONENTS WHEN SWITCHING PROJECTS OR DATA SOURCES**
+
+When switching between projects with different brands (e.g., tax services → athletic brands), multiple components need updating for brand difference analysis to work correctly.
+
+#### 1. Enhanced Query Analyzer Field Mappings
+**File**: `/lib/analysis/EnhancedQueryAnalyzer.ts`
+
+The EnhancedQueryAnalyzer needs correct field codes to detect brands in queries and route to the proper endpoint.
+
+**Current Configuration (Tax Services):**
+```typescript
+hrblock: {
+  keywords: ['h&r block', 'hr block', 'h and r block'],
+  fields: ['MP10128A_B', 'MP10128A_B_P'],  // ⚠️ MUST match your data
+  description: 'H&R Block tax service usage'
+},
+turbotax: {
+  keywords: ['turbotax', 'turbo tax'],
+  fields: ['MP10104A_B', 'MP10104A_B_P'],  // ⚠️ MUST match your data
+  description: 'TurboTax tax service usage'
+}
+```
+
+**To Update:**
+1. Find your brand field codes in your data (e.g., `MP30034A_B_P` for Nike)
+2. Update the FIELD_MAPPINGS object with correct field codes
+3. Update keywords to match how users would type brand names
+4. Update the `identifyBrands()` method brand list (line ~741)
+
+**Common Field Code Patterns:**
+- **Tax Services**: `MP101XX` codes (e.g., MP10104 = TurboTax, MP10128 = H&R Block)
+- **Athletic Brands**: `MP300XX` codes (e.g., MP30034 = Nike, MP30029 = Adidas)
+- **Banking Services**: `MP100XX` codes (varies by institution)
+
+#### 2. Brand Difference Processor Mappings
+**File**: `/lib/analysis/strategies/processors/BrandDifferenceProcessor.ts`
+
+The BrandDifferenceProcessor needs to know the exact field codes for calculating brand differences.
+
+**Current Configuration (lines 13-16):**
+```typescript
+private readonly BRAND_MAPPINGS = {
+  'h&r block': 'MP10128A_B_P',
+  'turbotax': 'MP10104A_B_P'
+};
+```
+
+**To Update:**
+1. Replace with your project's brand field codes
+2. Ensure brand names match those in EnhancedQueryAnalyzer
+3. Update validation logic if field patterns change
+
+#### 3. Comparative Analysis Processor
+**File**: `/lib/analysis/strategies/processors/ComparativeAnalysisProcessor.ts`
 
 The comparative analysis processor needs to know which fields represent competing brands/services.
-These are currently hardcoded and MUST be updated in:
-`/lib/analysis/strategies/processors/ComparativeAnalysisProcessor.ts`
 
 **Current Configuration (Tax Preparation Services):**
 - Brand A: `MP10104A_B_P` (TurboTax Users %)
@@ -46,23 +97,54 @@ These are currently hardcoded and MUST be updated in:
 
 **Without this update, comparative analysis will show incorrect results with 0 values and constant scores of 15.00**
 
-### Brand Fields for Brand Difference Analysis
-**ALSO UPDATE THESE FIELDS WHEN SWITCHING PROJECTS OR DATA SOURCES**
+#### 🔍 Troubleshooting Brand Analysis Issues
 
-The brand difference processor also needs manual updates for proper validation.
-These are currently hardcoded and MUST be updated in:
-`/lib/analysis/strategies/processors/BrandDifferenceProcessor.ts`
+**Problem: Brand difference analysis shows wrong ranges or no data**
+- **Symptom**: Quick Stats shows one range (e.g., -16.7% to 0.0%) but AI Analysis shows different range
+- **Root Cause**: EnhancedQueryAnalyzer has wrong field codes for brands
+- **Solution**: Update FIELD_MAPPINGS in EnhancedQueryAnalyzer.ts with correct field codes
 
-**Current Configuration (Tax Preparation Services):**
-- TurboTax: `MP10104A_B_P`
-- H&R Block: `MP10128A_B_P`
+**Problem: Query not routing to /brand-difference endpoint**
+- **Symptom**: Brand queries produce basic geographic data instead of enriched brand difference data
+- **Root Cause**: Brand detection failing due to incorrect field mappings
+- **Solution**: 
+  1. Check EnhancedQueryAnalyzer field codes match your data
+  2. Verify brand keywords in FIELD_MAPPINGS
+  3. Update identifyBrands() method brand list
 
-**To Update for Your Project:**
-1. Update the `BRAND_MAPPINGS` object (lines 13-18)
-2. Update the validation method brand field checks (lines 47-48)
-3. Replace brand field names with your project's actual field names
+**Problem: AI Analysis missing demographic data for brand differences**
+- **Symptom**: AI shows "0.0% market share" or "No demographic data"
+- **Root Cause**: BrandDifferenceProcessor not being called due to routing failure
+- **Solution**: Fix EnhancedQueryAnalyzer field mappings first, then verify BrandDifferenceProcessor BRAND_MAPPINGS
 
-**Note:** This processor validates data by checking for specific brand field names. When switching projects, you must update both the brand mappings and the validation logic to match your new data structure.
+**Testing Your Fix:**
+```bash
+# 1. Test brand detection in console
+const analyzer = new EnhancedQueryAnalyzer();
+console.log(analyzer.identifyBrands("H&R Block vs TurboTax"));
+// Should return: ['hrblock', 'turbotax']
+
+# 2. Test endpoint routing
+console.log(analyzer.getBestEndpoint("brand difference analysis"));
+// Should return: '/brand-difference'
+
+# 3. Check processed data has enriched fields
+// Look for: brand_difference_score, [brand]_market_share fields
+```
+
+#### 📊 Quick Reference: Field Code Updates by Industry
+
+When switching industries, here's what field codes typically need updating:
+
+| Industry | Brand 1 | Field Code | Brand 2 | Field Code |
+|----------|---------|------------|---------|------------|
+| Tax Services | TurboTax | MP10104A_B_P | H&R Block | MP10128A_B_P |
+| Athletic Shoes | Nike | MP30034A_B_P | Adidas | MP30029A_B_P |
+| Athletic Shoes | Jordan | MP30032A_B_P | New Balance | MP30033A_B_P |
+| Banking | Bank of America | MP10002A_B_P | Wells Fargo | MP10028A_B_P |
+| Digital Payments | Apple Pay | MP10050A_B_P | Google Pay | MP10051A_B_P |
+
+**⚠️ IMPORTANT**: Always verify field codes with your actual data source - these are examples only.
 
 ## Step 1: Run the Automation (2-5 minutes)
 

@@ -2591,7 +2591,7 @@ const EnhancedGeospatialChat = memo(({
       // Prepare comprehensive context for Claude - use existing features and analysis data
       const contextualData = {
         // Current analysis results
-        features: features.length > 0 ? features.slice(0, 50) : [], // Limit to prevent payload bloat
+        features: features, // Use full dataset for accurate analysis
         featuresCount: features.length,
         
         // Current visualization info
@@ -2616,7 +2616,7 @@ const EnhancedGeospatialChat = memo(({
           type: 'geojson',
           data: { type: 'FeatureCollection', features: [] }
         },
-        features: features.slice(0, 50), // Limit features to keep payload manageable
+        features: features, // Use full dataset for accurate analysis
         extent: null,
         fields: [],
         geometryType: 'polygon',

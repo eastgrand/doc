@@ -136,9 +136,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const brand1Field = this.extractBrandFieldCode(rawData, brand1.charAt(0).toUpperCase() + brand1.slice(1));
     const brand2Field = this.extractBrandFieldCode(rawData, brand2.charAt(0).toUpperCase() + brand2.slice(1));
     
-    // Create renderer and legend with brand names
-    const renderer = this.createBrandDifferenceRenderer(records, brand1, brand2);
-    const legend = this.createBrandDifferenceLegend(records, brand1, brand2);
+    // Create renderer and legend with dynamic quartiles
+    const renderer = this.createBrandDifferenceRenderer(records);
+    const legend = this.createBrandDifferenceLegend(records);
     
     console.log(`🔥 [BrandDifferenceProcessor] Created renderer and legend:`, {
       rendererType: renderer?.type,
@@ -568,16 +568,15 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
   // RENDERING METHODS
   // ============================================================================
 
-  private createBrandDifferenceRenderer(records: any[], brand1: string, brand2: string): any {
+  private createBrandDifferenceRenderer(records: any[]): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
-    // Use diverging color scheme: red (brand2 advantage) -> white -> blue (brand1 advantage)
-    // Use the exact same colors as strategic analysis (red-to-green)
+    // Use diverging color scheme: red (brand2 advantage) -> green (brand1 advantage)
+    // Use standard 4-color quartile scheme like other processors
     const differenceColors = [
       [215, 48, 39, 0.6],   // #d73027 - Red (Strong brand2 advantage)
       [253, 174, 97, 0.6],  // #fdae61 - Orange (Moderate brand2 advantage)
-      [254, 224, 144, 0.6], // #fee090 - Light yellow (Competitive parity)
       [166, 217, 106, 0.6], // #a6d96a - Light green (Moderate brand1 advantage)
       [26, 152, 80, 0.6]    // #1a9850 - Dark green (Strong brand1 advantage)
     ];
@@ -593,7 +592,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
           color: differenceColors[i],
           outline: { color: [0, 0, 0, 0], width: 0 }
         },
-        label: this.formatDifferenceLabel(i, quartileBreaks, brand1, brand2)
+        label: this.formatDifferenceLabel(i, quartileBreaks)
       })),
       defaultSymbol: {
         type: 'simple-fill',
@@ -603,15 +602,14 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     };
   }
 
-  private createBrandDifferenceLegend(records: any[], brand1: string, brand2: string): any {
+  private createBrandDifferenceLegend(records: any[]): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
-    // Use exact same colors as strategic analysis in rgba format
+    // Use standard 4-color quartile scheme in rgba format
     const colors = [
       'rgba(215, 48, 39, 0.6)',    // #d73027 - Red (Strong brand2 advantage)
       'rgba(253, 174, 97, 0.6)',   // #fdae61 - Orange (Moderate brand2 advantage)
-      'rgba(254, 224, 144, 0.6)',  // #fee090 - Light yellow (Competitive parity)
       'rgba(166, 217, 106, 0.6)',  // Light green - Moderate brand1 advantage  
       'rgba(26, 152, 80, 0.6)'     // Dark green - Strong brand1 advantage
     ];
@@ -619,7 +617,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const legendItems = [];
     for (let i = 0; i < quartileBreaks.length; i++) {
       legendItems.push({
-        label: this.formatDifferenceLabel(i, quartileBreaks, brand1, brand2),
+        label: this.formatDifferenceLabel(i, quartileBreaks),
         color: colors[i],
         minValue: quartileBreaks[i].min,
         maxValue: quartileBreaks[i].max
@@ -636,46 +634,31 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
   private calculateQuartileBreaks(values: number[]): Array<{min: number, max: number}> {
     if (values.length === 0) return [];
     
-    // Use quintiles (5 equal groups) for better distribution
-    const q1 = values[Math.floor(values.length * 0.2)];
-    const q2 = values[Math.floor(values.length * 0.4)];
-    const q3 = values[Math.floor(values.length * 0.6)];
-    const q4 = values[Math.floor(values.length * 0.8)];
+    // Use standard quartiles (4 equal groups) like other processors
+    const q1 = values[Math.floor(values.length * 0.25)];
+    const q2 = values[Math.floor(values.length * 0.5)];
+    const q3 = values[Math.floor(values.length * 0.75)];
     
-    // Create non-overlapping ranges by using exclusive boundaries
+    // Create clean, non-overlapping ranges
     return [
       { min: values[0], max: q1 },
-      { min: q1 + 0.01, max: q2 },  // Add small increment to avoid overlap
-      { min: q2 + 0.01, max: q3 },
-      { min: q3 + 0.01, max: q4 },
-      { min: q4 + 0.01, max: values[values.length - 1] }
+      { min: q1, max: q2 },
+      { min: q2, max: q3 },
+      { min: q3, max: values[values.length - 1] }
     ];
   }
 
-  private formatDifferenceLabel(classIndex: number, breaks: Array<{min: number, max: number}>, brand1: string, brand2: string): string {
-    const range = breaks[classIndex];
-    const brand1Name = brand1.charAt(0).toUpperCase() + brand1.slice(1);
-    const brand2Name = brand2.charAt(0).toUpperCase() + brand2.slice(1);
-    
-    // Format ranges more clearly to avoid duplicates
-    const minStr = range.min.toFixed(1);
-    const maxStr = range.max.toFixed(1);
-    
-    // For extreme ranges, show descriptive labels
-    if (classIndex === 0 && range.max < -10) {
-      return `Strong ${brand2Name} Advantage (${minStr}% to ${maxStr}%)`;
-    } else if (classIndex === 1 && range.max < -2) {
-      return `${brand2Name} Advantage (${minStr}% to ${maxStr}%)`;
-    } else if (classIndex === 2) {
-      return `Competitive Parity (${minStr}% to ${maxStr}%)`;
-    } else if (classIndex === 3 && range.min > 2) {
-      return `${brand1Name} Advantage (${minStr}% to ${maxStr}%)`;
-    } else if (classIndex === 4 && range.min > 10) {
-      return `Strong ${brand1Name} Advantage (${minStr}% to ${maxStr}%)`;
+  private formatDifferenceLabel(classIndex: number, breaks: Array<{min: number, max: number}>): string {
+    if (classIndex === 0) {
+      // First class: < maxValue
+      return `< ${breaks[classIndex].max.toFixed(1)}%`;
+    } else if (classIndex === breaks.length - 1) {
+      // Last class: > minValue  
+      return `> ${breaks[classIndex].min.toFixed(1)}%`;
+    } else {
+      // Middle classes: minValue% - maxValue%
+      return `${breaks[classIndex].min.toFixed(1)}% - ${breaks[classIndex].max.toFixed(1)}%`;
     }
-    
-    // Default: show numeric range
-    return `${minStr}% to ${maxStr}%`;
   }
 
   /**
