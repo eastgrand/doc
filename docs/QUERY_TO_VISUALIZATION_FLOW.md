@@ -662,6 +662,55 @@ if (this.geographicHierarchy.size === 0) {
    - `difference_category`
    - Demographic context
 
+### Issue 6: Analysis-Specific Field Relevance
+**Problem**: All analyses showing same demographic fields regardless of relevance
+**Root Cause**: Universal demographic function applied to all analysis types
+**Solution**: Implement analysis-specific field sets based on processor scoring algorithms
+
+**Analysis-Specific Field Sets Implementation**:
+
+1. **Strategic Analysis**: Market expansion factors
+   - Competitive advantage scores, market size indicators
+   - Purchasing power, opportunity percentages, diversity metrics
+   - Function: `addStrategicFields()` - focuses on expansion potential
+
+2. **Brand Analysis**: Consumer behavior demographics  
+   - Gen Z, Millennials, Gen Alpha with business context
+   - Brand loyalty indicators, consumer spending patterns
+   - Function: `addBrandFields()` - focuses on brand-relevant demographics
+
+3. **Demographic Analysis**: Comprehensive population characteristics
+   - All age groups, socioeconomic factors, household composition
+   - Education levels, employment status, lifestyle indicators
+   - Function: `addDemographicFields()` - comprehensive population view
+
+4. **Competitive Analysis**: Market positioning factors
+   - Competitor density, market saturation, competitive gaps
+   - Performance benchmarks, market share indicators
+   - Function: `addCompetitiveFields()` - focuses on competitive landscape
+
+5. **Market Sizing Analysis**: Business volume indicators
+   - Total addressable market, revenue potential, growth metrics
+   - Business density, commercial activity indicators
+   - Function: `addMarketSizingFields()` - focuses on market opportunity size
+
+6. **Comparative Analysis**: Cross-market comparison metrics
+   - Relative performance indicators, market differences
+   - Benchmark comparisons, ranking factors
+   - Function: `addComparativeFields()` - focuses on comparison relevance
+
+7. **Correlation Analysis**: Statistical relationship factors
+   - Variables being correlated, statistical significance indicators
+   - Relationship strength metrics, causation factors
+   - Function: `addCorrelationFields()` - focuses on correlation variables
+
+**Implementation Benefits**:
+- AI focuses on fields that actually drive the analysis scoring algorithm
+- Eliminates irrelevant demographic noise for each analysis type
+- Provides business context for why specific demographics matter to each analysis
+- Reduces "limited demographic data" errors by proper field detection
+- Each analysis gets targeted field relevance based on its processor's scoring method
+
 ## Testing the Flow
 
 ### 1. Test Query Analysis

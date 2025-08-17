@@ -690,10 +690,12 @@ ACTIONABLE RECOMMENDATIONS:
 - Leverage demographic insights from stronghold comparisons
 
 DATA HANDLING:
-- If demographic data is missing/zero, note "limited demographic data available"
+- Only note "limited demographic data available" if NO demographic fields are present
+- Include ALL available demographic groups (Gen Z, Millennials, Gen X, Baby Boomers, etc.) not just Gen Z/Alpha
 - If market share data is missing/zero, focus on brand difference scores
 - If both are available, provide full demographic and market share analysis
 - Always show BOTH H&R Block AND competitor strongholds for comparison
+- Analyze demographic diversity across different age groups, income levels, education
 
 Avoid suggesting additional data collection - provide strategic insights from current analysis.
 

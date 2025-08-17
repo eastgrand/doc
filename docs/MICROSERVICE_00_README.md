@@ -215,6 +215,62 @@ curl -s "your-blob-url" | jq '.results[0].ID'     # Should match your geographic
 **Problem**: Deployment size exceeds limits
 **Solution**: Ensure all endpoints are uploaded to blob storage and not included in deployment package.
 
+## Current System Architecture and Data Flow
+
+### **How Scoring Currently Works (VERIFIED WORKING)**
+
+```
+Microservice Export → Scoring Scripts → Enhanced JSON → Processors → Analysis Endpoints
+     ↓                      ↓               ↓              ↓             ↓
+Raw SHAP data        Add calculated      Scored data    Extract &     Visualization
+& base fields        scores to records   in JSON        format        with scores
+                           ↓                                              ↓
+                   ✅ strategic_value_score: 76.53            Strategic Analysis
+                   ✅ competitive_advantage_score: 90.6       Competitive Analysis  
+                   ✅ demographic_opportunity_score: 91.14    Demographic Analysis
+                   ✅ correlation_strength_score: 60.6       Correlation Analysis
+                   ✅ brand_analysis_score: 93.67            Brand Analysis
+```
+
+### **Current Working Field Usage**
+
+**✅ Scoring Scripts (WORKING CORRECTLY)**:
+- Use current field names: `mp30034a_b_p`, `median_income`, `total_population`
+- Generate calculated scores: `strategic_value_score`, `competitive_advantage_score`
+- Last updated: July 28, 2025
+
+**✅ Processors (WORKING CORRECTLY)**:
+- Extract calculated scores: `record.strategic_value_score`, `record.competitive_advantage_score`
+- Use appropriate fallbacks for missing fields
+- Work with both raw fields and calculated scores
+
+**✅ Data Structure (VERIFIED)**:
+```json
+{
+  "ID": "11236",
+  "mp30034a_b_p": 29.97,
+  "median_income": 66076,
+  "total_population": 96712,
+  "strategic_value_score": 76.53,
+  "competitive_advantage_score": 90.6,
+  "demographic_opportunity_score": 91.14
+}
+```
+
+### **Analysis-Specific Field Implementation (NEXT STEP)**
+
+Instead of re-scoring, implement field-specific display functions:
+
+```typescript
+// What each processor actually uses:
+Strategic Analysis → strategic_value_score + competitive_advantage_score + demographic_opportunity_score
+Competitive Analysis → competitive_advantage_score + brand_market_shares + strategic_context
+Brand Analysis → brand_difference_score + market_share_fields + demographic_context
+Correlation Analysis → correlation_strength_score + statistical_variables + population_context
+```
+
+**Key Insight**: Scoring is working correctly. The improvement needed is **field-specific analysis display** showing what each processor uses for its calculations.
+
 ## Migration Architecture
 
 ```

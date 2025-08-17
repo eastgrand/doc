@@ -104,6 +104,228 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
   // Use FULL dataset for accurate analysis - no sampling limits
   topFeatures = sorted; // Use all features for comprehensive analysis
   
+  // Analysis-specific field display functions
+  const addStrategicFields = (props: any, metricsSection: string): string => {
+    // Strategic analysis focuses on market expansion factors (as used by StrategicAnalysisProcessor)
+    let fieldCount = 0;
+    
+    // Core strategic factors (from processor importance weights)
+    if (props?.competitive_advantage_score) {
+      metricsSection += `   Competitive Advantage: ${props.competitive_advantage_score.toFixed(1)}\n`;
+      fieldCount++;
+    }
+    if (props?.total_population || props?.value_TOTPOP_CY) {
+      const pop = props?.total_population || props?.value_TOTPOP_CY;
+      metricsSection += `   Market Size: ${(pop / 1000).toFixed(1)}K people\n`;
+      fieldCount++;
+    }
+    if (props?.median_income || props?.value_AVGHINC_CY) {
+      const income = props?.median_income || props?.value_AVGHINC_CY;
+      metricsSection += `   Purchasing Power: $${(income / 1000).toFixed(0)}K\n`;
+      fieldCount++;
+    }
+    if (props?.market_gap !== undefined) {
+      metricsSection += `   Market Opportunity: ${props.market_gap.toFixed(1)}% untapped\n`;
+      fieldCount++;
+    }
+    if (props?.diversity_index || props?.value_DIVINDX_CY) {
+      const diversity = props?.diversity_index || props?.value_DIVINDX_CY;
+      metricsSection += `   Market Diversity: ${diversity.toFixed(0)}\n`;
+      fieldCount++;
+    }
+    
+    if (fieldCount === 0) {
+      metricsSection += `   Limited strategic data available\n`;
+    }
+    return metricsSection;
+  };
+  
+  const addBrandFields = (props: any, metricsSection: string): string => {
+    // Brand difference analysis focuses on consumer behavior demographics and brand metrics
+    let fieldCount = 0;
+    
+    // Consumer behavior demographics (relevant to brand loyalty)
+    if (props?.value_GENZ_CY_P || props?.GENZ_CY_P) {
+      const genZ = props?.value_GENZ_CY_P || props?.GENZ_CY_P;
+      metricsSection += `   Generation Z: ${genZ.toFixed(1)}% (digital-first consumers)\n`;
+      fieldCount++;
+    }
+    if (props?.value_MILLENN_CY_P || props?.MILLENN_CY_P) {
+      const millennials = props?.value_MILLENN_CY_P || props?.MILLENN_CY_P;
+      metricsSection += `   Millennials: ${millennials.toFixed(1)}% (tech-savvy)\n`;
+      fieldCount++;
+    }
+    if (props?.value_GENALPHACY_P || props?.GENALPHACY_P) {
+      const genAlpha = props?.value_GENALPHACY_P || props?.GENALPHACY_P;
+      metricsSection += `   Generation Alpha: ${genAlpha.toFixed(1)}% (emerging consumers)\n`;
+      fieldCount++;
+    }
+    
+    // Income context for brand positioning
+    if (props?.value_AVGHINC_CY || props?.AVGHINC_CY) {
+      const income = props?.value_AVGHINC_CY || props?.AVGHINC_CY;
+      metricsSection += `   Median Income: $${(income / 1000).toFixed(0)}K\n`;
+      fieldCount++;
+    }
+    
+    if (fieldCount === 0) {
+      metricsSection += `   Limited demographic data available\n`;
+    }
+    return metricsSection;
+  };
+  
+  const addDemographicFields = (props: any, metricsSection: string): string => {
+    // Demographic analysis shows comprehensive population characteristics
+    let fieldCount = 0;
+    
+    // All age groups for demographic analysis
+    const ageGroups = {
+      'Generation Z': props?.value_GENZ_CY_P || props?.GENZ_CY_P,
+      'Generation Alpha': props?.value_GENALPHACY_P || props?.GENALPHACY_P,
+      'Millennials': props?.value_MILLENN_CY_P || props?.MILLENN_CY_P,
+      'Generation X': props?.value_GENX_CY_P || props?.GENX_CY_P,
+      'Baby Boomers': props?.value_BABYBMR_CY_P || props?.BABYBMR_CY_P
+    };
+    
+    for (const [label, value] of Object.entries(ageGroups)) {
+      if (value !== undefined && value !== null && value > 0) {
+        metricsSection += `   ${label}: ${value.toFixed(1)}%\n`;
+        fieldCount++;
+      }
+    }
+    
+    // Socioeconomic factors
+    if (props?.value_AVGHINC_CY || props?.AVGHINC_CY) {
+      const income = props?.value_AVGHINC_CY || props?.AVGHINC_CY;
+      metricsSection += `   Median Income: $${(income / 1000).toFixed(0)}K\n`;
+      fieldCount++;
+    }
+    if (props?.value_EDCOLL_CY_P || props?.EDCOLL_CY_P) {
+      const education = props?.value_EDCOLL_CY_P || props?.EDCOLL_CY_P;
+      metricsSection += `   College Educated: ${education.toFixed(1)}%\n`;
+      fieldCount++;
+    }
+    
+    if (fieldCount === 0) {
+      metricsSection += `   Limited demographic data available\n`;
+    }
+    return metricsSection;
+  };
+  
+  const addCompetitiveFields = (props: any, metricsSection: string): string => {
+    // Competitive analysis focuses on market share competition between brands
+    let fieldCount = 0;
+    
+    // Brand market shares (core competitive metrics)
+    if (props?.nike_market_share) {
+      metricsSection += `   Nike Market Share: ${props.nike_market_share.toFixed(1)}%\n`;
+      fieldCount++;
+    }
+    if (props?.adidas_market_share) {
+      metricsSection += `   Adidas Market Share: ${props.adidas_market_share.toFixed(1)}%\n`;
+      fieldCount++;
+    }
+    if (props?.jordan_market_share) {
+      metricsSection += `   Jordan Market Share: ${props.jordan_market_share.toFixed(1)}%\n`;
+      fieldCount++;
+    }
+    
+    // Market dynamics
+    if (props?.total_population || props?.value_TOTPOP_CY) {
+      const pop = props?.total_population || props?.value_TOTPOP_CY;
+      metricsSection += `   Market Size: ${(pop / 1000).toFixed(1)}K\n`;
+      fieldCount++;
+    }
+    
+    if (fieldCount === 0) {
+      metricsSection += `   Limited competitive data available\n`;
+    }
+    return metricsSection;
+  };
+  
+  const addMarketSizingFields = (props: any, metricsSection: string): string => {
+    // Market sizing focuses on market potential and opportunity size
+    let fieldCount = 0;
+    
+    // Market potential metrics
+    if (props?.total_population || props?.value_TOTPOP_CY) {
+      const pop = props?.total_population || props?.value_TOTPOP_CY;
+      metricsSection += `   Total Market Size: ${(pop / 1000).toFixed(1)}K people\n`;
+      fieldCount++;
+    }
+    if (props?.median_income || props?.value_AVGHINC_CY) {
+      const income = props?.median_income || props?.value_AVGHINC_CY;
+      metricsSection += `   Purchasing Power: $${(income / 1000).toFixed(0)}K median income\n`;
+      fieldCount++;
+    }
+    if (props?.market_gap) {
+      metricsSection += `   Opportunity Size: ${props.market_gap.toFixed(1)}% untapped\n`;
+      fieldCount++;
+    }
+    
+    // Market penetration potential
+    if (props?.demographic_opportunity_score) {
+      metricsSection += `   Market Potential: ${props.demographic_opportunity_score.toFixed(1)}\n`;
+      fieldCount++;
+    }
+    
+    if (fieldCount === 0) {
+      metricsSection += `   Limited market sizing data available\n`;
+    }
+    return metricsSection;
+  };
+  
+  const addComparativeFields = (props: any, metricsSection: string): string => {
+    // Comparative analysis focuses on direct brand-to-brand comparisons
+    let fieldCount = 0;
+    
+    // Brand performance metrics
+    if (props?.brand_a_name && props?.brand_a_metric) {
+      metricsSection += `   ${props.brand_a_name}: ${props.brand_a_metric.toFixed(1)}%\n`;
+      fieldCount++;
+    }
+    if (props?.brand_b_name && props?.brand_b_metric) {
+      metricsSection += `   ${props.brand_b_name}: ${props.brand_b_metric.toFixed(1)}%\n`;
+      fieldCount++;
+    }
+    
+    // Market context
+    if (props?.total_population || props?.value_TOTPOP_CY) {
+      const pop = props?.total_population || props?.value_TOTPOP_CY;
+      metricsSection += `   Market Context: ${(pop / 1000).toFixed(1)}K people\n`;
+      fieldCount++;
+    }
+    
+    if (fieldCount === 0) {
+      metricsSection += `   Limited comparative data available\n`;
+    }
+    return metricsSection;
+  };
+  
+  const addCorrelationFields = (props: any, metricsSection: string): string => {
+    // Correlation analysis focuses on statistical relationships between variables
+    let fieldCount = 0;
+    
+    // Key variables being correlated
+    if (props?.primary_variable !== undefined) {
+      metricsSection += `   Primary Variable: ${props.primary_variable.toFixed(2)}\n`;
+      fieldCount++;
+    }
+    if (props?.secondary_variable !== undefined) {
+      metricsSection += `   Secondary Variable: ${props.secondary_variable.toFixed(2)}\n`;
+      fieldCount++;
+    }
+    if (props?.correlation_strength !== undefined) {
+      metricsSection += `   Correlation Strength: ${props.correlation_strength.toFixed(3)}\n`;
+      fieldCount++;
+    }
+    
+    if (fieldCount === 0) {
+      metricsSection += `   Limited correlation data available\n`;
+    }
+    return metricsSection;
+  };
+  
   // Normalize analysis type
   const normalizedType = analysisType.toLowerCase().replace(/-/g, '_');
   
@@ -140,6 +362,9 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         if (props?.nike_market_share && props.nike_market_share > 0) {
           metricsSection += `   Nike Share: ${props.nike_market_share.toFixed(1)}%\n`;
         }
+        
+        // Add strategic-specific context fields
+        metricsSection = addStrategicFields(props, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -156,16 +381,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         const competitiveScore = props?.competitive_advantage_score || feature?.competitive_advantage_score || props?.target_value;
         metricsSection += `   Competitive Advantage Score: ${competitiveScore || 'N/A'}\n`;
         
-        // Add market share context for competitive analysis
-        if (props?.nike_market_share) {
-          metricsSection += `   Nike Market Share: ${props.nike_market_share.toFixed(1)}%\n`;
-        }
-        if (props?.adidas_market_share) {
-          metricsSection += `   Adidas Market Share: ${props.adidas_market_share.toFixed(1)}%\n`;
-        }
-        if (props?.jordan_market_share) {
-          metricsSection += `   Jordan Market Share: ${props.jordan_market_share.toFixed(1)}%\n`;
-        }
+        // Add competitive-specific context fields
+        metricsSection = addCompetitiveFields(props, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -179,12 +396,9 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Demographic Score: ${props?.target_value || 'N/A'}\n`;
         
-        if (props?.total_population) {
-          metricsSection += `   Population: ${(props.total_population / 1000).toFixed(1)}K\n`;
-        }
-        if (props?.median_income) {
-          metricsSection += `   Median Income: $${(props.median_income / 1000).toFixed(1)}K\n`;
-        }
+        // Add comprehensive demographic analysis (all age groups and socioeconomic factors)
+        metricsSection = addDemographicFields(props, metricsSection);
+        
         if (props?.demographic_opportunity_score) {
           metricsSection += `   Demographic Opportunity: ${props.demographic_opportunity_score}\n`;
         }
@@ -200,15 +414,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Market Sizing Score: ${props?.target_value || 'N/A'}\n`;
         
-        if (props?.total_population) {
-          metricsSection += `   Total Market Size: ${(props.total_population / 1000).toFixed(1)}K people\n`;
-        }
-        if (props?.median_income) {
-          metricsSection += `   Purchasing Power: $${(props.median_income / 1000).toFixed(1)}K median income\n`;
-        }
-        if (props?.market_gap) {
-          metricsSection += `   Opportunity Size: ${props.market_gap}% untapped\n`;
-        }
+        // Add market sizing-specific context fields
+        metricsSection = addMarketSizingFields(props, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -269,13 +476,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
           metricsSection += `   Competitive Intensity: ${props.competitive_dynamics_level}\n`;
         }
         
-        // Include demographic context for targeting
-        if (props?.total_population) {
-          metricsSection += `   Market Size: ${(props.total_population / 1000).toFixed(1)}K people\n`;
-        }
-        if (props?.median_income) {
-          metricsSection += `   Median Income: $${(props.median_income / 1000).toFixed(1)}K\n`;
-        }
+        // Add comparative analysis specific fields
+        metricsSection = addComparativeFields(props, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -318,6 +520,9 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         if (props?.statistical_significance) {
           metricsSection += `   Statistical Significance: ${props.statistical_significance}\n`;
         }
+        
+        // Add correlation analysis specific fields
+        metricsSection = addCorrelationFields(props, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -340,6 +545,9 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         if (props?.nike_segment_affinity) {
           metricsSection += `   Nike Affinity: ${props.nike_segment_affinity}\n`;
         }
+        
+        // Add demographic analysis fields for customer segmentation
+        metricsSection = addDemographicFields(props, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -363,6 +571,9 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         if (props?.volatility_index) {
           metricsSection += `   Volatility Index: ${props.volatility_index}\n`;
         }
+        
+        // Add correlation analysis fields for temporal patterns
+        metricsSection = addCorrelationFields(props, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -382,6 +593,9 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         if (props?.statistical_deviation) {
           metricsSection += `   Statistical Deviation: ${props.statistical_deviation}\n`;
         }
+        
+        // Add comparative analysis fields for anomaly detection
+        metricsSection = addComparativeFields(props, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -401,6 +615,9 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         if (props?.synergy_effect) {
           metricsSection += `   Synergy Effect: ${props.synergy_effect}\n`;
         }
+        
+        // Add correlation analysis fields for multi-variable relationships
+        metricsSection = addCorrelationFields(props, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -420,6 +637,9 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         if (props?.statistical_outlier_level) {
           metricsSection += `   Statistical Outlier Level: ${props.statistical_outlier_level}\n`;
         }
+        
+        // Add comparative analysis fields for outlier detection
+        metricsSection = addComparativeFields(props, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -496,16 +716,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
           metricsSection += `   TurboTax Market Share: ${turbotaxShare.toFixed(1)}%\n`;
         }
         
-        // Add demographic context relevant to tax services
-        if (props?.GENZ_CY_P !== undefined) {
-          metricsSection += `   Generation Z Population: ${props.GENZ_CY_P.toFixed(1)}%\n`;
-        }
-        if (props?.GENALPHACY_P !== undefined) {
-          metricsSection += `   Generation Alpha Population: ${props.GENALPHACY_P.toFixed(1)}%\n`;
-        }
-        if (props?.total_population) {
-          metricsSection += `   Population: ${(props.total_population / 1000).toFixed(1)}K\n`;
-        }
+        // Add brand-specific demographic context (consumer behavior focus)
+        metricsSection = addBrandFields(props, metricsSection);
         metricsSection += '\n';
       });
       break;
