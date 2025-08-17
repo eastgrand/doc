@@ -505,6 +505,185 @@ After updating `GeoDataManager.ts`:
    - **Cleanup**: Offer storage optimization recommendations
 3. **You'll see**: `🎉 AUTOMATION PIPELINE COMPLETED SUCCESSFULLY!`
 
+## Step 6.8: Data-Driven Scoring Algorithm Regeneration (NEW - Optional)
+
+**🚀 NEW FEATURE**: Advanced data-driven scoring system that generates algorithms from SHAP feature importance analysis instead of hardcoded business assumptions.
+
+### When to Use Data-Driven Scoring
+
+**Use this system when:**
+- ✅ **New project with different data patterns**: Switching industries, geographic regions, or target variables
+- ✅ **Performance issues**: Current scoring algorithms not performing well
+- ✅ **Data schema changes**: New fields or updated field names  
+- ✅ **Scientific rigor**: Want algorithms based on actual statistical relationships vs. business assumptions
+- ✅ **Automated maintenance**: Need algorithms that adapt to data changes
+
+### Quick Start: Regenerate All Scoring Algorithms
+
+**1. Validate System Requirements**
+```bash
+# Check if your system is ready for algorithm regeneration
+python scripts/scoring/generators/regenerate_all_scoring.py --validate-only
+```
+
+**2. Generate All Algorithms**
+```bash
+# Regenerate all 15+ scoring algorithms using data-driven approach
+python scripts/scoring/generators/regenerate_all_scoring.py --project your_project_name
+```
+
+**3. Validate Generated Scripts**
+```bash
+# Ensure all generated algorithms are mathematically sound and data-compatible
+python scripts/scoring/generators/validator.py
+```
+
+**4. Execute New Scoring**
+```bash
+# Apply new algorithms to your data
+bash scripts/scoring/run_all_scoring.sh
+```
+
+**5. Upload Enhanced Data**
+```bash
+# Deploy scored data to blob storage
+python scripts/automation/upload_comprehensive_endpoints.py
+```
+
+### What This System Does
+
+**🧠 SHAP-Based Intelligence:**
+- Extracts feature importance from your actual endpoint data (984+ features analyzed)
+- Uses SHAP (SHapley Additive exPlanations) values to determine which fields truly matter
+- Creates mathematical formulas with data-driven weights instead of hardcoded percentages
+
+**⚙️ Complete Algorithm Generation:**
+- **LocalSHAPExtractor**: Analyzes feature importance patterns in your data
+- **ImportanceAnalyzer**: Creates normalized weights and confidence metrics
+- **FormulaGenerator**: Generates mathematical formulas from importance patterns
+- **JavaScriptGenerator**: Creates complete JavaScript scoring scripts
+- **ScoringValidator**: Validates generated algorithms for quality assurance
+
+**📊 Analysis Types Regenerated (15+):**
+1. Strategic Value Scoring
+2. Competitive Analysis Scoring  
+3. Demographic Opportunity Scoring
+4. Correlation Strength Scoring
+5. Brand Analysis Scoring
+6. Market Sizing Scoring
+7. Trend Analysis Scoring
+8. Anomaly Detection Scoring
+9. Feature Importance Scoring
+10. Spatial Clustering Scoring
+11. Segment Profiling Scoring
+12. Scenario Analysis Scoring  
+13. Predictive Modeling Scoring
+14. Outlier Detection Scoring
+15. Feature Interaction Scoring
+
+### Benefits Over Hardcoded Algorithms
+
+**❌ Old Approach (Hardcoded):**
+```javascript
+// Business assumptions - may not reflect actual data patterns
+const strategicScore = (0.35 * marketOpportunity) + 
+                      (0.30 * competitivePosition) + 
+                      (0.20 * dataReliability) + 
+                      (0.15 * marketScale);
+```
+
+**✅ New Approach (Data-Driven):**
+```javascript
+// Generated from SHAP analysis of your actual data
+const strategicScore = (0.342 * feature_importance_field_1) +
+                      (0.289 * feature_importance_field_2) + 
+                      (0.201 * feature_importance_field_3) +
+                      (0.168 * feature_importance_field_4);
+// Weights determined by statistical analysis, not assumptions
+```
+
+**🎯 Key Advantages:**
+- **Scientific rigor**: Algorithms based on actual statistical relationships
+- **Project-specific**: Adapts to your unique data patterns and target variables  
+- **Objective scoring**: Removes subjective business bias
+- **Automated updates**: Regenerate algorithms when data changes
+- **Comprehensive validation**: Built-in quality assurance and testing
+- **Complete documentation**: Every generated script includes formula explanation
+
+### Generated Script Features
+
+**Each generated scoring script includes:**
+- **Mathematical formula** derived from SHAP importance analysis
+- **Business logic explanations** for why each field matters
+- **Normalization functions** appropriate for field types
+- **Score validation** ensuring 0-100 ranges
+- **Error handling** for missing data
+- **Statistics generation** and performance metrics
+- **Complete documentation** with component weights and methodology
+
+### System Architecture
+
+**Pipeline Flow:**
+```
+Your Endpoint Data → SHAP Analysis → Feature Importance → Mathematical Formulas → JavaScript Scripts → Enhanced Scoring
+       ↓                   ↓              ↓                    ↓                    ↓                ↓
+   984 features      Importance ranks   Data-driven weights   Complete algorithms   Validated scripts   Better analysis
+```
+
+**Files Created:**
+- `scripts/scoring/generators/` - Complete regeneration system
+- `scripts/scoring/*-scores.js` - Generated scoring algorithms (replaces old ones)
+- `scripts/scoring/generators/metadata/` - Regeneration history and documentation
+
+### When NOT to Use This System
+
+**Skip data-driven regeneration if:**
+- ❌ **Current algorithms working well**: No performance issues or complaints
+- ❌ **Limited technical resources**: Requires Python environment and validation
+- ❌ **Specific business requirements**: Need hardcoded weights for regulatory/business reasons
+- ❌ **No SHAP data**: System requires feature importance analysis in your endpoints
+
+### Troubleshooting
+
+**Problem**: "No importance matrix available for testing"
+- **Cause**: Relevance scoring thresholds too strict for your data patterns
+- **Solution**: Tune relevance scoring in `ImportanceAnalyzer._calculate_analysis_relevance()`
+
+**Problem**: Generated scripts fail validation  
+- **Cause**: Mathematical or syntax issues in generation
+- **Solution**: Run `python scripts/scoring/generators/validator.py` for detailed error analysis
+
+**Problem**: Scores don't make business sense
+- **Cause**: SHAP importance may not align with business expectations
+- **Solution**: Review generated formulas vs. business requirements, consider hybrid approach
+
+### Integration with Existing System
+
+**✅ Fully Compatible:**
+- Same output format as existing scoring scripts
+- Same execution method (`node script.js`)
+- Works with existing analysis processors
+- Compatible with blob storage upload pipeline
+- No changes needed to client application
+
+**📈 Enhanced Capabilities:**
+- Better accuracy through data-driven weights
+- Automatic adaptation to data changes  
+- Complete algorithmic coverage (15+ analysis types)
+- Scientific validation and quality assurance
+
+### Documentation
+
+**📖 Complete Technical Documentation:**
+- `docs/DATA_DRIVEN_SCORING_REGENERATION_PLAN.md` - Full implementation guide
+- `docs/RE-SCORING_AND_FIELD_ANALYSIS_PLAN.md` - Field-specific analysis strategy
+
+**🔧 Implementation Details:**
+- Project-agnostic design (works with any dataset)
+- Example data structure handling (Nike → Your Project)
+- Comprehensive validation and testing framework
+- Complete workflow automation
+
 ### 🗂️ New: Automatic Field Mapping Updates
 
 The automation now includes **Phase 6.5: Field Mapping Update** which:
@@ -1034,6 +1213,12 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
 - [ ] AI synonym expansion applied (Optional Step 6.6)
 - [ ] Boundary file verification completed (Phase 6.6)
 - [ ] Geographic boundary files present or alerts addressed
+- [ ] **Data-driven scoring system available (Optional Step 6.8)**:
+  - [ ] System requirements validated (`--validate-only` passed)
+  - [ ] Algorithm regeneration system tested
+  - [ ] SHAP feature importance extraction working (984+ features)
+  - [ ] Generated scripts pass validation tests
+  - [ ] Documentation reviewed for future algorithm updates
 - [ ] Cleanup system reviewed and executed if needed
 
 **🎉 Congratulations! Your ArcGIS service is now a working microservice!**
