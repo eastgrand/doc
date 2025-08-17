@@ -33,7 +33,7 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({
             <Info className="w-3.5 h-3.5" />
           </button>
         </TooltipTrigger>
-        <TooltipContent className="max-w-sm p-3 space-y-2">
+        <TooltipContent className="max-w-sm p-3 space-y-2 bg-white border border-gray-200 shadow-lg">
           <div className="font-semibold text-sm">{title}</div>
           <div className="text-xs text-gray-600">{description}</div>
           {formula && (

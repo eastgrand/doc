@@ -19,7 +19,6 @@ import {
   formatDistributionForChat,
   formatPatternsForChat
 } from '@/lib/analysis/statsCalculator';
-import { getIconString } from '@/lib/utils/iconMapping';
 
 // Wrapper component for performance metrics - commented out as badges are no longer displayed
 // const PerformanceMetrics = ({ analysisResult, className }: { analysisResult: any, className: string }) => {
@@ -361,7 +360,7 @@ ${conversationText}
     const analysisData = result.data?.records || [];
     
     // Start with analyzing message  
-    let messageContent = `${getIconString('analyzing')} Analyzing ${analysisData.length} areas...`;
+    let messageContent = `Analyzing ${analysisData.length} areas...`;
     
     // Declare at top level so it's accessible in error handler
     const messageId = Date.now().toString();
@@ -425,7 +424,7 @@ ${conversationText}
       }
 
       // Add AI analysis loading indicator for full mode
-      messageContent += '\n\n🤖 **AI Analysis**\n*Generating comprehensive insights...*';
+      messageContent += '\n\n**AI Analysis**\n*Generating comprehensive insights...*';
       
       setMessages([{
         ...initialMessage,
@@ -544,13 +543,13 @@ ${conversationText}
         }
         
         // Remove the loading indicator and append AI analysis
-        const statsEndIndex = messageContent.lastIndexOf('🤖 **AI Analysis**');
+        const statsEndIndex = messageContent.lastIndexOf('**AI Analysis**');
         if (statsEndIndex > -1) {
           messageContent = messageContent.substring(0, statsEndIndex);
         }
         
         // Append the AI analysis to the existing message with stats
-        messageContent += '\n\n🤖 **AI Analysis**\n' + cleanContent;
+        messageContent += '\n\n**AI Analysis**\n' + cleanContent;
         
         const completeMessage: ChatMessage = {
           id: messageId,

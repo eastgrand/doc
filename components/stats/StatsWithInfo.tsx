@@ -1,5 +1,6 @@
 import React from 'react';
 import { InfoTooltip } from '@/components/ui/info-tooltip';
+import { BarChart3, TrendingUp, Search, Brain } from 'lucide-react';
 
 // Define stat explanations and formulas
 interface StatDefinition {
@@ -19,6 +20,16 @@ const statDefinitions: Record<string, StatDefinition> = {
     title: 'Areas Analyzed',
     description: 'The total number of geographic areas included in this analysis.',
     example: '500 areas analyzed'
+  },
+  'Records analyzed': {
+    title: 'Records Analyzed',
+    description: 'The total number of data records processed in this analysis.',
+    example: '1,250 records analyzed'
+  },
+  'Data points': {
+    title: 'Data Points',
+    description: 'The total number of individual data measurements included in the analysis.',
+    example: '5,000 data points processed'
   },
   'Average difference': {
     title: 'Average Difference',
@@ -50,11 +61,6 @@ const statDefinitions: Record<string, StatDefinition> = {
     formula: '√(Σ(x - μ)² / n)',
     example: '1.31% means most values are within ±1.31% of the average'
   },
-  'Difference range': {
-    title: 'Difference Range',
-    description: 'The minimum and maximum values in the dataset, showing the full spread of differences.',
-    example: '-16.7% to 0.0% shows competitor advantages ranging from 0% to 16.7%'
-  },
   'Score range': {
     title: 'Score Range',
     description: 'The minimum and maximum scores in the dataset, showing the full spread of values.',
@@ -71,6 +77,50 @@ const statDefinitions: Record<string, StatDefinition> = {
     description: 'The combined geographic area in square miles across all analyzed regions.',
     formula: 'Σ(area in sq mi)',
     example: '12,450 sq mi total coverage'
+  },
+  'Difference range': {
+    title: 'Difference Range',
+    description: 'The minimum and maximum brand share differences in the dataset, showing the full competitive spread.',
+    example: '-16.7% to 0.0% shows competitor advantages ranging from 0% to 16.7%'
+  },
+  'Quartiles': {
+    title: 'Quartiles',
+    description: 'Values that divide the dataset into four equal parts. Q1 (25th percentile), Q2 (median), Q3 (75th percentile).',
+    formula: 'Q1=25th%, Q2=50th%, Q3=75th%',
+    example: 'Q1=52.28, Q2=63.90, Q3=76.62 means 25% of areas score below 52.28'
+  },
+  'IQR': {
+    title: 'Interquartile Range (IQR)',
+    description: 'The range between the first and third quartiles, representing the middle 50% of the data.',
+    formula: 'IQR = Q3 - Q1',
+    example: 'IQR: 24.34 means the middle 50% of scores span 24.34 points'
+  },
+  'Outliers': {
+    title: 'Outliers',
+    description: 'Data points that are significantly different from other observations, typically beyond 1.5 × IQR from quartiles.',
+    formula: 'Beyond Q1 - 1.5×IQR or Q3 + 1.5×IQR',
+    example: 'None detected means all data points fall within normal range'
+  },
+  'Distribution shape': {
+    title: 'Distribution Shape',
+    description: 'The overall pattern of how data values are spread across the range.',
+    example: 'Normal means bell-curved, skewed-left/right means asymmetric, bimodal means two peaks'
+  },
+  'Model Used': {
+    title: 'Analysis Model',
+    description: 'The specific analytical model used to generate these results and scores.',
+    example: 'Strategic Market Opportunity Analyzer focuses on market gaps and expansion potential'
+  },
+  'R² Score': {
+    title: 'R-Squared Score',
+    description: 'A statistical measure indicating how well the model explains the variance in the data (0-1 scale).',
+    formula: 'R² = 1 - (SS_res / SS_tot)',
+    example: '0.87 means the model explains 87% of the variance in the data'
+  },
+  'Confidence': {
+    title: 'Model Confidence',
+    description: 'The level of confidence in the model\'s predictions and results.',
+    example: 'High confidence indicates reliable predictions based on strong data patterns'
   }
 };
 
@@ -87,23 +137,81 @@ export const StatsWithInfo: React.FC<StatsWithInfoProps> = ({ content, className
   return (
     <div className={className}>
       {lines.map((line, index) => {
-        // Check for section headers (includes both old and new icon formats)
-        if (line.includes('📊') || line.includes('📈') || line.includes('🎯') || 
-            line.includes('🔍') || line.includes('✨') || line.includes('⚡')) {
+        // Check for section headers and render with appropriate icons
+        const sectionMappings = [
+          { keyword: 'Quick Statistics', icon: BarChart3 },
+          { keyword: 'Brand Difference Statistics', icon: BarChart3 },
+          { keyword: 'Distribution Analysis', icon: TrendingUp },
+          { keyword: 'Key Patterns', icon: Search },
+          { keyword: 'Competitive Patterns', icon: Search },
+          { keyword: 'Analysis Statistics', icon: BarChart3 },
+          { keyword: 'AI Analysis', icon: Brain }
+        ];
+        
+        for (const { keyword, icon: Icon } of sectionMappings) {
+          if (line.includes(`**${keyword}**`)) {
+            // Extract the text without emoji
+            const cleanText = line.replace(/[�-�][�-�]|[�-�]/g, '').trim();
+            return (
+              <div key={index} className="font-bold text-sm mt-3 mb-2 first:mt-0 flex items-center gap-1">
+                <Icon className="w-4 h-4" />
+                <span dangerouslySetInnerHTML={{ __html: formatLine(cleanText) }} />
+              </div>
+            );
+          }
+        }
+        
+        // Legacy emoji-based section detection for backward compatibility
+        const isSection = line.includes('📈 **') || line.includes('📊 **') || line.includes('🔍 **') || line.includes('🤖 **');
+        
+        if (isSection) {
+          // Extract keyword to determine icon
+          let IconComponent = BarChart3; // default
+          if (line.includes('Distribution')) IconComponent = TrendingUp;
+          else if (line.includes('Patterns')) IconComponent = Search;
+          else if (line.includes('AI Analysis')) IconComponent = Brain;
+          
+          // Remove emoji and render with icon
+          const cleanText = line.replace(/[�-�][�-�]|[�-�]/g, '').trim();
           return (
-            <div key={index} className="font-bold text-sm mt-3 mb-2 first:mt-0">
-              <span dangerouslySetInnerHTML={{ __html: formatLine(line) }} />
+            <div key={index} className="font-bold text-sm mt-3 mb-2 first:mt-0 flex items-center gap-1">
+              <IconComponent className="w-4 h-4" />
+              <span dangerouslySetInnerHTML={{ __html: formatLine(cleanText) }} />
             </div>
           );
         }
         
-        // Check if this line contains a stat
+        // Check if this line contains a stat with exact matching to statsCalculator output
         let statKey: string | null = null;
         
-        // Check each stat definition
-        for (const [key, def] of Object.entries(statDefinitions)) {
-          if (line.includes(key + ':')) {
-            statKey = key;
+        // Extract the exact stat names that are generated by formatStatsForChat and formatBrandDifferenceStatsForChat
+        const exactStatNames = [
+          'Areas analyzed',
+          'Markets analyzed', 
+          'Records analyzed',
+          'Data points',
+          'Average score',
+          'Median score', 
+          'Average difference',
+          'Median difference',
+          'Standard deviation',
+          'Score range',
+          'Difference range',
+          'Total population',
+          'Total area',
+          'Quartiles',
+          'IQR',
+          'Outliers',
+          'Distribution shape',
+          'Model Used',
+          'R² Score',
+          'Confidence'
+        ];
+        
+        // Check for exact matches with the stat names from statsCalculator
+        for (const statName of exactStatNames) {
+          if (line.includes(`• ${statName}:`) || line.includes(`**${statName}:**`)) {
+            statKey = statName;
             break;
           }
         }
@@ -111,10 +219,12 @@ export const StatsWithInfo: React.FC<StatsWithInfoProps> = ({ content, className
         if (statKey && statDefinitions[statKey]) {
           const statDef = statDefinitions[statKey];
           
-          // Parse the line to extract the label and value
-          const match = line.match(/•\s*([^:]+):\s*(.+)/);
+          // Parse the line to extract the label and value (format: • StatName: **value** OR **StatName:** value)
+          const match = line.match(/(?:•\s*([^:]+):\s*(.+))|(?:\*\*([^:]+):\*\*\s*(.+))/);
           if (match) {
-            const [, label, rawValue] = match;
+            const [, bulletLabel, bulletValue, boldLabel, boldValue] = match;
+            const label = bulletLabel || boldLabel;
+            const rawValue = bulletValue || boldValue;
             
             // Process the value for ZIP codes and formatting
             const processValue = (text: string) => {

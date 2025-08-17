@@ -22,7 +22,6 @@ import {
 import { ErrorBoundary } from './ErrorBoundary';
 import { sendChatMessage } from '@/services/chat-service';
 import { StatsWithInfo } from '@/components/stats/StatsWithInfo';
-import { getIconString } from '@/lib/utils/iconMapping';
 
 // Wrapper component for performance metrics - commented out as badges are no longer displayed
 // const PerformanceMetrics = ({ analysisResult, className }: { analysisResult: any, className: string }) => {
@@ -278,8 +277,12 @@ ${conversationText}
 
   const renderFormattedMessage = useCallback((content: string) => {
     // Check if this is a stats section that should be enhanced
-    const statsKeywords = ['Quick Statistics', 'Brand Difference Statistics'];
-    const hasStats = statsKeywords.some(keyword => content.includes(`📊 **${keyword}**`));
+    const statsKeywords = ['Quick Statistics', 'Brand Difference Statistics', 'Distribution Analysis', 'Key Patterns', 'AI Analysis'];
+    const hasStats = statsKeywords.some(keyword => content.includes(`**${keyword}**`)) ||
+                     content.includes('Model Used:') ||
+                     content.includes('R² Score:') ||
+                     content.includes('Quartiles:') ||
+                     content.includes('IQR:');
     
     // For stats sections, use enhanced rendering with info tooltips
     if (hasStats) {
@@ -379,7 +382,7 @@ ${conversationText}
     const analysisData = result.data?.records || [];
     
     // Start with analyzing message  
-    let messageContent = `${getIconString('analyzing')} Analyzing ${analysisData.length} areas...`;
+    let messageContent = `Analyzing ${analysisData.length} areas...`;
     
     // Declare at top level so it's accessible in error handler
     const messageId = Date.now().toString();
@@ -442,7 +445,7 @@ ${conversationText}
       }
 
       // Add AI analysis loading indicator for full mode
-      messageContent += '\n\n🤖 **AI Analysis**\n*Generating comprehensive insights...*';
+      messageContent += '\n\n**AI Analysis**\n*Generating comprehensive insights...*';
       
       setMessages([{
         ...initialMessage,
@@ -574,13 +577,13 @@ ${conversationText}
         }
         
         // Remove the loading indicator and append AI analysis
-        const statsEndIndex = messageContent.lastIndexOf('🤖 **AI Analysis**');
+        const statsEndIndex = messageContent.lastIndexOf('**AI Analysis**');
         if (statsEndIndex > -1) {
           messageContent = messageContent.substring(0, statsEndIndex);
         }
         
         // Append the AI analysis to the existing message with stats
-        messageContent += '\n\n🤖 **AI Analysis**\n' + cleanContent;
+        messageContent += '\n\n**AI Analysis**\n' + cleanContent;
         
         const completeMessage: ChatMessage = {
           id: messageId,
@@ -869,10 +872,11 @@ ${conversationText}
                 <Button
                   variant="ghost"
                   size="sm"
-                  className={`absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 ${
+                  className={`absolute top-1 right-1 p-1 h-6 w-6 ${
                     message.role === 'user' ? 'text-white hover:bg-[var(--firefly-20)]' : 'text-gray-500 hover:bg-gray-300'
                   }`}
                   onClick={() => handleCopyMessage(message)}
+                  title="Copy message"
                 >
                   {copiedMessageId === message.id ? (
                     <Check className="w-3 h-3" />
@@ -891,7 +895,9 @@ ${conversationText}
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 text-gray-400 hover:text-gray-600 hover:bg-gray-200"
+                  className={`p-1 h-6 w-6 ${
+                    message.role === 'user' ? 'text-white hover:bg-[var(--firefly-20)]' : 'text-gray-500 hover:bg-gray-300'
+                  }`}
                   onClick={() => handleCopyMessage(message)}
                   title="Copy message"
                 >

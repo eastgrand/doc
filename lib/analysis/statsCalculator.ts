@@ -3,7 +3,6 @@
  * Provides fast statistical computations for immediate user feedback
  */
 
-import { getIconString } from '@/lib/utils/iconMapping';
 
 // Shared function to extract score from various field names
 function extractScore(record: any): number {
@@ -561,7 +560,7 @@ export function formatStatsForChat(stats: BasicStats, analysisType?: string): st
   
   const lines: string[] = [];
   
-  lines.push(`${getIconString('statistics')} **Quick Statistics**`);
+  lines.push(`**Quick Statistics**`);
   lines.push(`• Areas analyzed: **${stats.count}**`);
   lines.push(`• Average score: **${stats.mean.toFixed(2)}/100**`);
   lines.push(`• Median score: **${stats.median.toFixed(2)}/100**`);
@@ -592,7 +591,7 @@ export function formatStatsForChat(stats: BasicStats, analysisType?: string): st
 export function formatBrandDifferenceStatsForChat(stats: BasicStats): string {
   const lines: string[] = [];
   
-  lines.push(`${getIconString('statistics')} **Brand Difference Statistics**`);
+  lines.push(`**Brand Difference Statistics**`);
   lines.push(`• Markets analyzed: **${stats.count}**`);
   lines.push(`• Average difference: **${stats.mean.toFixed(2)}%**`);
   lines.push(`• Median difference: **${stats.median.toFixed(2)}%**`);
@@ -651,7 +650,7 @@ export function formatDistributionForChat(dist: Distribution, analysisType?: str
   
   const lines: string[] = [];
   
-  lines.push(`${getIconString('distribution')} **Distribution Analysis**`);
+  lines.push(`**Distribution Analysis**`);
   lines.push('');
   lines.push('**Score Distribution:**');
   
@@ -685,7 +684,7 @@ export function formatDistributionForChat(dist: Distribution, analysisType?: str
 export function formatBrandDifferenceDistributionForChat(dist: Distribution): string {
   const lines: string[] = [];
   
-  lines.push(`${getIconString('distribution')} **Competitive Distribution Analysis**`);
+  lines.push(`**Competitive Distribution Analysis**`);
   lines.push('');
   
   // Skip technical distribution details for brand difference
@@ -732,7 +731,7 @@ export function formatPatternsForChat(patterns: Patterns, analysisType?: string)
   
   const lines: string[] = [];
   
-  lines.push(`${getIconString('patterns')} **Key Patterns**`);
+  lines.push(`**Key Patterns**`);
   lines.push('');
   
   if (patterns.clusters.length > 0) {
@@ -777,7 +776,7 @@ export function formatPatternsForChat(patterns: Patterns, analysisType?: string)
 export function formatBrandDifferencePatternsForChat(patterns: Patterns): string {
   const lines: string[] = [];
   
-  lines.push(`${getIconString('patterns')} **Competitive Patterns**`);
+  lines.push(`**Competitive Patterns**`);
   lines.push('');
   
   // Skip market clusters for brand difference - not meaningful for competitive analysis

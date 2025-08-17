@@ -99,7 +99,7 @@ const iconMappings: Record<string, IconConfig> = {
 };
 
 // Configuration - can be changed easily
-export const currentIconType: IconType = 'modern-emoji'; // Change this to switch icon types
+export const currentIconType: IconType = 'lucide'; // Change this to switch icon types
 
 export function getIcon(
   iconKey: keyof typeof iconMappings, 
