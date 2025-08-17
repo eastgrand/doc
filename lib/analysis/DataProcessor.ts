@@ -24,6 +24,16 @@ import { RealEstateAnalysisProcessor } from './strategies/processors/RealEstateA
 import { RiskDataProcessor } from './strategies/processors/RiskDataProcessor';
 import { StrategicAnalysisProcessor } from './strategies/processors/StrategicAnalysisProcessor';
 import { CustomerProfileProcessor } from './strategies/processors/CustomerProfileProcessor';
+import { SensitivityAnalysisProcessor } from './strategies/processors/SensitivityAnalysisProcessor';
+import { ModelPerformanceProcessor } from './strategies/processors/ModelPerformanceProcessor';
+import { ModelSelectionProcessor } from './strategies/processors/ModelSelectionProcessor';
+import { EnsembleAnalysisProcessor } from './strategies/processors/EnsembleAnalysisProcessor';
+import { FeatureImportanceRankingProcessor } from './strategies/processors/FeatureImportanceRankingProcessor';
+import { DimensionalityInsightsProcessor } from './strategies/processors/DimensionalityInsightsProcessor';
+import { SpatialClustersProcessor } from './strategies/processors/SpatialClustersProcessor';
+import { ConsensusAnalysisProcessor } from './strategies/processors/ConsensusAnalysisProcessor';
+import { AlgorithmComparisonProcessor } from './strategies/processors/AlgorithmComparisonProcessor';
+import { AnalyzeProcessor } from './strategies/processors/AnalyzeProcessor';
 
 /**
  * DataProcessor - Standardizes raw microservice data into consistent format
@@ -401,7 +411,20 @@ export class DataProcessor {
     this.processors.set('/brand-difference', new BrandDifferenceProcessor()); // Brand market share difference analysis
     this.processors.set('/real-estate-analysis', new RealEstateAnalysisProcessor());
     
-    // All 16 endpoints now have dedicated processors!
+    // Register the 10 new processors for previously missing endpoints
+    this.processors.set('/sensitivity-analysis', new SensitivityAnalysisProcessor());
+    this.processors.set('/model-performance', new ModelPerformanceProcessor());
+    this.processors.set('/model-selection', new ModelSelectionProcessor());
+    this.processors.set('/ensemble-analysis', new EnsembleAnalysisProcessor());
+    this.processors.set('/feature-importance-ranking', new FeatureImportanceRankingProcessor());
+    this.processors.set('/dimensionality-insights', new DimensionalityInsightsProcessor());
+    this.processors.set('/spatial-clusters', new SpatialClustersProcessor());
+    this.processors.set('/consensus-analysis', new ConsensusAnalysisProcessor());
+    this.processors.set('/algorithm-comparison', new AlgorithmComparisonProcessor());
+    // Override the existing /analyze processor with the new dedicated one
+    this.processors.set('/analyze', new AnalyzeProcessor());
+    
+    // All 26 endpoints now have dedicated processors!
     // this.processors.set('/penetration-optimization', new OptimizationDataProcessor());
     
     // Default processor for unspecified endpoints

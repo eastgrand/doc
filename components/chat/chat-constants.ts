@@ -15,10 +15,7 @@ export const ANALYSIS_CATEGORIES = {
   ],
   'Demographic Insights': [
     'Which areas have the best customer demographics for tax preparation services?'
-  ]
-};
-
-export const DISABLED_ANALYSIS_CATEGORIES = {
+  ],
   'Customer Profile': [
     'Show me areas with ideal customer personas for tax preparation services'
   ],
@@ -70,17 +67,23 @@ export const DISABLED_ANALYSIS_CATEGORIES = {
   'Model Selection': [
     'What is the optimal AI algorithm for predictions in each geographic area?'
   ],
-  'Cluster Analysis': [
-    'How should we segment tax service markets for targeted strategies?'
-  ],
-  'Anomaly Insights': [
-    'Which unusual market patterns represent the biggest business opportunities?'
-  ],
   'Dimensionality Insights': [
     'Which factors explain most of the variation in tax service market performance?'
   ],
   'Consensus Analysis': [
     'Where do all our AI models agree on tax service predictions?'
+  ],
+  'Anomaly Insights': [
+    'Which unusual market patterns represent the biggest business opportunities?'
+  ],
+  'Analyze': [
+    'Provide comprehensive market insights for tax preparation services'
+  ]
+};
+
+export const DISABLED_ANALYSIS_CATEGORIES = {
+  'Cluster Analysis': [
+    'How should we segment tax service markets for targeted strategies?'
   ],
   'Nonlinear Analysis': [
     'What complex patterns exist in tax service data that linear models miss?'

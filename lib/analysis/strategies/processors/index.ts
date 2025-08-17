@@ -19,10 +19,19 @@ export { BrandAnalysisProcessor } from './BrandAnalysisProcessor';
 export { BrandDifferenceProcessor } from './BrandDifferenceProcessor';
 export { RealEstateAnalysisProcessor } from './RealEstateAnalysisProcessor';
 export { StrategicAnalysisProcessor } from './StrategicAnalysisProcessor';
+export { SensitivityAnalysisProcessor } from './SensitivityAnalysisProcessor';
+export { ModelPerformanceProcessor } from './ModelPerformanceProcessor';
+export { ModelSelectionProcessor } from './ModelSelectionProcessor';
+export { EnsembleAnalysisProcessor } from './EnsembleAnalysisProcessor';
+export { FeatureImportanceRankingProcessor } from './FeatureImportanceRankingProcessor';
+export { DimensionalityInsightsProcessor } from './DimensionalityInsightsProcessor';
+export { SpatialClustersProcessor } from './SpatialClustersProcessor';
+export { ConsensusAnalysisProcessor } from './ConsensusAnalysisProcessor';
+export { AlgorithmComparisonProcessor } from './AlgorithmComparisonProcessor';
+export { AnalyzeProcessor } from './AnalyzeProcessor';
 
 // TODO: Export additional processors as they're developed
 // export { OptimizationDataProcessor } from './OptimizationDataProcessor';
-// export { CorrelationDataProcessor } from './CorrelationDataProcessor';
 
 /**
  * Available processor types for different analysis endpoints
@@ -41,15 +50,25 @@ export const PROCESSOR_TYPES = {
   PREDICTIVE_MODELING: 'predictive_modeling',
   SCENARIO_ANALYSIS: 'scenario_analysis',
   SEGMENT_PROFILING: 'segment_profiling',
-  BRAND_DIFFERENCE: 'brand_difference'
+  BRAND_DIFFERENCE: 'brand_difference',
+  SENSITIVITY_ANALYSIS: 'sensitivity_analysis',
+  MODEL_PERFORMANCE: 'model_performance',
+  MODEL_SELECTION: 'model_selection',
+  ENSEMBLE_ANALYSIS: 'ensemble_analysis',
+  FEATURE_IMPORTANCE_RANKING: 'feature_importance_ranking',
+  DIMENSIONALITY_INSIGHTS: 'dimensionality_insights',
+  SPATIAL_CLUSTERS: 'spatial_clusters',
+  CONSENSUS_ANALYSIS: 'consensus_analysis',
+  ALGORITHM_COMPARISON: 'algorithm_comparison',
+  ANALYZE: 'analyze'
 } as const;
 
 /**
  * Processor registry for mapping endpoints to processor types
  */
 export const ENDPOINT_PROCESSOR_MAP = {
-  '/analyze': PROCESSOR_TYPES.CORE_ANALYSIS,
-  '/spatial-clusters': PROCESSOR_TYPES.CLUSTER_ANALYSIS,
+  '/analyze': PROCESSOR_TYPES.ANALYZE,
+  '/spatial-clusters': PROCESSOR_TYPES.SPATIAL_CLUSTERS,
   '/competitive-analysis': PROCESSOR_TYPES.COMPETITIVE_ANALYSIS,
   '/demographic-insights': PROCESSOR_TYPES.DEMOGRAPHIC_ANALYSIS,
   '/trend-analysis': PROCESSOR_TYPES.TREND_ANALYSIS,
@@ -65,8 +84,13 @@ export const ENDPOINT_PROCESSOR_MAP = {
   '/scenario-analysis': PROCESSOR_TYPES.SCENARIO_ANALYSIS,
   '/segment-profiling': PROCESSOR_TYPES.SEGMENT_PROFILING,
   '/brand-difference': PROCESSOR_TYPES.BRAND_DIFFERENCE,
-  // Fallback to core analysis for endpoints without specialized processors
-  '/sensitivity-analysis': PROCESSOR_TYPES.CORE_ANALYSIS,
-  '/model-performance': PROCESSOR_TYPES.CORE_ANALYSIS,
-  '/feature-importance-ranking': PROCESSOR_TYPES.CORE_ANALYSIS
+  // All endpoints now have specialized processors
+  '/sensitivity-analysis': PROCESSOR_TYPES.SENSITIVITY_ANALYSIS,
+  '/model-performance': PROCESSOR_TYPES.MODEL_PERFORMANCE,
+  '/model-selection': PROCESSOR_TYPES.MODEL_SELECTION,
+  '/ensemble-analysis': PROCESSOR_TYPES.ENSEMBLE_ANALYSIS,
+  '/feature-importance-ranking': PROCESSOR_TYPES.FEATURE_IMPORTANCE_RANKING,
+  '/dimensionality-insights': PROCESSOR_TYPES.DIMENSIONALITY_INSIGHTS,
+  '/consensus-analysis': PROCESSOR_TYPES.CONSENSUS_ANALYSIS,
+  '/algorithm-comparison': PROCESSOR_TYPES.ALGORITHM_COMPARISON
 } as const; 
