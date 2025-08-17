@@ -52,23 +52,89 @@ turbotax: {
 - **Athletic Brands**: `MP300XX` codes (e.g., MP30034 = Nike, MP30029 = Adidas)
 - **Banking Services**: `MP100XX` codes (varies by institution)
 
-#### 2. Brand Difference Processor Mappings
-**File**: `/lib/analysis/strategies/processors/BrandDifferenceProcessor.ts`
+#### 2. BrandNameResolver Configuration (MODERN APPROACH - RECOMMENDED)
+**File**: `/lib/analysis/utils/BrandNameResolver.ts`
 
-The BrandDifferenceProcessor needs to know the exact field codes for calculating brand differences.
+The BrandNameResolver provides a centralized, dynamic brand configuration system that replaces hardcoded brand mappings across all processors.
 
-**Current Configuration (lines 13-16):**
+**🎯 SINGLE SOURCE OF TRUTH**: Update brand configuration in ONE place for ALL processors.
+
+**Current Configuration (Tax Services - lines 25-42):**
 ```typescript
-private readonly BRAND_MAPPINGS = {
-  'h&r block': 'MP10128A_B_P',
-  'turbotax': 'MP10104A_B_P'
+const TARGET_BRAND = {
+  fieldName: 'MP10128A_B_P',
+  brandName: 'H&R Block'
 };
+
+const COMPETITOR_BRANDS = [
+  { fieldName: 'MP10104A_B_P', brandName: 'TurboTax' },
+  { fieldName: 'MP10001A_B_P', brandName: 'FreeTaxUSA' },
+  { fieldName: 'MP10002A_B_P', brandName: 'TaxAct' }
+];
+
+const PROJECT_INDUSTRY = 'Tax Software';
 ```
 
-**To Update:**
-1. Replace with your project's brand field codes
-2. Ensure brand names match those in EnhancedQueryAnalyzer
-3. Update validation logic if field patterns change
+**To Update for New Projects:**
+1. **Update TARGET_BRAND** with your primary brand's field code and name
+2. **Update COMPETITOR_BRANDS** with your project's competitors
+3. **Update PROJECT_INDUSTRY** with your domain name
+4. **That's it!** - All processors automatically use this configuration
+
+**Example Configurations by Industry:**
+
+**Athletic Brands:**
+```typescript
+const TARGET_BRAND = {
+  fieldName: 'MP30034A_B_P',
+  brandName: 'Nike'
+};
+
+const COMPETITOR_BRANDS = [
+  { fieldName: 'MP30029A_B_P', brandName: 'Adidas' },
+  { fieldName: 'MP30032A_B_P', brandName: 'Jordan' },
+  { fieldName: 'MP30033A_B_P', brandName: 'New Balance' }
+];
+
+const PROJECT_INDUSTRY = 'Athletic Footwear';
+```
+
+**Banking Services:**
+```typescript
+const TARGET_BRAND = {
+  fieldName: 'MP10002A_B_P',
+  brandName: 'Bank of America'
+};
+
+const COMPETITOR_BRANDS = [
+  { fieldName: 'MP10028A_B_P', brandName: 'Wells Fargo' },
+  { fieldName: 'MP10015A_B_P', brandName: 'JPMorgan Chase' },
+  { fieldName: 'MP10007A_B_P', brandName: 'Citibank' }
+];
+
+const PROJECT_INDUSTRY = 'Banking Services';
+```
+
+**Benefits of BrandNameResolver:**
+- ✅ **Single Source of Truth**: Update brands in ONE file instead of 10+ processors
+- ✅ **Dynamic Detection**: Automatically finds brand fields in data
+- ✅ **Market Gap Calculation**: Dynamically calculates untapped market potential
+- ✅ **Brand-Agnostic Code**: All processors work with any brand/industry
+- ✅ **Automatic Text Generation**: Summary text uses actual brand names
+- ✅ **Type Safety**: Full TypeScript support with proper interfaces
+
+**⚠️ DEPRECATION NOTICE**: The old BrandDifferenceProcessor with hardcoded BRAND_MAPPINGS is deprecated. All processors now use BrandNameResolver for brand-agnostic operation.
+
+#### 3. Legacy Brand Difference Processor (DEPRECATED)
+**File**: `/lib/analysis/strategies/processors/BrandDifferenceProcessor.ts`
+
+**🚨 DEPRECATED**: This processor uses hardcoded brand mappings and should be replaced with dynamic processors that use BrandNameResolver.
+
+**Migration Path:**
+1. Use `/comparative-analysis` endpoint instead of `/brand-difference`
+2. All brand analysis now handled by BrandAnalysisProcessor with BrandNameResolver
+3. Remove hardcoded BRAND_MAPPINGS - no longer needed
+4. Update queries to use standard competitive/comparative analysis
 
 #### 3. Comparative Analysis Processor
 **File**: `/lib/analysis/strategies/processors/ComparativeAnalysisProcessor.ts`
@@ -97,25 +163,66 @@ The comparative analysis processor needs to know which fields represent competin
 
 **Without this update, comparative analysis will show incorrect results with 0 values and constant scores of 15.00**
 
-#### 🔍 Troubleshooting Brand Analysis Issues
+#### 📊 Which Endpoints Use BrandNameResolver
 
-**Problem: Brand difference analysis shows wrong ranges or no data**
-- **Symptom**: Quick Stats shows one range (e.g., -16.7% to 0.0%) but AI Analysis shows different range
-- **Root Cause**: EnhancedQueryAnalyzer has wrong field codes for brands
-- **Solution**: Update FIELD_MAPPINGS in EnhancedQueryAnalyzer.ts with correct field codes
+**BrandNameResolver is automatically used by ALL modern analysis processors:**
 
-**Problem: Query not routing to /brand-difference endpoint**
-- **Symptom**: Brand queries produce basic geographic data instead of enriched brand difference data
-- **Root Cause**: Brand detection failing due to incorrect field mappings
+**✅ FULLY INTEGRATED ENDPOINTS (9):**
+1. **`/strategic-analysis`** - StrategicAnalysisProcessor uses BrandNameResolver for target brand detection and market gap calculation
+2. **`/competitive-analysis`** - CompetitiveDataProcessor uses BrandNameResolver for brand field detection and competitive positioning
+3. **`/brand-analysis`** - BrandAnalysisProcessor uses BrandNameResolver for dynamic brand comparison and analysis
+4. **`/core-analysis`** - CoreAnalysisProcessor uses BrandNameResolver for comprehensive brand-aware analysis
+5. **`/demographic-analysis`** - DemographicDataProcessor uses BrandNameResolver for brand-demographic correlation
+6. **`/segment-profiling`** - SegmentProfilingProcessor uses BrandNameResolver for brand affinity segmentation
+7. **`/trend-analysis`** - TrendAnalysisProcessor uses BrandNameResolver for brand performance trends
+8. **`/customer-profile`** - CustomerProfileProcessor uses BrandNameResolver for brand loyalty analysis
+9. **`/correlation-analysis`** - Uses BrandNameResolver for brand correlation studies
+
+**🚨 LEGACY ENDPOINTS (Still using hardcoded mappings - needs migration):**
+- `/brand-difference` (BrandDifferenceProcessor) - **DEPRECATED**: Use `/competitive-analysis` instead
+- `/comparative-analysis` (ComparativeAnalysisProcessor) - **NEEDS UPDATE**: Still uses hardcoded brand fields
+
+**✅ NO BRAND DEPENDENCY (Continue as-is):**
+- `/analyze` - General analysis without brand focus
+- `/predictive-modeling` - Model-based predictions
+- `/anomaly-detection` - Outlier detection
+- `/feature-interaction` - Statistical feature analysis
+
+#### 🔍 Troubleshooting BrandNameResolver Issues
+
+**Problem: Brand analysis shows "Unknown" brand names**
+- **Symptom**: Analysis results show "Unknown" instead of actual brand names
+- **Root Cause**: BrandNameResolver configuration doesn't match your data's field codes
+- **Solution**: Update TARGET_BRAND and COMPETITOR_BRANDS in `/lib/analysis/utils/BrandNameResolver.ts`
+
+**Problem: Market gap calculation returns unrealistic values**
+- **Symptom**: Market gaps show 5% or 95% (the safety bounds) instead of realistic values
+- **Root Cause**: Brand field detection failing, defaulting to safety calculations
 - **Solution**: 
-  1. Check EnhancedQueryAnalyzer field codes match your data
-  2. Verify brand keywords in FIELD_MAPPINGS
-  3. Update identifyBrands() method brand list
+  1. Verify field codes in BrandNameResolver match your data exactly
+  2. Check that data has the expected MP field pattern (e.g., MP10128A_B_P)
+  3. Ensure field values are in percentage format (0-100)
 
-**Problem: AI Analysis missing demographic data for brand differences**
-- **Symptom**: AI shows "0.0% market share" or "No demographic data"
-- **Root Cause**: BrandDifferenceProcessor not being called due to routing failure
-- **Solution**: Fix EnhancedQueryAnalyzer field mappings first, then verify BrandDifferenceProcessor BRAND_MAPPINGS
+**Problem: Brand field detection not working**
+- **Symptom**: Processors falling back to hardcoded field names or showing zeros
+- **Root Cause**: BrandNameResolver not finding brand fields in data
+- **Solution**: 
+  1. Check your data has the configured field names (TARGET_BRAND.fieldName, COMPETITOR_BRANDS[].fieldName)
+  2. Verify field naming patterns match exactly (case sensitive)
+  3. Test with `brandResolver.detectBrandFields(sampleRecord)` in console
+
+**Problem: Multiple processors showing inconsistent brand data**
+- **Symptom**: Different processors show different brand shares or names for same data
+- **Root Cause**: Some processors still using old hardcoded mappings instead of BrandNameResolver
+- **Solution**: 
+  1. Verify all processors import and use BrandNameResolver
+  2. Remove any remaining hardcoded brand field references
+  3. Check for legacy BRAND_MAPPINGS or hardcoded MP field codes
+
+**Problem: Analysis summaries use generic terms instead of brand names**
+- **Symptom**: AI summaries say "target brand" or "Brand A" instead of actual brand names
+- **Root Cause**: Summary generation not using BrandNameResolver methods
+- **Solution**: Update summary generation to use `this.brandResolver.getTargetBrandName()` and detected brand names
 
 **Testing Your Fix:**
 ```bash

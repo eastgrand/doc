@@ -11,6 +11,40 @@ export interface BrandMetric {
   brandName: string;
 }
 
+export interface BrandField {
+  fieldName: string;
+  value: number;
+  brandName: string;
+  isTarget: boolean;
+}
+
+// ============================================================================
+// PROJECT BRAND CONFIGURATION - EDIT HERE WHEN CHANGING PROJECTS
+// ============================================================================
+
+/**
+ * Current Project: Tax Software Analysis (H&R Block focus)
+ * 
+ * To change to a different project:
+ * 1. Update TARGET_BRAND with the primary brand field and name
+ * 2. Update COMPETITOR_BRANDS with relevant competitors
+ * 3. Update PROJECT_INDUSTRY name
+ */
+const TARGET_BRAND = {
+  fieldName: 'MP10128A_B_P',
+  brandName: 'H&R Block'
+};
+
+const COMPETITOR_BRANDS = [
+  { fieldName: 'MP10104A_B_P', brandName: 'TurboTax' },
+  { fieldName: 'MP10001A_B_P', brandName: 'FreeTaxUSA' },
+  { fieldName: 'MP10002A_B_P', brandName: 'TaxAct' }
+];
+
+const PROJECT_INDUSTRY = 'Tax Software';
+
+// ============================================================================
+
 export class BrandNameResolver {
   private fieldAliases: Record<string, string>;
   private brandNameCache: Map<string, string> = new Map();
@@ -82,16 +116,40 @@ export class BrandNameResolver {
   /**
    * Extract brand name from the beginning of alias
    * "Nike Market Share (%)" → "Nike"
+   * "H&R Block Market Share (%)" → "H&R Block"
    */
   private extractBrandFromStart(alias: string): string | null {
     const knownBrands = this.getKnownBrandNames();
     
-    for (const brand of knownBrands) {
+    // Sort by length descending to match longer brand names first (e.g., "H&R Block" before "Block")
+    const sortedBrands = knownBrands.sort((a, b) => b.length - a.length);
+    
+    for (const brand of sortedBrands) {
       if (alias.toLowerCase().startsWith(brand.toLowerCase())) {
         // Verify it's a word boundary (not partial match)
         const nextChar = alias[brand.length];
         if (!nextChar || /\s|[^\w]/.test(nextChar)) {
           return this.capitalizeFirstLetter(brand);
+        }
+      }
+    }
+    
+    // Fallback: try to extract first 1-3 words before common terms
+    const commonTerms = ['market', 'share', 'brand', 'purchase', 'loyalty', 'affinity'];
+    const corporateTerms = ['corporation', 'corp', 'company', 'inc', 'ltd', 'llc', 'customer', 'index']; // Terms to exclude from brand names
+    const words = alias.split(/\s+/);
+    
+    for (let wordCount = 3; wordCount >= 1; wordCount--) {
+      const candidateBrand = words.slice(0, wordCount).join(' ');
+      const remainingWords = words.slice(wordCount);
+      
+      // Check if any remaining words are common terms (indicating this is likely a brand name)
+      if (remainingWords.some(word => commonTerms.includes(word.toLowerCase()))) {
+        // Make sure candidate doesn't contain common terms or corporate terms itself
+        const candidateLower = candidateBrand.toLowerCase();
+        if (!commonTerms.some(term => candidateLower.includes(term)) && 
+            !corporateTerms.some(term => candidateLower.includes(term))) {
+          return candidateBrand;
         }
       }
     }
@@ -207,15 +265,35 @@ export class BrandNameResolver {
 
   /**
    * Extract potential brand names from a single alias
-   * Uses heuristics to identify brand-like words
+   * Uses heuristics to identify brand-like words and multi-word brands
    */
   private extractPotentialBrands(alias: string): string[] {
     const brands: string[] = [];
-    const words = alias.split(/\s+|[-:|()\[\]]/);
     
-    for (const word of words) {
-      const cleanWord = word.trim().replace(/[^\w]/g, '');
-      if (this.looksLikeBrandName(cleanWord)) {
+    // Strategy 1: Look for multi-word brands before common terms
+    const commonTerms = ['market', 'share', 'brand', 'purchase', 'loyalty', 'affinity', 'preference'];
+    const words = alias.split(/\s+/);
+    
+    // Try 1-3 word combinations at the start
+    for (let wordCount = 3; wordCount >= 1; wordCount--) {
+      if (words.length >= wordCount) {
+        const candidateBrand = words.slice(0, wordCount).join(' ');
+        const remainingWords = words.slice(wordCount);
+        
+        // Check if this looks like a brand name followed by common terms
+        if (remainingWords.some(word => commonTerms.includes(word.toLowerCase()))) {
+          if (!commonTerms.some(term => candidateBrand.toLowerCase().includes(term))) {
+            brands.push(candidateBrand);
+          }
+        }
+      }
+    }
+    
+    // Strategy 2: Look for individual words that look like brand names
+    const splitWords = alias.split(/\s+|[-:|()\[\]]/);
+    for (const word of splitWords) {
+      const cleanWord = word.trim().replace(/[^\w&]/g, ''); // Keep & for brands like H&R
+      if (this.looksLikeBrandName(cleanWord) && !brands.some(b => b.includes(cleanWord))) {
         brands.push(this.capitalizeFirstLetter(cleanWord));
       }
     }
@@ -317,4 +395,102 @@ export class BrandNameResolver {
       // Hit rate tracking could be added if needed for performance monitoring
     };
   }
+
+  /**
+   * Get project-specific brand fields from a data record
+   * Only returns brands defined in the project configuration
+   * 
+   * @param record - Data record to scan for brand fields
+   * @returns Array of brand fields with resolved names (only project-relevant brands)
+   */
+  detectBrandFields(record: any): BrandField[] {
+    const brandFields: BrandField[] = [];
+    
+    // Add target brand if present
+    const targetField = TARGET_BRAND.fieldName;
+    if (record[targetField] !== undefined && typeof record[targetField] === 'number') {
+      brandFields.push({
+        fieldName: targetField,
+        value: record[targetField],
+        brandName: TARGET_BRAND.brandName,
+        isTarget: true
+      });
+    }
+    
+    // Add competitor brands if present
+    for (const competitor of COMPETITOR_BRANDS) {
+      const fieldName = competitor.fieldName;
+      if (record[fieldName] !== undefined && typeof record[fieldName] === 'number') {
+        brandFields.push({
+          fieldName,
+          value: record[fieldName],
+          brandName: competitor.brandName,
+          isTarget: false
+        });
+      }
+    }
+    
+    // Sort by value descending to prioritize major brands
+    return brandFields.sort((a, b) => b.value - a.value);
+  }
+
+  /**
+   * Get the target brand field name from project configuration
+   * 
+   * @returns Target brand field name (e.g., MP10128A_B_P for H&R Block)
+   */
+  getTargetBrandField(): string {
+    return TARGET_BRAND.fieldName;
+  }
+
+  /**
+   * Get the target brand name from project configuration
+   * 
+   * @returns Target brand name (e.g., "H&R Block")
+   */
+  getTargetBrandName(): string {
+    return TARGET_BRAND.brandName;
+  }
+
+  /**
+   * Calculate market gap dynamically from actual competitor data
+   * 
+   * @param record - Data record with brand market share data
+   * @returns Market gap percentage (5-95% realistic bounds)
+   */
+  calculateMarketGap(record: any): number {
+    const target = this.getTargetBrandField();
+    const targetShare = Number(record[target] || record[target.toLowerCase()]) || 0;
+    
+    // Get all competitor brand shares
+    const allBrandFields = this.detectBrandFields(record);
+    const competitorShares = allBrandFields
+      .filter(field => field.fieldName !== target)
+      .map(field => field.value);
+    
+    const totalCompetitorShare = competitorShares.reduce((sum, share) => sum + share, 0);
+    const totalKnownShare = targetShare + totalCompetitorShare;
+    
+    // Market gap = 100% - total known market shares
+    const rawGap = Math.max(0, 100 - totalKnownShare);
+    
+    // Ensure realistic bounds (5-95%)
+    const marketGap = Math.max(5, Math.min(95, rawGap));
+    
+    return Math.round(marketGap * 100) / 100;
+  }
+
+  /**
+   * Get competitor brand information excluding the target brand
+   * 
+   * @param record - Data record with brand data
+   * @returns Array of competitor brand information
+   */
+  getCompetitorBrands(record: any): BrandField[] {
+    const target = this.getTargetBrandField();
+    const allBrands = this.detectBrandFields(record);
+    
+    return allBrands.filter(brand => brand.fieldName !== target);
+  }
+
 }

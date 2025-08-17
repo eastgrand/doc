@@ -1,5 +1,6 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import Extent from '@arcgis/core/geometry/Extent';
+import { BrandNameResolver, BrandField } from '../../utils/BrandNameResolver';
 
 /**
  * CustomerProfileProcessor - Handles data processing for the /customer-profile endpoint
@@ -8,6 +9,22 @@ import Extent from '@arcgis/core/geometry/Extent';
  * demographic alignment, lifestyle indicators, and behavioral patterns across geographic areas.
  */
 export class CustomerProfileProcessor implements DataProcessorStrategy {
+  private brandResolver: BrandNameResolver;
+
+  constructor() {
+    this.brandResolver = new BrandNameResolver();
+  }
+
+  private hasBrandFields(record: any): boolean {
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    return brandFields.length > 0;
+  }
+
+  private extractTargetBrandAffinity(record: any): number {
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    const targetBrand = brandFields.find((bf: BrandField) => bf.isTarget);
+    return targetBrand?.value || 0;
+  }
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
@@ -34,7 +51,8 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
          record.value_TOTPOP_CY !== undefined ||        // Legacy population
          record.value_AVGHINC_CY !== undefined ||       // Legacy income
          record.value_MEDAGE_CY !== undefined ||        // Age demographics
-         record.mp30034a_b_p !== undefined ||           // Nike affinity indicator
+         // Dynamic brand detection instead of hardcoded fields
+         this.hasBrandFields(record) ||
          record.demographic_opportunity_score !== undefined) // Demographic base
       );
     
@@ -133,7 +151,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
         median_age: record.value_MEDAGE_CY || record.age || 0,
         household_size: record.value_AVGHHSZ_CY || record.household_size || 0,
         wealth_index: record.value_WLTHINDXCY || 100,
-        nike_affinity: Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0
+        target_brand_affinity: this.extractTargetBrandAffinity(record)
       };
       
       // Extract SHAP values
@@ -188,13 +206,13 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   private identifyPersonaType(record: any): string {
     const income = record.median_income || record.value_AVGHINC_CY || record.income || 0;
     const age = record.median_age || record.value_MEDAGE_CY || record.age || 35;
-    const nikeAffinity = Number(record.mp30034a_b_p || record.target_value) || 0;
+    const targetBrandAffinity = this.extractTargetBrandAffinity(record);
     const behavioralScore = Number(record.behavioral_score) || 0;
     const demographicScore = Number(record.demographic_alignment) || 0;
 
-    // Athletic Enthusiasts: High Nike affinity + strong behavioral score
-    if (nikeAffinity >= 25 && behavioralScore >= 70) {
-      return 'Athletic Enthusiasts';
+    // Brand Enthusiasts: High target brand affinity + strong behavioral score
+    if (targetBrandAffinity >= 25 && behavioralScore >= 70) {
+      return 'Brand Enthusiasts';
     }
     
     // Fashion-Forward Professionals: High income + good lifestyle score
@@ -202,8 +220,8 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       return 'Fashion-Forward Professionals';
     }
     
-    // Premium Brand Loyalists: High income + Nike affinity + prime age
-    if (income >= 75000 && nikeAffinity >= 15 && age >= 25 && age <= 50) {
+    // Premium Brand Loyalists: High income + target brand affinity + prime age
+    if (income >= 75000 && targetBrandAffinity >= 15 && age >= 25 && age <= 50) {
       return 'Premium Brand Loyalists';
     }
     
@@ -223,14 +241,14 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
 
   private calculateBrandLoyalty(record: any): number {
-    const nikeAffinity = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
+    const targetBrandAffinity = this.extractTargetBrandAffinity(record);
     const income = record.median_income || record.value_AVGHINC_CY || record.income || 0;
     const age = record.value_MEDAGE_CY || record.age || 0;
     
     let loyaltyScore = 0;
     
-    // Nike affinity as primary loyalty indicator
-    loyaltyScore += (nikeAffinity / 50) * 40;
+    // Target brand affinity as primary loyalty indicator
+    loyaltyScore += (targetBrandAffinity / 50) * 40;
     
     // Income stability (higher income = more brand loyal)
     if (income >= 50000) loyaltyScore += 30;
@@ -258,7 +276,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     else if (age >= 16 && age <= 55) alignmentScore += 15;
     else alignmentScore += 5;
     
-    // Lifestyle income (disposable income for athletic/fashion purchases)
+    // Lifestyle income (disposable income for brand purchases)
     if (income >= 50000) alignmentScore += 25;
     else if (income >= 35000) alignmentScore += 20;
     else if (income >= 25000) alignmentScore += 10;
@@ -281,7 +299,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   private calculatePurchasePropensity(record: any): number {
     const age = record.value_MEDAGE_CY || record.age || 0;
     const income = record.median_income || record.value_AVGHINC_CY || record.income || 0;
-    const nikeAffinity = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
+    const targetBrandAffinity = this.extractTargetBrandAffinity(record);
     const wealthIndex = record.value_WLTHINDXCY || 100;
     
     let propensityScore = 0;
@@ -297,8 +315,8 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     else if (income >= 15000) propensityScore += 10;
     else propensityScore += 5;
     
-    // Brand preference (existing Nike customers likely to purchase more)
-    propensityScore += (nikeAffinity / 50) * 25;
+    // Brand preference (existing target brand customers likely to purchase more)
+    propensityScore += (targetBrandAffinity / 50) * 25;
     
     // Wealth-driven propensity
     propensityScore += Math.min(20, (wealthIndex / 150) * 20);
@@ -450,14 +468,14 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   private assessMarketDominance(personaAnalysis: any[]): string {
-    const athleticPercentage = personaAnalysis.find(p => p.persona === 'Athletic Enthusiasts')?.percentage || 0;
+    const enthusiastPercentage = personaAnalysis.find(p => p.persona === 'Brand Enthusiasts')?.percentage || 0;
     const professionalPercentage = personaAnalysis.find(p => p.persona === 'Fashion-Forward Professionals')?.percentage || 0;
     const premiumPercentage = personaAnalysis.find(p => p.persona === 'Premium Brand Loyalists')?.percentage || 0;
     
-    if (athleticPercentage > 40) return 'Athletic-Dominant Market';
+    if (enthusiastPercentage > 40) return 'Brand-Enthusiast Market';
     if (professionalPercentage > 35) return 'Professional-Focused Market';
     if (premiumPercentage > 30) return 'Premium-Oriented Market';
-    if (athleticPercentage + professionalPercentage > 50) return 'Active-Professional Mix';
+    if (enthusiastPercentage + professionalPercentage > 50) return 'Active-Professional Mix';
     return 'Diverse Customer Profile Mix';
   }
 
@@ -478,7 +496,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       'behavior': 'Purchase behavior and brand affinity patterns',
       'household': 'Household composition and family structure',
       'wealth': 'Wealth indicators and economic status',
-      'nike': 'Nike brand affinity and market presence',
+      'brand': 'Target brand affinity and market presence',
       'demographic': 'Core demographic alignment factors',
       'propensity': 'Purchase propensity and buying likelihood',
       'loyalty': 'Brand loyalty and retention indicators'
@@ -522,12 +540,12 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     
     // Start with customer profile scoring explanation
     let summary = `**👤 Customer Profile Formula (0-100 scale):**
-• **Demographic Alignment (30% weight):** Age, income, household fit with Nike's target customer (16-45 years, $35K-$150K income)
-• **Lifestyle Score (25% weight):** Activity patterns, wealth indicators, and lifestyle characteristics aligned with athletic/fashion brands
-• **Behavioral Score (25% weight):** Brand affinity, purchase propensity, and loyalty indicators based on Nike market presence
+• **Demographic Alignment (30% weight):** Age, income, household fit with target brand's customer profile (16-45 years, $35K-$150K income)
+• **Lifestyle Score (25% weight):** Activity patterns, wealth indicators, and lifestyle characteristics aligned with brand positioning
+• **Behavioral Score (25% weight):** Brand affinity, purchase propensity, and loyalty indicators based on target brand market presence
 • **Market Context Score (20% weight):** Market size, economic stability, competitive environment, and growth potential
 
-Higher scores indicate stronger alignment with Nike's ideal customer profile across multiple dimensions.
+Higher scores indicate stronger alignment with the target brand's ideal customer profile across multiple dimensions.
 
 `;
     

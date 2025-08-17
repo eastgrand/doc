@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 /**
  * TrendAnalysisProcessor - Handles data processing for the /trend-analysis endpoint
@@ -7,6 +8,11 @@ import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, Geogra
  * and trend consistency across geographic markets.
  */
 export class TrendAnalysisProcessor implements DataProcessorStrategy {
+  private brandResolver: BrandNameResolver;
+
+  constructor() {
+    this.brandResolver = new BrandNameResolver();
+  }
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
@@ -15,17 +21,25 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     
     // Validate that we have expected fields for trend analysis
     const hasRequiredFields = rawData.results.length === 0 || 
-      rawData.results.some(record => 
-        record && 
-        (record.area_id || record.id || record.ID) &&
-        (record.trend_score !== undefined || 
-         record.value !== undefined || 
-         record.score !== undefined ||
-         // Check for trend-relevant fields
-         record.mp30034a_b_p !== undefined || // Nike market share for trend tracking
-         record.strategic_value_score !== undefined ||
-         record.competitive_advantage_score !== undefined)
-      );
+      rawData.results.some(record => {
+        if (!record || !(record.area_id || record.id || record.ID)) {
+          return false;
+        }
+        
+        // Check for standard score fields
+        if (record.trend_score !== undefined || record.value !== undefined || record.score !== undefined) {
+          return true;
+        }
+        
+        // Use dynamic brand detection to check for brand fields
+        const brandFields = this.brandResolver.detectBrandFields(record);
+        if (brandFields.length > 0) {
+          return true;
+        }
+        
+        // Check for other trend-relevant fields
+        return record.strategic_value_score !== undefined || record.competitive_advantage_score !== undefined;
+      });
     
     return hasRequiredFields;
   }
@@ -58,8 +72,11 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
         });
       }
       
-      // Extract trend-relevant metrics for properties
-      const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
+      // Extract trend-relevant metrics for properties using dynamic brand detection
+      const brandFields = this.brandResolver.detectBrandFields(record);
+      const targetBrand = brandFields.find(bf => bf.isTarget);
+      const targetBrandShare = targetBrand?.value || 0;
+      
       const strategicScore = Number(record.strategic_value_score) || 0;
       const competitiveScore = Number(record.competitive_advantage_score) || 0;
       const demographicScore = Number(record.demographic_opportunity_score) || 0;
@@ -80,7 +97,8 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
         properties: {
           ...record, // Include ALL original fields in properties
           trend_strength_score: trendScore,
-          nike_market_share: nikeShare,
+          target_brand_share: targetBrandShare,
+          target_brand_name: targetBrand?.brandName || 'Unknown',
           strategic_score: strategicScore,
           competitive_score: competitiveScore,
           demographic_score: demographicScore,
@@ -139,12 +157,16 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     const strategicScore = Number(record.strategic_value_score) || 0;
     const competitiveScore = Number(record.competitive_advantage_score) || 0;
     const demographicScore = Number(record.demographic_opportunity_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
+    
+    // Use dynamic brand detection for target brand share
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    const targetBrand = brandFields.find(bf => bf.isTarget);
+    const targetBrandShare = targetBrand?.value || 0;
     
     // Simple trend strength calculation
     const consistencyFactor = strategicScore > 0 ? (strategicScore / 100) * 40 : 20;
     const growthFactor = competitiveScore > 0 ? (competitiveScore / 10) * 30 : 15;
-    const positionFactor = nikeShare > 0 ? Math.min(nikeShare / 50, 1) * 20 : 10;
+    const positionFactor = targetBrandShare > 0 ? Math.min(targetBrandShare / 50, 1) * 20 : 10;
     const stabilityFactor = 10; // Default stability
     
     return Math.min(100, consistencyFactor + growthFactor + positionFactor + stabilityFactor);
@@ -154,9 +176,13 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
    * Calculate growth potential based on market fundamentals
    */
   private calculateGrowthPotential(record: any): number {
-    const nikeShare = Number(record.mp30034a_b_p) || 0;
+    // Use dynamic brand detection for target brand share
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    const targetBrand = brandFields.find(bf => bf.isTarget);
+    const targetBrandShare = targetBrand?.value || 0;
+    
     const demographicScore = Number(record.demographic_opportunity_score) || 0;
-    const marketGap = Math.max(0, 100 - nikeShare);
+    const marketGap = Math.max(0, 100 - targetBrandShare);
     
     // Growth potential formula: Market Gap (60%) + Demographic Opportunity (40%)
     const gapPotential = (marketGap / 100) * 60;

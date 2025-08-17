@@ -11,7 +11,8 @@ This document provides a comprehensive explanation of how a user query flows thr
 2. **GeoAwarenessEngine** - Geographic entity recognition and filtering
 3. **Endpoint Router** - Determines which analysis endpoint to call
 4. **Data Processors** - Transform raw endpoint data for visualization
-5. **ArcGIS Renderer** - Visualizes processed data on the map
+5. **BrandNameResolver** - Dynamic brand configuration and field mapping
+6. **ArcGIS Renderer** - Visualizes processed data on the map
 
 ## Complete Flow Diagram
 
@@ -40,6 +41,7 @@ User Query
     ↓
 [Data Processor Strategy]
     ├── Validation
+    ├── BrandNameResolver Integration
     ├── Score Extraction
     ├── Field Mapping
     └── Geographic Integration
@@ -115,7 +117,33 @@ for (const entity of entities) {
 //                       ['33101', '33102', ...] for Miami-Dade
 ```
 
-### Step 3: Endpoint Routing
+### Step 3: Brand Configuration Processing
+
+**Component**: `lib/analysis/utils/BrandNameResolver.ts`
+
+The BrandNameResolver provides dynamic brand configuration for all analysis processors:
+
+```typescript
+// 1. Initialize brand resolver
+const brandResolver = new BrandNameResolver();
+
+// 2. Detect brand fields in data
+const brandFields = brandResolver.detectBrandFields(record);
+// Returns: [
+//   { fieldName: 'MP10128A_B_P', brandName: 'H&R Block', value: 25.3, isTarget: true },
+//   { fieldName: 'MP10104A_B_P', brandName: 'TurboTax', value: 18.7, isTarget: false }
+// ]
+
+// 3. Extract target brand information
+const targetBrandName = brandResolver.getTargetBrandName();
+// Returns: 'H&R Block'
+
+// 4. Calculate market gap
+const marketGap = brandResolver.calculateMarketGap(record);
+// Returns: 44.0 (100% - 25.3% - 18.7% - other competitors)
+```
+
+### Step 4: Endpoint Routing
 
 **Component**: Query routing logic
 
@@ -302,7 +330,8 @@ process(rawData: RawAnalysisResult): ProcessedAnalysisData {
 
 ### Step 5.5: Dynamic Brand Naming Process
 
-**Component**: `lib/analysis/utils/BrandNameRexesolver.ts`
+**Component**: `lib/analysis/utils/BrandNameR
+esolver.ts`
 
 For brand-related analysis endpoints (like comparative analysis), the system now dynamically extracts actual brand names instead of using generic "Brand A/B" terminology:
 
@@ -1027,3 +1056,126 @@ The system is designed to be robust, with multiple fallback mechanisms and flexi
 - **Complete documentation**: See `docs/ENDPOINT_SCORING_ALGORITHMS.md` for full algorithm reference
 - **Regeneration capability**: Algorithms automatically adapt to new data patterns
 - **Scientific rigor**: Data-driven weights replace hardcoded business assumptions
+
+## BrandNameResolver Integration
+
+### Overview
+
+The BrandNameResolver system provides centralized, dynamic brand configuration for all analysis processors. This replaces hardcoded brand mappings with a single source of truth that adapts to different project domains.
+
+### Key Features
+
+**Dynamic Brand Detection**:
+- Automatically detects brand fields in data using configurable patterns
+- Supports multiple competitor brands with target/non-target classification
+- Returns structured brand information with field names, brand names, and values
+
+**Market Gap Calculation**:
+- Dynamically calculates untapped market potential
+- Accounts for all detected competitors in market share calculations
+- Provides realistic bounds (5-95%) for market gap estimates
+
+**Brand-Agnostic Processing**:
+- All processors use the same brand detection logic
+- Summary text automatically includes actual brand names
+- Field mappings adapt to different industry contexts
+
+### Processor Integration
+
+**Fully Integrated Processors** (9):
+1. **StrategicAnalysisProcessor** - Uses BrandNameResolver for target brand detection and market gap calculation
+2. **CompetitiveDataProcessor** - Uses BrandNameResolver for brand field detection and competitive positioning
+3. **BrandAnalysisProcessor** - Uses BrandNameResolver for dynamic brand comparison and analysis
+4. **CoreAnalysisProcessor** - Uses BrandNameResolver for comprehensive brand-aware analysis
+5. **DemographicDataProcessor** - Uses BrandNameResolver for brand-demographic correlation
+6. **SegmentProfilingProcessor** - Uses BrandNameResolver for brand affinity segmentation
+7. **TrendAnalysisProcessor** - Uses BrandNameResolver for brand performance trends
+8. **CustomerProfileProcessor** - Uses BrandNameResolver for brand loyalty analysis
+9. **CorrelationAnalysisProcessor** - Uses BrandNameResolver for brand correlation studies
+
+**Configuration Example**:
+
+```typescript
+// Tax Software Project
+const TARGET_BRAND = {
+  fieldName: 'MP10128A_B_P',
+  brandName: 'H&R Block'
+};
+
+const COMPETITOR_BRANDS = [
+  { fieldName: 'MP10104A_B_P', brandName: 'TurboTax' },
+  { fieldName: 'MP10001A_B_P', brandName: 'FreeTaxUSA' }
+];
+
+// Athletic Footwear Project  
+const TARGET_BRAND = {
+  fieldName: 'MP30034A_B_P',
+  brandName: 'Nike'
+};
+
+const COMPETITOR_BRANDS = [
+  { fieldName: 'MP30029A_B_P', brandName: 'Adidas' },
+  { fieldName: 'MP30032A_B_P', brandName: 'Jordan' }
+];
+```
+
+### Usage Patterns
+
+**Brand Field Detection**:
+```typescript
+const brandFields = this.brandResolver.detectBrandFields(record);
+const targetBrand = brandFields.find(bf => bf.isTarget);
+const targetBrandShare = targetBrand?.value || 0;
+```
+
+**Market Gap Calculation**:
+```typescript
+const marketGap = this.brandResolver.calculateMarketGap(record);
+// Returns: percentage of market not captured by known brands
+```
+
+**Summary Generation**:
+```typescript
+const targetBrandName = this.brandResolver.getTargetBrandName();
+summary += `Strategic analysis for ${targetBrandName} expansion potential.`;
+```
+
+### Migration Benefits
+
+**Before (Hardcoded)**:
+- Each processor had its own brand field mappings
+- Brand changes required updates to 10+ files
+- Industry switching required extensive code changes
+- Summary text used generic "Brand A" terminology
+
+**After (BrandNameResolver)**:
+- Single source of truth for all brand configuration
+- Brand changes require updating only one file
+- Industry switching is configuration-only
+- Summary text uses actual brand names automatically
+
+### Configuration for New Projects
+
+**Step 1: Update BrandNameResolver Configuration**
+File: `/lib/analysis/utils/BrandNameResolver.ts`
+
+```typescript
+// Replace these constants with your project's brand information
+const TARGET_BRAND = {
+  fieldName: 'YOUR_TARGET_BRAND_FIELD',    // e.g., 'MP30034A_B_P'
+  brandName: 'Your Primary Brand'          // e.g., 'Nike'
+};
+
+const COMPETITOR_BRANDS = [
+  { fieldName: 'COMPETITOR_1_FIELD', brandName: 'Competitor 1' },
+  { fieldName: 'COMPETITOR_2_FIELD', brandName: 'Competitor 2' }
+];
+
+const PROJECT_INDUSTRY = 'Your Industry';  // e.g., 'Athletic Footwear'
+```
+
+**Step 2: Verify Field Patterns**
+Ensure your data uses the expected field naming patterns (e.g., MP codes ending with _B_P for brand percentages).
+
+**Step 3: Test Integration**
+All modern processors will automatically use the new configuration without code changes.

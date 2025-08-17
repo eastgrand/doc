@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
+import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 /**
  * StrategicAnalysisProcessor - Handles data processing for the /strategic-analysis endpoint
@@ -9,6 +10,11 @@ import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
  * market potential, and strategic value scoring.
  */
 export class StrategicAnalysisProcessor implements DataProcessorStrategy {
+  private brandResolver: BrandNameResolver;
+
+  constructor() {
+    this.brandResolver = new BrandNameResolver();
+  }
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
@@ -60,8 +66,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
           ...record,
           strategic_value_score: primaryScore,
           score_source: 'strategic_value_score',
-          nike_market_share: Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0,
-          market_gap: this.calculateRealisticMarketGap(Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0),
+          target_brand_share: this.extractTargetBrandShare(record),
+          market_gap: this.calculateRealMarketGap(record),
           total_population: Number(record.total_population || record.value_TOTPOP_CY) || 0,
           median_income: Number(record.median_income || record.value_AVGHINC_CY) || 0,
           competitive_advantage_score: Number(record.competitive_advantage_score) || 0,
@@ -265,8 +271,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       
       // Handle calculated fields
       if (fieldDef.calculated && fieldDef.field === 'market_gap') {
-        const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-        value = this.calculateRealisticMarketGap(nikeShare);
+        value = this.calculateRealMarketGap(record);
       }
       
       // Only include fields with meaningful values
@@ -336,7 +341,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       'income': 'Median household income',
       'competitive': 'Competitive landscape',
       'demographic': 'Demographic factors',
-      'nike': 'Nike brand presence',
+      'brand': 'Target brand presence',
       'strategic': 'Strategic positioning'
     };
     
@@ -404,7 +409,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     // Start with score explanation
     let summary = getScoreExplanationForAnalysis('strategic-analysis', 'strategic_value');
     
-    summary += `**Strategic Market Analysis Complete:** ${statistics.total} geographic areas evaluated for Nike expansion potential. `;
+    const targetBrandName = this.brandResolver.getTargetBrandName();
+    summary += `**Strategic Market Analysis Complete:** ${statistics.total} geographic areas evaluated for ${targetBrandName} expansion potential. `;
     summary += `Strategic value scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
     
     // Top strategic markets
@@ -443,27 +449,18 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
   }
 
   /**
-   * Calculate realistic market gap that prevents impossible 100% values
-   * Nike percentage is already a percentage (0-100), so we need to account for:
-   * - Other competitors (Adidas, etc.) typically 15-25% combined
-   * - Other brands and unbranded market share
-   * - Realistic market saturation levels
+   * Extract target brand share using BrandNameResolver
    */
-  private calculateRealisticMarketGap(nikePercentage: number): number {
-    // If Nike percentage is 0 or very low, assume moderate competition exists
-    if (nikePercentage <= 0) {
-      return 65; // Assume 35% other competitors, 65% opportunity
-    }
-    
-    // Estimate total athletic brand market share
-    // In a typical market: Nike (20-40%) + Adidas (10-20%) + Others (10-20%) = 40-80% total
-    const estimatedOtherCompetitors = Math.min(35, nikePercentage * 0.8); // Other brands typically 50-80% of Nike's share
-    const totalAthleticBrands = nikePercentage + estimatedOtherCompetitors;
-    
-    // Market gap is remaining athletic brand opportunity, capped at reasonable levels
-    const rawGap = Math.max(0, 85 - totalAthleticBrands); // Assume 85% max athletic brand penetration
-    
-    // Ensure gap is between 10-75% for realism
-    return Math.max(10, Math.min(75, rawGap));
+  private extractTargetBrandShare(record: any): number {
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    const targetBrand = brandFields.find(bf => bf.isTarget);
+    return targetBrand?.value || 0;
+  }
+
+  /**
+   * Calculate real market gap using BrandNameResolver
+   */
+  private calculateRealMarketGap(record: any): number {
+    return this.brandResolver.calculateMarketGap(record);
   }
 }

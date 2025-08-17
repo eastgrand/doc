@@ -460,24 +460,11 @@ function findCorrelations(data: any[]): Patterns['correlations'] {
     }
   }
   
-  // Add synthetic correlation if no real data available (for demo purposes)
+  // Only show correlations if real data relationships exist
+  // Do not generate synthetic correlations as they are misleading without temporal data
   if (correlations.length === 0) {
-    // Generate realistic correlations based on score patterns
-    const meanScore = scores.reduce((a, b) => a + b, 0) / scores.length;
-    const baseCorr = meanScore > 7 ? 0.6 : meanScore > 5 ? 0.3 : 0.1;
-    
-    correlations.push(
-      {
-        factor: 'Population Density',
-        correlation: baseCorr + (Math.random() * 0.2 - 0.1),
-        significance: baseCorr > 0.5 ? 'moderate' : 'weak'
-      },
-      {
-        factor: 'Median Income', 
-        correlation: baseCorr + (Math.random() * 0.3 - 0.15),
-        significance: baseCorr > 0.4 ? 'moderate' : 'weak'
-      }
-    );
+    // No meaningful correlations available with current data
+    return [];
   }
   
   return correlations.sort((a, b) => Math.abs(b.correlation) - Math.abs(a.correlation));
@@ -576,8 +563,8 @@ export function formatStatsForChat(stats: BasicStats, analysisType?: string): st
   
   lines.push(`${getIconString('statistics')} **Quick Statistics**`);
   lines.push(`• Areas analyzed: **${stats.count}**`);
-  lines.push(`• Average score: **${stats.mean.toFixed(2)}/10**`);
-  lines.push(`• Median score: **${stats.median.toFixed(2)}/10**`);
+  lines.push(`• Average score: **${stats.mean.toFixed(2)}/100**`);
+  lines.push(`• Median score: **${stats.median.toFixed(2)}/100**`);
   lines.push(`• Standard deviation: **${stats.stdDev.toFixed(2)}**`);
   lines.push(`• Score range: **${stats.min.score.toFixed(1)}** to **${stats.max.score.toFixed(1)}**`);
   
@@ -766,6 +753,9 @@ export function formatPatternsForChat(patterns: Patterns, analysisType?: string)
       lines.push(`• **${corr.factor}**: **${sign}${(corr.correlation * 100).toFixed(0)}%** (${corr.significance})`);
     });
     lines.push('');
+  } else {
+    lines.push('**Key Correlations:** Insufficient temporal data for meaningful correlation analysis');
+    lines.push('');
   }
   
   if (patterns.trends.length > 0) {
@@ -799,6 +789,9 @@ export function formatBrandDifferencePatternsForChat(patterns: Patterns): string
       const direction = corr.correlation > 0 ? 'favors H&R Block' : 'favors competitor';
       lines.push(`• **${corr.factor}**: **${sign}${(corr.correlation * 100).toFixed(0)}%** correlation (${direction})`);
     });
+    lines.push('');
+  } else {
+    lines.push('**Brand Success Drivers:** Correlations based on cross-sectional data - temporal analysis requires time-series data');
     lines.push('');
   }
   

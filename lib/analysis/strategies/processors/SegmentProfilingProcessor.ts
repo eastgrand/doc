@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
+import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 /**
  * SegmentProfilingProcessor - Specialized processor for segment profiling analysis
@@ -7,6 +8,12 @@ import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from 
  * demographic distinctiveness, behavioral clustering, market segment strength, and profiling clarity.
  */
 export class SegmentProfilingProcessor implements DataProcessorStrategy {
+  private brandResolver: BrandNameResolver;
+
+  constructor() {
+    this.brandResolver = new BrandNameResolver();
+  }
+
   validate(rawData: RawAnalysisResult): boolean {
     return rawData && 
            rawData.success && 
@@ -23,8 +30,10 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       // Extract or calculate segment profiling score with fallback logic
       const segmentScore = this.extractSegmentScore(record);
       
-      // Extract related metrics for additional analysis (updated for actual dataset fields)
-      const nikeShare = Number(record.value_MP30034A_B_P || record.mp30034a_b_p) || 0;
+      // Extract related metrics for additional analysis using dynamic brand detection
+      const brandFields = this.brandResolver.detectBrandFields(record);
+      const targetBrand = brandFields.find(bf => bf.isTarget);
+      const targetBrandShare = targetBrand?.value || 0;
       const strategicScore = Number(record.strategic_value_score) || 0;
       const competitiveScore = Number(record.competitive_advantage_score) || 0;
       const demographicScore = Number(record.demographic_opportunity_score) || 0;
@@ -36,7 +45,8 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       // Calculate additional segmentation indicators
       const indicators = this.calculateSegmentationIndicators({
         segmentScore,
-        nikeShare,
+        targetBrandShare,
+        targetBrandName: targetBrand?.brandName || this.brandResolver.getTargetBrandName(),
         strategicScore,
         competitiveScore,
         demographicScore,
@@ -65,7 +75,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
           primary_segment_type: indicators.primarySegmentType,
           segment_size: indicators.segmentSize,
           segment_income_level: indicators.segmentIncomeLevel,
-          nike_segment_affinity: indicators.nikeSegmentAffinity,
+          target_brand_segment_affinity: indicators.targetBrandSegmentAffinity,
           
           // Demographic segmentation factors
           income_distinctiveness: indicators.incomeDistinctiveness,
@@ -79,7 +89,8 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
           trend_behavioral_alignment: indicators.trendBehavioralAlignment,
           
           // Supporting segmentation data
-          nike_market_share: nikeShare,
+          target_brand_share: targetBrandShare,
+          target_brand_name: targetBrand?.brandName || 'Unknown',
           market_population: totalPop,
           median_household_income: medianIncome,
           strategic_alignment: strategicScore,
@@ -121,16 +132,19 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       summary,
       featureImportance: rawData.feature_importance || [],
       statistics,
-      targetVariable: 'value_MP30034A_B_P' // Nike market share percentage for segmentation
+      targetVariable: 'segment_profiling_score' // Segment profiling score for segmentation
     };
   }
 
   private extractSegmentScore(record: any): number {
-    // PRIORITY 1: Nike market share as primary segment profiling indicator  
-    if (record.value_MP30034A_B_P !== undefined && record.value_MP30034A_B_P !== null) {
-      const nikeShare = Number(record.value_MP30034A_B_P);
-      console.log(`🎯 [SegmentProfilingProcessor] Using Nike market share as segment score: ${nikeShare} for ${record.value_DESCRIPTION || record.ID || 'Unknown'}`);
-      return nikeShare;
+    // PRIORITY 1: Target brand market share as primary segment profiling indicator  
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    const targetBrand = brandFields.find(bf => bf.isTarget);
+    
+    if (targetBrand && targetBrand.value !== undefined && targetBrand.value !== null) {
+      const targetBrandShare = Number(targetBrand.value);
+      console.log(`🎯 [SegmentProfilingProcessor] Using ${targetBrand.brandName} market share as segment score: ${targetBrandShare} for ${record.value_DESCRIPTION || record.ID || 'Unknown'}`);
+      return targetBrandShare;
     }
     
     // PRIORITY 2: Pre-calculated segment profiling score (for other datasets)
@@ -170,7 +184,8 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
 
   private calculateSegmentationIndicators(metrics: {
     segmentScore: number;
-    nikeShare: number;
+    targetBrandShare: number;
+    targetBrandName: string;
     strategicScore: number;
     competitiveScore: number;
     demographicScore: number;
@@ -181,7 +196,8 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
   }) {
     const {
       segmentScore,
-      nikeShare,
+      targetBrandShare,
+      targetBrandName,
       strategicScore,
       competitiveScore,
       demographicScore,
@@ -198,9 +214,9 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
                                      demographicScore >= 35 ? 'Low' : 'Very Low';
 
     // Behavioral clustering strength
-    const behavioralClustering = (strategicScore >= 70 && nikeShare >= 20) ? 'Strong' :
-                               (strategicScore >= 50 || nikeShare >= 15) ? 'Moderate' :
-                               (strategicScore >= 30 || nikeShare >= 8) ? 'Weak' : 'Limited';
+    const behavioralClustering = (strategicScore >= 70 && targetBrandShare >= 20) ? 'Strong' :
+                               (strategicScore >= 50 || targetBrandShare >= 15) ? 'Moderate' :
+                               (strategicScore >= 30 || targetBrandShare >= 8) ? 'Weak' : 'Limited';
 
     // Market segment strength assessment
     const marketSegmentStrength = correlationScore >= 70 ? 'Excellent' :
@@ -208,7 +224,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
                                 correlationScore >= 35 ? 'Fair' : 'Limited';
 
     // Profiling clarity assessment  
-    const dataFields = [nikeShare, strategicScore, competitiveScore, demographicScore, 
+    const dataFields = [targetBrandShare, strategicScore, competitiveScore, demographicScore, 
                        trendScore, correlationScore, totalPop, medianIncome].filter(v => v > 0).length;
     const profilingClarity = dataFields >= 7 ? 'Very Clear' :
                            dataFields >= 5 ? 'Clear' :
@@ -216,9 +232,9 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
 
     // Primary segment type identification
     let primarySegmentType = 'Mixed Market';
-    if (nikeShare >= 25 && medianIncome >= 100000) primarySegmentType = 'Premium Nike Loyalists';
-    else if (nikeShare >= 20 && medianIncome >= 80000) primarySegmentType = 'Affluent Nike Consumers';
-    else if (nikeShare >= 15 && demographicScore >= 70) primarySegmentType = 'Demographic Nike Segment';
+    if (targetBrandShare >= 25 && medianIncome >= 100000) primarySegmentType = `Premium ${targetBrandName} Loyalists`;
+    else if (targetBrandShare >= 20 && medianIncome >= 80000) primarySegmentType = `Affluent ${targetBrandName} Consumers`;
+    else if (targetBrandShare >= 15 && demographicScore >= 70) primarySegmentType = `Demographic ${targetBrandName} Segment`;
     else if (medianIncome >= 100000) primarySegmentType = 'High-Income Market'; 
     else if (demographicScore >= 80) primarySegmentType = 'High-Demographic Potential';
     else if (strategicScore >= 70) primarySegmentType = 'Strategic Target Market';
@@ -239,11 +255,11 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
                               medianIncome >= 60000 ? 'Middle Income' :
                               medianIncome >= 40000 ? 'Lower-Middle Income' : 'Lower Income';
 
-    // Nike segment affinity
-    const nikeSegmentAffinity = nikeShare >= 30 ? 'Very High Affinity' :
-                               nikeShare >= 20 ? 'High Affinity' :
-                               nikeShare >= 15 ? 'Moderate Affinity' :
-                               nikeShare >= 8 ? 'Low Affinity' : 'Very Low Affinity';
+    // Target brand segment affinity
+    const targetBrandSegmentAffinity = targetBrandShare >= 30 ? 'Very High Affinity' :
+                                      targetBrandShare >= 20 ? 'High Affinity' :
+                                      targetBrandShare >= 15 ? 'Moderate Affinity' :
+                                      targetBrandShare >= 8 ? 'Low Affinity' : 'Very Low Affinity';
 
     // Income distinctiveness
     const incomeDistinctiveness = medianIncome >= 120000 ? 'Highly Distinctive' :
@@ -274,9 +290,9 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
                                        competitiveScore >= 4 ? 'Moderately Competitive' : 'Low Competition';
 
     // Brand loyalty segment
-    const brandLoyaltySegment = nikeShare >= 30 ? 'High Loyalty' :
-                               nikeShare >= 20 ? 'Moderate Loyalty' :
-                               nikeShare >= 10 ? 'Low Loyalty' : 'Minimal Loyalty';
+    const brandLoyaltySegment = targetBrandShare >= 30 ? 'High Loyalty' :
+                               targetBrandShare >= 20 ? 'Moderate Loyalty' :
+                               targetBrandShare >= 10 ? 'Low Loyalty' : 'Minimal Loyalty';
 
     // Trend behavioral alignment
     const trendBehavioralAlignment = trendScore >= 75 ? 'Strongly Aligned' :
@@ -310,8 +326,8 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
     else if (primarySegmentType.includes('Niche')) recommendedStrategy = 'Niche Specialization';
 
     // Targeting priority
-    const targetingPriority = (segmentScore >= 60 && (nikeShare >= 15 || medianIncome >= 80000)) ? 'High Priority' :
-                            (segmentScore >= 50 || nikeShare >= 12) ? 'Medium Priority' :
+    const targetingPriority = (segmentScore >= 60 && (targetBrandShare >= 15 || medianIncome >= 80000)) ? 'High Priority' :
+                            (segmentScore >= 50 || targetBrandShare >= 12) ? 'Medium Priority' :
                             (segmentScore >= 40) ? 'Low Priority' : 'Minimal Priority';
 
     // Segmentation complexity
@@ -327,7 +343,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       primarySegmentType,
       segmentSize,
       segmentIncomeLevel,
-      nikeSegmentAffinity,
+      targetBrandSegmentAffinity,
       incomeDistinctiveness,
       populationSegmentCategory,
       demographicProfileStrength,

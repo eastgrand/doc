@@ -1,6 +1,13 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
+import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 export class BrandAnalysisProcessor implements DataProcessorStrategy {
+  private brandResolver: BrandNameResolver;
+
+  constructor() {
+    this.brandResolver = new BrandNameResolver();
+  }
+
   validate(rawData: RawAnalysisResult): boolean {
     return rawData && rawData.success && Array.isArray(rawData.results) && rawData.results.length > 0;
   }
@@ -12,9 +19,16 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
 
     const records = rawData.results.map((record: any, index: number) => {
       const brandScore = Number(record.brand_analysis_score) || Number(record.brand_difference_score) || 0;
-      const hrBlockShare = Number(record.MP10128A_B_P) || 0;
-      const turboTaxShare = Number(record.MP10104A_B_P) || 0;
-      const brandDifference = hrBlockShare - turboTaxShare;
+      
+      // Use dynamic brand detection instead of hardcoded fields
+      const brandFields = this.brandResolver.detectBrandFields(record);
+      const targetBrand = brandFields.find(bf => bf.isTarget);
+      const topCompetitor = brandFields.find(bf => !bf.isTarget);
+      
+      const targetBrandShare = targetBrand?.value || 0;
+      const competitorShare = topCompetitor?.value || 0;
+      const brandDifference = targetBrandShare - competitorShare;
+      
       const strategicScore = Number(record.strategic_value_score) || 0;
       const competitiveScore = Number(record.competitive_advantage_score) || 0;
       const demographicScore = Number(record.demographic_opportunity_score) || 0;
@@ -24,17 +38,19 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
         area_name: record.area_name || record.DESCRIPTION || `Area ${index + 1}`,
         value: brandScore || brandDifference,
         rank: index + 1,
-        category: this.categorizeBrandStrength(hrBlockShare, turboTaxShare),
+        category: this.categorizeBrandStrength(targetBrandShare, competitorShare, targetBrand?.brandName, topCompetitor?.brandName),
         coordinates: this.extractCoordinates(record),
         properties: {
           brand_analysis_score: brandScore,
           brand_difference_score: brandDifference,
-          hr_block_market_share: hrBlockShare,
-          turbotax_market_share: turboTaxShare,
-          brand_strength_level: this.getBrandStrengthLevel(hrBlockShare, turboTaxShare),
+          target_brand_share: targetBrandShare,
+          target_brand_name: targetBrand?.brandName || 'Unknown',
+          competitor_share: competitorShare,
+          competitor_name: topCompetitor?.brandName || 'Unknown',
+          brand_strength_level: this.getBrandStrengthLevel(targetBrandShare, competitorShare),
           market_position: this.getMarketPosition(strategicScore, demographicScore),
           competitive_landscape: this.getCompetitiveLandscape(competitiveScore),
-          brand_opportunity: this.getBrandOpportunity(hrBlockShare, turboTaxShare, strategicScore),
+          brand_opportunity: this.getBrandOpportunity(targetBrandShare, competitorShare, strategicScore),
           strategic_value: strategicScore,
           demographic_alignment: demographicScore
         },
@@ -59,18 +75,21 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
     };
   }
 
-  private categorizeBrandStrength(hrBlockShare: number, turboTaxShare: number): string {
-    const difference = hrBlockShare - turboTaxShare;
-    if (difference >= 10) return 'H&R Block Advantage';
-    if (difference >= 5) return 'H&R Block Leading';
-    if (difference <= -10) return 'TurboTax Advantage';
-    if (difference <= -5) return 'TurboTax Leading';
+  private categorizeBrandStrength(targetShare: number, competitorShare: number, targetName?: string, competitorName?: string): string {
+    const difference = targetShare - competitorShare;
+    const target = targetName || 'Target Brand';
+    const competitor = competitorName || 'Competitor';
+    
+    if (difference >= 10) return `${target} Advantage`;
+    if (difference >= 5) return `${target} Leading`;
+    if (difference <= -10) return `${competitor} Advantage`;
+    if (difference <= -5) return `${competitor} Leading`;
     return 'Competitive Parity';
   }
 
-  private getBrandStrengthLevel(hrBlockShare: number, turboTaxShare: number): string {
-    const totalShare = hrBlockShare + turboTaxShare;
-    const difference = hrBlockShare - turboTaxShare;
+  private getBrandStrengthLevel(targetShare: number, competitorShare: number): string {
+    const totalShare = targetShare + competitorShare;
+    const difference = targetShare - competitorShare;
     if (totalShare >= 30 && Math.abs(difference) >= 10) return 'Clear Market Leader';
     if (totalShare >= 20 && Math.abs(difference) >= 5) return 'Strong Position';
     if (totalShare >= 15) return 'Established Presence';
@@ -93,8 +112,8 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
     return 'Low Competition';
   }
 
-  private getBrandOpportunity(hrBlockShare: number, turboTaxShare: number, strategic: number): string {
-    const difference = hrBlockShare - turboTaxShare;
+  private getBrandOpportunity(targetShare: number, competitorShare: number, strategic: number): string {
+    const difference = targetShare - competitorShare;
     if (difference >= 10 && strategic >= 70) return 'Defend Leadership';
     if (difference <= -10 && strategic >= 60) return 'Market Penetration';
     if (Math.abs(difference) <= 5 && strategic >= 50) return 'Competitive Battle';
@@ -113,14 +132,18 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
 
   private generateBrandSummary(records: any[], statistics: any): string {
     const topBrands = records.slice(0, 5);
-    const hrBlockAdvantage = records.filter(r => r.properties.brand_difference_score >= 5).length;
-    const turboTaxAdvantage = records.filter(r => r.properties.brand_difference_score <= -5).length;
+    const targetAdvantage = records.filter(r => r.properties.brand_difference_score >= 5).length;
+    const competitorAdvantage = records.filter(r => r.properties.brand_difference_score <= -5).length;
     const competitive = records.filter(r => Math.abs(r.properties.brand_difference_score) < 5).length;
     const avgScore = statistics.mean.toFixed(1);
 
     const topNames = topBrands.map(r => `${r.area_name} (${r.value.toFixed(1)})`).join(', ');
 
-    return `Brand analysis of ${records.length} markets identified ${hrBlockAdvantage} markets with H&R Block advantage, ${turboTaxAdvantage} with TurboTax advantage, and ${competitive} competitive markets. Average brand difference score: ${avgScore}. Top markets: ${topNames}. Analysis considers H&R Block vs TurboTax market share differences, competitive positioning, and strategic opportunities for tax software market leadership.`;
+    // Get brand names from the first record if available
+    const targetBrand = records[0]?.properties?.target_brand_name || this.brandResolver.getTargetBrandName();
+    const competitorBrand = records[0]?.properties?.competitor_name || 'Competitor';
+
+    return `Brand analysis of ${records.length} markets identified ${targetAdvantage} markets with ${targetBrand} advantage, ${competitorAdvantage} with ${competitorBrand} advantage, and ${competitive} competitive markets. Average brand difference score: ${avgScore}. Top markets: ${topNames}. Analysis considers ${targetBrand} vs ${competitorBrand} market share differences, competitive positioning, and strategic opportunities for market leadership.`;
   }
 
   private calculateStatistics(values: number[]) {

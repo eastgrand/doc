@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { BrandNameResolver, BrandField } from '../../utils/BrandNameResolver';
 
 /**
  * DemographicDataProcessor - Handles data processing for demographic insights analysis
@@ -7,6 +8,16 @@ import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, Geogra
  * diversity metrics, and lifestyle indicators across geographic areas.
  */
 export class DemographicDataProcessor implements DataProcessorStrategy {
+  private brandResolver: BrandNameResolver;
+
+  constructor() {
+    this.brandResolver = new BrandNameResolver();
+  }
+
+  private hasBrandFields(record: any): boolean {
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    return brandFields.length > 0;
+  }
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
@@ -20,7 +31,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
         // Check for actual demographic data fields present in the dataset
         (record.value_TOTPOP_CY !== undefined ||      // Total population (actual field)
          record.TOTPOP_CY !== undefined ||            // Total population (alternative)
-         record.value_MP30034A_B_P !== undefined ||   // Nike market share % (target variable)
+         // Dynamic brand detection instead of hardcoded fields
+         this.hasBrandFields(record) ||
          record.value_DESCRIPTION !== undefined ||     // Area description
          record.ID !== undefined ||                   // Area ID
          // Fallback demographic fields for other datasets
@@ -124,11 +136,14 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
   }
 
   private extractDemographicScore(record: any): number {
-    // PRIORITY 1: Nike market share as primary demographic opportunity indicator
-    if (record.value_MP30034A_B_P !== undefined && record.value_MP30034A_B_P !== null) {
-      const nikeShare = Number(record.value_MP30034A_B_P);
-      console.log(`🎯 [DemographicDataProcessor] Using Nike market share as demographic score: ${nikeShare} for ${record.value_DESCRIPTION || record.ID || 'Unknown'}`);
-      return nikeShare;
+    // PRIORITY 1: Target brand market share as primary demographic opportunity indicator
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    const targetBrand = brandFields.find((bf: BrandField) => bf.isTarget);
+    
+    if (targetBrand && targetBrand.value !== undefined && targetBrand.value !== null) {
+      const targetBrandShare = Number(targetBrand.value);
+      console.log(`🎯 [DemographicDataProcessor] Using ${targetBrand.brandName} market share as demographic score: ${targetBrandShare} for ${record.value_DESCRIPTION || record.ID || 'Unknown'}`);
+      return targetBrandShare;
     }
     
     // PRIORITY 2: PRE-CALCULATED DEMOGRAPHIC OPPORTUNITY SCORE (for other datasets)
@@ -460,7 +475,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     
     // Start with formula explanation
     let summary = `**📊 Demographic Fit Formula (0-100 scale):**
-• **Income Component (30 points):** Economic capability, optimal $40K-$100K range\n• **Population Component (25 points):** Market size and density factors\n• **Age Component (25 points):** Target demographics, optimal 25-45 years (peak at 35)\n• **Household Component (20 points):** Family size, optimal 2-4 people (peak at 3)\n\nHigher scores indicate better demographic alignment with athletic brand target markets.\n
+• **Income Component (30 points):** Economic capability, optimal $40K-$100K range\n• **Population Component (25 points):** Market size and density factors\n• **Age Component (25 points):** Target demographics, optimal 25-45 years (peak at 35)\n• **Household Component (20 points):** Family size, optimal 2-4 people (peak at 3)\n\nHigher scores indicate better demographic alignment with target brand markets.\n
 `;
     
     // Enhanced baseline and demographic metrics section

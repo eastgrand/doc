@@ -1,5 +1,6 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
+import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 /**
  * CoreAnalysisProcessor - Handles data processing for the /analyze endpoint
@@ -8,28 +9,38 @@ import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
  * and statistical analysis capabilities.
  */
 export class CoreAnalysisProcessor implements DataProcessorStrategy {
+  private brandResolver: BrandNameResolver;
+
+  constructor() {
+    this.brandResolver = new BrandNameResolver();
+  }
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Validate that we have the expected fields for core analysis - UPDATED for SHAP brand data
+    // Validate that we have the expected fields for core analysis - Dynamic brand detection
     const hasRequiredFields = rawData.results.length === 0 || 
-      rawData.results.some(record => 
-        record && 
-        (record.area_id || record.id || record.ID) &&
-        (record.value !== undefined || 
-         record.score !== undefined ||
-         // Check for brand-specific fields from SHAP data
-         record.value_MP30034A_B_P !== undefined || // Nike market share
-         record.value_MP30029A_B_P !== undefined || // Adidas market share
-         record.shap_MP30034A_B_P !== undefined ||  // Nike SHAP values
-         record.shap_MP30029A_B_P !== undefined ||  // Adidas SHAP values
-         // Check for demographic data that can be used for analysis
-         record.value_TOTPOP_CY !== undefined ||
-         record.value_AVGHINC_CY !== undefined)
-      );
+      rawData.results.some(record => {
+        if (!record || !(record.area_id || record.id || record.ID)) {
+          return false;
+        }
+        
+        // Check for standard score fields
+        if (record.value !== undefined || record.score !== undefined) {
+          return true;
+        }
+        
+        // Use dynamic brand detection to check for brand fields
+        const brandFields = this.brandResolver.detectBrandFields(record);
+        if (brandFields.length > 0) {
+          return true;
+        }
+        
+        // Check for demographic data that can be used for analysis
+        return record.value_TOTPOP_CY !== undefined || record.value_AVGHINC_CY !== undefined;
+      });
     
     return hasRequiredFields;
   }
@@ -52,9 +63,13 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         // FALLBACK: Calculate opportunity score from available data
         console.log('⚠️ [CoreAnalysisProcessor] No strategic_value_score found, calculating from raw data');
         
-        // Get actual brand values from the data (correlation_analysis format)
-        const nikeValue = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-        const adidasValue = Number(record.value_MP30029A_B_P) || 0;
+        // Get brand values using dynamic detection
+        const brandFields = this.brandResolver.detectBrandFields(record);
+        const targetBrand = brandFields.find(bf => bf.isTarget);
+        const primaryCompetitor = brandFields.find(bf => !bf.isTarget);
+        
+        const targetValue = targetBrand?.value || 0;
+        const competitorValue = primaryCompetitor?.value || 0;
         const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 1;
         const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 50000;
         
@@ -62,20 +77,22 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         if (index < 5) {
           console.log(`🔍 [CoreAnalysisProcessor] Raw data analysis for record ${index + 1}:`, {
             area_id: record.ID || record.id,
-            nike_value: nikeValue,
-            adidas_value: adidasValue,
+            target_brand: targetBrand?.brandName,
+            target_value: targetValue,
+            competitor_brand: primaryCompetitor?.brandName,
+            competitor_value: competitorValue,
             total_pop: totalPop,
             median_income: medianIncome,
-            available_fields: Object.keys(record).filter(k => k.includes('nike') || k.includes('adidas') || k.includes('pop') || k.includes('income')),
+            brand_fields_found: brandFields.length,
             all_field_sample: Object.keys(record).slice(0, 10)
           });
         }
         
         // Calculate fallback opportunity score from actual data
-        const marketGap = Math.max(0, 100 - nikeValue - adidasValue); // Untapped market
+        const marketGap = Math.max(0, 100 - targetValue - competitorValue); // Untapped market
         const incomeBonus = Math.min((medianIncome - 50000) / 50000, 1); // Income advantage
         const populationWeight = Math.min(totalPop / 50000, 2); // Population density
-        const competitiveAdvantage = Math.max(0, nikeValue - adidasValue); // Nike vs Adidas
+        const competitiveAdvantage = Math.max(0, targetValue - competitorValue); // Target vs competitor
         
         // DEBUG: Log calculation components
         if (index < 5) {
@@ -102,10 +119,10 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
           (Math.min(totalPop / 100000, 1) * 1)                // Population factor (0-1)
         );
         
-        // 3. Competitive Position (0-2 points): Nike's current standing
+        // 3. Competitive Position (0-2 points): Target brand's current standing
         const competitiveScore = Math.min(2,
-          (Math.max(0, nikeValue / 50) * 1) +           // Nike strength (0-1)
-          (Math.max(0, (nikeValue - adidasValue) / 25) * 1) // Relative advantage (0-1)
+          (Math.max(0, targetValue / 50) * 1) +           // Target brand strength (0-1)
+          (Math.max(0, (targetValue - competitorValue) / 25) * 1) // Relative advantage (0-1)
         );
         
         // 4. Growth Potential (0-2 points): Based on market dynamics
@@ -156,13 +173,17 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         });
       }
       
-      // Extract key metrics for properties (updated field names)
-      const nikeValue = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-      const adidasValue = Number(record.value_MP30029A_B_P) || 0;
+      // Extract key metrics for properties using dynamic brand detection
+      const recordBrandFields = this.brandResolver.detectBrandFields(record);
+      const targetBrandInfo = recordBrandFields.find(bf => bf.isTarget);
+      const competitorBrandInfo = recordBrandFields.find(bf => !bf.isTarget);
+      
+      const targetBrandValue = targetBrandInfo?.value || 0;
+      const competitorBrandValue = competitorBrandInfo?.value || 0;
       const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
       const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
-      const marketGap = Math.max(0, 100 - nikeValue - adidasValue);
-      const competitiveAdvantage = Math.max(0, nikeValue - adidasValue);
+      const marketGap = Math.max(0, 100 - targetBrandValue - competitorBrandValue);
+      const competitiveAdvantage = Math.max(0, targetBrandValue - competitorBrandValue);
       
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
@@ -177,12 +198,14 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         properties: {
           ...record, // Include ALL original fields in properties
           strategic_value_score: primaryScore,
-          nike_market_share: nikeValue,
-          adidas_market_share: adidasValue,
+          target_brand_share: targetBrandValue,
+          target_brand_name: targetBrandInfo?.brandName || 'Unknown',
+          competitor_brand_share: competitorBrandValue,
+          competitor_brand_name: competitorBrandInfo?.brandName || 'Unknown',
           market_gap: marketGap,
           total_population: totalPop,
           median_income: medianIncome,
-          nike_competitive_position: competitiveAdvantage,
+          competitive_advantage: competitiveAdvantage,
           // Include other pre-calculated scores if available
           demographic_opportunity_score: Number(record.demographic_opportunity_score) || 0,
           correlation_strength_score: Number(record.correlation_strength_score) || 0,
@@ -262,28 +285,32 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     }
     
     // --- ENHANCED: Calculate from brand data when available ---
-    const nikeValue = Number(record.value_MP30034A_B_P) || 0; // Data already in percentage format
-    const adidasValue = Number(record.value_MP30029A_B_P) || 0; // Data already in percentage format
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    const targetBrand = brandFields.find(bf => bf.isTarget);
+    const competitor = brandFields.find(bf => !bf.isTarget);
     
-    if (nikeValue > 0 || adidasValue > 0) {
+    const targetValue = targetBrand?.value || 0;
+    const competitorValue = competitor?.value || 0;
+    
+    if (targetValue > 0 || competitorValue > 0) {
       // Calculate opportunity score from brand data
       const totalPop = record.value_TOTPOP_CY || 1;
       const wealthIndex = Number(record.value_WLTHINDXCY) || 100;
       const avgIncome = record.value_AVGHINC_CY || (wealthIndex * 500);
       
       // Market opportunity calculation
-      const marketGap = Math.max(0, 100 - nikeValue - adidasValue);
+      const marketGap = Math.max(0, 100 - targetValue - competitorValue);
       const incomeBonus = Math.max(0, (avgIncome - 50000) / 1000);
       const populationWeight = Math.min(totalPop / 10000, 5);
-      const nikeAdvantage = Math.max(0, nikeValue - adidasValue);
+      const competitiveAdvantage = Math.max(0, targetValue - competitorValue);
       
       // Composite opportunity score
       const opportunityScore = (
         marketGap * 0.3 +      // Untapped market potential
         incomeBonus * 0.2 +    // Income level bonus
         populationWeight * 0.2 + // Population density
-        nikeAdvantage * 0.15 +   // Nike competitive position
-        nikeValue * 0.15       // Current Nike presence
+        competitiveAdvantage * 0.15 +   // Target brand competitive position
+        targetValue * 0.15       // Current target brand presence
       );
       
       return Math.round(opportunityScore * 100) / 100;
@@ -335,23 +362,27 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
   private generateFallbackShapValues(record: any): Record<string, number> {
     const fallbackShap: Record<string, number> = {};
     
-    // Get Nike and Adidas values for comparison (FIXED: Data already in percentage format)
-    const nikeValue = Number(record.value_MP30034A_B_P) || 0; // Already in percentage format
-    const adidasValue = Number(record.value_MP30029A_B_P) || 0; // Already in percentage format
+    // Get brand values using dynamic detection
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    const targetBrand = brandFields.find(bf => bf.isTarget);
+    const competitor = brandFields.find(bf => !bf.isTarget);
+    
+    const targetValue = targetBrand?.value || 0;
+    const competitorValue = competitor?.value || 0;
     const totalPop = record.value_TOTPOP_CY || 1;
     const wealthIndex = Number(record.value_WLTHINDXCY) || 100;
     const avgIncome = record.value_AVGHINC_CY || (wealthIndex * 500);
     
     // Calculate brand preference strength (0-1 scale)
-    const brandStrength = Math.max(nikeValue, adidasValue) / 100;
-    const competitiveFactor = Math.abs(nikeValue - adidasValue) / 100;
+    const brandStrength = Math.max(targetValue, competitorValue) / 100;
+    const competitiveFactor = Math.abs(targetValue - competitorValue) / 100;
     
     // Generate meaningful importance scores based on data relationships
     fallbackShap['demographic_income'] = (avgIncome - 50000) / 100000 * brandStrength;
     fallbackShap['brand_competition'] = competitiveFactor;
     fallbackShap['market_size'] = (totalPop / 10000) * brandStrength;
-    fallbackShap['nike_preference'] = (nikeValue / 100) - 0.2; // Baseline 20%
-    fallbackShap['adidas_preference'] = (adidasValue / 100) - 0.15; // Baseline 15%
+    fallbackShap['target_brand_preference'] = (targetValue / 100) - 0.2; // Baseline 20%
+    fallbackShap['competitor_preference'] = (competitorValue / 100) - 0.15; // Baseline 15%
     
     // Add demographic factors with realistic importance
     if (record.value_MEDAGE_CY) {
@@ -488,9 +519,9 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     summary += `**📈 Market Baseline & Averages:** `;
     summary += `Market average opportunity score: ${statistics.mean.toFixed(1)} (range: ${statistics.min.toFixed(1)}-${statistics.max.toFixed(1)}). `;
     
-          // Calculate and show demographic baselines
-      const avgNikeShare = records.reduce((sum, r) => sum + (r.properties.nike_market_share || 0), 0) / records.length;
-      const avgAdidasShare = records.reduce((sum, r) => sum + (r.properties.adidas_market_share || 0), 0) / records.length;
+          // Calculate and show demographic baselines using dynamic brand detection
+      const avgTargetShare = records.reduce((sum, r) => sum + (r.properties.target_brand_share || 0), 0) / records.length;
+      const avgCompetitorShare = records.reduce((sum, r) => sum + (r.properties.competitor_brand_share || 0), 0) / records.length;
       const avgMarketGap = records.reduce((sum, r) => sum + (r.properties.market_gap || 0), 0) / records.length;
       const avgWealthIndex = records.reduce((sum, r) => sum + (r.properties.value_WLTHINDXCY || 100), 0) / records.length;
               const avgIncome = records.reduce((sum, r) => {
@@ -500,7 +531,11 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         }, 0) / records.length;
       const avgPopulation = records.reduce((sum, r) => sum + (r.properties.total_population || r.properties.value_TOTPOP_CY || 0), 0) / records.length;
     
-          summary += `Average Nike presence: ${avgNikeShare.toFixed(1)}%, Adidas presence: ${avgAdidasShare.toFixed(1)}%, market gap: ${avgMarketGap.toFixed(1)}%. `;
+      // Get brand names from the first record
+      const targetBrandName = records[0]?.properties?.target_brand_name || this.brandResolver.getTargetBrandName();
+      const competitorBrandName = records[0]?.properties?.competitor_brand_name || 'Competitor';
+      
+          summary += `Average ${targetBrandName} presence: ${avgTargetShare.toFixed(1)}%, ${competitorBrandName} presence: ${avgCompetitorShare.toFixed(1)}%, market gap: ${avgMarketGap.toFixed(1)}%. `;
       summary += `Demographic baseline: wealth index ${avgWealthIndex.toFixed(0)}, $${(avgIncome/1000).toFixed(0)}K estimated income, ${(avgPopulation/1000).toFixed(0)}K average population. `;
     
     // Performance distribution context
@@ -611,7 +646,7 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     // Define field importance weights based on core analysis factors
     const fieldDefinitions = [
       { field: 'strategic_value_score', source: 'strategic_value_score', importance: 30 },
-      { field: 'nike_market_share', source: ['mp30034a_b_p', 'value_MP30034A_B_P', 'nike_market_share'], importance: 25 },
+      { field: 'target_brand_share', source: ['target_brand_share'], importance: 25 },
       { field: 'total_population', source: ['total_population', 'value_TOTPOP_CY'], importance: 20 },
       { field: 'median_income', source: ['median_income', 'value_AVGHINC_CY'], importance: 15 },
       { field: 'market_gap', source: 'market_gap', importance: 10, calculated: true }
@@ -631,9 +666,12 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       
       // Handle calculated fields
       if (fieldDef.calculated && fieldDef.field === 'market_gap') {
-        const nikeValue = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-        const adidasValue = Number(record.value_MP30029A_B_P) || 0;
-        value = Math.max(0, 100 - nikeValue - adidasValue);
+        const brandFields = this.brandResolver.detectBrandFields(record);
+        const targetBrand = brandFields.find(bf => bf.isTarget);
+        const competitor = brandFields.find(bf => !bf.isTarget);
+        const targetValue = targetBrand?.value || 0;
+        const competitorValue = competitor?.value || 0;
+        value = Math.max(0, 100 - targetValue - competitorValue);
       }
       
       // Only include fields with meaningful values
