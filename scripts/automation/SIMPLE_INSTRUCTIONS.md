@@ -420,6 +420,80 @@ Now you need to tell your application where to find the microservice.
    - Check created file: `public/data/blob-urls-{project_name}.json`
    - Geographic visualizations will now load boundary data from blob storage
 
+### 5.2.1 Upload Blob Storage Configuration for New Projects
+
+**⚠️ CRITICAL FOR NEW PROJECTS**: When setting up a new project, you MUST update the blob storage configuration to prevent conflicts with existing projects and ensure proper data isolation.
+
+#### Required Changes for New Projects:
+
+1. **Update Token Configuration**:
+   - Each project should have its own blob storage token
+   - Add project-specific token to `.env.local`:
+     ```bash
+     # Project-specific blob token
+     {PROJECT_NAME}_BLOB_READ_WRITE_TOKEN=your_new_token_here
+     ```
+
+2. **Update Upload Script Directory Paths**:
+   - **File**: `scripts/upload-endpoints-to-blob.js`
+   - **Change blob directory structure** (lines 21, 42):
+     ```javascript
+     // FROM (current project):
+     const filename = `hrb/${endpointName}.json`;
+     const filename = `hrb/boundaries/${boundaryName}.json`;
+     
+     // TO (new project):
+     const filename = `{project_name}/${endpointName}.json`;
+     const filename = `{project_name}/boundaries/${boundaryName}.json`;
+     ```
+
+3. **Update Environment Variable References**:
+   - **Change token variable name** (lines 12, 27, 48):
+     ```javascript
+     // FROM:
+     if (!process.env.HRB_READ_WRITE_TOKEN) {
+       token: process.env.HRB_READ_WRITE_TOKEN,
+     
+     // TO:
+     if (!process.env.{PROJECT_NAME}_READ_WRITE_TOKEN) {
+       token: process.env.{PROJECT_NAME}_READ_WRITE_TOKEN,
+     ```
+
+4. **Update Blob URLs Output File**:
+   - **Change output filename** (line 64):
+     ```javascript
+     // FROM:
+     const blobUrlsFile = path.join(__dirname, '../public/data/blob-urls-hrb.json');
+     
+     // TO:
+     const blobUrlsFile = path.join(__dirname, '../public/data/blob-urls-{project_name}.json');
+     ```
+
+#### Why This Is Critical:
+
+- **Data Isolation**: Prevents overwriting data from other projects
+- **Project Separation**: Each project maintains its own blob storage namespace
+- **Token Security**: Limits access scope to specific project data
+- **Deployment Safety**: Avoids conflicts when multiple projects use the same infrastructure
+- **Data Integrity**: Ensures correct data loads for each project's analysis
+
+#### Example Configuration:
+
+**For a project called "athletic-brands":**
+```javascript
+// Environment variable
+ATHLETIC_BRANDS_READ_WRITE_TOKEN=vercel_blob_rw_xyz123
+
+// Blob paths
+const filename = `athletic-brands/${endpointName}.json`;
+const filename = `athletic-brands/boundaries/${boundaryName}.json`;
+
+// Output file
+const blobUrlsFile = '../public/data/blob-urls-athletic-brands.json';
+```
+
+**⚠️ REMEMBER**: After updating the upload script, also update your data loader configuration (Step 5.3) to use the correct blob URLs file for your new project.
+
 ### 5.3 Update Data Loader for New Project
 
 **CRITICAL**: Update the system to use your new project's blob URLs:
