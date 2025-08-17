@@ -77,7 +77,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'correlation_score', // Use the actual field from data
+      targetVariable: 'correlation_analysis_score', // Use the correlation analysis specific score
       renderer: this.createCorrelationRenderer(records), // Add direct renderer
       legend: this.createCorrelationLegend(records), // Add direct legend
       correlationAnalysis // Additional metadata for correlation visualization
@@ -102,7 +102,8 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       // Extract correlation-specific properties (updated for actual dataset fields)
       const properties = {
         ...this.extractProperties(record),
-        correlation_score: correlationScore,
+        correlation_analysis_score: correlationScore,
+        correlation_score: correlationScore, // Alternative field
         correlation_strength_score: correlationScore, // Legacy compatibility
         target_value: Number(record.value_MP30034A_B_P || record.target_value) || 0,
         median_income: Number(record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income) || 0,
@@ -125,7 +126,8 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
         area_id,
         area_name,
         value,
-        correlation_score: correlationScore, // Current scoring system
+        correlation_analysis_score: correlationScore, // Current scoring system
+        correlation_score: correlationScore, // Alternative field
         correlation_strength_score: correlationScore, // Legacy compatibility
         rank: 0, // Will be calculated in ranking
         category,
@@ -139,13 +141,21 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
 
   private extractCorrelationScore(record: any): number {
     // PRIORITIZE PRE-CALCULATED CORRELATION STRENGTH SCORE
-    if (record.correlation_score !== undefined && record.correlation_score !== null) {
-      const preCalculatedScore = Number(record.correlation_score);
-      console.log(`🔗 [CorrelationAnalysisProcessor] Using pre-calculated score: ${preCalculatedScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
-      return preCalculatedScore;
+    // Check for correlation_analysis_score first (primary field)
+    if (record.correlation_analysis_score !== undefined && record.correlation_analysis_score !== null) {
+      const primaryScore = Number(record.correlation_analysis_score);
+      console.log(`🔗 [CorrelationAnalysisProcessor] Using correlation_analysis_score: ${primaryScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+      return primaryScore;
     }
     
-    console.log('⚠️ [CorrelationAnalysisProcessor] No pre-calculated correlation_score found, using default');
+    // Fallback to correlation_score
+    if (record.correlation_score !== undefined && record.correlation_score !== null) {
+      const fallbackScore = Number(record.correlation_score);
+      console.log(`🔗 [CorrelationAnalysisProcessor] Using fallback correlation_score: ${fallbackScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+      return fallbackScore;
+    }
+    
+    console.log('⚠️ [CorrelationAnalysisProcessor] No pre-calculated correlation_analysis_score or correlation_score found, using default');
     return 50.0; // Default moderate correlation strength
   }
 

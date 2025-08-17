@@ -20,12 +20,12 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Competitive analysis requires competitive_advantage_score OR competitive_score (HRB data)
+    // Competitive analysis requires competitive_analysis_score, competitive_advantage_score OR competitive_score (legacy)
     const hasCompetitiveFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
         (record.area_id || record.id || record.ID) &&
-        (record.competitive_advantage_score !== undefined || record.competitive_score !== undefined)
+        (record.competitive_analysis_score !== undefined || record.competitive_advantage_score !== undefined || record.competitive_score !== undefined)
       );
     
     return hasCompetitiveFields;
@@ -80,7 +80,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'competitive_advantage_score',
+      targetVariable: 'competitive_analysis_score',
       renderer: this.createCompetitiveRenderer(records), // Add direct renderer  
       legend: this.createCompetitiveLegend(records), // Add direct legend
       competitiveAnalysis // Additional metadata for competitive visualization
@@ -148,13 +148,14 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
   }
 
   private extractCompetitiveScore(record: any): number {
-    // Competitive analysis uses competitive_advantage_score OR competitive_score (HRB data)
-    const score = Number(record.competitive_advantage_score || record.competitive_score);
+    // Priority order: competitive_analysis_score -> competitive_advantage_score -> competitive_score (legacy)
+    const score = Number(record.competitive_analysis_score || record.competitive_advantage_score || record.competitive_score);
     
     if (isNaN(score)) {
-      throw new Error(`Competitive analysis record ${record.ID || 'unknown'} is missing competitive_advantage_score or competitive_score`);
+      throw new Error(`Competitive analysis record ${record.ID || 'unknown'} is missing competitive_analysis_score, competitive_advantage_score, or competitive_score`);
     }
     
+    console.log(`🔥 [CompetitiveDataProcessor] Using competitive score: ${score} from ${record.competitive_analysis_score ? 'competitive_analysis_score' : record.competitive_advantage_score ? 'competitive_advantage_score' : 'competitive_score'}`);
     return score;
   }
 
