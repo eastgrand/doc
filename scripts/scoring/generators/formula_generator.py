@@ -23,40 +23,40 @@ class DataDrivenFormulaGenerator:
     def generate_formula(self, analysis_type: str, importance_data: Dict[str, Any]) -> Dict[str, Any]:
         """Create scoring formula from feature importance"""
         
-        if not importance_data or 'normalized_weights' not in importance_data:
+        if not importance_data:
             print(f"❌ No importance data available for {analysis_type}")
             return {}
             
         print(f"🔧 Generating formula for {analysis_type}...")
         
-        normalized_weights = importance_data['normalized_weights']
-        field_mappings = importance_data.get('field_mappings', {})
-        confidence_metrics = importance_data.get('confidence_metrics', {})
+        # Convert importance data to components with distributed weights
+        components = self._create_distributed_weights(importance_data)
         
-        # Generate mathematical formula components
-        formula_components = self._create_formula_components(
-            analysis_type, normalized_weights, field_mappings, confidence_metrics
-        )
+        if not components:
+            print(f"❌ No valid components for {analysis_type}")
+            return {}
         
         # Create weighted formula string
-        formula_string = self._create_weighted_formula(formula_components)
+        formula_string = self._create_weighted_formula(analysis_type, components)
         
-        # Calculate normalization ranges
-        normalization_ranges = self._calculate_normalization_ranges(
-            analysis_type, field_mappings
-        )
+        # Calculate normalization ranges for each field
+        normalization_ranges = self._calculate_normalization_ranges(components)
         
-        print(f"✅ Generated {len(formula_components)} component formula for {analysis_type}")
+        # Extract weights and field mappings from components
+        normalized_weights = {comp['field_name']: comp['weight'] for comp in components}
+        field_mappings = {comp['field_name']: {'original_name': comp['original_field']} for comp in components}
+        
+        print(f"✅ Generated {len(components)} component formula for {analysis_type}")
         
         return {
             'analysis_type': analysis_type,
             'formula': formula_string,
-            'components': formula_components,
+            'components': components,
             'weights': normalized_weights,
             'field_mappings': field_mappings,
             'normalization_ranges': normalization_ranges,
             'generation_method': 'data_driven_shap',
-            'total_components': len(formula_components)
+            'total_components': len(components)
         }
     
     def _create_formula_components(self, analysis_type: str, 
@@ -94,18 +94,57 @@ class DataDrivenFormulaGenerator:
             
         return components
     
-    def _create_weighted_formula(self, formula_components: List[Dict[str, Any]]) -> str:
+    def _create_distributed_weights(self, importance_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Create components with distributed weights from importance data"""
+        
+        if not importance_data:
+            return []
+            
+        # Extract normalized weights and field mappings from the structure
+        normalized_weights = importance_data.get('normalized_weights', {})
+        field_mappings = importance_data.get('field_mappings', {})
+        confidence_metrics = importance_data.get('confidence_metrics', {})
+        
+        if not normalized_weights:
+            return []
+            
+        components = []
+        
+        for field_name, weight in normalized_weights.items():
+            if field_name and weight > 0:
+                field_info = field_mappings.get(field_name, {})
+                confidence = confidence_metrics.get(field_name, 0.5)
+                
+                component = {
+                    'field_name': field_name,
+                    'original_field': field_info.get('original_name', field_name),
+                    'weight': weight,
+                    'importance': field_info.get('importance_score', 0),
+                    'relevance': field_info.get('relevance_score', 0.5),
+                    'confidence': confidence,
+                    'rank': field_info.get('rank', 0),
+                    'normalization_method': self._get_normalization_method(field_name, ''),
+                    'transformation': self._get_transformation_method(field_name, ''),
+                    'business_logic': self._get_business_logic(field_name, '')
+                }
+                
+                components.append(component)
+        
+        # Sort by weight (highest first)
+        components.sort(key=lambda x: x['weight'], reverse=True)
+        
+        return components
+    
+    def _create_weighted_formula(self, analysis_type: str, components: List[Dict[str, Any]]) -> str:
         """Create mathematical formula string from components"""
         
-        if not formula_components:
+        if not components:
             return "score = 0"
             
-        analysis_type = formula_components[0]['component_name'].split('_')[0]
-        
         # Create formula string
         formula_parts = []
         
-        for component in formula_components:
+        for component in components:
             weight = component['weight']
             field_name = component['field_name']
             transformation = component['transformation']
@@ -182,14 +221,13 @@ class DataDrivenFormulaGenerator:
         else:
             return f"Feature contributes to {analysis_type} analysis through data-driven importance"
     
-    def _calculate_normalization_ranges(self, analysis_type: str, 
-                                      field_mappings: Dict[str, Any]) -> Dict[str, Dict[str, float]]:
+    def _calculate_normalization_ranges(self, components: List[Dict[str, Any]]) -> Dict[str, Dict[str, float]]:
         """Calculate normalization ranges for each field"""
         
         normalization_ranges = {}
         
-        for field_name, field_info in field_mappings.items():
-            # Default ranges based on field type
+        for component in components:
+            field_name = component['field_name']
             field_lower = field_name.lower()
             
             if any(term in field_lower for term in ['score', 'percentage', 'pct']):

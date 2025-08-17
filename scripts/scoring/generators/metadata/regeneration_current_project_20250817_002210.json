@@ -1,0 +1,169 @@
+{
+  "regeneration_info": {
+    "project_name": "current_project",
+    "timestamp": "2025-08-17 00:22:10",
+    "method": "data_driven_shap_importance",
+    "version": "1.0",
+    "total_scripts_generated": 26
+  },
+  "data_source": {
+    "extraction_source": "local_endpoints",
+    "total_features": 22,
+    "feature_distribution": {
+      "mean": 0.29673311964496385,
+      "median": 0.26561189714668076,
+      "std": 0.17719783675993017,
+      "min": 0.10079051078516763,
+      "max": 0.6180850723181143,
+      "q25": 0.12694240355325523,
+      "q75": 0.4578501313106321
+    },
+    "top_features_sample": [
+      [
+        "MP10104A_B_P",
+        0.6180850723181143
+      ],
+      [
+        "thematic_value",
+        0.6180850723181143
+      ],
+      [
+        "GENALPHACY_P",
+        0.5183102626239646
+      ],
+      [
+        "MP10116A_B_P",
+        0.48728886404907995
+      ],
+      [
+        "MP10120A_B_P",
+        0.4682139039583536
+      ],
+      [
+        "X14058_X_A",
+        0.46160804600173205
+      ],
+      [
+        "MP10002A_B_P",
+        0.4465763872373324
+      ],
+      [
+        "X14060_X_A",
+        0.4013236491191125
+      ],
+      [
+        "MP10028A_B_P",
+        0.3673947770243243
+      ],
+      [
+        "GENZ_CY_P",
+        0.3475622280044967
+      ]
+    ]
+  },
+  "importance_analysis": {
+    "analysis_types_generated": 26,
+    "analysis_types": [
+      "strategic_analysis",
+      "competitive_analysis",
+      "demographic_insights",
+      "comparative_analysis",
+      "correlation_analysis",
+      "predictive_modeling",
+      "trend_analysis",
+      "spatial_clusters",
+      "anomaly_detection",
+      "scenario_analysis",
+      "segment_profiling",
+      "sensitivity_analysis",
+      "feature_interactions",
+      "feature_importance_ranking",
+      "model_performance",
+      "outlier_detection",
+      "analyze",
+      "brand_difference",
+      "customer_profile",
+      "algorithm_comparison",
+      "ensemble_analysis",
+      "model_selection",
+      "cluster_analysis",
+      "anomaly_insights",
+      "dimensionality_insights",
+      "consensus_analysis"
+    ],
+    "average_features_per_analysis": 4.538461538461538
+  },
+  "formula_generation": {
+    "formulas_generated": 26,
+    "formula_types": [
+      "strategic_analysis",
+      "competitive_analysis",
+      "demographic_insights",
+      "comparative_analysis",
+      "correlation_analysis",
+      "predictive_modeling",
+      "trend_analysis",
+      "spatial_clusters",
+      "anomaly_detection",
+      "scenario_analysis",
+      "segment_profiling",
+      "sensitivity_analysis",
+      "feature_interactions",
+      "feature_importance_ranking",
+      "model_performance",
+      "outlier_detection",
+      "analyze",
+      "brand_difference",
+      "customer_profile",
+      "algorithm_comparison",
+      "ensemble_analysis",
+      "model_selection",
+      "cluster_analysis",
+      "anomaly_insights",
+      "dimensionality_insights",
+      "consensus_analysis"
+    ],
+    "average_components_per_formula": 4.538461538461538
+  },
+  "script_generation": {
+    "scripts_saved": [
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/strategic_analysis-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/competitive_analysis-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/demographic_insights-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/comparative_analysis-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/correlation_analysis-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/predictive_modeling-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/trend_analysis-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/spatial_clusters-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/anomaly_detection-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/scenario_analysis-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/segment_profiling-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/sensitivity_analysis-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/feature_interactions-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/feature_importance_ranking-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/model_performance-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/outlier_detection-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/analyze-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/brand_difference-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/customer_profile-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/algorithm_comparison-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/ensemble_analysis-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/model_selection-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/cluster_analysis-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/anomaly_insights-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/dimensionality_insights-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/consensus_analysis-scores.js"
+    ],
+    "output_directory": "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring",
+    "script_format": "javascript_nodejs"
+  },
+  "usage_instructions": {
+    "execution_order": "Use run_all_scoring.sh or execute individual scripts",
+    "dependencies": [
+      "Node.js",
+      "microservice-export.json data"
+    ],
+    "validation": "Run validator.py after generation",
+    "deployment": "Execute scoring then upload to blob storage"
+  }
+}

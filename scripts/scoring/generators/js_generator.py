@@ -130,21 +130,9 @@ console.log('🎯 Starting Data-Driven Scoring Analysis...');
         """Generate data loading section"""
         
         return """
-// Load the microservice data
-const dataPath = path.join(__dirname, '../../public/data/microservice-export.json');
-const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-
-// Access analysis dataset - try multiple possible sources
-let analysisData = null;
-const possibleDatasets = ['correlation_analysis', 'strategic_analysis', 'competitive_analysis', 'demographic_analysis'];
-
-for (const datasetName of possibleDatasets) {
-  if (data.datasets && data.datasets[datasetName] && data.datasets[datasetName].results) {
-    analysisData = data.datasets[datasetName];
-    console.log(`📊 Using dataset: ${datasetName} with ${analysisData.results.length} records`);
-    break;
-  }
-}
+// Load the analysis data from endpoints
+const dataPath = path.join(__dirname, '../../public/data/endpoints/correlation-analysis.json');
+const analysisData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
 if (!analysisData || !analysisData.results) {
   console.error('❌ No analysis dataset found');
@@ -342,7 +330,7 @@ analysisData.{analysis_type}_scoring_metadata = {{
 
 // Save updated data
 console.log('💾 Saving updated dataset...');
-fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
+fs.writeFileSync(dataPath, JSON.stringify(analysisData, null, 2));
 
 console.log('✅ {analysis_type.title().replace("_", " ")} scoring complete!');
 console.log(`📄 Updated dataset saved to: ${{dataPath}}`);

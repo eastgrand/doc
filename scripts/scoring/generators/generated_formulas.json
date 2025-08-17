@@ -1,0 +1,2967 @@
+{
+  "generation_timestamp": "{\"timestamp\": \"2025-01-01T00:00:00Z\"}",
+  "total_formulas": 26,
+  "generation_method": "data_driven_shap_importance",
+  "formulas": {
+    "strategic_analysis": {
+      "analysis_type": "strategic_analysis",
+      "formula": "strategic_analysis_score = (0.228 \u00d7 mp10104a_b_p_normalized) + (0.228 \u00d7 thematic_value_normalized) + (0.191 \u00d7 genalphacy_p_normalized) + (0.180 \u00d7 mp10116a_b_p_normalized) + (0.173 \u00d7 mp10120a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.19125958690602515,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.1798125052938594,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10120a_b_p",
+          "original_field": "MP10120A_B_P",
+          "weight": 0.17277373093363016,
+          "importance": 0.4682139039583536,
+          "relevance": 0.5,
+          "confidence": 0.1170534759895884,
+          "rank": 5,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2280770884332427,
+        "thematic_value": 0.2280770884332427,
+        "genalphacy_p": 0.19125958690602515,
+        "mp10116a_b_p": 0.1798125052938594,
+        "mp10120a_b_p": 0.17277373093363016
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        },
+        "mp10120a_b_p": {
+          "original_name": "MP10120A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10120a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 5
+    },
+    "competitive_analysis": {
+      "analysis_type": "competitive_analysis",
+      "formula": "competitive_analysis_score = (0.276 \u00d7 mp10104a_b_p_normalized) + (0.276 \u00d7 thematic_value_normalized) + (0.231 \u00d7 genalphacy_p_normalized) + (0.217 \u00d7 mp10116a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.23120589137224323,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.21736798264010726,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2757130629938248,
+        "thematic_value": 0.2757130629938248,
+        "genalphacy_p": 0.23120589137224323,
+        "mp10116a_b_p": 0.21736798264010726
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 4
+    },
+    "demographic_insights": {
+      "analysis_type": "demographic_insights",
+      "formula": "demographic_insights_score = (0.195 \u00d7 mp10104a_b_p_normalized) + (0.195 \u00d7 thematic_value_normalized) + (0.163 \u00d7 genalphacy_p_normalized) + (0.154 \u00d7 mp10116a_b_p_normalized) + (0.148 \u00d7 mp10120a_b_p_normalized) + (0.146 \u00d7 x14058_x_a_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.19488169476983844,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.19488169476983844,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.16342278259192636,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.15364176214804046,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10120a_b_p",
+          "original_field": "MP10120A_B_P",
+          "weight": 0.14762744354266483,
+          "importance": 0.4682139039583536,
+          "relevance": 0.5,
+          "confidence": 0.1170534759895884,
+          "rank": 5,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "x14058_x_a",
+          "original_field": "X14058_X_A",
+          "weight": 0.14554462217769154,
+          "importance": 0.46160804600173205,
+          "relevance": 0.5,
+          "confidence": 0.11540201150043301,
+          "rank": 6,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.19488169476983844,
+        "thematic_value": 0.19488169476983844,
+        "genalphacy_p": 0.16342278259192636,
+        "mp10116a_b_p": 0.15364176214804046,
+        "mp10120a_b_p": 0.14762744354266483,
+        "x14058_x_a": 0.14554462217769154
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        },
+        "mp10120a_b_p": {
+          "original_name": "MP10120A_B_P"
+        },
+        "x14058_x_a": {
+          "original_name": "X14058_X_A"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10120a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "x14058_x_a": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 6
+    },
+    "comparative_analysis": {
+      "analysis_type": "comparative_analysis",
+      "formula": "comparative_analysis_score = (0.276 \u00d7 mp10104a_b_p_normalized) + (0.276 \u00d7 thematic_value_normalized) + (0.231 \u00d7 genalphacy_p_normalized) + (0.217 \u00d7 mp10116a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.23120589137224323,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.21736798264010726,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2757130629938248,
+        "thematic_value": 0.2757130629938248,
+        "genalphacy_p": 0.23120589137224323,
+        "mp10116a_b_p": 0.21736798264010726
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 4
+    },
+    "correlation_analysis": {
+      "analysis_type": "correlation_analysis",
+      "formula": "correlation_analysis_score = (0.352 \u00d7 mp10104a_b_p_normalized) + (0.352 \u00d7 thematic_value_normalized) + (0.295 \u00d7 genalphacy_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.3522895267227974,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.3522895267227974,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.2954209465544052,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.3522895267227974,
+        "thematic_value": 0.3522895267227974,
+        "genalphacy_p": 0.2954209465544052
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 3
+    },
+    "predictive_modeling": {
+      "analysis_type": "predictive_modeling",
+      "formula": "predictive_modeling_score = (0.228 \u00d7 mp10104a_b_p_normalized) + (0.228 \u00d7 thematic_value_normalized) + (0.191 \u00d7 genalphacy_p_normalized) + (0.180 \u00d7 mp10116a_b_p_normalized) + (0.173 \u00d7 mp10120a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.19125958690602515,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.1798125052938594,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10120a_b_p",
+          "original_field": "MP10120A_B_P",
+          "weight": 0.17277373093363016,
+          "importance": 0.4682139039583536,
+          "relevance": 0.5,
+          "confidence": 0.1170534759895884,
+          "rank": 5,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2280770884332427,
+        "thematic_value": 0.2280770884332427,
+        "genalphacy_p": 0.19125958690602515,
+        "mp10116a_b_p": 0.1798125052938594,
+        "mp10120a_b_p": 0.17277373093363016
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        },
+        "mp10120a_b_p": {
+          "original_name": "MP10120A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10120a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 5
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "formula": "trend_analysis_score = (0.276 \u00d7 mp10104a_b_p_normalized) + (0.276 \u00d7 thematic_value_normalized) + (0.231 \u00d7 genalphacy_p_normalized) + (0.217 \u00d7 mp10116a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.23120589137224323,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.21736798264010726,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2757130629938248,
+        "thematic_value": 0.2757130629938248,
+        "genalphacy_p": 0.23120589137224323,
+        "mp10116a_b_p": 0.21736798264010726
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 4
+    },
+    "spatial_clusters": {
+      "analysis_type": "spatial_clusters",
+      "formula": "spatial_clusters_score = (0.276 \u00d7 mp10104a_b_p_normalized) + (0.276 \u00d7 thematic_value_normalized) + (0.231 \u00d7 genalphacy_p_normalized) + (0.217 \u00d7 mp10116a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.23120589137224323,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.21736798264010726,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2757130629938248,
+        "thematic_value": 0.2757130629938248,
+        "genalphacy_p": 0.23120589137224323,
+        "mp10116a_b_p": 0.21736798264010726
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 4
+    },
+    "anomaly_detection": {
+      "analysis_type": "anomaly_detection",
+      "formula": "anomaly_detection_score = (0.352 \u00d7 mp10104a_b_p_normalized) + (0.352 \u00d7 thematic_value_normalized) + (0.295 \u00d7 genalphacy_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.3522895267227974,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.3522895267227974,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.2954209465544052,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.3522895267227974,
+        "thematic_value": 0.3522895267227974,
+        "genalphacy_p": 0.2954209465544052
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 3
+    },
+    "scenario_analysis": {
+      "analysis_type": "scenario_analysis",
+      "formula": "scenario_analysis_score = (0.228 \u00d7 mp10104a_b_p_normalized) + (0.228 \u00d7 thematic_value_normalized) + (0.191 \u00d7 genalphacy_p_normalized) + (0.180 \u00d7 mp10116a_b_p_normalized) + (0.173 \u00d7 mp10120a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.19125958690602515,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.1798125052938594,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10120a_b_p",
+          "original_field": "MP10120A_B_P",
+          "weight": 0.17277373093363016,
+          "importance": 0.4682139039583536,
+          "relevance": 0.5,
+          "confidence": 0.1170534759895884,
+          "rank": 5,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2280770884332427,
+        "thematic_value": 0.2280770884332427,
+        "genalphacy_p": 0.19125958690602515,
+        "mp10116a_b_p": 0.1798125052938594,
+        "mp10120a_b_p": 0.17277373093363016
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        },
+        "mp10120a_b_p": {
+          "original_name": "MP10120A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10120a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 5
+    },
+    "segment_profiling": {
+      "analysis_type": "segment_profiling",
+      "formula": "segment_profiling_score = (0.195 \u00d7 mp10104a_b_p_normalized) + (0.195 \u00d7 thematic_value_normalized) + (0.163 \u00d7 genalphacy_p_normalized) + (0.154 \u00d7 mp10116a_b_p_normalized) + (0.148 \u00d7 mp10120a_b_p_normalized) + (0.146 \u00d7 x14058_x_a_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.19488169476983844,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.19488169476983844,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.16342278259192636,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.15364176214804046,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10120a_b_p",
+          "original_field": "MP10120A_B_P",
+          "weight": 0.14762744354266483,
+          "importance": 0.4682139039583536,
+          "relevance": 0.5,
+          "confidence": 0.1170534759895884,
+          "rank": 5,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "x14058_x_a",
+          "original_field": "X14058_X_A",
+          "weight": 0.14554462217769154,
+          "importance": 0.46160804600173205,
+          "relevance": 0.5,
+          "confidence": 0.11540201150043301,
+          "rank": 6,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.19488169476983844,
+        "thematic_value": 0.19488169476983844,
+        "genalphacy_p": 0.16342278259192636,
+        "mp10116a_b_p": 0.15364176214804046,
+        "mp10120a_b_p": 0.14762744354266483,
+        "x14058_x_a": 0.14554462217769154
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        },
+        "mp10120a_b_p": {
+          "original_name": "MP10120A_B_P"
+        },
+        "x14058_x_a": {
+          "original_name": "X14058_X_A"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10120a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "x14058_x_a": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 6
+    },
+    "sensitivity_analysis": {
+      "analysis_type": "sensitivity_analysis",
+      "formula": "sensitivity_analysis_score = (0.276 \u00d7 mp10104a_b_p_normalized) + (0.276 \u00d7 thematic_value_normalized) + (0.231 \u00d7 genalphacy_p_normalized) + (0.217 \u00d7 mp10116a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.23120589137224323,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.21736798264010726,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2757130629938248,
+        "thematic_value": 0.2757130629938248,
+        "genalphacy_p": 0.23120589137224323,
+        "mp10116a_b_p": 0.21736798264010726
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 4
+    },
+    "feature_interactions": {
+      "analysis_type": "feature_interactions",
+      "formula": "feature_interactions_score = (0.228 \u00d7 mp10104a_b_p_normalized) + (0.228 \u00d7 thematic_value_normalized) + (0.191 \u00d7 genalphacy_p_normalized) + (0.180 \u00d7 mp10116a_b_p_normalized) + (0.173 \u00d7 mp10120a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.19125958690602515,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.1798125052938594,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10120a_b_p",
+          "original_field": "MP10120A_B_P",
+          "weight": 0.17277373093363016,
+          "importance": 0.4682139039583536,
+          "relevance": 0.5,
+          "confidence": 0.1170534759895884,
+          "rank": 5,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2280770884332427,
+        "thematic_value": 0.2280770884332427,
+        "genalphacy_p": 0.19125958690602515,
+        "mp10116a_b_p": 0.1798125052938594,
+        "mp10120a_b_p": 0.17277373093363016
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        },
+        "mp10120a_b_p": {
+          "original_name": "MP10120A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10120a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 5
+    },
+    "feature_importance_ranking": {
+      "analysis_type": "feature_importance_ranking",
+      "formula": "feature_importance_ranking_score = (0.171 \u00d7 mp10104a_b_p_normalized) + (0.171 \u00d7 thematic_value_normalized) + (0.143 \u00d7 genalphacy_p_normalized) + (0.135 \u00d7 mp10116a_b_p_normalized) + (0.129 \u00d7 mp10120a_b_p_normalized) + (0.128 \u00d7 x14058_x_a_normalized) + (0.123 \u00d7 mp10002a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.17082820344334837,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.17082820344334837,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.14325214271593248,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.13467835566915495,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10120a_b_p",
+          "original_field": "MP10120A_B_P",
+          "weight": 0.12940636107004377,
+          "importance": 0.4682139039583536,
+          "relevance": 0.5,
+          "confidence": 0.1170534759895884,
+          "rank": 5,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "x14058_x_a",
+          "original_field": "X14058_X_A",
+          "weight": 0.12758061426354136,
+          "importance": 0.46160804600173205,
+          "relevance": 0.5,
+          "confidence": 0.11540201150043301,
+          "rank": 6,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10002a_b_p",
+          "original_field": "MP10002A_B_P",
+          "weight": 0.12342611939463073,
+          "importance": 0.4465763872373324,
+          "relevance": 0.5,
+          "confidence": 0.1116440968093331,
+          "rank": 7,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.17082820344334837,
+        "thematic_value": 0.17082820344334837,
+        "genalphacy_p": 0.14325214271593248,
+        "mp10116a_b_p": 0.13467835566915495,
+        "mp10120a_b_p": 0.12940636107004377,
+        "x14058_x_a": 0.12758061426354136,
+        "mp10002a_b_p": 0.12342611939463073
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        },
+        "mp10120a_b_p": {
+          "original_name": "MP10120A_B_P"
+        },
+        "x14058_x_a": {
+          "original_name": "X14058_X_A"
+        },
+        "mp10002a_b_p": {
+          "original_name": "MP10002A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10120a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "x14058_x_a": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10002a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 7
+    },
+    "model_performance": {
+      "analysis_type": "model_performance",
+      "formula": "model_performance_score = (0.276 \u00d7 mp10104a_b_p_normalized) + (0.276 \u00d7 thematic_value_normalized) + (0.231 \u00d7 genalphacy_p_normalized) + (0.217 \u00d7 mp10116a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.23120589137224323,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.21736798264010726,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2757130629938248,
+        "thematic_value": 0.2757130629938248,
+        "genalphacy_p": 0.23120589137224323,
+        "mp10116a_b_p": 0.21736798264010726
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 4
+    },
+    "outlier_detection": {
+      "analysis_type": "outlier_detection",
+      "formula": "outlier_detection_score = (0.352 \u00d7 mp10104a_b_p_normalized) + (0.352 \u00d7 thematic_value_normalized) + (0.295 \u00d7 genalphacy_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.3522895267227974,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.3522895267227974,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.2954209465544052,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.3522895267227974,
+        "thematic_value": 0.3522895267227974,
+        "genalphacy_p": 0.2954209465544052
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 3
+    },
+    "analyze": {
+      "analysis_type": "analyze",
+      "formula": "analyze_score = (0.228 \u00d7 mp10104a_b_p_normalized) + (0.228 \u00d7 thematic_value_normalized) + (0.191 \u00d7 genalphacy_p_normalized) + (0.180 \u00d7 mp10116a_b_p_normalized) + (0.173 \u00d7 mp10120a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.19125958690602515,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.1798125052938594,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10120a_b_p",
+          "original_field": "MP10120A_B_P",
+          "weight": 0.17277373093363016,
+          "importance": 0.4682139039583536,
+          "relevance": 0.5,
+          "confidence": 0.1170534759895884,
+          "rank": 5,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2280770884332427,
+        "thematic_value": 0.2280770884332427,
+        "genalphacy_p": 0.19125958690602515,
+        "mp10116a_b_p": 0.1798125052938594,
+        "mp10120a_b_p": 0.17277373093363016
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        },
+        "mp10120a_b_p": {
+          "original_name": "MP10120A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10120a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 5
+    },
+    "brand_difference": {
+      "analysis_type": "brand_difference",
+      "formula": "brand_difference_score = (0.276 \u00d7 mp10104a_b_p_normalized) + (0.276 \u00d7 thematic_value_normalized) + (0.231 \u00d7 genalphacy_p_normalized) + (0.217 \u00d7 mp10116a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.23120589137224323,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.21736798264010726,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2757130629938248,
+        "thematic_value": 0.2757130629938248,
+        "genalphacy_p": 0.23120589137224323,
+        "mp10116a_b_p": 0.21736798264010726
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 4
+    },
+    "customer_profile": {
+      "analysis_type": "customer_profile",
+      "formula": "customer_profile_score = (0.195 \u00d7 mp10104a_b_p_normalized) + (0.195 \u00d7 thematic_value_normalized) + (0.163 \u00d7 genalphacy_p_normalized) + (0.154 \u00d7 mp10116a_b_p_normalized) + (0.148 \u00d7 mp10120a_b_p_normalized) + (0.146 \u00d7 x14058_x_a_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.19488169476983844,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.19488169476983844,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.16342278259192636,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.15364176214804046,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10120a_b_p",
+          "original_field": "MP10120A_B_P",
+          "weight": 0.14762744354266483,
+          "importance": 0.4682139039583536,
+          "relevance": 0.5,
+          "confidence": 0.1170534759895884,
+          "rank": 5,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "x14058_x_a",
+          "original_field": "X14058_X_A",
+          "weight": 0.14554462217769154,
+          "importance": 0.46160804600173205,
+          "relevance": 0.5,
+          "confidence": 0.11540201150043301,
+          "rank": 6,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.19488169476983844,
+        "thematic_value": 0.19488169476983844,
+        "genalphacy_p": 0.16342278259192636,
+        "mp10116a_b_p": 0.15364176214804046,
+        "mp10120a_b_p": 0.14762744354266483,
+        "x14058_x_a": 0.14554462217769154
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        },
+        "mp10120a_b_p": {
+          "original_name": "MP10120A_B_P"
+        },
+        "x14058_x_a": {
+          "original_name": "X14058_X_A"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10120a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "x14058_x_a": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 6
+    },
+    "algorithm_comparison": {
+      "analysis_type": "algorithm_comparison",
+      "formula": "algorithm_comparison_score = (0.276 \u00d7 mp10104a_b_p_normalized) + (0.276 \u00d7 thematic_value_normalized) + (0.231 \u00d7 genalphacy_p_normalized) + (0.217 \u00d7 mp10116a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.23120589137224323,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.21736798264010726,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2757130629938248,
+        "thematic_value": 0.2757130629938248,
+        "genalphacy_p": 0.23120589137224323,
+        "mp10116a_b_p": 0.21736798264010726
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 4
+    },
+    "ensemble_analysis": {
+      "analysis_type": "ensemble_analysis",
+      "formula": "ensemble_analysis_score = (0.228 \u00d7 mp10104a_b_p_normalized) + (0.228 \u00d7 thematic_value_normalized) + (0.191 \u00d7 genalphacy_p_normalized) + (0.180 \u00d7 mp10116a_b_p_normalized) + (0.173 \u00d7 mp10120a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.19125958690602515,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.1798125052938594,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10120a_b_p",
+          "original_field": "MP10120A_B_P",
+          "weight": 0.17277373093363016,
+          "importance": 0.4682139039583536,
+          "relevance": 0.5,
+          "confidence": 0.1170534759895884,
+          "rank": 5,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2280770884332427,
+        "thematic_value": 0.2280770884332427,
+        "genalphacy_p": 0.19125958690602515,
+        "mp10116a_b_p": 0.1798125052938594,
+        "mp10120a_b_p": 0.17277373093363016
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        },
+        "mp10120a_b_p": {
+          "original_name": "MP10120A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10120a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 5
+    },
+    "model_selection": {
+      "analysis_type": "model_selection",
+      "formula": "model_selection_score = (0.276 \u00d7 mp10104a_b_p_normalized) + (0.276 \u00d7 thematic_value_normalized) + (0.231 \u00d7 genalphacy_p_normalized) + (0.217 \u00d7 mp10116a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.23120589137224323,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.21736798264010726,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2757130629938248,
+        "thematic_value": 0.2757130629938248,
+        "genalphacy_p": 0.23120589137224323,
+        "mp10116a_b_p": 0.21736798264010726
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 4
+    },
+    "cluster_analysis": {
+      "analysis_type": "cluster_analysis",
+      "formula": "cluster_analysis_score = (0.228 \u00d7 mp10104a_b_p_normalized) + (0.228 \u00d7 thematic_value_normalized) + (0.191 \u00d7 genalphacy_p_normalized) + (0.180 \u00d7 mp10116a_b_p_normalized) + (0.173 \u00d7 mp10120a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.19125958690602515,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.1798125052938594,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10120a_b_p",
+          "original_field": "MP10120A_B_P",
+          "weight": 0.17277373093363016,
+          "importance": 0.4682139039583536,
+          "relevance": 0.5,
+          "confidence": 0.1170534759895884,
+          "rank": 5,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2280770884332427,
+        "thematic_value": 0.2280770884332427,
+        "genalphacy_p": 0.19125958690602515,
+        "mp10116a_b_p": 0.1798125052938594,
+        "mp10120a_b_p": 0.17277373093363016
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        },
+        "mp10120a_b_p": {
+          "original_name": "MP10120A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10120a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 5
+    },
+    "anomaly_insights": {
+      "analysis_type": "anomaly_insights",
+      "formula": "anomaly_insights_score = (0.276 \u00d7 mp10104a_b_p_normalized) + (0.276 \u00d7 thematic_value_normalized) + (0.231 \u00d7 genalphacy_p_normalized) + (0.217 \u00d7 mp10116a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.23120589137224323,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.21736798264010726,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2757130629938248,
+        "thematic_value": 0.2757130629938248,
+        "genalphacy_p": 0.23120589137224323,
+        "mp10116a_b_p": 0.21736798264010726
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 4
+    },
+    "dimensionality_insights": {
+      "analysis_type": "dimensionality_insights",
+      "formula": "dimensionality_insights_score = (0.228 \u00d7 mp10104a_b_p_normalized) + (0.228 \u00d7 thematic_value_normalized) + (0.191 \u00d7 genalphacy_p_normalized) + (0.180 \u00d7 mp10116a_b_p_normalized) + (0.173 \u00d7 mp10120a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2280770884332427,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.19125958690602515,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.1798125052938594,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10120a_b_p",
+          "original_field": "MP10120A_B_P",
+          "weight": 0.17277373093363016,
+          "importance": 0.4682139039583536,
+          "relevance": 0.5,
+          "confidence": 0.1170534759895884,
+          "rank": 5,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2280770884332427,
+        "thematic_value": 0.2280770884332427,
+        "genalphacy_p": 0.19125958690602515,
+        "mp10116a_b_p": 0.1798125052938594,
+        "mp10120a_b_p": 0.17277373093363016
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        },
+        "mp10120a_b_p": {
+          "original_name": "MP10120A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10120a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 5
+    },
+    "consensus_analysis": {
+      "analysis_type": "consensus_analysis",
+      "formula": "consensus_analysis_score = (0.276 \u00d7 mp10104a_b_p_normalized) + (0.276 \u00d7 thematic_value_normalized) + (0.231 \u00d7 genalphacy_p_normalized) + (0.217 \u00d7 mp10116a_b_p_normalized)",
+      "components": [
+        {
+          "field_name": "mp10104a_b_p",
+          "original_field": "MP10104A_B_P",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 1,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "thematic_value",
+          "original_field": "thematic_value",
+          "weight": 0.2757130629938248,
+          "importance": 0.6180850723181143,
+          "relevance": 0.5,
+          "confidence": 0.15452126807952857,
+          "rank": 2,
+          "normalization_method": "percentile_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "genalphacy_p",
+          "original_field": "GENALPHACY_P",
+          "weight": 0.23120589137224323,
+          "importance": 0.5183102626239646,
+          "relevance": 0.5,
+          "confidence": 0.12957756565599116,
+          "rank": 3,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        },
+        {
+          "field_name": "mp10116a_b_p",
+          "original_field": "MP10116A_B_P",
+          "weight": 0.21736798264010726,
+          "importance": 0.48728886404907995,
+          "relevance": 0.5,
+          "confidence": 0.12182221601226999,
+          "rank": 4,
+          "normalization_method": "min_max_scale",
+          "transformation": "normalize_0_100",
+          "business_logic": "Feature contributes to  analysis through data-driven importance"
+        }
+      ],
+      "weights": {
+        "mp10104a_b_p": 0.2757130629938248,
+        "thematic_value": 0.2757130629938248,
+        "genalphacy_p": 0.23120589137224323,
+        "mp10116a_b_p": 0.21736798264010726
+      },
+      "field_mappings": {
+        "mp10104a_b_p": {
+          "original_name": "MP10104A_B_P"
+        },
+        "thematic_value": {
+          "original_name": "thematic_value"
+        },
+        "genalphacy_p": {
+          "original_name": "GENALPHACY_P"
+        },
+        "mp10116a_b_p": {
+          "original_name": "MP10116A_B_P"
+        }
+      },
+      "normalization_ranges": {
+        "mp10104a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "thematic_value": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "genalphacy_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        },
+        "mp10116a_b_p": {
+          "min": 0,
+          "max": 100,
+          "optimal_min": 30,
+          "optimal_max": 80
+        }
+      },
+      "generation_method": "data_driven_shap",
+      "total_components": 4
+    }
+  }
+}

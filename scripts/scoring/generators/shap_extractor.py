@@ -78,6 +78,37 @@ class LocalSHAPExtractor:
             print("❌ Nike factor importance dataset not found in export")
             return {}
     
+    def _get_target_variable(self) -> str:
+        """Get the target variable from training results"""
+        
+        # Check for training results in project directories
+        possible_paths = [
+            self.project_root / "projects" / "HRB_v3" / "trained_models" / "training_results.json",
+            self.project_root / "projects" / "HRB_v2" / "trained_models" / "training_results.json", 
+            self.project_root / "projects" / "HRB" / "trained_models" / "training_results.json"
+        ]
+        
+        for path in possible_paths:
+            if path.exists():
+                try:
+                    with open(path, 'r') as f:
+                        training_data = json.load(f)
+                    
+                    # Look for target variable in xgboost results
+                    if 'xgboost' in training_data:
+                        target_var = training_data['xgboost'].get('target_variable')
+                        if target_var:
+                            print(f"📊 Found target variable from training results: {target_var}")
+                            return target_var
+                            
+                except Exception as e:
+                    print(f"⚠️  Error reading training results from {path}: {e}")
+                    continue
+        
+        # Default fallback
+        print("⚠️  Using default target variable: MP10128A_B_P")
+        return "MP10128A_B_P"
+    
     def _analyze_feature_importance(self, feature_data: Dict[str, Any]) -> Dict[str, Any]:
         """Analyze feature importance from endpoint data"""
         
@@ -85,24 +116,43 @@ class LocalSHAPExtractor:
         if not results:
             return {}
             
-        # Extract importance scores
-        importance_scores = []
-        feature_names = []
+        print(f"🔍 Analyzing all available fields from {len(results)} records...")
         
-        for record in results:
-            # Look for SHAP-related fields
-            importance_score = record.get('importance_score', 0)
-            feature_importance_score = record.get('feature_importance_score', 0)
-            
-            # Use the higher of the two scores
-            final_score = max(importance_score, feature_importance_score)
-            
-            if final_score > 0:
-                importance_scores.append(final_score)
+        # Get first record to identify all available fields
+        sample_record = results[0]
+        all_fields = list(sample_record.keys())
+        
+        print(f"📊 Found {len(all_fields)} total fields in dataset")
+        
+        # Filter to numeric fields that could be used for scoring
+        numeric_fields = []
+        for field_name in all_fields:
+            if self._is_numeric_field(sample_record, field_name):
+                numeric_fields.append(field_name)
+        
+        print(f"📈 Identified {len(numeric_fields)} numeric fields for analysis")
+        
+        # Prefer percentage fields over count fields when both exist
+        preferred_fields = self._prefer_percentage_fields(numeric_fields)
+        
+        # Calculate importance scores for all preferred fields
+        field_importance = {}
+        target_variable = self._get_target_variable()
+        
+        for field_name in preferred_fields:
+            if field_name == target_variable:
+                continue  # Skip target variable to avoid circular scoring
                 
-                # Extract meaningful field names
-                field_name = self._extract_field_name(record)
-                feature_names.append(field_name)
+            importance_score = self._calculate_field_importance(results, field_name, target_variable)
+            if importance_score > 0.1:  # Only include fields with meaningful correlation
+                field_importance[field_name] = importance_score
+        
+        # Sort fields by importance score
+        sorted_features = sorted(field_importance.items(), key=lambda x: x[1], reverse=True)
+        importance_scores = [score for _, score in sorted_features]
+        feature_names = [name for name, _ in sorted_features]
+        
+        print(f"✅ Calculated importance for {len(sorted_features)} fields")
         
         # Sort by importance
         sorted_features = sorted(zip(feature_names, importance_scores), 
@@ -163,9 +213,23 @@ class LocalSHAPExtractor:
         return pattern_analysis
     
     def _extract_field_name(self, record: Dict[str, Any]) -> str:
-        """Extract meaningful field name from record"""
+        """Extract meaningful field name from record, preferring percentage fields"""
         
-        # Priority order for field identification
+        # Look for percentage fields first (better for analysis)
+        percentage_fields = [key for key in record.keys() if key.endswith('_P') and isinstance(record[key], (int, float))]
+        if percentage_fields:
+            # Return the percentage field with highest value (most significant)
+            best_pct_field = max(percentage_fields, key=lambda field: record[field])
+            return best_pct_field
+        
+        # Look for MP fields (market penetration codes)
+        mp_fields = [key for key in record.keys() if key.startswith('MP') and isinstance(record[key], (int, float))]
+        if mp_fields:
+            # Return the MP field with highest value
+            best_mp_field = max(mp_fields, key=lambda field: record[field])
+            return best_mp_field
+        
+        # Fall back to traditional field identification
         field_candidates = [
             record.get('ID', ''),
             record.get('field_name', ''),
@@ -235,18 +299,36 @@ class LocalSHAPExtractor:
             
         top_features = shap_data['top_features']
         
-        # Create analysis-specific feature rankings
+        # Create analysis-specific feature rankings for all 26 endpoint types
+        # Use different numbers of features based on analysis complexity
         analysis_rankings = {
-            'strategic': self._get_top_features_for_analysis(top_features, 'strategic', 6),
-            'competitive': self._get_top_features_for_analysis(top_features, 'competitive', 5),
-            'demographic': self._get_top_features_for_analysis(top_features, 'demographic', 8),
-            'correlation': self._get_top_features_for_analysis(top_features, 'correlation', 4),
-            'brand_analysis': self._get_top_features_for_analysis(top_features, 'brand_analysis', 5),
-            'market_sizing': self._get_top_features_for_analysis(top_features, 'market_sizing', 4),
-            'trend_analysis': self._get_top_features_for_analysis(top_features, 'trend_analysis', 3),
+            # Strategic analysis needs multiple factors
+            'strategic_analysis': self._get_top_features_for_analysis(top_features, 'strategic_analysis', 5),
+            'competitive_analysis': self._get_top_features_for_analysis(top_features, 'competitive_analysis', 4),
+            'demographic_insights': self._get_top_features_for_analysis(top_features, 'demographic_insights', 6),
+            'comparative_analysis': self._get_top_features_for_analysis(top_features, 'comparative_analysis', 4),
+            'correlation_analysis': self._get_top_features_for_analysis(top_features, 'correlation_analysis', 3),
+            'predictive_modeling': self._get_top_features_for_analysis(top_features, 'predictive_modeling', 5),
+            'trend_analysis': self._get_top_features_for_analysis(top_features, 'trend_analysis', 4),
+            'spatial_clusters': self._get_top_features_for_analysis(top_features, 'spatial_clusters', 4),
             'anomaly_detection': self._get_top_features_for_analysis(top_features, 'anomaly_detection', 3),
-            'feature_importance': self._get_top_features_for_analysis(top_features, 'feature_importance', 10),
-            'spatial_clustering': self._get_top_features_for_analysis(top_features, 'spatial_clustering', 4)
+            'scenario_analysis': self._get_top_features_for_analysis(top_features, 'scenario_analysis', 5),
+            'segment_profiling': self._get_top_features_for_analysis(top_features, 'segment_profiling', 6),
+            'sensitivity_analysis': self._get_top_features_for_analysis(top_features, 'sensitivity_analysis', 4),
+            'feature_interactions': self._get_top_features_for_analysis(top_features, 'feature_interactions', 5),
+            'feature_importance_ranking': self._get_top_features_for_analysis(top_features, 'feature_importance_ranking', 7),
+            'model_performance': self._get_top_features_for_analysis(top_features, 'model_performance', 4),
+            'outlier_detection': self._get_top_features_for_analysis(top_features, 'outlier_detection', 3),
+            'analyze': self._get_top_features_for_analysis(top_features, 'analyze', 5),
+            'brand_difference': self._get_top_features_for_analysis(top_features, 'brand_difference', 4),
+            'customer_profile': self._get_top_features_for_analysis(top_features, 'customer_profile', 6),
+            'algorithm_comparison': self._get_top_features_for_analysis(top_features, 'algorithm_comparison', 4),
+            'ensemble_analysis': self._get_top_features_for_analysis(top_features, 'ensemble_analysis', 5),
+            'model_selection': self._get_top_features_for_analysis(top_features, 'model_selection', 4),
+            'cluster_analysis': self._get_top_features_for_analysis(top_features, 'cluster_analysis', 5),
+            'anomaly_insights': self._get_top_features_for_analysis(top_features, 'anomaly_insights', 4),
+            'dimensionality_insights': self._get_top_features_for_analysis(top_features, 'dimensionality_insights', 5),
+            'consensus_analysis': self._get_top_features_for_analysis(top_features, 'consensus_analysis', 4)
         }
         
         return analysis_rankings
@@ -260,7 +342,7 @@ class LocalSHAPExtractor:
         for feature_name, importance_score in top_features:
             relevance_score = self._calculate_analysis_relevance(feature_name, analysis_type)
             
-            if relevance_score > 0.3:  # Minimum relevance threshold
+            if relevance_score > 0.2:  # Lower threshold to include more features
                 relevant_features.append({
                     'feature': feature_name,
                     'importance': importance_score,
@@ -277,18 +359,85 @@ class LocalSHAPExtractor:
         
         feature_lower = feature_name.lower()
         
-        # Define relevance patterns for each analysis type
+        # Define optimized relevance patterns based on business purpose (from endpoints.csv)
         relevance_patterns = {
-            'strategic': ['market', 'share', 'income', 'population', 'demographic', 'competitive'],
-            'competitive': ['market', 'share', 'brand', 'competition', 'position'],
-            'demographic': ['age', 'income', 'education', 'population', 'demographic'],
-            'correlation': ['correlation', 'statistical', 'relationship', 'value'],
-            'brand_analysis': ['brand', 'market', 'share', 'competition'],
-            'market_sizing': ['population', 'market', 'size', 'opportunity'],
-            'trend_analysis': ['trend', 'time', 'growth', 'change'],
-            'anomaly_detection': ['anomaly', 'outlier', 'unusual'],
-            'feature_importance': ['importance', 'feature', 'significant'],
-            'spatial_clustering': ['geographic', 'spatial', 'location', 'cluster']
+            # MARKET-FOCUSED: Investment potential, market factors, growth indicators
+            'strategic_analysis': ['mp10', 'x14060', 'x14068', 'population', 'income', 'market', 'value'],
+            
+            # COMPETITIVE: Market share potential × brand positioning × competitive advantage
+            'competitive_analysis': ['mp10', 'mp11', 'mp12', 'share', 'market', 'competitive', 'brand'],
+            
+            # DEMOGRAPHIC: Population favorability based on target demographic alignment
+            'demographic_insights': ['genalphacy', 'x14060', 'x14068', 'gen', 'age', 'demo', 'population'],
+            
+            # COMPARATIVE: Relative performance across all key metrics
+            'comparative_analysis': ['mp10', 'ratio', 'compare', 'relative', 'versus', 'performance'],
+            
+            # STATISTICAL: Statistical correlation (limited by static data)
+            'correlation_analysis': ['mp10', 'x14', 'correlation', 'statistical', 'value'],
+            
+            # PREDICTIVE: Future trends (limited by static data)
+            'predictive_modeling': ['mp10', 'x14', 'trend', 'value', 'pattern'],
+            
+            # TREND: Temporal patterns (limited by static data)  
+            'trend_analysis': ['mp10', 'value', 'trend', 'pattern', 'growth'],
+            
+            # SPATIAL: Geographic density × within-cluster similarity
+            'spatial_clusters': ['shape', 'area', 'length', 'coord', 'lat', 'long', 'spatial'],
+            
+            # ANOMALY: Statistical deviation magnitude × outlier significance
+            'anomaly_detection': ['mp10', 'x14', 'deviation', 'extreme', 'unusual'],
+            
+            # SCENARIO: Multiple conditions (ensemble approach)
+            'scenario_analysis': ['mp10', 'x14', 'value', 'scenario', 'condition'],
+            
+            # SEGMENTATION: Segment distinctiveness × profile clarity
+            'segment_profiling': ['genalphacy', 'x14', 'demo', 'segment', 'profile', 'group'],
+            
+            # SENSITIVITY: Parameter impact magnitude × business criticality
+            'sensitivity_analysis': ['mp10', 'x14', 'impact', 'critical', 'sensitive'],
+            
+            # INTERACTIONS: Interaction effect strength × significance
+            'feature_interactions': ['mp10', 'x14', 'interaction', 'effect', 'relationship'],
+            
+            # IMPORTANCE: SHAP value magnitude × model consensus
+            'feature_importance_ranking': ['mp10', 'x14', 'genalphacy', 'importance', 'significant'],
+            
+            # PERFORMANCE: Model accuracy × prediction reliability
+            'model_performance': ['mp10', 'x14', 'performance', 'accuracy', 'quality'],
+            
+            # OUTLIERS: Statistical outliers (different from anomaly)
+            'outlier_detection': ['mp10', 'x14', 'outlier', 'statistical', 'extreme'],
+            
+            # COMPREHENSIVE: Complete analytical overview
+            'analyze': ['mp10', 'x14', 'genalphacy', 'value', 'comprehensive'],
+            
+            # BRAND DIFFERENTIATION: Brand differentiation score × competitive gap
+            'brand_difference': ['mp10104', 'mp10128', 'brand', 'difference', 'gap'],
+            
+            # CUSTOMER FIT: Customer fit score × profile match × lifetime value
+            'customer_profile': ['genalphacy', 'x14060', 'x14068', 'customer', 'profile', 'fit'],
+            
+            # ALGORITHM: Algorithm performance comparison
+            'algorithm_comparison': ['mp10', 'x14', 'algorithm', 'performance', 'accuracy'],
+            
+            # ENSEMBLE: Multi-model consensus
+            'ensemble_analysis': ['mp10', 'x14', 'ensemble', 'consensus', 'agreement'],
+            
+            # MODEL SELECTION: Algorithm suitability × expected performance
+            'model_selection': ['mp10', 'x14', 'model', 'suitability', 'optimal'],
+            
+            # CLUSTERING: Enhanced clustering for market segmentation
+            'cluster_analysis': ['mp10', 'x14', 'genalphacy', 'cluster', 'segment'],
+            
+            # ANOMALY INSIGHTS: Business opportunity focused anomaly detection
+            'anomaly_insights': ['mp10', 'x14', 'anomaly', 'opportunity', 'insight'],
+            
+            # DIMENSIONALITY: PCA variance explanation
+            'dimensionality_insights': ['mp10', 'x14', 'genalphacy', 'variance', 'component'],
+            
+            # CONSENSUS: Multi-model agreement
+            'consensus_analysis': ['mp10', 'x14', 'consensus', 'agreement', 'confidence']
         }
         
         patterns = relevance_patterns.get(analysis_type, [])
@@ -299,8 +448,239 @@ class LocalSHAPExtractor:
             if pattern in feature_lower:
                 relevance_score += 1.0 / len(patterns)
         
-        # Default relevance for all features
-        return max(relevance_score, 0.2)
+        # Add specific field type bonuses based on analysis purpose
+        relevance_score += self._get_analysis_specific_bonus(feature_name, analysis_type)
+        
+        # More permissive default relevance - was 0.2, now 0.5
+        # This ensures more fields get included for analysis
+        return max(relevance_score, 0.5)
+    
+    def _get_analysis_specific_bonus(self, field_name: str, analysis_type: str) -> float:
+        """Apply analysis-specific field bonuses based on business purpose from endpoints.csv"""
+        
+        field_lower = field_name.lower()
+        bonus = 0.0
+        
+        # STRATEGIC ANALYSIS: "Investment potential weighted by market factors, growth indicators"
+        if analysis_type == 'strategic_analysis':
+            if field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.3  # Market penetration for investment potential
+            elif field_lower.startswith('x14068'):  # Income data for growth indicators
+                bonus += 0.3
+            elif field_lower.startswith('x14060'):  # Population data for market size
+                bonus += 0.2
+        
+        # COMPETITIVE ANALYSIS: "Market share potential × brand positioning × competitive advantage"
+        elif analysis_type == 'competitive_analysis':
+            if field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.4  # All MP fields for competitive comparison
+        
+        # BRAND DIFFERENCE: "Brand differentiation score × competitive gap analysis"
+        elif analysis_type == 'brand_difference':
+            # Prioritize H&R Block vs TurboTax specifically for gap analysis
+            if field_lower in ['mp10128a_b_p', 'mp10104a_b_p']:  # HRB vs TurboTax
+                bonus += 0.5
+            elif field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.2  # Other competitors for context
+        
+        # DEMOGRAPHIC INSIGHTS: "Population favorability based on target demographic alignment"
+        elif analysis_type == 'demographic_insights':
+            if 'genalphacy' in field_lower:
+                bonus += 0.4  # Generational alignment
+            elif field_lower.startswith('x14060'):  # Population density
+                bonus += 0.3
+            elif field_lower.startswith('x14068'):  # Income alignment
+                bonus += 0.3
+        
+        # CUSTOMER PROFILE: "Customer fit score × profile match × lifetime value potential"
+        elif analysis_type == 'customer_profile':
+            if 'genalphacy' in field_lower:
+                bonus += 0.4  # Customer demographic fit
+            elif field_lower.startswith('x14068'):  # Income for lifetime value
+                bonus += 0.3
+            elif field_lower.startswith('x14060'):  # Population characteristics
+                bonus += 0.2
+        
+        # SEGMENT PROFILING: "Segment distinctiveness × profile clarity × business value"
+        elif analysis_type == 'segment_profiling':
+            if 'genalphacy' in field_lower:
+                bonus += 0.4  # Demographic segmentation
+            elif field_lower.startswith('x14'):
+                bonus += 0.3  # Various demographic factors
+            elif field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.2  # Usage patterns for segments
+        
+        # COMPARATIVE ANALYSIS: "Relative performance scoring × comparative advantage"
+        elif analysis_type == 'comparative_analysis':
+            if field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.3  # Performance metrics for comparison
+            elif field_lower.startswith('x14'):
+                bonus += 0.2  # Contextual factors
+        
+        # FEATURE IMPORTANCE RANKING: "SHAP value magnitude × model consensus × business relevance"
+        elif analysis_type == 'feature_importance_ranking':
+            # Should include diverse field types for comprehensive ranking
+            if any(field_lower.startswith(prefix) for prefix in ['mp10', 'x14', 'genalphacy']):
+                bonus += 0.2  # Balanced representation
+        
+        # ENSEMBLE ANALYSIS: "Ensemble confidence × component model agreement"
+        elif analysis_type == 'ensemble_analysis':
+            # Should use most reliable fields across models
+            if field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.2  # Reliable percentage fields
+            elif 'genalphacy' in field_lower:
+                bonus += 0.2  # Stable demographic data
+        
+        # ANOMALY DETECTION: "Statistical deviation magnitude × outlier significance"
+        elif analysis_type == 'anomaly_detection':
+            if field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.3  # Market penetration anomalies
+            elif field_lower.startswith('x14068'):  # Income anomalies
+                bonus += 0.2
+        
+        # ANOMALY INSIGHTS: "Opportunity potential × investigation priority × market value"
+        elif analysis_type == 'anomaly_insights':
+            if field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.3  # Market opportunity anomalies
+            elif field_lower.startswith('x14068'):  # Economic opportunity indicators
+                bonus += 0.2
+        
+        # OUTLIER DETECTION: "Statistical outliers that deserve special investigation"
+        elif analysis_type == 'outlier_detection':
+            # Different from anomaly - focuses on statistical extremes
+            if field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.2  # Statistical outliers in usage
+            elif field_lower.startswith('x14'):
+                bonus += 0.2  # Demographic outliers
+        
+        # SPATIAL/CLUSTER ANALYSIS: "Cluster cohesion × geographic density × similarity"
+        elif analysis_type in ['spatial_clusters', 'cluster_analysis']:
+            # Clusters based on business similarity, not geography
+            if field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.3  # Business performance similarity
+            elif 'genalphacy' in field_lower:
+                bonus += 0.2  # Demographic similarity
+        
+        # SENSITIVITY ANALYSIS: "Parameter impact magnitude × business criticality"
+        elif analysis_type == 'sensitivity_analysis':
+            if field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.3  # Critical business parameters
+            elif field_lower.startswith('x14068'):  # Income sensitivity
+                bonus += 0.2
+        
+        # MODEL PERFORMANCE: "R² score × prediction accuracy × model stability"
+        elif analysis_type == 'model_performance':
+            # Should use most predictive fields
+            if field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.2  # Predictive market fields
+            elif 'genalphacy' in field_lower:
+                bonus += 0.2  # Stable demographic predictors
+        
+        # TIME-SERIES LIMITED ENDPOINTS: Use best available static proxies
+        elif analysis_type in ['predictive_modeling', 'trend_analysis', 'correlation_analysis']:
+            # These need time-series data but we only have static data
+            if field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.1  # Lower bonus due to data limitation
+        
+        # COMPREHENSIVE ANALYSIS: "Complete analytical overview of opportunities and risks"
+        elif analysis_type == 'analyze':
+            # Should include diverse field types for comprehensive view
+            if field_lower.startswith('mp10') and field_lower.endswith('_p'):
+                bonus += 0.2  # Market opportunity
+            elif 'genalphacy' in field_lower:
+                bonus += 0.2  # Demographic context
+            elif field_lower.startswith('x14068'):  # Economic context
+                bonus += 0.2
+        
+        # ALGORITHM/MODEL COMPARISON ENDPOINTS: Use diverse fields for robust comparison
+        elif analysis_type in ['algorithm_comparison', 'model_selection']:
+            if any(field_lower.startswith(prefix) for prefix in ['mp10', 'x14', 'genalphacy']):
+                bonus += 0.1  # Diverse field types for algorithm testing
+        
+        return bonus
+    
+    def _prefer_percentage_fields(self, numeric_fields: List[str]) -> List[str]:
+        """Prefer percentage fields over count fields when both exist"""
+        
+        preferred_fields = []
+        excluded_count_fields = set()
+        
+        # First pass: identify percentage fields and mark their count equivalents
+        for field_name in numeric_fields:
+            if field_name.endswith('_P'):
+                preferred_fields.append(field_name)
+                # Mark the count equivalent for exclusion
+                count_equivalent = field_name[:-2]  # Remove '_P'
+                excluded_count_fields.add(count_equivalent)
+        
+        # Second pass: add non-percentage fields that don't have percentage equivalents
+        for field_name in numeric_fields:
+            if not field_name.endswith('_P') and field_name not in excluded_count_fields:
+                preferred_fields.append(field_name)
+        
+        print(f"📊 Preferred {len(preferred_fields)} fields (excluded {len(excluded_count_fields)} count fields with percentage equivalents)")
+        
+        return preferred_fields
+    
+    def _is_numeric_field(self, record: Dict, field_name: str) -> bool:
+        """Check if a field contains numeric data suitable for scoring"""
+        
+        # Skip non-data fields and duplicate/redundant fields
+        skip_fields = ['ID', 'DESCRIPTION', 'OBJECTID', 'Creator', 'Editor', 
+                      'CreationDate', 'EditDate', 'pointCount', 'thematic_value']
+        
+        if field_name in skip_fields:
+            return False
+            
+        value = record.get(field_name)
+        
+        # Check if value is numeric
+        try:
+            float(value)
+            return True
+        except (ValueError, TypeError):
+            return False
+    
+    def _calculate_field_importance(self, results: List[Dict], field_name: str, target_variable: str) -> float:
+        """Calculate importance score for a field based on correlation with target"""
+        
+        field_values = []
+        target_values = []
+        
+        for record in results:
+            field_val = record.get(field_name, 0)
+            target_val = record.get(target_variable, 0)
+            
+            # Only include records with both values
+            if field_val and target_val:
+                try:
+                    field_values.append(float(field_val))
+                    target_values.append(float(target_val))
+                except (ValueError, TypeError):
+                    continue
+        
+        if len(field_values) < 10:  # Need minimum data points
+            return 0.0
+            
+        # Calculate simple correlation coefficient
+        try:
+            import numpy as np
+            correlation = abs(np.corrcoef(field_values, target_values)[0, 1])
+            
+            # Handle NaN correlations
+            if np.isnan(correlation):
+                return 0.0
+                
+            return correlation
+            
+        except Exception:
+            # Fallback: use standard deviation as proxy for importance
+            try:
+                std_dev = np.std(field_values)
+                normalized_std = min(std_dev / 100.0, 1.0)  # Normalize to 0-1
+                return normalized_std
+            except Exception:
+                return 0.0
 
 def main():
     """Test the LocalSHAPExtractor"""

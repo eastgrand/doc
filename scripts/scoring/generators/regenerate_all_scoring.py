@@ -191,24 +191,36 @@ class ScoringRegenerator:
         return metadata_path
     
     def get_analysis_types(self) -> List[str]:
-        """Get list of supported analysis types"""
+        """Get list of supported analysis types (all 26 endpoints)"""
         
         return [
-            'strategic',
-            'competitive', 
-            'demographic',
-            'correlation',
-            'brand_analysis',
-            'market_sizing',
-            'trend_analysis',
-            'anomaly_detection',
-            'feature_importance',
-            'spatial_clustering',
-            'segment_profiling',
-            'scenario_analysis',
+            # Core analysis types
+            'strategic_analysis',
+            'competitive_analysis', 
+            'demographic_insights',
+            'comparative_analysis',
+            'correlation_analysis',
             'predictive_modeling',
+            'trend_analysis',
+            'spatial_clusters',
+            'anomaly_detection',
+            'scenario_analysis',
+            'segment_profiling',
+            'sensitivity_analysis',
+            'feature_interactions',
+            'feature_importance_ranking',
+            'model_performance',
             'outlier_detection',
-            'feature_interaction'
+            'analyze',
+            'brand_difference',
+            'customer_profile',
+            'algorithm_comparison',
+            'ensemble_analysis',
+            'model_selection',
+            'cluster_analysis',
+            'anomaly_insights',
+            'dimensionality_insights',
+            'consensus_analysis'
         ]
     
     def validate_requirements(self, endpoints_dir: str) -> Dict[str, bool]:

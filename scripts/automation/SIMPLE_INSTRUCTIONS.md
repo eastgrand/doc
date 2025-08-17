@@ -42,7 +42,7 @@ turbotax: {
 ```
 
 **To Update:**
-1. Find your brand field codes in your data (e.g., `MP30034A_B_P` for Nike)
+1. Find your brand field codes in your data (varies by project)
 2. Update the FIELD_MAPPINGS object with correct field codes
 3. Update keywords to match how users would type brand names
 4. Update the `identifyBrands()` method brand list (line ~741)
@@ -528,9 +528,11 @@ python scripts/scoring/generators/regenerate_all_scoring.py --validate-only
 
 **2. Generate All Algorithms**
 ```bash
-# Regenerate all 15+ scoring algorithms using data-driven approach
+# Regenerate all 26 scoring algorithms using data-driven approach
 python scripts/scoring/generators/regenerate_all_scoring.py --project your_project_name
 ```
+
+**Note**: The system automatically detects the target variable from your training results (`projects/*/trained_models/training_results.json`). No manual target variable specification needed for scoring regeneration.
 
 **3. Validate Generated Scripts**
 ```bash
@@ -669,18 +671,20 @@ Your Endpoint Data → SHAP Analysis → Feature Importance → Mathematical For
 **📈 Enhanced Capabilities:**
 - Better accuracy through data-driven weights
 - Automatic adaptation to data changes  
-- Complete algorithmic coverage (15+ analysis types)
+- Complete algorithmic coverage (26 analysis types)
 - Scientific validation and quality assurance
 
 ### Documentation
 
 **📖 Complete Technical Documentation:**
+- `docs/ENDPOINT_SCORING_ALGORITHMS.md` - **NEW: Complete reference for all 26 endpoint algorithms**
 - `docs/DATA_DRIVEN_SCORING_REGENERATION_PLAN.md` - Full implementation guide
 - `docs/RE-SCORING_AND_FIELD_ANALYSIS_PLAN.md` - Field-specific analysis strategy
 
 **🔧 Implementation Details:**
 - Project-agnostic design (works with any dataset)
-- Example data structure handling (Nike → Your Project)
+- Business-purpose-driven field selection (based on endpoints.csv)
+- Percentage field prioritization over count fields
 - Comprehensive validation and testing framework
 - Complete workflow automation
 

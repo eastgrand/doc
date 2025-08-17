@@ -302,7 +302,7 @@ process(rawData: RawAnalysisResult): ProcessedAnalysisData {
 
 ### Step 5.5: Dynamic Brand Naming Process
 
-**Component**: `lib/analysis/utils/BrandNameResolver.ts`
+**Component**: `lib/analysis/utils/BrandNameRexesolver.ts`
 
 For brand-related analysis endpoints (like comparative analysis), the system now dynamically extracts actual brand names instead of using generic "Brand A/B" terminology:
 
@@ -1012,3 +1012,18 @@ The system is designed to be robust, with multiple fallback mechanisms and flexi
 - **Diverging color visualization** (red for Brand2 advantage, green for Brand1 advantage)
 - **Contextual analysis** including market dominance patterns and competitive balance
 - **Professional reporting** with brand-specific insights and strategic recommendations
+
+**Data-Driven Scoring Algorithm Features** *(NEW 2025)*:
+- **26 unique analysis endpoints** with business-purpose-driven scoring algorithms
+- **SHAP-based feature importance** analysis for algorithm generation
+- **Percentage field prioritization** (automatically prefer `_P` fields over count fields)
+- **Multi-field algorithms** with 3-7 components per endpoint (vs. old single-field approach)
+- **Business-specific optimizations**:
+  - Strategic Analysis: Market factors + growth indicators (5 components)
+  - Brand Difference: H&R Block vs TurboTax gap analysis (4 components, TurboTax weighted 0.348)
+  - Demographic Insights: Generational alignment prioritized (6 components, GENALPHACY_P leads)
+  - Competitive Analysis: All market penetration fields for comprehensive comparison
+- **Validation system** ensuring algorithm quality (average score: 0.568)
+- **Complete documentation**: See `docs/ENDPOINT_SCORING_ALGORITHMS.md` for full algorithm reference
+- **Regeneration capability**: Algorithms automatically adapt to new data patterns
+- **Scientific rigor**: Data-driven weights replace hardcoded business assumptions

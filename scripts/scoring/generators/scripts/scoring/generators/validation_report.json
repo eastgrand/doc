@@ -1,0 +1,280 @@
+{
+  "total_algorithms": 26,
+  "valid_algorithms": 26,
+  "algorithms_with_warnings": 22,
+  "algorithms_with_errors": 1,
+  "average_validation_score": 0.5684615384615385,
+  "detailed_results": {
+    "strategic_analysis": {
+      "analysis_type": "strategic_analysis",
+      "is_valid": true,
+      "warnings": [],
+      "errors": [],
+      "recommendations": [
+        "Algorithm meets validation criteria"
+      ],
+      "validation_score": 0.96
+    },
+    "competitive_analysis": {
+      "analysis_type": "competitive_analysis",
+      "is_valid": true,
+      "warnings": [],
+      "errors": [],
+      "recommendations": [
+        "Algorithm meets validation criteria"
+      ],
+      "validation_score": 0.8666666666666667
+    },
+    "demographic_insights": {
+      "analysis_type": "demographic_insights",
+      "is_valid": true,
+      "warnings": [
+        "Many fields may not be relevant to business logic"
+      ],
+      "errors": [],
+      "recommendations": [
+        "Algorithm meets validation criteria"
+      ],
+      "validation_score": 0.8333333333333334
+    },
+    "comparative_analysis": {
+      "analysis_type": "comparative_analysis",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for comparative_analysis"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "correlation_analysis": {
+      "analysis_type": "correlation_analysis",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for correlation_analysis"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "predictive_modeling": {
+      "analysis_type": "predictive_modeling",
+      "is_valid": true,
+      "warnings": [],
+      "errors": [],
+      "recommendations": [
+        "Algorithm meets validation criteria"
+      ],
+      "validation_score": 0.9199999999999999
+    },
+    "trend_analysis": {
+      "analysis_type": "trend_analysis",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for trend_analysis"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "spatial_clusters": {
+      "analysis_type": "spatial_clusters",
+      "is_valid": true,
+      "warnings": [
+        "Missing field types: ['spatial_data']",
+        "No preferred fields found: ['shape', 'area', 'location']"
+      ],
+      "errors": [
+        "No fields appear relevant to business logic"
+      ],
+      "recommendations": [
+        "Consider regenerating algorithm with different field selection"
+      ],
+      "validation_score": 0.3333333333333333
+    },
+    "anomaly_detection": {
+      "analysis_type": "anomaly_detection",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for anomaly_detection"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "scenario_analysis": {
+      "analysis_type": "scenario_analysis",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for scenario_analysis"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "segment_profiling": {
+      "analysis_type": "segment_profiling",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for segment_profiling"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "sensitivity_analysis": {
+      "analysis_type": "sensitivity_analysis",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for sensitivity_analysis"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "feature_interactions": {
+      "analysis_type": "feature_interactions",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for feature_interactions"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "feature_importance_ranking": {
+      "analysis_type": "feature_importance_ranking",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for feature_importance_ranking"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "model_performance": {
+      "analysis_type": "model_performance",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for model_performance"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "outlier_detection": {
+      "analysis_type": "outlier_detection",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for outlier_detection"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "analyze": {
+      "analysis_type": "analyze",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for analyze"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "brand_difference": {
+      "analysis_type": "brand_difference",
+      "is_valid": true,
+      "warnings": [],
+      "errors": [],
+      "recommendations": [
+        "Algorithm meets validation criteria"
+      ],
+      "validation_score": 0.8666666666666667
+    },
+    "customer_profile": {
+      "analysis_type": "customer_profile",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for customer_profile"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "algorithm_comparison": {
+      "analysis_type": "algorithm_comparison",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for algorithm_comparison"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "ensemble_analysis": {
+      "analysis_type": "ensemble_analysis",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for ensemble_analysis"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "model_selection": {
+      "analysis_type": "model_selection",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for model_selection"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "cluster_analysis": {
+      "analysis_type": "cluster_analysis",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for cluster_analysis"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "anomaly_insights": {
+      "analysis_type": "anomaly_insights",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for anomaly_insights"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "dimensionality_insights": {
+      "analysis_type": "dimensionality_insights",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for dimensionality_insights"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    },
+    "consensus_analysis": {
+      "analysis_type": "consensus_analysis",
+      "is_valid": true,
+      "warnings": [
+        "No validation rules defined for consensus_analysis"
+      ],
+      "errors": [],
+      "recommendations": [],
+      "validation_score": 0.5
+    }
+  },
+  "overall_recommendations": [
+    "Some algorithms have critical errors and should be regenerated",
+    "Overall validation score is low - consider improving field selection logic"
+  ]
+}

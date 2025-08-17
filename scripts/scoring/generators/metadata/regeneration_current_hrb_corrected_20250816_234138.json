@@ -1,0 +1,85 @@
+{
+  "regeneration_info": {
+    "project_name": "current_hrb_corrected",
+    "timestamp": "2025-08-16 23:41:38",
+    "method": "data_driven_shap_importance",
+    "version": "1.0",
+    "total_scripts_generated": 10
+  },
+  "data_source": {
+    "extraction_source": "local_endpoints",
+    "total_features": 1,
+    "feature_distribution": {
+      "mean": 5.88,
+      "median": 5.88,
+      "std": 0.0,
+      "min": 5.88,
+      "max": 5.88,
+      "q25": 5.88,
+      "q75": 5.88
+    },
+    "top_features_sample": [
+      [
+        "MP10128A_B_P",
+        5.88
+      ]
+    ]
+  },
+  "importance_analysis": {
+    "analysis_types_generated": 10,
+    "analysis_types": [
+      "strategic",
+      "competitive",
+      "demographic",
+      "correlation",
+      "brand_analysis",
+      "market_sizing",
+      "trend_analysis",
+      "anomaly_detection",
+      "feature_importance",
+      "spatial_clustering"
+    ],
+    "average_features_per_analysis": 1.0
+  },
+  "formula_generation": {
+    "formulas_generated": 10,
+    "formula_types": [
+      "strategic",
+      "competitive",
+      "demographic",
+      "correlation",
+      "brand_analysis",
+      "market_sizing",
+      "trend_analysis",
+      "anomaly_detection",
+      "feature_importance",
+      "spatial_clustering"
+    ],
+    "average_components_per_formula": 1.0
+  },
+  "script_generation": {
+    "scripts_saved": [
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/strategic-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/competitive-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/demographic-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/correlation-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/brand_analysis-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/market_sizing-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/trend_analysis-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/anomaly_detection-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/feature_importance-scores.js",
+      "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring/spatial_clustering-scores.js"
+    ],
+    "output_directory": "/Users/voldeck/code/mpiq-ai-chat/scripts/scoring",
+    "script_format": "javascript_nodejs"
+  },
+  "usage_instructions": {
+    "execution_order": "Use run_all_scoring.sh or execute individual scripts",
+    "dependencies": [
+      "Node.js",
+      "microservice-export.json data"
+    ],
+    "validation": "Run validator.py after generation",
+    "deployment": "Execute scoring then upload to blob storage"
+  }
+}
