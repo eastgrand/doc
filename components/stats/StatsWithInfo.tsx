@@ -1,6 +1,7 @@
 import React from 'react';
 import { InfoTooltip } from '@/components/ui/info-tooltip';
 import { BarChart3, TrendingUp, Search, Brain } from 'lucide-react';
+import { getScoreCalculationMethod } from '@/lib/analysis/utils/ModelAttributionMapping';
 
 // Define stat explanations and formulas
 interface StatDefinition {
@@ -108,8 +109,8 @@ const statDefinitions: Record<string, StatDefinition> = {
   },
   'Model Used': {
     title: 'Analysis Model',
-    description: 'The specific analytical model used to generate these results and scores.',
-    example: 'Strategic Market Opportunity Analyzer focuses on market gaps and expansion potential'
+    description: 'The specific analytical model used to generate these results and scores. Each model uses different calculation methods for optimal accuracy.',
+    example: 'Strategic Analysis Model uses investment potential weighted by market factors, growth indicators, and competitive positioning'
   },
   'R² Score': {
     title: 'R-Squared Score',
@@ -135,7 +136,7 @@ export const StatsWithInfo: React.FC<StatsWithInfoProps> = ({ content, className
   const lines = content.split('\n');
   
   return (
-    <div className={className}>
+    <div className={`text-xs ${className}`}>
       {lines.map((line, index) => {
         // Check for section headers and render with appropriate icons
         const sectionMappings = [
@@ -153,8 +154,8 @@ export const StatsWithInfo: React.FC<StatsWithInfoProps> = ({ content, className
             // Extract the text without emoji
             const cleanText = line.replace(/[�-�][�-�]|[�-�]/g, '').trim();
             return (
-              <div key={index} className="font-bold text-sm mt-3 mb-2 first:mt-0 flex items-center gap-1">
-                <Icon className="w-4 h-4" />
+              <div key={index} className="font-bold text-xs mt-3 mb-2 first:mt-0 flex items-center gap-1">
+                <Icon className="w-3 h-3" />
                 <span dangerouslySetInnerHTML={{ __html: formatLine(cleanText) }} />
               </div>
             );
@@ -175,7 +176,7 @@ export const StatsWithInfo: React.FC<StatsWithInfoProps> = ({ content, className
           const cleanText = line.replace(/[�-�][�-�]|[�-�]/g, '').trim();
           return (
             <div key={index} className="font-bold text-sm mt-3 mb-2 first:mt-0 flex items-center gap-1">
-              <IconComponent className="w-4 h-4" />
+              <IconComponent className="w-3 h-3" />
               <span dangerouslySetInnerHTML={{ __html: formatLine(cleanText) }} />
             </div>
           );
@@ -217,7 +218,20 @@ export const StatsWithInfo: React.FC<StatsWithInfoProps> = ({ content, className
         }
         
         if (statKey && statDefinitions[statKey]) {
-          const statDef = statDefinitions[statKey];
+          let statDef = statDefinitions[statKey];
+          
+          // For Model Used, create dynamic tooltip based on actual model name
+          if (statKey === 'Model Used') {
+            const match = line.match(/(?:•\s*Model Used:\s*\*\*([^*]+)\*\*)|(?:\*\*Model Used:\*\*\s*([^*]+))/);
+            if (match) {
+              const modelName = (match[1] || match[2] || '').trim();
+              const calculationMethod = getScoreCalculationMethod(modelName);
+              statDef = {
+                ...statDef,
+                description: `${statDef.description} This model uses: ${calculationMethod}`
+              };
+            }
+          }
           
           // Parse the line to extract the label and value (format: • StatName: **value** OR **StatName:** value)
           const match = line.match(/(?:•\s*([^:]+):\s*(.+))|(?:\*\*([^:]+):\*\*\s*(.+))/);
@@ -256,7 +270,7 @@ export const StatsWithInfo: React.FC<StatsWithInfoProps> = ({ content, className
             
             return (
               <div key={index} className="flex items-start py-1 ml-4">
-                <span className="text-sm flex items-center">
+                <span className="text-xs flex items-center">
                   <span className="mr-1">•</span>
                   <span className="font-medium">{label}:</span>
                   <span className="ml-1 font-semibold">{processValue(rawValue)}</span>
@@ -275,11 +289,10 @@ export const StatsWithInfo: React.FC<StatsWithInfoProps> = ({ content, className
         // Handle special formatting for headers and lists
         const isBullet = line.trim().startsWith('•');
         const isNumbered = /^\d+\.\s/.test(line.trim());
-        const isBold = line.includes('**');
         
         if (isBullet || isNumbered) {
           return (
-            <div key={index} className={`py-1 ${isBullet ? 'ml-4' : 'font-semibold mt-2'}`}>
+            <div key={index} className={`text-xs py-1 ${isBullet ? 'ml-4' : 'font-semibold mt-2'}`}>
               {renderLineWithZipCodes(line, onZipCodeClick)}
             </div>
           );
@@ -288,7 +301,7 @@ export const StatsWithInfo: React.FC<StatsWithInfoProps> = ({ content, className
         // Regular line without info icon
         if (line.trim()) {
           return (
-            <div key={index} className="py-1">
+            <div key={index} className="text-xs py-1">
               {renderLineWithZipCodes(line, onZipCodeClick)}
             </div>
           );
@@ -335,9 +348,9 @@ function formatLine(text: string): string {
   let formatted = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   
   // Convert markdown headers
-  formatted = formatted.replace(/^###\s+(.+)/, '<h3 class="font-semibold text-base mt-2">$1</h3>');
-  formatted = formatted.replace(/^##\s+(.+)/, '<h2 class="font-semibold text-lg mt-3">$1</h2>');
-  formatted = formatted.replace(/^#\s+(.+)/, '<h1 class="font-bold text-xl mt-4">$1</h1>');
+  formatted = formatted.replace(/^###\s+(.+)/, '<h3 class="font-semibold text-xs mt-2">$1</h3>');
+  formatted = formatted.replace(/^##\s+(.+)/, '<h2 class="font-semibold text-xs mt-3">$1</h2>');
+  formatted = formatted.replace(/^#\s+(.+)/, '<h1 class="font-bold text-xs mt-4">$1</h1>');
   
   return formatted;
 }

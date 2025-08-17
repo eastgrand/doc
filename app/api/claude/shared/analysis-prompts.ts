@@ -1038,23 +1038,67 @@ ALWAYS include model traceability information at the END of your analysis in thi
 
 ---
 **Model Attribution:**
-• **Model Used:** [Extract from model_attribution.primary_model.name or _model_attribution.primary_model_used]
-• **Model Type:** [Extract from model_attribution.primary_model.type or _model_attribution.model_type]
-• **R² Score:** [Extract from model_attribution.primary_model.performance.r2_score] ([Extract performance_level])
-• **Confidence:** [Map performance level: Excellent = High Confidence, Good = Strong Confidence, Moderate = Medium Confidence, Poor = Low Confidence]
+• **Model Used:** [Use hardcoded model mapping based on endpoint - see ENDPOINT_MODEL_MAPPING below]
+• **R² Score:** [Extract from data if available, otherwise use "Not recorded"]
+• **Confidence:** [If R² is "Not recorded" then use "Not recorded", otherwise map performance level: Excellent = High Confidence, Good = Strong Confidence, Moderate = Medium Confidence, Poor = Low Confidence]
 
-CRITICAL: This model attribution section must be included in EVERY analysis response. Look for these fields in the endpoint data:
-- model_attribution.primary_model.name (endpoint level)
-- model_attribution.primary_model.performance.r2_score 
-- model_attribution.primary_model.performance.performance_level
-- _model_attribution.primary_model_used (record level)
-- _model_attribution.model_type (record level)
+ENDPOINT MODEL MAPPING (use this hardcoded data instead of extracting from endpoint):
+- strategic-analysis: Strategic Analysis Model
+- competitive-analysis: Competitive Analysis Model  
+- demographic-insights: Demographic Analysis Model
+- comparative-analysis: Ensemble Model
+- correlation-analysis: Correlation Analysis Model
+- predictive-modeling: Predictive Modeling
+- trend-analysis: XGBoost Model
+- spatial-clusters: Clustering Model (K-Means)
+- anomaly-detection: Anomaly Detection Model
+- scenario-analysis: Ensemble Model
+- segment-profiling: Clustering Model
+- sensitivity-analysis: Random Forest Model
+- feature-interactions: XGBoost Model
+- feature-importance-ranking: Ensemble Model
+- model-performance: Ensemble Model
+- outlier-detection: Anomaly Detection Model
+- analyze: Ensemble Model
+- brand-difference: Competitive Analysis Model
+- customer-profile: Demographic Analysis Model
+- algorithm-comparison: Ensemble + All 8 Algorithms
+- ensemble-analysis: Ensemble Model (R² = 0.879)
+- model-selection: Ensemble + Performance Analysis
+- cluster-analysis: Enhanced Clustering (8 Clusters)
+- anomaly-insights: Enhanced Anomaly Detection
+- dimensionality-insights: PCA (91.7% Variance Explained)
+- consensus-analysis: Multi-Model Consensus
 
-If model attribution data is not available in the endpoint, use:
-• **Model Used:** Attribution data not available (endpoint generated before model tracking)
-• **Model Type:** Legacy endpoint 
-• **R² Score:** Not recorded
-• **Confidence:** Model performance not tracked`;
+TOOLTIP TEXT MAPPING (for Score Calculation Method - store this for potential tooltip use):
+- strategic-analysis: "Investment potential weighted by market factors, growth indicators, and competitive positioning"
+- competitive-analysis: "Market share potential × brand positioning strength × competitive advantage factors"  
+- demographic-insights: "Population favorability score based on target demographic alignment and density"
+- comparative-analysis: "Relative performance scoring × comparative advantage × market positioning strength"
+- correlation-analysis: "Statistical correlation strength weighted by significance and business relevance"
+- predictive-modeling: "Future trend probability × prediction confidence × model accuracy (ensemble weighted)"
+- trend-analysis: "Temporal pattern strength × trend consistency × directional confidence"
+- spatial-clusters: "Cluster cohesion score × geographic density × within-cluster similarity"
+- anomaly-detection: "Statistical deviation magnitude × outlier significance × detection confidence"
+- scenario-analysis: "Scenario probability × impact magnitude × model consensus across conditions"
+- segment-profiling: "Segment distinctiveness × profile clarity × business value potential"
+- sensitivity-analysis: "Parameter impact magnitude × sensitivity coefficient × business criticality"
+- feature-interactions: "Interaction effect strength × statistical significance × business interpretability"
+- feature-importance-ranking: "SHAP value magnitude × model consensus × business relevance weighting"
+- model-performance: "R² score × prediction accuracy × cross-validation performance × model stability"
+- outlier-detection: "Outlier strength score × statistical significance × business opportunity potential"
+- analyze: "Comprehensive analysis score combining multiple model outputs with business weights"
+- brand-difference: "Brand differentiation score × market positioning × competitive gap analysis"
+- customer-profile: "Customer fit score × profile match strength × lifetime value potential"
+- algorithm-comparison: "Algorithm performance weighted average × consensus strength × prediction reliability"
+- ensemble-analysis: "Ensemble confidence × component model agreement × prediction interval accuracy"
+- model-selection: "Algorithm suitability × expected performance × interpretability × data characteristics"
+- cluster-analysis: "Cluster quality × segment distinctiveness × business value × market opportunity"
+- anomaly-insights: "Anomaly significance × opportunity potential × investigation priority × market value"
+- dimensionality-insights: "Feature compression efficiency × component significance × variance explanation × complexity reduction"
+- consensus-analysis: "Model agreement score × consensus confidence × uncertainty quantification × prediction reliability"
+
+CRITICAL: Use the exact model name from the ENDPOINT_MODEL_MAPPING above based on the analysis type being performed. Do NOT extract from endpoint data anymore.`;
 
   return basePrompt + cityAnalysisAddendum;
 }

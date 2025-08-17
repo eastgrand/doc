@@ -76,7 +76,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'demographic_opportunity_score', // Changed to match actual field
+      targetVariable: 'demographic_opportunity_score', // Use the specific demographic score field
       renderer: this.createDemographicRenderer(records), // Add direct renderer
       legend: this.createDemographicLegend(records), // Add direct legend
       demographicAnalysis // Additional metadata for demographic visualization
@@ -610,7 +610,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'demographic_opportunity_score', // Changed to match actual field in records
+      field: 'demographic_opportunity_score', // Use the specific demographic score field
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

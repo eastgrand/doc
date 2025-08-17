@@ -251,12 +251,12 @@ export function calculateDistribution(data: any[]): Distribution {
   
   // Create score buckets
   const bucketDefs = [
-    { min: 9, max: 10, label: 'Exceptional (9-10)' },
-    { min: 8, max: 9, label: 'High (8-9)' },
-    { min: 7, max: 8, label: 'Above Average (7-8)' },
-    { min: 6, max: 7, label: 'Average (6-7)' },
-    { min: 5, max: 6, label: 'Below Average (5-6)' },
-    { min: 0, max: 5, label: 'Low (0-5)' }
+    { min: 90, max: 100, label: 'Exceptional (90-100)' },
+    { min: 80, max: 90, label: 'High (80-90)' },
+    { min: 70, max: 80, label: 'Above Average (70-80)' },
+    { min: 60, max: 70, label: 'Average (60-70)' },
+    { min: 50, max: 60, label: 'Below Average (50-60)' },
+    { min: 0, max: 50, label: 'Low (0-50)' }
   ];
   
   const buckets = bucketDefs.map(bucket => {
@@ -655,9 +655,7 @@ export function formatDistributionForChat(dist: Distribution, analysisType?: str
   lines.push('**Score Distribution:**');
   
   dist.buckets.forEach(bucket => {
-    const bar = '█'.repeat(Math.round(bucket.percentage / 5));
     lines.push(`• ${bucket.range}: **${bucket.count}** areas (**${bucket.percentage.toFixed(1)}%**)`);
-    lines.push(`  ${bar}`);
   });
   
   lines.push('');

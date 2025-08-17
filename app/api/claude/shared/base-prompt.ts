@@ -105,8 +105,11 @@ Implementation Priorities:
 
 ---
 **Model Attribution:**
-• **Model Used:** [Name]
-• **R² Score:** [Value]
+• **Model Used:** [Use hardcoded model mapping based on analysis endpoint type]
+• **R² Score:** [Extract from data if available, otherwise "Not recorded"]
+• **Confidence:** [If R² is "Not recorded" then use "Not recorded", otherwise map performance level appropriately]
+
+IMPORTANT: Use the hardcoded endpoint-to-model mapping defined in the analysis prompts. Do NOT extract or invent model names.
 
 CONTENT REQUIREMENTS: 
 - Your first sentence must be the start of the analysis. Do not use any introductory preambles like "Based on the data...".

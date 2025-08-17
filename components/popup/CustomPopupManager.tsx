@@ -17,6 +17,7 @@ import { FieldMappingHelper } from '../../utils/visualizations/field-mapping-hel
 import { determinePopupTitle, createStandardizedPopupTemplate, StandardizedPopupConfig } from '../../utils/popup-utils';
 import Graphic from '@arcgis/core/Graphic';
 import Handles from '@arcgis/core/core/Handles';
+import { BrandNameResolver } from '../../lib/analysis/utils/BrandNameResolver';
 
 interface CustomPopupManagerProps {
   mapView: __esri.MapView;
@@ -386,10 +387,28 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
             }).then(queryResponse => {
               if (queryResponse.features.length > 0) {
                 const fullFeature = queryResponse.features[0];
+                
+                // 🔍 DEBUG: Log attribute comparison
+                console.log('[CustomPopupManager] 🔍 Popup Attribute Debug:', {
+                  hitFeatureAttrs: Object.keys(hitFeature.attributes || {}),
+                  fullFeatureAttrs: Object.keys(fullFeature.attributes || {}),
+                  hitFeatureValues: hitFeature.attributes,
+                  fullFeatureValues: fullFeature.attributes,
+                  areEqual: JSON.stringify(hitFeature.attributes) === JSON.stringify(fullFeature.attributes)
+                });
+                
                 createCustomPopup(fullFeature, event.mapPoint);
               }
             }).catch(queryError => {
               console.error('[CustomPopupManager] Failed to query for full feature:', queryError);
+              
+              // 🔍 DEBUG: Log fallback scenario
+              console.log('[CustomPopupManager] 🔍 Using fallback feature attributes:', {
+                attributes: hitFeature.attributes,
+                hasAttributes: !!hitFeature.attributes,
+                attributeCount: hitFeature.attributes ? Object.keys(hitFeature.attributes).length : 0
+              });
+              
               // Fallback to the original hit feature if the query fails for some reason
               createCustomPopup(hitFeature, event.mapPoint);
             });
@@ -925,10 +944,52 @@ const generateBarChart = (
   if (isAnalysisLayer) {
     // Handle unified analysis layers with proper bar chart
     const attrs = feature.attributes || {};
+    
+    // Initialize BrandNameResolver to handle brand field detection
+    const brandResolver = new BrandNameResolver(FIELD_ALIASES);
+    const brandFields = brandResolver.detectBrandFields(attrs);
+    const isBrandAnalysis = brandFields.length > 0 || attrs.brand_difference_score !== undefined;
+    
+    // 🔍 DEBUG: Log all attributes for analysis layer popup
+    console.log('[CustomPopupManager] 🔍 Analysis Layer Popup Debug:', {
+      layerId: feature.layer?.id,
+      hasAttributes: !!attrs,
+      attributeKeys: Object.keys(attrs),
+      attributeValues: attrs,
+      nonZeroValues: Object.entries(attrs).filter(([key, value]) => typeof value === 'number' && value !== 0),
+      allNumericValues: Object.entries(attrs).filter(([key, value]) => typeof value === 'number'),
+      brandFields: brandFields.map(bf => ({ field: bf.fieldName, brand: bf.brandName, value: bf.value })),
+      isBrandAnalysis: isBrandAnalysis
+    });
+    
     const metrics: Metric[] = [];
     
-    // Find the main score field - look for strategic_value_score, value, etc.
-    const scoreFields = ['strategic_value_score', 'competitive_advantage_score', 'value'];
+    // Find the main score field - look for analysis-specific score fields
+    const scoreFields = [
+      'brand_difference_score',        // Brand difference analysis
+      'strategic_value_score',         // Strategic analysis  
+      'competitive_advantage_score',   // Competitive analysis
+      'demographic_opportunity_score', // Demographic analysis
+      'demographic_score',             // Demographic analysis (alternative)
+      'customer_profile_score',        // Customer profile analysis
+      'trend_strength_score',          // Trend analysis
+      'outlier_detection_score',       // Outlier detection
+      'correlation_strength_score',    // Correlation analysis
+      'segment_profiling_score',       // Segment profiling
+      'feature_interaction_score',     // Feature interaction
+      'brand_analysis_score',          // Brand analysis
+      'market_sizing_score',           // Market sizing
+      'real_estate_analysis_score',    // Real estate analysis
+      'anomaly_detection_score',       // Anomaly detection
+      'predictive_modeling_score',     // Predictive modeling
+      'risk_adjusted_score',           // Risk analysis
+      'expansion_opportunity_score',   // Competitive expansion
+      'cluster_performance_score',     // Cluster analysis
+      'comparison_score',              // Comparative analysis
+      'trend_strength',                // Trend data (alternative)
+      'scenario_analysis_score',       // Scenario analysis
+      'value'                          // Generic fallback (should rarely be used)
+    ];
     let mainScoreField: string | null = null;
     let mainScoreValue: number = 0;
     
@@ -965,28 +1026,49 @@ const generateBarChart = (
       }
     }
     
-    // Add contributing fields, excluding unwanted system fields
-    const excludedFields = ['OBJECTID', 'value', 'rank', 'ID', 'DESCRIPTION', 'area_name'];
-    
-    // Fields from other projects that should be excluded
-    const otherProjectFields = [
-      'nike_market_share', 'adidas_market_share', 'jordan_market_share',
-      'nike_purchases', 'adidas_purchases', 'footwear_sales',
-      'athletic_shoes', 'running_shoes', 'basketball_shoes'
+    // Add contributing fields, excluding unwanted system fields and main score fields
+    const excludedFields = [
+      'OBJECTID', 'value', 'rank', 'ID', 'DESCRIPTION', 'area_name',
+      // Exclude all main score fields to prevent duplicates
+      'brand_difference_score', 'strategic_value_score', 'competitive_advantage_score',
+      'demographic_opportunity_score', 'demographic_score', 'customer_profile_score',
+      'trend_strength_score', 'outlier_detection_score', 'correlation_strength_score',
+      'segment_profiling_score', 'feature_interaction_score', 'brand_analysis_score',
+      'market_sizing_score', 'real_estate_analysis_score', 'anomaly_detection_score',
+      'predictive_modeling_score', 'risk_adjusted_score', 'expansion_opportunity_score',
+      'cluster_performance_score', 'comparison_score', 'trend_strength', 'scenario_analysis_score'
     ];
     
+    // Fields from other unrelated projects that should be excluded
+    const excludedProjectFields = [
+      'footwear_sales', 'athletic_shoes', 'running_shoes', 'basketball_shoes'
+    ];
+    
+    // Add brand fields first if this is a brand analysis
+    if (isBrandAnalysis && brandFields.length > 0) {
+      brandFields.forEach(brandField => {
+        if (brandField.fieldName !== mainScoreField && brandField.value !== 0) {
+          metrics.push({
+            label: FieldMappingHelper.getFriendlyFieldName(brandField.fieldName) || `${brandField.brandName} Market Share`,
+            value: brandField.value,
+            color: '#007bff', // Blue for brand metrics
+            isPercent: true
+          });
+        }
+      });
+    }
+    
     // Get all available numeric fields that could be contributing factors
+    const brandFieldNames = brandFields.map(bf => bf.fieldName);
     Object.keys(attrs).forEach(key => {
       if (key !== mainScoreField && 
           !excludedFields.includes(key) && 
-          !otherProjectFields.includes(key) && 
-          !key.toLowerCase().includes('nike') &&
-          !key.toLowerCase().includes('adidas') &&
-          !key.toLowerCase().includes('jordan') &&
+          !excludedProjectFields.includes(key) && 
+          !brandFieldNames.includes(key) && // Skip brand fields as we handled them above
           typeof attrs[key] === 'number' && 
-          attrs[key] > 0) { // Only show fields with positive values
+          attrs[key] !== 0) { // Show fields with non-zero values (including negative for brand differences)
         
-        // Determine color based on field type
+        // Determine color based on field type (no hardcoded brand colors)
         let color = '#6c757d'; // Default gray
         if (key.includes('score')) {
           color = '#4285f4'; // Blue for scores
