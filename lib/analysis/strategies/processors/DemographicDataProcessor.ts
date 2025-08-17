@@ -36,6 +36,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
          record.value_DESCRIPTION !== undefined ||     // Area description
          record.ID !== undefined ||                   // Area ID
          // Fallback demographic fields for other datasets
+         record.demographic_insights_score !== undefined || 
          record.demographic_opportunity_score !== undefined || 
          record.demographic_score !== undefined ||    // HRB data field
          record.total_population !== undefined ||     
@@ -44,6 +45,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
          record.value_MEDAGE_CY !== undefined ||      
          record.population !== undefined ||           
          record.income !== undefined ||              
+         record.demographic_insights_score !== undefined ||   // Current scoring system
          record.demographic_score !== undefined)      
       );
     
@@ -76,7 +78,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'demographic_opportunity_score', // Use the specific demographic score field
+      targetVariable: 'demographic_insights_score', // Use the current scoring system field
       renderer: this.createDemographicRenderer(records), // Add direct renderer
       legend: this.createDemographicLegend(records), // Add direct legend
       demographicAnalysis // Additional metadata for demographic visualization
@@ -101,7 +103,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       // Extract demographic-specific properties (updated for actual dataset fields)
       const properties = {
         ...this.extractProperties(record),
-        demographic_opportunity_score: demographicScore,
+        demographic_insights_score: demographicScore,
+        demographic_opportunity_score: demographicScore, // Legacy compatibility
         population: record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population || record.population || 0,
         avg_income: record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income || record.income || 0,
         median_age: record.value_MEDAGE_CY || record.age || 0,
@@ -124,7 +127,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
         area_id,
         area_name,
         value,
-        demographic_opportunity_score: demographicScore, // Add target variable at top level
+        demographic_insights_score: demographicScore, // Current scoring system
+        demographic_opportunity_score: demographicScore, // Legacy compatibility
         rank: 0, // Will be calculated in ranking
         category,
         coordinates: record.coordinates || [0, 0],
@@ -147,9 +151,10 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     }
     
     // PRIORITY 2: PRE-CALCULATED DEMOGRAPHIC OPPORTUNITY SCORE (for other datasets)
-    if ((record.demographic_opportunity_score !== undefined && record.demographic_opportunity_score !== null) ||
+    if ((record.demographic_insights_score !== undefined && record.demographic_insights_score !== null) ||
+        (record.demographic_opportunity_score !== undefined && record.demographic_opportunity_score !== null) ||
         (record.demographic_score !== undefined && record.demographic_score !== null)) {
-      const preCalculatedScore = Number(record.demographic_opportunity_score || record.demographic_score);
+      const preCalculatedScore = Number(record.demographic_insights_score || record.demographic_opportunity_score || record.demographic_score);
       console.log(`🎯 [DemographicDataProcessor] Using pre-calculated score: ${preCalculatedScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
       return preCalculatedScore;
     }
@@ -194,7 +199,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       }
     }
     
-    console.log('⚠️ [DemographicDataProcessor] No pre-calculated demographic_opportunity_score or demographic_score found, using fallback calculation');
+    console.log('⚠️ [DemographicDataProcessor] No pre-calculated demographic_insights_score, demographic_opportunity_score or demographic_score found, using fallback calculation');
     return Math.max(0, Math.min(100, demographicScore));
   }
 
@@ -258,7 +263,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
 
   private extractProperties(record: any): Record<string, any> {
     const internalFields = new Set([
-      'area_id', 'id', 'area_name', 'name', 'demographic_score',
+      'area_id', 'id', 'area_name', 'name', 'demographic_insights_score', 'demographic_score',
       'coordinates', 'shap_values'
     ]);
     
@@ -610,7 +615,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'demographic_opportunity_score', // Use the specific demographic score field
+      field: 'demographic_insights_score', // Use the current scoring system field
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

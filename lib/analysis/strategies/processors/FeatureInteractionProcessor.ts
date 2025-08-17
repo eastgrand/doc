@@ -80,11 +80,13 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         value: Math.round(interactionScore * 100) / 100, // Use interaction score as primary value
-        feature_interaction_score: Math.round(interactionScore * 100) / 100, // Add target variable at top level
+        feature_interactions_score: Math.round(interactionScore * 100) / 100, // Add target variable at top level
+        feature_interaction_score: Math.round(interactionScore * 100) / 100, // Legacy compatibility
         rank: 0, // Will be calculated after sorting
         properties: {
           ...record, // Include ALL original fields in properties
-          feature_interaction_score: interactionScore,
+          feature_interactions_score: interactionScore,
+          feature_interaction_score: interactionScore, // Legacy compatibility
           nike_market_share: nikeShare,
           strategic_score: strategicScore,
           competitive_score: competitiveScore,
@@ -123,7 +125,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'feature_interaction_score', // Primary ranking by interaction strength
+      targetVariable: 'feature_interactions_score', // Primary ranking by interaction strength
       renderer: this.createFeatureInteractionRenderer(rankedRecords), // Add direct renderer
       legend: this.createFeatureInteractionLegend(rankedRecords) // Add direct legend
     };
@@ -143,8 +145,15 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       return preCalculatedScore;
     }
     
+    // Check for feature_interactions_score (current field)
+    if (record.feature_interactions_score !== undefined && record.feature_interactions_score !== null) {
+      const currentScore = Number(record.feature_interactions_score);
+      console.log(`🔗 [FeatureInteractionProcessor] Using current feature_interactions_score: ${currentScore}`);
+      return currentScore;
+    }
+    
     // FALLBACK: Calculate interaction score from available data
-    console.log('⚠️ [FeatureInteractionProcessor] No feature_interaction_score found, calculating from raw data');
+    console.log('⚠️ [FeatureInteractionProcessor] No feature_interactions_score found, calculating from raw data');
     
     const strategicScore = Number(record.strategic_value_score) || 0;
     const demographicScore = Number(record.demographic_opportunity_score) || 0;

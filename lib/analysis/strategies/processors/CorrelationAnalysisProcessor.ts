@@ -77,7 +77,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'correlation_strength_score',
+      targetVariable: 'correlation_score', // Use the actual field from data
       renderer: this.createCorrelationRenderer(records), // Add direct renderer
       legend: this.createCorrelationLegend(records), // Add direct legend
       correlationAnalysis // Additional metadata for correlation visualization
@@ -102,7 +102,8 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       // Extract correlation-specific properties (updated for actual dataset fields)
       const properties = {
         ...this.extractProperties(record),
-        correlation_strength_score: correlationScore,
+        correlation_score: correlationScore,
+        correlation_strength_score: correlationScore, // Legacy compatibility
         target_value: Number(record.value_MP30034A_B_P || record.target_value) || 0,
         median_income: Number(record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income) || 0,
         total_population: Number(record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population) || 0,
@@ -124,7 +125,8 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
         area_id,
         area_name,
         value,
-        correlation_strength_score: correlationScore, // Add target variable at top level
+        correlation_score: correlationScore, // Current scoring system
+        correlation_strength_score: correlationScore, // Legacy compatibility
         rank: 0, // Will be calculated in ranking
         category,
         coordinates: record.coordinates || [0, 0],
@@ -143,7 +145,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       return preCalculatedScore;
     }
     
-    console.log('⚠️ [CorrelationAnalysisProcessor] No pre-calculated correlation_strength_score found, using default');
+    console.log('⚠️ [CorrelationAnalysisProcessor] No pre-calculated correlation_score found, using default');
     return 50.0; // Default moderate correlation strength
   }
 
