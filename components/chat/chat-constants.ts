@@ -22,9 +22,6 @@ export const ANALYSIS_CATEGORIES = {
   'Spatial Clusters': [
     'Show me geographic clusters of similar tax service markets'  
   ], 
-  'Correlation Analysis': [
-    'What market factors are most strongly correlated with H&R Block online usage?'
-  ],
   'Outlier Detection': [
     'Show me markets that have outliers with unique tax service characteristics'
   ],
@@ -76,6 +73,9 @@ export const ANALYSIS_CATEGORIES = {
 };
 
 export const DISABLED_ANALYSIS_CATEGORIES = {
+  'Correlation Analysis': [
+    'What market factors are most strongly correlated with H&R Block online usage?'
+  ],
   'Trend Analysis': [
     'Show me markets with the strongest growth trends for online tax preparation'
   ],

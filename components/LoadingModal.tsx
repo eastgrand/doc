@@ -48,13 +48,13 @@ const FIREFLY_COLORS = [
 export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalProgress, show }) => {
   // Internal progress state to manage continuous loading even when tab is inactive
   const [internalProgress, setInternalProgress] = useState(externalProgress);
-  const [particles, setParticles] = useState<Particle[]>([]);
   const [currentFact, setCurrentFact] = useState<LoadingFact | null>(null);
   const [allFacts, setAllFacts] = useState<LoadingFact[]>([]);
   const [factIndex, setFactIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
   const factIntervalRef = useRef<NodeJS.Timeout>();
+  const particlesRef = useRef<Particle[]>([]);
   
   // Fetch project stats
   const { stats: projectStats } = useProjectStats();
@@ -88,7 +88,7 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
         pulse: Math.random() > 0.7,
       });
     }
-    setParticles(newParticles);
+    particlesRef.current = newParticles;
   }, [show]);
   
   // Load facts
@@ -144,6 +144,27 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Initialize particles if not already done
+    if (particlesRef.current.length === 0) {
+      const particleCount = 50;
+      const newParticles: Particle[] = [];
+
+      for (let i = 0; i < particleCount; i++) {
+        newParticles.push({
+          id: i,
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          size: Math.random() * 3 + 1,
+          color: FIREFLY_COLORS[Math.floor(Math.random() * FIREFLY_COLORS.length)],
+          opacity: Math.random() * 0.5 + 0.3,
+          pulse: Math.random() > 0.7,
+        });
+      }
+      particlesRef.current = newParticles;
+    }
+
     // Set canvas size
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
@@ -152,14 +173,19 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Create mutable particle array for animation
-    const animatedParticles = particles.map(p => ({...p}));
-
-    // Animation loop
+    // Animation loop - directly mutate particles in ref
+    let frameCount = 0;
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      animatedParticles.forEach(particle => {
+      const particles = particlesRef.current;
+      
+      // Debug log every 60 frames (about once per second at 60fps)
+      if (frameCount++ % 60 === 0) {
+        console.log('[LoadingModal] Animation frame', frameCount, 'particles:', particles.length, 'sample position:', particles[0]?.x, particles[0]?.y);
+      }
+      
+      particles.forEach(particle => {
         // Update position
         particle.x += particle.vx;
         particle.y += particle.vy;
@@ -186,7 +212,7 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
         ctx.fill();
 
         // Draw connecting lines to nearby particles
-        animatedParticles.forEach(other => {
+        particles.forEach(other => {
           if (particle.id === other.id) return;
           const distance = Math.sqrt(
             Math.pow(particle.x - other.x, 2) + 
@@ -215,7 +241,7 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [particles, show]);
+  }, [show]); // Only depend on show, not particles
   
   if (!show) {
     console.log('[LoadingModal] Not showing - returning null');
