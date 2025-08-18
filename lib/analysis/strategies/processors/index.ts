@@ -19,6 +19,7 @@ export { BrandAnalysisProcessor } from './BrandAnalysisProcessor';
 export { BrandDifferenceProcessor } from './BrandDifferenceProcessor';
 export { RealEstateAnalysisProcessor } from './RealEstateAnalysisProcessor';
 export { StrategicAnalysisProcessor } from './StrategicAnalysisProcessor';
+export { CustomerProfileProcessor } from './CustomerProfileProcessor';
 export { SensitivityAnalysisProcessor } from './SensitivityAnalysisProcessor';
 export { ModelPerformanceProcessor } from './ModelPerformanceProcessor';
 export { ModelSelectionProcessor } from './ModelSelectionProcessor';

@@ -18,7 +18,7 @@ All endpoints have corresponding scoring scripts in `/scripts/scoring/`. The end
 | correlation-analysis.json | CorrelationAnalysisProcessor | `correlation_analysis_score` | ✅ |
 | brand-difference.json | BrandDifferenceProcessor | `brand_difference_score` | ✅ |
 | comparative-analysis.json | ComparativeAnalysisProcessor | `comparative_analysis_score` | ✅ |
-| customer-profile.json | CustomerProfileProcessor | `customer_profile_score` | ✅ |
+| customer-profile.json | CustomerProfileProcessor | `purchase_propensity` | ✅ |
 | trend-analysis.json | TrendAnalysisProcessor | `trend_analysis_score` | ✅ |
 | segment-profiling.json | SegmentProfilingProcessor | `segment_profiling_score` | ✅ |
 | anomaly-detection.json | AnomalyDetectionProcessor | `anomaly_detection_score` | ✅ |

@@ -37,9 +37,6 @@ export const ANALYSIS_CATEGORIES = {
   'Trend Analysis': [
     'Show me markets with the strongest growth trends for online tax preparation'
   ],
-  'Anomaly Detection': [
-    'Show me statistical outliers in H&R Block market performance'
-  ],
   'Feature Interactions': [
     'Which markets have the strongest interactions between demographics and tax service usage?'
   ],
@@ -76,15 +73,15 @@ export const ANALYSIS_CATEGORIES = {
   'Anomaly Insights': [
     'Which unusual market patterns represent the biggest business opportunities?'
   ],
+  'Cluster Analysis': [
+    'How should we segment tax service markets for targeted strategies?'
+  ],
   'Analyze': [
     'Provide comprehensive market insights for tax preparation services'
   ]
 };
 
 export const DISABLED_ANALYSIS_CATEGORIES = {
-  'Cluster Analysis': [
-    'How should we segment tax service markets for targeted strategies?'
-  ],
   'Nonlinear Analysis': [
     'What complex patterns exist in tax service data that linear models miss?'
   ],

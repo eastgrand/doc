@@ -31,7 +31,7 @@ console.log('🎯 Starting Data-Driven Scoring Analysis...');
 
 
 // Load the analysis data from endpoints
-const dataPath = path.join(__dirname, '../../public/data/endpoints/correlation-analysis.json');
+const dataPath = path.join(__dirname, '../../public/data/endpoints/scenario-analysis.json');
 const analysisData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
 if (!analysisData || !analysisData.results) {

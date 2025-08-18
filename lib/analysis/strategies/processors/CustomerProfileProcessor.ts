@@ -45,7 +45,8 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     const hasCustomerProfileFields = dataArray.length === 0 || 
       dataArray.some(record => 
         record && 
-        (record.customer_profile_score !== undefined || // Pre-calculated score
+        (record.purchase_propensity !== undefined || // Latest scoring field
+         record.customer_profile_score !== undefined || // Pre-calculated score
          record.total_population !== undefined ||        // Population for analysis
          record.median_income !== undefined ||          // Income demographics
          record.value_TOTPOP_CY !== undefined ||        // Legacy population
@@ -108,7 +109,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'customer_profile_score',
+      targetVariable: 'purchase_propensity', // Use the actual last field from scoring script
       renderer: this.createCustomerProfileRenderer(records), // Add direct renderer
       legend: this.createCustomerProfileLegend(records), // Add direct legend
       customerProfileAnalysis, // Additional metadata for customer profile visualization
@@ -164,7 +165,8 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
         area_id,
         area_name,
         value,
-        customer_profile_score: customerProfileScore, // Add target variable at top level
+        purchase_propensity: customerProfileScore, // Current scoring field
+        customer_profile_score: customerProfileScore, // Legacy compatibility
         rank: 0, // Will be calculated in ranking
         category,
         coordinates: record.coordinates || [0, 0],
@@ -176,21 +178,28 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   private extractCustomerProfileScore(record: any): number {
-    // Use pre-calculated customer profile score from data
-    if (record.customer_profile_score !== undefined && record.customer_profile_score !== null) {
-      const score = Number(record.customer_profile_score);
-      console.log(`👤 [CustomerProfileProcessor] Using customer_profile_score: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+    // PRIORITY 1: Use the actual last field from the scoring script
+    if (record.purchase_propensity !== undefined && record.purchase_propensity !== null) {
+      const score = Number(record.purchase_propensity);
+      console.log(`👤 [CustomerProfileProcessor] Using purchase_propensity: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
       return score;
     }
     
-    // Fallback to demographic opportunity score if customer profile score not available
+    // PRIORITY 2: Fallback to customer_profile_score if available
+    if (record.customer_profile_score !== undefined && record.customer_profile_score !== null) {
+      const score = Number(record.customer_profile_score);
+      console.log(`👤 [CustomerProfileProcessor] Fallback to customer_profile_score: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+      return score;
+    }
+    
+    // PRIORITY 3: Fallback to demographic opportunity score if customer profile score not available
     if (record.demographic_opportunity_score !== undefined && record.demographic_opportunity_score !== null) {
       const score = Number(record.demographic_opportunity_score);
       console.log(`👤 [CustomerProfileProcessor] Fallback to demographic_opportunity_score: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
       return score;
     }
     
-    console.log('⚠️ [CustomerProfileProcessor] No customer profile or demographic scores found');
+    console.log('⚠️ [CustomerProfileProcessor] No purchase_propensity, customer_profile_score, or demographic scores found');
     return 0;
   }
 
@@ -660,7 +669,7 @@ Higher scores indicate stronger alignment with the target brand's ideal customer
     
     return {
       type: 'class-breaks',
-      field: 'customer_profile_score',
+      field: 'purchase_propensity', // Use the actual last field from scoring script
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

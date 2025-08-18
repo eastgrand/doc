@@ -353,26 +353,42 @@ export class CachedEndpointRouter {
   }
 
   /**
-   * Convert endpoint path to cache key - FIXED to match actual filenames
+   * Convert endpoint path to cache key - Updated to include all 26 enabled endpoints
    */
   private getEndpointKey(endpoint: string): string {
     const endpointMap: Record<string, string> = {
+      // Core analysis endpoints
       '/analyze': 'analyze',
       '/strategic-analysis': 'strategic-analysis',
-      '/spatial-clusters': 'spatial-clusters',
-      '/competitive-analysis': 'competitive-analysis', 
-      '/correlation-analysis': 'correlation-analysis',
+      '/comparative-analysis': 'comparative-analysis',
+      '/competitive-analysis': 'competitive-analysis',
       '/demographic-insights': 'demographic-insights',
+      '/customer-profile': 'customer-profile',
+      '/spatial-clusters': 'spatial-clusters',
+      '/correlation-analysis': 'correlation-analysis',
+      '/outlier-detection': 'outlier-detection',
+      '/brand-difference': 'brand-difference',
+      '/scenario-analysis': 'scenario-analysis',
       '/trend-analysis': 'trend-analysis',
       '/anomaly-detection': 'anomaly-detection',
       '/feature-interactions': 'feature-interactions',
-      '/outlier-detection': 'outlier-detection',
-      '/comparative-analysis': 'comparative-analysis',
       '/predictive-modeling': 'predictive-modeling',
       '/segment-profiling': 'segment-profiling',
-      '/scenario-analysis': 'scenario-analysis',
+      
+      // Newly enabled endpoints (all 10 missing ones)
+      '/sensitivity-analysis': 'sensitivity-analysis',
+      '/feature-importance-ranking': 'feature-importance-ranking',
+      '/model-performance': 'model-performance',
+      '/algorithm-comparison': 'algorithm-comparison',
+      '/ensemble-analysis': 'ensemble-analysis',
+      '/model-selection': 'model-selection',
+      '/dimensionality-insights': 'dimensionality-insights',
+      '/consensus-analysis': 'consensus-analysis',
+      '/anomaly-insights': 'anomaly-insights',
+      '/cluster-analysis': 'cluster-analysis',
+      
+      // Legacy mappings for backwards compatibility
       '/brand-analysis': 'competitive-analysis',
-      '/brand-difference': 'brand-difference',
       '/market-sizing': 'segment-profiling',
       '/real-estate-analysis': 'spatial-clusters'
     };

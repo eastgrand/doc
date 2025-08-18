@@ -35,7 +35,7 @@ class JavaScriptScoringGenerator:
         # Generate script components
         header_comment = self._generate_header_comment(analysis_type, formula_config)
         imports_section = self._generate_imports()
-        data_loading = self._generate_data_loading()
+        data_loading = self._generate_data_loading(analysis_type)
         scoring_function = self._generate_scoring_function(analysis_type, formula_config)
         processing_loop = self._generate_processing_loop(analysis_type, formula_config)
         statistics_calculation = self._generate_statistics(analysis_type)
@@ -126,20 +126,23 @@ const path = require('path');
 console.log('🎯 Starting Data-Driven Scoring Analysis...');
 """
     
-    def _generate_data_loading(self) -> str:
-        """Generate data loading section"""
+    def _generate_data_loading(self, analysis_type: str = None) -> str:
+        """Generate data loading section with correct endpoint file"""
         
-        return """
+        # Map analysis types to their endpoint files (using hyphens not underscores)
+        endpoint_filename = f"{analysis_type.replace('_', '-')}.json" if analysis_type else "correlation-analysis.json"
+        
+        return f"""
 // Load the analysis data from endpoints
-const dataPath = path.join(__dirname, '../../public/data/endpoints/correlation-analysis.json');
+const dataPath = path.join(__dirname, '../../public/data/endpoints/{endpoint_filename}');
 const analysisData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
-if (!analysisData || !analysisData.results) {
+if (!analysisData || !analysisData.results) {{
   console.error('❌ No analysis dataset found');
   process.exit(1);
-}
+}}
 
-console.log(`📊 Processing ${analysisData.results.length} records for scoring...`);
+console.log(`📊 Processing ${{analysisData.results.length}} records for scoring...`);
 """
     
     def _generate_scoring_function(self, analysis_type: str, formula_config: Dict[str, Any]) -> str:

@@ -611,15 +611,15 @@ export class EnhancedQueryAnalyzer {
       weight: 1.0
     },
     '/competitive-analysis': {
-      primaryKeywords: ['competitive', 'competition', 'compete', 'market share', 'brand position', 'dominance'],
-      contextKeywords: ['h&r block vs', 'versus', 'against', 'compare to'],
-      avoidTerms: ['difference', 'percent'],
-      weight: 0.9
+      primaryKeywords: ['market share', 'market share difference', 'share difference', 'quantitative comparison'],
+      contextKeywords: ['h&r block vs turbotax', 'between h&r block and', 'market share between'],
+      avoidTerms: ['brand positioning', 'brand strength', 'strongest'],
+      weight: 1.2
     },
     '/brand-difference': {
-      primaryKeywords: ['difference', 'percent difference', 'gap', 'lead', 'delta'],
-      contextKeywords: ['h&r block vs turbotax', 'brand difference', 'market share difference'],
-      avoidTerms: [],
+      primaryKeywords: ['brand positioning', 'brand strength', 'strongest', 'brand difference', 'positioning vs'],
+      contextKeywords: ['strongest brand', 'brand positioning vs', 'positioning against'],
+      avoidTerms: ['market share', 'quantitative'],
       weight: 1.1
     },
     '/demographic-insights': {
@@ -664,12 +664,6 @@ export class EnhancedQueryAnalyzer {
       avoidTerms: [],
       weight: 1.0
     },
-    '/anomaly-detection': {
-      primaryKeywords: ['anomaly', 'anomalies', 'unexpected', 'performing unexpectedly', 'outlier'],
-      contextKeywords: ['unexpectedly well', 'unexpectedly poorly', 'compared to predictions'],
-      avoidTerms: [],
-      weight: 1.0
-    },
     '/scenario-analysis': {
       primaryKeywords: ['scenario', 'scenarios', 'what if', 'economic scenarios', 'different conditions'],
       contextKeywords: ['economic scenarios', 'affect performance', 'different economic scenarios'],
@@ -677,10 +671,10 @@ export class EnhancedQueryAnalyzer {
       weight: 1.0
     },
     '/segment-profiling': {
-      primaryKeywords: ['segment', 'segments', 'customer segments', 'profitable segments'],
-      contextKeywords: ['key characteristics', 'most profitable', 'customer segments'],
-      avoidTerms: [],
-      weight: 1.0
+      primaryKeywords: ['clearest customer segmentation', 'customer segmentation profiles', 'which markets have'],
+      contextKeywords: ['clearest', 'segmentation profiles for', 'customer segmentation'],
+      avoidTerms: ['how should we', 'targeted strategies'],
+      weight: 1.2
     },
     '/sensitivity-analysis': {
       primaryKeywords: ['sensitivity', 'sensitive', 'impact', 'biggest impact', 'factors impact'],
@@ -701,15 +695,15 @@ export class EnhancedQueryAnalyzer {
       weight: 1.0
     },
     '/model-performance': {
-      primaryKeywords: ['reliable', 'reliability', 'accurate', 'accuracy', 'predictions'],
-      contextKeywords: ['how reliable', 'how accurate', 'prediction accuracy'],
-      avoidTerms: [],
-      weight: 1.0
+      primaryKeywords: ['accurate', 'accuracy', 'performance', 'how accurate', 'prediction accuracy'],
+      contextKeywords: ['accurate are our predictions', 'market performance', 'performance accuracy'],
+      avoidTerms: ['likely to grow', 'forecast', 'future'],
+      weight: 1.2
     },
     '/outlier-detection': {
-      primaryKeywords: ['outlier', 'outliers', 'statistical outliers', 'unusual'],
-      contextKeywords: ['deserve investigation', 'statistical outliers', 'special investigation'],
-      avoidTerms: [],
+      primaryKeywords: ['outliers', 'unique characteristics', 'unusual characteristics'],
+      contextKeywords: ['deserve investigation', 'unique tax service characteristics', 'unusual patterns'],
+      avoidTerms: ['performance', 'statistical outliers'],
       weight: 1.0
     },
     '/analyze': {
@@ -725,28 +719,28 @@ export class EnhancedQueryAnalyzer {
       weight: 1.0
     },
     '/ensemble-analysis': {
-      primaryKeywords: ['ensemble', 'confidence', 'highest confidence', 'best model'],
-      contextKeywords: ['highest-confidence predictions', 'best available model', 'ensemble confidence'],
-      avoidTerms: [],
-      weight: 1.0
+      primaryKeywords: ['ensemble', 'highest confidence', 'best ensemble model', 'confidence predictions'],
+      contextKeywords: ['using our best ensemble', 'ensemble model', 'highest confidence predictions'],
+      avoidTerms: ['likely to grow', 'forecast'],
+      weight: 1.3
     },
     '/model-selection': {
-      primaryKeywords: ['optimal', 'optimal algorithm', 'best algorithm', 'algorithm to use'],
-      contextKeywords: ['optimal ml algorithm', 'best to use', 'geographic area'],
-      avoidTerms: [],
-      weight: 1.0
+      primaryKeywords: ['optimal', 'optimal algorithm', 'best algorithm', 'optimal ai algorithm'],
+      contextKeywords: ['optimal algorithm for predictions', 'best algorithm', 'each geographic area'],
+      avoidTerms: ['likely to grow', 'forecast'],
+      weight: 1.3
     },
     '/cluster-analysis': {
-      primaryKeywords: ['cluster', 'clusters', 'clustering', 'segment', 'groups'],
-      contextKeywords: ['customer groups', 'targeted strategies', 'distinct groups'],
-      avoidTerms: [],
-      weight: 1.0
+      primaryKeywords: ['how should we segment', 'targeted strategies', 'segment markets', 'cluster markets'],
+      contextKeywords: ['how should we', 'for targeted strategies', 'markets for targeted'],
+      avoidTerms: ['clearest', 'customer segmentation profiles'],
+      weight: 1.2
     },
     '/anomaly-insights': {
-      primaryKeywords: ['unusual', 'patterns', 'business opportunities', 'anomaly insights'],
-      contextKeywords: ['unusual patterns', 'biggest opportunities', 'business opportunities'],
-      avoidTerms: [],
-      weight: 1.0
+      primaryKeywords: ['anomaly', 'anomalies', 'statistical outliers', 'unusual patterns', 'business opportunities'],
+      contextKeywords: ['market performance', 'unusual patterns', 'biggest opportunities', 'statistical outliers in'],
+      avoidTerms: ['unique characteristics', 'investigation'],
+      weight: 1.2
     },
     '/dimensionality-insights': {
       primaryKeywords: ['factors explain', 'variation', 'variance', 'dimensionality'],
@@ -755,10 +749,10 @@ export class EnhancedQueryAnalyzer {
       weight: 1.0
     },
     '/consensus-analysis': {
-      primaryKeywords: ['consensus', 'models agree', 'all models', 'confident'],
-      contextKeywords: ['where do all models agree', 'how confident', 'all our models'],
-      avoidTerms: [],
-      weight: 1.0
+      primaryKeywords: ['consensus', 'models agree', 'all models agree', 'all our models'],
+      contextKeywords: ['where do all models agree', 'all our ai models', 'models agree on'],
+      avoidTerms: ['likely to grow', 'forecast'],
+      weight: 1.3
     }
   };
 
