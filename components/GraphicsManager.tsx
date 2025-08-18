@@ -40,7 +40,7 @@ const GraphicsManager = ({ view }: GraphicsManagerProps): null => {
           
           // Force a refresh of the graphics layer
           if (graphicsLayerRef.current.graphics.length > 0) {
-            graphicsLayerRef.current.refresh();
+            // Graphics layer doesn't have a refresh method, visibility should be sufficient
           }
         }
       };

@@ -95,6 +95,8 @@ export interface UnifiedAnalysisWorkflowProps {
   enableChat?: boolean;
   defaultAnalysisType?: 'query' | 'infographic' | 'comprehensive';
   setFormattedLegendData?: React.Dispatch<React.SetStateAction<any>>;
+  selectedHotspot?: import('@/components/map/SampleHotspots').SampleHotspot | null;
+  onHotspotProcessed?: () => void;
 }
 
 type WorkflowStep = 'area' | 'buffer' | 'analysis' | 'results';
@@ -114,7 +116,9 @@ export default function UnifiedAnalysisWorkflow({
   onExport,
   enableChat = true,
   defaultAnalysisType = 'query',
-  setFormattedLegendData
+  setFormattedLegendData,
+  selectedHotspot,
+  onHotspotProcessed
 }: UnifiedAnalysisWorkflowProps) {
   // State management
   const [workflowState, setWorkflowState] = useState<WorkflowState>({
@@ -136,6 +140,50 @@ export default function UnifiedAnalysisWorkflow({
   
   // Abort controller for cancelling ongoing analysis
   const abortControllerRef = useRef<AbortController | null>(null);
+  
+  // Handle selected hotspot from sample areas
+  useEffect(() => {
+    if (selectedHotspot) {
+      console.log('[UnifiedAnalysisWorkflow] Processing selected hotspot:', selectedHotspot);
+      
+      // Convert hotspot coordinates to point geometry
+      const hotspotPoint = {
+        type: 'point',
+        longitude: selectedHotspot.coordinates[0],
+        latitude: selectedHotspot.coordinates[1],
+        spatialReference: { wkid: 4326 }
+      } as __esri.Point;
+      
+      // Create area selection for the hotspot
+      const hotspotAreaSelection: AreaSelection = {
+        geometry: hotspotPoint,
+        displayName: selectedHotspot.name,
+        method: 'search',
+        metadata: {
+          source: `sample-hotspot-${selectedHotspot.type}-${selectedHotspot.id}`
+        }
+      };
+      
+      // Update workflow state with the hotspot area and move to buffer step
+      setWorkflowState(prev => ({
+        ...prev,
+        areaSelection: hotspotAreaSelection,
+        currentStep: 'buffer',
+        error: undefined
+      }));
+      
+      // Pre-populate query based on hotspot type and sample query
+      setSelectedQuery(selectedHotspot.sampleQuery);
+      
+      // Auto-set buffer distance for demonstration
+      setBufferDistance('5');
+      setBufferUnit('miles');
+      setBufferType('radius');
+      
+      // Notify parent that hotspot has been processed
+      onHotspotProcessed?.();
+    }
+  }, [selectedHotspot, onHotspotProcessed]);
   
   // Stop analysis function
   const stopAnalysis = useCallback(() => {

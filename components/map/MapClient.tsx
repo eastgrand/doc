@@ -1,12 +1,13 @@
 // MapClient.tsx
 'use client';
 
-import React, { useEffect, useRef, memo, useCallback } from 'react';
+import React, { useEffect, useRef, memo, useCallback, useState } from 'react';
 import { loadArcGISModules } from '@/lib/arcgis-imports';
 import { LegendType } from '@/types/legend';
 import { LegendItem } from '@/components/MapLegend';
 import { MAP_CONSTRAINTS, DATA_EXTENT, applyMapConstraints } from '@/config/mapConstraints';
 import { useTheme } from '@/components/theme/ThemeProvider';
+import SampleHotspots, { FLORIDA_DEFAULT_VIEW, SampleHotspot } from './SampleHotspots';
 
 // Legend props interface
 
@@ -37,6 +38,8 @@ interface MapClientProps {
   sidebarWidth: number;
   showLabels?: boolean;
   legend?: MapLegendProps;
+  onSampleHotspotClick?: (hotspot: SampleHotspot) => void;
+  showSampleHotspots?: boolean;
 }
 
 // Simple Legend component
@@ -297,7 +300,9 @@ const MapClient = memo(({
   onError, 
   sidebarWidth, 
   showLabels = false,
-  legend
+  legend,
+  onSampleHotspotClick,
+  showSampleHotspots = true
 }: MapClientProps) => {
   // Use light theme as default fallback
   let theme = 'light';
@@ -312,6 +317,7 @@ const MapClient = memo(({
   const viewRef = useRef<__esri.MapView | null>(null);
   const isInitialized = useRef(false);
   const highlightRef = useRef<__esri.Handle | null>(null);
+  const [showHotspots, setShowHotspots] = useState(showSampleHotspots);
 
   // Feature interaction handlers
   const handleFeatureClick = useCallback(async (featureId: string) => {
@@ -369,8 +375,8 @@ const MapClient = memo(({
         const view = new MapView({
           container: mapRef.current,
           map: map,
-          zoom: 10,
-          center: [-81.6557, 30.3322], // Jacksonville, FL coordinates
+          zoom: FLORIDA_DEFAULT_VIEW.zoom,
+          center: FLORIDA_DEFAULT_VIEW.center,
           ui: {
             components: []
           }
@@ -500,9 +506,38 @@ const MapClient = memo(({
     });*/
   }, [legend]);
 
+  // Handle hotspot click
+  const handleHotspotClick = useCallback((hotspot: SampleHotspot) => {
+    console.log('[MapClient] Sample hotspot clicked:', hotspot);
+    
+    // Zoom to the hotspot
+    if (viewRef.current) {
+      viewRef.current.goTo({
+        center: hotspot.coordinates,
+        zoom: 12
+      }, {
+        duration: 1500,
+        easing: 'ease-in-out'
+      });
+    }
+
+    // Hide hotspots after selection
+    setShowHotspots(false);
+    
+    // Notify parent component
+    onSampleHotspotClick?.(hotspot);
+  }, [onSampleHotspotClick]);
+
   return (
     <div className="relative w-full h-full">
       <div ref={mapRef} className="w-full h-full" />
+      {viewRef.current && showHotspots && (
+        <SampleHotspots 
+          view={viewRef.current}
+          onHotspotClick={handleHotspotClick}
+          showWelcomeOverlay={true}
+        />
+      )}
       <MapLegend 
         {...legend} 
         onFeatureClick={handleFeatureClick}

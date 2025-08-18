@@ -2,16 +2,17 @@
 
 import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
+import EnhancedAppLoader from '@/components/EnhancedAppLoader'
 
 // Test dynamic import with a simple component first
 const MapPageClient = dynamic(() => import('@/components/MapPageClient'), {
   ssr: false,
-  loading: () => <div className="h-screen w-full flex items-center justify-center">Loading Map...</div>,
+  loading: () => <EnhancedAppLoader />,
 })
 
 export default function MapPage() {
   return (
-      <Suspense fallback={<div className="h-screen w-full flex items-center justify-center">Loading...</div>}>
+      <Suspense fallback={<EnhancedAppLoader />}>
         <MapPageClient />
       </Suspense>
   )

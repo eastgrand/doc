@@ -14,6 +14,7 @@ import CustomZoom from './CustomZoom';
 import { LegendItem } from '@/components/MapLegend';
 import { LegendType } from '@/types/legend';
 import ThemeSwitcher from '@/components/theme/ThemeSwitcher';
+import { SampleHotspot } from '@/components/map/SampleHotspots';
 
 console.log('[MAP_APP] MapApp component function body executing');
 
@@ -25,7 +26,7 @@ const ResizableSidebar = dynamic(() => import('@/components/ResizableSidebar'), 
   ssr: false 
 });
 
-const DynamicAITab = dynamic(() => import('@/components/tabs/AITab'), { 
+const DynamicUnifiedAnalysis = dynamic(() => import('@/components/unified-analysis/UnifiedAnalysisWorkflow'), { 
   ssr: false 
 });
 
@@ -74,6 +75,7 @@ export const MapApp: React.FC = memo(() => {
   const [layerStates, setLayerStates] = useState<{[key: string]: any}>({});
   const [formattedLegendData, setFormattedLegendData] = useState<any>(null);
   const [visualizationResult, setVisualizationResult] = useState<any>(null);
+  const [selectedHotspot, setSelectedHotspot] = useState<SampleHotspot | null>(null);
 
 
   // Sync formattedLegendData with mapLegend state
@@ -192,6 +194,12 @@ export const MapApp: React.FC = memo(() => {
     console.log('Correlation analysis requested:', { layer, primaryField, comparisonField });
   }, []);
 
+  // Handle sample hotspot clicks
+  const handleSampleHotspotClick = useCallback((hotspot: SampleHotspot) => {
+    console.log('[MapApp] Sample hotspot selected:', hotspot);
+    setSelectedHotspot(hotspot);
+  }, []);
+
   // Memoize static configurations
   const memoizedVisibleWidgets = useMemo(() => VISIBLE_WIDGETS, []);
 
@@ -236,6 +244,7 @@ export const MapApp: React.FC = memo(() => {
             sidebarWidth={sidebarWidth}
             showLabels={showLabels}
             legend={mapLegend}
+            onSampleHotspotClick={handleSampleHotspotClick}
           />
           
           {/* Theme Switcher - positioned where basemap gallery used to be */}
@@ -296,15 +305,14 @@ export const MapApp: React.FC = memo(() => {
           onLayerStatesChange={setLayerStates}
             chatInterface={
             mapView ? (
-              <DynamicAITab
-                key="main-ai-tab"
+              <DynamicUnifiedAnalysis
+                key="main-unified-analysis"
                 view={mapView}
-                layerStates={layerStates}
-                onLayerStateChange={handleLayerStateChange}
                 setFormattedLegendData={setFormattedLegendData}
-                setVisualizationResult={setVisualizationResult}
-                mapViewRefValue={mapView}
-                onVisualizationCreated={handleVisualizationCreated}
+                enableChat={true}
+                defaultAnalysisType="comprehensive"
+                selectedHotspot={selectedHotspot}
+                onHotspotProcessed={() => setSelectedHotspot(null)}
               />
             ) : null
             }
