@@ -16,7 +16,7 @@ const BufferTools = memo(({
 }) => {
   return (
     <TooltipProvider>
-      <div className="w-full bg-gray-100 rounded-lg p-1">
+      <div className="w-full bg-muted rounded-lg p-1">
         <div className="grid grid-cols-3 gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
@@ -24,14 +24,14 @@ const BufferTools = memo(({
                 type="button"
                 className={`h-12 w-full rounded-md flex items-center justify-center transition-colors
                   ${bufferType === 'radius' 
-                    ? 'bg-blue-50 text-blue-600 border border-blue-200 shadow-sm' 
-                    : 'bg-white hover:bg-gray-50 border border-gray-200'}`}
+                    ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm' 
+                    : 'bg-background hover:bg-muted/50 border border-border'}`}
                 onClick={() => handleBufferTypeChange('radius')}
               >
                 <Target className="w-5 h-5" />
               </button>
             </TooltipTrigger>
-            <TooltipContent side="bottom" align="center" className="bg-black text-white rounded px-3 py-1.5 text-sm">
+            <TooltipContent side="bottom" align="center">
               Radius Buffer
             </TooltipContent>
           </Tooltip>
@@ -42,14 +42,14 @@ const BufferTools = memo(({
                 type="button"
                 className={`h-12 w-full rounded-md flex items-center justify-center transition-colors
                   ${bufferType === 'drivetime' 
-                    ? 'bg-green-50 text-green-600 border border-green-200 shadow-sm' 
-                    : 'bg-white hover:bg-gray-50 border border-gray-200'}`}
+                    ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm' 
+                    : 'bg-background hover:bg-muted/50 border border-border'}`}
                 onClick={() => handleBufferTypeChange('drivetime')}
               >
                 <Car className="w-5 h-5" />
               </button>
             </TooltipTrigger>
-            <TooltipContent side="bottom" align="center" className="bg-black text-white rounded px-3 py-1.5 text-sm">
+            <TooltipContent side="bottom" align="center">
               Drive Time Buffer
             </TooltipContent>
           </Tooltip>
@@ -60,14 +60,14 @@ const BufferTools = memo(({
                 type="button"
                 className={`h-12 w-full rounded-md flex items-center justify-center transition-colors
                   ${bufferType === 'walktime' 
-                    ? 'bg-orange-50 text-orange-600 border border-orange-200 shadow-sm' 
-                    : 'bg-white hover:bg-gray-50 border border-gray-200'}`}
+                    ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm' 
+                    : 'bg-background hover:bg-muted/50 border border-border'}`}
                 onClick={() => handleBufferTypeChange('walktime')}
               >
                 <PersonStanding className="w-5 h-5" />
               </button>
             </TooltipTrigger>
-            <TooltipContent side="bottom" align="center" className="bg-black text-white rounded px-3 py-1.5 text-sm">
+            <TooltipContent side="bottom" align="center">
               Walk Time Buffer
             </TooltipContent>
           </Tooltip>

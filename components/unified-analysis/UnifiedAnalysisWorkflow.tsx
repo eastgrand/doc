@@ -73,6 +73,10 @@ import Circle from "@arcgis/core/geometry/Circle";
 import Graphic from "@arcgis/core/Graphic";
 import { SimpleFillSymbol, SimpleLineSymbol } from '@arcgis/core/symbols';
 import Polygon from '@arcgis/core/geometry/Polygon';
+import * as serviceArea from "@arcgis/core/rest/serviceArea";
+import ServiceAreaParameters from "@arcgis/core/rest/support/ServiceAreaParameters";
+import FeatureSet from "@arcgis/core/rest/support/FeatureSet";
+import esriConfig from "@arcgis/core/config";
 import { SpatialFilterService } from '@/lib/spatial/SpatialFilterService';
 
 // Persona icons map
@@ -719,9 +723,85 @@ export default function UnifiedAnalysisWorkflow({
       } else if (bufferType === 'drivetime' || bufferType === 'walktime') {
         // Service area buffering - only works with points
         if (geometry.type === 'point') {
-          // This would integrate with service area API
-          const travelMode = bufferType === 'drivetime' ? 'driving' : 'walking';
-          throw new Error(`${travelMode} time buffering not yet implemented`);
+          console.log('[Service Area] Starting service area analysis for', bufferType);
+          
+          let timeInMinutes = distance;
+          if (unit === 'miles' || unit === 'kilometers') {
+            const speedInKmh = bufferType === 'drivetime' ? 50 : 5;
+            const distanceInKm = unit === 'miles' 
+              ? distance * 1.60934 
+              : distance;
+            timeInMinutes = (distanceInKm / speedInKmh) * 60;
+          }
+
+          const params = new ServiceAreaParameters({
+            facilities: new FeatureSet({
+              features: [{
+                geometry: geometry,
+                attributes: {
+                  Name: "Location",
+                  [bufferType === "drivetime" ? "TravelTime" : "WalkTime"]: timeInMinutes
+                }
+              }]
+            }),
+            defaultBreaks: [timeInMinutes],
+            travelDirection: "from-facility",
+            outputGeometryPrecision: 1,
+            trimOuterPolygon: true,
+            outSpatialReference: view.spatialReference,
+            travelMode: {
+              attributeParameterValues: [],
+              description: "Results are calculated using the street network",
+              impedanceAttributeName: bufferType === "drivetime" ? "TravelTime" : "WalkTime",
+              name: bufferType === "drivetime" ? "Driving Time" : "Walking Distance",
+              type: bufferType === "drivetime" ? "automobile" : "walk",
+              useHierarchy: bufferType === "drivetime",
+              restrictionAttributeNames: [],
+              simplificationTolerance: 2,
+              timeAttributeName: bufferType === "drivetime" ? "TravelTime" : "WalkTime"
+            }
+          });
+
+          const serviceUrl = "https://route-api.arcgis.com/arcgis/rest/services/World/ServiceAreas/NAServer/ServiceArea_World/solveServiceArea";
+          
+          try {
+            const result = await serviceArea.solve(serviceUrl, params);
+            
+            if (result?.serviceAreaPolygons?.features && result.serviceAreaPolygons.features.length > 0) {
+              const featureGeometry = result.serviceAreaPolygons.features[0].geometry;
+              if (featureGeometry) {
+                bufferedGeometry = featureGeometry as __esri.Geometry;
+                console.log('[Service Area] Successfully created service area');
+              } else {
+                throw new Error("Invalid geometry in service area result");
+              }
+            } else {
+              throw new Error("No service area returned");
+            }
+          } catch (error) {
+            console.warn('[Service Area] Service area failed, using approximation:', error);
+            
+            // Enhanced fallback with realistic approximation
+            let radiusInMeters = distance;
+            
+            if (bufferType === "drivetime") {
+              // Realistic driving speed: 25 mph average = 0.417 miles per minute
+              radiusInMeters = distance * 0.417 * 1609.34;
+            } else if (bufferType === "walktime") {
+              // Walking speed: 2.5 mph = 0.042 miles per minute  
+              radiusInMeters = distance * 0.042 * 1609.34;
+            }
+            
+            // Create approximation buffer
+            bufferedGeometry = geometryEngine.geodesicBuffer(
+              geometry as __esri.Point, 
+              radiusInMeters, 
+              'meters', 
+              false
+            ) as __esri.Polygon;
+            
+            console.log('[Service Area] Using approximation buffer with radius:', radiusInMeters, 'meters');
+          }
         } else {
           throw new Error('Travel time buffering only works with point geometries');
         }
@@ -1037,7 +1117,7 @@ export default function UnifiedAnalysisWorkflow({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
         {/* quickstartIQ */}
         <Card 
-          className={`cursor-pointer transition-all h-32 ${
+          className={`cursor-pointer transition-all h-32 animate-entrance ${
             workflowState.analysisType === 'query' 
               ? 'border-green-500 bg-green-50 shadow-lg' 
               : 'hover:shadow-lg'
@@ -1068,7 +1148,7 @@ export default function UnifiedAnalysisWorkflow({
 
         {/* infographIQ */}
         <Card 
-          className={`transition-all h-32 ${
+          className={`transition-all h-32 animate-entrance ${
             isProjectArea 
               ? 'opacity-50 cursor-not-allowed theme-bg-secondary' 
               : workflowState.analysisType === 'infographic' 
@@ -1326,7 +1406,14 @@ export default function UnifiedAnalysisWorkflow({
                     handleAnalysisTypeSelected(workflowState.analysisType!);
                   }
                 }}
-                className="w-full h-12"
+                className={`w-full h-12 ${
+                  !workflowState.isProcessing && 
+                  ((workflowState.analysisType === 'query' && selectedQuery.trim()) ||
+                   (workflowState.analysisType === 'infographic' && infographicsDialog.selectedReport) ||
+                   (workflowState.analysisType === 'comprehensive'))
+                    ? 'firefly-glow-on-hover' 
+                    : ''
+                }`}
                 disabled={workflowState.isProcessing || 
                   (workflowState.analysisType === 'query' && !selectedQuery.trim()) ||
                   (workflowState.analysisType === 'infographic' && !infographicsDialog.selectedReport)}
@@ -1513,7 +1600,7 @@ export default function UnifiedAnalysisWorkflow({
     const { analysisResult, metadata } = workflowState.analysisResult;
 
     return (
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full animate-entrance">
         {/* Results content with Analysis/Chat, Data Table, and Insights */}
         <div className="flex-1 flex flex-col min-h-0">
           <Tabs value={activeResultsTab} onValueChange={setActiveResultsTab} className="flex-1 flex flex-col min-h-0">
@@ -1532,7 +1619,7 @@ export default function UnifiedAnalysisWorkflow({
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="analysis" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-hidden">
+            <TabsContent value="analysis" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-hidden animate-entrance">
               {/* Analysis and Chat Interface */}
               <ChatInterface 
                 analysisResult={workflowState.analysisResult}
@@ -1545,7 +1632,7 @@ export default function UnifiedAnalysisWorkflow({
               />
             </TabsContent>
 
-            <TabsContent value="data" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-y-auto">
+            <TabsContent value="data" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-y-auto animate-entrance">
               {/* Data Table */}
               <UnifiedDataTable 
                 analysisResult={analysisResult}
@@ -1553,7 +1640,7 @@ export default function UnifiedAnalysisWorkflow({
               />
             </TabsContent>
 
-            <TabsContent value="chart" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-y-auto">
+            <TabsContent value="chart" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-y-auto animate-entrance">
               {/* Feature Importance Chart */}
               <UnifiedInsightsChart 
                 analysisResult={analysisResult}
