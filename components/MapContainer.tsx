@@ -186,7 +186,7 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
 
   return (
     <div className="relative w-full h-full">
-      {layerConfig && showLoadingModal && <LoadingModal progress={calculatedProgress} show={showLoadingModal} />}
+      {showLoadingModal && <LoadingModal progress={calculatedProgress} show={showLoadingModal} />}
 
       {view && layerConfig && (
         <div className="absolute top-4 right-4 w-80">

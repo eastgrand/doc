@@ -34,14 +34,8 @@ export const ANALYSIS_CATEGORIES = {
   'Scenario Analysis': [
     'What if H&R Block changes its pricing strategy - which markets would be most resilient?'
   ],
-  'Trend Analysis': [
-    'Show me markets with the strongest growth trends for online tax preparation'
-  ],
   'Feature Interactions': [
     'Which markets have the strongest interactions between demographics and tax service usage?'
-  ],
-  'Predictive Modeling': [
-    'Which markets are most likely to grow for H&R Block in the next year?'
   ],
   'Segment Profiling': [
     'Which markets have the clearest customer segmentation profiles for tax services?'
@@ -82,6 +76,12 @@ export const ANALYSIS_CATEGORIES = {
 };
 
 export const DISABLED_ANALYSIS_CATEGORIES = {
+  'Trend Analysis': [
+    'Show me markets with the strongest growth trends for online tax preparation'
+  ],
+  'Predictive Modeling': [
+    'Which markets are most likely to grow for H&R Block in the next year?'
+  ],
   'Nonlinear Analysis': [
     'What complex patterns exist in tax service data that linear models miss?'
   ],

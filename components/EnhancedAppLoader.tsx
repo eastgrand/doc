@@ -202,17 +202,8 @@ export default function EnhancedAppLoader({
     };
   }, [particles]);
 
-  // Handle minimum duration and exit animation
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsExiting(true);
-      setTimeout(() => {
-        onLoadComplete?.();
-      }, 500); // Allow exit animation to complete
-    }, minimumDuration);
-
-    return () => clearTimeout(timer);
-  }, [minimumDuration, onLoadComplete]);
+  // Don't auto-hide - let the parent component control when to hide
+  // The loader should stay visible until the map and layers are fully loaded
 
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-background transition-opacity duration-500 ${
