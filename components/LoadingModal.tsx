@@ -82,8 +82,8 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
         id: i,
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
-        vx: (Math.random() - 0.5) * 2, // Increased velocity
-        vy: (Math.random() - 0.5) * 2, // Increased velocity
+        vx: (Math.random() - 0.5) * 5, // Much faster velocity
+        vy: (Math.random() - 0.5) * 5, // Much faster velocity
         size: Math.random() * 3 + 1,
         color: FIREFLY_COLORS[Math.floor(Math.random() * FIREFLY_COLORS.length)],
         opacity: 0, // Start with 0 opacity for fade in
@@ -203,7 +203,7 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
 
         // Fade in effect (gradually increase opacity to target)
         if (particle.opacity < particle.targetOpacity) {
-          particle.opacity = Math.min(particle.opacity + 0.01, particle.targetOpacity);
+          particle.opacity = Math.min(particle.opacity + 0.02, particle.targetOpacity); // Faster fade-in
         }
 
         // Pulse effect for some particles

@@ -77,6 +77,7 @@ export const MapApp: React.FC = memo(() => {
   const [formattedLegendData, setFormattedLegendData] = useState<any>(null);
   const [visualizationResult, setVisualizationResult] = useState<any>(null);
   const [selectedHotspot, setSelectedHotspot] = useState<SampleHotspot | null>(null);
+  const [mapContainerReady, setMapContainerReady] = useState(false);
 
 
   // Sync formattedLegendData with mapLegend state
@@ -201,18 +202,25 @@ export const MapApp: React.FC = memo(() => {
     setSelectedHotspot(hotspot);
   }, []);
 
+  // Handle MapContainer ready state
+  const handleMapContainerReady = useCallback(() => {
+    setMapContainerReady(true);
+  }, []);
+
   // Memoize static configurations
   const memoizedVisibleWidgets = useMemo(() => VISIBLE_WIDGETS, []);
 
   console.log('[MapApp] Render state:', { mounted, mapView: !!mapView, activeWidget });
 
   if (!mounted) {
-    // Show LoadingModal immediately while component mounts
     return <LoadingModal progress={0} show={true} />;
   }
 
   return (
-    <>      
+    <>
+      {/* Show LoadingModal until MapContainer takes over */}
+      {(!mapView || !mapContainerReady) && <LoadingModal progress={0} show={true} />}
+      
       <div className="fixed inset-0 flex">
         {/* Left Toolbar */}
         <div className="w-16 flex flex-col z-[9999]" style={{ 
@@ -266,6 +274,7 @@ export const MapApp: React.FC = memo(() => {
             <MapContainer
               view={mapView}
               analysisConfig={{ layers: {} }}
+              onReady={handleMapContainerReady}
             />
           )}
           
@@ -296,16 +305,16 @@ export const MapApp: React.FC = memo(() => {
         </div>
 
         {/* Right Sidebar */}
-          <ResizableSidebar
-            key="main-sidebar"
-            view={mapView}
-            layerStates={layerStates}
-            defaultWidth={sidebarWidth}
-            minWidth={300}
-            maxWidth={800}
-            onWidthChange={setSidebarWidth}
+        <ResizableSidebar
+          key="main-sidebar"
+          view={mapView}
+          layerStates={layerStates}
+          defaultWidth={sidebarWidth}
+          minWidth={300}
+          maxWidth={800}
+          onWidthChange={setSidebarWidth}
           onLayerStatesChange={setLayerStates}
-            chatInterface={
+          chatInterface={
             mapView ? (
               <DynamicUnifiedAnalysis
                 key="main-unified-analysis"
@@ -317,8 +326,8 @@ export const MapApp: React.FC = memo(() => {
                 onHotspotProcessed={() => setSelectedHotspot(null)}
               />
             ) : null
-            }
-          />
+          }
+        />
       </div>
     </>
   );

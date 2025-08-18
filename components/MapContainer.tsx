@@ -18,13 +18,14 @@ interface AnalysisConfig {
 interface MapContainerProps {
   view: __esri.MapView;
   analysisConfig: AnalysisConfig;
+  onReady?: () => void;
 }
 
-const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) => {
+const MapContainer = React.memo(({ view, analysisConfig, onReady }: MapContainerProps) => {
   const layerControllerRef = useRef<LayerControllerRef>(null);
   const [layerConfig, setLayerConfig] = useState<ProjectLayerConfig | null>(null);
   
-  // State for loading modal
+  // State for loading modal - initialize to show immediately
   const [loadingProgress, setLoadingProgress] = useState({ loaded: 0, total: 0 });
   const [showLoadingModal, setShowLoadingModal] = useState(true);
   const [layerControllerInitialized, setLayerControllerInitialized] = useState(false);
@@ -53,6 +54,11 @@ const MapContainer = React.memo(({ view, analysisConfig }: MapContainerProps) =>
     setShowLoadingModal(false);
     initializationCompleted.current = true; // Mark as completed
   }, []);
+
+  // Signal ready immediately when component mounts
+  useEffect(() => {
+    onReady?.();
+  }, [onReady]);
 
   // Initialize layer config - only run once per unique view
   useEffect(() => {
