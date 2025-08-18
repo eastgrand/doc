@@ -175,12 +175,14 @@ export default function SampleHotspots({
         view.on("click", (event) => {
           view.hitTest(event).then((response) => {
             const hotspotHit = response.results.find(
-              result => result.graphic?.attributes?.type === 'sample-hotspot'
+              result => result.type === 'graphic' && 
+                       (result as __esri.GraphicHit).graphic?.attributes?.type === 'sample-hotspot'
             );
 
-            if (hotspotHit && hotspotHit.graphic) {
+            if (hotspotHit && hotspotHit.type === 'graphic') {
+              const graphicHit = hotspotHit as __esri.GraphicHit;
               const hotspotData = FLORIDA_HOTSPOTS.find(
-                h => h.id === hotspotHit.graphic.attributes.id
+                h => h.id === graphicHit.graphic.attributes.id
               );
               if (hotspotData && onHotspotClick) {
                 onHotspotClick(hotspotData);
@@ -194,15 +196,21 @@ export default function SampleHotspots({
         view.on("pointer-move", (event) => {
           view.hitTest(event).then((response) => {
             const hotspotHit = response.results.find(
-              result => result.graphic?.attributes?.type === 'sample-hotspot'
+              result => result.type === 'graphic' && 
+                       (result as __esri.GraphicHit).graphic?.attributes?.type === 'sample-hotspot'
             );
 
-            if (hotspotHit && hotspotHit.graphic) {
-              setHoveredHotspot(hotspotHit.graphic.attributes.id);
-              view.container.style.cursor = 'pointer';
+            if (hotspotHit && hotspotHit.type === 'graphic') {
+              const graphicHit = hotspotHit as __esri.GraphicHit;
+              setHoveredHotspot(graphicHit.graphic.attributes.id);
+              if (view.container) {
+                view.container.style.cursor = 'pointer';
+              }
             } else {
               setHoveredHotspot(null);
-              view.container.style.cursor = 'default';
+              if (view.container) {
+                view.container.style.cursor = 'default';
+              }
             }
           });
         });

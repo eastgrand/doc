@@ -1837,18 +1837,10 @@ export default function InfographicsTab({
             console.log(`[FetchReports] Setting reportTemplate state to: ${defaultReport.id}`);
             setReportTemplate(defaultReport.id);
           } else {
-            // Fallback to finding by title (but this should not happen now)
-            // No fallback needed since we try preferred defaults above
-            if (defaultReport) {
-              console.log(`[FetchReports] ✅ Found desired default by title: "${defaultReport.title}" (ID: ${defaultReport.id})`);
-              console.log(`[FetchReports] Setting reportTemplate state to: ${defaultReport.id}`);
-              setReportTemplate(defaultReport.id);
-            } else {
-              console.log(`[FetchReports] ❌ No preferred defaults found`);
-              if (finalReports.length > 0) {
-                console.log(`[FetchReports] Setting default report template to the first available: '${finalReports[0].title}' (ID: ${finalReports[0].id})`);
-                setReportTemplate(finalReports[0].id); // Fallback to the first report
-              }
+            console.log(`[FetchReports] ❌ No preferred defaults found`);
+            if (finalReports.length > 0) {
+              console.log(`[FetchReports] Setting default report template to the first available: '${finalReports[0].title}' (ID: ${finalReports[0].id})`);
+              setReportTemplate(finalReports[0].id); // Fallback to the first report
             }
           }
         } else {
