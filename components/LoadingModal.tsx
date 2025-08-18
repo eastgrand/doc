@@ -16,6 +16,7 @@ interface Particle {
   size: number;
   color: string;
   opacity: number;
+  targetOpacity: number;
   pulse: boolean;
 }
 
@@ -76,15 +77,17 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
     const newParticles: Particle[] = [];
 
     for (let i = 0; i < particleCount; i++) {
+      const targetOpacity = Math.random() * 0.5 + 0.3;
       newParticles.push({
         id: i,
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
+        vx: (Math.random() - 0.5) * 2, // Increased velocity
+        vy: (Math.random() - 0.5) * 2, // Increased velocity
         size: Math.random() * 3 + 1,
         color: FIREFLY_COLORS[Math.floor(Math.random() * FIREFLY_COLORS.length)],
-        opacity: Math.random() * 0.5 + 0.3,
+        opacity: 0, // Start with 0 opacity for fade in
+        targetOpacity: targetOpacity,
         pulse: Math.random() > 0.7,
       });
     }
@@ -150,15 +153,17 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
       const newParticles: Particle[] = [];
 
       for (let i = 0; i < particleCount; i++) {
+        const targetOpacity = Math.random() * 0.5 + 0.3;
         newParticles.push({
           id: i,
           x: Math.random() * window.innerWidth,
           y: Math.random() * window.innerHeight,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
+          vx: (Math.random() - 0.5) * 2, // Increased velocity
+          vy: (Math.random() - 0.5) * 2, // Increased velocity
           size: Math.random() * 3 + 1,
           color: FIREFLY_COLORS[Math.floor(Math.random() * FIREFLY_COLORS.length)],
-          opacity: Math.random() * 0.5 + 0.3,
+          opacity: 0, // Start with 0 opacity for fade in
+          targetOpacity: targetOpacity,
           pulse: Math.random() > 0.7,
         });
       }
@@ -196,9 +201,14 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
         if (particle.y < 0) particle.y = canvas.height;
         if (particle.y > canvas.height) particle.y = 0;
 
+        // Fade in effect (gradually increase opacity to target)
+        if (particle.opacity < particle.targetOpacity) {
+          particle.opacity = Math.min(particle.opacity + 0.01, particle.targetOpacity);
+        }
+
         // Pulse effect for some particles
         let opacity = particle.opacity;
-        if (particle.pulse) {
+        if (particle.pulse && particle.opacity > 0.1) {
           opacity = particle.opacity + Math.sin(Date.now() * 0.001) * 0.2;
         }
 

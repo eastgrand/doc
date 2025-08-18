@@ -15,6 +15,7 @@ import { LegendItem } from '@/components/MapLegend';
 import { LegendType } from '@/types/legend';
 import ThemeSwitcher from '@/components/theme/ThemeSwitcher';
 import { SampleHotspot } from '@/components/map/SampleHotspots';
+import { LoadingModal } from '@/components/LoadingModal';
 
 console.log('[MAP_APP] MapApp component function body executing');
 
@@ -206,7 +207,8 @@ export const MapApp: React.FC = memo(() => {
   console.log('[MapApp] Render state:', { mounted, mapView: !!mapView, activeWidget });
 
   if (!mounted) {
-    return <div />;
+    // Show LoadingModal immediately while component mounts
+    return <LoadingModal progress={0} show={true} />;
   }
 
   return (
