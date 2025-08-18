@@ -1679,10 +1679,50 @@ export default function InfographicsTab({
 
         console.log(`[FetchReports] Unique items after deduplication: ${uniqueItems.length}`);
 
-        // Switch to United States reports (change from previous Canada-only filter)
+        // Filter for United States reports only - explicitly exclude Canada
         const filteredItems = uniqueItems.filter((item: any) => {
-          const countryProp = item.properties?.countries || item.properties?.country || item.properties?.Country;
-          return countryProp === 'US' || countryProp === 'USA' || (Array.isArray(countryProp) && countryProp.includes('US'));
+          // Check multiple possible country field locations
+          const countryProp = item.properties?.countries || item.properties?.country || item.properties?.Country ||
+                             item.countries || item.country || item.Country;
+          const titleLower = (item.title || '').toLowerCase();
+          const descLower = (item.description || '').toLowerCase();
+          const tagsLower = (item.tags || []).join(' ').toLowerCase();
+          const snippetLower = (item.snippet || '').toLowerCase();
+          
+          // Check if this is a Canada item (exclude these)
+          const isCanada = 
+            // Country field checks
+            countryProp === 'CA' || countryProp === 'CAN' || countryProp === 'Canada' || countryProp === 'canada' ||
+            (Array.isArray(countryProp) && (countryProp.includes('CA') || countryProp.includes('CAN') || 
+             countryProp.includes('Canada') || countryProp.includes('canada'))) ||
+            // Text content checks
+            titleLower.includes('canada') || descLower.includes('canada') || 
+            tagsLower.includes('canada') || snippetLower.includes('canada') ||
+            // Additional checks for Canadian postal codes or provinces
+            /\b[A-Z]\d[A-Z]\s*\d[A-Z]\d\b/.test(item.title || '') || // Canadian postal code pattern
+            /(ontario|quebec|british columbia|alberta|manitoba|saskatchewan|nova scotia|new brunswick|newfoundland|prince edward island|yukon|northwest territories|nunavut)/i.test(`${titleLower} ${descLower} ${tagsLower}`)
+          
+          if (isCanada) {
+            console.log(`[FetchReports] Excluding Canada item: "${item.title}"`);
+            return false;
+          }
+          
+          // Check if this is a US item (include these)
+          const isUS = 
+            countryProp === 'US' || countryProp === 'USA' || countryProp === 'United States' ||
+            (Array.isArray(countryProp) && (countryProp.includes('US') || countryProp.includes('USA') || 
+             countryProp.includes('United States'))) ||
+            // If no country specified but contains US indicators
+            (!countryProp && (titleLower.includes('united states') || titleLower.includes('usa') || 
+             /\b\d{5}(-\d{4})?\b/.test(item.title || ''))); // US ZIP code pattern
+          
+          if (isUS) {
+            console.log(`[FetchReports] Including US item: "${item.title}"`);
+          } else {
+            console.log(`[FetchReports] Excluding non-US item: "${item.title}" (country: ${countryProp})`);
+          }
+          
+          return isUS;
         });
         console.log(`[FetchReports] Filtered US items count: ${filteredItems.length}`);
         if (filteredItems.length > 0) {
@@ -1718,7 +1758,7 @@ export default function InfographicsTab({
           id: item.id,
           title: item.title,
           description: item.description || 'No description available',
-          thumbnail: `https://synapse54.maps.arcgis.com/sharing/rest/content/items/${item.id}/info/thumbnail/thumbnail.png?token=${token}`,
+          thumbnail: item.thumbnail || `https://synapse54.maps.arcgis.com/sharing/rest/content/items/${item.id}/info/thumbnail/thumbnail.png?token=${token}`,
           categories: assignCategories(item) // Use new categorization function
         }));
 
@@ -1737,6 +1777,7 @@ export default function InfographicsTab({
           'custom invesco (Esri 2025)',
           'Energy',
           'Energy (Esri 2024)', // Corrected casing
+          'Market Analysis for Nike', // Exclude Nike-related content for US-focused project
           'Invesco',
           'Invesco Index',
           'Invesco2',
@@ -1773,12 +1814,7 @@ export default function InfographicsTab({
             return false;
           }
           
-          // Special handling for "Market Analysis for Nike" - exclude older versions by ID
-          // Keep only the newer report with ID: 2279b8d2fc974887b15b36d0fd272980
-          if (trimmedTitle === 'Market Analysis for Nike' && report.id !== '2279b8d2fc974887b15b36d0fd272980') {
-            console.log(`[FetchReports] Excluding older "Market Analysis for Nike" report with ID: ${report.id}`);
-            return false;
-          }
+          // Nike reports are now excluded via the titlesToExclude list above
           
           return true;
         });
@@ -1786,15 +1822,15 @@ export default function InfographicsTab({
         if (finalReports.length === 0) {
           console.warn('No US reports found after filtering or all reports were excluded. Check fetch URL/data/exclusion list.');
         } else if (!reportTemplate || !finalReports.some(r => r.id === reportTemplate)) {
-          // If no template is set yet, or the current one isn't in the final list, find the new default.
-          const desiredDefaultId = '2279b8d2fc974887b15b36d0fd272980'; // Specific ID for the newer "Market Analysis for Nike"
-          const desiredDefaultTitle = 'Market Analysis for Nike';
+          // If no template is set yet, or the current one isn't in the final list, find a suitable default.
+          // Try common US-focused report templates
+          const preferredDefaults = ['State of the Community (Esri 2024)', 'Demographic Summary', 'Emergency Information'];
           
-          console.log(`[FetchReports] Looking for default report: "${desiredDefaultTitle}" (ID: ${desiredDefaultId})`);
+          console.log(`[FetchReports] Looking for default report from preferred list: ${preferredDefaults.join(', ')}`);
           console.log(`[FetchReports] Available reports:`, finalReports.map(r => `"${r.title}" (ID: ${r.id})`));
           
-          // First try to find by specific ID
-          let defaultReport = finalReports.find(r => r.id === desiredDefaultId);
+          // First try to find by preferred titles
+          let defaultReport = preferredDefaults.map(title => finalReports.find(r => r.title === title)).find(r => r);
           
           if (defaultReport) {
             console.log(`[FetchReports] ✅ Found desired default by ID: "${defaultReport.title}" (ID: ${defaultReport.id})`);
@@ -1802,13 +1838,13 @@ export default function InfographicsTab({
             setReportTemplate(defaultReport.id);
           } else {
             // Fallback to finding by title (but this should not happen now)
-            defaultReport = finalReports.find(r => r.title === desiredDefaultTitle);
+            // No fallback needed since we try preferred defaults above
             if (defaultReport) {
               console.log(`[FetchReports] ✅ Found desired default by title: "${defaultReport.title}" (ID: ${defaultReport.id})`);
               console.log(`[FetchReports] Setting reportTemplate state to: ${defaultReport.id}`);
               setReportTemplate(defaultReport.id);
             } else {
-              console.log(`[FetchReports] ❌ Neither ID nor title found for '${desiredDefaultTitle}'`);
+              console.log(`[FetchReports] ❌ No preferred defaults found`);
               if (finalReports.length > 0) {
                 console.log(`[FetchReports] Setting default report template to the first available: '${finalReports[0].title}' (ID: ${finalReports[0].id})`);
                 setReportTemplate(finalReports[0].id); // Fallback to the first report

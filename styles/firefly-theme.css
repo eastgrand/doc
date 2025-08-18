@@ -38,28 +38,28 @@
   --firefly-20: #ff8000;  /* Dark Orange */
   --firefly-neutral: #ffffff;
 
-  /* Light Mode Colors */
-  --firefly-light-1: #cc0033;   /* Darker Deep Pink */
-  --firefly-light-2: #cc0066;   /* Darker Hot Pink */
-  --firefly-light-3: #cc0099;   /* Darker Magenta */
-  --firefly-light-4: #cc00cc;   /* Darker Fuchsia */
-  --firefly-light-5: #9900cc;   /* Darker Purple */
-  --firefly-light-6: #6600cc;   /* Darker Blue Violet */
-  --firefly-light-7: #3300cc;   /* Darker Indigo */
-  --firefly-light-8: #0033cc;   /* Darker Blue */
-  --firefly-light-9: #0066cc;   /* Darker Dodger Blue */
-  --firefly-light-10: #0099cc;  /* Darker Deep Sky Blue */
-  --firefly-light-11: #00cccc;  /* Darker Cyan */
-  --firefly-light-12: #00cc99;  /* Darker Spring Green */
-  --firefly-light-13: #00cc66;  /* Darker Bright Green */
-  --firefly-light-14: #00cc33;  /* Darker Lime Green */
-  --firefly-light-15: #33cc00;  /* Darker Chartreuse */
-  --firefly-light-16: #66cc00;  /* Darker Yellow Green */
-  --firefly-light-17: #99cc00;  /* Darker Light Yellow */
-  --firefly-light-18: #cccc00;  /* Darker Yellow */
-  --firefly-light-19: #cc9900;  /* Darker Orange */
-  --firefly-light-20: #cc6600;  /* Darker Dark Orange */
-  --firefly-light-neutral: #333333;
+  /* Light Mode Colors - Muted and Professional */
+  --firefly-light-1: #b91c1c;   /* Muted Red */
+  --firefly-light-2: #be185d;   /* Muted Pink */
+  --firefly-light-3: #a21caf;   /* Muted Magenta */
+  --firefly-light-4: #9333ea;   /* Muted Purple */
+  --firefly-light-5: #7c3aed;   /* Muted Violet */
+  --firefly-light-6: #6366f1;   /* Muted Indigo */
+  --firefly-light-7: #3b82f6;   /* Muted Blue */
+  --firefly-light-8: #2563eb;   /* Muted Royal Blue */
+  --firefly-light-9: #0ea5e9;   /* Muted Sky Blue */
+  --firefly-light-10: #06b6d4;  /* Muted Cyan */
+  --firefly-light-11: #0891b2;  /* Muted Teal */
+  --firefly-light-12: #059669;  /* Muted Emerald */
+  --firefly-light-13: #16a34a;  /* Muted Green */
+  --firefly-light-14: #22c55e;  /* Muted Lime - Primary Accent */
+  --firefly-light-15: #65a30d;  /* Muted Lime Green */
+  --firefly-light-16: #84cc16;  /* Muted Yellow Green */
+  --firefly-light-17: #a3a3a3;  /* Muted Gray instead of bright yellow */
+  --firefly-light-18: #d97706;  /* Muted Amber - Warning */
+  --firefly-light-19: #ea580c;  /* Muted Orange */
+  --firefly-light-20: #dc2626;  /* Muted Red Orange */
+  --firefly-light-neutral: #374151;
 
   /* Theme Variables - Default to Dark Mode */
   --theme-bg-primary: #1a1a1a;

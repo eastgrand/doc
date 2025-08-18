@@ -403,3 +403,40 @@ div[role="dialog"] *,
   --dialog-background: white !important;
   --popover-background: white !important;
 }
+
+/* Fix Material-UI Slider handles (thumbs) */
+.MuiSlider-thumb {
+  width: 16px !important;
+  height: 16px !important;
+  background-color: #33a852 !important;
+  border: 2px solid #33a852 !important;
+  margin-top: -6px !important;
+  margin-left: -8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.MuiSlider-thumb:hover {
+  background-color: #2d9944 !important;
+  border-color: #2d9944 !important;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15) !important;
+}
+
+.MuiSlider-thumb:focus,
+.MuiSlider-thumb.Mui-focusVisible {
+  background-color: #33a852 !important;
+  border-color: #33a852 !important;
+  box-shadow: 0 0 0 8px rgba(51, 168, 82, 0.16) !important;
+}
+
+.MuiSlider-track {
+  background-color: #33a852 !important;
+  border: none !important;
+  opacity: 1 !important;
+}
+
+.MuiSlider-rail {
+  background-color: #e0e0e0 !important;
+  opacity: 1 !important;
+}

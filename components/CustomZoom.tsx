@@ -52,7 +52,7 @@ const CustomZoom: React.FC<CustomZoomProps> = ({ view, sidebarWidth }) => {
         .custom-zoom-control {
           position: absolute;
           bottom: 20px;
-          left: 80px; /* Position 20px to the right of the 60px left toolbar */
+          left: 84px; /* Position 20px to the right of the 64px left toolbar */
           display: flex;
           flex-direction: column;
           gap: 4px;

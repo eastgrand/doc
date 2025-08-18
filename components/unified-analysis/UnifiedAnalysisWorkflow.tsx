@@ -1123,8 +1123,8 @@ export default function UnifiedAnalysisWorkflow({
                   className="h-5 w-5" 
                 />
                 <div className="flex text-sm font-bold">
-                  <span className="text-[#33a852]">report</span>
-                  <span className="text-black -ml-px">IQ</span>
+                  <span className="firefly-accent-primary">report</span>
+                  <span className="theme-text-primary -ml-px">IQ</span>
                 </div>
               </div>
             </CardTitle>
@@ -1280,15 +1280,6 @@ export default function UnifiedAnalysisWorkflow({
                         <span className="text-sm">Selected: {infographicsReports.find(r => r.id === infographicsDialog.selectedReport)?.title || 'Unknown'}</span>
                       </div>
                     )}
-                  </div>
-                  <div className="bg-green-50 p-4 rounded-lg">
-                    <p className="text-xs text-green-800 font-medium mb-2">What you&rsquo;ll get:</p>
-                    <ul className="text-xs text-green-700 space-y-1">
-                      <li>• Comprehensive scoring across multiple data points</li>
-                      <li>• Visual charts and infographic displays</li>
-                      <li>• Competitive benchmarking analysis</li>
-                      <li>• Key insights and recommendations</li>
-                    </ul>
                   </div>
                 </div>
               )}
@@ -1589,7 +1580,7 @@ export default function UnifiedAnalysisWorkflow({
                 className="h-4 w-4" 
               />
               <div className="flex text-sm font-bold">
-                <span className="text-[#33a852]">IQ</span>
+                <span className="firefly-accent-primary">IQ</span>
                 <span className="theme-text-primary -ml-px">builder</span>
               </div>
             </div>

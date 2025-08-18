@@ -435,23 +435,47 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
   // Handle theme changes for widgets
   useEffect(() => {
     const handleThemeChange = () => {
-      // Force widget containers to re-render their styles
+      console.log('[MapWidgets] Theme changed, refreshing widget state...');
+      // Force widget containers to re-render their styles without affecting visibility
       setTimeout(() => {
         const containers = document.querySelectorAll('.widget-container');
         containers.forEach(container => {
           const element = container as HTMLElement;
-          // Trigger a style recalculation by temporarily changing a property
-          const originalDisplay = element.style.display;
-          element.style.display = 'none';
+          const widgetType = element.getAttribute('data-widget-type');
+          const shouldBeVisible = widgetType === activeWidget;
+          
+          // Force style recalculation without changing visibility
+          const currentVisibility = element.style.visibility;
+          element.style.visibility = 'hidden';
           element.offsetHeight; // Force reflow
-          element.style.display = originalDisplay || 'block';
+          element.style.visibility = currentVisibility;
+          
+          // Ensure correct display state is maintained
+          element.style.display = shouldBeVisible ? 'block' : 'none';
+          
+          // Refresh widget internal state if it's active
+          if (shouldBeVisible && widgetType) {
+            refreshWidgetState(widgetType);
+          }
         });
       }, 50); // Small delay to ensure theme has been applied
     };
 
+    const refreshWidgetState = (widgetType: string) => {
+      const widget = widgetsRef.current[widgetType as keyof WidgetState];
+      if (widget && typeof (widget as any).refresh === 'function') {
+        try {
+          (widget as any).refresh();
+          console.log(`[MapWidgets] Refreshed ${widgetType} widget state`);
+        } catch (error) {
+          console.warn(`[MapWidgets] Could not refresh ${widgetType} widget:`, error);
+        }
+      }
+    };
+
     window.addEventListener('theme-changed', handleThemeChange);
     return () => window.removeEventListener('theme-changed', handleThemeChange);
-  }, []);
+  }, [activeWidget]); // Include activeWidget in dependencies
 
   // Render logic - LayerController portal for layerList widget
   const layerControllerPortal = useMemo(() => {

@@ -100,7 +100,7 @@ const MapLegend: React.FC<MapLegendProps> = ({
         style={{
           position: 'absolute',
           bottom: '20px',
-          left: '84px',
+          left: '20px', // Position relative to the map container after left padding
           zIndex: 15000,
         }}
       >
@@ -126,7 +126,7 @@ const MapLegend: React.FC<MapLegendProps> = ({
         style={{
           position: 'absolute',
           bottom: '20px',
-          left: '84px',
+          left: '20px', // Position relative to the map container after left padding
           backgroundColor: 'white',
           padding: '12px',
           borderRadius: '8px',
@@ -199,7 +199,7 @@ const MapLegend: React.FC<MapLegendProps> = ({
       style={{
         position: 'absolute',
         bottom: '20px',
-        left: '84px',
+        left: '20px', // Position relative to the map container after left padding
         backgroundColor: 'white',
         padding: '12px',
         borderRadius: '8px',
@@ -465,8 +465,10 @@ const MapClient = memo(({
 
     const updatePadding = () => {
       if (viewRef.current && !viewRef.current.destroyed) {
+        // Center the map between left toolbar (64px) and right sidebar
         viewRef.current.padding = {
           ...viewRef.current.padding,
+          left: 64, // Account for left toolbar width (w-16 = 64px)
           right: sidebarWidth
         };
       }

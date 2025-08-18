@@ -37,6 +37,11 @@ const GraphicsManager = ({ view }: GraphicsManagerProps): null => {
           if (!view.map.layers.includes(graphicsLayerRef.current)) {
             view.map.add(graphicsLayerRef.current);
           }
+          
+          // Force a refresh of the graphics layer
+          if (graphicsLayerRef.current.graphics.length > 0) {
+            graphicsLayerRef.current.refresh();
+          }
         }
       };
 
@@ -45,6 +50,19 @@ const GraphicsManager = ({ view }: GraphicsManagerProps): null => {
       setTimeout(forceVisible, 100);
       setTimeout(forceVisible, 500);
       setTimeout(forceVisible, 1000);
+    };
+
+    // Handle theme changes to maintain graphics visibility
+    const handleThemeChange = () => {
+      console.log('[GraphicsManager] Theme changed, preserving graphics...');
+      // Force graphics to remain visible after theme change
+      setTimeout(() => {
+        tryForceLayerVisibility();
+      }, 100);
+      // Additional check after potential view refresh
+      setTimeout(() => {
+        tryForceLayerVisibility();
+      }, 500);
     };
 
     // Create new graphics layer if it doesn't exist
@@ -74,10 +92,14 @@ const GraphicsManager = ({ view }: GraphicsManagerProps): null => {
       // Set up periodic check
       const intervalId = setInterval(tryForceLayerVisibility, 1000);
 
+      // Add theme change listener
+      window.addEventListener('theme-changed', handleThemeChange);
+
       // Return cleanup function
       return () => {
         observer.disconnect();
         clearInterval(intervalId);
+        window.removeEventListener('theme-changed', handleThemeChange);
         if (graphicsLayerRef.current && !view.destroyed) {
           view.map.remove(graphicsLayerRef.current);
           graphicsLayerRef.current.destroy();

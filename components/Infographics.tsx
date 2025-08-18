@@ -460,7 +460,7 @@ const Infographics: React.FC<InfographicsProps> = ({
           />
         )}
         {mockData && !loading && !error && !pdfUrl && (
-          <div className="h-full overflow-auto">
+          <div className="min-h-0 flex-1">
             {renderMockReport()}
           </div>
         )}
