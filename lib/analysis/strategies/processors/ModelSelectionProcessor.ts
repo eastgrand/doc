@@ -53,7 +53,7 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
     const sortedCategories = Array.from(algorithmCounts.entries())
       .sort((a, b) => b[1] - a[1])
       .map((entry, index) => [entry[0], index + 1]);
-    const categoryMapping = new Map(sortedCategories);
+    const categoryMapping = new Map(sortedCategories as [string, number][]);
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
       const algorithmCategory = record.algorithm_category;

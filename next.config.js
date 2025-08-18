@@ -43,7 +43,25 @@ const nextConfig = {
         stream: false,
         buffer: false,
       };
+      
+      // Exclude ONNX Node.js binaries from client bundle
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'onnxruntime-node': false,
+      };
     }
+    
+    // Ignore ONNX Node.js native binaries
+    config.externals = config.externals || [];
+    config.externals.push({
+      'onnxruntime-node': 'onnxruntime-node'
+    });
+    
+    // Ignore .node files  
+    config.module.rules.push({
+      test: /\.node$/,
+      loader: 'ignore-loader'
+    });
     
     // Handle Kepler.gl and other large modules - but simplify for development
     if (dev) {

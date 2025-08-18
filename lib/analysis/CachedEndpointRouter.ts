@@ -1,27 +1,47 @@
 import { AnalysisOptions, RawAnalysisResult } from './types';
 import { ConfigurationManager } from './ConfigurationManager';
 import { loadEndpointData } from '@/utils/blob-data-loader';
+import { semanticRouter, SemanticRouter } from './SemanticRouter';
 import { EnhancedQueryAnalyzer } from './EnhancedQueryAnalyzer';
 
 /**
- * CachedEndpointRouter - Enhanced with multi-endpoint detection
+ * CachedEndpointRouter - Enhanced with semantic routing
  * 
  * Now includes:
- * - Multi-endpoint query detection
+ * - Semantic similarity-based query routing
+ * - Multi-endpoint query detection  
  * - Intelligent routing to MultiEndpointRouter when needed
- * - Seamless fallback to single-endpoint processing
+ * - Keyword fallback for robustness
  * - Backwards compatibility maintained
  */
 export class CachedEndpointRouter {
   private configManager: ConfigurationManager;
   private cachedDatasets: Map<string, any> = new Map();
   private loadingPromises: Map<string, Promise<any>> = new Map();
-  private queryAnalyzer: EnhancedQueryAnalyzer;
+  private queryAnalyzer: EnhancedQueryAnalyzer; // Keep for fallback
+  private useSemanticRouting: boolean = true;
 
   constructor(configManager: ConfigurationManager) {
     this.configManager = configManager;
     this.queryAnalyzer = new EnhancedQueryAnalyzer();
-    console.log('[CachedEndpointRouter] Initialized with enhanced query analyzer');
+    console.log('[CachedEndpointRouter] Initialized with semantic routing (fallback to keyword-based)');
+    
+    // Initialize semantic router in background
+    this.initializeSemanticRouter();
+  }
+
+  /**
+   * Initialize semantic router asynchronously
+   */
+  private async initializeSemanticRouter(): Promise<void> {
+    try {
+      console.log('[CachedEndpointRouter] Initializing semantic router...');
+      await semanticRouter.initialize();
+      console.log('[CachedEndpointRouter] Semantic router ready');
+    } catch (error) {
+      console.warn('[CachedEndpointRouter] Failed to initialize semantic router, using keyword fallback:', error);
+      this.useSemanticRouting = false;
+    }
   }
 
   /**
@@ -44,7 +64,7 @@ export class CachedEndpointRouter {
     }
 
     // Use standard single endpoint suggestion
-    const selectedEndpoint = this.suggestSingleEndpoint(query);
+    const selectedEndpoint = await this.suggestSingleEndpoint(query);
     console.log(`[CachedEndpointRouter] Auto-selected endpoint: ${selectedEndpoint} for query: "${query}"`);
     return selectedEndpoint;
   }
@@ -133,8 +153,30 @@ export class CachedEndpointRouter {
   /**
    * Standard single endpoint suggestion - Now uses EnhancedQueryAnalyzer
    */
-  public suggestSingleEndpoint(query: string): string {
-    console.log(`[CachedEndpointRouter] Using enhanced query analyzer for: "${query}"`);
+  public async suggestSingleEndpoint(query: string): Promise<string> {
+    // Try semantic routing first if available
+    if (this.useSemanticRouting && semanticRouter.isReady()) {
+      try {
+        console.log(`[CachedEndpointRouter] Using semantic routing for: "${query}"`);
+        const routeResult = await semanticRouter.route(query);
+        
+        console.log(`[CachedEndpointRouter] Semantic routing result: ${routeResult.endpoint} (confidence: ${(routeResult.confidence * 100).toFixed(1)}%)`);
+        
+        // Log alternatives if available
+        if (routeResult.alternativeEndpoints && routeResult.alternativeEndpoints.length > 0) {
+          console.log(`[CachedEndpointRouter] Alternative endpoints:`, 
+            routeResult.alternativeEndpoints.map(alt => `${alt.endpoint} (${(alt.confidence * 100).toFixed(1)}%)`).join(', ')
+          );
+        }
+        
+        return routeResult.endpoint;
+      } catch (error) {
+        console.warn(`[CachedEndpointRouter] Semantic routing failed, falling back to keyword analysis:`, error);
+      }
+    }
+
+    // Fallback to keyword-based routing
+    console.log(`[CachedEndpointRouter] Using keyword-based analyzer for: "${query}"`);
     
     // Use the enhanced query analyzer
     const bestEndpoint = this.queryAnalyzer.getBestEndpoint(query);
