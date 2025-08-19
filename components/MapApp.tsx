@@ -16,6 +16,7 @@ import { LegendType } from '@/types/legend';
 import ThemeSwitcher from '@/components/theme/ThemeSwitcher';
 import { SampleHotspot } from '@/components/map/SampleHotspots';
 import { LoadingModal } from '@/components/LoadingModal';
+import SampleAreasPanel from '@/components/map/SampleAreasPanel';
 
 console.log('[MAP_APP] MapApp component function body executing');
 
@@ -37,7 +38,7 @@ const DynamicMapWidgets = dynamic(() => import('@/components/MapWidgets'), {
 
 // Define widget buttons and visible widgets
 
-const VISIBLE_WIDGETS = ['search', 'bookmarks', 'layerList', 'print', 'basemapGallery'];
+const VISIBLE_WIDGETS = ['search', 'bookmarks', 'layerList', 'print', 'basemapGallery', 'quickStats'];
 
 interface MapLegendState {
   title: string;
@@ -64,7 +65,7 @@ export const MapApp: React.FC = memo(() => {
   const [activeWidget, setActiveWidget] = useState<string | null>(null);
   const [showTable, setShowTable] = useState(false);
   const [selectedLayer, setSelectedLayer] = useState<__esri.FeatureLayer | null>(null);
-  const [sidebarWidth, setSidebarWidth] = useState(640); // Increased by 40px
+  const [sidebarWidth, setSidebarWidth] = useState(640);
   const [showLabels, setShowLabels] = useState(false);
   const [featureLayers, setFeatureLayers] = useState<__esri.FeatureLayer[]>([]);
   const [mapLegend, setMapLegend] = useState<MapLegendState>({
@@ -78,6 +79,7 @@ export const MapApp: React.FC = memo(() => {
   const [visualizationResult, setVisualizationResult] = useState<any>(null);
   const [selectedHotspot, setSelectedHotspot] = useState<SampleHotspot | null>(null);
   const [mapContainerReady, setMapContainerReady] = useState(false);
+  const [showSampleAreasPanel, setShowSampleAreasPanel] = useState(true);
 
 
   // Sync formattedLegendData with mapLegend state
@@ -141,11 +143,18 @@ export const MapApp: React.FC = memo(() => {
   }, []);
 
   const handleToggleWidget = useCallback((widgetName: string) => {
-    setActiveWidget(prev => prev === widgetName ? null : widgetName);
+    if (widgetName === 'quickStats') {
+      setShowSampleAreasPanel(prev => !prev);
+      setActiveWidget(null); // Close any other active widgets
+    } else {
+      setActiveWidget(prev => prev === widgetName ? null : widgetName);
+      setShowSampleAreasPanel(false); // Close Sample Areas Panel when other widgets open
+    }
   }, []);
 
   const handleCloseWidget = useCallback(() => {
     setActiveWidget(null);
+    setShowSampleAreasPanel(false);
   }, []);
 
   const handleLayerSelect = useCallback((layer: __esri.FeatureLayer) => {
@@ -241,12 +250,19 @@ export const MapApp: React.FC = memo(() => {
               visibleWidgets={memoizedVisibleWidgets}
               onLayerStatesChange={handleLayerStatesChange}
               onLayersCreated={handleLayersCreated}
+              showQuickStatsPanel={showSampleAreasPanel}
             />
           )}
         </div>
 
         {/* Main Map Container */}
-        <div className="flex-1 relative">
+        <div 
+          className="flex-1 relative" 
+          style={{
+            marginRight: `${Math.max(0, (sidebarWidth - 64) / 2)}px`,
+            transition: 'margin-right 0.2s ease'
+          }}
+        >
           <MapClient
             key="main-map-client"
             onMapLoad={handleMapLoad}
@@ -255,6 +271,7 @@ export const MapApp: React.FC = memo(() => {
             showLabels={showLabels}
             legend={mapLegend}
             onSampleHotspotClick={handleSampleHotspotClick}
+            showSampleHotspots={false}
           />
           
           {/* Theme Switcher - positioned where basemap gallery used to be */}
@@ -268,6 +285,15 @@ export const MapApp: React.FC = memo(() => {
           >
             <ThemeSwitcher />
           </div>
+
+          {/* Sample Areas Panel */}
+          {mapView && (
+            <SampleAreasPanel
+              view={mapView}
+              onClose={() => setShowSampleAreasPanel(false)}
+              visible={showSampleAreasPanel}
+            />
+          )}
           
           {/* Layer Controller and Management */}
           {mapView && (

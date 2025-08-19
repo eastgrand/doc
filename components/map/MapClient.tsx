@@ -7,7 +7,7 @@ import { LegendType } from '@/types/legend';
 import { LegendItem } from '@/components/MapLegend';
 import { MAP_CONSTRAINTS, DATA_EXTENT, applyMapConstraints } from '@/config/mapConstraints';
 import { useTheme } from '@/components/theme/ThemeProvider';
-import SampleHotspots, { FLORIDA_DEFAULT_VIEW, SampleHotspot } from './SampleHotspots';
+import SampleHotspots, { SampleHotspot } from './SampleHotspots';
 
 // Legend props interface
 
@@ -56,6 +56,17 @@ const MapLegend: React.FC<MapLegendProps> = ({
 }) => {
   const isVisible = visible !== false; // default to true when undefined
   
+  // Always call hooks at the top level
+  const [TernaryPlot, setTernaryPlot] = React.useState<React.ComponentType<any> | null>(null);
+  
+  React.useEffect(() => {
+    if (type === 'ternary-plot') {
+      import('@/components/TernaryPlot').then((module) => {
+        setTernaryPlot(() => module.default);
+      });
+    }
+  }, [type]);
+  
   // Debug logging for legend items
   console.log('[MapClient MapLegend] Rendering legend:', {
     title,
@@ -87,14 +98,6 @@ const MapLegend: React.FC<MapLegendProps> = ({
 
   // Handle ternary plot legend
   if (type === 'ternary-plot' && ternaryData && labels) {
-    // Import TernaryPlot dynamically to avoid SSR issues
-    const [TernaryPlot, setTernaryPlot] = React.useState<React.ComponentType<any> | null>(null);
-    
-    React.useEffect(() => {
-      import('@/components/TernaryPlot').then((module) => {
-        setTernaryPlot(() => module.default);
-      });
-    }, []);
 
     if (!TernaryPlot) return null;
 
@@ -372,11 +375,21 @@ const MapClient = memo(({
         }
         
         console.log('[MapClient] Creating MapView...');
+        
+        // Hardcoded Jacksonville metro area coordinates
+        const jacksonvilleCenter = [-82.3096907401495, 30.220957986146445];
+        const jacksonvilleZoom = 7;
+        
+        console.log('[MapClient] Using hardcoded Jacksonville center and zoom:', {
+          center: jacksonvilleCenter,
+          zoom: jacksonvilleZoom
+        });
+        
         const view = new MapView({
           container: mapRef.current,
           map: map,
-          zoom: FLORIDA_DEFAULT_VIEW.zoom,
-          center: FLORIDA_DEFAULT_VIEW.center,
+          center: jacksonvilleCenter,
+          zoom: jacksonvilleZoom,
           ui: {
             components: []
           }
@@ -391,12 +404,12 @@ const MapClient = memo(({
             rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
           });
           
-          // Add a small delay to ensure basemap is loaded
+          // Add a small delay to ensure basemap is loaded  
           setTimeout(() => {
             try {
               console.log('[MapClient] Applying feature service extent constraints with spatial reference...');
               applyMapConstraints(view);
-              console.log('[MapClient] Map constraints applied successfully');
+              console.log('[MapClient] Map constraints applied successfully - initial extent preserved');
             } catch (error) {
               console.error('[MapClient] Error applying constraints:', error);
             }
@@ -420,12 +433,20 @@ const MapClient = memo(({
         // Wait for view to be ready
         await view.when();
         console.log('[MapClient] MapView is ready');
+        console.log('[MapClient] Actual view extent after creation:', {
+          xmin: view.extent?.xmin,
+          ymin: view.extent?.ymin, 
+          xmax: view.extent?.xmax,
+          ymax: view.extent?.ymax,
+          center: view.center ? [view.center.longitude, view.center.latitude] : null,
+          zoom: view.zoom
+        });
 
         // Store map view reference globally for debugging
         try {
           const { storeMapViewReference } = await import('../LayerController/enhancedLayerCreation');
           storeMapViewReference(view);
-        } catch (error) {
+        } catch {
           // Could not store map view reference - ignore in production
         }
 
@@ -465,22 +486,30 @@ const MapClient = memo(({
     
   }, [theme]);
 
-  // Handle sidebar width changes
+  // Handle sidebar width changes - just notify the container to resize
   useEffect(() => {
     if (!viewRef.current) return;
 
-    const updatePadding = () => {
+    const notifyResize = () => {
       if (viewRef.current && !viewRef.current.destroyed) {
-        // Center the map between left toolbar (64px) and right sidebar
-        viewRef.current.padding = {
-          ...viewRef.current.padding,
-          left: 64, // Account for left toolbar width (w-16 = 64px)
-          right: sidebarWidth
-        };
+        // Just notify the view that its container may have changed size
+        // This doesn't affect zoom operations or other map functions
+        setTimeout(() => {
+          if (viewRef.current && !viewRef.current.destroyed) {
+            // Trigger container size recalculation
+            const resizeEvent = new Event('resize');
+            window.dispatchEvent(resizeEvent);
+          }
+        }, 10);
+        
+        console.log('[MapClient] Notified map of sidebar width change:', sidebarWidth);
       }
     };
 
-    updatePadding();
+    // Small delay to ensure DOM has updated
+    const timeoutId = setTimeout(notifyResize, 100);
+    
+    return () => clearTimeout(timeoutId);
   }, [sidebarWidth]);
 
   useEffect(() => {

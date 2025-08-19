@@ -227,14 +227,14 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         // Fallback: generate mock data for demonstration
         console.log('[SampleAreasPanel] Pre-joined data not found, generating mock data');
         generateMockData();
-        // Auto-zoom to Jacksonville area after data loads
-        setTimeout(() => zoomToJacksonville(), 500);
+        // Don't auto-zoom - let MapClient handle initial view  
+        // setTimeout(() => zoomToJacksonville(), 500);
       }
     } catch (error) {
       console.error('[SampleAreasPanel] Error loading sample areas data:', error);
       generateMockData();
-      // Auto-zoom to Jacksonville area even on error
-      setTimeout(() => zoomToJacksonville(), 500);
+      // Don't auto-zoom - let MapClient handle initial view
+      // setTimeout(() => zoomToJacksonville(), 500);
     } finally {
       setLoading(false);
     }
@@ -320,8 +320,8 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
     // Create the choropleth layers on the map
     createChoroplethLayers(areas);
     
-    // Auto-zoom to Jacksonville area after data loads
-    setTimeout(() => zoomToJacksonville(), 1000);
+    // Don't auto-zoom - let MapClient handle initial view
+    // setTimeout(() => zoomToJacksonville(), 1000);
   };
 
   // This function is no longer needed with the new simplified approach
@@ -543,10 +543,10 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
       }
     }
     
-    // Zoom to combined extent of all areas
-    if (areas.length > 0) {
-      zoomToCombinedExtent(areas);
-    }
+    // Don't auto-zoom to combined extent - let MapClient handle initial view
+    // if (areas.length > 0) {
+    //   zoomToCombinedExtent(areas);
+    // }
 
     setChoroplethLayers(newLayers);
   };
@@ -686,8 +686,23 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         ymax: bounds.ymax,
         spatialReference: { wkid: 4326 }
       });
+      
+      const expandedExtent = extent.expand(1.3);
+      
+      // DEBUG: Log the exact extent being used for Jacksonville
+      if (area.id === 'jacksonville') {
+        console.log('[handleAreaClick] Jacksonville extent:', {
+          original: bounds,
+          expanded: {
+            xmin: expandedExtent.xmin,
+            ymin: expandedExtent.ymin,
+            xmax: expandedExtent.xmax,
+            ymax: expandedExtent.ymax
+          }
+        });
+      }
 
-      await view.goTo(extent.expand(1.3), {
+      await view.goTo(expandedExtent, {
         duration: 1500,
         easing: 'ease-in-out'
       });

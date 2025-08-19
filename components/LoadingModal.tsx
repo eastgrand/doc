@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useProjectStats, formatProjectFacts } from '@/hooks/useProjectStats';
 import { ParticleEffectManager } from './particles/ParticleEffectManager';
+import Image from 'next/image';
 import { 
   BarChart3, 
   Car, 
@@ -79,17 +80,21 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
     loadFacts();
   }, [projectStats, show]);
   
-  // Rotate facts
+  // Rotate facts - start after animation and progress are both active
   useEffect(() => {
     if (!show || allFacts.length === 0) return;
 
-    let currentIndex = 0;
-    factIntervalRef.current = setInterval(() => {
-      currentIndex = (currentIndex + 1) % allFacts.length;
-      setCurrentFact(allFacts[currentIndex]);
-    }, 3500); // Change fact every 3.5 seconds
+    // Wait 1 second to ensure animation has started and is visually active
+    const initialDelay = setTimeout(() => {
+      let currentIndex = 0;
+      factIntervalRef.current = setInterval(() => {
+        currentIndex = (currentIndex + 1) % allFacts.length;
+        setCurrentFact(allFacts[currentIndex]);
+      }, 3500); // Change fact every 3.5 seconds
+    }, 1000); // 1 second delay to ensure animation is fully active
 
     return () => {
+      clearTimeout(initialDelay);
       if (factIntervalRef.current) {
         clearInterval(factIntervalRef.current);
       }
@@ -114,18 +119,41 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
 
   return (
     <div className="fixed inset-0 bg-white dark:bg-gray-900 z-[99999] flex items-center justify-center pointer-events-auto">
-      {/* Advanced Particle Effects */}
+      {/* Animation Canvas - starts immediately */}
       <canvas 
         ref={canvasRef}
         className="absolute inset-0 pointer-events-none"
-        style={{ opacity: 0.7 }} // Slightly increased opacity for better visibility
+        style={{ opacity: 0.7 }}
       />
       <ParticleEffectManager 
         show={show}
         canvasRef={canvasRef}
       />
       
-      {/* Text content positioned in lower half to avoid globe overlap */}
+      {/* Map pin logo positioned in the center of the network */}
+      <div 
+        className="absolute pointer-events-none"
+        style={{
+          left: '50%',
+          top: '35%', // Match network center position
+          transform: 'translate(-50%, -50%)',
+          zIndex: 50 // Position above the network animation
+        }}
+      >
+        <Image
+          src="/mpiq_pin2.png"
+          alt="Loading..."
+          width={48}
+          height={48}
+          priority
+          className="opacity-90" // Slightly transparent to blend with network
+          style={{
+            filter: 'drop-shadow(0 0 8px rgba(34, 197, 94, 0.6))' // Green glow to match network theme
+          }}
+        />
+      </div>
+      
+      {/* Text content positioned in lower half to avoid network overlap */}
       <div className="absolute bottom-0 left-0 right-0 pb-16">
         <div className="max-w-md w-full mx-auto p-6">
           <div className="space-y-4 text-center">

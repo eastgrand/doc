@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ColorTheme, GREEN_THEME } from './utils/ColorThemes';
-import { LogoShapeEffect } from './effects/LogoShapeEffect';
+import { NetworkBuildingEffect } from './effects/NetworkBuildingEffect';
 
-export type EffectType = 'logo' | 'globe' | 'wave';
+export type EffectType = 'network' | 'logo' | 'globe' | 'wave';
 
 export interface EffectConfig {
   type: EffectType;
@@ -29,11 +29,11 @@ export const ParticleEffectManager: React.FC<ParticleEffectManagerProps> = React
       configLockRef.current = true; // Lock to prevent race conditions
       initializationRef.current = true;
       
-      const type: EffectType = 'logo'; // Use new logo shape effect
+      const type: EffectType = 'network'; // Use new network building effect
       const colorTheme = GREEN_THEME; // Force green theme for consistency
       
-      console.log('[ParticleEffectManager] LOCKED - Using Logo Shape Effect with Green Theme:', { type, colorTheme: colorTheme.name });
-      console.log('[ParticleEffectManager] Will render ONLY: Logo Shape Effect with Green colors');
+      console.log('[ParticleEffectManager] LOCKED - Using Network Building Effect with Green Theme:', { type, colorTheme: colorTheme.name });
+      console.log('[ParticleEffectManager] Will render ONLY: Network Building Effect with Green colors');
       
       setEffectConfig({
         type,
@@ -43,9 +43,10 @@ export const ParticleEffectManager: React.FC<ParticleEffectManagerProps> = React
     }
   }, [show]); // Remove effectConfig from dependencies to prevent loops
 
-  // Reset when component unmounts or show becomes false
+  // Don't reset effect config to prevent animation restarts
   useEffect(() => {
     return () => {
+      // Only cleanup on final unmount - keep effect running across instances
       if (!show) {
         initializationRef.current = false;
         configLockRef.current = false;
@@ -59,9 +60,9 @@ export const ParticleEffectManager: React.FC<ParticleEffectManagerProps> = React
     return null;
   }
 
-  // Render logo shape effect only
+  // Render network building effect only
   return (
-    <LogoShapeEffect
+    <NetworkBuildingEffect
       canvasRef={canvasRef}
       colorTheme={effectConfig.colorTheme}
       show={show}

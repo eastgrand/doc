@@ -1,0 +1,29 @@
+{
+  "name": "H&R Block Market Analysis",
+  "industry": "Tax Services",
+  "primaryBrand": "H&R Block",
+  "targetCities": [
+    {
+      "name": "Miami",
+      "zipCount": 4
+    },
+    {
+      "name": "Tampa", 
+      "zipCount": 4
+    },
+    {
+      "name": "Orlando",
+      "zipCount": 4
+    },
+    {
+      "name": "Jacksonville",
+      "zipCount": 4
+    }
+  ],
+  "analysisFiles": [
+    "strategic-analysis.json",
+    "demographic-insights.json",
+    "brand-difference.json",
+    "comparative-analysis.json"
+  ]
+}

@@ -60,15 +60,15 @@ export const FLORIDA_HOTSPOTS: SampleHotspot[] = [
   }
 ];
 
-// Default Florida view configuration
+// Default view configuration - hardcoded for Jacksonville metro area
 export const FLORIDA_DEFAULT_VIEW = {
-  center: [-81.5, 27.5], // Central Florida
-  zoom: 7,
+  center: [-82.3096907401495, 30.220957986146445], // Jacksonville metro area center
+  zoom: 9, // Jacksonville metro area zoom level (2 levels out from 11)
   extent: {
-    xmin: -87.5,
-    ymin: 24.5,
-    xmax: -79.5,
-    ymax: 31.0,
+    xmin: -81.9,
+    ymin: 30.1,
+    xmax: -81.3,
+    ymax: 30.6,
     spatialReference: { wkid: 4326 }
   }
 };
@@ -264,21 +264,8 @@ export default function SampleHotspots({
     return () => clearInterval(intervalId);
   }, [view, hotspotGraphics, hoveredHotspot]);
 
-  // Set initial view to Florida
-  useEffect(() => {
-    if (!view) return;
-
-    view.when(() => {
-      // Set the initial extent to show all of Florida
-      view.goTo({
-        center: FLORIDA_DEFAULT_VIEW.center,
-        zoom: FLORIDA_DEFAULT_VIEW.zoom
-      }, {
-        duration: 2000,
-        easing: 'ease-in-out'
-      });
-    });
-  }, [view]);
+  // Note: Initial view is now set in MapClient with Jacksonville coordinates
+  // No need to override it here
 
   return (
     <>

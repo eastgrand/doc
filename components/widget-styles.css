@@ -2346,3 +2346,24 @@ div[role="tooltip"],
     color: var(--theme-text-primary) !important;
     border-color: var(--theme-border) !important;
 }
+
+/* Hide auto-generated header for sample areas panel */
+.widget-container.sample-areas-panel::before {
+    display: none !important;
+}
+
+/* Sample Areas Panel Title Styling */
+.sample-areas-panel .esri-widget__heading {
+    display: block !important; /* Override the global display: none */
+    font-size: 16px !important; /* Make it larger */
+    color: #33a852 !important; /* Green color */
+    font-weight: 600 !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+    flex: 1 !important;
+}
+
+/* Sample Areas Panel Dark Mode Support */
+[data-theme="dark"] .sample-areas-panel .esri-widget__heading {
+    color: #33a852 !important; /* Keep the green color in dark mode */
+}

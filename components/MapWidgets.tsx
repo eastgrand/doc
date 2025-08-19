@@ -44,6 +44,7 @@ interface MapWidgetsProps {
   onCorrelationAnalysis: (layer: __esri.FeatureLayer, primaryField: string, comparisonField: string) => void;
   onLayerStatesChange?: (states: any) => void;
   onLayersCreated?: (layers: __esri.FeatureLayer[]) => void; // NEW: For CustomPopupManager integration
+  showQuickStatsPanel?: boolean; // NEW: For quickStats button active state
 }
 
 // Define Florida City Bookmarks Data (Alphabetical Order)
@@ -70,7 +71,8 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
   showLoading = false,
   visibleWidgets = ['search', 'layerList', 'bookmarks', 'print'], // Removed basemapGallery
   onLayerStatesChange,
-  onLayersCreated
+  onLayersCreated,
+  showQuickStatsPanel = false
 }: MapWidgetsProps) {
 
 
@@ -590,6 +592,20 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
             title="Projects"
           >
             <Folder width="16" height="16" />
+          </button>
+        )}
+        
+        {visibleWidgets?.includes('quickStats') && (
+          <button
+            onClick={() => onToggleWidget('quickStats')}
+            className={`widget-icon ${showQuickStatsPanel ? 'active' : ''}`}
+            title="Quick Stats"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <rect x="7" y="7" width="3" height="9"/>
+              <rect x="14" y="7" width="3" height="5"/>
+            </svg>
           </button>
         )}
         
