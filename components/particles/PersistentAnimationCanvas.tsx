@@ -12,7 +12,7 @@ let activeInstances = 0;
 
 export const PersistentAnimationCanvas: React.FC<PersistentAnimationCanvasProps> = ({ show }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     if (!show) return;
