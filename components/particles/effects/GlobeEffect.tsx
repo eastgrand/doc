@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import Image from 'next/image';
 import { ColorTheme, getRandomMixedColor } from '../utils/ColorThemes';
 import {
   Vector3D,
@@ -27,6 +26,7 @@ class Globe3DRenderer {
   private currentRotation = { x: 0, y: 0, z: 0 };
   private centerX = 0;
   private centerY = 0;
+  private logoZDepth = 0; // Z-depth where logo appears (center of globe)
 
   constructor(canvas: HTMLCanvasElement, private colorTheme: ColorTheme) {
     this.canvas = canvas;
@@ -59,7 +59,7 @@ class Globe3DRenderer {
   }
 
   private initializeParticles(): void {
-    const particleCount = PerformanceUtils.getOptimalParticleCount(200); // More particles for fuller look
+    const particleCount = PerformanceUtils.getOptimalParticleCount(350); // Much more particles for denser globe
     this.particles = [];
 
     for (let i = 0; i < particleCount; i++) {
@@ -67,7 +67,6 @@ class Globe3DRenderer {
       const goldenRatio = (1 + Math.sqrt(5)) / 2;
       const theta = 2 * Math.PI * i / goldenRatio;
       const y = 1 - (i / (particleCount - 1)) * 2; // y goes from 1 to -1
-      const radiusAtY = Math.sqrt(1 - y * y);
       
       const phi = Math.acos(y);
       
@@ -145,7 +144,23 @@ class Globe3DRenderer {
     // Sort particles by z-depth for proper depth rendering
     const sortedParticles = [...this.particles].sort((a, b) => b.position.z - a.position.z);
 
-    sortedParticles.forEach(particle => {
+    // Split particles into background (behind logo) and foreground (in front of logo)
+    const backgroundParticles = sortedParticles.filter(p => p.position.z < this.logoZDepth);
+    const foregroundParticles = sortedParticles.filter(p => p.position.z >= this.logoZDepth);
+
+    // Render background particles and their connections first
+    this.renderParticleGroup(backgroundParticles, 0.7); // Slightly dimmer for depth
+    this.drawConnections(backgroundParticles, 0.6); // Dimmer connections in back
+
+    // Logo will be rendered by React component here (z-index positioned)
+
+    // Render foreground particles and their connections
+    this.renderParticleGroup(foregroundParticles, 1.0); // Full brightness in front
+    this.drawConnections(foregroundParticles, 1.0); // Full brightness connections in front
+  }
+
+  private renderParticleGroup(particles: Particle3D[], brightnessMultiplier: number): void {
+    particles.forEach(particle => {
       // Apply perspective projection
       const perspective = 800;
       const scale = perspective / (perspective - particle.position.z);
@@ -164,7 +179,7 @@ class Globe3DRenderer {
 
       // Calculate opacity based on depth (closer = more visible)
       const depthOpacity = Math.max(0.1, Math.min(1, (particle.position.z + this.globeRadius) / (this.globeRadius * 2)));
-      const finalOpacity = particle.opacity * depthOpacity;
+      const finalOpacity = particle.opacity * depthOpacity * brightnessMultiplier;
 
       // Draw particle with glow effect
       this.ctx.save();
@@ -182,16 +197,13 @@ class Globe3DRenderer {
 
       this.ctx.restore();
     });
-
-    // Draw connecting lines between nearby particles
-    this.drawConnections(sortedParticles);
   }
 
-  private drawConnections(particles: Particle3D[]): void {
-    const maxDistance = 80;
+  private drawConnections(particles: Particle3D[], brightnessMultiplier: number = 1.0): void {
+    const maxDistance = 100; // Increased for more connections
     
     this.ctx.save();
-    this.ctx.lineWidth = 0.5;
+    this.ctx.lineWidth = 0.8; // Slightly thicker lines
 
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
@@ -215,7 +227,8 @@ class Globe3DRenderer {
           const x2 = this.centerX + p2.position.x * scale2;
           const y2 = this.centerY + p2.position.y * scale2;
 
-          const opacity = (1 - distance / maxDistance) * 0.15;
+          // Darker, more visible lines
+          const opacity = (1 - distance / maxDistance) * 0.35 * brightnessMultiplier; // Increased from 0.15
           this.ctx.strokeStyle = p1.color;
           this.ctx.globalAlpha = opacity;
           
@@ -278,34 +291,7 @@ export const GlobeEffect: React.FC<GlobeEffectProps> = ({
     };
   }, []);
 
-  // Render the map pin logo in the center
-  return (
-    <div className="absolute inset-0 pointer-events-none">
-      {show && (
-        <div 
-          className="absolute"
-          style={{
-            left: '50%',
-            top: '35%', // Match globe center position
-            transform: 'translate(-50%, -50%)',
-            zIndex: 10
-          }}
-        >
-          <div className="relative">
-            <Image
-              src="/mpiq_pin2.png"
-              alt="Loading..."
-              width={48}
-              height={48}
-              priority
-              className="relative z-10"
-              style={{
-                filter: `drop-shadow(0 0 3px ${colorTheme.primary}66)` // Reduced glow
-              }}
-            />
-          </div>
-        </div>
-      )}
-    </div>
-  );
+  // Don't render the logo here anymore - it will be handled by LoadingModal
+  // to properly layer between background and foreground particles
+  return null;
 };

@@ -686,6 +686,275 @@ After updating `GeoDataManager.ts`:
    - **Cleanup**: Offer storage optimization recommendations
 3. **You'll see**: `🎉 AUTOMATION PIPELINE COMPLETED SUCCESSFULLY!`
 
+## Step 6.9: Sample Areas Data Preparation (NEW - For Map Sample Areas)
+
+**🗺️ OPTIONAL**: Generate pre-joined sample areas data for the map's sample areas feature. This step creates efficient, project-specific sample data for user exploration.
+
+### When to Prepare Sample Areas Data
+
+**Use this system when:**
+- ✅ **New project deployment**: Setting up sample areas for the first time
+- ✅ **Geographic area changes**: Project covers different cities/regions than existing samples
+- ✅ **Data updates**: Analysis endpoints have been regenerated with new data
+- ✅ **Performance optimization**: Want faster, more reliable sample area loading
+- ✅ **Switching to real data**: Moving from simulated to actual demographic data
+
+### Method 1: Generate Real Sample Data (RECOMMENDED)
+
+**🎯 NEW APPROACH**: Use actual demographic endpoint data joined with ZIP boundaries for authentic market intelligence.
+
+**1. Generate Real Sample Areas Data**
+```bash
+# Navigate to scripts directory
+cd scripts
+
+# Run the real data generation script
+node generate-real-sample-areas.js
+```
+
+**What this does:**
+- Joins real demographic endpoint data with ZIP boundary geometries
+- Converts cryptic field codes (MP10104A_B_P) to human-readable names ("TurboTax Users (%)")
+- Calculates engagement scores from actual usage patterns
+- Creates comprehensive demographics with 28+ real metrics per ZIP code
+
+**Output:**
+- Creates `/public/data/sample_areas_data_real.json` (typically 15-20MB)
+- Contains 976 ZIP codes with complete demographic data
+- Includes real geographic boundaries for choropleth visualization
+- Data quality marked as 100% (real data vs simulated)
+
+**2. Update Application to Use Real Data**
+```bash
+# The SampleAreasPanel component needs to point to the real data file
+# Edit: components/map/SampleAreasPanel.tsx
+# Change line 219 from:
+#   const response = await fetch('/data/sample_areas_data.json');
+# To:
+#   const response = await fetch('/data/sample_areas_data_real.json');
+```
+
+### Method 2: Generate Simulated Sample Data (FALLBACK)
+
+**Use when real demographic data is not available or for quick testing.**
+
+**1. Configure Your Project**
+```bash
+# Edit the sample areas configuration
+nano scripts/sample-areas-config.json
+```
+
+**Update the configuration for your project:**
+```json
+{
+  "name": "Your Project Name",
+  "industry": "Your Industry", 
+  "primaryBrand": "Your Primary Brand",
+  "targetCities": [
+    { "name": "City1", "zipCount": 4 },
+    { "name": "City2", "zipCount": 4 },
+    { "name": "City3", "zipCount": 4 },
+    { "name": "City4", "zipCount": 4 }
+  ],
+  "analysisFiles": [
+    "strategic-analysis.json",
+    "demographic-insights.json", 
+    "brand-difference.json",
+    "comparative-analysis.json"
+  ]
+}
+```
+
+**2. Generate Sample Areas Data**
+```bash
+# For simulated data (old method)
+cd scripts
+node regenerate-sample-areas.js
+
+# OR for TypeScript generator
+cd lib/data-prep
+npx ts-node SampleAreasDataGenerator.ts ../../scripts/sample-areas-config.json
+```
+
+### Current Implementation: Real Data with 5 Cities (RECOMMENDED)
+
+**🎯 ACTIVE CONFIGURATION**: The sample panel now uses real demographic data from 5 specific Florida cities only.
+
+**Generate Current Sample Data:**
+```bash
+# Navigate to scripts directory
+cd scripts
+
+# Run the real data generation script (configured for 5 cities)
+node generate-real-sample-areas.js
+```
+
+**What this generates:**
+- **371 ZIP codes** across 5 cities only: Jacksonville, Miami, Tampa, St. Petersburg, Orlando
+- **Real demographic data** from actual census and market research
+- **Human-readable field names** like "TurboTax Users (%)" instead of "MP10104A_B_P" 
+- **Creates**: `/public/data/sample_areas_data_real.json` (~8MB)
+
+**Expected output:**
+```
+Generated real sample areas data:
+- Total areas: 371
+- Jacksonville: 78 ZIP codes
+- Miami: 113 ZIP codes  
+- Tampa: 67 ZIP codes
+- Orlando: 75 ZIP codes
+- St. Petersburg: 38 ZIP codes
+```
+
+### Verify Generated Data
+
+**For current real data:**
+```bash
+# Check the output file was created
+ls -la public/data/sample_areas_data_real.json
+
+# Verify file size (~8MB for 371 areas across 5 cities)
+du -h public/data/sample_areas_data_real.json
+
+# Test the data structure and city distribution
+node -e "
+const data = JSON.parse(require('fs').readFileSync('public/data/sample_areas_data_real.json', 'utf8'));
+const cities = {};
+data.areas.forEach(area => cities[area.city] = (cities[area.city] || 0) + 1);
+console.log('Cities and ZIP counts:');
+Object.entries(cities).sort((a,b) => b[1] - a[1]).forEach(([city, count]) => {
+  console.log(\`  \${city}: \${count} ZIP codes\`);
+});
+console.log(\`Total areas: \${data.areas.length}\`);
+console.log('Data source:', data.dataSource);
+"
+```
+
+### Legacy Methods (For Reference Only)
+
+**Method 2: Generate Simulated Sample Data (FALLBACK)**
+
+**Use when real demographic data is not available or for quick testing.**
+
+### What This System Does
+
+**🏗️ Pre-Joined Data Architecture:**
+- Combines ZIP boundaries + analysis statistics + city mappings into single file
+- Eliminates runtime ArcGIS API calls for sample areas (99% reduction)
+- Pre-calculates analysis scores and relevance ratings
+- Includes data quality indicators and validation
+
+**🎯 Smart Sample Selection:**
+- Uses existing GeoDataManager for accurate city-to-ZIP mappings
+- Randomly selects high-quality areas (dataQuality > 0.8)
+- Generates 5 analysis focuses: Young Professionals, Financial Services, Digital Adoption, Growth Markets, Investment Activity
+- Rotates choropleth visualization fields for discovery
+
+**📊 Rich Statistics Integration:**
+- Demographics: Population, age groups, income
+- Financial: Credit usage, savings, investment assets
+- Digital: Mobile payments, online services, crypto adoption
+- Business: Business density, market opportunity scores
+- Geographic: Pre-calculated bounds for instant zoom
+
+### Benefits Over Runtime API Calls
+
+**❌ Old Approach (Runtime APIs):**
+- 10-20 ArcGIS FeatureServer calls per sample area load
+- Network timeouts and rate limiting issues
+- Complex error handling for multiple failure points
+- Inconsistent loading times (2-15 seconds)
+
+**✅ New Approach (Pre-Joined Data):**
+- Single 2-3MB file load with all data included
+- Zero external API dependencies for samples
+- Instant rendering with pre-calculated bounds
+- Predictable performance (< 1 second loading)
+
+### File Structure Created
+
+**Generated:** `/public/data/sample_areas_data.json`
+```json
+{
+  "version": "1.0.0",
+  "generated": "2025-01-18T...",
+  "project": {
+    "name": "Your Project",
+    "industry": "Your Industry"
+  },
+  "areas": [
+    {
+      "zipCode": "33131",
+      "city": "Miami",
+      "county": "Miami-Dade County",
+      "geometry": { /* GeoJSON polygon */ },
+      "bounds": { "xmin": -80.19, "ymin": 25.76, ... },
+      "stats": { /* 20+ statistics */ },
+      "analysisScores": { /* 5 pre-calculated scores */ },
+      "dataQuality": 0.96
+    }
+  ]
+}
+```
+
+### Integration with Map Component
+
+**The SampleAreasPanel automatically:**
+1. **Tries to load** `/data/sample_areas_data.json` first
+2. **Falls back gracefully** to mock data if file not found
+3. **Displays areas** with white background panel and dismissal options
+4. **Renders choropleth** visualization using actual ZIP boundaries
+5. **Provides zoom-to-bounds** functionality (not just center points)
+
+### When NOT to Generate Sample Areas Data
+
+**Skip this step if:**
+- ❌ **Using existing samples**: Current sample areas work fine for your project
+- ❌ **No map component**: Your application doesn't use the map sample areas feature
+- ❌ **Limited data**: Don't have sufficient analysis endpoints generated yet
+- ❌ **Quick testing**: Just need basic functionality without geographic accuracy
+
+### Troubleshooting
+
+**Problem**: "No geometry found for ZIP code"
+- **Cause**: ZIP code not found in zip_boundaries.json file
+- **Solution**: Verify your target cities have ZIP codes that exist in the boundaries file
+
+**Problem**: "Analysis files not found"
+- **Cause**: Configuration references endpoint files that don't exist
+- **Solution**: Check `public/data/endpoints/` for available files, update configuration
+
+**Problem**: Generated file too large (>5MB)
+- **Cause**: Too many ZIP codes selected or overly detailed geometry
+- **Solution**: Reduce zipCount per city or simplify geometry coordinates
+
+**Problem**: Mock data always used instead of real data
+- **Cause**: Real endpoint data not available or accessible
+- **Solution**: Ensure analysis endpoints exist and are properly formatted
+
+### Documentation References
+
+- **📖 Complete Architecture**: `/docs/PRE_JOINED_DATA_APPROACH.md`
+- **📊 Available Statistics**: `/docs/AVAILABLE_STATS_FOR_SAMPLES.md` 
+- **🔧 Implementation Plan**: `/docs/SAMPLE_AREAS_REDESIGN_PLAN.md`
+
+### Success Criteria
+
+**✅ Sample areas data prepared successfully when:**
+- File created at `/public/data/sample_areas_data.json` (2-3MB)
+- Contains 16 areas with full statistics and boundaries
+- Data quality scores > 0.8 for all areas
+- Map sample areas panel loads instantly
+- Choropleth visualization renders properly
+- Zoom-to-area functionality works smoothly
+
+**🎯 User Experience Improvements:**
+- **99% faster loading** - Instant vs 2-15 second waits
+- **Reliable experience** - No network timeouts or API failures
+- **Rich visualizations** - Choropleth boundaries instead of simple points
+- **Smart area selection** - Project-relevant areas with analysis scores
+- **Easy dismissal** - Clear controls to remove samples when not needed
+
 ## Step 6.8: Data-Driven Scoring Algorithm Regeneration (NEW - Optional)
 
 **🚀 NEW FEATURE**: Advanced data-driven scoring system that generates algorithms from SHAP feature importance analysis instead of hardcoded business assumptions.
@@ -1404,6 +1673,13 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
   - [ ] SHAP feature importance extraction working (984+ features)
   - [ ] Generated scripts pass validation tests
   - [ ] Documentation reviewed for future algorithm updates
+- [ ] **Sample areas data prepared (Optional Step 6.9)**:
+  - [ ] Sample areas configuration created (`scripts/sample-areas-config.json`)
+  - [ ] Pre-joined data generated (`public/data/sample_areas_data.json`)
+  - [ ] File size appropriate (2-3MB for 16 areas)
+  - [ ] Map sample areas panel loads instantly
+  - [ ] Choropleth visualization works properly
+  - [ ] Zoom-to-bounds functionality operational
 - [ ] Cleanup system reviewed and executed if needed
 
 **🎉 Congratulations! Your ArcGIS service is now a working microservice!**

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ColorTheme, GREEN_THEME } from './utils/ColorThemes';
-import { GlobeEffect } from './effects/GlobeEffect';
+import { LogoShapeEffect } from './effects/LogoShapeEffect';
 
-export type EffectType = 'globe' | 'wave';
+export type EffectType = 'logo' | 'globe' | 'wave';
 
 export interface EffectConfig {
   type: EffectType;
@@ -29,11 +29,11 @@ export const ParticleEffectManager: React.FC<ParticleEffectManagerProps> = React
       configLockRef.current = true; // Lock to prevent race conditions
       initializationRef.current = true;
       
-      const type: EffectType = 'globe'; // Force globe only for now
+      const type: EffectType = 'logo'; // Use new logo shape effect
       const colorTheme = GREEN_THEME; // Force green theme for consistency
       
-      console.log('[ParticleEffectManager] LOCKED - Forcing Globe Effect with Green Theme:', { type, colorTheme: colorTheme.name });
-      console.log('[ParticleEffectManager] Will render ONLY: Globe Effect with Green colors');
+      console.log('[ParticleEffectManager] LOCKED - Using Logo Shape Effect with Green Theme:', { type, colorTheme: colorTheme.name });
+      console.log('[ParticleEffectManager] Will render ONLY: Logo Shape Effect with Green colors');
       
       setEffectConfig({
         type,
@@ -59,9 +59,9 @@ export const ParticleEffectManager: React.FC<ParticleEffectManagerProps> = React
     return null;
   }
 
-  // Render globe effect only
+  // Render logo shape effect only
   return (
-    <GlobeEffect
+    <LogoShapeEffect
       canvasRef={canvasRef}
       colorTheme={effectConfig.colorTheme}
       show={show}

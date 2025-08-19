@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useProjectStats, formatProjectFacts } from '@/hooks/useProjectStats';
 import { ParticleEffectManager } from './particles/ParticleEffectManager';
+import { 
+  BarChart3, 
+  Car, 
+  Brain, 
+  Target, 
+  Layers, 
+  Zap,
+  TrendingUp
+} from 'lucide-react';
 
 interface LoadingModalProps {
   progress: number;
@@ -11,17 +20,17 @@ interface LoadingModalProps {
 interface LoadingFact {
   type: 'general' | 'project';
   text: string;
-  icon?: string;
+  icon?: React.ReactNode;
 }
 
 // General facts about the application capabilities
 const GENERAL_FACTS: LoadingFact[] = [
-  { type: 'general', text: 'Our AI analyzes over 47,000 data points per query', icon: '📊' },
-  { type: 'general', text: 'Drive-time analysis uses real-world traffic patterns', icon: '🚗' },
-  { type: 'general', text: 'Machine learning identifies up to 15 demographic patterns', icon: '🤖' },
-  { type: 'general', text: 'Spatial clustering reveals hidden market opportunities', icon: '🎯' },
-  { type: 'general', text: 'Each analysis combines 10+ data sources for accuracy', icon: '🔄' },
-  { type: 'general', text: 'Real-time processing delivers insights in seconds', icon: '⚡' },
+  { type: 'general', text: 'Our AI analyzes over 47,000 data points per query', icon: <BarChart3 className="w-5 h-5" /> },
+  { type: 'general', text: 'Drive-time analysis uses real-world traffic patterns', icon: <Car className="w-5 h-5" /> },
+  { type: 'general', text: 'Machine learning identifies up to 15 demographic patterns', icon: <Brain className="w-5 h-5" /> },
+  { type: 'general', text: 'Spatial clustering reveals hidden market opportunities', icon: <Target className="w-5 h-5" /> },
+  { type: 'general', text: 'Each analysis combines 10+ data sources for accuracy', icon: <Layers className="w-5 h-5" /> },
+  { type: 'general', text: 'Real-time processing delivers insights in seconds', icon: <Zap className="w-5 h-5" /> },
 ];
 
 
@@ -55,7 +64,7 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
         ? formatProjectFacts(projectStats).map(text => ({
             type: 'project' as const,
             text,
-            icon: '📊'
+            icon: <TrendingUp className="w-5 h-5" />
           }))
         : [];
       
@@ -109,7 +118,7 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
       <canvas 
         ref={canvasRef}
         className="absolute inset-0 pointer-events-none"
-        style={{ opacity: 0.6 }}
+        style={{ opacity: 0.7 }} // Slightly increased opacity for better visibility
       />
       <ParticleEffectManager 
         show={show}
@@ -168,7 +177,11 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
             {currentFact && (
               <div className="animate-entrance">
                 <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
-                  <span className="text-lg">{currentFact.icon}</span>
+                  <span className={`transition-all duration-500 ${
+                    currentFact.type === 'project' ? 'text-primary' : 'text-muted-foreground'
+                  }`}>
+                    {currentFact.icon}
+                  </span>
                   <span className={`transition-all duration-500 ${
                     currentFact.type === 'project' ? 'text-primary' : ''
                   }`}>
