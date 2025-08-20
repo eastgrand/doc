@@ -315,13 +315,29 @@ export default function UnifiedAnalysisWorkflow({
 
         const finalReports = allItems
           .filter(item => !exclusionList.some(excluded => item.title?.includes(excluded)))
-          .map(item => ({
-            id: item.id,
-            title: item.title || 'Untitled Report',
-            description: item.snippet || item.description || '',
-            thumbnail: item.thumbnail || '',
-            categories: ['Summary Reports'] // Default category
-          }));
+          .map(item => {
+            // Construct proper thumbnail URL if thumbnail exists
+            let thumbnailUrl = '';
+            if (item.thumbnail) {
+              // If it's just the thumbnail filename, construct the full URL
+              if (!item.thumbnail.startsWith('http')) {
+                thumbnailUrl = `https://www.arcgis.com/sharing/rest/content/items/${item.id}/info/${item.thumbnail}?token=${token}`;
+              } else {
+                thumbnailUrl = item.thumbnail;
+              }
+            } else {
+              // Fallback thumbnail URL for items without thumbnails
+              thumbnailUrl = `https://www.arcgis.com/sharing/rest/content/items/${item.id}/info/thumbnail/thumbnail.png?token=${token}`;
+            }
+            
+            return {
+              id: item.id,
+              title: item.title || 'Untitled Report',
+              description: item.snippet || item.description || '',
+              thumbnail: thumbnailUrl,
+              categories: ['Summary Reports'] // Default category
+            };
+          });
 
         console.log('[UnifiedWorkflow] Loaded', finalReports.length, 'infographics reports');
         setInfographicsReports(finalReports);
@@ -1036,6 +1052,97 @@ export default function UnifiedAnalysisWorkflow({
       selectedReport: null,
       showInfographics: false
     });
+  }, []);
+
+  // Generate standard report using ArcGIS API
+  const generateStandardReport = useCallback(async (geometry: __esri.Geometry, reportType: string) => {
+    try {
+      console.log('[UnifiedWorkflow] Generating standard report for', reportType);
+
+      const reportId = reportType; // Use the report ID directly
+
+      // Get the API key from environment config
+      const apiKey = process.env.NEXT_PUBLIC_ARCGIS_API_KEY;
+      
+      if (!apiKey) {
+        throw new Error('Missing ArcGIS API key');
+      }
+
+      // Make sure the geometry is in the correct spatial reference (4326/WGS84)
+      let projectedGeometry = geometry;
+      if (geometry.spatialReference.wkid !== 4326) {
+        console.log('[UnifiedWorkflow] Projecting geometry to WGS84 (4326)');
+        const projection = await import('@arcgis/core/geometry/projection');
+        await projection.load();
+        const geometryUnion = geometry as __esri.GeometryUnion;
+        projectedGeometry = projection.project(geometryUnion, { wkid: 4326 }) as __esri.Geometry;
+      }
+      
+      // Create the study area from the geometry - handle different geometry types
+      let studyArea: any;
+      
+      if (projectedGeometry.type === 'polygon') {
+        studyArea = {
+          geometry: {
+            rings: (projectedGeometry as __esri.Polygon).rings,
+            spatialReference: { wkid: 4326 }
+          }
+        };
+      } else if (projectedGeometry.type === 'point') {
+        // For points, we need to create a small buffer or use point coordinates
+        const point = projectedGeometry as __esri.Point;
+        studyArea = {
+          geometry: {
+            x: point.x,
+            y: point.y,
+            spatialReference: { wkid: 4326 }
+          }
+        };
+      } else {
+        throw new Error(`Unsupported geometry type: ${projectedGeometry.type}`);
+      }
+
+      // Use the exact same base URL as the older code
+      const baseUrl = 'https://geoenrich.arcgis.com/arcgis/rest/services/World/geoenrichmentserver/Geoenrichment/createreport';
+      console.log('[UnifiedWorkflow] Sending request to ArcGIS API');
+      
+      // Create params object
+      const params = {
+        f: 'json',
+        token: apiKey,
+        studyAreas: JSON.stringify([studyArea]),
+        report: reportId, // Pass the report ID
+        format: 'PDF',
+        langCode: 'en-us'
+      };
+
+      // Send the request using fetch
+      const response = await fetch(baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/pdf'
+        },
+        body: new URLSearchParams(params).toString()
+      });
+
+      // Check if the response is successful
+      if (!response.ok) {
+        console.error('[UnifiedWorkflow] ArcGIS API request failed with status:', response.status);
+        const errorText = await response.text();
+        console.error('[UnifiedWorkflow] Error response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Get the blob from the response
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      
+      return url;
+    } catch (error) {
+      console.error('[UnifiedWorkflow] Error generating standard report:', error);
+      throw error;
+    }
   }, []);
 
   // Reset workflow
@@ -1813,11 +1920,12 @@ export default function UnifiedAnalysisWorkflow({
             }
           }}
         >
-          <DialogContent className="max-w-7xl max-h-[90vh] overflow-auto">
-            <DialogHeader>
-              <DialogTitle>Infographic Report</DialogTitle>
-            </DialogHeader>
-            <div className="w-full">
+          <DialogContent className="max-w-7xl p-0 bg-white overflow-hidden">
+            <div className="flex justify-between items-center p-4 border-b bg-white">
+              <DialogTitle className="text-base font-medium">Area Analysis Report</DialogTitle>
+            </div>
+            
+            <div className="h-[calc(100vh-8rem)] overflow-y-scroll">
               <Infographics
                 geometry={infographicsDialog.geometry}
                 reportTemplate={infographicsDialog.selectedReport}
@@ -1829,6 +1937,7 @@ export default function UnifiedAnalysisWorkflow({
                 }}
                 view={view}
                 layerStates={{}}
+                generateStandardReport={generateStandardReport}
                 onExportPDF={() => {}}
               />
             </div>

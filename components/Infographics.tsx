@@ -213,7 +213,7 @@ const Infographics: React.FC<InfographicsProps> = ({
 
     return (
       <div className="p-4 border-b flex justify-between items-center">
-        <h2 className="text-base font-medium">{selectedTemplate?.name || 'Select Report'}</h2>
+        <h2 className="text-base font-medium">{selectedTemplate?.name || ''}</h2>
         <div className="flex items-center gap-4">
           <Button onClick={handleDialogOpen} className="w-[220px] h-8 bg-white text-black border border-gray-300 hover:bg-gray-50">
             {selectedTemplate?.name || 'Select Report'}
@@ -245,7 +245,7 @@ const Infographics: React.FC<InfographicsProps> = ({
         {/* Header */}
         <div className="text-center mb-8 border-b pb-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">{selectedTemplate?.name}</h1>
-          <p className="text-lg text-gray-600">Toronto Downtown Area Analysis</p>
+          <p className="text-lg text-gray-600">Area Analysis Report</p>
           <p className="text-sm text-gray-500 mt-2">Generated on {new Date().toLocaleDateString()}</p>
         </div>
 
@@ -442,7 +442,7 @@ const Infographics: React.FC<InfographicsProps> = ({
           <div className="flex items-center justify-center p-8">
             <div className="text-center">
             <Loader2 className="h-8 w-8 animate-spin text-blue-500 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">Generating demographic report...</p>
+              <p className="text-sm text-gray-600">Generating report...</p>
             </div>
           </div>
         )}
@@ -456,7 +456,11 @@ const Infographics: React.FC<InfographicsProps> = ({
           <iframe
             src={pdfUrl}
             title="Infographic Report"
-            className="w-full h-full border-0"
+            className="w-full border-0"
+            style={{ 
+              height: '800px', 
+              minHeight: '100%'
+            }}
           />
         )}
         {mockData && !loading && !error && !pdfUrl && (
