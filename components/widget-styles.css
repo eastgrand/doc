@@ -2376,6 +2376,18 @@ div[role="tooltip"],
   overflow-y: auto !important;
 }
 
+/* LayerController specific scrolling fixes */
+.layer-controller {
+  height: 100% !important;
+  max-height: calc(100vh - 120px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+.layer-controller > div {
+  padding-bottom: 20px !important; /* Add extra padding at bottom */
+}
+
 /* Specific widget height constraints */
 .esri-layer-list,
 .esri-search,

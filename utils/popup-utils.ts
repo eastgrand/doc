@@ -25,6 +25,11 @@ export interface StandardizedPopupConfig {
  * Priority: DESCRIPTION > ID > FSA_ID > NAME > OBJECTID
  */
 export function determinePopupTitle(attributes: { [key: string]: any }): string {
+  // Check for lowercase 'name' first (for point layers like H&R Block)
+  if (attributes.name !== undefined && attributes.name !== null && attributes.name.toString().trim()) {
+    return attributes.name.toString().trim();
+  }
+  
   const titleFields = ['DESCRIPTION', 'ID', 'FSA_ID', 'NAME', 'OBJECTID'];
   
   for (const field of titleFields) {
@@ -55,22 +60,44 @@ export function determinePopupTitle(attributes: { [key: string]: any }): string 
  * Creates a standardized popup template with proper title expressions and field content
  */
 export function createStandardizedPopupTemplate(config: StandardizedPopupConfig): PopupTemplate {
-  // Create sophisticated title expression that prioritizes DESCRIPTION and ID fields
-  const titleExpression = `
-    IIf(
-      HasKey($feature, 'DESCRIPTION') && !IsEmpty($feature.DESCRIPTION),
-      $feature.DESCRIPTION,
+  // Create title expression based on visualization type
+  let titleExpression: string;
+  
+  if (config.visualizationType === 'point-location') {
+    // For point/location layers, prioritize lowercase 'name' field first (for H&R Block), then uppercase NAME
+    titleExpression = `
       IIf(
-        HasKey($feature, 'ID') && !IsEmpty($feature.ID),
-        $feature.ID,
+        HasKey($feature, 'name') && !IsEmpty($feature.name),
+        $feature.name,
         IIf(
           HasKey($feature, 'NAME') && !IsEmpty($feature.NAME),
           $feature.NAME,
-          'Feature ' + $feature.OBJECTID
+          IIf(
+            HasKey($feature, 'DESCRIPTION') && !IsEmpty($feature.DESCRIPTION),
+            $feature.DESCRIPTION,
+            'Location'
+          )
         )
       )
-    )
-  `;
+    `;
+  } else {
+    // For other layers, prioritize DESCRIPTION and ID fields
+    titleExpression = `
+      IIf(
+        HasKey($feature, 'DESCRIPTION') && !IsEmpty($feature.DESCRIPTION),
+        $feature.DESCRIPTION,
+        IIf(
+          HasKey($feature, 'ID') && !IsEmpty($feature.ID),
+          $feature.ID,
+          IIf(
+            HasKey($feature, 'NAME') && !IsEmpty($feature.NAME),
+            $feature.NAME,
+            'Feature ' + $feature.OBJECTID
+          )
+        )
+      )
+    `;
+  }
 
   // Create field info objects with proper formatting
   const fieldInfos: FieldInfo[] = [];

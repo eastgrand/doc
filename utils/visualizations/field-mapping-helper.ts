@@ -69,33 +69,61 @@ const FIELD_CODE_TO_DISPLAY_NAME: Record<string, string> = {
     "trend_strength_score": "Trend Strength Score",
     "value": "Value",
 
-    // === MP CODES (Current Project Data Fields) ===
-    "MP10002A_B": "MP10002 Count",
-    "MP10002A_B_P": "MP10002 Percentage",
-    "MP10020A_B": "MP10020 Count", 
-    "MP10020A_B_P": "MP10020 Percentage",
-    "MP10028A_B": "MP10028 Count",
-    "MP10028A_B_P": "MP10028 Percentage",
-    "MP10104A_B": "MP10104 Count",
-    "MP10104A_B_P": "MP10104 Percentage", 
-    "MP10110A_B": "MP10110 Count",
-    "MP10110A_B_P": "MP10110 Percentage",
-    "MP10116A_B": "MP10116 Count",
-    "MP10116A_B_P": "MP10116 Percentage",
-    "MP10120A_B": "MP10120 Count",
-    "MP10120A_B_P": "MP10120 Percentage",
-    "MP10128A_B": "MP10128 Count",
-    "MP10128A_B_P": "MP10128 Percentage",
-    "MP10138A_B": "MP10138 Count", 
-    "MP10138A_B_P": "MP10138 Percentage",
+    // === MP CODES (Consumer Financial Behavior) ===
+    "MP10002A_B": "Bank of America Users (Count)",
+    "MP10002A_B_P": "Bank of America Users",
+    "MP10020A_B": "Savings Account Holders (Count)", 
+    "MP10020A_B_P": "Savings Account Holders",
+    "MP10028A_B": "Personal Line of Credit Users (Count)",
+    "MP10028A_B_P": "Personal Line of Credit Users",
+    "MP10104A_B": "TurboTax Users (Count)",
+    "MP10104A_B_P": "TurboTax Users", 
+    "MP10110A_B": "Apple Pay Users (Count)",
+    "MP10110A_B_P": "Apple Pay Users",
+    "MP10116A_B": "Credit Card Balance Carriers (Count)",
+    "MP10116A_B_P": "Credit Card Balance Carriers",
+    "MP10120A_B": "Google Pay Users (Count)",
+    "MP10120A_B_P": "Google Pay Users",
+    "MP10128A_B": "H&R Block Users (Count)",
+    "MP10128A_B_P": "H&R Block Users",
+    "MP10138A_B": "Cryptocurrency Owners (Count)", 
+    "MP10138A_B_P": "Cryptocurrency Owners",
 
-    // === X CODES (Spending/Economic Data) ===
-    "X14058_X": "X14058 Spending",
-    "X14058_X_A": "X14058 Average Spending", 
-    "X14060_X": "X14060 Spending",
-    "X14060_X_A": "X14060 Average Spending",
-    "X14068_X": "X14068 Spending",
-    "X14068_X_A": "X14068 Average Spending",
+    // === MP CODES (Lowercase variations) ===
+    "mp10002a_b": "Bank of America Users (Count)",
+    "mp10002a_b_p": "Bank of America Users",
+    "mp10020a_b": "Savings Account Holders (Count)", 
+    "mp10020a_b_p": "Savings Account Holders",
+    "mp10028a_b": "Personal Line of Credit Users (Count)",
+    "mp10028a_b_p": "Personal Line of Credit Users",
+    "mp10104a_b": "TurboTax Users (Count)",
+    "mp10104a_b_p": "TurboTax Users", 
+    "mp10110a_b": "Apple Pay Users (Count)",
+    "mp10110a_b_p": "Apple Pay Users",
+    "mp10116a_b": "Credit Card Balance Carriers (Count)",
+    "mp10116a_b_p": "Credit Card Balance Carriers",
+    "mp10120a_b": "Google Pay Users (Count)",
+    "mp10120a_b_p": "Google Pay Users",
+    "mp10128a_b": "H&R Block Users (Count)",
+    "mp10128a_b_p": "H&R Block Users",
+    "mp10138a_b": "Cryptocurrency Owners (Count)", 
+    "mp10138a_b_p": "Cryptocurrency Owners",
+
+    // === X CODES (Financial Asset Values) ===
+    "X14058_X": "Stocks/Bonds/Mutual Funds Investment Value",
+    "X14058_X_A": "Average Investment Portfolio Value", 
+    "X14060_X": "Bank Deposits Value (Checking/Savings/CDs)",
+    "X14060_X_A": "Average Bank Account Value",
+    "X14068_X": "Credit Card Debt Amount",
+    "X14068_X_A": "Average Credit Card Debt",
+
+    // === X CODES (Lowercase variations) ===
+    "x14058_x": "Stocks/Bonds/Mutual Funds Investment Value",
+    "x14058_x_a": "Average Investment Portfolio Value", 
+    "x14060_x": "Bank Deposits Value (Checking/Savings/CDs)",
+    "x14060_x_a": "Average Bank Account Value",
+    "x14068_x": "Credit Card Debt Amount",
+    "x14068_x_a": "Average Credit Card Debt",
 
     // === GENERATION DEMOGRAPHICS ===
     "GENALPHACY": "Generation Alpha Population",
@@ -282,6 +310,9 @@ export class FieldMappingHelper {
     
     // Remove percentage symbols
     cleaned = cleaned.replace(/\s*%\s*/g, '');
+    
+    // Remove year prefixes (e.g., "2025 Used H&R Block..." → "Used H&R Block...")
+    cleaned = cleaned.replace(/^\d{4}\s+/, '');
     
     // Clean up extra whitespace
     cleaned = cleaned.replace(/\s+/g, ' ').trim();

@@ -524,7 +524,15 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     loaded: 0,
     status: 'pending'
   });
-  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
+  // Initialize collapsed groups from config
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(() => {
+    if (config?.defaultCollapsed) {
+      return new Set(Object.entries(config.defaultCollapsed)
+        .filter(([_, isCollapsed]) => isCollapsed)
+        .map(([groupId]) => groupId));
+    }
+    return new Set();
+  });
   const [currentLegendData, setCurrentLegendData] = useState<StandardizedLegendData | null>(null);
   const [popoverAnchorElement, setPopoverAnchorElement] = useState<HTMLElement | null>(null);
   const [isLegendPopoverOpen, setIsLegendPopoverOpen] = useState(false);
@@ -592,14 +600,17 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
               // Add ALL layers to the map so they appear in LayerList widget
               view.map.add(layer);
               layer.visible = shouldBeVisible;
-              layer.opacity = 0.6;
+              
+              // Preserve higher opacity for location layers, use 0.6 for others
+              const layerOpacity = layerConfig.name?.toLowerCase().includes('locations') ? layer.opacity : 0.6;
+              layer.opacity = layerOpacity;
               
               newLayerStates[layerConfig.id] = {
                 id: layerConfig.id,
                 name: layerConfig.name,
                 layer,
                 visible: shouldBeVisible,
-                opacity: 0.6,
+                opacity: layerOpacity,
                 order: 0,
                 group: group.id,
                 loading: false,
@@ -673,33 +684,36 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     onInitializationComplete
   ]);
 
-  // Reset guard when view/config changes
+  // Initialize layers with proper race condition protection
   useEffect(() => {
-    // Reset initialization state when view or config changes
-    console.log('[LayerController] View or config changed, resetting initialization state');
-    hasInitialized.current = null;
-    setIsInitialized(false);
-  }, [view, config]);
-
-  // Only initialize if not already initialized
-  useEffect(() => {
-    if (!view || !config || isInitialized || initializationInProgress.current || hasInitialized.current !== null) return;
+    if (!view || !config) return;
     
     // Create unique identifier for this view+config combination to prevent duplicates
     const viewId = view.container ? view.container.id : 'default';
     const configHash = JSON.stringify(config.groups?.map(g => g.id).sort());
     const initId = `${viewId}-${configHash}`;
     
-    // Check if we've already initialized this exact combination
-    if (hasInitialized.current === initId) {
-      console.log('[LayerController] Already initialized this view+config combination, skipping');
+    // Check if we've already initialized this exact combination or initialization is in progress
+    if (hasInitialized.current === initId || initializationInProgress.current || isInitialized) {
+      console.log('[LayerController] Already initialized or in progress, skipping:', initId);
       return;
     }
     
-    console.log('[LayerController] Starting initialization for:', initId);
+    // Reset state for new initialization
+    console.log('[LayerController] Starting fresh initialization for:', initId);
     hasInitialized.current = initId;
+    setIsInitialized(false);
+    
+    // Update collapsed groups when config changes
+    if (config?.defaultCollapsed) {
+      const collapsedGroupIds = Object.entries(config.defaultCollapsed)
+        .filter(([_, isCollapsed]) => isCollapsed)
+        .map(([groupId]) => groupId);
+      setCollapsedGroups(new Set(collapsedGroupIds));
+    }
+    
     initializeLayers();
-  }, [view, config, isInitialized, initializeLayers]);
+  }, [view, config, initializeLayers]);
 
   // Set mounted state
   useEffect(() => {
@@ -776,8 +790,82 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         const oldVisible = newStates[layerId].visible;
         newStates[layerId].visible = !oldVisible;
         console.log('Toggling layer visibility from', oldVisible, 'to', newStates[layerId].visible);
+        
+        // Special debugging for Google Pay layer
+        if (layerStates[layerId]?.name?.includes('Google Pay')) {
+          console.log('🔍 [GOOGLE PAY] Layer toggle debug:', {
+            layerId,
+            newVisibility: newStates[layerId].visible,
+            layerName: layerStates[layerId]?.name,
+            hasRenderer: !!layerStates[layerId]?.layer?.renderer,
+            rendererType: layerStates[layerId]?.layer?.renderer?.type,
+            rendererField: (layerStates[layerId]?.layer?.renderer as any)?.field,
+            layerOpacity: layerStates[layerId]?.layer?.opacity,
+            layerLoaded: layerStates[layerId]?.layer?.loaded,
+            currentlyVisible: layerStates[layerId]?.layer?.visible
+          });
+          
+          // Deep dive into renderer when toggling on
+          if (newStates[layerId].visible && layerStates[layerId]?.layer?.renderer) {
+            const renderer = layerStates[layerId]?.layer?.renderer as any;
+            console.log('🔍 [GOOGLE PAY] DEEP RENDERER ANALYSIS when toggling ON:', {
+              rendererType: renderer.type,
+              field: renderer.field,
+              classBreakInfos: renderer.classBreakInfos?.length || 0,
+              classBreaks: renderer.classBreakInfos?.map((cb: any, i: number) => ({
+                index: i,
+                minValue: cb.minValue,
+                maxValue: cb.maxValue,
+                range: cb.maxValue - cb.minValue,
+                label: cb.label,
+                symbolType: cb.symbol?.type,
+                symbolColor: cb.symbol?.color?.toArray ? cb.symbol.color.toArray() : cb.symbol?.color,
+                symbolOutline: cb.symbol?.outline
+              })),
+              defaultSymbol: {
+                type: renderer.defaultSymbol?.type,
+                color: renderer.defaultSymbol?.color?.toArray ? renderer.defaultSymbol.color.toArray() : renderer.defaultSymbol?.color
+              }
+            });
+            
+            // Also query some actual feature data to see what values we're working with
+            if (layerStates[layerId]?.layer?.loaded) {
+              const layer = layerStates[layerId]?.layer;
+              const query = layer.createQuery();
+              query.outFields = [renderer.field];
+              query.returnGeometry = false;
+              query.num = 10; // Get 10 sample features
+              
+              layer.queryFeatures(query).then((featureSet: any) => {
+                const values = featureSet.features.map((f: any) => f.attributes[renderer.field]);
+                console.log('🔍 [GOOGLE PAY] Sample data values:', {
+                  field: renderer.field,
+                  sampleValues: values,
+                  min: Math.min(...values),
+                  max: Math.max(...values),
+                  range: Math.max(...values) - Math.min(...values),
+                  mean: values.reduce((a: number, b: number) => a + b, 0) / values.length
+                });
+              }).catch((error: any) => {
+                console.error('🔍 [GOOGLE PAY] Error querying sample data:', error);
+              });
+            }
+          }
+        }
         if (newStates[layerId].layer) {
           newStates[layerId].layer.visible = newStates[layerId].visible;
+          
+          // Additional debugging for location layers
+          if (newStates[layerId].name?.toLowerCase().includes('locations')) {
+            console.log(`🔍 Location layer ${layerId} debug info:`, {
+              visible: newStates[layerId].layer.visible,
+              opacity: newStates[layerId].layer.opacity,
+              renderer: newStates[layerId].layer.renderer,
+              geometryType: newStates[layerId].layer.geometryType,
+              loaded: newStates[layerId].layer.loaded,
+              url: newStates[layerId].layer.url
+            });
+          }
         }
         handleLayerStatesChange(newStates);
       }

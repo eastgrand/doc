@@ -64,6 +64,52 @@ export const concepts = {
     ],
     weight: 25,
   },
+  'consumer-behavior': {
+    terms: [
+      'consumer',
+      'behavior',
+      'lifestyle',
+      'activity',
+      'purchase',
+      'bought',
+      'shopped',
+      'used',
+      'service',
+      'online',
+      'app'
+    ],
+    weight: 20,
+  },
+  demographics: {
+    terms: [
+      'demographics',
+      'population',
+      'age',
+      'generation',
+      'race',
+      'ethnicity',
+      'household',
+      'family',
+      'residents'
+    ],
+    weight: 15,
+  },
+  financial: {
+    terms: [
+      'financial',
+      'bank',
+      'credit',
+      'debt',
+      'savings',
+      'investment',
+      'income',
+      'wealth',
+      'money',
+      'pay',
+      'payment'
+    ],
+    weight: 25,
+  },
   sports: {
     terms: [
       'sports',

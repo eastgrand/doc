@@ -50,7 +50,7 @@
 }
 
 .popup-title {
-  font-size: 16px;
+  font-size: 12px; /* xs text size */
   font-weight: 600;
   margin: 0;
   visibility: visible !important;
@@ -182,7 +182,7 @@
 
 .popup-title {
   margin: 0;
-  font-size: 16px;
+  font-size: 12px; /* xs text size */
   font-weight: 600;
   color: #111827;
   white-space: nowrap;

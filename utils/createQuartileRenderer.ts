@@ -175,19 +175,34 @@ const createQuartileRenderer = async (
       throw new Error(`Field '${field}' not found in visualization layer '${layer.title}'. Available fields: ${layer.fields?.map(f => f.name).join(', ')}`);
     }
 
-    // Check if the layer is a Google Trends layer
-    const isGoogleTrendsLayer = (
-      layer.title?.toLowerCase().includes("trends") ||
-      layer.title?.toLowerCase().includes("google") ||
-      (layer as any).metadata?.isGoogleTrendsLayer
-    );
-
-
     // Use custom breaks if provided, otherwise calculate quantiles
     const breaks = customBreaks || await calculateQuantiles(layer, field, {
       excludeZeros: !isCompositeIndex,
-      isNormalized: isGoogleTrendsLayer // Normalize Google Trends values
+      isNormalized: false // No normalization needed
     });
+
+    // Special debugging for Google Pay layer
+    if (layer.title?.includes('Google Pay')) {
+      console.log(`🔍 [GOOGLE PAY DEBUG] Quantile calculation results:`, {
+        field,
+        isNormalized: false,
+        calculatedBreaks: breaks,
+        breakRanges: breaks.map((val, i) => i === 0 ? `0 - ${val}` : `${breaks[i-1]} - ${val}`),
+        uniqueBreaks: new Set(breaks).size,
+        totalBreaks: breaks.length,
+        isCustomBreaks: !!customBreaks
+      });
+      
+      // Check for identical or near-identical breaks
+      const uniqueValues = new Set(breaks);
+      if (uniqueValues.size < breaks.length) {
+        console.warn(`🔍 [GOOGLE PAY DEBUG] WARNING: Duplicate breaks detected!`, {
+          uniqueCount: uniqueValues.size,
+          totalCount: breaks.length,
+          breaks: breaks
+        });
+      }
+    }
 
 
     // For custom breaks, ensure we include 0 as the first break
@@ -263,10 +278,7 @@ const createQuartileRenderer = async (
           return $feature["${field}"];
         `,
         defaultLabel: "No data",
-        defaultSymbol: createSymbol(
-          isGoogleTrendsLayer ? effectiveColorStops[0] : [150, 150, 150],
-          0
-        )
+        defaultSymbol: createSymbol([150, 150, 150], 0)
       });
 
       // Add a special break for filtered out values
@@ -316,10 +328,7 @@ const createQuartileRenderer = async (
       renderer = new ClassBreaksRenderer({
         field: field,
         defaultLabel: "No data",
-        defaultSymbol: createSymbol(
-          isGoogleTrendsLayer ? effectiveColorStops[0] : [150, 150, 150],
-          0
-        ),
+        defaultSymbol: createSymbol([150, 150, 150], 0),
         classBreakInfos: finalBreaks.map((breakValue, i) => {
           const colorIndex = isCompositeIndex ? (finalBreaks.length - 1 - i) : i;
           const colorArray = effectiveColorStops[colorIndex] || effectiveColorStops[0];

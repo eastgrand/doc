@@ -89,35 +89,100 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
     try {
       console.log('[CustomPopupManager] Applying standardized popup to layer:', featureLayer.title);
       
-      // Get all numeric fields for bar chart display
-      const barChartFields = featureLayer.fields
-        ?.filter(field => 
-          ['double', 'single', 'integer', 'small-integer'].includes(field.type) &&
-          !['OBJECTID', 'FID', 'Shape__Area', 'Shape__Length'].includes(field.name)
-        )
-        .map(field => field.name)
-        .slice(0, 5) || []; // Limit to 5 fields for readability
-
-      // Get all other fields for list display
-      const listFields = featureLayer.fields
-        ?.filter(field => 
-          !['OBJECTID', 'FID', 'Shape__Area', 'Shape__Length'].includes(field.name) &&
-          !barChartFields.includes(field.name)
-        )
-        .map(field => field.name)
-        .slice(0, 8) || []; // Limit to 8 additional fields
-
-      const config: StandardizedPopupConfig = {
-        titleFields: ['DESCRIPTION', 'ID', 'FSA_ID', 'NAME', 'OBJECTID'],
-        barChartFields,
-        listFields,
-        visualizationType: 'custom-popup-manager'
-      };
-
-      const popupTemplate = createStandardizedPopupTemplate(config);
-      featureLayer.popupTemplate = popupTemplate;
+      // Check if this is a point layer (location layer)
+      const isPointLayer = featureLayer.geometryType === 'point';
+      const isLocationLayer = featureLayer.title?.toLowerCase().includes('locations') || 
+                             featureLayer.title?.toLowerCase().includes('points');
       
-      console.log('[CustomPopupManager] ✅ Successfully applied standardized popup');
+      if (isPointLayer || isLocationLayer) {
+        console.log('[CustomPopupManager] 📍 Configuring simplified popup for point/location layer');
+        
+        // For point layers, only show address field in content
+        // First try exact field names for known layers like H&R Block
+        let addressFields: string[] = [];
+        const availableFieldNames = featureLayer.fields?.map(f => f.name) || [];
+        
+        console.log('[CustomPopupManager] 🔍 Available fields for point layer:', availableFieldNames);
+        
+        // Check for exact 'address' field first (like in H&R Block)
+        if (availableFieldNames.includes('address')) {
+          addressFields.push('address');
+        } else {
+          // Fall back to pattern matching if exact field not found
+          const matchedFields = featureLayer.fields
+            ?.filter(field => {
+              const fieldName = field.name.toLowerCase();
+              const fieldAlias = (field.alias || '').toLowerCase();
+              
+              // Include address-related fields
+              return (fieldName.includes('address') || fieldAlias.includes('address') ||
+                     fieldName.includes('addr') || fieldAlias.includes('addr')) &&
+                     !['OBJECTID', 'FID', 'Shape__Area', 'Shape__Length'].includes(field.name);
+            })
+            .map(field => field.name) || [];
+          
+          addressFields.push(...matchedFields);
+          
+          // If no address fields found, try common address field names
+          if (addressFields.length === 0) {
+            const commonAddressFields = ['ADDRESS', 'ADDR', 'STREET_ADDRESS', 'FULL_ADDRESS'];
+            for (const fieldName of commonAddressFields) {
+              if (featureLayer.fields?.find(f => f.name === fieldName)) {
+                addressFields.push(fieldName);
+                break; // Only take the first match
+              }
+            }
+          }
+        }
+
+        const config: StandardizedPopupConfig = {
+          titleFields: ['name', 'NAME'], // Prioritize lowercase 'name' field first for H&R Block
+          barChartFields: [], // No bar chart for point layers
+          listFields: addressFields, // Only address field(s)
+          visualizationType: 'point-location'
+        };
+        
+        const popupTemplate = createStandardizedPopupTemplate(config);
+        featureLayer.popupTemplate = popupTemplate;
+        
+        console.log('[CustomPopupManager] ✅ Applied simplified popup for point layer', {
+          addressFields,
+          availableFields: featureLayer.fields?.map(f => f.name)
+        });
+      } else {
+        // Regular behavior for polygon/other layers
+        console.log('[CustomPopupManager] Configuring standard popup with value bars');
+        
+        // Get all numeric fields for bar chart display
+        const barChartFields = featureLayer.fields
+          ?.filter(field => 
+            ['double', 'single', 'integer', 'small-integer'].includes(field.type) &&
+            !['OBJECTID', 'FID', 'Shape__Area', 'Shape__Length'].includes(field.name)
+          )
+          .map(field => field.name)
+          .slice(0, 5) || []; // Limit to 5 fields for readability
+
+        // Get all other fields for list display
+        const listFields = featureLayer.fields
+          ?.filter(field => 
+            !['OBJECTID', 'FID', 'Shape__Area', 'Shape__Length'].includes(field.name) &&
+            !barChartFields.includes(field.name)
+          )
+          .map(field => field.name)
+          .slice(0, 8) || []; // Limit to 8 additional fields
+
+        const config: StandardizedPopupConfig = {
+          titleFields: ['DESCRIPTION', 'ID', 'FSA_ID', 'NAME', 'OBJECTID'],
+          barChartFields,
+          listFields,
+          visualizationType: 'custom-popup-manager'
+        };
+
+        const popupTemplate = createStandardizedPopupTemplate(config);
+        featureLayer.popupTemplate = popupTemplate;
+        
+        console.log('[CustomPopupManager] ✅ Applied standard popup with value bars');
+      }
     } catch (error) {
       console.error('[CustomPopupManager] ❌ Error applying standardized popup:', error);
       // Layer will use default popup behavior
@@ -388,13 +453,23 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
               if (queryResponse.features.length > 0) {
                 const fullFeature = queryResponse.features[0];
                 
-                // 🔍 DEBUG: Log attribute comparison
+                // 🔍 DEBUG: Log attribute comparison with specific field checks
+                const attrs = fullFeature.attributes || {};
                 console.log('[CustomPopupManager] 🔍 Popup Attribute Debug:', {
                   hitFeatureAttrs: Object.keys(hitFeature.attributes || {}),
                   fullFeatureAttrs: Object.keys(fullFeature.attributes || {}),
                   hitFeatureValues: hitFeature.attributes,
                   fullFeatureValues: fullFeature.attributes,
-                  areEqual: JSON.stringify(hitFeature.attributes) === JSON.stringify(fullFeature.attributes)
+                  areEqual: JSON.stringify(hitFeature.attributes) === JSON.stringify(fullFeature.attributes),
+                  // Specific field checks for point layers
+                  hasName: 'name' in attrs,
+                  hasNAME: 'NAME' in attrs,
+                  hasAddress: 'address' in attrs,
+                  hasADDRESS: 'ADDRESS' in attrs,
+                  nameValue: attrs.name,
+                  NAMEValue: attrs.NAME,
+                  addressValue: attrs.address,
+                  ADDRESSValue: attrs.ADDRESS
                 });
                 
                 createCustomPopup(fullFeature, event.mapPoint);
@@ -530,79 +605,87 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
       }
     };
     
-    // Create Infographics button (with icon)
-    const infoButton = document.createElement('button');
-    infoButton.className = 'theme-popup-button';
-    infoButton.innerHTML = '';
-    const infoIconNode = document.createElement('span');
-    const infoRoot = createRoot(infoIconNode);
-    infoRoot.render(<BarChartBig size={16} />);
-    infoIconNode.style.marginRight = '4px';
-    infoButton.appendChild(infoIconNode);
-    infoButton.appendChild(document.createTextNode('Infographics'));
+    // Check if this is a point layer to determine whether to show infographics button
+    const isPointLayer = feature.geometry?.type === 'point';
+    const isLocationLayer = layer.title?.toLowerCase().includes('locations') || 
+                           layer.title?.toLowerCase().includes('points');
+    const shouldShowInfographicsButton = !(isPointLayer || isLocationLayer);
     
-    infoButton.onclick = () => {
-      console.log('[CustomPopupManager] Infographics button clicked!');
-      const geometry = feature.geometry; // Get geometry first
-      console.log('[CustomPopupManager] Geometry object:', geometry);
-
-      if (geometry) {
-        console.log('[CustomPopupManager] Geometry type:', geometry.type);
-        
-        // Store geometry in localStorage for InfographicsTab to pick up
-        const geometryData = {
-          type: geometry.type,
-          rings: geometry.type === 'polygon' ? (geometry as __esri.Polygon).rings : undefined,
-          x: geometry.type === 'point' ? (geometry as __esri.Point).x : undefined,
-          y: geometry.type === 'point' ? (geometry as __esri.Point).y : undefined,
-          spatialReference: geometry.spatialReference.toJSON()
-        };
-        
-        console.log('[CustomPopupManager] Geometry data to store:', geometryData);
-        localStorage.setItem('emergencyGeometry', JSON.stringify(geometryData));
-        console.log('[CustomPopupManager] Stored geometry in localStorage');
-        
-        // Verify storage worked
-        const stored = localStorage.getItem('emergencyGeometry');
-        console.log('[CustomPopupManager] Verification - stored data exists:', !!stored);
-      }
-
-      // 1. Dispatch event (Re-enabled)
-      const infographicsEvent = new CustomEvent('openInfographics', {
-        detail: { geometry: geometry }, // Pass geometry
-        bubbles: true,
-        composed: true
-      });
-      document.dispatchEvent(infographicsEvent);
-      // console.log('[CustomPopupManager] Event dispatch skipped for testing.'); // Remove testing log
-
-      // 2. Remove delayed call to global function
-      // setTimeout(() => {
-      //   if (typeof (window as any).forceToStep3 === 'function') {
-      //     console.log('[CustomPopupManager] Calling window.forceToStep3 (delayed)...');
-      //     try {
-      //       const success = (window as any).forceToStep3(geometry);
-      //       console.log(`[CustomPopupManager] window.forceToStep3 call returned: ${success}`);
-      //     } catch (e) {
-      //       console.error('[CustomPopupManager] Error calling window.forceToStep3:', e);
-      //     }
-      //   } else {
-      //     console.warn('[CustomPopupManager] window.forceToStep3 function not found (delayed check).');
-      //   }
-      // }, 100); // 100ms delay
+    console.log('[CustomPopupManager] 📍 Popup button decision:', {
+      isPointLayer,
+      isLocationLayer, 
+      shouldShowInfographicsButton,
+      layerTitle: layer.title,
+      geometryType: feature.geometry?.type
+    });
+    
+    let infoButton: HTMLButtonElement | null = null;
+    
+    // Only create Infographics button for non-point layers
+    if (shouldShowInfographicsButton) {
+      console.log('[CustomPopupManager] Creating infographics button for non-point layer');
       
-      // 3. Call original configured action if exists
-      if (config?.actions) {
-        const infoAction = config.actions.find(a => a.label === 'Infographics');
-        if (infoAction) {
-          infoAction.onClick(feature); 
+      infoButton = document.createElement('button');
+      infoButton.className = 'theme-popup-button';
+      infoButton.innerHTML = '';
+      const infoIconNode = document.createElement('span');
+      const infoRoot = createRoot(infoIconNode);
+      infoRoot.render(<BarChartBig size={16} />);
+      infoIconNode.style.marginRight = '4px';
+      infoButton.appendChild(infoIconNode);
+      infoButton.appendChild(document.createTextNode('Infographics'));
+      
+      infoButton.onclick = () => {
+        console.log('[CustomPopupManager] Infographics button clicked!');
+        const geometry = feature.geometry; // Get geometry first
+        console.log('[CustomPopupManager] Geometry object:', geometry);
+
+        if (geometry) {
+          console.log('[CustomPopupManager] Geometry type:', geometry.type);
+          
+          // Store geometry in localStorage for InfographicsTab to pick up
+          const geometryData = {
+            type: geometry.type,
+            rings: geometry.type === 'polygon' ? (geometry as __esri.Polygon).rings : undefined,
+            x: geometry.type === 'point' ? (geometry as __esri.Point).x : undefined,
+            y: geometry.type === 'point' ? (geometry as __esri.Point).y : undefined,
+            spatialReference: geometry.spatialReference.toJSON()
+          };
+          
+          console.log('[CustomPopupManager] Geometry data to store:', geometryData);
+          localStorage.setItem('emergencyGeometry', JSON.stringify(geometryData));
+          console.log('[CustomPopupManager] Stored geometry in localStorage');
+          
+          // Verify storage worked
+          const stored = localStorage.getItem('emergencyGeometry');
+          console.log('[CustomPopupManager] Verification - stored data exists:', !!stored);
         }
-      }
-    };
+
+        // 1. Dispatch event (Re-enabled)
+        const infographicsEvent = new CustomEvent('openInfographics', {
+          detail: { geometry: geometry }, // Pass geometry
+          bubbles: true,
+          composed: true
+        });
+        document.dispatchEvent(infographicsEvent);
+        
+        // 3. Call original configured action if exists
+        if (config?.actions) {
+          const infoAction = config.actions.find(a => a.label === 'Infographics');
+          if (infoAction) {
+            infoAction.onClick(feature); 
+          }
+        }
+      };
+    } else {
+      console.log('[CustomPopupManager] 📍 Skipping infographics button for point/location layer');
+    }
     
     // Add buttons to actions container
     actionsContainer.appendChild(zoomButton);
-    actionsContainer.appendChild(infoButton);
+    if (infoButton) {
+      actionsContainer.appendChild(infoButton);
+    }
     
     // Add buttons and chart container to content: buttons first, then chart
     // Center and justify buttons
@@ -610,8 +693,48 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
     actionsContainer.style.alignItems = 'center';
     popupContent.appendChild(actionsContainer);
     popupContent.appendChild(chartContainer);
-    // Generate bar chart showing all layers
-    generateBarChart(feature, chartContainer, mapView);
+    
+    // For point/location layers, show simple field content instead of bar chart
+    if (isPointLayer || isLocationLayer) {
+      console.log('[CustomPopupManager] 📍 Creating simple content for point/location layer');
+      
+      // Create simple content container for point layers
+      const fieldContainer = document.createElement('div');
+      fieldContainer.className = 'popup-field-container';
+      fieldContainer.style.padding = '12px 0';
+      
+      // Show address field if available
+      const attrs = feature.attributes || {};
+      if (attrs.address) {
+        const addressDiv = document.createElement('div');
+        addressDiv.style.fontSize = '14px';
+        addressDiv.style.color = '#555';
+        addressDiv.style.marginBottom = '8px';
+        addressDiv.innerHTML = `<strong>Address:</strong> ${attrs.address}`;
+        fieldContainer.appendChild(addressDiv);
+      }
+      
+      // Show any additional relevant fields for points
+      const relevantFields = ['locality', 'region', 'postcode'];
+      relevantFields.forEach(fieldName => {
+        if (attrs[fieldName]) {
+          const fieldDiv = document.createElement('div');
+          fieldDiv.style.fontSize = '12px';
+          fieldDiv.style.color = '#666';
+          fieldDiv.style.marginBottom = '4px';
+          fieldDiv.innerHTML = `<strong>${fieldName}:</strong> ${attrs[fieldName]}`;
+          fieldContainer.appendChild(fieldDiv);
+        }
+      });
+      
+      popupContent.appendChild(fieldContainer);
+      
+      // Hide the chart container since we're showing simple content
+      chartContainer.style.display = 'none';
+    } else {
+      // For polygon layers, generate bar chart as usual
+      generateBarChart(feature, chartContainer, mapView);
+    }
     
     // ----------------- SHAP FEATURE IMPORTANCE (optional) -----------------
     const shapImportanceData = (layer as any).shapFeatureImportance as Array<{ feature: string; importance: number }> | undefined;
