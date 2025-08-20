@@ -6,6 +6,7 @@
 import React, { useRef, useState, useEffect, memo, useCallback } from 'react';
 import { Bot, Loader2 } from 'lucide-react';
 import Image from 'next/image';
+import ThemeSwitcher from '@/components/theme/ThemeSwitcher';
 
 // Dynamic imports
 
@@ -104,18 +105,21 @@ const ResizableSidebar = memo(({
       >
         <div className="h-full flex flex-col" style={{ borderLeft: '1px solid var(--theme-border)' }}>
           <div className="p-2" style={{ borderBottom: '1px solid var(--theme-border)' }}>
-            <div className="flex items-center gap-2 pl-4 p-4">
-              <Image 
-                src="/mpiq_pin2.png" 
-                alt="IQ Logo" 
-                width={20} 
-                height={20}
-                priority
-              />
-              <div className="flex text-xl font-bold">
-                <span className="firefly-accent-primary">IQ</span>
-                <span className="-ml-px" style={{ color: 'var(--theme-text-primary)' }}>center</span>
+            <div className="flex items-center justify-between pl-4 p-4">
+              <div className="flex items-center gap-2">
+                <Image 
+                  src="/mpiq_pin2.png" 
+                  alt="IQ Logo" 
+                  width={20} 
+                  height={20}
+                  priority
+                />
+                <div className="flex text-xl font-bold">
+                  <span className="firefly-accent-primary">IQ</span>
+                  <span className="-ml-px" style={{ color: 'var(--theme-text-primary)' }}>center</span>
+                </div>
               </div>
+              <ThemeSwitcher />
             </div>
           </div>
 

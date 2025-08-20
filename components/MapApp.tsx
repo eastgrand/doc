@@ -13,7 +13,6 @@ import CustomPopupManager from './popup/CustomPopupManager';
 import CustomZoom from './CustomZoom';
 import { LegendItem } from '@/components/MapLegend';
 import { LegendType } from '@/types/legend';
-import ThemeSwitcher from '@/components/theme/ThemeSwitcher';
 import { SampleHotspot } from '@/components/map/SampleHotspots';
 import { LoadingModal } from '@/components/LoadingModal';
 import SampleAreasPanel from '@/components/map/SampleAreasPanel';
@@ -274,17 +273,6 @@ export const MapApp: React.FC = memo(() => {
             showSampleHotspots={false}
           />
           
-          {/* Theme Switcher - positioned where basemap gallery used to be */}
-          <div 
-            style={{
-              position: 'absolute',
-              top: '20px',
-              right: '20px',
-              zIndex: 1000
-            }}
-          >
-            <ThemeSwitcher />
-          </div>
 
           {/* Sample Areas Panel */}
           {mapView && (
