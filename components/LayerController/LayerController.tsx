@@ -85,31 +85,70 @@ const Switch = ({ checked, onCheckedChange, disabled }: {
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
   disabled?: boolean;
-}): JSX.Element => (
-  <button
-    type="button"
-    role="switch"
-    aria-checked={checked}
-    onClick={() => !disabled && onCheckedChange(!checked)}
-    disabled={disabled}
-    className={`
-      relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent 
-      transition-colors duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 
-      focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background 
-      ${checked ? 'bg-green-500' : 'bg-gray-200'}
-      ${disabled ? 'opacity-50 cursor-wait' : ''}
-    `}
-  >
-    <span
-      className={`
-        pointer-events-none block h-4 w-4 rounded-full theme-bg-primary shadow-lg ring-0 
-        transition-transform duration-200 ease-in-out
-        ${checked ? 'translate-x-4' : 'translate-x-0'}
-        ${disabled ? 'animate-pulse' : ''}
-      `}
-    />
-  </button>
-);
+}): JSX.Element => {
+  // Log to debug
+  console.log('Switch state:', { checked, disabled });
+  
+  return (
+    <div 
+      style={{
+        display: 'inline-block',
+        position: 'relative',
+        width: '36px',
+        height: '20px'
+      }}
+    >
+      <button
+        type="button"
+        role="switch"
+        aria-checked={checked}
+        onClick={() => {
+          console.log('Switch clicked, current checked:', checked);
+          if (!disabled) {
+            onCheckedChange(!checked);
+          }
+        }}
+        disabled={disabled}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          borderRadius: '10px',
+          border: 'none',
+          padding: 0,
+          margin: 0,
+          cursor: disabled ? 'wait' : 'pointer',
+          opacity: disabled ? 0.5 : 1,
+          background: checked 
+            ? 'linear-gradient(to right, #21c55d, #21c55d)' 
+            : 'linear-gradient(to right, #e0e0e0, #e0e0e0)',
+          boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.1)',
+          transition: 'background 200ms ease-in-out',
+          WebkitAppearance: 'none',
+          MozAppearance: 'none',
+          appearance: 'none'
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: '2px',
+            left: checked ? '18px' : '2px',
+            width: '14px',
+            height: '14px',
+            borderRadius: '50%',
+            background: 'linear-gradient(to bottom, #ffffff, #f9fafb)',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
+            transition: 'left 200ms ease-in-out',
+            pointerEvents: 'none'
+          }}
+        />
+      </button>
+    </div>
+  );
+};
 
 // DraggableLayer Component
 const DraggableLayer: React.FC<DraggableLayerProps> = ({ 
@@ -196,7 +235,7 @@ const DraggableLayer: React.FC<DraggableLayerProps> = ({
           <div className="flex items-center gap-3 flex-grow min-w-0">
             <Switch
               checked={isVisible}
-              onCheckedChange={onToggle}
+              onCheckedChange={() => onToggle()}
               disabled={isLoading}
             />
             <TooltipProvider>
@@ -503,7 +542,9 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
 
   // Memoize handlers to prevent unnecessary re-renders
   const handleLayerStatesChange = useCallback((newStates: LayerStatesMap) => {
+    console.log('handleLayerStatesChange called, isMounted:', isMountedRef.current);
     if (!isMountedRef.current) return;
+    console.log('Setting new layer states');
     setLayerStates(newStates);
     layerStatesRef.current = newStates;
     onLayerStatesChange?.(newStates);
@@ -660,11 +701,19 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     initializeLayers();
   }, [view, config, isInitialized, initializeLayers]);
 
-  // Cleanup effect
+  // Set mounted state
   useEffect(() => {
+    isMountedRef.current = true;
     return () => {
       isMountedRef.current = false;
-      if (view) {
+    };
+  }, []);
+
+  // Cleanup effect for view changes
+  useEffect(() => {
+    return () => {
+      // Only cleanup layers when component unmounts, not when view changes
+      if (!isMountedRef.current && view) {
         Object.values(layerStatesRef.current).forEach(state => {
           if (state.layer && view.map) {
             view.map.remove(state.layer);
@@ -721,9 +770,12 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     };
 
     const handleToggleLayer = (layerId: string) => {
+      console.log('handleToggleLayer called for:', layerId);
       const newStates = { ...layerStatesRef.current };
       if (newStates[layerId]) {
-        newStates[layerId].visible = !newStates[layerId].visible;
+        const oldVisible = newStates[layerId].visible;
+        newStates[layerId].visible = !oldVisible;
+        console.log('Toggling layer visibility from', oldVisible, 'to', newStates[layerId].visible);
         if (newStates[layerId].layer) {
           newStates[layerId].layer.visible = newStates[layerId].visible;
         }
