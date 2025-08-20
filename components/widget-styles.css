@@ -443,7 +443,7 @@
 
 /* Layer List Specific Styles */
 .esri-layer-list {
-    background-color: white !important;
+    background-color: var(--theme-bg-primary) !important;
     padding: 16px !important;
 }
 
@@ -578,7 +578,7 @@
     transform: none !important;
     margin: 0 !important;
     padding: 4px !important;
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Legend Symbol Styles */
@@ -598,7 +598,7 @@
     opacity: 1 !important;
     font-size: 11px !important;
     line-height: 1.2 !important;
-    color: #333333 !important;
+    color: var(--theme-text-primary) !important;
     padding: 2px 4px !important;
 }
 
@@ -638,7 +638,7 @@
     opacity: 1 !important;
     margin: 8px 0 !important;
     padding: 8px !important;
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     border-radius: 4px !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
 }
@@ -1300,40 +1300,40 @@
 
 /* Search Widget Specific Styles */
 .widget-container[data-widget-type="search"] {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 .widget-container[data-widget-type="search"] .esri-search {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 .widget-container[data-widget-type="search"] .esri-search__container {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 .widget-container[data-widget-type="search"] .esri-search__input-container {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 .widget-container[data-widget-type="search"] .esri-search__form {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 .widget-container[data-widget-type="search"] .esri-search__input {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 .widget-container[data-widget-type="search"] .esri-search__suggestions-menu {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Ensure suggestions are properly styled */
 .esri-search__suggestions-list {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 .esri-search__suggestion-item {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 .esri-search__suggestion-item:hover {
@@ -1342,45 +1342,45 @@
 
 /* Ensure proper container styling */
 .widget-search {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Fix any transparency in the widget container */
 .esri-search .esri-widget {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Base Widget Container */
 .widget-container[data-widget-type="search"] {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     overflow: visible !important;
     height: auto !important;
 }
 
 /* Search Widget and Its Components */
 .esri-search {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     padding: 16px !important;
 }
 
 /* Main container */
 .esri-search__container {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Input container */
 .esri-search__input-container {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Search form */
 .esri-search__form {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Search input */
 .esri-search__input {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     border: 1px solid #e5e7eb !important;
     border-radius: 8px !important;
     padding: 12px 16px !important;
@@ -1390,7 +1390,7 @@
 /* Search suggestions menu */
 .esri-search__suggestions-menu {
     position: absolute !important;
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     border: 1px solid #e5e7eb !important;
     border-radius: 8px !important;
     margin-top: 8px !important;
@@ -1399,13 +1399,13 @@
 
 /* Suggestions list */
 .esri-search__suggestions-list {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     padding: 8px 0 !important;
 }
 
 /* Individual suggestion items */
 .esri-search__suggestion-item {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     padding: 8px 16px !important;
 }
 
@@ -1415,12 +1415,12 @@
 
 /* Fix for any ESRI widget transparency */
 .esri-widget {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Ensure the entire search widget has background */
 .esri-search.esri-widget {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Additional fixes for any nested components */
@@ -1430,12 +1430,12 @@
 
 /* Sources menu */
 .esri-search__sources-menu {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Clear button */
 .esri-search__clear-button {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Submit button */
@@ -1446,27 +1446,27 @@
 
 /* Sources button */
 .esri-search__sources-button {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Ensure the widget container itself is white */
 .widget-search.widget-container {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Force background color on the root element */
 .esri-view .esri-search {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Clear any transparency */
 .esri-view .widget-container[data-widget-type="search"] * {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Override any ArcGIS default transparent backgrounds */
 .esri-search .esri-widget--button {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Hide the export widget header */
@@ -1499,7 +1499,7 @@
     border: 1px solid #e5e7eb !important;
     border-radius: 8px !important;
     margin: 8px 0 !important;
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     transition: all 0.2s ease !important;
 }
 
@@ -1598,7 +1598,7 @@
 
 /* Index Widget Styles */
 .widget-container[data-widget-type="index"] {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     border-radius: 12px !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
     z-index: 1000 !important;
@@ -1709,14 +1709,14 @@
 
 /* Super specific tooltip styles to override transparency */
 .esri-view [data-radix-popper-content-wrapper] > * {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     background: white !important;
     opacity: 1 !important;
 }
 
 /* Target Radix UI tooltip specifically */
 [role="tooltip"][data-radix-popper-content-wrapper] {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     background: white !important;
     opacity: 1 !important;
 }
@@ -1726,7 +1726,7 @@
 [role="tooltip"].tooltip-content,
 div[role="tooltip"],
 .esri-view [role="tooltip"] {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     background: white !important;
     opacity: 1 !important;
     border: 1px solid #e5e7eb !important;
@@ -1739,7 +1739,7 @@ div[role="tooltip"],
 
 /* Target any nested elements that might be causing transparency */
 [role="tooltip"] * {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     background: white !important;
     opacity: 1 !important;
     backdrop-filter: none !important;
@@ -1751,7 +1751,7 @@ div[role="tooltip"],
 .shadcn-tooltip[role="tooltip"],
 [data-radix-tooltip-content],
 .tooltip-content[role="tooltip"] {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     background: white !important;
     opacity: 1 !important;
     backdrop-filter: none !important;
@@ -1834,7 +1834,7 @@ div[role="tooltip"],
   
   /* Dialog specific styling */
   .dialog-content {
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     padding: 0 !important;
     z-index: 1100 !important; /* Ensure dialog is above other elements */
     max-height: 90vh !important;
@@ -2083,7 +2083,7 @@ div[role="tooltip"],
     transform: none !important;
     margin: 0 !important;
     padding: 4px !important;
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
 }
 
 /* Legend Symbol Styles */
@@ -2103,7 +2103,7 @@ div[role="tooltip"],
     opacity: 1 !important;
     font-size: 11px !important;
     line-height: 1.2 !important;
-    color: #333333 !important;
+    color: var(--theme-text-primary) !important;
     padding: 2px 4px !important;
 }
 
@@ -2143,7 +2143,7 @@ div[role="tooltip"],
     opacity: 1 !important;
     margin: 8px 0 !important;
     padding: 8px !important;
-    background-color: white !important;
+    background-color: var(--theme-bg-secondary) !important;
     border-radius: 4px !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
 }
@@ -2375,10 +2375,21 @@ div[role="tooltip"],
 
 /* Theme transition support for all widget elements */
 .widget-container,
+.esri-widget {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Smooth transitions for theme changes */
+.theme-transition,
+.theme-transitioning {
+    transition: all 0.3s ease !important;
+}
+
+/* Remove forced transitions from all elements to prevent performance issues */
 .widget-container *,
-.esri-widget,
 .esri-widget * {
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
+    /* Inherit transitions only when needed */
+    transition: inherit;
 }
 
 /* Widget headers should always use theme colors */
