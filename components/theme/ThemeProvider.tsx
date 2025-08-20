@@ -44,6 +44,9 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   // Apply theme to document
   useEffect(() => {
     if (mounted) {
+      // Set flag to indicate theme is switching
+      document.documentElement.setAttribute('data-theme-switching', 'true');
+      
       document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('theme', theme);
       
@@ -51,6 +54,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       window.dispatchEvent(new CustomEvent('theme-changed', { 
         detail: { theme, timestamp: Date.now() }
       }));
+      
+      // Remove flag after theme switch is complete
+      setTimeout(() => {
+        document.documentElement.removeAttribute('data-theme-switching');
+      }, 500);
     }
   }, [theme, mounted]);
 

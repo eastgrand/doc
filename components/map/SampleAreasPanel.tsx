@@ -718,11 +718,30 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
   };
 
   // Clear layers when panel is closed
+  // Track if component is being unmounted vs just hidden
+  const isUnmountingRef = useRef(false);
+  
   useEffect(() => {
-    if (!visible) {
+    // Only clear samples if truly closing the panel, not during theme switches
+    if (!visible && !document.documentElement.hasAttribute('data-theme-switching')) {
       clearAllSamples();
     }
   }, [visible]);
+  
+  // Cleanup on actual unmount
+  useEffect(() => {
+    return () => {
+      isUnmountingRef.current = true;
+      // Only clear if actually unmounting the component
+      if (isUnmountingRef.current) {
+        choroplethLayers.forEach(layer => {
+          if (view && view.map && !view.destroyed) {
+            view.map.remove(layer);
+          }
+        });
+      }
+    };
+  }, []);
 
   const formatNumber = (num: number) => {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
