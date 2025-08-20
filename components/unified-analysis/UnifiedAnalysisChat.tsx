@@ -287,7 +287,7 @@ ${conversationText}
             return (
               <button
                 key={`${lineIndex}-${partIndex}`}
-                className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors cursor-pointer mr-1"
+                className="inline-flex items-center px-1 py-0.5 text-xs font-medium theme-bg-success-light theme-text-success rounded hover:theme-bg-tertiary transition-colors cursor-pointer mr-1"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleZipCodeClick(part);
@@ -851,7 +851,7 @@ ${conversationText}
                   className={`inline-block p-3 rounded-lg text-xs cursor-pointer transition-all hover:shadow-md ${
                     message.role === 'user'
                       ? 'bg-blue-500 text-white hover:bg-blue-600'
-                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                      : 'theme-message-container'
                   }`}
                   onClick={() => handleMessageClick(message)}
                 >
@@ -864,7 +864,7 @@ ${conversationText}
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 text-gray-400 hover:text-gray-600 hover:bg-gray-200"
+                  className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 theme-text-secondary hover:theme-text-primary hover:theme-bg-tertiary"
                   onClick={() => handleCopyMessage(message)}
                   title="Copy message"
                 >
@@ -879,7 +879,7 @@ ${conversationText}
                   variant="ghost"
                   size="sm"
                   className={`absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 ${
-                    message.role === 'user' ? 'text-white hover:bg-blue-600' : 'text-gray-500 hover:bg-gray-300'
+                    message.role === 'user' ? 'text-white hover:bg-blue-600' : 'theme-text-secondary hover:theme-bg-tertiary'
                   }`}
                   onClick={() => handleCopyMessage(message)}
                 >
@@ -893,14 +893,14 @@ ${conversationText}
               
               {/* Bottom area with timestamp and copy button */}
               <div className="flex items-center justify-between mt-1">
-                <div className="text-xs text-gray-500">
+                <div className="text-xs theme-text-secondary">
                   {message.timestamp.toLocaleTimeString()}
                 </div>
                 {/* Bottom copy button */}
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 text-gray-400 hover:text-gray-600 hover:bg-gray-200"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 theme-text-secondary hover:theme-text-primary hover:theme-bg-tertiary"
                   onClick={() => handleCopyMessage(message)}
                   title="Copy message"
                 >
@@ -921,9 +921,9 @@ ${conversationText}
               <Bot className="w-4 h-4" />
             </div>
             <div className="flex-1">
-              <div className="inline-flex items-center gap-3 p-3 rounded-lg bg-gray-100">
+              <div className="inline-flex items-center gap-3 p-3 rounded-lg theme-processing-indicator">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span className="text-xs text-gray-600">Running Full Analysis…</span>
+                <span className="text-xs theme-text-secondary">Running Full Analysis…</span>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -942,7 +942,7 @@ ${conversationText}
       </div>
 
       {/* Input area */}
-      <div className="flex-shrink-0 p-4 border-t max-h-[200px] overflow-y-auto">
+      <div className="flex-shrink-0 p-4 border-t theme-border max-h-[200px] overflow-y-auto">
         <div className="flex gap-2">
           <Textarea
             value={inputValue}

@@ -20,7 +20,7 @@ const QueryDialog: React.FC<QueryDialogProps> = ({
 }) => {
   return (
     <>
-      <DialogHeader className="border-b pb-4">
+      <DialogHeader className="border-b theme-border pb-4">
         <div className="flex items-center gap-3">
           <Image
             src="/mpiq_pin2.png"
@@ -29,21 +29,21 @@ const QueryDialog: React.FC<QueryDialogProps> = ({
             height={32}
             className="object-contain"
           />
-          <DialogTitle className="text-lg font-bold">
+          <DialogTitle className="text-lg font-bold theme-text-primary">
             {title.split('IQ')[0]}
             <span className="text-lg font-bold text-[#33a852]">IQ</span>
           </DialogTitle>
         </div>
-        <p className="text-sm text-gray-600 mt-2">{description}</p>
+        <p className="text-sm theme-text-secondary mt-2">{description}</p>
       </DialogHeader>
-      <div className="grid gap-6 py-6 px-4 bg-gray-50/50">
+      <div className="grid gap-6 py-6 px-4 theme-bg-secondary">
         {/* Enabled Categories */}
         {Object.entries(categories).map(([category, questions]) => (
           <div
             key={category}
-            className="space-y-3 bg-white p-4 rounded-xl shadow-sm"
+            className="space-y-3 theme-bg-tertiary p-4 rounded-xl shadow-sm border theme-border"
           >
-            <h3 className="font-semibold text-sm text-gray-800">
+            <h3 className="font-semibold text-sm theme-text-primary">
               {category}
             </h3>
             <div className="grid gap-1">
@@ -51,7 +51,7 @@ const QueryDialog: React.FC<QueryDialogProps> = ({
                 <Button
                   key={index}
                   variant="ghost"
-                  className="justify-start text-left text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-100 h-auto py-2 px-3 whitespace-normal"
+                  className="justify-start text-left text-xs h-auto py-2 px-3 whitespace-normal theme-text-secondary hover:theme-text-primary hover:theme-bg-secondary"
                   onClick={() => {
                     onQuestionSelect(question);
                   }}
@@ -67,9 +67,9 @@ const QueryDialog: React.FC<QueryDialogProps> = ({
         {Object.entries(disabledCategories).map(([category, questions]) => (
           <div
             key={`disabled-${category}`}
-            className="space-y-3 bg-gray-100 p-4 rounded-xl shadow-sm opacity-60"
+            className="space-y-3 theme-bg-secondary p-4 rounded-xl shadow-sm border theme-border opacity-60"
           >
-            <h3 className="font-semibold text-sm text-gray-500 flex items-center gap-2">
+            <h3 className="font-semibold text-sm theme-text-muted flex items-center gap-2">
               {category}
             {/*  <span className="text-xs bg-gray-300 text-gray-600 px-2 py-1 rounded-full">
                 Coming Soon
@@ -81,7 +81,7 @@ const QueryDialog: React.FC<QueryDialogProps> = ({
                   key={index}
                   variant="ghost"
                   disabled
-                  className="justify-start text-left text-xs text-gray-400 cursor-not-allowed h-auto py-2 px-3 whitespace-normal"
+                  className="justify-start text-left text-xs cursor-not-allowed h-auto py-2 px-3 whitespace-normal theme-text-muted"
                 >
                   {question}
                 </Button>

@@ -723,16 +723,23 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     };
   }, []);
 
-  // Cleanup effect for view changes
+  // Cleanup effect - only on true unmount
   useEffect(() => {
     return () => {
-      // Only cleanup layers when component unmounts, not when view changes
-      if (!isMountedRef.current && view) {
+      // Check if this is a theme switch using multiple methods
+      const isThemeSwitch = document.documentElement.hasAttribute('data-theme-switching') || 
+                           window.__themeTransitioning === true;
+      
+      // Only cleanup layers when component truly unmounts, not during theme switches
+      if (!isMountedRef.current && view && !isThemeSwitch) {
+        console.log('[LayerController] Component unmounting - removing layers');
         Object.values(layerStatesRef.current).forEach(state => {
-          if (state.layer && view.map) {
+          if (state.layer && view.map && view.map.layers.includes(state.layer)) {
             view.map.remove(state.layer);
           }
         });
+      } else if (isThemeSwitch) {
+        console.log('[LayerController] Theme switching detected - preserving all layers');
       }
     };
   }, [view]);

@@ -124,7 +124,7 @@ const AITab: React.FC<AITabProps> = ({
           <div key={id} className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Loader2 className="h-4 w-4 animate-spin" />
-              <span className="text-sm">{state.message || 'Loading...'}</span>
+              <span className="text-sm theme-text-secondary">{state.message || 'Loading...'}</span>
             </div>
             {state.progress !== undefined && (
               <Progress value={state.progress} className="h-1" />
@@ -165,16 +165,23 @@ const AITab: React.FC<AITabProps> = ({
                 featureCount: (layer.source as any)?.length || 'unknown'
               });
               
-              // Remove any existing visualization layers first if shouldReplace is true
+              // Remove any existing visualization layers first if shouldReplace is true - but not during theme switches
               if (shouldReplace) {
-                const existingLayers = view.map.layers.filter((l: any) => 
-                  l.type === 'feature' && l.title?.includes('Correlation')
-                ).toArray();
+                const isThemeSwitch = document.documentElement.hasAttribute('data-theme-switching') || 
+                                     window.__themeTransitioning === true;
                 
-                existingLayers.forEach((existingLayer: any) => {
-                  console.log('[AITab] Removing existing visualization layer:', existingLayer.id);
-                  view.map.remove(existingLayer);
-                });
+                if (!isThemeSwitch) {
+                  const existingLayers = view.map.layers.filter((l: any) => 
+                    l.type === 'feature' && l.title?.includes('Correlation')
+                  ).toArray();
+                  
+                  existingLayers.forEach((existingLayer: any) => {
+                    console.log('[AITab] Removing existing visualization layer:', existingLayer.id);
+                    view.map.remove(existingLayer);
+                  });
+                } else {
+                  console.log('[AITab] 🎨 Theme switching - preserving existing correlation layers');
+                }
               }
               
               // Add the new layer to the map

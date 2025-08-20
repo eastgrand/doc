@@ -309,7 +309,7 @@ const MessageList: React.FC<MessageListProps> = ({
   const TypingIndicator: React.FC = () => (
     <div className="flex items-center gap-2 py-1">
       <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
-      <span className="text-xs text-gray-500">Thinking</span>
+      <span className="text-xs theme-text-secondary">Thinking</span>
     </div>
   );
 
@@ -344,12 +344,12 @@ const MessageList: React.FC<MessageListProps> = ({
                   {messages.map((message) => (
                     <div
                       key={message.id}
-                      className={`rounded-lg p-3 ${
+                      className={`theme-message-container ${
                         message.role === 'user'
-                          ? 'bg-green-50 text-green-900'
+                          ? 'theme-message-user'
                           : message.role === 'system' && message.metadata?.error
-                          ? 'bg-red-50 text-red-900'
-                          : 'bg-gray-50 text-gray-900 hover:bg-gray-100 cursor-pointer transition-colors'
+                          ? 'theme-bg-destructive-subtle theme-text-destructive'
+                          : 'cursor-pointer'
                       }`}
                       onClick={(e) => {
                         if (
@@ -400,7 +400,7 @@ const MessageList: React.FC<MessageListProps> = ({
                                   <Copy className="h-4 w-4" />
                                 </button>
                               </TooltipTrigger>
-                              <TooltipContent side="top" className="bg-white">
+                              <TooltipContent side="top" className="theme-tooltip">
                                 <p>Copy to clipboard</p>
                               </TooltipContent>
                             </Tooltip>
@@ -421,7 +421,7 @@ const MessageList: React.FC<MessageListProps> = ({
                                     <FileSpreadsheet className="h-4 w-4" />
                                   </button>
                                 </TooltipTrigger>
-                                <TooltipContent side="top" className="bg-white">
+                                <TooltipContent side="top" className="theme-tooltip">
                                   <p>Export data to CSV</p>
                                 </TooltipContent>
                               </Tooltip>
@@ -443,7 +443,7 @@ const MessageList: React.FC<MessageListProps> = ({
                                     <BarChart className="h-4 w-4" />
                                   </button>
                                 </TooltipTrigger>
-                                <TooltipContent side="top" className="bg-white">
+                                <TooltipContent side="top" className="theme-tooltip">
                                   <p>Why these scores? (Feature importance)</p>
                                 </TooltipContent>
                               </Tooltip>
@@ -466,7 +466,7 @@ const MessageList: React.FC<MessageListProps> = ({
                                     <Cog className="h-4 w-4" />
                                   </button>
                                 </TooltipTrigger>
-                                <TooltipContent side="top" className="bg-white">
+                                <TooltipContent side="top" className="theme-tooltip">
                                   <p>Customize visualization</p>
                                 </TooltipContent>
                               </Tooltip>
@@ -478,7 +478,7 @@ const MessageList: React.FC<MessageListProps> = ({
                   ))}
                   {isProcessing && (
                     <div className="flex items-center justify-center pt-0 pb-2">
-                      <div className="bg-gray-50/80 rounded-lg p-4 space-y-2 w-full max-w-2xl">
+                      <div className="theme-loading-container space-y-2 w-full max-w-2xl">
                         {processingSteps.map((step) => (
                           <ProcessingIndicator key={step.id} step={step} />
                         ))}

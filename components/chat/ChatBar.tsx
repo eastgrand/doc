@@ -30,7 +30,7 @@ const ChatBar: React.FC<ChatBarProps> = ({ onSend, disabled = false, placeholder
   return (
     <div className={`flex items-end gap-2 ${className || ''}`}>
       <textarea
-        className="flex-1 resize-none border rounded-md p-2 text-sm placeholder:text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+        className="flex-1 resize-none theme-input placeholder:text-xs focus:outline-none focus:ring-1 focus:ring-primary"
         rows={1}
         value={text}
         onChange={(e) => setText(e.target.value)}

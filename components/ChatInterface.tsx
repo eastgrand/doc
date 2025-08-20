@@ -860,7 +860,7 @@ ${conversationText}
                   className={`inline-block p-3 rounded-lg text-xs cursor-pointer transition-all hover:shadow-md ${
                     message.role === 'user'
                       ? 'bg-[var(--firefly-19)] text-white hover:bg-[var(--firefly-20)]'
-                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                      : 'theme-message-container'
                   }`}
                   onClick={() => handleMessageClick(message)}
                 >
@@ -873,7 +873,7 @@ ${conversationText}
                   variant="ghost"
                   size="sm"
                   className={`absolute top-1 right-1 p-1 h-6 w-6 ${
-                    message.role === 'user' ? 'text-white hover:bg-[var(--firefly-20)]' : 'text-gray-500 hover:bg-gray-300'
+                    message.role === 'user' ? 'text-white hover:bg-[var(--firefly-20)]' : 'theme-text-secondary hover:theme-bg-tertiary'
                   }`}
                   onClick={() => handleCopyMessage(message)}
                   title="Copy message"
@@ -896,7 +896,7 @@ ${conversationText}
                   variant="ghost"
                   size="sm"
                   className={`p-1 h-6 w-6 ${
-                    message.role === 'user' ? 'text-white hover:bg-[var(--firefly-20)]' : 'text-gray-500 hover:bg-gray-300'
+                    message.role === 'user' ? 'text-white hover:bg-[var(--firefly-20)]' : 'theme-text-secondary hover:theme-bg-tertiary'
                   }`}
                   onClick={() => handleCopyMessage(message)}
                   title="Copy message"
@@ -918,9 +918,9 @@ ${conversationText}
               <Bot className="w-4 h-4" />
             </div>
             <div className="flex-1">
-              <div className="inline-flex items-center gap-3 p-3 rounded-lg bg-gray-100">
+              <div className="inline-flex items-center gap-3 p-3 rounded-lg theme-processing-indicator">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span className="text-xs text-gray-600">Running Full Analysis…</span>
+                <span className="text-xs theme-text-secondary">Running Full Analysis…</span>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -939,7 +939,7 @@ ${conversationText}
       </div>
 
       {/* Input area */}
-      <div className="flex-shrink-0 p-4 border-t max-h-[200px] overflow-y-auto">
+      <div className="flex-shrink-0 p-4 border-t theme-border max-h-[200px] overflow-y-auto">
         <div className="flex gap-2">
           <Textarea
             value={inputValue}

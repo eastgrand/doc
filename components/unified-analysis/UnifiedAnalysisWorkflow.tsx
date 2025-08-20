@@ -97,6 +97,7 @@ export interface UnifiedAnalysisWorkflowProps {
   setFormattedLegendData?: React.Dispatch<React.SetStateAction<any>>;
   selectedHotspot?: import('@/components/map/SampleHotspots').SampleHotspot | null;
   onHotspotProcessed?: () => void;
+  onAnalysisStart?: () => void;
 }
 
 type WorkflowStep = 'area' | 'buffer' | 'analysis' | 'results';
@@ -118,7 +119,8 @@ export default function UnifiedAnalysisWorkflow({
   defaultAnalysisType = 'query',
   setFormattedLegendData,
   selectedHotspot,
-  onHotspotProcessed
+  onHotspotProcessed,
+  onAnalysisStart
 }: UnifiedAnalysisWorkflowProps) {
   // State management
   const [workflowState, setWorkflowState] = useState<WorkflowState>({
@@ -385,6 +387,9 @@ export default function UnifiedAnalysisWorkflow({
       }));
       return;
     }
+
+    // Notify parent that analysis is starting
+    onAnalysisStart?.();
 
     setWorkflowState(prev => ({
       ...prev,
@@ -1147,7 +1152,24 @@ export default function UnifiedAnalysisWorkflow({
 
   // Reset workflow
   const resetWorkflow = useCallback(() => {
+    // Check if this is during a theme switch - if so, don't clear analysis layers
+    const isThemeSwitch = document.documentElement.hasAttribute('data-theme-switching') || 
+                         window.__themeTransitioning === true;
+    
+    if (isThemeSwitch) {
+      console.log('[UnifiedAnalysisWorkflow] 🎨 Theme switching detected - preserving analysis layers during reset');
+      // Just reset state without clearing map layers
+      setWorkflowState({
+        currentStep: 'area',
+        isProcessing: false
+      });
+      setResetCounter(prev => prev + 1);
+      return;
+    }
+    
     if (view) {
+      console.log('[UnifiedAnalysisWorkflow] 🔄 Full reset - clearing analysis layers');
+      
       // Clear all graphics from the map
       view.graphics.removeAll();
       
@@ -1166,6 +1188,11 @@ export default function UnifiedAnalysisWorkflow({
                 (layer as __esri.FeatureLayer).source?.length > 0); // Client-side layers
         
         return isAnalysisLayer;
+      });
+      
+      console.log('[UnifiedAnalysisWorkflow] Removing analysis layers:', {
+        layersFound: layersToRemove.length,
+        layerIds: layersToRemove.map(l => l.id)
       });
       
       layersToRemove.forEach(layer => {
@@ -1251,7 +1278,7 @@ export default function UnifiedAnalysisWorkflow({
                 <span className="font-medium text-xs">{step.label}</span>
               </button>
               {index < steps.length - 1 && (
-                <ChevronRight className="mx-2 text-gray-400 flex-shrink-0" />
+                <ChevronRight className="mx-2 theme-text-muted flex-shrink-0" />
               )}
             </div>
           );
@@ -1272,10 +1299,8 @@ export default function UnifiedAnalysisWorkflow({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
         {/* quickstartIQ */}
         <Card 
-          className={`cursor-pointer transition-all h-32 animate-entrance ${
-            workflowState.analysisType === 'query' 
-              ? 'border-green-500 bg-green-50 shadow-lg' 
-              : 'hover:shadow-lg'
+          className={`cursor-pointer transition-all h-32 animate-entrance theme-analysis-card ${
+            workflowState.analysisType === 'query' ? 'theme-analysis-card-selected' : ''
           }`}
           onClick={() => !workflowState.isProcessing && setWorkflowState(prev => ({ ...prev, analysisType: 'query' }))}
         >
@@ -1295,7 +1320,7 @@ export default function UnifiedAnalysisWorkflow({
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-2">
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs theme-text-secondary">
               Natural language queries for custom analysis
             </p>
           </CardContent>
@@ -1303,12 +1328,12 @@ export default function UnifiedAnalysisWorkflow({
 
         {/* infographIQ */}
         <Card 
-          className={`transition-all h-32 animate-entrance ${
+          className={`transition-all h-32 animate-entrance theme-analysis-card ${
             isProjectArea 
-              ? 'opacity-50 cursor-not-allowed theme-bg-secondary' 
+              ? 'theme-analysis-card-disabled' 
               : workflowState.analysisType === 'infographic' 
-                ? 'border-green-500 theme-bg-success-light shadow-lg cursor-pointer' 
-                : 'hover:shadow-lg cursor-pointer'
+                ? 'theme-analysis-card-selected cursor-pointer' 
+                : 'cursor-pointer'
           }`}
           onClick={() => !workflowState.isProcessing && !isProjectArea && setWorkflowState(prev => ({ ...prev, analysisType: 'infographic' }))}
         >
@@ -1330,7 +1355,7 @@ export default function UnifiedAnalysisWorkflow({
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-2">
-            <p className={`text-xs ${isProjectArea ? 'theme-text-secondary' : 'text-muted-foreground'}`}>
+            <p className={`text-xs ${isProjectArea ? 'theme-text-muted' : 'theme-text-secondary'}`}>
               {isProjectArea ? 'Not available for all areas at once. Make a selection first' : 'Pre-configured reports and insights'}
             </p>
           </CardContent>
@@ -1340,10 +1365,10 @@ export default function UnifiedAnalysisWorkflow({
         {/* <Card 
           className={`transition-all h-28 ${
             isProjectArea 
-              ? 'opacity-50 cursor-not-allowed bg-gray-100' 
+              ? 'opacity-50 cursor-not-allowed bg-gray-100 dark:!bg-gray-800' 
               : workflowState.analysisType === 'comprehensive' 
-                ? 'border-green-500 bg-green-50 shadow-lg cursor-pointer' 
-                : 'hover:shadow-lg cursor-pointer'
+                ? 'border-green-500 bg-green-50 dark:!bg-green-900/30 dark:!border-green-400 shadow-lg cursor-pointer' 
+                : 'hover:shadow-lg dark:hover:bg-gray-800 cursor-pointer'
           }`}
           onClick={() => !workflowState.isProcessing && !isProjectArea && setWorkflowState(prev => ({ ...prev, analysisType: 'comprehensive' }))}
         >
@@ -1374,7 +1399,7 @@ export default function UnifiedAnalysisWorkflow({
 
       {/* Configuration Section - Only show when analysis type is selected */}
       {workflowState.analysisType && (
-        <Card className="flex-1 flex flex-col border-t-2 border-t-gray-200">
+        <Card className="flex-1 flex flex-col border-t-2 border-t-gray-200 dark:!border-t-gray-700">
           <CardHeader className="flex-shrink-0 py-2">
             <CardTitle className="text-xs">Configure Analysis</CardTitle>
           </CardHeader>
@@ -1397,7 +1422,7 @@ export default function UnifiedAnalysisWorkflow({
                               Quick Start
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto theme-dialog">
                             <QueryDialog
                               onQuestionSelect={handlePredefinedQuerySelect}
                               title="quickstartIQ"
@@ -1425,10 +1450,10 @@ export default function UnifiedAnalysisWorkflow({
                               </span>
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="max-w-lg theme-bg-primary" aria-describedby="persona-dialog-description">
+                          <DialogContent className="max-w-lg theme-dialog" aria-describedby="persona-dialog-description">
                             <DialogHeader>
                               <DialogTitle>Select AI Persona</DialogTitle>
-                              <p id="persona-dialog-description" className="text-xs text-gray-600 mt-2">
+                              <p id="persona-dialog-description" className="text-xs theme-text-secondary mt-2">
                                 Choose an analytical perspective that matches your decision-making context.
                               </p>
                             </DialogHeader>
@@ -1450,7 +1475,7 @@ export default function UnifiedAnalysisWorkflow({
                                   )}
                                   <div className="flex-1 min-w-0">
                                     <div className="font-medium text-xs">{persona.name}</div>
-                                    <div className="text-xs text-gray-600 mt-1 leading-relaxed">
+                                    <div className="text-xs text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">
                                       {persona.description}
                                     </div>
                                   </div>
@@ -1471,7 +1496,7 @@ export default function UnifiedAnalysisWorkflow({
                               {clusterConfig.enabled ? `${clusterConfig.numClusters} Clusters` : 'Clustering'}
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto theme-dialog">
                             <ClusterConfigPanel
                               config={clusterConfig}
                               onConfigChange={setClusterConfig}
@@ -1483,7 +1508,7 @@ export default function UnifiedAnalysisWorkflow({
                     </div>
                     <textarea
                       placeholder="Enter your natural language query..."
-                      className="flex-1 w-full p-3 border rounded-lg text-xs min-h-[120px] resize-none"
+                      className="flex-1 w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-xs min-h-[120px] resize-none bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-transparent"
                       value={selectedQuery}
                       onChange={(e) => setSelectedQuery(e.target.value)}
                     />
@@ -1511,7 +1536,7 @@ export default function UnifiedAnalysisWorkflow({
                       Choose a Report Template
                     </Button>
                     {infographicsDialog.selectedReport && (
-                      <div className="mt-2 p-2 bg-gray-50 rounded">
+                      <div className="mt-2 p-2 bg-gray-50 dark:bg-gray-800 rounded">
                         <span className="text-sm">Selected: {infographicsReports.find(r => r.id === infographicsDialog.selectedReport)?.title || 'Unknown'}</span>
                       </div>
                     )}
@@ -1625,8 +1650,8 @@ export default function UnifiedAnalysisWorkflow({
                   <Card 
                     className={`cursor-pointer transition-all p-3 ${
                       bufferType === 'radius' 
-                        ? 'border-green-500 bg-green-50 shadow-md' 
-                        : 'hover:shadow-md'
+                        ? 'border-green-500 bg-green-50 dark:!bg-green-900/30 dark:!border-green-400 shadow-md' 
+                        : 'hover:shadow-md dark:hover:bg-gray-800'
                     }`}
                     onClick={() => {
                       setBufferType('radius');
@@ -1642,8 +1667,8 @@ export default function UnifiedAnalysisWorkflow({
                   <Card 
                     className={`cursor-pointer transition-all p-3 ${
                       bufferType === 'drivetime' 
-                        ? 'border-green-500 bg-green-50 shadow-md' 
-                        : 'hover:shadow-md'
+                        ? 'border-green-500 bg-green-50 dark:!bg-green-900/30 dark:!border-green-400 shadow-md' 
+                        : 'hover:shadow-md dark:hover:bg-gray-800'
                     }`}
                     onClick={() => {
                       setBufferType('drivetime');
@@ -1659,8 +1684,8 @@ export default function UnifiedAnalysisWorkflow({
                   <Card 
                     className={`cursor-pointer transition-all p-3 ${
                       bufferType === 'walktime' 
-                        ? 'border-green-500 bg-green-50 shadow-md' 
-                        : 'hover:shadow-md'
+                        ? 'border-green-500 bg-green-50 dark:!bg-green-900/30 dark:!border-green-400 shadow-md' 
+                        : 'hover:shadow-md dark:hover:bg-gray-800'
                     }`}
                     onClick={() => {
                       setBufferType('walktime');
@@ -1676,7 +1701,7 @@ export default function UnifiedAnalysisWorkflow({
                 </div>
 
                 {/* Buffer Configuration */}
-                <div className="space-y-2 bg-gray-50 p-3 rounded-lg">
+                <div className="space-y-2 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-medium mb-1">
@@ -1684,7 +1709,7 @@ export default function UnifiedAnalysisWorkflow({
                       </label>
                       <input
                         type="number"
-                        className="w-full px-2 py-1 text-xs border rounded"
+                        className="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                         value={bufferDistance}
                         onChange={(e) => setBufferDistance(e.target.value)}
                         min="0.1"
@@ -1695,7 +1720,7 @@ export default function UnifiedAnalysisWorkflow({
                     <div>
                       <label className="block text-xs font-medium mb-1">Unit</label>
                       <select
-                        className="w-full px-2 py-1 text-xs border rounded"
+                        className="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                         value={bufferUnit}
                         onChange={(e) => setBufferUnit(e.target.value as 'miles' | 'kilometers' | 'minutes')}
                       >
@@ -1710,7 +1735,7 @@ export default function UnifiedAnalysisWorkflow({
                       </select>
                     </div>
                   </div>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
                     {bufferType === 'radius' && (
                       `Create a ${bufferDistance} ${bufferUnit} radius buffer around your point.`
                     )}
@@ -1759,7 +1784,7 @@ export default function UnifiedAnalysisWorkflow({
         {/* Results content with Analysis/Chat, Data Table, and Insights */}
         <div className="flex-1 flex flex-col min-h-0">
           <Tabs value={activeResultsTab} onValueChange={setActiveResultsTab} className="flex-1 flex flex-col min-h-0">
-            <TabsList className="grid w-full grid-cols-3 flex-shrink-0 theme-bg-primary border-b mb-2">
+            <TabsList className="grid w-full grid-cols-3 flex-shrink-0 theme-bg-primary border-b dark:border-gray-700 mb-2">
               <TabsTrigger value="analysis" className="flex items-center gap-2">
                 <MessageCircle className="h-3 w-3" />
                 Analysis
@@ -1920,8 +1945,8 @@ export default function UnifiedAnalysisWorkflow({
             }
           }}
         >
-          <DialogContent className="max-w-7xl p-0 bg-white overflow-hidden">
-            <div className="flex justify-between items-center p-4 border-b bg-white">
+          <DialogContent className="max-w-7xl p-0 theme-dialog overflow-hidden">
+            <div className="flex justify-between items-center p-4 border-b theme-bg-primary theme-border">
               <DialogTitle className="text-base font-medium">Area Analysis Report</DialogTitle>
             </div>
             

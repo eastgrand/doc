@@ -717,31 +717,45 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
     setSelectedArea(null);
   };
 
-  // Clear layers when panel is closed
-  // Track if component is being unmounted vs just hidden
-  const isUnmountingRef = useRef(false);
+  // Store layers in a ref to persist across re-renders
+  const persistentLayersRef = useRef<Map<string, __esri.FeatureLayer>>(new Map());
   
+  // Sync persistent ref with state
   useEffect(() => {
-    // Only clear samples if truly closing the panel, not during theme switches
-    if (!visible && !document.documentElement.hasAttribute('data-theme-switching')) {
-      clearAllSamples();
+    persistentLayersRef.current = choroplethLayers;
+  }, [choroplethLayers]);
+  
+  // Clear layers when panel is closed - but NOT during theme switches
+  useEffect(() => {
+    // Skip clearing during theme switches or initial mount
+    if (!visible && persistentLayersRef.current.size > 0) {
+      // Check if this is a theme switch using multiple methods
+      const isThemeSwitch = document.documentElement.hasAttribute('data-theme-switching') || 
+                           window.__themeTransitioning === true;
+      
+      if (!isThemeSwitch) {
+        console.log('[SampleAreasPanel] Panel hidden - clearing layers');
+        clearAllSamples();
+      } else {
+        console.log('[SampleAreasPanel] Theme switching detected - preserving layers');
+      }
     }
   }, [visible]);
   
-  // Cleanup on actual unmount
+  // Cleanup only on actual unmount
   useEffect(() => {
+    // Save layers ref for cleanup
+    const layersToCleanup = persistentLayersRef.current;
+    
     return () => {
-      isUnmountingRef.current = true;
-      // Only clear if actually unmounting the component
-      if (isUnmountingRef.current) {
-        choroplethLayers.forEach(layer => {
-          if (view && view.map && !view.destroyed) {
-            view.map.remove(layer);
-          }
-        });
-      }
+      console.log('[SampleAreasPanel] Component unmounting - cleaning up layers');
+      layersToCleanup.forEach(layer => {
+        if (view && view.map && !view.destroyed && view.map.layers.includes(layer)) {
+          view.map.remove(layer);
+        }
+      });
     };
-  }, []);
+  }, [view]); // Only depend on view to avoid re-running
 
   const formatNumber = (num: number) => {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;

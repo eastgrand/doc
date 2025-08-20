@@ -44,21 +44,26 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   // Apply theme to document
   useEffect(() => {
     if (mounted) {
-      // Set flag to indicate theme is switching
+      // Set flag BEFORE changing theme to prevent layer removal
       document.documentElement.setAttribute('data-theme-switching', 'true');
+      window.__themeTransitioning = true; // Global flag as backup
       
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
+      // Small delay to ensure flag is set before any effects run
+      requestAnimationFrame(() => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        
+        // Notify widgets about theme change
+        window.dispatchEvent(new CustomEvent('theme-changed', { 
+          detail: { theme, timestamp: Date.now() }
+        }));
+      });
       
-      // Notify widgets about theme change
-      window.dispatchEvent(new CustomEvent('theme-changed', { 
-        detail: { theme, timestamp: Date.now() }
-      }));
-      
-      // Remove flag after theme switch is complete
+      // Remove flag after theme switch is complete - increased delay
       setTimeout(() => {
         document.documentElement.removeAttribute('data-theme-switching');
-      }, 500);
+        window.__themeTransitioning = false;
+      }, 1000); // Increased to 1 second to be safe
     }
   }, [theme, mounted]);
 
@@ -70,9 +75,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     setThemeState(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
   };
 
-  // Prevent hydration mismatch
+  // Prevent hydration mismatch - keep the same structure to avoid remounting
   if (!mounted) {
-    return <div className="theme-loading">{children}</div>;
+    // Return children directly to avoid remounting components
+    return <>{children}</>;
   }
 
   return (

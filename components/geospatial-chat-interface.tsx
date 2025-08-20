@@ -1938,8 +1938,11 @@ const EnhancedGeospatialChat = memo(({
       // MEMORY SAFEGUARD: Create feature layer with proper error handling
       let featureLayer;
       try {
+        const layerId = `analysis-layer-${Date.now()}`;
+        console.log('[applyAnalysisEngineVisualization] ✨ Creating analysis layer with ID:', layerId);
+        
         featureLayer = new FeatureLayer({
-          id: `analysis-layer-${Date.now()}`, // Ensure unique ID for CustomPopupManager
+          id: layerId, // Ensure unique ID for CustomPopupManager
           source: arcgisFeatures,
           fields: essentialFields,
           objectIdField: 'OBJECTID',
@@ -2029,17 +2032,25 @@ const EnhancedGeospatialChat = memo(({
       mapView.map.removeMany(existingLayers.toArray());
 
       // Add the new advanced layer
-      console.log('[AnalysisEngine] Adding layer to map:', {
+      console.log('[AnalysisEngine] 🎯 Adding analysis layer to map:', {
+        layerId: featureLayer.id,
         mapViewExists: !!mapView,
         mapExists: !!mapView?.map,
         layerVisible: featureLayer.visible,
         layerOpacity: featureLayer.opacity,
         featureCount: arcgisFeatures.length,
         layerTitle: featureLayer.title,
-        beforeAddMapLayers: mapView?.map?.layers?.length || 0
+        beforeAddMapLayers: mapView?.map?.layers?.length || 0,
+        isThemeSwitch: document.documentElement.hasAttribute('data-theme-switching') || window.__themeTransitioning
       });
       
+      // Add layer to map with theme switch awareness
       mapView.map.add(featureLayer);
+      
+      // Store metadata for theme switch protection
+      (featureLayer as any).__isAnalysisLayer = true;
+      (featureLayer as any).__createdAt = Date.now();
+      console.log('[AnalysisEngine] ✅ Analysis layer added with protection metadata');
       
       console.log('[AnalysisEngine] Layer added to map:', {
         afterAddMapLayers: mapView?.map?.layers?.length || 0,
@@ -4775,7 +4786,7 @@ const EnhancedGeospatialChat = memo(({
               className={`flex-1 px-3 py-1 rounded-md border transition-all ${
                 inputMode === 'analysis' 
                   ? 'bg-[#33a852] text-white border-[#33a852] shadow-sm' 
-                  : 'bg-gray-50 hover:bg-gray-100 border-gray-200'
+                  : 'bg-gray-50 hover:theme-bg-tertiary border-gray-200'
               }`}
             >
               <div className="flex items-center justify-center gap-2">
@@ -4791,7 +4802,7 @@ const EnhancedGeospatialChat = memo(({
                   ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' 
                   : inputMode === 'chat' 
                     ? 'bg-[#33a852] text-white border-[#33a852] shadow-sm' 
-                    : 'bg-gray-50 hover:bg-gray-100 border-gray-200'
+                    : 'bg-gray-50 hover:theme-bg-tertiary border-gray-200'
               }`}
               disabled={!features.length && !lastAnalysisEndpoint}
             >
@@ -4827,7 +4838,7 @@ const EnhancedGeospatialChat = memo(({
             <div className="flex-1">
               <div className="flex flex-col gap-4 mb-4 pt-0">
                 {/* Main Container */}
-                <div className="bg-gray-50 p-2 rounded-lg space-y-2">
+                <div className="theme-bg-secondary p-2 rounded-lg space-y-2">
                   {/* Title */}
                   <div className="flex items-center gap-2">
                     <Image
@@ -4876,7 +4887,7 @@ const EnhancedGeospatialChat = memo(({
                                 type="button"
                                 variant="outline"
                                 size="sm"
-                                className="relative flex items-center justify-center gap-2 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-7"
+                                className="relative flex items-center justify-center gap-2 text-xs font-medium border-2 hover:theme-bg-tertiary hover:theme-text-primary hover:theme-border shadow-sm hover:shadow rounded-lg w-full h-7"
                               >
                                 <Image
                                   src="/mpiq_pin2.png"
@@ -4937,7 +4948,7 @@ const EnhancedGeospatialChat = memo(({
                             type="button"
                             variant="outline"
                             size="sm"
-                            className="relative flex items-center justify-center gap-2 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-7"
+                            className="relative flex items-center justify-center gap-2 text-xs font-medium border-2 hover:theme-bg-tertiary hover:theme-text-primary hover:theme-border shadow-sm hover:shadow rounded-lg w-full h-7"
                             onClick={handleInfographicsClick}
                           >
                             <Image
@@ -4973,7 +4984,7 @@ const EnhancedGeospatialChat = memo(({
                                 type="button"
                                 variant="outline"
                                 size="sm"
-                                className="relative flex items-center justify-center gap-1 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-7"
+                                className="relative flex items-center justify-center gap-1 text-xs font-medium border-2 hover:theme-bg-tertiary hover:theme-text-primary hover:theme-border shadow-sm hover:shadow rounded-lg w-full h-7"
                                 onClick={() => setIsTargetDialogOpen(true)}
                               >
                                 {React.createElement(
@@ -5048,7 +5059,7 @@ const EnhancedGeospatialChat = memo(({
                                 type="button"
                                 variant="outline"
                                 size="sm"
-                                className="relative flex items-center justify-center gap-1 text-xs font-medium border-2 hover:bg-gray-50 hover:text-black hover:border-gray-200 shadow-sm hover:shadow rounded-lg w-full h-7"
+                                className="relative flex items-center justify-center gap-1 text-xs font-medium border-2 hover:theme-bg-tertiary hover:theme-text-primary hover:theme-border shadow-sm hover:shadow rounded-lg w-full h-7"
                               >
                                 {React.createElement(
                                   PERSONA_ICON_MAP[selectedPersona] || UserCog,
@@ -5119,7 +5130,7 @@ const EnhancedGeospatialChat = memo(({
                                     disabled={!clusteringSupported}
                                     className={`relative flex items-center justify-center gap-1 text-xs font-medium border-2 shadow-sm rounded-lg w-full h-7 ${
                                       clusteringSupported 
-                                        ? 'hover:bg-gray-50 hover:text-black hover:border-gray-200 hover:shadow' 
+                                        ? 'hover:theme-bg-tertiary hover:theme-text-primary hover:theme-border hover:shadow' 
                                         : 'opacity-50 cursor-not-allowed bg-gray-100 text-gray-400 border-gray-300'
                                     }`}
                                   >
@@ -5165,7 +5176,7 @@ const EnhancedGeospatialChat = memo(({
                       variant="ghost"
                       size="sm"
                       onClick={() => setIsFiltersDialogOpen(true)}
-                      className="text-[11px] px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full"
+                      className="text-[11px] px-3 py-1 theme-bg-secondary hover:theme-bg-tertiary rounded-full"
                     >
                       Filters: Apps ≥ {minApplications} • Top N {isTopNAll ? 'All' : topNResults}
                     </Button>
@@ -5262,7 +5273,7 @@ const EnhancedGeospatialChat = memo(({
                               type="button"
                               variant="outline"
                               size="sm"
-                              className="flex items-center justify-center gap-2 px-4 text-xs font-medium border border-gray-300 hover:bg-gray-100 hover:text-gray-700 shadow-sm hover:shadow rounded-lg h-8"
+                              className="flex items-center justify-center gap-2 px-4 text-xs font-medium border border-gray-300 hover:theme-bg-tertiary hover:text-gray-700 shadow-sm hover:shadow rounded-lg h-8"
                               onClick={handleClear}
                             >
                               <X className="h-4 w-4 text-gray-500" />
@@ -5522,7 +5533,7 @@ const EnhancedGeospatialChat = memo(({
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsInfographicsOpen(false)}
-                className="h-6 w-6 p-0 hover:bg-gray-100 rounded-full mr-[50px]"
+                className="h-6 w-6 p-0 hover:theme-bg-tertiary rounded-full mr-[50px]"
               >
                 <X className="h-3 w-3" />
               </Button>
