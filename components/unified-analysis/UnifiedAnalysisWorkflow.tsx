@@ -1107,7 +1107,7 @@ export default function UnifiedAnalysisWorkflow({
   // Render workflow steps indicator
   const renderStepIndicator = () => {
     const steps = [
-      { id: 'area', label: 'Select Area', icon: MapPin },
+      { id: 'area', label: 'Area', icon: MapPin },
       { id: 'buffer', label: 'Buffer', icon: Target },
       { id: 'analysis', label: 'Analysis', icon: BarChart3 },
       { id: 'results', label: 'Results', icon: FileText }

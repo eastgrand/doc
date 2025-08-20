@@ -6,7 +6,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Select,
   SelectContent,
@@ -75,12 +74,10 @@ export default function UnifiedAreaSelector({
   allowMultipleSelection = false
 }: UnifiedAreaSelectorProps) {
   // State management
-  const [selectionMethod, setSelectionMethod] = useState<'draw' | 'search' | 'buffer' | 'project'>(
-    defaultMethod === 'project' ? defaultMethod : 
-    defaultMethod === 'draw' ? defaultMethod : 'project'
-  );
+  const [selectionMethod, setSelectionMethod] = useState<'draw' | 'search' | 'buffer' | 'project'>('draw');
   const [drawMode, setDrawMode] = useState<'point' | 'polygon' | 'click' | null>(null);
   const [isSelecting, setIsSelecting] = useState(false);
+  const [isSelectingProjectArea, setIsSelectingProjectArea] = useState(false);
   const [selectedAreas, setSelectedAreas] = useState<AreaSelection[]>([]);
   
   // Buffer-specific state
@@ -296,7 +293,7 @@ export default function UnifiedAreaSelector({
   // Handle project area selection
   const handleProjectAreaSelection = useCallback(async () => {
     try {
-      setIsSelecting(true);
+      setIsSelectingProjectArea(true);
       setError(null);
       
       // Create a geometry that represents the entire project area
@@ -338,7 +335,7 @@ export default function UnifiedAreaSelector({
       console.error('Error selecting project area:', err);
       setError('Failed to select project area');
     } finally {
-      setIsSelecting(false);
+      setIsSelectingProjectArea(false);
     }
   }, [view, handleGeometryCreated]);
 
@@ -408,191 +405,77 @@ export default function UnifiedAreaSelector({
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 flex flex-col py-3">
-        <Tabs value={selectionMethod} onValueChange={(v) => setSelectionMethod(v as any)} className="flex-1 flex flex-col">
-          <TabsList className="grid w-full grid-cols-4 flex-shrink-0">
-            <TabsTrigger value="project" className="flex items-center gap-1 text-xs">
-              <MapPin className="h-3 w-3" />
-              Entire Project
-            </TabsTrigger>
-            <TabsTrigger value="draw" className="flex items-center gap-1 text-xs">
-              <Pencil className="h-3 w-3" />
-              Draw
-            </TabsTrigger>
-            <TabsTrigger value="search" className="flex items-center gap-1 text-xs">
-              <Search className="h-3 w-3" />
-              Search
-            </TabsTrigger>
-            <TabsTrigger 
-              value="buffer" 
-              className="flex items-center gap-1 text-xs" 
-              disabled={selectedAreas.length === 0 && !bufferCenter}
+      <CardContent className="flex-1 flex flex-col py-3 space-y-4">
+        {/* Drawing Tools Section */}
+        <div className="space-y-3">
+          <h3 className="text-xs font-medium text-gray-700 dark:text-gray-300">Draw on Map</h3>
+          <DrawingTools
+            drawMode={drawMode}
+            handleDrawButtonClick={handleDrawButtonClick}
+            isDrawing={isSelecting && drawMode !== null}
+            isSelectionMode={drawMode === 'click'}
+            onSelectionComplete={completeSelection}
+            hasSelectedFeature={hasSelectedFeatures}
+            selectedCount={selectedFeatureCount}
+            shouldShowNext={drawMode === 'click' && hasSelectedFeatures && selectedFeatureCount > 0}
+          />
+          {(isSelecting && drawMode) && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={clearCurrentDrawing}
+              className="w-full text-xs h-7"
             >
-              <CircleIcon className="h-3 w-3" />
-              Buffer {bufferCenter && <span className="text-xs">(Point Set)</span>}
-            </TabsTrigger>
-          </TabsList>
+              Clear Drawing
+            </Button>
+          )}
+        </div>
 
-          <TabsContent value="project" className="flex-1 flex flex-col space-y-4 mt-4">
-            <div className="space-y-4">
-              <div className="bg-gray-100 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-300 dark:border-gray-600">
-                <h3 className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">Entire Project Area</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">
-                  Analyze all data within the full project extent. This will include all available data points across the entire geographic region.
-                </p>
-                <Button
-                  onClick={handleProjectAreaSelection}
-                  className="w-full text-xs h-9 hover:shadow-sm hover:shadow-green-400/30 transition-all duration-200"
-                  disabled={isSelecting}
-                >
-                  {isSelecting && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
-                  Select Entire Project Area
-                  <ChevronRight className="ml-2 h-3 w-3" />
-                </Button>
-              </div>
-            </div>
-          </TabsContent>
+        {/* Divider */}
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">or</span>
+          </div>
+        </div>
 
-          <TabsContent value="draw" className="flex-1 flex flex-col space-y-4 mt-4">
-            <div className="space-y-4">
-              <DrawingTools
-                drawMode={drawMode}
-                handleDrawButtonClick={handleDrawButtonClick}
-                isDrawing={isSelecting}
-                isSelectionMode={drawMode === 'click'}
-                onSelectionComplete={completeSelection}
-                hasSelectedFeature={hasSelectedFeatures}
-                selectedCount={selectedFeatureCount}
-                shouldShowNext={drawMode === 'click' && hasSelectedFeatures && selectedFeatureCount > 0}
-              />
-              {(isSelecting || drawMode) && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={clearCurrentDrawing}
-                  className="w-full text-xs h-7"
-                >
-                  Clear Drawing
-                </Button>
-              )}
-            </div>
-          </TabsContent>
+        {/* Search Section */}
+        <div className="space-y-3">
+          <h3 className="text-xs font-medium text-gray-700 dark:text-gray-300">Search Location</h3>
+          <LocationSearch
+            onLocationSelected={handleLocationSelected}
+            placeholder="Enter address, city, or place..."
+            className="w-full"
+          />
+        </div>
 
-          <TabsContent value="search" className="flex-1 flex flex-col space-y-4 mt-4">
-            <LocationSearch
-              onLocationSelected={handleLocationSelected}
-              placeholder="Enter address, city, or place..."
-              className="w-full"
-            />
-            <p className="text-xs text-muted-foreground">
-              Search for a location to analyze. All searches create point locations that can be used with buffer options.
-            </p>
-          </TabsContent>
+        {/* Divider */}
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">or</span>
+          </div>
+        </div>
 
-          <TabsContent value="buffer" className="flex-1 flex flex-col space-y-4 mt-4">
-            {selectedAreas.length === 0 && !bufferCenter ? (
-              <Alert>
-                <AlertCircle className="h-3 w-3" />
-                <AlertDescription className="text-xs">
-                  Please first select an area using Draw or Search, or click on the map to set a buffer center point.
-                </AlertDescription>
-              </Alert>
-            ) : (
-              <div className="space-y-4">
-                <div>
-                  <Label className="text-xs">Buffer Type</Label>
-                  <Select value={bufferType} onValueChange={(v: any) => setBufferType(v)}>
-                    <SelectTrigger className="text-xs h-8">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="radius" className="text-xs">
-                        <div className="flex items-center gap-1">
-                          <CircleIcon className="h-3 w-3" />
-                          Radius
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="drivetime" className="text-xs">
-                        <div className="flex items-center gap-1">
-                          <Car className="h-3 w-3" />
-                          Drive Time
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="walktime" className="text-xs">
-                        <div className="flex items-center gap-1">
-                          <Walk className="h-3 w-3" />
-                          Walk Time
-                        </div>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-xs">Value</Label>
-                    <Input
-                      type="number"
-                      value={bufferValue}
-                      onChange={(e) => setBufferValue(e.target.value)}
-                      min="0.1"
-                      step="0.1"
-                      className="text-xs h-8"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs">Unit</Label>
-                    <Select 
-                      value={bufferUnit} 
-                      onValueChange={(v: any) => setBufferUnit(v)}
-                    >
-                      <SelectTrigger className="text-xs h-8">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {bufferType === 'radius' ? (
-                          <>
-                            <SelectItem value="miles" className="text-xs">Miles</SelectItem>
-                            <SelectItem value="kilometers" className="text-xs">Kilometers</SelectItem>
-                          </>
-                        ) : (
-                          <SelectItem value="minutes" className="text-xs">Minutes</SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                {!bufferCenter ? (
-                  <Alert>
-                    <MapPin className="h-3 w-3" />
-                    <AlertDescription className="text-xs">
-                      Click on the map to set the buffer center point, or use Draw/Search to create a point first.
-                    </AlertDescription>
-                  </Alert>
-                ) : (
-                  <div className="space-y-2">
-                    <Alert>
-                      <CheckCircle className="h-3 w-3" />
-                      <AlertDescription className="text-xs">
-                        Buffer center point is set. Generate your buffer area below.
-                      </AlertDescription>
-                    </Alert>
-                    <Button 
-                      onClick={generateServiceArea} 
-                      className="w-full text-xs h-9"
-                      disabled={isSelecting}
-                    >
-                      {isSelecting && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
-                      Generate {bufferType === 'radius' ? 'Buffer' : 'Service Area'}
-                      <ChevronRight className="ml-2 h-3 w-3" />
-                    </Button>
-                  </div>
-                )}
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
+        {/* Select Entire Area Section */}
+        <div className="space-y-3">
+          <div className="bg-gray-100 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-300 dark:border-gray-600">
+            <h3 className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-3">Analyze Entire Project Area</h3>
+            <Button
+              onClick={handleProjectAreaSelection}
+              className="w-full text-xs h-9 hover:shadow-sm hover:shadow-green-400/30 transition-all duration-200"
+              disabled={isSelectingProjectArea}
+            >
+              {isSelectingProjectArea && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
+              Select Entire Project Area
+              <ChevronRight className="ml-2 h-3 w-3" />
+            </Button>
+          </div>
+        </div>
 
         {error && (
           <Alert variant="destructive" className="mt-4">

@@ -63,7 +63,7 @@ const DrawingTools = ({
             disabled={isDrawing && tool.type !== 'click'}
             onClick={() => handleDrawButtonClick(tool.type as 'point' | 'polygon' | 'click')}
             className={`
-              flex flex-col items-center justify-center gap-1 h-16 w-full
+              flex flex-col items-center justify-center gap-1 h-12 w-full
               transition-colors duration-200 rounded-md
               ${drawMode === tool.type ? tool.classes.active : tool.classes.default}
               ${isDrawing && tool.type !== 'click' ? 'opacity-50 cursor-not-allowed' : ''}

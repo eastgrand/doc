@@ -124,7 +124,7 @@ export function LocationSearch({
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
-            className="pr-10"
+            className="pr-10 text-xs placeholder:text-xs"
           />
           {isLoading && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
