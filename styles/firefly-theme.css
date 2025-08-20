@@ -1443,3 +1443,51 @@ textarea::placeholder, input::placeholder {
 [data-theme="dark"] .theme-message-user {
   background-color: rgba(34, 197, 94, 0.15) !important;
 }
+
+/* ===== MAP ZOOM CONTROLS ===== */
+
+/* Zoom control positioning and base styles */
+.custom-zoom-control {
+  position: absolute !important;
+  bottom: 20px !important;
+  left: 84px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  z-index: 1000 !important;
+}
+
+/* Zoom button theming */
+.custom-zoom-control button {
+  background-color: var(--theme-bg-primary) !important;
+  color: var(--theme-text-primary) !important;
+  border: 1px solid var(--theme-border) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.15s ease !important;
+}
+
+.custom-zoom-control button:hover {
+  background-color: var(--theme-bg-tertiary) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+.custom-zoom-control button:focus {
+  border-color: var(--theme-accent-primary) !important;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2) !important;
+}
+
+.custom-zoom-control button:active {
+  background-color: var(--theme-bg-secondary) !important;
+  transform: translateY(0px) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Dark mode specific adjustments for zoom controls */
+[data-theme="dark"] .custom-zoom-control button {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .custom-zoom-control button:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
