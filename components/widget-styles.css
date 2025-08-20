@@ -2367,3 +2367,85 @@ div[role="tooltip"],
 [data-theme="dark"] .sample-areas-panel .esri-widget__heading {
     color: #33a852 !important; /* Keep the green color in dark mode */
 }
+
+/* Widget height constraints to prevent overlap with map controls */
+.esri-widget,
+.esri-widget--panel,
+.widget-container {
+  max-height: calc(100vh - 120px) !important;
+  overflow-y: auto !important;
+}
+
+/* Specific widget height constraints */
+.esri-layer-list,
+.esri-search,
+.esri-bookmarks,
+.esri-print {
+  max-height: calc(100vh - 120px) !important;
+  overflow-y: auto !important;
+}
+
+/* Widget container specific height constraints */
+.widget-container[data-widget-type="layerList"],
+.widget-container[data-widget-type="search"],  
+.widget-container[data-widget-type="bookmarks"],
+.widget-container[data-widget-type="print"] {
+  max-height: calc(100vh - 120px) !important;
+  overflow-y: auto !important;
+}
+
+/* Force height constraints on any widget in top-left position */
+.esri-ui-top-left > *,
+.esri-ui-top-left .esri-widget,
+.esri-ui-top-left .widget-container {
+  max-height: calc(100vh - 120px) !important;
+  overflow-y: auto !important;
+}
+
+/* Print widget export button - override blue brand color to green */
+.esri-print__export-button,
+.esri-print calcite-button.esri-print__export-button,
+calcite-button.esri-print__export-button,
+.esri-print [kind="brand"],
+.esri-print calcite-button[kind="brand"] {
+  --calcite-color-brand: #21c55d !important;
+  --calcite-color-brand-hover: #16a34a !important;
+  --calcite-color-brand-press: #15803d !important;
+  background-color: #21c55d !important;
+  border-color: #21c55d !important;
+  color: white !important;
+}
+
+.esri-print__export-button:hover,
+.esri-print calcite-button.esri-print__export-button:hover,
+calcite-button.esri-print__export-button:hover,
+.esri-print [kind="brand"]:hover,
+.esri-print calcite-button[kind="brand"]:hover {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+}
+
+.esri-print__export-button:active,
+.esri-print calcite-button.esri-print__export-button:active,
+calcite-button.esri-print__export-button:active,
+.esri-print [kind="brand"]:active,
+.esri-print calcite-button[kind="brand"]:active {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+}
+
+/* More aggressive targeting for print widget buttons */
+.esri-print .esri-print__export-button,
+.esri-print button[class*="export"],
+.esri-print calcite-button {
+  background-color: #21c55d !important;
+  border-color: #21c55d !important;
+  color: white !important;
+}
+
+.esri-print .esri-print__export-button:hover,
+.esri-print button[class*="export"]:hover,
+.esri-print calcite-button:hover {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+}
