@@ -501,6 +501,24 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
                     });
                   }
                 }
+                
+                // Special handling for bookmarks widget
+                if (type === 'bookmarks') {
+                  const bookmarkElements = container.querySelectorAll('.esri-bookmarks__bookmark');
+                  bookmarkElements.forEach((bookmark: Element) => {
+                    const bookmarkEl = bookmark as HTMLElement;
+                    bookmarkEl.style.setProperty('background-color', 'var(--theme-bg-secondary)', 'important');
+                    bookmarkEl.style.setProperty('color', 'var(--theme-text-primary)', 'important');
+                    bookmarkEl.style.setProperty('border-color', 'var(--theme-border)', 'important');
+                    
+                    // Update bookmark button
+                    const button = bookmarkEl.querySelector('.esri-bookmarks__bookmark-button');
+                    if (button) {
+                      const buttonEl = button as HTMLElement;
+                      buttonEl.style.setProperty('color', 'var(--theme-text-primary)', 'important');
+                    }
+                  });
+                }
               }
               
               console.log(`[MapWidgets] Applied theme update to ${type} widget`);

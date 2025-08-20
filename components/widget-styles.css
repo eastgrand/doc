@@ -1653,17 +1653,19 @@
 }
 
 .esri-bookmarks__bookmark {
-    border: 1px solid #e5e7eb !important;
+    border: 1px solid var(--theme-border) !important;
     border-radius: 8px !important;
     margin: 8px 0 !important;
     padding: 12px !important;
     transition: all 0.2s ease !important;
     cursor: pointer !important;
+    background-color: var(--theme-bg-secondary) !important;
+    color: var(--theme-text-primary) !important;
 }
 
 .esri-bookmarks__bookmark:hover {
-    border-color: #FFA500 !important;
-    background-color: #fff8e6 !important;
+    border-color: var(--theme-accent-primary) !important;
+    background-color: var(--theme-bg-tertiary) !important;
 }
 
 .esri-bookmarks__bookmark-button {
@@ -1674,12 +1676,12 @@
     padding: 0 !important;
     font-family: "Helvetica Neue", sans-serif !important;
     font-size: 14px !important;
-    color: #333 !important;
+    color: var(--theme-text-primary) !important;
     cursor: pointer !important;
 }
 
 .esri-bookmarks__bookmark-button:hover {
-    color: #000 !important;
+    color: var(--theme-text-primary) !important;
 }
 
 .esri-bookmarks__bookmark-name {
@@ -2351,6 +2353,24 @@ div[role="tooltip"],
     color: var(--theme-text-primary) !important;
     border-color: var(--theme-border) !important;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
+}
+
+/* Specific bookmark widget theme overrides */
+.widget-container .esri-bookmarks .esri-bookmarks__bookmark {
+    background-color: var(--theme-bg-secondary) !important;
+    color: var(--theme-text-primary) !important;
+    border-color: var(--theme-border) !important;
+}
+
+.widget-container .esri-bookmarks .esri-bookmarks__bookmark:hover {
+    background-color: var(--theme-bg-tertiary) !important;
+    border-color: var(--theme-accent-primary) !important;
+}
+
+.widget-container .esri-bookmarks .esri-bookmarks__bookmark-button,
+.widget-container .esri-bookmarks .esri-bookmarks__bookmark-name {
+    color: var(--theme-text-primary) !important;
+    background-color: transparent !important;
 }
 
 /* Theme transition support for all widget elements */
