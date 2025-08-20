@@ -737,6 +737,37 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     };
   }, [view]);
 
+  // Handle theme changes for LayerController
+  useEffect(() => {
+    const handleThemeChange = () => {
+      console.log('[LayerController] Theme changed, applying updates...');
+      
+      // Force React component to re-render by triggering a state update
+      setTimeout(() => {
+        // Update the component container styling
+        const container = document.querySelector('.layer-controller');
+        if (container) {
+          const element = container as HTMLElement;
+          element.style.backgroundColor = 'var(--theme-bg-primary)';
+          element.style.color = 'var(--theme-text-primary)';
+          element.style.borderColor = 'var(--theme-border)';
+          
+          // Force all child elements to update
+          const allElements = element.querySelectorAll('*:not(svg):not(path):not(circle):not(rect)');
+          allElements.forEach((child: Element) => {
+            const childEl = child as HTMLElement;
+            childEl.style.setProperty('color', 'var(--theme-text-primary)', 'important');
+          });
+        }
+        
+        console.log('[LayerController] Theme update complete');
+      }, 10);
+    };
+
+    window.addEventListener('theme-changed', handleThemeChange);
+    return () => window.removeEventListener('theme-changed', handleThemeChange);
+  }, []);
+
   // Expose methods via ref
   useImperativeHandle(ref, () => ({
     layerStates: layerStatesRef.current,

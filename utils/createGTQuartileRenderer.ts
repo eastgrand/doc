@@ -9,10 +9,10 @@ import {
 } from './types';
 import { LayerWithMetadata } from '@/types/geospatial-chat-component';
 import { LayerMetadata } from '@/types/layers';
-import { STANDARD_COLOR_SCHEME, STANDARD_OPACITY } from './renderer-standardization';
+import { ACTIVE_COLOR_SCHEME, STANDARD_OPACITY } from './renderer-standardization';
 
-// Use standard color scheme from competitive renderer
-export const DEFAULT_COLOR_STOPS: ColorStop[] = STANDARD_COLOR_SCHEME.slice(0, 4).map(color => {
+// Use active color scheme from renderer standardization
+export const DEFAULT_COLOR_STOPS: ColorStop[] = ACTIVE_COLOR_SCHEME.slice(0, 4).map(color => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
   if (!result) return [173, 216, 230];
   return [

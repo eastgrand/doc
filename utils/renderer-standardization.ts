@@ -5,13 +5,24 @@
  * the competitive analysis renderer's red-yellow-green color scheme and 0.6 opacity.
  */
 
-// Standard quartile color scheme (Firefly colors, 4 classes)
+// Original standard color scheme
 export const STANDARD_COLOR_SCHEME = [
   '#ff0040', // Firefly Deep Pink (lowest values)
   '#ffbf00', // Firefly Orange 
   '#00ff40', // Firefly Lime Green
   '#00ff80'  // Firefly Bright Green (highest values)
 ];
+
+// Firefly color scheme (matches LayerController and SampleAreasPanel)
+export const FIREFLY_COLOR_SCHEME = [
+  '#ff0040', // Firefly Deep Pink (lowest values)
+  '#ffbf00', // Firefly Orange 
+  '#00ff40', // Firefly Lime Green
+  '#00ff80'  // Firefly Bright Green (highest values)
+];
+
+// Current active color scheme (change this to switch schemes globally)
+export const ACTIVE_COLOR_SCHEME = FIREFLY_COLOR_SCHEME;
 
 // Standard opacity for all renderers
 export const STANDARD_OPACITY = 0.6;
@@ -36,7 +47,7 @@ export function hexToRgbWithOpacity(hex: string, opacity: number = STANDARD_OPAC
  * Get standardized color stops for a given number of classes
  */
 export function getStandardColorStops(numClasses: number): number[][] {
-  return STANDARD_COLOR_SCHEME.slice(0, numClasses).map(color => 
+  return ACTIVE_COLOR_SCHEME.slice(0, numClasses).map(color => 
     hexToRgbWithOpacity(color)
   );
 }
@@ -148,7 +159,7 @@ export function standardizeRenderer(renderer: any, numClasses: number = 4): any 
 export function getStandardQuartileConfig(config: any): any {
   return {
     ...config,
-    colorStops: STANDARD_COLOR_SCHEME.slice(0, 4).map(color => {
+    colorStops: ACTIVE_COLOR_SCHEME.slice(0, 4).map(color => {
       const rgb = hexToRgbWithOpacity(color, 1); // Get RGB without opacity
       return [rgb[0], rgb[1], rgb[2]]; // Return just RGB array
     }),

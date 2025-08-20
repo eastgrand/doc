@@ -7,6 +7,7 @@ import ClassBreaksRenderer from "@arcgis/core/renderers/ClassBreaksRenderer";
 import Color from "@arcgis/core/Color";
 import Graphic from "@arcgis/core/Graphic";
 import Polygon from "@arcgis/core/geometry/Polygon";
+import { ACTIVE_COLOR_SCHEME } from '@/utils/renderer-standardization';
 
 // Pre-joined data interfaces
 export interface PreJoinedSampleAreasData {
@@ -642,21 +643,16 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
   };
 
   const createCitySpecificRenderer = (breaks: number[], renderingField: string) => {
-    // Use Firefly quartile color scheme
-    const fireflyColors = [
-      '#ff0040', // Firefly Deep Pink (lowest values)
-      '#ffbf00', // Firefly Orange 
-      '#00ff40', // Firefly Lime Green
-      '#00ff80'  // Firefly Bright Green (highest values)
-    ];
+    // Use the centralized Firefly color scheme
+    const fireflyColors = ACTIVE_COLOR_SCHEME;
 
     return new ClassBreaksRenderer({
       field: renderingField, // Use the first selected metric instead of hardcoded 'population'
-      classBreakInfos: fireflyColors.map((color, index) => ({
+      classBreakInfos: fireflyColors.map((color: string, index: number) => ({
         minValue: index === 0 ? -Infinity : breaks[index],
         maxValue: index === fireflyColors.length - 1 ? Infinity : breaks[index + 1],
         symbol: new SimpleFillSymbol({
-          color: new Color(color),
+          color: new Color([...new Color(color).toRgba().slice(0, 3), 0.6]), // Apply 0.6 opacity to symbol
           outline: {
             color: new Color([0, 0, 0, 0]),
             width: 0

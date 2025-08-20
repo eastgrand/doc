@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ProcessedAnalysisData, VisualizationResult, VisualizationConfig } from '../../types';
 import { EnhancedRendererBase, EnhancedVisualizationConfig } from './EnhancedRendererBase';
-import { STANDARD_COLOR_SCHEME, STANDARD_OPACITY, standardizeRenderer } from '@/utils/renderer-standardization';
+import { ACTIVE_COLOR_SCHEME, STANDARD_OPACITY, standardizeRenderer } from '@/utils/renderer-standardization';
 
 /**
  * ChoroplethRenderer - Enhanced choropleth map visualization with visual effects
@@ -231,8 +231,8 @@ export class ChoroplethRenderer extends EnhancedRendererBase {
   }
 
   private generateColorScheme(data: ProcessedAnalysisData, config: VisualizationConfig, numClasses: number): string[] {
-    // Use standard color scheme from competitive renderer
-    return STANDARD_COLOR_SCHEME.slice(0, numClasses);
+    // Use active color scheme from renderer standardization
+    return ACTIVE_COLOR_SCHEME.slice(0, numClasses);
   }
 
   private createArcGISRenderer(classBreaks: number[], colors: string[], config: VisualizationConfig): any {

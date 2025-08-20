@@ -1,6 +1,6 @@
 import { VisualizationRendererStrategy, ProcessedAnalysisData, VisualizationResult, VisualizationConfig } from '../../types';
 import { getQuintileColorScheme, calculateEqualCountQuintiles } from '../../utils/QuintileUtils';
-import { STANDARD_COLOR_SCHEME, STANDARD_OPACITY } from '../../../../utils/renderer-standardization';
+import { ACTIVE_COLOR_SCHEME, STANDARD_OPACITY } from '../../../../utils/renderer-standardization';
 
 /**
  * ClusterRenderer - Advanced cluster visualization for spatial clustering
@@ -138,7 +138,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
     
     // For 4 or fewer clusters, use the standard 4-color scheme
     if (clusterCount <= 4) {
-      return STANDARD_COLOR_SCHEME.slice(0, clusterCount);
+      return ACTIVE_COLOR_SCHEME.slice(0, clusterCount);
     }
     
     // For 5 clusters, use the full quintile scheme (which is red-to-green)
@@ -150,7 +150,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
     // For more than 5 clusters, cycle through red-to-green scheme
     const colors = [];
     for (let i = 0; i < clusterCount; i++) {
-      colors.push(STANDARD_COLOR_SCHEME[i % STANDARD_COLOR_SCHEME.length]);
+      colors.push(ACTIVE_COLOR_SCHEME[i % ACTIVE_COLOR_SCHEME.length]);
     }
     
     return colors;

@@ -6,10 +6,10 @@ import {
   RendererResult, 
   ColorStop 
 } from './types';
-import { STANDARD_COLOR_SCHEME, STANDARD_OPACITY } from './renderer-standardization';
+import { ACTIVE_COLOR_SCHEME, STANDARD_OPACITY } from './renderer-standardization';
 
-// Use standard color scheme from competitive renderer
-const DEFAULT_COLOR_STOPS: ColorStop[] = STANDARD_COLOR_SCHEME.slice(0, 5).map(color => {
+// Use active color scheme from renderer standardization
+const DEFAULT_COLOR_STOPS: ColorStop[] = ACTIVE_COLOR_SCHEME.slice(0, 5).map(color => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
   if (!result) return [239, 59, 44];
   return [

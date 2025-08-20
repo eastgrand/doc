@@ -2336,8 +2336,29 @@ div[role="tooltip"],
 
 /* Ensure all nested widget elements follow theme */
 .widget-container *:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon) {
-    background-color: inherit !important;
-    color: inherit !important;
+    background-color: var(--theme-bg-primary) !important;
+    color: var(--theme-text-primary) !important;
+    border-color: var(--theme-border) !important;
+}
+
+/* Force ESRI widget content to use theme colors */
+.widget-container .esri-widget *:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon),
+.widget-container .esri-search *:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon),
+.widget-container .esri-layer-list *:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon),
+.widget-container .esri-bookmarks *:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon),
+.widget-container .esri-print *:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon) {
+    background-color: var(--theme-bg-primary) !important;
+    color: var(--theme-text-primary) !important;
+    border-color: var(--theme-border) !important;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
+}
+
+/* Theme transition support for all widget elements */
+.widget-container,
+.widget-container *,
+.esri-widget,
+.esri-widget * {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
 }
 
 /* Widget headers should always use theme colors */

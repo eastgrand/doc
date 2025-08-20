@@ -436,43 +436,82 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
 
   // Handle theme changes for widgets
   useEffect(() => {
-    const handleThemeChange = () => {
-      console.log('[MapWidgets] Theme changed, refreshing widget state...');
-      // Force widget containers to re-render their styles without affecting visibility
+    const handleThemeChange = (event: any) => {
+      console.log('[MapWidgets] Theme changed, applying comprehensive theme updates...');
+      
+      // Store current widget visibility state to prevent it from being lost
+      const currentActiveWidget = activeWidget;
+      
+      // Force comprehensive theme update without losing widget state
       setTimeout(() => {
         const containers = document.querySelectorAll('.widget-container');
         containers.forEach(container => {
           const element = container as HTMLElement;
           const widgetType = element.getAttribute('data-widget-type');
-          const shouldBeVisible = widgetType === activeWidget;
           
-          // Force style recalculation without changing visibility
-          const currentVisibility = element.style.visibility;
-          element.style.visibility = 'hidden';
-          element.offsetHeight; // Force reflow
-          element.style.visibility = currentVisibility;
+          // Force all CSS custom properties to be recalculated
+          const computedStyle = getComputedStyle(element);
+          element.style.backgroundColor = computedStyle.getPropertyValue('--theme-bg-primary');
+          element.style.color = computedStyle.getPropertyValue('--theme-text-primary');
+          element.style.borderColor = computedStyle.getPropertyValue('--theme-border');
           
-          // Ensure correct display state is maintained
+          // Force all child elements to update theme
+          const allElements = element.querySelectorAll('*');
+          allElements.forEach((child: Element) => {
+            const childEl = child as HTMLElement;
+            if (!childEl.tagName.toLowerCase().includes('svg')) {
+              const childStyle = getComputedStyle(childEl);
+              // Force recalculation of theme variables
+              childEl.style.setProperty('background-color', 'var(--theme-bg-primary)', 'important');
+              childEl.style.setProperty('color', 'var(--theme-text-primary)', 'important');
+              childEl.style.setProperty('border-color', 'var(--theme-border)', 'important');
+            }
+          });
+          
+          // Preserve visibility state based on current active widget
+          const shouldBeVisible = widgetType === currentActiveWidget;
           element.style.display = shouldBeVisible ? 'block' : 'none';
           
-          // Refresh widget internal state if it's active
-          if (shouldBeVisible && widgetType) {
-            refreshWidgetState(widgetType);
+          // Force widget to re-render by triggering a reflow
+          element.style.transform = 'translateZ(0)';
+          element.offsetHeight; // Force reflow
+          element.style.transform = '';
+        });
+
+        // Force ESRI widgets to update their internal styling
+        Object.entries(widgetsRef.current).forEach(([type, widget]) => {
+          if (widget && !widget.destroyed) {
+            try {
+              // For ESRI widgets, force a style update by updating container
+              const container = widget.container as HTMLElement;
+              if (container) {
+                container.style.setProperty('background-color', 'var(--theme-bg-primary)', 'important');
+                container.style.setProperty('color', 'var(--theme-text-primary)', 'important');
+                
+                // For specific widget types, force internal updates
+                if (type === 'search' && (widget as any).viewModel) {
+                  // Force search widget to update suggestions styling
+                  const searchWidget = widget as __esri.widgetsSearch;
+                  if (searchWidget.allSources) {
+                    searchWidget.allSources.forEach(source => {
+                      if (source.suggestionsEnabled) {
+                        // Trigger a small update to refresh internal styling
+                        source.suggestionsEnabled = source.suggestionsEnabled;
+                      }
+                    });
+                  }
+                }
+              }
+              
+              console.log(`[MapWidgets] Applied theme update to ${type} widget`);
+            } catch (error) {
+              console.warn(`[MapWidgets] Could not update theme for ${type} widget:`, error);
+            }
           }
         });
-      }, 50); // Small delay to ensure theme has been applied
-    };
-
-    const refreshWidgetState = (widgetType: string) => {
-      const widget = widgetsRef.current[widgetType as keyof WidgetState];
-      if (widget && typeof (widget as any).refresh === 'function') {
-        try {
-          (widget as any).refresh();
-          console.log(`[MapWidgets] Refreshed ${widgetType} widget state`);
-        } catch (error) {
-          console.warn(`[MapWidgets] Could not refresh ${widgetType} widget:`, error);
-        }
-      }
+        
+        console.log('[MapWidgets] Theme update complete, preserved activeWidget:', currentActiveWidget);
+      }, 10); // Very short delay to ensure theme variables are updated
     };
 
     window.addEventListener('theme-changed', handleThemeChange);
