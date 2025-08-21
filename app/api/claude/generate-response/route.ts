@@ -2429,59 +2429,116 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 console.log(`[Claude Prompt Gen] No valid numeric data found for ${currentLayerPrimaryField} in layer ${layerName}.`);
             }
 
-            // --- Identify and Summarize Top Features --- 
-            let topFeatures: TopFeature[] = [];
+            // --- Optimized Data Summarization (Replaces Feature Enumeration) ---
             try {
-                const sortedFeatures = sortAttributesByField(features, currentLayerPrimaryField);
-                console.log(`[Claude Prompt Gen] Sorted ${sortedFeatures.length} features for layer ${layerName} by ${currentLayerPrimaryField}.`);
-
-                // Use FULL dataset for accurate analysis - no artificial limits
-                topFeatures = sortedFeatures.map((f: FeatureProperties): TopFeature => {
-                    // *** FIX: Access nested properties for getZIPCode ***
-                    // Assuming 'f' has the structure { properties: { actual_attributes } }
-                    const actualProperties = f.properties || f; // Use f.properties if it exists, else f itself
-                    const tempFeatureForZip = { properties: actualProperties, attributes: actualProperties }; 
-                    const zipCode = getZIPCode(tempFeatureForZip); // Pass the actual properties
-                    const description = actualProperties.DESCRIPTION ? String(actualProperties.DESCRIPTION) : null; // Get description from actual properties
-                    const value = actualProperties[currentLayerPrimaryField] as number;
+                // Import the optimized summarization system
+                const { replaceExistingFeatureEnumeration } = await import('./data-summarization/IntegrationBridge');
+                
+                // Create processed layer data structure for the summarization system
+                const processedLayerData = [{
+                    layerId: layerResult.layerId,
+                    layerName: layerName,
+                    layerType: layerResult.layerType || 'feature',
+                    features: features,
+                    extent: layerResult.extent,
+                    fields: layerResult.fields,
+                    geometryType: layerResult.geometryType,
+                    isComprehensiveSummary: layerResult.isComprehensiveSummary
+                }];
+                
+                // Attempt optimized summarization
+                const optimizedSummary = replaceExistingFeatureEnumeration(
+                    processedLayerData,
+                    { [layerResult.layerId]: layerConfig },
+                    metadata,
+                    currentLayerPrimaryField
+                );
+                
+                if (optimizedSummary && optimizedSummary.trim().length > 0) {
+                    // Use optimized summary - prevents 413 errors
+                    dataSummary += optimizedSummary;
+                    console.log(`[Claude Prompt Gen] ✅ Used optimized summarization for layer ${layerName} (${features.length} features)`);
+                } else {
+                    // Fallback to existing logic for backward compatibility
+                    console.log(`[Claude Prompt Gen] ⏭️ Using existing feature enumeration for layer ${layerName}`);
                     
-                    // Logging within map
-                    // console.log(`  [Top Feature Map] ZIP: ${zipCode}, Desc: ${description}, Val: ${value}`);
-                    
-                    return { zipCode, description, value };
-                });
+                    // Original feature enumeration logic as fallback
+                    let topFeatures: TopFeature[] = [];
+                    const sortedFeatures = sortAttributesByField(features, currentLayerPrimaryField);
+                    console.log(`[Claude Prompt Gen] Sorted ${sortedFeatures.length} features for layer ${layerName} by ${currentLayerPrimaryField}.`);
 
-                console.log(`[Claude Prompt Gen] Extracted top ${topFeatures.length} features for layer ${layerName}.`);
-
-                if (topFeatures.length > 0) {
-                    dataSummary += `- Top Areas by ${humanReadableFieldName}:\n`;
-                    topFeatures.forEach((tf, index) => {
-                        // DEBUG: Log all values for competitive analysis
-                        console.log(`🔍 [Regular Processing] ${tf.description || tf.zipCode}:`);
-                        console.log(`   currentLayerPrimaryField: ${currentLayerPrimaryField}`);
-                        console.log(`   tf.value: ${tf.value}`);
-                        console.log(`   layerName: ${layerName}`);
+                    // Use FULL dataset for accurate analysis - no artificial limits
+                    topFeatures = sortedFeatures.map((f: FeatureProperties): TopFeature => {
+                        // *** FIX: Access nested properties for getZIPCode ***
+                        // Assuming 'f' has the structure { properties: { actual_attributes } }
+                        const actualProperties = f.properties || f; // Use f.properties if it exists, else f itself
+                        const tempFeatureForZip = { properties: actualProperties, attributes: actualProperties }; 
+                        const zipCode = getZIPCode(tempFeatureForZip); // Pass the actual properties
+                        const description = actualProperties.DESCRIPTION ? String(actualProperties.DESCRIPTION) : null; // Get description from actual properties
+                        const value = actualProperties[currentLayerPrimaryField] as number;
                         
-                        // Cap any scores over 10 (competitive analysis should be 1-10 scale)
-                        let valueToFormat = tf.value;
-                        if (currentLayerPrimaryField === 'thematic_value' && tf.value > 10) {
-                          valueToFormat = Math.max(1.0, Math.min(10.0, tf.value));
-                          console.log(`🔧 [Regular Processing] Capped score from ${tf.value} to ${valueToFormat} for area ${tf.description || tf.zipCode}`);
-                        } else if (tf.value > 10) {
-                          console.log(`⚠️ [Regular Processing] Score ${tf.value} > 10 but not capped (field: ${currentLayerPrimaryField})`);
-                        }
-                        
-                        const formattedValue = formatFieldValue(valueToFormat, currentLayerPrimaryField, layerConfig);
-                        // Use description (which might contain city name) if available, otherwise ZIP
-                        const locationIdentifier = tf.description ? `${tf.description} (ZIP: ${tf.zipCode})` : `ZIP ${tf.zipCode}`; 
-                        // Use the actual field name, not hardcoded competitive_advantage_score
-                        const fieldLabel = getHumanReadableFieldName(currentLayerPrimaryField);
-                        dataSummary += `  ${index + 1}. ${locationIdentifier}: ${fieldLabel} ${formattedValue}\n`;
+                        return { zipCode, description, value };
                     });
-                    console.log(`[Claude Prompt Gen] Added top features list to summary for layer ${layerName}.`);
+
+                    console.log(`[Claude Prompt Gen] Extracted top ${topFeatures.length} features for layer ${layerName}.`);
+
+                    if (topFeatures.length > 0) {
+                        dataSummary += `- Top Areas by ${humanReadableFieldName}:\n`;
+                        topFeatures.forEach((tf, index) => {
+                            // Cap any scores over 10 (competitive analysis should be 1-10 scale)
+                            let valueToFormat = tf.value;
+                            if (currentLayerPrimaryField === 'thematic_value' && tf.value > 10) {
+                              valueToFormat = Math.max(1.0, Math.min(10.0, tf.value));
+                              console.log(`🔧 [Regular Processing] Capped score from ${tf.value} to ${valueToFormat} for area ${tf.description || tf.zipCode}`);
+                            } else if (tf.value > 10) {
+                              console.log(`⚠️ [Regular Processing] Score ${tf.value} > 10 but not capped (field: ${currentLayerPrimaryField})`);
+                            }
+                            
+                            const formattedValue = formatFieldValue(valueToFormat, currentLayerPrimaryField, layerConfig);
+                            // Use description (which might contain city name) if available, otherwise ZIP
+                            const locationIdentifier = tf.description ? `${tf.description} (ZIP: ${tf.zipCode})` : `ZIP ${tf.zipCode}`; 
+                            // Use the actual field name, not hardcoded competitive_advantage_score
+                            const fieldLabel = getHumanReadableFieldName(currentLayerPrimaryField);
+                            dataSummary += `  ${index + 1}. ${locationIdentifier}: ${fieldLabel} ${formattedValue}\n`;
+                        });
+                        console.log(`[Claude Prompt Gen] Added top features list to summary for layer ${layerName}.`);
+                    }
                 }
             } catch (e) {
-                console.error(`[Claude Prompt Gen] Error sorting or processing top features for layer ${layerName}:`, e);
+                console.error(`[Claude Prompt Gen] ❌ Error in optimized summarization, using fallback for layer ${layerName}:`, e);
+                
+                // Complete fallback to original logic
+                let topFeatures: TopFeature[] = [];
+                try {
+                    const sortedFeatures = sortAttributesByField(features, currentLayerPrimaryField);
+                    console.log(`[Claude Prompt Gen] Sorted ${sortedFeatures.length} features for layer ${layerName} by ${currentLayerPrimaryField}.`);
+
+                    topFeatures = sortedFeatures.map((f: FeatureProperties): TopFeature => {
+                        const actualProperties = f.properties || f;
+                        const tempFeatureForZip = { properties: actualProperties, attributes: actualProperties }; 
+                        const zipCode = getZIPCode(tempFeatureForZip);
+                        const description = actualProperties.DESCRIPTION ? String(actualProperties.DESCRIPTION) : null;
+                        const value = actualProperties[currentLayerPrimaryField] as number;
+                        return { zipCode, description, value };
+                    });
+
+                    if (topFeatures.length > 0) {
+                        dataSummary += `- Top Areas by ${humanReadableFieldName}:\n`;
+                        topFeatures.forEach((tf, index) => {
+                            let valueToFormat = tf.value;
+                            if (currentLayerPrimaryField === 'thematic_value' && tf.value > 10) {
+                              valueToFormat = Math.max(1.0, Math.min(10.0, tf.value));
+                            }
+                            
+                            const formattedValue = formatFieldValue(valueToFormat, currentLayerPrimaryField, layerConfig);
+                            const locationIdentifier = tf.description ? `${tf.description} (ZIP: ${tf.zipCode})` : `ZIP ${tf.zipCode}`; 
+                            const fieldLabel = getHumanReadableFieldName(currentLayerPrimaryField);
+                            dataSummary += `  ${index + 1}. ${locationIdentifier}: ${fieldLabel} ${formattedValue}\n`;
+                        });
+                    }
+                } catch (fallbackError) {
+                    console.error(`[Claude Prompt Gen] Error in fallback feature processing for layer ${layerName}:`, fallbackError);
+                }
             }
 
             // Add the processed layer info to the array for potential later use (if needed)
