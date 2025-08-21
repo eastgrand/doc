@@ -27,24 +27,29 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            className={`inline-flex items-center justify-center w-4 h-4 ml-1 text-gray-400 hover:text-gray-600 transition-colors ${className}`}
+            className={`inline-flex items-center justify-center w-4 h-4 ml-1 transition-colors ${className}`}
+            style={{ 
+              color: 'var(--theme-text-muted)'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--theme-accent-primary)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--theme-text-muted)'}
             aria-label={`Info about ${title}`}
           >
             <Info className="w-3.5 h-3.5" />
           </button>
         </TooltipTrigger>
-        <TooltipContent className="max-w-sm p-3 space-y-2 bg-white border border-gray-200 shadow-lg">
-          <div className="font-semibold text-sm">{title}</div>
-          <div className="text-xs text-gray-600">{description}</div>
+        <TooltipContent className="max-w-sm p-3 space-y-2 theme-tooltip">
+          <div className="font-semibold text-sm" style={{ color: 'var(--theme-text-primary)' }}>{title}</div>
+          <div className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>{description}</div>
           {formula && (
             <div className="text-xs">
-              <span className="font-semibold">Formula: </span>
-              <code className="bg-gray-100 px-1 py-0.5 rounded text-[11px]">{formula}</code>
+              <span className="font-semibold" style={{ color: 'var(--theme-text-primary)' }}>Formula: </span>
+              <code className="theme-code text-[11px]">{formula}</code>
             </div>
           )}
           {example && (
-            <div className="text-xs text-gray-500">
-              <span className="font-semibold">Example: </span>
+            <div className="text-xs" style={{ color: 'var(--theme-text-muted)' }}>
+              <span className="font-semibold" style={{ color: 'var(--theme-text-primary)' }}>Example: </span>
               {example}
             </div>
           )}

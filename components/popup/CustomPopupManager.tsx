@@ -708,7 +708,7 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
       if (attrs.address) {
         const addressDiv = document.createElement('div');
         addressDiv.style.fontSize = '14px';
-        addressDiv.style.color = '#555';
+        addressDiv.style.color = 'var(--theme-text-secondary)';
         addressDiv.style.marginBottom = '8px';
         addressDiv.innerHTML = `<strong>Address:</strong> ${attrs.address}`;
         fieldContainer.appendChild(addressDiv);
@@ -720,7 +720,7 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
         if (attrs[fieldName]) {
           const fieldDiv = document.createElement('div');
           fieldDiv.style.fontSize = '12px';
-          fieldDiv.style.color = '#666';
+          fieldDiv.style.color = 'var(--theme-text-secondary)';
           fieldDiv.style.marginBottom = '4px';
           fieldDiv.innerHTML = `<strong>${fieldName}:</strong> ${attrs[fieldName]}`;
           fieldContainer.appendChild(fieldDiv);
@@ -770,7 +770,7 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
         const barBg = document.createElement('div');
         barBg.style.flex = '1';
         barBg.style.height = '6px';
-        barBg.style.background = '#e0e0e0';
+        barBg.style.background = 'var(--theme-bg-tertiary)';
         barBg.style.borderRadius = '3px';
         barBg.style.position = 'relative';
 
@@ -941,14 +941,14 @@ const applyCustomPopupTemplates = (view: __esri.MapView, config?: PopupConfig) =
               const zoomButton = document.createElement("button");
               zoomButton.textContent = "Zoom to";
               zoomButton.className = "popup-action-button";
-              zoomButton.style.backgroundColor = "#4285f4";
+              zoomButton.style.backgroundColor = "var(--theme-accent-secondary)";
               zoomButton.style.color = "white";
               
               // Create infographics button
               const infoButton = document.createElement("button");
               infoButton.textContent = "Infographics";
               infoButton.className = "popup-action-button";
-              infoButton.style.backgroundColor = "#33a852";
+              infoButton.style.backgroundColor = "var(--theme-accent-primary)";
               infoButton.style.color = "white";
               
               // Get the graphic from the event if available
@@ -1138,7 +1138,7 @@ const generateBarChart = (
         metrics.push({
           label: FieldMappingHelper.getFriendlyFieldName(mainScoreField),
           value: mainScoreValue,
-          color: '#33a852',
+          color: 'var(--theme-accent-primary)',
           isPercent: false,
           statistics: {
             min: minValue,
@@ -1174,7 +1174,7 @@ const generateBarChart = (
           metrics.push({
             label: FieldMappingHelper.getFriendlyFieldName(brandField.fieldName) || `${brandField.brandName} Market Share`,
             value: brandField.value,
-            color: '#007bff', // Blue for brand metrics
+            color: 'var(--firefly-8)', // Blue for brand metrics
             isPercent: true
           });
         }
@@ -1192,13 +1192,13 @@ const generateBarChart = (
           attrs[key] !== 0) { // Show fields with non-zero values (including negative for brand differences)
         
         // Determine color based on field type (no hardcoded brand colors)
-        let color = '#6c757d'; // Default gray
+        let color = 'var(--theme-text-muted)'; // Default gray
         if (key.includes('score')) {
-          color = '#4285f4'; // Blue for scores
+          color = 'var(--firefly-8)'; // Blue for scores
         } else if (key.includes('population') || key.includes('income')) {
-          color = '#28a745'; // Green for demographics
+          color = 'var(--firefly-13)'; // Green for demographics
         } else if (key.includes('market') || key.includes('gap')) {
-          color = '#fd7e14'; // Orange for market metrics
+          color = 'var(--firefly-19)'; // Orange for market metrics
         }
         
         metrics.push({
@@ -1216,7 +1216,7 @@ const generateBarChart = (
       chartTitle.style.fontSize = '14px';
       chartTitle.style.fontWeight = 'bold';
       chartTitle.style.margin = '0 0 12px 0';
-      chartTitle.style.color = '#343a40';
+      chartTitle.style.color = 'var(--theme-text-primary)';
       container.appendChild(chartTitle);
       
       metrics.forEach(metric => {
@@ -1232,14 +1232,14 @@ const generateBarChart = (
         label.style.width = '140px';
         label.style.fontSize = '12px';
         label.style.fontWeight = '500';
-        label.style.color = '#495057';
+        label.style.color = 'var(--theme-text-primary)';
         label.style.flexShrink = '0';
         
         // Bar wrapper
         const barWrapper = document.createElement('div');
         barWrapper.style.flex = '1';
         barWrapper.style.height = '18px';
-        barWrapper.style.backgroundColor = '#e9ecef';
+        barWrapper.style.backgroundColor = 'var(--theme-bg-tertiary)';
         barWrapper.style.borderRadius = '9px';
         barWrapper.style.margin = '0 8px';
         barWrapper.style.position = 'relative';
@@ -1272,7 +1272,7 @@ const generateBarChart = (
         valueText.style.textAlign = 'right';
         valueText.style.fontSize = '12px';
         valueText.style.fontWeight = '600';
-        valueText.style.color = '#495057';
+        valueText.style.color = 'var(--theme-text-primary)';
         
         barWrapper.appendChild(barFill);
         row.appendChild(label);
@@ -1287,22 +1287,22 @@ const generateBarChart = (
         const statsContainer = document.createElement('div');
         statsContainer.style.marginTop = '12px';
         statsContainer.style.padding = '8px';
-        statsContainer.style.backgroundColor = '#f8f9fa';
+        statsContainer.style.backgroundColor = 'var(--theme-bg-secondary)';
         statsContainer.style.borderRadius = '4px';
-        statsContainer.style.borderLeft = '3px solid #33a852';
+        statsContainer.style.borderLeft = '3px solid var(--theme-accent-primary)';
         
         const statsTitle = document.createElement('div');
         statsTitle.textContent = 'All Areas';
         statsTitle.style.fontSize = '11px';
         statsTitle.style.fontWeight = 'bold';
-        statsTitle.style.color = '#495057';
+        statsTitle.style.color = 'var(--theme-text-primary)';
         statsTitle.style.marginBottom = '4px';
         
         const statsText = document.createElement('div');
         statsText.innerHTML = `
-          <div style="font-size: 10px; color: #6c757d; line-height: 1.4;">
-            <div>Median: <strong>${mainMetric.statistics.median.toFixed(1)}</strong></div>
-            <div>Range: <strong>${mainMetric.statistics.min.toFixed(1)} - ${mainMetric.statistics.max.toFixed(1)}</strong></div>
+          <div style="font-size: 10px; color: var(--theme-text-secondary); line-height: 1.4;">
+            <div>Median: <strong style="color: var(--theme-text-primary);">${mainMetric.statistics.median.toFixed(1)}</strong></div>
+            <div>Range: <strong style="color: var(--theme-text-primary);">${mainMetric.statistics.min.toFixed(1)} - ${mainMetric.statistics.max.toFixed(1)}</strong></div>
           </div>
         `;
         
@@ -1327,7 +1327,7 @@ const generateBarChart = (
 
     // 1) Correlation score (if available)
     if (typeof attrs.correlation_score === 'number') {
-      metrics.push({ label: 'Correlation Score', value: Math.abs(attrs.correlation_score), color: '#17a2b8', isPercent: true });
+      metrics.push({ label: 'Correlation Score', value: Math.abs(attrs.correlation_score), color: 'var(--firefly-10)', isPercent: true });
     }
 
     // Retrieve friendly names for the underlying fields, if stored on the layer
@@ -1340,7 +1340,7 @@ const generateBarChart = (
       metrics.push({
         label: FieldMappingHelper.getFriendlyFieldName(rawPrimaryField),
         value: attrs[rawPrimaryField],
-        color: '#007bff'
+        color: 'var(--firefly-8)'
       });
     }
 
@@ -1349,7 +1349,7 @@ const generateBarChart = (
       metrics.push({
         label: FieldMappingHelper.getFriendlyFieldName(rawComparisonField),
         value: attrs[rawComparisonField],
-        color: '#28a745'
+        color: 'var(--firefly-13)'
       });
     }
 
@@ -1360,7 +1360,7 @@ const generateBarChart = (
       row.style.alignItems = 'center';
       row.style.marginBottom = '8px';
       row.style.padding = '6px 8px';
-      row.style.background = '#f8f9fa';
+      row.style.background = 'var(--theme-bg-secondary)';
       row.style.borderRadius = '6px';
 
       // Label
@@ -1377,7 +1377,7 @@ const generateBarChart = (
       const barWrapper = document.createElement('div');
       barWrapper.style.flex = '1';
       barWrapper.style.height = '18px';
-      barWrapper.style.backgroundColor = '#e9ecef';
+      barWrapper.style.backgroundColor = 'var(--theme-bg-tertiary)';
       barWrapper.style.borderRadius = '9px';
       barWrapper.style.margin = '0 12px';
 
@@ -1401,7 +1401,7 @@ const generateBarChart = (
       valueText.style.textAlign = 'right';
       valueText.style.fontSize = '12px';
       valueText.style.fontWeight = '600';
-      valueText.style.color = '#495057';
+      valueText.style.color = 'var(--theme-text-primary)';
 
       barWrapper.appendChild(barFill);
       row.appendChild(label);
@@ -1420,7 +1420,7 @@ const generateBarChart = (
     .filter(layer => layer.type === 'feature' && layer.visible && layer.listMode !== 'hide')
     .toArray() as __esri.FeatureLayer[];
   if (visibleLayers.length === 0) {
-    container.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No visible layers to display</div>';
+    container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--theme-text-muted);">No visible layers to display</div>';
     return;
   }
 
@@ -1523,7 +1523,7 @@ const generateBarChart = (
         const barWrapper = document.createElement('div');
         barWrapper.style.flex = '1';
         barWrapper.style.height = '20px';
-        barWrapper.style.backgroundColor = '#f0f0f0';
+        barWrapper.style.backgroundColor = 'var(--theme-bg-tertiary)';
         barWrapper.style.borderRadius = '4px';
         barWrapper.style.margin = '0 8px';
         const bar = document.createElement('div');
@@ -1539,7 +1539,7 @@ const generateBarChart = (
       });
     } catch (err) {
       console.error('Error generating chart data:', err);
-      container.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">Error loading data</div>';
+      container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--theme-text-muted);">Error loading data</div>';
     }
   })();
 };

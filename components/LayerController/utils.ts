@@ -115,7 +115,7 @@ const createLayer = async (
               // Log symbol details for debugging
               symbolType: cb.symbol?.type,
               symbolColor: cb.symbol?.color,
-              symbolOutline: cb.symbol?.outline
+              symbolOutline: cb.symbol && 'outline' in cb.symbol ? cb.symbol.outline : undefined
             })) || []
           });
           
@@ -128,7 +128,7 @@ const createLayer = async (
                 maxValue: cb.maxValue,
                 label: cb.label,
                 color: cb.symbol?.color,
-                outline: cb.symbol?.outline
+                outline: cb.symbol && 'outline' in cb.symbol ? cb.symbol.outline : undefined
               }))
             );
           }
