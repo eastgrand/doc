@@ -30,13 +30,21 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   // Initialize theme on mount
   useEffect(() => {
-    // Check localStorage first
+    // Check localStorage first but default to light
     const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme) {
-      setThemeState(savedTheme);
-    } else {
-      // Default to light theme
+    console.log('🎨 [THEME INIT] Saved theme from localStorage:', savedTheme);
+    
+    if (savedTheme === 'dark') {
+      console.log('🎨 [THEME INIT] Found dark theme in localStorage, but defaulting to light');
+      // Override dark theme preference and start with light
       setThemeState('light');
+      localStorage.setItem('theme', 'light');
+    } else {
+      // Use saved theme or default to light
+      const themeToUse = savedTheme === 'light' ? 'light' : 'light';
+      console.log('🎨 [THEME INIT] Using theme:', themeToUse);
+      setThemeState(themeToUse);
+      localStorage.setItem('theme', themeToUse);
     }
     setMounted(true);
   }, []);
