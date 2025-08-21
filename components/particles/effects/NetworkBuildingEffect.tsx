@@ -50,7 +50,7 @@ class NetworkBuildingRenderer {
   private connections: NetworkConnection[] = [];
   private centerX = 0;
   private centerY = 0;
-  private networkRadius = 140; // Similar size to previous effects
+  private networkRadius = Math.max(window.innerWidth, window.innerHeight) * 0.9; // Use max dimension for full coverage
   private currentTime = 0;
 
   constructor(canvas: HTMLCanvasElement, private colorTheme: ColorTheme) {
@@ -65,25 +65,32 @@ class NetworkBuildingRenderer {
   }
 
   private initializeCanvas(): void {
+    // Set canvas slightly larger than viewport to ensure smooth edge rendering
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.centerX = this.canvas.width / 2;
-    this.centerY = this.canvas.height * 0.35; // Match previous effects position
+    this.centerY = this.canvas.height * 0.5; // Center vertically on screen
+
 
     this.canvas.style.willChange = 'transform';
     window.addEventListener('resize', this.handleResize.bind(this));
   }
 
   private handleResize(): void {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-    this.centerX = this.canvas.width / 2;
-    this.centerY = this.canvas.height * 0.35;
+    // Only resize if dimensions actually changed to prevent flashing
+    if (this.canvas.width !== window.innerWidth || this.canvas.height !== window.innerHeight) {
+      this.canvas.width = window.innerWidth;
+      this.canvas.height = window.innerHeight;
+      this.centerX = this.canvas.width / 2;
+      this.centerY = this.canvas.height * 0.5;
+      // Update network radius based on new viewport size
+      this.networkRadius = Math.max(window.innerWidth, window.innerHeight) * 0.9;
+    }
   }
 
   private generateNetworkNodes(): void {
     // Create network nodes representing geographic locations
-    const nodeCount = 12; // Reasonable number for a clean network
+    const nodeCount = 50; // Even more nodes for full screen coverage
     this.nodes = [];
 
     // Central hub node (like a main analysis center)
@@ -93,19 +100,93 @@ class NetworkBuildingRenderer {
       connections: [],
       isActive: false,
       activationTime: 0,
-      size: 4,
-      color: this.colorTheme.primary,
+      size: 10,
+      color: '#ffffff', // White for central node
       pulsePhase: 0
     });
 
-    // Ring of nodes around the center (like cities or analysis points)
-    for (let i = 1; i < nodeCount; i++) {
-      const angle = (i / (nodeCount - 1)) * Math.PI * 2;
-      const radius = this.networkRadius * (0.6 + Math.random() * 0.4); // Vary distance
-      const height = (Math.random() - 0.5) * 40; // Some 3D variation
+    // Multiple rings of nodes extending off screen
+    let nodeId = 1;
+    
+    // Inner ring - close to center
+    const innerNodes = 8;
+    for (let i = 0; i < innerNodes; i++) {
+      const angle = (i / innerNodes) * Math.PI * 2;
+      const radius = this.networkRadius * 0.2;
+      const height = (Math.random() - 0.5) * 30;
 
       this.nodes.push({
-        id: i,
+        id: nodeId++,
+        position: {
+          x: Math.cos(angle) * radius,
+          y: Math.sin(angle) * radius,
+          z: height
+        },
+        connections: [],
+        isActive: false,
+        activationTime: 0,
+        size: 4 + Math.random() * 4,
+        color: '#ffffff', // All white
+        pulsePhase: Math.random() * Math.PI * 2
+      });
+    }
+    
+    // Middle ring
+    const middleNodes = 12;
+    for (let i = 0; i < middleNodes; i++) {
+      const angle = (i / middleNodes) * Math.PI * 2 + 0.3;
+      const radius = this.networkRadius * 0.5;
+      const height = (Math.random() - 0.5) * 40;
+
+      this.nodes.push({
+        id: nodeId++,
+        position: {
+          x: Math.cos(angle) * radius,
+          y: Math.sin(angle) * radius,
+          z: height
+        },
+        connections: [],
+        isActive: false,
+        activationTime: 0,
+        size: 3 + Math.random() * 3,
+        color: '#ffffff', // All white
+        pulsePhase: Math.random() * Math.PI * 2
+      });
+    }
+    
+    // Outer ring - extending near screen edges
+    const outerNodes = 10;
+    for (let i = 0; i < outerNodes; i++) {
+      const angle = (i / outerNodes) * Math.PI * 2;
+      const radius = this.networkRadius * 0.8;
+      const height = (Math.random() - 0.5) * 50;
+
+      this.nodes.push({
+        id: nodeId++,
+        position: {
+          x: Math.cos(angle) * radius,
+          y: Math.sin(angle) * radius,
+          z: height
+        },
+        connections: [],
+        isActive: false,
+        activationTime: 0,
+        size: 2.5 + Math.random() * 2.5,
+        color: '#ffffff', // All white
+        pulsePhase: Math.random() * Math.PI * 2
+      });
+    }
+    
+    // Far outer ring - extending off screen
+    const farOuterNodes = Math.floor((nodeCount - nodeId) * 0.7);
+    for (let i = 0; i < farOuterNodes; i++) {
+      const angle = (i / farOuterNodes) * Math.PI * 2 + Math.random() * 0.5;
+      // Radius extends well beyond screen bounds
+      const radius = this.networkRadius * (1.0 + Math.random() * 0.5);
+      const height = (Math.random() - 0.5) * 60;
+
+      this.nodes.push({
+        id: nodeId++,
         position: {
           x: Math.cos(angle) * radius,
           y: Math.sin(angle) * radius,
@@ -115,10 +196,38 @@ class NetworkBuildingRenderer {
         isActive: false,
         activationTime: 0,
         size: 2 + Math.random() * 2,
-        color: getRandomMixedColor(this.colorTheme),
+        color: '#ffffff', // All white
         pulsePhase: Math.random() * Math.PI * 2
       });
     }
+    
+    // Add corner nodes to ensure full screen coverage
+    const cornerDistance = Math.max(window.innerWidth, window.innerHeight) * 0.7;
+    const corners = [
+      { x: -cornerDistance, y: -cornerDistance }, // Top-left
+      { x: cornerDistance, y: -cornerDistance },  // Top-right
+      { x: -cornerDistance, y: cornerDistance },   // Bottom-left
+      { x: cornerDistance, y: cornerDistance }     // Bottom-right
+    ];
+    
+    corners.forEach(corner => {
+      if (nodeId < nodeCount) {
+        this.nodes.push({
+          id: nodeId++,
+          position: {
+            x: corner.x,
+            y: corner.y,
+            z: (Math.random() - 0.5) * 40
+          },
+          connections: [],
+          isActive: false,
+          activationTime: 0,
+          size: 3 + Math.random() * 2,
+          color: '#ffffff',
+          pulsePhase: Math.random() * Math.PI * 2
+        });
+      }
+    });
 
     this.generateConnections();
   }
@@ -147,8 +256,8 @@ class NetworkBuildingRenderer {
           z: this.nodes[i].position.z - this.nodes[j].position.z
         });
 
-        // Only connect nearby nodes (create natural clusters)
-        if (distance < this.networkRadius * 0.7 && Math.random() < 0.4) {
+        // Connect nodes across the expanded network
+        if (distance < this.networkRadius * 0.8 && Math.random() < 0.3) {
           this.connections.push({
             fromNodeId: i,
             toNodeId: j,
@@ -169,23 +278,23 @@ class NetworkBuildingRenderer {
     // Immediate, overlapping animation with continuous activity
     // Everything starts right away with heavy overlap
     
-    // Nodes appear very quickly (over first 1 second)
-    if (this.currentTime < 1) {
+    // Nodes appear more gradually (over first 2 seconds)
+    if (this.currentTime < 2) {
       this.updateBuildingNodes(dt);
     }
     
-    // Start connecting immediately at 0.1 seconds (almost instant overlap)
-    if (this.currentTime > 0.1) {
+    // Start connecting at 0.3 seconds (delayed for smoother start)
+    if (this.currentTime > 0.3) {
       this.updateConnectingNodes(dt);
     }
     
-    // Start data flows very early at 0.3 seconds
-    if (this.currentTime > 0.3) {
+    // Start data flows at 0.8 seconds
+    if (this.currentTime > 0.8) {
       this.updateDataFlowing(dt);
     }
     
-    // Full network effects start immediately at 0.5 seconds
-    if (this.currentTime > 0.5) {
+    // Full network effects start at 1.2 seconds
+    if (this.currentTime > 1.2) {
       this.updateFullNetworkPulse(dt);
     }
     
@@ -205,7 +314,7 @@ class NetworkBuildingRenderer {
 
 
   private updateBuildingNodes(dt: number): void {
-    const nodeActivationInterval = 0.8 / this.nodes.length; // Spread over 0.8 seconds
+    const nodeActivationInterval = 1.5 / this.nodes.length; // Slower - spread over 1.5 seconds
 
     this.nodes.forEach((node, index) => {
       const activationTime = index * nodeActivationInterval;
@@ -217,8 +326,8 @@ class NetworkBuildingRenderer {
   }
 
   private updateConnectingNodes(dt: number): void {
-    const connectionStartTime = 0.1; // Start almost immediately at 0.1 seconds
-    const connectionDuration = 1.0; // Spread over 1 second
+    const connectionStartTime = 0.3; // Start a bit later at 0.3 seconds
+    const connectionDuration = 4.0; // Much slower - spread over 4 seconds
     const connectionActivationInterval = connectionDuration / this.connections.length;
 
     this.connections.forEach((connection, index) => {
@@ -227,16 +336,16 @@ class NetworkBuildingRenderer {
         connection.isActive = true;
       }
       
-      // Very fast connection drawing for immediate visual feedback
+      // Much slower connection drawing for smoother animation
       if (connection.isActive && connection.progress < 1) {
-        connection.progress = Math.min(1, connection.progress + dt * 3.0); // Even faster
+        connection.progress = Math.min(1, connection.progress + dt * 0.5); // Much slower drawing speed
       }
     });
   }
 
   private updateDataFlowing(dt: number): void {
     // Add new data flows randomly
-    if (Math.random() < dt * 3) { // 3 times per second on average
+    if (Math.random() < dt * 1.5) { // Slower - 1.5 times per second on average
       const activeConnections = this.connections.filter(c => c.isActive && c.progress >= 0.9);
       if (activeConnections.length > 0) {
         const connection = activeConnections[Math.floor(Math.random() * activeConnections.length)];
@@ -245,29 +354,19 @@ class NetworkBuildingRenderer {
     }
   }
 
-  private updateEarlyDataFlows(dt: number): void {
-    // Start some early data flows during connection phase
-    if (Math.random() < dt * 1.5) { // Slower rate during connection phase
-      const readyConnections = this.connections.filter(c => c.isActive && c.progress >= 0.8);
-      if (readyConnections.length > 0) {
-        const connection = readyConnections[Math.floor(Math.random() * readyConnections.length)];
-        this.addDataFlows(connection);
-      }
-    }
-  }
 
   private updateNodePulses(dt: number): void {
     // Continuous node pulsing regardless of phase
     this.nodes.forEach(node => {
       if (node.isActive) {
-        node.pulsePhase += dt * (2.5 + Math.sin(node.id * 0.5) * 0.5); // Varied pulse speeds
+        node.pulsePhase += dt * (1.2 + Math.sin(node.id * 0.5) * 0.3); // Slower pulse speeds
       }
     });
   }
 
-  private updateFullNetworkPulse(dt: number): void {
+  private updateFullNetworkPulse(_dt: number): void {
     // Add network-wide pulse effects
-    const pulseFreq = 0.3; // Slower, more dramatic pulses
+    const pulseFreq = 0.15; // Much slower, more calming pulses
     const globalPulse = Math.sin(this.currentTime * pulseFreq) * 0.15 + 0.85;
     
     // Apply gentle global pulse to base node sizes
@@ -288,15 +387,17 @@ class NetworkBuildingRenderer {
 
     connection.dataFlows.push({
       position: 0,
-      speed: 0.3 + Math.random() * 0.4, // Vary speed
-      color: getRandomMixedColor(this.colorTheme),
+      speed: 0.15 + Math.random() * 0.2, // Much slower particle movement
+      color: '#ffffff', // White glowing particles
       size: 1 + Math.random() * 2,
       intensity: 0.8 + Math.random() * 0.2
     });
   }
 
   private renderNetwork(): void {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // Fill with light grey background
+    this.ctx.fillStyle = '#f0f0f0';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     // Render connections first (behind nodes)
     this.renderConnections();
@@ -338,7 +439,7 @@ class NetworkBuildingRenderer {
       gradient.addColorStop(1, toNode.color + '80');
 
       this.ctx.strokeStyle = gradient;
-      this.ctx.globalAlpha = 0.7;
+      this.ctx.globalAlpha = 0.5; // More visible connections
 
       this.ctx.beginPath();
       this.ctx.moveTo(fromX, fromY);
@@ -376,17 +477,17 @@ class NetworkBuildingRenderer {
         // Pulsing glow effect
         this.ctx.shadowBlur = 15;
         this.ctx.shadowColor = flow.color;
-        this.ctx.globalAlpha = flow.intensity * 0.9;
+        this.ctx.globalAlpha = flow.intensity * 0.7; // More visible flow particles
 
         this.ctx.fillStyle = flow.color;
         this.ctx.beginPath();
         this.ctx.arc(flowX, flowY, flow.size, 0, Math.PI * 2);
         this.ctx.fill();
 
-        // Bright core
+        // White core
         this.ctx.shadowBlur = 0;
-        this.ctx.globalAlpha = flow.intensity;
-        this.ctx.fillStyle = '#ffffff';
+        this.ctx.globalAlpha = flow.intensity * 0.9; // Bright core for flow particles
+        this.ctx.fillStyle = '#ffffff'; // White core
         this.ctx.beginPath();
         this.ctx.arc(flowX, flowY, flow.size * 0.3, 0, Math.PI * 2);
         this.ctx.fill();
@@ -417,17 +518,17 @@ class NetworkBuildingRenderer {
       // Outer glow
       this.ctx.shadowBlur = 20 * scale;
       this.ctx.shadowColor = node.color;
-      this.ctx.globalAlpha = 0.8;
+      this.ctx.globalAlpha = 0.6; // More visible nodes
 
       this.ctx.fillStyle = node.color;
       this.ctx.beginPath();
       this.ctx.arc(screenX, screenY, finalSize, 0, Math.PI * 2);
       this.ctx.fill();
 
-      // Inner bright core
+      // Inner white core
       this.ctx.shadowBlur = 0;
-      this.ctx.globalAlpha = 1;
-      this.ctx.fillStyle = '#ffffff';
+      this.ctx.globalAlpha = 0.8; // Bright core opacity
+      this.ctx.fillStyle = '#ffffff'; // White core
       this.ctx.beginPath();
       this.ctx.arc(screenX, screenY, finalSize * 0.4, 0, Math.PI * 2);
       this.ctx.fill();
@@ -436,7 +537,7 @@ class NetworkBuildingRenderer {
       if (node.id === 0) {
         this.ctx.strokeStyle = node.color + '60';
         this.ctx.lineWidth = 2 * scale;
-        this.ctx.globalAlpha = 0.6;
+        this.ctx.globalAlpha = 0.4; // More visible ring effect
         this.ctx.beginPath();
         this.ctx.arc(screenX, screenY, finalSize * 1.8, 0, Math.PI * 2);
         this.ctx.stroke();
@@ -447,6 +548,13 @@ class NetworkBuildingRenderer {
   }
 
   start(): void {
+    console.log('[NetworkBuildingEffect] Starting animation with:', {
+      nodeCount: this.nodes.length,
+      connectionCount: this.connections.length,
+      canvasSize: { width: this.canvas.width, height: this.canvas.height },
+      networkRadius: this.networkRadius
+    });
+    
     this.animationManager.start((deltaTime) => {
       this.updateNetwork(deltaTime);
       this.renderNetwork();
@@ -472,21 +580,28 @@ export const NetworkBuildingEffect: React.FC<NetworkBuildingEffectProps> = ({
   const initializedRef = useRef(false);
 
   useEffect(() => {
-    if (!show || !canvasRef.current || initializedRef.current) return;
+    if (!show || !canvasRef.current) return;
+    
+    // If we already have a renderer for this canvas, don't create a new one
+    if (globalRenderer && globalCanvas === canvasRef.current) {
+      console.log('[NetworkBuildingEffect] Using existing renderer, preventing restart');
+      rendererRef.current = globalRenderer;
+      return;
+    }
+
+    // Only initialize once per canvas
+    if (initializedRef.current) {
+      console.log('[NetworkBuildingEffect] Already initialized, skipping');
+      return;
+    }
 
     try {
-      // If this is the same canvas as the global one, reuse the renderer
-      if (globalRenderer && globalCanvas === canvasRef.current) {
-        console.log('[NetworkBuildingEffect] Reusing existing renderer for same canvas');
-        rendererRef.current = globalRenderer;
-        initializedRef.current = true;
-        return;
-      }
-
-      // Stop any existing renderer
-      if (globalRenderer) {
-        console.log('[NetworkBuildingEffect] Stopping existing renderer');
+      // Stop any existing renderer on a different canvas
+      if (globalRenderer && globalCanvas !== canvasRef.current) {
+        console.log('[NetworkBuildingEffect] Stopping renderer from different canvas');
         globalRenderer.stop();
+        globalRenderer = null;
+        globalCanvas = null;
       }
 
       console.log('[NetworkBuildingEffect] Creating new renderer');
@@ -503,19 +618,22 @@ export const NetworkBuildingEffect: React.FC<NetworkBuildingEffectProps> = ({
 
   useEffect(() => {
     return () => {
-      // Only cleanup if this component owns the global renderer
-      if (rendererRef.current === globalRenderer) {
-        console.log('[NetworkBuildingEffect] Cleaning up global renderer');
-        if (globalRenderer) {
-          globalRenderer.stop();
+      // Don't cleanup if we're just re-rendering, only on actual unmount
+      if (!show) {
+        // Only cleanup if this component owns the global renderer
+        if (rendererRef.current === globalRenderer) {
+          console.log('[NetworkBuildingEffect] Component unmounting, cleaning up renderer');
+          if (globalRenderer) {
+            globalRenderer.stop();
+          }
+          globalRenderer = null;
+          globalCanvas = null;
+          initializedRef.current = false;
         }
-        globalRenderer = null;
-        globalCanvas = null;
+        rendererRef.current = null;
       }
-      rendererRef.current = null;
-      initializedRef.current = false;
     };
-  }, []);
+  }, [show]);
 
   return null; // Pure canvas effect, no React elements
 };

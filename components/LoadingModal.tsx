@@ -119,77 +119,81 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
 
   return (
     <div className="fixed inset-0 bg-white dark:bg-gray-900 z-[99999] flex items-center justify-center pointer-events-auto">
-      {/* Animation Canvas - starts immediately */}
-      <canvas 
+      {/* Animation Canvas - DISABLED for debugging */}
+      {/* <canvas 
         ref={canvasRef}
         className="absolute inset-0 pointer-events-none"
-        style={{ opacity: 0.7 }}
+        style={{ opacity: 1.0 }}
       />
       <ParticleEffectManager 
         show={show}
         canvasRef={canvasRef}
-      />
+      /> */}
       
-      {/* Map pin logo positioned in the center of the network */}
+      {/* Map pin logo with progress donut */}
       <div 
         className="absolute pointer-events-none"
         style={{
           left: '50%',
-          top: '35%', // Match network center position
+          top: '50%',
           transform: 'translate(-50%, -50%)',
-          zIndex: 50 // Position above the network animation
+          zIndex: 50
         }}
       >
-        <Image
-          src="/mpiq_pin2.png"
-          alt="Loading..."
-          width={48}
-          height={48}
-          priority
-          className="opacity-90" // Slightly transparent to blend with network
+        {/* Progress donut SVG */}
+        <svg
+          width="120"
+          height="120"
+          className="absolute"
           style={{
-            filter: 'drop-shadow(0 0 8px rgba(34, 197, 94, 0.6))' // Green glow to match network theme
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)'
           }}
-        />
+        >
+          {/* Background circle (light grey) */}
+          <circle
+            cx="60"
+            cy="60"
+            r="50"
+            stroke="#e0e0e0"
+            strokeWidth="8"
+            fill="none"
+          />
+          {/* Progress circle (green) */}
+          <circle
+            cx="60"
+            cy="60"
+            r="50"
+            stroke="#33a852"
+            strokeWidth="8"
+            fill="none"
+            strokeLinecap="round"
+            strokeDasharray={`${internalProgress * 3.14159}, 314.159`}
+            style={{
+              transformOrigin: 'center',
+              transform: 'rotate(-90deg)',
+              transition: 'stroke-dasharray 0.3s ease'
+            }}
+          />
+        </svg>
+        
+        {/* Logo in center */}
+        <div className="relative flex items-center justify-center">
+          <Image
+            src="/mpiq_pin2.png"
+            alt="Loading..."
+            width={48}
+            height={48}
+            priority
+            className="opacity-100"
+          />
+        </div>
       </div>
       
-      {/* Text content positioned in lower half to avoid network overlap */}
+      {/* Text content positioned in lower half */}
       <div className="absolute bottom-0 left-0 right-0 pb-16">
         <div className="max-w-md w-full mx-auto p-6">
-          <div className="space-y-4 text-center">
-            {/* Progress ring only - no logo since it's in the globe */}
-            <div className="flex items-center justify-center">
-              <div className="relative">
-                <div className="absolute inset-0 animate-pulse">
-                  <div className="w-32 h-32 bg-primary/20 rounded-full blur-xl" />
-                </div>
-                <div className="relative w-32 h-32">
-                  <svg className="animate-spin-slow w-full h-full" viewBox="0 0 100 100">
-                    <circle
-                      className="stroke-primary/20"
-                      strokeWidth="4"
-                      fill="none"
-                      cx="50"
-                      cy="50"
-                      r="45"
-                    />
-                    <circle
-                      className="stroke-primary"
-                      strokeWidth="4"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeDasharray={`${internalProgress * 2.827}, 282.7`}
-                      style={{ transformOrigin: 'center', transform: 'rotate(-90deg)' }}
-                      cx="50"
-                      cy="50"
-                      r="45"
-                    />
-                  </svg>
-                  {/* Map pin logo now handled by particle effects */}
-                </div>
-              </div>
-            </div>
-          
           {/* Loading message and progress */}
           <div className="space-y-4 text-center">
             <div>
@@ -224,7 +228,6 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '75ms' }} />
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '150ms' }} />
-            </div>
             </div>
           </div>
         </div>

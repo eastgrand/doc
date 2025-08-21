@@ -44,16 +44,7 @@ export const ParticleEffectManager: React.FC<ParticleEffectManagerProps> = React
   }, [show]); // Remove effectConfig from dependencies to prevent loops
 
   // Don't reset effect config to prevent animation restarts
-  useEffect(() => {
-    return () => {
-      // Only cleanup on final unmount - keep effect running across instances
-      if (!show) {
-        initializationRef.current = false;
-        configLockRef.current = false;
-        setEffectConfig(null);
-      }
-    };
-  }, [show]);
+  // Remove cleanup entirely to prevent flashing
 
   // Don't render until we have a configuration
   if (!show || !effectConfig) {
