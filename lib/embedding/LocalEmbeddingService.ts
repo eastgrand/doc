@@ -5,12 +5,10 @@
  * Uses the all-MiniLM-L6-v2 model (22MB, 384-dimensional vectors).
  */
 
-import { pipeline, env } from '@xenova/transformers';
-
-// Configure transformers for browser environment
-env.allowRemoteModels = true;
-env.allowLocalModels = true;
-env.backends.onnx.wasm.wasmPaths = '/static/onnx-wasm/';
+// Dynamic import to avoid SSR issues
+let transformersLoaded = false;
+let pipeline: any = null;
+let env: any = null;
 
 interface EmbeddingResult {
   embedding: number[];
@@ -43,19 +41,48 @@ export class LocalEmbeddingService {
       console.log('[LocalEmbeddingService] Initializing sentence transformer...');
       const startTime = performance.now();
 
-      // Load the all-MiniLM-L6-v2 model
-      this.pipeline = await pipeline(
-        'feature-extraction',
-        'Xenova/all-MiniLM-L6-v2',
-        {
-          quantized: true, // Use quantized model for smaller size
-          progress_callback: (progress: any) => {
-            if (progress.status === 'downloading') {
-              console.log(`[LocalEmbeddingService] Downloading: ${Math.round(progress.progress || 0)}%`);
+      // Check if we're in browser environment
+      if (typeof window === 'undefined') {
+        throw new Error('LocalEmbeddingService only works in browser environment');
+      }
+
+      // Dynamic import to avoid SSR issues
+      if (!transformersLoaded) {
+        console.log('[LocalEmbeddingService] Loading @xenova/transformers...');
+        const transformers = await import('@xenova/transformers');
+        pipeline = transformers.pipeline;
+        env = transformers.env;
+
+        // Configure transformers for browser environment
+        env.allowRemoteModels = true;
+        env.allowLocalModels = false; // Disable local models to use CDN
+        env.backends.onnx.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.16.3/dist/';
+        
+        transformersLoaded = true;
+        console.log('[LocalEmbeddingService] Transformers loaded and configured');
+      }
+
+      // Add timeout to prevent hanging
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Initialization timeout')), 30000);
+      });
+
+      // Load the all-MiniLM-L6-v2 model with timeout
+      this.pipeline = await Promise.race([
+        pipeline(
+          'feature-extraction',
+          'Xenova/all-MiniLM-L6-v2',
+          {
+            quantized: true, // Use quantized model for smaller size
+            progress_callback: (progress: any) => {
+              if (progress.status === 'downloading') {
+                console.log(`[LocalEmbeddingService] Downloading: ${Math.round(progress.progress || 0)}%`);
+              }
             }
           }
-        }
-      );
+        ),
+        timeoutPromise
+      ]);
 
       const endTime = performance.now();
       console.log(`[LocalEmbeddingService] Initialized in ${Math.round(endTime - startTime)}ms`);
@@ -63,6 +90,7 @@ export class LocalEmbeddingService {
       this.isInitialized = true;
     } catch (error) {
       console.error('[LocalEmbeddingService] Initialization failed:', error);
+      console.warn('[LocalEmbeddingService] Semantic routing will be disabled, falling back to keyword-based routing');
       this.initPromise = null;
       throw error;
     }

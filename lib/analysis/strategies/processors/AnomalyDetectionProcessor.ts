@@ -81,8 +81,8 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
         anomaly_detection_score: Math.round(anomalyScore * 100) / 100, // Add target variable at top level
         rank: 0, // Will be calculated after sorting
         properties: {
-          ...record, // Include ALL original fields in properties
           anomaly_detection_score: anomalyScore,
+          score_source: 'anomaly_detection_score',
           nike_market_share: nikeShare,
           strategic_score: strategicScore,
           competitive_score: competitiveScore,

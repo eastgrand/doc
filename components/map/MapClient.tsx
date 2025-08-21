@@ -470,7 +470,7 @@ const MapClient = memo(({
         isInitialized.current = false;
       }
     };
-  }, [onMapLoad, onError, theme]);
+  }, [onMapLoad, onError]); // Removed theme dependency - map should only initialize once
 
   // Handle theme changes for existing map
   useEffect(() => {

@@ -19,7 +19,7 @@ interface ThemeProviderState {
 }
 
 const initialState: ThemeProviderState = {
-  theme: 'system',
+  theme: 'light',
   setTheme: () => null,
 };
 
@@ -27,10 +27,10 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
-  defaultTheme = 'system',
+  defaultTheme = 'light',
   storageKey = 'ui-theme',
   attribute = 'class',
-  enableSystem = true,
+  enableSystem = false,
   disableTransitionOnChange = false,
   ...props
 }: ThemeProviderProps) {

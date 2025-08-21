@@ -92,11 +92,11 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         value: Math.round(trendScore * 100) / 100, // Use trend score as primary value
-        trend_strength_score: Math.round(trendScore * 100) / 100, // Add target variable at top level
+        trend_analysis_score: Math.round(trendScore * 100) / 100, // Add target variable at top level
         rank: 0, // Will be calculated after sorting
         properties: {
-          ...record, // Include ALL original fields in properties
-          trend_strength_score: trendScore,
+          trend_analysis_score: trendScore,
+          score_source: 'trend_analysis_score',
           target_brand_share: targetBrandShare,
           target_brand_name: targetBrand?.brandName || 'Unknown',
           strategic_score: strategicScore,
@@ -131,7 +131,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'trend_strength_score', // Primary ranking by trend strength
+      targetVariable: 'trend_analysis_score', // Use exact field name from endpoint mapping
       renderer: this.createTrendRenderer(rankedRecords), // Add direct renderer
       legend: this.createTrendLegend(rankedRecords) // Add direct legend
     };
@@ -508,7 +508,7 @@ Higher scores indicate stronger, more consistent, and predictable market trends.
     
     return {
       type: 'class-breaks',
-      field: 'trend_strength_score', // Direct field reference
+      field: 'trend_analysis_score', // Use correct scoring field
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

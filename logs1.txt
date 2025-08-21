@@ -1,14 +1,888 @@
-LayerController.tsx:106 Switch clicked, current checked: false
-LayerController.tsx:787 handleToggleLayer called for: Unknown_Service_layer_2
-LayerController.tsx:792 Toggling layer visibility from false to true
-LayerController.tsx:796 🔍 [GOOGLE PAY] Layer toggle debug: {layerId: 'Unknown_Service_layer_2', newVisibility: true, layerName: 'Used Google Pay Digital Payment Svc', hasRenderer: true, rendererType: 'class-breaks', …}currentlyVisible: falsehasRenderer: truelayerId: "Unknown_Service_layer_2"layerLoaded: truelayerName: "Used Google Pay Digital Payment Svc"layerOpacity: 0.6newVisibility: truerendererField: "MP10120A_B_P"rendererType: "class-breaks"[[Prototype]]: Object
-LayerController.tsx:811 🔍 [GOOGLE PAY] DEEP RENDERER ANALYSIS when toggling ON: {rendererType: 'class-breaks', field: 'MP10120A_B_P', classBreakInfos: 4, classBreaks: Array(4), defaultSymbol: {…}}classBreakInfos: 4classBreaks: Array(4)0: {index: 0, minValue: 0, maxValue: 28, range: 28, label: '< 28', …}1: {index: 1, minValue: 28, maxValue: 37, range: 9, label: '28 - 37', …}2: {index: 2, minValue: 37, maxValue: 46, range: 9, label: '37 - 46', …}3: {index: 3, minValue: 46, maxValue: 100, range: 54, label: '> 46', …}length: 4[[Prototype]]: Array(0)defaultSymbol: {type: 'simple-fill', color: Array(4)}field: "MP10120A_B_P"rendererType: "class-breaks"[[Prototype]]: Object
-LayerController.tsx:553 handleLayerStatesChange called, isMounted: true
-LayerController.tsx:555 Setting new layer states
-LayerController.tsx:90 Switch state: {checked: true, disabled: false}
-LayerController.tsx:90 Switch state: {checked: false, disabled: false}
-LayerController.tsx:90 Switch state: {checked: false, disabled: false}
-LayerController.tsx:90 Switch state: {checked: false, disabled: false}
-LayerController.tsx:90 Switch state: {checked: false, disabled: false}
-SampleAreasPanel.tsx:866 [SampleAreasPanel] Render check: {visible: false, displayAreasCount: 0, loading: false}displayAreasCount: 0loading: falsevisible: false[[Prototype]]: Object
-LayerController.tsx:841 🔍 [GOOGLE PAY] Sample data values: {field: 'MP10120A_B_P', sampleValues: Array(10), min: 5.32, max: 7.56, range: 2.2399999999999993, …}field: "MP10120A_B_P"max: 7.56mean: 6.635min: 5.32range: 2.2399999999999993sampleValues: Array(10)0: 7.291: 6.752: 7.393: 7.564: 6.065: 6.666: 7.277: 5.328: 5.459: 6.6length: 10[[Prototype]]: Array(0)[[Prototype]]: Object
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ 🎨 [THEME SWITCH] Switching to dark theme with protection flags set
+ 🎨 [THEME SWITCH] Protection flags removed
+ [Fast Refresh] rebuilding
+ [Fast Refresh] done in 60237ms
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ Skipping auto-scroll behavior due to `position: sticky` or `position: fixed` on element: 
+shouldSkipElement @ webpack-internal:///…ayout-router.js:110
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ Image with src "/mpiq_pin2.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+warnOnce @ webpack-internal:///…ils/warn-once.js:16
+ [Fast Refresh] rebuilding
+ [Fast Refresh] done in 1275ms
+data/project-config.json:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+data/project-config.json:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [MapClient MapLegend] Rendering legend: Object
+ [MapClient] Starting map initialization...
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+data/project-config.json:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ Using Calcite Components 3.2.1 [Date: 2025-05-29, Revision: 618973fec]
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [MapClient] ArcGIS modules loaded successfully
+ [MapClient] API key set: true
+ [MapClient] Creating map with dark mode basemap: dark-gray-vector
+ [MapClient] Map created successfully with theme-appropriate basemap
+ [MapClient] Creating MapView...
+ [MapClient] Using hardcoded Jacksonville center and zoom: Object
+ [MapClient] MapView created, waiting for it to be ready...
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [MapClient] View is ready, applying dynamic map constraints... Object
+ [MapClient] MapView is ready
+ [MapClient] Actual view extent after creation: Object
+ [MapClient] Calling onMapLoad...
+ [MapClient] Map initialization complete
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [SampleAreasPanel] Final render check: Object
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [SampleAreasPanel] Loading pre-joined data...
+ [LayerAdapter] ✅ Preserved rendererField 'GENALPHACY_P' for layer: Generation Alpha Pop
+ [LayerAdapter] ✅ Preserved rendererField 'GENZ_CY_P' for layer: Generation Z Pop
+ [LayerAdapter] ✅ Preserved rendererField 'MP10120A_B_P' for layer: Used Google Pay Digital Payment Svc
+ [LayerAdapter] ✅ Preserved rendererField 'MP10110A_B_P' for layer: Used Apple Pay Digital Payment Svc
+ [LayerAdapter] ✅ Preserved rendererField 'MP10002A_B_P' for layer: Used Bank of America Bank 12 Mo
+ [LayerAdapter] ✅ Preserved rendererField 'MP10138A_B_P' for layer: Own Cryptocurrency Investment
+ [LayerAdapter] ✅ Preserved rendererField 'MP10028A_B_P' for layer: Have Personal Line of Credit
+ [LayerAdapter] ✅ Preserved rendererField 'MP10020A_B_P' for layer: Have Savings Account
+ [LayerAdapter] ✅ Preserved rendererField 'MP10116A_B_P' for layer: Carry Credit Card Balance 3-Usually Always
+ [LayerAdapter] ✅ Preserved rendererField 'MP10104A_B_P' for layer: Used TurboTax Online to Prepare Taxes
+ [LayerAdapter] ✅ Preserved rendererField 'MP10128A_B_P' for layer: Used H&R Block Online to Prepare Taxes
+ [LayerAdapter] ✅ Preserved rendererField 'X14068_X' for layer: Value of Credit Card Debt
+ [LayerAdapter] ✅ Preserved rendererField 'X14060_X' for layer: Value of Checking Savings Money Mkt CD
+ [LayerAdapter] ✅ Preserved rendererField 'X14058_X' for layer: Value of Stocks Bonds Mutual Funds
+ [LayerAdapter] Hiding layer: H&R Block by ZIP
+ [LayerAdapter] Moving H&R Block points to top level and renaming
+ [Adapter] Final generated config: Object
+ [SampleAreasPanel] Successfully fetched sample areas data
+ [SampleAreasPanel] Final render check: Object
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [LayerController] Starting fresh initialization for: -["consumer-behavior","demographics","financial","locations"]
+ [LC createLayer] Starting layer creation for: Unknown_Service_layer_15
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ 🛡️ [LAYER PROTECTION] Activating layer protection
+data/project-config.json:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ [LayerAdapter] ✅ Preserved rendererField 'GENALPHACY_P' for layer: Generation Alpha Pop
+ [LayerAdapter] ✅ Preserved rendererField 'GENZ_CY_P' for layer: Generation Z Pop
+ [LayerAdapter] ✅ Preserved rendererField 'MP10120A_B_P' for layer: Used Google Pay Digital Payment Svc
+ [LayerAdapter] ✅ Preserved rendererField 'MP10110A_B_P' for layer: Used Apple Pay Digital Payment Svc
+ [LayerAdapter] ✅ Preserved rendererField 'MP10002A_B_P' for layer: Used Bank of America Bank 12 Mo
+ [LayerAdapter] ✅ Preserved rendererField 'MP10138A_B_P' for layer: Own Cryptocurrency Investment
+ [LayerAdapter] ✅ Preserved rendererField 'MP10028A_B_P' for layer: Have Personal Line of Credit
+ [LayerAdapter] ✅ Preserved rendererField 'MP10020A_B_P' for layer: Have Savings Account
+ [LayerAdapter] ✅ Preserved rendererField 'MP10116A_B_P' for layer: Carry Credit Card Balance 3-Usually Always
+ [LayerAdapter] ✅ Preserved rendererField 'MP10104A_B_P' for layer: Used TurboTax Online to Prepare Taxes
+ [LayerAdapter] ✅ Preserved rendererField 'MP10128A_B_P' for layer: Used H&R Block Online to Prepare Taxes
+ [LayerAdapter] ✅ Preserved rendererField 'X14068_X' for layer: Value of Credit Card Debt
+ [LayerAdapter] ✅ Preserved rendererField 'X14060_X' for layer: Value of Checking Savings Money Mkt CD
+ [LayerAdapter] ✅ Preserved rendererField 'X14058_X' for layer: Value of Stocks Bonds Mutual Funds
+ [LayerAdapter] Hiding layer: H&R Block by ZIP
+ [LayerAdapter] Moving H&R Block points to top level and renaming
+ [Adapter] Final generated config: Object
+ [SampleAreasPanel] Sample data loaded, areas count: 371
+ [SampleAreasPanel] STEP 1 - Processing real sample areas data: 371 areas
+ [SampleAreasPanel] STEP 2 - Selected random metrics: Array(4)
+ [SampleAreasPanel] STEP 3a - Sample area 0: Object
+ [SampleAreasPanel] STEP 3a - Sample area 1: Object
+ [SampleAreasPanel] STEP 3a - Sample area 2: Object
+ [SampleAreasPanel] STEP 3a - Sample area 3: Object
+ [SampleAreasPanel] STEP 3a - Sample area 4: Object
+ [SampleAreasPanel] STEP 3b - Cities grouped: Array(5)
+ [SampleAreasPanel] STEP 4a - Processing city Jacksonville with 78 ZIP codes
+ [DEBUG] Jacksonville ZIP 32214:
+   Demographics keys: Array(37)
+   GenZ value: 53.85
+   GenZ type: number
+   Apple Pay value: 30.43
+   Apple Pay type: number
+   After safeNumber - GenZ: 53.85
+   After safeNumber - Apple Pay: 30.43
+ [DEBUG] Jacksonville ZIP 32212:
+   Demographics keys: Array(37)
+   GenZ value: 54.56
+   GenZ type: number
+   Apple Pay value: 30.85
+   Apple Pay type: number
+   After safeNumber - GenZ: 54.56
+   After safeNumber - Apple Pay: 30.85
+ [DEBUG] Jacksonville ZIP 32227:
+   Demographics keys: Array(37)
+   GenZ value: 55.38
+   GenZ type: number
+   Apple Pay value: 30.82
+   Apple Pay type: number
+   After safeNumber - GenZ: 55.38
+   After safeNumber - Apple Pay: 30.82
+ [SampleAreasPanel] STEP 4d - Jacksonville final area created with bounds: Object
+ [SampleAreasPanel] STEP 4a - Processing city Tampa with 67 ZIP codes
+ [DEBUG] Tampa ZIP 33621:
+   Demographics keys: Array(35)
+   GenZ value: 39.37
+   GenZ type: number
+   Apple Pay value: 30.86
+   Apple Pay type: number
+   After safeNumber - GenZ: 39.37
+   After safeNumber - Apple Pay: 30.86
+ [DEBUG] Tampa ZIP 33602:
+   Demographics keys: Array(35)
+   GenZ value: 20.56
+   GenZ type: number
+   Apple Pay value: 25.82
+   Apple Pay type: number
+   After safeNumber - GenZ: 20.56
+   After safeNumber - Apple Pay: 25.82
+ [DEBUG] Tampa ZIP 33579:
+   Demographics keys: Array(35)
+   GenZ value: 25.56
+   GenZ type: number
+   Apple Pay value: 21.75
+   Apple Pay type: number
+   After safeNumber - GenZ: 25.56
+   After safeNumber - Apple Pay: 21.75
+ [SampleAreasPanel] STEP 4d - Tampa final area created with bounds: Object
+ [SampleAreasPanel] STEP 4a - Processing city Miami with 113 ZIP codes
+ [DEBUG] Miami ZIP 33132:
+   Demographics keys: Array(37)
+   GenZ value: 17.47
+   GenZ type: number
+   Apple Pay value: 29.4
+   Apple Pay type: number
+   After safeNumber - GenZ: 17.47
+   After safeNumber - Apple Pay: 29.4
+ [DEBUG] Miami ZIP 33131:
+   Demographics keys: Array(37)
+   GenZ value: 16.74
+   GenZ type: number
+   Apple Pay value: 29.22
+   Apple Pay type: number
+   After safeNumber - GenZ: 16.74
+   After safeNumber - Apple Pay: 29.22
+ [DEBUG] Miami ZIP 33137:
+   Demographics keys: Array(37)
+   GenZ value: 18.21
+   GenZ type: number
+   Apple Pay value: 28.25
+   Apple Pay type: number
+   After safeNumber - GenZ: 18.21
+   After safeNumber - Apple Pay: 28.25
+ [SampleAreasPanel] STEP 4d - Miami final area created with bounds: Object
+ [SampleAreasPanel] STEP 4a - Processing city Orlando with 75 ZIP codes
+ [DEBUG] Orlando ZIP 32814:
+   Demographics keys: Array(37)
+   GenZ value: 23.44
+   GenZ type: number
+   Apple Pay value: 27.55
+   Apple Pay type: number
+   After safeNumber - GenZ: 23.44
+   After safeNumber - Apple Pay: 27.55
+ [DEBUG] Orlando ZIP 32801:
+   Demographics keys: Array(37)
+   GenZ value: 20.75
+   GenZ type: number
+   Apple Pay value: 25.92
+   Apple Pay type: number
+   After safeNumber - GenZ: 20.75
+   After safeNumber - Apple Pay: 25.92
+ [DEBUG] Orlando ZIP 32803:
+   Demographics keys: Array(37)
+   GenZ value: 18.24
+   GenZ type: number
+   Apple Pay value: 24.82
+   Apple Pay type: number
+   After safeNumber - GenZ: 18.24
+   After safeNumber - Apple Pay: 24.82
+ [SampleAreasPanel] STEP 4d - Orlando final area created with bounds: Object
+ [SampleAreasPanel] STEP 4a - Processing city St. Petersburg with 38 ZIP codes
+ [DEBUG] St. Petersburg ZIP 33716:
+   Demographics keys: Array(35)
+   GenZ value: 22.28
+   GenZ type: number
+   Apple Pay value: 22.02
+   Apple Pay type: number
+   After safeNumber - GenZ: 22.28
+   After safeNumber - Apple Pay: 22.02
+ [DEBUG] St. Petersburg ZIP 33701:
+   Demographics keys: Array(35)
+   GenZ value: 16.14
+   GenZ type: number
+   Apple Pay value: 19.44
+   Apple Pay type: number
+   After safeNumber - GenZ: 16.14
+   After safeNumber - Apple Pay: 19.44
+ [DEBUG] St. Petersburg ZIP 33713:
+   Demographics keys: Array(35)
+   GenZ value: 16.81
+   GenZ type: number
+   Apple Pay value: 18.53
+   Apple Pay type: number
+   After safeNumber - GenZ: 16.81
+   After safeNumber - Apple Pay: 18.53
+ [SampleAreasPanel] STEP 4d - St. Petersburg final area created with bounds: Object
+ [SampleAreasPanel] STEP 5 - Created 5 display areas from real data
+ [SampleAreasPanel] STEP 5 - Available cities: Array(5)
+ [SampleAreasPanel] STEP 6 - Creating city-level choropleth layers for 5 cities
+ [SampleAreasPanel] Removing 0 sample area graphics
+ [SampleAreasPanel] STEP 6a - Creating layer for Jacksonville with 78 ZIP codes
+ [DEBUG] Jacksonville ZIP 32214 attributes: Object
+ [DEBUG] Jacksonville ZIP 32212 attributes: Object
+ [DEBUG] Jacksonville ZIP 32227 attributes: Object
+ [SampleAreasPanel] STEP 6c - Jacksonville: 78 graphics created, 0 errors
+ [SampleAreasPanel] STEP 6d - Adding 78 graphics directly to map for Jacksonville
+ [SampleAreasPanel] STEP 6e - Added 78 graphics directly to map for Jacksonville
+ [SampleAreasPanel] STEP 6a - Creating layer for Tampa with 67 ZIP codes
+ [DEBUG] Tampa ZIP 33621 attributes: Object
+ [DEBUG] Tampa ZIP 33602 attributes: Object
+ [DEBUG] Tampa ZIP 33579 attributes: Object
+ [SampleAreasPanel] STEP 6c - Tampa: 67 graphics created, 0 errors
+ [SampleAreasPanel] STEP 6d - Adding 67 graphics directly to map for Tampa
+ [SampleAreasPanel] STEP 6e - Added 67 graphics directly to map for Tampa
+ [SampleAreasPanel] STEP 6a - Creating layer for Miami with 113 ZIP codes
+ [DEBUG] Miami ZIP 33132 attributes: Object
+ [DEBUG] Miami ZIP 33131 attributes: Object
+ [DEBUG] Miami ZIP 33137 attributes: Object
+ [SampleAreasPanel] STEP 6c - Miami: 113 graphics created, 0 errors
+ [SampleAreasPanel] STEP 6d - Adding 113 graphics directly to map for Miami
+ [SampleAreasPanel] STEP 6e - Added 113 graphics directly to map for Miami
+ [SampleAreasPanel] STEP 6a - Creating layer for Orlando with 75 ZIP codes
+ [DEBUG] Orlando ZIP 32814 attributes: Object
+ [DEBUG] Orlando ZIP 32801 attributes: Object
+ [DEBUG] Orlando ZIP 32803 attributes: Object
+ [SampleAreasPanel] STEP 6c - Orlando: 75 graphics created, 0 errors
+ [SampleAreasPanel] STEP 6d - Adding 75 graphics directly to map for Orlando
+ [SampleAreasPanel] STEP 6e - Added 75 graphics directly to map for Orlando
+ [SampleAreasPanel] STEP 6a - Creating layer for St. Petersburg with 38 ZIP codes
+ [DEBUG] St. Petersburg ZIP 33716 attributes: Object
+ [DEBUG] St. Petersburg ZIP 33701 attributes: Object
+ [DEBUG] St. Petersburg ZIP 33713 attributes: Object
+ [SampleAreasPanel] STEP 6c - St. Petersburg: 38 graphics created, 0 errors
+ [SampleAreasPanel] STEP 6d - Adding 38 graphics directly to map for St. Petersburg
+ [SampleAreasPanel] STEP 6e - Added 38 graphics directly to map for St. Petersburg
+ [SampleAreasPanel] STEP 7 - Layer creation complete. Total layers: 0
+ [SampleAreasPanel] Final render check: Object
+ [LayerController] Starting fresh initialization for: -["consumer-behavior","demographics","financial","locations"]
+ [LC createLayer] Starting layer creation for: Unknown_Service_layer_15
+ MapWidgets initialization - creating all widgets immediately
+ Search widget initialized
+ Print widget initialized
+ All widgets initialized successfully
+ Bookmarks widget initialized with 5 bookmarks
+ [MapClient] Applying feature service extent constraints with spatial reference...
+ [MapConstraints] Applying feature service extent constraints...
+ [MapConstraints] Applied constraints to feature service extents: Object
+ [MapClient] Map constraints applied successfully - initial extent preserved
+ Print widget loaded and ready
+ [LC createLayer] Layer loaded: Unknown_Service_layer_15
+ ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_15
+ [LC createLayer] Available fields for Unknown_Service_layer_15: Array(19)
+ [LC createLayer] No rendererField specified for layer: Unknown_Service_layer_15, using default styling
+ [LC createLayer] 📍 Setting up simple renderer for location layer: Unknown_Service_layer_15
+ [LC createLayer] Layer loaded: Unknown_Service_layer_15
+ ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_15
+ [LC createLayer] Available fields for Unknown_Service_layer_15: Array(19)
+ [LC createLayer] No rendererField specified for layer: Unknown_Service_layer_15, using default styling
+ [LC createLayer] 📍 Setting up simple renderer for location layer: Unknown_Service_layer_15
+ ✅ Applied green square renderer to location layer: Unknown_Service_layer_15 Object
+ [LC createLayer] Starting layer creation for: Unknown_Service_layer_2
+ ✅ Applied green square renderer to location layer: Unknown_Service_layer_15 Object
+ [LC createLayer] Starting layer creation for: Unknown_Service_layer_2
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [LoadingModal] Render: Object
+ [LoadingModal] Showing modal
+ [LC createLayer] Layer loaded: Unknown_Service_layer_2
+ ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_2
+ [LC createLayer] Available fields for Unknown_Service_layer_2: Array(12)
+ [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_2, field: MP10120A_B_P
+ [LC createLayer] 🔍 Layer config details: Object
+ [LC createLayer] Layer loaded: Unknown_Service_layer_2
+ ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_2
+ [LC createLayer] Available fields for Unknown_Service_layer_2: Array(12)
+ [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_2, field: MP10120A_B_P
+ [LC createLayer] 🔍 Layer config details: Object
+ [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
+ [LoadingModal] Render: {show: true, externalProgress: 6.666666666666667, internalProgress: 6.666666666666667}
+ [LoadingModal] Showing modal
+ 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10120A_B_P'
+ 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10120A_B_P'
+ 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
+ [UnifiedWorkflow] Loading infographics reports...
+ 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10120A_B_P' value: 7.29
+ 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+ 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10120A_B', 'MP10120A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10120A_B_P' value: 7.29
+ 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+ [UnifiedWorkflow] Loaded 98 infographics reports
+ [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
+ 🔍 [GOOGLE PAY DEBUG] Quantile calculation results: {field: 'MP10120A_B_P', isNormalized: false, calculatedBreaks: Array(4), breakRanges: Array(4), uniqueBreaks: 4, …}
+ ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_2
+ 🎨 Renderer details: {type: 'class-breaks', field: 'MP10120A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+ 🔍 [GOOGLE PAY DEBUG] Full class break details: (4) [{…}, {…}, {…}, {…}]
+ 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_2', layerName: 'Used Google Pay Digital Payment Svc', rendererType: 'class-breaks', rendererField: 'MP10120A_B_P', isGooglePayLayer: true, …}
+ 🔍 [GOOGLE PAY DEBUG] Detailed renderer info: {hasRenderer: true, rendererConstructor: 'ClassBreaksRenderer', classBreakCount: 4, firstBreak: l, defaultSymbol: l, …}
+ 🔍 [GOOGLE PAY DEBUG] Full quartile analysis: {quartileCount: 4, quartiles: Array(4), minRange: 0.96, maxRange: 6.129999999999999}
+ [LC createLayer] Starting layer creation for: Unknown_Service_layer_3
+ 🔍 [GOOGLE PAY DEBUG] Quantile calculation results: {field: 'MP10120A_B_P', isNormalized: false, calculatedBreaks: Array(4), breakRanges: Array(4), uniqueBreaks: 4, …}
+ ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_2
+ 🎨 Renderer details: {type: 'class-breaks', field: 'MP10120A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+ 🔍 [GOOGLE PAY DEBUG] Full class break details: (4) [{…}, {…}, {…}, {…}]
+ 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_2', layerName: 'Used Google Pay Digital Payment Svc', rendererType: 'class-breaks', rendererField: 'MP10120A_B_P', isGooglePayLayer: true, …}
+ 🔍 [GOOGLE PAY DEBUG] Detailed renderer info: {hasRenderer: true, rendererConstructor: 'ClassBreaksRenderer', classBreakCount: 4, firstBreak: l, defaultSymbol: l, …}
+ 🔍 [GOOGLE PAY DEBUG] Full quartile analysis: {quartileCount: 4, quartiles: Array(4), minRange: 0.96, maxRange: 6.129999999999999}
+ [LC createLayer] Starting layer creation for: Unknown_Service_layer_3
+ [LoadingModal] Render: {show: true, externalProgress: 13.333333333333334, internalProgress: 6.666666666666667}
+ [LoadingModal] Showing modal
+ [LoadingModal] Render: {show: true, externalProgress: 13.333333333333334, internalProgress: 13.333333333333334}
+ [LoadingModal] Showing modal
+ [LC createLayer] Layer loaded: Unknown_Service_layer_3
+ ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_3
+ [LC createLayer] Available fields for Unknown_Service_layer_3: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_3, field: MP10110A_B_P
+ [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_3', name: 'Used Apple Pay Digital Payment Svc', rendererField: 'MP10110A_B_P', type: 'feature-service', group: 'consumer-behavior'}
+ 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10110A_B_P'
+ 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [LC createLayer] Layer loaded: Unknown_Service_layer_3
+ ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_3
+ [LC createLayer] Available fields for Unknown_Service_layer_3: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_3, field: MP10110A_B_P
+ [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_3', name: 'Used Apple Pay Digital Payment Svc', rendererField: 'MP10110A_B_P', type: 'feature-service', group: 'consumer-behavior'}
+ 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10110A_B_P'
+ 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10110A_B_P' value: 21.09
+ 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+ 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10110A_B', 'MP10110A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10110A_B_P' value: 21.09
+ 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+ ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_3
+ 🎨 Renderer details: {type: 'class-breaks', field: 'MP10110A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+ 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_3', layerName: 'Used Apple Pay Digital Payment Svc', rendererType: 'class-breaks', rendererField: 'MP10110A_B_P', isGooglePayLayer: false, …}
+ [LC createLayer] Starting layer creation for: Unknown_Service_layer_4
+ ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_3
+ 🎨 Renderer details: {type: 'class-breaks', field: 'MP10110A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+ 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_3', layerName: 'Used Apple Pay Digital Payment Svc', rendererType: 'class-breaks', rendererField: 'MP10110A_B_P', isGooglePayLayer: false, …}
+ [LC createLayer] Starting layer creation for: Unknown_Service_layer_4
+ [LoadingModal] Render: {show: true, externalProgress: 20, internalProgress: 13.333333333333334}
+ [LoadingModal] Showing modal
+ [LoadingModal] Render: {show: true, externalProgress: 20, internalProgress: 20}
+ [LoadingModal] Showing modal
+ [LC createLayer] Layer loaded: Unknown_Service_layer_4
+ ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_4
+ [LC createLayer] Available fields for Unknown_Service_layer_4: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_4, field: MP10002A_B_P
+ [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_4', name: 'Used Bank of America Bank 12 Mo', rendererField: 'MP10002A_B_P', type: 'feature-service', group: 'consumer-behavior'}
+ 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10002A_B_P'
+ 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [LC createLayer] Layer loaded: Unknown_Service_layer_4
+ ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_4
+ [LC createLayer] Available fields for Unknown_Service_layer_4: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_4, field: MP10002A_B_P
+ [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_4', name: 'Used Bank of America Bank 12 Mo', rendererField: 'MP10002A_B_P', type: 'feature-service', group: 'consumer-behavior'}
+ 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10002A_B_P'
+ 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10002A_B_P' value: 15.49
+ 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+ 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10002A_B', 'MP10002A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10002A_B_P' value: 15.49
+ 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+ ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_4
+ 🎨 Renderer details: {type: 'class-breaks', field: 'MP10002A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+ 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_4', layerName: 'Used Bank of America Bank 12 Mo', rendererType: 'class-breaks', rendererField: 'MP10002A_B_P', isGooglePayLayer: false, …}
+ [LC createLayer] Starting layer creation for: Unknown_Service_layer_9
+ ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_4
+ 🎨 Renderer details: {type: 'class-breaks', field: 'MP10002A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+ 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_4', layerName: 'Used Bank of America Bank 12 Mo', rendererType: 'class-breaks', rendererField: 'MP10002A_B_P', isGooglePayLayer: false, …}
+ [LC createLayer] Starting layer creation for: Unknown_Service_layer_9
+ [LoadingModal] Render: {show: true, externalProgress: 26.666666666666668, internalProgress: 20}
+ [LoadingModal] Showing modal
+ [LoadingModal] Render: {show: true, externalProgress: 26.666666666666668, internalProgress: 26.666666666666668}
+ [LoadingModal] Showing modal
+ [LC createLayer] Layer loaded: Unknown_Service_layer_9
+ ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_9
+ [LC createLayer] Available fields for Unknown_Service_layer_9: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_9, field: MP10104A_B_P
+ [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_9', name: 'Used TurboTax Online to Prepare Taxes', rendererField: 'MP10104A_B_P', type: 'feature-service', group: 'consumer-behavior'}
+ 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10104A_B_P'
+ 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [LC createLayer] Layer loaded: Unknown_Service_layer_9
+ ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_9
+ [LC createLayer] Available fields for Unknown_Service_layer_9: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_9, field: MP10104A_B_P
+ [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_9', name: 'Used TurboTax Online to Prepare Taxes', rendererField: 'MP10104A_B_P', type: 'feature-service', group: 'consumer-behavior'}
+ 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10104A_B_P'
+ 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10104A_B_P' value: 11.99
+ 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+ 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10104A_B', 'MP10104A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10104A_B_P' value: 11.99
+ 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+ ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_9
+ 🎨 Renderer details: {type: 'class-breaks', field: 'MP10104A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+ 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_9', layerName: 'Used TurboTax Online to Prepare Taxes', rendererType: 'class-breaks', rendererField: 'MP10104A_B_P', isGooglePayLayer: false, …}
+ [LC createLayer] Starting layer creation for: Unknown_Service_layer_10
+ ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_9
+ 🎨 Renderer details: {type: 'class-breaks', field: 'MP10104A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+ 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_9', layerName: 'Used TurboTax Online to Prepare Taxes', rendererType: 'class-breaks', rendererField: 'MP10104A_B_P', isGooglePayLayer: false, …}
+ [LC createLayer] Starting layer creation for: Unknown_Service_layer_10
+ [LoadingModal] Render: {show: true, externalProgress: 33.33333333333333, internalProgress: 26.666666666666668}
+ [LoadingModal] Showing modal
+ [LoadingModal] Render: {show: true, externalProgress: 33.33333333333333, internalProgress: 33.33333333333333}
+ [LoadingModal] Showing modal
+ [LC createLayer] Layer loaded: Unknown_Service_layer_10
+ ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_10
+ [LC createLayer] Available fields for Unknown_Service_layer_10: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_10, field: MP10128A_B_P
+ [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_10', name: 'Used H&R Block Online to Prepare Taxes', rendererField: 'MP10128A_B_P', type: 'feature-service', group: 'consumer-behavior'}
+ 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10128A_B_P'
+ 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [LC createLayer] Layer loaded: Unknown_Service_layer_10
+ ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_10
+ [LC createLayer] Available fields for Unknown_Service_layer_10: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_10, field: MP10128A_B_P
+ [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_10', name: 'Used H&R Block Online to Prepare Taxes', rendererField: 'MP10128A_B_P', type: 'feature-service', group: 'consumer-behavior'}
+ 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10128A_B_P'
+ 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10128A_B_P' value: 2.53
+ 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+ 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10128A_B', 'MP10128A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+ 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10128A_B_P' value: 2.53
+ 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+ ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_10
+ 🎨 Renderer details: {type: 'class-breaks', field: 'MP10128A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+ 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_10', layerName: 'Used H&R Block Online to Prepare Taxes', rendererType: 'class-breaks', rendererField: 'MP10128A_B_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_0
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_10
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'MP10128A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_10', layerName: 'Used H&R Block Online to Prepare Taxes', rendererType: 'class-breaks', rendererField: 'MP10128A_B_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_0
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 40, internalProgress: 33.33333333333333}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 40, internalProgress: 40}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_0
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_0
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_0: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_0, field: GENALPHACY_P
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_0', name: 'Generation Alpha Pop', rendererField: 'GENALPHACY_P', type: 'feature-service', group: 'demographics'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'GENALPHACY_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_0
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_0
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_0: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_0, field: GENALPHACY_P
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_0', name: 'Generation Alpha Pop', rendererField: 'GENALPHACY_P', type: 'feature-service', group: 'demographics'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'GENALPHACY_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'GENALPHACY_P' value: 7.97
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENALPHACY', 'GENALPHACY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'GENALPHACY_P' value: 7.97
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 40, internalProgress: 40}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_0
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'GENALPHACY_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_0', layerName: 'Generation Alpha Pop', rendererType: 'class-breaks', rendererField: 'GENALPHACY_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_1
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 46.666666666666664, internalProgress: 40}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 46.666666666666664, internalProgress: 46.666666666666664}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_0
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'GENALPHACY_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_0', layerName: 'Generation Alpha Pop', rendererType: 'class-breaks', rendererField: 'GENALPHACY_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_1
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_1
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_1
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_1: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_1, field: GENZ_CY_P
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_1', name: 'Generation Z Pop', rendererField: 'GENZ_CY_P', type: 'feature-service', group: 'demographics'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'GENZ_CY_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_1
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_1
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_1: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_1, field: GENZ_CY_P
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_1', name: 'Generation Z Pop', rendererField: 'GENZ_CY_P', type: 'feature-service', group: 'demographics'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'GENZ_CY_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'GENZ_CY_P' value: 10.49
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'GENZ_CY', 'GENZ_CY_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'GENZ_CY_P' value: 10.49
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_1
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'GENZ_CY_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_1', layerName: 'Generation Z Pop', rendererType: 'class-breaks', rendererField: 'GENZ_CY_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_5
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_1
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'GENZ_CY_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_1', layerName: 'Generation Z Pop', rendererType: 'class-breaks', rendererField: 'GENZ_CY_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_5
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 53.333333333333336, internalProgress: 46.666666666666664}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 53.333333333333336, internalProgress: 53.333333333333336}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_5
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_5
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_5: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_5, field: MP10138A_B_P
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_5', name: 'Own Cryptocurrency Investment', rendererField: 'MP10138A_B_P', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10138A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_5
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_5
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_5: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_5, field: MP10138A_B_P
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_5', name: 'Own Cryptocurrency Investment', rendererField: 'MP10138A_B_P', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10138A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10138A_B_P' value: 3.45
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10138A_B', 'MP10138A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10138A_B_P' value: 3.45
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_5
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'MP10138A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_5', layerName: 'Own Cryptocurrency Investment', rendererType: 'class-breaks', rendererField: 'MP10138A_B_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_6
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_5
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'MP10138A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_5', layerName: 'Own Cryptocurrency Investment', rendererType: 'class-breaks', rendererField: 'MP10138A_B_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_6
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 60, internalProgress: 53.333333333333336}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 60, internalProgress: 60}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_6
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_6
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_6: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_6, field: MP10028A_B_P
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_6', name: 'Have Personal Line of Credit', rendererField: 'MP10028A_B_P', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10028A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_6
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_6
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_6: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_6, field: MP10028A_B_P
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_6', name: 'Have Personal Line of Credit', rendererField: 'MP10028A_B_P', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10028A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10028A_B_P' value: 5.75
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10028A_B', 'MP10028A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10028A_B_P' value: 5.75
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_6
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'MP10028A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_6', layerName: 'Have Personal Line of Credit', rendererType: 'class-breaks', rendererField: 'MP10028A_B_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_7
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 66.66666666666666, internalProgress: 60}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 66.66666666666666, internalProgress: 66.66666666666666}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_6
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'MP10028A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_6', layerName: 'Have Personal Line of Credit', rendererType: 'class-breaks', rendererField: 'MP10028A_B_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_7
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_7
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_7
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_7: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_7, field: MP10020A_B_P
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_7', name: 'Have Savings Account', rendererField: 'MP10020A_B_P', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10020A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_7
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_7
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_7: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_7, field: MP10020A_B_P
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_7', name: 'Have Savings Account', rendererField: 'MP10020A_B_P', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10020A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10020A_B_P' value: 76.96
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10020A_B', 'MP10020A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10020A_B_P' value: 76.96
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_7
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'MP10020A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_7', layerName: 'Have Savings Account', rendererType: 'class-breaks', rendererField: 'MP10020A_B_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_8
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 73.33333333333333, internalProgress: 66.66666666666666}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 73.33333333333333, internalProgress: 73.33333333333333}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_7
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'MP10020A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_7', layerName: 'Have Savings Account', rendererType: 'class-breaks', rendererField: 'MP10020A_B_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_8
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_8
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_8
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_8: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_8, field: MP10116A_B_P
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_8', name: 'Carry Credit Card Balance 3-Usually Always', rendererField: 'MP10116A_B_P', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10116A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_8
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_8
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_8: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_8, field: MP10116A_B_P
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_8', name: 'Carry Credit Card Balance 3-Usually Always', rendererField: 'MP10116A_B_P', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'MP10116A_B_P'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10116A_B_P' value: 16.73
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'MP10116A_B', 'MP10116A_B_P', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'MP10116A_B_P' value: 16.73
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_8
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'MP10116A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_8', layerName: 'Carry Credit Card Balance 3-Usually Always', rendererType: 'class-breaks', rendererField: 'MP10116A_B_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_11
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 80, internalProgress: 73.33333333333333}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 80, internalProgress: 80}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_8
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'MP10116A_B_P', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_8', layerName: 'Carry Credit Card Balance 3-Usually Always', rendererType: 'class-breaks', rendererField: 'MP10116A_B_P', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_11
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_11
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_11
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_11: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_11, field: X14068_X
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_11', name: 'Value of Credit Card Debt', rendererField: 'X14068_X', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14068_X'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_11
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_11
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_11: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_11, field: X14068_X
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_11', name: 'Value of Credit Card Debt', rendererField: 'X14068_X', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14068_X'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14068_X' value: 43987093
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14068_X', 'X14068_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14068_X' value: 43987093
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_11
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'X14068_X', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_11', layerName: 'Value of Credit Card Debt', rendererType: 'class-breaks', rendererField: 'X14068_X', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_12
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 86.66666666666667, internalProgress: 80}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 86.66666666666667, internalProgress: 86.66666666666667}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_11
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'X14068_X', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_11', layerName: 'Value of Credit Card Debt', rendererType: 'class-breaks', rendererField: 'X14068_X', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_12
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_12
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_12
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_12: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_12, field: X14060_X
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_12', name: 'Value of Checking Savings Money Mkt CD', rendererField: 'X14060_X', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14060_X'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_12
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_12
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_12: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_12, field: X14060_X
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_12', name: 'Value of Checking Savings Money Mkt CD', rendererField: 'X14060_X', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14060_X'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14060_X' value: 773692677
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14060_X', 'X14060_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14060_X' value: 773692677
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_12
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'X14060_X', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_12', layerName: 'Value of Checking Savings Money Mkt CD', rendererType: 'class-breaks', rendererField: 'X14060_X', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_13
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_12
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'X14060_X', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_12', layerName: 'Value of Checking Savings Money Mkt CD', rendererType: 'class-breaks', rendererField: 'X14060_X', isGooglePayLayer: false, …}
+utils.ts:40 [LC createLayer] Starting layer creation for: Unknown_Service_layer_13
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 93.33333333333333, internalProgress: 86.66666666666667}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 93.33333333333333, internalProgress: 93.33333333333333}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_13
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_13
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_13: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_13, field: X14058_X
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_13', name: 'Value of Stocks Bonds Mutual Funds', rendererField: 'X14058_X', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14058_X'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:59 [LC createLayer] Layer loaded: Unknown_Service_layer_13
+utils.ts:66 ✅ Layer created for CustomPopupManager handling: Unknown_Service_layer_13
+utils.ts:69 [LC createLayer] Available fields for Unknown_Service_layer_13: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+utils.ts:80 [LC createLayer] ✨ Applying quartile renderer to layer: Unknown_Service_layer_13, field: X14058_X
+utils.ts:81 [LC createLayer] 🔍 Layer config details: {id: 'Unknown_Service_layer_13', name: 'Value of Stocks Bonds Mutual Funds', rendererField: 'X14058_X', type: 'feature-service', group: 'financial'}
+createQuartileRenderer.ts:152 🔥 [STRATEGIC VIZ DEBUG] createQuartileRenderer called with field: 'X14058_X'
+createQuartileRenderer.ts:153 🔥 [STRATEGIC VIZ DEBUG] Available fields in layer: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14058_X' value: 1146176901
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+createQuartileRenderer.ts:165 🔥 [STRATEGIC VIZ DEBUG] First feature attributes: (12) ['OBJECTID', 'DESCRIPTION', 'ID', 'X14058_X', 'X14058_X_A', 'thematic_value', 'Shape__Area', 'Shape__Length', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+createQuartileRenderer.ts:166 🔥 [STRATEGIC VIZ DEBUG] Target field 'X14058_X' value: 1146176901
+createQuartileRenderer.ts:167 🔥 [STRATEGIC VIZ DEBUG] Strategic value score: undefined
+LoadingModal.tsx:49 [LoadingModal] Render: {show: true, externalProgress: 93.33333333333333, internalProgress: 93.33333333333333}
+LoadingModal.tsx:110 [LoadingModal] Showing modal
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_13
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'X14058_X', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_13', layerName: 'Value of Stocks Bonds Mutual Funds', rendererType: 'class-breaks', rendererField: 'X14058_X', isGooglePayLayer: false, …}
+LayerController.tsx:698 [LayerController] Already initialized or in progress, skipping: -["consumer-behavior","demographics","financial","locations"]
+utils.ts:103 ✅ Successfully applied quartile renderer to layer: Unknown_Service_layer_13
+utils.ts:104 🎨 Renderer details: {type: 'class-breaks', field: 'X14058_X', classBreakInfos: 4, hasDefaultSymbol: true, classBreakDetails: Array(4)}
+utils.ts:137 🗺️ Layer renderer set: {layerId: 'Unknown_Service_layer_13', layerName: 'Value of Stocks Bonds Mutual Funds', rendererType: 'class-breaks', rendererField: 'X14058_X', isGooglePayLayer: false, …}
+SampleAreasPanel.tsx:796 [SampleAreasPanel] Final render check: {visible: true, displayAreasCount: 0, loading: false}
+UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
+LayerController.tsx:698 [LayerController] Already initialized or in progress, skipping: -["consumer-behavior","demographics","financial","locations"]
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: H&R Block Locations
+CustomPopupManager.tsx:98 [CustomPopupManager] 📍 Configuring simplified popup for point/location layer
+CustomPopupManager.tsx:105 [CustomPopupManager] 🔍 Available fields for point layer: (19) ['OBJECTID', 'name', 'address', 'locality', 'region', 'postcode', 'country', 'fsq_category', 'fsq_category_all', 'INDUSTRY_DESC', 'source', 'esri_pid', 'DESC_', 'LATITUDE', 'LONGITUDE', 'CreationDate', 'Creator', 'EditDate', 'Editor']
+CustomPopupManager.tsx:148 [CustomPopupManager] ✅ Applied simplified popup for point layer {addressFields: Array(1), availableFields: Array(19)}
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Used Google Pay Digital Payment Svc
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Used Apple Pay Digital Payment Svc
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Used Bank of America Bank 12 Mo
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Used TurboTax Online to Prepare Taxes
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Used H&R Block Online to Prepare Taxes
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Generation Alpha Pop
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Generation Z Pop
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Own Cryptocurrency Investment
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Have Personal Line of Credit
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Have Savings Account
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Carry Credit Card Balance 3-Usually Always
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Value of Credit Card Debt
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Value of Checking Savings Money Mkt CD
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: Value of Stocks Bonds Mutual Funds
+CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
+CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
+customElement.js:523 The specified value "null" cannot be parsed, or is out of range.
+warnAboutInvalidNumberValue @ customElement.js:523
+valueWatcher @ customElement.js:223
+set value @ customElement.js:135
+set @ reactive-element.js:331
+set @ index.js:372
+y @ projection.js:94
+w @ projection.js:106
+x @ projection.js:126
+b @ projection.js:104
+w @ projection.js:106
+x @ projection.js:126
+b @ projection.js:104
+w @ projection.js:106
+x @ projection.js:126
+b @ projection.js:104
+w @ projection.js:106
+x @ projection.js:126
+b @ projection.js:104
+w @ projection.js:106
+x @ projection.js:126
+b @ projection.js:104
+w @ projection.js:106
+x @ projection.js:126
+b @ projection.js:104
+w @ projection.js:106
+x @ projection.js:126
+b @ projection.js:104
+w @ projection.js:106
+x @ projection.js:126
+b @ projection.js:104
+w @ projection.js:106
+x @ projection.js:126
+b @ projection.js:104
+w @ projection.js:106
+x @ projection.js:126
+b @ projection.js:104
+w @ projection.js:106
+x @ projection.js:126
+b @ projection.js:104
+w @ projection.js:106
+x @ projection.js:126
+S @ projection.js:173
+N @ projection.js:192
+update @ projection.js:206
+v @ projector.js:62
+requestAnimationFrame
+scheduleRender @ projector.js:74
+scheduleRender @ Widget.js:167
+eval @ Widget.js:224
+onCommitted @ SimpleTrackingTarget.js:26
+onCommitted @ Property.js:52
+commit @ Property.js:41
+_setAtOrigin @ Properties.js:157
+_internalSet @ Properties.js:153
+set @ Properties.js:131
+set @ subclass.js:95
+t @ set.js:24
+t @ set.js:17
+set @ Accessor.js:161
+applyTemplate @ TemplateOptions.js:45
+applyTemplate @ PrintViewModel.js:277
+_processTemplateOptions @ PrintViewModel.js:316
+_loadResources @ PrintViewModel.js:292

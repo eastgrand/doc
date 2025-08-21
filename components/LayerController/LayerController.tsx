@@ -846,7 +846,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
                 label: cb.label,
                 symbolType: cb.symbol?.type,
                 symbolColor: cb.symbol?.color?.toArray ? cb.symbol.color.toArray() : cb.symbol?.color,
-                symbolOutline: cb.symbol?.outline
+                symbolOutline: cb.symbol && 'outline' in cb.symbol ? cb.symbol.outline : undefined
               })),
               defaultSymbol: {
                 type: renderer.defaultSymbol?.type,

@@ -84,9 +84,9 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
         feature_interaction_score: Math.round(interactionScore * 100) / 100, // Legacy compatibility
         rank: 0, // Will be calculated after sorting
         properties: {
-          ...record, // Include ALL original fields in properties
           feature_interactions_score: interactionScore,
           feature_interaction_score: interactionScore, // Legacy compatibility
+          score_source: 'feature_interactions_score',
           nike_market_share: nikeShare,
           strategic_score: strategicScore,
           competitive_score: competitiveScore,

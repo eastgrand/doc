@@ -62,9 +62,11 @@ export class FeatureImportanceRankingProcessor implements DataProcessorStrategy 
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
-          ...record,
           feature_importance_ranking_score: primaryScore,
-          score_source: 'feature_importance_ranking_score'
+          score_source: 'feature_importance_ranking_score',
+          target_brand_share: this.extractTargetBrandShare(record),
+          total_population: Number(record.total_population || record.value_TOTPOP_CY) || 0,
+          median_income: Number(record.median_income || record.value_AVGHINC_CY) || 0
         }
       };
     });
@@ -320,6 +322,12 @@ export class FeatureImportanceRankingProcessor implements DataProcessorStrategy 
       iqr,
       outlierCount
     };
+  }
+
+  private extractTargetBrandShare(record: any): number {
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    const targetBrand = brandFields.find(bf => bf.isTarget);
+    return targetBrand?.value || 0;
   }
 
   private generateSummary(records: GeographicDataPoint[], statistics: AnalysisStatistics): string {

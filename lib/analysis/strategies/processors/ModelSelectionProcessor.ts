@@ -81,10 +81,12 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
-          ...record,
           algorithm_category: algorithmCategory,
           score_source: 'algorithm_category',
-          category_numeric: numericValue
+          category_numeric: numericValue,
+          target_brand_share: this.extractTargetBrandShare(record),
+          total_population: Number(record.total_population || record.value_TOTPOP_CY) || 0,
+          median_income: Number(record.median_income || record.value_AVGHINC_CY) || 0
         }
       };
     });
@@ -315,6 +317,12 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
       iqr,
       outlierCount
     };
+  }
+
+  private extractTargetBrandShare(record: any): number {
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    const targetBrand = brandFields.find(bf => bf.isTarget);
+    return targetBrand?.value || 0;
   }
 
   private generateSummary(records: GeographicDataPoint[], statistics: AnalysisStatistics, algorithmCounts: Map<string, number>): string {

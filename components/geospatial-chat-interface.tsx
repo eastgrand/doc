@@ -91,6 +91,9 @@ import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import Graphic from '@arcgis/core/Graphic';
 import * as geometryEngine from '@arcgis/core/geometry/geometryEngine';
 
+// Shared visualization utility
+import { applyAnalysisEngineVisualization } from '@/utils/apply-analysis-visualization';
+
 // Types for feature validation
 type BaseGeometry = {
   type: string;
@@ -1102,12 +1105,38 @@ const EnhancedGeospatialChat = memo(({
       try {
         const features = await loadingPromise;
         
+        // Validate loaded features
+        if (!features || features.length === 0) {
+          console.error('[loadGeographicFeatures] ❌ No boundary features loaded from file');
+          throw new Error('No boundary features loaded from file');
+        }
+        
+        // Validate feature structure
+        const validFeatures = features.filter(f => f && f.properties && f.geometry);
+        if (validFeatures.length === 0) {
+          console.error('[loadGeographicFeatures] ❌ No valid boundary features with properties and geometry');
+          throw new Error('No valid boundary features found');
+        }
+        
+        console.log('[loadGeographicFeatures] 🔍 Feature validation:', {
+          totalLoaded: features.length,
+          validFeatures: validFeatures.length,
+          invalidFeatures: features.length - validFeatures.length,
+          sampleFeature: validFeatures[0] ? {
+            hasProperties: !!validFeatures[0].properties,
+            propertyKeys: Object.keys(validFeatures[0].properties || {}),
+            sampleId: validFeatures[0].properties?.ID,
+            hasGeometry: !!validFeatures[0].geometry,
+            geometryType: validFeatures[0].geometry?.type
+          } : null
+        });
+        
         // Cache the loaded features
-        setCachedBoundaryFeatures(features);
+        setCachedBoundaryFeatures(validFeatures);
         setBoundaryLoadingPromise(null);
         
-        console.log('[loadGeographicFeatures] ✅ Boundary features cached for session:', features.length);
-        return features;
+        console.log('[loadGeographicFeatures] ✅ Boundary features cached for session:', validFeatures.length);
+        return validFeatures;
         
       } catch (error) {
         setBoundaryLoadingPromise(null);
@@ -1484,1092 +1513,7 @@ const EnhancedGeospatialChat = memo(({
 
   // Helper: convert raw dataset code to reader-friendly label
 
-  // Apply AnalysisEngine's advanced visualization to the map
-  const applyAnalysisEngineVisualization = async (
-    visualization: VisualizationResult,
-    data: ProcessedAnalysisData,
-    mapView: __esri.MapView | null
-  ): Promise<__esri.FeatureLayer | null> => {
-    try {
-      // Validate inputs first
-      if (!visualization) {
-        console.error('[applyAnalysisEngineVisualization] ❌ No visualization object provided');
-        return null;
-      }
-      
-      if (!data) {
-        console.error('[applyAnalysisEngineVisualization] ❌ No data object provided');
-        return null;
-      }
-      
-      if (!mapView) {
-        console.error('[applyAnalysisEngineVisualization] ❌ No map view provided');
-        return null;
-      }
-      
-      console.log('[applyAnalysisEngineVisualization] Starting with:', {
-        visualizationType: visualization?.type,
-        hasRenderer: !!visualization?.renderer,
-        rendererType: visualization?.renderer?.type,
-        rendererKeys: visualization?.renderer ? Object.keys(visualization.renderer) : [],
-        recordCount: data?.records?.length,
-        sampleRecord: data?.records?.[0] ? {
-          hasGeometry: !!(data.records[0] as any).geometry,
-          geometryType: (data.records[0] as any).geometry?.type,
-          hasAreaId: !!(data.records[0] as any).area_id,
-          hasProperties: !!(data.records[0] as any).properties,
-          allKeys: Object.keys(data.records[0]),
-          sampleGeometry: (data.records[0] as any).geometry ? {
-            type: (data.records[0] as any).geometry.type,
-            hasCoordinates: !!(data.records[0] as any).geometry.coordinates,
-            coordinatesLength: (data.records[0] as any).geometry.coordinates?.length,
-            firstCoordinate: (data.records[0] as any).geometry.coordinates?.[0]?.[0]
-          } : null,
-          sampleAreaId: (data.records[0] as any).area_id,
-          sampleAreaName: (data.records[0] as any).area_name,
-          sampleValue: (data.records[0] as any).value
-        } : 'No records'
-      });
-
-      // CRITICAL DEBUG: Check if we have ANY records at all
-      if (!data.records || data.records.length === 0) {
-        console.error('[applyAnalysisEngineVisualization] ❌ NO RECORDS PROVIDED TO VISUALIZATION');
-        console.error('[applyAnalysisEngineVisualization] Data structure:', data);
-        return null;
-      }
-
-      console.log('[applyAnalysisEngineVisualization] ✅ Records found, checking geometry...');
-
-      if (!mapView) {
-        console.error('[applyAnalysisEngineVisualization] No map view available');
-        return null;
-      }
-
-      if (!data.records || data.records.length === 0) {
-        console.error('[applyAnalysisEngineVisualization] No records to visualize');
-        return null;
-      }
-
-      // Check if records have geometry
-      console.log('[applyAnalysisEngineVisualization] First record inspection:', {
-        hasRecord: !!data.records[0],
-        recordKeys: data.records[0] ? Object.keys(data.records[0]) : [],
-        hasGeometry: data.records[0] ? !!(data.records[0] as any).geometry : false,
-        geometryValue: data.records[0] ? (data.records[0] as any).geometry : null,
-        isCluster: data.records[0] ? (data.records[0] as any).properties?.is_cluster : false
-      });
-      
-      const recordsWithGeometry = (data.records as any[]).filter((record: any) => record.geometry && record.geometry.coordinates);
-      console.log('[applyAnalysisEngineVisualization] Geometry check:', {
-        totalRecords: data.records.length,
-        recordsWithGeometry: recordsWithGeometry.length,
-        geometryTypes: [...new Set(recordsWithGeometry.map((r: any) => r.geometry?.type))],
-        sampleGeometry: recordsWithGeometry[0]?.geometry ? {
-          type: recordsWithGeometry[0].geometry.type,
-          hasCoordinates: !!recordsWithGeometry[0].geometry.coordinates,
-          coordinatesLength: recordsWithGeometry[0].geometry.coordinates?.length
-        } : 'No geometry found',
-        isClustered: data.isClustered
-      });
-
-      if (recordsWithGeometry.length === 0) {
-        console.error('[applyAnalysisEngineVisualization] No records with valid geometry found');
-        console.error('[applyAnalysisEngineVisualization] Geometry debug:', {
-          totalRecords: data.records.length,
-          recordsWithGeometry: recordsWithGeometry.length,
-          sampleRecord: data.records[0] ? {
-            keys: Object.keys(data.records[0]),
-            hasGeometry: !!(data.records[0] as any).geometry,
-            geometryType: (data.records[0] as any).geometry?.type,
-            hasCoordinates: !!(data.records[0] as any).geometry?.coordinates,
-            rawRecord: data.records[0],
-            coordinatesLength: (data.records[0] as any).geometry?.coordinates?.length
-          } : 'No first record'
-        });
-        return null;
-      }
-      
-      // Validate renderer configuration
-      if (!visualization.renderer) {
-        console.error('[applyAnalysisEngineVisualization] ❌ No renderer in visualization object');
-        console.error('[applyAnalysisEngineVisualization] Visualization object:', visualization);
-        return null;
-      }
-
-      // Import ArcGIS modules
-      let FeatureLayer, Graphic;
-      try {
-        [FeatureLayer, Graphic] = await Promise.all([
-        import('@arcgis/core/layers/FeatureLayer').then(m => m.default),
-        import('@arcgis/core/Graphic').then(m => m.default)
-      ]);
-        
-        console.log('[applyAnalysisEngineVisualization] ✅ ArcGIS modules imported successfully:', {
-          hasFeatureLayer: !!FeatureLayer,
-          hasGraphic: !!Graphic
-        });
-      } catch (importError) {
-        console.error('[applyAnalysisEngineVisualization] ❌ Failed to import ArcGIS modules:', importError);
-        return null;
-      }
-
-      console.log('[AnalysisEngine] Creating features from data:', {
-        totalRecords: data.records.length,
-        recordsWithGeometry: data.records.filter((r: any) => r.geometry).length,
-        sampleRecord: data.records[0] ? {
-          area_name: data.records[0].area_name,
-          hasGeometry: !!(data.records[0] as any).geometry,
-          geometryType: (data.records[0] as any).geometry?.type
-        } : null
-      });
-
-      // VISUALIZATION-ONLY MEMORY OPTIMIZATION
-      // IMPORTANT: This optimization ONLY affects ArcGIS Graphics creation for browser performance
-      // The original data.records remains intact and is used for analysis/chat context
-      const getOptimalFeatureLimit = (totalRecords: number) => {
-        if (totalRecords <= 4000) return totalRecords; // Keep all data for normal datasets (like ours with 3,983)
-        if (totalRecords <= 8000) return 6000; // Large datasets: keep 75%
-        return 4000; // Very large datasets: reasonable limit for performance
-      };
-      
-      const optimalLimit = getOptimalFeatureLimit(data.records.length);
-      const recordsToProcess = data.records.length > optimalLimit 
-        ? data.records.slice(0, optimalLimit)
-        : data.records;
-      
-      console.log('[AnalysisEngine] VISUALIZATION-ONLY memory optimization:', {
-        originalRecords: data.records.length,
-        processedRecords: recordsToProcess.length,
-        coveragePercent: Math.round((recordsToProcess.length / data.records.length) * 100),
-        limitApplied: data.records.length > optimalLimit,
-        strategy: data.records.length <= 4000 ? 'Full dataset' : 'Intelligent limiting',
-        note: 'This only affects ArcGIS Graphics - original data preserved for analysis'
-      });
-
-      // FINAL GEOMETRY CHECK BEFORE ARCGIS FEATURE CREATION
-      console.log('[AnalysisEngine] 🔍 PRE-ARCGIS GEOMETRY CHECK:');
-      recordsToProcess.forEach((record: any, index: number) => {
-        console.log(`[AnalysisEngine] 🔍 Record ${index + 1} (${record.area_name}) final geometry:`, {
-          hasGeometry: !!record.geometry,
-          geometryType: record.geometry?.type,
-          hasCoordinates: !!record.geometry?.coordinates,
-          geometryValid: !!(record.geometry && record.geometry.coordinates),
-          isCluster: record.properties?.is_cluster,
-          geometryJSON: record.geometry ? JSON.stringify(record.geometry) : 'NO GEOMETRY'
-        });
-      });
-      
-      // Convert AnalysisEngine data to ArcGIS features - IMPROVED with debugging
-      const arcgisFeatures = recordsToProcess.map((record: any, index: number) => {
-        // Only create features with valid geometry
-        if (!record.geometry || !record.geometry.coordinates) {
-          console.warn(`[AnalysisEngine] ❌ Skipping record ${index} - no valid geometry:`, {
-            area_name: record.area_name,
-            hasGeometry: !!record.geometry,
-            geometryType: record.geometry?.type,
-            isCluster: record.properties?.is_cluster,
-            reason: !record.geometry ? 'NO_GEOMETRY_OBJECT' : 'NO_COORDINATES_ARRAY'
-          });
-          return null;
-        }
-
-        // Convert GeoJSON geometry to ArcGIS geometry format
-        let arcgisGeometry: any = null;
-        
-        try {
-          if (record.geometry.type === 'Polygon') {
-            // Check if visualization renderer wants to use centroids
-            const useCentroids = visualization.renderer?._useCentroids;
-            
-            console.log(`[AnalysisEngine] 🟦 POLYGON CONVERSION for ${record.area_name}:`, {
-              isCluster: record.properties?.is_cluster,
-              useCentroids,
-              hasCoordinates: !!record.geometry.coordinates,
-              coordinatesLength: record.geometry.coordinates?.length,
-              firstRingLength: record.geometry.coordinates?.[0]?.length,
-              polygonGeometry: record.geometry
-            });
-            
-            console.log(`[AnalysisEngine] Original polygon geometry check:`, {
-              area: record.area_name,
-              hasRenderer: !!visualization.renderer,
-              rendererType: visualization.renderer?.type,
-              useCentroids: useCentroids,
-              rendererKeys: visualization.renderer ? Object.keys(visualization.renderer) : 'no renderer'
-            });
-            
-            if (useCentroids) {
-              // Use centroid from boundary properties if available, otherwise calculate it
-              const centroidGeometry = record.properties?.centroid;
-              if (centroidGeometry && centroidGeometry.coordinates) {
-                arcgisGeometry = {
-                  type: 'point',
-                  x: centroidGeometry.coordinates[0],
-                  y: centroidGeometry.coordinates[1],
-                  spatialReference: { wkid: 4326 }
-                };
-                console.log(`[AnalysisEngine] ✅ Using pre-calculated centroid for competitive analysis:`, {
-                  area: record.area_name,
-                  centroid: centroidGeometry.coordinates
-                });
-              } else {
-                // Calculate centroid from polygon coordinates
-                const coordinates = record.geometry.coordinates[0]; // First ring
-                let sumX = 0, sumY = 0;
-                let validCoords = 0;
-                
-                coordinates.forEach((coord: number[]) => {
-                  if (coord && coord.length >= 2 && !isNaN(coord[0]) && !isNaN(coord[1])) {
-                    sumX += coord[0];
-                    sumY += coord[1];
-                    validCoords++;
-                  }
-                });
-                
-                if (validCoords === 0) {
-                  console.warn(`[AnalysisEngine] No valid coordinates for ${record.area_name}`);
-                  return null;
-                }
-                
-                const centroidX = sumX / validCoords;
-                const centroidY = sumY / validCoords;
-                
-                if (isNaN(centroidX) || isNaN(centroidY)) {
-                  console.warn(`[AnalysisEngine] Invalid centroid calculated for ${record.area_name}:`, [centroidX, centroidY]);
-                  return null;
-                }
-                
-                arcgisGeometry = {
-                  type: 'point',
-                  x: centroidX,
-                  y: centroidY,
-                  spatialReference: { wkid: 4326 }
-                };
-                
-              }
-            } else {
-              console.log(`[AnalysisEngine] 🟦 Creating POLYGON geometry for ${record.area_name}:`, {
-                hasCoordinates: !!record.geometry.coordinates,
-                coordinatesLength: record.geometry.coordinates?.length,
-                firstRingLength: record.geometry.coordinates?.[0]?.length,
-                isCluster: record.properties?.is_cluster,
-                originalGeometry: record.geometry
-              });
-              
-              // GeoJSON Polygon to ArcGIS Polygon for other visualizations
-              arcgisGeometry = {
-                type: 'polygon',
-                rings: record.geometry.coordinates,
-                spatialReference: { wkid: 4326 }
-              };
-              
-              console.log(`[AnalysisEngine] ✅ POLYGON ArcGIS geometry created for ${record.area_name}:`, {
-                geometryType: arcgisGeometry.type,
-                hasRings: !!arcgisGeometry.rings,
-                ringsCount: arcgisGeometry.rings?.length,
-                firstRingPoints: arcgisGeometry.rings?.[0]?.length,
-                isCluster: record.properties?.is_cluster
-              });
-            }
-          } else if (record.geometry.type === 'Point') {
-            // GeoJSON Point to ArcGIS Point
-            arcgisGeometry = {
-              type: 'point',
-              x: record.geometry.coordinates[0],
-              y: record.geometry.coordinates[1],
-              spatialReference: { wkid: 4326 }
-            };
-          } else {
-            console.warn(`[AnalysisEngine] Unsupported geometry type: ${record.geometry.type}`);
-            return null;
-          }
-        } catch (geoError) {
-          console.error(`[AnalysisEngine] Geometry conversion error for record ${index}:`, geoError);
-          return null;
-        }
-
-        // VISUALIZATION-ONLY ATTRIBUTE OPTIMIZATION
-        // IMPORTANT: This only affects ArcGIS Graphics attributes for browser performance
-        // The full record data is preserved separately for analysis/chat context
-        const essentialAttributes: any = {
-          OBJECTID: index + 1,
-          area_name: record.area_name || 'Unknown Area',
-          value: typeof record.value === 'number' ? record.value : 0,
-          ID: String(record.properties?.ID || record.area_id || ''),
-          DESCRIPTION: record.area_name || record.properties?.DESCRIPTION || `Area ${record.area_id}`, // For popup title
-          
-          // Target variable field (dynamic based on analysis type)
-          [data.targetVariable]: typeof record.value === 'number' ? record.value : 
-                                 typeof record.properties?.[data.targetVariable] === 'number' ? record.properties[data.targetVariable] : 0
-        };
-
-        // DYNAMIC FIELD INCLUSION: Automatically include fields that the renderer actually uses
-        // Check what fields the renderer references and include those
-        const rendererFields = new Set<string>();
-        
-        // Extract field names from renderer configuration
-        if (visualization.renderer?.field) {
-          rendererFields.add(visualization.renderer.field);
-        }
-        if (visualization.renderer?.visualVariables) {
-          visualization.renderer.visualVariables.forEach((vv: any) => {
-            if (vv.field) rendererFields.add(vv.field);
-          });
-        }
-        if (visualization.renderer?.classBreakInfos) {
-          // Class breaks renderer uses the main field
-          if (visualization.renderer.field) rendererFields.add(visualization.renderer.field);
-        }
-        
-        // Include renderer fields if they exist in the record
-        rendererFields.forEach(fieldName => {
-          if (fieldName && (record[fieldName] !== undefined || record.properties?.[fieldName] !== undefined)) {
-            essentialAttributes[fieldName] = record[fieldName] ?? record.properties?.[fieldName];
-          }
-        });
-        
-        // Always include common demographic fields for popups if they exist
-        const commonDemographicFields = [
-          'value_TOTPOP_CY', 'TOTPOP_CY', 
-          'value_AVGHINC_CY', 'AVGHINC_CY',
-          'value_WLTHINDXCY', 'WLTHINDXCY',
-          'nike_market_share', 'adidas_market_share', 'jordan_market_share',
-          'rank', 'competitive_advantage_score', 'strategic_value_score',
-          'customer_profile_score', 'persona_type'
-        ];
-        
-        commonDemographicFields.forEach(fieldName => {
-          const value = record[fieldName] ?? record.properties?.[fieldName];
-          if (value !== undefined && value !== null) {
-            essentialAttributes[fieldName] = value;
-          }
-        });
-
-        const graphic = new Graphic({
-          geometry: arcgisGeometry,
-          attributes: essentialAttributes
-        });
-        
-        console.log(`[AnalysisEngine] ✅ ArcGIS Graphic created for ${record.area_name}:`, {
-          hasGraphic: !!graphic,
-          hasGeometry: !!graphic.geometry,
-          geometryType: graphic.geometry?.type,
-          hasAttributes: !!graphic.attributes,
-          isCluster: record.properties?.is_cluster,
-          areaName: graphic.attributes?.area_name
-        });
-        
-        return graphic;
-      }).filter(feature => feature !== null); // Remove null features
-
-      console.log('[AnalysisEngine] Created features:', {
-        totalFeatures: arcgisFeatures.length,
-        skippedFeatures: data.records.length - arcgisFeatures.length,
-        geometryType: arcgisFeatures[0]?.geometry?.type
-      });
-
-
-      if (arcgisFeatures.length === 0) {
-        console.error('[AnalysisEngine] 🔥 NO VALID ARCGIS FEATURES CREATED - LAYER WILL BE EMPTY');
-        throw new Error('No valid features with geometry to visualize');
-      }
-
-      // Determine the actual geometry type being used
-      const useCentroids = visualization.renderer?._useCentroids;
-      const actualGeometryType = useCentroids ? 'point' : 'polygon';
-      
-      console.log('[AnalysisEngine] Geometry type determination:', {
-        useCentroids,
-        actualGeometryType,
-        rendererType: visualization.renderer?.type
-      });
-
-
-      // DYNAMIC FIELD SCHEMA: Generate field definitions based on what attributes actually exist
-      // IMPORTANT: These field definitions only affect the ArcGIS FeatureLayer schema
-      // The full data remains available for analysis/chat context via setFeatures()
-      const essentialFields: __esri.FieldProperties[] = [
-        { name: 'OBJECTID', type: 'oid' },
-        { name: 'area_name', type: 'string' },
-        { name: 'value', type: 'double' },
-        { name: 'ID', type: 'string' },
-        { name: data.targetVariable || 'value', type: 'double' } // Dynamic target variable field
-      ];
-
-      // Dynamically discover what fields exist in the graphics and add appropriate schema
-      if (arcgisFeatures.length > 0) {
-        const sampleAttributes = arcgisFeatures[0].attributes;
-        const fieldTypeMap: Record<string, string> = {
-          // Common field type mappings
-          'rank': 'integer',
-          'TOTPOP_CY': 'double', 'value_TOTPOP_CY': 'double',
-          'AVGHINC_CY': 'double', 'value_AVGHINC_CY': 'double', 
-          'WLTHINDXCY': 'double', 'value_WLTHINDXCY': 'double',
-          'nike_market_share': 'double', 'adidas_market_share': 'double', 'jordan_market_share': 'double',
-          'competitive_advantage_score': 'double', 'strategic_value_score': 'double', 'customer_profile_score': 'double',
-          'persona_type': 'string'
-        };
-        
-        // Add fields that actually exist in the data
-        Object.keys(sampleAttributes).forEach(fieldName => {
-          // Skip fields we already defined
-          if (essentialFields.some(f => f.name === fieldName)) return;
-          
-          const value = sampleAttributes[fieldName];
-          let fieldType: __esri.FieldProperties['type'] = 'string'; // default
-          
-          if (fieldTypeMap[fieldName]) {
-            fieldType = fieldTypeMap[fieldName] as __esri.FieldProperties['type'];
-          } else if (typeof value === 'number') {
-            fieldType = Number.isInteger(value) ? 'integer' : 'double';
-          } else if (typeof value === 'string') {
-            fieldType = 'string';
-          }
-          
-          essentialFields.push({ name: fieldName, type: fieldType });
-        });
-      }
-
-      console.log('[AnalysisEngine] Memory-optimized field definitions:', {
-        totalFields: essentialFields.length,
-        fieldNames: essentialFields.map(f => f.name)
-      });
-
-      // MEMORY SAFEGUARD: Create feature layer with proper error handling
-      let featureLayer;
-      try {
-        const layerId = `analysis-layer-${Date.now()}`;
-        console.log('[applyAnalysisEngineVisualization] ✨ Creating analysis layer with ID:', layerId);
-        
-        featureLayer = new FeatureLayer({
-          id: layerId, // Ensure unique ID for CustomPopupManager
-          source: arcgisFeatures,
-          fields: essentialFields,
-          objectIdField: 'OBJECTID',
-          geometryType: actualGeometryType, // Use actual geometry type
-          spatialReference: { wkid: 4326 }, // Explicitly set WGS84 geographic coordinate system
-          renderer: (() => {
-            console.log('[FeatureLayer] 🎯 Renderer selection:', {
-              hasDataRenderer: !!data.renderer,
-              hasVisualizationRenderer: !!visualization.renderer,
-              dataIsClustered: data.isClustered,
-              visualizationType: visualization.type,
-              rendererType: visualization.renderer?.type
-            });
-            return data.renderer || visualization.renderer;
-          })(), // Use direct processor renderer if available, otherwise fallback to complex chain
-          // Don't set popupTemplate here - CustomPopupManager will handle popups
-          popupEnabled: false, // Explicitly disable default popups
-          title: `AnalysisEngine - ${data.targetVariable || 'Analysis'}`,
-          visible: true,
-        opacity: 0.8
-      });
-
-      console.log('[AnalysisEngine] FeatureLayer created successfully:', {
-        layerId: featureLayer.id,
-        layerType: featureLayer.type,
-        layerTitle: featureLayer.title,
-        popupEnabled: featureLayer.popupEnabled,
-        hasSource: !!featureLayer.source,
-        sourceCount: (featureLayer.source as any)?.length
-      });
-      
-      } catch (featureLayerError) {
-        console.error('[AnalysisEngine] Failed to create FeatureLayer:', featureLayerError);
-        // Clean up arcgisFeatures array to free memory
-        arcgisFeatures.length = 0;
-        throw new Error(`FeatureLayer creation failed: ${featureLayerError}`);
-      }
-
-      // Note: Enhanced styling will be applied after layer is added to map to preserve popup functionality
-
-      // 🎯 SIMPLIFIED RENDERING: Log which renderer is being used
-      console.log('[AnalysisEngine] 🎯 RENDERER SOURCE:', {
-        hasDirectRenderer: !!data.renderer,
-        hasVisualizationRenderer: !!visualization.renderer,
-        usingDirectRenderer: !!data.renderer,
-        rendererSource: data.renderer ? 'processor' : 'visualization chain'
-      });
-      
-      // MEMORY OPTIMIZATION: Reduce logging overhead
-      console.log('[AnalysisEngine] Renderer applied:', {
-        rendererType: visualization.renderer?.type,
-        rendererField: visualization.renderer?.field,
-        attributesAvailable: arcgisFeatures[0] ? Object.keys(arcgisFeatures[0].attributes).length : 0
-      });
-
-      // DEBUG: FeatureLayer created, check its properties
-      console.log('[AnalysisEngine] 🏗️ FEATURELAYER CREATED:', {
-        layerId: featureLayer.id,
-        title: featureLayer.title,
-        loaded: featureLayer.loaded,
-        visible: featureLayer.visible,
-        opacity: featureLayer.opacity,
-        geometryType: featureLayer.geometryType,
-        hasRenderer: !!featureLayer.renderer,
-        rendererType: featureLayer.renderer?.type,
-        sourceLength: (featureLayer.source as any)?.length,
-        fieldsCount: featureLayer.fields?.length,
-        popupTemplate: !!featureLayer.popupTemplate,
-        layerSpatialRef: featureLayer.spatialReference?.wkid,
-        mapSpatialRef: mapView.spatialReference?.wkid,
-        spatialRefMatch: featureLayer.spatialReference?.wkid === mapView.spatialReference?.wkid
-      });
-
-      // Remove any existing analysis layers
-      const existingLayers = mapView.map.layers.filter((layer: any) => 
-        Boolean(layer.title?.includes('Analysis') || layer.title?.includes('AnalysisEngine'))
-      );
-      
-      if (existingLayers.length > 0) {
-        console.log('[AnalysisEngine] 🗑️ REMOVING EXISTING ANALYSIS LAYERS:', {
-          layerCount: existingLayers.length,
-          layerTitles: existingLayers.map((l: any) => l.title).toArray(),
-          reason: 'Adding new visualization layer'
-        });
-      }
-      
-      mapView.map.removeMany(existingLayers.toArray());
-
-      // Add the new advanced layer
-      console.log('[AnalysisEngine] 🎯 Adding analysis layer to map:', {
-        layerId: featureLayer.id,
-        mapViewExists: !!mapView,
-        mapExists: !!mapView?.map,
-        layerVisible: featureLayer.visible,
-        layerOpacity: featureLayer.opacity,
-        featureCount: arcgisFeatures.length,
-        layerTitle: featureLayer.title,
-        beforeAddMapLayers: mapView?.map?.layers?.length || 0,
-        isThemeSwitch: document.documentElement.hasAttribute('data-theme-switching') || window.__themeTransitioning
-      });
-      
-      // Add layer to map with theme switch awareness
-      mapView.map.add(featureLayer);
-      
-      // Store metadata for theme switch protection
-      (featureLayer as any).__isAnalysisLayer = true;
-      (featureLayer as any).__createdAt = Date.now();
-      console.log('[AnalysisEngine] ✅ Analysis layer added with protection metadata');
-      
-      console.log('[AnalysisEngine] Layer added to map:', {
-        afterAddMapLayers: mapView?.map?.layers?.length || 0,
-        layerInMap: mapView?.map?.layers?.includes(featureLayer),
-        layerLoaded: featureLayer.loaded,
-        layerLoadError: featureLayer.loadError
-      });
-
-      // 🎯 CRITICAL FIX: Create legend data from the actual renderer like the working system does
-      try {
-        const { formatLegendDataFromRenderer } = await import('@/utils/legend-formatter');
-        const renderer = featureLayer.renderer;
-        
-        if (renderer) {
-          console.log('[AnalysisEngine] 🎯 Creating legend from renderer:', {
-            rendererType: renderer.type,
-            hasRenderer: !!renderer
-          });
-          
-          const legendItems = formatLegendDataFromRenderer(renderer);
-          
-          if (legendItems && legendItems.length > 0) {
-            // Create proper title from targetVariable
-            const legendTitle = data.targetVariable ? 
-              data.targetVariable.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 
-              'Analysis Result';
-            
-            const legendData = {
-              title: legendTitle,
-              items: legendItems.map(item => ({
-                label: item.label,
-                color: item.color,
-                value: item.minValue
-              }))
-            };
-            
-            console.log('[AnalysisEngine] 🎯 Setting legend data from renderer:', {
-              title: legendTitle,
-              itemCount: legendItems.length,
-              firstItem: legendItems[0]
-            });
-            
-            setFormattedLegendData(legendData);
-          } else {
-            console.warn('[AnalysisEngine] 🚨 formatLegendDataFromRenderer returned empty array');
-          }
-        } else {
-          console.warn('[AnalysisEngine] 🚨 No renderer found on feature layer');
-        }
-      } catch (legendError) {
-        console.error('[AnalysisEngine] 🚨 Failed to create legend from renderer:', legendError);
-      }
-
-      // 🎯 CRITICAL: CustomPopupManager will be automatically attached when layer is added to featureLayers state
-      console.log('[AnalysisEngine] 🎯 Layer ready for CustomPopupManager integration:', {
-        layerId: featureLayer.id,
-        popupEnabled: featureLayer.popupEnabled,
-        title: featureLayer.title
-      });
-
-      // 🎯 AUTO-ZOOM: Zoom to fit displayed features when showing subset of data
-      const shouldAutoZoom = shouldAutoZoomToFeatures(data, arcgisFeatures);
-      if (shouldAutoZoom && mapView) {
-        console.log('[AnalysisEngine] Auto-zooming to fit displayed features');
-        zoomToDisplayedFeatures(mapView, featureLayer, arcgisFeatures);
-      }
-      
-      // 🔥 CRITICAL DEBUG: Track layer renderer lifecycle
-      console.log('🔥 [RENDERER LIFECYCLE] Initial renderer after layer creation:', {
-        hasRenderer: !!featureLayer.renderer,
-        rendererType: featureLayer.renderer?.type,
-        rendererField: (featureLayer.renderer as any)?.field,
-        classBreakCount: (featureLayer.renderer as any)?.classBreakInfos?.length
-      });
-      
-      // Watch for renderer changes
-      
-      // Check renderer after various timeouts
-      setTimeout(() => {
-        console.log('🔥 [RENDERER LIFECYCLE] After 500ms:', {
-          hasRenderer: !!featureLayer.renderer,
-          rendererType: featureLayer.renderer?.type,
-          rendererField: (featureLayer.renderer as any)?.field,
-          layerVisible: featureLayer.visible,
-          layerOpacity: featureLayer.opacity
-        });
-      }, 500);
-      
-      setTimeout(() => {
-        console.log('🔥 [RENDERER LIFECYCLE] After 2000ms:', {
-          hasRenderer: !!featureLayer.renderer,
-          rendererType: featureLayer.renderer?.type,
-          rendererField: (featureLayer.renderer as any)?.field,
-          layerVisible: featureLayer.visible,
-          layerOpacity: featureLayer.opacity,
-          mapReady: mapView.ready,
-          layerReady: featureLayer.loaded
-        });
-        
-        // Try to force refresh the layer
-        console.log('🔥 [RENDERER LIFECYCLE] Attempting layer refresh...');
-        featureLayer.refresh();
-      }, 2000);
-
-      // 🔥 CRITICAL DEBUG: Wait for layer to load properly, then verify field access
-      featureLayer.load().then(() => {
-        console.log('🔍 [ARCGIS FIELD ACCESS TEST] Layer loaded successfully - testing field access...');
-        
-        if (featureLayer.source && (featureLayer.source as any).length > 0) {
-          const firstFeature = (featureLayer.source as any).items[0];
-          const rendererField = (featureLayer.renderer as any)?.field;
-          
-          console.log('🔍 [ARCGIS FIELD ACCESS TEST] Layer details:', {
-            layerId: featureLayer.id,
-            sourceCount: (featureLayer.source as any).length,
-            rendererField: rendererField,
-            rendererType: featureLayer.renderer?.type,
-            firstFeatureExists: !!firstFeature,
-            layerFullyLoaded: featureLayer.loaded
-          });
-          
-          if (firstFeature && rendererField) {
-            const fieldValue = firstFeature.attributes?.[rendererField];
-            const availableFields = Object.keys(firstFeature.attributes || {});
-            const hasRendererField = availableFields.includes(rendererField);
-            
-            console.log('🔍 [ARCGIS FIELD ACCESS TEST] Field access verification:', {
-              rendererField: rendererField,
-              hasRendererField: hasRendererField,
-              fieldValue: fieldValue,
-              fieldValueType: typeof fieldValue,
-              isValidNumber: typeof fieldValue === 'number' && !isNaN(fieldValue),
-              availableFieldsCount: availableFields.length,
-              availableFields: availableFields.slice(0, 10), // Show first 10 fields
-              sampleValues: {
-                value: firstFeature.attributes?.value,
-                [data.targetVariable]: firstFeature.attributes?.[data.targetVariable],
-                strategic_value_score: firstFeature.attributes?.strategic_value_score,
-                competitive_advantage_score: firstFeature.attributes?.competitive_advantage_score
-              }
-            });
-            
-            if (!hasRendererField) {
-              console.error('❌ [ARCGIS FIELD ACCESS TEST] CRITICAL: Renderer field not found in feature attributes!');
-              console.error('   This is why the visualization appears grey - ArcGIS cannot find the field.');
-              console.error('   Renderer expects:', rendererField);
-              console.error('   Available fields:', availableFields);
-            } else if (typeof fieldValue !== 'number' || isNaN(fieldValue)) {
-              console.error('❌ [ARCGIS FIELD ACCESS TEST] CRITICAL: Renderer field value is not a valid number!');
-              console.error('   Field value:', fieldValue, typeof fieldValue);
-            } else {
-              console.log('✅ [ARCGIS FIELD ACCESS TEST] SUCCESS: Field access working correctly!');
-              console.log('   ArcGIS should be able to render features properly with this field.');
-              console.log('   The grey visualization issue must be caused by something else.');
-              
-              // 🔥 RENDERER CONFLICT DEBUGGING: Check for multiple renderers or enhanced styling conflicts
-              console.log('🔍 [RENDERER CONFLICT CHECK] Investigating renderer conflicts...');
-              
-              const currentRenderer = featureLayer.renderer;
-              console.log('🔍 [RENDERER CONFLICT CHECK] Current renderer details:', {
-                type: currentRenderer?.type,
-                field: (currentRenderer as any)?.field,
-                hasClassBreakInfos: !!(currentRenderer as any)?.classBreakInfos,
-                classBreakCount: (currentRenderer as any)?.classBreakInfos?.length || 0,
-                hasVisualVariables: !!(currentRenderer as any)?.visualVariables,
-                visualVariableCount: (currentRenderer as any)?.visualVariables?.length || 0,
-                visualVariableTypes: (currentRenderer as any)?.visualVariables?.map((vv: any) => vv.type) || [],
-                hasDefaultSymbol: !!(currentRenderer as any)?.defaultSymbol,
-                defaultSymbolColor: (currentRenderer as any)?.defaultSymbol?.color,
-                rendererJSON: JSON.stringify(currentRenderer, null, 2).substring(0, 500) + '...'
-              });
-              
-              // Check for visual variables conflicts
-              if ((currentRenderer as any)?.visualVariables && (currentRenderer as any).visualVariables.length > 0) {
-                console.log('⚠️ [RENDERER CONFLICT CHECK] Visual variables detected - potential conflict!');
-                (currentRenderer as any).visualVariables.forEach((vv: any, i: number) => {
-                  console.log(`   Visual Variable ${i + 1}:`, {
-                    type: vv.type,
-                    field: vv.field,
-                    hasStops: !!vv.stops,
-                    stopCount: vv.stops?.length || 0,
-                    legendTitle: vv.legendOptions?.title
-                  });
-                });
-              }
-              
-              // Check class breaks details
-              if ((currentRenderer as any)?.classBreakInfos) {
-                const classBreaks = (currentRenderer as any).classBreakInfos;
-                console.log('🔍 [RENDERER CONFLICT CHECK] Class breaks analysis:', {
-                  totalBreaks: classBreaks.length,
-                  breakRanges: classBreaks.map((cb: any, i: number) => `${i + 1}: ${cb.minValue}-${cb.maxValue}`),
-                  symbolColors: classBreaks.map((cb: any, i: number) => ({
-                    class: i + 1,
-                    color: cb.symbol?.color,
-                    colorType: typeof cb.symbol?.color,
-                    symbolType: cb.symbol?.type
-                  }))
-                });
-                
-                // 🔥 DETAILED SYMBOL INSPECTION: Check each class break symbol in detail
-                console.log('🔍 [DETAILED SYMBOL INSPECTION] Examining each class break symbol:');
-                classBreaks.forEach((cb: any, i: number) => {
-                  console.log(`   Class ${i + 1}:`, {
-                    minValue: cb.minValue,
-                    maxValue: cb.maxValue,
-                    symbolExists: !!cb.symbol,
-                    symbolType: cb.symbol?.type,
-                    colorExists: !!cb.symbol?.color,
-                    colorValue: cb.symbol?.color,
-                    colorIsArray: Array.isArray(cb.symbol?.color),
-                    colorArrayValues: Array.isArray(cb.symbol?.color) ? cb.symbol.color : 'not array',
-                    isGreyColor: Array.isArray(cb.symbol?.color) && 
-                      cb.symbol.color[0] === 200 && cb.symbol.color[1] === 200 && cb.symbol.color[2] === 200,
-                    fullSymbol: JSON.stringify(cb.symbol, null, 2)
-                  });
-                });
-                
-                // Check if any symbols are missing or grey
-                const hasGreySymbols = classBreaks.some((cb: any) => {
-                  const color = cb.symbol?.color;
-                  if (Array.isArray(color)) {
-                    return color[0] === 200 && color[1] === 200 && color[2] === 200; // Grey [200,200,200]
-                  }
-                  return false;
-                });
-                
-                if (hasGreySymbols) {
-                  console.error('❌ [RENDERER CONFLICT CHECK] FOUND GREY SYMBOLS in class breaks!');
-                  console.error('   Some class break symbols are using grey [200,200,200] color');
-                }
-              }
-              
-              // Check for enhanced styling remnants
-              const layerElement = document.querySelector(`[data-layer-id="${featureLayer.id}"]`);
-              if (layerElement) {
-                console.log('🔍 [ENHANCED STYLING CHECK] Layer DOM element found:', {
-                  hasEnhancedClass: layerElement.classList.contains('enhanced-layer'),
-                  classList: Array.from(layerElement.classList),
-                  style: layerElement.getAttribute('style'),
-                  hasDataAttributes: Array.from(layerElement.attributes).filter(attr => attr.name.startsWith('data-'))
-                });
-              }
-              
-              // Check map layer order and conflicts
-              const mapLayers = (featureLayer as any).view?.map?.layers;
-              if (mapLayers) {
-                const layerIndex = mapLayers.indexOf(featureLayer);
-                console.log('🔍 [LAYER ORDER CHECK] Layer positioning:', {
-                  layerIndex: layerIndex,
-                  totalLayers: mapLayers.length,
-                  isTopLayer: layerIndex === mapLayers.length - 1,
-                  layersAbove: layerIndex >= 0 ? mapLayers.length - layerIndex - 1 : 'unknown',
-                  nearbyLayerTitles: mapLayers.toArray().slice(Math.max(0, layerIndex - 2), layerIndex + 3).map((l: any) => l.title)
-                });
-              }
-              
-              // CRITICAL: Test if we can see the actual rendered colors
-              setTimeout(() => {
-                console.log('🔍 [VISUAL VERIFICATION] Checking actual rendered appearance...');
-                const mapDiv = document.querySelector('.esri-view-surface');
-                if (mapDiv) {
-                  console.log('   Map surface found - layer should be visually rendered');  
-                  // Check if features are actually grey by sampling pixel colors (if possible)
-                }
-                
-                // 🔥 CHECK VALUE DISTRIBUTION vs RENDERER
-                if (featureLayer.source && (featureLayer.source as any).length > 0) {
-                  const features = (featureLayer.source as any).toArray();
-                  const fieldName = (featureLayer.renderer as any)?.field || 'value';
-                  const values = features.map((f: any) => f.attributes[fieldName]).filter((v: any) => !isNaN(v));
-                  const rendererType = (featureLayer.renderer as any)?.type;
-                  
-                  console.log('🔥 [VALUE DISTRIBUTION CHECK]:', {
-                    fieldName: fieldName,
-                    rendererType: rendererType,
-                    totalFeatures: features.length,
-                    featuresWithValues: values.length,
-                    valueRange: {
-                      min: Math.min(...values),
-                      max: Math.max(...values),
-                      avg: values.reduce((a: number, b: number) => a + b, 0) / values.length
-                    },
-                    sampleValues: values.slice(0, 10)
-                  });
-                  
-                  if (rendererType === 'class-breaks') {
-                    const classBreaks = (featureLayer.renderer as any)?.classBreakInfos || [];
-                    
-                    console.log('🔥 [CLASS BREAK DISTRIBUTION]:', classBreaks.map((cb: any, i: number) => {
-                      const count = values.filter((v: number) => v >= cb.minValue && v <= cb.maxValue).length;
-                      return {
-                        class: i + 1,
-                        range: `${cb.minValue}-${cb.maxValue}`,
-                        count: count,
-                        percentage: ((count / values.length) * 100).toFixed(1) + '%'
-                      };
-                    }));
-                    
-                    // Check for values outside all class breaks
-                    const minBreak = Math.min(...classBreaks.map((cb: any) => cb.minValue));
-                    const maxBreak = Math.max(...classBreaks.map((cb: any) => cb.maxValue));
-                    const outsideValues = values.filter((v: number) => v < minBreak || v > maxBreak);
-                    
-                    if (outsideValues.length > 0) {
-                      console.error('❌ [VALUE DISTRIBUTION] CRITICAL: Features with values outside class breaks!', {
-                        outsideCount: outsideValues.length,
-                        outsidePercentage: ((outsideValues.length / values.length) * 100).toFixed(1) + '%',
-                        sampleOutsideValues: outsideValues.slice(0, 5),
-                        classBreakRange: `${minBreak} - ${maxBreak}`,
-                        info: 'These features will use the default grey symbol!'
-                      });
-                    }
-                  } else if (rendererType === 'unique-value') {
-                    const uniqueValues = (featureLayer.renderer as any)?.uniqueValueInfos || [];
-                    const definedValues = uniqueValues.map((uv: any) => uv.value);
-                    
-                    console.log('🔥 [UNIQUE VALUE DISTRIBUTION]:', definedValues.map((val: any) => {
-                      const count = values.filter((v: any) => v === val).length;
-                      return {
-                        value: val,
-                        count: count,
-                        percentage: ((count / values.length) * 100).toFixed(1) + '%'
-                      };
-                    }));
-                    
-                    // Check for values not in unique value list
-                    const unmatchedValues = values.filter((v: any) => !definedValues.includes(v));
-                    
-                    if (unmatchedValues.length > 0) {
-                      const uniqueUnmatched = [...new Set(unmatchedValues)];
-                      console.log('⚠️ [UNIQUE VALUE] Some features use undefined values:', {
-                        unmatchedCount: unmatchedValues.length,
-                        unmatchedPercentage: ((unmatchedValues.length / values.length) * 100).toFixed(1) + '%',
-                        uniqueUnmatchedValues: uniqueUnmatched,
-                        definedValues: definedValues,
-                        info: 'These features will use the default symbol.'
-                      });
-                    } else {
-                      console.log('✅ [UNIQUE VALUE] All feature values match defined unique values');
-                    }
-                  }
-                }
-              }, 2000);
-            }
-          } else {
-            console.error('❌ [ARCGIS FIELD ACCESS TEST] CRITICAL: No feature or renderer field found!');
-            console.error('   firstFeature:', !!firstFeature);
-            console.error('   rendererField:', rendererField);
-          }
-        } else {
-          console.error('❌ [ARCGIS FIELD ACCESS TEST] No source features available after load');
-          console.error('   Source exists:', !!featureLayer.source);
-          console.error('   Source length:', featureLayer.source ? (featureLayer.source as any).length : 'N/A');
-        }
-      }).catch((error) => {
-        console.error('❌ [ARCGIS FIELD ACCESS TEST] Layer failed to load:', error);
-        console.error('   This explains why the visualization appears grey - the layer cannot load.');
-      });
-      
-      // Force zoom to features if they exist
-      if (arcgisFeatures.length > 0) {
-        try {
-          console.log('[AnalysisEngine] Attempting to zoom to features...');
-          const firstFeature = arcgisFeatures[0];
-          if (firstFeature.geometry && firstFeature.geometry.type === 'point') {
-            // For point geometry, create extent around the point
-            const x = (firstFeature.geometry as any).x;
-            const y = (firstFeature.geometry as any).y;
-            console.log('[AnalysisEngine] First feature coordinates:', { x, y });
-            
-            // Create extent around first feature with some buffer
-            const extent = {
-              xmin: x - 1.0,  // Larger buffer for visibility
-              ymin: y - 1.0,
-              xmax: x + 1.0,
-              ymax: y + 1.0,
-              spatialReference: { wkid: 4326 }
-            };
-            
-            console.log('[AnalysisEngine] Current map center before zoom:', {
-              center: mapView.center ? [mapView.center.longitude, mapView.center.latitude] : 'No center',
-              zoom: mapView.zoom,
-              scale: mapView.scale
-            });
-            
-            console.log('[AnalysisEngine] Zooming to extent:', extent);
-            
-            try {
-              await mapView.goTo(extent, { duration: 2000 }); // Add animation duration
-              
-              console.log('[AnalysisEngine] Map center after zoom:', {
-                center: mapView.center ? [mapView.center.longitude, mapView.center.latitude] : 'No center',
-                zoom: mapView.zoom,
-                scale: mapView.scale
-              });
-              
-              console.log('[AnalysisEngine] ✅ Zoomed to feature extent');
-            } catch (goToError) {
-              console.error('[AnalysisEngine] goTo failed:', goToError);
-              
-              // Try alternative zoom method
-              console.log('[AnalysisEngine] Trying alternative zoom to point...');
-              try {
-                await mapView.goTo({
-                  center: [x, y],
-                  zoom: 10
-                });
-                console.log('[AnalysisEngine] ✅ Alternative zoom succeeded');
-              } catch (altZoomError) {
-                console.error('[AnalysisEngine] Alternative zoom failed:', altZoomError);
-              }
-            }
-          } else {
-            console.log('[AnalysisEngine] First feature geometry type:', firstFeature.geometry?.type);
-          }
-        } catch (zoomError) {
-          console.warn('[AnalysisEngine] Could not zoom to features:', zoomError);
-        }
-      }
-      
-      // Store reference for cleanup
-      currentVisualizationLayer.current = featureLayer;
-      
-      
-      // Wait a moment for the layer to load and check its status
-      setTimeout(() => {
-        console.log('[AnalysisEngine] 🔍 LAYER STATUS CHECK (after 100ms):', {
-          layerId: featureLayer.id,
-          loaded: featureLayer.loaded,
-          loadError: featureLayer.loadError?.message,
-          visible: featureLayer.visible,
-          opacity: featureLayer.opacity,
-          inMap: mapView.map.layers.includes(featureLayer),
-          mapLayersCount: mapView.map.layers.length,
-          renderingInfo: featureLayer.renderer ? 'Present' : 'Missing'
-        });
-        
-      }, 100);
-      
-      console.log('[AnalysisEngine] Advanced visualization layer applied to map:', {
-        layerId: featureLayer.id,
-        title: featureLayer.title,
-        featureCount: arcgisFeatures.length,
-        visible: featureLayer.visible,
-        opacity: featureLayer.opacity,
-        renderer: featureLayer.renderer?.type,
-        geometryType: arcgisFeatures[0]?.geometry?.type,
-        sampleGeometry: arcgisFeatures[0]?.geometry ? {
-          type: arcgisFeatures[0].geometry.type,
-          hasCoordinates: !!(arcgisFeatures[0].geometry as any).x || !!(arcgisFeatures[0].geometry as any).coordinates,
-          x: (arcgisFeatures[0].geometry as any).x,
-          y: (arcgisFeatures[0].geometry as any).y
-        } : 'No geometry',
-        sampleAttributes: arcgisFeatures[0]?.attributes || 'No attributes'
-      });
-      
-      // DEBUG: Check what the AnalysisEngine renderer actually contains
-      console.log('[AnalysisEngine] 🔍 DEBUGGING RENDERER:', {
-        hasRenderer: !!visualization.renderer,
-        rendererType: visualization.renderer?.type,
-        rendererField: visualization.renderer?.field,
-        rendererAuthoringInfo: visualization.renderer?.authoringInfo,
-        fullRenderer: JSON.stringify(visualization.renderer, null, 2)
-      });
-      
-      // DEBUG: Check feature attributes to see if they have the score fields
-      if (arcgisFeatures.length > 0) {
-        const sampleFeature = arcgisFeatures[0];
-        console.log('[AnalysisEngine] 🔍 SAMPLE FEATURE ATTRIBUTES:', {
-          attributeKeys: Object.keys(sampleFeature.attributes),
-          targetVariable: data.targetVariable,
-          [data.targetVariable]: sampleFeature.attributes[data.targetVariable],
-          strategic_value_score: sampleFeature.attributes.strategic_value_score,
-          competitive_advantage_score: sampleFeature.attributes.competitive_advantage_score,
-          value: sampleFeature.attributes.value
-        });
-      }
-      
-      // If renderer is broken, let's try a simple approach
-      if (!visualization.renderer || visualization.renderer.type === 'simple') {
-        console.log('[AnalysisEngine] 🚨 RENDERER IS BROKEN - APPLYING SIMPLE FIX');
-        console.log('[AnalysisEngine] 🔥 STRATEGIC VIZ DEBUG - Using dynamic targetVariable:', data.targetVariable);
-        try {
-          const { createQuartileRenderer } = await import('@/utils/createQuartileRenderer');
-          
-          console.log(`[AnalysisEngine] 🎯 Trying to render with field: ${data.targetVariable}`);
-          
-          const rendererResult = await createQuartileRenderer({
-            layer: featureLayer,
-            field: data.targetVariable,
-            opacity: 0.6
-          });
-          
-          if (rendererResult?.renderer) {
-            featureLayer.renderer = rendererResult.renderer;
-            console.log('[AnalysisEngine] ✅ APPLIED BACKUP QUARTILE RENDERER');
-          }
-        } catch (error) {
-          console.error('[AnalysisEngine] ❌ Backup renderer failed:', error);
-        }
-      }
-      
-      return featureLayer;
-
-    } catch (error) {
-      console.error('[AnalysisEngine] Failed to apply visualization:', error);
-      console.error('[AnalysisEngine] Error details:', {
-        errorMessage: error instanceof Error ? error.message : String(error),
-        errorStack: error instanceof Error ? error.stack : undefined,
-        errorType: error?.constructor?.name,
-        dataAvailable: !!data,
-        recordsCount: data?.records?.length || 0,
-        visualizationAvailable: !!visualization,
-        mapViewAvailable: !!mapView
-      });
-      return null;
-    }
-  };
+  // Use the shared applyAnalysisEngineVisualization function
 
   // 🎯 IMPROVED: Handle contextual chat without triggering new analysis
   const handleContextualChat = async (query: string) => {
@@ -3495,7 +2439,7 @@ const EnhancedGeospatialChat = memo(({
       }
       
       const visualization = finalAnalysisResult.visualization;
-      const createdLayer = await applyAnalysisEngineVisualization(visualization, visualizationData, currentMapView);
+      const createdLayer = await applyAnalysisEngineVisualization(visualization, visualizationData, currentMapView, setFormattedLegendData);
       
       // Pass the created layer to the callback
       console.log('[AnalysisEngine] Layer creation result:', {
@@ -4153,6 +3097,8 @@ const EnhancedGeospatialChat = memo(({
 
   // Handle unified workflow completion
   const handleUnifiedAnalysisComplete = useCallback(async (result: UnifiedAnalysisResponse) => {
+    console.log('[UnifiedWorkflow] ★★★ handleUnifiedAnalysisComplete CALLED ★★★');
+    console.log('[UnifiedWorkflow] Full result structure:', result);
     console.log('[UnifiedWorkflow] Analysis complete:', result);
     console.log('[UnifiedWorkflow] Analysis result data:', {
       hasData: !!result?.analysisResult?.data,
@@ -4164,14 +3110,38 @@ const EnhancedGeospatialChat = memo(({
     // Convert unified result to existing format for compatibility
     const { analysisResult } = result;
     
+    console.log('[UnifiedWorkflow] 🚨 CRITICAL DEBUG - analysisResult structure:', {
+      hasAnalysisResult: !!analysisResult,
+      analysisResultKeys: analysisResult ? Object.keys(analysisResult) : [],
+      hasData: !!analysisResult?.data,
+      dataKeys: analysisResult?.data ? Object.keys(analysisResult.data) : [],
+      hasRecords: !!analysisResult?.data?.records,
+      recordsType: typeof analysisResult?.data?.records,
+      recordsIsArray: Array.isArray(analysisResult?.data?.records),
+      recordCount: analysisResult?.data?.records?.length || 0
+    });
+    
     // CRITICAL FIX: Perform geometry join process like original UI
+    console.log('[UnifiedWorkflow] 🔍 DEBUG: Checking geometry join conditions...', {
+      hasAnalysisResult: !!analysisResult,
+      hasData: !!analysisResult?.data,
+      hasRecords: !!analysisResult?.data?.records,
+      recordCount: analysisResult?.data?.records?.length || 0,
+      sampleRecord: analysisResult?.data?.records?.[0] ? {
+        hasGeometry: !!(analysisResult.data.records[0] as any).geometry,
+        areaId: (analysisResult.data.records[0] as any).area_id,
+        keys: Object.keys(analysisResult.data.records[0]).slice(0, 10)
+      } : null
+    });
+    
     if (analysisResult.data?.records && analysisResult.data.records.length > 0) {
-      console.log('[UnifiedWorkflow] Performing geometry join process...');
+      console.log('[UnifiedWorkflow] 🔍 DEBUG: Starting geometry join process with', analysisResult.data.records.length, 'records');
       
       try {
         // Load the cached ZIP Code polygon boundaries (same as original UI)
-        console.log('[UnifiedWorkflow] Loading ZIP Code polygon boundaries for visualization');
+        console.log('[UnifiedWorkflow] 🔍 DEBUG: About to call loadGeographicFeatures...');
         const geographicFeatures = await loadGeographicFeatures();
+        console.log('[UnifiedWorkflow] 🔍 DEBUG: loadGeographicFeatures returned:', geographicFeatures.length, 'features');
         
         if (geographicFeatures.length === 0) {
           throw new Error('loadGeographicFeatures returned empty array');
@@ -4186,6 +3156,8 @@ const EnhancedGeospatialChat = memo(({
         });
         
         // Join analysis data with ZIP Code polygon boundaries (same logic as original UI)
+        console.log('[UnifiedWorkflow] 🔍 DEBUG: Starting record mapping for', analysisResult.data.records.length, 'records');
+        
         const joinedResults = analysisResult.data.records.map((record: any, index: number) => {
           // Extract ZIP Code using same logic as original UI
           const recordAreaId = record.area_id;
@@ -4205,6 +3177,19 @@ const EnhancedGeospatialChat = memo(({
           const rawZip = String(primaryId || recordAreaId || `area_${index}`);
           const recordZip = rawZip.padStart(5, '0'); // Pad to 5 digits with leading zeros
           
+          // Debug logging for first few records
+          if (index < 3) {
+            console.log(`[UnifiedWorkflow] 🔍 DEBUG: Record ${index} ZIP extraction:`, {
+              recordAreaId,
+              recordPropertiesID,
+              recordDirectID,
+              primaryId,
+              rawZip,
+              recordZip,
+              sampleBoundaryIds: geographicFeatures.slice(0, 3).map(f => f?.properties?.ID)
+            });
+          }
+          
           // Find matching ZIP Code boundary by ZIP code (same logic as original UI)
           const zipFeature = geographicFeatures.find(f => 
             f?.properties && (
@@ -4215,6 +3200,16 @@ const EnhancedGeospatialChat = memo(({
               String(f.properties.OBJECTID).padStart(5, '0') === recordZip
             )
           );
+          
+          // Debug logging for geometry matches
+          if (index < 3) {
+            console.log(`[UnifiedWorkflow] 🔍 DEBUG: Record ${index} geometry match:`, {
+              recordZip,
+              foundMatch: !!zipFeature,
+              zipFeatureId: zipFeature?.properties?.ID,
+              hasGeometry: !!zipFeature?.geometry
+            });
+          }
           
           // Create record with actual ZIP Code polygon geometry
           if (zipFeature) {
@@ -4267,15 +3262,56 @@ const EnhancedGeospatialChat = memo(({
         console.log('[UnifiedWorkflow] Visualization has legend:', !!analysisResult.visualization?.legend);
         console.log('[UnifiedWorkflow] Visualization legend title:', analysisResult.visualization?.legend?.title);
         
+        const recordsWithGeometry = joinedResults.filter(r => r.geometry).length;
+        const recordsWithoutGeometry = joinedResults.length - recordsWithGeometry;
+        
         console.log('[UnifiedWorkflow] ✅ Geometry join complete:', {
           totalRecords: joinedResults.length,
-          recordsWithGeometry: joinedResults.filter(r => r.geometry).length
+          recordsWithGeometry,
+          recordsWithoutGeometry,
+          successRate: `${((recordsWithGeometry / joinedResults.length) * 100).toFixed(1)}%`,
+          sampleRecordWithGeometry: joinedResults.find(r => r.geometry) ? {
+            areaId: joinedResults.find(r => r.geometry)?.area_id,
+            hasGeometry: !!joinedResults.find(r => r.geometry)?.geometry,
+            geometryType: joinedResults.find(r => r.geometry)?.geometry?.type
+          } : 'No records with geometry found'
         });
+        
+        // CRITICAL: Log if no geometries were successfully joined
+        if (recordsWithGeometry === 0) {
+          console.error('[UnifiedWorkflow] ❌ CRITICAL: NO GEOMETRIES JOINED! This will cause visualization failure.');
+          console.error('[UnifiedWorkflow] Sample boundary feature structure:', {
+            boundaryCount: geographicFeatures.length,
+            sampleBoundary: geographicFeatures[0] ? {
+              hasProperties: !!geographicFeatures[0].properties,
+              propertyKeys: geographicFeatures[0].properties ? Object.keys(geographicFeatures[0].properties) : [],
+              sampleId: geographicFeatures[0].properties?.ID,
+              hasGeometry: !!geographicFeatures[0].geometry
+            } : 'No boundary features'
+          });
+          console.error('[UnifiedWorkflow] Sample analysis record structure:', {
+            recordCount: analysisResult.data.records.length,
+            sampleRecord: analysisResult.data.records[0] ? {
+              hasAreaId: !!(analysisResult.data.records[0] as any).area_id,
+              areaId: (analysisResult.data.records[0] as any).area_id,
+              hasID: !!(analysisResult.data.records[0] as any).ID,
+              ID: (analysisResult.data.records[0] as any).ID,
+              allKeys: Object.keys(analysisResult.data.records[0]).slice(0, 15)
+            } : 'No analysis records'
+          });
+        }
         
       } catch (error) {
         console.error('[UnifiedWorkflow] ❌ Geometry join failed:', error);
         // Continue without geometry data if join fails
       }
+    } else {
+      console.warn('[UnifiedWorkflow] ⚠️ Skipping geometry join - conditions not met:', {
+        hasAnalysisResult: !!analysisResult,
+        hasData: !!analysisResult?.data,
+        hasRecords: !!analysisResult?.data?.records,
+        recordCount: analysisResult?.data?.records?.length || 0
+      });
     }
     
     // Update features for chat context (after geometry join)
@@ -4299,7 +3335,8 @@ const EnhancedGeospatialChat = memo(({
         const visualizationLayer = await applyAnalysisEngineVisualization(
           analysisResult.visualization,
           analysisResult.data,
-          initialMapView
+          initialMapView,
+          setFormattedLegendData
         );
         
         if (visualizationLayer) {
@@ -5330,7 +4367,14 @@ const EnhancedGeospatialChat = memo(({
         {inputMode === 'analysis' && showUnifiedWorkflow && (
           <div className="flex-1 min-h-0 overflow-hidden">
             <div className="h-full overflow-hidden">
-              {initialMapView && (
+              {initialMapView && (() => {
+                console.log('[GeoChat] 🔍 About to render UnifiedAnalysisWorkflow with callback:', {
+                  hasInitialMapView: !!initialMapView,
+                  hasHandleUnifiedAnalysisComplete: !!handleUnifiedAnalysisComplete,
+                  callbackType: typeof handleUnifiedAnalysisComplete,
+                  callbackName: handleUnifiedAnalysisComplete?.name
+                });
+                return (
                 <UnifiedAnalysisWorkflow
                   view={initialMapView}
                   onAnalysisComplete={handleUnifiedAnalysisComplete}
@@ -5338,7 +4382,8 @@ const EnhancedGeospatialChat = memo(({
                   defaultAnalysisType="query"
                   setFormattedLegendData={setFormattedLegendData}
                 />
-              )}
+                );
+              })()}
             </div>
           </div>
         )}

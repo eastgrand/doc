@@ -621,7 +621,7 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
     
     return {
       type: 'class-breaks',
-      field: 'competitive_advantage_score', // Direct field reference
+      field: 'competitive_analysis_score', // Use correct scoring field
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

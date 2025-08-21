@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useState, useEffect, useRef } from 'react';
 import { Users, DollarSign, Building, Info, X } from 'lucide-react';
 import Extent from "@arcgis/core/geometry/Extent";
@@ -92,25 +93,19 @@ export interface SampleAreaData {
   lastUpdated: string;
 }
 
-// Individual ZIP code interface
+// Individual ZIP code interface - only real demographic data fields
 export interface ZipCodeArea {
   zipCode: string;
   city: string;
-  population: number;
-  medianIncome: number;
-  genZ_percent: number;
-  applePay_percent: number;
-  businessCount: number;
-  // Additional available metrics
-  millennial_percent?: number;
-  genX_percent?: number;
-  boomer_percent?: number;
-  creditCardDebt_percent?: number;
-  savingsAccount_percent?: number;
-  investmentAssets_avg?: number;
-  googlePay_percent?: number;
-  onlineTax_percent?: number;
-  marketOpportunity_score?: number;
+  // Only include fields that actually exist in real demographic data
+  genZ_percent: number;                 // 'Generation Z Population (%)'
+  applePay_percent: number;             // 'Apple Pay Users (%)'
+  creditCardDebt_percent: number;       // 'Credit Card Balance Carriers (%)'
+  savingsAccount_percent: number;       // 'Savings Account Holders (%)'
+  investmentAssets_avg: number;         // 'Investment Assets Value (Avg)'
+  googlePay_percent: number;            // 'Google Pay Users (%)'
+  turboTax_percent: number;             // 'TurboTax Users (%)'
+  hrBlockOnline_percent: number;        // 'H&R Block Online Users (%)'
   geometry: {
     type: "Polygon";
     coordinates: number[][][];
@@ -144,6 +139,13 @@ interface SampleAreasPanelProps {
 
 // These constants are no longer needed with the simplified approach
 
+// Helper function to safely convert values to numbers for ArcGIS
+const safeNumber = (value: any): number => {
+  if (value === null || value === undefined || value === '') return 0;
+  const num = typeof value === 'number' ? value : parseFloat(String(value));
+  return isNaN(num) ? 0 : num;
+};
+
 export default function SampleAreasPanel({ view, onClose, visible }: SampleAreasPanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   // Removed preJoinedData state as we're using simplified mock data
@@ -153,7 +155,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
   const [choroplethLayers, setChoroplethLayers] = useState<Map<string, __esri.FeatureLayer>>(new Map());
   const [showTooltip, setShowTooltip] = useState(false);
   const [selectedMetrics, setSelectedMetrics] = useState<string[]>([]);
-  const [showLegendTooltip, setShowLegendTooltip] = useState(false);
+  // Removed showLegendTooltip - legend now in main header tooltip
 
   // Widget positioning effect
   useEffect(() => {
@@ -196,17 +198,23 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
   useEffect(() => {
     if (!visible) return;
     loadPreJoinedData();
-  }, [visible]);
+  }, [visible]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Select random metrics once when component mounts or data changes
+  // Only include fields that actually exist in real demographic data
   const selectRandomMetrics = () => {
-    const allMetricKeys = [
-      'genZ_percent', 'applePay_percent', 'googlePay_percent', 'onlineTax_percent',
-      'creditCardDebt_percent', 'savingsAccount_percent', 'investmentAssets_avg',
-      'marketOpportunity_score', 'population', 'medianIncome', 'businessCount'
+    const realMetricKeys = [
+      'genZ_percent',               // 'Generation Z Population (%)'
+      'applePay_percent',           // 'Apple Pay Users (%)'
+      'googlePay_percent',          // 'Google Pay Users (%)'
+      'turboTax_percent',           // 'TurboTax Users (%)'
+      'hrBlockOnline_percent',      // 'H&R Block Online Users (%)'
+      'creditCardDebt_percent',     // 'Credit Card Balance Carriers (%)'
+      'savingsAccount_percent',     // 'Savings Account Holders (%)'
+      'investmentAssets_avg'        // 'Investment Assets Value (Avg)'
     ];
     
-    const shuffled = [...allMetricKeys].sort(() => 0.5 - Math.random());
+    const shuffled = [...realMetricKeys].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 4);
   };
 
@@ -225,34 +233,39 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         // Convert pre-joined data to display areas
         processRealSampleData(sampleData);
       } else {
-        // Fallback: generate mock data for demonstration
-        console.log('[SampleAreasPanel] Pre-joined data not found, generating mock data');
-        generateMockData();
-        // Don't auto-zoom - let MapClient handle initial view  
-        // setTimeout(() => zoomToJacksonville(), 500);
+        console.log('[SampleAreasPanel] Pre-joined data not found - response not ok');
+        setDisplayAreas([]);
       }
     } catch (error) {
       console.error('[SampleAreasPanel] Error loading sample areas data:', error);
-      generateMockData();
-      // Don't auto-zoom - let MapClient handle initial view
-      // setTimeout(() => zoomToJacksonville(), 500);
+      setDisplayAreas([]);
     } finally {
       setLoading(false);
     }
   };
 
   const processRealSampleData = (sampleData: any) => {
-    console.log('[SampleAreasPanel] Processing real sample areas data:', sampleData.areas.length, 'areas');
+    console.log('[SampleAreasPanel] STEP 1 - Processing real sample areas data:', sampleData.areas?.length, 'areas');
     
     // Select random metrics for this session
     const randomMetrics = selectRandomMetrics();
     setSelectedMetrics(randomMetrics);
-    console.log('[SampleAreasPanel] Selected random metrics:', randomMetrics);
+    console.log('[SampleAreasPanel] STEP 2 - Selected random metrics:', randomMetrics);
     
     // Group areas by city
     const citiesMap = new Map<string, any[]>();
     
-    sampleData.areas.forEach((area: any) => {
+    sampleData.areas.forEach((area: any, index: number) => {
+      if (index < 5) {
+        console.log(`[SampleAreasPanel] STEP 3a - Sample area ${index}:`, {
+          zipCode: area.zipCode,
+          city: area.city,
+          hasGeometry: !!area.geometry,
+          hasDemographics: !!area.demographics,
+          demographicsKeys: area.demographics ? Object.keys(area.demographics).length : 0
+        });
+      }
+      
       const cityKey = area.city.toLowerCase();
       if (!citiesMap.has(cityKey)) {
         citiesMap.set(cityKey, []);
@@ -260,46 +273,60 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
       citiesMap.get(cityKey)!.push(area);
     });
     
+    console.log('[SampleAreasPanel] STEP 3b - Cities grouped:', Array.from(citiesMap.keys()).map(city => `${city}: ${citiesMap.get(city)?.length} ZIPs`));
+    
     // Convert to DisplaySampleArea format
     const areas: DisplaySampleArea[] = [];
     
     citiesMap.forEach((zipAreas, cityKey) => {
       const cityName = zipAreas[0].city;
+      console.log(`[SampleAreasPanel] STEP 4a - Processing city ${cityName} with ${zipAreas.length} ZIP codes`);
       
       // Convert areas to ZipCodeArea format with real geometry and demographics
-      const zipCodes: ZipCodeArea[] = zipAreas.map(area => {
+      const zipCodes: ZipCodeArea[] = zipAreas.map((area, index) => {
         const demo = area.demographics;
+        
+        if (index < 3) {
+          console.log(`[DEBUG] ${cityName} ZIP ${area.zipCode}:`);
+          console.log('  Demographics keys:', demo ? Object.keys(demo) : 'NO DEMO');
+          console.log('  GenZ value:', demo ? demo['Generation Z Population (%)'] : 'NO DEMO');
+          console.log('  GenZ type:', demo ? typeof demo['Generation Z Population (%)'] : 'NO DEMO');
+          console.log('  Apple Pay value:', demo ? demo['Apple Pay Users (%)'] : 'NO DEMO');
+          console.log('  Apple Pay type:', demo ? typeof demo['Apple Pay Users (%)'] : 'NO DEMO');
+          console.log('  After safeNumber - GenZ:', safeNumber(demo['Generation Z Population (%)']));
+          console.log('  After safeNumber - Apple Pay:', safeNumber(demo['Apple Pay Users (%)']));
+        }
+        
         return {
           zipCode: area.zipCode,
           city: area.city,
           geometry: area.geometry, // Use real polygon geometry
           bounds: area.bounds,
-          // Map real demographic data to expected fields
-          population: Math.round((demo['Generation Z Population'] || 0) / (demo['Generation Z Population (%)'] || 20) * 100) || 50000,
-          medianIncome: 60000, // Not in current data, use default
-          genZ_percent: demo['Generation Z Population (%)'] || 20.0,
-          applePay_percent: demo['Apple Pay Users (%)'] || 30.0,
-          businessCount: 2000, // Not in current data, use default
-          // Additional metrics from real data
-          millennial_percent: 28.0, // Not in current data, use default
-          genX_percent: 22.0, // Not in current data, use default
-          boomer_percent: 18.0, // Not in current data, use default
-          creditCardDebt_percent: demo['Credit Card Balance Carriers (%)'] || 35.0,
-          savingsAccount_percent: demo['Savings Account Holders (%)'] || 50.0,
-          investmentAssets_avg: demo['Investment Assets Value (Avg)'] || 25000,
-          googlePay_percent: demo['Google Pay Users (%)'] || 25.0,
-          onlineTax_percent: (demo['TurboTax Users (%)'] || 0) + (demo['H&R Block Online Users (%)'] || 0),
-          marketOpportunity_score: demo['Digital Financial Engagement Score'] || 50.0
+          // Only include fields that actually exist in real demographic data - convert to numbers for ArcGIS
+          genZ_percent: safeNumber(demo['Generation Z Population (%)']),
+          applePay_percent: safeNumber(demo['Apple Pay Users (%)']),
+          creditCardDebt_percent: safeNumber(demo['Credit Card Balance Carriers (%)']),
+          savingsAccount_percent: safeNumber(demo['Savings Account Holders (%)']),
+          investmentAssets_avg: safeNumber(demo['Investment Assets Value (Avg)']),
+          googlePay_percent: safeNumber(demo['Google Pay Users (%)']),
+          turboTax_percent: safeNumber(demo['TurboTax Users (%)']),
+          hrBlockOnline_percent: safeNumber(demo['H&R Block Online Users (%)'])
         };
       });
       
       // Calculate combined bounds
-      const combinedBounds = zipCodes.reduce((bounds, zip) => ({
-        xmin: Math.min(bounds.xmin, zip.bounds.xmin),
-        ymin: Math.min(bounds.ymin, zip.bounds.ymin),
-        xmax: Math.max(bounds.xmax, zip.bounds.xmax),
-        ymax: Math.max(bounds.ymax, zip.bounds.ymax)
-      }), {
+      const combinedBounds = zipCodes.reduce((bounds, zip) => {
+        if (!zip.bounds) {
+          console.log(`[SampleAreasPanel] WARNING: ZIP ${zip.zipCode} has no bounds`);
+          return bounds;
+        }
+        return {
+          xmin: Math.min(bounds.xmin, zip.bounds.xmin),
+          ymin: Math.min(bounds.ymin, zip.bounds.ymin),
+          xmax: Math.max(bounds.xmax, zip.bounds.xmax),
+          ymax: Math.max(bounds.ymax, zip.bounds.ymax)
+        };
+      }, {
         xmin: Infinity,
         ymin: Infinity,
         xmax: -Infinity,
@@ -312,11 +339,13 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         zipCodes,
         combinedBounds
       });
+      
+      console.log(`[SampleAreasPanel] STEP 4d - ${cityName} final area created with bounds:`, combinedBounds);
     });
     
-    setDisplayAreas(areas);
-    console.log('[SampleAreasPanel] Created', areas.length, 'display areas from real data');
-    console.log('[SampleAreasPanel] Available cities:', areas.map(a => a.id));
+    setDisplayAreas(() => areas);
+    console.log('[SampleAreasPanel] STEP 5 - Created', areas.length, 'display areas from real data');
+    console.log('[SampleAreasPanel] STEP 5 - Available cities:', areas.map(a => `${a.name} (${a.zipCodes.length} ZIPs)`));
     
     // Create the choropleth layers on the map
     createChoroplethLayers(areas);
@@ -328,134 +357,27 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
   // This function is no longer needed with the new simplified approach
   // generateDisplayAreas is replaced by direct mock data creation
 
-  const generateMockData = () => {
-    console.log('[SampleAreasPanel] Generating mock ZIP code data for 5 Florida cities');
-    
-    // Select random metrics for this session
-    const randomMetrics = selectRandomMetrics();
-    setSelectedMetrics(randomMetrics);
-    console.log('[SampleAreasPanel] Selected random metrics:', randomMetrics);
-    
-    // Generate individual ZIP codes with realistic geometries
-    const generateZipCodes = (cityId: string, cityName: string, zipCodes: string[], baseLat: number, baseLng: number, baseStats: any) => {
-      return zipCodes.map((zip, index) => {
-        // Offset each ZIP code slightly from the base city coordinates
-        const latOffset = (Math.random() - 0.5) * 0.1;
-        const lngOffset = (Math.random() - 0.5) * 0.1;
-        const centerLat = baseLat + latOffset;
-        const centerLng = baseLng + lngOffset;
-        
-        // Create rectangular ZIP code boundary
-        const size = 0.02 + Math.random() * 0.03; // Random size between 0.02 and 0.05 degrees
-        const coordinates = [[
-          [centerLng - size, centerLat - size],
-          [centerLng + size, centerLat - size], 
-          [centerLng + size, centerLat + size],
-          [centerLng - size, centerLat + size],
-          [centerLng - size, centerLat - size] // Close the polygon
-        ]];
-        
-        return {
-          zipCode: zip,
-          city: cityName,
-          population: Math.floor(baseStats.avgPopulation * (0.8 + Math.random() * 0.4)), // Vary ±20%
-          medianIncome: Math.floor(baseStats.avgIncome * (0.9 + Math.random() * 0.2)), // Vary ±10%
-          genZ_percent: Math.round((baseStats.genZ * (0.8 + Math.random() * 0.4)) * 10) / 10,
-          applePay_percent: Math.round((baseStats.applePay * (0.8 + Math.random() * 0.4)) * 10) / 10,
-          businessCount: Math.floor(baseStats.businesses * (0.7 + Math.random() * 0.6)), // Vary ±30%
-          geometry: {
-            type: 'Polygon' as const,
-            coordinates
-          },
-          bounds: {
-            xmin: centerLng - size,
-            ymin: centerLat - size,
-            xmax: centerLng + size,
-            ymax: centerLat + size
-          }
-        };
-      });
-    };
-    
-    const calculateCombinedBounds = (zipCodes: ZipCodeArea[]) => {
-      return zipCodes.reduce((bounds, zip) => ({
-        xmin: Math.min(bounds.xmin, zip.bounds.xmin),
-        ymin: Math.min(bounds.ymin, zip.bounds.ymin),
-        xmax: Math.max(bounds.xmax, zip.bounds.xmax),
-        ymax: Math.max(bounds.ymax, zip.bounds.ymax)
-      }), {
-        xmin: Infinity,
-        ymin: Infinity,
-        xmax: -Infinity,
-        ymax: -Infinity
-      });
-    };
-    
-    const cityData = [
-      {
-        id: 'jacksonville',
-        name: 'Jacksonville',
-        zipCodes: generateZipCodes('jacksonville', 'Jacksonville', ['32204', '32205', '32207', '32210', '32225'], 30.35, -81.65, {
-          avgPopulation: 57000, avgIncome: 58600, genZ: 23.8, applePay: 37.2, businesses: 2500
-        }),
-        combinedBounds: { xmin: 0, ymin: 0, xmax: 0, ymax: 0 } // Will be calculated
-      },
-      {
-        id: 'miami',
-        name: 'Miami',
-        zipCodes: generateZipCodes('miami', 'Miami', ['33131', '33132', '33134', '33135', '33137'], 25.79, -80.19, {
-          avgPopulation: 91000, avgIncome: 72300, genZ: 21.4, applePay: 45.8, businesses: 3750
-        }),
-        combinedBounds: { xmin: 0, ymin: 0, xmax: 0, ymax: 0 }
-      },
-      {
-        id: 'orlando',
-        name: 'Orlando',
-        zipCodes: generateZipCodes('orlando', 'Orlando', ['32801', '32803', '32804', '32806', '32807'], 28.54, -81.38, {
-          avgPopulation: 57000, avgIncome: 61200, genZ: 25.9, applePay: 42.3, businesses: 2900
-        }),
-        combinedBounds: { xmin: 0, ymin: 0, xmax: 0, ymax: 0 }
-      },
-      {
-        id: 'stpetersburg',
-        name: 'St. Petersburg',
-        zipCodes: generateZipCodes('stpetersburg', 'St. Petersburg', ['33701', '33702', '33703', '33704', '33705'], 27.77, -82.68, {
-          avgPopulation: 51000, avgIncome: 54800, genZ: 20.1, applePay: 34.6, businesses: 1950
-        }),
-        combinedBounds: { xmin: 0, ymin: 0, xmax: 0, ymax: 0 }
-      },
-      {
-        id: 'tampa',
-        name: 'Tampa',
-        zipCodes: generateZipCodes('tampa', 'Tampa', ['33602', '33603', '33604', '33605', '33606'], 27.97, -82.49, {
-          avgPopulation: 64000, avgIncome: 59400, genZ: 24.7, applePay: 39.1, businesses: 2650
-        }),
-        combinedBounds: { xmin: 0, ymin: 0, xmax: 0, ymax: 0 }
-      }
-    ];
-    
-    // Calculate combined bounds for each city
-    cityData.forEach(city => {
-      city.combinedBounds = calculateCombinedBounds(city.zipCodes);
-    });
-
-    setDisplayAreas(cityData);
-    createChoroplethLayers(cityData);
-  };
+  // Mock data generation removed - only real data is used
 
   const createChoroplethLayers = (areas: DisplaySampleArea[]) => {
-    console.log('[SampleAreasPanel] Creating city-level choropleth layers');
+    console.log('[SampleAreasPanel] STEP 6 - Creating city-level choropleth layers for', areas.length, 'cities');
     if (!view) {
       console.log('[SampleAreasPanel] No view available for layer creation');
       return;
     }
+
+    // Clear any existing sample area graphics first
+    clearAllSamples();
 
     const newLayers = new Map<string, __esri.FeatureLayer>();
     let globalObjectId = 1;
 
     // Create separate layer for each city with its own classification
     for (const area of areas) {
+      console.log(`[SampleAreasPanel] STEP 6a - Creating layer for ${area.name} with ${area.zipCodes.length} ZIP codes`);
       const cityGraphics: __esri.Graphic[] = [];
+      let graphicsCreated = 0;
+      let graphicsErrors = 0;
       
       // Collect all graphics for this city
       for (const zipCode of area.zipCodes) {
@@ -465,90 +387,78 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
             spatialReference: { wkid: 4326 }
           });
 
+          const attributes = {
+            OBJECTID: globalObjectId++,
+            zipCode: zipCode.zipCode,
+            city: zipCode.city,
+            // Only include attributes that exist in real demographic data
+            genZ_percent: zipCode.genZ_percent,
+            applePay_percent: zipCode.applePay_percent,
+            creditCardDebt_percent: zipCode.creditCardDebt_percent,
+            savingsAccount_percent: zipCode.savingsAccount_percent,
+            investmentAssets_avg: zipCode.investmentAssets_avg,
+            googlePay_percent: zipCode.googlePay_percent,
+            turboTax_percent: zipCode.turboTax_percent,
+            hrBlockOnline_percent: zipCode.hrBlockOnline_percent
+          };
+          
+          // Log first few attributes to see what we're passing to ArcGIS
+          if (graphicsCreated < 3) {
+            console.log(`[DEBUG] ${area.name} ZIP ${zipCode.zipCode} attributes:`, attributes);
+          }
+
           const graphic = new Graphic({
             geometry: polygon,
-            attributes: {
-              OBJECTID: globalObjectId++,
-              zipCode: zipCode.zipCode,
-              city: zipCode.city,
-              population: zipCode.population,
-              medianIncome: zipCode.medianIncome,
-              genZ_percent: zipCode.genZ_percent,
-              applePay_percent: zipCode.applePay_percent,
-              businessCount: zipCode.businessCount
-            }
+            attributes
           });
 
           cityGraphics.push(graphic);
+          graphicsCreated++;
         } catch (error) {
-          console.error(`Error creating graphic for ZIP ${zipCode.zipCode}:`, error);
+          console.error(`[SampleAreasPanel] STEP 6b - Error creating graphic for ZIP ${zipCode.zipCode}:`, error);
+          graphicsErrors++;
         }
       }
+      
+      console.log(`[SampleAreasPanel] STEP 6c - ${area.name}: ${graphicsCreated} graphics created, ${graphicsErrors} errors`);
 
-      // Create layer for this city with city-specific classification
+      // Skip ArcGIS FeatureLayer validation - just add graphics directly to map with manual styling
       if (cityGraphics.length > 0) {
-        try {
-          // Calculate city-specific quartiles
-          const cityPopulations = area.zipCodes.map(z => z.population).sort((a, b) => a - b);
-          const cityBreaks = calculateCityQuartiles(cityPopulations);
+        console.log(`[SampleAreasPanel] STEP 6d - Adding ${cityGraphics.length} graphics directly to map for ${area.name}`);
+        
+        // Calculate city-specific quartiles for coloring
+        const firstMetric = selectedMetrics[0] || 'genZ_percent';
+        const metricValues = area.zipCodes.map(z => z[firstMetric as keyof ZipCodeArea] as number).sort((a, b) => a - b);
+        const cityBreaks = calculateMetricQuartiles(metricValues, firstMetric);
+        
+        // Apply colors directly to graphics based on quartiles
+        cityGraphics.forEach(graphic => {
+          const value = graphic.attributes[firstMetric];
+          let colorIndex = 0;
+          if (value > cityBreaks[3]) colorIndex = 3;
+          else if (value > cityBreaks[2]) colorIndex = 2;
+          else if (value > cityBreaks[1]) colorIndex = 1;
           
-          const layer = new FeatureLayer({
-            source: cityGraphics,
-            objectIdField: 'OBJECTID',
-            fields: [
-              { name: 'OBJECTID', type: 'oid' as const },
-              { name: 'zipCode', type: 'string' as const },
-              { name: 'city', type: 'string' as const },
-              { name: 'population', type: 'integer' as const },
-              { name: 'medianIncome', type: 'integer' as const },
-              { name: 'genZ_percent', type: 'double' as const },
-              { name: 'applePay_percent', type: 'double' as const },
-              { name: 'businessCount', type: 'integer' as const },
-              // Additional fields for rendering options
-              { name: 'millennial_percent', type: 'double' as const },
-              { name: 'genX_percent', type: 'double' as const },
-              { name: 'boomer_percent', type: 'double' as const },
-              { name: 'creditCardDebt_percent', type: 'double' as const },
-              { name: 'savingsAccount_percent', type: 'double' as const },
-              { name: 'investmentAssets_avg', type: 'integer' as const },
-              { name: 'googlePay_percent', type: 'double' as const },
-              { name: 'onlineTax_percent', type: 'double' as const },
-              { name: 'marketOpportunity_score', type: 'double' as const }
-            ],
-            renderer: createCitySpecificRenderer(cityBreaks, selectedMetrics[0] || 'population'),
-            visible: true,
-            opacity: 0.6,
-            title: `${area.name} ZIP Codes`,
-            popupTemplate: {
-              title: 'ZIP Code {zipCode}',
-              content: `
-                <div style="padding: 10px;">
-                  <p><strong>City:</strong> {city}</p>
-                  <hr style="margin: 10px 0;">
-                  <p><strong>Population:</strong> {population}</p>
-                  <p><strong>Median Income:</strong> ${'{medianIncome}'}</p>
-                  <p><strong>Gen Z:</strong> {genZ_percent}%</p>
-                  <p><strong>Apple Pay Usage:</strong> {applePay_percent}%</p>
-                  <p><strong>Businesses:</strong> {businessCount}</p>
-                </div>
-              `
+          graphic.symbol = new SimpleFillSymbol({
+            color: [parseInt(ACTIVE_COLOR_SCHEME[colorIndex].slice(1, 3), 16), 
+                   parseInt(ACTIVE_COLOR_SCHEME[colorIndex].slice(3, 5), 16), 
+                   parseInt(ACTIVE_COLOR_SCHEME[colorIndex].slice(5, 7), 16), 0.6],
+            outline: {
+              color: [0, 0, 0, 0],
+              width: 0
             }
           });
-
-          view.map.add(layer);
-          newLayers.set(area.id, layer);
-          console.log(`[SampleAreasPanel] Created layer for ${area.name} with ${cityGraphics.length} ZIP codes`);
-        } catch (error) {
-          console.error(`Error creating layer for ${area.name}:`, error);
-        }
+        });
+        
+        // Add graphics directly to map view - no FeatureLayer validation
+        view.graphics.addMany(cityGraphics);
+        console.log(`[SampleAreasPanel] STEP 6e - Added ${cityGraphics.length} graphics directly to map for ${area.name}`);
+      } else {
+        console.warn(`[SampleAreasPanel] STEP 6f - No graphics created for ${area.name}, skipping`);
       }
     }
     
-    // Don't auto-zoom to combined extent - let MapClient handle initial view
-    // if (areas.length > 0) {
-    //   zoomToCombinedExtent(areas);
-    // }
-
+    console.log(`[SampleAreasPanel] STEP 7 - Layer creation complete. Total layers: ${newLayers.size}`);
     setChoroplethLayers(newLayers);
   };
   
@@ -642,6 +552,33 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
     ];
   };
 
+  const calculateMetricQuartiles = (values: number[], metricType: string) => {
+    // Calculate quartile breaks appropriate for different metric types
+    if (values.length === 0) {
+      // Default breaks based on metric type
+      if (metricType.includes('_percent')) {
+        return [0, 10, 20, 30, 40]; // Percentage defaults
+      } else if (metricType === 'investmentAssets_avg') {
+        return [0, 10000, 25000, 50000, 100000]; // Dollar amount defaults
+      } else {
+        return [0, 40000, 60000, 80000, 100000]; // General numeric defaults
+      }
+    }
+    
+    const sorted = [...values].sort((a, b) => a - b);
+    const q1Index = Math.floor(sorted.length * 0.25);
+    const q2Index = Math.floor(sorted.length * 0.5);
+    const q3Index = Math.floor(sorted.length * 0.75);
+    
+    return [
+      sorted[0],
+      sorted[q1Index],
+      sorted[q2Index],
+      sorted[q3Index],
+      sorted[sorted.length - 1]
+    ];
+  };
+
   const createCitySpecificRenderer = (breaks: number[], renderingField: string) => {
     // Use the centralized Firefly color scheme
     const fireflyColors = ACTIVE_COLOR_SCHEME;
@@ -652,9 +589,9 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         minValue: index === 0 ? -Infinity : breaks[index],
         maxValue: index === fireflyColors.length - 1 ? Infinity : breaks[index + 1],
         symbol: new SimpleFillSymbol({
-          color: new Color([...new Color(color).toRgba().slice(0, 3), 0.6]), // Apply 0.6 opacity to symbol
+          color: [parseInt(color.slice(1, 3), 16), parseInt(color.slice(3, 5), 16), parseInt(color.slice(5, 7), 16), 0.6], // Direct RGB conversion
           outline: {
-            color: new Color([0, 0, 0, 0]),
+            color: [0, 0, 0, 0],
             width: 0
           }
         }),
@@ -708,13 +645,17 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
   };
 
   const clearAllSamples = () => {
-    // Remove all choropleth layers
-    choroplethLayers.forEach(layer => {
-      view.map.remove(layer);
-    });
-    setChoroplethLayers(new Map());
-    setDisplayAreas([]);
-    setSelectedArea(null);
+    // Remove all sample area graphics from map view
+    if (view && view.graphics) {
+      // Filter out only our sample area graphics (those with zipCode attribute)
+      const sampleGraphics = view.graphics.toArray().filter(graphic => 
+        graphic.attributes && graphic.attributes.zipCode
+      );
+      console.log(`[SampleAreasPanel] Removing ${sampleGraphics.length} sample area graphics`);
+      view.graphics.removeMany(sampleGraphics);
+    }
+  setChoroplethLayers(new Map());
+  setSelectedArea(null);
   };
 
   // Store layers in a ref to persist across re-renders
@@ -725,35 +666,36 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
     persistentLayersRef.current = choroplethLayers;
   }, [choroplethLayers]);
   
-  // Clear layers when panel is closed - but NOT during theme switches
+  // Clear graphics when panel is closed - but NOT during theme switches
   useEffect(() => {
     // Skip clearing during theme switches or initial mount
-    if (!visible && persistentLayersRef.current.size > 0) {
+    if (!visible && displayAreas.length > 0) {
       // Check if this is a theme switch using multiple methods
       const isThemeSwitch = document.documentElement.hasAttribute('data-theme-switching') || 
                            window.__themeTransitioning === true;
       
       if (!isThemeSwitch) {
-        console.log('[SampleAreasPanel] Panel hidden - clearing layers');
+        console.log('[SampleAreasPanel] Panel hidden - clearing graphics');
         clearAllSamples();
       } else {
-        console.log('[SampleAreasPanel] Theme switching detected - preserving layers');
+        console.log('[SampleAreasPanel] Theme switching detected - preserving graphics');
       }
     }
   }, [visible]);
   
   // Cleanup only on actual unmount
   useEffect(() => {
-    // Save layers ref for cleanup
-    const layersToCleanup = persistentLayersRef.current;
-    
     return () => {
-      console.log('[SampleAreasPanel] Component unmounting - cleaning up layers');
-      layersToCleanup.forEach(layer => {
-        if (view && view.map && !view.destroyed && view.map.layers.includes(layer)) {
-          view.map.remove(layer);
+      console.log('[SampleAreasPanel] Component unmounting - cleaning up graphics');
+      if (view && view.graphics && !view.destroyed) {
+        const sampleGraphics = view.graphics.toArray().filter(graphic => 
+          graphic.attributes && graphic.attributes.zipCode
+        );
+        if (sampleGraphics.length > 0) {
+          view.graphics.removeMany(sampleGraphics);
+          console.log(`[SampleAreasPanel] Removed ${sampleGraphics.length} sample graphics on unmount`);
         }
-      });
+      }
     };
   }, [view]); // Only depend on view to avoid re-running
 
@@ -770,67 +712,26 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
   // Removed formatPercent as it's no longer used
 
   const getMetricDisplayName = (metricKey: string) => {
+    // Only include real fields that exist in demographic data
     const metricDisplayNames: Record<string, string> = {
-      population: 'Population',
-      medianIncome: 'Median Income',
-      businessCount: 'Business Count',
       genZ_percent: 'Gen Z %',
-      millennial_percent: 'Millennials %',
-      genX_percent: 'Gen X %',
-      boomer_percent: 'Boomers %',
       creditCardDebt_percent: 'Credit Debt %',
       savingsAccount_percent: 'Savings %',
       investmentAssets_avg: 'Investment Assets',
       applePay_percent: 'Apple Pay %',
       googlePay_percent: 'Google Pay %',
-      onlineTax_percent: 'Online Tax %',
-      marketOpportunity_score: 'Market Opportunity'
+      turboTax_percent: 'TurboTax %',
+      hrBlockOnline_percent: 'H&R Block Online %'
     };
     return metricDisplayNames[metricKey] || metricKey;
   };
 
   const getQuickStats = (area: DisplaySampleArea) => {
-    // Define metric calculators and metadata
+    // Only include metric calculators for real data fields that exist in demographic data
     const metricCalculators: Record<string, { calculate: () => any, label: string, icon: any, format: (val: any) => string }> = {
-      population: {
-        calculate: () => area.zipCodes.reduce((sum, zip) => sum + zip.population, 0),
-        label: 'Population',
-        icon: Users,
-        format: (val) => formatNumber(val)
-      },
-      medianIncome: {
-        calculate: () => Math.round(area.zipCodes.reduce((sum, zip) => sum + zip.medianIncome, 0) / area.zipCodes.length),
-        label: 'Avg Income',
-        icon: DollarSign,
-        format: (val) => formatCurrency(val)
-      },
-      businessCount: {
-        calculate: () => area.zipCodes.reduce((sum, zip) => sum + zip.businessCount, 0),
-        label: 'Businesses',
-        icon: Building,
-        format: (val) => formatNumber(val)
-      },
       genZ_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + zip.genZ_percent, 0) / area.zipCodes.length) * 10) / 10,
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.genZ_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
         label: 'Gen Z %',
-        icon: Users,
-        format: (val) => `${val}%`
-      },
-      millennial_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.millennial_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Millennials %',
-        icon: Users,
-        format: (val) => `${val}%`
-      },
-      genX_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.genX_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Gen X %',
-        icon: Users,
-        format: (val) => `${val}%`
-      },
-      boomer_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.boomer_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Boomers %',
         icon: Users,
         format: (val) => `${val}%`
       },
@@ -853,7 +754,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         format: (val) => formatCurrency(val)
       },
       applePay_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + zip.applePay_percent, 0) / area.zipCodes.length) * 10) / 10,
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.applePay_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
         label: 'Apple Pay %',
         icon: DollarSign,
         format: (val) => `${val}%`
@@ -864,17 +765,17 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         icon: DollarSign,
         format: (val) => `${val}%`
       },
-      onlineTax_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.onlineTax_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Online Tax %',
+      turboTax_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.turboTax_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'TurboTax %',
         icon: DollarSign,
         format: (val) => `${val}%`
       },
-      marketOpportunity_score: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.marketOpportunity_score || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Market Opp',
-        icon: Building,
-        format: (val) => `${val}`
+      hrBlockOnline_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.hrBlockOnline_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'H&R Block Online %',
+        icon: DollarSign,
+        format: (val) => `${val}%`
       }
     };
 
@@ -892,7 +793,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
     }).filter(Boolean); // Remove any null values
   };
 
-  console.log('[SampleAreasPanel] Render check:', { visible, displayAreasCount: displayAreas.length, loading });
+  console.log('[SampleAreasPanel] Final render check:', { visible, displayAreasCount: displayAreas.length, loading });
   
   return (
     <div 
@@ -966,11 +867,12 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                     backgroundColor: 'var(--theme-bg-primary)',
                     border: '1px solid var(--theme-border)',
                     color: 'var(--theme-text-primary)',
-                    maxWidth: '200px',
+                    minWidth: '200px',
+                    maxWidth: '250px',
                     whiteSpace: 'normal'
                   }}
                 >
-                  Random statistics for major market areas in your project
+                  Statistics for major market areas in your project
                 </div>
               )}
             </div>
@@ -1002,8 +904,6 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
 
         {/* Content */}
         <div className="esri-widget__panel" style={{ 
-          maxHeight: '300px',
-          overflowY: 'auto',
           padding: '0'
         }}>
           {loading ? (
@@ -1070,104 +970,99 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
 
                     {/* Choropleth Info */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <p className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>
-                          Showing: {getMetricDisplayName(selectedMetrics[0] || 'population')}
-                        </p>
-                        <div className="relative">
-                          <button
-                            onMouseEnter={() => setShowLegendTooltip(true)}
-                            onMouseLeave={() => setShowLegendTooltip(false)}
-                            style={{ 
-                              border: 'none',
-                              background: 'transparent',
-                              color: 'var(--theme-text-secondary)',
-                              padding: '2px',
-                              borderRadius: '2px',
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center'
-                            }}
-                            onMouseOver={(e) => {
-                              e.currentTarget.style.backgroundColor = 'var(--theme-bg-tertiary)';
-                            }}
-                            onMouseOut={(e) => {
-                              e.currentTarget.style.backgroundColor = 'transparent';
-                            }}
-                            aria-label="Legend information"
-                          >
-                            <Info className="h-2 w-2" />
-                          </button>
-                          {showLegendTooltip && (
-                            <div 
-                              className="absolute z-50 px-2 py-1 text-xs rounded shadow-lg"
-                              style={{
-                                top: '100%',
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                                marginTop: '4px',
-                                backgroundColor: 'var(--theme-bg-primary)',
-                                border: '1px solid var(--theme-border)',
-                                color: 'var(--theme-text-primary)',
-                                minWidth: '120px',
-                                whiteSpace: 'nowrap'
-                              }}
-                            >
-                              <div style={{ fontSize: '11px', marginBottom: '4px', fontWeight: '600' }}>Legend:</div>
-                              <div style={{ fontSize: '10px', lineHeight: '1.2' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '2px' }}>
-                                  <div 
-                                    style={{ 
-                                      width: '10px', 
-                                      height: '10px',
-                                      border: '5px solid #ff0040',
-                                      borderRadius: '1px'
-                                    }}
-                                  />
-                                  <span>Lowest</span>
-                                </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '2px' }}>
-                                  <div 
-                                    style={{ 
-                                      width: '10px', 
-                                      height: '10px',
-                                      border: '5px solid #ffbf00',
-                                      borderRadius: '1px'
-                                    }}
-                                  />
-                                  <span>Low</span>
-                                </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '2px' }}>
-                                  <div 
-                                    style={{ 
-                                      width: '10px', 
-                                      height: '10px',
-                                      border: '5px solid #00ff40',
-                                      borderRadius: '1px'
-                                    }}
-                                  />
-                                  <span>High</span>
-                                </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                  <div 
-                                    style={{ 
-                                      width: '10px', 
-                                      height: '10px',
-                                      border: '5px solid #00ff80',
-                                      borderRadius: '1px'
-                                    }}
-                                  />
-                                  <span>Highest</span>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                      <p className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>
+                        Showing: {getMetricDisplayName(selectedMetrics[0] || 'genZ_percent')}
+                      </p>
                     </div>
                   </div>
                 );
               })}
+            </div>
+          )}
+
+          {/* Legend */}
+          {selectedMetrics.length > 0 && (
+            <div className="p-4" style={{ 
+              borderTop: '1px solid var(--theme-border)',
+              backgroundColor: 'var(--theme-bg-secondary)'
+            }}>
+              <h4 className="text-xs font-medium mb-2" style={{ color: 'var(--theme-text-primary)' }}>
+                {getMetricDisplayName(selectedMetrics[0] || 'genZ_percent')} Legend
+              </h4>
+              <div className="flex flex-col space-y-1">
+                <div className="flex items-center space-x-2">
+                  <div 
+                    className="w-3 h-3 rounded-sm"
+                    style={{ 
+                      backgroundColor: '#ff0040',
+                      border: '1px solid #ddd',
+                      opacity: 1,
+                      boxShadow: 'none',
+                      backgroundClip: 'padding-box',
+                      zIndex: 1,
+                      position: 'relative',
+                      // Use !important to override any global CSS
+                      // @ts-ignore
+                      cssText: 'background-color: #ff0040 !important;'
+                    }}
+                  ></div>
+                  <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Lowest</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div 
+                    className="w-3 h-3 rounded-sm"
+                    style={{ 
+                      backgroundColor: '#ffbf00',
+                      border: '1px solid #ddd',
+                      opacity: 1,
+                      boxShadow: 'none',
+                      backgroundClip: 'padding-box',
+                      zIndex: 1,
+                      position: 'relative',
+                      // Use !important to override any global CSS
+                      // @ts-ignore
+                      cssText: 'background-color: #ffbf00 !important;'
+                    }}
+                  ></div>
+                  <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Low</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div 
+                    className="w-3 h-3 rounded-sm"
+                    style={{ 
+                      backgroundColor: '#00ff40',
+                      border: '1px solid #ddd',
+                      opacity: 1,
+                      boxShadow: 'none',
+                      backgroundClip: 'padding-box',
+                      zIndex: 1,
+                      position: 'relative',
+                      // Use !important to override any global CSS
+                      // @ts-ignore
+                      cssText: 'background-color: #00ff40 !important;'
+                    }}
+                  ></div>
+                  <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>High</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div 
+                    className="w-3 h-3 rounded-sm"
+                    style={{ 
+                      backgroundColor: '#00ff80',
+                      border: '1px solid #ddd',
+                      opacity: 1,
+                      boxShadow: 'none',
+                      backgroundClip: 'padding-box',
+                      zIndex: 1,
+                      position: 'relative',
+                      // Use !important to override any global CSS
+                      // @ts-ignore
+                      cssText: 'background-color: #00ff80 !important;'
+                    }}
+                  ></div>
+                  <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Highest</span>
+                </div>
+              </div>
             </div>
           )}
         </div>

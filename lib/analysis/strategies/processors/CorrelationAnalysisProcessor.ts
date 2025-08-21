@@ -490,7 +490,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'correlation_strength_score', // Direct field reference
+      field: 'correlation_analysis_score', // Use correct scoring field
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

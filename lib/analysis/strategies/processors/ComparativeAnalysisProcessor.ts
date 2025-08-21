@@ -206,10 +206,10 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
         competitive_advantage_score: Math.round(comparativeScore * 100) / 100, // Keep for compatibility
         rank: 0, // Will be calculated after sorting
         properties: {
-          ...record, // Include ALL original fields in properties
           competitive_advantage_score: comparativeScore, // Primary field for competitive analysis
           comparative_analysis_score: comparativeScore, // Keep for compatibility
           strategic_value_score: comparativeScore, // Keep for compatibility
+          score_source: 'comparative_analysis_score',
           turbotax_market_share: brandAMetric.value, // Legacy field for compatibility
           hrblock_market_share: brandBMetric.value, // Legacy field for compatibility
           brand_dominance: brandDominance, // Legacy field for compatibility
@@ -261,7 +261,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'comparison_score', // Use comparison_score to match new data
+      targetVariable: 'comparative_analysis_score', // Use exact field name from endpoint mapping
       renderer: this.createComparativeRenderer(rankedRecords), // Add back custom renderer
       legend: this.createComparativeLegend(rankedRecords) // Add back custom legend
     };
@@ -288,7 +288,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'comparison_score', // Direct field reference
+      field: 'comparative_analysis_score', // Use correct scoring field
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

@@ -196,8 +196,8 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
-          ...record, // Include ALL original fields in properties
           strategic_value_score: primaryScore,
+          score_source: 'strategic_value_score',
           target_brand_share: targetBrandValue,
           target_brand_name: targetBrandInfo?.brandName || 'Unknown',
           competitor_brand_share: competitorBrandValue,

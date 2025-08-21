@@ -53,7 +53,7 @@ export default function UnifiedDataTable({ analysisResult, onExport }: UnifiedDa
 
   if (!data || !data.records || data.records.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-gray-500">
+      <div className="flex flex-col items-center justify-center h-full text-gray-500 dark:text-gray-400">
         <Table className="w-12 h-12 mb-4" />
         <p className="text-sm">No data available to display</p>
       </div>
@@ -63,7 +63,7 @@ export default function UnifiedDataTable({ analysisResult, onExport }: UnifiedDa
   return (
     <div className="flex flex-col h-full">
       {/* Header with export button */}
-      <div className="flex justify-between items-center p-4 border-b">
+      <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
         <div>
           <h3 className="text-sm font-semibold">Data Table</h3>
           <p className="text-xs theme-text-secondary">
@@ -78,7 +78,7 @@ export default function UnifiedDataTable({ analysisResult, onExport }: UnifiedDa
 
       {/* Statistics summary */}
       {stats && (
-        <div className="p-4 theme-bg-secondary border-b">
+        <div className="p-4 theme-bg-secondary border-b dark:border-gray-700">
           <h4 className="text-xs font-semibold mb-2">Summary Statistics</h4>
           <div className="grid grid-cols-3 gap-4">
             {stats.map((stat, index) => (
@@ -97,7 +97,7 @@ export default function UnifiedDataTable({ analysisResult, onExport }: UnifiedDa
           <thead className="theme-bg-secondary sticky top-0">
             <tr>
               {tableData.headers.map((header, index) => (
-                <th key={index} className="px-3 py-2 text-left font-semibold text-gray-700 border-b">
+                <th key={index} className="px-3 py-2 text-left font-semibold text-gray-700 dark:text-gray-300 border-b dark:border-gray-700">
                   {header}
                 </th>
               ))}
@@ -105,7 +105,7 @@ export default function UnifiedDataTable({ analysisResult, onExport }: UnifiedDa
           </thead>
           <tbody>
             {tableData.rows.map((row, rowIndex) => (
-              <tr key={rowIndex} className="hover:theme-bg-secondary border-b">
+              <tr key={rowIndex} className="hover:theme-bg-secondary border-b dark:border-gray-700">
                 {row.map((cell, cellIndex) => (
                   <td key={cellIndex} className="px-3 py-2 theme-text-primary">
                     {cell}
@@ -118,7 +118,7 @@ export default function UnifiedDataTable({ analysisResult, onExport }: UnifiedDa
       </div>
 
       {/* Footer with record count */}
-      <div className="p-2 border-t theme-bg-secondary text-center">
+      <div className="p-2 border-t dark:border-gray-700 theme-bg-secondary text-center">
         <span className="text-xs theme-text-secondary">
           Showing {tableData.rows.length} of {data.totalRecords || tableData.rows.length} records
         </span>

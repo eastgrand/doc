@@ -43,28 +43,31 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   // Apply theme to document
   useEffect(() => {
-    if (mounted) {
-      // Set flag BEFORE changing theme to prevent layer removal
-      document.documentElement.setAttribute('data-theme-switching', 'true');
-      window.__themeTransitioning = true; // Global flag as backup
+    if (!mounted) return;
+    
+    // Set protection flags
+    document.documentElement.setAttribute('data-theme-switching', 'true');
+    window.__themeTransitioning = true;
+    
+    console.log(`🎨 [THEME SWITCH] Switching to ${theme} theme with protection flags set`);
+    
+    // Apply theme change
+    requestAnimationFrame(() => {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
       
-      // Small delay to ensure flag is set before any effects run
-      requestAnimationFrame(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        
-        // Notify widgets about theme change
-        window.dispatchEvent(new CustomEvent('theme-changed', { 
-          detail: { theme, timestamp: Date.now() }
-        }));
-      });
-      
-      // Remove flag after theme switch is complete - increased delay
-      setTimeout(() => {
-        document.documentElement.removeAttribute('data-theme-switching');
-        window.__themeTransitioning = false;
-      }, 1000); // Increased to 1 second to be safe
-    }
+      // Notify widgets about theme change
+      window.dispatchEvent(new CustomEvent('theme-changed', { 
+        detail: { theme, timestamp: Date.now() }
+      }));
+    });
+    
+    // Remove protection flags after delay
+    setTimeout(() => {
+      document.documentElement.removeAttribute('data-theme-switching');
+      window.__themeTransitioning = false;
+      console.log('🎨 [THEME SWITCH] Protection flags removed');
+    }, 2000);
   }, [theme, mounted]);
 
   const setTheme = (newTheme: Theme) => {
@@ -75,14 +78,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     setThemeState(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
   };
 
-  // Prevent hydration mismatch - keep the same structure to avoid remounting
-  if (!mounted) {
-    // Return children directly to avoid remounting components
-    return <>{children}</>;
-  }
-
+  // Prevent hydration mismatch - always render children with theme context
+  // Don't conditionally render to avoid component unmounting
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+    <ThemeContext.Provider value={{ theme: mounted ? theme : 'light', toggleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

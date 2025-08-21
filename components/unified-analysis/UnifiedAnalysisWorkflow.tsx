@@ -98,6 +98,7 @@ export interface UnifiedAnalysisWorkflowProps {
   selectedHotspot?: import('@/components/map/SampleHotspots').SampleHotspot | null;
   onHotspotProcessed?: () => void;
   onAnalysisStart?: () => void;
+  onVisualizationLayerCreated?: (layer: __esri.FeatureLayer | null, shouldReplace?: boolean) => void;
 }
 
 type WorkflowStep = 'area' | 'buffer' | 'analysis' | 'results';
@@ -120,8 +121,19 @@ export default function UnifiedAnalysisWorkflow({
   setFormattedLegendData,
   selectedHotspot,
   onHotspotProcessed,
-  onAnalysisStart
+  onAnalysisStart,
+  onVisualizationLayerCreated
 }: UnifiedAnalysisWorkflowProps) {
+  
+  // DEBUG: Log received props
+  console.log('[UnifiedWorkflow] 🔍 PROPS DEBUG:', {
+    hasView: !!view,
+    hasOnAnalysisComplete: !!onAnalysisComplete,
+    onAnalysisCompleteType: typeof onAnalysisComplete,
+    hasOnExport: !!onExport,
+    enableChat,
+    defaultAnalysisType
+  });
   // State management
   const [workflowState, setWorkflowState] = useState<WorkflowState>({
     currentStep: 'area',
@@ -468,6 +480,134 @@ export default function UnifiedAnalysisWorkflow({
 
       console.log('[UnifiedWorkflow] Analysis complete:', result);
 
+      // Apply visualization to map if analysis includes visualization and data
+      if (result.analysisResult?.visualization && result.analysisResult?.data && view) {
+        try {
+          console.log('[UnifiedWorkflow] Applying visualization to map...');
+          
+          // First, perform geometry join if records have area_id but no geometry
+          const analysisData = result.analysisResult.data;
+          if (analysisData?.records && analysisData.records.length > 0) {
+            const recordsWithoutGeometry = analysisData.records.filter((record: any) => !record.geometry);
+            
+            if (recordsWithoutGeometry.length > 0) {
+              console.log('[UnifiedWorkflow] Starting geometry join for', recordsWithoutGeometry.length, 'records without geometry');
+              
+              try {
+                // Load ZIP code boundaries for Florida
+                const { loadBoundaryData } = await import('@/utils/blob-data-loader');
+                const boundaryData = await loadBoundaryData('zip_boundaries');
+                const geographicFeatures = boundaryData?.features || [];
+                
+                if (geographicFeatures.length > 0) {
+                  console.log('[UnifiedWorkflow] ✅ Loaded', geographicFeatures.length, 'ZIP code boundaries');
+                  
+                  // Join records with geometry
+                  const joinedResults = analysisData.records.map((record: any, index: number) => {
+                    // Skip if already has geometry
+                    if (record.geometry) return record;
+                    
+                    // Extract ZIP code from record
+                    const recordAreaId = record.area_id;
+                    const recordPropertiesID = record.properties?.ID;
+                    const recordDirectID = record.ID;
+                    
+                    let primaryId = recordPropertiesID || recordDirectID;
+                    if (recordAreaId && !String(recordAreaId).startsWith('area_')) {
+                      primaryId = recordAreaId;
+                    }
+                    
+                    const recordZip = String(primaryId || recordAreaId || `area_${index}`).padStart(5, '0');
+                    
+                    // Find matching boundary
+                    const zipFeature = geographicFeatures.find((f: any) => 
+                      f?.properties && (
+                        String(f.properties.ID).padStart(5, '0') === recordZip ||
+                        String(f.properties.ZIP).padStart(5, '0') === recordZip ||
+                        String(f.properties.ZIPCODE).padStart(5, '0') === recordZip ||
+                        f.properties.DESCRIPTION?.match(/^(\d{5})/)?.[1] === recordZip
+                      )
+                    );
+                    
+                    if (zipFeature) {
+                      const zipDescription = zipFeature.properties?.DESCRIPTION || '';
+                      const zipMatch = zipDescription.match(/^(\d{5})\s*\(([^)]+)\)/);
+                      const zipCode = zipMatch?.[1] || recordZip;
+                      const cityName = zipMatch?.[2] || 'Unknown City';
+                      
+                      return {
+                        ...record,
+                        geometry: zipFeature.geometry,
+                        area_name: `${zipCode} (${cityName})`,
+                        properties: {
+                          ...record.properties,
+                          ID: zipCode,
+                          ZIP: zipCode,
+                          city: cityName,
+                          DESCRIPTION: zipDescription,
+                        }
+                      };
+                    } else {
+                      console.warn(`[UnifiedWorkflow] No geometry found for ZIP: ${recordZip}`);
+                      return record; // Return as-is without geometry
+                    }
+                  });
+                  
+                  // Update analysis result with geometry
+                  result.analysisResult.data = {
+                    ...analysisData,
+                    records: joinedResults
+                  };
+                  
+                  const recordsWithGeometry = joinedResults.filter((r: any) => r.geometry).length;
+                  console.log('[UnifiedWorkflow] ✅ Geometry join complete:', {
+                    totalRecords: joinedResults.length,
+                    recordsWithGeometry,
+                    recordsWithoutGeometry: joinedResults.length - recordsWithGeometry,
+                    successRate: `${((recordsWithGeometry / joinedResults.length) * 100).toFixed(1)}%`
+                  });
+                  
+                } else {
+                  console.error('[UnifiedWorkflow] No ZIP code boundaries loaded');
+                }
+                
+              } catch (error) {
+                console.error('[UnifiedWorkflow] ❌ Geometry join failed:', error);
+              }
+            } else {
+              console.log('[UnifiedWorkflow] All records already have geometry, skipping join');
+            }
+          }
+          
+          // Import the applyAnalysisEngineVisualization function
+          const { applyAnalysisEngineVisualization } = await import('@/utils/apply-analysis-visualization');
+          
+          // Apply visualization with legend data callback and layer creation callback
+          const visualizationLayer = await applyAnalysisEngineVisualization(
+            result.analysisResult.visualization,
+            result.analysisResult.data,
+            view,
+            setFormattedLegendData,
+            onVisualizationLayerCreated
+          );
+          
+          if (visualizationLayer) {
+            console.log('[UnifiedWorkflow] ✅ Visualization applied successfully');
+          } else {
+            console.warn('[UnifiedWorkflow] ⚠️ Visualization function returned null');
+          }
+          
+        } catch (error) {
+          console.error('[UnifiedWorkflow] ❌ Failed to apply visualization:', error);
+        }
+      } else {
+        console.warn('[UnifiedWorkflow] ⚠️ Missing requirements for visualization:', {
+          hasVisualization: !!result.analysisResult?.visualization,
+          hasData: !!result.analysisResult?.data,
+          hasView: !!view
+        });
+      }
+
       // Update state with results
       setWorkflowState(prev => ({
         ...prev,
@@ -477,7 +617,15 @@ export default function UnifiedAnalysisWorkflow({
       }));
 
       // Notify parent component
-      onAnalysisComplete?.(result);
+      console.log('[UnifiedWorkflow] 🔥 About to call onAnalysisComplete callback with result:', result);
+      console.log('[UnifiedWorkflow] 🔥 onAnalysisComplete exists?', !!onAnalysisComplete);
+      if (onAnalysisComplete) {
+        console.log('[UnifiedWorkflow] 🔥 Calling onAnalysisComplete...');
+        onAnalysisComplete(result);
+        console.log('[UnifiedWorkflow] 🔥 onAnalysisComplete called successfully');
+      } else {
+        console.warn('[UnifiedWorkflow] ⚠️ onAnalysisComplete callback is undefined!');
+      }
 
     } catch (error) {
       console.error('[UnifiedWorkflow] Analysis error:', error);

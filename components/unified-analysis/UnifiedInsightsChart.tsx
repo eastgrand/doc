@@ -64,7 +64,7 @@ export default function UnifiedInsightsChart({ analysisResult, onExportChart }: 
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex justify-between items-center p-4 border-b">
+      <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
         <div>
           <h3 className="text-sm font-semibold">Feature Importance</h3>
           <p className="text-xs theme-text-secondary">
@@ -93,7 +93,7 @@ export default function UnifiedInsightsChart({ analysisResult, onExportChart }: 
               </div>
               
               {/* Progress bar */}
-              <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                 <div
                   className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-500"
                   style={{

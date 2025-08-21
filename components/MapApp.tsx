@@ -27,11 +27,15 @@ const ResizableSidebar = dynamic(() => import('@/components/ResizableSidebar'), 
   ssr: false 
 });
 
-const DynamicUnifiedAnalysis = dynamic(() => import('@/components/unified-analysis/UnifiedAnalysisWorkflow'), { 
+const DynamicGeospatialChat = dynamic(() => import('@/components/geospatial-chat-interface').then(mod => ({ default: mod.EnhancedGeospatialChat })), { 
   ssr: false 
 });
 
 const DynamicMapWidgets = dynamic(() => import('@/components/MapWidgets'), {
+  ssr: false
+});
+
+const DynamicUnifiedAnalysis = dynamic(() => import('@/components/unified-analysis/UnifiedAnalysisWorkflow'), {
   ssr: false
 });
 
@@ -129,11 +133,27 @@ export const MapApp: React.FC = memo(() => {
 
   useEffect(() => {
     setMounted(true);
+    
+    // Cleanup layer protection on unmount
+    return () => {
+      if ((window as any).mapView) {
+        import('../utils/layer-protection').then(({ deactivateLayerProtection }) => {
+          deactivateLayerProtection((window as any).mapView);
+        });
+      }
+    };
   }, []);
 
   // Simple handlers
   const handleMapLoad = useCallback((view: __esri.MapView) => {
     setMapView(view);
+    // Store global reference for theme switch debugging
+    (window as any).mapView = view;
+    
+    // Activate layer protection system
+    import('../utils/layer-protection').then(({ activateLayerProtection }) => {
+      activateLayerProtection(view);
+    });
   }, []);
 
   const handleMapError = useCallback((error: Error) => {
@@ -177,6 +197,19 @@ export const MapApp: React.FC = memo(() => {
     });
   }, []);
 
+  // NEW: Handle SampleAreasPanel layers for CustomPopupManager
+  const handleSampleAreasLayersCreated = useCallback((layers: __esri.FeatureLayer[]) => {
+    console.log('[MapApp] SampleAreasPanel layers created for CustomPopupManager:', layers.length);
+    setFeatureLayers(prevLayers => {
+      // Remove any existing sample area layers and add new ones
+      const nonSampleAreaLayers = prevLayers.filter(layer => 
+        !layer.title?.includes('ZIP Codes') && 
+        !layers.some(newLayer => newLayer.id === layer.id)
+      );
+      return [...nonSampleAreaLayers, ...layers];
+    });
+  }, []);
+
   // Memoize layer state update handler for AITab
   const handleLayerStateChange = useCallback((layerId: string, state: any) => {
     setLayerStates(prev => ({ ...prev, [layerId]: state }));
@@ -198,6 +231,54 @@ export const MapApp: React.FC = memo(() => {
       setFeatureLayers(currentFeatureLayers);
     }
   }, [mapView]);
+
+  // Handle analysis start - close sample panel to show visualization
+  const handleAnalysisStart = useCallback(() => {
+    console.log('[MapApp] Analysis starting - closing sample areas panel');
+    setShowSampleAreasPanel(false);
+  }, []);
+
+  // Handle visualization layer creation for CustomPopupManager integration
+  const handleVisualizationLayerCreated = useCallback((layer: __esri.FeatureLayer | null, shouldReplace?: boolean) => {
+    console.log('[MapApp] ★★★ handleVisualizationLayerCreated CALLED ★★★', {
+      hasLayer: !!layer,
+      layerId: layer?.id,
+      layerTitle: layer?.title,
+      shouldReplace
+    });
+    
+    if (layer) {
+      setFeatureLayers(prevLayers => {
+        // Remove any existing analysis layers if shouldReplace is true
+        const filteredLayers = shouldReplace 
+          ? prevLayers.filter(l => !l.title?.includes('AnalysisEngine') && !l.title?.includes('Analysis'))
+          : prevLayers;
+        
+        // Add the new layer if it's not already in the list
+        const layerExists = filteredLayers.some(l => l.id === layer.id);
+        if (!layerExists) {
+          console.log('[MapApp] Adding visualization layer to featureLayers for CustomPopupManager:', layer.id);
+          return [...filteredLayers, layer];
+        }
+        
+        return filteredLayers;
+      });
+    } else if (shouldReplace) {
+      // Remove all analysis layers
+      setFeatureLayers(prevLayers => 
+        prevLayers.filter(l => !l.title?.includes('AnalysisEngine') && !l.title?.includes('Analysis'))
+      );
+    }
+  }, []);
+
+  // Handle unified workflow completion
+  const handleUnifiedAnalysisComplete = useCallback(async (_result: any) => {
+    console.log('[MapApp] ★★★ handleUnifiedAnalysisComplete CALLED ★★★');
+    console.log('[MapApp] Analysis complete - UnifiedAnalysisWorkflow handles visualization now');
+    
+    // No need to handle visualization here anymore since UnifiedAnalysisWorkflow does it
+    // This callback is kept for any future needs like additional processing
+  }, []);
 
   const handleCorrelationAnalysis = useCallback((layer: __esri.FeatureLayer, primaryField: string, comparisonField: string) => {
     // Handle correlation analysis
@@ -338,6 +419,9 @@ export const MapApp: React.FC = memo(() => {
                 defaultAnalysisType="comprehensive"
                 selectedHotspot={selectedHotspot}
                 onHotspotProcessed={() => setSelectedHotspot(null)}
+                onAnalysisStart={handleAnalysisStart}
+                onAnalysisComplete={handleUnifiedAnalysisComplete}
+                onVisualizationLayerCreated={handleVisualizationLayerCreated}
               />
             ) : null
           }
