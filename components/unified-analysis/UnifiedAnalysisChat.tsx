@@ -476,7 +476,9 @@ ${conversationText}
           rankingContext: (metadata as any)?.rankingContext,
           isClustered: result.data?.isClustered,
           clusterAnalysis: (result.data as any)?.clusterAnalysis,
-          isContextualChat: false // This is an analysis request, not a chat request
+          isContextualChat: false, // This is an analysis request, not a chat request
+          enableOptimization: true, // Enable payload optimization to prevent 413 errors
+          forceOptimization: true // Force optimization for all analysis requests
         },
         featureData: [{
           layerId: 'unified_analysis',
