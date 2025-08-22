@@ -665,10 +665,10 @@ export class EnhancedQueryAnalyzer {
       weight: 1.0
     },
     '/scenario-analysis': {
-      primaryKeywords: ['scenario', 'scenarios', 'what if', 'economic scenarios', 'different conditions'],
-      contextKeywords: ['economic scenarios', 'affect performance', 'different economic scenarios'],
+      primaryKeywords: ['scenario', 'scenarios', 'what if', 'economic scenarios', 'different conditions', 'pricing strategy', 'resilient'],
+      contextKeywords: ['what if h&r block changes', 'pricing strategy', 'most resilient', 'economic scenarios'],
       avoidTerms: [],
-      weight: 1.0
+      weight: 1.3
     },
     '/segment-profiling': {
       primaryKeywords: ['clearest customer segmentation', 'customer segmentation profiles', 'which markets have'],
@@ -677,16 +677,16 @@ export class EnhancedQueryAnalyzer {
       weight: 1.2
     },
     '/sensitivity-analysis': {
-      primaryKeywords: ['sensitivity', 'sensitive', 'impact', 'biggest impact', 'factors impact'],
-      contextKeywords: ['adoption rates', 'biggest impact on', 'which factors have'],
+      primaryKeywords: ['sensitivity', 'sensitive', 'impact', 'biggest impact', 'factors impact', 'adjust', 'adjust weights', 'rankings change'],
+      contextKeywords: ['if we adjust', 'adjust income weights', 'rankings change if', 'weights by'],
       avoidTerms: [],
-      weight: 1.0
+      weight: 1.2
     },
     '/feature-interactions': {
-      primaryKeywords: ['interaction', 'interactions', 'interact', 'combine'],
-      contextKeywords: ['income level and age', 'how do', 'interact to influence'],
+      primaryKeywords: ['interaction', 'interactions', 'interact', 'combine', 'interactions between'],
+      contextKeywords: ['between demographics', 'demographics and', 'interact to influence', 'strongest interactions'],
       avoidTerms: [],
-      weight: 1.0
+      weight: 1.3
     },
     '/feature-importance-ranking': {
       primaryKeywords: ['important', 'importance', 'most important', 'factors', 'predicting'],
@@ -713,10 +713,10 @@ export class EnhancedQueryAnalyzer {
       weight: 1.0
     },
     '/algorithm-comparison': {
-      primaryKeywords: ['algorithm', 'algorithms', 'ml algorithm', 'accurate predictions'],
-      contextKeywords: ['most accurate', 'which algorithm', 'ml algorithm gives'],
+      primaryKeywords: ['algorithm', 'algorithms', 'ml algorithm', 'accurate predictions', 'ai model', 'model performs best', 'performs best'],
+      contextKeywords: ['which ai model', 'ai model performs', 'model performs best', 'which algorithm'],
       avoidTerms: [],
-      weight: 1.0
+      weight: 1.2
     },
     '/ensemble-analysis': {
       primaryKeywords: ['ensemble', 'highest confidence', 'best ensemble model', 'confidence predictions'],

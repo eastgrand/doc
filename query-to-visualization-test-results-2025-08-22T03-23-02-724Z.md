@@ -1,13 +1,13 @@
 # Query-to-Visualization Pipeline Test Results
 
 ## Test Summary
-- **Test Date**: 2025-08-22T01:21:20.919Z
+- **Test Date**: 2025-08-22T03:23:02.724Z
 - **Total Queries**: 22
 - **Successful**: 22
 - **Failed**: 0
 - **Success Rate**: 100.0%
-- **Total Duration**: 224ms
-- **Average Duration**: 10.2ms per query
+- **Total Duration**: 77ms
+- **Average Duration**: 3.5ms per query
 
 ## Category Results
 ### ✅ Successful Categories
@@ -42,28 +42,28 @@
 - **semantic**: 22 queries (100.0%)
 
 ### Average Performance by Category
-- **Strategic Analysis**: 17.0ms avg, 100.0% success rate (1/1)
-- **Comparative Analysis**: 10.0ms avg, 100.0% success rate (1/1)
-- **Competitive Analysis**: 9.0ms avg, 100.0% success rate (1/1)
-- **Demographic Insights**: 10.0ms avg, 100.0% success rate (1/1)
-- **Customer Profile**: 13.0ms avg, 100.0% success rate (1/1)
-- **Spatial Clusters**: 10.0ms avg, 100.0% success rate (1/1)
-- **Outlier Detection**: 9.0ms avg, 100.0% success rate (1/1)
-- **Brand Difference**: 11.0ms avg, 100.0% success rate (1/1)
-- **Scenario Analysis**: 10.0ms avg, 100.0% success rate (1/1)
-- **Feature Interactions**: 11.0ms avg, 100.0% success rate (1/1)
-- **Segment Profiling**: 8.0ms avg, 100.0% success rate (1/1)
-- **Sensitivity Analysis**: 10.0ms avg, 100.0% success rate (1/1)
-- **Feature Importance Ranking**: 9.0ms avg, 100.0% success rate (1/1)
-- **Model Performance**: 9.0ms avg, 100.0% success rate (1/1)
-- **Algorithm Comparison**: 11.0ms avg, 100.0% success rate (1/1)
-- **Ensemble Analysis**: 10.0ms avg, 100.0% success rate (1/1)
+- **Strategic Analysis**: 5.0ms avg, 100.0% success rate (1/1)
+- **Comparative Analysis**: 4.0ms avg, 100.0% success rate (1/1)
+- **Competitive Analysis**: 4.0ms avg, 100.0% success rate (1/1)
+- **Demographic Insights**: 3.0ms avg, 100.0% success rate (1/1)
+- **Customer Profile**: 3.0ms avg, 100.0% success rate (1/1)
+- **Spatial Clusters**: 3.0ms avg, 100.0% success rate (1/1)
+- **Outlier Detection**: 3.0ms avg, 100.0% success rate (1/1)
+- **Brand Difference**: 3.0ms avg, 100.0% success rate (1/1)
+- **Scenario Analysis**: 3.0ms avg, 100.0% success rate (1/1)
+- **Feature Interactions**: 3.0ms avg, 100.0% success rate (1/1)
+- **Segment Profiling**: 3.0ms avg, 100.0% success rate (1/1)
+- **Sensitivity Analysis**: 4.0ms avg, 100.0% success rate (1/1)
+- **Feature Importance Ranking**: 3.0ms avg, 100.0% success rate (1/1)
+- **Model Performance**: 3.0ms avg, 100.0% success rate (1/1)
+- **Algorithm Comparison**: 3.0ms avg, 100.0% success rate (1/1)
+- **Ensemble Analysis**: 3.0ms avg, 100.0% success rate (1/1)
 - **Model Selection**: 10.0ms avg, 100.0% success rate (1/1)
-- **Dimensionality Insights**: 9.0ms avg, 100.0% success rate (1/1)
-- **Consensus Analysis**: 11.0ms avg, 100.0% success rate (1/1)
-- **Anomaly Insights**: 9.0ms avg, 100.0% success rate (1/1)
-- **Cluster Analysis**: 9.0ms avg, 100.0% success rate (1/1)
-- **Analyze**: 9.0ms avg, 100.0% success rate (1/1)
+- **Dimensionality Insights**: 3.0ms avg, 100.0% success rate (1/1)
+- **Consensus Analysis**: 2.0ms avg, 100.0% success rate (1/1)
+- **Anomaly Insights**: 2.0ms avg, 100.0% success rate (1/1)
+- **Cluster Analysis**: 4.0ms avg, 100.0% success rate (1/1)
+- **Analyze**: 3.0ms avg, 100.0% success rate (1/1)
 
 ## Detailed Test Results
 
@@ -73,20 +73,25 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 11ms
-- Timestamp: 2025-08-22T01:21:20.840Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.691Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
-- Actual Endpoint: `/algorithm-comparison` ⚠️
+- Actual Endpoint: `/analyze` ✅
 - Routing Method: semantic
-- Confidence: 0.400
-- Routing Time: 4ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /algorithm-comparison
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -103,15 +108,11 @@
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.4
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -121,20 +122,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 9ms
-- Timestamp: 2025-08-22T01:21:20.909Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.720Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
 - Actual Endpoint: `/analyze` ✅
 - Routing Method: semantic
-- Confidence: 0.267
-- Routing Time: 2ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
 - Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -151,15 +157,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.26666666666666666
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -169,20 +171,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 9ms
-- Timestamp: 2025-08-22T01:21:20.891Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-22T03:23:02.714Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
-- Actual Endpoint: `/outlier-detection` ⚠️
+- Actual Endpoint: `/analyze` ✅
 - Routing Method: semantic
-- Confidence: 0.267
-- Routing Time: 2ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /outlier-detection
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -199,15 +206,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.26666666666666666
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -217,20 +220,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 11ms
-- Timestamp: 2025-08-22T01:21:20.770Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.668Z
 
 **Query Routing:**
 - Expected Endpoint: `/brand-difference`
 - Actual Endpoint: `/competitive-analysis` ⚠️
 - Routing Method: semantic
-- Confidence: 0.267
-- Routing Time: 2ms
+- Confidence: 0.900
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
 - Configuration: /competitive-analysis
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: competitive_advantage_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -247,15 +255,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.26666666666666666
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.9
 
 ---
 
@@ -265,20 +269,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 9ms
-- Timestamp: 2025-08-22T01:21:20.900Z
+- Processing Time: 4ms
+- Timestamp: 2025-08-22T03:23:02.716Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
-- Actual Endpoint: `/cluster-analysis` ⚠️
+- Actual Endpoint: `/analyze` ✅
 - Routing Method: semantic
-- Confidence: 0.700
-- Routing Time: 2ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /cluster-analysis
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -295,15 +304,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.7
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -313,25 +318,30 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 10ms
-- Timestamp: 2025-08-22T01:21:20.709Z
+- Processing Time: 4ms
+- Timestamp: 2025-08-22T03:23:02.648Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
-- Actual Endpoint: `/comparative-analysis` ⚠️
+- Actual Endpoint: `/analyze` ✅
 - Routing Method: semantic
-- Confidence: 0.320
-- Routing Time: 2ms
+- Confidence: 0.600
+- Routing Time: 0ms
 
 **Geographic Processing:**
 - Entities Detected: detected-county
 - ZIP Codes: 10
 - Processing Time: 0ms
 
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
+
 **Configuration:**
-- Configuration: /comparative-analysis
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -348,15 +358,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.32000000000000006
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -366,20 +372,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 9ms
-- Timestamp: 2025-08-22T01:21:20.719Z
+- Processing Time: 4ms
+- Timestamp: 2025-08-22T03:23:02.652Z
 
 **Query Routing:**
 - Expected Endpoint: `/competitive-analysis`
-- Actual Endpoint: `/competitive-analysis` ✅
+- Actual Endpoint: `/brand-difference` ⚠️
 - Routing Method: semantic
-- Confidence: 0.267
-- Routing Time: 2ms
+- Confidence: 0.850
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /competitive-analysis
+- Configuration: /brand-difference
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: brand_difference_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -396,15 +407,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.26666666666666666
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.85
 
 ---
 
@@ -414,20 +421,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 11ms
-- Timestamp: 2025-08-22T01:21:20.880Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-22T03:23:02.711Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
-- Actual Endpoint: `/consensus-analysis` ⚠️
+- Actual Endpoint: `/analyze` ✅
 - Routing Method: semantic
-- Confidence: 0.400
-- Routing Time: 2ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /consensus-analysis
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -444,15 +456,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.4
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -462,20 +470,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 13ms
-- Timestamp: 2025-08-22T01:21:20.738Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.659Z
 
 **Query Routing:**
 - Expected Endpoint: `/customer-profile`
-- Actual Endpoint: `/customer-profile` ✅
+- Actual Endpoint: `/analyze` ⚠️
 - Routing Method: semantic
-- Confidence: 0.533
-- Routing Time: 2ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /customer-profile
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -492,15 +505,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.5333333333333333
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -510,20 +519,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 10ms
-- Timestamp: 2025-08-22T01:21:20.728Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.656Z
 
 **Query Routing:**
 - Expected Endpoint: `/demographic-insights`
 - Actual Endpoint: `/demographic-insights` ✅
 - Routing Method: semantic
-- Confidence: 0.320
-- Routing Time: 2ms
+- Confidence: 0.800
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
 - Configuration: /demographic-insights
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: demographic_insights_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -540,15 +554,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.32000000000000006
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.8
 
 ---
 
@@ -558,20 +568,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 9ms
-- Timestamp: 2025-08-22T01:21:20.871Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.708Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
-- Actual Endpoint: `/dimensionality-insights` ⚠️
+- Actual Endpoint: `/analyze` ✅
 - Routing Method: semantic
-- Confidence: 0.700
-- Routing Time: 2ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /dimensionality-insights
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -588,15 +603,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.7
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -606,20 +617,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 10ms
-- Timestamp: 2025-08-22T01:21:20.851Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.695Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
-- Actual Endpoint: `/ensemble-analysis` ⚠️
+- Actual Endpoint: `/analyze` ✅
 - Routing Method: semantic
-- Confidence: 0.700
-- Routing Time: 1ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /ensemble-analysis
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -636,15 +652,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.7
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -654,20 +666,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 9ms
-- Timestamp: 2025-08-22T01:21:20.822Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.685Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
-- Actual Endpoint: `/feature-importance-ranking` ⚠️
+- Actual Endpoint: `/analyze` ✅
 - Routing Method: semantic
-- Confidence: 0.400
-- Routing Time: 1ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /feature-importance-ranking
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -684,15 +701,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.4
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -702,20 +715,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 11ms
-- Timestamp: 2025-08-22T01:21:20.791Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.674Z
 
 **Query Routing:**
 - Expected Endpoint: `/feature-interactions`
-- Actual Endpoint: `/feature-interactions` ✅
+- Actual Endpoint: `/demographic-insights` ⚠️
 - Routing Method: semantic
-- Confidence: 0.533
-- Routing Time: 2ms
+- Confidence: 0.800
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /feature-interactions
+- Configuration: /demographic-insights
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: demographic_insights_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -732,15 +750,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.5333333333333333
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.8
 
 ---
 
@@ -750,20 +764,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 9ms
-- Timestamp: 2025-08-22T01:21:20.831Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.688Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
-- Actual Endpoint: `/model-performance` ⚠️
+- Actual Endpoint: `/analyze` ✅
 - Routing Method: semantic
-- Confidence: 0.533
-- Routing Time: 2ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /model-performance
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -780,15 +799,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.5333333333333333
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -799,19 +814,24 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 **Basic Info:**
 - Status: SUCCESS
 - Processing Time: 10ms
-- Timestamp: 2025-08-22T01:21:20.861Z
+- Timestamp: 2025-08-22T03:23:02.698Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
-- Actual Endpoint: `/algorithm-comparison` ⚠️
+- Actual Endpoint: `/analyze` ✅
 - Routing Method: semantic
-- Confidence: 0.400
-- Routing Time: 3ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /algorithm-comparison
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -828,15 +848,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.4
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -846,20 +862,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 9ms
-- Timestamp: 2025-08-22T01:21:20.761Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.665Z
 
 **Query Routing:**
 - Expected Endpoint: `/outlier-detection`
-- Actual Endpoint: `/outlier-detection` ✅
+- Actual Endpoint: `/analyze` ⚠️
 - Routing Method: semantic
-- Confidence: 0.267
-- Routing Time: 2ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /outlier-detection
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -876,15 +897,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.26666666666666666
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -894,20 +911,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 10ms
-- Timestamp: 2025-08-22T01:21:20.781Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.671Z
 
 **Query Routing:**
 - Expected Endpoint: `/scenario-analysis`
-- Actual Endpoint: `/scenario-analysis` ✅
+- Actual Endpoint: `/analyze` ⚠️
 - Routing Method: semantic
-- Confidence: 0.533
-- Routing Time: 2ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /scenario-analysis
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -924,15 +946,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.5333333333333333
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -942,20 +960,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 8ms
-- Timestamp: 2025-08-22T01:21:20.803Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.677Z
 
 **Query Routing:**
 - Expected Endpoint: `/segment-profiling`
-- Actual Endpoint: `/segment-profiling` ✅
+- Actual Endpoint: `/analyze` ⚠️
 - Routing Method: semantic
-- Confidence: 0.400
-- Routing Time: 1ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /segment-profiling
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -972,15 +995,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.4
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -990,20 +1009,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 10ms
-- Timestamp: 2025-08-22T01:21:20.811Z
+- Processing Time: 4ms
+- Timestamp: 2025-08-22T03:23:02.680Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
-- Actual Endpoint: `/sensitivity-analysis` ⚠️
+- Actual Endpoint: `/demographic-insights` ⚠️
 - Routing Method: semantic
-- Confidence: 0.533
-- Routing Time: 3ms
+- Confidence: 0.800
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /sensitivity-analysis
+- Configuration: /demographic-insights
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: demographic_insights_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -1020,15 +1044,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.5333333333333333
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.8
 
 ---
 
@@ -1038,20 +1058,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 10ms
-- Timestamp: 2025-08-22T01:21:20.751Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-22T03:23:02.662Z
 
 **Query Routing:**
 - Expected Endpoint: `/spatial-clusters`
-- Actual Endpoint: `/spatial-clusters` ✅
+- Actual Endpoint: `/analyze` ⚠️
 - Routing Method: semantic
-- Confidence: 0.267
-- Routing Time: 2ms
+- Confidence: 0.600
+- Routing Time: 0ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /spatial-clusters
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -1068,15 +1093,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.26666666666666666
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.6
 
 ---
 
@@ -1086,20 +1107,25 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 17ms
-- Timestamp: 2025-08-22T01:21:20.692Z
+- Processing Time: 5ms
+- Timestamp: 2025-08-22T03:23:02.643Z
 
 **Query Routing:**
 - Expected Endpoint: `/strategic-analysis`
 - Actual Endpoint: `/strategic-analysis` ✅
 - Routing Method: semantic
-- Confidence: 0.400
-- Routing Time: 3ms
+- Confidence: 0.900
+- Routing Time: 1ms
+
+**Brand Analysis:**
+- Target Brand: H&R Block
+- Brands Detected: H&R Block, TurboTax
+- Competitors: TurboTax
 
 **Configuration:**
 - Configuration: /strategic-analysis
 - Processor: StrategicAnalysisProcessor
-- Target Variable: unknown
+- Target Variable: strategic_analysis_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -1116,15 +1142,11 @@ Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
 
 **Validation Results:**
 - Analysis Quality: ✅ PASS
-- Legend Accuracy: ❌ FAIL
+- Legend Accuracy: ✅ PASS
 - Field Consistency: ✅ PASS
 
 **Troubleshooting Notes:**
-- Semantic routing successful with confidence 0.4
-- Legend validation failed: Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
-
-Expected value: [32m"rgba(215, 48, 39, 0.6)"[39m
-Received array: [31m["#D6191C", "#FCAD61", "#A6D96A", "#1A9641"][39m
+- Semantic routing successful with confidence 0.9
 
 ---
 
@@ -1134,7 +1156,7 @@ This comprehensive test report covers the complete query-to-visualization pipeli
 
 **Key Findings:**
 - 22/22 queries processed successfully
-- Average processing time: 10.2ms per query
+- Average processing time: 3.5ms per query
 - Routing method distribution shows semantic vs keyword vs fallback usage
 - Field consistency and validation results identify areas for improvement
 

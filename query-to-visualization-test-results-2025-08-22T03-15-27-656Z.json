@@ -1,14 +1,14 @@
 {
   "metadata": {
     "testSuite": "Query-to-Visualization Pipeline Integration",
-    "timestamp": "2025-08-22T01:23:57.542Z",
+    "timestamp": "2025-08-22T03:15:27.656Z",
     "version": "1.0.0",
     "totalQueries": 22,
     "successCount": 22,
     "errorCount": 0,
     "successRate": "100.0%",
-    "totalDuration": "279ms",
-    "averageDuration": "12.7ms"
+    "totalDuration": "60ms",
+    "averageDuration": "2.7ms"
   },
   "categoryBreakdown": {
     "successful": [
@@ -41,26 +41,30 @@
     {
       "query": "Show me the top strategic markets for H&R Block tax service expansion",
       "category": "Strategic Analysis",
-      "timestamp": "2025-08-22T01:23:57.262Z",
+      "timestamp": "2025-08-22T03:15:27.592Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.4",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.9"
       ],
       "actualEndpoint": "/strategic-analysis",
       "routingMethod": "semantic",
-      "routingConfidence": 0.4,
-      "routingTime": 2,
+      "routingConfidence": 0.9,
+      "routingTime": 0,
       "expectedEndpoint": "/strategic-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
       "configurationUsed": "/strategic-analysis",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "strategic_analysis_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -83,36 +87,40 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 19
+      "totalProcessingTime": 4
     },
     {
       "query": "Compare H&R Block usage between Alachua County and Miami-Dade County",
       "category": "Comparative Analysis",
-      "timestamp": "2025-08-22T01:23:57.281Z",
+      "timestamp": "2025-08-22T03:15:27.596Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.32000000000000006",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/comparative-analysis",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.32000000000000006,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [
         "detected-county"
       ],
       "zipCodesDetected": 10,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/comparative-analysis",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -135,34 +143,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "totalProcessingTime": 2
     },
     {
       "query": "Show me the market share difference between H&R Block and TurboTax",
       "category": "Competitive Analysis",
-      "timestamp": "2025-08-22T01:23:57.290Z",
+      "timestamp": "2025-08-22T03:15:27.599Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.26666666666666666",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.85"
       ],
-      "actualEndpoint": "/competitive-analysis",
+      "actualEndpoint": "/brand-difference",
       "routingMethod": "semantic",
-      "routingConfidence": 0.26666666666666666,
-      "routingTime": 2,
+      "routingConfidence": 0.85,
+      "routingTime": 0,
       "expectedEndpoint": "/competitive-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/competitive-analysis",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/brand-difference",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "brand_difference_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -185,34 +197,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "totalProcessingTime": 2
     },
     {
       "query": "Which areas have the best customer demographics for tax preparation services?",
       "category": "Demographic Insights",
-      "timestamp": "2025-08-22T01:23:57.300Z",
+      "timestamp": "2025-08-22T03:15:27.602Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.32000000000000006",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.8"
       ],
       "actualEndpoint": "/demographic-insights",
       "routingMethod": "semantic",
-      "routingConfidence": 0.32000000000000006,
-      "routingTime": 2,
+      "routingConfidence": 0.8,
+      "routingTime": 0,
       "expectedEndpoint": "/demographic-insights",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
       "configurationUsed": "/demographic-insights",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "demographic_insights_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -235,34 +251,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "totalProcessingTime": 2
     },
     {
       "query": "Show me areas with ideal customer personas for tax preparation services",
       "category": "Customer Profile",
-      "timestamp": "2025-08-22T01:23:57.309Z",
+      "timestamp": "2025-08-22T03:15:27.604Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.5333333333333333",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/customer-profile",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.5333333333333333,
-      "routingTime": 3,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/customer-profile",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/customer-profile",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -285,34 +305,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 15
+      "totalProcessingTime": 3
     },
     {
       "query": "Show me geographic clusters of similar tax service markets",
       "category": "Spatial Clusters",
-      "timestamp": "2025-08-22T01:23:57.324Z",
+      "timestamp": "2025-08-22T03:15:27.607Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.26666666666666666",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/spatial-clusters",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.26666666666666666,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/spatial-clusters",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/spatial-clusters",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -335,34 +359,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "totalProcessingTime": 7
     },
     {
       "query": "Show me markets that have outliers with unique tax service characteristics",
       "category": "Outlier Detection",
-      "timestamp": "2025-08-22T01:23:57.334Z",
+      "timestamp": "2025-08-22T03:15:27.614Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.26666666666666666",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/outlier-detection",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.26666666666666666,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/outlier-detection",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/outlier-detection",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -385,34 +413,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 8
+      "totalProcessingTime": 3
     },
     {
       "query": "Which markets have the strongest H&R Block brand positioning vs competitors?",
       "category": "Brand Difference",
-      "timestamp": "2025-08-22T01:23:57.343Z",
+      "timestamp": "2025-08-22T03:15:27.617Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.26666666666666666",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.9"
       ],
       "actualEndpoint": "/competitive-analysis",
       "routingMethod": "semantic",
-      "routingConfidence": 0.26666666666666666,
-      "routingTime": 2,
+      "routingConfidence": 0.9,
+      "routingTime": 0,
       "expectedEndpoint": "/brand-difference",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
       "configurationUsed": "/competitive-analysis",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "competitive_advantage_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -435,34 +467,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "totalProcessingTime": 2
     },
     {
       "query": "What if H&R Block changes its pricing strategy - which markets would be most resilient?",
       "category": "Scenario Analysis",
-      "timestamp": "2025-08-22T01:23:57.353Z",
+      "timestamp": "2025-08-22T03:15:27.619Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.5333333333333333",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/scenario-analysis",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.5333333333333333,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/scenario-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/scenario-analysis",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -485,34 +521,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 11
+      "totalProcessingTime": 2
     },
     {
       "query": "Which markets have the strongest interactions between demographics and tax service usage?",
       "category": "Feature Interactions",
-      "timestamp": "2025-08-22T01:23:57.364Z",
+      "timestamp": "2025-08-22T03:15:27.621Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.5333333333333333",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.8"
       ],
-      "actualEndpoint": "/feature-interactions",
+      "actualEndpoint": "/demographic-insights",
       "routingMethod": "semantic",
-      "routingConfidence": 0.5333333333333333,
-      "routingTime": 2,
+      "routingConfidence": 0.8,
+      "routingTime": 0,
       "expectedEndpoint": "/feature-interactions",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/feature-interactions",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/demographic-insights",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "demographic_insights_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -535,34 +575,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 13
+      "totalProcessingTime": 2
     },
     {
       "query": "Which markets have the clearest customer segmentation profiles for tax services?",
       "category": "Segment Profiling",
-      "timestamp": "2025-08-22T01:23:57.377Z",
+      "timestamp": "2025-08-22T03:15:27.623Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.4",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/segment-profiling",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.4,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/segment-profiling",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/segment-profiling",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -585,34 +629,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "totalProcessingTime": 3
     },
     {
       "query": "How do tax service rankings change if we adjust income weights by 20%?",
       "category": "Sensitivity Analysis",
-      "timestamp": "2025-08-22T01:23:57.386Z",
+      "timestamp": "2025-08-22T03:15:27.626Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.5333333333333333",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.8"
       ],
-      "actualEndpoint": "/sensitivity-analysis",
+      "actualEndpoint": "/demographic-insights",
       "routingMethod": "semantic",
-      "routingConfidence": 0.5333333333333333,
-      "routingTime": 1,
+      "routingConfidence": 0.8,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/sensitivity-analysis",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/demographic-insights",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "demographic_insights_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -635,34 +683,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "totalProcessingTime": 2
     },
     {
       "query": "What are the most important factors predicting H&R Block online usage?",
       "category": "Feature Importance Ranking",
-      "timestamp": "2025-08-22T01:23:57.396Z",
+      "timestamp": "2025-08-22T03:15:27.628Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.4",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/feature-importance-ranking",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.4,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/feature-importance-ranking",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -685,34 +737,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 47
+      "totalProcessingTime": 3
     },
     {
       "query": "How accurate are our predictions for tax service market performance?",
       "category": "Model Performance",
-      "timestamp": "2025-08-22T01:23:57.443Z",
+      "timestamp": "2025-08-22T03:15:27.631Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.5333333333333333",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/model-performance",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.5333333333333333,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/model-performance",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -735,34 +791,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 21
+      "totalProcessingTime": 2
     },
     {
       "query": "Which AI model performs best for predicting tax service usage in each area?",
       "category": "Algorithm Comparison",
-      "timestamp": "2025-08-22T01:23:57.464Z",
+      "timestamp": "2025-08-22T03:15:27.633Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.4",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/algorithm-comparison",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.4,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/algorithm-comparison",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -785,34 +845,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "totalProcessingTime": 2
     },
     {
       "query": "Show me the highest confidence predictions using our best ensemble model",
       "category": "Ensemble Analysis",
-      "timestamp": "2025-08-22T01:23:57.474Z",
+      "timestamp": "2025-08-22T03:15:27.636Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.7",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/ensemble-analysis",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.7,
-      "routingTime": 1,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/ensemble-analysis",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -835,34 +899,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "totalProcessingTime": 2
     },
     {
       "query": "What is the optimal AI algorithm for predictions in each geographic area?",
       "category": "Model Selection",
-      "timestamp": "2025-08-22T01:23:57.484Z",
+      "timestamp": "2025-08-22T03:15:27.638Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.4",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/algorithm-comparison",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.4,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/algorithm-comparison",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -885,34 +953,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "totalProcessingTime": 2
     },
     {
       "query": "Which factors explain most of the variation in tax service market performance?",
       "category": "Dimensionality Insights",
-      "timestamp": "2025-08-22T01:23:57.493Z",
+      "timestamp": "2025-08-22T03:15:27.641Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.7",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/dimensionality-insights",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.7,
-      "routingTime": 1,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/dimensionality-insights",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -935,34 +1007,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "totalProcessingTime": 2
     },
     {
       "query": "Where do all our AI models agree on tax service predictions?",
       "category": "Consensus Analysis",
-      "timestamp": "2025-08-22T01:23:57.503Z",
+      "timestamp": "2025-08-22T03:15:27.643Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.4",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/consensus-analysis",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.4,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/consensus-analysis",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -985,34 +1061,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 11
+      "totalProcessingTime": 2
     },
     {
       "query": "Which unusual market patterns represent the biggest business opportunities?",
       "category": "Anomaly Insights",
-      "timestamp": "2025-08-22T01:23:57.514Z",
+      "timestamp": "2025-08-22T03:15:27.645Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.26666666666666666",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/outlier-detection",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.26666666666666666,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/outlier-detection",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -1035,34 +1115,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "totalProcessingTime": 3
     },
     {
       "query": "How should we segment tax service markets for targeted strategies?",
       "category": "Cluster Analysis",
-      "timestamp": "2025-08-22T01:23:57.523Z",
+      "timestamp": "2025-08-22T03:15:27.648Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.7",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
-      "actualEndpoint": "/cluster-analysis",
+      "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.7,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/cluster-analysis",
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -1085,34 +1169,38 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "totalProcessingTime": 3
     },
     {
       "query": "Provide comprehensive market insights for tax preparation services",
       "category": "Analyze",
-      "timestamp": "2025-08-22T01:23:57.533Z",
+      "timestamp": "2025-08-22T03:15:27.651Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.26666666666666666",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing successful with confidence 0.6"
       ],
       "actualEndpoint": "/analyze",
       "routingMethod": "semantic",
-      "routingConfidence": 0.26666666666666666,
-      "routingTime": 2,
+      "routingConfidence": 0.6,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
-      "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "brandsDetected": [
+        "Nike",
+        "Adidas"
+      ],
+      "targetBrand": "Nike",
+      "competitorBrands": [
+        "Adidas"
+      ],
       "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -1135,10 +1223,10 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "totalProcessingTime": 5
     }
   ]
 }

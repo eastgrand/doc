@@ -1,14 +1,14 @@
 {
   "metadata": {
     "testSuite": "Query-to-Visualization Pipeline Integration",
-    "timestamp": "2025-08-22T01:17:53.812Z",
+    "timestamp": "2025-08-22T04:00:44.363Z",
     "version": "1.0.0",
     "totalQueries": 22,
-    "successCount": 22,
-    "errorCount": 0,
-    "successRate": "100.0%",
-    "totalDuration": "264ms",
-    "averageDuration": "12.0ms"
+    "successCount": 19,
+    "errorCount": 3,
+    "successRate": "86.4%",
+    "totalDuration": "104ms",
+    "averageDuration": "4.7ms"
   },
   "categoryBreakdown": {
     "successful": [
@@ -20,13 +20,10 @@
       "Spatial Clusters",
       "Outlier Detection",
       "Brand Difference",
-      "Scenario Analysis",
       "Feature Interactions",
       "Segment Profiling",
-      "Sensitivity Analysis",
       "Feature Importance Ranking",
       "Model Performance",
-      "Algorithm Comparison",
       "Ensemble Analysis",
       "Model Selection",
       "Dimensionality Insights",
@@ -35,32 +32,40 @@
       "Cluster Analysis",
       "Analyze"
     ],
-    "failed": []
+    "failed": [
+      "Scenario Analysis",
+      "Sensitivity Analysis",
+      "Algorithm Comparison"
+    ]
   },
   "results": [
     {
       "query": "Show me the top strategic markets for H&R Block tax service expansion",
       "category": "Strategic Analysis",
-      "timestamp": "2025-08-22T01:17:53.546Z",
+      "timestamp": "2025-08-22T04:00:44.256Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.4",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /strategic-analysis (score: 9.0) - Primary keywords: strategic, expansion; Intent bonus: ranking (+3)"
       ],
       "actualEndpoint": "/strategic-analysis",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.4,
-      "routingTime": 3,
+      "routingMethod": "keyword",
+      "routingTime": 0,
       "expectedEndpoint": "/strategic-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/strategic-analysis",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "strategic_analysis_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -83,36 +88,41 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 18
+      "routingAccurate": true,
+      "totalProcessingTime": 6
     },
     {
       "query": "Compare H&R Block usage between Alachua County and Miami-Dade County",
       "category": "Comparative Analysis",
-      "timestamp": "2025-08-22T01:17:53.564Z",
+      "timestamp": "2025-08-22T04:00:44.262Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.32000000000000006",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /comparative-analysis (score: 5.7) - Primary keywords: compare, between"
       ],
       "actualEndpoint": "/comparative-analysis",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.32000000000000006,
-      "routingTime": 2,
-      "expectedEndpoint": "/analyze",
+      "routingMethod": "keyword",
+      "routingTime": 1,
+      "expectedEndpoint": "/comparative-analysis",
       "geographicEntities": [
         "detected-county"
       ],
       "zipCodesDetected": 10,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/comparative-analysis",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "comparative_analysis_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -135,34 +145,39 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "routingAccurate": true,
+      "totalProcessingTime": 4
     },
     {
       "query": "Show me the market share difference between H&R Block and TurboTax",
       "category": "Competitive Analysis",
-      "timestamp": "2025-08-22T01:17:53.573Z",
+      "timestamp": "2025-08-22T04:00:44.266Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.26666666666666666",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /competitive-analysis (score: 15.2) - Primary keywords: market share, market share difference, share difference; Context matches: between h&r block and; Multiple brands mentioned: hrblock, turbotax"
       ],
       "actualEndpoint": "/competitive-analysis",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.26666666666666666,
-      "routingTime": 14,
+      "routingMethod": "keyword",
+      "routingTime": 1,
       "expectedEndpoint": "/competitive-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/competitive-analysis",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "competitive_advantage_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -185,34 +200,39 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 44
+      "routingAccurate": true,
+      "totalProcessingTime": 6
     },
     {
       "query": "Which areas have the best customer demographics for tax preparation services?",
       "category": "Demographic Insights",
-      "timestamp": "2025-08-22T01:17:53.618Z",
+      "timestamp": "2025-08-22T04:00:44.272Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.32000000000000006",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /demographic-insights (score: 6.0) - Primary keywords: demographics; Context matches: customer demographics; Intent bonus: ranking (+1)"
       ],
       "actualEndpoint": "/demographic-insights",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.32000000000000006,
-      "routingTime": 3,
+      "routingMethod": "keyword",
+      "routingTime": 0,
       "expectedEndpoint": "/demographic-insights",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/demographic-insights",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "demographic_insights_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -235,34 +255,39 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 14
+      "routingAccurate": true,
+      "totalProcessingTime": 4
     },
     {
       "query": "Show me areas with ideal customer personas for tax preparation services",
       "category": "Customer Profile",
-      "timestamp": "2025-08-22T01:17:53.632Z",
+      "timestamp": "2025-08-22T04:00:44.276Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.5333333333333333",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /customer-profile (score: 5.0) - Primary keywords: customer; Context matches: ideal customer"
       ],
       "actualEndpoint": "/customer-profile",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.5333333333333333,
-      "routingTime": 2,
+      "routingMethod": "keyword",
+      "routingTime": 0,
       "expectedEndpoint": "/customer-profile",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/customer-profile",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "purchase_propensity",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -285,34 +310,39 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 14
+      "routingAccurate": true,
+      "totalProcessingTime": 4
     },
     {
       "query": "Show me geographic clusters of similar tax service markets",
       "category": "Spatial Clusters",
-      "timestamp": "2025-08-22T01:17:53.646Z",
+      "timestamp": "2025-08-22T04:00:44.281Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.26666666666666666",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /spatial-clusters (score: 6.0) - Primary keywords: clusters, geographic clusters"
       ],
       "actualEndpoint": "/spatial-clusters",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.26666666666666666,
-      "routingTime": 2,
+      "routingMethod": "keyword",
+      "routingTime": 0,
       "expectedEndpoint": "/spatial-clusters",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/spatial-clusters",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "spatial_clusters_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -335,34 +365,39 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "routingAccurate": true,
+      "totalProcessingTime": 4
     },
     {
       "query": "Show me markets that have outliers with unique tax service characteristics",
       "category": "Outlier Detection",
-      "timestamp": "2025-08-22T01:17:53.655Z",
+      "timestamp": "2025-08-22T04:00:44.285Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.26666666666666666",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /outlier-detection (score: 5.0) - Primary keywords: outliers; Context matches: unique tax service characteristics"
       ],
       "actualEndpoint": "/outlier-detection",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.26666666666666666,
-      "routingTime": 2,
+      "routingMethod": "keyword",
+      "routingTime": 0,
       "expectedEndpoint": "/outlier-detection",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/outlier-detection",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "outlier_detection_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -385,34 +420,39 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "routingAccurate": true,
+      "totalProcessingTime": 5
     },
     {
       "query": "Which markets have the strongest H&R Block brand positioning vs competitors?",
       "category": "Brand Difference",
-      "timestamp": "2025-08-22T01:17:53.665Z",
+      "timestamp": "2025-08-22T04:00:44.290Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.26666666666666666",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /brand-difference (score: 14.1) - Primary keywords: brand positioning, strongest, positioning vs; Context matches: brand positioning vs; Intent bonus: comparison (+2)"
       ],
-      "actualEndpoint": "/competitive-analysis",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.26666666666666666,
-      "routingTime": 2,
+      "actualEndpoint": "/brand-difference",
+      "routingMethod": "keyword",
+      "routingTime": 0,
       "expectedEndpoint": "/brand-difference",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/competitive-analysis",
+      "competitorBrands": [
+        "TurboTax"
+      ],
+      "configurationUsed": "/brand-difference",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "brand_difference_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -435,34 +475,40 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "routingAccurate": true,
+      "totalProcessingTime": 4
     },
     {
       "query": "What if H&R Block changes its pricing strategy - which markets would be most resilient?",
       "category": "Scenario Analysis",
-      "timestamp": "2025-08-22T01:17:53.675Z",
-      "success": true,
+      "timestamp": "2025-08-22T04:00:44.294Z",
+      "success": false,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.5333333333333333",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /strategic-analysis (score: 3.0) - Primary keywords: strategy",
+        "❌ ROUTING MISMATCH: Expected /scenario-analysis, got /strategic-analysis"
       ],
-      "actualEndpoint": "/scenario-analysis",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.5333333333333333,
-      "routingTime": 2,
+      "actualEndpoint": "/strategic-analysis",
+      "routingMethod": "keyword",
+      "routingTime": 1,
       "expectedEndpoint": "/scenario-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/scenario-analysis",
+      "competitorBrands": [
+        "TurboTax"
+      ],
+      "configurationUsed": "/strategic-analysis",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "strategic_analysis_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -485,34 +531,41 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "routingAccurate": false,
+      "error": "Error: Routing failed: Expected endpoint /scenario-analysis but got /strategic-analysis for query \"What if H&R Block changes its pricing strategy - which markets would be most resilient?\"",
+      "errorStack": "Error: Routing failed: Expected endpoint /scenario-analysis but got /strategic-analysis for query \"What if H&R Block changes its pricing strategy - which markets would be most resilient?\"\n    at Object.<anonymous> (/Users/voldeck/code/mpiq-ai-chat/__tests__/query-to-visualization-pipeline.test.ts:1211:19)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)",
+      "totalProcessingTime": 4
     },
     {
       "query": "Which markets have the strongest interactions between demographics and tax service usage?",
       "category": "Feature Interactions",
-      "timestamp": "2025-08-22T01:17:53.685Z",
+      "timestamp": "2025-08-22T04:00:44.298Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.5333333333333333",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /feature-interactions (score: 15.6) - Primary keywords: interactions, interactions between; Context matches: between demographics, demographics and, strongest interactions"
       ],
       "actualEndpoint": "/feature-interactions",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.5333333333333333,
-      "routingTime": 2,
+      "routingMethod": "keyword",
+      "routingTime": 1,
       "expectedEndpoint": "/feature-interactions",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/feature-interactions",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "feature_interactions_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -535,34 +588,39 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 11
+      "routingAccurate": true,
+      "totalProcessingTime": 5
     },
     {
       "query": "Which markets have the clearest customer segmentation profiles for tax services?",
       "category": "Segment Profiling",
-      "timestamp": "2025-08-22T01:17:53.696Z",
+      "timestamp": "2025-08-22T04:00:44.303Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.4",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /segment-profiling (score: 18.0) - Primary keywords: clearest customer segmentation, customer segmentation profiles, which markets have; Context matches: clearest, segmentation profiles for, customer segmentation"
       ],
       "actualEndpoint": "/segment-profiling",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.4,
-      "routingTime": 2,
+      "routingMethod": "keyword",
+      "routingTime": 1,
       "expectedEndpoint": "/segment-profiling",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/segment-profiling",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "segment_profiling_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -585,34 +643,40 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 8
+      "routingAccurate": true,
+      "totalProcessingTime": 4
     },
     {
       "query": "How do tax service rankings change if we adjust income weights by 20%?",
       "category": "Sensitivity Analysis",
-      "timestamp": "2025-08-22T01:17:53.705Z",
-      "success": true,
+      "timestamp": "2025-08-22T04:00:44.307Z",
+      "success": false,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.5333333333333333",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /demographic-insights (score: 6.0) - Primary keywords: income; Intent bonus: ranking (+1); Demographic fields mentioned",
+        "❌ ROUTING MISMATCH: Expected /sensitivity-analysis, got /demographic-insights"
       ],
-      "actualEndpoint": "/sensitivity-analysis",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.5333333333333333,
-      "routingTime": 2,
-      "expectedEndpoint": "/analyze",
+      "actualEndpoint": "/demographic-insights",
+      "routingMethod": "keyword",
+      "routingTime": 0,
+      "expectedEndpoint": "/sensitivity-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/sensitivity-analysis",
+      "competitorBrands": [
+        "TurboTax"
+      ],
+      "configurationUsed": "/demographic-insights",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "demographic_insights_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -635,34 +699,41 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "routingAccurate": false,
+      "error": "Error: Routing failed: Expected endpoint /sensitivity-analysis but got /demographic-insights for query \"How do tax service rankings change if we adjust income weights by 20%?\"",
+      "errorStack": "Error: Routing failed: Expected endpoint /sensitivity-analysis but got /demographic-insights for query \"How do tax service rankings change if we adjust income weights by 20%?\"\n    at Object.<anonymous> (/Users/voldeck/code/mpiq-ai-chat/__tests__/query-to-visualization-pipeline.test.ts:1211:19)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)",
+      "totalProcessingTime": 4
     },
     {
       "query": "What are the most important factors predicting H&R Block online usage?",
       "category": "Feature Importance Ranking",
-      "timestamp": "2025-08-22T01:17:53.714Z",
+      "timestamp": "2025-08-22T04:00:44.312Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.4",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /feature-importance-ranking (score: 16.0) - Primary keywords: important, most important, factors, predicting; Context matches: most important factors, what are the most"
       ],
       "actualEndpoint": "/feature-importance-ranking",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.4,
-      "routingTime": 2,
-      "expectedEndpoint": "/analyze",
+      "routingMethod": "keyword",
+      "routingTime": 0,
+      "expectedEndpoint": "/feature-importance-ranking",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/feature-importance-ranking",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "feature_importance_ranking_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -685,34 +756,39 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "routingAccurate": true,
+      "totalProcessingTime": 4
     },
     {
       "query": "How accurate are our predictions for tax service market performance?",
       "category": "Model Performance",
-      "timestamp": "2025-08-22T01:17:53.723Z",
+      "timestamp": "2025-08-22T04:00:44.316Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.5333333333333333",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /model-performance (score: 15.6) - Primary keywords: accurate, performance, how accurate; Context matches: accurate are our predictions, market performance"
       ],
       "actualEndpoint": "/model-performance",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.5333333333333333,
-      "routingTime": 3,
-      "expectedEndpoint": "/analyze",
+      "routingMethod": "keyword",
+      "routingTime": 0,
+      "expectedEndpoint": "/model-performance",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/model-performance",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "model_performance_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -735,34 +811,40 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "routingAccurate": true,
+      "totalProcessingTime": 3
     },
     {
       "query": "Which AI model performs best for predicting tax service usage in each area?",
       "category": "Algorithm Comparison",
-      "timestamp": "2025-08-22T01:17:53.733Z",
-      "success": true,
+      "timestamp": "2025-08-22T04:00:44.319Z",
+      "success": false,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.4",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /feature-importance-ranking (score: 5.0) - Primary keywords: predicting; Context matches: for predicting",
+        "❌ ROUTING MISMATCH: Expected /algorithm-comparison, got /feature-importance-ranking"
       ],
-      "actualEndpoint": "/algorithm-comparison",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.4,
-      "routingTime": 4,
-      "expectedEndpoint": "/analyze",
+      "actualEndpoint": "/feature-importance-ranking",
+      "routingMethod": "keyword",
+      "routingTime": 1,
+      "expectedEndpoint": "/algorithm-comparison",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/algorithm-comparison",
+      "competitorBrands": [
+        "TurboTax"
+      ],
+      "configurationUsed": "/feature-importance-ranking",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "feature_importance_ranking_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -785,34 +867,41 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 11
+      "routingAccurate": false,
+      "error": "Error: Routing failed: Expected endpoint /algorithm-comparison but got /feature-importance-ranking for query \"Which AI model performs best for predicting tax service usage in each area?\"",
+      "errorStack": "Error: Routing failed: Expected endpoint /algorithm-comparison but got /feature-importance-ranking for query \"Which AI model performs best for predicting tax service usage in each area?\"\n    at Object.<anonymous> (/Users/voldeck/code/mpiq-ai-chat/__tests__/query-to-visualization-pipeline.test.ts:1211:19)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)",
+      "totalProcessingTime": 5
     },
     {
       "query": "Show me the highest confidence predictions using our best ensemble model",
       "category": "Ensemble Analysis",
-      "timestamp": "2025-08-22T01:17:53.744Z",
+      "timestamp": "2025-08-22T04:00:44.324Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.7",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /ensemble-analysis (score: 23.4) - Primary keywords: ensemble, highest confidence, best ensemble model, confidence predictions; Context matches: using our best ensemble, ensemble model, highest confidence predictions"
       ],
       "actualEndpoint": "/ensemble-analysis",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.7,
-      "routingTime": 2,
-      "expectedEndpoint": "/analyze",
+      "routingMethod": "keyword",
+      "routingTime": 6,
+      "expectedEndpoint": "/ensemble-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/ensemble-analysis",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "ensemble_analysis_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -835,34 +924,39 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
+      "routingAccurate": true,
       "totalProcessingTime": 9
     },
     {
       "query": "What is the optimal AI algorithm for predictions in each geographic area?",
       "category": "Model Selection",
-      "timestamp": "2025-08-22T01:17:53.753Z",
+      "timestamp": "2025-08-22T04:00:44.334Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.4",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /model-selection (score: 10.4) - Primary keywords: optimal, optimal ai algorithm; Context matches: each geographic area"
       ],
-      "actualEndpoint": "/algorithm-comparison",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.4,
-      "routingTime": 3,
-      "expectedEndpoint": "/analyze",
+      "actualEndpoint": "/model-selection",
+      "routingMethod": "keyword",
+      "routingTime": 0,
+      "expectedEndpoint": "/model-selection",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/algorithm-comparison",
+      "competitorBrands": [
+        "TurboTax"
+      ],
+      "configurationUsed": "/model-selection",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "algorithm_category",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -885,34 +979,39 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 11
+      "routingAccurate": true,
+      "totalProcessingTime": 3
     },
     {
       "query": "Which factors explain most of the variation in tax service market performance?",
       "category": "Dimensionality Insights",
-      "timestamp": "2025-08-22T01:17:53.764Z",
+      "timestamp": "2025-08-22T04:00:44.337Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.7",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /dimensionality-insights (score: 10.0) - Primary keywords: factors explain, variation; Context matches: market performance, factors explain most"
       ],
       "actualEndpoint": "/dimensionality-insights",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.7,
-      "routingTime": 2,
-      "expectedEndpoint": "/analyze",
+      "routingMethod": "keyword",
+      "routingTime": 0,
+      "expectedEndpoint": "/dimensionality-insights",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/dimensionality-insights",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "dimensionality_insights_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -935,34 +1034,39 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "routingAccurate": true,
+      "totalProcessingTime": 3
     },
     {
       "query": "Where do all our AI models agree on tax service predictions?",
       "category": "Consensus Analysis",
-      "timestamp": "2025-08-22T01:17:53.773Z",
+      "timestamp": "2025-08-22T04:00:44.340Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.4",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /consensus-analysis (score: 9.1) - Primary keywords: models agree; Context matches: all our ai models, models agree on"
       ],
       "actualEndpoint": "/consensus-analysis",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.4,
-      "routingTime": 1,
-      "expectedEndpoint": "/analyze",
+      "routingMethod": "keyword",
+      "routingTime": 0,
+      "expectedEndpoint": "/consensus-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/consensus-analysis",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "consensus_analysis_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -985,32 +1089,37 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 11
+      "routingAccurate": true,
+      "totalProcessingTime": 3
     },
     {
       "query": "Which unusual market patterns represent the biggest business opportunities?",
       "category": "Anomaly Insights",
-      "timestamp": "2025-08-22T01:17:53.784Z",
+      "timestamp": "2025-08-22T04:00:44.343Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.26666666666666666",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /anomaly-insights (score: 3.6) - Primary keywords: business opportunities"
       ],
-      "actualEndpoint": "/outlier-detection",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.26666666666666666,
-      "routingTime": 2,
-      "expectedEndpoint": "/analyze",
+      "actualEndpoint": "/anomaly-insights",
+      "routingMethod": "keyword",
+      "routingTime": 0,
+      "expectedEndpoint": "/anomaly-insights",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
-      "configurationUsed": "/outlier-detection",
+      "competitorBrands": [
+        "TurboTax"
+      ],
+      "configurationUsed": "/anomaly-insights",
       "processorUsed": "StrategicAnalysisProcessor",
       "targetVariable": "unknown",
       "recordCount": 2,
@@ -1035,31 +1144,36 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "routingAccurate": true,
+      "totalProcessingTime": 8
     },
     {
       "query": "How should we segment tax service markets for targeted strategies?",
       "category": "Cluster Analysis",
-      "timestamp": "2025-08-22T01:17:53.793Z",
+      "timestamp": "2025-08-22T04:00:44.351Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.7",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /cluster-analysis (score: 14.4) - Primary keywords: how should we segment, targeted strategies; Context matches: how should we, for targeted strategies, markets for targeted"
       ],
       "actualEndpoint": "/cluster-analysis",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.7,
-      "routingTime": 2,
-      "expectedEndpoint": "/analyze",
+      "routingMethod": "keyword",
+      "routingTime": 1,
+      "expectedEndpoint": "/cluster-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/cluster-analysis",
       "processorUsed": "StrategicAnalysisProcessor",
       "targetVariable": "unknown",
@@ -1085,34 +1199,39 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 10
+      "routingAccurate": true,
+      "totalProcessingTime": 9
     },
     {
       "query": "Provide comprehensive market insights for tax preparation services",
       "category": "Analyze",
-      "timestamp": "2025-08-22T01:17:53.803Z",
+      "timestamp": "2025-08-22T04:00:44.360Z",
       "success": true,
       "troubleshootingNotes": [
-        "Semantic routing successful with confidence 0.26666666666666666",
-        "Legend validation failed: Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"rgba(215, 48, 39, 0.6)\"\u001b[39m\nReceived array: \u001b[31m[\"#D6191C\", \"#FCAD61\", \"#A6D96A\", \"#1A9641\"]\u001b[39m"
+        "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
+        "Keyword routing: /analyze (score: 3.0) - Primary keywords: comprehensive"
       ],
       "actualEndpoint": "/analyze",
-      "routingMethod": "semantic",
-      "routingConfidence": 0.26666666666666666,
-      "routingTime": 2,
+      "routingMethod": "keyword",
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
       "geoProcessingTime": 0,
-      "brandsDetected": [],
+      "brandsDetected": [
+        "H&R Block",
+        "TurboTax"
+      ],
       "targetBrand": "H&R Block",
-      "competitorBrands": [],
+      "competitorBrands": [
+        "TurboTax"
+      ],
       "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "unknown",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -1135,10 +1254,11 @@
         "rgb(26, 152, 80)"
       ],
       "analysisQualityPassed": true,
-      "legendValidationPassed": false,
-      "legendAccuracy": false,
+      "legendValidationPassed": true,
+      "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "totalProcessingTime": 9
+      "routingAccurate": true,
+      "totalProcessingTime": 3
     }
   ]
 }
