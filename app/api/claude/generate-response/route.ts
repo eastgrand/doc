@@ -2434,8 +2434,8 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
 
             // --- Optimized Data Summarization (Replaces Feature Enumeration) ---
             try {
-                // Force optimization for any dataset >= 50 features (ultra-aggressive prevention)
-                const shouldForceOptimization = features.length >= 50;
+                // Force optimization for any dataset >= 50 features OR if explicitly forced via metadata
+                const shouldForceOptimization = features.length >= 50 || !!metadata?.forceOptimization;
                 let optimizedSummary = '';
                 
                 console.log(`[OPTIMIZATION DEBUG] Layer: ${layerName}, Features: ${features.length}, shouldForceOptimization: ${shouldForceOptimization}`);
