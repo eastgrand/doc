@@ -118,7 +118,6 @@ export function integrateOptimizedSummarization(
   
   // Check if we should use comprehensive summary (existing logic)
   const hasComprehensiveSummary = shouldUseComprehensiveSummary(processedLayersData);
-  console.log(`[IntegrationBridge] hasComprehensiveSummary: ${hasComprehensiveSummary}, forceOptimization: ${mergedOptions.forceOptimization}`);
   
   if (hasComprehensiveSummary && !mergedOptions.forceOptimization) {
     if (mergedOptions.logPerformance) {
@@ -141,9 +140,6 @@ export function integrateOptimizedSummarization(
   const wouldExceedLimits = wouldExceedSizeLimits(processedLayersData, mergedOptions.maxPayloadSize);
   const shouldOptimize = mergedOptions.enableOptimization && 
                         (wouldExceedLimits || mergedOptions.forceOptimization);
-  
-  console.log(`[IntegrationBridge] wouldExceedLimits: ${wouldExceedLimits}, enableOptimization: ${mergedOptions.enableOptimization}, shouldOptimize: ${shouldOptimize}`);
-  console.log(`[IntegrationBridge] Estimated size: ${processedLayersData.reduce((total, layer) => total + (layer.features?.length || 0) * 350, 0)} chars`);
   
   if (!shouldOptimize) {
     if (mergedOptions.logPerformance) {
@@ -221,9 +217,6 @@ export function replaceExistingFeatureEnumeration(
   forceOptimization?: boolean
 ): string {
   try {
-    console.log(`[IntegrationBridge] replaceExistingFeatureEnumeration called with forceOptimization: ${forceOptimization}`);
-    console.log(`[IntegrationBridge] processedLayersData length: ${processedLayersData.length}, first layer features: ${processedLayersData[0]?.features?.length || 0}`);
-    
     // Integration with optimized summarization
     const integration = integrateOptimizedSummarization(
       processedLayersData,
@@ -232,11 +225,9 @@ export function replaceExistingFeatureEnumeration(
       {
         enableOptimization: true,
         forceOptimization: forceOptimization || false, // Use passed parameter or default to false
-        logPerformance: true
+        logPerformance: false // Disable excessive logging
       }
     );
-    
-    console.log(`[IntegrationBridge] Integration result - shouldUseOptimization: ${integration.shouldUseOptimization}, optimizedSummary length: ${integration.optimizedSummary.length}`);
     
     if (integration.shouldUseOptimization) {
       console.log('[IntegrationBridge] ✅ Replaced feature enumeration with optimized summary');

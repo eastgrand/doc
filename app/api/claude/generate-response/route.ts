@@ -1368,8 +1368,7 @@ async function streamToBufferHelper(stream: ReadableStream<Uint8Array>): Promise
 
 // --- POST Request Handler ---
 export async function POST(req: NextRequest) {
-    console.log('[Claude] 🔥 POST request received - 413 ERROR DEBUGGING ENABLED 🔥');
-    console.log('[Claude] 📅 Deployment timestamp:', new Date().toISOString());
+    console.log('[Claude] POST request received');
     
     // Check API key first
     const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -2434,47 +2433,43 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
             }
 
             // --- Optimized Data Summarization (Replaces Feature Enumeration) ---
-            console.log(`[Claude Prompt Gen] 🚀 STARTING OPTIMIZATION CHECK - Features: ${features.length}, Layer: ${layerName}`);
             try {
-                // Import the optimized summarization system
-                console.log(`[Claude Prompt Gen] 📦 Importing IntegrationBridge module...`);
-                const { replaceExistingFeatureEnumeration } = await import('./data-summarization/IntegrationBridge');
-                console.log(`[Claude Prompt Gen] ✅ IntegrationBridge module imported successfully`);
+                // Force optimization for any dataset >= 50 features (ultra-aggressive prevention)
+                const shouldForceOptimization = features.length >= 50;
+                let optimizedSummary = '';
                 
-                // Create processed layer data structure for the summarization system
-                const processedLayerData = [{
-                    layerId: layerResult.layerId,
-                    layerName: layerName,
-                    layerType: layerResult.layerType || 'feature',
-                    features: features,
-                    extent: layerResult.extent,
-                    fields: layerResult.fields
-                }];
-                console.log(`[Claude Prompt Gen] 📊 Created processedLayerData with ${features.length} features`);
-                
-                // Force optimization for large datasets to prevent 413 errors
-                const shouldForceOptimization = features.length >= 200; // Very aggressive prevention of 413 errors
-                console.log(`[Claude Prompt Gen] 🎯 CRITICAL: Dataset size check: ${features.length} features, forceOptimization: ${shouldForceOptimization}`);
-                
-                // Attempt optimized summarization
-                console.log(`[Claude Prompt Gen] 🔄 Calling replaceExistingFeatureEnumeration with force=${shouldForceOptimization}...`);
-                const optimizedSummary = replaceExistingFeatureEnumeration(
-                    processedLayerData,
-                    { [layerResult.layerId]: layerConfig },
-                    metadata,
-                    currentLayerPrimaryField,
-                    shouldForceOptimization
-                );
-                console.log(`[Claude Prompt Gen] 📝 Optimization returned summary length: ${optimizedSummary ? optimizedSummary.length : 0} chars`);
-                
-                if (optimizedSummary && optimizedSummary.trim().length > 0) {
-                    // Use optimized summary - prevents 413 errors
-                    dataSummary += optimizedSummary;
-                    console.log(`[Claude Prompt Gen] ✅ Used optimized summarization for layer ${layerName} (${features.length} features)`);
-                } else {
-                    // Fallback to existing logic for backward compatibility
-                    console.log(`[Claude Prompt Gen] ⏭️ Using existing feature enumeration for layer ${layerName}`);
+                if (shouldForceOptimization) {
+                    // Import the optimized summarization system
+                    const { replaceExistingFeatureEnumeration } = await import('./data-summarization/IntegrationBridge');
                     
+                    // Create processed layer data structure for the summarization system
+                    const processedLayerData = [{
+                        layerId: layerResult.layerId,
+                        layerName: layerName,
+                        layerType: layerResult.layerType || 'feature',
+                        features: features,
+                        extent: layerResult.extent,
+                        fields: layerResult.fields
+                    }];
+                    
+                    // Attempt optimized summarization with force=true
+                    optimizedSummary = replaceExistingFeatureEnumeration(
+                        processedLayerData,
+                        { [layerResult.layerId]: layerConfig },
+                        metadata,
+                        currentLayerPrimaryField,
+                        true  // Always force optimization for datasets >= 50
+                    );
+                
+                    if (optimizedSummary && optimizedSummary.trim().length > 0) {
+                        // Use optimized summary - prevents 413 errors
+                        dataSummary += optimizedSummary;
+                        console.log(`[Claude Prompt Gen] ✅ Used optimized summarization for layer ${layerName} (${features.length} features)`);
+                    }
+                }
+                
+                // If optimization wasn't used or failed, use original enumeration
+                if (!shouldForceOptimization || !optimizedSummary || optimizedSummary.trim().length === 0) {
                     // Original feature enumeration logic as fallback
                     const sortedFeatures = sortAttributesByField(features, currentLayerPrimaryField);
                     console.log(`[Claude Prompt Gen] Sorted ${sortedFeatures.length} features for layer ${layerName} by ${currentLayerPrimaryField}.`);
@@ -2517,9 +2512,8 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                     }
                 }
             } catch (e) {
-                console.error(`[Claude Prompt Gen] 💥 CRITICAL ERROR in optimized summarization for layer ${layerName} (${features.length} features):`, e);
-                console.error(`[Claude Prompt Gen] 💥 Error stack:`, e instanceof Error ? e.stack : 'No stack available');
-                console.error(`[Claude Prompt Gen] 💥 This will cause 413 error - fallback will use full enumeration!`);
+                console.error(`[Claude Prompt Gen] Error in optimized summarization for layer ${layerName}:`, e);
+                // Continue with fallback enumeration
                 
                 // Complete fallback to original logic
                 try {
