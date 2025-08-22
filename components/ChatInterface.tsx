@@ -103,7 +103,7 @@ const ChatInterfaceInner: React.FC<ChatInterfaceProps> = ({
   
   // Stop chat processing function
   const stopChatProcessing = useCallback(() => {
-    console.log('[ChatInterface] Stopping chat processing...');
+    // console.log('[ChatInterface] Stopping chat processing...');
     
     // Abort any ongoing requests
     if (chatAbortControllerRef.current) {
@@ -285,7 +285,7 @@ ${conversationText}
   }, [messages, analysisResult]);
 
   const handleZipCodeClick = useCallback((zipCode: string) => {
-    console.log(`[ChatInterface] ZIP code ${zipCode} clicked - zooming to feature`);
+    // console.log(`[ChatInterface] ZIP code ${zipCode} clicked - zooming to feature`);
     if (onZipCodeClick) {
       onZipCodeClick(zipCode);
     } else {
@@ -480,7 +480,7 @@ ${conversationText}
     if (analysisMode !== 'full') return;
 
     try {
-      console.log('[ChatInterface] Generating initial AI narrative...');
+      // console.log('[ChatInterface] Generating initial AI narrative...');
       
       // Build the request payload with sanitized data
       const sanitizeFeatureData = (records: any[]) => {
@@ -536,12 +536,12 @@ ${conversationText}
         persona: persona
       };
 
-      console.log('[ChatInterface] Request payload prepared:', {
-        endpoint: result.endpoint,
-        recordCount: result.data?.records?.length,
-        spatialFilter: !!(metadata as any)?.spatialFilterIds,
-        isClustered: !!result.data?.isClustered
-      });
+      // console.log('[ChatInterface] Request payload prepared:', {
+      //   endpoint: result.endpoint,
+      //   recordCount: result.data?.records?.length,
+      //   spatialFilter: !!(metadata as any)?.spatialFilterIds,
+      //   isClustered: !!result.data?.isClustered
+      // });
 
       // Clean up any existing abort controller
       if (chatAbortControllerRef.current) {
@@ -552,7 +552,7 @@ ${conversationText}
       chatAbortControllerRef.current = new AbortController();
       const controller = chatAbortControllerRef.current;
       const timeoutId = setTimeout(() => {
-        console.log('[ChatInterface] AI analysis timeout reached (290s)');
+        // console.log('[ChatInterface] AI analysis timeout reached (290s)');
         controller.abort();
       }, 290000); // Set to 290 seconds - 10 seconds less than server timeout (300s) to avoid race condition
 
@@ -592,7 +592,7 @@ ${conversationText}
         
         if (cutIndex < cleanContent.length) {
           cleanContent = cleanContent.substring(0, cutIndex).trim();
-          console.log('[ChatInterface] Removed leaked prompt instructions from response');
+          // console.log('[ChatInterface] Removed leaked prompt instructions from response');
         }
         
         // Remove the loading indicator and append AI analysis
@@ -611,7 +611,7 @@ ${conversationText}
           timestamp: messageTimestamp
         };
         setMessages([completeMessage]);
-        console.log('[ChatInterface] AI narrative generated successfully');
+        // console.log('[ChatInterface] AI narrative generated successfully');
       } else {
         throw new Error('No content in API response');
       }
@@ -658,7 +658,7 @@ ${conversationText}
   // Auto-generate AI narrative when analysisResult is available (only once initially)
   React.useEffect(() => {
     if (!hasGeneratedNarrative && analysisResult) {
-      console.log('[ChatInterface] Starting auto-generation of AI narrative');
+      // console.log('[ChatInterface] Starting auto-generation of AI narrative');
       generateInitialNarrative();
     }
   }, [hasGeneratedNarrative, analysisResult, generateInitialNarrative]);
@@ -707,7 +707,7 @@ ${conversationText}
     setIsProcessing(true);
 
     try {
-      console.log('[ChatInterface] Sending chat message via service');
+      // console.log('[ChatInterface] Sending chat message via service');
       
       const { analysisResult: result, metadata } = analysisResult;
       
@@ -798,7 +798,7 @@ ${conversationText}
         persona: persona
       };
 
-      console.log('[ChatInterface] Request payload prepared');
+      // console.log('[ChatInterface] Request payload prepared');
       
       // Use external service with FormData format (same as analysis)
       const claudeResponse = await sendChatMessage(requestPayload);
@@ -812,7 +812,7 @@ ${conversationText}
         };
         const finalMessages = [...updatedMessages, aiMessage];
         setMessages(finalMessages);
-        console.log('[ChatInterface] Chat response received successfully');
+        // console.log('[ChatInterface] Chat response received successfully');
       } else {
         throw new Error('No content in API response');
       }
