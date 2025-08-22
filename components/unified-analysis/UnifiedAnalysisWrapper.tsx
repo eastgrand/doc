@@ -51,6 +51,7 @@ export interface UnifiedAnalysisResponse {
   metadata: {
     geometry?: __esri.Geometry;
     analysisType: string;
+    query?: string;
     timestamp: Date;
     processingTime: number;
   };
@@ -124,6 +125,7 @@ export class UnifiedAnalysisWrapper {
         metadata: {
           geometry: request.geometry,
           analysisType: request.analysisType,
+          query: request.query,
           timestamp: new Date(),
           processingTime: Date.now() - startTime
         },

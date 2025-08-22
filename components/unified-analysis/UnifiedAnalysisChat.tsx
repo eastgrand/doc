@@ -377,8 +377,9 @@ ${conversationText}
     const { analysisResult: result, metadata } = analysisResult;
     const analysisData = result.data?.records || [];
     
-    // Start with analyzing message  
-    let messageContent = `Analyzing ${analysisData.length} areas...`;
+    // Start with query display and analyzing message  
+    const queryText = metadata?.query || 'Analysis';
+    let messageContent = `**Query:** "${queryText}"\n\n---\n\nAnalyzing ${analysisData.length} areas...`;
     
     // Declare at top level so it's accessible in error handler
     const messageId = Date.now().toString();
@@ -505,9 +506,9 @@ ${conversationText}
       chatAbortControllerRef.current = new AbortController();
       const controller = chatAbortControllerRef.current;
       const timeoutId = setTimeout(() => {
-        console.log('[UnifiedAnalysisChat] AI analysis timeout reached (120s)');
+        console.log('[UnifiedAnalysisChat] AI analysis timeout reached (290s)');
         controller.abort();
-      }, 120000); // Increase to 120 second timeout
+      }, 290000); // Set to 290 seconds - 10 seconds less than server timeout (300s) to avoid race condition
 
       const response = await fetch('/api/claude/generate-response', {
         method: 'POST',
@@ -589,7 +590,7 @@ ${conversationText}
         if (error.name === 'AbortError') {
           errorMessage = chatAbortControllerRef.current === null ? 
             'Analysis was cancelled.' : 
-            'AI analysis timed out. Please try asking a specific question instead.';
+            'AI analysis timed out after 290 seconds. Please try asking a specific question instead.';
         } else if (error.message.includes('429')) {
           errorMessage = 'Too many requests. Please wait a moment before trying again.';
         } else if (error.message.includes('401')) {

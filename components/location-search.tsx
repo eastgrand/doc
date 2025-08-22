@@ -138,16 +138,16 @@ export function LocationSearch({
       </div>
       
       {showResults && results.length > 0 && (
-        <div className="absolute z-50 mt-1 w-full rounded-md border bg-background shadow-lg">
+        <div className="absolute z-50 mt-1 w-full rounded-md border shadow-lg bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
           <ul className="py-1">
             {results.map((result, index) => (
               <li 
                 key={index}
-                className="cursor-pointer px-4 py-2 hover:bg-muted"
+                className="cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 onClick={() => handleSelectLocation(result)}
               >
-                <div className="text-sm font-medium">{result.address}</div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-xs font-medium text-gray-900 dark:text-gray-100">{result.address}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
                   {result.type.charAt(0).toUpperCase() + result.type.slice(1)}
                 </div>
               </li>

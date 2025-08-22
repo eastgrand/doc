@@ -611,16 +611,16 @@ export class EnhancedQueryAnalyzer {
       weight: 1.0
     },
     '/competitive-analysis': {
-      primaryKeywords: ['market share', 'market share difference', 'share difference', 'quantitative comparison'],
-      contextKeywords: ['h&r block vs turbotax', 'between h&r block and', 'market share between'],
-      avoidTerms: ['brand positioning', 'brand strength', 'strongest'],
+      primaryKeywords: ['competitive advantage', 'competitive position', 'competitive landscape', 'competitive opportunities', 'competitive scoring'],
+      contextKeywords: ['competitive analysis', 'advantage score', 'competitive strength', 'market competitiveness'],
+      avoidTerms: ['brand positioning', 'brand difference', 'vs', 'versus', 'h&r block and turbotax'],
       weight: 1.2
     },
     '/brand-difference': {
-      primaryKeywords: ['brand positioning', 'brand strength', 'strongest', 'brand difference', 'positioning vs'],
-      contextKeywords: ['strongest brand', 'brand positioning vs', 'positioning against'],
-      avoidTerms: ['market share', 'quantitative'],
-      weight: 1.1
+      primaryKeywords: ['market share difference', 'difference between', 'brand difference', 'vs', 'versus', 'market share', 'brand positioning', 'positioning vs', 'strongest brand'],
+      contextKeywords: ['h&r block and turbotax', 'turbotax and h&r block', 'between h&r block', 'between turbotax', 'vs competitors', 'positioning vs competitors', 'brand positioning vs'],
+      avoidTerms: ['competitive advantage', 'competitive position'],
+      weight: 1.4
     },
     '/demographic-insights': {
       primaryKeywords: ['demographic', 'demographics', 'population', 'age', 'income', 'race', 'ethnicity'],

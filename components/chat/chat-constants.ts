@@ -10,7 +10,7 @@ export const ANALYSIS_CATEGORIES = {
   'Comparative Analysis': [
     'Compare H&R Block usage between Alachua County and Miami-Dade County'
   ],
-  'Competitive Analysis': [
+  'Brand Difference': [
     'Show me the market share difference between H&R Block and TurboTax'
   ],
   'Demographic Insights': [
@@ -25,8 +25,8 @@ export const ANALYSIS_CATEGORIES = {
   'Outlier Detection': [
     'Show me markets that have outliers with unique tax service characteristics'
   ],
-  'Brand Difference': [
-    'Which markets have the strongest H&R Block brand positioning vs competitors?'
+  'Competitive Analysis': [
+    'Show me areas with the best competitive positioning'
   ],
   'Scenario Analysis': [
     'What if H&R Block changes its pricing strategy - which markets would be most resilient?'

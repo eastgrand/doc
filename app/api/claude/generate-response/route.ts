@@ -837,7 +837,7 @@ interface ClusterOptions {
 // --- Configuration ---
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-export const maxDuration = 120;
+export const maxDuration = 300;
 export const fetchCache = 'force-no-store';
 export const revalidate = 0;
 
