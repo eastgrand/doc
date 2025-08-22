@@ -785,7 +785,15 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     for (const field of nameFields) {
       const value = record[field];
       if (value && typeof value === 'string' && value.trim() !== '' && value.toLowerCase() !== 'unknown') {
-        return value.trim();
+        const trimmedValue = value.trim();
+        // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
+        if (field === 'DESCRIPTION' || field === 'value_DESCRIPTION') {
+          const nameMatch = trimmedValue.match(/\(([^)]+)\)/);
+          if (nameMatch && nameMatch[1]) {
+            return nameMatch[1].trim();
+          }
+        }
+        return trimmedValue;
       }
     }
     

@@ -702,8 +702,23 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
    */
   private generateAreaName(record: any): string {
     // Try explicit name fields first (updated for correlation_analysis format)
-    if (record.value_DESCRIPTION) return record.value_DESCRIPTION;
-    if (record.DESCRIPTION) return record.DESCRIPTION; // Primary field in correlation_analysis
+    if (record.value_DESCRIPTION && typeof record.value_DESCRIPTION === 'string') {
+      const description = record.value_DESCRIPTION.trim();
+      const nameMatch = description.match(/\(([^)]+)\)/);
+      if (nameMatch && nameMatch[1]) {
+        return nameMatch[1].trim();
+      }
+      return description;
+    }
+    if (record.DESCRIPTION && typeof record.DESCRIPTION === 'string') {
+      const description = record.DESCRIPTION.trim();
+      // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
+      const nameMatch = description.match(/\(([^)]+)\)/);
+      if (nameMatch && nameMatch[1]) {
+        return nameMatch[1].trim();
+      }
+      return description;
+    } // Primary field in correlation_analysis
     if (record.area_name) return record.area_name;
     if (record.NAME) return record.NAME;
     if (record.name) return record.name;
@@ -731,6 +746,6 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       return `Location ${record.coordinates[0].toFixed(2)},${record.coordinates[1].toFixed(2)}`;
     }
     
-    return 'Unknown Area';
+    return `Area ${record.OBJECTID || 'Unknown'}`;
   }
 } 

@@ -297,8 +297,29 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
   }
 
   private generateAreaName(record: any): string {
-    if (record.value_DESCRIPTION) return record.value_DESCRIPTION;
-    if (record.DESCRIPTION) return record.DESCRIPTION;
+    // Check for DESCRIPTION field first (common in strategic analysis data)
+    if (record.DESCRIPTION && typeof record.DESCRIPTION === 'string') {
+      const description = record.DESCRIPTION.trim();
+      // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
+      const nameMatch = description.match(/\(([^)]+)\)/);
+      if (nameMatch && nameMatch[1]) {
+        return nameMatch[1].trim();
+      }
+      // If no parentheses, return the whole description
+      return description;
+    }
+    
+    // Try value_DESCRIPTION with same extraction logic
+    if (record.value_DESCRIPTION && typeof record.value_DESCRIPTION === 'string') {
+      const description = record.value_DESCRIPTION.trim();
+      const nameMatch = description.match(/\(([^)]+)\)/);
+      if (nameMatch && nameMatch[1]) {
+        return nameMatch[1].trim();
+      }
+      return description;
+    }
+    
+    // Other name fields
     if (record.area_name) return record.area_name;
     if (record.NAME) return record.NAME;
     if (record.name) return record.name;
@@ -314,7 +335,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       return `Area ${id}`;
     }
     
-    return 'Unknown Area';
+    return `Area ${record.OBJECTID || 'Unknown'}`;
   }
 
   private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
