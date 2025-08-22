@@ -2438,9 +2438,14 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 const shouldForceOptimization = features.length >= 50;
                 let optimizedSummary = '';
                 
+                console.log(`[OPTIMIZATION DEBUG] Layer: ${layerName}, Features: ${features.length}, shouldForceOptimization: ${shouldForceOptimization}`);
+                
                 if (shouldForceOptimization) {
+                    console.log(`[OPTIMIZATION DEBUG] Attempting to import IntegrationBridge module...`);
+                    
                     // Import the optimized summarization system
                     const { replaceExistingFeatureEnumeration } = await import('./data-summarization/IntegrationBridge');
+                    console.log(`[OPTIMIZATION DEBUG] ✅ IntegrationBridge module imported successfully`);
                     
                     // Create processed layer data structure for the summarization system
                     const processedLayerData = [{
@@ -2452,6 +2457,13 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                         fields: layerResult.fields
                     }];
                     
+                    console.log(`[OPTIMIZATION DEBUG] Calling replaceExistingFeatureEnumeration with:`, {
+                        layerCount: processedLayerData.length,
+                        featureCount: features.length,
+                        primaryField: currentLayerPrimaryField,
+                        forceOptimization: true
+                    });
+                    
                     // Attempt optimized summarization with force=true
                     optimizedSummary = replaceExistingFeatureEnumeration(
                         processedLayerData,
@@ -2461,11 +2473,17 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                         true  // Always force optimization for datasets >= 50
                     );
                 
+                    console.log(`[OPTIMIZATION DEBUG] Function returned summary length: ${optimizedSummary ? optimizedSummary.length : 'null/undefined'}`);
+                
                     if (optimizedSummary && optimizedSummary.trim().length > 0) {
                         // Use optimized summary - prevents 413 errors
                         dataSummary += optimizedSummary;
-                        console.log(`[Claude Prompt Gen] ✅ Used optimized summarization for layer ${layerName} (${features.length} features)`);
+                        console.log(`[OPTIMIZATION DEBUG] ✅ Used optimized summarization for layer ${layerName} (${features.length} features)`);
+                    } else {
+                        console.log(`[OPTIMIZATION DEBUG] ❌ Optimization returned empty/invalid summary for layer ${layerName}`);
                     }
+                } else {
+                    console.log(`[OPTIMIZATION DEBUG] ⏭️ Skipping optimization - dataset too small (${features.length} < 50 features)`);
                 }
                 
                 // If optimization wasn't used or failed, use original enumeration

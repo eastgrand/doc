@@ -119,6 +119,13 @@ export function integrateOptimizedSummarization(
   // Check if we should use comprehensive summary (existing logic)
   const hasComprehensiveSummary = shouldUseComprehensiveSummary(processedLayersData);
   
+  console.log('[IntegrationBridge] DEBUG - Initial checks:', {
+    hasComprehensiveSummary,
+    forceOptimization: mergedOptions.forceOptimization,
+    enableOptimization: mergedOptions.enableOptimization,
+    maxPayloadSize: mergedOptions.maxPayloadSize
+  });
+  
   if (hasComprehensiveSummary && !mergedOptions.forceOptimization) {
     if (mergedOptions.logPerformance) {
       console.log('[IntegrationBridge] Using existing comprehensive summary path');
@@ -140,6 +147,13 @@ export function integrateOptimizedSummarization(
   const wouldExceedLimits = wouldExceedSizeLimits(processedLayersData, mergedOptions.maxPayloadSize);
   const shouldOptimize = mergedOptions.enableOptimization && 
                         (wouldExceedLimits || mergedOptions.forceOptimization);
+  
+  console.log('[IntegrationBridge] DEBUG - Optimization decision:', {
+    wouldExceedLimits,
+    shouldOptimize,
+    totalFeatures: processedLayersData.reduce((total, layer) => total + (layer.features?.length || 0), 0),
+    estimatedSize: processedLayersData.reduce((total, layer) => total + (layer.features?.length || 0) * 350, 0)
+  });
   
   if (!shouldOptimize) {
     if (mergedOptions.logPerformance) {
@@ -217,6 +231,14 @@ export function replaceExistingFeatureEnumeration(
   forceOptimization?: boolean
 ): string {
   try {
+    console.log('[IntegrationBridge] DEBUG - Function called with:', {
+      layerCount: processedLayersData?.length,
+      totalFeatures: processedLayersData?.reduce((total, layer) => total + (layer.features?.length || 0), 0),
+      forceOptimization: forceOptimization,
+      primaryField: currentLayerPrimaryField,
+      metadataAnalysisType: metadata?.analysisType
+    });
+
     // Integration with optimized summarization
     const integration = integrateOptimizedSummarization(
       processedLayersData,
@@ -225,9 +247,15 @@ export function replaceExistingFeatureEnumeration(
       {
         enableOptimization: true,
         forceOptimization: forceOptimization || false, // Use passed parameter or default to false
-        logPerformance: false // Disable excessive logging
+        logPerformance: true // Enable logging to see what's happening
       }
     );
+    
+    console.log('[IntegrationBridge] DEBUG - Integration result:', {
+      shouldUseOptimization: integration.shouldUseOptimization,
+      summaryLength: integration.optimizedSummary?.length || 0,
+      reductionPercentage: integration.performanceMetrics.reductionPercentage
+    });
     
     if (integration.shouldUseOptimization) {
       console.log('[IntegrationBridge] ✅ Replaced feature enumeration with optimized summary');
