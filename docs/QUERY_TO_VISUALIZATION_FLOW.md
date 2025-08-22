@@ -357,7 +357,7 @@ process(rawData: RawAnalysisResult): ProcessedAnalysisData {
     // Get city from ZIP code
     const city = this.extractCityFromRecord(record);
     // Uses GeoDataManager: "32601" → "Gainesville"
-    
+    y
     return {
       area_id: record.ID || record.id,
       area_name: areaName,
