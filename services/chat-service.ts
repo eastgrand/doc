@@ -9,7 +9,15 @@ export interface ChatMessage {
 export interface ChatRequest {
   messages: ChatMessage[];
   metadata: Record<string, unknown>;
-  featureData: import('@/types/geospatial-chat').ProcessedLayerResult[];
+  // Minimal client-side layer shape to avoid heavy ArcGIS types in the browser
+  featureData: Array<{
+    layerId: string;
+    layerName: string;
+    layerType?: string;
+    field?: string;
+    // Features should be plain objects shaped like { properties: Record<string, any> }
+    features: Array<{ properties: Record<string, unknown> }>;
+  }>;
   persona: string;
 }
 

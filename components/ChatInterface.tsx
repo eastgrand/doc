@@ -520,7 +520,7 @@ ${conversationText}
         });
       };
 
-      const requestPayload = {
+  const requestPayload = {
         messages: [{
           role: 'user' as const,
           content: `Provide a comprehensive analysis of the ${result.endpoint?.replace('/', '').replace(/-/g, ' ')} results`
@@ -540,7 +540,8 @@ ${conversationText}
           layerId: 'unified_analysis',
           layerName: 'Analysis Results',
           layerType: 'polygon',
-          features: sanitizeFeatureData(result.data?.records || [])
+          // Wrap records as properties so the summarizer can read fields consistently
+          features: (sanitizeFeatureData(result.data?.records || []) as any[]).map(r => ({ properties: r }))
         }],
         persona: persona
       };
@@ -786,7 +787,7 @@ ${conversationText}
         });
       };
 
-      const requestPayload = {
+  const requestPayload = {
         messages: optimizedMessages,
         metadata: {
           query: userMessage.content,
@@ -805,7 +806,7 @@ ${conversationText}
           layerId: 'unified_analysis',
           layerName: 'Analysis Results',
           layerType: 'polygon',
-          features: sanitizeFeatureData(result.data?.records || [])
+          features: (sanitizeFeatureData(result.data?.records || []) as any[]).map(r => ({ properties: r }))
         }],
         persona: persona
       };

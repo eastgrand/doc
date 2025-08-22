@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ProcessedLayerResult } from '@/types/geospatial-chat';
+// Accept a minimal layer shape to avoid tight coupling to ArcGIS types in the browser
+export interface MinimalClientLayer {
+  layerId: string;
+  layerName: string;
+  layerType?: string;
+  field?: string;
+  features: Array<{ properties?: Record<string, any> } | any>;
+}
 
 export interface HistogramBin {
   start: number;
@@ -133,7 +140,7 @@ function safeSampleProperties(props: Record<string, any>, maxKeys = 20): Record<
   return out;
 }
 
-export function summarizeFeatureData(featureData: ProcessedLayerResult[] | undefined | null): ClientSummary | undefined {
+export function summarizeFeatureData(featureData: MinimalClientLayer[] | undefined | null): ClientSummary | undefined {
   if (!featureData || !Array.isArray(featureData) || featureData.length === 0) return undefined;
 
   const layerSummaries: LayerSummary[] = [];
@@ -142,17 +149,18 @@ export function summarizeFeatureData(featureData: ProcessedLayerResult[] | undef
   for (const layer of featureData) {
     const featureCount = Array.isArray(layer.features) ? layer.features.length : 0;
     totalFeatures += featureCount;
-    const firstProps = featureCount > 0 ? (layer.features[0] as any)?.properties ?? {} : {};
+  const firstProps = featureCount > 0 ? (layer.features[0] as any)?.properties ?? layer.features[0] ?? {} : {};
     const numericField = layer.field || selectNumericFieldFromFeature(firstProps);
 
     const values: number[] = [];
     const ranked: Array<{ id: string; name: string; value: number }> = [];
     if (numericField) {
       for (const f of layer.features) {
-        const v = (f as any)?.properties?.[numericField];
+        const props = (f as any)?.properties ?? f;
+        const v = props?.[numericField];
         if (isFiniteNumber(v)) {
           values.push(v);
-          const { id, name } = pickIdAndName((f as any).properties || {});
+          const { id, name } = pickIdAndName(props || {});
           ranked.push({ id, name, value: v });
         }
       }
@@ -168,7 +176,7 @@ export function summarizeFeatureData(featureData: ProcessedLayerResult[] | undef
     const samples: Array<Record<string, any>> = [];
     const sampleSize = Math.min(5, featureCount);
     for (let i = 0; i < sampleSize; i++) {
-      const props = (layer.features[i] as any)?.properties ?? {};
+      const props = (layer.features[i] as any)?.properties ?? layer.features[i] ?? {};
       const { id, name } = pickIdAndName(props);
       samples.push({ id, name, ...safeSampleProperties(props) });
     }
