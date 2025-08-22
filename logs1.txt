@@ -1,661 +1,30 @@
-chat-service.ts:54 [ChatService] Chat response received successfully
-ChatInterface.tsx:613 [ChatInterface] AI narrative generated successfully
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-The resource <URL> was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
-The resource <URL> was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
-The resource <URL> was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
-The resource <URL> was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
-The resource <URL> was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
-The resource <URL> was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
-The resource <URL> was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
-CustomPopupManager.tsx:458 [CustomPopupManager] 🔍 Popup Attribute Debug: {hitFeatureAttrs: Array(2), fullFeatureAttrs: Array(9), hitFeatureValues: {…}, fullFeatureValues: {…}, areEqual: false, …}
-CustomPopupManager.tsx:614 [CustomPopupManager] 📍 Popup button decision: {isPointLayer: false, isLocationLayer: false, shouldShowInfographicsButton: true, layerTitle: 'AnalysisEngine - comparative_analysis_score', geometryType: 'polygon'}
-CustomPopupManager.tsx:626 [CustomPopupManager] Creating infographics button for non-point layer
-CustomPopupManager.tsx:1077 [CustomPopupManager] 🔍 Analysis Layer Popup Debug: {layerId: 'analysis-layer-1755863341687', hasAttributes: true, attributeKeys: Array(9), attributeValues: {…}, nonZeroValues: Array(6), …}
-CustomPopupManager.tsx:458 [CustomPopupManager] 🔍 Popup Attribute Debug: {hitFeatureAttrs: Array(2), fullFeatureAttrs: Array(9), hitFeatureValues: {…}, fullFeatureValues: {…}, areEqual: false, …}
-CustomPopupManager.tsx:614 [CustomPopupManager] 📍 Popup button decision: {isPointLayer: false, isLocationLayer: false, shouldShowInfographicsButton: true, layerTitle: 'AnalysisEngine - comparative_analysis_score', geometryType: 'polygon'}
-CustomPopupManager.tsx:626 [CustomPopupManager] Creating infographics button for non-point layer
-CustomPopupManager.tsx:1077 [CustomPopupManager] 🔍 Analysis Layer Popup Debug: {layerId: 'analysis-layer-1755863341687', hasAttributes: true, attributeKeys: Array(9), attributeValues: {…}, nonZeroValues: Array(6), …}
-UnifiedAnalysisWorkflow.tsx:1319 [UnifiedAnalysisWorkflow] 🔄 Full reset - clearing analysis layers
-UnifiedAnalysisWorkflow.tsx:1341 [UnifiedAnalysisWorkflow] Removing analysis layers: {layersFound: 1, layerIds: l}
-layer-protection.ts:40 ✅ [LAYER PROTECTION] Allowing layer removal (not theme switch): analysis-layer-1755863341687
-UnifiedAnalysisWorkflow.tsx:1350 [UnifiedWorkflow] Cleared 1 analysis layers from map
-UnifiedAnalysisWorkflow.tsx:1356 [UnifiedWorkflow] Cleared legend data
-SampleAreasPanel.tsx:796 [SampleAreasPanel] Final render check: {visible: false, displayAreasCount: 5, loading: false}
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-MapClient.tsx:71 [MapClient MapLegend] Rendering legend: {title: '', type: 'simple', visible: false, itemCount: 0, sampleItems: Array(0)}
-SampleAreasPanel.tsx:796 [SampleAreasPanel] Final render check: {visible: false, displayAreasCount: 5, loading: false}
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-UnifiedAnalysisWorkflow.tsx:376 [UnifiedWorkflow] Non-point geometry selected: polygon
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-index.mjs:468 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-eval @ index.mjs:468
-commitHookEffectListMount @ react-dom.development.js:21102
-commitHookPassiveMountEffects @ react-dom.development.js:23154
-commitPassiveMountOnFiber @ react-dom.development.js:23259
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-:3000/map:1 Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.
-Element with focus: <button.justify-center whitespace-nowrap font-medium firefly-transitions focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 theme-button-outline theme-border-primary hover:theme-button-outline-hover rounded-md px-3 text-xs h-6 flex items-center gap-1>
-Ancestor with aria-hidden: <div.fixed right-0 top-0 bottom-0 theme-sidebar shadow-lg> <div class=​"fixed right-0 top-0 bottom-0 theme-sidebar shadow-lg" style=​"width:​ 640px;​ z-index:​ 10;​ background-color:​ var(--theme-bg-secondary)​;​ border-left:​ 1px solid var(--theme-border)​;​ color:​ var(--theme-text-primary)​;​">​…​</div>​<div class=​"h-full flex flex-col" style=​"border-left:​ 1px solid var(--theme-border)​;​">​…​</div>​flex<div class=​"p-2" style=​"border-bottom:​ 1px solid var(--theme-border)​;​">​…​</div>​<div class=​"flex-1 overflow-hidden h-[calc(100vh-80px)​]​">​…​</div>​<div class=​"h-full">​…​</div>​<div class=​"w-full h-full flex flex-col">​…​</div>​flex<div class=​"theme-card theme-border-primary theme-shadow-primary flex-1 flex flex-col min-h-0">​…​</div>​flex<div class=​"flex flex-col space-y-1.5 p-6 flex-shrink-0 py-2">​…​</div>​flex<div class=​"p-6 flex-1 flex flex-col py-3 min-h-0">​…​</div>​flex<div class=​"flex-shrink-0 mb-3">​…​</div>​<div class=​"flex-1 flex flex-col min-h-0 overflow-hidden">​…​</div>​flex<div class=​"flex-1">​…​</div>​<div class=​"theme-card theme-border-primary theme-shadow-primary w-full h-full flex flex-col">​…​</div>​flex<div class=​"flex flex-col space-y-1.5 p-6 flex-shrink-0 py-2">​…​</div>​flex<div class=​"p-6 flex-1 flex flex-col py-3 space-y-4">​…​</div>​flex<div class=​"space-y-3">​…​</div>​<div class=​"relative">​…​</div>​<div class=​"space-y-3">​…​</div>​<h3 class=​"text-xs font-medium text-gray-700 dark:​text-gray-300">​Search Location​</h3>​<div class=​"relative w-full">​…​</div>​<div class=​"flex items-center gap-2">​…​</div>​flex<div class=​"relative flex-1">​…​</div>​<div class=​"flex flex-col gap-1">​…​</div>​flex<input class=​"flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 shadow-sm transition-colors file:​border-0 file:​bg-transparent file:​text-sm file:​font-medium file:​text-foreground placeholder:​text-muted-foreground focus-visible:​outline-none focus-visible:​ring-1 focus-visible:​ring-ring disabled:​cursor-not-allowed disabled:​opacity-50 pr-10 text-xs placeholder:​text-xs" placeholder=​"Enter address, city, or place..." type=​"text" value>​flex</div>​</div>​<button class=​"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium firefly-transitions focus-visible:​outline-none focus-visible:​ring-1 disabled:​pointer-events-none disabled:​opacity-50 [&_svg]​:​pointer-events-none [&_svg]​:​size-4 [&_svg]​:​shrink-0 theme-button-secondary theme-shadow-primary hover:​theme-button-secondary-hover h-9 w-9">​…​</button>​flex</div>​</div>​</div>​<div class=​"relative">​…​</div>​<div class=​"space-y-3">​…​</div>​</div>​</div>​</div>​</div>​</div>​</div>​</div>​</div>​</div>​</div>​</div>​
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-index.mjs:468 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-eval @ index.mjs:468
-commitHookEffectListMount @ react-dom.development.js:21102
-commitHookPassiveMountEffects @ react-dom.development.js:23154
-commitPassiveMountOnFiber @ react-dom.development.js:23259
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-UnifiedAnalysisWorkflow.tsx:1319 [UnifiedAnalysisWorkflow] 🔄 Full reset - clearing analysis layers
-UnifiedAnalysisWorkflow.tsx:1341 [UnifiedAnalysisWorkflow] Removing analysis layers: {layersFound: 0, layerIds: l}
-UnifiedAnalysisWorkflow.tsx:1350 [UnifiedWorkflow] Cleared 0 analysis layers from map
-UnifiedAnalysisWorkflow.tsx:1356 [UnifiedWorkflow] Cleared legend data
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-UnifiedAnalysisWorkflow.tsx:376 [UnifiedWorkflow] Non-point geometry selected: polygon
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-index.mjs:468 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-eval @ index.mjs:468
-commitHookEffectListMount @ react-dom.development.js:21102
-commitHookPassiveMountEffects @ react-dom.development.js:23154
-commitPassiveMountOnFiber @ react-dom.development.js:23259
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
 UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
 SpatialFilterConfig.ts:11 [SpatialFilterConfig] Using configured spatial reference layer: Unknown_Service_layer_0
 UnifiedAnalysisWorkflow.tsx:423 [UnifiedWorkflow] Using spatial reference layer: {layerId: 'Unknown_Service_layer_0', geometryType: 'polygon', method: 'project-area'}
 UnifiedAnalysisWorkflow.tsx:432 [UnifiedAnalysisWorkflow] Analysis request preparation: {shouldApplySpatialFilter: false, areaSelectionMethod: 'project-area', hasGeometry: true, geometryType: 'polygon'}
 UnifiedAnalysisWorkflow.tsx:471 [UnifiedWorkflow] Starting analysis with spatial context: {hasGeometry: false, geometryType: undefined, hasView: true, layerId: 'Unknown_Service_layer_0'}
-UnifiedAnalysisWrapper.tsx:94 [UnifiedAnalysisWrapper] Processing request: {analysisType: 'query', hasGeometry: false, query: 'Show me the market share difference between H&R Bl'}
-UnifiedAnalysisWrapper.tsx:165 [UnifiedAnalysisWrapper] Spatial filter skipped - missing required parameters: {hasGeometry: false, hasView: true, hasDataSourceLayerId: true}
+UnifiedAnalysisWrapper.tsx:95 [UnifiedAnalysisWrapper] Processing request: {analysisType: 'query', hasGeometry: false, query: 'Show me the market share difference between H&R Bl'}
+UnifiedAnalysisWrapper.tsx:167 [UnifiedAnalysisWrapper] Spatial filter skipped - missing required parameters: {hasGeometry: false, hasView: true, hasDataSourceLayerId: true}
+AnalysisEngine.ts:97 [AnalysisEngine] Creating singleton instance...
+ConfigurationManager.ts:35 [ConfigurationManager] Creating singleton instance...
+ConfigurationManager.ts:59 [ConfigurationManager] Loading configurations...
+ConfigurationManager.ts:69 [ConfigurationManager] ✅ Singleton loaded configurations for 24 endpoints
+CachedEndpointRouter.ts:27 [CachedEndpointRouter] Initialized with semantic routing (fallback to keyword-based)
+CachedEndpointRouter.ts:38 [CachedEndpointRouter] Initializing semantic router...
+SemanticRouter.ts:261 [SemanticRouter] Initializing...
+EndpointEmbeddings.ts:42 [EndpointEmbeddings] Initializing endpoint embeddings...
+LocalEmbeddingService.ts:41 [LocalEmbeddingService] Initializing sentence transformer...
+LocalEmbeddingService.ts:51 [LocalEmbeddingService] Loading @xenova/transformers...
+DataProcessor.ts:433 [DataProcessor] Initialized 30 specialized processors
+VisualizationRenderer.ts:331 [VisualizationRenderer] Initialized 5 specialized renderers
+CachedEndpointRouter.ts:27 [CachedEndpointRouter] Initialized with semantic routing (fallback to keyword-based)
+CachedEndpointRouter.ts:38 [CachedEndpointRouter] Initializing semantic router...
+SemanticRouter.ts:261 [SemanticRouter] Initializing...
+MultiEndpointRouter.ts:35 [MultiEndpointRouter] Initialized with multi-endpoint support
+MultiEndpointAnalysisEngine.ts:79 [MultiEndpointAnalysisEngine] Initialized with multi-endpoint capabilities
+AnalysisEngine.ts:74 [AnalysisEngine] Multi-endpoint system enabled
+AnalysisEngine.ts:79 [AnalysisEngine] Clustering system initialized
+AnalysisEngine.ts:84 [AnalysisEngine] Initialized with multi-endpoint support: {multiEndpointEnabled: true, config: {…}}
 AnalysisEngine.ts:119 [AnalysisEngine] Starting analysis: "Show me the market share difference between H&R Block and TurboTax"
 AnalysisEngine.ts:125 [AnalysisEngine] Using frontend cache as primary data source
 CachedEndpointRouter.ts:51 🔥 [CachedEndpointRouter] selectEndpoint called with query: "Show me the market share difference between H&R Block and TurboTax"
@@ -663,1045 +32,453 @@ CachedEndpointRouter.ts:52 🔥 [CachedEndpointRouter] Options: {clusterConfig: 
 CachedEndpointRouter.ts:116 [CachedEndpointRouter] Multi-endpoint detection: {query: 'Show me the market share difference between H&R Bl...', hasMultiPattern: false, endpointMentions: 0, shouldRoute: false}
 CachedEndpointRouter.ts:179 [CachedEndpointRouter] Using keyword-based analyzer for: "Show me the market share difference between H&R Block and TurboTax"
 CachedEndpointRouter.ts:187 [CachedEndpointRouter] Top 3 endpoint scores:
-CachedEndpointRouter.ts:189   1. /competitive-analysis: 15.2 - Primary keywords: market share, market share difference, share difference; Context matches: between h&r block and; Multiple brands mentioned: hrblock, turbotax
+CachedEndpointRouter.ts:189   1. /brand-difference: 21.2 - Primary keywords: market share difference, difference between, market share; Context matches: h&r block and turbotax, between h&r block; Brand comparison context: hrblock vs turbotax
 CachedEndpointRouter.ts:189   2. /demographic-insights: 3 - Intent bonus: relationship (+3)
 CachedEndpointRouter.ts:189   3. /comparative-analysis: 2.8499999999999996 - Primary keywords: between
 CachedEndpointRouter.ts:196 [CachedEndpointRouter] Identified fields: (6) [{…}, {…}, {…}, {…}, {…}, {…}]
-CachedEndpointRouter.ts:199 🔥 [CachedEndpointRouter] ENDPOINT DECISION: /competitive-analysis for query: "Show me the market share difference between H&R Block and TurboTax"
-CachedEndpointRouter.ts:68 [CachedEndpointRouter] Auto-selected endpoint: /competitive-analysis for query: "Show me the market share difference between H&R Block and TurboTax"
-AnalysisEngine.ts:129 [AnalysisEngine] Selected endpoint: /competitive-analysis
-CachedEndpointRouter.ts:270 [CachedEndpointRouter] Loading cached data for /competitive-analysis
+CachedEndpointRouter.ts:199 🔥 [CachedEndpointRouter] ENDPOINT DECISION: /brand-difference for query: "Show me the market share difference between H&R Block and TurboTax"
+CachedEndpointRouter.ts:68 [CachedEndpointRouter] Auto-selected endpoint: /brand-difference for query: "Show me the market share difference between H&R Block and TurboTax"
+AnalysisEngine.ts:129 [AnalysisEngine] Selected endpoint: /brand-difference
+CachedEndpointRouter.ts:270 [CachedEndpointRouter] Loading cached data for /brand-difference
 CachedEndpointRouter.ts:271 [CachedEndpointRouter] Called with query: "Show me the market share difference between H&R Block and TurboTax"
 CachedEndpointRouter.ts:272 [CachedEndpointRouter] Called with options: {clusterConfig: undefined, spatialFilterIds: undefined, spatialFilterGeometry: undefined, spatialFilterMethod: 'project-area', persona: 'strategist'}
-CachedEndpointRouter.ts:333 [CachedEndpointRouter] Looking for dataset with key: "competitive-analysis"
-blob-data-loader.ts:69 ✅ Loaded competitive-analysis from blob storage
-CachedEndpointRouter.ts:339 [CachedEndpointRouter] ✅ Loaded data for competitive-analysis from blob storage
+CachedEndpointRouter.ts:333 [CachedEndpointRouter] Looking for dataset with key: "brand-difference"
+LocalEmbeddingService.ts:92 [LocalEmbeddingService] Initialization failed: ReferenceError: onnxruntime is not defined
+    at onnxruntime-node (page.js:18:18)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (onnx.js:8:74)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/backends/onnx.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:201:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (env.js:8:75)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/env.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:223:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (hub.js:9:65)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/utils/hub.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:333:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (tokenizers.js:52:71)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/tokenizers.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:267:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (pipelines.js:30:72)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/pipelines.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:245:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (transformers.js:505:71)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/transformers.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:278:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at async LocalEmbeddingService._doInitialize (LocalEmbeddingService.ts:52:30)
+    at async EndpointEmbeddings._doInitialize (EndpointEmbeddings.ts:46:7)
+window.console.error @ app-index.js:33
+console.error @ hydration-error-info.js:63
+_doInitialize @ LocalEmbeddingService.ts:92
+await in _doInitialize
+initialize @ LocalEmbeddingService.ts:35
+_doInitialize @ EndpointEmbeddings.ts:46
+initialize @ EndpointEmbeddings.ts:36
+initialize @ SemanticRouter.ts:264
+initializeSemanticRouter @ CachedEndpointRouter.ts:39
+CachedEndpointRouter @ CachedEndpointRouter.ts:30
+AnalysisEngine @ AnalysisEngine.ts:64
+getInstance @ AnalysisEngine.ts:98
+getAnalysisEngine @ UnifiedAnalysisWrapper.tsx:82
+await in getAnalysisEngine
+processQueryAnalysis @ UnifiedAnalysisWrapper.tsx:256
+await in processQueryAnalysis
+processUnifiedRequest @ UnifiedAnalysisWrapper.tsx:107
+eval @ UnifiedAnalysisWorkflow.tsx:479
+await in eval
+onClick @ UnifiedAnalysisWorkflow.tsx:1734
+callCallback @ react-dom.development.js:20565
+invokeGuardedCallbackImpl @ react-dom.development.js:20614
+invokeGuardedCallback @ react-dom.development.js:20689
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
+executeDispatch @ react-dom.development.js:32128
+processDispatchQueueItemsInOrder @ react-dom.development.js:32160
+processDispatchQueue @ react-dom.development.js:32173
+dispatchEventsForPlugins @ react-dom.development.js:32184
+eval @ react-dom.development.js:32374
+batchedUpdates$1 @ react-dom.development.js:24953
+batchedUpdates @ react-dom.development.js:28844
+dispatchEventForPluginEventSystem @ react-dom.development.js:32373
+dispatchEvent @ react-dom.development.js:30141
+dispatchDiscreteEvent @ react-dom.development.js:30112
+LocalEmbeddingService.ts:93 [LocalEmbeddingService] Semantic routing will be disabled, falling back to keyword-based routing
+_doInitialize @ LocalEmbeddingService.ts:93
+await in _doInitialize
+initialize @ LocalEmbeddingService.ts:35
+_doInitialize @ EndpointEmbeddings.ts:46
+initialize @ EndpointEmbeddings.ts:36
+initialize @ SemanticRouter.ts:264
+initializeSemanticRouter @ CachedEndpointRouter.ts:39
+CachedEndpointRouter @ CachedEndpointRouter.ts:30
+AnalysisEngine @ AnalysisEngine.ts:64
+getInstance @ AnalysisEngine.ts:98
+getAnalysisEngine @ UnifiedAnalysisWrapper.tsx:82
+await in getAnalysisEngine
+processQueryAnalysis @ UnifiedAnalysisWrapper.tsx:256
+await in processQueryAnalysis
+processUnifiedRequest @ UnifiedAnalysisWrapper.tsx:107
+eval @ UnifiedAnalysisWorkflow.tsx:479
+await in eval
+onClick @ UnifiedAnalysisWorkflow.tsx:1734
+callCallback @ react-dom.development.js:20565
+invokeGuardedCallbackImpl @ react-dom.development.js:20614
+invokeGuardedCallback @ react-dom.development.js:20689
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
+executeDispatch @ react-dom.development.js:32128
+processDispatchQueueItemsInOrder @ react-dom.development.js:32160
+processDispatchQueue @ react-dom.development.js:32173
+dispatchEventsForPlugins @ react-dom.development.js:32184
+eval @ react-dom.development.js:32374
+batchedUpdates$1 @ react-dom.development.js:24953
+batchedUpdates @ react-dom.development.js:28844
+dispatchEventForPluginEventSystem @ react-dom.development.js:32373
+dispatchEvent @ react-dom.development.js:30141
+dispatchDiscreteEvent @ react-dom.development.js:30112
+EndpointEmbeddings.ts:56 [EndpointEmbeddings] Initialization failed: ReferenceError: onnxruntime is not defined
+    at onnxruntime-node (page.js:18:18)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (onnx.js:8:74)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/backends/onnx.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:201:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (env.js:8:75)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/env.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:223:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (hub.js:9:65)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/utils/hub.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:333:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (tokenizers.js:52:71)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/tokenizers.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:267:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (pipelines.js:30:72)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/pipelines.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:245:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (transformers.js:505:71)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/transformers.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:278:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at async LocalEmbeddingService._doInitialize (LocalEmbeddingService.ts:52:30)
+    at async EndpointEmbeddings._doInitialize (EndpointEmbeddings.ts:46:7)
+window.console.error @ app-index.js:33
+console.error @ hydration-error-info.js:63
+_doInitialize @ EndpointEmbeddings.ts:56
+await in _doInitialize
+initialize @ EndpointEmbeddings.ts:36
+initialize @ SemanticRouter.ts:264
+initializeSemanticRouter @ CachedEndpointRouter.ts:39
+CachedEndpointRouter @ CachedEndpointRouter.ts:30
+AnalysisEngine @ AnalysisEngine.ts:64
+getInstance @ AnalysisEngine.ts:98
+getAnalysisEngine @ UnifiedAnalysisWrapper.tsx:82
+await in getAnalysisEngine
+processQueryAnalysis @ UnifiedAnalysisWrapper.tsx:256
+await in processQueryAnalysis
+processUnifiedRequest @ UnifiedAnalysisWrapper.tsx:107
+eval @ UnifiedAnalysisWorkflow.tsx:479
+await in eval
+onClick @ UnifiedAnalysisWorkflow.tsx:1734
+callCallback @ react-dom.development.js:20565
+invokeGuardedCallbackImpl @ react-dom.development.js:20614
+invokeGuardedCallback @ react-dom.development.js:20689
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
+executeDispatch @ react-dom.development.js:32128
+processDispatchQueueItemsInOrder @ react-dom.development.js:32160
+processDispatchQueue @ react-dom.development.js:32173
+dispatchEventsForPlugins @ react-dom.development.js:32184
+eval @ react-dom.development.js:32374
+batchedUpdates$1 @ react-dom.development.js:24953
+batchedUpdates @ react-dom.development.js:28844
+dispatchEventForPluginEventSystem @ react-dom.development.js:32373
+dispatchEvent @ react-dom.development.js:30141
+dispatchDiscreteEvent @ react-dom.development.js:30112
+CachedEndpointRouter.ts:42 [CachedEndpointRouter] Failed to initialize semantic router, using keyword fallback: ReferenceError: onnxruntime is not defined
+    at onnxruntime-node (page.js:18:18)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (onnx.js:8:74)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/backends/onnx.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:201:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (env.js:8:75)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/env.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:223:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (hub.js:9:65)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/utils/hub.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:333:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (tokenizers.js:52:71)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/tokenizers.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:267:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (pipelines.js:30:72)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/pipelines.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:245:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (transformers.js:505:71)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/transformers.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:278:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at async LocalEmbeddingService._doInitialize (LocalEmbeddingService.ts:52:30)
+    at async EndpointEmbeddings._doInitialize (EndpointEmbeddings.ts:46:7)
+initializeSemanticRouter @ CachedEndpointRouter.ts:42
+await in initializeSemanticRouter
+CachedEndpointRouter @ CachedEndpointRouter.ts:30
+AnalysisEngine @ AnalysisEngine.ts:64
+getInstance @ AnalysisEngine.ts:98
+getAnalysisEngine @ UnifiedAnalysisWrapper.tsx:82
+await in getAnalysisEngine
+processQueryAnalysis @ UnifiedAnalysisWrapper.tsx:256
+await in processQueryAnalysis
+processUnifiedRequest @ UnifiedAnalysisWrapper.tsx:107
+eval @ UnifiedAnalysisWorkflow.tsx:479
+await in eval
+onClick @ UnifiedAnalysisWorkflow.tsx:1734
+callCallback @ react-dom.development.js:20565
+invokeGuardedCallbackImpl @ react-dom.development.js:20614
+invokeGuardedCallback @ react-dom.development.js:20689
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
+executeDispatch @ react-dom.development.js:32128
+processDispatchQueueItemsInOrder @ react-dom.development.js:32160
+processDispatchQueue @ react-dom.development.js:32173
+dispatchEventsForPlugins @ react-dom.development.js:32184
+eval @ react-dom.development.js:32374
+batchedUpdates$1 @ react-dom.development.js:24953
+batchedUpdates @ react-dom.development.js:28844
+dispatchEventForPluginEventSystem @ react-dom.development.js:32373
+dispatchEvent @ react-dom.development.js:30141
+dispatchDiscreteEvent @ react-dom.development.js:30112
+CachedEndpointRouter.ts:42 [CachedEndpointRouter] Failed to initialize semantic router, using keyword fallback: ReferenceError: onnxruntime is not defined
+    at onnxruntime-node (page.js:18:18)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (onnx.js:8:74)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/backends/onnx.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:201:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (env.js:8:75)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/env.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:223:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (hub.js:9:65)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/utils/hub.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:333:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (tokenizers.js:52:71)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/tokenizers.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:267:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (pipelines.js:30:72)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/pipelines.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:245:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at eval (transformers.js:505:71)
+    at (:3000/app-pages-browser)/node_modules/@xenova/transformers/src/transformers.js (http://localhost:3000/_next/static/chunks/vendors-_app-pages-browser_node_modules_xenova_transformers_src_models_js-_app-pages-browser_-96e241.js:278:1)
+    at options.factory (webpack.js?v=1755868679199:715:31)
+    at __webpack_require__ (webpack.js?v=1755868679199:37:33)
+    at fn (webpack.js?v=1755868679199:371:21)
+    at async LocalEmbeddingService._doInitialize (LocalEmbeddingService.ts:52:30)
+    at async EndpointEmbeddings._doInitialize (EndpointEmbeddings.ts:46:7)
+initializeSemanticRouter @ CachedEndpointRouter.ts:42
+await in initializeSemanticRouter
+CachedEndpointRouter @ CachedEndpointRouter.ts:30
+MultiEndpointRouter @ MultiEndpointRouter.ts:33
+MultiEndpointAnalysisEngine @ MultiEndpointAnalysisEngine.ts:74
+AnalysisEngine @ AnalysisEngine.ts:72
+getInstance @ AnalysisEngine.ts:98
+getAnalysisEngine @ UnifiedAnalysisWrapper.tsx:82
+await in getAnalysisEngine
+processQueryAnalysis @ UnifiedAnalysisWrapper.tsx:256
+await in processQueryAnalysis
+processUnifiedRequest @ UnifiedAnalysisWrapper.tsx:107
+eval @ UnifiedAnalysisWorkflow.tsx:479
+await in eval
+onClick @ UnifiedAnalysisWorkflow.tsx:1734
+callCallback @ react-dom.development.js:20565
+invokeGuardedCallbackImpl @ react-dom.development.js:20614
+invokeGuardedCallback @ react-dom.development.js:20689
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
+executeDispatch @ react-dom.development.js:32128
+processDispatchQueueItemsInOrder @ react-dom.development.js:32160
+processDispatchQueue @ react-dom.development.js:32173
+dispatchEventsForPlugins @ react-dom.development.js:32184
+eval @ react-dom.development.js:32374
+batchedUpdates$1 @ react-dom.development.js:24953
+batchedUpdates @ react-dom.development.js:28844
+dispatchEventForPluginEventSystem @ react-dom.development.js:32373
+dispatchEvent @ react-dom.development.js:30141
+dispatchDiscreteEvent @ react-dom.development.js:30112
+blob-data-loader.ts:69 ✅ Loaded brand-difference from blob storage
+CachedEndpointRouter.ts:339 [CachedEndpointRouter] ✅ Loaded data for brand-difference from blob storage
 CachedEndpointRouter.ts:481 [CachedEndpointRouter] Processing wrapped format with 984 records
 CachedEndpointRouter.ts:494 [CachedEndpointRouter] Processed 984 cached records
-CachedEndpointRouter.ts:285 [CachedEndpointRouter] Loaded 984 records from cache in 273ms
-DataProcessor.ts:307 🔥 [DataProcessor] processResults called for endpoint: /competitive-analysis, query: "Show me the market share difference between H&R Block and TurboTax"
+CachedEndpointRouter.ts:285 [CachedEndpointRouter] Loaded 984 records from cache in 264ms
+DataProcessor.ts:307 🔥 [DataProcessor] processResults called for endpoint: /brand-difference, query: "Show me the market share difference between H&R Block and TurboTax"
 DataProcessor.ts:308 🔥 [DataProcessor] Raw data structure: {success: true, resultsLength: 984, firstRecordKeys: Array(10)}
-DataProcessor.ts:318 🔥 [DataProcessor] Using processor: CompetitiveDataProcessor for endpoint: /competitive-analysis
- 🔥🔥🔥 [COMPETITIVE PROCESSOR] CALLED WITH 984 RECORDS 🔥🔥🔥
- [CompetitiveDataProcessor] Process method called with 984 records
- 🔥 [CompetitiveDataProcessor] Using competitive score: 19.56 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 19.31 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 18.82 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 17.22 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 17.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 16.74 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 16.42 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 15.7 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 15.45 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 15.36 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 14.9 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 14.76 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 14.36 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 14.3 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 14.27 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 14.2 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 14.15 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 14.15 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 14.09 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 14.03 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 14.02 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.95 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.95 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.94 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.92 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.91 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.89 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.78 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.77 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.76 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.73 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.69 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.66 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.56 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.56 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.54 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.52 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.5 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.5 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.49 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.49 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.47 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.44 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.43 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.42 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.42 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.42 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.41 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.4 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.4 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.39 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.37 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.37 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.36 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.35 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.32 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.31 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.3 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.3 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.29 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.29 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.29 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.29 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.28 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.28 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.27 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.24 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.24 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.23 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.22 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.22 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.22 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.21 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.2 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.19 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.19 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.19 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.16 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.15 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.14 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.14 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.14 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.12 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.12 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.12 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.1 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.1 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.09 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.09 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.08 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.06 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.05 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.05 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.03 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.03 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.02 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.02 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.99 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.99 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.98 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.98 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.98 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.96 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.96 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.95 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.95 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.94 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.93 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.93 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.91 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.9 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.9 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.9 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.89 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.89 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.89 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.89 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.89 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.88 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.88 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.87 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.86 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.86 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.86 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.85 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.85 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.84 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.84 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.83 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.82 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.82 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.82 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.82 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.8 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.8 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.79 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.79 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.78 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.77 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.76 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.76 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.75 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.74 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.73 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.73 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.73 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.71 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.71 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.71 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.71 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.71 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.71 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.7 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.7 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.69 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.69 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.69 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.69 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.67 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.67 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.67 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.66 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.65 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.65 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.65 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.63 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.63 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.63 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.62 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.62 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.62 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.61 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.6 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.6 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.6 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.6 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.59 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.59 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.59 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.58 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.58 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.58 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.58 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.56 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.55 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.55 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.55 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.55 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.54 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.54 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.52 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.52 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.51 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.5 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.5 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.49 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.49 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.49 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.49 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.48 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.45 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.45 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.44 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.44 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.44 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.44 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.44 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.44 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.43 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.43 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.43 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.43 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.43 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.41 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.41 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.41 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.41 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.4 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.4 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.4 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.39 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.39 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.39 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.37 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.37 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.37 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.37 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.36 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.36 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.36 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.35 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.35 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.35 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.35 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.35 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.33 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.33 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.33 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.32 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.31 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.31 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.3 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.3 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.3 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.3 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.29 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.29 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.29 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.29 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.28 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.28 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.27 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.27 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.27 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.26 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.26 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.26 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.25 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.25 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.23 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.23 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.23 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.21 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.21 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.2 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.19 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.19 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.16 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.16 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.16 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.16 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.16 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.15 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.15 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.15 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.15 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.15 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.14 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.12 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.12 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.12 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.1 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.1 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.1 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.09 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.09 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.09 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.09 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.09 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.08 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.08 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.08 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.08 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.06 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.06 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.06 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.06 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.06 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.06 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.05 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.05 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.05 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.02 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 12 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.99 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.99 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.99 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.99 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.98 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.98 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.97 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.97 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.97 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.97 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.96 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.96 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.96 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.95 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.95 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.95 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.95 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.95 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.94 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.94 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.94 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.94 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.94 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.93 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.93 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.92 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.92 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.92 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.91 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.9 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.9 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.9 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.89 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.89 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.88 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.88 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.87 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.87 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.87 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.87 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.87 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.86 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.86 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.85 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.85 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.85 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.84 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.84 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.83 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.83 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.83 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.83 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.83 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.82 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.82 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.82 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.8 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.8 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.8 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.8 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.78 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.77 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.77 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.76 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.75 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.75 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.75 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.75 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.74 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.74 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.74 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.72 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.72 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.72 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.72 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.71 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.71 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.7 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.7 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.7 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.7 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.69 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.69 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.67 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.67 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.66 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.65 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.65 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.65 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.65 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.65 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.63 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.63 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.63 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.62 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.62 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.62 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.61 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.6 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.6 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.6 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.6 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.6 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.59 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.59 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.59 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.59 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.59 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.58 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.58 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.58 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.58 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.58 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.56 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.56 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.56 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.55 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.55 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.55 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.52 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.52 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.52 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.51 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.51 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.5 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.5 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.49 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.49 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.48 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.48 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.48 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.47 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.47 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.44 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.44 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.42 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.42 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.41 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.41 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.41 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.39 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.37 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.36 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.36 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.35 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.33 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.33 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.32 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.32 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.31 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.3 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.3 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.3 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.28 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.27 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.27 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.26 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.25 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.25 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.25 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.24 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.23 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.22 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.22 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.21 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.21 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.2 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.2 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.19 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.19 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.19 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.16 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.16 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.16 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.14 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.14 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.14 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.09 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.09 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.09 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.06 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.05 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.05 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.05 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.03 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.99 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.97 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.96 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.94 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.94 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.94 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.94 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.93 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.93 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.92 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.92 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.92 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.92 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.89 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.87 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.86 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.86 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.86 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.85 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.85 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.85 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.84 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.83 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.82 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.79 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.79 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.79 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.78 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.78 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.78 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.77 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.77 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.77 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.77 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.76 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.7 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.7 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.69 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.67 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.67 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.67 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.67 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.65 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.63 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.63 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.61 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.61 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.6 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.6 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.59 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.59 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.59 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.58 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.56 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.52 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.52 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.52 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.52 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.51 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.51 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.5 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.48 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.48 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.47 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.45 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.45 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.44 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.44 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.43 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.43 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.41 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.4 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.39 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.37 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.37 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.36 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.36 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.33 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.33 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.33 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.31 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.31 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.25 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.25 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.25 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.24 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.24 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.23 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.23 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.22 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.21 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.2 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.2 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.16 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.15 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.15 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.12 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.08 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.08 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.07 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.06 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.03 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.03 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.03 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.02 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.02 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.02 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10.02 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 10 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.99 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.99 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.98 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.96 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.96 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.91 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.91 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.9 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.9 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.88 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.88 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.87 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.87 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.85 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.84 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.84 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.83 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.79 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.78 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.78 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.77 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.77 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.75 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.73 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.72 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.71 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.7 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.69 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.69 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.68 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.67 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.67 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.66 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.65 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.63 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.6 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.59 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.58 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.57 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.55 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.51 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.49 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.49 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.48 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.47 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.45 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.43 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.42 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.41 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.41 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.4 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.4 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.4 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.36 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.34 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.32 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.31 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.3 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.29 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.28 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.26 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.24 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.22 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.22 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.21 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.21 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.2 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.2 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.19 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.19 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.19 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.18 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.17 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.13 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.12 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.11 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.1 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.09 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.08 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.06 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.04 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.03 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9.01 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 9 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.99 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.99 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.97 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.94 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.92 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.92 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.91 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.9 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.88 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.86 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.81 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.79 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.74 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.71 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.7 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.69 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.64 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.61 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.56 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.53 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.52 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.51 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.5 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.49 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.48 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.46 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.43 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.41 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.4 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.38 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.37 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.35 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.3 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.29 from competitive_analysis_score
- 🔥 [CompetitiveDataProcessor] Using competitive score: 8.28 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 8.24 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 8.24 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 8.24 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 8.2 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 8.19 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 8.16 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 8.16 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 8.12 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 8.05 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 8.04 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 8.02 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.93 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.92 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.89 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.69 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.63 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.58 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.5 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.49 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.48 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.47 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.47 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.42 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.4 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.29 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.29 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.27 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.26 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.21 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.18 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.14 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.11 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.1 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 7.01 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.95 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.94 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.94 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.85 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.77 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.75 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.74 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.71 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.69 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.66 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.66 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.65 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.64 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.63 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.6 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.6 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.58 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.55 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.55 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.5 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.46 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.44 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.38 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.33 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 6.17 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 5.96 from competitive_analysis_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 80 from competitive_advantage_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 80 from competitive_advantage_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 80 from competitive_advantage_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 80 from competitive_advantage_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 80 from competitive_advantage_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 80 from competitive_advantage_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 80 from competitive_advantage_score
-CompetitiveDataProcessor.ts:158 🔥 [CompetitiveDataProcessor] Using competitive score: 80 from competitive_advantage_score
-CompetitiveDataProcessor.ts:46 [CompetitiveDataProcessor] Processed 984 records
-CompetitiveDataProcessor.ts:47 [CompetitiveDataProcessor] Sample processed record: {area_name: '34478 (Ocala)', value: 80, target_brand_share: 0, competitive_advantage_score: 80}
-CompetitiveDataProcessor.ts:277 [CompetitiveDataProcessor] Competitive quintiles calculated: (5) [10.02, 11.36, 12.09, 12.7, 80]
-CompetitiveDataProcessor.ts:278 [CompetitiveDataProcessor] Market share quintiles calculated: (5) [2.66, 2.97, 3.16, 3.36, 5.88]
-CompetitiveDataProcessor.ts:66 [CompetitiveDataProcessor] Final result summary: {type: 'competitive_analysis', recordCount: 984, targetVariable: 'expansion_opportunity_score', topRecord: {…}}
-DataProcessor.ts:352 🚨🚨🚨 [DataProcessor] Set targetVariable from ConfigurationManager: competitive_advantage_score 🚨🚨🚨
-DataProcessor.ts:355 [DataProcessor] Successfully processed 984 records using /competitive-analysis processor
-DataProcessor.ts:356 🔥 [DataProcessor] First processed record value: 80
-DataProcessor.ts:357 🔥 [DataProcessor] First processed record properties: {ID: 34478, DESCRIPTION: '34478 (Ocala)', OBJECTID: 882, MP10104A_B: 0, MP10104A_B_P: 0, …}
+DataProcessor.ts:318 🔥 [DataProcessor] Using processor: BrandDifferenceProcessor for endpoint: /brand-difference
+BrandDifferenceProcessor.ts:19 🔍 [BrandDifferenceProcessor] VALIDATE CALLED
+BrandDifferenceProcessor.ts:20 🔍 [BrandDifferenceProcessor] Raw data structure: {success: true, resultsLength: 984, firstRecordKeys: Array(54)}
+BrandDifferenceProcessor.ts:50 🔍 [BrandDifferenceProcessor] Brand fields validation result: true
+BrandDifferenceProcessor.ts:57 ✅ [BrandDifferenceProcessor] VALIDATION PASSED: Brand fields found
+DataProcessor.ts:546 [DataProcessor] Extracted brands from query "Show me the market share difference between H&R Block and TurboTax": (2) ['h&r block', 'turbotax']
+DataProcessor.ts:342 🔥 [DataProcessor] Brand-difference context created: {query: 'Show me the market share difference between H&R Block and TurboTax', extractedBrands: Array(2)}
+BrandDifferenceProcessor.ts:64 [BrandDifferenceProcessor] ===== BRAND DIFFERENCE PROCESSOR CALLED =====
+BrandDifferenceProcessor.ts:65 [BrandDifferenceProcessor] Processing 984 records for brand difference analysis
+BrandDifferenceProcessor.ts:66 [BrandDifferenceProcessor] Context: {query: 'Show me the market share difference between H&R Block and TurboTax', endpoint: '/brand-difference', extractedBrands: Array(2)}
+BrandDifferenceProcessor.ts:72 [BrandDifferenceProcessor] Available brand fields in data: (6) ['MP10104A_B_P', 'MP10116A_B_P', 'MP10128A_B_P', 'MP10138A_B_P', 'MP10110A_B_P', 'MP10120A_B_P']
+BrandDifferenceProcessor.ts:19 🔍 [BrandDifferenceProcessor] VALIDATE CALLED
+BrandDifferenceProcessor.ts:20 🔍 [BrandDifferenceProcessor] Raw data structure: {success: true, resultsLength: 984, firstRecordKeys: Array(54)}
+BrandDifferenceProcessor.ts:50 🔍 [BrandDifferenceProcessor] Brand fields validation result: true
+BrandDifferenceProcessor.ts:57 ✅ [BrandDifferenceProcessor] VALIDATION PASSED: Brand fields found
+BrandDifferenceProcessor.ts:696 [BrandDifferenceProcessor] Found unknown brand field MP10116A_B_P, naming it: taxsoftware16
+BrandDifferenceProcessor.ts:696 [BrandDifferenceProcessor] Found unknown brand field MP10138A_B_P, naming it: taxsoftware38
+BrandDifferenceProcessor.ts:696 [BrandDifferenceProcessor] Found unknown brand field MP10110A_B_P, naming it: taxsoftware10
+BrandDifferenceProcessor.ts:696 [BrandDifferenceProcessor] Found unknown brand field MP10120A_B_P, naming it: taxsoftware20
+BrandDifferenceProcessor.ts:707 [BrandDifferenceProcessor] Detected 6 brands in data: (6) ['turbotax', 'taxsoftware16', 'h&r block', 'taxsoftware38', 'taxsoftware10', 'taxsoftware20']
+BrandDifferenceProcessor.ts:708 [BrandDifferenceProcessor] Brand field mapping: {turbotax: 'MP10104A_B_P', taxsoftware16: 'MP10116A_B_P', h&r block: 'MP10128A_B_P', taxsoftware38: 'MP10138A_B_P', taxsoftware10: 'MP10110A_B_P', …}
+BrandDifferenceProcessor.ts:81 [BrandDifferenceProcessor] Available brand fields: (6) ['turbotax', 'taxsoftware16', 'h&r block', 'taxsoftware38', 'taxsoftware10', 'taxsoftware20']
+BrandDifferenceProcessor.ts:85 [BrandDifferenceProcessor] Context received: {hasContext: true, extractedBrands: Array(2), query: 'Show me the market share difference between H&R Block and TurboTax'}
+BrandDifferenceProcessor.ts:105 [BrandDifferenceProcessor] Comparing brands: h&r block vs turbotax (from query)
+BrandDifferenceProcessor.ts:108 [BrandDifferenceProcessor] Processing comparison for: h&r block vs turbotax
+BrandDifferenceProcessor.ts:224 [BrandDifferenceProcessor] Using fields: MP10128A_B_P vs MP10104A_B_P
+BrandDifferenceProcessor.ts:239 [BrandDifferenceProcessor] Record 0: h&r block=4.35%, turbotax=16.52%, difference=-12.17%
+BrandDifferenceProcessor.ts:239 [BrandDifferenceProcessor] Record 1: h&r block=4.38%, turbotax=16.48%, difference=-12.100000000000001%
+BrandDifferenceProcessor.ts:239 [BrandDifferenceProcessor] Record 2: h&r block=4.26%, turbotax=16.02%, difference=-11.76%
+BrandDifferenceProcessor.ts:113 [BrandDifferenceProcessor] Processed 984 records for h&r block vs turbotax
+BrandDifferenceProcessor.ts:114 [BrandDifferenceProcessor] Sample difference: 0%
+BrandDifferenceProcessor.ts:370 [BrandDifferenceProcessor] Difference quintiles calculated: (5) [-9.05, -8.39, -8.040000000000001, -7.71, 0]
+BrandDifferenceProcessor.ts:128 [BrandDifferenceProcessor] Final result summary: {type: 'brand_difference', recordCount: 984, comparison: 'h&r block vs turbotax', avgDifference: -8.366036585365853}
+BrandDifferenceProcessor.ts:208 [BrandDifferenceProcessor] Could not find field for brand: H&r block
+extractBrandFieldCode @ BrandDifferenceProcessor.ts:208
+process @ BrandDifferenceProcessor.ts:136
+processResults @ DataProcessor.ts:343
+processResultsWithGeographicAnalysis @ DataProcessor.ts:183
+executeAnalysis @ AnalysisEngine.ts:226
+await in executeAnalysis
+processQueryAnalysis @ UnifiedAnalysisWrapper.tsx:257
+await in processQueryAnalysis
+processUnifiedRequest @ UnifiedAnalysisWrapper.tsx:107
+eval @ UnifiedAnalysisWorkflow.tsx:479
+await in eval
+onClick @ UnifiedAnalysisWorkflow.tsx:1734
+callCallback @ react-dom.development.js:20565
+invokeGuardedCallbackImpl @ react-dom.development.js:20614
+invokeGuardedCallback @ react-dom.development.js:20689
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
+executeDispatch @ react-dom.development.js:32128
+processDispatchQueueItemsInOrder @ react-dom.development.js:32160
+processDispatchQueue @ react-dom.development.js:32173
+dispatchEventsForPlugins @ react-dom.development.js:32184
+eval @ react-dom.development.js:32374
+batchedUpdates$1 @ react-dom.development.js:24953
+batchedUpdates @ react-dom.development.js:28844
+dispatchEventForPluginEventSystem @ react-dom.development.js:32373
+dispatchEvent @ react-dom.development.js:30141
+dispatchDiscreteEvent @ react-dom.development.js:30112
+BrandDifferenceProcessor.ts:208 [BrandDifferenceProcessor] Could not find field for brand: Turbotax
+extractBrandFieldCode @ BrandDifferenceProcessor.ts:208
+process @ BrandDifferenceProcessor.ts:137
+processResults @ DataProcessor.ts:343
+processResultsWithGeographicAnalysis @ DataProcessor.ts:183
+executeAnalysis @ AnalysisEngine.ts:226
+await in executeAnalysis
+processQueryAnalysis @ UnifiedAnalysisWrapper.tsx:257
+await in processQueryAnalysis
+processUnifiedRequest @ UnifiedAnalysisWrapper.tsx:107
+eval @ UnifiedAnalysisWorkflow.tsx:479
+await in eval
+onClick @ UnifiedAnalysisWorkflow.tsx:1734
+callCallback @ react-dom.development.js:20565
+invokeGuardedCallbackImpl @ react-dom.development.js:20614
+invokeGuardedCallback @ react-dom.development.js:20689
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
+executeDispatch @ react-dom.development.js:32128
+processDispatchQueueItemsInOrder @ react-dom.development.js:32160
+processDispatchQueue @ react-dom.development.js:32173
+dispatchEventsForPlugins @ react-dom.development.js:32184
+eval @ react-dom.development.js:32374
+batchedUpdates$1 @ react-dom.development.js:24953
+batchedUpdates @ react-dom.development.js:28844
+dispatchEventForPluginEventSystem @ react-dom.development.js:32373
+dispatchEvent @ react-dom.development.js:30141
+dispatchDiscreteEvent @ react-dom.development.js:30112
+BrandDifferenceProcessor.ts:143 🔥 [BrandDifferenceProcessor] Created renderer and legend: {rendererType: 'class-breaks', rendererField: 'brand_difference_score', classBreakCount: 4, firstLabel: '< -8.9%', legendTitle: 'Brand Market Share Difference (%)', …}
+BrandDifferenceProcessor.ts:169 [BrandDifferenceProcessor] ===== RETURNING PROCESSED DATA =====
+BrandDifferenceProcessor.ts:170 [BrandDifferenceProcessor] Brand comparison: h&r block (MP10104A_B_P) vs turbotax (MP10104A_B_P)
+BrandDifferenceProcessor.ts:171 [BrandDifferenceProcessor] Relevant fields for visualization: (2) ['MP10104A_B_P', 'MP10104A_B_P']
+BrandDifferenceProcessor.ts:172 [BrandDifferenceProcessor] Records generated: 984
+DataProcessor.ts:352 🚨🚨🚨 [DataProcessor] Set targetVariable from ConfigurationManager: brand_difference_score 🚨🚨🚨
+DataProcessor.ts:355 [DataProcessor] Successfully processed 984 records using /brand-difference processor
+DataProcessor.ts:356 🔥 [DataProcessor] First processed record value: 0
+DataProcessor.ts:357 🔥 [DataProcessor] First processed record properties: {ID: 45, DESCRIPTION: '00045 (Southeast Marion Cnty)', OBJECTID: 980, MP10104A_B: 0, MP10104A_B_P: 0, …}
+GeoDataManager.ts:51 [GeoDataManager] Initializing comprehensive Florida geographic database...
+GeoDataManager.ts:357 [GeoDataManager] Aggregating ZIP codes for counties, metros, and state...
+GeoDataManager.ts:406 [GeoDataManager] ZIP code mappings created: {cities: 378, counties: 378, metros: 272, state: 378}
+GeoDataManager.ts:60 [GeoDataManager] Comprehensive Florida database initialized with 32 entities
+GeoAwarenessEngine.ts:602 [GeoAwarenessEngine] Loaded Phase 1 multi-level geographic data: {entities: 32, zipToCity: 378, zipToCounty: 378, zipToMetro: 272, zipToState: 378, …}
 GeoAwarenessEngine.ts:108 [GeoAwarenessEngine] Processing geo query: Show me the market share difference between H&R Block and TurboTax
 GeoAwarenessEngine.ts:166 🔍 [GEO DEBUG] Parsing query: "Show me the market share difference between H&R Block and TurboTax"
 GeoAwarenessEngine.ts:172 🚫 [GEO DEBUG] Query lacks explicit geographic intent - skipping geographic filtering
-AnalysisEngine.ts:242 [AnalysisEngine] Processed data returned: {type: 'competitive_analysis', recordCount: 984, targetVariable: 'competitive_advantage_score', firstRecord: {…}}
-AnalysisEngine.ts:310 [AnalysisEngine] 🎯 About to create visualization (AFTER clustering): {endpoint: '/competitive-analysis', dataType: 'competitive_analysis', recordCount: 984, isClustered: undefined, hasGeometry: 'NO', …}
-VisualizationRenderer.ts:100 [VisualizationRenderer] Creating visualization for /competitive-analysis with 984 records
-VisualizationRenderer.ts:107 [VisualizationRenderer] Data type: competitive_analysis, target variable: competitive_advantage_score
+AnalysisEngine.ts:242 [AnalysisEngine] Processed data returned: {type: 'brand_difference', recordCount: 984, targetVariable: 'brand_difference_score', firstRecord: {…}}
+AnalysisEngine.ts:310 [AnalysisEngine] 🎯 About to create visualization (AFTER clustering): {endpoint: '/brand-difference', dataType: 'brand_difference', recordCount: 984, isClustered: undefined, hasGeometry: 'NO', …}
+VisualizationRenderer.ts:100 [VisualizationRenderer] Creating visualization for /brand-difference with 984 records
+VisualizationRenderer.ts:107 [VisualizationRenderer] Data type: brand_difference, target variable: brand_difference_score
 VisualizationRenderer.ts:108 [VisualizationRenderer] Is clustered data: undefined
-VisualizationRenderer.ts:109 [VisualizationRenderer] Sample record: {area_id: 'area_976', area_name: '34478 (Ocala)', value: 80, hasProperties: true, propertyKeys: Array(5), …}
-VisualizationRenderer.ts:356 [VisualizationRenderer] 🎯 Using CHOROPLETH renderer for competitive analysis (same as strategic)
+VisualizationRenderer.ts:109 [VisualizationRenderer] Sample record: {area_id: 'area_11', area_name: '00045 (Southeast Marion Cnty)', value: 0, hasProperties: true, propertyKeys: Array(5), …}
 VisualizationRenderer.ts:393 [VisualizationRenderer] 🎯 Getting renderer for type: choropleth
 VisualizationRenderer.ts:398 [VisualizationRenderer] ✅ Found specific renderer for choropleth: ChoroplethRenderer
 VisualizationRenderer.ts:456 [VisualizationRenderer] 🔍 detectGeometryType: Analyzing 984 records for geometry type
-VisualizationRenderer.ts:461 [VisualizationRenderer] 🔍 detectGeometryType: Record 0 (34478 (Ocala)): {hasProperties: true, hasGeometry: false, geometryType: undefined, hasCoordinates: true, coordinatesType: 'array', …}
+VisualizationRenderer.ts:461 [VisualizationRenderer] 🔍 detectGeometryType: Record 0 (00045 (Southeast Marion Cnty)): {hasProperties: true, hasGeometry: false, geometryType: undefined, hasCoordinates: true, coordinatesType: 'array', …}
 VisualizationRenderer.ts:512 [VisualizationRenderer] 🔍 detectGeometryType: Found coordinates array, inferring POINT
-VisualizationRenderer.ts:542 [VisualizationRenderer] Using targetVariable for competitive_analysis: competitive_advantage_score
-VisualizationRenderer.ts:137 [VisualizationRenderer] 🔍 Direct rendering condition check: {hasRenderer: true, hasLegend: true, isClustered: false, rendererType: 'class-breaks', legendTitle: 'Competitive Advantage Score', …}
+VisualizationRenderer.ts:542 [VisualizationRenderer] Using targetVariable for brand_difference: brand_difference_score
+VisualizationRenderer.ts:137 [VisualizationRenderer] 🔍 Direct rendering condition check: {hasRenderer: true, hasLegend: true, isClustered: false, rendererType: 'class-breaks', legendTitle: 'Brand Market Share Difference (%)', …}
 VisualizationRenderer.ts:148 [VisualizationRenderer] 🎯 Using DIRECT RENDERING from processor
 VisualizationRenderer.ts:158 [VisualizationRenderer] Direct renderer result: {type: 'choropleth', hasRenderer: true, rendererType: 'class-breaks', hasPopupTemplate: true, hasLegend: true, …}
 AnalysisEngine.ts:326 [AnalysisEngine] 🎯 Visualization created: {success: true, type: 'choropleth', hasRenderer: true, hasConfig: true, hasLegend: true}
-AnalysisEngine.ts:398 [AnalysisEngine] Cache-based analysis complete: {records: 984, endpoint: '/competitive-analysis', executionTime: 342}
-UnifiedAnalysisWrapper.tsx:136 [UnifiedAnalysisWrapper] Request completed: {processingTime: 366, hasResults: true}
+AnalysisEngine.ts:398 [AnalysisEngine] Cache-based analysis complete: {records: 984, endpoint: '/brand-difference', executionTime: 297}
+UnifiedAnalysisWrapper.tsx:138 [UnifiedAnalysisWrapper] Request completed: {processingTime: 653, hasResults: true}
 UnifiedAnalysisWorkflow.tsx:481 [UnifiedWorkflow] Analysis complete: {analysisResult: {…}, metadata: {…}, exportOptions: {…}}
 UnifiedAnalysisWorkflow.tsx:486 [UnifiedWorkflow] Applying visualization to map...
 UnifiedAnalysisWorkflow.tsx:494 [UnifiedWorkflow] Starting geometry join for 984 records without geometry
+blob-data-loader.ts:156 ✅ Loaded zip_boundaries boundary from blob storage
 UnifiedAnalysisWorkflow.tsx:503 [UnifiedWorkflow] ✅ Loaded 984 ZIP code boundaries
 UnifiedAnalysisWorkflow.tsx:563 [UnifiedWorkflow] ✅ Geometry join complete: {totalRecords: 984, recordsWithGeometry: 984, recordsWithoutGeometry: 0, successRate: '100.0%'}
 apply-analysis-visualization.ts:30 [applyAnalysisEngineVisualization] Starting with: {visualizationType: 'choropleth', hasRenderer: true, rendererType: 'class-breaks', rendererKeys: Array(4), recordCount: 984, …}
@@ -1709,8 +486,8 @@ apply-analysis-visualization.ts:61 [applyAnalysisEngineVisualization] ✅ Record
 apply-analysis-visualization.ts:65 [applyAnalysisEngineVisualization] Geometry check: {totalRecords: 984, recordsWithGeometry: 984, geometryTypes: Array(1), sampleGeometry: {…}, isClustered: undefined}
 apply-analysis-visualization.ts:97 [applyAnalysisEngineVisualization] ✅ ArcGIS modules imported successfully
 apply-analysis-visualization.ts:244 [applyAnalysisEngineVisualization] Created features: {totalFeatures: 984, skippedFeatures: 0, geometryType: 'polygon'}
-apply-analysis-visualization.ts:303 [applyAnalysisEngineVisualization] ✨ Creating analysis layer with ID: analysis-layer-1755863427014
-apply-analysis-visualization.ts:319 [applyAnalysisEngineVisualization] FeatureLayer created successfully: {layerId: 'analysis-layer-1755863427014', layerType: 'feature', layerTitle: 'AnalysisEngine - competitive_advantage_score'}
+apply-analysis-visualization.ts:303 [applyAnalysisEngineVisualization] ✨ Creating analysis layer with ID: analysis-layer-1755868853941
+apply-analysis-visualization.ts:319 [applyAnalysisEngineVisualization] FeatureLayer created successfully: {layerId: 'analysis-layer-1755868853941', layerType: 'feature', layerTitle: 'AnalysisEngine - brand_difference_score'}
 layer-protection.ts:55 ✅ [LAYER PROTECTION] Allowing removeMany (not theme switch)
 apply-analysis-visualization.ts:345 [applyAnalysisEngineVisualization] 🎯 Adding analysis layer to map
 apply-analysis-visualization.ts:351 [applyAnalysisEngineVisualization] ✅ Analysis layer added with protection metadata
@@ -1725,42 +502,27 @@ UnifiedAnalysisWorkflow.tsx:623 [UnifiedWorkflow] 🔥 Calling onAnalysisComplet
 UnifiedAnalysisWorkflow.tsx:625 [UnifiedWorkflow] 🔥 onAnalysisComplete called successfully
 SampleAreasPanel.tsx:796 [SampleAreasPanel] Final render check: {visible: false, displayAreasCount: 5, loading: false}
 UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: AnalysisEngine - competitive_advantage_score
+CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: AnalysisEngine - brand_difference_score
 CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
 CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
-ChatInterface.tsx:660 [ChatInterface] Starting auto-generation of AI narrative
-MapClient.tsx:71 [MapClient MapLegend] Rendering legend: {title: 'Competitive Advantage Score', type: 'standard', visible: true, itemCount: 4, sampleItems: Array(4)}
+ChatInterface.tsx:661 [ChatInterface] Starting auto-generation of AI narrative
+MapClient.tsx:71 [MapClient MapLegend] Rendering legend: {title: 'Brand Difference Score', type: 'standard', visible: true, itemCount: 4, sampleItems: Array(4)}
 MapClient.tsx:86 [MapClient MapLegend] Size values check: (4) [{…}, {…}, {…}, {…}]
 SampleAreasPanel.tsx:796 [SampleAreasPanel] Final render check: {visible: false, displayAreasCount: 5, loading: false}
 UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-Logger.js:136 [esri.layers.FeatureLayer] #load() Encountered 966 validation errors while loading features. (title: 'AnalysisEngine - competitive_advantage_score', id: 'analysis-layer-1755863427014') {errors: Array(966)}
-i @ Logger.js:136
-_log @ Logger.js:99
-warn @ Logger.js:37
-_startWorker @ MemorySource.js:272
-await in _startWorker
-load @ MemorySource.js:51
-load @ Loadable.js:57
-createGraphicsSource @ FeatureLayer.js:353
-eval @ FeatureLayer.js:183
-Promise.then
-load @ FeatureLayer.js:177
-load @ Loadable.js:57
-_createLayerView @ LayerViewManager.js:255
-I._doWork @ LayerViewManager.js:296
-g @ scheduling.js:135
-eval @ nextTick.js:13
-statsCalculator.ts:551 [formatStatsForChat] Called with analysisType: "competitive-analysis"
-statsCalculator.ts:559 [formatStatsForChat] Using generic formatter
+statsCalculator.ts:551 [formatStatsForChat] Called with analysisType: "brand-difference"
+statsCalculator.ts:555 [formatStatsForChat] Using brand difference formatter
 UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-statsCalculator.ts:649 [formatDistributionForChat] Using generic distribution formatter
+statsCalculator.ts:645 [formatDistributionForChat] Using brand difference distribution formatter
 UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
-statsCalculator.ts:720 [formatPatternsForChat] Called with analysisType: "competitive-analysis"
-statsCalculator.ts:728 [formatPatternsForChat] Using generic patterns formatter
-ChatInterface.tsx:482 [ChatInterface] Generating initial AI narrative...
-ChatInterface.tsx:538 [ChatInterface] Request payload prepared: {endpoint: '/competitive-analysis', recordCount: 984, spatialFilter: false, isClustered: false}
+statsCalculator.ts:720 [formatPatternsForChat] Called with analysisType: "brand-difference"
+statsCalculator.ts:724 [formatPatternsForChat] Using brand difference patterns formatter
+ChatInterface.tsx:483 [ChatInterface] Generating initial AI narrative...
+ChatInterface.tsx:539 [ChatInterface] Request payload prepared: {endpoint: '/brand-difference', recordCount: 984, spatialFilter: false, isClustered: false}
 chat-service.ts:16 [ChatService] Sending chat message to API using JSON format with all required data
 UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
+:3000/map:1 The resource http://localhost:3000/_next/static/media/e4af272ccee01ff0-s.p.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
 chat-service.ts:54 [ChatService] Chat response received successfully
-ChatInterface.tsx:613 [ChatInterface] AI narrative generated successfully
+ChatInterface.tsx:614 [ChatInterface] AI narrative generated successfully
 UnifiedAnalysisWorkflow.tsx:129 [UnifiedWorkflow] 🔍 PROPS DEBUG: {hasView: true, hasOnAnalysisComplete: true, onAnalysisCompleteType: 'function', hasOnExport: false, enableChat: true, …}
+:3000/map:1 The resource http://localhost:3000/_next/static/media/e4af272ccee01ff0-s.p.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
