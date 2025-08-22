@@ -2279,13 +2279,15 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
             // Check for endpoint-level attribution
             if (originalSummary.model_attribution) {
               const modelAttr = originalSummary.model_attribution;
-              dataSummary += `🤖 Model Used: ${modelAttr.primary_model?.name || 'Not specified'}\n`;
-              dataSummary += `📊 Model Type: ${modelAttr.primary_model?.type || 'Not specified'}\n`;
+              const modelName = modelAttr.primary_model?.name;
+              const modelType = modelAttr.primary_model?.type;
+              if (modelName) dataSummary += `🤖 Model Used: ${modelName}\n`;
+              if (modelType) dataSummary += `📊 Model Type: ${modelType}\n`;
               
-              if (modelAttr.primary_model?.performance?.r2_score) {
-                const r2Score = modelAttr.primary_model.performance.r2_score;
-                const perfLevel = modelAttr.primary_model.performance.performance_level || 'Unknown';
-                dataSummary += `🎯 R² Score: ${r2Score.toFixed(3)} (${perfLevel} Performance)\n`;
+              const r2Value = modelAttr.primary_model?.performance?.r2_score;
+              if (typeof r2Value === 'number' && !Number.isNaN(r2Value)) {
+                const perfLevel = modelAttr.primary_model?.performance?.performance_level || 'Unknown';
+                dataSummary += `🎯 R² Score: ${r2Value.toFixed(3)} (${perfLevel} Performance)\n`;
                 
                 // Map performance level to confidence
                 const confidenceMap: Record<string, string> = {
@@ -2294,8 +2296,8 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                   'MODERATE': 'Medium Confidence',
                   'POOR': 'Low Confidence'
                 };
-                const confidence = confidenceMap[perfLevel.toUpperCase()] || 'Unknown Confidence';
-                dataSummary += `✅ Model Confidence: ${confidence}\n`;
+                const confidence = confidenceMap[(perfLevel || '').toString().toUpperCase()] || undefined;
+                if (confidence) dataSummary += `✅ Model Confidence: ${confidence}\n`;
               }
               
               if (modelAttr.traceability_note) {
@@ -2306,9 +2308,18 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
             // Check for record-level attribution from first performer
             else if (originalSummary.performanceAnalysis?.topPerformers?.[0]?._model_attribution) {
               const recordAttr = originalSummary.performanceAnalysis.topPerformers[0]._model_attribution;
-              dataSummary += `🤖 Model Used: ${recordAttr.primary_model_used || 'Not specified'}\n`;
-              dataSummary += `📊 Model Type: ${recordAttr.model_type || 'Not specified'}\n`;
-              dataSummary += `📝 Note: ${recordAttr.confidence_note || 'Model attribution available at record level'}\n\n`;
+              if (recordAttr.primary_model_used) dataSummary += `🤖 Model Used: ${recordAttr.primary_model_used}\n`;
+              if (recordAttr.model_type) dataSummary += `📊 Model Type: ${recordAttr.model_type}\n`;
+              const r2Value = (recordAttr.performance?.r2_score ?? recordAttr.r2_score);
+              if (typeof r2Value === 'number' && !Number.isNaN(r2Value)) {
+                dataSummary += `🎯 R² Score: ${r2Value.toFixed(3)}\n`;
+              }
+              if (recordAttr.confidence_level) {
+                dataSummary += `✅ Model Confidence: ${recordAttr.confidence_level}\n`;
+              } else if (recordAttr.confidence_note) {
+                dataSummary += `📝 Note: ${recordAttr.confidence_note}\n`;
+              }
+              dataSummary += `\n`;
             }
           }
 
@@ -3048,13 +3059,15 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
           if ((endpointData as any).model_attribution) {
             dataSummary += `\n=== MODEL ATTRIBUTION ===\n`;
             const modelAttr = (endpointData as any).model_attribution;
-            dataSummary += `🤖 Model Used: ${modelAttr.primary_model?.name || 'Not specified'}\n`;
-            dataSummary += `📊 Model Type: ${modelAttr.primary_model?.type || 'Not specified'}\n`;
+            const modelName = modelAttr.primary_model?.name;
+            const modelType = modelAttr.primary_model?.type;
+            if (modelName) dataSummary += `🤖 Model Used: ${modelName}\n`;
+            if (modelType) dataSummary += `📊 Model Type: ${modelType}\n`;
             
-            if (modelAttr.primary_model?.performance?.r2_score) {
-              const r2Score = modelAttr.primary_model.performance.r2_score;
-              const perfLevel = modelAttr.primary_model.performance.performance_level || 'Unknown';
-              dataSummary += `🎯 R² Score: ${r2Score.toFixed(3)} (${perfLevel} Performance)\n`;
+            const r2Value = modelAttr.primary_model?.performance?.r2_score;
+            if (typeof r2Value === 'number' && !Number.isNaN(r2Value)) {
+              const perfLevel = modelAttr.primary_model?.performance?.performance_level || 'Unknown';
+              dataSummary += `🎯 R² Score: ${r2Value.toFixed(3)} (${perfLevel} Performance)\n`;
               
               const confidenceMap: Record<string, string> = {
                 'EXCELLENT': 'High Confidence',
@@ -3062,8 +3075,8 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
                 'MODERATE': 'Medium Confidence',
                 'POOR': 'Low Confidence'
               };
-              const confidence = confidenceMap[perfLevel.toUpperCase()] || 'Unknown Confidence';
-              dataSummary += `✅ Model Confidence: ${confidence}\n`;
+              const confidence = confidenceMap[(perfLevel || '').toString().toUpperCase()] || undefined;
+              if (confidence) dataSummary += `✅ Model Confidence: ${confidence}\n`;
             }
             
             if (modelAttr.traceability_note) {
@@ -3076,9 +3089,18 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
           else if (endpointData.features && (endpointData.features[0] as any)?._model_attribution) {
             dataSummary += `\n=== MODEL ATTRIBUTION ===\n`;
             const recordAttr = (endpointData.features[0] as any)._model_attribution;
-            dataSummary += `🤖 Model Used: ${recordAttr.primary_model_used || 'Not specified'}\n`;
-            dataSummary += `📊 Model Type: ${recordAttr.model_type || 'Not specified'}\n`;
-            dataSummary += `📝 Note: ${recordAttr.confidence_note || 'Model attribution available at record level'}\n\n`;
+            if (recordAttr.primary_model_used) dataSummary += `🤖 Model Used: ${recordAttr.primary_model_used}\n`;
+            if (recordAttr.model_type) dataSummary += `📊 Model Type: ${recordAttr.model_type}\n`;
+            const r2Value = (recordAttr.performance?.r2_score ?? recordAttr.r2_score);
+            if (typeof r2Value === 'number' && !Number.isNaN(r2Value)) {
+              dataSummary += `🎯 R² Score: ${r2Value.toFixed(3)}\n`;
+            }
+            if (recordAttr.confidence_level) {
+              dataSummary += `✅ Model Confidence: ${recordAttr.confidence_level}\n`;
+            } else if (recordAttr.confidence_note) {
+              dataSummary += `📝 Note: ${recordAttr.confidence_note}\n`;
+            }
+            dataSummary += `\n`;
             modelAttributionFound = true;
           }
           
@@ -3744,29 +3766,31 @@ function generateClusterInformation(
           .map(f => getZIPCode(f));
 
         // Determine a region name from the features
-        let regionName = "Unknown Region";
-        const firstFeature = features[0];
-
-        // Try to find a location name from DESCRIPTION or other fields
-        if (firstFeature.properties?.DESCRIPTION) {
-          const desc = String(firstFeature.properties.DESCRIPTION);
-          const match = desc.match(/\(([^)]+)\)/);
-          if (match && match[1]) {
-            regionName = match[1];
-          } else {
-            regionName = desc;
-          }
-        } else {
-          // Try other common name fields
-          const nameFields = ['NAME', 'CITY', 'MUNICIPALITY', 'REGION'];
-          for (const field of nameFields) {
-            if (firstFeature.properties?.[field]) {
-              regionName = String(firstFeature.properties[field]);
-              break;
+        // Prefer DESCRIPTION/area_name; scan multiple features if needed
+        let regionName = "";
+        const tryExtractName = (desc: string): string | null => {
+          const trimmed = desc.trim();
+          if (!trimmed) return null;
+          const match = trimmed.match(/\(([^)]+)\)/);
+          if (match && match[1]) return match[1].trim();
+          return trimmed;
+        };
+        const nameFields = ['DESCRIPTION', 'area_name', 'NAME', 'CITY', 'MUNICIPALITY', 'REGION'];
+        // Check first a few representative features for a good name
+        for (const f of features.slice(0, 5)) {
+          const props = f.properties || {};
+          // Prefer DESCRIPTION/area_name first
+          if (typeof props.DESCRIPTION === 'string') { regionName = tryExtractName(props.DESCRIPTION) || regionName; }
+          if (!regionName && typeof props.area_name === 'string') { regionName = tryExtractName(props.area_name) || regionName; }
+          // Then other common fields
+          if (!regionName) {
+            for (const field of nameFields.slice(2)) {
+              if (props[field]) { regionName = String(props[field]).trim(); break; }
             }
           }
+          if (regionName) break;
         }
-
+        if (!regionName) regionName = 'Unknown Region';
         // Add region identifier to name if it doesn't already contain it
         if (!regionName.includes(regionId)) {
           regionName += ` (${regionId}xx)`;
