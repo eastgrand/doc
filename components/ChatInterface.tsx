@@ -101,6 +101,9 @@ const ChatInterfaceInner: React.FC<ChatInterfaceProps> = ({
   // Abort controller for cancelling chat requests
   const chatAbortControllerRef = useRef<AbortController | null>(null);
   
+  // Track if initial narrative generation is in progress to prevent duplicates
+  const isGeneratingNarrativeRef = useRef(false);
+  
   // Stop chat processing function
   const stopChatProcessing = useCallback(() => {
     // console.log('[ChatInterface] Stopping chat processing...');
@@ -392,6 +395,12 @@ ${conversationText}
   }, [messages, scrollToBottom]);
 
   const generateInitialNarrative = useCallback(async () => {
+    // Prevent multiple simultaneous generations using ref
+    if (isGeneratingNarrativeRef.current || hasGeneratedNarrative) {
+      return;
+    }
+    
+    isGeneratingNarrativeRef.current = true;
     setHasGeneratedNarrative(true);
     setIsProcessing(true);
 
@@ -649,11 +658,12 @@ ${conversationText}
       };
       setMessages([fallbackMessage]);
     } finally {
-      // Clean up abort controller
+      // Clean up abort controller and reset generation flag
       chatAbortControllerRef.current = null;
       setIsProcessing(false);
+      isGeneratingNarrativeRef.current = false;
     }
-  }, [analysisResult, persona, setMessages, setHasGeneratedNarrative, analysisMode]);
+  }, [analysisResult, persona, setMessages, setHasGeneratedNarrative, analysisMode, isProcessing, hasGeneratedNarrative]);
 
   // Auto-generate AI narrative when analysisResult is available (only once initially)
   React.useEffect(() => {
@@ -661,7 +671,9 @@ ${conversationText}
       // console.log('[ChatInterface] Starting auto-generation of AI narrative');
       generateInitialNarrative();
     }
-  }, [hasGeneratedNarrative, analysisResult, generateInitialNarrative]);
+    // Remove generateInitialNarrative from dependencies to prevent infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasGeneratedNarrative, analysisResult]);
 
   const handleSendMessage = useCallback(async () => {
     if (!inputValue.trim() || isProcessing) return;

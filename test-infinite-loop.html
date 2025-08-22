@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Infinite Loop</title>
+</head>
+<body>
+    <h1>Testing for Infinite Loop</h1>
+    <button onclick="testAPI()">Test API Call</button>
+    <button onclick="openApp()">Open App</button>
+    <div id="output"></div>
+    
+    <script>
+        // Monitor for infinite loops by checking console
+        let consoleCount = 0;
+        let lastCheck = Date.now();
+        const originalLog = console.log;
+        
+        console.log = function(...args) {
+            consoleCount++;
+            const now = Date.now();
+            
+            // Check if we're getting too many logs too fast (potential infinite loop)
+            if (now - lastCheck < 1000) { // Within 1 second
+                if (consoleCount > 100) {
+                    document.getElementById('output').innerHTML += 
+                        `<div style="color:red">⚠️ POTENTIAL INFINITE LOOP DETECTED: ${consoleCount} logs in < 1 second</div>`;
+                    console.error('INFINITE LOOP DETECTED');
+                    // Reset to prevent spam
+                    consoleCount = 0;
+                    lastCheck = now;
+                }
+            } else {
+                // Reset counter after 1 second
+                consoleCount = 0;
+                lastCheck = now;
+            }
+            
+            originalLog.apply(console, args);
+        };
+        
+        function openApp() {
+            window.open('http://localhost:3000', '_blank');
+        }
+        
+        async function testAPI() {
+            const output = document.getElementById('output');
+            output.innerHTML += '<div>Testing API...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/claude/generate-response', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages: [{role: 'user', content: 'Test for infinite loop detection'}],
+                        featureData: [{
+                            layerId: 'test-layer',
+                            features: [
+                                {id: 1, properties: {value: 10}},
+                                {id: 2, properties: {value: 20}}
+                            ]
+                        }],
+                        metadata: {
+                            enableOptimization: true,
+                            forceOptimization: true
+                        }
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    output.innerHTML += '<div style="color:green">✓ API call successful</div>';
+                } else {
+                    output.innerHTML += `<div style="color:red">✗ API error: ${response.status}</div>`;
+                }
+            } catch (error) {
+                output.innerHTML += `<div style="color:red">✗ Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
