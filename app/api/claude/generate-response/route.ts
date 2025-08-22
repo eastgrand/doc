@@ -97,25 +97,31 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
   // Helper to resolve a human-friendly area name consistently
   const resolveAreaName = (feature: any, index: number): string => {
     try {
-      // Try properties structure (common from ChatInterface)
+      // Handle double nesting from ChatInterface: feature.properties.properties.DESCRIPTION
       const props = feature.properties || feature;
+      const nestedProps = props.properties || props; // Check for double nesting
       
-      // Priority 1: Use full DESCRIPTION if available (e.g., "32544 (Hurlburt Field)")
+      // Priority 1: Check nested DESCRIPTION (from processor -> ChatInterface wrapping)
+      if (typeof nestedProps?.DESCRIPTION === 'string' && nestedProps.DESCRIPTION.trim()) {
+        return nestedProps.DESCRIPTION.trim(); // Return full description as-is
+      }
+      
+      // Priority 2: Check flat DESCRIPTION in properties
       if (typeof props?.DESCRIPTION === 'string' && props.DESCRIPTION.trim()) {
         return props.DESCRIPTION.trim(); // Return full description as-is
       }
       
-      // Priority 2: Check DESCRIPTION at top level (raw endpoint data)
+      // Priority 3: Check DESCRIPTION at top level (raw endpoint data)
       if (typeof feature?.DESCRIPTION === 'string' && feature.DESCRIPTION.trim()) {
         return feature.DESCRIPTION.trim(); // Return full description as-is
       }
       
-      // Priority 3: Use area_name if no DESCRIPTION (already extracted city name)
+      // Priority 4: Use area_name if no DESCRIPTION (already extracted city name)
       if (typeof props?.area_name === 'string' && props.area_name.trim()) {
         return props.area_name.trim();
       }
       
-      // Priority 4: Try getLocationName helper
+      // Priority 5: Try getLocationName helper
       const f = { properties: props } as LocalGeospatialFeature;
       const name = getLocationName(f);
       if (name && name !== 'Unknown Location') return name;
@@ -388,40 +394,39 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Strategic Analysis - Enhanced with market expansion metrics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
   const areaName = resolveAreaName(feature, index);
         // Debug logging to trace area name resolution
         if (index < 3) {
-          console.log(`[Strategic Metrics] Area ${index + 1}: feature.DESCRIPTION="${feature?.DESCRIPTION}", props.DESCRIPTION="${props?.DESCRIPTION}", resolved="${areaName}"`);
+          console.log(`[Strategic Metrics] Area ${index + 1}: nested.DESCRIPTION="${nestedProps?.DESCRIPTION}", resolved="${areaName}"`);
         }
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
-        // Use strategic_value_score directly instead of target_value for strategic analysis
-        const strategicScore = props?.strategic_value_score || feature?.strategic_value_score || props?.target_value;
+        // Use strategic_value_score from nested properties first
+        const strategicScore = nestedProps?.strategic_analysis_score || props?.strategic_value_score || feature?.strategic_value_score || props?.target_value;
         metricsSection += `   Strategic Value Score: ${strategicScore || 'N/A'}\n`;
         
-        if (props?.demographic_opportunity_score) {
-          metricsSection += `   Demographic Opportunity: ${props.demographic_opportunity_score}\n`;
+        if (nestedProps?.demographic_opportunity_score || props?.demographic_opportunity_score) {
+          const demoScore = nestedProps?.demographic_opportunity_score || props?.demographic_opportunity_score;
+          metricsSection += `   Demographic Opportunity: ${demoScore}\n`;
         }
-        if (props?.market_gap !== undefined) {
-          metricsSection += `   Market Gap (Untapped): ${props.market_gap}%\n`;
+        if ((nestedProps?.market_gap !== undefined) || (props?.market_gap !== undefined)) {
+          const marketGap = nestedProps?.market_gap !== undefined ? nestedProps.market_gap : props?.market_gap;
+          metricsSection += `   Market Gap (Untapped): ${marketGap}%\n`;
         }
-        // Debug: Log the actual market share and gap values
-        console.log(`[Strategic Debug] ${props?.area_name}: nike_share=${props?.nike_market_share}, market_gap=${props?.market_gap}, mp30034a_b_p=${props?.mp30034a_b_p}`);
-        if (props?.mp30034a_b_p) {
-          metricsSection += `   Nike Market Data: ${props.mp30034a_b_p}%\n`;
+        // Check nested properties for population and income data
+        const population = nestedProps?.total_population || props?.total_population;
+        const income = nestedProps?.median_income || props?.median_income;
+        
+        if (population) {
+          metricsSection += `   Population: ${(population / 1000).toFixed(1)}K\n`;
         }
-        if (props?.total_population) {
-          metricsSection += `   Population: ${(props.total_population / 1000).toFixed(1)}K\n`;
-        }
-        if (props?.median_income) {
-          metricsSection += `   Income: $${(props.median_income / 1000).toFixed(1)}K\n`;
-        }
-        if (props?.nike_market_share && props.nike_market_share > 0) {
-          metricsSection += `   Nike Share: ${props.nike_market_share.toFixed(1)}%\n`;
+        if (income) {
+          metricsSection += `   Income: $${(income / 1000).toFixed(1)}K\n`;
         }
         
-        // Add strategic-specific context fields
-        metricsSection = addStrategicFields(props, metricsSection);
+        // Add strategic-specific context fields - pass nested props
+        metricsSection = addStrategicFields(nestedProps || props, metricsSection);
         metricsSection += '\n';
       });
       break;
