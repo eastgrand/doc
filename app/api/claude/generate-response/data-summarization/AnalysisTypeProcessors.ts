@@ -64,7 +64,7 @@ export function createAnalysisSpecificSummary(
   layerConfig?: LayerConfig
 ): string {
   
-  const processors = {
+  const processors: Record<string, (features: FeatureProperties[], primaryField: string, layerConfig?: LayerConfig) => string> = {
     'strategic-analysis': createStrategicAnalysisSummary,
     'competitive-analysis': createCompetitiveAnalysisSummary,
     'demographic-insights': createDemographicInsightsSummary,

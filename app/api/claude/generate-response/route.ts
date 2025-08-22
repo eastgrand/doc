@@ -2321,6 +2321,9 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
         // Skip regular feature processing if we have a comprehensive summary
         if (!hasComprehensiveSummary) {
         for (const layerResult of processedLayersData) {
+            // Initialize topFeatures at the beginning of each loop iteration
+            let topFeatures: TopFeature[] = [];
+            
             // 🔍 DEBUG: Check features in each layer
             console.log(`🔍 [LAYER PROCESSING] Processing layer ${layerResult.layerId}:`, {
               featureCount: layerResult.features?.length || 0,
@@ -2441,9 +2444,7 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                     layerType: layerResult.layerType || 'feature',
                     features: features,
                     extent: layerResult.extent,
-                    fields: layerResult.fields,
-                    geometryType: layerResult.geometryType,
-                    isComprehensiveSummary: layerResult.isComprehensiveSummary
+                    fields: layerResult.fields
                 }];
                 
                 // Attempt optimized summarization
@@ -2463,7 +2464,6 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                     console.log(`[Claude Prompt Gen] ⏭️ Using existing feature enumeration for layer ${layerName}`);
                     
                     // Original feature enumeration logic as fallback
-                    let topFeatures: TopFeature[] = [];
                     const sortedFeatures = sortAttributesByField(features, currentLayerPrimaryField);
                     console.log(`[Claude Prompt Gen] Sorted ${sortedFeatures.length} features for layer ${layerName} by ${currentLayerPrimaryField}.`);
 
@@ -2508,7 +2508,6 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 console.error(`[Claude Prompt Gen] ❌ Error in optimized summarization, using fallback for layer ${layerName}:`, e);
                 
                 // Complete fallback to original logic
-                let topFeatures: TopFeature[] = [];
                 try {
                     const sortedFeatures = sortAttributesByField(features, currentLayerPrimaryField);
                     console.log(`[Claude Prompt Gen] Sorted ${sortedFeatures.length} features for layer ${layerName} by ${currentLayerPrimaryField}.`);
