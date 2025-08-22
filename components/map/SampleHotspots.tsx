@@ -4,6 +4,7 @@ import Point from "@arcgis/core/geometry/Point";
 import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol";
 import TextSymbol from "@arcgis/core/symbols/TextSymbol";
 import { MapPin, ShoppingBag, Users, DollarSign, Car } from 'lucide-react';
+import { ACTIVE_COLOR_SCHEME } from '@/utils/renderer-standardization';
 
 export interface SampleHotspot {
   id: string;
@@ -25,7 +26,7 @@ export const FLORIDA_HOTSPOTS: SampleHotspot[] = [
     type: 'retail',
     description: 'Explore retail density and consumer patterns in Miami',
     sampleQuery: 'Show me retail opportunities within 5 miles of downtown Miami',
-    color: '#ff8000', // Orange
+    color: ACTIVE_COLOR_SCHEME[1], // Orange
     icon: ShoppingBag
   },
   {
@@ -35,7 +36,7 @@ export const FLORIDA_HOTSPOTS: SampleHotspot[] = [
     type: 'demographic',
     description: 'Analyze demographic trends and population insights',
     sampleQuery: 'What are the demographic patterns in Tampa Bay area?',
-    color: '#0080ff', // Blue
+    color: '#0080ff', // Blue (keep unique for demographics)
     icon: Users
   },
   {
@@ -45,7 +46,7 @@ export const FLORIDA_HOTSPOTS: SampleHotspot[] = [
     type: 'economic',
     description: 'Economic indicators and growth patterns analysis',
     sampleQuery: 'Analyze economic growth indicators for Orlando metropolitan area',
-    color: '#00ff40', // Green (primary)
+    color: ACTIVE_COLOR_SCHEME[3], // Green (primary)
     icon: DollarSign
   },
   {
@@ -55,7 +56,7 @@ export const FLORIDA_HOTSPOTS: SampleHotspot[] = [
     type: 'transportation',
     description: 'Transportation networks and accessibility analysis',
     sampleQuery: 'Show transportation accessibility within Jacksonville',
-    color: '#bf00ff', // Purple
+    color: '#bf00ff', // Purple (keep unique for transportation)
     icon: Car
   }
 ];

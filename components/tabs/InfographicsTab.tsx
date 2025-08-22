@@ -1678,48 +1678,46 @@ export default function InfographicsTab({
         }, []);
 
         console.log(`[FetchReports] Unique items after deduplication: ${uniqueItems.length}`);
+        
+        // DEBUG: Log the first few items with their full structure
+        console.log('[FetchReports] DEBUG - First 3 raw items structure:');
+        uniqueItems.slice(0, 3).forEach((item, index) => {
+          console.log(`[FetchReports] DEBUG Item ${index + 1}:`, {
+            id: item.id,
+            title: item.title,
+            description: item.description,
+            snippet: item.snippet,
+            tags: item.tags,
+            properties: item.properties,
+            culture: item.culture,
+            extent: item.extent,
+            spatialReference: item.spatialReference,
+            fullItem: item // Log the complete item for inspection
+          });
+        });
+        
+        // DEBUG: Log all unique item titles to see what we're working with
+        console.log('[FetchReports] DEBUG - All fetched item titles:');
+        uniqueItems.forEach((item, index) => {
+          console.log(`${index + 1}. "${item.title}" (ID: ${item.id})`);
+        });
 
-        // Filter for United States reports only - explicitly exclude Canada
+        // Filter for United States reports only - explicitly exclude Canada and other countries
         const filteredItems = uniqueItems.filter((item: any) => {
-          // Check multiple possible country field locations
-          const countryProp = item.properties?.countries || item.properties?.country || item.properties?.Country ||
-                             item.countries || item.country || item.Country;
+          // The country data is clearly in properties.countries field
+          const countries = item.properties?.countries;
           const titleLower = (item.title || '').toLowerCase();
-          const descLower = (item.description || '').toLowerCase();
-          const tagsLower = (item.tags || []).join(' ').toLowerCase();
-          const snippetLower = (item.snippet || '').toLowerCase();
           
-          // Check if this is a Canada item (exclude these)
-          const isCanada = 
-            // Country field checks
-            countryProp === 'CA' || countryProp === 'CAN' || countryProp === 'Canada' || countryProp === 'canada' ||
-            (Array.isArray(countryProp) && (countryProp.includes('CA') || countryProp.includes('CAN') || 
-             countryProp.includes('Canada') || countryProp.includes('canada'))) ||
-            // Text content checks
-            titleLower.includes('canada') || descLower.includes('canada') || 
-            tagsLower.includes('canada') || snippetLower.includes('canada') ||
-            // Additional checks for Canadian postal codes or provinces
-            /\b[A-Z]\d[A-Z]\s*\d[A-Z]\d\b/.test(item.title || '') || // Canadian postal code pattern
-            /(ontario|quebec|british columbia|alberta|manitoba|saskatchewan|nova scotia|new brunswick|newfoundland|prince edward island|yukon|northwest territories|nunavut)/i.test(`${titleLower} ${descLower} ${tagsLower}`)
+          // Log what we're checking for debugging
+          console.log(`[FetchReports] Checking item: "${item.title}" - countries: "${countries}"`);
           
-          if (isCanada) {
-            console.log(`[FetchReports] Excluding Canada item: "${item.title}"`);
-            return false;
-          }
-          
-          // Check if this is a US item (include these)
-          const isUS = 
-            countryProp === 'US' || countryProp === 'USA' || countryProp === 'United States' ||
-            (Array.isArray(countryProp) && (countryProp.includes('US') || countryProp.includes('USA') || 
-             countryProp.includes('United States'))) ||
-            // If no country specified but contains US indicators
-            (!countryProp && (titleLower.includes('united states') || titleLower.includes('usa') || 
-             /\b\d{5}(-\d{4})?\b/.test(item.title || ''))); // US ZIP code pattern
+          // Only include items that explicitly have "US" as the country
+          const isUS = countries === 'US';
           
           if (isUS) {
-            console.log(`[FetchReports] Including US item: "${item.title}"`);
+            console.log(`[FetchReports] ✅ Including US item: "${item.title}"`);
           } else {
-            console.log(`[FetchReports] Excluding non-US item: "${item.title}" (country: ${countryProp})`);
+            console.log(`[FetchReports] ❌ Excluding non-US item: "${item.title}" (countries: ${countries})`);
           }
           
           return isUS;
@@ -1728,6 +1726,12 @@ export default function InfographicsTab({
         if (filteredItems.length > 0) {
           console.log(`[FetchReports] First filtered US item properties:`, filteredItems[0].properties);
         }
+        
+        // DEBUG: Log what items survived the country filtering
+        console.log('[FetchReports] DEBUG - Items that survived country filtering:');
+        filteredItems.forEach((item, index) => {
+          console.log(`${index + 1}. "${item.title}" (ID: ${item.id})`);
+        });
 
         // --- NEW CATEGORIZATION LOGIC ---
         const assignCategories = (item: any): string[] => {
@@ -1847,6 +1851,13 @@ export default function InfographicsTab({
           console.log(`[FetchReports] Report template already set: ${reportTemplate}`);
         }
         console.log('[FetchReports] Final Reports after exclusion:', finalReports); // Log the final reports being set
+        
+        // DEBUG: Log final report titles that will show in dialog
+        console.log('[FetchReports] DEBUG - Final reports that will appear in dialog:');
+        finalReports.forEach((report, index) => {
+          console.log(`${index + 1}. "${report.title}" (ID: ${report.id})`);
+        });
+        
         setReports(finalReports); // Use the filtered list
       } catch (error) {
         console.error('[FetchReports] Error:', error);

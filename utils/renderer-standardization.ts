@@ -7,10 +7,10 @@
 
 // Original standard color scheme
 export const STANDARD_COLOR_SCHEME = [
-  '#ff0040', // Firefly Deep Pink (lowest values)
-  '#ffbf00', // Firefly Orange 
-  '#00ff40', // Firefly Lime Green
-  '#00ff80'  // Firefly Bright Green (highest values)
+  '#D6191C', // Red (lowest values)
+  '#FCAD61', // Orange 
+  '#A6D96A', // Light Green
+  '#1A9641'  // Green (highest values)
 ];
 
 // Firefly color scheme (matches LayerController and SampleAreasPanel)
@@ -22,7 +22,7 @@ export const FIREFLY_COLOR_SCHEME = [
 ];
 
 // Current active color scheme (change this to switch schemes globally)
-export const ACTIVE_COLOR_SCHEME = FIREFLY_COLOR_SCHEME;
+export const ACTIVE_COLOR_SCHEME = STANDARD_COLOR_SCHEME;
 
 // Standard opacity for all renderers
 export const STANDARD_OPACITY = 0.6;

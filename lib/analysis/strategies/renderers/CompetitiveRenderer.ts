@@ -1,6 +1,6 @@
 import { VisualizationRendererStrategy, ProcessedAnalysisData, VisualizationResult, VisualizationConfig } from '../../types';
 import { EnhancedRendererBase, EnhancedVisualizationConfig } from './EnhancedRendererBase';
-import { STANDARD_OPACITY, standardizeRenderer } from '@/utils/renderer-standardization';
+import { ACTIVE_COLOR_SCHEME, STANDARD_OPACITY, standardizeRenderer } from '@/utils/renderer-standardization';
 import { getQuintileColorScheme, calculateEqualCountQuintiles } from '../../utils/QuintileUtils';
 
 /**
@@ -395,12 +395,7 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
     if (quartiles.length < 4) return [{ value: 0, color: '#4169E1' }];
     
     // Use standardized quartile colors to match static layers: red -> orange -> light green -> dark green
-    const colors = [
-      '#ff0040', // Strong red (lowest values)
-      '#ffbf00', // Orange
-      '#00ff40', // Light green
-      '#00ff80'  // Dark green (highest values)
-    ];
+    const colors = ACTIVE_COLOR_SCHEME;
     
     return quartiles.map((value, index) => ({
       value: value,
@@ -771,7 +766,7 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
                 : index === competitiveQuartiles.length - 1
                   ? `> ${competitiveQuartiles[index - 1].toFixed(1)}`
                   : `${competitiveQuartiles[index - 1].toFixed(1)} - ${quartile.toFixed(1)}`,
-              color: ['#ff0040', '#ffbf00', '#00ff40', '#00ff80'][index],
+              color: ACTIVE_COLOR_SCHEME[index],
               value: quartile,
               quartile: index + 1
             }))
@@ -963,11 +958,11 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
   private createBrandStrengthColorStops(): any[] {
     // Color progression for market share (0-1 range) from low (red) to high (green) - standard scheme
     return [
-      { value: 0, color: '#ff0040' },      // Strong red - low market share
-      { value: 0.1, color: '#ffbf00' },    // Orange
-      { value: 0.2, color: '#fee08b' },    // Yellow - moderate
-      { value: 0.3, color: '#00ff40' },    // Light green
-      { value: 0.4, color: '#00ff80' }     // Strong green - high market share
+      { value: 0, color: ACTIVE_COLOR_SCHEME[0] },      // Red - low market share
+      { value: 0.1, color: ACTIVE_COLOR_SCHEME[1] },    // Orange
+      { value: 0.2, color: '#fee08b' },                 // Yellow - moderate (keep intermediate color)
+      { value: 0.3, color: ACTIVE_COLOR_SCHEME[2] },    // Light green
+      { value: 0.4, color: ACTIVE_COLOR_SCHEME[3] }     // Green - high market share
     ];
   }
 
@@ -1004,15 +999,15 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
   }
 
   private getCompetitiveColors(numClasses: number): string[] {
-    // Red-Yellow-Green color scheme for competitive analysis
+    // Standard color scheme for competitive analysis
     const colors = [
-      '#ff0040', // Strong red
-      '#f46d43', // Red-orange
-      '#ffbf00', // Orange
-      '#fee08b', // Yellow
-      '#00ff40', // Light green
-      '#66bd63', // Green
-      '#00ff80'  // Dark green
+      ACTIVE_COLOR_SCHEME[0], // Red
+      '#f46d43',              // Red-orange (intermediate)
+      ACTIVE_COLOR_SCHEME[1], // Orange
+      '#fee08b',              // Yellow (intermediate)
+      ACTIVE_COLOR_SCHEME[2], // Light green
+      '#66bd63',              // Green (intermediate)
+      ACTIVE_COLOR_SCHEME[3]  // Dark green
     ];
     
     return colors.slice(0, numClasses);
@@ -1034,7 +1029,7 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
       'dominant': {
         type: 'simple-marker',
         style: 'diamond',
-        color: '#00ff80',
+        color: ACTIVE_COLOR_SCHEME[3], // Green
         size: 16,
         outline: { color: [0, 0, 0, 0], width: 0 } // No border
       },
@@ -1048,14 +1043,14 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
       'challenged': {
         type: 'simple-marker',
         style: 'square',
-        color: '#ffbf00',
+        color: ACTIVE_COLOR_SCHEME[1], // Orange
         size: 10,
         outline: { color: [0, 0, 0, 0], width: 0 } // No border
       },
       'underperforming': {
         type: 'simple-marker',
         style: 'triangle',
-        color: '#ff0040',
+        color: ACTIVE_COLOR_SCHEME[0], // Red
         size: 8,
         outline: { color: [0, 0, 0, 0], width: 0 } // No border
       }
@@ -1066,13 +1061,13 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
 
   private getPositionColor(position: string): string {
     const colorMap: Record<string, string> = {
-      'dominant': '#00ff80',
-      'competitive': '#66bd63',
-      'challenged': '#ffbf00',
-      'underperforming': '#ff0040'
+      'dominant': ACTIVE_COLOR_SCHEME[3],     // Green
+      'competitive': ACTIVE_COLOR_SCHEME[2],  // Light Green
+      'challenged': ACTIVE_COLOR_SCHEME[1],   // Orange
+      'underperforming': ACTIVE_COLOR_SCHEME[0] // Red
     };
     
-    return colorMap[position] || '#ffbf00';
+    return colorMap[position] || ACTIVE_COLOR_SCHEME[1];
   }
 
   private getPositionSymbolType(position: string): string {
@@ -1095,16 +1090,8 @@ export class CompetitiveRenderer extends EnhancedRendererBase {
   }
 
   private getColorForRange(index: number, totalClasses: number): string {
-    // Color palette for competitive analysis (low to high)
-    const colors = [
-      '#ff0040', // Red - low competitive advantage
-      '#f46d43', // Orange-red
-      '#ffbf00', // Orange  
-      '#00ff40', // Light green
-      '#00ff80'  // Green - high competitive advantage
-    ];
-    
-    return colors[Math.min(index, colors.length - 1)];
+    // Use standardized color scheme for competitive analysis (low to high)
+    return ACTIVE_COLOR_SCHEME[Math.min(index, ACTIVE_COLOR_SCHEME.length - 1)];
   }
 
   // ============================================================================

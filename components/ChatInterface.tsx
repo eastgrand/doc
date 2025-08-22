@@ -52,6 +52,24 @@ interface ChatMessage {
   timestamp: Date;
 }
 
+// Randomized thinking messages to make chat feel more natural
+const THINKING_MESSAGES = [
+  "Thinking",
+  "Analyzing",
+  "Processing", 
+  "Considering",
+  "Evaluating",
+  "Reviewing",
+  "Calculating",
+  "Examining",
+  "Understanding",
+  "Interpreting"
+];
+
+function getRandomThinkingMessage(): string {
+  return THINKING_MESSAGES[Math.floor(Math.random() * THINKING_MESSAGES.length)];
+}
+
 // Inner component - following QueryInterface pattern with full UnifiedAnalysisChat functionality
 const ChatInterfaceInner: React.FC<ChatInterfaceProps> = ({ 
   analysisResult, 
@@ -920,7 +938,7 @@ ${conversationText}
             <div className="flex-1">
               <div className="inline-flex items-center gap-3 p-3 rounded-lg theme-processing-indicator">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span className="text-xs theme-text-secondary">Running Full Analysis…</span>
+                <span className="text-xs theme-text-secondary">{getRandomThinkingMessage()}…</span>
                 <Button
                   variant="ghost"
                   size="sm"

@@ -994,7 +994,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                   <div 
                     className="w-3 h-3 rounded-sm"
                     style={{ 
-                      backgroundColor: '#ff0040',
+                      backgroundColor: ACTIVE_COLOR_SCHEME[0], // Red
                       border: '1px solid #ddd',
                       opacity: 1,
                       boxShadow: 'none',
@@ -1003,7 +1003,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                       position: 'relative',
                       // Use !important to override any global CSS
                       // @ts-ignore
-                      cssText: 'background-color: #ff0040 !important;'
+                      cssText: `background-color: ${ACTIVE_COLOR_SCHEME[0]} !important;`
                     }}
                   ></div>
                   <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Lowest</span>
@@ -1012,7 +1012,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                   <div 
                     className="w-3 h-3 rounded-sm"
                     style={{ 
-                      backgroundColor: '#ffbf00',
+                      backgroundColor: ACTIVE_COLOR_SCHEME[1], // Orange
                       border: '1px solid #ddd',
                       opacity: 1,
                       boxShadow: 'none',
@@ -1021,7 +1021,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                       position: 'relative',
                       // Use !important to override any global CSS
                       // @ts-ignore
-                      cssText: 'background-color: #ffbf00 !important;'
+                      cssText: `background-color: ${ACTIVE_COLOR_SCHEME[1]} !important;`
                     }}
                   ></div>
                   <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Low</span>
@@ -1030,7 +1030,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                   <div 
                     className="w-3 h-3 rounded-sm"
                     style={{ 
-                      backgroundColor: '#00ff40',
+                      backgroundColor: ACTIVE_COLOR_SCHEME[2], // Light Green
                       border: '1px solid #ddd',
                       opacity: 1,
                       boxShadow: 'none',
@@ -1039,7 +1039,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                       position: 'relative',
                       // Use !important to override any global CSS
                       // @ts-ignore
-                      cssText: 'background-color: #00ff40 !important;'
+                      cssText: `background-color: ${ACTIVE_COLOR_SCHEME[2]} !important;`
                     }}
                   ></div>
                   <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>High</span>
@@ -1048,7 +1048,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                   <div 
                     className="w-3 h-3 rounded-sm"
                     style={{ 
-                      backgroundColor: '#00ff80',
+                      backgroundColor: ACTIVE_COLOR_SCHEME[3], // Green
                       border: '1px solid #ddd',
                       opacity: 1,
                       boxShadow: 'none',
@@ -1057,7 +1057,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                       position: 'relative',
                       // Use !important to override any global CSS
                       // @ts-ignore
-                      cssText: 'background-color: #00ff80 !important;'
+                      cssText: `background-color: ${ACTIVE_COLOR_SCHEME[3]} !important;`
                     }}
                   ></div>
                   <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Highest</span>

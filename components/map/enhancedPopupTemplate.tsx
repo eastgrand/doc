@@ -1440,10 +1440,16 @@ export function createEnhancedPopupTemplate(
   if (layerConfig.type === 'point') {
     return new PopupTemplate({
       title: "{CONAME}",
+      outFields: ["CONAME", "ADDR"], // Only show specific fields, exclude ESRI_PID
       content: [
         {
           type: "fields",
           fieldInfos: [
+            {
+              fieldName: "CONAME",
+              label: "Company Name",
+              visible: true
+            },
             {
               fieldName: "ADDR",
               label: "Address",
