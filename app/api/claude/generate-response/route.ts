@@ -2447,12 +2447,17 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                     fields: layerResult.fields
                 }];
                 
+                // Force optimization for large datasets to prevent 413 errors
+                const shouldForceOptimization = features.length >= 200; // Very aggressive prevention of 413 errors
+                console.log(`[Claude Prompt Gen] Dataset size check: ${features.length} features, forceOptimization: ${shouldForceOptimization}`);
+                
                 // Attempt optimized summarization
                 const optimizedSummary = replaceExistingFeatureEnumeration(
                     processedLayerData,
                     { [layerResult.layerId]: layerConfig },
                     metadata,
-                    currentLayerPrimaryField
+                    currentLayerPrimaryField,
+                    shouldForceOptimization
                 );
                 
                 if (optimizedSummary && optimizedSummary.trim().length > 0) {
