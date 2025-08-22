@@ -1,0 +1,529 @@
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Test ultra-aggressive optimization with 30 features"
+    }
+  ],
+  "featureData": [
+    {
+      "layerId": "medium-test-layer",
+      "features": [
+        {
+          "id": 0,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.12754545187545,
+              25.891360089445385
+            ]
+          },
+          "properties": {
+            "name": "Feature 0",
+            "description": "Test feature 0 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 74.83213520743267,
+            "category": "Category 0",
+            "metadata": "Additional metadata for feature 0 to increase payload size"
+          }
+        },
+        {
+          "id": 1,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.49829103247974,
+              25.57061258799915
+            ]
+          },
+          "properties": {
+            "name": "Feature 1",
+            "description": "Test feature 1 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 64.21223030810992,
+            "category": "Category 0",
+            "metadata": "Additional metadata for feature 1 to increase payload size"
+          }
+        },
+        {
+          "id": 2,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.1460164874166,
+              25.580725203110646
+            ]
+          },
+          "properties": {
+            "name": "Feature 2",
+            "description": "Test feature 2 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 39.013681661782165,
+            "category": "Category 0",
+            "metadata": "Additional metadata for feature 2 to increase payload size"
+          }
+        },
+        {
+          "id": 3,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.08299873883782,
+              25.5459233509009
+            ]
+          },
+          "properties": {
+            "name": "Feature 3",
+            "description": "Test feature 3 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 87.36942118646729,
+            "category": "Category 0",
+            "metadata": "Additional metadata for feature 3 to increase payload size"
+          }
+        },
+        {
+          "id": 4,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.97046168712366,
+              25.134261729902676
+            ]
+          },
+          "properties": {
+            "name": "Feature 4",
+            "description": "Test feature 4 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 82.18357601680165,
+            "category": "Category 0",
+            "metadata": "Additional metadata for feature 4 to increase payload size"
+          }
+        },
+        {
+          "id": 5,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.69748917347886,
+              25.894260110339886
+            ]
+          },
+          "properties": {
+            "name": "Feature 5",
+            "description": "Test feature 5 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 61.43280021573152,
+            "category": "Category 0",
+            "metadata": "Additional metadata for feature 5 to increase payload size"
+          }
+        },
+        {
+          "id": 6,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.21157077677184,
+              25.27894412540932
+            ]
+          },
+          "properties": {
+            "name": "Feature 6",
+            "description": "Test feature 6 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 57.84804696851483,
+            "category": "Category 0",
+            "metadata": "Additional metadata for feature 6 to increase payload size"
+          }
+        },
+        {
+          "id": 7,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.0342860052937,
+              25.058617541480068
+            ]
+          },
+          "properties": {
+            "name": "Feature 7",
+            "description": "Test feature 7 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 87.4029140932441,
+            "category": "Category 0",
+            "metadata": "Additional metadata for feature 7 to increase payload size"
+          }
+        },
+        {
+          "id": 8,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.63993995779789,
+              25.963092987713427
+            ]
+          },
+          "properties": {
+            "name": "Feature 8",
+            "description": "Test feature 8 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 77.65212746242743,
+            "category": "Category 0",
+            "metadata": "Additional metadata for feature 8 to increase payload size"
+          }
+        },
+        {
+          "id": 9,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.62760324074378,
+              25.158929265481046
+            ]
+          },
+          "properties": {
+            "name": "Feature 9",
+            "description": "Test feature 9 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 88.86781239509772,
+            "category": "Category 0",
+            "metadata": "Additional metadata for feature 9 to increase payload size"
+          }
+        },
+        {
+          "id": 10,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.4524026778512,
+              25.489107838552872
+            ]
+          },
+          "properties": {
+            "name": "Feature 10",
+            "description": "Test feature 10 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 84.85470823305008,
+            "category": "Category 1",
+            "metadata": "Additional metadata for feature 10 to increase payload size"
+          }
+        },
+        {
+          "id": 11,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.1666910120409,
+              25.54881197209883
+            ]
+          },
+          "properties": {
+            "name": "Feature 11",
+            "description": "Test feature 11 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 53.51240849977682,
+            "category": "Category 1",
+            "metadata": "Additional metadata for feature 11 to increase payload size"
+          }
+        },
+        {
+          "id": 12,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.60237057447355,
+              25.696802690932042
+            ]
+          },
+          "properties": {
+            "name": "Feature 12",
+            "description": "Test feature 12 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 55.6731301739498,
+            "category": "Category 1",
+            "metadata": "Additional metadata for feature 12 to increase payload size"
+          }
+        },
+        {
+          "id": 13,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.50851675811715,
+              25.97156321447174
+            ]
+          },
+          "properties": {
+            "name": "Feature 13",
+            "description": "Test feature 13 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 2.0616114054740176,
+            "category": "Category 1",
+            "metadata": "Additional metadata for feature 13 to increase payload size"
+          }
+        },
+        {
+          "id": 14,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.96346951059749,
+              25.68301693965739
+            ]
+          },
+          "properties": {
+            "name": "Feature 14",
+            "description": "Test feature 14 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 5.871097346289444,
+            "category": "Category 1",
+            "metadata": "Additional metadata for feature 14 to increase payload size"
+          }
+        },
+        {
+          "id": 15,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.78056173308715,
+              25.721101097906704
+            ]
+          },
+          "properties": {
+            "name": "Feature 15",
+            "description": "Test feature 15 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 29.82553481464958,
+            "category": "Category 1",
+            "metadata": "Additional metadata for feature 15 to increase payload size"
+          }
+        },
+        {
+          "id": 16,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.81526424198307,
+              25.239481405183533
+            ]
+          },
+          "properties": {
+            "name": "Feature 16",
+            "description": "Test feature 16 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 54.77116563364264,
+            "category": "Category 1",
+            "metadata": "Additional metadata for feature 16 to increase payload size"
+          }
+        },
+        {
+          "id": 17,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.50333287642985,
+              25.26722935238941
+            ]
+          },
+          "properties": {
+            "name": "Feature 17",
+            "description": "Test feature 17 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 2.067551108819443,
+            "category": "Category 1",
+            "metadata": "Additional metadata for feature 17 to increase payload size"
+          }
+        },
+        {
+          "id": 18,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.7409141047673,
+              25.4040007440103
+            ]
+          },
+          "properties": {
+            "name": "Feature 18",
+            "description": "Test feature 18 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 19.785522315728286,
+            "category": "Category 1",
+            "metadata": "Additional metadata for feature 18 to increase payload size"
+          }
+        },
+        {
+          "id": 19,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.372780089566,
+              25.262867233954847
+            ]
+          },
+          "properties": {
+            "name": "Feature 19",
+            "description": "Test feature 19 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 81.1385849292875,
+            "category": "Category 1",
+            "metadata": "Additional metadata for feature 19 to increase payload size"
+          }
+        },
+        {
+          "id": 20,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.28182098495121,
+              25.51026368383367
+            ]
+          },
+          "properties": {
+            "name": "Feature 20",
+            "description": "Test feature 20 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 18.524383283790623,
+            "category": "Category 2",
+            "metadata": "Additional metadata for feature 20 to increase payload size"
+          }
+        },
+        {
+          "id": 21,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.92594721949389,
+              25.416311998882154
+            ]
+          },
+          "properties": {
+            "name": "Feature 21",
+            "description": "Test feature 21 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 90.40360858149043,
+            "category": "Category 2",
+            "metadata": "Additional metadata for feature 21 to increase payload size"
+          }
+        },
+        {
+          "id": 22,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.25743625131615,
+              25.755966234513696
+            ]
+          },
+          "properties": {
+            "name": "Feature 22",
+            "description": "Test feature 22 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 41.88096427079451,
+            "category": "Category 2",
+            "metadata": "Additional metadata for feature 22 to increase payload size"
+          }
+        },
+        {
+          "id": 23,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.4044778110612,
+              25.483622010539655
+            ]
+          },
+          "properties": {
+            "name": "Feature 23",
+            "description": "Test feature 23 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 37.18567208697138,
+            "category": "Category 2",
+            "metadata": "Additional metadata for feature 23 to increase payload size"
+          }
+        },
+        {
+          "id": 24,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.53926702539653,
+              25.608705080541924
+            ]
+          },
+          "properties": {
+            "name": "Feature 24",
+            "description": "Test feature 24 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 0.5991943329314298,
+            "category": "Category 2",
+            "metadata": "Additional metadata for feature 24 to increase payload size"
+          }
+        },
+        {
+          "id": 25,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.3351939691122,
+              25.474364420937817
+            ]
+          },
+          "properties": {
+            "name": "Feature 25",
+            "description": "Test feature 25 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 29.972366993400556,
+            "category": "Category 2",
+            "metadata": "Additional metadata for feature 25 to increase payload size"
+          }
+        },
+        {
+          "id": 26,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.22255957740153,
+              25.55477976532196
+            ]
+          },
+          "properties": {
+            "name": "Feature 26",
+            "description": "Test feature 26 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 72.4465258203883,
+            "category": "Category 2",
+            "metadata": "Additional metadata for feature 26 to increase payload size"
+          }
+        },
+        {
+          "id": 27,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.5604676865229,
+              25.41744927913839
+            ]
+          },
+          "properties": {
+            "name": "Feature 27",
+            "description": "Test feature 27 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 77.1652713498506,
+            "category": "Category 2",
+            "metadata": "Additional metadata for feature 27 to increase payload size"
+          }
+        },
+        {
+          "id": 28,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.23031599337143,
+              25.594804096609764
+            ]
+          },
+          "properties": {
+            "name": "Feature 28",
+            "description": "Test feature 28 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 88.46314255052626,
+            "category": "Category 2",
+            "metadata": "Additional metadata for feature 28 to increase payload size"
+          }
+        },
+        {
+          "id": 29,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              -80.30966105566756,
+              25.04459126589203
+            ]
+          },
+          "properties": {
+            "name": "Feature 29",
+            "description": "Test feature 29 with medium-sized data payload to test the new 25-feature threshold",
+            "value": 95.86625924665407,
+            "category": "Category 2",
+            "metadata": "Additional metadata for feature 29 to increase payload size"
+          }
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "enableOptimization": false,
+    "forceOptimization": false
+  }
+}

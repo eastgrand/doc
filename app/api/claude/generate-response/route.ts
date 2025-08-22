@@ -2434,11 +2434,17 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
 
             // --- Optimized Data Summarization (Replaces Feature Enumeration) ---
             try {
-                // Force optimization for any dataset >= 50 features OR if explicitly forced via metadata
-                const shouldForceOptimization = features.length >= 50 || !!metadata?.forceOptimization;
+                // Ultra-aggressive optimization to prevent 413 errors:
+                // - ANY dataset >= 25 features (lowered from 50)
+                // - Estimated payload size >= 30KB 
+                // - OR explicitly forced via metadata
+                const estimatedPayloadSize = features.length * 350; // Conservative estimate
+                const shouldForceOptimization = features.length >= 25 || 
+                                                estimatedPayloadSize >= 30000 || 
+                                                !!metadata?.forceOptimization;
                 let optimizedSummary = '';
                 
-                console.log(`[OPTIMIZATION DEBUG] Layer: ${layerName}, Features: ${features.length}, shouldForceOptimization: ${shouldForceOptimization}`);
+                console.log(`[OPTIMIZATION DEBUG] Layer: ${layerName}, Features: ${features.length}, EstimatedSize: ${Math.round(estimatedPayloadSize/1024)}KB, shouldForceOptimization: ${shouldForceOptimization}`);
                 
                 if (shouldForceOptimization) {
                     console.log(`[OPTIMIZATION DEBUG] Attempting to import IntegrationBridge module...`);
