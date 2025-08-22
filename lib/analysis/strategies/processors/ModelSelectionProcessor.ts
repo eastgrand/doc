@@ -81,6 +81,7 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
+          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
           algorithm_category: algorithmCategory,
           score_source: 'algorithm_category',
           category_numeric: numericValue,

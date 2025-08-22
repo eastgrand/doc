@@ -196,6 +196,7 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
+          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
           strategic_value_score: primaryScore,
           score_source: 'strategic_value_score',
           target_brand_share: targetBrandValue,

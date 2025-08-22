@@ -62,6 +62,7 @@ export class DimensionalityInsightsProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
+          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
           dimensionality_insights_score: primaryScore,
           score_source: 'dimensionality_insights_score',
           target_brand_share: this.extractTargetBrandShare(record),

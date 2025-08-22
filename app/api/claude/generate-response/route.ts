@@ -97,34 +97,28 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
   // Helper to resolve a human-friendly area name consistently
   const resolveAreaName = (feature: any, index: number): string => {
     try {
-      // First try to get DESCRIPTION directly from feature (strategic analysis structure)
-      if (typeof feature?.DESCRIPTION === 'string' && feature.DESCRIPTION.trim()) {
-        const description = feature.DESCRIPTION.trim();
-        // Extract city name from parentheses like "32544 (Hurlburt Field)" -> "Hurlburt Field"
-        const nameMatch = description.match(/\(([^)]+)\)/);
-        if (nameMatch && nameMatch[1]) {
-          return nameMatch[1].trim();
-        }
-        return description;
+      // Try properties structure (common from ChatInterface)
+      const props = feature.properties || feature;
+      
+      // Priority 1: Use full DESCRIPTION if available (e.g., "32544 (Hurlburt Field)")
+      if (typeof props?.DESCRIPTION === 'string' && props.DESCRIPTION.trim()) {
+        return props.DESCRIPTION.trim(); // Return full description as-is
       }
       
-      // Try properties structure as fallback
-      const props = feature.properties || feature;
+      // Priority 2: Check DESCRIPTION at top level (raw endpoint data)
+      if (typeof feature?.DESCRIPTION === 'string' && feature.DESCRIPTION.trim()) {
+        return feature.DESCRIPTION.trim(); // Return full description as-is
+      }
+      
+      // Priority 3: Use area_name if no DESCRIPTION (already extracted city name)
+      if (typeof props?.area_name === 'string' && props.area_name.trim()) {
+        return props.area_name.trim();
+      }
+      
+      // Priority 4: Try getLocationName helper
       const f = { properties: props } as LocalGeospatialFeature;
       const name = getLocationName(f);
       if (name && name !== 'Unknown Location') return name;
-      
-      // Try DESCRIPTION/area_name directly if present
-      if (typeof props?.DESCRIPTION === 'string' && props.DESCRIPTION.trim()) {
-        const description = props.DESCRIPTION.trim();
-        // Extract city name from parentheses
-        const nameMatch = description.match(/\(([^)]+)\)/);
-        if (nameMatch && nameMatch[1]) {
-          return nameMatch[1].trim();
-        }
-        return description;
-      }
-      if (typeof props?.area_name === 'string' && props.area_name.trim()) return props.area_name.trim();
       
       // Try common name fields
       const nameFields = ['NAME', 'CITY', 'MUNICIPALITY', 'REGION', 'CSDNAME', 'FEDNAME'];
@@ -395,6 +389,10 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
   const areaName = resolveAreaName(feature, index);
+        // Debug logging to trace area name resolution
+        if (index < 3) {
+          console.log(`[Strategic Metrics] Area ${index + 1}: feature.DESCRIPTION="${feature?.DESCRIPTION}", props.DESCRIPTION="${props?.DESCRIPTION}", resolved="${areaName}"`);
+        }
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use strategic_value_score directly instead of target_value for strategic analysis

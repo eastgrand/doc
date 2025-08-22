@@ -62,6 +62,7 @@ export class FeatureImportanceRankingProcessor implements DataProcessorStrategy 
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
+          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
           feature_importance_ranking_score: primaryScore,
           score_source: 'feature_importance_ranking_score',
           target_brand_share: this.extractTargetBrandShare(record),

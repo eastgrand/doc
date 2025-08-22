@@ -84,6 +84,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
         feature_interaction_score: Math.round(interactionScore * 100) / 100, // Legacy compatibility
         rank: 0, // Will be calculated after sorting
         properties: {
+          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
           feature_interactions_score: interactionScore,
           feature_interaction_score: interactionScore, // Legacy compatibility
           score_source: 'feature_interactions_score',

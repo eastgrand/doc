@@ -62,6 +62,7 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
+          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
           algorithm_comparison_score: primaryScore,
           score_source: 'algorithm_comparison_score',
           target_brand_share: this.extractTargetBrandShare(record),

@@ -35,6 +35,12 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {
     console.log(`🎯 [STRATEGIC ANALYSIS PROCESSOR] Processing ${rawData.results?.length || 0} records for strategic expansion analysis`);
     
+    // Debug: Check first raw record
+    if (rawData.results && rawData.results.length > 0) {
+      console.log('🚨 [STRATEGIC PROCESSOR] First raw record DESCRIPTION:', rawData.results[0].DESCRIPTION);
+      console.log('🚨 [STRATEGIC PROCESSOR] First raw record keys:', Object.keys(rawData.results[0]).slice(0, 10));
+    }
+    
     if (!this.validate(rawData)) {
       throw new Error('Invalid data format for StrategicAnalysisProcessor');
     }
@@ -63,6 +69,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
+          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
           strategic_analysis_score: primaryScore,
           score_source: 'strategic_analysis_score',
           target_brand_share: this.extractTargetBrandShare(record),
@@ -82,9 +89,10 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     const rankedRecords = this.rankRecords(processedRecords);
     
     // Debug: Check if values are being corrupted
-    console.log('🚨 [STRATEGIC PROCESSOR] First 5 processed values:');
+    console.log('🚨 [STRATEGIC PROCESSOR] First 5 processed records with area names:');
     rankedRecords.slice(0, 5).forEach((record, i) => {
-      console.log(`🚨   ${i+1}. ${record.area_name}: value=${record.value}, strategic_value_score=${record.properties.strategic_value_score}`);
+      console.log(`🚨   ${i+1}. area_name="${record.area_name}", area_id="${record.area_id}", value=${record.value}`);
+      console.log(`🚨      Full record keys:`, Object.keys(record));
     });
     
     // Extract feature importance

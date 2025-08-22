@@ -95,6 +95,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
         trend_analysis_score: Math.round(trendScore * 100) / 100, // Add target variable at top level
         rank: 0, // Will be calculated after sorting
         properties: {
+          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
           trend_analysis_score: trendScore,
           score_source: 'trend_analysis_score',
           target_brand_share: targetBrandShare,

@@ -62,6 +62,7 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
+          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
           model_performance_score: primaryScore,
           score_source: 'model_performance_score',
           target_brand_share: this.extractTargetBrandShare(record),

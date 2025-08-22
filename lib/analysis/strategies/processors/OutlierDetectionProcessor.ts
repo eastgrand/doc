@@ -85,6 +85,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
         outlier_detection_score: Math.round(outlierScore * 100) / 100, // Add target variable at top level
         rank: 0, // Will be calculated after sorting
         properties: {
+          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
           outlier_detection_score: outlierScore,
           score_source: 'outlier_detection_score',
           nike_market_share: nikeShare,
