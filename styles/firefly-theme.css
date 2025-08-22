@@ -2,64 +2,66 @@
 /* Complete CSS implementation with Dark & Light Mode support */
 
 /* 
- * COLOR SELECTION RATIONALE (Updated Phase 5.1)
+ * PROFESSIONAL COLOR SCHEME (Updated Phase 6.0)
  * ============================================
- * Primary Accent: Green (Firefly-14) - Maintains brand consistency with original #33a852
- * Secondary Accent: Orange (Firefly-19) - Complementary color to green on color wheel
- * Warning: Yellow (Firefly-18) - Universal warning color
- * Error: Deep Pink (Firefly-1) - High contrast for critical alerts
- * Success: Bright Green (Firefly-13) - Positive feedback, variation of primary
+ * Based on Standard Color Scheme: 
+ * - Red (#D6191C) for lowest values/errors
+ * - Orange (#FCAD61) for mid-low values/warnings
+ * - Light Green (#A6D96A) for mid-high values
+ * - Green (#1A9641) for highest values
+ * - Primary Green (#33a852) for UI accents and branding
  * 
- * This maintains visual continuity with the existing brand while leveraging
- * the Firefly color system for enhanced visual effects and consistency.
+ * Professional and subtle styling with reduced glow effects.
+ * Maintains excellent visibility in both light and dark modes.
+ * Optimized for data visualization and business applications.
  */
 
 :root {
-  /* Dark Mode Colors (Original Firefly) */
-  --firefly-1: #ff0040;   /* Deep Pink/Red */
-  --firefly-2: #ff0080;   /* Hot Pink */
-  --firefly-3: #ff00bf;   /* Magenta */
-  --firefly-4: #ff00ff;   /* Fuchsia */
-  --firefly-5: #bf00ff;   /* Purple */
-  --firefly-6: #8000ff;   /* Blue Violet */
-  --firefly-7: #4000ff;   /* Indigo */
-  --firefly-8: #0040ff;   /* Blue */
-  --firefly-9: #0080ff;   /* Dodger Blue */
-  --firefly-10: #00bfff;  /* Deep Sky Blue */
-  --firefly-11: #00ffff;  /* Cyan */
-  --firefly-12: #00ffbf;  /* Spring Green */
-  --firefly-13: #00ff80;  /* Bright Green */
-  --firefly-14: #00ff40;  /* Lime Green */
-  --firefly-15: #40ff00;  /* Chartreuse */
-  --firefly-16: #80ff00;  /* Yellow Green */
-  --firefly-17: #bfff00;  /* Light Yellow */
-  --firefly-18: #ffff00;  /* Yellow */
-  --firefly-19: #ffbf00;  /* Orange */
-  --firefly-20: #ff8000;  /* Dark Orange */
+  /* Dark Mode Colors - Based on Standard Color Scheme */
+  --firefly-1: #D6191C;   /* Red (lowest values) - standard scheme */
+  --firefly-2: #dc2626;   /* Red variant */
+  --firefly-3: #ef4444;   /* Red lighter */
+  --firefly-4: #f87171;   /* Red very light */
+  --firefly-5: #fca5a5;   /* Red pale */
+  --firefly-6: #fed7d7;   /* Red very pale */
+  --firefly-7: #FFC085;   /* Orange lighter */
+  --firefly-8: #FCAD61;   /* Orange - standard scheme */
+  --firefly-9: #f59e0b;   /* Orange variant */
+  --firefly-10: #fbbf24;  /* Orange light */
+  --firefly-11: #fde047;  /* Yellow light */
+  --firefly-12: #C0EB75;  /* Light Green lighter */
+  --firefly-13: #A6D96A;  /* Light Green - standard scheme */
+  --firefly-14: #33a852;  /* Primary Green - exact color requested */
+  --firefly-15: #1A9641;  /* Green (highest values) - standard scheme */
+  --firefly-16: #15803d;  /* Green darker */
+  --firefly-17: #166534;  /* Green very dark */
+  --firefly-18: #FCAD61;  /* Orange for warnings */
+  --firefly-19: #D6191C;  /* Red for errors */
+  --firefly-20: #1A9641;  /* Green for success */
   --firefly-neutral: #ffffff;
 
-  /* Light Mode Colors - Muted and Professional */
-  --firefly-light-1: #b91c1c;   /* Muted Red */
-  --firefly-light-2: #be185d;   /* Muted Pink */
-  --firefly-light-3: #a21caf;   /* Muted Magenta */
-  --firefly-light-4: #9333ea;   /* Muted Purple */
-  --firefly-light-5: #7c3aed;   /* Muted Violet */
-  --firefly-light-6: #6366f1;   /* Muted Indigo */
-  --firefly-light-7: #3b82f6;   /* Muted Blue */
-  --firefly-light-8: #2563eb;   /* Muted Royal Blue */
-  --firefly-light-9: #0ea5e9;   /* Muted Sky Blue */
-  --firefly-light-10: #06b6d4;  /* Muted Cyan */
-  --firefly-light-11: #0891b2;  /* Muted Teal */
-  --firefly-light-12: #059669;  /* Muted Emerald */
-  --firefly-light-13: #16a34a;  /* Muted Green */
-  --firefly-light-14: #22c55e;  /* Muted Lime - Primary Accent */
-  --firefly-light-15: #65a30d;  /* Muted Lime Green */
-  --firefly-light-16: #84cc16;  /* Muted Yellow Green */
-  --firefly-light-17: #a3a3a3;  /* Muted Gray instead of bright yellow */
-  --firefly-light-18: #d97706;  /* Muted Amber - Warning */
-  --firefly-light-19: #ea580c;  /* Muted Orange */
-  --firefly-light-20: #dc2626;  /* Muted Red Orange */
-  --firefly-light-neutral: #374151;
+  /* Light Mode Colors - Professional versions of standard scheme */
+  --firefly-light-1: #B91C1C;   /* Red darker for light mode */
+  --firefly-light-2: #dc2626;   /* Red variant */
+  --firefly-light-3: #ef4444;   /* Red lighter */
+  --firefly-light-4: #f87171;   /* Red very light */
+  --firefly-light-5: #fca5a5;   /* Red pale */
+  --firefly-light-6: #fed7d7;   /* Red very pale */
+  --firefly-light-7: #EA8441;   /* Orange darker for light mode */
+  --firefly-light-8: #E09142;   /* Orange - muted for light mode */
+  --firefly-light-9: #f59e0b;   /* Orange variant */
+  --firefly-light-10: #fbbf24;  /* Orange light */
+  --firefly-light-11: #fde047;  /* Yellow light */
+  --firefly-light-12: #84C95A;  /* Light Green - muted for light mode */
+  --firefly-light-13: #7CB05A;  /* Light Green darker */
+  --firefly-light-14: #2E8B47;  /* Primary Green - darker for light mode */
+  --firefly-light-15: #16713E;  /* Green - darker for light mode */
+  --firefly-light-16: #15803d;  /* Green darker */
+  --firefly-light-17: #166534;  /* Green very dark */
+  --firefly-light-18: #E09142;  /* Orange for warnings */
+  --firefly-light-19: #B91C1C;  /* Red for errors */
+  --firefly-light-20: #16713E;  /* Green for success */
+  --firefly-light-neutral: #4b5563;
 
   /* Theme Variables - Default to Dark Mode */
   --theme-bg-primary: #1a1a1a;
@@ -69,11 +71,11 @@
   --theme-text-secondary: #cccccc;
   --theme-text-muted: #999999;
   --theme-border: #444444;
-  --theme-accent-primary: var(--firefly-14);    /* Lime Green - closest to #33a852 */
-  --theme-accent-secondary: var(--firefly-13);  /* Bright Green - darker green from primary */
-  --theme-warning: var(--firefly-18);           /* Yellow */
-  --theme-error: var(--firefly-1);              /* Deep Pink */
-  --theme-success: var(--firefly-13);           /* Bright Green */
+  --theme-accent-primary: var(--firefly-14);    /* Primary Green #33a852 */
+  --theme-accent-secondary: var(--firefly-15);  /* Green (highest values) */
+  --theme-warning: var(--firefly-18);           /* Orange */
+  --theme-error: var(--firefly-19);             /* Red */
+  --theme-success: var(--firefly-20);           /* Green for success */
   
   /* Map Basemap */
   --theme-basemap: "dark-gray-vector";
@@ -88,11 +90,11 @@
   --theme-text-secondary: #666666;
   --theme-text-muted: #999999;
   --theme-border: #e0e0e0;
-  --theme-accent-primary: var(--firefly-light-14);    /* Darker Lime Green - closest to #33a852 */
-  --theme-accent-secondary: var(--firefly-light-13);  /* Darker Bright Green - darker green from primary */
-  --theme-warning: var(--firefly-light-18);           /* Darker Yellow */
-  --theme-error: var(--firefly-light-1);              /* Darker Deep Pink */
-  --theme-success: var(--firefly-light-13);           /* Darker Bright Green */
+  --theme-accent-primary: var(--firefly-light-14);    /* Primary Green - darker for light mode */
+  --theme-accent-secondary: var(--firefly-light-15);  /* Green - darker for light mode */
+  --theme-warning: var(--firefly-light-18);           /* Orange for warnings */
+  --theme-error: var(--firefly-light-19);             /* Red for errors */
+  --theme-success: var(--firefly-light-20);           /* Green for success */
   
   /* Map Basemap */
   --theme-basemap: "gray-vector";
@@ -127,51 +129,52 @@ button, a, input, textarea, select,
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 6.2 - Firefly Glow Effects */
-@keyframes firefly-glow-pulse {
+/* 6.2 - Professional Subtle Effects */
+@keyframes subtle-glow-pulse {
   0%, 100% {
-    box-shadow: 0 0 8px rgba(34, 197, 94, 0.2),
-                0 0 12px rgba(34, 197, 94, 0.15),
-                inset 0 0 4px rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 4px rgba(51, 168, 82, 0.1),
+                0 0 8px rgba(51, 168, 82, 0.08),
+                inset 0 0 2px rgba(255, 255, 255, 0.03);
   }
   50% {
-    box-shadow: 0 0 10px rgba(34, 197, 94, 0.25),
-                0 0 16px rgba(34, 197, 94, 0.2),
-                inset 0 0 6px rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 6px rgba(51, 168, 82, 0.15),
+                0 0 10px rgba(51, 168, 82, 0.12),
+                inset 0 0 3px rgba(255, 255, 255, 0.05);
   }
 }
 
-/* Apply glow to primary buttons on hover */
+/* Subtle effect on primary buttons - no animation by default */
 .theme-button-primary:hover {
-  animation: firefly-glow-pulse 2s ease-in-out infinite;
-}
-
-/* Subtle glow on hover for specific elements */
-.firefly-glow-on-hover:hover {
-  box-shadow: 0 0 6px rgba(34, 197, 94, 0.15),
-              0 2px 8px rgba(34, 197, 94, 0.1);
+  box-shadow: 0 0 4px rgba(51, 168, 82, 0.2),
+              0 2px 8px rgba(51, 168, 82, 0.1);
   transition: box-shadow 0.3s ease;
 }
 
-/* Very subtle glow for links and minor elements */
+/* Very subtle hover effect for specific elements */
+.firefly-glow-on-hover:hover {
+  box-shadow: 0 0 3px rgba(51, 168, 82, 0.1),
+              0 1px 4px rgba(51, 168, 82, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Minimal glow for links and minor elements */
 .firefly-glow-subtle:hover {
-  text-shadow: 0 0 4px rgba(34, 197, 94, 0.2);
+  text-shadow: 0 0 2px rgba(51, 168, 82, 0.15);
   transition: text-shadow 0.2s ease;
 }
 
-/* Glow effect for active elements */
+/* Subtle effect for active elements - animation only on user request */
 .firefly-glow {
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.2),
-              0 0 12px rgba(34, 197, 94, 0.15);
-  animation: firefly-glow-pulse 3s ease-in-out infinite;
+  box-shadow: 0 0 4px rgba(51, 168, 82, 0.15),
+              0 0 8px rgba(51, 168, 82, 0.1);
 }
 
-/* Subtle glow for focus states */
+/* Professional focus states */
 .theme-input:focus,
 .theme-textarea:focus,
 .theme-select:focus {
   box-shadow: 0 0 0 2px var(--theme-accent-primary),
-              0 0 8px rgba(0, 255, 64, 0.15) !important;
+              0 0 4px rgba(51, 168, 82, 0.1) !important;
 }
 
 /* 6.3 - Subtle Animations */
@@ -304,43 +307,41 @@ body {
 }
 
 .firefly-point-standard {
-  background: radial-gradient(circle, currentColor 0%, currentColor 40%, transparent 70%);
+  background: radial-gradient(circle, currentColor 0%, currentColor 50%, transparent 80%);
   box-shadow: 
-    0 0 10px currentColor,
-    0 0 20px currentColor,
-    0 0 40px currentColor,
-    inset 0 0 10px rgba(255, 255, 255, 0.2);
+    0 0 4px currentColor,
+    0 0 8px rgba(0, 0, 0, 0.2),
+    inset 0 0 4px rgba(255, 255, 255, 0.1);
 }
 
 .firefly-point-shimmer {
-  background: radial-gradient(circle, currentColor 0%, currentColor 30%, transparent 60%);
+  background: radial-gradient(circle, currentColor 0%, currentColor 40%, transparent 70%);
   box-shadow: 
-    0 0 5px currentColor,
-    0 0 15px currentColor,
-    0 0 30px currentColor,
-    0 0 60px currentColor,
-    inset 0 0 15px rgba(255, 255, 255, 0.4);
-  animation: firefly-twinkle 2s ease-in-out infinite alternate;
+    0 0 3px currentColor,
+    0 0 6px currentColor,
+    0 0 12px rgba(0, 0, 0, 0.1),
+    inset 0 0 8px rgba(255, 255, 255, 0.2);
+  animation: subtle-twinkle 3s ease-in-out infinite alternate;
 }
 
-@keyframes firefly-twinkle {
+@keyframes subtle-twinkle {
   0% {
     box-shadow: 
-      0 0 5px currentColor,
-      0 0 15px currentColor,
-      0 0 30px currentColor,
-      0 0 60px currentColor,
-      inset 0 0 15px rgba(255, 255, 255, 0.4);
+      0 0 3px currentColor,
+      0 0 6px currentColor,
+      0 0 12px rgba(0, 0, 0, 0.1),
+      inset 0 0 8px rgba(255, 255, 255, 0.2);
     transform: scale(1);
+    opacity: 0.9;
   }
   100% {
     box-shadow: 
-      0 0 10px currentColor,
-      0 0 25px currentColor,
-      0 0 50px currentColor,
-      0 0 100px currentColor,
-      inset 0 0 20px rgba(255, 255, 255, 0.6);
-    transform: scale(1.1);
+      0 0 4px currentColor,
+      0 0 8px currentColor,
+      0 0 16px rgba(0, 0, 0, 0.15),
+      inset 0 0 10px rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+    opacity: 1;
   }
 }
 
@@ -361,11 +362,11 @@ body {
 
 .firefly-polygon-standard {
   background: rgba(0, 0, 0, 0.1);
-  border: 2px solid currentColor;
+  border: 1px solid currentColor;
   box-shadow: 
-    0 0 10px currentColor,
-    0 0 20px currentColor,
-    inset 0 0 10px rgba(255, 255, 255, 0.05);
+    0 0 3px currentColor,
+    0 0 6px rgba(0, 0, 0, 0.1),
+    inset 0 0 4px rgba(255, 255, 255, 0.03);
 }
 
 .firefly-polygon-inner {
@@ -388,40 +389,39 @@ body {
   height: 2px;
   background: currentColor;
   box-shadow: 
-    0 0 5px currentColor,
-    0 0 10px currentColor,
-    0 0 20px currentColor;
+    0 0 2px currentColor,
+    0 0 4px rgba(0, 0, 0, 0.1);
 }
 
 /* ===== LIGHT MODE ADAPTATIONS ===== */
 
 [data-theme="light"] .firefly-point-standard {
-  background: radial-gradient(circle, currentColor 0%, currentColor 50%, rgba(255,255,255,0.8) 80%, transparent 100%);
+  background: radial-gradient(circle, currentColor 0%, currentColor 50%, rgba(255,255,255,0.9) 80%, transparent 100%);
   box-shadow: 
-    0 0 8px rgba(0,0,0,0.3),
-    0 0 15px currentColor,
-    0 0 25px rgba(0,0,0,0.1),
-    inset 0 0 8px rgba(0,0,0,0.2),
-    inset 0 0 15px rgba(255,255,255,0.6);
-  border: 1px solid rgba(0,0,0,0.2);
+    0 0 3px rgba(0,0,0,0.2),
+    0 0 6px currentColor,
+    0 0 8px rgba(0,0,0,0.1),
+    inset 0 0 4px rgba(0,0,0,0.1),
+    inset 0 0 8px rgba(255,255,255,0.4);
+  border: 1px solid rgba(0,0,0,0.15);
 }
 
 [data-theme="light"] .firefly-polygon-standard {
-  background: rgba(255, 255, 255, 0.3);
-  border: 2px solid currentColor;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid currentColor;
   box-shadow: 
-    0 0 8px rgba(0,0,0,0.2),
-    0 0 15px currentColor,
-    inset 0 0 10px rgba(255,255,255,0.6),
-    inset 0 0 20px rgba(0,0,0,0.1);
+    0 0 3px rgba(0,0,0,0.15),
+    0 0 6px currentColor,
+    inset 0 0 4px rgba(255,255,255,0.4),
+    inset 0 0 8px rgba(0,0,0,0.05);
 }
 
 [data-theme="light"] .firefly-line {
-  height: 3px;
+  height: 2px;
   box-shadow: 
-    0 0 5px rgba(0,0,0,0.3),
-    0 0 10px currentColor,
-    0 0 15px rgba(0,0,0,0.2);
+    0 0 2px rgba(0,0,0,0.2),
+    0 0 4px currentColor,
+    0 0 6px rgba(0,0,0,0.1);
   border-radius: 1px;
 }
 
@@ -492,13 +492,13 @@ body {
 
 .theme-button:hover {
   background-color: var(--theme-accent-primary);
-  box-shadow: 0 0 10px var(--theme-accent-primary);
+  box-shadow: 0 0 4px rgba(51, 168, 82, 0.2);
 }
 
 .theme-button-primary {
   background-color: var(--theme-accent-primary);
   color: var(--theme-bg-primary);
-  box-shadow: 0 0 10px var(--theme-accent-primary);
+  box-shadow: 0 0 4px rgba(51, 168, 82, 0.15);
 }
 
 /* Inputs */
@@ -513,7 +513,7 @@ body {
 .theme-input:focus {
   outline: none;
   border-color: var(--theme-accent-primary);
-  box-shadow: 0 0 5px var(--theme-accent-primary);
+  box-shadow: 0 0 3px rgba(51, 168, 82, 0.2);
 }
 
 /* Cards/Panels */
@@ -542,7 +542,7 @@ body {
 .theme-tab-active {
   color: var(--theme-accent-primary);
   border-bottom-color: var(--theme-accent-primary);
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  box-shadow: 0 0 4px rgba(51, 168, 82, 0.2);
 }
 
 .theme-tab:hover:not(.theme-tab-active) {
@@ -556,14 +556,14 @@ body {
   border: 1px solid var(--theme-border);
   border-radius: 12px;
   box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.5),
-    0 0 20px var(--theme-accent-primary);
+    0 10px 30px rgba(0, 0, 0, 0.3),
+    0 0 8px rgba(51, 168, 82, 0.1);
 }
 
 [data-theme="light"] .theme-dialog {
   box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.2),
-    0 0 20px var(--theme-accent-primary);
+    0 10px 30px rgba(0, 0, 0, 0.15),
+    0 0 6px rgba(46, 139, 71, 0.1);
 }
 
 /* ===== ACCESSIBILITY & PERFORMANCE ===== */
