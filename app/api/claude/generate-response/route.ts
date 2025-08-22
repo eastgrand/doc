@@ -1483,6 +1483,34 @@ export async function POST(req: NextRequest) {
         };
 
         const { messages, metadata, featureData, persona } = body;
+
+        // --- Payload guard to prevent 413 and accept compact client summaries ---
+        try {
+          const approxBodySize = (() => {
+            try { return JSON.stringify(body).length; } catch { return -1; }
+          })();
+          console.log('[Claude] Payload meta:', {
+            approxBodySize,
+            hasSummary: !!(body as any).summary,
+            hasFeatureShadows: Array.isArray((body as any).featureShadows),
+            featureDataType: Array.isArray(featureData) ? 'array' : typeof featureData,
+            featureDataLayers: Array.isArray(featureData) ? featureData.length : 0
+          });
+
+          // If raw feature arrays are attempted and appear very large, reject early with guidance
+          if (Array.isArray(featureData)) {
+            const totalFeatures = featureData.reduce((acc: number, l: any) => acc + (Array.isArray(l?.features) ? l.features.length : 0), 0);
+            if (totalFeatures > 5000) {
+              console.warn('[Claude] Rejecting oversized raw feature payload:', { totalFeatures });
+              return NextResponse.json({
+                error: 'Payload too large: send compact client summary instead',
+                hint: 'Use client-side summarization. Include { summary, featureShadows } rather than raw features.'
+              }, { status: 413 });
+            }
+          }
+        } catch (e) {
+          console.warn('[Claude] Payload meta logging failed:', e);
+        }
         
         // 🎯 CHAT OPTIMIZATION: Handle contextual follow-up questions efficiently
         const isContextualChat = metadata?.isContextualChat || false;
@@ -1541,8 +1569,50 @@ export async function POST(req: NextRequest) {
 
         let processedLayersData: ProcessedLayerResult[] = [];
 
+        // Accept compact client-side summary payloads and convert to synthetic layers
+        const clientSummary = (body as any)?.summary as any;
+        if (clientSummary && Array.isArray(clientSummary.layers) && clientSummary.layers.length > 0) {
+          console.log('[Claude] Using client summary layers:', clientSummary.layers.length);
+          try {
+            processedLayersData = clientSummary.layers.map((ls: any, idx: number) => {
+              const examples: Array<{ id: string; name: string; value: number }> = [];
+              if (Array.isArray(ls.top)) examples.push(...ls.top.slice(0, 5));
+              if (Array.isArray(ls.bottom)) examples.push(...ls.bottom.slice(0, 3));
+
+              const features = examples.map((e, i) => ({
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: [0, 0] },
+                properties: {
+                  id: e.id,
+                  area_name: e.name,
+                  target_value: e.value,
+                  thematic_value: e.value,
+                  SUMMARY_STATS: ls.stats ? JSON.stringify(ls.stats) : undefined,
+                  SUMMARY_FIELD: ls.numericField || ls.field || 'value',
+                  SUMMARY_FEATURE_COUNT: ls.featureCount
+                }
+              })) as unknown as LocalGeospatialFeature[];
+
+              return {
+                layerId: ls.layerId || `client-summary-${idx}`,
+                layerName: ls.layerName || 'Client Summary',
+                layerType: ls.layerType || 'summary',
+                layer: {} as any,
+                features,
+                extent: null,
+                fields: [],
+                type: 'single-layer',
+                field: ls.numericField || ls.field,
+              } as ProcessedLayerResult;
+            });
+          } catch (err) {
+            console.warn('[Claude] Failed to convert client summary to layers, falling back:', err);
+            processedLayersData = [];
+          }
+        }
+
         // 🎯 FAST PATH: For contextual chat, use simplified data processing
-        if (isContextualChat && featureData) {
+        if (processedLayersData.length === 0 && isContextualChat && featureData) {
             console.log('🎯 [CHAT STEP 1] Using fast-path data processing');
             
             // For contextual follow-ups, use simplified processing without heavy analysis
@@ -1578,7 +1648,7 @@ export async function POST(req: NextRequest) {
             }
         }
         // 🎯 FULL PATH: For initial questions, use complete data processing
-        else if (featureData) {
+  else if (processedLayersData.length === 0 && featureData) {
           console.log('[Claude] Processing featureData from request body');
           console.log('[Claude DEBUG] featureData structure:', {
             isArray: Array.isArray(featureData),

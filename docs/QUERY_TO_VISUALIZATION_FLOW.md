@@ -438,41 +438,56 @@ if (scoreConfig) {
 }
 ```
 
-### Step 7.5: Claude API Data Optimization (NEW 2025)
+### Step 7.5: Claude API Data Optimization (Client-first, Aug 2025)
 
-**Component**: `app/api/claude/generate-response/data-summarization/` modules *(NEW)*
+Primary components:
 
-Before data is sent to Claude API for analysis, the system now uses an intelligent summarization system to prevent 413 (request too large) errors while maintaining analytical accuracy.
+- Client summarizer: `utils/chat/client-summarizer.ts`
+- Payload builder: `utils/chat/build-claude-payload.ts`
+- Chat sender: `services/chat-service.ts`
+- API route (guard + summary ingestion): `app/api/claude/generate-response/route.ts`
 
-#### Optimized Data Flow
+
+The system now defaults to a client-first compact payload for chat to prevent 413 (Request Entity Too Large) while maintaining analytical accuracy. The browser summarizes the already-loaded dataset into statistics, histograms, and exemplar sets, then sends that summary to the Claude API. The server accepts this summary, converts it into synthetic processed layer(s) for downstream prompt generation, and enforces guardrails against oversized raw payloads. Server-side summarization modules remain as a fallback.
+
+Initial analysis vs follow-up chat:
+
+- Initial analysis (new session): FormData upload (blobUrl) OR JSON with `isContextualChat: false` → full/legacy processing, blob download when provided.
+- Follow-up chat (contextual): JSON with `metadata.isContextualChat: true` → client builds `{ summary, featureShadows }`; server synthesizes lightweight layers from summary and skips blob download.
+
+
+#### Optimized Data Flow (Updated)
 
 ```typescript
-// 1. Force optimization for large datasets to prevent 413 errors
-const shouldForceOptimization = features.length >= 200; // Very aggressive prevention
-console.log(`[Claude Prompt Gen] Dataset size check: ${features.length} features, forceOptimization: ${shouldForceOptimization}`);
-
-// 2. Check if optimization is needed
-const hasComprehensiveSummary = processedLayersData.some(layer => layer.isComprehensiveSummary);
-const wouldExceedLimits = estimatePayloadSize(processedLayersData) > 50KB;
-
-if (!hasComprehensiveSummary && (wouldExceedLimits || shouldForceOptimization)) {
-  // 3. Use optimized summarization system
-  const { replaceExistingFeatureEnumeration } = await import('./data-summarization/IntegrationBridge');
-  
-  const optimizedSummary = replaceExistingFeatureEnumeration(
-    processedLayerData,
-    { [layerResult.layerId]: layerConfig },
-    metadata,
-    currentLayerPrimaryField,
-    shouldForceOptimization  // NEW: Force parameter for aggressive 413 prevention
-  );
-  
-  // 4. Send compact summary to Claude API instead of full enumeration
-  dataSummary += optimizedSummary; // ~780 characters vs 50,000+
-} else {
-  // 5. Use existing feature enumeration for small datasets
-  // Original logic preserved for backward compatibility
+// Primary path (client-first):
+// Client builds compact summary; server ingests and synthesizes processed layers.
+if (body.summary && !Array.isArray(body.featureData)) {
+  processedLayersData = synthesizeFromSummary(body.summary);
 }
+
+// Fallback path (server-side or legacy small arrays):
+const hasComprehensiveSummary = processedLayersData.some(layer => (layer as any).isComprehensiveSummary);
+const wouldExceedLimits = estimatePayloadSize(processedLayersData) > 50 * 1024;
+if (!hasComprehensiveSummary && wouldExceedLimits) {
+  dataSummary += optimizedSummary; // server-side summary
+} else {
+  // Use feature enumeration only for small datasets
+}
+
+// API guardrails: early reject oversized raw feature arrays
+if (Array.isArray(featureData)) {
+  const totalFeatures = featureData.reduce((n, l) => n + (Array.isArray(l?.features) ? l.features.length : 0), 0);
+  if (totalFeatures > 5000) throw new PayloadTooLargeError('Send client summary instead');
+}
+
+// Example client payload (truncated):
+// {
+//   messages: [...],
+//   metadata: { isContextualChat: true, payloadStrategy: 'client-summary-v1' },
+//   persona: 'strategist',
+//   summary: { totalLayers, totalFeatures, layers: [{ layerId, featureCount, numericField, stats, histogram, top, bottom, samples }] },
+//   featureShadows: [{ layerId, layerName, featureCount, field }]
+// }
 ```
 
 #### Summarization Architecture

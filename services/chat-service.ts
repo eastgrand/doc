@@ -1,10 +1,15 @@
 // Chat service to handle API requests outside of React component context
 // This prevents Fast Refresh issues with fetch operations
 
+export interface ChatMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
 export interface ChatRequest {
-  messages: any[];
-  metadata: any;
-  featureData: any[];
+  messages: ChatMessage[];
+  metadata: Record<string, unknown>;
+  featureData: import('@/types/geospatial-chat').ProcessedLayerResult[];
   persona: string;
 }
 
@@ -13,36 +18,14 @@ export interface ChatResponse {
 }
 
 export async function sendChatMessage(request: ChatRequest, options?: { signal?: AbortSignal }): Promise<ChatResponse> {
-  console.log('[ChatService] Sending chat message to API using JSON format with all required data');
-  
-  // Chat needs the full context (analysis data, messages, dataset, persona) so we use JSON format
-  // This ensures all parameters including persona are properly passed
+  console.log('[ChatService] Preparing compact chat payload');
+  const { buildClaudePayload } = await import('@/utils/chat/build-claude-payload');
+  const payload = buildClaudePayload(request);
+
   const response = await fetch('/api/claude/generate-response', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      messages: request.messages,
-      metadata: { 
-        ...request.metadata, 
-        isContextualChat: true, // Enable fast-path processing
-        enableOptimization: true, // Enable payload optimization
-        forceOptimization: true // Force optimization to prevent 413 errors
-      },
-      featureData: request.featureData && request.featureData.length > 0 
-        ? request.featureData 
-        : [{ // Provide minimal data structure if empty
-            layerId: 'chat_context',
-            layerName: 'Chat Context',
-            layerType: 'polygon',
-            features: [{
-              properties: { area_name: 'Chat Session', context: 'interactive' },
-              geometry: { type: 'Point', coordinates: [0, 0] }
-            }]
-          }],
-      persona: request.persona
-    }),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
     signal: options?.signal
   });
 
