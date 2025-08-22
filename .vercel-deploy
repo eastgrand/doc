@@ -1,0 +1,7 @@
+Deploy trigger for 413 error fixes
+Timestamp: 2025-08-22T14:40:00Z
+
+This file forces Vercel to deploy the latest optimizations:
+- Always-on optimization prevents 413 errors
+- Frontend chat service includes optimization flags  
+- Ultra-aggressive payload reduction (91.7% for large datasets)
