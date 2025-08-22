@@ -13,6 +13,8 @@ describe('ChatStateManager', () => {
 
   afterEach(() => {
     manager.endSession(sessionId);
+    // Ensure no background timers keep Jest open
+  (manager as ChatStateManager).stopCleanupInterval?.();
   });
 
   describe('Session Management', () => {

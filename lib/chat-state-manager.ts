@@ -9,7 +9,7 @@ export interface ChatMessage {
   content: string;
   role: 'user' | 'assistant' | 'system';
   timestamp: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
@@ -44,7 +44,7 @@ export interface DataContext {
     spatialBounds?: [number, number, number, number];
   };
   availableMetrics: string[];
-  currentFilters: Record<string, any>;
+  currentFilters: Record<string, unknown>;
 }
 
 /**
@@ -53,7 +53,7 @@ export interface DataContext {
 interface UserPreferences {
   preferredVisualizationTypes?: VisualizationType[];
   preferredMetrics?: string[];
-  defaultFilters?: Record<string, any>;
+  defaultFilters?: Record<string, unknown>;
   language?: string;
 }
 
@@ -74,10 +74,15 @@ export interface ChatState {
 export class ChatStateManager {
   private states: Map<string, ChatState>;
   private readonly DEFAULT_SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+  private cleanupTimer: NodeJS.Timeout | null = null;
 
   constructor() {
     this.states = new Map();
-    this.startCleanupInterval();
+    // Avoid starting background timers in test environments to prevent Jest open handle leaks
+    const isTestEnv = process.env.NODE_ENV === 'test' || !!process.env.JEST_WORKER_ID;
+    if (!isTestEnv) {
+      this.startCleanupInterval();
+    }
   }
 
   /**
@@ -109,7 +114,7 @@ export class ChatStateManager {
   /**
    * Adds a message to the chat history
    */
-  addMessage(sessionId: string, content: string, role: 'user' | 'assistant' | 'system', metadata?: Record<string, any>): void {
+  addMessage(sessionId: string, content: string, role: 'user' | 'assistant' | 'system', metadata?: Record<string, unknown>): void {
     const state = this.getState(sessionId);
     const message: ChatMessage = {
       id: uuidv4(),
@@ -235,7 +240,8 @@ export class ChatStateManager {
    * Cleans up expired sessions
    */
   private startCleanupInterval(): void {
-    setInterval(() => {
+    // Store timer so tests or runtime can stop it if needed
+    this.cleanupTimer = setInterval(() => {
       const now = Date.now();
       for (const [sessionId, state] of this.states.entries()) {
         const lastMessage = state.messages[state.messages.length - 1];
@@ -244,6 +250,11 @@ export class ChatStateManager {
         }
       }
     }, 5 * 60 * 1000); // Check every 5 minutes
+    // Do not keep the Node event loop alive solely for this timer
+    const maybeTimer = this.cleanupTimer as unknown as { unref?: () => void };
+    if (typeof maybeTimer.unref === 'function') {
+      maybeTimer.unref();
+    }
   }
 
   /**
@@ -251,6 +262,16 @@ export class ChatStateManager {
    */
   endSession(sessionId: string): void {
     this.states.delete(sessionId);
+  }
+
+  /**
+   * Stop background cleanup interval (useful for graceful shutdown or tests)
+   */
+  stopCleanupInterval(): void {
+    if (this.cleanupTimer) {
+      clearInterval(this.cleanupTimer);
+      this.cleanupTimer = null;
+    }
   }
 }
 

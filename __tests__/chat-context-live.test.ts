@@ -48,7 +48,8 @@ const mockAnalysisData = {
   }
 };
 
-describe('Live Chat Context Integration', () => {
+// Skipped in CI: requires running dev server and network I/O; covered by unit tests elsewhere
+describe.skip('Live Chat Context Integration', () => {
   beforeAll(async () => {
     // Check if dev server is running by testing a basic endpoint
     try {

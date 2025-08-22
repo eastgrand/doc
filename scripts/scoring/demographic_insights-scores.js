@@ -212,11 +212,41 @@ topPerformers.forEach((record, index) => {
   console.log(`   ${index + 1}. ${record.DESCRIPTION || record.ID}: ${record.demographic_insights_score.toFixed(1)} score`);
 });
 
+// Load model performance data from training results
+const trainingResultsPath = path.join(__dirname, '../../projects/HRB/trained_models/training_results.json');
+console.log(`🔍 Looking for training results at: ${trainingResultsPath}`);
+let modelPerformance = null;
+try {
+  // Load and fix JSON (replace Infinity values with null to make it valid JSON)
+  const rawJson = fs.readFileSync(trainingResultsPath, 'utf8').replace(/Infinity/g, 'null');
+  const trainingResults = JSON.parse(rawJson);
+  // Use the demographic analysis model performance
+  modelPerformance = {
+    model_used: 'Demographic Analysis Model',
+    r2_score: trainingResults.demographic_analysis.performance.r2_score,
+    rmse: trainingResults.demographic_analysis.performance.rmse,
+    mae: trainingResults.demographic_analysis.performance.mae,
+    confidence: trainingResults.demographic_analysis.performance.r2_score > 0.8 ? 'High Confidence' : 
+                trainingResults.demographic_analysis.performance.r2_score > 0.6 ? 'Strong Confidence' : 
+                trainingResults.demographic_analysis.performance.r2_score > 0.4 ? 'Medium Confidence' : 'Low Confidence'
+  };
+  console.log(`📊 Loaded model performance: R²=${modelPerformance.r2_score.toFixed(3)}, Confidence=${modelPerformance.confidence}`);
+} catch (error) {
+  console.warn('⚠️ Could not load training results, using default model performance');
+  console.warn(`Error details: ${error.message}`);
+  modelPerformance = {
+    model_used: 'Demographic Analysis Model',
+    r2_score: 'Not recorded',
+    confidence: 'Not recorded'
+  };
+}
+
 // Add scoring metadata
 analysisData.demographic_insights_scoring_metadata = {
   scoring_methodology: 'data_driven_shap_importance',
   algorithm_source: 'generated_from_feature_importance_analysis',
   generation_timestamp: new Date().toISOString(),
+  model_performance: modelPerformance,
   score_statistics: {
     mean: avgScore,
     median: medianScore,

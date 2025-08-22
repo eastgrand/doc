@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+// Removed unused Alert imports
 import { 
   Dialog, 
   DialogContent, 
@@ -22,6 +22,15 @@ import {
 import { ErrorBoundary } from './ErrorBoundary';
 import { sendChatMessage } from '@/services/chat-service';
 import { StatsWithInfo } from '@/components/stats/StatsWithInfo';
+import type { AnalysisResult, AnalysisMetadata } from '@/lib/analysis/types';
+
+// Extend AnalysisMetadata with chat-specific optional fields used in UI payloads
+type LocalChatMetadata = Partial<AnalysisMetadata> & {
+  query?: string;
+  spatialFilterIds?: string[];
+  filterType?: string;
+  rankingContext?: unknown;
+};
 
 // Wrapper component for performance metrics - commented out as badges are no longer displayed
 // const PerformanceMetrics = ({ analysisResult, className }: { analysisResult: any, className: string }) => {
@@ -30,8 +39,10 @@ import { StatsWithInfo } from '@/components/stats/StatsWithInfo';
 // };
 
 interface UnifiedAnalysisResponse {
-  analysisResult: any;
-  metadata?: any;
+  analysisResult: AnalysisResult;
+  // Accept any upstream metadata shape (e.g., from UnifiedAnalysisWrapper);
+  // this component safely narrows to LocalChatMetadata at usage sites.
+  metadata?: unknown;
 }
 
 interface ChatInterfaceProps {
@@ -50,6 +61,37 @@ interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
+}
+
+// Utility: create a clean, serializable copy of records for safe transport
+type SafeRecord = Record<string, unknown>;
+function sanitizeFeatureData(records: unknown[]): SafeRecord[] {
+  if (!Array.isArray(records) || records.length === 0) return [];
+
+  return records.map((record) => {
+    if (!record || typeof record !== 'object') return record as SafeRecord;
+
+    const cleanRecord: SafeRecord = {};
+    for (const [key, value] of Object.entries(record)) {
+      if (
+        value !== undefined &&
+        value !== null &&
+        typeof value !== 'function' &&
+        typeof value !== 'symbol'
+      ) {
+        if (typeof value === 'object') {
+          try {
+            cleanRecord[key] = JSON.parse(JSON.stringify(value));
+          } catch (e) {
+            console.warn(`[ChatInterface] Skipping problematic property ${key}:`, e);
+          }
+        } else {
+          cleanRecord[key] = value;
+        }
+      }
+    }
+    return cleanRecord;
+  });
 }
 
 // Randomized thinking messages to make chat feel more natural
@@ -73,7 +115,6 @@ function getRandomThinkingMessage(): string {
 // Inner component - following QueryInterface pattern with full UnifiedAnalysisChat functionality
 const ChatInterfaceInner: React.FC<ChatInterfaceProps> = ({ 
   analysisResult, 
-  onExportChart, 
   onZipCodeClick, 
   persona = 'strategist',
   messages: externalMessages,
@@ -132,7 +173,7 @@ const ChatInterfaceInner: React.FC<ChatInterfaceProps> = ({
       return { isCommand: false };
     }
 
-    const [command, ...args] = input.slice(1).split(' ');
+    const [command] = input.slice(1).split(' ');
     const lowerCommand = command.toLowerCase();
 
     switch (lowerCommand) {
@@ -171,7 +212,7 @@ const ChatInterfaceInner: React.FC<ChatInterfaceProps> = ({
               action: 'export'
             };
           }
-        } catch (error) {
+  } catch {
           return { 
             isCommand: true, 
             response: '❌ **Export Failed**\n\nUnable to copy to clipboard. Please try selecting and copying manually.',
@@ -296,20 +337,41 @@ ${conversationText}
     }
   }, [onZipCodeClick]);
 
-  const renderFormattedMessage = useCallback((content: string) => {
-    // Check if this is a stats section that should be enhanced
+  const renderFormattedMessage = useCallback((message: ChatMessage) => {
+    const content = message.content;
+    // Determine if enhanced stats rendering should be allowed for this message
+    // Rule: Only for the initial assistant analysis or when user explicitly asks for stats
+    const firstAssistantIndex = messages.findIndex(m => m.role === 'assistant');
+    const messageIndex = messages.findIndex(m => m.id === message.id);
+    const isInitialAssistant = message.role === 'assistant' && messageIndex === firstAssistantIndex;
+
+    // Find the most recent user message before this one
+    let previousUserContent = '';
+    for (let i = messageIndex - 1; i >= 0; i--) {
+      if (messages[i].role === 'user') {
+        previousUserContent = messages[i].content || '';
+        break;
+      }
+    }
+
+    const explicitStatsRequestPattern = /(\bquick\s*stats\b|\bstats\b|statistics|model\s*stats|model\s*performance|\br2\b|r²|confidence|model\s*used|show\s*stats|summary\s*stats|distribution|quartiles|\biqr\b)/i;
+    const userExplicitlyRequestedStats = explicitStatsRequestPattern.test(previousUserContent);
+
+    const allowEnhancedStats = isInitialAssistant || userExplicitlyRequestedStats;
+
+    // Check if this content contains stats/model metrics
     const statsKeywords = ['Quick Statistics', 'Brand Difference Statistics', 'Distribution Analysis', 'Key Patterns', 'AI Analysis'];
-    const hasStats = statsKeywords.some(keyword => content.includes(`**${keyword}**`)) ||
-                     content.includes('Model Used:') ||
-                     content.includes('R² Score:') ||
-                     content.includes('Quartiles:') ||
-                     content.includes('IQR:');
-    
-    // For stats sections, use enhanced rendering with info tooltips
-    if (hasStats) {
+    const hasStatsLikeContent = statsKeywords.some(keyword => content.includes(`**${keyword}**`)) ||
+                                content.includes('Model Used:') ||
+                                content.includes('R² Score:') ||
+                                content.includes('Quartiles:') ||
+                                content.includes('IQR:');
+
+    // Use enhanced rendering only when allowed
+    if (allowEnhancedStats && hasStatsLikeContent) {
       return <StatsWithInfo content={content} className="space-y-2" onZipCodeClick={handleZipCodeClick} />;
     }
-    
+
     // Split content into lines to preserve formatting
     const lines = content.split('\n');
     
@@ -388,7 +450,7 @@ ${conversationText}
         );
       }
     });
-  }, [handleZipCodeClick]);
+  }, [handleZipCodeClick, messages]);
 
   React.useEffect(() => {
     scrollToBottom();
@@ -405,11 +467,12 @@ ${conversationText}
     setIsProcessing(true);
 
     // Get the analysis data
-    const { analysisResult: result, metadata } = analysisResult;
-    const analysisData = result.data?.records || [];
+  const { analysisResult: result, metadata } = analysisResult;
+  const meta = (metadata || {}) as LocalChatMetadata;
+  const analysisData = result.data?.records || [];
     
-    // Start with query display and analyzing message  
-    const queryText = metadata?.query || 'Analysis';
+  // Start with query display and analyzing message  
+  const queryText = meta.query || 'Analysis';
     let messageContent = `**Query:** "${queryText}"\n\n---\n\nAnalyzing ${analysisData.length} areas...`;
     
     // Declare at top level so it's accessible in error handler
@@ -488,37 +551,11 @@ ${conversationText}
     // Only generate AI analysis in full mode
     if (analysisMode !== 'full') return;
 
-    try {
+  try {
       // console.log('[ChatInterface] Generating initial AI narrative...');
       
-      // Build the request payload with sanitized data
-      const sanitizeFeatureData = (records: any[]) => {
-        if (!records || records.length === 0) return [];
-        
-        return records.map(record => {
-          if (!record || typeof record !== 'object') return record;
-          
-          const cleanRecord: any = {};
-          for (const [key, value] of Object.entries(record)) {
-            if (value !== undefined && 
-                value !== null && 
-                typeof value !== 'function' &&
-                typeof value !== 'symbol') {
-              
-              if (typeof value === 'object') {
-                try {
-                  cleanRecord[key] = JSON.parse(JSON.stringify(value));
-                } catch (e) {
-                  console.warn(`[ChatInterface] Skipping problematic property ${key}:`, e);
-                }
-              } else {
-                cleanRecord[key] = value;
-              }
-            }
-          }
-          return cleanRecord;
-        });
-      };
+      // Narrow metadata typing for safe access
+  // meta already defined above for this scope
 
   const requestPayload = {
         messages: [{
@@ -529,9 +566,9 @@ ${conversationText}
           query: `Analyze the ${result.endpoint?.replace('/', '').replace(/-/g, ' ')} results`,
           analysisType: result.endpoint?.replace('/', '').replace(/-/g, '_') || 'strategic_analysis',
           relevantLayers: ['unified_analysis'],
-          spatialFilterIds: (metadata as any)?.spatialFilterIds,
-          filterType: (metadata as any)?.filterType,
-          rankingContext: (metadata as any)?.rankingContext,
+          spatialFilterIds: meta.spatialFilterIds,
+          filterType: meta.filterType,
+          rankingContext: meta.rankingContext,
           isClustered: result.data?.isClustered,
           // Skip clusterAnalysis to reduce complexity
           isContextualChat: false
@@ -541,7 +578,7 @@ ${conversationText}
           layerName: 'Analysis Results',
           layerType: 'polygon',
           // Wrap records as properties so the summarizer can read fields consistently
-          features: (sanitizeFeatureData(result.data?.records || []) as any[]).map(r => ({ properties: r }))
+          features: sanitizeFeatureData(result.data?.records || []).map(r => ({ properties: r }))
         }],
         persona: persona
       };
@@ -606,7 +643,7 @@ ${conversationText}
         }
         
         // Remove the loading indicator and append AI analysis
-        const statsEndIndex = messageContent.lastIndexOf('**AI Analysis**');
+    const statsEndIndex = messageContent.lastIndexOf('**AI Analysis**');
         if (statsEndIndex > -1) {
           messageContent = messageContent.substring(0, statsEndIndex);
         }
@@ -645,7 +682,7 @@ ${conversationText}
       }
       
       // Keep the stats and show error for AI portion
-      const statsEndIndex = messageContent.lastIndexOf('🤖 **AI Analysis**');
+  const statsEndIndex = messageContent.lastIndexOf('**AI Analysis**');
       if (statsEndIndex > -1) {
         messageContent = messageContent.substring(0, statsEndIndex);
       }
@@ -664,7 +701,7 @@ ${conversationText}
       setIsProcessing(false);
       isGeneratingNarrativeRef.current = false;
     }
-  }, [analysisResult, persona, setMessages, setHasGeneratedNarrative, analysisMode, isProcessing, hasGeneratedNarrative]);
+  }, [analysisResult, persona, setMessages, setHasGeneratedNarrative, analysisMode, hasGeneratedNarrative]);
 
   // Auto-generate AI narrative when analysisResult is available (only once initially)
   React.useEffect(() => {
@@ -719,7 +756,7 @@ ${conversationText}
     setInputValue('');
     setIsProcessing(true);
 
-    try {
+  try {
       // console.log('[ChatInterface] Sending chat message via service');
       
       const { analysisResult: result, metadata } = analysisResult;
@@ -750,42 +787,7 @@ ${conversationText}
           }
         ];
 
-      // Build optimized request payload with sanitized data to prevent Fast Refresh
-      const sanitizeFeatureData = (records: any[]) => {
-        if (!records || records.length === 0) return [];
-        
-        // Create plain objects to avoid proxy/getter issues
-        return records.map(record => {
-          if (!record || typeof record !== 'object') return record;
-          
-          // Create a clean, serializable copy
-          const cleanRecord: any = {};
-          
-          // Only copy safe, serializable properties
-          for (const [key, value] of Object.entries(record)) {
-            // Skip functions, undefined, and complex objects that might cause issues
-            if (value !== undefined && 
-                value !== null && 
-                typeof value !== 'function' &&
-                typeof value !== 'symbol') {
-              
-              if (typeof value === 'object') {
-                // Handle nested objects carefully
-                try {
-                  cleanRecord[key] = JSON.parse(JSON.stringify(value));
-                } catch (e) {
-                  // Skip problematic nested objects
-                  console.warn(`[ChatInterface] Skipping problematic property ${key}:`, e);
-                }
-              } else {
-                cleanRecord[key] = value;
-              }
-            }
-          }
-          
-          return cleanRecord;
-        });
-      };
+  const meta = (metadata || {}) as LocalChatMetadata;
 
   const requestPayload = {
         messages: optimizedMessages,
@@ -793,9 +795,9 @@ ${conversationText}
           query: userMessage.content,
           analysisType: result.endpoint?.replace('/', '').replace(/-/g, '_') || 'strategic_analysis',
           relevantLayers: ['unified_analysis'],
-          spatialFilterIds: (metadata as any)?.spatialFilterIds,
-          filterType: (metadata as any)?.filterType,
-          rankingContext: (metadata as any)?.rankingContext,
+          spatialFilterIds: meta.spatialFilterIds,
+          filterType: meta.filterType,
+          rankingContext: meta.rankingContext,
           isClustered: result.data?.isClustered,
           // Skip clusterAnalysis entirely to reduce payload complexity
           targetVariable: result.data?.targetVariable,
@@ -806,7 +808,7 @@ ${conversationText}
           layerId: 'unified_analysis',
           layerName: 'Analysis Results',
           layerType: 'polygon',
-          features: (sanitizeFeatureData(result.data?.records || []) as any[]).map(r => ({ properties: r }))
+          features: sanitizeFeatureData(result.data?.records || []).map(r => ({ properties: r }))
         }],
         persona: persona
       };
@@ -897,7 +899,7 @@ ${conversationText}
                   onClick={() => handleMessageClick(message)}
                 >
                   <div className="whitespace-pre-wrap" style={{ lineHeight: '1.5' }}>
-                    {renderFormattedMessage(message.content)}
+                    {renderFormattedMessage(message)}
                   </div>
                 </div>
                 {/* Copy button */}
@@ -1014,7 +1016,7 @@ ${conversationText}
           <div id="analysis-details-description" className="space-y-4">
             <div>
               <div className="text-sm leading-relaxed">
-                {selectedMessage?.content && renderFormattedMessage(selectedMessage.content)}
+                {selectedMessage && renderFormattedMessage(selectedMessage)}
               </div>
             </div>
             {analysisResult.analysisResult.data.records && (
