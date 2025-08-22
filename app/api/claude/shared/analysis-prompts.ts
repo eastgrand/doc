@@ -1410,13 +1410,18 @@ When the query mentions specific cities (e.g., "NYC vs Philadelphia", "Boston ma
 SUPPORTED CITIES: New York (NYC), Philadelphia, Chicago, Los Angeles, Boston, Miami, Seattle, Denver, Atlanta, San Francisco, Washington DC, Dallas, Houston, Phoenix, Detroit, Minneapolis, Las Vegas, San Diego, Tampa, Orlando, and other major metropolitan areas.
 
 MODEL ATTRIBUTION REQUIREMENTS:
-ALWAYS include model traceability information at the END of your analysis in this format:
+Include model traceability at the END only when values are available. Use this format and OMIT lines that aren't available:
 
 ---
 **Model Attribution:**
-• **Model Used:** [Use hardcoded model mapping based on endpoint - see ENDPOINT_MODEL_MAPPING below]
-• **R² Score:** [Extract from data if available, otherwise use "Not recorded"]
-• **Confidence:** [If R² is "Not recorded" then use "Not recorded", otherwise map performance level: Excellent = High Confidence, Good = Strong Confidence, Moderate = Medium Confidence, Poor = Low Confidence]
+• **Model Used:** [Use hardcoded model mapping based on endpoint - see ENDPOINT_MODEL_MAPPING below] (omit if unknown)
+• **R² Score:** [Include only if available; numeric to 3 decimals]
+• **Confidence:** [Include only if R² is available; map performance level: Excellent = High Confidence, Good = Strong Confidence, Moderate = Medium Confidence, Poor = Low Confidence]
+
+LOCATION NAMING REQUIREMENTS:
+- Use DESCRIPTION or area_name for area labels (e.g., "10001 (New York)")
+- If not present, use common name fields (NAME, CITY, MUNICIPALITY, REGION)
+- As a last resort, use the ZIP code; never emit placeholders like "Unknown Area", "Area 1", or "Region 1"
 
 ENDPOINT MODEL MAPPING (use this hardcoded data instead of extracting from endpoint):
 - strategic-analysis: Strategic Analysis Model

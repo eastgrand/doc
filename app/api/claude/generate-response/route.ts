@@ -93,6 +93,30 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
   };
   
   const scoreField = getScoreField(analysisType);
+
+  // Helper to resolve a human-friendly area name consistently
+  const resolveAreaName = (props: any, index: number): string => {
+    try {
+      const f = { properties: props } as LocalGeospatialFeature;
+      const name = getLocationName(f);
+      if (name && name !== 'Unknown Location') return name;
+      // Try DESCRIPTION/area_name directly if present
+      if (typeof props?.DESCRIPTION === 'string' && props.DESCRIPTION.trim()) return props.DESCRIPTION.trim();
+      if (typeof props?.area_name === 'string' && props.area_name.trim()) return props.area_name.trim();
+      // Try common name fields
+      const nameFields = ['NAME', 'CITY', 'MUNICIPALITY', 'REGION', 'CSDNAME', 'FEDNAME'];
+      for (const field of nameFields) {
+        if (props?.[field]) return String(props[field]).trim();
+      }
+      // Fall back to ZIP if available
+      const zip = getZIPCode(f);
+      if (zip && zip !== 'Unknown') return zip;
+      // As a last resort, use area_id or a stable index-based label
+  return props?.area_id || 'Location';
+    } catch {
+  return 'Location';
+    }
+  };
   
   // Sort by the appropriate score field to get full range representation
   const sorted = [...features].sort((a, b) => {
@@ -334,8 +358,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'strategic':
       metricsSection += 'Strategic Analysis - Enhanced with market expansion metrics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use strategic_value_score directly instead of target_value for strategic analysis
@@ -373,8 +397,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'competitive':
       metricsSection += 'Competitive Analysis - Enhanced with market share context:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use competitive_advantage_score directly instead of target_value for competitive analysis
@@ -391,8 +415,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'demographic':
       metricsSection += 'Demographic Analysis - Enhanced with population characteristics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Demographic Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -409,8 +433,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'market_sizing':
       metricsSection += 'Market Sizing Analysis - Enhanced with opportunity metrics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Market Sizing Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -423,8 +447,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'brand_analysis':
       metricsSection += 'Brand Analysis - Enhanced with competitive positioning:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Brand Analysis Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -443,8 +467,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'comparative':
       metricsSection += 'Comparative Analysis - Brand vs competitor performance:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use comparative_analysis_score as primary metric
@@ -486,8 +510,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'spatial-clusters':
       metricsSection += 'Spatial Clusters Analysis - Geographic clustering patterns:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Cluster Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -509,8 +533,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'correlation':
       metricsSection += 'Correlation Analysis - Statistical relationships:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Correlation Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -531,8 +555,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'segment-profiling':
       metricsSection += 'Segment Profiling Analysis - Customer segmentation:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Segment Profiling Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -557,8 +581,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'trends':
       metricsSection += 'Trend Analysis - Temporal patterns and growth:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Trend Strength Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -582,8 +606,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'anomaly-detection':
       metricsSection += 'Anomaly Detection Analysis - Unusual market patterns:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Anomaly Detection Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -604,8 +628,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'feature-interactions':
       metricsSection += 'Feature Interactions Analysis - Multi-variable relationships:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Feature Interaction Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -626,8 +650,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'outlier-detection':
       metricsSection += 'Outlier Detection Analysis - Exceptional market characteristics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+  const props = feature.properties;
+  const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Outlier Detection Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -649,7 +673,7 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Scenario Analysis - Market adaptability and flexibility:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Scenario Analysis Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -671,7 +695,7 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Predictive Modeling Analysis - Forecasting reliability:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Predictive Modeling Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -696,7 +720,7 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use brand_difference_score as primary metric with proper notation
@@ -727,7 +751,7 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += `${analysisType} Analysis - Enhanced metrics:\n\n`;
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties;
-        const areaName = props?.area_name || props?.DESCRIPTION || props?.area_id || `Area ${index + 1}`;
+        const areaName = resolveAreaName(props, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Analysis Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -1467,9 +1491,11 @@ export async function POST(req: NextRequest) {
         }
 
         // Initialize variables used throughout the function
-        let userMessage = '';
+  let userMessage = '';
         let dataSummary = '';
         let processedLayersForPrompt: ProcessedLayer[] = [];
+  // Accumulate model attribution for post-processing enforcement
+  let computedAttribution: { modelName?: string; r2?: number; perfLevel?: string; confidence?: string } = {};
 
         // Security configuration
         const securityConfig = {
@@ -2277,7 +2303,7 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
             dataSummary += `=== MODEL ATTRIBUTION ===\n`;
             
             // Check for endpoint-level attribution
-            if (originalSummary.model_attribution) {
+      if (originalSummary.model_attribution) {
               const modelAttr = originalSummary.model_attribution;
               const modelName = modelAttr.primary_model?.name;
               const modelType = modelAttr.primary_model?.type;
@@ -2298,6 +2324,8 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 };
                 const confidence = confidenceMap[(perfLevel || '').toString().toUpperCase()] || undefined;
                 if (confidence) dataSummary += `✅ Model Confidence: ${confidence}\n`;
+        // Save for post-processing
+        computedAttribution = { modelName, r2: r2Value, perfLevel, confidence };
               }
               
               if (modelAttr.traceability_note) {
@@ -2313,9 +2341,11 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
               const r2Value = (recordAttr.performance?.r2_score ?? recordAttr.r2_score);
               if (typeof r2Value === 'number' && !Number.isNaN(r2Value)) {
                 dataSummary += `🎯 R² Score: ${r2Value.toFixed(3)}\n`;
+                computedAttribution = { modelName: recordAttr.primary_model_used, r2: r2Value };
               }
               if (recordAttr.confidence_level) {
                 dataSummary += `✅ Model Confidence: ${recordAttr.confidence_level}\n`;
+                computedAttribution.confidence = recordAttr.confidence_level;
               } else if (recordAttr.confidence_note) {
                 dataSummary += `📝 Note: ${recordAttr.confidence_note}\n`;
               }
@@ -3056,7 +3086,7 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
           const endpointData = featureData[0];
           
           // Check for endpoint-level model attribution
-          if ((endpointData as any).model_attribution) {
+      if ((endpointData as any).model_attribution) {
             dataSummary += `\n=== MODEL ATTRIBUTION ===\n`;
             const modelAttr = (endpointData as any).model_attribution;
             const modelName = modelAttr.primary_model?.name;
@@ -3076,7 +3106,8 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
                 'POOR': 'Low Confidence'
               };
               const confidence = confidenceMap[(perfLevel || '').toString().toUpperCase()] || undefined;
-              if (confidence) dataSummary += `✅ Model Confidence: ${confidence}\n`;
+        if (confidence) dataSummary += `✅ Model Confidence: ${confidence}\n`;
+        computedAttribution = { modelName, r2: r2Value, perfLevel, confidence };
             }
             
             if (modelAttr.traceability_note) {
@@ -3094,9 +3125,11 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
             const r2Value = (recordAttr.performance?.r2_score ?? recordAttr.r2_score);
             if (typeof r2Value === 'number' && !Number.isNaN(r2Value)) {
               dataSummary += `🎯 R² Score: ${r2Value.toFixed(3)}\n`;
+              computedAttribution = { modelName: recordAttr.primary_model_used, r2: r2Value };
             }
             if (recordAttr.confidence_level) {
               dataSummary += `✅ Model Confidence: ${recordAttr.confidence_level}\n`;
+              computedAttribution.confidence = recordAttr.confidence_level;
             } else if (recordAttr.confidence_note) {
               dataSummary += `📝 Note: ${recordAttr.confidence_note}\n`;
             }
@@ -3499,6 +3532,27 @@ Present this analysis in your professional ${selectedPersona.name} style while p
         }
         const responseContent = anthropicResponse.content?.find(block => block.type === 'text')?.text || 'No text content received from AI.';
 
+        // Sanitize Model Attribution section to enforce conditional display and remove placeholders
+        let finalContent = responseContent;
+        try {
+          // If we have a numeric R², replace any 'Not recorded/Not specified' with the actual value
+          if (computedAttribution && typeof computedAttribution.r2 === 'number' && !Number.isNaN(computedAttribution.r2)) {
+            const r2Text = `${computedAttribution.r2.toFixed(3)}${computedAttribution.perfLevel ? ` (${computedAttribution.perfLevel} Performance)` : ''}`;
+            finalContent = finalContent.replace(/(\*\*R² Score:\*\*|R² Score:)\s*(Not recorded|Not specified)/gi, `$1 ${r2Text}`);
+            if (computedAttribution.confidence) {
+              finalContent = finalContent.replace(/(\*\*Confidence:\*\*|Confidence:)\s*(Not recorded|Not specified)/gi, `$1 ${computedAttribution.confidence}`);
+            }
+          } else {
+            // No R² available: drop entire R²/Confidence lines that state they're not recorded
+            finalContent = finalContent.replace(/^.*(R² Score:|\*\*R² Score:\*\*).*?(Not recorded|Not specified).*\n?/gmi, '');
+            finalContent = finalContent.replace(/^.*(Confidence:|\*\*Confidence:\*\*).*?(Not recorded|Not specified).*\n?/gmi, '');
+          }
+          // Minor cleanup: collapse multiple blank lines introduced by removals
+          finalContent = finalContent.replace(/\n{3,}/g, '\n\n');
+        } catch (e) {
+          console.warn('[Claude] Post-processing of Model Attribution failed:', e);
+        }
+
         console.log('[Claude] AI Response Start:', responseContent.substring(0, 200) + '...');
 
         // Validate response for hallucinated data
@@ -3532,8 +3586,8 @@ Present this analysis in your professional ${selectedPersona.name} style while p
         });
 
         // --- Return response ---
-        const analysisResponse: AnalysisResponse = {
-            content: responseContent,
+    const analysisResponse: AnalysisResponse = {
+      content: finalContent,
             validIdentifiers: identifierData.validIdentifiers || [],
             clickableFeatureType: identifierData.featureType,
             sourceLayerIdForClickable: identifierData.sourceLayerIdForClickable,
