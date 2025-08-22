@@ -2724,6 +2724,16 @@ const EnhancedGeospatialChat = memo(({
                 const displayName = fullDescription || result.area_name || result.name || result.area_id || result.id || 'Unknown Area';
                 const displayId = result.area_id || result.id;
                 
+                // Debug what displayName is actually being used
+                if (index < 3) {
+                  console.log(`🔍 [DISPLAYNAME DEBUG] Record ${index + 1}:`);
+                  console.log(`   result.properties?.DESCRIPTION: "${result.properties?.DESCRIPTION}"`);
+                  console.log(`   result.DESCRIPTION: "${result.DESCRIPTION}"`);
+                  console.log(`   result.area_name: "${result.area_name}"`);
+                  console.log(`   fullDescription: "${fullDescription}"`);
+                  console.log(`   displayName: "${displayName}"`);
+                }
+                
                 // Generic approach: try to find the score field from the configuration
                 // For clusters, use avgScore; for individual records, use the configured field
                 const targetValue = isClusterRecord 
