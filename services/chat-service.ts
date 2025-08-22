@@ -26,7 +26,9 @@ export async function sendChatMessage(request: ChatRequest, options?: { signal?:
       messages: request.messages,
       metadata: { 
         ...request.metadata, 
-        isContextualChat: true // Enable fast-path processing
+        isContextualChat: true, // Enable fast-path processing
+        enableOptimization: true, // Enable payload optimization
+        forceOptimization: false // Let system auto-decide based on size
       },
       featureData: request.featureData && request.featureData.length > 0 
         ? request.featureData 
