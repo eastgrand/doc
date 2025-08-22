@@ -95,26 +95,61 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
   const scoreField = getScoreField(analysisType);
 
   // Helper to resolve a human-friendly area name consistently
-  const resolveAreaName = (props: any, index: number): string => {
+  const resolveAreaName = (feature: any, index: number): string => {
     try {
+      // First try to get DESCRIPTION directly from feature (strategic analysis structure)
+      if (typeof feature?.DESCRIPTION === 'string' && feature.DESCRIPTION.trim()) {
+        const description = feature.DESCRIPTION.trim();
+        // Extract city name from parentheses like "32544 (Hurlburt Field)" -> "Hurlburt Field"
+        const nameMatch = description.match(/\(([^)]+)\)/);
+        if (nameMatch && nameMatch[1]) {
+          return nameMatch[1].trim();
+        }
+        return description;
+      }
+      
+      // Try properties structure as fallback
+      const props = feature.properties || feature;
       const f = { properties: props } as LocalGeospatialFeature;
       const name = getLocationName(f);
       if (name && name !== 'Unknown Location') return name;
+      
       // Try DESCRIPTION/area_name directly if present
-      if (typeof props?.DESCRIPTION === 'string' && props.DESCRIPTION.trim()) return props.DESCRIPTION.trim();
+      if (typeof props?.DESCRIPTION === 'string' && props.DESCRIPTION.trim()) {
+        const description = props.DESCRIPTION.trim();
+        // Extract city name from parentheses
+        const nameMatch = description.match(/\(([^)]+)\)/);
+        if (nameMatch && nameMatch[1]) {
+          return nameMatch[1].trim();
+        }
+        return description;
+      }
       if (typeof props?.area_name === 'string' && props.area_name.trim()) return props.area_name.trim();
+      
       // Try common name fields
       const nameFields = ['NAME', 'CITY', 'MUNICIPALITY', 'REGION', 'CSDNAME', 'FEDNAME'];
       for (const field of nameFields) {
         if (props?.[field]) return String(props[field]).trim();
       }
+      
       // Fall back to ZIP if available
       const zip = getZIPCode(f);
       if (zip && zip !== 'Unknown') return zip;
-      // As a last resort, use area_id or a stable index-based label
-  return props?.area_id || 'Location';
-    } catch {
-  return 'Location';
+      
+      // Try ID field with proper formatting
+      if (feature?.ID || props?.ID) {
+        const id = feature.ID || props.ID;
+        if (typeof id === 'string' && id.match(/^\d{5}$/)) {
+          return `ZIP ${id}`;
+        }
+        return `Area ${id}`;
+      }
+      
+      // As a last resort, avoid generic labels
+      return props?.area_id || feature?.area_id || `Location ${index + 1}`;
+    } catch (error) {
+      console.error('[resolveAreaName] Error:', error);
+      return `Location ${index + 1}`;
     }
   };
   
@@ -358,8 +393,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'strategic':
       metricsSection += 'Strategic Analysis - Enhanced with market expansion metrics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use strategic_value_score directly instead of target_value for strategic analysis
@@ -397,8 +432,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'competitive':
       metricsSection += 'Competitive Analysis - Enhanced with market share context:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use competitive_advantage_score directly instead of target_value for competitive analysis
@@ -415,8 +450,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'demographic':
       metricsSection += 'Demographic Analysis - Enhanced with population characteristics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Demographic Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -433,8 +468,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'market_sizing':
       metricsSection += 'Market Sizing Analysis - Enhanced with opportunity metrics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Market Sizing Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -447,8 +482,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'brand_analysis':
       metricsSection += 'Brand Analysis - Enhanced with competitive positioning:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Brand Analysis Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -467,8 +502,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'comparative':
       metricsSection += 'Comparative Analysis - Brand vs competitor performance:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use comparative_analysis_score as primary metric
@@ -510,8 +545,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'spatial-clusters':
       metricsSection += 'Spatial Clusters Analysis - Geographic clustering patterns:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Cluster Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -533,8 +568,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'correlation':
       metricsSection += 'Correlation Analysis - Statistical relationships:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Correlation Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -555,8 +590,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'segment-profiling':
       metricsSection += 'Segment Profiling Analysis - Customer segmentation:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Segment Profiling Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -581,8 +616,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'trends':
       metricsSection += 'Trend Analysis - Temporal patterns and growth:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Trend Strength Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -606,8 +641,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'anomaly-detection':
       metricsSection += 'Anomaly Detection Analysis - Unusual market patterns:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Anomaly Detection Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -628,8 +663,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'feature-interactions':
       metricsSection += 'Feature Interactions Analysis - Multi-variable relationships:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Feature Interaction Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -650,8 +685,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'outlier-detection':
       metricsSection += 'Outlier Detection Analysis - Exceptional market characteristics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-  const props = feature.properties;
-  const areaName = resolveAreaName(props, index);
+  const props = feature.properties || feature;
+  const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Outlier Detection Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -672,8 +707,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'scenario-analysis':
       metricsSection += 'Scenario Analysis - Market adaptability and flexibility:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = resolveAreaName(props, index);
+        const props = feature.properties || feature;
+        const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Scenario Analysis Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -694,8 +729,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     case 'predictive-modeling':
       metricsSection += 'Predictive Modeling Analysis - Forecasting reliability:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = resolveAreaName(props, index);
+        const props = feature.properties || feature;
+        const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Predictive Modeling Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -719,8 +754,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Positive values = H&R Block advantage, Negative values = TurboTax advantage\n\n';
       
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = resolveAreaName(props, index);
+        const props = feature.properties || feature;
+        const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use brand_difference_score as primary metric with proper notation
@@ -750,8 +785,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       // For other analysis types, provide basic enhanced info
       metricsSection += `${analysisType} Analysis - Enhanced metrics:\n\n`;
       topFeatures.forEach((feature: any, index: number) => {
-        const props = feature.properties;
-        const areaName = resolveAreaName(props, index);
+        const props = feature.properties || feature;
+        const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         metricsSection += `   Analysis Score: ${props?.target_value || 'N/A'}\n`;
         
@@ -3535,17 +3570,24 @@ Present this analysis in your professional ${selectedPersona.name} style while p
         // Sanitize Model Attribution section to enforce conditional display and remove placeholders
         let finalContent = responseContent;
         try {
-          // If we have a numeric R², replace any 'Not recorded/Not specified' with the actual value
+          // If we have a numeric R², replace any 'Not recorded/Not specified/Data not available' with the actual value
           if (computedAttribution && typeof computedAttribution.r2 === 'number' && !Number.isNaN(computedAttribution.r2)) {
             const r2Text = `${computedAttribution.r2.toFixed(3)}${computedAttribution.perfLevel ? ` (${computedAttribution.perfLevel} Performance)` : ''}`;
-            finalContent = finalContent.replace(/(\*\*R² Score:\*\*|R² Score:)\s*(Not recorded|Not specified)/gi, `$1 ${r2Text}`);
+            finalContent = finalContent.replace(/(\*\*R² Score:\*\*|R² Score:)\s*(Not recorded|Not specified|Data not available)/gi, `$1 ${r2Text}`);
             if (computedAttribution.confidence) {
-              finalContent = finalContent.replace(/(\*\*Confidence:\*\*|Confidence:)\s*(Not recorded|Not specified)/gi, `$1 ${computedAttribution.confidence}`);
+              finalContent = finalContent.replace(/(\*\*Confidence:\*\*|Confidence:)\s*(Not recorded|Not specified|Data not available)/gi, `$1 ${computedAttribution.confidence}`);
             }
           } else {
-            // No R² available: drop entire R²/Confidence lines that state they're not recorded
-            finalContent = finalContent.replace(/^.*(R² Score:|\*\*R² Score:\*\*).*?(Not recorded|Not specified).*\n?/gmi, '');
-            finalContent = finalContent.replace(/^.*(Confidence:|\*\*Confidence:\*\*).*?(Not recorded|Not specified).*\n?/gmi, '');
+            // No R² available: remove entire Model Attribution section if it only contains unavailable data
+            // First, try to remove the entire Model Attribution section if all values are unavailable
+            finalContent = finalContent.replace(/---\s*\n\*\*Model Attribution:\*\*\s*\n(•[^\n]*(Not recorded|Not specified|Data not available|N\/A)[^\n]*\n?)+/gmi, '');
+            
+            // Fallback: drop individual R²/Confidence lines that state they're not available
+            finalContent = finalContent.replace(/^.*(R² Score:|\*\*R² Score:\*\*).*?(Not recorded|Not specified|Data not available|N\/A).*\n?/gmi, '');
+            finalContent = finalContent.replace(/^.*(Confidence:|\*\*Confidence:\*\*).*?(Not recorded|Not specified|Data not available|N\/A).*\n?/gmi, '');
+            
+            // Also remove Model Used line if it's the only remaining line in the section
+            finalContent = finalContent.replace(/---\s*\n\*\*Model Attribution:\*\*\s*\n•\s*\*\*Model Used:\*\*[^\n]*\n(?!•)/gmi, '');
           }
           // Minor cleanup: collapse multiple blank lines introduced by removals
           finalContent = finalContent.replace(/\n{3,}/g, '\n\n');
