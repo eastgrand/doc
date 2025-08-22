@@ -148,7 +148,7 @@ export default function UnifiedAnalysisWorkflow({
   // Handle selected hotspot from sample areas
   useEffect(() => {
     if (selectedHotspot) {
-      console.log('[UnifiedAnalysisWorkflow] Processing selected hotspot:', selectedHotspot);
+      // console.log('[UnifiedAnalysisWorkflow] Processing selected hotspot:', selectedHotspot);
       
       // Convert hotspot coordinates to point geometry
       const hotspotPoint = {
@@ -191,7 +191,7 @@ export default function UnifiedAnalysisWorkflow({
   
   // Stop analysis function
   const stopAnalysis = useCallback(() => {
-    console.log('[UnifiedWorkflow] Stopping analysis...');
+    // console.log('[UnifiedWorkflow] Stopping analysis...');
     
     // Abort any ongoing requests
     if (abortControllerRef.current) {
@@ -253,7 +253,7 @@ export default function UnifiedAnalysisWorkflow({
   // Add event listener for popup infographics
   useEffect(() => {
     const handleOpenInfographics = (event: CustomEvent) => {
-      console.log('[UnifiedWorkflow] Infographics popup event received', event.detail);
+      // console.log('[UnifiedWorkflow] Infographics popup event received', event.detail);
       
       // Open report selection dialog immediately with popup geometry
       setInfographicsDialog({
@@ -274,7 +274,7 @@ export default function UnifiedAnalysisWorkflow({
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        console.log('[UnifiedWorkflow] Loading infographics reports...');
+        // console.log('[UnifiedWorkflow] Loading infographics reports...');
         
         const reportApiKey = process.env.NEXT_PUBLIC_ARCGIS_API_KEY_2;
         const token = reportApiKey || 'AAPTxy8BH1VEsoebNVZXo8HurEs9TD-3BH9IvorrjVWQR4uGhbHZOyV9S-QJcwJfNyPyN6IDTc6dX1pscXuVgb4-GEQ70Mrk6FUuIcuO2Si45rlSIepAJkP92iyuw5nBPxpTjI0ga_Aau9Cr6xaQ2DJnJfzaCkTor0cB9UU6pcNyFqxJlYt_26boxHYqnnu7vWlqt7SVFcWKmYq6kh8anIAmEi0hXY1ThVhKIupAS_Mure0.AT1_VqzOv0Y5';
@@ -343,7 +343,7 @@ export default function UnifiedAnalysisWorkflow({
             };
           });
 
-        console.log('[UnifiedWorkflow] Loaded', finalReports.length, 'infographics reports');
+        // console.log('[UnifiedWorkflow] Loaded', finalReports.length, 'infographics reports');
         setInfographicsReports(finalReports);
       } catch (error) {
         console.error('[UnifiedWorkflow] Failed to load infographics reports:', error);
@@ -358,12 +358,12 @@ export default function UnifiedAnalysisWorkflow({
   const handleAreaSelected = useCallback((area: AreaSelection) => {
     if (area.geometry.type === 'point') {
       const point = area.geometry as __esri.Point;
-      console.log('[UnifiedWorkflow] Point selected at coordinates:', 
-        `X: ${point.x}, Y: ${point.y}, WKID: ${point.spatialReference?.wkid}`);
-      console.log('[UnifiedWorkflow] Point extent:', point.extent ? 
-        `xmin: ${point.extent.xmin}, ymin: ${point.extent.ymin}, xmax: ${point.extent.xmax}, ymax: ${point.extent.ymax}` : 'null');
+      // console.log('[UnifiedWorkflow] Point selected at coordinates:', 
+      //   `X: ${point.x}, Y: ${point.y}, WKID: ${point.spatialReference?.wkid}`);
+      // console.log('[UnifiedWorkflow] Point extent:', point.extent ? 
+      //   `xmin: ${point.extent.xmin}, ymin: ${point.extent.ymin}, xmax: ${point.extent.xmax}, ymax: ${point.extent.ymax}` : 'null');
     } else {
-      console.log('[UnifiedWorkflow] Non-point geometry selected:', area.geometry.type);
+      // console.log('[UnifiedWorkflow] Non-point geometry selected:', area.geometry.type);
     }
     const isPoint = area.geometry.type === 'point';
     const isProjectArea = area.method === 'project-area';
@@ -410,32 +410,32 @@ export default function UnifiedAnalysisWorkflow({
       const dataSourceLayerId = SpatialFilterConfig.getReferenceLayerId();
       
       // Log the configuration for debugging
-      console.log('[UnifiedWorkflow] Using spatial reference layer:', {
-        layerId: dataSourceLayerId,
-        geometryType: workflowState.areaSelection.geometry?.type,
-        method: workflowState.areaSelection.method
-      });
+      // console.log('[UnifiedWorkflow] Using spatial reference layer:', {
+      //   layerId: dataSourceLayerId,
+      //   geometryType: workflowState.areaSelection.geometry?.type,
+      //   method: workflowState.areaSelection.method
+      // });
       
       // Skip spatial filtering for project-wide analysis
       const shouldApplySpatialFilter = workflowState.areaSelection.method !== 'project-area';
       
-      console.log('[UnifiedAnalysisWorkflow] Analysis request preparation:', {
-        shouldApplySpatialFilter,
-        areaSelectionMethod: workflowState.areaSelection.method,
-        hasGeometry: !!workflowState.areaSelection.geometry,
-        geometryType: workflowState.areaSelection.geometry?.type
-      });
+      // console.log('[UnifiedAnalysisWorkflow] Analysis request preparation:', {
+      //   shouldApplySpatialFilter,
+      //   areaSelectionMethod: workflowState.areaSelection.method,
+      //   hasGeometry: !!workflowState.areaSelection.geometry,
+      //   geometryType: workflowState.areaSelection.geometry?.type
+      // });
       
       // Get spatial filter IDs if applying spatial filtering
       let spatialFilterIds: string[] | undefined;
       if (shouldApplySpatialFilter && workflowState.areaSelection.geometry) {
         try {
-          console.log('[UnifiedAnalysisWorkflow] Querying area IDs for spatial filtering...');
+          // console.log('[UnifiedAnalysisWorkflow] Querying area IDs for spatial filtering...');
           spatialFilterIds = await SpatialFilterService.queryAreaIdsByGeometry(
             workflowState.areaSelection.geometry,
             { spatialRelationship: 'intersects' }
           );
-          console.log(`[UnifiedAnalysisWorkflow] Found ${spatialFilterIds.length} area IDs for spatial filter:`, spatialFilterIds.slice(0, 10));
+          // console.log(`[UnifiedAnalysisWorkflow] Found ${spatialFilterIds.length} area IDs for spatial filter:`, spatialFilterIds.slice(0, 10));
         } catch (error) {
           console.warn('[UnifiedAnalysisWorkflow] Spatial ID lookup failed, proceeding without spatial filter:', error);
           spatialFilterIds = undefined;
@@ -458,22 +458,22 @@ export default function UnifiedAnalysisWorkflow({
         persona: selectedPersona              // Pass the selected persona
       };
 
-      console.log('[UnifiedWorkflow] Starting analysis with spatial context:', {
-        hasGeometry: !!request.geometry,
-        geometryType: request.geometry?.type,
-        hasView: !!request.view,
-        layerId: request.dataSourceLayerId
-      });
+      // console.log('[UnifiedWorkflow] Starting analysis with spatial context:', {
+      //   hasGeometry: !!request.geometry,
+      //   geometryType: request.geometry?.type,
+      //   hasView: !!request.view,
+      //   layerId: request.dataSourceLayerId
+      // });
 
       // Execute analysis
       const result = await analysisWrapper.processUnifiedRequest(request);
 
-      console.log('[UnifiedWorkflow] Analysis complete:', result);
+      // console.log('[UnifiedWorkflow] Analysis complete:', result);
 
       // Apply visualization to map if analysis includes visualization and data
       if (result.analysisResult?.visualization && result.analysisResult?.data && view) {
         try {
-          console.log('[UnifiedWorkflow] Applying visualization to map...');
+          // console.log('[UnifiedWorkflow] Applying visualization to map...');
           
           // First, perform geometry join if records have area_id but no geometry
           const analysisData = result.analysisResult.data;
@@ -481,7 +481,7 @@ export default function UnifiedAnalysisWorkflow({
             const recordsWithoutGeometry = analysisData.records.filter((record: any) => !record.geometry);
             
             if (recordsWithoutGeometry.length > 0) {
-              console.log('[UnifiedWorkflow] Starting geometry join for', recordsWithoutGeometry.length, 'records without geometry');
+              // console.log('[UnifiedWorkflow] Starting geometry join for', recordsWithoutGeometry.length, 'records without geometry');
               
               try {
                 // Load ZIP code boundaries for Florida
@@ -490,7 +490,7 @@ export default function UnifiedAnalysisWorkflow({
                 const geographicFeatures = boundaryData?.features || [];
                 
                 if (geographicFeatures.length > 0) {
-                  console.log('[UnifiedWorkflow] ✅ Loaded', geographicFeatures.length, 'ZIP code boundaries');
+                  // console.log('[UnifiedWorkflow] ✅ Loaded', geographicFeatures.length, 'ZIP code boundaries');
                   
                   // Join records with geometry
                   const joinedResults = analysisData.records.map((record: any, index: number) => {
@@ -550,12 +550,12 @@ export default function UnifiedAnalysisWorkflow({
                   };
                   
                   const recordsWithGeometry = joinedResults.filter((r: any) => r.geometry).length;
-                  console.log('[UnifiedWorkflow] ✅ Geometry join complete:', {
-                    totalRecords: joinedResults.length,
-                    recordsWithGeometry,
-                    recordsWithoutGeometry: joinedResults.length - recordsWithGeometry,
-                    successRate: `${((recordsWithGeometry / joinedResults.length) * 100).toFixed(1)}%`
-                  });
+                  // console.log('[UnifiedWorkflow] ✅ Geometry join complete:', {
+                  //   totalRecords: joinedResults.length,
+                  //   recordsWithGeometry,
+                  //   recordsWithoutGeometry: joinedResults.length - recordsWithGeometry,
+                  //   successRate: `${((recordsWithGeometry / joinedResults.length) * 100).toFixed(1)}%`
+                  // });
                   
                 } else {
                   console.error('[UnifiedWorkflow] No ZIP code boundaries loaded');
@@ -565,7 +565,7 @@ export default function UnifiedAnalysisWorkflow({
                 console.error('[UnifiedWorkflow] ❌ Geometry join failed:', error);
               }
             } else {
-              console.log('[UnifiedWorkflow] All records already have geometry, skipping join');
+              // console.log('[UnifiedWorkflow] All records already have geometry, skipping join');
             }
           }
           
@@ -582,7 +582,7 @@ export default function UnifiedAnalysisWorkflow({
           );
           
           if (visualizationLayer) {
-            console.log('[UnifiedWorkflow] ✅ Visualization applied successfully');
+            // console.log('[UnifiedWorkflow] ✅ Visualization applied successfully');
           } else {
             console.warn('[UnifiedWorkflow] ⚠️ Visualization function returned null');
           }
@@ -607,12 +607,12 @@ export default function UnifiedAnalysisWorkflow({
       }));
 
       // Notify parent component
-      console.log('[UnifiedWorkflow] 🔥 About to call onAnalysisComplete callback with result:', result);
-      console.log('[UnifiedWorkflow] 🔥 onAnalysisComplete exists?', !!onAnalysisComplete);
+      // console.log('[UnifiedWorkflow] 🔥 About to call onAnalysisComplete callback with result:', result);
+      // console.log('[UnifiedWorkflow] 🔥 onAnalysisComplete exists?', !!onAnalysisComplete);
       if (onAnalysisComplete) {
-        console.log('[UnifiedWorkflow] 🔥 Calling onAnalysisComplete...');
+        // console.log('[UnifiedWorkflow] 🔥 Calling onAnalysisComplete...');
         onAnalysisComplete(result);
-        console.log('[UnifiedWorkflow] 🔥 onAnalysisComplete called successfully');
+        // console.log('[UnifiedWorkflow] 🔥 onAnalysisComplete called successfully');
       } else {
         console.warn('[UnifiedWorkflow] ⚠️ onAnalysisComplete callback is undefined!');
       }
@@ -622,7 +622,7 @@ export default function UnifiedAnalysisWorkflow({
       
       // Check if the error is due to cancellation
       if (signal.aborted || (error as Error)?.name === 'AbortError') {
-        console.log('[UnifiedWorkflow] Analysis was cancelled');
+        // console.log('[UnifiedWorkflow] Analysis was cancelled');
         setWorkflowState(prev => ({
           ...prev,
           error: 'Analysis cancelled',
@@ -670,7 +670,7 @@ export default function UnifiedAnalysisWorkflow({
 
   // Handle ZIP code click to zoom to feature - using the exact same approach as CustomPopupManager
   const handleZipCodeClick = useCallback(async (zipCode: string) => {
-    console.log(`[UnifiedAnalysisWorkflow] Zooming to ZIP code: ${zipCode}`);
+    // console.log(`[UnifiedAnalysisWorkflow] Zooming to ZIP code: ${zipCode}`);
     
     try {
       // Find the feature with this ZIP code in the current analysis results
@@ -694,13 +694,13 @@ export default function UnifiedAnalysisWorkflow({
         return;
       }
 
-      console.log(`[UnifiedAnalysisWorkflow] Found target feature for ${zipCode}:`, {
-        hasGeometry: !!targetFeature.geometry,
-        hasProperties: !!targetFeature.properties,
-        geometryInProperties: !!targetFeature.properties?.geometry,
-        featureKeys: Object.keys(targetFeature),
-        propertiesKeys: targetFeature.properties ? Object.keys(targetFeature.properties) : null
-      });
+      // console.log(`[UnifiedAnalysisWorkflow] Found target feature for ${zipCode}:`, {
+      //   hasGeometry: !!targetFeature.geometry,
+      //   hasProperties: !!targetFeature.properties,
+      //   geometryInProperties: !!targetFeature.properties?.geometry,
+      //   featureKeys: Object.keys(targetFeature),
+      //   propertiesKeys: targetFeature.properties ? Object.keys(targetFeature.properties) : null
+      // });
 
       // Get the geometry from the feature
       const geometry = targetFeature.geometry;
@@ -709,17 +709,17 @@ export default function UnifiedAnalysisWorkflow({
         return;
       }
 
-      console.log(`[UnifiedAnalysisWorkflow] Geometry details:`, {
-        type: geometry.type,
-        hasExtent: !!geometry.extent,
-        hasCoordinates: !!(geometry as any).coordinates,
-        hasRings: !!(geometry as any).rings
-      });
+      // console.log(`[UnifiedAnalysisWorkflow] Geometry details:`, {
+      //   type: geometry.type,
+      //   hasExtent: !!geometry.extent,
+      //   hasCoordinates: !!(geometry as any).coordinates,
+      //   hasRings: !!(geometry as any).rings
+      // });
 
       // The geometry from the analysis data is a GeoJSON-style object with coordinates, not rings
       // Convert it to the proper format for ArcGIS view.goTo()
       if (geometry.type === 'point') {
-        console.log(`[UnifiedAnalysisWorkflow] Zooming to point geometry`);
+        // console.log(`[UnifiedAnalysisWorkflow] Zooming to point geometry`);
         await view.goTo({
           target: geometry,
           zoom: 15
@@ -734,19 +734,19 @@ export default function UnifiedAnalysisWorkflow({
             spatialReference: geometry.spatialReference || view.spatialReference
           };
           
-          console.log(`[UnifiedAnalysisWorkflow] Autocast geometry:`, {
-            type: autocastGeometry.type,
-            ringsCount: autocastGeometry.rings.length,
-            firstRingLength: autocastGeometry.rings[0]?.length,
-            spatialReference: autocastGeometry.spatialReference?.wkid,
-            sampleCoords: autocastGeometry.rings[0]?.slice(0, 2)
-          });
-          
-          console.log(`[UnifiedAnalysisWorkflow] View state before zoom:`, {
-            center: view.center ? [view.center.longitude, view.center.latitude] : null,
-            zoom: view.zoom,
-            scale: view.scale
-          });
+          // console.log(`[UnifiedAnalysisWorkflow] Autocast geometry:`, {
+          //   type: autocastGeometry.type,
+          //   ringsCount: autocastGeometry.rings.length,
+          //   firstRingLength: autocastGeometry.rings[0]?.length,
+          //   spatialReference: autocastGeometry.spatialReference?.wkid,
+          //   sampleCoords: autocastGeometry.rings[0]?.slice(0, 2)
+          // });
+          // 
+          // console.log(`[UnifiedAnalysisWorkflow] View state before zoom:`, {
+          //   center: view.center ? [view.center.longitude, view.center.latitude] : null,
+          //   zoom: view.zoom,
+          //   scale: view.scale
+          // });
           
           // Try calculating extent manually and using that instead
           let xmin = Infinity, ymin = Infinity, xmax = -Infinity, ymax = -Infinity;
@@ -764,8 +764,8 @@ export default function UnifiedAnalysisWorkflow({
             spatialReference: { wkid: 4326 }
           };
           
-          console.log(`[UnifiedAnalysisWorkflow] Calculated extent:`, calculatedExtent);
-          console.log(`[UnifiedAnalysisWorkflow] Calling view.goTo() with calculated extent`);
+          // console.log(`[UnifiedAnalysisWorkflow] Calculated extent:`, calculatedExtent);
+          // console.log(`[UnifiedAnalysisWorkflow] Calling view.goTo() with calculated extent`);
           
           try {
             // Calculate center point of the feature
@@ -784,7 +784,7 @@ export default function UnifiedAnalysisWorkflow({
             else if (maxExtent < 0.1) targetZoom = 12;  // Medium area
             else if (maxExtent < 0.2) targetZoom = 11;  // Large area
             
-            console.log(`[UnifiedAnalysisWorkflow] Center: [${centerX}, ${centerY}], Target zoom: ${targetZoom}`);
+            // console.log(`[UnifiedAnalysisWorkflow] Center: [${centerX}, ${centerY}], Target zoom: ${targetZoom}`);
             
             const goToResult = await view.goTo({
               center: [centerX, centerY],
@@ -793,7 +793,7 @@ export default function UnifiedAnalysisWorkflow({
               duration: 1500,
               easing: 'ease-in-out'
             });
-            console.log(`[UnifiedAnalysisWorkflow] view.goTo() completed successfully, result:`, goToResult);
+            // console.log(`[UnifiedAnalysisWorkflow] view.goTo() completed successfully, result:`, goToResult);
             
             // Add flash effect after zoom completes
             setTimeout(() => {
@@ -816,7 +816,7 @@ export default function UnifiedAnalysisWorkflow({
                 });
                 
                 view.graphics.add(flashGraphic);
-                console.log(`[UnifiedAnalysisWorkflow] Flash effect added`);
+                // console.log(`[UnifiedAnalysisWorkflow] Flash effect added`);
                 
                 // Create pulsing effect
                 let opacity = 0.8;
@@ -843,7 +843,7 @@ export default function UnifiedAnalysisWorkflow({
                 setTimeout(() => {
                   clearInterval(pulseInterval);
                   view.graphics.remove(flashGraphic);
-                  console.log(`[UnifiedAnalysisWorkflow] Flash effect removed`);
+                  // console.log(`[UnifiedAnalysisWorkflow] Flash effect removed`);
                 }, 3000);
                 
               } catch (flashError) {
@@ -851,11 +851,11 @@ export default function UnifiedAnalysisWorkflow({
               }
             }, 1600); // After zoom animation completes
             
-            console.log(`[UnifiedAnalysisWorkflow] View state after zoom:`, {
-              center: view.center ? [view.center.longitude, view.center.latitude] : null,
-              zoom: view.zoom,
-              scale: view.scale
-            });
+            // console.log(`[UnifiedAnalysisWorkflow] View state after zoom:`, {
+            //   center: view.center ? [view.center.longitude, view.center.latitude] : null,
+            //   zoom: view.zoom,
+            //   scale: view.scale
+            // });
             
           } catch (goToError) {
             console.error(`[UnifiedAnalysisWorkflow] view.goTo() failed:`, goToError);
@@ -867,7 +867,7 @@ export default function UnifiedAnalysisWorkflow({
         console.warn(`[UnifiedAnalysisWorkflow] Unsupported geometry type: ${geometry.type}`);
       }
       
-      console.log(`[UnifiedAnalysisWorkflow] Successfully zoomed to ZIP code: ${zipCode}`);
+      // console.log(`[UnifiedAnalysisWorkflow] Successfully zoomed to ZIP code: ${zipCode}`);
     } catch (error) {
       console.error(`[UnifiedAnalysisWorkflow] Error zooming to ZIP code ${zipCode}:`, error);
     }
@@ -877,37 +877,37 @@ export default function UnifiedAnalysisWorkflow({
   // Apply buffer to geometry
   const createBufferedGeometry = useCallback(async (geometry: __esri.Geometry, distance: number, unit: string) => {
     try {
-      console.log('[Buffer Creation] Starting buffer creation for geometry type:', geometry.type);
+      // console.log('[Buffer Creation] Starting buffer creation for geometry type:', geometry.type);
       
       let bufferedGeometry: __esri.Geometry | null = null;
       
       if (bufferType === 'radius') {
         if (geometry.type === 'point') {
           const originalPoint = geometry as __esri.Point;
-          console.log('[Buffer Creation] Original point coordinates:', 
-            `X: ${originalPoint.x}, Y: ${originalPoint.y}, WKID: ${originalPoint.spatialReference?.wkid}`);
+          // console.log('[Buffer Creation] Original point coordinates:', 
+          //   `X: ${originalPoint.x}, Y: ${originalPoint.y}, WKID: ${originalPoint.spatialReference?.wkid}`);
           
           // For points, create a circle
           const distanceInMeters = unit === 'miles' ? distance * 1609.34 : distance * 1000;
-          console.log('[Buffer Creation] Distance conversion:', `${distance} ${unit} = ${distanceInMeters} meters`);
+          // console.log('[Buffer Creation] Distance conversion:', `${distance} ${unit} = ${distanceInMeters} meters`);
           
           // Project the point to the map's spatial reference if needed for proper circle rendering
           let centerPoint = originalPoint;
-          console.log('[Buffer Creation] View spatial reference WKID:', view.spatialReference.wkid);
+          // console.log('[Buffer Creation] View spatial reference WKID:', view.spatialReference.wkid);
           
           if (centerPoint.spatialReference.wkid !== view.spatialReference.wkid) {
-            console.log('[Buffer Creation] Point projection needed from', centerPoint.spatialReference.wkid, 'to', view.spatialReference.wkid);
+            // console.log('[Buffer Creation] Point projection needed from', centerPoint.spatialReference.wkid, 'to', view.spatialReference.wkid);
             const projection = await import('@arcgis/core/geometry/projection');
             await projection.load();
             centerPoint = projection.project(centerPoint, view.spatialReference) as __esri.Point;
-            console.log('[Buffer Creation] Point after projection:', 
-              `X: ${centerPoint.x}, Y: ${centerPoint.y}, WKID: ${centerPoint.spatialReference?.wkid}`);
+            // console.log('[Buffer Creation] Point after projection:', 
+            //   `X: ${centerPoint.x}, Y: ${centerPoint.y}, WKID: ${centerPoint.spatialReference?.wkid}`);
           } else {
-            console.log('[Buffer Creation] No projection needed - coordinates match');
+            // console.log('[Buffer Creation] No projection needed - coordinates match');
           }
           
-          console.log('[Buffer Creation] Creating Circle with center:', 
-            `X: ${centerPoint.x}, Y: ${centerPoint.y}, radius: ${distanceInMeters}m`);
+          // console.log('[Buffer Creation] Creating Circle with center:', 
+          //   `X: ${centerPoint.x}, Y: ${centerPoint.y}, radius: ${distanceInMeters}m`);
           
           bufferedGeometry = new Circle({
             center: centerPoint,
@@ -916,8 +916,8 @@ export default function UnifiedAnalysisWorkflow({
             spatialReference: view.spatialReference
           });
           
-          console.log('[Buffer Creation] Circle created with extent:', bufferedGeometry.extent ? 
-            `xmin: ${bufferedGeometry.extent.xmin}, ymin: ${bufferedGeometry.extent.ymin}, xmax: ${bufferedGeometry.extent.xmax}, ymax: ${bufferedGeometry.extent.ymax}` : 'null');
+          // console.log('[Buffer Creation] Circle created with extent:', bufferedGeometry.extent ? 
+          //   `xmin: ${bufferedGeometry.extent.xmin}, ymin: ${bufferedGeometry.extent.ymin}, xmax: ${bufferedGeometry.extent.xmax}, ymax: ${bufferedGeometry.extent.ymax}` : 'null');
         } else {
           // For polygons and other geometries, use geometryEngine.buffer with proper types
           const bufferResult = geometryEngine.buffer(
@@ -930,7 +930,7 @@ export default function UnifiedAnalysisWorkflow({
       } else if (bufferType === 'drivetime' || bufferType === 'walktime') {
         // Service area buffering - only works with points
         if (geometry.type === 'point') {
-          console.log('[Service Area] Starting service area analysis for', bufferType);
+          // console.log('[Service Area] Starting service area analysis for', bufferType);
           
           let timeInMinutes = distance;
           if (unit === 'miles' || unit === 'kilometers') {
@@ -978,7 +978,7 @@ export default function UnifiedAnalysisWorkflow({
               const featureGeometry = result.serviceAreaPolygons.features[0].geometry;
               if (featureGeometry) {
                 bufferedGeometry = featureGeometry as __esri.Geometry;
-                console.log('[Service Area] Successfully created service area');
+                // console.log('[Service Area] Successfully created service area');
               } else {
                 throw new Error("Invalid geometry in service area result");
               }
@@ -1007,7 +1007,7 @@ export default function UnifiedAnalysisWorkflow({
               false
             ) as __esri.Polygon;
             
-            console.log('[Service Area] Using approximation buffer with radius:', radiusInMeters, 'meters');
+            // console.log('[Service Area] Using approximation buffer with radius:', radiusInMeters, 'meters');
           }
         } else {
           throw new Error('Travel time buffering only works with point geometries');
@@ -1027,12 +1027,12 @@ export default function UnifiedAnalysisWorkflow({
 
   // Handle buffer step completion
   const handleBufferComplete = useCallback(async (applyBuffer: boolean = false) => {
-    console.log('[UnifiedWorkflow] Buffer complete, apply:', applyBuffer);
+    // console.log('[UnifiedWorkflow] Buffer complete, apply:', applyBuffer);
     
     if (applyBuffer && workflowState.areaSelection && workflowState.areaSelection.geometry.type === 'point') {
       const point = workflowState.areaSelection.geometry as __esri.Point;
-      console.log('[UnifiedWorkflow] Original point before buffering:', 
-        `X: ${point.x}, Y: ${point.y}, WKID: ${point.spatialReference?.wkid}`);
+      // console.log('[UnifiedWorkflow] Original point before buffering:', 
+      //   `X: ${point.x}, Y: ${point.y}, WKID: ${point.spatialReference?.wkid}`);
     }
     
     if (applyBuffer && workflowState.areaSelection) {
@@ -1048,14 +1048,14 @@ export default function UnifiedAnalysisWorkflow({
           bufferUnit
         );
         
-        console.log('[UnifiedWorkflow] Buffer created - Distance:', distance, bufferUnit, 'Type:', bufferType);
-        if (bufferedGeometry.extent) {
-          console.log('[UnifiedWorkflow] Buffer extent:', 
-            `xmin: ${bufferedGeometry.extent.xmin}, ymin: ${bufferedGeometry.extent.ymin}, xmax: ${bufferedGeometry.extent.xmax}, ymax: ${bufferedGeometry.extent.ymax}`);
-          console.log('[UnifiedWorkflow] Buffer center coordinates:', 
-            `X: ${bufferedGeometry.extent.center.x}, Y: ${bufferedGeometry.extent.center.y}`);
-        }
-        console.log('[UnifiedWorkflow] Buffer spatial reference:', bufferedGeometry.spatialReference?.wkid);
+        // console.log('[UnifiedWorkflow] Buffer created - Distance:', distance, bufferUnit, 'Type:', bufferType);
+        // if (bufferedGeometry.extent) {
+        //   console.log('[UnifiedWorkflow] Buffer extent:', 
+        //     `xmin: ${bufferedGeometry.extent.xmin}, ymin: ${bufferedGeometry.extent.ymin}, xmax: ${bufferedGeometry.extent.xmax}, ymax: ${bufferedGeometry.extent.ymax}`);
+        //   console.log('[UnifiedWorkflow] Buffer center coordinates:', 
+        //     `X: ${bufferedGeometry.extent.center.x}, Y: ${bufferedGeometry.extent.center.y}`);
+        // }
+        // console.log('[UnifiedWorkflow] Buffer spatial reference:', bufferedGeometry.spatialReference?.wkid);
         
         // Add buffered geometry as a graphic to the map (matching button colors)
         if (view && bufferedGeometry) {
@@ -1156,7 +1156,7 @@ export default function UnifiedAnalysisWorkflow({
 
   // Handle infographics report selection
   const handleInfographicsReportSelect = useCallback((reportId: string) => {
-    console.log('[UnifiedWorkflow] Report selected:', reportId);
+    // console.log('[UnifiedWorkflow] Report selected:', reportId);
     
     // Check if this is from the UI workflow (has area selection) or from popup
     const isFromUIWorkflow = workflowState.analysisType === 'infographic' && workflowState.areaSelection;
@@ -1200,7 +1200,7 @@ export default function UnifiedAnalysisWorkflow({
   // Generate standard report using ArcGIS API
   const generateStandardReport = useCallback(async (geometry: __esri.Geometry, reportType: string) => {
     try {
-      console.log('[UnifiedWorkflow] Generating standard report for', reportType);
+      // console.log('[UnifiedWorkflow] Generating standard report for', reportType);
 
       const reportId = reportType; // Use the report ID directly
 
@@ -1214,7 +1214,7 @@ export default function UnifiedAnalysisWorkflow({
       // Make sure the geometry is in the correct spatial reference (4326/WGS84)
       let projectedGeometry = geometry;
       if (geometry.spatialReference.wkid !== 4326) {
-        console.log('[UnifiedWorkflow] Projecting geometry to WGS84 (4326)');
+        // console.log('[UnifiedWorkflow] Projecting geometry to WGS84 (4326)');
         const projection = await import('@arcgis/core/geometry/projection');
         await projection.load();
         const geometryUnion = geometry as __esri.GeometryUnion;
@@ -1247,7 +1247,7 @@ export default function UnifiedAnalysisWorkflow({
 
       // Use the exact same base URL as the older code
       const baseUrl = 'https://geoenrich.arcgis.com/arcgis/rest/services/World/geoenrichmentserver/Geoenrichment/createreport';
-      console.log('[UnifiedWorkflow] Sending request to ArcGIS API');
+      // console.log('[UnifiedWorkflow] Sending request to ArcGIS API');
       
       // Create params object
       const params = {
@@ -1295,7 +1295,7 @@ export default function UnifiedAnalysisWorkflow({
                          window.__themeTransitioning === true;
     
     if (isThemeSwitch) {
-      console.log('[UnifiedAnalysisWorkflow] 🎨 Theme switching detected - preserving analysis layers during reset');
+      // console.log('[UnifiedAnalysisWorkflow] 🎨 Theme switching detected - preserving analysis layers during reset');
       // Just reset state without clearing map layers
       setWorkflowState({
         currentStep: 'area',
@@ -1306,7 +1306,7 @@ export default function UnifiedAnalysisWorkflow({
     }
     
     if (view) {
-      console.log('[UnifiedAnalysisWorkflow] 🔄 Full reset - clearing analysis layers');
+      // console.log('[UnifiedAnalysisWorkflow] 🔄 Full reset - clearing analysis layers');
       
       // Clear all graphics from the map
       view.graphics.removeAll();
@@ -1328,22 +1328,22 @@ export default function UnifiedAnalysisWorkflow({
         return isAnalysisLayer;
       });
       
-      console.log('[UnifiedAnalysisWorkflow] Removing analysis layers:', {
-        layersFound: layersToRemove.length,
-        layerIds: layersToRemove.map(l => l.id)
-      });
+      // console.log('[UnifiedAnalysisWorkflow] Removing analysis layers:', {
+      //   layersFound: layersToRemove.length,
+      //   layerIds: layersToRemove.map(l => l.id)
+      // });
       
       layersToRemove.forEach(layer => {
         view.map.remove(layer);
       });
       
-      console.log(`[UnifiedWorkflow] Cleared ${layersToRemove.length} analysis layers from map`);
+      // console.log(`[UnifiedWorkflow] Cleared ${layersToRemove.length} analysis layers from map`);
     }
     
     // Clear legend data
     if (setFormattedLegendData) {
       setFormattedLegendData(null);
-      console.log('[UnifiedWorkflow] Cleared legend data');
+      // console.log('[UnifiedWorkflow] Cleared legend data');
     }
     
     // Reset all state
