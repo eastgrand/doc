@@ -2719,7 +2719,9 @@ const EnhancedGeospatialChat = memo(({
                 
                 // Determine if this is a cluster record
                 const isClusterRecord = hasClusterAnalysis && result.zipCount;
-                const displayName = result.area_name || result.name || result.area_id || result.id || 'Unknown Area';
+                // For Claude, prioritize full DESCRIPTION over extracted area_name
+                const fullDescription = result.properties?.DESCRIPTION || result.DESCRIPTION;
+                const displayName = fullDescription || result.area_name || result.name || result.area_id || result.id || 'Unknown Area';
                 const displayId = result.area_id || result.id;
                 
                 // Generic approach: try to find the score field from the configuration
