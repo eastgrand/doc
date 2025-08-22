@@ -124,16 +124,6 @@ export default function UnifiedAnalysisWorkflow({
   onAnalysisStart,
   onVisualizationLayerCreated
 }: UnifiedAnalysisWorkflowProps) {
-  
-  // DEBUG: Log received props
-  console.log('[UnifiedWorkflow] 🔍 PROPS DEBUG:', {
-    hasView: !!view,
-    hasOnAnalysisComplete: !!onAnalysisComplete,
-    onAnalysisCompleteType: typeof onAnalysisComplete,
-    hasOnExport: !!onExport,
-    enableChat,
-    defaultAnalysisType
-  });
   // State management
   const [workflowState, setWorkflowState] = useState<WorkflowState>({
     currentStep: 'area',
