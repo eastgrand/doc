@@ -1085,7 +1085,7 @@ const generateBarChart = (
       isBrandAnalysis: isBrandAnalysis
     });
     
-    const metrics: Metric[] = [];
+  const metrics: Metric[] = [];
     
     // Find the main score field - look for analysis-specific score fields
     const scoreFields = [

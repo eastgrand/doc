@@ -3699,6 +3699,43 @@ Present this analysis in your professional ${selectedPersona.name} style while p
           console.warn('[Claude] Name placeholder sanitation failed:', e);
         }
 
+        // Remove confidence and feature-count lines from final narrative (chat dialog cleanliness)
+        try {
+          // Strip any "Confidence:" lines (including bold variants and bullet prefixes)
+          finalContent = finalContent.replace(
+            /^[ \t]*(?:[-•*]\s*)?(?:\*\*)?Analysis?\s*Confidence(?:\s*\*\*)?\s*:\s*.*\n?/gmi,
+            ''
+          );
+          finalContent = finalContent.replace(
+            /^[ \t]*(?:[-•*]\s*)?(?:\*\*)?Confidence(?:\s*\*\*)?\s*:\s*.*\n?/gmi,
+            ''
+          );
+
+          // Strip feature-count lines commonly emitted in narratives
+          finalContent = finalContent.replace(
+            /^[ \t]*(?:[-•*]\s*)?Total\s+Features\s+Analyzed\s*:\s*.*\n?/gmi,
+            ''
+          );
+          finalContent = finalContent.replace(
+            /^[ \t]*(?:[-•*]\s*)?Layer:\s.*\(\s*\d+\s*features\s+analyzed\s*\)\s*\n?/gmi,
+            ''
+          );
+          finalContent = finalContent.replace(
+            /^[ \t]*(?:[-•*]\s*)?Layer:\s.*\(\s*\d+\s*features\s+sampled\s+from\s+\d+\s+total\s+features\s*\)\s*\n?/gmi,
+            ''
+          );
+          // Generic fallback: any standalone line mentioning "features analyzed"
+          finalContent = finalContent.replace(
+            /^[ \t]*(?:[-•*]\s*)?.*\bfeatures?\s+analyzed\b.*\n?/gmi,
+            ''
+          );
+
+          // Collapse any excessive blank lines introduced by removals
+          finalContent = finalContent.replace(/\n{3,}/g, '\n\n');
+        } catch (e) {
+          console.warn('[Claude] Cleanup of confidence/feature-count lines failed:', e);
+        }
+
         console.log('[Claude] AI Response Start:', responseContent.substring(0, 200) + '...');
 
         // Validate response for hallucinated data

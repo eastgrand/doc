@@ -426,6 +426,7 @@ process(rawData: RawAnalysisResult): ProcessedAnalysisData {
         city: city,
         // ... calculated metrics
       }
+      
     };
   });
 

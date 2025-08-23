@@ -26,7 +26,6 @@ const MetricBadge: React.FC<MetricBadgeProps> = ({ label, value, color }) => {
 };
 
 interface AnalysisMetadata {
-  confidenceScore?: number;
   modelInfo?: {
     accuracy?: number;
     rmse?: number;
@@ -62,19 +61,9 @@ const createOrderedMetrics = (
 ): React.ReactNode[] => {
   const metrics: React.ReactNode[] = [];
 
-  // Order: features analyzed, Analysis Type, model used, Model R² Score, RMSE, MAE
-  
-  // 1. Features analyzed
-  metrics.push(
-    <MetricBadge 
-      key="features" 
-      label="Features Analyzed" 
-      value={featuresCount} 
-      color="gray" 
-    />
-  );
+  // Order: Analysis Type, model used, Model R² Score, RMSE, MAE
 
-  // 2. Analysis Type
+  // 1. Analysis Type
   metrics.push(
     <MetricBadge 
       key="analysisType" 
@@ -84,7 +73,7 @@ const createOrderedMetrics = (
     />
   );
 
-  // 3. Model Used
+  // 2. Model Used
   metrics.push(
     <MetricBadge 
       key="model" 
@@ -94,7 +83,7 @@ const createOrderedMetrics = (
     />
   );
 
-  // 4. Model R² Score (if available)
+  // 3. Model R² Score (if available)
   if (r2Score) {
     metrics.push(
       <MetricBadge 
@@ -106,7 +95,7 @@ const createOrderedMetrics = (
     );
   }
 
-  // 5. RMSE (if available)
+  // 4. RMSE (if available)
   if (rmse) {
     metrics.push(
       <MetricBadge 
@@ -118,7 +107,7 @@ const createOrderedMetrics = (
     );
   }
 
-  // 6. MAE (if available)
+  // 5. MAE (if available)
   if (mae) {
     metrics.push(
       <MetricBadge 
@@ -147,11 +136,6 @@ export const renderPerformanceMetrics = (
   if (metadata.isMultiEndpoint && metadata.endpointsUsed) {
     return (
       <div className={containerClass}>
-        <MetricBadge 
-          label="Features Analyzed" 
-          value={featuresCount} 
-          color="gray" 
-        />
         <MetricBadge 
           label="Analysis Type" 
           value="Multi-Endpoint Analysis" 
