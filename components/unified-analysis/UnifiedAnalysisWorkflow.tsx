@@ -356,7 +356,7 @@ export default function UnifiedAnalysisWorkflow({
 
   // Handle area selection
   const handleAreaSelected = useCallback((area: AreaSelection) => {
-    if (area.geometry.type === 'point') {
+    if ((area.geometry as any).type === 'point') {
       const point = area.geometry as __esri.Point;
       // console.log('[UnifiedWorkflow] Point selected at coordinates:', 
       //   `X: ${point.x}, Y: ${point.y}, WKID: ${point.spatialReference?.wkid}`);
@@ -365,7 +365,7 @@ export default function UnifiedAnalysisWorkflow({
     } else {
       // console.log('[UnifiedWorkflow] Non-point geometry selected:', area.geometry.type);
     }
-    const isPoint = area.geometry.type === 'point';
+    const isPoint = (area.geometry as any).type === 'point';
     const isProjectArea = area.method === 'project-area';
     
     setWorkflowState(prev => ({
@@ -702,12 +702,26 @@ export default function UnifiedAnalysisWorkflow({
       //   propertiesKeys: targetFeature.properties ? Object.keys(targetFeature.properties) : null
       // });
 
-      // Get the geometry from the feature
-      const geometry = targetFeature.geometry;
-      if (!geometry) {
-        console.warn(`[UnifiedAnalysisWorkflow] No geometry found for ZIP code: ${zipCode}`);
+      // Get the geometry from the feature (GeoJSON-style or ArcGIS-like object)
+      const geometryUnknown = targetFeature.geometry as unknown;
+      if (!geometryUnknown || typeof geometryUnknown !== 'object') {
+        console.warn(`[UnifiedAnalysisWorkflow] No valid geometry found for ZIP code: ${zipCode}`);
         return;
       }
+
+      // Type guards for common GeoJSON shapes
+      const isPointLike = (g: unknown): g is { type: 'Point' | 'point'; coordinates: [number, number] | [number, number, number] } => {
+        if (!g || typeof g !== 'object') return false;
+        const obj = g as Record<string, unknown>;
+        const t = obj.type;
+        return (t === 'Point' || t === 'point') && Array.isArray(obj.coordinates);
+      };
+      const isPolygonLike = (g: unknown): g is { type: 'Polygon' | 'polygon'; coordinates: number[][][] } => {
+        if (!g || typeof g !== 'object') return false;
+        const obj = g as Record<string, unknown>;
+        const t = obj.type;
+        return (t === 'Polygon' || t === 'polygon') && Array.isArray(obj.coordinates);
+      };
 
       // console.log(`[UnifiedAnalysisWorkflow] Geometry details:`, {
       //   type: geometry.type,
@@ -718,20 +732,23 @@ export default function UnifiedAnalysisWorkflow({
 
       // The geometry from the analysis data is a GeoJSON-style object with coordinates, not rings
       // Convert it to the proper format for ArcGIS view.goTo()
-      if (geometry.type === 'point') {
-        // console.log(`[UnifiedAnalysisWorkflow] Zooming to point geometry`);
-        await view.goTo({
-          target: geometry,
-          zoom: 15
-        }, { duration: 1000 });
-      } else if (geometry.type === 'Polygon' || geometry.type === 'polygon') {
+      if (isPointLike(geometryUnknown)) {
+        // Handle GeoJSON Point with coordinates or ArcGIS point-like
+        const coords = geometryUnknown.coordinates;
+        if (coords && coords.length >= 2) {
+          await view.goTo({
+            center: [Number(coords[0]), Number(coords[1])],
+            zoom: 15
+          }, { duration: 1000 });
+        }
+      } else if (isPolygonLike(geometryUnknown)) {
         // Convert GeoJSON coordinates to ArcGIS rings format for autocast
-        const coordinates = (geometry as any).coordinates;
+        const coordinates = geometryUnknown.coordinates;
         if (coordinates && coordinates.length > 0) {
           const autocastGeometry = {
             type: 'polygon',
             rings: coordinates, // GeoJSON coordinates are already in rings format
-            spatialReference: geometry.spatialReference || view.spatialReference
+            spatialReference: (geometryUnknown as { spatialReference?: unknown }).spatialReference || view.spatialReference
           };
           
           // console.log(`[UnifiedAnalysisWorkflow] Autocast geometry:`, {
@@ -864,7 +881,8 @@ export default function UnifiedAnalysisWorkflow({
           console.warn(`[UnifiedAnalysisWorkflow] No coordinates available for polygon geometry`);
         }
       } else {
-        console.warn(`[UnifiedAnalysisWorkflow] Unsupported geometry type: ${geometry.type}`);
+        const gType = (geometryUnknown as Record<string, unknown>)?.type ?? 'unknown';
+        console.warn(`[UnifiedAnalysisWorkflow] Unsupported geometry type: ${gType}`);
       }
       
       // console.log(`[UnifiedAnalysisWorkflow] Successfully zoomed to ZIP code: ${zipCode}`);
@@ -882,7 +900,7 @@ export default function UnifiedAnalysisWorkflow({
       let bufferedGeometry: __esri.Geometry | null = null;
       
       if (bufferType === 'radius') {
-        if (geometry.type === 'point') {
+        if ((geometry as any).type === 'point') {
           const originalPoint = geometry as __esri.Point;
           // console.log('[Buffer Creation] Original point coordinates:', 
           //   `X: ${originalPoint.x}, Y: ${originalPoint.y}, WKID: ${originalPoint.spatialReference?.wkid}`);
@@ -929,7 +947,7 @@ export default function UnifiedAnalysisWorkflow({
         }
       } else if (bufferType === 'drivetime' || bufferType === 'walktime') {
         // Service area buffering - only works with points
-        if (geometry.type === 'point') {
+        if ((geometry as any).type === 'point') {
           // console.log('[Service Area] Starting service area analysis for', bufferType);
           
           let timeInMinutes = distance;
@@ -1029,7 +1047,7 @@ export default function UnifiedAnalysisWorkflow({
   const handleBufferComplete = useCallback(async (applyBuffer: boolean = false) => {
     // console.log('[UnifiedWorkflow] Buffer complete, apply:', applyBuffer);
     
-    if (applyBuffer && workflowState.areaSelection && workflowState.areaSelection.geometry.type === 'point') {
+    if (applyBuffer && workflowState.areaSelection && (workflowState.areaSelection.geometry as any).type === 'point') {
       const point = workflowState.areaSelection.geometry as __esri.Point;
       // console.log('[UnifiedWorkflow] Original point before buffering:', 
       //   `X: ${point.x}, Y: ${point.y}, WKID: ${point.spatialReference?.wkid}`);
@@ -1087,7 +1105,7 @@ export default function UnifiedAnalysisWorkflow({
           // Re-add point graphic if it exists
           if (pointGraphic) {
             view.graphics.add(pointGraphic);
-          } else if (workflowState.areaSelection.geometry.type === 'point') {
+          } else if ((workflowState.areaSelection.geometry as any).type === 'point') {
             // Create new point graphic if needed
             const newPointGraphic = new Graphic({
               geometry: workflowState.areaSelection.geometry,
@@ -1769,7 +1787,7 @@ export default function UnifiedAnalysisWorkflow({
   const renderBufferStep = () => {
     if (!workflowState.areaSelection) return null;
 
-    const isPoint = workflowState.areaSelection.geometry.type === 'point';
+    const isPoint = (workflowState.areaSelection.geometry as any).type === 'point';
 
     return (
       <div className="flex-1 flex flex-col space-y-3">
