@@ -1,4 +1,5 @@
 import React from 'react';
+import { MODEL_NAME_MAPPING } from '@/lib/analysis/utils/ModelAttributionMapping';
 
 interface MetricBadgeProps {
   label: string;
@@ -16,7 +17,7 @@ const MetricBadge: React.FC<MetricBadgeProps> = ({ label, value, color }) => {
     gray: 'bg-gray-100 text-gray-800'
   };
 
-  if (!value && value !== 0) return null;
+  if (value === undefined || value === null || value === '') return null;
 
   return (
     <span className={`${colorClasses[color]} text-xs px-2 py-1 rounded whitespace-nowrap`}>
@@ -27,7 +28,11 @@ const MetricBadge: React.FC<MetricBadgeProps> = ({ label, value, color }) => {
 
 interface AnalysisMetadata {
   modelInfo?: {
+    target_variable?: string;
+    feature_count?: number;
     accuracy?: number;
+    r2?: number;        // preferred normalized field in UI
+    r2_score?: number;  // passthrough from service if present
     rmse?: number;
     mae?: number;
     silhouette_score?: number;
@@ -46,306 +51,77 @@ interface AnalysisResult {
   endpoint: string;
   metadata?: AnalysisMetadata;
   data?: {
-    records?: any[];
+  records?: unknown[];
   };
 }
 
-const createOrderedMetrics = (
-  endpoint: string, 
-  featuresCount: number,
-  analysisType: string,
-  modelUsed: string,
-  r2Score?: string,
-  rmse?: string,
-  mae?: string
-): React.ReactNode[] => {
-  const metrics: React.ReactNode[] = [];
-
-  // Order: Analysis Type, model used, Model R² Score, RMSE, MAE
-
-  // 1. Analysis Type
-  metrics.push(
-    <MetricBadge 
-      key="analysisType" 
-      label="Analysis Type" 
-      value={analysisType} 
-      color="gray" 
-    />
-  );
-
-  // 2. Model Used
-  metrics.push(
-    <MetricBadge 
-      key="model" 
-      label="Model Used" 
-      value={modelUsed} 
-      color="gray" 
-    />
-  );
-
-  // 3. Model R² Score (if available)
-  if (r2Score) {
-    metrics.push(
-      <MetricBadge 
-        key="r2" 
-        label="Model R² Score" 
-        value={r2Score} 
-        color="gray" 
-      />
-    );
-  }
-
-  // 4. RMSE (if available)
-  if (rmse) {
-    metrics.push(
-      <MetricBadge 
-        key="rmse" 
-        label="RMSE" 
-        value={rmse} 
-        color="gray" 
-      />
-    );
-  }
-
-  // 5. MAE (if available)
-  if (mae) {
-    metrics.push(
-      <MetricBadge 
-        key="mae" 
-        label="MAE" 
-        value={mae} 
-        color="gray" 
-      />
-    );
-  }
-
-  return metrics;
-};
+const formatPercent = (value: number, fractionDigits = 1) => `${(value * 100).toFixed(fractionDigits)}%`;
+const formatNumber = (value: number, fractionDigits = 3) => value.toFixed(fractionDigits);
+const toTitleCase = (s: string) => s.replace(/^\//, '').replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase());
 
 export const renderPerformanceMetrics = (
   analysisResult: AnalysisResult, 
-  containerClass: string = "flex flex-wrap gap-2"
+  containerClass: string = 'flex flex-wrap gap-2'
 ): React.ReactNode => {
-  const { endpoint, metadata, data } = analysisResult;
-  
+  const { endpoint, metadata } = analysisResult;
   if (!metadata) return null;
 
-  const featuresCount = data?.records?.length || 0;
-
-  // Handle multi-endpoint analysis
+  // Multi-endpoint simple display
   if (metadata.isMultiEndpoint && metadata.endpointsUsed) {
     return (
       <div className={containerClass}>
-        <MetricBadge 
-          label="Analysis Type" 
-          value="Multi-Endpoint Analysis" 
-          color="gray" 
-        />
-        <MetricBadge 
-          label="Model Used" 
-          value={`${metadata.endpointsUsed.length} endpoints`} 
-          color="gray" 
-        />
+        <MetricBadge label="Analysis Type" value="Multi-Endpoint Analysis" color="gray" />
+        <MetricBadge label="Model Used" value={`${metadata.endpointsUsed.length} endpoints`} color="gray" />
       </div>
     );
   }
 
-  let metrics: React.ReactNode[] = [];
+  const analysisType = toTitleCase(endpoint);
+  const modelType = metadata.modelInfo?.model_type 
+    || MODEL_NAME_MAPPING[endpoint.replace(/^\//, '')]
+    || 'Model';
 
-  // Determine analysis type and render appropriate metrics
-  switch (endpoint) {
-    case '/predictive-modeling':
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        "Predictive Modeling",
-        "Ensemble (8 Algorithms)",
-        "87.9%",
-        "0.165",
-        "0.121"
-      );
-      break;
+  // Prefer r2, fallback to r2_score
+  const r2Raw = (metadata.modelInfo?.r2 ?? metadata.modelInfo?.r2_score);
+  const rmseRaw = metadata.modelInfo?.rmse;
+  const maeRaw = metadata.modelInfo?.mae;
 
-    case '/ensemble-analysis':
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        "Ensemble Analysis",
-        "8 Algorithms",
-        "87.9%",
-        "0.165",
-        "0.121"
-      );
-      break;
+  const metrics: React.ReactNode[] = [];
+  metrics.push(<MetricBadge key="analysisType" label="Analysis Type" value={analysisType} color="gray" />);
+  metrics.push(<MetricBadge key="model" label="Model Used" value={modelType} color="gray" />);
 
-    case '/model-performance':
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        "Performance Comparison",
-        "Ensemble (Best of 11)",
-        "87.9%"
-      );
-      break;
+  if (typeof r2Raw === 'number' && isFinite(r2Raw)) {
+    metrics.push(<MetricBadge key="r2" label="Model R² Score" value={formatPercent(r2Raw)} color="gray" />);
+  }
+  if (typeof rmseRaw === 'number' && isFinite(rmseRaw)) {
+    metrics.push(<MetricBadge key="rmse" label="RMSE" value={formatNumber(rmseRaw)} color="gray" />);
+  }
+  if (typeof maeRaw === 'number' && isFinite(maeRaw)) {
+    metrics.push(<MetricBadge key="mae" label="MAE" value={formatNumber(maeRaw)} color="gray" />);
+  }
 
-    case '/algorithm-comparison':
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        "Algorithm Comparison",
-        "Ensemble (Best of 8)",
-        "87.9%"
-      );
-      break;
+  // Add clustering extras when relevant
+  if (['/spatial-clusters', '/clustering'].includes(endpoint)) {
+    const sil = metadata.modelInfo?.silhouette_score;
+    const k = metadata.modelInfo?.n_clusters;
+    if (typeof sil === 'number' && isFinite(sil)) {
+      metrics.push(<MetricBadge key="silhouette" label="Cluster Quality" value={sil.toFixed(2)} color="gray" />);
+    }
+    if (typeof k === 'number' && isFinite(k)) {
+      metrics.push(<MetricBadge key="clusters" label="Clusters Found" value={k} color="gray" />);
+    }
+  }
 
-    case '/spatial-clusters':
-    case '/clustering':
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        "Spatial Clustering",
-        "K-Means"
-      );
-      // Add clustering-specific metrics after the standard ones
-      if (metadata.modelInfo?.silhouette_score) {
-        metrics.push(
-          <MetricBadge 
-            key="silhouette" 
-            label="Cluster Quality" 
-            value={metadata.modelInfo.silhouette_score.toFixed(2)} 
-            color="gray" 
-          />
-        );
-      }
-      if (metadata.modelInfo?.n_clusters) {
-        metrics.push(
-          <MetricBadge 
-            key="clusters" 
-            label="Clusters Found" 
-            value={metadata.modelInfo.n_clusters} 
-            color="gray" 
-          />
-        );
-      }
-      break;
-
-    case '/anomaly-detection':
-    case '/outlier-detection':
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        "Anomaly Detection",
-        "Isolation Forest"
-      );
-      // Add anomaly-specific metrics after the standard ones
-      if (metadata.modelInfo?.outlier_ratio) {
-        metrics.push(
-          <MetricBadge 
-            key="outliers" 
-            label="Anomalies Detected" 
-            value={`${(metadata.modelInfo.outlier_ratio * 100).toFixed(1)}%`} 
-            color="gray" 
-          />
-        );
-      }
-      if (metadata.modelInfo?.contamination) {
-        metrics.push(
-          <MetricBadge 
-            key="contamination" 
-            label="Expected Rate" 
-            value={`${(metadata.modelInfo.contamination * 100).toFixed(1)}%`} 
-            color="gray" 
-          />
-        );
-      }
-      break;
-
-    case '/strategic-analysis':
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        "Strategic Analysis",
-        "Ensemble (8 Algorithms)",
-        "87.9%",
-        "0.165",
-        "0.121"
-      );
-      break;
-
-    case '/competitive-analysis':
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        "Competitive Analysis",
-        "XGBoost",
-        "60.8%",
-        "0.300",
-        "0.145"
-      );
-      break;
-
-    case '/demographic-insights':
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        "Demographic Insights",
-        "Random Forest",
-        "51.3%",
-        "0.334",
-        "0.166"
-      );
-      break;
-
-    case '/comparative-analysis':
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        "Comparative Analysis",
-        "Support Vector Regression",
-        "60.9%",
-        "0.300",
-        "0.158"
-      );
-      break;
-
-    case '/correlation-analysis':
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        "Correlation Analysis",
-        "Linear Regression",
-        "29.7%",
-        "0.402",
-        "0.161"
-      );
-      break;
-
-    case '/trend-analysis':
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        "Trend Analysis",
-        "Ridge Regression",
-        "34.9%",
-        "0.386",
-        "0.165"
-      );
-      break;
-
-    default:
-      // Fallback for unknown analysis types
-      const endpointName = endpoint
-        .replace(/^\//, '')
-        .replace(/-/g, ' ')
-        .replace(/\b\w/g, (l: string) => l.toUpperCase());
-      
-      metrics = createOrderedMetrics(
-        endpoint, 
-        featuresCount, 
-        endpointName,
-        "Unknown Model"
-      );
-      break;
+  // Add anomaly extras when relevant
+  if (['/anomaly-detection', '/outlier-detection'].includes(endpoint)) {
+    const ratio = metadata.modelInfo?.outlier_ratio;
+    const contamination = metadata.modelInfo?.contamination;
+    if (typeof ratio === 'number' && isFinite(ratio)) {
+      metrics.push(<MetricBadge key="outliers" label="Anomalies Detected" value={formatPercent(ratio)} color="gray" />);
+    }
+    if (typeof contamination === 'number' && isFinite(contamination)) {
+      metrics.push(<MetricBadge key="contamination" label="Expected Rate" value={formatPercent(contamination)} color="gray" />);
+    }
   }
 
   return metrics.length > 0 ? <div className={containerClass}>{metrics}</div> : null;

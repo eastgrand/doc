@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { VisualizationRendererStrategy, ProcessedAnalysisData, VisualizationResult, VisualizationConfig } from '../../types';
-import { getQuintileColorScheme, calculateEqualCountQuintiles } from '../../utils/QuintileUtils';
+import { getQuintileColorScheme } from '../../utils/QuintileUtils';
 import { ACTIVE_COLOR_SCHEME, STANDARD_OPACITY } from '../../../../utils/renderer-standardization';
 
 /**
@@ -20,16 +21,16 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
 
   render(data: ProcessedAnalysisData, config: VisualizationConfig): VisualizationResult {
     console.log('🚨🚨🚨 [ClusterRenderer] UPDATED VERSION EXECUTING - SHOULD USE POLYGON FILLS');
-    console.log(`[ClusterRenderer] Rendering ${data.records.length} clustered records`);
-    console.log(`[ClusterRenderer] 🎯 Data structure:`, {
+  console.log(`[ClusterRenderer] Rendering ${data.records.length} clustered records`);
+  console.log(`[ClusterRenderer] 🎯 Data structure:`, {
       isClustered: data.isClustered,
       hasClusterInfo: !!data.clusters,
       clusterCount: data.clusters?.length || 0,
       sampleRecord: data.records[0] ? {
         cluster_id: data.records[0].cluster_id,
         cluster_name: data.records[0].cluster_name,
-        hasGeometry: !!data.records[0].geometry,
-        geometryType: data.records[0].geometry?.type
+    hasGeometry: !!(data.records[0] as any).geometry,
+    geometryType: (data.records[0] as any).geometry ? (data.records[0] as any).geometry.type : undefined
       } : null
     });
     
@@ -46,7 +47,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
     const popupTemplate = this.createClusterPopupTemplate(data, config);
     
     // Create cluster legend
-    const legend = this.createClusterLegend(clusterInfo, clusterColors, data);
+  const legend = this.createClusterLegend(clusterInfo, clusterColors) as unknown as import('../../types').LegendConfig;
 
     return {
       type: 'cluster',
@@ -156,9 +157,9 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
     return colors;
   }
 
-  private createClusterRenderer(clusterInfo: ClusterInfo, clusterColors: string[], config: VisualizationConfig): any {
+  private createClusterRenderer(clusterInfo: ClusterInfo, clusterColors: string[], config: VisualizationConfig): unknown {
     // Detect geometry type from config or default to polygon for cluster analysis
-    const geometryType = (config as any).geometryType || 'polygon';
+  const geometryType = (config as any).geometryType || 'polygon';
     console.log('🔍 [ClusterRenderer] Detected geometryType:', geometryType, 'config.geometryType:', (config as any).geometryType);
     // For cluster rendering, use 'cluster_id' field from individual ZIP codes
     const valueField = 'cluster_id';
@@ -292,7 +293,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
     }
   }
 
-  private createClusterPopupTemplate(data: ProcessedAnalysisData, config: VisualizationConfig): any {
+  private createClusterPopupTemplate(data: ProcessedAnalysisData, config: VisualizationConfig): unknown {
     // Create cluster-specific popup content
     const content = [
       {
@@ -380,7 +381,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
     };
   }
 
-  private createClusterLegend(clusterInfo: ClusterInfo, clusterColors: string[], data: ProcessedAnalysisData): any {
+  private createClusterLegend(clusterInfo: ClusterInfo, clusterColors: string[]): unknown {
     const numberEmojis = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩'];
     
     const legendItems = clusterInfo.clusters.map((cluster, index) => {
@@ -447,7 +448,7 @@ export class ClusterRenderer implements VisualizationRendererStrategy {
   // CLUSTER CENTROID MARKERS (for enhanced visualization)
   // ============================================================================
 
-  createCentroidMarkers(clusterInfo: ClusterInfo, clusterColors: string[]): any[] {
+  createCentroidMarkers(clusterInfo: ClusterInfo, clusterColors: string[]): unknown[] {
     return clusterInfo.clusters.map((cluster, index) => ({
       type: 'point',
       geometry: {

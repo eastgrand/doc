@@ -113,7 +113,7 @@ export class VisualizationRenderer {
         hasProperties: !!data.records[0].properties,
         propertyKeys: data.records[0].properties ? Object.keys(data.records[0].properties).slice(0, 5) : [],
         isCluster: data.records[0].properties?.is_cluster,
-        clusterZipCodes: data.records[0].properties?.zip_codes?.length
+  clusterZipCodes: (data.records[0].properties as any)?.zip_codes?.length
       } : 'No records');
       
       // Get endpoint configuration
@@ -138,9 +138,9 @@ export class VisualizationRenderer {
         hasRenderer: !!data.renderer,
         hasLegend: !!data.legend,
         isClustered: !!data.isClustered,
-        rendererType: data.renderer?.type,
-        legendTitle: data.legend?.title,
-        legendItems: data.legend?.items?.length,
+        rendererType: (data.renderer as any)?.type,
+        legendTitle: (data.legend as any)?.title,
+        legendItems: (data.legend as any)?.items?.length,
         willUseDirect: !!(data.renderer && data.legend && !data.isClustered)
       });
       
@@ -149,19 +149,19 @@ export class VisualizationRenderer {
         const result = {
           type: visualizationType,
           config: visualizationConfig,
-          renderer: data.renderer,
+          renderer: data.renderer as any,
           popupTemplate: this.createMinimalPopupTemplate(),
-          legend: data.legend,
+          legend: (data.legend as any) as unknown as import('./types').LegendConfig,
           extent: data.extent || null,
           shouldZoom: data.shouldZoom || false
         };
         console.log(`[VisualizationRenderer] Direct renderer result:`, {
           type: result?.type,
           hasRenderer: !!result?.renderer,
-          rendererType: result?.renderer?.type,
+          rendererType: (result?.renderer as any)?.type,
           hasPopupTemplate: !!result?.popupTemplate,
           hasLegend: !!result?.legend,
-          legendItems: result?.legend?.items?.length
+          legendItems: (result?.legend as any)?.items?.length
         });
         return result;
       }
@@ -188,7 +188,7 @@ export class VisualizationRenderer {
       console.log(`[VisualizationRenderer] Renderer returned:`, {
         type: result?.type,
         hasRenderer: !!result?.renderer,
-        rendererType: result?.renderer?.type,
+        rendererType: (result?.renderer as any)?.type,
         hasPopupTemplate: !!result?.popupTemplate,
         hasLegend: !!result?.legend
       });
@@ -414,7 +414,7 @@ export class VisualizationRenderer {
     
     // Detect geometry type from data records
     // For spatial clustering, check if we have cluster centroids (point data) or individual areas (polygon data)
-    const hasClusterCentroids = data.records.some(r => r.properties?.is_cluster_centroid === true);
+  const hasClusterCentroids = data.records.some(r => (r.properties as any)?.is_cluster_centroid === true);
     const geometryType = data.type === 'spatial_clustering' && !hasClusterCentroids 
       ? 'polygon' 
       : this.detectGeometryType(data);
@@ -460,19 +460,19 @@ export class VisualizationRenderer {
       const record = data.records[i];
       console.log(`[VisualizationRenderer] 🔍 detectGeometryType: Record ${i} (${record.area_name}):`, {
         hasProperties: !!record.properties,
-        hasGeometry: !!record.properties?.geometry,
-        geometryType: record.properties?.geometry?.type,
+  hasGeometry: !!(record.properties as any)?.geometry,
+  geometryType: (record.properties as any)?.geometry?.type,
         hasCoordinates: !!record.coordinates,
         coordinatesType: Array.isArray(record.coordinates) ? 'array' : typeof record.coordinates,
         hasActualGeometry: !!record.geometry,
-        actualGeometryType: record.geometry?.type
+  actualGeometryType: (record.geometry as any)?.type
       });
       
       // Check in properties for geometry info, or infer from coordinates
-      const geometry = record.properties?.geometry;
+      const geometry = (record.properties as any)?.geometry;
       if (geometry?.type) {
         console.log(`[VisualizationRenderer] 🔍 detectGeometryType: Found geometry.type = ${geometry.type} in properties`);
-        switch (geometry.type.toLowerCase()) {
+        switch ((geometry.type as string).toLowerCase()) {
           case 'point':
           case 'multipoint':
             console.log('[VisualizationRenderer] 🔍 detectGeometryType: Returning POINT based on properties.geometry.type');
@@ -489,9 +489,9 @@ export class VisualizationRenderer {
       }
       
       // Check actual geometry field
-      if (record.geometry?.type) {
-        console.log(`[VisualizationRenderer] 🔍 detectGeometryType: Found geometry.type = ${record.geometry.type} in main geometry field`);
-        switch (record.geometry.type.toLowerCase()) {
+      if ((record.geometry as any)?.type) {
+        console.log(`[VisualizationRenderer] 🔍 detectGeometryType: Found geometry.type = ${(record.geometry as any).type} in main geometry field`);
+        switch (((record.geometry as any).type as string).toLowerCase()) {
           case 'point':
           case 'multipoint':
             console.log('[VisualizationRenderer] 🔍 detectGeometryType: Returning POINT based on main geometry.type');

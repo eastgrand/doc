@@ -24,11 +24,12 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     
     // Competitive analysis requires competitive_analysis_score, competitive_advantage_score OR competitive_score (legacy)
     const hasCompetitiveFields = rawData.results.length === 0 || 
-      rawData.results.some(record => 
-        record && 
-        (record.area_id || record.id || record.ID) &&
-        (record.competitive_analysis_score !== undefined || record.competitive_advantage_score !== undefined || record.competitive_score !== undefined)
-      );
+      rawData.results.some(r => {
+        const record = r as any;
+        return record &&
+          (record.area_id || record.id || record.ID) &&
+          (record.competitive_analysis_score !== undefined || record.competitive_advantage_score !== undefined || record.competitive_score !== undefined);
+      });
     
     return hasCompetitiveFields;
   }
@@ -68,7 +69,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     console.log(`[CompetitiveDataProcessor] Final result summary:`, {
       type: 'competitive_analysis',
       recordCount: records.length,
-      targetVariable: 'expansion_opportunity_score',
+      targetVariable: 'competitive_analysis_score',
       topRecord: records[0] ? {
         area_name: records[0].area_name,
         value: records[0].value,
@@ -114,6 +115,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       const properties = {
         ...this.extractProperties(record),
         competitive_advantage_score: competitiveScore,
+  competitive_analysis_score: competitiveScore, // ensure alias for renderer field
         score_source: 'competitive_advantage_score',
         market_share: marketShare,
         target_brand_share: targetBrand?.value || 0,
@@ -138,7 +140,8 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
         area_id,
         area_name,
         value,
-        competitive_advantage_score: competitiveScore, // Add at top level for visualization
+  competitive_advantage_score: competitiveScore, // Add at top level for visualization
+  competitive_analysis_score: competitiveScore,  // Add alias for renderer field
         rank: 0, // Will be calculated in ranking
         category,
         coordinates: record.coordinates || [0, 0],
@@ -243,8 +246,10 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
   }
 
   private calculateCompetitiveStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
-    const scores = records.map(r => r.value).filter(v => !isNaN(v));
-    const marketShares = records.map(r => r.properties.target_brand_share || 0).filter(v => !isNaN(v));
+    const scores = records.map(r => Number(r.value)).filter(v => !isNaN(v));
+    const marketShares = records
+      .map(r => Number((r.properties as any)?.target_brand_share) || 0)
+      .filter(v => !isNaN(v));
     
     if (scores.length === 0) {
       return {
@@ -255,7 +260,9 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     }
     
     const sorted = [...scores].sort((a, b) => a - b);
-    const sortedShares = [...marketShares].sort((a, b) => a - b);
+    // Normalize shares to 0-1 range for statistics
+    const normalizedShares = marketShares.map(s => (s > 1 ? s / 100 : s));
+    const sortedShares = [...normalizedShares].sort((a, b) => a - b);
     const total = scores.length;
     const sum = scores.reduce((a, b) => a + b, 0);
     const mean = sum / total;
@@ -268,12 +275,12 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     const stdDev = Math.sqrt(variance);
     
     // Calculate quintiles (20%, 40%, 60%, 80%, 100%) for competitive scores
-    const competitiveQuintiles = this.calculateQuintiles(sorted);
-    const marketShareQuintiles = this.calculateQuintiles(sortedShares);
+  const competitiveQuintiles = this.calculateQuintiles(sorted);
+  const marketShareQuintiles = this.calculateQuintiles(sortedShares);
     
     // Competitive-specific metrics
-    const avgMarketShare = marketShares.reduce((a, b) => a + b, 0) / marketShares.length;
-    const marketConcentration = this.calculateMarketConcentration(marketShares);
+  const avgMarketShare = normalizedShares.reduce((a, b) => a + b, 0) / (normalizedShares.length || 1);
+  const marketConcentration = this.calculateMarketConcentration(normalizedShares);
     const competitiveIntensity = this.calculateCompetitiveIntensity(scores);
     
     console.log('[CompetitiveDataProcessor] Competitive quintiles calculated:', competitiveQuintiles);
@@ -333,8 +340,8 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     
     // Analyze each category
     const categoryAnalysis = Array.from(categoryMap.entries()).map(([category, categoryRecords]) => {
-      const avgScore = categoryRecords.reduce((sum, r) => sum + r.value, 0) / categoryRecords.length;
-      const avgMarketShare = categoryRecords.reduce((sum, r) => sum + (r.properties.market_share || 0), 0) / categoryRecords.length;
+  const avgScore = categoryRecords.reduce((sum, r) => sum + Number(r.value || 0), 0) / categoryRecords.length;
+  const avgMarketShare = categoryRecords.reduce((sum, r) => sum + (Number((r.properties as any)?.market_share) || 0), 0) / categoryRecords.length;
       
       return {
         category,
@@ -348,7 +355,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
           .map(r => ({
             name: r.area_name,
             score: r.value,
-            marketShare: r.properties.market_share
+    marketShare: (r.properties as any)?.market_share
           }))
       };
     });
@@ -360,8 +367,8 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       .slice(0, 5);
     
     const growthOpportunities = records
-      .filter(r => r.category === 'challenged' && r.properties.market_share < 0.3)
-      .sort((a, b) => (b.properties.brand_awareness || 0) - (a.properties.brand_awareness || 0))
+      .filter(r => r.category === 'challenged' && (Number((r.properties as any)?.market_share) || 0) < 0.3)
+      .sort((a, b) => ((Number((b.properties as any)?.brand_awareness) || 0) - (Number((a.properties as any)?.brand_awareness) || 0)))
       .slice(0, 5);
     
     return {
@@ -369,13 +376,13 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       marketLeaders: marketLeaders.map(r => ({
         area: r.area_name,
         score: r.value,
-        marketShare: r.properties.market_share,
-        position: r.properties.competitive_position
+        marketShare: (r.properties as any)?.market_share,
+        position: (r.properties as any)?.competitive_position
       })),
       growthOpportunities: growthOpportunities.map(r => ({
         area: r.area_name,
-        currentShare: r.properties.market_share,
-        brandAwareness: r.properties.brand_awareness,
+        currentShare: (r.properties as any)?.market_share,
+        brandAwareness: (r.properties as any)?.brand_awareness,
         opportunity: 'high'
       })),
       competitiveBalance: this.assessCompetitiveBalance(categoryAnalysis)
@@ -393,12 +400,17 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
   }
 
   private processCompetitiveFeatureImportance(rawFeatureImportance: any[]): any[] {
-    return rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getCompetitiveFeatureDescription(item.feature || item.name),
-      competitiveImpact: this.assessCompetitiveImpact(item.importance || 0)
-    })).sort((a, b) => b.importance - a.importance);
+    return rawFeatureImportance.map((it) => {
+      const item = it as any;
+      const featureName = String(item.feature ?? item.name ?? 'unknown');
+      const importance = Number(item.importance ?? item.value ?? 0);
+      return {
+        feature: featureName,
+        importance,
+        description: this.getCompetitiveFeatureDescription(featureName),
+        competitiveImpact: this.assessCompetitiveImpact(importance)
+      };
+    }).sort((a, b) => b.importance - a.importance);
   }
 
   private getCompetitiveFeatureDescription(featureName: string): string {
@@ -436,17 +448,24 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     competitiveAnalysis: any
   ): string {
     
-    // Enhanced summary with expansion opportunity focus
+    // Handle empty results safely
     const recordCount = records.length;
+    if (recordCount === 0) {
+      const targetBrandName = this.brandResolver.getTargetBrandName();
+      return `No competitive data available for ${targetBrandName}. Try broadening the area or adjusting filters.`;
+    }
+    
+    // Enhanced summary with expansion opportunity focus
     const topExpansionTargets = records.slice(0, 10); // Top 10 expansion opportunities
-    const avgScore = records.reduce((sum, r) => sum + r.value, 0) / recordCount;
+    const avgScore = records.reduce((sum, r) => sum + Number(r.value || 0), 0) / recordCount;
     
     // Check data quality
-  const nonZeroRecords = records.filter(r => r.value > 0);
+    const nonZeroRecords = records.filter(r => Number(r.value) > 0);
     
     // Get brand names from the first record or defaults
-    const targetBrandName = records[0]?.properties?.target_brand_name || this.brandResolver.getTargetBrandName();
-    const competitorBrandName = records[0]?.properties?.primary_competitor_name || 'Primary Competitor';
+    const firstProps = (records[0]?.properties || {}) as any;
+    const targetBrandName = firstProps?.target_brand_name || this.brandResolver.getTargetBrandName();
+    const competitorBrandName = firstProps?.primary_competitor_name || 'Primary Competitor';
     
     // Start with competitive advantage scoring explanation
     let summary = `**🏆 Competitive Advantage Formula (0-100 scale):**
@@ -461,27 +480,29 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
     
     // Enhanced baseline and competitive metrics section
     summary += `**🏆 Competitive Baseline & Market Averages:** `;
-    summary += `Market average competitive advantage: ${avgScore.toFixed(1)} (range: ${records[records.length - 1]?.value.toFixed(1) || '0'}-${records[0]?.value.toFixed(1) || '0'}). `;
+  const rangeLow = records[records.length - 1]?.value;
+  const rangeHigh = records[0]?.value;
+  summary += `Market average competitive advantage: ${avgScore.toFixed(1)} (range: ${rangeLow != null ? Number(rangeLow).toFixed(1) : '0'}-${rangeHigh != null ? Number(rangeHigh).toFixed(1) : '0'}). `;
     
     // Calculate competitive landscape baselines using dynamic brand detection
     const avgTargetShare = records.reduce((sum, r) => {
-      const targetShare = Number(r.properties?.target_brand_share) || 0;
+      const targetShare = Number((r.properties as any)?.target_brand_share) || 0;
       return sum + targetShare;
     }, 0) / recordCount;
     
     const avgCompetitorShare = records.reduce((sum, r) => {
-      const competitorShare = Number(r.properties?.primary_competitor_share) || 0;
+      const competitorShare = Number((r.properties as any)?.primary_competitor_share) || 0;
       return sum + competitorShare;
     }, 0) / recordCount;
     
     const avgMarketGap = 100 - avgTargetShare - avgCompetitorShare;
-    const avgWealthIndex = records.reduce((sum, r) => sum + (Number(r.properties?.value_WLTHINDXCY) || 100), 0) / recordCount;
-          const avgIncome = records.reduce((sum, r) => {
-        const wealth = Number(r.properties?.value_WLTHINDXCY) || 100;
-        const income = Number(r.properties?.value_AVGHINC_CY) || (wealth * 500);
-        return sum + income;
-      }, 0) / recordCount;
-    const avgPopulation = records.reduce((sum, r) => sum + (Number(r.properties?.value_TOTPOP_CY) || 0), 0) / recordCount;
+    const avgWealthIndex = records.reduce((sum, r) => sum + (Number((r.properties as any)?.value_WLTHINDXCY) || 100), 0) / recordCount;
+    const avgIncome = records.reduce((sum, r) => {
+      const wealth = Number((r.properties as any)?.value_WLTHINDXCY) || 100;
+      const income = Number((r.properties as any)?.value_AVGHINC_CY) || (wealth * 500);
+      return sum + income;
+    }, 0) / recordCount;
+    const avgPopulation = records.reduce((sum, r) => sum + (Number((r.properties as any)?.value_TOTPOP_CY) || 0), 0) / recordCount;
     
     summary += `Competitive baseline: ${targetBrandName} ${avgTargetShare.toFixed(1)}%, ${competitorBrandName} ${avgCompetitorShare.toFixed(1)}%, untapped market ${avgMarketGap.toFixed(1)}%. `;
     summary += `Market demographics: wealth index ${avgWealthIndex.toFixed(0)}, $${(avgIncome/1000).toFixed(0)}K estimated income, ${(avgPopulation/1000).toFixed(0)}K average population. `;
@@ -507,11 +528,12 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
 \n**🎯 Top Expansion Opportunities** (Markets with GROWTH potential, not current ${targetBrandName} dominance): `;
       
       topExpansionTargets.slice(0, 8).forEach((record, index) => {
-        const targetShare = Number(record.properties?.target_brand_share) || 0;
-        const competitorShare = Number(record.properties?.primary_competitor_share) || 0;
-        const population = Number(record.properties?.value_TOTPOP_CY) || 0;
-        const wealthIndex = Number(record.properties?.value_WLTHINDXCY) || 100;
-        const income = Number(record.properties?.value_AVGHINC_CY) || (wealthIndex * 500); // Use wealth index to estimate income
+        const props = (record.properties || {}) as any;
+        const targetShare = Number(props?.target_brand_share) || 0;
+        const competitorShare = Number(props?.primary_competitor_share) || 0;
+        const population = Number(props?.value_TOTPOP_CY) || 0;
+        const wealthIndex = Number(props?.value_WLTHINDXCY) || 100;
+        const income = Number(props?.value_AVGHINC_CY) || (wealthIndex * 500); // Use wealth index to estimate income
         const marketGap = Math.max(0, 100 - targetShare - competitorShare);
         
   summary += `${index + 1}. **${record.area_name}**: ${record.value.toFixed(1)} expansion score`;
@@ -541,7 +563,7 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
       summary += `
 \n**🏆 Premium Expansion Targets** (80+ expansion scores - high growth potential): `;
       topTierMarkets.forEach((record) => {
-        const targetShare = Number(record.properties?.target_brand_share) || 0;
+        const targetShare = Number(((record.properties || {}) as any)?.target_brand_share) || 0;
         summary += `${record.area_name} (${record.value.toFixed(1)} score, ${targetShare.toFixed(1)}% ${targetBrandName} share), `;
       });
       summary = summary.slice(0, -2) + '. ';
@@ -551,7 +573,7 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
       summary += `
 \n**📈 Strong Expansion Targets** (60-80 expansion scores - solid growth potential): `;
       strongMarkets.forEach((record) => {
-        const targetShare = Number(record.properties?.target_brand_share) || 0;
+        const targetShare = Number(((record.properties || {}) as any)?.target_brand_share) || 0;
         summary += `${record.area_name} (${record.value.toFixed(1)} score, ${targetShare.toFixed(1)}% ${targetBrandName} share), `;
       });
       summary = summary.slice(0, -2) + '. ';
@@ -561,7 +583,7 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
       summary += `
 \n**🌱 Developing Expansion Markets** (40-60 expansion scores - moderate growth potential): `;
       emergingMarkets.forEach((record) => {
-        const targetShare = Number(record.properties?.target_brand_share) || 0;
+        const targetShare = Number(((record.properties || {}) as any)?.target_brand_share) || 0;
         summary += `${record.area_name} (${record.value.toFixed(1)} score, ${targetShare.toFixed(1)}% ${targetBrandName} share), `;
       });
       summary = summary.slice(0, -2) + '. ';
@@ -586,7 +608,7 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
     }
     
     // Competitive positioning insights
-    const competitiveAnalysisData = competitiveAnalysis?.categoryAnalysis;
+  const competitiveAnalysisData = competitiveAnalysis?.categories;
     if (competitiveAnalysisData) {
       const dominantMarkets = competitiveAnalysisData.find((cat: any) => cat.category === 'dominant');
       if (dominantMarkets && dominantMarkets.size > 0) {

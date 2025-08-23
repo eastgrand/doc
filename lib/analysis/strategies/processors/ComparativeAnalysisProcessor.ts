@@ -64,7 +64,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       hasSuccess: rawData?.success,
       hasResults: Array.isArray(rawData?.results),
       resultsLength: rawData?.results?.length,
-      firstRecordKeys: rawData?.results?.[0] ? Object.keys(rawData.results[0]).slice(0, 15) : []
+  firstRecordKeys: rawData?.results?.[0] ? Object.keys(rawData.results[0] as any).slice(0, 15) : []
     });
 
     if (!rawData || typeof rawData !== 'object') {
@@ -87,11 +87,11 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     }
 
     // Check first few records for required fields - be more flexible with ID fields
-    const sampleSize = Math.min(5, rawData.results.length);
-    const sampleRecords = rawData.results.slice(0, sampleSize);
+  const sampleSize = Math.min(5, rawData.results.length);
+  const sampleRecords = (rawData.results as any[]).slice(0, sampleSize);
     
     for (let i = 0; i < sampleRecords.length; i++) {
-      const record = sampleRecords[i];
+  const record = sampleRecords[i] as any;
       
       // Check for ID field (flexible naming)
       const hasIdField = record && (
@@ -110,8 +110,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
         record.score !== undefined ||
         record.thematic_value !== undefined ||
         // Be more flexible - accept any field that looks like it contains numeric data
-        Object.keys(record).some(key => 
-          typeof record[key] === 'number' && 
+        Object.keys(record as any).some((key: string) => 
+          typeof (record as any)[key] === 'number' && 
           !key.toLowerCase().includes('date') &&
           !key.toLowerCase().includes('time') &&
           !key.toLowerCase().includes('area') &&
@@ -123,7 +123,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       console.log(`🔍 [ComparativeAnalysisProcessor] Record ${i} validation:`, {
         hasIdField,
         hasScoringField,
-        recordKeys: Object.keys(record).slice(0, 10)
+  recordKeys: Object.keys(record as any).slice(0, 10)
       });
       
       if (hasIdField && hasScoringField) {
@@ -141,11 +141,12 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     
     // DEBUG: Log ALL ZIP codes received by processor
     if (rawData.results && rawData.results.length > 0) {
-      const allZips = rawData.results.map(r => r.ID || r.area_name || r.zipcode || 'unknown');
+      const resultsAny = rawData.results as any[];
+      const allZips = resultsAny.map(r => r.ID || r.area_name || r.zipcode || 'unknown');
       console.log(`🔍 [COMPARATIVE PROCESSOR] DEBUGGING: ALL ${allZips.length} ZIP codes received:`, allZips);
       
       // Check which cities are represented
-      const cityCount = rawData.results.reduce((acc, r) => {
+      const cityCount = resultsAny.reduce((acc: Record<string, number>, r: any) => {
         const city = this.extractCityFromRecord(r);
         acc[city] = (acc[city] || 0) + 1;
         return acc;
@@ -158,7 +159,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     }
 
     // Process records with comparative analysis scoring priority
-    const processedRecords = rawData.results.map((record: any, index: number) => {
+  const processedRecords = (rawData.results as any[]).map((record: any, index: number) => {
       // PRIORITIZE PRE-CALCULATED COMPARATIVE ANALYSIS SCORE
       const comparativeScore = this.extractComparativeScore(record);
       
@@ -174,7 +175,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
           hasID: 'ID' in record,
           hasId: 'id' in record,
           hasAreaId: 'area_id' in record,
-          recordKeys: Object.keys(record).slice(0, 10)
+          recordKeys: Object.keys(record as any).slice(0, 10)
         });
       }
       
@@ -251,11 +252,21 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     
     // Get brand names from first record (all records should have same brand names)
     const firstRecord = rankedRecords[0];
-    const brandAName = firstRecord?.properties?.brand_a_name || 'Brand A';
-    const brandBName = firstRecord?.properties?.brand_b_name || 'Brand B';
+    const brandAName = typeof (firstRecord?.properties as any)?.brand_a_name === 'string'
+      ? (firstRecord!.properties as any).brand_a_name as string
+      : 'Brand A';
+    const brandBName = typeof (firstRecord?.properties as any)?.brand_b_name === 'string'
+      ? (firstRecord!.properties as any).brand_b_name as string
+      : 'Brand B';
 
     // Generate comparative-focused summary
-    const summary = this.generateComparativeSummary(rankedRecords, statistics, rawData.summary, brandAName, brandBName);
+    const summary = this.generateComparativeSummary(
+      rankedRecords,
+      statistics,
+      typeof rawData.summary === 'string' ? rawData.summary : undefined,
+      brandAName,
+      brandBName
+    );
 
     return {
       type: 'competitive_analysis', // Use correct competitive analysis type
@@ -428,7 +439,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       comparative_score: record.comparative_score,
       thematic_value: record.thematic_value,
       value: record.value,
-      allNumericFields: Object.keys(record).filter(k => typeof record[k] === 'number').slice(0, 10)
+      allNumericFields: Object.keys(record as any).filter((k: string) => typeof (record as any)[k] === 'number').slice(0, 10)
     });
     
     // PRIORITY 1: Use comparison_score if available (this is the ACTUAL field in our data)
@@ -471,8 +482,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     console.log('⚠️ [ComparativeAnalysisProcessor] No direct scores found, using first available numeric field');
     
     // Find the first numeric field that's not an ID, date, or geometric field
-    const numericFields = Object.keys(record).filter(key => {
-      const value = record[key];
+    const numericFields = Object.keys(record as any).filter((key: string) => {
+      const value = (record as any)[key];
       const keyLower = key.toLowerCase();
       return typeof value === 'number' && 
              !isNaN(value) &&
@@ -803,11 +814,14 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    * Process feature importance with comparative focus
    */
   private processComparativeFeatureImportance(rawFeatureImportance: any[]): any[] {
-    const comparativeFeatures = rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getComparativeFeatureDescription(item.feature || item.name)
-    }));
+    const comparativeFeatures = rawFeatureImportance.map((item: any) => {
+      const featureName = String(item.feature ?? item.name ?? 'unknown');
+      return {
+        feature: featureName,
+        importance: Number(item.importance ?? item.value ?? 0),
+        description: this.getComparativeFeatureDescription(featureName)
+      };
+    });
 
     // Add comparative-specific synthetic features if none provided
     if (comparativeFeatures.length === 0) {
@@ -917,6 +931,10 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     brandAName: string = 'Brand A',
     brandBName: string = 'Brand B'
   ): string {
+    const num = (v: unknown, d = 0) => {
+      const n = Number(v as any);
+      return isNaN(n) ? d : n;
+    };
     // Start with comparative scoring explanation using actual brand names
     let summary = `**⚖️ Comparative Analysis Formula (0-100 scale):**
 • **Brand Performance Gap (35% weight):** ${brandAName} vs competitors performance differential\n• **Market Position Strength (30% weight):** Relative market positioning and dominance\n• **Competitive Dynamics (25% weight):** Competitive pressure and market share dynamics\n• **Growth Differential (10% weight):** Relative growth potential and trend momentum\n\nHigher scores indicate stronger competitive advantages and superior market positioning.\n
@@ -927,17 +945,17 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     summary += `Average comparative advantage: ${statistics.mean.toFixed(1)} (range: ${statistics.min.toFixed(1)}-${statistics.max.toFixed(1)}). `;
     
     // Calculate brand dominance patterns
-    const brandADominantMarkets = records.filter(r => (r.properties.brand_dominance || 0) > 5).length;
-    const balancedMarkets = records.filter(r => Math.abs(r.properties.brand_dominance || 0) <= 5).length;
-    const brandBDominantMarkets = records.filter(r => (r.properties.brand_dominance || 0) < -5).length;
+  const brandADominantMarkets = records.filter(r => num((r.properties as any).brand_dominance) > 5).length;
+  const balancedMarkets = records.filter(r => Math.abs(num((r.properties as any).brand_dominance)) <= 5).length;
+  const brandBDominantMarkets = records.filter(r => num((r.properties as any).brand_dominance) < -5).length;
     
     summary += `Brand dominance: ${brandADominantMarkets} ${brandAName}-dominant markets (${(brandADominantMarkets/records.length*100).toFixed(1)}%), `;
     summary += `${balancedMarkets} balanced markets (${(balancedMarkets/records.length*100).toFixed(1)}%), `;
     summary += `${brandBDominantMarkets} ${brandBName}-dominant markets (${(brandBDominantMarkets/records.length*100).toFixed(1)}%). `;
     
     // Market competitive intensity
-    const avgTotalBrandShare = records.reduce((sum, r) => sum + (r.properties.total_brand_share || 0), 0) / records.length;
-    const avgMarketGap = records.reduce((sum, r) => sum + (r.properties.market_gap || 0), 0) / records.length;
+  const avgTotalBrandShare = records.reduce((sum, r) => sum + num((r.properties as any).total_brand_share), 0) / records.length;
+  const avgMarketGap = records.reduce((sum, r) => sum + num((r.properties as any).market_gap), 0) / records.length;
     summary += `Market intensity: ${avgTotalBrandShare.toFixed(1)}% average brand presence, ${avgMarketGap.toFixed(1)}% untapped market potential.
 
 `;
@@ -962,7 +980,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       if (strongCompetitive.length > 0) {
         summary += `**Strongest Competitive Advantages:** `;
         const competitiveNames = strongCompetitive.slice(0, 6).map(r => {
-          const brandDom = r.properties.brand_dominance || 0;
+          const brandDom = num((r.properties as any).brand_dominance);
           return `${r.area_name} (${r.value.toFixed(1)}, +${brandDom.toFixed(1)}% brand lead)`;
         });
         summary += `${competitiveNames.join(', ')}. `;
@@ -975,14 +993,14 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     // Brand performance leaders
     if (records.length > 0) {
       const brandLeaders = records
-        .filter(r => (r.properties.brand_performance_gap || 0) >= 60)
+        .filter(r => num((r.properties as any).brand_performance_gap) >= 60)
         .slice(0, 5);
       
       if (brandLeaders.length > 0) {
         summary += `**Brand Performance Leaders:** `;
         const leaderNames = brandLeaders.map(r => {
-          const brandAShare = r.properties.brand_a_share || 0;
-          const brandBShare = r.properties.brand_b_share || 0;
+          const brandAShare = num((r.properties as any).brand_a_share);
+          const brandBShare = num((r.properties as any).brand_b_share);
           return `${r.area_name} (${brandAName} ${brandAShare.toFixed(1)}% vs ${brandBName} ${brandBShare.toFixed(1)}%)`;
         });
         summary += `${leaderNames.join(', ')}. `;
@@ -993,7 +1011,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     // Market position strength leaders
     if (records.length > 0) {
       const positionLeaders = records
-        .filter(r => (r.properties.market_position_strength || 0) >= 70)
+        .filter(r => num((r.properties as any).market_position_strength) >= 70)
         .slice(0, 5);
       
       if (positionLeaders.length > 0) {
@@ -1007,13 +1025,13 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     // Competitive dynamics insights
     if (records.length > 0) {
       const highDynamics = records
-        .filter(r => (r.properties.competitive_dynamics_level || 0) >= 65)
+        .filter(r => num((r.properties as any).competitive_dynamics_level) >= 65)
         .slice(0, 5);
       
       if (highDynamics.length > 0) {
         summary += `**High Competitive Dynamics:** `;
         const dynamicsNames = highDynamics.map(r => {
-          const totalShare = r.properties.total_brand_share || 0;
+          const totalShare = num((r.properties as any).total_brand_share);
           return `${r.area_name} (${totalShare.toFixed(1)}% brand presence)`;
         });
         summary += `${dynamicsNames.join(', ')}. `;
@@ -1024,7 +1042,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     // Strategic insights
     summary += `**Competitive Insights:** ${statistics.total} geographic areas analyzed for comparative brand performance and market positioning. `;
     
-    const avgBrandDominance = records.reduce((sum, r) => sum + (r.properties.brand_dominance || 0), 0) / records.length;
+  const avgBrandDominance = records.reduce((sum, r) => sum + num((r.properties as any).brand_dominance), 0) / records.length;
     if (avgBrandDominance > 0) {
       summary += `${brandAName} holds average ${avgBrandDominance.toFixed(1)}% market share advantage across analyzed markets. `;
     } else {
@@ -1032,7 +1050,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     }
     
     // Opportunity assessment
-    const highGrowthMarkets = records.filter(r => (r.properties.growth_differential || 0) >= 50).length;
+  const highGrowthMarkets = records.filter(r => num((r.properties as any).growth_differential) >= 50).length;
     if (highGrowthMarkets > 0) {
       summary += `${highGrowthMarkets} markets (${(highGrowthMarkets/records.length*100).toFixed(1)}%) show high growth differentials offering expansion opportunities. `;
     }

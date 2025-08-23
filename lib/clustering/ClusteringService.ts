@@ -235,36 +235,36 @@ export class ClusteringService {
     console.log(`[ClusteringService] 📍 Converting ${data.records?.length || 0} records for clustering`);
     
     const features = (data.records || []).map((record, index) => {
-      // Extract ZIP code more reliably - prefer zip_code over geo_id (geo_id often lacks leading zeros)
-      let rawZipCode = record.properties?.zip_code || record.properties?.geo_id;
-      
-      // If no direct ZIP code field, extract from area_name (e.g., "11234 (Brooklyn)" -> "11234")
-      if (!rawZipCode && record.area_name) {
+      // Prefer shared resolver for robust ZIP/FSA extraction, with fallbacks
+      let resolvedZip = getZip({ ...(record.properties as any), area_name: record.area_name });
+      if (!resolvedZip && record.area_name) {
         const match = record.area_name.match(/^\d{4,5}/);
-        rawZipCode = match ? match[0] : record.area_name;
+        resolvedZip = match ? match[0] : record.area_name;
       }
-      
-      // Fallback to area_name or unknown
-      if (!rawZipCode) {
-        rawZipCode = record.area_name || `unknown_${index}`;
+      if (!resolvedZip) {
+        resolvedZip = record.area_name || `unknown_${index}`;
       }
-      
-      const zipCode = this.normalizeZipCode(rawZipCode);
+
+      // Normalize and ensure string
+      const zipCode = this.normalizeZipCode(String(resolvedZip));
       const centroid = this.extractCentroid(record);
       
       // Debug first few records
       if (index < 5) {
+        const dbgGeom = (record as any)?.geometry as any;
         console.log(`[ClusteringService] 📍 Record ${index + 1} (${zipCode}):`, {
           area_name: record.area_name,
           zipCode,
           extractedCentroid: centroid,
-          hasGeometry: !!record.geometry,
-          geometryType: record.geometry?.type,
-          originalCoordinates: record.geometry?.coordinates
+          hasGeometry: !!dbgGeom,
+          geometryType: dbgGeom?.type,
+          originalCoordinates: dbgGeom?.coordinates
         });
       }
       
-      return {
+  // Narrow geometry from unknown with a local cast for safe optional access
+  const recGeom = (record as any)?.geometry as any;
+  return {
         properties: {
           // Include all original properties
           ...record.properties,
@@ -290,7 +290,7 @@ export class ClusteringService {
         geometry: {
           // Try to extract coordinates from various possible locations
           centroid: centroid,
-          coordinates: record.geometry?.coordinates || record.geometry?.centroid
+          coordinates: Array.isArray(recGeom?.coordinates) ? recGeom.coordinates : recGeom?.centroid
         }
       };
     });
@@ -581,7 +581,7 @@ export class ClusteringService {
       }
       
       // ALWAYS normalize the ZIP code to ensure leading zeros
-      zipCode = this.normalizeZipCode(zipCode);
+  zipCode = this.normalizeZipCode(String(zipCode));
       
       // Debug log to verify this code is running
       if (record.area_name?.includes('070') || record.area_name?.includes('080')) {
@@ -613,9 +613,10 @@ export class ClusteringService {
         
         // Debug logging for first few records only
         if (clusteredZipRecords.length < 3) {
+          const geom: any = (clusteredRecord as any)?.geometry;
           console.log(`[ClusteringService] 📍 ZIP ${zipCode} clustered record:`, {
             hasGeometry: !!clusteredRecord.geometry,
-            geometryType: clusteredRecord.geometry?.type,
+            geometryType: geom?.type,
             clusterId: clusterAssignment.clusterId
           });
         }
@@ -657,6 +658,8 @@ export class ClusteringService {
       // Add metadata indicating this is clustered ZIP data
       isClustered: true,
       clusteringApproach: 'clustered_zip_codes',
+      // Hint visualization pipeline to zoom after rendering clustered records
+      shouldZoom: true,
       originalRecordCount: originalResult.data.records?.length || 0,
       // CRITICAL: Remove any existing renderer/legend to force ClusterRenderer usage
       renderer: undefined,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Shared utility for applying AnalysisEngine visualization to the map
 // This function is used by both geospatial-chat-interface and MapApp
 
@@ -31,8 +32,8 @@ export const applyAnalysisEngineVisualization = async (
     console.log('[applyAnalysisEngineVisualization] Starting with:', {
       visualizationType: visualization?.type,
       hasRenderer: !!visualization?.renderer,
-      rendererType: visualization?.renderer?.type,
-      rendererKeys: visualization?.renderer ? Object.keys(visualization.renderer) : [],
+  rendererType: (visualization?.renderer as any)?.type,
+  rendererKeys: visualization?.renderer ? Object.keys(visualization.renderer as any) : [],
       recordCount: data?.records?.length,
       sampleRecord: data?.records?.[0] ? {
         hasGeometry: !!(data.records[0] as any).geometry,
@@ -62,15 +63,15 @@ export const applyAnalysisEngineVisualization = async (
     console.log('[applyAnalysisEngineVisualization] ✅ Records found, checking geometry...');
 
     // Check if records have geometry
-    const recordsWithGeometry = (data.records as any[]).filter((record: any) => record.geometry && record.geometry.coordinates);
+  const recordsWithGeometry = (data.records as any[]).filter((record: any) => record.geometry && (record.geometry as any).coordinates);
     console.log('[applyAnalysisEngineVisualization] Geometry check:', {
       totalRecords: data.records.length,
       recordsWithGeometry: recordsWithGeometry.length,
-      geometryTypes: [...new Set(recordsWithGeometry.map((r: any) => r.geometry?.type))],
+      geometryTypes: [...new Set(recordsWithGeometry.map((r: any) => (r.geometry as any)?.type))],
       sampleGeometry: recordsWithGeometry[0]?.geometry ? {
-        type: recordsWithGeometry[0].geometry.type,
-        hasCoordinates: !!recordsWithGeometry[0].geometry.coordinates,
-        coordinatesLength: recordsWithGeometry[0].geometry.coordinates?.length
+        type: (recordsWithGeometry[0].geometry as any).type,
+        hasCoordinates: !!(recordsWithGeometry[0].geometry as any).coordinates,
+        coordinatesLength: (recordsWithGeometry[0].geometry as any).coordinates?.length
       } : 'No geometry found',
       isClustered: data.isClustered
     });
@@ -104,7 +105,7 @@ export const applyAnalysisEngineVisualization = async (
     // Convert AnalysisEngine data to ArcGIS features
     const arcgisFeatures = data.records.map((record: any, index: number) => {
       // Only create features with valid geometry
-      if (!record.geometry || !record.geometry.coordinates) {
+  if (!record.geometry || !(record.geometry as any).coordinates) {
         console.warn(`[applyAnalysisEngineVisualization] ❌ Skipping record ${index} - no valid geometry`);
         return null;
       }
@@ -113,13 +114,13 @@ export const applyAnalysisEngineVisualization = async (
       let arcgisGeometry: any = null;
       
       try {
-        if (record.geometry.type === 'Polygon') {
+  if ((record.geometry as any).type === 'Polygon') {
           // Check if visualization renderer wants to use centroids
-          const useCentroids = visualization.renderer?._useCentroids;
+          const useCentroids = (visualization.renderer as any)?._useCentroids;
           
           if (useCentroids) {
             // Use centroid from boundary properties if available, otherwise calculate it
-            const centroidGeometry = record.properties?.centroid;
+            const centroidGeometry = (record.properties as any)?.centroid;
             if (centroidGeometry && centroidGeometry.coordinates) {
               arcgisGeometry = {
                 type: 'point',
@@ -129,7 +130,7 @@ export const applyAnalysisEngineVisualization = async (
               };
             } else {
               // Calculate centroid from polygon coordinates
-              const coordinates = record.geometry.coordinates[0]; // First ring
+              const coordinates = (record.geometry as any).coordinates[0]; // First ring
               let sumX = 0, sumY = 0;
               let validCoords = 0;
               
@@ -165,20 +166,20 @@ export const applyAnalysisEngineVisualization = async (
             // GeoJSON Polygon to ArcGIS Polygon for other visualizations
             arcgisGeometry = {
               type: 'polygon',
-              rings: record.geometry.coordinates,
+              rings: (record.geometry as any).coordinates,
               spatialReference: { wkid: 4326 }
             };
           }
-        } else if (record.geometry.type === 'Point') {
+        } else if ((record.geometry as any).type === 'Point') {
           // GeoJSON Point to ArcGIS Point
           arcgisGeometry = {
             type: 'point',
-            x: record.geometry.coordinates[0],
-            y: record.geometry.coordinates[1],
+            x: (record.geometry as any).coordinates[0],
+            y: (record.geometry as any).coordinates[1],
             spatialReference: { wkid: 4326 }
           };
         } else {
-          console.warn(`[applyAnalysisEngineVisualization] Unsupported geometry type: ${record.geometry.type}`);
+          console.warn(`[applyAnalysisEngineVisualization] Unsupported geometry type: ${(record.geometry as any).type}`);
           return null;
         }
       } catch (geoError) {
@@ -253,7 +254,7 @@ export const applyAnalysisEngineVisualization = async (
     }
 
     // Determine the actual geometry type being used
-    const useCentroids = visualization.renderer?._useCentroids;
+  const useCentroids = (visualization.renderer as any)?._useCentroids;
     const actualGeometryType = useCentroids ? 'point' : 'polygon';
 
     // Generate field definitions based on what attributes actually exist
@@ -280,7 +281,7 @@ export const applyAnalysisEngineVisualization = async (
         objectIdField: 'OBJECTID',
         geometryType: actualGeometryType,
         spatialReference: { wkid: 4326 },
-        renderer: data.renderer || visualization.renderer,
+  renderer: (data.renderer as any) || (visualization.renderer as any),
         popupEnabled: false,
         title: `AnalysisEngine - ${data.targetVariable || 'Analysis'}`,
         visible: true,

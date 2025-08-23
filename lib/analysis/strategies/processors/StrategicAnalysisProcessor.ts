@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics, ProcessingContext } from '../../types';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 import { resolveAreaName } from '../../../shared/AreaName';
@@ -23,9 +24,9 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     if (!Array.isArray(rawData.results)) return false;
     
     // Strategic analysis requires strategic_analysis_score (primary) with fallbacks
-    const hasRequiredFields = rawData.results.length === 0 || 
-      rawData.results.some(record => 
-        record && 
+    const hasRequiredFields = rawData.results.length === 0 ||
+      (rawData.results as any[]).some((record: any) =>
+        record &&
         (record.area_id || record.id || record.ID) &&
         (record.strategic_analysis_score !== undefined || record.strategic_value_score !== undefined || record.strategic_score !== undefined)
       );
@@ -33,20 +34,22 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     return hasRequiredFields;
   }
 
-  process(rawData: RawAnalysisResult): ProcessedAnalysisData {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  process(rawData: RawAnalysisResult, _context?: ProcessingContext): ProcessedAnalysisData {
     console.log(`🎯 [STRATEGIC ANALYSIS PROCESSOR] Processing ${rawData.results?.length || 0} records for strategic expansion analysis`);
     
     // Debug: Check first raw record
     if (rawData.results && rawData.results.length > 0) {
-      console.log('🚨 [STRATEGIC PROCESSOR] First raw record DESCRIPTION:', rawData.results[0].DESCRIPTION);
-      console.log('🚨 [STRATEGIC PROCESSOR] First raw record keys:', Object.keys(rawData.results[0]).slice(0, 10));
+      const first: any = (rawData.results as any[])[0];
+      console.log('🚨 [STRATEGIC PROCESSOR] First raw record DESCRIPTION:', first?.DESCRIPTION);
+      console.log('🚨 [STRATEGIC PROCESSOR] First raw record keys:', Object.keys(first || {}).slice(0, 10));
     }
     
     if (!this.validate(rawData)) {
       throw new Error('Invalid data format for StrategicAnalysisProcessor');
     }
 
-    const processedRecords = rawData.results.map((record: any, index: number) => {
+  const processedRecords = (rawData.results as any[]).map((record: any, index: number) => {
       // Strategic analysis uses strategic_analysis_score as primary field
       const primaryScore = Number(record.strategic_analysis_score || record.strategic_value_score || record.strategic_score);
       
@@ -97,7 +100,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     });
     
     // Extract feature importance
-    const featureImportance = this.processFeatureImportance(rawData.feature_importance || []);
+  const featureImportance = this.processFeatureImportance((rawData.feature_importance as any[]) || []);
     
     // Generate strategic summary
     const summary = this.generateStrategicSummary(rankedRecords, statistics);
@@ -175,7 +178,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       lastClassMinValue: classBreakInfos[classBreakInfos.length - 1]?.minValue,
       lastClassMaxValue: classBreakInfos[classBreakInfos.length - 1]?.maxValue,
       sampleRecordValue: records[0]?.value,
-      sampleRecordStrategicScore: records[0]?.properties?.strategic_value_score
+      sampleRecordStrategicScore: (records[0]?.properties as any)?.strategic_value_score
     });
     
     return renderer;
@@ -319,10 +322,10 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
   }
 
   private processFeatureImportance(rawFeatureImportance: any[]): any[] {
-    return rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getFeatureDescription(item.feature || item.name)
+    return (rawFeatureImportance as any[]).map((item: any) => ({
+      feature: String(item?.feature || item?.name || 'unknown'),
+      importance: Number(item?.importance ?? item?.value ?? 0),
+      description: this.getFeatureDescription(String(item?.feature || item?.name || 'unknown'))
     })).sort((a, b) => b.importance - a.importance);
   }
 
@@ -337,7 +340,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       'strategic': 'Strategic positioning'
     };
     
-    const lowerName = featureName.toLowerCase();
+  const lowerName = String(featureName || '').toLowerCase();
     for (const [key, desc] of Object.entries(descriptions)) {
       if (lowerName.includes(key)) {
         return desc;
@@ -413,8 +416,16 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         summary += `${topNames.join(', ')}. `;
       
         // Analyze characteristics of top markets
-        const avgMarketGap = topMarkets.reduce((sum, r) => sum + (r.properties.market_gap || 0), 0) / topMarkets.length;
-        const avgPopulation = topMarkets.reduce((sum, r) => sum + (r.properties.total_population || 0), 0) / topMarkets.length;
+        const avgMarketGap = topMarkets.reduce((sum, r) => {
+          const props = (r.properties || {}) as Record<string, unknown>;
+          const val = Number((props as any).market_gap) || 0;
+          return sum + val;
+        }, 0) / topMarkets.length;
+        const avgPopulation = topMarkets.reduce((sum, r) => {
+          const props = (r.properties || {}) as Record<string, unknown>;
+          const val = Number((props as any).total_population) || 0;
+          return sum + val;
+        }, 0) / topMarkets.length;
       
         if (isFinite(avgMarketGap)) {
           summary += `These markets show average untapped potential of ${avgMarketGap.toFixed(1)}%`;
@@ -432,7 +443,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       }
     
       // Market insights
-      const untappedMarkets = records.filter(r => (r.properties.market_gap || 0) > 80).length;
+  const untappedMarkets = records.filter(r => Number((r.properties as any)?.market_gap) > 80).length;
       if (untappedMarkets > 0) {
         summary += `${untappedMarkets} markets have over 80% untapped potential. `;
       }

@@ -19,7 +19,7 @@ export interface AnalysisOptions {
   
   // Spatial filtering options (NEW)
   spatialFilterIds?: string[];      // Feature IDs to include
-  spatialFilterGeometry?: any;      // Original geometry for reference
+  spatialFilterGeometry?: unknown;      // Original geometry for reference
   spatialFilterMethod?: string;     // How geometry was selected
   
   // AI Persona selection
@@ -61,15 +61,18 @@ export interface AnalysisMetadata {
     target_variable: string;
     feature_count: number;
     accuracy?: number;
+  r2?: number;
+  r2_score?: number;
     rmse?: number;
     mae?: number;
+  model_type?: string;
   };
   
   // Multi-endpoint metadata
   isMultiEndpoint?: boolean;
   endpointsUsed?: string[];
   mergeStrategy?: string;
-  strategicInsights?: any;
+  strategicInsights?: unknown;
   performanceMetrics?: {
     totalAnalysisTime: number;
     dataLoadingTime: number;
@@ -90,7 +93,7 @@ export interface AnalysisMetadata {
 
 export interface RawAnalysisResult {
   success: boolean;
-  results: any[];
+  results: unknown[];
   feature_importance?: Array<{
     feature: string;
     importance: number;
@@ -99,15 +102,18 @@ export interface RawAnalysisResult {
     target_variable: string;
     feature_count: number;
     accuracy?: number;
+  r2?: number;
+  r2_score?: number;
     rmse?: number;
     mae?: number;
+  model_type?: string;
   };
   summary?: string;
   error?: string;
   total_records?: number;
   progressive_processed?: boolean;
   final_memory_mb?: number;
-  correlation_metadata?: any;
+  correlation_metadata?: unknown;
 }
 
 // ============================================================================
@@ -122,29 +128,29 @@ export interface ProcessedAnalysisData {
   featureImportance?: FeatureImportance[];
   statistics: AnalysisStatistics;
   targetVariable: string;
-  renderer?: any; // Optional direct renderer (bypasses complex rendering chain)
-  legend?: any; // Optional direct legend (bypasses complex legend generation)
+  renderer?: unknown; // Optional direct renderer (bypasses complex rendering chain)
+  legend?: unknown; // Optional direct legend (bypasses complex legend generation)
   extent?: __esri.Extent | null; // Optional extent for map zooming
   shouldZoom?: boolean; // Whether to zoom to features extent
   clusterAnalysis?: ClusterAnalysisMetadata; // Optional cluster-specific metadata
   competitiveAnalysis?: CompetitiveAnalysisMetadata; // Optional competitive-specific metadata
-  demographicAnalysis?: any; // Optional demographic-specific metadata
-  trendAnalysis?: any; // Optional trend-specific metadata
-  correlationMatrix?: any; // Optional correlation-specific metadata
-  riskAssessment?: any; // Optional risk-specific metadata
-  customerProfileAnalysis?: any; // Optional customer profile-specific metadata
-  correlationAnalysis?: any; // Optional correlation-specific metadata
-  brandAnalysis?: any; // Optional brand comparison-specific metadata
-  brandComparison?: any; // Optional brand comparison data
+  demographicAnalysis?: unknown; // Optional demographic-specific metadata
+  trendAnalysis?: unknown; // Optional trend-specific metadata
+  correlationMatrix?: unknown; // Optional correlation-specific metadata
+  riskAssessment?: unknown; // Optional risk-specific metadata
+  customerProfileAnalysis?: unknown; // Optional customer profile-specific metadata
+  correlationAnalysis?: unknown; // Optional correlation-specific metadata
+  brandAnalysis?: unknown; // Optional brand comparison-specific metadata
+  brandComparison?: unknown; // Optional brand comparison data
   // Clustering-related fields
   isClustered?: boolean; // Whether this data has been processed by clustering
-  clusters?: any[]; // Array of cluster information when available
+  clusters?: unknown[]; // Array of cluster information when available
   
   // Spatial filtering metadata
   metadata?: {
     spatialFilterApplied?: boolean;
     spatialFilterCount?: number;
-    [key: string]: any;
+  [key: string]: unknown;
   };
 }
 
@@ -155,9 +161,9 @@ export interface GeographicDataPoint {
   rank?: number;
   category?: string;
   coordinates?: [number, number];
-  properties: Record<string, any>;
+  properties: Record<string, unknown>;
   shapValues?: Record<string, number>;
-  geometry?: any; // GeoJSON geometry (Point, Polygon, etc.)
+  geometry?: unknown; // GeoJSON geometry (Point, Polygon, etc.)
   // Clustering-related fields
   cluster_id?: number; // Cluster assignment when data is clustered
   cluster_name?: string; // Human-readable cluster name
@@ -216,7 +222,7 @@ export interface AnalysisStatistics {
   avgBehavioralScore?: number;
   avgTargetConfidence?: number;
   strongCorrelations?: number;
-  correlationMatrix?: any;
+  correlationMatrix?: unknown;
 }
 
 // ============================================================================
@@ -226,18 +232,18 @@ export interface AnalysisStatistics {
 export interface VisualizationResult {
   type: VisualizationType;
   config: VisualizationConfig;
-  renderer: any; // ArcGIS renderer object
-  popupTemplate: any; // ArcGIS popup template
+  renderer: unknown; // ArcGIS renderer object
+  popupTemplate: unknown; // ArcGIS popup template
   legend: LegendConfig;
   
   // Enhanced effects integration
   _pendingEffects?: {
     enabled: boolean;
-    rendererFlags: any;
+    rendererFlags: unknown;
     visualizationData: ProcessedAnalysisData;
     config: VisualizationConfig;
   };
-  _enhancedEffects?: any; // Effects metadata from renderers
+  _enhancedEffects?: unknown; // Effects metadata from renderers
 }
 
 export type VisualizationType = 
@@ -268,7 +274,7 @@ export interface VisualizationConfig {
   classificationMethod?: 'natural-breaks' | 'equal-interval' | 'quantile' | 'manual' | 'categorical' | 'graduated' | string;
   classBreaks?: number[];
   // Allow additional properties for specialized renderers
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface LegendConfig {
@@ -295,7 +301,7 @@ export interface EndpointConfiguration {
   category: 'core' | 'geographic' | 'demographic' | 'economic' | 'competitive' | 'temporal' | 'strategic' | 'detection' | 'advanced' | 'comparative' | 'predictive' | 'segmentation';
   url: string;
   defaultVisualization: VisualizationType;
-  payloadTemplate: Record<string, any>;
+  payloadTemplate: Record<string, unknown>;
   responseProcessor: string; // processor class name
   keywords: string[];
 }
@@ -318,7 +324,7 @@ export type ProcessingStepKey = keyof ProcessingStep | string;
 export interface ErrorState {
   hasError?: boolean;
   message: string;
-  details?: any;
+  details?: unknown;
   timestamp: string;
 }
 
@@ -338,7 +344,7 @@ export interface AnalysisState {
   // Query and endpoint state
   lastQuery: string | null;
   selectedEndpoint?: string;
-  lastAnalysisMetadata?: any;
+  lastAnalysisMetadata?: unknown;
   
   // History
   history: AnalysisHistoryItem[];
@@ -384,7 +390,7 @@ export interface QueryAnalysis {
   confidence: number;
   keywords: string[];
   intent: QueryIntent;
-  extractedParameters: Record<string, any>;
+  extractedParameters: Record<string, unknown>;
 }
 
 export type QueryIntent = 
@@ -405,7 +411,7 @@ export type StateSubscriber = (state: AnalysisState) => void;
 
 export interface AnalysisEvent {
   type: AnalysisEventType;
-  payload: any;
+  payload: unknown;
   timestamp: string;
 }
 
@@ -462,8 +468,8 @@ export interface EndpointConfig {
   url: string;
   timeout?: number;
   retryAttempts?: number;
-  payloadTransformer?: (data: any) => any;
-  responseTransformer?: (data: any) => any;
+  payloadTransformer?: (data: unknown) => unknown;
+  responseTransformer?: (data: unknown) => unknown;
 } 
 
 // Additional metadata interfaces

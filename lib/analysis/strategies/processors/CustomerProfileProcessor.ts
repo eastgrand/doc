@@ -29,22 +29,23 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
-    
-    // Handle both formats: direct array or wrapped object
+
+    // Handle both formats: direct array or wrapped object (use local casts)
+    const dataAny = rawData as any;
     let dataArray: any[];
-    if (Array.isArray(rawData)) {
+    if (Array.isArray(dataAny)) {
       // Direct array format: [{...}, {...}]
-      dataArray = rawData;
-    } else if (rawData.success && Array.isArray(rawData.results)) {
+      dataArray = dataAny as any[];
+    } else if (dataAny.success && Array.isArray(dataAny.results)) {
       // Wrapped format: {success: true, results: [{...}, {...}]}
-      dataArray = rawData.results;
+      dataArray = dataAny.results as any[];
     } else {
       return false;
     }
     
     // Validate customer profile-specific fields
     const hasCustomerProfileFields = dataArray.length === 0 || 
-      dataArray.some(record => 
+  dataArray.some((record: any) => 
         record && 
         (record.purchase_propensity !== undefined || // Latest scoring field
          record.customer_profile_score !== undefined || // Pre-calculated score
@@ -63,14 +64,15 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {
     // Handle both formats: direct array or wrapped object
+    const dataAny = rawData as any;
     let dataArray: any[];
-    if (Array.isArray(rawData)) {
+    if (Array.isArray(dataAny)) {
       // Direct array format: [{...}, {...}]
-      dataArray = rawData;
+      dataArray = dataAny as any[];
       console.log(`👤 [CUSTOMER PROFILE PROCESSOR] CALLED WITH ${dataArray.length} RECORDS (direct array) 👤`);
-    } else if (rawData.success && Array.isArray(rawData.results)) {
+    } else if (dataAny.success && Array.isArray(dataAny.results)) {
       // Wrapped format: {success: true, results: [{...}, {...}]}
-      dataArray = rawData.results;
+      dataArray = dataAny.results as any[];
       console.log(`👤 [CUSTOMER PROFILE PROCESSOR] CALLED WITH ${dataArray.length} RECORDS (wrapped) 👤`);
     } else {
       throw new Error('Invalid data format for CustomerProfileProcessor');
@@ -91,14 +93,14 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     
     // Process feature importance for customer profile factors
     const featureImportance = this.processCustomerProfileFeatureImportance(
-      Array.isArray(rawData) ? [] : (rawData.feature_importance || [])
+      Array.isArray(dataAny) ? [] : ((dataAny.feature_importance as any[]) || [])
     );
     
     // Generate customer profile summary
     const summary = this.generateCustomerProfileSummary(
-      records, 
-      customerProfileAnalysis, 
-      Array.isArray(rawData) ? undefined : rawData.summary
+  records,
+  customerProfileAnalysis,
+  Array.isArray(dataAny) ? undefined : (dataAny.summary as string | undefined)
     );
 
     // Calculate extent from features for map zooming
@@ -369,9 +371,9 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
   private calculateCustomerProfileStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
     const scores = records.map(r => r.value);
-    const demographicScores = records.map(r => r.properties.demographic_alignment || 0);
-    const lifestyleScores = records.map(r => r.properties.lifestyle_score || 0);
-    const behavioralScores = records.map(r => r.properties.behavioral_score || 0);
+  const demographicScores = records.map(r => Number((r.properties as any).demographic_alignment) || 0);
+  const lifestyleScores = records.map(r => Number((r.properties as any).lifestyle_score) || 0);
+  const behavioralScores = records.map(r => Number((r.properties as any).behavioral_score) || 0);
     
     if (scores.length === 0) {
       return {
@@ -394,10 +396,10 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     const stdDev = Math.sqrt(variance);
     
     // Customer profile-specific metrics
-    const avgDemographicAlignment = demographicScores.reduce((a, b) => a + b, 0) / total;
-    const avgLifestyleScore = lifestyleScores.reduce((a, b) => a + b, 0) / total;
-    const avgBehavioralScore = behavioralScores.reduce((a, b) => a + b, 0) / total;
-    const avgTargetConfidence = records.reduce((sum, r) => sum + (r.properties.target_confidence || 0), 0) / total;
+  const avgDemographicAlignment = demographicScores.reduce((a, b) => a + b, 0) / total;
+  const avgLifestyleScore = lifestyleScores.reduce((a, b) => a + b, 0) / total;
+  const avgBehavioralScore = behavioralScores.reduce((a, b) => a + b, 0) / total;
+  const avgTargetConfidence = records.reduce((sum, r) => sum + (Number((r.properties as any).target_confidence) || 0), 0) / total;
     
     return {
       total,
@@ -415,10 +417,10 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
   private analyzeCustomerProfilePatterns(records: GeographicDataPoint[]): any {
     // Group by persona types
-    const personaMap = new Map<string, GeographicDataPoint[]>();
+  const personaMap = new Map<string, GeographicDataPoint[]>();
     
     records.forEach(record => {
-      const persona = record.properties.persona_type || 'Unknown';
+      const persona = String((record.properties as any).persona_type || 'Unknown');
       if (!personaMap.has(persona)) {
         personaMap.set(persona, []);
       }
@@ -428,7 +430,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     // Analyze each persona
     const personaAnalysis = Array.from(personaMap.entries()).map(([persona, personaRecords]) => {
       const avgScore = personaRecords.reduce((sum, r) => sum + r.value, 0) / personaRecords.length;
-      const avgConfidence = personaRecords.reduce((sum, r) => sum + (r.properties.target_confidence || 0), 0) / personaRecords.length;
+  const avgConfidence = personaRecords.reduce((sum, r) => sum + (Number((r.properties as any).target_confidence) || 0), 0) / personaRecords.length;
       
       return {
         persona,
@@ -442,7 +444,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
           .map(r => ({
             name: r.area_name,
             score: r.value,
-            confidence: r.properties.target_confidence
+            confidence: Number((r.properties as any).target_confidence) || 0
           }))
       };
     });
@@ -454,8 +456,8 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       .slice(0, 5);
     
     const emergingOpportunities = records
-      .filter(r => r.value >= 50 && r.value < 75 && (r.properties.target_confidence || 0) >= 60)
-      .sort((a, b) => (b.properties.target_confidence || 0) - (a.properties.target_confidence || 0))
+      .filter(r => r.value >= 50 && r.value < 75 && ((Number((r.properties as any).target_confidence) || 0) >= 60))
+      .sort((a, b) => ((Number((b.properties as any).target_confidence) || 0) - (Number((a.properties as any).target_confidence) || 0)))
       .slice(0, 5);
     
     return {
@@ -463,14 +465,14 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       profileLeaders: profileLeaders.map(r => ({
         area: r.area_name,
         score: r.value,
-        persona: r.properties.persona_type,
-        confidence: r.properties.target_confidence
+  persona: (r.properties as any).persona_type,
+  confidence: Number((r.properties as any).target_confidence) || 0
       })),
       emergingOpportunities: emergingOpportunities.map(r => ({
         area: r.area_name,
         currentScore: r.value,
-        confidence: r.properties.target_confidence,
-        persona: r.properties.persona_type
+  confidence: Number((r.properties as any).target_confidence) || 0,
+  persona: (r.properties as any).persona_type
       })),
       marketDominance: this.assessMarketDominance(personaAnalysis)
     };
@@ -542,10 +544,10 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     
     // Calculate baseline metrics
     const avgScore = records.reduce((sum, r) => sum + r.value, 0) / records.length;
-    const avgDemographic = records.reduce((sum, r) => sum + (r.properties.demographic_alignment || 0), 0) / records.length;
-    const avgLifestyle = records.reduce((sum, r) => sum + (r.properties.lifestyle_score || 0), 0) / records.length;
-    const avgBehavioral = records.reduce((sum, r) => sum + (r.properties.behavioral_score || 0), 0) / records.length;
-    const avgConfidence = records.reduce((sum, r) => sum + (r.properties.target_confidence || 0), 0) / records.length;
+  const avgDemographic = records.reduce((sum, r) => sum + (Number((r.properties as any).demographic_alignment) || 0), 0) / records.length;
+  const avgLifestyle = records.reduce((sum, r) => sum + (Number((r.properties as any).lifestyle_score) || 0), 0) / records.length;
+  const avgBehavioral = records.reduce((sum, r) => sum + (Number((r.properties as any).behavioral_score) || 0), 0) / records.length;
+  const avgConfidence = records.reduce((sum, r) => sum + (Number((r.properties as any).target_confidence) || 0), 0) / records.length;
     
     // Start with customer profile scoring explanation
     let summary = `**👤 Customer Profile Formula (0-100 scale):**
@@ -603,7 +605,7 @@ Higher scores indicate stronger alignment with the target brand's ideal customer
       });
       
       // Top areas for dominant persona
-      if (topPersonas[0] && topPersonas[0].topAreas.length > 0) {
+  if (topPersonas[0] && topPersonas[0].topAreas.length > 0) {
         const topAreas = topPersonas[0].topAreas.slice(0, 3);
         summary += `Top ${topPersonas[0].persona} markets: ${topAreas.map((area: any) => `${area.name} (${area.score.toFixed(1)})`).join(', ')}. `;
       }
@@ -623,9 +625,9 @@ Higher scores indicate stronger alignment with the target brand's ideal customer
     summary += `Market structure: ${marketDominance.replace(/-/g, ' ')}. `;
     
     // Component analysis insights
-    const strongDemographic = records.filter(r => (r.properties.demographic_alignment || 0) >= 70).length;
-    const strongLifestyle = records.filter(r => (r.properties.lifestyle_score || 0) >= 70).length;
-    const strongBehavioral = records.filter(r => (r.properties.behavioral_score || 0) >= 70).length;
+  const strongDemographic = records.filter(r => ((Number((r.properties as any).demographic_alignment) || 0) >= 70)).length;
+  const strongLifestyle = records.filter(r => ((Number((r.properties as any).lifestyle_score) || 0) >= 70)).length;
+  const strongBehavioral = records.filter(r => ((Number((r.properties as any).behavioral_score) || 0) >= 70)).length;
     
     summary += `**Component Strengths:** ${strongDemographic} markets with strong demographic alignment (${(strongDemographic/totalAreas*100).toFixed(1)}%), ${strongLifestyle} with strong lifestyle scores (${(strongLifestyle/totalAreas*100).toFixed(1)}%), ${strongBehavioral} with strong behavioral indicators (${(strongBehavioral/totalAreas*100).toFixed(1)}%). `;
     

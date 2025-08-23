@@ -2376,7 +2376,8 @@ const EnhancedGeospatialChat = memo(({
           console.log('🎯 [CLUSTERING] New visualization created:', {
             type: clusterVisualization?.type,
             hasRenderer: !!clusterVisualization?.renderer,
-            rendererType: clusterVisualization?.renderer?.type,
+            // Cast to any to avoid strict '{}' typing on renderer
+            rendererType: (clusterVisualization?.renderer as any)?.type,
             isClusterRenderer: clusterVisualization?.type === 'cluster'
           });
           
@@ -2498,12 +2499,12 @@ const EnhancedGeospatialChat = memo(({
         console.log('[AnalysisEngine] Processing legend:', legendSource);
         
         let legendData;
-        if ((legendSource as any).components) {
+    if ((legendSource as any).components) {
           // Dual-variable format with components array
           legendData = {
-            title: visualization.legend.title,
+      title: (visualization.legend as any).title,
             type: 'dual-variable',
-            components: (visualization.legend as any).components.map((component: any) => ({
+      components: ((visualization.legend as any).components as any[]).map((component: any) => ({
               title: component.title,
               type: component.type,
               items: component.items.map((item: any) => ({
@@ -2515,11 +2516,11 @@ const EnhancedGeospatialChat = memo(({
               }))
             }))
           };
-        } else if (visualization.legend.items) {
+    } else if ((visualization.legend as any).items) {
           // Standard format with items array
           legendData = {
-            title: visualization.legend.title,
-            items: visualization.legend.items.map((item: any) => ({
+      title: (visualization.legend as any).title,
+      items: ((visualization.legend as any).items as any[]).map((item: any) => ({
               label: item.label,
               color: item.color,
               value: item.value,
@@ -3260,8 +3261,8 @@ const EnhancedGeospatialChat = memo(({
         console.log('[UnifiedWorkflow] 🔍 BEFORE geometry join - checking renderer/legend:');
         console.log('[UnifiedWorkflow] Has renderer:', !!analysisResult.data.renderer);
         console.log('[UnifiedWorkflow] Has legend:', !!analysisResult.data.legend);
-        console.log('[UnifiedWorkflow] Legend title:', analysisResult.data.legend?.title);
-        console.log('[UnifiedWorkflow] Legend items:', analysisResult.data.legend?.items?.length);
+  console.log('[UnifiedWorkflow] Legend title:', (analysisResult.data.legend as any)?.title);
+  console.log('[UnifiedWorkflow] Legend items:', ((analysisResult.data.legend as any)?.items as any[])?.length);
         
         analysisResult.data = {
           ...analysisResult.data,
@@ -3271,12 +3272,12 @@ const EnhancedGeospatialChat = memo(({
         console.log('[UnifiedWorkflow] 🔍 AFTER geometry join - checking renderer/legend:');
         console.log('[UnifiedWorkflow] Has renderer:', !!analysisResult.data.renderer);
         console.log('[UnifiedWorkflow] Has legend:', !!analysisResult.data.legend);
-        console.log('[UnifiedWorkflow] Legend title:', analysisResult.data.legend?.title);
-        console.log('[UnifiedWorkflow] Legend items:', analysisResult.data.legend?.items?.length);
+  console.log('[UnifiedWorkflow] Legend title:', (analysisResult.data.legend as any)?.title);
+  console.log('[UnifiedWorkflow] Legend items:', ((analysisResult.data.legend as any)?.items as any[])?.length);
         
         console.log('[UnifiedWorkflow] 🔍 CHECKING VISUALIZATION OBJECT:');
         console.log('[UnifiedWorkflow] Visualization has legend:', !!analysisResult.visualization?.legend);
-        console.log('[UnifiedWorkflow] Visualization legend title:', analysisResult.visualization?.legend?.title);
+  console.log('[UnifiedWorkflow] Visualization legend title:', (analysisResult.visualization as any)?.legend?.title);
         
         const recordsWithGeometry = joinedResults.filter(r => r.geometry).length;
         const recordsWithoutGeometry = joinedResults.length - recordsWithGeometry;

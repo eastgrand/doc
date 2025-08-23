@@ -20,7 +20,7 @@ import { StateManager } from './StateManager';
 import { ConfigurationManager } from './ConfigurationManager';
 
 // Import multi-endpoint system
-import { MultiEndpointAnalysisEngine, MultiEndpointAnalysisOptions, MultiEndpointAnalysisResult } from './MultiEndpointAnalysisEngine';
+import { MultiEndpointAnalysisEngine, MultiEndpointAnalysisOptions } from './MultiEndpointAnalysisEngine';
 import { MultiEndpointQueryDetector } from './MultiEndpointQueryDetector';
 
 // Import clustering system
@@ -146,7 +146,7 @@ export class AnalysisEngine {
           const processedData = this.dataProcessor.processResults(analysisData, fallbackEndpoint);
           
           // Continue with visualization creation...
-          let visualization: any = null;
+          let visualization: VisualizationResult | null = null;
           if (this.visualizationRenderer) {
             try {
               visualization = this.visualizationRenderer.createVisualization(processedData, fallbackEndpoint);
@@ -196,6 +196,7 @@ export class AnalysisEngine {
               },
               legend: { 
                 title: 'Analysis',
+                position: 'bottom-right',
                 items: [{
                   label: 'Analysis Areas',
                   color: '#4169E1',
@@ -258,9 +259,9 @@ export class AnalysisEngine {
         
         // Group by city to verify filtering
         const cityGroups = processedData.records.reduce((acc, r) => {
-          const city = r.properties?.city || 'Unknown';
+          const city = (r.properties?.city as string) || 'Unknown';
           if (!acc[city]) acc[city] = 0;
-          acc[city]++;
+          acc[city]! += 1;
           return acc;
         }, {} as Record<string, number>);
         console.log(`🔍 [AnalysisEngine] DEBUGGING: Final city distribution:`, cityGroups);
@@ -285,7 +286,7 @@ export class AnalysisEngine {
       }
       
       // Create initial result structure (without visualization yet)
-      let result: AnalysisResult = {
+  const result: AnalysisResult = {
         success: true,
         endpoint: selectedEndpoint,
         data: processedData,
@@ -296,7 +297,10 @@ export class AnalysisEngine {
           timestamp: new Date().toISOString(),
           // Add model performance information from analysisData if available
           confidenceScore: analysisData?.model_info?.accuracy || undefined,
-          modelInfo: analysisData?.model_info || undefined
+          modelInfo: analysisData?.model_info ? {
+            ...analysisData.model_info,
+            r2: analysisData.model_info.r2 ?? analysisData.model_info.r2_score
+          } : undefined
         }
       };
 
@@ -304,7 +308,7 @@ export class AnalysisEngine {
       // This ensures clustering has access to real ZIP code geometries instead of approximations
 
       // Create visualization from final data (after clustering if enabled)
-      let visualization: any = null;
+  let visualization: VisualizationResult | null = null;
       if (this.visualizationRenderer) {
         try {
           console.log('[AnalysisEngine] 🎯 About to create visualization (AFTER clustering):', {
@@ -314,11 +318,15 @@ export class AnalysisEngine {
             isClustered: result.data.isClustered,
             hasGeometry: result.data.records?.[0]?.geometry ? 'YES' : 'NO',
             targetVariable: result.data.targetVariable,
-            firstClusterRecord: result.data.isClustered ? {
-              area_name: result.data.records?.[0]?.area_name,
-              value: result.data.records?.[0]?.value,
-              zip_codes: result.data.records?.[0]?.properties?.zip_codes?.length
-            } : 'Not clustered'
+            firstClusterRecord: result.data.isClustered ? (() => {
+              const first = result.data.records?.[0];
+              const z = first?.properties?.zip_codes as unknown[] | undefined;
+              return {
+                area_name: first?.area_name,
+                value: first?.value,
+                zip_codes: z?.length
+              };
+            })() : 'Not clustered'
           });
           
           visualization = this.visualizationRenderer.createVisualization(result.data, selectedEndpoint);
@@ -346,7 +354,7 @@ export class AnalysisEngine {
       }
 
       // Set final visualization (or fallback)
-      result.visualization = visualization || { 
+    result.visualization = visualization || { 
         type: 'choropleth', 
         config: {
           colorScheme: 'viridis',
@@ -381,7 +389,8 @@ export class AnalysisEngine {
           }]
         },
         legend: { 
-          title: 'Analysis',
+      title: 'Analysis',
+      position: 'bottom-right',
           items: [{
             label: 'Analysis Areas',
             color: '#4169E1',
@@ -708,9 +717,11 @@ export class AnalysisEngine {
     this.visualizationRenderer.clearEffects();
     
     // Log memory usage if available (Chrome only)
-    if ((performance as any).memory) {
-      const used = Math.round((performance as any).memory.usedJSHeapSize / 1048576);
-      const total = Math.round((performance as any).memory.totalJSHeapSize / 1048576);
+    interface PerfWithMem extends Performance { memory?: { usedJSHeapSize: number; totalJSHeapSize: number } }
+    const perfMem = (performance as PerfWithMem).memory;
+    if (perfMem) {
+      const used = Math.round(perfMem.usedJSHeapSize / 1048576);
+      const total = Math.round(perfMem.totalJSHeapSize / 1048576);
       console.log(`[AnalysisEngine] Memory after cache clear: ${used}MB / ${total}MB`);
     }
     
@@ -862,7 +873,7 @@ export class AnalysisEngine {
     return `analysis-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  private emitEvent(type: AnalysisEventType, payload: any): void {
+  private emitEvent(type: AnalysisEventType, payload: unknown): void {
     const event: AnalysisEvent = {
       type,
       payload,
@@ -882,30 +893,35 @@ export class AnalysisEngine {
   /**
    * Incorporate competitive analysis data from visualization into the summary
    */
-  private incorporateCompetitiveAnalysis(originalSummary: string, competitiveAnalysis: any): string {
-    if (!competitiveAnalysis || (!competitiveAnalysis.topMarkets && !competitiveAnalysis.allMarkets)) {
+  private incorporateCompetitiveAnalysis(originalSummary: string, competitiveAnalysis: unknown): string {
+    const comp = competitiveAnalysis as {
+      topMarkets?: Array<{ area_name: string; competitiveAdvantageScore: number; nikeMarketShare: number; adidasMarketShare: number }>;
+      allMarkets?: Array<{ competitiveAdvantageScore: number }>;
+    } | undefined;
+    if (!comp || (!comp.topMarkets && !comp.allMarkets)) {
       return originalSummary;
     }
 
     let enhancedSummary = originalSummary;
 
     // Add competitive advantage insights if available
-    if (competitiveAnalysis.topMarkets && competitiveAnalysis.topMarkets.length > 0) {
-      const topMarket = competitiveAnalysis.topMarkets[0];
+    if (comp.topMarkets && comp.topMarkets.length > 0) {
+      const topMarket = comp.topMarkets[0];
       enhancedSummary += ` Competitive Analysis: ${topMarket.area_name} leads with ${topMarket.competitiveAdvantageScore.toFixed(1)}/10 competitive advantage score, driven by ${topMarket.nikeMarketShare.toFixed(1)}% Nike market share vs ${topMarket.adidasMarketShare.toFixed(1)}% Adidas.`;
       
-      if (competitiveAnalysis.topMarkets.length > 1) {
-        const secondMarket = competitiveAnalysis.topMarkets[1];
+      if (comp.topMarkets.length > 1) {
+        const secondMarket = comp.topMarkets[1];
         enhancedSummary += ` ${secondMarket.area_name} follows with ${secondMarket.competitiveAdvantageScore.toFixed(1)}/10 advantage score.`;
       }
     }
 
     // Add market analysis summary
-    if (competitiveAnalysis.allMarkets && competitiveAnalysis.allMarkets.length > 0) {
-      const avgAdvantageScore = competitiveAnalysis.allMarkets.reduce((sum: number, market: any) => sum + market.competitiveAdvantageScore, 0) / competitiveAnalysis.allMarkets.length;
-      const strongMarkets = competitiveAnalysis.allMarkets.filter((market: any) => market.competitiveAdvantageScore >= 6.0).length;
+    if (comp.allMarkets && comp.allMarkets.length > 0) {
+      type Market = { competitiveAdvantageScore: number };
+      const avgAdvantageScore = comp.allMarkets.reduce((sum: number, market: Market) => sum + market.competitiveAdvantageScore, 0) / comp.allMarkets.length;
+      const strongMarkets = comp.allMarkets.filter((market: Market) => market.competitiveAdvantageScore >= 6.0).length;
       
-      enhancedSummary += ` Overall competitive position: ${avgAdvantageScore.toFixed(1)}/10 average advantage score across ${competitiveAnalysis.allMarkets.length} markets, with ${strongMarkets} markets showing strong competitive positioning (6.0+ score).`;
+      enhancedSummary += ` Overall competitive position: ${avgAdvantageScore.toFixed(1)}/10 average advantage score across ${comp.allMarkets.length} markets, with ${strongMarkets} markets showing strong competitive positioning (6.0+ score).`;
     }
 
     return enhancedSummary;
