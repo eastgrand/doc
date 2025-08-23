@@ -193,7 +193,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const brandUpper = brandName.toUpperCase();
     
     // Find fields that contain data and might be brand fields
-    for (const [key, value] of Object.entries(sampleRecord)) {
+    for (const [key, value] of Object.entries(sampleRecord as any)) {
       // Check if this is a percentage field for tax software
       if (key.includes('MP101') && key.endsWith('A_B_P') && typeof value === 'number') {
         // Use the field code directly (e.g., MP10128A_B_P)
@@ -284,7 +284,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     
     const properties: Record<string, any> = {};
     
-    for (const [key, value] of Object.entries(record)) {
+    for (const [key, value] of Object.entries(record as any)) {
       if (!internalFields.has(key)) {
         properties[key] = value;
       }
@@ -308,7 +308,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     }
     
     // Extract general SHAP values
-    for (const [key, value] of Object.entries(record)) {
+    for (const [key, value] of Object.entries(record as any)) {
       if (key.startsWith('shap_') && typeof value === 'number') {
         shapValues[key] = value;
       }
@@ -397,8 +397,8 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     // Analyze each category
     const categoryAnalysis = Array.from(categoryMap.entries()).map(([category, categoryRecords]) => {
       const avgDifference = categoryRecords.reduce((sum, r) => sum + r.value, 0) / categoryRecords.length;
-      const avgBrand1Share = categoryRecords.reduce((sum, r) => sum + (r.properties[`${brand1}_market_share`] || 0), 0) / categoryRecords.length;
-      const avgBrand2Share = categoryRecords.reduce((sum, r) => sum + (r.properties[`${brand2}_market_share`] || 0), 0) / categoryRecords.length;
+      const avgBrand1Share = categoryRecords.reduce((sum, r) => sum + ((r.properties as any)[`${brand1}_market_share`] || 0), 0) / categoryRecords.length;
+      const avgBrand2Share = categoryRecords.reduce((sum, r) => sum + ((r.properties as any)[`${brand2}_market_share`] || 0), 0) / categoryRecords.length;
       
       return {
         category,
@@ -673,7 +673,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const sampleRecord = rawData.results[0];
     
     // Look for ALL tax software brand fields in the data (MP101XX_B_P pattern)
-    for (const [key, value] of Object.entries(sampleRecord)) {
+    for (const [key, value] of Object.entries(sampleRecord as any)) {
       if (key.includes('MP101') && key.endsWith('A_B_P') && typeof value === 'number') {
         // Use the field code directly (e.g., MP10128A_B_P)
         const fieldCode = key;
@@ -720,7 +720,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     }
     
     // Otherwise, search for the field in the data
-    for (const [key, value] of Object.entries(sampleRecord)) {
+    for (const [key, value] of Object.entries(sampleRecord as any)) {
       if (key.includes('MP101') && key.endsWith('A_B_P') && typeof value === 'number') {
         const fieldCode = key;
         
