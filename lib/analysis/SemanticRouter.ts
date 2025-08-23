@@ -114,7 +114,7 @@ export class SemanticRouter {
     const keywordMappings = {
       '/strategic-analysis': ['strategic', 'expansion', 'investment', 'opportunity'],
       '/comparative-analysis': ['compare', 'comparison', 'between', 'versus', 'vs'],
-      '/competitive-analysis': ['market share', 'competitive', 'competitors'],
+      '/competitive-analysis': ['market share', 'competitive', 'competitors', 'competitive positioning', 'positioning', 'competitive advantage'],
       '/demographic-insights': ['demographic', 'demographics', 'population', 'age', 'income'],
       '/customer-profile': ['customer persona', 'ideal customer', 'target customer'],
       '/spatial-clusters': ['geographic cluster', 'spatial', 'similar markets'],
@@ -136,7 +136,7 @@ export class SemanticRouter {
       '/consensus-analysis': ['consensus', 'models agree'],
       '/anomaly-insights': ['anomaly', 'unusual patterns', 'business opportunities'],
       '/cluster-analysis': ['how should we segment', 'targeted strategies'],
-      '/analyze': ['comprehensive', 'general', 'overall']
+      '/analyze': ['comprehensive', 'general', 'overall', 'market insights', 'insights', 'analysis', 'analyze']
     };
 
     let bestEndpoint = '/analyze';
