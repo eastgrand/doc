@@ -561,9 +561,9 @@ export class ConfigurationManager {
           include_psychographics: true
         },
         responseProcessor: 'CustomerProfileProcessor',
-        keywords: ['customer profile', 'customer persona', 'ideal customer', 'target customer', 'customer characteristics', 'customer fit', 'persona analysis', 'buyer profile', 'customer behavior', 'lifestyle patterns', 'customer demographics', 'target demographics', 'demographic fit', 'lifestyle analysis', 'customer values', 'psychographics', 'customer personas', 'ideal customer personas', 'yoga enthusiast', 'fitness lifestyle', 'gym member', 'athletic customer', 'health conscious', 'wellness focused', 'active lifestyle'],
-        targetVariable: 'purchase_propensity',
-        scoreFieldName: 'purchase_propensity',
+        keywords: ['customer profile', 'customer persona', 'ideal customer', 'target customer', 'customer characteristics', 'customer fit', 'persona analysis', 'buyer profile', 'customer behavior', 'lifestyle patterns', 'customer demographics', 'target demographics', 'demographic fit', 'lifestyle analysis', 'customer values', 'psychographics', 'customer personas', 'ideal customer personas', 'tax preparation', 'tax preparation services', 'tax services', 'tax filing', 'tax return', 'health conscious', 'active lifestyle'],
+        targetVariable: 'customer_profile_score',
+        scoreFieldName: 'customer_profile_score',
         requiredFields: ['target_variable'],
         optionalFields: ['sample_size', 'profile_depth', 'segment_focus', 'include_psychographics'],
         expectedResponseTime: 25000,

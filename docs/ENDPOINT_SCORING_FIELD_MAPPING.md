@@ -18,7 +18,7 @@ All endpoints have corresponding scoring scripts in `/scripts/scoring/`. The end
 | correlation-analysis.json | CorrelationAnalysisProcessor | `correlation_analysis_score` | ✅ |
 | brand-difference.json | BrandDifferenceProcessor | `brand_difference_score` | ✅ |
 | comparative-analysis.json | ComparativeAnalysisProcessor | `comparative_analysis_score` | ✅ |
-| customer-profile.json | CustomerProfileProcessor | `purchase_propensity` | ✅ |
+| customer-profile.json | CustomerProfileProcessor | `customer_profile_score` | ✅ |
 | trend-analysis.json | TrendAnalysisProcessor | `trend_analysis_score` | ✅ |
 | segment-profiling.json | SegmentProfilingProcessor | `segment_profiling_score` | ✅ |
 | anomaly-detection.json | AnomalyDetectionProcessor | `anomaly_detection_score` | ✅ |
@@ -39,21 +39,29 @@ All endpoints have corresponding scoring scripts in `/scripts/scoring/`. The end
 
 ## Key Findings
 
+ 
 ### Standard Pattern
+
 Most endpoints follow the pattern: `{endpoint_name}_score` as the final field.
 
+ 
 ### Special Cases
+ 
 - **model-selection.json**: Uses `algorithm_category` as the last field (not a score)
-- **customer-profile.json**: Has different structure but follows standard pattern
+- **customer-profile.json**: The primary score is `customer_profile_score`. Older datasets may include `purchase_propensity`; processors treat it as a fallback only.
 
 ### Processors That Need Updates
 
-#### ❌ Immediate Fixes Required:
+ 
+#### ❌ Immediate Fixes Required
+
 1. **CompetitiveAnalysisProcessor** - Currently uses `competitive_analysis_score` ✅ (correct)
 2. **CorrelationAnalysisProcessor** - Currently uses `correlation_score`, should use `correlation_analysis_score`
 
-#### ✅ All Processors Completed:
+#### ✅ All Processors Completed
+
 All processors have been created and are now fully functional:
+ 
 - SensitivityAnalysisProcessor ✅ (script: `sensitivity_analysis-scores.js`)
 - ModelPerformanceProcessor ✅ (script: `model_performance-scores.js`)
 - ModelSelectionProcessor ✅ (script: `model_selection-scores.js`) - *Special case: handles categorical algorithm_category field*
@@ -69,10 +77,13 @@ All processors have been created and are now fully functional:
 
 ## Implementation Guidelines
 
+ 
 ### For Existing Processors
+
 Update the `targetVariable` property to use the exact scoring field name from this mapping.
 
 Example:
+ 
 ```typescript
 return {
   // ... other properties
@@ -81,7 +92,9 @@ return {
 };
 ```
 
+ 
 ### For Score Extraction
+
 Update score extraction methods to prioritize the correct scoring field:
 
 ```typescript
@@ -96,7 +109,9 @@ private extractScore(record: any): number {
 }
 ```
 
+ 
 ### Field Validation
+
 Update validation methods to check for the correct scoring field:
 
 ```typescript
@@ -118,6 +133,8 @@ validate(rawData: RawAnalysisResult): boolean {
 3. **Use exact field names** - no approximations or variations
 4. **Prioritize the current scoring field** over legacy alternatives
 
+ 
 ## Last Updated
+
 Generated: 2025-08-17
 Based on: Systematic audit of all endpoint JSON files in `/public/data/endpoints/`

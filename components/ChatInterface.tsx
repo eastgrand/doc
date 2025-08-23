@@ -1019,12 +1019,7 @@ ${conversationText}
                 {selectedMessage && renderFormattedMessage(selectedMessage)}
               </div>
             </div>
-            {analysisResult.analysisResult.data.records && (
-              <div>
-                <h4 className="font-semibold">Results:</h4>
-                <p>{analysisResult.analysisResult.data.records.length} features found</p>
-              </div>
-            )}
+            {/* Removed features count from dialog to avoid showing total features */}
           </div>
         </DialogContent>
       </Dialog>

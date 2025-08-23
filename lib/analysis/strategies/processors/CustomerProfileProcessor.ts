@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import Extent from '@arcgis/core/geometry/Extent';
 import { BrandNameResolver, BrandField } from '../../utils/BrandNameResolver';
@@ -109,7 +110,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'purchase_propensity', // Use the actual last field from scoring script
+      targetVariable: 'customer_profile_score', // Use dedicated customer profile score as primary
       renderer: this.createCustomerProfileRenderer(records), // Add direct renderer
       legend: this.createCustomerProfileLegend(records), // Add direct legend
       customerProfileAnalysis, // Additional metadata for customer profile visualization
@@ -165,8 +166,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
         area_id,
         area_name,
         value,
-        purchase_propensity: customerProfileScore, // Current scoring field
-        customer_profile_score: customerProfileScore, // Legacy compatibility
+        customer_profile_score: customerProfileScore, // Primary scoring field
         rank: 0, // Will be calculated in ranking
         category,
         coordinates: record.coordinates || [0, 0],
@@ -178,17 +178,17 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   private extractCustomerProfileScore(record: any): number {
-    // PRIORITY 1: Use the actual last field from the scoring script
-    if (record.purchase_propensity !== undefined && record.purchase_propensity !== null) {
-      const score = Number(record.purchase_propensity);
-      console.log(`👤 [CustomerProfileProcessor] Using purchase_propensity: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+    // PRIORITY 1: Use the explicit customer profile score when available
+    if (record.customer_profile_score !== undefined && record.customer_profile_score !== null) {
+      const score = Number(record.customer_profile_score);
+      console.log(`👤 [CustomerProfileProcessor] Using customer_profile_score: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
       return score;
     }
     
-    // PRIORITY 2: Fallback to customer_profile_score if available
-    if (record.customer_profile_score !== undefined && record.customer_profile_score !== null) {
-      const score = Number(record.customer_profile_score);
-      console.log(`👤 [CustomerProfileProcessor] Fallback to customer_profile_score: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+    // PRIORITY 2: Fallback to purchase propensity if explicit profile score not present
+    if (record.purchase_propensity !== undefined && record.purchase_propensity !== null) {
+      const score = Number(record.purchase_propensity);
+      console.log(`👤 [CustomerProfileProcessor] Fallback to purchase_propensity: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
       return score;
     }
     
@@ -217,7 +217,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     const age = record.median_age || record.value_MEDAGE_CY || record.age || 35;
     const targetBrandAffinity = this.extractTargetBrandAffinity(record);
     const behavioralScore = Number(record.behavioral_score) || 0;
-    const demographicScore = Number(record.demographic_alignment) || 0;
+  // const demographicScore = Number(record.demographic_alignment) || 0;
 
     // Brand Enthusiasts: High target brand affinity + strong behavioral score
     if (targetBrandAffinity >= 25 && behavioralScore >= 70) {
@@ -669,7 +669,7 @@ Higher scores indicate stronger alignment with the target brand's ideal customer
     
     return {
       type: 'class-breaks',
-      field: 'purchase_propensity', // Use the actual last field from scoring script
+      field: 'customer_profile_score', // Render on the primary customer profile score
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

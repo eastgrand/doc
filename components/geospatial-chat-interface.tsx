@@ -3476,13 +3476,10 @@ const EnhancedGeospatialChat = memo(({
             <div>
               <p className="whitespace-pre-wrap">{message.content}</p>
             </div>
-            {message.metadata?.totalFeatures !== undefined && (
+            {message.metadata?.analysisResult && (
               <div>
-                <h4 className="font-semibold">Results:</h4>
-                <p>{message.metadata.totalFeatures} features found</p>
-                
                 {/* Dynamic Model Performance Information */}
-                {message.metadata?.analysisResult && renderPerformanceMetrics(
+                {renderPerformanceMetrics(
                   message.metadata.analysisResult,
                   "flex flex-wrap gap-4 mt-2 text-sm text-gray-700"
                 )}

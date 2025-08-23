@@ -11,11 +11,14 @@ import { renderPerformanceMetrics } from '@/lib/utils/performanceMetrics';
 type LocalChatMessage = ChatMessage & {
   role: 'user' | 'assistant' | 'system';
   metadata?: {
-    analysisResult?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  analysisResult?: any;
     context?: string;
     totalFeatures?: number;
-    visualizationResult?: any;
-    debugInfo?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  visualizationResult?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  debugInfo?: any;
     error?: string;
   };
 };
@@ -40,13 +43,10 @@ const MessageDialog: React.FC<MessageDialogProps> = ({ message, onClose }) => {
             <h4 className="font-semibold">Content:</h4>
             <p className="whitespace-pre-wrap">{message.content}</p>
           </div>
-          {message.metadata?.totalFeatures !== undefined && (
+          {message.metadata?.analysisResult && (
             <div>
-              <h4 className="font-semibold">Results:</h4>
-              <p>{message.metadata.totalFeatures} features found</p>
-              
               {/* Dynamic Model Performance Information */}
-              {message.metadata?.analysisResult && renderPerformanceMetrics(
+              {renderPerformanceMetrics(
                 message.metadata.analysisResult,
                 "flex flex-wrap gap-4 mt-2 text-sm text-gray-700"
               )}

@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 import { AnalysisOptions, RawAnalysisResult } from './types';
 import { ConfigurationManager } from './ConfigurationManager';
 import { loadEndpointData } from '@/utils/blob-data-loader';
-import { semanticRouter, SemanticRouter } from './SemanticRouter';
+import { semanticRouter } from './SemanticRouter';
 import { EnhancedQueryAnalyzer } from './EnhancedQueryAnalyzer';
 
 /**
@@ -65,6 +66,9 @@ export class CachedEndpointRouter {
 
     // Use standard single endpoint suggestion
     const selectedEndpoint = await this.suggestSingleEndpoint(query);
+    if (query.includes('ideal customer personas')) {
+      console.log(`[CachedEndpointRouter] Recognized 'ideal customer personas' in query.`);
+    }
     console.log(`[CachedEndpointRouter] Auto-selected endpoint: ${selectedEndpoint} for query: "${query}"`);
     return selectedEndpoint;
   }
@@ -180,6 +184,9 @@ export class CachedEndpointRouter {
     
     // Use the enhanced query analyzer
     const bestEndpoint = this.queryAnalyzer.getBestEndpoint(query);
+    if (query.includes('ideal customer personas')) {
+      console.log(`[CachedEndpointRouter] Recognized 'ideal customer personas' in query during fallback.`);
+    }
     const scores = this.queryAnalyzer.analyzeQuery(query);
     
     // Log analysis results for debugging

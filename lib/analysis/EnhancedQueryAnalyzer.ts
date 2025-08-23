@@ -629,10 +629,10 @@ export class EnhancedQueryAnalyzer {
       weight: 1.0
     },
     '/customer-profile': {
-      primaryKeywords: ['customer', 'profile', 'persona', 'lifestyle', 'behavior', 'values', 'psychographic'],
-      contextKeywords: ['ideal customer', 'target customer', 'customer fit'],
+      primaryKeywords: ['customer', 'profile', 'persona', 'personas', 'lifestyle', 'behavior', 'values', 'psychographic', 'psychographics'],
+      contextKeywords: ['ideal customer', 'target customer', 'customer fit', 'ideal customer personas', 'buyer profile', 'customer personas', 'for tax preparation', 'tax preparation services', 'tax services'],
       avoidTerms: [],
-      weight: 1.0
+      weight: 1.1
     },
     '/comparative-analysis': {
       primaryKeywords: ['compare', 'comparison', 'between', 'cities', 'regions'],
