@@ -98,11 +98,11 @@ export class DataProcessor {
       if (sampleRecord) {
         const extractedId = IDFieldMapper.extractId(sampleRecord);
         console.log('[DataProcessor] Sample data record IDs:', {
-          ID: sampleRecord.ID,
-          OBJECTID: sampleRecord.OBJECTID,
-          DESCRIPTION: sampleRecord.DESCRIPTION,
+          ID: (sampleRecord as any).ID,
+          OBJECTID: (sampleRecord as any).OBJECTID,
+          DESCRIPTION: (sampleRecord as any).DESCRIPTION,
           extractedId: extractedId,
-          allKeys: Object.keys(sampleRecord).filter(k => k.toLowerCase().includes('id') || k.includes('DESCRIPTION'))
+          allKeys: Object.keys(sampleRecord as any).filter(k => k.toLowerCase().includes('id') || k.includes('DESCRIPTION'))
         });
       }
       
@@ -112,7 +112,7 @@ export class DataProcessor {
         results: rawResults.results?.filter(record => {
           const recordId = IDFieldMapper.extractId(record);
           if (!recordId) {
-            console.warn('[DataProcessor] Record has no identifiable ID:', Object.keys(record).slice(0, 10));
+            console.warn('[DataProcessor] Record has no identifiable ID:', Object.keys(record as any).slice(0, 10));
             return false;
           }
           const matches = idSet.has(recordId);
