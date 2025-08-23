@@ -51,7 +51,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     if (!hasBrandFields) {
       console.log('❌ [BrandDifferenceProcessor] VALIDATION FAILED: No brand fields found');
       if (rawData.results.length > 0) {
-        console.log('🔍 [BrandDifferenceProcessor] Available fields in first record:', Object.keys(rawData.results[0]));
+        console.log('🔍 [BrandDifferenceProcessor] Available fields in first record:', Object.keys(rawData.results[0] as any));
       }
     } else {
       console.log('✅ [BrandDifferenceProcessor] VALIDATION PASSED: Brand fields found');
