@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { calculateEqualCountQuintiles } from '../../utils/QuintileUtils';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
+import { resolveAreaName } from '../../../shared/AreaName';
 
 /**
  * CompetitiveDataProcessor - Handles data processing for the /competitive-analysis endpoint
@@ -61,7 +63,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     const featureImportance = this.processCompetitiveFeatureImportance(rawData.feature_importance || []);
     
     // Generate competitive summary
-    const summary = this.generateCompetitiveSummary(records, competitiveAnalysis, rawData.summary);
+  const summary = this.generateCompetitiveSummary(records, competitiveAnalysis);
 
     console.log(`[CompetitiveDataProcessor] Final result summary:`, {
       type: 'competitive_analysis',
@@ -94,7 +96,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
   private processCompetitiveRecords(rawRecords: any[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
       const area_id = record.area_id || record.id || record.GEOID || `area_${index}`;
-      const area_name = record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || record.name || record.NAME || `Area ${index + 1}`;
+      const area_name = resolveAreaName(record, { mode: 'zipCity', neutralFallback: `Area ${area_id || index + 1}` });
       
       // Extract competitive metrics
       const competitiveScore = this.extractCompetitiveScore(record);
@@ -431,8 +433,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
 
   private generateCompetitiveSummary(
     records: GeographicDataPoint[], 
-    competitiveAnalysis: any, 
-    rawSummary?: string
+    competitiveAnalysis: any
   ): string {
     
     // Enhanced summary with expansion opportunity focus
@@ -441,8 +442,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     const avgScore = records.reduce((sum, r) => sum + r.value, 0) / recordCount;
     
     // Check data quality
-    const nonZeroRecords = records.filter(r => r.value > 0);
-    const dataQualityPercent = (nonZeroRecords.length / recordCount * 100).toFixed(1);
+  const nonZeroRecords = records.filter(r => r.value > 0);
     
     // Get brand names from the first record or defaults
     const targetBrandName = records[0]?.properties?.target_brand_name || this.brandResolver.getTargetBrandName();
@@ -514,7 +514,7 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
         const income = Number(record.properties?.value_AVGHINC_CY) || (wealthIndex * 500); // Use wealth index to estimate income
         const marketGap = Math.max(0, 100 - targetShare - competitorShare);
         
-        summary += `${index + 1}. **${record.area_name || 'Unknown Area'}**: ${record.value.toFixed(1)} expansion score`;
+  summary += `${index + 1}. **${record.area_name}**: ${record.value.toFixed(1)} expansion score`;
         
         if (targetShare > 0) {
           summary += ` (${targetShare.toFixed(1)}% current ${targetBrandName} share`;

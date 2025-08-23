@@ -2,6 +2,7 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
+import { resolveAreaName } from '../../../shared/AreaName';
 
 /**
  * StrategicAnalysisProcessor - Handles data processing for the /strategic-analysis endpoint
@@ -304,47 +305,10 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     return topFields;
   }
 
-  private generateAreaName(record: any): string {
-    // Check for DESCRIPTION field first (common in strategic analysis data)
-    if (record.DESCRIPTION && typeof record.DESCRIPTION === 'string') {
-      const description = record.DESCRIPTION.trim();
-      // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
-      const nameMatch = description.match(/\(([^)]+)\)/);
-      if (nameMatch && nameMatch[1]) {
-        return nameMatch[1].trim();
-      }
-      // If no parentheses, return the whole description
-      return description;
+    private generateAreaName(record: any): string {
+      const fallbackId = record?.ID || record?.id || record?.area_id || record?.GEOID || record?.OBJECTID || 'Unknown';
+      return resolveAreaName(record, { mode: 'cityOnly', neutralFallback: `Area ${fallbackId}` });
     }
-    
-    // Try value_DESCRIPTION with same extraction logic
-    if (record.value_DESCRIPTION && typeof record.value_DESCRIPTION === 'string') {
-      const description = record.value_DESCRIPTION.trim();
-      const nameMatch = description.match(/\(([^)]+)\)/);
-      if (nameMatch && nameMatch[1]) {
-        return nameMatch[1].trim();
-      }
-      return description;
-    }
-    
-    // Other name fields
-    if (record.area_name) return record.area_name;
-    if (record.NAME) return record.NAME;
-    if (record.name) return record.name;
-    
-    const id = record.ID || record.id || record.GEOID;
-    if (id) {
-      if (typeof id === 'string' && id.match(/^\d{5}$/)) {
-        return `ZIP ${id}`;
-      }
-      if (typeof id === 'string' && id.match(/^[A-Z]\d[A-Z]$/)) {
-        return `FSA ${id}`;
-      }
-      return `Area ${id}`;
-    }
-    
-    return `Area ${record.OBJECTID || 'Unknown'}`;
-  }
 
   private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
     const sorted = [...records].sort((a, b) => b.value - a.value);
@@ -417,64 +381,72 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     const outlierCount = values.filter(v => v < lowerBound || v > upperBound).length;
     
     return {
-      total,
-      mean,
-      median,
-      min: sorted[0],
-      max: sorted[sorted.length - 1],
-      stdDev,
-      percentile25,
-      percentile75,
-      iqr,
-      outlierCount
-    };
-  }
+        total,
+        mean,
+        median,
+        min: sorted[0],
+        max: sorted[sorted.length - 1],
+        stdDev,
+        percentile25,
+        percentile75,
+        iqr,
+        outlierCount
+      };
+    }
 
-  private generateStrategicSummary(
-    records: GeographicDataPoint[], 
-    statistics: AnalysisStatistics
-  ): string {
-    // Start with score explanation
-    let summary = getScoreExplanationForAnalysis('strategic-analysis', 'strategic_value');
+    private generateStrategicSummary(
+      records: GeographicDataPoint[],
+      statistics: AnalysisStatistics
+    ): string {
+      // Start with score explanation
+      let summary = getScoreExplanationForAnalysis('strategic-analysis', 'strategic_value');
     
-    const targetBrandName = this.brandResolver.getTargetBrandName();
-    summary += `**Strategic Market Analysis Complete:** ${statistics.total} geographic areas evaluated for ${targetBrandName} expansion potential. `;
-    summary += `Strategic value scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
+      // We don't reference BrandNameResolver target brand here to avoid tight coupling in tests
+      summary += `**Strategic Market Analysis Complete:** ${statistics.total} geographic areas evaluated for expansion potential. `;
+      summary += `Strategic value scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
     
-    // Top strategic markets
-    const topMarkets = records.slice(0, 5);
-    if (topMarkets.length > 0) {
-      summary += `**Top Strategic Markets:** `;
-      const topNames = topMarkets.map(r => `${r.area_name} (${r.value.toFixed(1)})`);
-      summary += `${topNames.join(', ')}. `;
+      // Top strategic markets
+      const topMarkets = records.slice(0, 5);
+      if (topMarkets.length > 0) {
+        summary += `**Top Strategic Markets:** `;
+        const topNames = topMarkets.map(r => `${r.area_name} (${r.value.toFixed(1)})`);
+        summary += `${topNames.join(', ')}. `;
       
-      // Analyze characteristics of top markets
-      const avgMarketGap = topMarkets.reduce((sum, r) => sum + (r.properties.market_gap || 0), 0) / topMarkets.length;
-      const avgPopulation = topMarkets.reduce((sum, r) => sum + (r.properties.total_population || 0), 0) / topMarkets.length;
+        // Analyze characteristics of top markets
+        const avgMarketGap = topMarkets.reduce((sum, r) => sum + (r.properties.market_gap || 0), 0) / topMarkets.length;
+        const avgPopulation = topMarkets.reduce((sum, r) => sum + (r.properties.total_population || 0), 0) / topMarkets.length;
       
-      summary += `These markets show average untapped potential of ${avgMarketGap.toFixed(1)}% and serve ${(avgPopulation/1000).toFixed(0)}K population on average. `;
+        if (isFinite(avgMarketGap)) {
+          summary += `These markets show average untapped potential of ${avgMarketGap.toFixed(1)}%`;
+        }
+        if (isFinite(avgPopulation)) {
+          summary += ` and serve ${(avgPopulation/1000).toFixed(0)}K population on average.`;
+        }
+        summary += ' ';
+      }
+    
+      // Expansion opportunities
+      const highPotential = records.filter(r => r.value >= (statistics.percentile75 || statistics.mean)).length;
+      if (records.length > 0) {
+        summary += `**Expansion Opportunities:** ${highPotential} markets (${(highPotential/records.length*100).toFixed(1)}%) show high strategic value for expansion. `;
+      }
+    
+      // Market insights
+      const untappedMarkets = records.filter(r => (r.properties.market_gap || 0) > 80).length;
+      if (untappedMarkets > 0) {
+        summary += `${untappedMarkets} markets have over 80% untapped potential. `;
+      }
+    
+      // Recommendations
+      summary += `**Strategic Recommendations:** `;
+      if (topMarkets.length > 0 && topMarkets[0].value >= 8) {
+        summary += `Prioritize immediate expansion in top-scoring markets. `;
+      }
+      summary += `Focus on markets with high market gap and favorable demographics. `;
+      summary += `Consider pilot programs in emerging markets scoring above ${(statistics.percentile75 || statistics.mean).toFixed(1)}. `;
+    
+      return summary;
     }
-    
-    // Expansion opportunities
-    const highPotential = records.filter(r => r.value >= (statistics.percentile75 || statistics.mean)).length;
-    summary += `**Expansion Opportunities:** ${highPotential} markets (${(highPotential/records.length*100).toFixed(1)}%) show high strategic value for expansion. `;
-    
-    // Market insights
-    const untappedMarkets = records.filter(r => (r.properties.market_gap || 0) > 80).length;
-    if (untappedMarkets > 0) {
-      summary += `${untappedMarkets} markets have over 80% untapped potential. `;
-    }
-    
-    // Recommendations
-    summary += `**Strategic Recommendations:** `;
-    if (topMarkets.length > 0 && topMarkets[0].value >= 8) {
-      summary += `Prioritize immediate expansion in top-scoring markets. `;
-    }
-    summary += `Focus on markets with high market gap and favorable demographics. `;
-    summary += `Consider pilot programs in emerging markets scoring above ${(statistics.percentile75 || statistics.mean).toFixed(1)}. `;
-    
-    return summary;
-  }
 
   /**
    * Extract target brand share using BrandNameResolver

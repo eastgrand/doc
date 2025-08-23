@@ -17,6 +17,7 @@ import { unionByGeoId } from '../../../../types/union-layer';
 import { multiEndpointFormatting, strategicSynthesis } from '../shared/base-prompt';
 import { GeoAwarenessEngine } from '../../../../lib/geo/GeoAwarenessEngine';
 import { getAnalysisPrompt } from '../shared/analysis-prompts';
+import { resolveAreaName as resolveSharedAreaName, getZip as getSharedZip, resolveRegionName as resolveSharedRegionName } from '@/lib/shared/AreaName';
 
 /**
  * Validate cluster response for hallucinated data
@@ -97,6 +98,20 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
   // Helper to resolve a human-friendly area name consistently
   const resolveAreaName = (feature: any, index: number): string => {
     try {
+      // Debug logging for strategic analysis
+      if (index < 3 && analysisType?.includes('strategic')) {
+        console.log(`🔍 [resolveAreaName] Strategic Analysis Debug - Feature ${index}:`, {
+          feature_keys: Object.keys(feature || {}),
+          area_name: feature?.area_name,
+          DESCRIPTION: feature?.DESCRIPTION,
+          properties_keys: feature?.properties ? Object.keys(feature.properties) : [],
+          properties_area_name: feature?.properties?.area_name,
+          properties_DESCRIPTION: feature?.properties?.DESCRIPTION,
+          properties_id: feature?.properties?.id,
+          nested_properties: feature?.properties?.properties ? Object.keys(feature.properties.properties) : []
+        });
+      }
+      
       // Handle double nesting from ChatInterface: feature.properties.properties.DESCRIPTION
       const props = feature.properties || feature;
       const nestedProps = props.properties || props; // Check for double nesting
@@ -121,7 +136,11 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         return props.area_name.trim();
       }
       
-      // Priority 5: Try getLocationName helper
+      // Priority 5: Use shared resolver before local helper
+      try {
+        const shared = resolveSharedAreaName(feature, { mode: 'full', neutralFallback: '' });
+        if (shared) return shared;
+      } catch {}
       const f = { properties: props } as LocalGeospatialFeature;
       const name = getLocationName(f);
       if (name && name !== 'Unknown Location') return name;
@@ -414,18 +433,7 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
           const marketGap = nestedProps?.market_gap !== undefined ? nestedProps.market_gap : props?.market_gap;
           metricsSection += `   Market Gap (Untapped): ${marketGap}%\n`;
         }
-        // Check nested properties for population and income data
-        const population = nestedProps?.total_population || props?.total_population;
-        const income = nestedProps?.median_income || props?.median_income;
-        
-        if (population) {
-          metricsSection += `   Population: ${(population / 1000).toFixed(1)}K\n`;
-        }
-        if (income) {
-          metricsSection += `   Income: $${(income / 1000).toFixed(1)}K\n`;
-        }
-        
-        // Add strategic-specific context fields - pass nested props
+  // Add strategic-specific context fields - pass nested props (handles Market Size/Purchasing Power)
         metricsSection = addStrategicFields(nestedProps || props, metricsSection);
         metricsSection += '\n';
       });
@@ -1202,6 +1210,11 @@ function getLocationName(feature: LocalGeospatialFeature): string {
       return `Location ${propsToCheck.OBJECTID}`;
     }
     
+    // Prefer shared resolver; fall back only if it returns neutral
+    try {
+      const name = resolveSharedAreaName({ properties: propsToCheck }, { mode: 'full', neutralFallback: '' });
+      if (name) return name;
+    } catch {}
     return 'Unknown Location';
   } catch (error) {
     console.error('[getLocationName ERROR] Exception occurred:', error);
@@ -1389,6 +1402,11 @@ function getZIPCode(feature: any): string {
     }
     
     // If we still don't have a ZIP code, return Unknown
+    // If we still don't have a ZIP code, try shared helper then return Unknown
+    try {
+      const z = getSharedZip(feature);
+      if (z) return z;
+    } catch {}
     return 'Unknown';
   } catch (error) {
     console.error('[getZIPCode ERROR] Exception occurred:', error);
@@ -1643,19 +1661,62 @@ export async function POST(req: NextRequest) {
               if (Array.isArray(ls.top)) examples.push(...ls.top.slice(0, 5));
               if (Array.isArray(ls.bottom)) examples.push(...ls.bottom.slice(0, 3));
 
-              const features = examples.map((e, i) => ({
-                type: 'Feature',
-                geometry: { type: 'Point', coordinates: [0, 0] },
-                properties: {
-                  id: e.id,
-                  area_name: e.name,
-                  target_value: e.value,
-                  thematic_value: e.value,
-                  SUMMARY_STATS: ls.stats ? JSON.stringify(ls.stats) : undefined,
-                  SUMMARY_FIELD: ls.numericField || ls.field || 'value',
-                  SUMMARY_FEATURE_COUNT: ls.featureCount
+              const features = examples.map((e, i) => {
+                // Find corresponding sample data to get additional fields
+                // Try multiple matching strategies: exact ID match, exact name match, or positional fallback
+                const sample = ls.samples?.find((s: any) => 
+                  s.id === e.id || 
+                  s.name === e.name || 
+                  s.id === String(e.id) || 
+                  s.name === String(e.name)
+                ) || ls.samples?.[i] || {};
+                
+                // Debug logging for client summary conversion
+                if (i < 3) {
+                  console.log(`🔍 [CLIENT SUMMARY CONVERSION] Feature ${i}:`, {
+                    e_id: e.id,
+                    e_name: e.name,
+                    e_value: e.value,
+                    sample_found: !!sample,
+                    sample_keys: sample ? Object.keys(sample) : [],
+                    sample_market_gap: sample?.market_gap,
+                    sample_demographic_opportunity_score: sample?.demographic_opportunity_score
+                  });
                 }
-              })) as unknown as LocalGeospatialFeature[];
+                
+        // Build robust DESCRIPTION and area_name
+        const sampleDescription = sample?.DESCRIPTION || sample?.description || '';
+        const candidateName = typeof e.name === 'string' ? e.name : '';
+        const cleanName = /unknown\s+area/i.test(candidateName) ? '' : candidateName;
+        const idString = e?.id != null ? String(e.id) : '';
+        const zipLike = /^\d{5}/.test(idString) ? idString.substring(0,5) : '';
+        const derivedDescription = sampleDescription || cleanName || (zipLike ? `ZIP ${zipLike}` : '');
+
+        return {
+                  type: 'Feature',
+                  geometry: { type: 'Point', coordinates: [0, 0] },
+                  properties: {
+                    id: e.id,
+          area_name: cleanName || derivedDescription || (zipLike ? `ZIP ${zipLike}` : `Area ${idString || i+1}`),
+          DESCRIPTION: derivedDescription,
+          area_id: idString || undefined,
+                    target_value: e.value,
+                    thematic_value: e.value,
+                    // Include strategic analysis specific fields from samples
+                    strategic_analysis_score: e.value,
+                    strategic_value_score: e.value,
+                    market_gap: sample.market_gap,
+                    demographic_opportunity_score: sample.demographic_opportunity_score,
+                    competitive_advantage_score: sample.competitive_advantage_score,
+                    total_population: sample.total_population,
+                    median_income: sample.median_income,
+                    // Summary metadata
+                    SUMMARY_STATS: ls.stats ? JSON.stringify(ls.stats) : undefined,
+                    SUMMARY_FIELD: ls.numericField || ls.field || 'value',
+                    SUMMARY_FEATURE_COUNT: ls.featureCount
+                  }
+                };
+              }) as unknown as LocalGeospatialFeature[];
 
               return {
                 layerId: ls.layerId || `client-summary-${idx}`,
@@ -3570,7 +3631,7 @@ Present this analysis in your professional ${selectedPersona.name} style while p
         }
         const responseContent = anthropicResponse.content?.find(block => block.type === 'text')?.text || 'No text content received from AI.';
 
-        // Sanitize Model Attribution section to enforce conditional display and remove placeholders
+  // Sanitize Model Attribution section to enforce conditional display and remove placeholders
         let finalContent = responseContent;
         try {
           // If we have a numeric R², replace any 'Not recorded/Not specified/Data not available' with the actual value
@@ -3596,6 +3657,46 @@ Present this analysis in your professional ${selectedPersona.name} style while p
           finalContent = finalContent.replace(/\n{3,}/g, '\n\n');
         } catch (e) {
           console.warn('[Claude] Post-processing of Model Attribution failed:', e);
+        }
+
+        // Name placeholder sanitation in AI narrative: replace "Unknown Area" with real top strategic names when possible
+        try {
+          if (/Top Strategic Markets:/i.test(finalContent) && /Unknown Area/i.test(finalContent)) {
+            const allFeatures = (processedLayersData || []).flatMap(layer => Array.isArray((layer as any)?.features) ? (layer as any).features : []);
+            const candidates = allFeatures
+              .map((feat: any) => {
+                const props = feat?.properties || feat || {};
+                const score = Number(
+                  props?.strategic_analysis_score ??
+                  props?.strategic_value_score ??
+                  feat?.strategic_value_score ??
+                  props?.target_value
+                );
+                const name = resolveSharedAreaName(feat, { mode: 'zipCity', neutralFallback: '' });
+                return { name, score };
+              })
+              .filter((x: any) => x.name && !Number.isNaN(x.score))
+              .sort((a: any, b: any) => b.score - a.score)
+              .slice(0, 8);
+
+            if (candidates.length) {
+              const startIdx = finalContent.search(/Top Strategic Markets:/i);
+              if (startIdx >= 0) {
+                let idx = 0;
+                const head = finalContent.slice(0, startIdx);
+                let tail = finalContent.slice(startIdx);
+                // Replace sequential Unknown Area/Location occurrences preferentially within this section
+                tail = tail.replace(/Unknown (Area|Location)/gi, () => (idx < candidates.length ? candidates[idx++].name : ''));
+                finalContent = head + tail;
+              } else {
+                // Global sequential replacement as a fallback
+                let idx = 0;
+                finalContent = finalContent.replace(/Unknown (Area|Location)/gi, () => (idx < candidates.length ? candidates[idx++].name : ''));
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('[Claude] Name placeholder sanitation failed:', e);
         }
 
         console.log('[Claude] AI Response Start:', responseContent.substring(0, 200) + '...');
@@ -3864,32 +3965,9 @@ function generateClusterInformation(
           .slice(0, 5)
           .map(f => getZIPCode(f));
 
-        // Determine a region name from the features
-        // Prefer DESCRIPTION/area_name; scan multiple features if needed
-        let regionName = "";
-        const tryExtractName = (desc: string): string | null => {
-          const trimmed = desc.trim();
-          if (!trimmed) return null;
-          const match = trimmed.match(/\(([^)]+)\)/);
-          if (match && match[1]) return match[1].trim();
-          return trimmed;
-        };
-        const nameFields = ['DESCRIPTION', 'area_name', 'NAME', 'CITY', 'MUNICIPALITY', 'REGION'];
-        // Check first a few representative features for a good name
-        for (const f of features.slice(0, 5)) {
-          const props = f.properties || {};
-          // Prefer DESCRIPTION/area_name first
-          if (typeof props.DESCRIPTION === 'string') { regionName = tryExtractName(props.DESCRIPTION) || regionName; }
-          if (!regionName && typeof props.area_name === 'string') { regionName = tryExtractName(props.area_name) || regionName; }
-          // Then other common fields
-          if (!regionName) {
-            for (const field of nameFields.slice(2)) {
-              if (props[field]) { regionName = String(props[field]).trim(); break; }
-            }
-          }
-          if (regionName) break;
-        }
-        if (!regionName) regionName = 'Unknown Region';
+  // Determine a region name from the features using shared resolver
+  let regionName = resolveSharedRegionName(features, regionId, { neutralFallback: `Region ${regionId}` });
+  if (!regionName) regionName = `Region ${regionId}`;
         // Add region identifier to name if it doesn't already contain it
         if (!regionName.includes(regionId)) {
           regionName += ` (${regionId}xx)`;

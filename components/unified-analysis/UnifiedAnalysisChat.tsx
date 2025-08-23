@@ -486,6 +486,14 @@ ${conversationText}
           layerType: 'polygon',
           features: (() => {
             const records = result.data?.records || [];
+            // Debug: Check first few records structure for strategic analysis
+            console.log('🔍 [UNIFIED ANALYSIS DEBUG] First few records:', records.slice(0, 3).map(record => ({
+              area_name: record.area_name,
+              area_id: record.area_id,
+              DESCRIPTION_from_properties: record.properties?.DESCRIPTION,
+              strategic_analysis_score: record.properties?.strategic_analysis_score || record.value,
+              properties_keys: record.properties ? Object.keys(record.properties) : []
+            })));
             return records;
           })()
         }],

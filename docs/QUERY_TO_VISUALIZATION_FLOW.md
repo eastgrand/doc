@@ -6,18 +6,21 @@ This document provides a comprehensive explanation of how a user query flows thr
 
 ## Architecture Components
 
-### Core Components:
+### Core Components
+
 1. **SemanticRouter** - Semantic similarity-based query routing (NEW 2025)
 2. **EnhancedQueryAnalyzer** - Natural language query understanding (fallback)
 3. **GeoAwarenessEngine** - Geographic entity recognition and filtering
 4. **Endpoint Router** - Determines which analysis endpoint to call
 5. **Data Processors** - Transform raw endpoint data for visualization
-6. **BrandNameResolver** - Dynamic brand configuration and field mapping
-7. **ArcGIS Renderer** - Visualizes processed data on the map
+6. **Shared AreaName Resolver** - Consistent area name/ZIP resolution across server, processors, and UI
+7. **Server-side Narrative Sanitizer** - Replaces placeholder names in AI output with resolved names
+8. **BrandNameResolver** - Dynamic brand configuration and field mapping (where applicable)
+9. **ArcGIS Renderer** - Visualizes processed data on the map
 
 ## Complete Flow Diagram
 
-```
+```text
 User Query
     ↓
 [SemanticRouter] (NEW 2025 - Primary)
@@ -74,6 +77,7 @@ User Query
 The routing system achieves **100% accuracy** across all 22 endpoint categories through a sophisticated dual-approach:
 
 #### Browser: Semantic Similarity Routing
+
 ```typescript
 // 1. Generate query embedding using local transformer model
 const queryEmbedding = await localEmbeddingService.embed(query);
@@ -93,6 +97,7 @@ if (similarityScores[0].confidence > 0.3) {
 ```
 
 #### Production: Advanced Keyword Routing (100% Accurate)
+
 Used when semantic routing fails (Node.js environments):
 
 ```typescript
@@ -142,6 +147,7 @@ for (const [endpoint, config] of Object.entries(ENDPOINT_CONFIGS)) {
 ```
 
 #### Endpoint Configurations & Weights
+
 **25 specialized endpoints** with optimized keyword configurations:
 
 | Endpoint | Weight | Primary Keywords | Context Keywords |
@@ -214,6 +220,7 @@ if (scoreConfig) {
 ```
 
 **ConfigurationManager as Single Source of Truth**:
+
 - **Centralized configuration**: All 25 endpoints configured in one place
 - **Field mapping authority**: Overrides processor `targetVariable` settings
 - **Processor routing**: Maps endpoints to their dedicated processor classes
@@ -274,6 +281,7 @@ const endpointConfig = {
 ### Step 6: API Call to Microservice
 
 **Request Structure**:
+
 ```json
 {
   "query": "Compare Alachua County and Miami-Dade County",
@@ -288,6 +296,7 @@ const endpointConfig = {
 ```
 
 **For Brand Difference Analysis**:
+
 ```json
 {
   "query": "TurboTax vs H&R Block market share difference",
@@ -303,6 +312,7 @@ const endpointConfig = {
 ```
 
 **Response Structure** (from endpoint):
+
 ```json
 {
   "success": true,
@@ -324,6 +334,7 @@ const endpointConfig = {
 ```
 
 **For Brand Difference Analysis Response**:
+
 ```json
 {
   "success": true,
@@ -375,9 +386,11 @@ const difference = brand1Share - brand2Share;     // Result: 6.5% (TurboTax adva
 ```
 
 **Brand Field Mappings**:
+
 - TurboTax: `MP10104A_B_P`
 - H&R Block: `MP10128A_B_P`
 - Athletic brands: `MP30034A_B_P` (Nike), `MP30029A_B_P` (Adidas), etc.
+
 
 #### For Comparative Analysis
 
@@ -400,8 +413,7 @@ process(rawData: RawAnalysisResult): ProcessedAnalysisData {
     
     // Get city from ZIP code
     const city = this.extractCityFromRecord(record);
-    // Uses GeoDataManager: "32601" → "Gainesville"
-    y
+  // Uses GeoDataManager: "32601" → "Gainesville"
     return {
       area_id: record.ID || record.id,
       area_name: areaName,
@@ -446,6 +458,12 @@ Primary components:
 - Payload builder: `utils/chat/build-claude-payload.ts`
 - Chat sender: `services/chat-service.ts`
 - API route (guard + summary ingestion): `app/api/claude/generate-response/route.ts`
+
+Name resolution and sanitizer integration (Aug 2025):
+
+- Client summary now includes DESCRIPTION and stronger area_name to preserve naming in synthesized layers.
+- API route applies a narrative sanitizer that replaces “Unknown Area/Unknown Location” in top lists with names from the shared resolver.
+- Frontend visualization and chat UI use the shared resolver so placeholders do not surface.
 
 
 The system now defaults to a client-first compact payload for chat to prevent 413 (Request Entity Too Large) while maintaining analytical accuracy. The browser summarizes the already-loaded dataset into statistics, histograms, and exemplar sets, then sends that summary to the Claude API. The server accepts this summary, converts it into synthetic processed layer(s) for downstream prompt generation, and enforces guardrails against oversized raw payloads. Server-side summarization modules remain as a fallback.
@@ -517,6 +535,7 @@ if (Array.isArray(featureData)) {
 #### Performance Results
 
 **Payload Size Reduction**:
+
 ```typescript
 // Before optimization (full enumeration)
 Original size: 50,000-100,000 characters (causes 413 errors)
@@ -527,7 +546,8 @@ Processing time: 0.5-7ms (scales logarithmically)
 ```
 
 **Example Optimized Output**:
-```
+
+```text
 === COMPETITIVE ANALYSIS STATISTICAL FOUNDATION ===
 Dataset: 10,247 total features analyzed
 Field: competitive analysis score
@@ -576,13 +596,15 @@ Low Performance Regions:
 **Enhanced Integration Features**:
 
 1. **Aggressive Threshold Detection**:
-   ```typescript
+
+  ```typescript
    // Very low threshold prevents even medium-sized datasets from causing 413s
    const shouldForceOptimization = features.length >= 200; // Down from 500
    ```
 
-2. **Comprehensive Debug Logging**:
-   ```typescript
+1. **Comprehensive Debug Logging**:
+
+  ```typescript
    // Route-level debugging
    console.log(`[Claude Prompt Gen] Dataset size check: ${features.length} features, forceOptimization: ${shouldForceOptimization}`);
    
@@ -592,12 +614,12 @@ Low Performance Regions:
    console.log(`[IntegrationBridge] Estimated size: ${estimatedSize} chars`);
    ```
 
-3. **Force Optimization Parameter**:
+1. **Force Optimization Parameter**:
    - Added `forceOptimization` parameter to `replaceExistingFeatureEnumeration()`
    - Bypasses size estimation and forces optimization for datasets ≥200 features
    - Ensures 984-feature datasets (like brand-difference queries) are always optimized
 
-4. **Real-World Fix Validation**:
+2. **Real-World Fix Validation**:
    - **Problem**: 984-feature brand-difference queries causing 413 errors
    - **Root Cause**: Conservative 50KB threshold not triggering for 344KB estimated payloads
    - **Solution**: Lowered threshold to 200 features + forced optimization parameter
@@ -606,6 +628,7 @@ Low Performance Regions:
 #### Integration Benefits
 
 **Problem Solved** (Updated August 2025):
+
 - **413 Errors Eliminated**: All datasets ≥200 features now process within API limits (previously failing at 984 features)
 - **Analytical Accuracy Maintained**: Statistical foundation + analysis-specific processing preserves insights
 - **Performance Improved**: 96.6-100% payload reduction with consistent sub-millisecond processing
@@ -613,6 +636,7 @@ Low Performance Regions:
 - **Debug Visibility**: Comprehensive logging tracks optimization decisions for troubleshooting
 
 **Fallback Strategy**:
+
 ```typescript
 // Triple-layer fallback system ensures reliability
 try {
@@ -719,7 +743,7 @@ let summary = `
 • Market dominance: 15 Brand A-dominant markets (18.3%), 42 balanced markets (51.2%)
 • Brand A holds average 7.3% market share advantage across analyzed markets
 `;
-
+```markdown
 // After (Project-Specific):
 let summary = `  
 • Brand Performance Gap (35% weight): Nike vs competitors performance differential
@@ -788,6 +812,7 @@ Key benefits of this approach:
 ### Step 8: Renderer Configuration
 
 **Generated Renderer Structure**:
+
 ```typescript
 {
   type: 'class-breaks',
@@ -835,6 +860,7 @@ const features = processedData.records.map(record => ({
 }));
 
 // 2. Apply renderer to layer
+// Renderer field is endpoint-specific (e.g., competitive_analysis_score, comparative_analysis_score)
 featureLayer.renderer = processedData.renderer;
 
 // 3. Add interactive popups
@@ -921,6 +947,7 @@ if (scoreConfig) {
 ## Geographic Integration Points
 
 ### 1. ZIP Code to City Mapping
+
 ```typescript
 // GeoDataManager provides ZIP → City mapping
 database.zipCodeToCity.get("33101") // → "miami"
@@ -929,6 +956,7 @@ database.zipCodeToMetro.get("33101") // → "miami metro"
 ```
 
 ### 2. Multi-Level Geographic Filtering
+
 ```typescript
 // Phase 1 implementation enables:
 - City queries: "Miami" → Miami ZIP codes only
@@ -938,21 +966,24 @@ database.zipCodeToMetro.get("33101") // → "miami metro"
 ```
 
 ### 3. Area Name Enhancement
+
 ```typescript
-// Combines ID with geographic context
-"33101" → "33101 (Miami)"
-"32601" → "32601 (Gainesville)"
+// Combines ID with geographic context via shared resolver
+resolveAreaName({ DESCRIPTION: '33101 (Miami)' }, { mode: 'zipCity' }) // → "33101 (Miami)"
+resolveAreaName({ ID: '32601' }, { mode: 'zipCity' }) // → "32601 (Gainesville)" when city mapping exists
 ```
 
 ## Error Handling & Fallbacks
 
 ### Validation Fallbacks
+
 1. **Missing ID**: Generate from index (`area_1`, `area_2`)
 2. **Missing Score**: Try multiple field names, then use default (50)
 3. **Missing Name**: Use ID with city context
 4. **Missing City**: Return "Unknown"
 
 ### Processing Safeguards
+
 ```typescript
 // Empty results are valid
 if (rawData.results.length === 0) {
@@ -969,11 +1000,13 @@ for (let i = 0; i < sampleSize; i++) {
 ## Performance Optimizations
 
 ### 1. Geographic Filtering
+
 - **Before Phase 1**: Process all 984 areas
 - **After Phase 1**: Process only relevant ZIP codes
 - **Impact**: 80-95% reduction in data processing
 
 ### 2. Lazy Loading
+
 ```typescript
 // Geographic data loaded on first use
 if (this.geographicHierarchy.size === 0) {
@@ -982,6 +1015,7 @@ if (this.geographicHierarchy.size === 0) {
 ```
 
 ### 3. Caching
+
 - ZIP code mappings cached in memory
 - Geographic entities cached after first lookup
 - Renderer configurations reused when possible
@@ -989,37 +1023,51 @@ if (this.geographicHierarchy.size === 0) {
 ## Common Issues & Solutions
 
 ### Issue 1: Field Name Mismatch
+
 **Problem**: Renderer can't find field in data
 **Root Cause**: ConfigurationManager and processor `targetVariable` mismatch
-**Solution**: 
+**Solution**:
+
 1. Check ConfigurationManager has correct `targetVariable` for endpoint
 2. Ensure processor uses same field name in records
 3. Verify DataProcessor applies ConfigurationManager override
 
 ### Issue 2: Duplicate Popup Fields
+
 **Problem**: Map popups show duplicate fields (e.g., "Strategic Value Score" + "strategic analysis score")
 **Root Cause**: Processor using `...record` spread includes endpoint data fields alongside processed fields
 **Solution**:
+
 1. Remove `...record` spreads from processor properties
 2. Ensure ConfigurationManager `targetVariable` matches processor field exactly
 3. Use only the processor's calculated field in properties
 
-### Issue 3: Missing Geographic Context
-**Problem**: Area names show as "Unknown Area"
-**Solution**: Implement `extractCityFromRecord` using GeoDataManager
+### Issue 3: Missing Geographic Context / Placeholder Names
+
+**Problem**: Area names appear as IDs or “Unknown Area/Location”
+**Solution**: Use the shared AreaName resolver everywhere names are constructed and sanitize AI output.
+
+1. Resolve with `lib/shared/AreaName.resolveAreaName(input, { mode: 'zipCity' })`.
+2. Include DESCRIPTION in client summary to strengthen naming.
+3. Route-level sanitizer replaces placeholders in narratives with resolved names.
+4. Remove any frontend 'Unknown Area' fallbacks; rely on the resolver.
 
 ### Issue 4: Score Extraction Fails
+
 **Problem**: Expected score field not in endpoint response
 **Solution**: Use fallback hierarchy (specific → thematic_value → value → any numeric)
 
 ### Issue 5: Validation Too Strict
+
 **Problem**: Valid data rejected due to rigid field requirements
 **Solution**: Implement flexible validation with multiple field name options
 
 ### Issue 6: Brand Difference Analysis Not Working
+
 **Problem**: Brand difference queries not producing enriched data with `brand_difference_score`
 **Root Cause**: EnhancedQueryAnalyzer field mappings incorrect for tax service brands
-**Solution**: 
+**Solution**:
+
 1. Ensure EnhancedQueryAnalyzer maps correct field codes:
    - H&R Block: `MP10128A_B_P` (NOT `MP30034A_B_P`)
    - TurboTax: `MP10104A_B_P` (NOT `MP30029A_B_P`)
@@ -1032,11 +1080,13 @@ if (this.geographicHierarchy.size === 0) {
    - Demographic context
 
 ### Issue 7: Analysis-Specific Field Relevance
+
 **Problem**: All analyses showing same demographic fields regardless of relevance
 **Root Cause**: Universal demographic function applied to all analysis types
 **Solution**: Implement analysis-specific field sets based on processor scoring algorithms
 
 **Analysis-Specific Field Sets Implementation**:
+
 
 1. **Strategic Analysis**: Market expansion factors
    - Competitive advantage scores, market size indicators
@@ -1074,6 +1124,7 @@ if (this.geographicHierarchy.size === 0) {
    - Function: `addCorrelationFields()` - focuses on correlation variables
 
 **Implementation Benefits**:
+
 - AI focuses on fields that actually drive the analysis scoring algorithm
 - Eliminates irrelevant demographic noise for each analysis type
 - Provides business context for why specific demographics matter to each analysis
@@ -1083,6 +1134,7 @@ if (this.geographicHierarchy.size === 0) {
 ## Testing the Flow
 
 ### 1. Test Query Analysis
+
 ```bash
 # Check if query intent is correctly identified
 console.log(analyzer.analyzeQuery("Compare Miami and Tampa"))
@@ -1090,6 +1142,7 @@ console.log(analyzer.analyzeQuery("Compare Miami and Tampa"))
 ```
 
 ### 2. Test Geographic Processing
+
 ```bash
 # Verify geographic entities are recognized
 console.log(geoEngine.parseGeographicQuery("Alachua County"))
@@ -1097,6 +1150,7 @@ console.log(geoEngine.parseGeographicQuery("Alachua County"))
 ```
 
 ### 3. Test Data Processing
+
 ```bash
 # Ensure processor handles endpoint data correctly
 console.log(processor.validate(endpointResponse))
@@ -1104,6 +1158,7 @@ console.log(processor.validate(endpointResponse))
 ```
 
 ### 4. Test Visualization
+
 ```bash
 # Check browser console for renderer application
 # Should see: "Applying renderer with field: comparison_score"
@@ -1111,6 +1166,7 @@ console.log(processor.validate(endpointResponse))
 ```
 
 ### 5. Test Dynamic Brand Naming
+
 ```bash
 # Test brand name extraction from field aliases
 const resolver = new BrandNameResolver({
@@ -1137,6 +1193,7 @@ console.log(result.summary);
 ```
 
 ### 6. Test Brand Difference Analysis
+
 ```bash
 # Test EnhancedQueryAnalyzer brand detection
 const analyzer = new EnhancedQueryAnalyzer();
@@ -1196,6 +1253,7 @@ console.log(autoResult.brandAnalysis.brandComparison);
 The system now features a sophisticated chat interface that provides progressive analysis with immediate feedback:
 
 #### Progressive Statistics Display
+
 ```typescript
 // Phase 1: Initial analysis message (0.5s)
 let messageContent = `${getIconString('analyzing')} Analyzing ${analysisData.length} areas...`;
@@ -1242,11 +1300,13 @@ const statDefinitions = {
 #### Interactive Message Features
 
 **Copy Functionality**:
+
 - **Top copy button**: Appears on hover in top-right of message
 - **Bottom copy button**: Appears on hover in bottom-right of message
 - **Visual feedback**: Shows checkmark when copied, reverts after 2 seconds
 
 **Export Conversation**:
+
 ```typescript
 const handleExportConversation = useCallback(() => {
   const conversationText = messages.map(message => {
@@ -1279,6 +1339,7 @@ ${conversationText}
 Replaced dated emojis with configurable icon system:
 
 #### Icon Configuration Options
+
 ```typescript
 export type IconType = 'emoji' | 'lucide' | 'modern-emoji';
 
@@ -1309,6 +1370,7 @@ export const currentIconType: IconType = 'modern-emoji';
 ```
 
 #### Icon Usage
+
 ```typescript
 // In stats calculator
 lines.push(`${getIconString('statistics')} **Quick Statistics**`);
@@ -1320,9 +1382,11 @@ let messageContent = `${getIconString('analyzing')} Analyzing ${analysisData.len
 ```
 
 #### Settings Component
+
 **Component**: `components/settings/IconStyleSelector.tsx`
 
 Provides UI for users to change icon preferences:
+
 - **Classic Emojis**: Original style (📊📈🎯)
 - **Modern Emojis**: Updated selection (📈📊🔍)
 - **Lucide Icons**: Professional icon set (matching UI)
@@ -1330,18 +1394,21 @@ Provides UI for users to change icon preferences:
 ### Enhanced User Experience
 
 #### Visual Improvements
+
 - **Grey project area button** in light mode (instead of green)
 - **Subtle green glow effects** (reduced intensity by 60-70%)
 - **Consistent button styling** across components
 - **Professional color palette** for better business appeal
 
-#### Performance Optimizations
+#### UX Performance Optimizations
+
 - **Removed duplicate badges** (model attribution info now only in message content)
 - **Streamlined stats display** with enhanced readability
 - **Efficient icon rendering** with configurable system
 - **Optimized chat message rendering** for large conversations
 
 #### Accessibility Features
+
 - **ARIA labels** for all icons and interactive elements
 - **Keyboard navigation** support for copy buttons
 - **High contrast** color schemes for better readability
@@ -1350,6 +1417,7 @@ Provides UI for users to change icon preferences:
 ## Summary
 
 The query-to-visualization flow involves:
+
 1. **Natural language understanding** to determine intent
 2. **Geographic awareness** to identify and filter locations
 3. **Configuration management** via centralized ConfigurationManager
@@ -1368,6 +1436,7 @@ The query-to-visualization flow involves:
 The system is designed to be robust, with multiple fallback mechanisms and flexible field handling to accommodate various data formats from different endpoints. **ConfigurationManager serves as the central authority** for field mapping, ensuring processors and endpoints stay synchronized. The new **Claude API data optimization system** prevents 413 errors by intelligently summarizing large datasets (96.6-100% payload reduction) while maintaining full analytical accuracy through statistical foundation + analysis-specific processing. The progressive chat system provides immediate feedback while full analysis processes, making the experience more responsive and informative.
 
 **Recent Chat System Features**:
+
 - **Progressive statistics display** with 5-phase loading
 - **Interactive info tooltips** explaining statistical concepts and formulas
 - **Dual copy buttons** (top and bottom of messages) for easy content copying
@@ -1376,6 +1445,7 @@ The system is designed to be robust, with multiple fallback mechanisms and flexi
 - **Enhanced UX** with improved visual design and accessibility
 
 **Brand Difference Analysis Features**:
+
 - **Auto-detection** of available brand fields in data (MP10104A_B_P, MP10128A_B_P, etc.)
 - **Flexible brand mapping** supporting TurboTax/H&R Block and athletic brands
 - **Percentage difference calculation** (Brand1% - Brand2%) with proper categorization
@@ -1384,6 +1454,7 @@ The system is designed to be robust, with multiple fallback mechanisms and flexi
 - **Professional reporting** with brand-specific insights and strategic recommendations
 
 **Data-Driven Scoring Algorithm Features** *(NEW 2025)*:
+
 - **26 unique analysis endpoints** with business-purpose-driven scoring algorithms
 - **SHAP-based feature importance** analysis for algorithm generation
 - **Percentage field prioritization** (automatically prefer `_P` fields over count fields)
@@ -1400,23 +1471,26 @@ The system is designed to be robust, with multiple fallback mechanisms and flexi
 
 ## BrandNameResolver Integration
 
-### Overview
+### BrandNameResolver Overview
 
 The BrandNameResolver system provides centralized, dynamic brand configuration for all analysis processors. This replaces hardcoded brand mappings with a single source of truth that adapts to different project domains.
 
 ### Key Features
 
 **Dynamic Brand Detection**:
+
 - Automatically detects brand fields in data using configurable patterns
 - Supports multiple competitor brands with target/non-target classification
 - Returns structured brand information with field names, brand names, and values
 
 **Market Gap Calculation**:
+
 - Dynamically calculates untapped market potential
 - Accounts for all detected competitors in market share calculations
 - Provides realistic bounds (5-95%) for market gap estimates
 
 **Brand-Agnostic Processing**:
+
 - All processors use the same brand detection logic
 - Summary text automatically includes actual brand names
 - Field mappings adapt to different industry contexts
@@ -1424,6 +1498,7 @@ The BrandNameResolver system provides centralized, dynamic brand configuration f
 ### Processor Integration
 
 **Fully Integrated Processors** (9):
+
 1. **StrategicAnalysisProcessor** - Uses BrandNameResolver for target brand detection and market gap calculation
 2. **CompetitiveDataProcessor** - Uses BrandNameResolver for brand field detection and competitive positioning
 3. **BrandAnalysisProcessor** - Uses BrandNameResolver for dynamic brand comparison and analysis
@@ -1463,6 +1538,7 @@ const COMPETITOR_BRANDS = [
 ### Usage Patterns
 
 **Brand Field Detection**:
+
 ```typescript
 const brandFields = this.brandResolver.detectBrandFields(record);
 const targetBrand = brandFields.find(bf => bf.isTarget);
@@ -1470,12 +1546,14 @@ const targetBrandShare = targetBrand?.value || 0;
 ```
 
 **Market Gap Calculation**:
+
 ```typescript
 const marketGap = this.brandResolver.calculateMarketGap(record);
 // Returns: percentage of market not captured by known brands
 ```
 
 **Summary Generation**:
+
 ```typescript
 const targetBrandName = this.brandResolver.getTargetBrandName();
 summary += `Strategic analysis for ${targetBrandName} expansion potential.`;
@@ -1484,12 +1562,14 @@ summary += `Strategic analysis for ${targetBrandName} expansion potential.`;
 ### Migration Benefits
 
 **Before (Hardcoded)**:
+
 - Each processor had its own brand field mappings
 - Brand changes required updates to 10+ files
 - Industry switching required extensive code changes
 - Summary text used generic "Brand A" terminology
 
 **After (BrandNameResolver)**:
+
 - Single source of truth for all brand configuration
 - Brand changes require updating only one file
 - Industry switching is configuration-only
@@ -1523,27 +1603,30 @@ All modern processors will automatically use the new configuration without code 
 
 ## Semantic Routing System (NEW 2025)
 
-### Overview
+### Semantic Routing Overview
 
 The system now features a **semantic similarity-based query routing engine** that provides significantly improved accuracy over keyword-based routing. This represents a fundamental upgrade to query understanding capabilities.
 
 **Implementation**: See `docs/SEMANTIC_ROUTING_IMPLEMENTATION.md` for complete technical details.
 
-### Key Features
+### Semantic Routing Key Features
 
 **🎯 Semantic Understanding**:
+
 - **Natural language processing** - understands conversational queries
 - **Context awareness** - comprehends sentence meaning vs individual keywords  
 - **Synonym detection** - automatically handles query variations
 - **Business terminology** - trained on comprehensive endpoint descriptions
 
 **⚡ Performance**:
+
 - **25-55ms routing time** - within acceptable performance bounds
 - **Local processing** - no external API calls required
 - **Efficient caching** - embeddings computed once and reused
 - **Graceful fallbacks** - keyword routing if semantic fails
 
 **🔧 Robustness**:
+
 - **Confidence scoring** - ensures high-quality routing decisions
 - **Timeout handling** - prevents slow routing from blocking UI
 - **Error recovery** - fails safely to general analysis endpoint
@@ -1551,7 +1634,7 @@ The system now features a **semantic similarity-based query routing engine** tha
 
 ### Architecture
 
-```
+```text
 User Query → SemanticRouter → LocalEmbeddingService → Similarity Search → Best Endpoint
      ↓              ↓               ↓                     ↓              ↓
 "Show income    Semantic      [0.1, 0.3,          Cosine similarity  /demographic-
@@ -1597,6 +1680,7 @@ User Query → SemanticRouter → LocalEmbeddingService → Similarity Search �
 
 The semantic router is automatically integrated into the existing query flow:
 
+
 ```typescript
 // Existing code continues to work unchanged
 const router = new CachedEndpointRouter(configManager);
@@ -1604,9 +1688,11 @@ const endpoint = await router.selectEndpoint(userQuery);
 // Now uses semantic routing with keyword fallback
 ```
 
+ 
 ### ONNX.js Integration Details
 
 **Local AI Model Architecture**:
+
 ```typescript
 // LocalEmbeddingService implementation using ONNX.js
 class LocalEmbeddingService {
@@ -1666,7 +1752,8 @@ class LocalEmbeddingService {
 ```
 
 **Model Architecture Specifications**:
-- **Model**: `sentence-transformers/all-MiniLM-L6-v2` 
+
+- **Model**: `sentence-transformers/all-MiniLM-L6-v2`
 - **Size**: 22MB ONNX model file
 - **Architecture**: 6-layer MiniLM transformer
 - **Output Dimensions**: 384 (optimized for semantic similarity)
@@ -1674,6 +1761,7 @@ class LocalEmbeddingService {
 - **Performance**: ~25-55ms inference time in browser
 
 **Browser Compatibility**:
+
 ```typescript
 // ONNX.js WebAssembly backend configuration
 ort.env.wasm = {
@@ -1690,6 +1778,7 @@ const executionProviders = [
 ```
 
 **Caching Strategy**:
+
 ```typescript
 // Three-tier caching system
 class EmbeddingCache {
@@ -1723,6 +1812,7 @@ class EmbeddingCache {
 ### Configuration
 
 **Next.js Webpack Configuration**:
+
 ```javascript
 // next.config.js - Exclude Node.js binaries from browser bundle
 module.exports = {
@@ -1749,7 +1839,8 @@ module.exports = {
 ```
 
 **Static File Configuration**:
-```
+
+```text
 public/
 ├── models/
 │   ├── model.onnx           # 22MB sentence transformer model
@@ -1762,6 +1853,7 @@ public/
 ```
 
 **Dependencies Added**:
+
 ```json
 {
   "@xenova/transformers": "^2.17.2",  // Hugging Face tokenizers for browser
@@ -1781,13 +1873,15 @@ public/
 ### ONNX.js Performance Optimizations
 
 **WebAssembly Acceleration**:
+
 - **SIMD Instructions**: Enables Single Instruction, Multiple Data operations for faster matrix computations
 - **Multi-threading**: Utilizes available CPU cores (up to 4 threads) for parallel processing  
 - **Memory Management**: Efficient tensor allocation and cleanup to prevent memory leaks
 - **Graph Optimization**: ONNX model optimizations applied at load time for faster inference
 
 **Benchmark Results** (Average across different devices):
-```
+
+```text
 Desktop Chrome: 25-35ms per embedding
 Mobile Safari:  45-55ms per embedding  
 Firefox:        30-40ms per embedding
@@ -1795,12 +1889,14 @@ Edge:           25-35ms per embedding
 ```
 
 **Resource Usage**:
+
 - **Memory**: ~50MB total (22MB model + 28MB runtime)
 - **CPU**: Moderate usage during inference, idle between queries
 - **Network**: One-time download of model files, then fully offline
 - **Storage**: Models cached in browser for subsequent visits
 
 **Fallback Strategy**:
+
 ```typescript
 // Graceful degradation if ONNX.js fails
 async function getEmbeddingWithFallback(text: string): Promise<number[]> {
@@ -1927,7 +2023,8 @@ const mockSemanticRouter = {
 ### Final Routing Test Results
 
 **Perfect Score Achieved**:
-```
+
+```text
 🎯 ROUTING ACCURACY: 100.0% (22/22)
 
 ✅ All queries route to their optimal specialized endpoints:
@@ -1942,12 +2039,14 @@ const mockSemanticRouter = {
 ### Production Impact
 
 **Before Fixes**:
+
 - 86.4% of users received generic `/analyze` results instead of specialized insights
 - Brand comparison queries often routed to wrong endpoint types
 - AI/ML queries defaulted to basic analysis
 - Business scenario queries missed specialized endpoints
 
 **After Fixes**:
+
 - 100% of users receive optimal specialized analysis for their query type
 - Perfect routing to brand comparison endpoints
 - AI/ML queries properly route to machine learning specific endpoints
@@ -1956,24 +2055,28 @@ const mockSemanticRouter = {
 ### Validation Framework Features
 
 **Comprehensive Coverage**:
+
 - Tests all 25 analysis endpoints with representative queries
 - Uses actual production routing logic (`CachedEndpointRouter`)
 - Validates against real endpoint configurations
 - Includes confidence scoring verification
 
 **Production Alignment**:
+
 - Same routing path as production chat interface
 - Identical configuration management
 - Real brand detection and geographic processing
 - Authentic query examples from `chat-constants.ts`
 
 **Quality Assurance**:
+
 - Fails tests immediately if routing accuracy drops below 100%
 - Provides detailed routing analysis for each query
 - Tracks confidence scores and routing reasons
 - Ensures no regressions in specialized endpoint routing
 
 **Testing Command**:
+
 ```bash
 npm test -- __tests__/query-to-visualization-pipeline.test.ts
 ```

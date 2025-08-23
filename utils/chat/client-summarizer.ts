@@ -104,6 +104,17 @@ function pickIdAndName(props: any): { id: string; name: string } {
   const name = String(
     props?.area_name ?? props?.NAME ?? props?.name ?? props?.DESCRIPTION ?? props?.city ?? props?.zip ?? id
   );
+  
+  // Debug logging for strategic analysis (first few only to reduce noise)
+  if ((props?.strategic_analysis_score || props?.strategic_value_score) && id && ['32544', '33621', '32542'].includes(id)) {
+    console.log(`🔍 [pickIdAndName] Strategic analysis - ${id}:`, {
+      area_name: props?.area_name,
+      final_id: id,
+      final_name: name,
+      name_source: props?.area_name ? 'area_name' : 'other'
+    });
+  }
+  
   return { id, name };
 }
 

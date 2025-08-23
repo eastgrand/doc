@@ -2,6 +2,7 @@
 // This function is used by both geospatial-chat-interface and MapApp
 
 import { VisualizationResult, ProcessedAnalysisData } from '@/lib/analysis/types';
+import { resolveAreaName as resolveSharedAreaName } from '@/lib/shared/AreaName';
 
 export const applyAnalysisEngineVisualization = async (
   visualization: VisualizationResult,
@@ -186,12 +187,18 @@ export const applyAnalysisEngineVisualization = async (
       }
 
       // Create essential attributes for visualization
+      const resolvedName = (() => {
+        try {
+          return resolveSharedAreaName(record, { mode: 'zipCity', neutralFallback: '' }) || '';
+        } catch { return ''; }
+      })();
+
       const essentialAttributes: any = {
         OBJECTID: index + 1,
-        area_name: record.area_name || 'Unknown Area',
+        area_name: resolvedName || record.area_name || record.properties?.DESCRIPTION || record.area_id || `Area ${index + 1}`,
         value: typeof record.value === 'number' ? record.value : 0,
         ID: String(record.properties?.ID || record.area_id || ''),
-        DESCRIPTION: record.area_name || record.properties?.DESCRIPTION || `Area ${record.area_id}`,
+        DESCRIPTION: record.properties?.DESCRIPTION || resolvedName || record.area_name || `Area ${record.area_id ?? index + 1}`,
         
         // Target variable field (dynamic based on analysis type)
         [data.targetVariable]: typeof record.value === 'number' ? record.value : 

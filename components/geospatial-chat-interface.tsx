@@ -51,6 +51,7 @@ import { personaMetadata } from '@/app/api/claude/prompts';
 import ChatBar from '@/components/chat/ChatBar';
 import { classifyQuery } from '@/lib/ai/query-classifier';
 import { renderPerformanceMetrics } from '@/lib/utils/performanceMetrics';
+import { resolveAreaName as resolveSharedAreaName } from '@/lib/shared/AreaName';
 
 // Import Unified Workflow Components
 import UnifiedAnalysisWorkflow from '@/components/unified-analysis/UnifiedAnalysisWorkflow';
@@ -2721,7 +2722,10 @@ const EnhancedGeospatialChat = memo(({
                 const isClusterRecord = hasClusterAnalysis && result.zipCount;
                 // For Claude, prioritize full DESCRIPTION over extracted area_name
                 const fullDescription = result.properties?.DESCRIPTION || result.DESCRIPTION;
-                const displayName = fullDescription || result.area_name || result.name || result.area_id || result.id || 'Unknown Area';
+                const resolvedName = (() => {
+                  try { return resolveSharedAreaName(result, { mode: 'zipCity', neutralFallback: '' }) || ''; } catch { return ''; }
+                })();
+                const displayName = resolvedName || fullDescription || result.area_name || result.name || result.area_id || result.id || `Area ${index + 1}`;
                 const displayId = result.area_id || result.id;
                 
                 // Debug what displayName is actually being used

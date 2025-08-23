@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * Clustering Service
  * 
@@ -14,8 +16,9 @@ import {
 } from './types';
 import { RegionGrowingAlgorithm } from './algorithms/region-growing';
 import { extractClusteringFeatures, AnalysisData } from './utils/feature-extraction';
-import { validateClusters } from './utils/cluster-validation';
+// import { validateClusters } from './utils/cluster-validation';
 import { ProcessedAnalysisData, AnalysisResult } from '../analysis/types';
+import { resolveAreaName, getZip, resolveRegionName } from '../shared/AreaName';
 
 /**
  * Main clustering service that connects to AnalysisEngine
@@ -71,12 +74,7 @@ export class ClusteringService {
     
     // Use passed config if provided, otherwise use current config
     const clusterConfig = config ? { ...this.currentConfig, ...config } : this.currentConfig;
-    console.log('[ClusteringService] 🔍 Using config:', {
-      passedConfig: config,
-      currentConfig: this.currentConfig,
-      mergedConfig: clusterConfig,
-      isEnabled: clusterConfig.enabled
-    });
+  console.log('[ClusteringService] 🔍 Using config:', clusterConfig);
     
     // Skip clustering if disabled
     if (!clusterConfig.enabled) {
@@ -837,7 +835,7 @@ export class ClusteringService {
     });
 
     // Filter out any null clusters and sort by strategic importance
-    const validNamedClusters = namedClusters.filter(cluster => cluster !== null);
+  const validNamedClusters = namedClusters.filter(cluster => cluster !== null);
     // Keep clusters in original ID order to match map legend - do NOT sort by score
     validNamedClusters.sort((a, b) => a.originalClusterId - b.originalClusterId);
     
@@ -854,7 +852,7 @@ export class ClusteringService {
     let analysis = this.generateClusterIntroduction(validNamedClusters, endpointConfig);
     
     // Add detailed cluster analysis
-    validNamedClusters.forEach((cluster, index) => {
+  validNamedClusters.forEach((cluster) => {
       // Use cluster ID + 1 to match legend numbering (cluster ID 0 = ①, cluster ID 1 = ②, etc.)
       const displayNumber = cluster.originalClusterId + 1;
       analysis += this.generateClusterDetails(cluster, displayNumber, endpointConfig, validNamedClusters.length);
@@ -948,13 +946,9 @@ export class ClusteringService {
       return zipPop > maxPop ? zip : max;
     });
 
-    // Extract cluster name - use largest ZIP code by population for meaningful geographic naming
-    let clusterName;
-    if (clusterZips.length === 1) {
-      clusterName = this.extractClusterName(leadZip);
-    } else {
-      // For multi-ZIP clusters, use the largest ZIP code to create a meaningful geographic name
-      clusterName = this.extractClusterName(leadZip);
+    // Extract cluster name using shared resolver (city-focused label)
+  const clusterName = resolveAreaName(leadZip, { mode: 'cityOnly', neutralFallback: `Region ${cluster.clusterId + 1}` });
+    if (clusterZips.length > 1) {
       console.log(`🎯 [CLUSTER ANALYSIS] Multi-ZIP cluster ${cluster.clusterId}: Using geographic name "${clusterName}" based on largest ZIP ${leadZip.area_name} (pop: ${leadZip.properties?.total_population || leadZip.properties?.totpop_cy || 0}) for ${clusterZips.length} ZIP codes`);
     }
     
@@ -971,7 +965,7 @@ export class ClusteringService {
     const minScore = scores.length > 0 ? Math.min(...scores) : 0;
 
     // Get top 5 ZIP codes in this cluster for detailed description
-    const topZips = clusterZips
+  const topZips = clusterZips
       .filter(zip => {
         const score = zip.value || zip.properties?.[config.scoreField] || zip.properties?.strategic_value_score || 0;
         return !isNaN(score) && score > 0;
@@ -983,13 +977,15 @@ export class ClusteringService {
       })
       .slice(0, 5)
       .map(zip => {
-        const rawZipCode = zip.properties?.geo_id || zip.properties?.zip_code || zip.area_name?.match(/\d{4,5}/)?.[0] || 'Unknown';
-        const normalizedZipCode = this.normalizeZipCode(rawZipCode);
+    const normalizedZipCode = getZip(zip);
         const score = zip.value || zip.properties?.[config.scoreField] || zip.properties?.strategic_value_score || 0;
-        
+
+    // Prefer a robust, human-friendly label via shared resolver
+    const name = resolveAreaName(zip, { mode: 'zipCity' });
+
         return {
-          code: normalizedZipCode,
-          name: zip.area_name || 'Unknown Area',
+          code: normalizedZipCode || '—',
+          name,
           score: isNaN(score) ? 0 : score
         };
       });
@@ -1016,6 +1012,38 @@ export class ClusteringService {
       // Add cluster-level market analysis
       marketShares: clusterMarketShares
     };
+  }
+
+  /**
+   * Resolve a clear area label for a ZIP record.
+   * Preference order: properties.DESCRIPTION -> area_name -> "ZIP <code> (City)" -> "ZIP <code>" -> "Location".
+   */
+  private resolveAreaLabel(record: any, normalizedZipCode?: string): string {
+    try {
+      const props = record?.properties || {};
+      // 1) Full DESCRIPTION like "11234 (Brooklyn)" — return as-is
+      const desc = (typeof props.DESCRIPTION === 'string' && props.DESCRIPTION.trim())
+        ? props.DESCRIPTION.trim()
+        : (typeof record?.area_name === 'string' && record.area_name.trim())
+          ? record.area_name.trim()
+          : '';
+      if (desc) return desc;
+
+      // 2) Build from ZIP + city-like fields
+      const zip = normalizedZipCode || props.geo_id || props.zip_code || '';
+      const nameFields = ['NAME', 'CITY', 'MUNICIPALITY', 'REGION', 'CSDNAME', 'FEDNAME'];
+      let city = '';
+      for (const f of nameFields) {
+        if (props[f]) { city = String(props[f]).trim(); break; }
+      }
+      if (zip && city) return `${zip} (${city})`;
+      if (zip) return `ZIP ${zip}`;
+
+      // 3) Fall back to area_id or neutral label
+      return record?.area_id || 'Location';
+  } catch {
+      return 'Location';
+    }
   }
 
   /**
@@ -1067,32 +1095,7 @@ export class ClusteringService {
     };
   }
 
-  /**
-   * Extract meaningful cluster name from lead ZIP code
-   */
-  private extractClusterName(leadZip: any): string {
-    const areaName = leadZip.area_name || '';
-    const description = leadZip.properties?.DESCRIPTION || leadZip.properties?.description || '';
-    
-    // Try to extract neighborhood/area name from various fields
-    if (description && description !== areaName) {
-      return `${description.replace(/\s+\(.*?\)/, '').trim()} Territory`; // Remove parenthetical info
-    }
-    
-    if (areaName.includes('(') && areaName.includes(')')) {
-      // Extract area name from format like "11234 (Brooklyn)"
-      const match = areaName.match(/\((.*?)\)/);
-      if (match) return `${match[1]} Territory`;
-    }
-    
-    // Extract borough/city name from area_name
-    const cityMatch = areaName.match(/\b(Brooklyn|Queens|Manhattan|Bronx|Staten Island|Jersey City|Newark|Philadelphia|Boston|Chicago|Los Angeles)\b/i);
-    if (cityMatch) return `${cityMatch[1]} Territory`;
-    
-    // Fallback to ZIP-based naming - use first 3 digits + "xx Territory" format
-    const zipMatch = areaName.match(/(\d{5})/);
-    return zipMatch ? `${zipMatch[1].substring(0, 3)}xx Territory` : `Territory ${leadZip.cluster_id + 1}`;
-  }
+  // Removed: cluster name now uses shared resolveAreaName
 
   /**
    * Generate cluster analysis introduction
@@ -1124,7 +1127,7 @@ This ${config.focus} analysis has identified ${clusters.length} distinct market 
     if (cluster.topZips && cluster.topZips.length > 0) {
       zipDetails = `\nTop ZIP codes: ${cluster.topZips.map((zip: any) => {
         // Extract area name from formats like "11234 (Brooklyn)" or "Brooklyn"
-        let areaName = zip.name || 'Unknown Area';
+        let areaName = zip.name || 'Location';
         if (areaName.includes('(') && areaName.includes(')')) {
           // Extract the part in parentheses: "11234 (Brooklyn)" -> "Brooklyn"
           const match = areaName.match(/\((.*?)\)/);
@@ -1186,7 +1189,7 @@ This ${config.focus} analysis has identified ${clusters.length} distinct market 
 
     // Add color indicator for visualization legend matching
     // Use the actual cluster ID (not rank) to match the renderer's color assignment
-    const colorIndicator = this.getColorIndicatorForCluster(cluster.originalClusterId, totalClusters);
+  const colorIndicator = this.getColorIndicatorForCluster(cluster.originalClusterId);
     console.log(`🎯 [COLOR DEBUG] Cluster ID ${cluster.originalClusterId}, Rank ${rank}: ${colorIndicator} for ${cluster.name} (${totalClusters} total clusters)`);
     
     // Ensure all numeric values are valid
@@ -1207,7 +1210,6 @@ Territory Profile: Comprehensive market area with ${consistencyText} across the 
    */
   private generateClusterRecommendations(clusters: any[], config: any): string {
     const topCluster = clusters[0];
-    const totalPopulation = clusters.reduce((sum, cluster) => sum + cluster.totalPopulation, 0);
     
     // Generate specific, actionable recommendations based on cluster characteristics
     let recommendations = `**Strategic Recommendations:**\n\n`;
@@ -1223,7 +1225,7 @@ Territory Profile: Comprehensive market area with ${consistencyText} across the 
     
     // Territory-specific strategies
     recommendations += `**2. Territory-Specific Market Entry Strategies:**\n`;
-    clusters.slice(0, 3).forEach((cluster, index) => {
+  clusters.slice(0, 3).forEach((cluster) => {
       recommendations += `- **${cluster.name}**: `;
       if (cluster.marketShares?.marketGap > 70) {
         recommendations += `High market gap (${cluster.marketShares.marketGap.toFixed(1)}%) - aggressive store expansion and digital marketing campaigns\n`;
@@ -1252,7 +1254,7 @@ Territory Profile: Comprehensive market area with ${consistencyText} across the 
    * Get a simple, clear indicator for a cluster that users can easily match to the map legend
    * Uses numbered circles for foolproof identification
    */
-  private getColorIndicatorForCluster(clusterId: number, totalClusters: number): string {
+  private getColorIndicatorForCluster(clusterId: number): string {
     // Use simple numbered indicators for clear identification
     // This approach is foolproof - users can easily match numbers between analysis and legend
     const numberEmojis = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩'];

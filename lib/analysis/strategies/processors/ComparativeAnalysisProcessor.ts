@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { GeoDataManager } from '../../../geo/GeoDataManager';
+import { resolveAreaName } from '../../../shared/AreaName';
 interface BrandMetric {
   value: number;
   fieldName: string;
@@ -780,67 +781,9 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    * Generate meaningful area name from available data
    */
   private generateAreaName(record: any): string {
-    // Try explicit name/description fields first - be flexible with naming
-    const nameFields = ['DESCRIPTION', 'value_DESCRIPTION', 'area_name', 'NAME', 'name', 'label', 'title'];
-    
-    for (const field of nameFields) {
-      const value = record[field];
-      if (value && typeof value === 'string' && value.trim() !== '' && value.toLowerCase() !== 'unknown') {
-        const trimmedValue = value.trim();
-        // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
-        if (field === 'DESCRIPTION' || field === 'value_DESCRIPTION') {
-          const nameMatch = trimmedValue.match(/\(([^)]+)\)/);
-          if (nameMatch && nameMatch[1]) {
-            return nameMatch[1].trim();
-          }
-        }
-        return trimmedValue;
-      }
-    }
-    
-    // Create name from ID and location data with city context
-    const idFields = ['ID', 'id', 'GEOID', 'area_id', 'zipcode', 'zip'];
-    let id = null;
-    for (const field of idFields) {
-      if (record[field] !== undefined && record[field] !== null) {
-        id = record[field];
-        break;
-      }
-    }
-    
-    if (id) {
-      const city = this.extractCityFromRecord(record);
-      
-      // For ZIP codes, create format like "12345 (Brooklyn)" 
-      if (typeof id === 'string' && id.match(/^\d{5}$/)) {
-        return city !== 'Unknown' ? `${id} (${city})` : `ZIP ${id}`;
-      }
-      // For FSA codes, create format like "M5V (Toronto)"
-      if (typeof id === 'string' && id.match(/^[A-Z]\d[A-Z]$/)) {
-        return city !== 'Unknown' ? `${id} (${city})` : `FSA ${id}`;
-      }
-      // For numeric IDs, create descriptive name
-      if (typeof id === 'number' || !isNaN(Number(id))) {
-        const numericId = typeof id === 'number' ? id : Number(id);
-        // For ZIP-like 5-digit numbers, format as ZIP
-        if (numericId >= 10000 && numericId <= 99999) {
-          return city !== 'Unknown' ? `${numericId} (${city})` : `ZIP ${numericId}`;
-        }
-        return city !== 'Unknown' ? `${id} (${city})` : `Area ${id}`;
-      }
-      return city !== 'Unknown' ? `${id} (${city})` : `Region ${id}`;
-    }
-    
-    // Final fallback - try to extract any meaningful identifier
-    const backupFields = ['address', 'location', 'place', 'district', 'neighborhood'];
-    for (const field of backupFields) {
-      const value = record[field];
-      if (value && typeof value === 'string' && value.trim() !== '') {
-        return value.trim();
-      }
-    }
-    
-    return 'Unknown Area';
+  // Centralized resolver: ensures consistent naming and avoids 'Unknown Area'
+  const fallbackId = record.ID || record.id || record.area_id || record.GEOID || record.zipcode || '1';
+  return resolveAreaName(record, { mode: 'zipCity', neutralFallback: `Area ${fallbackId}` });
   }
 
   /**
