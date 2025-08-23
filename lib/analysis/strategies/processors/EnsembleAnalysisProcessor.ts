@@ -105,12 +105,12 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
-    // Ensemble colors: Purple gradient (low) -> Blue -> Teal -> Green (high)
+    // Use standard red-to-green gradient: Red (low) -> Orange -> Light Green -> Dark Green (high)
     const ensembleColors = [
-      [123, 50, 148, 0.6],   // Purple (low ensemble performance)
-      [66, 146, 198, 0.6],   // Blue
-      [49, 163, 84, 0.6],    // Teal
-      [0, 109, 44, 0.6]      // Dark Green (high ensemble performance)
+      [215, 48, 39, 0.6],   // #d73027 - Red (low ensemble performance)
+      [253, 174, 97, 0.6],  // #fdae61 - Orange
+      [166, 217, 106, 0.6], // #a6d96a - Light Green
+      [26, 152, 80, 0.6]    // #1a9850 - Dark Green (high ensemble performance)
     ];
     
     const classBreakInfos = [];
@@ -144,10 +144,10 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
     const ensembleColors = [
-      'rgba(123, 50, 148, 0.6)',   // Purple
-      'rgba(66, 146, 198, 0.6)',   // Blue
-      'rgba(49, 163, 84, 0.6)',    // Teal
-      'rgba(0, 109, 44, 0.6)'      // Dark Green
+      'rgba(215, 48, 39, 0.6)',   // Red (low ensemble performance)
+      'rgba(253, 174, 97, 0.6)',  // Orange
+      'rgba(166, 217, 106, 0.6)', // Light Green
+      'rgba(26, 152, 80, 0.6)'    // Dark Green (high ensemble performance)
     ];
     
     const legendItems = [];

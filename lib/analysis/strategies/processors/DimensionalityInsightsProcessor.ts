@@ -105,12 +105,12 @@ export class DimensionalityInsightsProcessor implements DataProcessorStrategy {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
-    // Dimensionality colors: Blue gradient (simple) -> Purple -> Pink -> Red (complex)
+    // Use standard red-to-green gradient: Red (low) -> Orange -> Light Green -> Dark Green (high)
     const dimensionalityColors = [
-      [158, 202, 225, 0.6],  // Light blue (low dimensionality)
-      [107, 174, 214, 0.6],  // Medium blue
-      [166, 118, 192, 0.6],  // Purple
-      [206, 18, 86, 0.6]     // Pink-red (high dimensionality)
+      [215, 48, 39, 0.6],   // #d73027 - Red (low dimensionality)
+      [253, 174, 97, 0.6],  // #fdae61 - Orange
+      [166, 217, 106, 0.6], // #a6d96a - Light Green
+      [26, 152, 80, 0.6]    // #1a9850 - Dark Green (high dimensionality)
     ];
     
     const classBreakInfos = [];
@@ -144,10 +144,10 @@ export class DimensionalityInsightsProcessor implements DataProcessorStrategy {
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
     const dimensionalityColors = [
-      'rgba(158, 202, 225, 0.6)',  // Light blue
-      'rgba(107, 174, 214, 0.6)',  // Medium blue
-      'rgba(166, 118, 192, 0.6)',  // Purple
-      'rgba(206, 18, 86, 0.6)'     // Pink-red
+      'rgba(215, 48, 39, 0.6)',   // Red (low dimensionality)
+      'rgba(253, 174, 97, 0.6)',  // Orange
+      'rgba(166, 217, 106, 0.6)', // Light Green
+      'rgba(26, 152, 80, 0.6)'    // Dark Green (high dimensionality)
     ];
     
     const legendItems = [];

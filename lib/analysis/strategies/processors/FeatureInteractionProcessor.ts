@@ -683,12 +683,12 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
-    // Use purple/blue gradient for feature interactions: Light blue -> Purple (high interaction)
+    // Use standard red-to-green gradient: Red (low) -> Orange -> Light Green -> Dark Green (high)
     const interactionColors = [
-      [158, 202, 225, 0.6],  // #9ecae1 - Light blue (low interaction)
-      [107, 174, 214, 0.6],  // #6baed6 - Medium blue
-      [74, 138, 184, 0.6],   // #4a8ab8 - Blue  
-      [99, 82, 139, 0.6]     // #63528b - Purple (high interaction)
+      [215, 48, 39, 0.6],   // #d73027 - Red (low interaction)
+      [253, 174, 97, 0.6],  // #fdae61 - Orange
+      [166, 217, 106, 0.6], // #a6d96a - Light Green
+      [26, 152, 80, 0.6]    // #1a9850 - Dark Green (high interaction)
     ];
     
     return {
@@ -719,12 +719,12 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
-    // Use RGBA format with correct opacity to match features
+    // Use standard red-to-green RGBA format to match renderer
     const colors = [
-      'rgba(158, 202, 225, 0.6)',  // Low interaction
-      'rgba(107, 174, 214, 0.6)',  // Medium-low  
-      'rgba(74, 138, 184, 0.6)',   // Medium-high
-      'rgba(99, 82, 139, 0.6)'     // High interaction
+      'rgba(215, 48, 39, 0.6)',   // Low interaction
+      'rgba(253, 174, 97, 0.6)',  // Medium-low  
+      'rgba(166, 217, 106, 0.6)', // Medium-high
+      'rgba(26, 152, 80, 0.6)'    // High interaction
     ];
     
     const legendItems = [];
