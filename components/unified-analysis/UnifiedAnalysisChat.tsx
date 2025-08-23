@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+// Removed unused Alert components import
 import { 
   Dialog, 
   DialogContent, 
@@ -64,7 +64,6 @@ function getRandomThinkingMessage(): string {
 
 export default function UnifiedAnalysisChat({ 
   analysisResult, 
-  onExportChart, 
   onZipCodeClick, 
   persona = 'strategist',
   messages: externalMessages,
@@ -120,7 +119,7 @@ export default function UnifiedAnalysisChat({
       return { isCommand: false };
     }
 
-    const [command, ...args] = input.slice(1).split(' ');
+  const [command] = input.slice(1).split(' ');
     const lowerCommand = command.toLowerCase();
 
     switch (lowerCommand) {
@@ -159,7 +158,7 @@ export default function UnifiedAnalysisChat({
               action: 'export'
             };
           }
-        } catch (error) {
+  } catch {
           return { 
             isCommand: true, 
             response: '❌ **Export Failed**\n\nUnable to copy to clipboard. Please try selecting and copying manually.',
@@ -471,10 +470,14 @@ ${conversationText}
           query: `Analyze the ${result.endpoint?.replace('/', '').replace(/-/g, ' ')} results`,
           analysisType: result.endpoint?.replace('/', '').replace(/-/g, '_') || 'strategic_analysis',
           relevantLayers: ['unified_analysis'],
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           spatialFilterIds: (metadata as any)?.spatialFilterIds,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           filterType: (metadata as any)?.filterType,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           rankingContext: (metadata as any)?.rankingContext,
           isClustered: result.data?.isClustered,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           clusterAnalysis: (result.data as any)?.clusterAnalysis,
           isContextualChat: false, // This is an analysis request, not a chat request
           enableOptimization: true, // Enable payload optimization to prevent 413 errors
@@ -503,6 +506,7 @@ ${conversationText}
       console.log('[UnifiedAnalysisChat] Request payload prepared:', {
         endpoint: result.endpoint,
         recordCount: result.data?.records?.length,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         spatialFilter: !!(metadata as any)?.spatialFilterIds,
         isClustered: !!result.data?.isClustered
       });
@@ -637,7 +641,7 @@ ${conversationText}
       console.log('[UnifiedAnalysisChat] Starting auto-generation of AI narrative');
       generateInitialNarrative();
     }
-  }, [hasGeneratedNarrative, analysisResult]);
+  }, [hasGeneratedNarrative, analysisResult, generateInitialNarrative]);
 
   const handleSendMessage = useCallback(async () => {
     console.log('🧪 [CRITICAL TEST] handleSendMessage START - checking for Fast Refresh');
@@ -722,10 +726,14 @@ ${conversationText}
           query: userMessage.content,
           analysisType: result.endpoint?.replace('/', '').replace(/-/g, '_') || 'strategic_analysis',
           relevantLayers: ['unified_analysis'],
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           spatialFilterIds: (metadata as any)?.spatialFilterIds,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           filterType: (metadata as any)?.filterType,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           rankingContext: (metadata as any)?.rankingContext,
           isClustered: result.data?.isClustered,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           clusterAnalysis: isFollowUpQuestion ? undefined : (result.data as any)?.clusterAnalysis, // Skip heavy cluster data on follow-ups
           targetVariable: result.data?.targetVariable,
           endpoint: result.endpoint,
@@ -761,24 +769,24 @@ ${conversationText}
       // Test 1: External URL from this component
       console.log('🧪 [TEST 1] External fetch from UnifiedAnalysisChat...');
       try {
-        const ext = await fetch('https://jsonplaceholder.typicode.com/posts/1');
+        await fetch('https://jsonplaceholder.typicode.com/posts/1');
         console.log('🧪 [TEST 1] External fetch SUCCESS - no Fast Refresh?');
-      } catch (e) {
+      } catch {
         console.log('🧪 [TEST 1] External fetch failed');
       }
       
       // Test 2: Different internal endpoint
       console.log('🧪 [TEST 2] Fetching different internal endpoint...');
       try {
-        const int = await fetch('/api/blob/upload', { method: 'GET' }).catch(() => null);
+        await fetch('/api/blob/upload', { method: 'GET' }).catch(() => null);
         console.log('🧪 [TEST 2] Internal endpoint completed - Fast Refresh?');
-      } catch (e) {
+      } catch {
         console.log('🧪 [TEST 2] Internal endpoint failed');
       }
       
       // Test 3: Our problematic endpoint
       console.log('🧪 [TEST 3] Fetching /api/claude/generate-response...');
-      const response = await fetch('/api/claude/generate-response', {
+      await fetch('/api/claude/generate-response', {
         method: 'POST',
         body: new FormData()
       });
@@ -1017,12 +1025,6 @@ ${conversationText}
                 {selectedMessage?.content && renderFormattedMessage(selectedMessage.content)}
               </div>
             </div>
-            {analysisResult.analysisResult.data.records && (
-              <div>
-                <h4 className="font-semibold">Results:</h4>
-                <p>{analysisResult.analysisResult.data.records.length} features found</p>
-              </div>
-            )}
           </div>
         </DialogContent>
       </Dialog>
