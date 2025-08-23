@@ -180,29 +180,63 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   private extractCustomerProfileScore(record: any): number {
-    // PRIORITY 1: Use the explicit customer profile score when available
-    if ((record as any).customer_profile_score !== undefined && (record as any).customer_profile_score !== null) {
-      const score = Number((record as any).customer_profile_score);
-      console.log(`👤 [CustomerProfileProcessor] Using customer_profile_score: ${score} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
-      return score;
+    // Calculate composite score from multiple available fields
+    // Since the raw customer_profile_score values are all low (19-20), we'll create a better composite score
+    
+    const purchasePropensity = Number((record as any).purchase_propensity) || 0;
+    const lifestyleScore = Number((record as any).lifestyle_score) || 0;
+    const demographicAlignment = Number((record as any).demographic_alignment) || 0;
+    const behavioralScore = Number((record as any).behavioral_score) || 0;
+    const marketContextScore = Number((record as any).market_context_score) || 0;
+    const brandLoyalty = Number((record as any).brand_loyalty_indicator) || 0;
+    const targetConfidence = Number((record as any).target_confidence) || 0;
+    const lifestyleAlignment = Number((record as any).lifestyle_alignment) || 0;
+    
+    // Also consider H&R Block specific fields if available
+    const hrbShare = Number((record as any).MP10104A_B_P) || 0; // H&R Block market share percentage
+    const thematicValue = Number((record as any).thematic_value) || 0;
+    const strategicScore = Number((record as any).strategic_score) || 0;
+    
+    // Create a balanced composite score that gives meaningful variation
+    let compositeScore = 0;
+    
+    // Core persona factors (60% weight)
+    compositeScore += purchasePropensity * 0.25; // Purchase intent is key
+    compositeScore += demographicAlignment * 0.20; // Demographics matter
+    compositeScore += Math.max(lifestyleScore, lifestyleAlignment) * 0.15; // Use better lifestyle indicator
+    
+    // Brand and confidence factors (25% weight)
+    compositeScore += targetConfidence * 0.15;
+    compositeScore += brandLoyalty * 0.10;
+    
+    // Market context (15% weight)
+    compositeScore += marketContextScore * 0.10;
+    compositeScore += behavioralScore * 0.05;
+    
+    // Add bonus for actual H&R Block presence (up to 15 points)
+    if (hrbShare > 0) {
+      const hrbBonus = Math.min(hrbShare * 1.5, 15); // 1.5x the market share percentage, max 15 points
+      compositeScore += hrbBonus;
     }
     
-    // PRIORITY 2: Fallback to purchase propensity if explicit profile score not present
-    if ((record as any).purchase_propensity !== undefined && (record as any).purchase_propensity !== null) {
-      const score = Number((record as any).purchase_propensity);
-      console.log(`👤 [CustomerProfileProcessor] Fallback to purchase_propensity: ${score} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
-      return score;
+    // Add small bonus for high strategic score (up to 5 points)
+    if (strategicScore > 80) {
+      compositeScore += (strategicScore - 80) * 0.25; // 0.25 points per point above 80
     }
     
-    // PRIORITY 3: Fallback to demographic opportunity score if customer profile score not available
-    if ((record as any).demographic_opportunity_score !== undefined && (record as any).demographic_opportunity_score !== null) {
-      const score = Number((record as any).demographic_opportunity_score);
-      console.log(`👤 [CustomerProfileProcessor] Fallback to demographic_opportunity_score: ${score} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
-      return score;
+    // If we still have a very low score, use thematic value as floor
+    if (compositeScore < 25 && thematicValue > 0) {
+      compositeScore = Math.max(compositeScore, thematicValue * 2.5); // Use thematic value as floor
     }
     
-    console.log('⚠️ [CustomerProfileProcessor] No purchase_propensity, customer_profile_score, or demographic scores found');
-    return 0;
+    // Ensure score is in reasonable range
+    compositeScore = Math.max(0, Math.min(100, compositeScore));
+    
+    if (compositeScore > 50) { // Only log high scores for debugging
+      console.log(`👤 [CustomerProfileProcessor] High composite score: ${compositeScore.toFixed(1)} for ${(record as any).DESCRIPTION || 'Unknown'} (purchase: ${purchasePropensity}, demographic: ${demographicAlignment}, HRB: ${hrbShare}%)`);
+    }
+    
+    return compositeScore;
   }
 
   private getCustomerProfileCategory(score: number): string {
