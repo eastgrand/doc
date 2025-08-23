@@ -21,17 +21,17 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
 
     const records = rawData.results.map((record: any, index: number) => {
       // Extract the pre-calculated scenario analysis score
-      const scenarioScore = Number(record.scenario_analysis_score || record.scenario_score) || 0;
+      const scenarioScore = Number((record as any).scenario_analysis_score || (record as any).scenario_score) || 0;
       
       // Extract related metrics for additional analysis (updated for actual dataset fields)
-      const nikeShare = Number(record.value_MP30034A_B_P || record.mp30034a_b_p) || 0;
-      const strategicScore = Number(record.strategic_value_score) || 0;
-      const competitiveScore = Number(record.competitive_advantage_score) || 0;
-      const demographicScore = Number(record.demographic_opportunity_score) || 0;
-      const trendScore = Number(record.trend_strength_score) || 0;
-      const correlationScore = Number(record.correlation_strength_score) || 0;
-      const totalPop = Number(record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population) || 0;
-      const medianIncome = Number(record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income) || 0;
+      const nikeShare = Number((record as any).value_MP30034A_B_P || (record as any).mp30034a_b_p) || 0;
+      const strategicScore = Number((record as any).strategic_value_score) || 0;
+      const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+      const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+      const trendScore = Number((record as any).trend_strength_score) || 0;
+      const correlationScore = Number((record as any).correlation_strength_score) || 0;
+      const totalPop = Number((record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population) || 0;
+      const medianIncome = Number((record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income) || 0;
 
       // Calculate additional scenario indicators
       const indicators = this.calculateScenarioIndicators({
@@ -47,8 +47,8 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
       });
 
       return {
-        area_id: record.area_id || record.ID || `area_${index}`,
-        area_name: record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || `Area ${index + 1}`,
+        area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
+        area_name: (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || `Area ${index + 1}`,
         value: scenarioScore,
         rank: index + 1, // Will be sorted later
         category: this.categorizeScenarioReadiness(scenarioScore),
@@ -100,7 +100,7 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
           planning_complexity: indicators.planningComplexity,
           scenario_risk_assessment: indicators.scenarioRiskAssessment
         },
-        shapValues: record.shap_values || {}
+        shapValues: (record as any).shap_values || {}
       };
     });
 
@@ -109,7 +109,7 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
     
     // Update ranks after sorting
     records.forEach((record, index) => {
-      record.rank = index + 1;
+      (record as any).rank = index + 1;
     });
 
     // Calculate statistics
@@ -346,13 +346,13 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
   }
 
   private extractCoordinates(record: any): [number, number] {
-    if (record.coordinates && Array.isArray(record.coordinates)) {
-      return [record.coordinates[0] || 0, record.coordinates[1] || 0];
+    if ((record as any).coordinates && Array.isArray((record as any).coordinates)) {
+      return [(record as any).coordinates[0] || 0, (record as any).coordinates[1] || 0];
     }
     
     // Try to extract from latitude/longitude fields
-    const lat = Number(record.latitude || record.lat || record.LATITUDE) || 0;
-    const lng = Number(record.longitude || record.lng || record.lon || record.LONGITUDE) || 0;
+    const lat = Number((record as any).latitude || (record as any).lat || (record as any).LATITUDE) || 0;
+    const lng = Number((record as any).longitude || (record as any).lng || (record as any).lon || (record as any).LONGITUDE) || 0;
     
     return [lng, lat]; // GeoJSON format [longitude, latitude]
   }
@@ -368,7 +368,7 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
       .join(', ');
 
     // Identify dominant scenario types from top markets
-    const scenarioTypes = topScenarioReady.map(r => r.properties.primary_scenario_type);
+    const scenarioTypes = topScenarioReady.map(r => (r.properties as any).primary_scenario_type);
     const dominantScenarioType = this.findMostCommon(scenarioTypes) || 'Mixed scenario capabilities';
 
     return `Scenario analysis of ${records.length} markets identified ${excellentCount} areas with excellent scenario readiness (80+) and ${goodCount} with good scenario potential (65-79). Average scenario analysis score: ${avgScore}. Top scenario-ready markets: ${topMarkets}. Analysis reveals ${dominantScenarioType.toLowerCase()} as the primary high-value scenario type, considering scenario adaptability, market resilience, strategic flexibility, and planning readiness for comprehensive scenario planning.`;
@@ -377,7 +377,7 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
   private findMostCommon(arr: string[]): string {
     const frequency: Record<string, number> = {};
     arr.forEach(item => frequency[item] = (frequency[item] || 0) + 1);
-    return Object.keys(frequency).reduce((a, b) => frequency[a] > frequency[b] ? a : b);
+    return Object.keys(frequency as any).reduce((a, b) => frequency[a] > frequency[b] ? a : b);
   }
 
   private calculateStatistics(values: number[]) {

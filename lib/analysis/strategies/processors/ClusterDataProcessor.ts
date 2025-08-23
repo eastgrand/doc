@@ -17,8 +17,8 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     const hasClusterFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
-        (record.area_id || record.id || record.ID) &&
-        record.cluster_performance_score !== undefined
+        ((record as any).area_id || (record as any).id || (record as any).ID) &&
+        (record as any).cluster_performance_score !== undefined
       );
     
     return hasClusterFields;
@@ -66,10 +66,10 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     
     rawRecords.forEach(record => {
       // Use the predefined cluster_id from the dataset
-      const clusterId = Number(record.cluster_id);
-      const clusterLabel = record.cluster_label || `Cluster ${clusterId}`;
+      const clusterId = Number((record as any).cluster_id);
+      const clusterLabel = (record as any).cluster_label || `Cluster ${clusterId}`;
       
-      console.log('🔥 [ClusterDataProcessor] Using existing cluster_id:', clusterId, 'label:', clusterLabel, 'for record:', record.ID);
+      console.log('🔥 [ClusterDataProcessor] Using existing cluster_id:', clusterId, 'label:', clusterLabel, 'for record:', (record as any).ID);
       
       if (!clusterMap.has(clusterId)) {
         clusterMap.set(clusterId, []);
@@ -80,7 +80,7 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     // Calculate average performance for each cluster and get top 5
     const clusterPerformances = Array.from(clusterMap.entries()).map(([clusterId, records]) => {
       const avgPerformance = records.reduce((sum, record) => 
-        sum + (Number(record.cluster_performance_score) || 0), 0) / records.length;
+        sum + (Number((record as any).cluster_performance_score) || 0), 0) / records.length;
       return { clusterId, records, avgPerformance };
     });
     
@@ -124,18 +124,18 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     const topClusterRecords = clusterCentroids;
     
     return topClusterRecords.map((record, index) => {
-      const area_id = `cluster_${record.clusterId || index}`;
-      const area_name = `Cluster ${record.clusterId || index + 1} (${record.represented_areas} areas)`;
+      const area_id = `cluster_${(record as any).clusterId || index}`;
+      const area_name = `Cluster ${(record as any).clusterId || index + 1} (${(record as any).represented_areas} areas)`;
       
       // Spatial clustering ONLY uses cluster_performance_score - no fallbacks
-      const clusterPerformanceScore = Number(record.cluster_performance_score);
+      const clusterPerformanceScore = Number((record as any).cluster_performance_score);
       
       if (isNaN(clusterPerformanceScore)) {
-        throw new Error(`Spatial clustering record ${record.ID || index} is missing cluster_performance_score`);
+        throw new Error(`Spatial clustering record ${(record as any).ID || index} is missing cluster_performance_score`);
       }
       
       // Use the existing cluster_id from the dataset
-      const clusterId = Number(record.cluster_id);
+      const clusterId = Number((record as any).cluster_id);
       const value = clusterId;
       
       // Extract cluster-specific properties
@@ -144,24 +144,24 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
         cluster_performance_score: clusterPerformanceScore,
         score_source: 'cluster_performance_score',
         cluster_id: clusterId,
-        cluster_label: record.cluster_label || this.getClusterLabel(clusterId), // Use existing labels from dataset
-        cluster_size: record.cluster_size || 0,
-        similarity_score: Number(record.similarity_score) || 0
+        cluster_label: (record as any).cluster_label || this.getClusterLabel(clusterId), // Use existing labels from dataset
+        cluster_size: (record as any).cluster_size || 0,
+        similarity_score: Number((record as any).similarity_score) || 0
       };
       
       // Extract SHAP values
       const shapValues = this.extractShapValues(record);
       
       // Category is the cluster name/label (use existing labels from dataset)
-      const category = record.cluster_label || this.getClusterLabel(clusterId);
+      const category = (record as any).cluster_label || this.getClusterLabel(clusterId);
 
       return {
         area_id,
         area_name,
         value,
-        rank: Math.round((record.similarity_score || 0) * 100), // Use similarity as rank (0-100)
+        rank: Math.round(((record as any).similarity_score || 0) * 100), // Use similarity as rank (0-100)
         category,
-        coordinates: record.coordinates || [0, 0],
+        coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
@@ -170,8 +170,8 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
 
   private extractSimilarityScore(record: any): number {
     // PRIORITIZE PRE-CALCULATED SIMILARITY SCORE
-    if (record.similarity_score !== undefined && record.similarity_score !== null) {
-      const preCalculatedScore = Number(record.similarity_score);
+    if ((record as any).similarity_score !== undefined && (record as any).similarity_score !== null) {
+      const preCalculatedScore = Number((record as any).similarity_score);
       return Math.max(0, Math.min(1, preCalculatedScore)); // Ensure 0-1 range
     }
     
@@ -215,8 +215,8 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
   }
 
   private extractShapValues(record: any): Record<string, number> {
-    if (record.shap_values && typeof record.shap_values === 'object') {
-      return record.shap_values;
+    if ((record as any).shap_values && typeof (record as any).shap_values === 'object') {
+      return (record as any).shap_values;
     }
     
     const shapValues: Record<string, number> = {};
@@ -244,8 +244,8 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
   }
 
   private calculateClusterStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
-    const similarityScores = records.map(r => r.properties.similarity_score || 0);
-    const clusterSizes = records.map(r => r.properties.cluster_size || 0);
+    const similarityScores = records.map(r => (r.properties as any).similarity_score || 0);
+    const clusterSizes = records.map(r => (r.properties as any).cluster_size || 0);
     
     if (similarityScores.length === 0) {
       return {
@@ -288,7 +288,7 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     
     // Group records by cluster
     records.forEach(record => {
-      const clusterId = record.value;
+      const clusterId = (record as any).value;
       if (!clusterMap.has(clusterId)) {
         clusterMap.set(clusterId, []);
       }
@@ -297,7 +297,7 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     
     // Analyze each cluster
     const clusterCharacteristics = Array.from(clusterMap.entries()).map(([clusterId, clusterRecords]) => {
-      const avgSimilarity = clusterRecords.reduce((sum, r) => sum + (r.properties.similarity_score || 0), 0) / clusterRecords.length;
+      const avgSimilarity = clusterRecords.reduce((sum, r) => sum + ((r.properties as any).similarity_score || 0), 0) / clusterRecords.length;
       const size = clusterRecords.length;
       const label = this.getClusterLabel(clusterId);
       
@@ -311,7 +311,7 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
         avgSimilarity,
         centroid,
         representativeAreas: clusterRecords
-          .sort((a, b) => (b.properties.similarity_score || 0) - (a.properties.similarity_score || 0))
+          .sort((a, b) => ((b.properties as any).similarity_score || 0) - ((a.properties as any).similarity_score || 0))
           .slice(0, 3)
           .map(r => r.area_name)
       };
@@ -330,7 +330,7 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     
     // Identify numeric fields
     clusterRecords.forEach(record => {
-      Object.entries(record.properties).forEach(([key, value]) => {
+      Object.entries((record as any).properties).forEach(([key, value]) => {
         if (typeof value === 'number' && !isNaN(value)) {
           numericFields.add(key);
         }
@@ -357,7 +357,7 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     
     const clusterMap = new Map<number, GeographicDataPoint[]>();
     records.forEach(record => {
-      const clusterId = record.value;
+      const clusterId = (record as any).value;
       if (!clusterMap.has(clusterId)) {
         clusterMap.set(clusterId, []);
       }
@@ -367,16 +367,16 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     if (clusterMap.size <= 1) return 0; // No meaningful clustering
     
     // For now, return average similarity score as a proxy
-    const avgSimilarity = records.reduce((sum, r) => sum + (r.properties.similarity_score || 0), 0) / records.length;
+    const avgSimilarity = records.reduce((sum, r) => sum + ((r.properties as any).similarity_score || 0), 0) / records.length;
     return avgSimilarity;
   }
 
   private processClusterFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getClusterFeatureDescription(item.feature || item.name),
-      clusterContribution: item.cluster_contribution || 'all' // Which clusters this feature most affects
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getClusterFeatureDescription((item as any).feature || (item as any).name),
+      clusterContribution: (item as any).cluster_contribution || 'all' // Which clusters this feature most affects
     })).sort((a, b) => b.importance - a.importance);
   }
 
@@ -415,7 +415,7 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     const clusterSizes = clusterAnalysis.clusters.map((c: any) => c.size);
     const maxClusterSize = Math.max(...clusterSizes);
     const minClusterSize = Math.min(...clusterSizes);
-    const avgDistanceToCenter = records.reduce((sum, r) => sum + (r.properties.cluster_centroid_distance || 0), 0) / records.length;
+    const avgDistanceToCenter = records.reduce((sum, r) => sum + ((r.properties as any).cluster_centroid_distance || 0), 0) / records.length;
     
     // Start with clustering explanation
     let summary = `**🗺️ Spatial Clustering Methodology:** Areas are grouped based on similar demographic and economic characteristics. Similarity scores (0-100%) measure how well each area fits its assigned cluster. Distance scores measure proximity to cluster center characteristics.
@@ -621,9 +621,9 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     let validCoords = 0;
     
     records.forEach(record => {
-      if (record.coordinates && Array.isArray(record.coordinates) && record.coordinates.length >= 2) {
-        totalLon += record.coordinates[0];
-        totalLat += record.coordinates[1];
+      if ((record as any).coordinates && Array.isArray((record as any).coordinates) && (record as any).coordinates.length >= 2) {
+        totalLon += (record as any).coordinates[0];
+        totalLat += (record as any).coordinates[1];
         validCoords++;
       }
     });

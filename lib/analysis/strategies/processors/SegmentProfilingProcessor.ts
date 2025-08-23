@@ -34,13 +34,13 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       const brandFields = this.brandResolver.detectBrandFields(record);
       const targetBrand = brandFields.find(bf => bf.isTarget);
       const targetBrandShare = targetBrand?.value || 0;
-      const strategicScore = Number(record.strategic_value_score) || 0;
-      const competitiveScore = Number(record.competitive_advantage_score) || 0;
-      const demographicScore = Number(record.demographic_opportunity_score) || 0;
-      const trendScore = Number(record.trend_strength_score) || 0;
-      const correlationScore = Number(record.correlation_strength_score) || 0;
-      const totalPop = Number(record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population) || 0;
-      const medianIncome = Number(record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income) || 0;
+      const strategicScore = Number((record as any).strategic_value_score) || 0;
+      const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+      const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+      const trendScore = Number((record as any).trend_strength_score) || 0;
+      const correlationScore = Number((record as any).correlation_strength_score) || 0;
+      const totalPop = Number((record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population) || 0;
+      const medianIncome = Number((record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income) || 0;
 
       // Calculate additional segmentation indicators
       const indicators = this.calculateSegmentationIndicators({
@@ -57,8 +57,8 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       });
 
       return {
-        area_id: record.area_id || record.ID || `area_${index}`,
-        area_name: record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || `Area ${index + 1}`,
+        area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
+        area_name: (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || `Area ${index + 1}`,
         value: segmentScore,
         rank: index + 1, // Will be sorted later
         category: this.categorizeSegmentPotential(segmentScore),
@@ -107,7 +107,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
           segment_targeting_priority: indicators.targetingPriority,
           segmentation_complexity: indicators.segmentationComplexity
         },
-        shapValues: record.shap_values || {}
+        shapValues: (record as any).shap_values || {}
       };
     });
 
@@ -116,7 +116,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
     
     // Update ranks after sorting
     records.forEach((record, index) => {
-      record.rank = index + 1;
+      (record as any).rank = index + 1;
     });
 
     // Calculate statistics
@@ -143,23 +143,23 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
     
     if (targetBrand && targetBrand.value !== undefined && targetBrand.value !== null) {
       const targetBrandShare = Number(targetBrand.value);
-      console.log(`🎯 [SegmentProfilingProcessor] Using ${targetBrand.brandName} market share as segment score: ${targetBrandShare} for ${record.value_DESCRIPTION || record.ID || 'Unknown'}`);
+      console.log(`🎯 [SegmentProfilingProcessor] Using ${targetBrand.brandName} market share as segment score: ${targetBrandShare} for ${(record as any).value_DESCRIPTION || (record as any).ID || 'Unknown'}`);
       return targetBrandShare;
     }
     
     // PRIORITY 2: Pre-calculated segment profiling score (for other datasets)
-    if ((record.segment_profiling_score !== undefined && record.segment_profiling_score !== null) ||
-        (record.segment_score !== undefined && record.segment_score !== null)) {
-      const preCalculatedScore = Number(record.segment_profiling_score || record.segment_score);
-      console.log(`🎯 [SegmentProfilingProcessor] Using pre-calculated segment score: ${preCalculatedScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+    if (((record as any).segment_profiling_score !== undefined && (record as any).segment_profiling_score !== null) ||
+        ((record as any).segment_score !== undefined && (record as any).segment_score !== null)) {
+      const preCalculatedScore = Number((record as any).segment_profiling_score || (record as any).segment_score);
+      console.log(`🎯 [SegmentProfilingProcessor] Using pre-calculated segment score: ${preCalculatedScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
       return preCalculatedScore;
     }
     
     // Fallback: Calculate segment fit score from available demographic and market data
-    const population = record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population || 0;
-    const income = record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income || 0;
-    const age = record.value_MEDAGE_CY || record.age || 0;
-    const diversity = record.value_DIVINDX_CY || record.diversity_index || 50; // Default mid-range
+    const population = (record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population || 0;
+    const income = (record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income || 0;
+    const age = (record as any).value_MEDAGE_CY || (record as any).age || 0;
+    const diversity = (record as any).value_DIVINDX_CY || (record as any).diversity_index || 50; // Default mid-range
     
     // Calculate composite segment profiling score (0-100)
     let segmentScore = 0;
@@ -369,13 +369,13 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
   }
 
   private extractCoordinates(record: any): [number, number] {
-    if (record.coordinates && Array.isArray(record.coordinates)) {
-      return [record.coordinates[0] || 0, record.coordinates[1] || 0];
+    if ((record as any).coordinates && Array.isArray((record as any).coordinates)) {
+      return [(record as any).coordinates[0] || 0, (record as any).coordinates[1] || 0];
     }
     
     // Try to extract from latitude/longitude fields
-    const lat = Number(record.latitude || record.lat || record.LATITUDE) || 0;
-    const lng = Number(record.longitude || record.lng || record.lon || record.LONGITUDE) || 0;
+    const lat = Number((record as any).latitude || (record as any).lat || (record as any).LATITUDE) || 0;
+    const lng = Number((record as any).longitude || (record as any).lng || (record as any).lon || (record as any).LONGITUDE) || 0;
     
     return [lng, lat]; // GeoJSON format [longitude, latitude]
   }
@@ -391,7 +391,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       .join(', ');
 
     // Identify dominant segment types from top markets
-    const segmentTypes = topSegmentable.map(r => r.properties.primary_segment_type);
+    const segmentTypes = topSegmentable.map(r => (r.properties as any).primary_segment_type);
     const dominantSegmentType = this.findMostCommon(segmentTypes) || 'Mixed segments';
 
     return `Segment profiling analysis of ${records.length} markets identified ${excellentCount} areas with excellent segmentation potential (80+) and ${goodCount} with good segment potential (65-79). Average segment profiling score: ${avgScore}. Top segmentable markets: ${topMarkets}. Analysis reveals ${dominantSegmentType.toLowerCase()} as the primary high-value segment type, considering demographic distinctiveness, behavioral clustering, market segment strength, and profiling clarity.`;
@@ -400,7 +400,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
   private findMostCommon(arr: string[]): string {
     const frequency: Record<string, number> = {};
     arr.forEach(item => frequency[item] = (frequency[item] || 0) + 1);
-    return Object.keys(frequency).reduce((a, b) => frequency[a] > frequency[b] ? a : b);
+    return Object.keys(frequency as any).reduce((a, b) => frequency[a] > frequency[b] ? a : b);
   }
 
   private calculateStatistics(values: number[]) {

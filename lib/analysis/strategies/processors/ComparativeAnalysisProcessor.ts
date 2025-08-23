@@ -37,10 +37,10 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   
   private extractCityFromRecord(record: any): string {
     // First check if there's an explicit city field
-    if (record.city) return record.city;
+    if ((record as any).city) return (record as any).city;
     
     // Extract ZIP code and map to city using GeoDataManager
-    const zipCode = record.ID || record.id || record.area_id || record.zipcode;
+    const zipCode = (record as any).ID || (record as any).id || (record as any).area_id || (record as any).zipcode;
     if (zipCode) {
       const zipStr = String(zipCode);
       const database = this.getGeoDataManager().getDatabase();
@@ -95,20 +95,20 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       
       // Check for ID field (flexible naming)
       const hasIdField = record && (
-        record.area_id !== undefined || 
-        record.id !== undefined || 
-        record.ID !== undefined ||
-        record.GEOID !== undefined ||
-        record.zipcode !== undefined ||
-        record.area_name !== undefined
+        (record as any).area_id !== undefined || 
+        (record as any).id !== undefined || 
+        (record as any).ID !== undefined ||
+        (record as any).GEOID !== undefined ||
+        (record as any).zipcode !== undefined ||
+        (record as any).area_name !== undefined
       );
       
       // Check for at least one scoring/value field
       const hasScoringField = record && (
-        record.comparative_score !== undefined || 
-        record.value !== undefined || 
-        record.score !== undefined ||
-        record.thematic_value !== undefined ||
+        (record as any).comparative_score !== undefined || 
+        (record as any).value !== undefined || 
+        (record as any).score !== undefined ||
+        (record as any).thematic_value !== undefined ||
         // Be more flexible - accept any field that looks like it contains numeric data
         Object.keys(record as any).some((key: string) => 
           typeof (record as any)[key] === 'number' && 
@@ -167,7 +167,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       const areaName = this.generateAreaName(record);
       
       // Extract ID (updated for correlation_analysis format)
-      const recordId = record.ID || record.id || record.area_id;
+      const recordId = (record as any).ID || (record as any).id || (record as any).area_id;
       
       // Debug logging for records with missing ID
       if (!recordId) {
@@ -182,12 +182,12 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       // Extract comparative-relevant metrics for properties (generic approach)
       const brandAMetric = this.extractBrandMetric(record, 'brand_a');
       const brandBMetric = this.extractBrandMetric(record, 'brand_b');
-      const strategicScore = Number(record.strategic_value_score) || 0;
-      const competitiveScore = Number(record.competitive_advantage_score) || 0;
-      const demographicScore = Number(record.demographic_opportunity_score) || 0;
-      const trendScore = Number(record.trend_strength_score) || 0;
-      const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-      const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
+      const strategicScore = Number((record as any).strategic_value_score) || 0;
+      const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+      const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+      const trendScore = Number((record as any).trend_strength_score) || 0;
+      const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+      const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
       
       // Calculate comparative indicators
       const brandPerformanceGap = this.calculateBrandPerformanceGap(record);
@@ -208,7 +208,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
         competitive_advantage_score: Math.round(comparativeScore * 100) / 100, // Keep for compatibility
         rank: 0, // Will be calculated after sorting
         properties: {
-          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
+          DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           competitive_advantage_score: comparativeScore, // Primary field for competitive analysis
           comparative_analysis_score: comparativeScore, // Keep for compatibility
           strategic_value_score: comparativeScore, // Keep for compatibility
@@ -395,8 +395,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    */
   private extractBrandMetric(record: any, brandType: 'brand_a' | 'brand_b'): BrandMetric {
     // Use hardcoded TurboTax and H&R Block field mappings
-    const turbotaxField = record.value_TURBOTAX_P !== undefined ? 'value_TURBOTAX_P' : 'TURBOTAX_P';
-    const hrblockField = record.value_HRBLOCK_P !== undefined ? 'value_HRBLOCK_P' : 'HRBLOCK_P';
+    const turbotaxField = (record as any).value_TURBOTAX_P !== undefined ? 'value_TURBOTAX_P' : 'TURBOTAX_P';
+    const hrblockField = (record as any).value_HRBLOCK_P !== undefined ? 'value_HRBLOCK_P' : 'HRBLOCK_P';
     
     let fieldName = '';
     let value = 0;
@@ -433,46 +433,46 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    */
   private extractComparativeScore(record: any): number {
     // DEBUG: Log all fields to identify the issue
-    const recordId = record.ID || record.id || record.area_id || 'unknown';
+    const recordId = (record as any).ID || (record as any).id || (record as any).area_id || 'unknown';
     console.log(`🔍 [ComparativeAnalysisProcessor] DEBUG - Record ${recordId} fields:`, {
-      comparison_score: record.comparison_score,
-      comparative_score: record.comparative_score,
-      thematic_value: record.thematic_value,
-      value: record.value,
+      comparison_score: (record as any).comparison_score,
+      comparative_score: (record as any).comparative_score,
+      thematic_value: (record as any).thematic_value,
+      value: (record as any).value,
       allNumericFields: Object.keys(record as any).filter((k: string) => typeof (record as any)[k] === 'number').slice(0, 10)
     });
     
     // PRIORITY 1: Use comparison_score if available (this is the ACTUAL field in our data)
-    if (record.comparison_score !== undefined && record.comparison_score !== null) {
-      const comparisonScore = Number(record.comparison_score);
+    if ((record as any).comparison_score !== undefined && (record as any).comparison_score !== null) {
+      const comparisonScore = Number((record as any).comparison_score);
       console.log(`⚖️ [ComparativeAnalysisProcessor] Using comparison_score: ${comparisonScore}`);
       return comparisonScore;
     }
     
     // PRIORITY 2: Use comparative_score if available (alternative field name)
-    if (record.comparative_score !== undefined && record.comparative_score !== null) {
-      const comparativeScore = Number(record.comparative_score);
+    if ((record as any).comparative_score !== undefined && (record as any).comparative_score !== null) {
+      const comparativeScore = Number((record as any).comparative_score);
       console.log(`⚖️ [ComparativeAnalysisProcessor] Using comparative_score: ${comparativeScore}`);
       return comparativeScore;
     }
     
     // PRIORITY 3: Use thematic_value as fallback (common field in endpoint data)
-    if (record.thematic_value !== undefined && record.thematic_value !== null) {
-      const thematicScore = Number(record.thematic_value);
+    if ((record as any).thematic_value !== undefined && (record as any).thematic_value !== null) {
+      const thematicScore = Number((record as any).thematic_value);
       console.log(`⚖️ [ComparativeAnalysisProcessor] Using thematic_value: ${thematicScore}`);
       return thematicScore;
     }
     
     // PRIORITY 4: Use value field if available
-    if (record.value !== undefined && record.value !== null) {
-      const valueScore = Number(record.value);
+    if ((record as any).value !== undefined && (record as any).value !== null) {
+      const valueScore = Number((record as any).value);
       console.log(`⚖️ [ComparativeAnalysisProcessor] Using value: ${valueScore}`);
       return valueScore;
     }
     
     // PRIORITY 5: Use competitive advantage score if available (scale from 1-10 to 0-100)
-    if (record.competitive_advantage_score !== undefined && record.competitive_advantage_score !== null) {
-      const competitiveScore = Number(record.competitive_advantage_score);
+    if ((record as any).competitive_advantage_score !== undefined && (record as any).competitive_advantage_score !== null) {
+      const competitiveScore = Number((record as any).competitive_advantage_score);
       const scaledScore = competitiveScore * 10; // Scale 1-10 to 10-100
       console.log(`⚖️ [ComparativeAnalysisProcessor] Using competitive_advantage_score: ${competitiveScore} -> scaled to ${scaledScore}`);
       return scaledScore;
@@ -573,10 +573,10 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    * Calculate market position strength relative to competitors
    */
   private calculateMarketPositionStrength(record: any): number {
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const competitiveScore = Number(record.competitive_advantage_score) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
     
     let positionStrength = 0;
     
@@ -689,10 +689,10 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    * Calculate growth differential compared to market baseline
    */
   private calculateGrowthDifferential(record: any): number {
-    const trendScore = Number(record.trend_strength_score) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
+    const trendScore = Number((record as any).trend_strength_score) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
     
     let growthDifferential = 0;
     
@@ -793,7 +793,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    */
   private generateAreaName(record: any): string {
   // Centralized resolver: ensures consistent naming and avoids 'Unknown Area'
-  const fallbackId = record.ID || record.id || record.area_id || record.GEOID || record.zipcode || '1';
+  const fallbackId = (record as any).ID || (record as any).id || (record as any).area_id || (record as any).GEOID || (record as any).zipcode || '1';
   return resolveAreaName(record, { mode: 'zipCity', neutralFallback: `Area ${fallbackId}` });
   }
 
@@ -815,10 +815,10 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    */
   private processComparativeFeatureImportance(rawFeatureImportance: any[]): any[] {
     const comparativeFeatures = rawFeatureImportance.map((item: any) => {
-      const featureName = String(item.feature ?? item.name ?? 'unknown');
+      const featureName = String((item as any).feature ?? (item as any).name ?? 'unknown');
       return {
         feature: featureName,
-        importance: Number(item.importance ?? item.value ?? 0),
+        importance: Number((item as any).importance ?? (item as any).value ?? 0),
         description: this.getComparativeFeatureDescription(featureName)
       };
     });

@@ -18,15 +18,15 @@ export class RiskDataProcessor implements DataProcessorStrategy {
       rawData.results.some(record => 
         record && 
         // Check for risk-related fields
-        (record.risk_score !== undefined ||       // Risk score
-         record.volatility !== undefined ||       // Volatility measure
-         record.uncertainty !== undefined ||      // Uncertainty level
-         record.stability !== undefined ||        // Stability indicator
-         record.downside_risk !== undefined ||    // Downside risk
-         record.value_at_risk !== undefined ||    // Value at Risk (VaR)
-         record.confidence_interval !== undefined || // Confidence intervals
-         record.risk_category !== undefined ||    // Risk category
-         record.mitigation_score !== undefined)   // Risk mitigation score
+        ((record as any).risk_score !== undefined ||       // Risk score
+         (record as any).volatility !== undefined ||       // Volatility measure
+         (record as any).uncertainty !== undefined ||      // Uncertainty level
+         (record as any).stability !== undefined ||        // Stability indicator
+         (record as any).downside_risk !== undefined ||    // Downside risk
+         (record as any).value_at_risk !== undefined ||    // Value at Risk (VaR)
+         (record as any).confidence_interval !== undefined || // Confidence intervals
+         (record as any).risk_category !== undefined ||    // Risk category
+         (record as any).mitigation_score !== undefined)   // Risk mitigation score
       );
     
     return hasRiskFields;
@@ -69,8 +69,8 @@ export class RiskDataProcessor implements DataProcessorStrategy {
 
   private processRiskRecords(rawRecords: any[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
-      const area_id = record.area_id || record.id || record.GEOID || record.ID || `area_${index}`;
-      const area_name = record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || record.name || record.NAME || `Area ${index + 1}`;
+      const area_id = (record as any).area_id || (record as any).id || (record as any).GEOID || (record as any).ID || `area_${index}`;
+      const area_name = (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || (record as any).name || (record as any).NAME || `Area ${index + 1}`;
       
       // Extract risk-adjusted score (higher is better - lower risk, higher opportunity)
       const riskScore = this.extractRiskScore(record);
@@ -82,11 +82,11 @@ export class RiskDataProcessor implements DataProcessorStrategy {
       const properties = {
         ...this.extractProperties(record),
         risk_score: riskScore,
-        volatility: record.volatility || 0,
-        uncertainty: record.uncertainty || 0,
-        stability: record.stability || 0,
-        downside_risk: record.downside_risk || 0,
-        value_at_risk: record.value_at_risk || 0,
+        volatility: (record as any).volatility || 0,
+        uncertainty: (record as any).uncertainty || 0,
+        stability: (record as any).stability || 0,
+        downside_risk: (record as any).downside_risk || 0,
+        value_at_risk: (record as any).value_at_risk || 0,
         risk_category: this.determineRiskCategory(record),
         mitigation_potential: this.calculateMitigationPotential(record),
         risk_confidence: this.calculateRiskConfidence(record)
@@ -104,7 +104,7 @@ export class RiskDataProcessor implements DataProcessorStrategy {
         value,
         rank: 0, // Will be calculated in ranking
         category,
-        coordinates: record.coordinates || [0, 0],
+        coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
@@ -114,10 +114,10 @@ export class RiskDataProcessor implements DataProcessorStrategy {
 
   private extractRiskScore(record: any): number {
     // Calculate risk-adjusted score (higher is better)
-    const baseValue = record.base_value || record.opportunity_score || 50;
-    const volatility = record.volatility || 0.3;
-    const uncertainty = record.uncertainty || 0.3;
-    const stability = record.stability || 0.7;
+    const baseValue = (record as any).base_value || (record as any).opportunity_score || 50;
+    const volatility = (record as any).volatility || 0.3;
+    const uncertainty = (record as any).uncertainty || 0.3;
+    const stability = (record as any).stability || 0.7;
     
     // Risk-adjusted score penalizes high volatility and uncertainty
     let riskAdjustedScore = baseValue;
@@ -152,8 +152,8 @@ export class RiskDataProcessor implements DataProcessorStrategy {
   }
 
   private determineRiskCategory(record: any): string {
-    const volatility = record.volatility || 0.3;
-    const uncertainty = record.uncertainty || 0.3;
+    const volatility = (record as any).volatility || 0.3;
+    const uncertainty = (record as any).uncertainty || 0.3;
     
     if (volatility > 0.7 || uncertainty > 0.7) return 'high_risk';
     if (volatility > 0.4 || uncertainty > 0.4) return 'medium_risk';
@@ -162,10 +162,10 @@ export class RiskDataProcessor implements DataProcessorStrategy {
 
   private calculateMitigationPotential(record: any): number {
     // Calculate potential for risk mitigation
-    const diversification = record.diversification_potential || 0.5;
-    const hedging = record.hedging_opportunities || 0.5;
-    const insurance = record.insurance_coverage || 0.5;
-    const controlMeasures = record.control_measures || 0.5;
+    const diversification = (record as any).diversification_potential || 0.5;
+    const hedging = (record as any).hedging_opportunities || 0.5;
+    const insurance = (record as any).insurance_coverage || 0.5;
+    const controlMeasures = (record as any).control_measures || 0.5;
     
     // Average mitigation potential
     const mitigationPotential = (diversification + hedging + insurance + controlMeasures) / 4;
@@ -174,10 +174,10 @@ export class RiskDataProcessor implements DataProcessorStrategy {
 
   private calculateRiskConfidence(record: any): number {
     // Calculate confidence in risk assessment
-    const dataQuality = record.data_quality || 0.8;
-    const sampleSize = Math.min(1, (record.sample_size || 100) / 1000);
-    const timeSpan = Math.min(1, (record.time_span || 12) / 60); // months to 5 years
-    const modelAccuracy = record.model_accuracy || 0.7;
+    const dataQuality = (record as any).data_quality || 0.8;
+    const sampleSize = Math.min(1, ((record as any).sample_size || 100) / 1000);
+    const timeSpan = Math.min(1, ((record as any).time_span || 12) / 60); // months to 5 years
+    const modelAccuracy = (record as any).model_accuracy || 0.7;
     
     // Weighted average of confidence factors
     const confidence = (dataQuality * 0.3 + sampleSize * 0.2 + timeSpan * 0.2 + modelAccuracy * 0.3);
@@ -202,8 +202,8 @@ export class RiskDataProcessor implements DataProcessorStrategy {
   }
 
   private extractShapValues(record: any): Record<string, number> {
-    if (record.shap_values && typeof record.shap_values === 'object') {
-      return record.shap_values;
+    if ((record as any).shap_values && typeof (record as any).shap_values === 'object') {
+      return (record as any).shap_values;
     }
     
     const shapValues: Record<string, number> = {};
@@ -231,8 +231,8 @@ export class RiskDataProcessor implements DataProcessorStrategy {
 
   private calculateRiskStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
     const scores = records.map(r => r.value);
-    const volatilities = records.map(r => r.properties.volatility || 0);
-    const uncertainties = records.map(r => r.properties.uncertainty || 0);
+    const volatilities = records.map(r => (r.properties as any).volatility || 0);
+    const uncertainties = records.map(r => (r.properties as any).uncertainty || 0);
     
     if (scores.length === 0) {
       return {
@@ -280,7 +280,7 @@ export class RiskDataProcessor implements DataProcessorStrategy {
     const categoryMap = new Map<string, GeographicDataPoint[]>();
     
     records.forEach(record => {
-      const category = record.category!;
+      const category = (record as any).category!;
       if (!categoryMap.has(category)) {
         categoryMap.set(category, []);
       }
@@ -290,7 +290,7 @@ export class RiskDataProcessor implements DataProcessorStrategy {
     // Analyze each category
     const categoryAnalysis = Array.from(categoryMap.entries()).map(([category, categoryRecords]) => {
       const avgScore = categoryRecords.reduce((sum, r) => sum + r.value, 0) / categoryRecords.length;
-      const avgVolatility = categoryRecords.reduce((sum, r) => sum + (r.properties.volatility || 0), 0) / categoryRecords.length;
+      const avgVolatility = categoryRecords.reduce((sum, r) => sum + ((r.properties as any).volatility || 0), 0) / categoryRecords.length;
       
       return {
         category,
@@ -304,8 +304,8 @@ export class RiskDataProcessor implements DataProcessorStrategy {
           .map(r => ({
             name: r.area_name,
             score: r.value,
-            volatility: r.properties.volatility,
-            uncertainty: r.properties.uncertainty
+            volatility: (r.properties as any).volatility,
+            uncertainty: (r.properties as any).uncertainty
           }))
       };
     });
@@ -317,8 +317,8 @@ export class RiskDataProcessor implements DataProcessorStrategy {
       .slice(0, 5);
     
     const highRiskAreas = records
-      .filter(r => r.properties.volatility > 0.6)
-      .sort((a, b) => b.properties.volatility - a.properties.volatility)
+      .filter(r => (r.properties as any).volatility > 0.6)
+      .sort((a, b) => (b.properties as any).volatility - (a.properties as any).volatility)
       .slice(0, 5);
     
     return {
@@ -326,15 +326,15 @@ export class RiskDataProcessor implements DataProcessorStrategy {
       safeHavens: safeHavens.map(r => ({
         area: r.area_name,
         score: r.value,
-        volatility: r.properties.volatility,
-        uncertainty: r.properties.uncertainty,
-        confidence: r.properties.risk_confidence
+        volatility: (r.properties as any).volatility,
+        uncertainty: (r.properties as any).uncertainty,
+        confidence: (r.properties as any).risk_confidence
       })),
       highRiskAreas: highRiskAreas.map(r => ({
         area: r.area_name,
-        volatility: r.properties.volatility,
-        uncertainty: r.properties.uncertainty,
-        mitigation: r.properties.mitigation_potential,
+        volatility: (r.properties as any).volatility,
+        uncertainty: (r.properties as any).uncertainty,
+        mitigation: (r.properties as any).mitigation_potential,
         status: 'high_risk'
       })),
       riskProfile: this.analyzeRiskProfile(categoryAnalysis)
@@ -353,10 +353,10 @@ export class RiskDataProcessor implements DataProcessorStrategy {
 
   private processRiskFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getRiskFeatureDescription(item.feature || item.name),
-      riskImpact: this.assessRiskImpact(item.importance || 0)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getRiskFeatureDescription((item as any).feature || (item as any).name),
+      riskImpact: this.assessRiskImpact((item as any).importance || 0)
     })).sort((a, b) => b.importance - a.importance);
   }
 
@@ -407,18 +407,18 @@ export class RiskDataProcessor implements DataProcessorStrategy {
     
     // Enhanced baseline and risk metrics section
     const avgScore = records.reduce((sum, r) => sum + r.value, 0) / records.length;
-    const avgVolatility = records.reduce((sum, r) => sum + (r.properties.volatility || 0), 0) / records.length;
-    const avgUncertainty = records.reduce((sum, r) => sum + (r.properties.uncertainty || 0), 0) / records.length;
-    const avgStability = records.reduce((sum, r) => sum + (r.properties.stability || 0), 0) / records.length;
+    const avgVolatility = records.reduce((sum, r) => sum + ((r.properties as any).volatility || 0), 0) / records.length;
+    const avgUncertainty = records.reduce((sum, r) => sum + ((r.properties as any).uncertainty || 0), 0) / records.length;
+    const avgStability = records.reduce((sum, r) => sum + ((r.properties as any).stability || 0), 0) / records.length;
     
     summary += `**⚖️ Risk Baseline & Market Averages:** `;
     summary += `Market average risk-adjusted score: ${avgScore.toFixed(1)} (range: ${records[records.length - 1]?.value.toFixed(1) || '0'}-${records[0]?.value.toFixed(1) || '0'}). `;
     summary += `Risk baseline: ${(avgVolatility * 100).toFixed(1)}% volatility, ${(avgUncertainty * 100).toFixed(1)}% uncertainty, ${(avgStability * 100).toFixed(1)}% stability. `;
     
     // Risk distribution analysis
-    const lowRisk = records.filter(r => (r.properties.volatility || 0) < 0.3).length;
-    const moderateRisk = records.filter(r => (r.properties.volatility || 0) >= 0.3 && (r.properties.volatility || 0) < 0.6).length;
-    const highRisk = records.filter(r => (r.properties.volatility || 0) >= 0.6).length;
+    const lowRisk = records.filter(r => ((r.properties as any).volatility || 0) < 0.3).length;
+    const moderateRisk = records.filter(r => ((r.properties as any).volatility || 0) >= 0.3 && ((r.properties as any).volatility || 0) < 0.6).length;
+    const highRisk = records.filter(r => ((r.properties as any).volatility || 0) >= 0.6).length;
     
     summary += `Risk distribution: ${lowRisk} low-risk markets (${(lowRisk/totalAreas*100).toFixed(1)}%), ${moderateRisk} moderate-risk (${(moderateRisk/totalAreas*100).toFixed(1)}%), ${highRisk} high-risk (${(highRisk/totalAreas*100).toFixed(1)}%).
 
@@ -454,14 +454,14 @@ export class RiskDataProcessor implements DataProcessorStrategy {
       if (lowRiskCategory && lowRiskCategory.size > 0) {
         summary += `**${lowRiskCategory.size} Low-Risk Markets** (${lowRiskCategory.percentage.toFixed(1)}%): `;
         const topLowRisk = lowRiskCategory.topAreas.slice(0, 3);
-        summary += topLowRisk.map((area: any) => `${area.name} (${(area.volatility * 100).toFixed(1)}% vol)`).join(', ');
+        summary += topLowRisk.map((area: any) => `${(area as any).name} (${((area as any).volatility * 100).toFixed(1)}% vol)`).join(', ');
         summary += '. ';
       }
       
       if (moderateRiskCategory && moderateRiskCategory.size > 0) {
         summary += `**${moderateRiskCategory.size} Moderate-Risk Markets** (${moderateRiskCategory.percentage.toFixed(1)}%): `;
         const topModerate = moderateRiskCategory.topAreas.slice(0, 3);
-        summary += topModerate.map((area: any) => `${area.name} (${(area.volatility * 100).toFixed(1)}% vol)`).join(', ');
+        summary += topModerate.map((area: any) => `${(area as any).name} (${((area as any).volatility * 100).toFixed(1)}% vol)`).join(', ');
         summary += '. ';
       }
     }
@@ -478,7 +478,7 @@ export class RiskDataProcessor implements DataProcessorStrategy {
       if (highRiskAreas.length > 1) {
         const additionalRiskAreas = highRiskAreas.slice(1, 6);
         const riskAreaNames = additionalRiskAreas.map((area: any) => 
-          `${area.area} (${(area.volatility * 100).toFixed(1)}% volatility)`
+          `${(area as any).area} (${((area as any).volatility * 100).toFixed(1)}% volatility)`
         );
         
         if (riskAreaNames.length > 0) {

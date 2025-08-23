@@ -29,24 +29,24 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       rawData.results.some(record => 
         record && 
         // Check for actual demographic data fields present in the dataset
-        (record.value_TOTPOP_CY !== undefined ||      // Total population (actual field)
-         record.TOTPOP_CY !== undefined ||            // Total population (alternative)
+        ((record as any).value_TOTPOP_CY !== undefined ||      // Total population (actual field)
+         (record as any).TOTPOP_CY !== undefined ||            // Total population (alternative)
          // Dynamic brand detection instead of hardcoded fields
          this.hasBrandFields(record) ||
-         record.value_DESCRIPTION !== undefined ||     // Area description
-         record.ID !== undefined ||                   // Area ID
+         (record as any).value_DESCRIPTION !== undefined ||     // Area description
+         (record as any).ID !== undefined ||                   // Area ID
          // Fallback demographic fields for other datasets
-         record.demographic_insights_score !== undefined || 
-         record.demographic_opportunity_score !== undefined || 
-         record.demographic_score !== undefined ||    // HRB data field
-         record.total_population !== undefined ||     
-         record.median_income !== undefined ||        
-         record.value_AVGHINC_CY !== undefined ||     
-         record.value_MEDAGE_CY !== undefined ||      
-         record.population !== undefined ||           
-         record.income !== undefined ||              
-         record.demographic_insights_score !== undefined ||   // Current scoring system
-         record.demographic_score !== undefined)      
+         (record as any).demographic_insights_score !== undefined || 
+         (record as any).demographic_opportunity_score !== undefined || 
+         (record as any).demographic_score !== undefined ||    // HRB data field
+         (record as any).total_population !== undefined ||     
+         (record as any).median_income !== undefined ||        
+         (record as any).value_AVGHINC_CY !== undefined ||     
+         (record as any).value_MEDAGE_CY !== undefined ||      
+         (record as any).population !== undefined ||           
+         (record as any).income !== undefined ||              
+         (record as any).demographic_insights_score !== undefined ||   // Current scoring system
+         (record as any).demographic_score !== undefined)      
       );
     
     return hasDemographicFields;
@@ -91,8 +91,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
 
   private processDemographicRecords(rawRecords: any[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
-      const area_id = record.ID || record.area_id || record.id || record.GEOID || `area_${index}`;
-      const area_name = record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || record.name || record.NAME || `Area ${index + 1}`;
+      const area_id = (record as any).ID || (record as any).area_id || (record as any).id || (record as any).GEOID || `area_${index}`;
+      const area_name = (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || (record as any).name || (record as any).NAME || `Area ${index + 1}`;
       
       // Extract demographic score
       const demographicScore = this.extractDemographicScore(record);
@@ -105,14 +105,14 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
         ...this.extractProperties(record),
         demographic_insights_score: demographicScore,
         demographic_opportunity_score: demographicScore, // Legacy compatibility
-        population: record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population || record.population || 0,
-        avg_income: record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income || record.income || 0,
-        median_age: record.value_MEDAGE_CY || record.age || 0,
-        household_size: record.value_AVGHHSZ_CY || record.household_size || 0,
-        white_population: record.value_WHITE_CY || record.white_population || 0,
-        asian_population: record.value_ASIAN_CY || record.asian_population || 0,
-        black_population: record.value_BLACK_CY || record.black_population || 0,
-        diversity_index: record.value_DIVINDX_CY || this.calculateDiversityIndex(record),
+        population: (record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population || (record as any).population || 0,
+        avg_income: (record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income || (record as any).income || 0,
+        median_age: (record as any).value_MEDAGE_CY || (record as any).age || 0,
+        household_size: (record as any).value_AVGHHSZ_CY || (record as any).household_size || 0,
+        white_population: (record as any).value_WHITE_CY || (record as any).white_population || 0,
+        asian_population: (record as any).value_ASIAN_CY || (record as any).asian_population || 0,
+        black_population: (record as any).value_BLACK_CY || (record as any).black_population || 0,
+        diversity_index: (record as any).value_DIVINDX_CY || this.calculateDiversityIndex(record),
         lifestyle_score: this.calculateLifestyleScore(record),
         economic_stability: this.calculateEconomicStability(record)
       };
@@ -131,7 +131,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
         demographic_opportunity_score: demographicScore, // Legacy compatibility
         rank: 0, // Will be calculated in ranking
         category,
-        coordinates: record.coordinates || [0, 0],
+        coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
@@ -146,24 +146,24 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     
     if (targetBrand && targetBrand.value !== undefined && targetBrand.value !== null) {
       const targetBrandShare = Number(targetBrand.value);
-      console.log(`🎯 [DemographicDataProcessor] Using ${targetBrand.brandName} market share as demographic score: ${targetBrandShare} for ${record.value_DESCRIPTION || record.ID || 'Unknown'}`);
+      console.log(`🎯 [DemographicDataProcessor] Using ${targetBrand.brandName} market share as demographic score: ${targetBrandShare} for ${(record as any).value_DESCRIPTION || (record as any).ID || 'Unknown'}`);
       return targetBrandShare;
     }
     
     // PRIORITY 2: PRE-CALCULATED DEMOGRAPHIC OPPORTUNITY SCORE (for other datasets)
-    if ((record.demographic_insights_score !== undefined && record.demographic_insights_score !== null) ||
-        (record.demographic_opportunity_score !== undefined && record.demographic_opportunity_score !== null) ||
-        (record.demographic_score !== undefined && record.demographic_score !== null)) {
-      const preCalculatedScore = Number(record.demographic_insights_score || record.demographic_opportunity_score || record.demographic_score);
-      console.log(`🎯 [DemographicDataProcessor] Using pre-calculated score: ${preCalculatedScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+    if (((record as any).demographic_insights_score !== undefined && (record as any).demographic_insights_score !== null) ||
+        ((record as any).demographic_opportunity_score !== undefined && (record as any).demographic_opportunity_score !== null) ||
+        ((record as any).demographic_score !== undefined && (record as any).demographic_score !== null)) {
+      const preCalculatedScore = Number((record as any).demographic_insights_score || (record as any).demographic_opportunity_score || (record as any).demographic_score);
+      console.log(`🎯 [DemographicDataProcessor] Using pre-calculated score: ${preCalculatedScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
       return preCalculatedScore;
     }
     
     // Fallback: Calculate demographic fit score from available data
-    const population = record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population || record.population || 0;
-    const income = record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income || record.income || 0;
-    const age = record.value_MEDAGE_CY || record.age || 0;
-    const householdSize = record.value_AVGHHSZ_CY || record.household_size || 0;
+    const population = (record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population || (record as any).population || 0;
+    const income = (record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income || (record as any).income || 0;
+    const age = (record as any).value_MEDAGE_CY || (record as any).age || 0;
+    const householdSize = (record as any).value_AVGHHSZ_CY || (record as any).household_size || 0;
     
     // Calculate composite demographic score (0-100)
     let demographicScore = 0;
@@ -207,17 +207,17 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     // Simplified diversity calculation - would be more complex in real implementation
     const factors = [];
     
-    if (record.ethnic_diversity) factors.push(record.ethnic_diversity);
-    if (record.age_diversity) factors.push(record.age_diversity);
-    if (record.income_diversity) factors.push(record.income_diversity);
+    if ((record as any).ethnic_diversity) factors.push((record as any).ethnic_diversity);
+    if ((record as any).age_diversity) factors.push((record as any).age_diversity);
+    if ((record as any).income_diversity) factors.push((record as any).income_diversity);
     
     if (factors.length > 0) {
       return factors.reduce((sum, factor) => sum + factor, 0) / factors.length;
     }
     
     // Default calculation based on available data
-    const income = record.value_AVGHINC_CY || 50000;
-    const age = record.value_MEDAGE_CY || 40;
+    const income = (record as any).value_AVGHINC_CY || 50000;
+    const age = (record as any).value_MEDAGE_CY || 40;
     
     // Higher diversity in mixed income/age areas
     return Math.min(1, (Math.abs(income - 60000) / 30000 + Math.abs(age - 40) / 20) / 2);
@@ -225,9 +225,9 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
 
   private calculateLifestyleScore(record: any): number {
     // Calculate lifestyle fit based on demographic characteristics
-    const income = record.value_AVGHINC_CY || 0;
-    const age = record.value_MEDAGE_CY || 0;
-    const householdSize = record.value_AVGHHSZ_CY || 0;
+    const income = (record as any).value_AVGHINC_CY || 0;
+    const age = (record as any).value_MEDAGE_CY || 0;
+    const householdSize = (record as any).value_AVGHHSZ_CY || 0;
     
     // Target lifestyle: moderate-high income, working age, small families
     let lifestyleScore = 0;
@@ -235,16 +235,16 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     if (income > 50000 && income < 120000) lifestyleScore += 0.3;
     if (age > 25 && age < 50) lifestyleScore += 0.3;
     if (householdSize > 1.5 && householdSize < 4) lifestyleScore += 0.2;
-    if (record.education_level === 'college' || record.education_score > 0.6) lifestyleScore += 0.2;
+    if ((record as any).education_level === 'college' || (record as any).education_score > 0.6) lifestyleScore += 0.2;
     
     return Math.min(1, lifestyleScore);
   }
 
   private calculateEconomicStability(record: any): number {
     // Calculate economic stability indicators
-    const income = record.value_AVGHINC_CY || 0;
-    const unemploymentRate = record.unemployment_rate || 0.05; // Default 5%
-    const householdSize = record.value_AVGHHSZ_CY || 2;
+    const income = (record as any).value_AVGHINC_CY || 0;
+    const unemploymentRate = (record as any).unemployment_rate || 0.05; // Default 5%
+    const householdSize = (record as any).value_AVGHHSZ_CY || 2;
     
     let stabilityScore = 0;
     
@@ -279,8 +279,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
   }
 
   private extractShapValues(record: any): Record<string, number> {
-    if (record.shap_values && typeof record.shap_values === 'object') {
-      return record.shap_values;
+    if ((record as any).shap_values && typeof (record as any).shap_values === 'object') {
+      return (record as any).shap_values;
     }
     
     const shapValues: Record<string, number> = {};
@@ -309,8 +309,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
 
   private calculateDemographicStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
     const scores = records.map(r => r.value);
-    const incomes = records.map(r => r.properties.avg_income || 0);
-    const ages = records.map(r => r.properties.median_age || 0);
+    const incomes = records.map(r => (r.properties as any).avg_income || 0);
+    const ages = records.map(r => (r.properties as any).median_age || 0);
     
     if (scores.length === 0) {
       return {
@@ -334,7 +334,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     // Demographic-specific metrics
     const avgIncome = incomes.reduce((a, b) => a + b, 0) / total;
     const medianAge = ages.reduce((a, b) => a + b, 0) / total;
-    const diversityIndex = records.reduce((sum, r) => sum + (r.properties.diversity_index || 0), 0) / total;
+    const diversityIndex = records.reduce((sum, r) => sum + ((r.properties as any).diversity_index || 0), 0) / total;
     
     return {
       total,
@@ -354,7 +354,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     const categoryMap = new Map<string, GeographicDataPoint[]>();
     
     records.forEach(record => {
-      const category = record.category!;
+      const category = (record as any).category!;
       if (!categoryMap.has(category)) {
         categoryMap.set(category, []);
       }
@@ -364,7 +364,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     // Analyze each category
     const categoryAnalysis = Array.from(categoryMap.entries()).map(([category, categoryRecords]) => {
       const avgScore = categoryRecords.reduce((sum, r) => sum + r.value, 0) / categoryRecords.length;
-      const avgIncome = categoryRecords.reduce((sum, r) => sum + (r.properties.avg_income || 0), 0) / categoryRecords.length;
+      const avgIncome = categoryRecords.reduce((sum, r) => sum + ((r.properties as any).avg_income || 0), 0) / categoryRecords.length;
       
       return {
         category,
@@ -378,8 +378,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
           .map(r => ({
             name: r.area_name,
             score: r.value,
-            income: r.properties.avg_income,
-            age: r.properties.median_age
+            income: (r.properties as any).avg_income,
+            age: (r.properties as any).median_age
           }))
       };
     });
@@ -392,7 +392,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     
     const growthTargets = records
       .filter(r => ['moderate_demographics', 'developing_demographics'].includes(r.category!))
-      .sort((a, b) => b.properties.economic_stability - a.properties.economic_stability)
+      .sort((a, b) => (b.properties as any).economic_stability - (a.properties as any).economic_stability)
       .slice(0, 5);
     
     return {
@@ -400,14 +400,14 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       demographicLeaders: demographicLeaders.map(r => ({
         area: r.area_name,
         score: r.value,
-        income: r.properties.avg_income,
-        age: r.properties.median_age,
-        stability: r.properties.economic_stability
+        income: (r.properties as any).avg_income,
+        age: (r.properties as any).median_age,
+        stability: (r.properties as any).economic_stability
       })),
       growthTargets: growthTargets.map(r => ({
         area: r.area_name,
         currentScore: r.value,
-        stability: r.properties.economic_stability,
+        stability: (r.properties as any).economic_stability,
         potential: 'high'
       })),
       marketSegmentation: this.analyzeMarketSegmentation(categoryAnalysis)
@@ -426,10 +426,10 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
 
   private processDemographicFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getDemographicFeatureDescription(item.feature || item.name),
-      demographicImpact: this.assessDemographicImpact(item.importance || 0)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getDemographicFeatureDescription((item as any).feature || (item as any).name),
+      demographicImpact: this.assessDemographicImpact((item as any).importance || 0)
     })).sort((a, b) => b.importance - a.importance);
   }
 
@@ -475,8 +475,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     
     // Calculate baseline metrics first
     const avgScore = records.reduce((sum, r) => sum + r.value, 0) / records.length;
-    const avgIncome = records.reduce((sum, r) => sum + (r.properties.avg_income || 0), 0) / records.length;
-    const avgAge = records.reduce((sum, r) => sum + (r.properties.median_age || 0), 0) / records.length;
+    const avgIncome = records.reduce((sum, r) => sum + ((r.properties as any).avg_income || 0), 0) / records.length;
+    const avgAge = records.reduce((sum, r) => sum + ((r.properties as any).median_age || 0), 0) / records.length;
     
     // Start with formula explanation
     let summary = `**📊 Demographic Fit Formula (0-100 scale):**
@@ -488,10 +488,10 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     summary += `Market average demographic score: ${avgScore.toFixed(1)} (range: ${records[records.length - 1]?.value.toFixed(1) || '0'}-${records[0]?.value.toFixed(1) || '0'}). `;
     
     // Calculate demographic baselines
-    const avgPopulation = records.reduce((sum, r) => sum + (r.properties.population || 0), 0) / totalAreas;
-    const avgDiversityIndex = records.reduce((sum, r) => sum + (r.properties.diversity_index || 0), 0) / totalAreas;
-    const avgHouseholdSize = records.reduce((sum, r) => sum + (r.properties.household_size || 0), 0) / totalAreas;
-    const avgEconomicStability = records.reduce((sum, r) => sum + (r.properties.economic_stability || 0), 0) / totalAreas;
+    const avgPopulation = records.reduce((sum, r) => sum + ((r.properties as any).population || 0), 0) / totalAreas;
+    const avgDiversityIndex = records.reduce((sum, r) => sum + ((r.properties as any).diversity_index || 0), 0) / totalAreas;
+    const avgHouseholdSize = records.reduce((sum, r) => sum + ((r.properties as any).household_size || 0), 0) / totalAreas;
+    const avgEconomicStability = records.reduce((sum, r) => sum + ((r.properties as any).economic_stability || 0), 0) / totalAreas;
     
     summary += `Demographic baseline: $${(avgIncome/1000).toFixed(0)}K income, ${avgAge.toFixed(0)} median age, ${(avgPopulation/1000).toFixed(0)}K population. `;
     summary += `Market characteristics: ${avgHouseholdSize.toFixed(1)} avg household size, ${(avgDiversityIndex*100).toFixed(1)}% diversity index, ${(avgEconomicStability*100).toFixed(1)}% economic stability. `;
@@ -535,14 +535,14 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       if (optimalCategory && optimalCategory.size > 0) {
         summary += `**${optimalCategory.size} Optimal Markets** (${optimalCategory.percentage.toFixed(1)}%): `;
         const topOptimal = optimalCategory.topAreas.slice(0, 3);
-        summary += topOptimal.map((area: any) => `${area.name} ($${(area.income/1000).toFixed(0)}K)`).join(', ');
+        summary += topOptimal.map((area: any) => `${(area as any).name} ($${((area as any).income/1000).toFixed(0)}K)`).join(', ');
         summary += '. ';
       }
       
       if (strongCategory && strongCategory.size > 0) {
         summary += `**${strongCategory.size} Strong Markets** (${strongCategory.percentage.toFixed(1)}%): `;
         const topStrong = strongCategory.topAreas.slice(0, 3);
-        summary += topStrong.map((area: any) => `${area.name} ($${(area.income/1000).toFixed(0)}K)`).join(', ');
+        summary += topStrong.map((area: any) => `${(area as any).name} ($${((area as any).income/1000).toFixed(0)}K)`).join(', ');
         summary += '. ';
       }
     }

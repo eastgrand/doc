@@ -11,19 +11,19 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
     }
 
     const records = rawData.results.map((record: any, index: number) => {
-      const realEstateScore = Number(record.real_estate_analysis_score) || 0;
-      const totalPop = Number(record.total_population) || 0;
-      const medianIncome = Number(record.median_income) || 0;
-      const strategicScore = Number(record.strategic_value_score) || 0;
-      const demographicScore = Number(record.demographic_opportunity_score) || 0;
-      const nikeShare = Number(record.mp30034a_b_p) || 0;
+      const realEstateScore = Number((record as any).real_estate_analysis_score) || 0;
+      const totalPop = Number((record as any).total_population) || 0;
+      const medianIncome = Number((record as any).median_income) || 0;
+      const strategicScore = Number((record as any).strategic_value_score) || 0;
+      const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+      const nikeShare = Number((record as any).mp30034a_b_p) || 0;
 
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
       return {
-        area_id: record.area_id || record.ID || `area_${index}`,
-        area_name: record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || `Area ${index + 1}`,
+        area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
+        area_name: (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || `Area ${index + 1}`,
         value: realEstateScore,
         rank: index + 1,
         category: this.categorizeRealEstateOpportunity(realEstateScore),
@@ -42,12 +42,12 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
           median_income: medianIncome,
           nike_presence: nikeShare
         },
-        shapValues: record.shap_values || {}
+        shapValues: (record as any).shap_values || {}
       };
     });
 
     records.sort((a, b) => b.value - a.value);
-    records.forEach((record, index) => { record.rank = index + 1; });
+    records.forEach((record, index) => { (record as any).rank = index + 1; });
 
     const values = records.map(r => r.value);
     const statistics = this.calculateStatistics(values);
@@ -157,20 +157,20 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
       .sort((a, b) => b.importance - a.importance)
       .slice(0, 5)
       .reduce((acc, item) => {
-        acc[item.field] = item.value;
+        acc[(item as any).field] = (item as any).value;
         return acc;
       }, {} as Record<string, number>);
     
-    console.log(`[RealEstateAnalysisProcessor] Top contributing fields for ${record.ID}:`, topFields);
+    console.log(`[RealEstateAnalysisProcessor] Top contributing fields for ${(record as any).ID}:`, topFields);
     return topFields;
   }
 
   private extractCoordinates(record: any): [number, number] {
-    if (record.coordinates && Array.isArray(record.coordinates)) {
-      return [record.coordinates[0] || 0, record.coordinates[1] || 0];
+    if ((record as any).coordinates && Array.isArray((record as any).coordinates)) {
+      return [(record as any).coordinates[0] || 0, (record as any).coordinates[1] || 0];
     }
-    const lat = Number(record.latitude || record.lat || 0);
-    const lng = Number(record.longitude || record.lng || 0);
+    const lat = Number((record as any).latitude || (record as any).lat || 0);
+    const lng = Number((record as any).longitude || (record as any).lng || 0);
     return [lng, lat];
   }
 

@@ -25,8 +25,8 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
-        (record.area_id || record.id || record.ID) &&
-        record.algorithm_comparison_score !== undefined
+        ((record as any).area_id || (record as any).id || (record as any).ID) &&
+        (record as any).algorithm_comparison_score !== undefined
       );
     
     return hasRequiredFields;
@@ -40,15 +40,15 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
     }
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
-      const primaryScore = Number(record.algorithm_comparison_score);
+      const primaryScore = Number((record as any).algorithm_comparison_score);
       
       if (isNaN(primaryScore)) {
-        throw new Error(`Algorithm comparison record ${record.ID || index} is missing algorithm_comparison_score`);
+        throw new Error(`Algorithm comparison record ${(record as any).ID || index} is missing algorithm_comparison_score`);
       }
       
       // Generate area name
       const areaName = this.generateAreaName(record);
-      const recordId = record.ID || record.id || record.area_id || `area_${index + 1}`;
+      const recordId = (record as any).ID || (record as any).id || (record as any).area_id || `area_${index + 1}`;
       
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
@@ -62,12 +62,12 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
-          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
+          DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           algorithm_comparison_score: primaryScore,
           score_source: 'algorithm_comparison_score',
           target_brand_share: this.extractTargetBrandShare(record),
-          total_population: Number(record.total_population || record.value_TOTPOP_CY) || 0,
-          median_income: Number(record.median_income || record.value_AVGHINC_CY) || 0
+          total_population: Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0,
+          median_income: Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0
         }
       };
     });
@@ -217,7 +217,7 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
       .sort((a, b) => b.importance - a.importance)
       .slice(0, 5)
       .reduce((acc, item) => {
-        acc[item.field] = item.value;
+        acc[(item as any).field] = (item as any).value;
         return acc;
       }, {} as Record<string, number>);
   }
@@ -230,8 +230,8 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
 
   private generateAreaName(record: any): string {
     // Check for DESCRIPTION field first (common in strategic analysis data)
-    if (record.DESCRIPTION && typeof record.DESCRIPTION === 'string') {
-      const description = record.DESCRIPTION.trim();
+    if ((record as any).DESCRIPTION && typeof (record as any).DESCRIPTION === 'string') {
+      const description = (record as any).DESCRIPTION.trim();
       // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
@@ -242,8 +242,8 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
     }
     
     // Try value_DESCRIPTION with same extraction logic
-    if (record.value_DESCRIPTION && typeof record.value_DESCRIPTION === 'string') {
-      const description = record.value_DESCRIPTION.trim();
+    if ((record as any).value_DESCRIPTION && typeof (record as any).value_DESCRIPTION === 'string') {
+      const description = (record as any).value_DESCRIPTION.trim();
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
         return nameMatch[1].trim();
@@ -252,11 +252,11 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
     }
     
     // Other name fields
-    if (record.area_name) return record.area_name;
-    if (record.NAME) return record.NAME;
-    if (record.name) return record.name;
+    if ((record as any).area_name) return (record as any).area_name;
+    if ((record as any).NAME) return (record as any).NAME;
+    if ((record as any).name) return (record as any).name;
     
-    const id = record.ID || record.id || record.GEOID;
+    const id = (record as any).ID || (record as any).id || (record as any).GEOID;
     if (id) {
       if (typeof id === 'string' && id.match(/^\d{5}$/)) {
         return `ZIP ${id}`;
@@ -267,7 +267,7 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
       return `Area ${id}`;
     }
     
-    return `Area ${record.OBJECTID || 'Unknown'}`;
+    return `Area ${(record as any).OBJECTID || 'Unknown'}`;
   }
 
   private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
@@ -280,9 +280,9 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
 
   private processFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getFeatureDescription(item.feature || item.name)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getFeatureDescription((item as any).feature || (item as any).name)
     })).sort((a, b) => b.importance - a.importance);
   }
 

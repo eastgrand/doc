@@ -18,16 +18,16 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       rawData.results.some(record => 
         record && 
         // Check for actual correlation data fields present in the dataset
-        (record.value_MP30034A_B_P !== undefined ||   // Nike market share (raw format)
-         record.value_TOTPOP_CY !== undefined ||      // Total population (raw format)
-         record.ID !== undefined ||                   // Area ID
+        ((record as any).value_MP30034A_B_P !== undefined ||   // Nike market share (raw format)
+         (record as any).value_TOTPOP_CY !== undefined ||      // Total population (raw format)
+         (record as any).ID !== undefined ||                   // Area ID
          // Fallback fields for other datasets
-         record.correlation_score !== undefined ||
-         record.target_value !== undefined ||
-         record.median_income !== undefined ||
-         record.total_population !== undefined ||
-         record.demographic_opportunity_score !== undefined ||
-         record.mp30034a_b_p !== undefined)
+         (record as any).correlation_score !== undefined ||
+         (record as any).target_value !== undefined ||
+         (record as any).median_income !== undefined ||
+         (record as any).total_population !== undefined ||
+         (record as any).demographic_opportunity_score !== undefined ||
+         (record as any).mp30034a_b_p !== undefined)
       );
     
     return hasCorrelationFields;
@@ -90,8 +90,8 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
 
   private processCorrelationRecords(rawRecords: any[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
-      const area_id = record.ID || record.area_id || record.id || record.GEOID || `area_${index}`;
-      const area_name = record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || record.name || record.NAME || `Area ${index + 1}`;
+      const area_id = (record as any).ID || (record as any).area_id || (record as any).id || (record as any).GEOID || `area_${index}`;
+      const area_name = (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || (record as any).name || (record as any).NAME || `Area ${index + 1}`;
       
       // Extract correlation strength score
       const correlationScore = this.extractCorrelationScore(record);
@@ -105,14 +105,14 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
         correlation_analysis_score: correlationScore,
         correlation_score: correlationScore, // Alternative field
         correlation_strength_score: correlationScore, // Legacy compatibility
-        target_value: Number(record.value_MP30034A_B_P || record.target_value) || 0,
-        median_income: Number(record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income) || 0,
-        total_population: Number(record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population) || 0,
-        demographic_opportunity_score: Number(record.demographic_opportunity_score) || 0,
-        nike_market_share: Number(record.value_MP30034A_B_P || record.mp30034a_b_p) || 0,
-        asian_population: Number(record.value_ASIAN_CY || record.asian_population) || 0,
-        black_population: Number(record.value_BLACK_CY || record.black_population) || 0,
-        white_population: Number(record.value_WHITE_CY || record.white_population) || 0,
+        target_value: Number((record as any).value_MP30034A_B_P || (record as any).target_value) || 0,
+        median_income: Number((record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income) || 0,
+        total_population: Number((record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population) || 0,
+        demographic_opportunity_score: Number((record as any).demographic_opportunity_score) || 0,
+        nike_market_share: Number((record as any).value_MP30034A_B_P || (record as any).mp30034a_b_p) || 0,
+        asian_population: Number((record as any).value_ASIAN_CY || (record as any).asian_population) || 0,
+        black_population: Number((record as any).value_BLACK_CY || (record as any).black_population) || 0,
+        white_population: Number((record as any).value_WHITE_CY || (record as any).white_population) || 0,
         correlation_strength: this.getCorrelationStrengthLevel(correlationScore)
       };
       
@@ -131,7 +131,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
         correlation_strength_score: correlationScore, // Legacy compatibility
         rank: 0, // Will be calculated in ranking
         category,
-        coordinates: record.coordinates || [0, 0],
+        coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
@@ -142,16 +142,16 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
   private extractCorrelationScore(record: any): number {
     // PRIORITIZE PRE-CALCULATED CORRELATION STRENGTH SCORE
     // Check for correlation_analysis_score first (primary field)
-    if (record.correlation_analysis_score !== undefined && record.correlation_analysis_score !== null) {
-      const primaryScore = Number(record.correlation_analysis_score);
-      console.log(`🔗 [CorrelationAnalysisProcessor] Using correlation_analysis_score: ${primaryScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+    if ((record as any).correlation_analysis_score !== undefined && (record as any).correlation_analysis_score !== null) {
+      const primaryScore = Number((record as any).correlation_analysis_score);
+      console.log(`🔗 [CorrelationAnalysisProcessor] Using correlation_analysis_score: ${primaryScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
       return primaryScore;
     }
     
     // Fallback to correlation_score
-    if (record.correlation_score !== undefined && record.correlation_score !== null) {
-      const fallbackScore = Number(record.correlation_score);
-      console.log(`🔗 [CorrelationAnalysisProcessor] Using fallback correlation_score: ${fallbackScore} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+    if ((record as any).correlation_score !== undefined && (record as any).correlation_score !== null) {
+      const fallbackScore = Number((record as any).correlation_score);
+      console.log(`🔗 [CorrelationAnalysisProcessor] Using fallback correlation_score: ${fallbackScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
       return fallbackScore;
     }
     
@@ -192,8 +192,8 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
   }
 
   private extractShapValues(record: any): Record<string, number> {
-    if (record.shap_values && typeof record.shap_values === 'object') {
-      return record.shap_values;
+    if ((record as any).shap_values && typeof (record as any).shap_values === 'object') {
+      return (record as any).shap_values;
     }
     
     const shapValues: Record<string, number> = {};
@@ -259,7 +259,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
     const categoryMap = new Map<string, GeographicDataPoint[]>();
     
     records.forEach(record => {
-      const category = record.category!;
+      const category = (record as any).category!;
       if (!categoryMap.has(category)) {
         categoryMap.set(category, []);
       }
@@ -281,8 +281,8 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
           .map(r => ({
             name: r.area_name,
             score: r.value,
-            targetValue: r.properties.target_value,
-            income: r.properties.median_income
+            targetValue: (r.properties as any).target_value,
+            income: (r.properties as any).median_income
           }))
       };
     });
@@ -326,10 +326,10 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
 
   private processCorrelationFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getCorrelationFeatureDescription(item.feature || item.name),
-      correlationImpact: this.assessCorrelationImpact(item.importance || 0)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getCorrelationFeatureDescription((item as any).feature || (item as any).name),
+      correlationImpact: this.assessCorrelationImpact((item as any).importance || 0)
     })).sort((a, b) => b.importance - a.importance);
   }
 
@@ -406,11 +406,11 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       summary += `**🎯 Strongest Correlation Patterns:** `;
       
       topCorrelated.slice(0, 8).forEach((record, index) => {
-        const targetValue = Number(record.properties?.target_value) || 0;
-        const income = Number(record.properties?.median_income) || 0;
-        const population = Number(record.properties?.total_population) || 0;
+        const targetValue = Number((record as any).properties?.target_value) || 0;
+        const income = Number((record as any).properties?.median_income) || 0;
+        const population = Number((record as any).properties?.total_population) || 0;
         
-        summary += `${index + 1}. **${record.area_name}**: ${record.value.toFixed(1)} correlation score`;
+        summary += `${index + 1}. **${(record as any).area_name}**: ${(record as any).value.toFixed(1)} correlation score`;
         
         if (targetValue > 0 || income > 0) {
           summary += ` (Target: ${targetValue.toFixed(1)}`;
@@ -436,14 +436,14 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       if (strongCategory && strongCategory.size > 0) {
         summary += `**${strongCategory.size} Strong Correlation Areas** (${strongCategory.percentage.toFixed(1)}%): `;
         const topStrong = strongCategory.topAreas.slice(0, 3);
-        summary += topStrong.map((area: any) => `${area.name} (${area.score.toFixed(1)})`).join(', ');
+        summary += topStrong.map((area: any) => `${(area as any).name} (${(area as any).score.toFixed(1)})`).join(', ');
         summary += '. ';
       }
       
       if (moderateCategory && moderateCategory.size > 0) {
         summary += `**${moderateCategory.size} Moderate Correlation Areas** (${moderateCategory.percentage.toFixed(1)}%): `;
         const topModerate = moderateCategory.topAreas.slice(0, 3);
-        summary += topModerate.map((area: any) => `${area.name} (${area.score.toFixed(1)})`).join(', ');
+        summary += topModerate.map((area: any) => `${(area as any).name} (${(area as any).score.toFixed(1)})`).join(', ');
         summary += '. ';
       }
     }

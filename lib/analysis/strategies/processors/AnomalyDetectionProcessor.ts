@@ -17,15 +17,15 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
-        (record.area_id || record.id || record.ID) &&
-        (record.anomaly_score !== undefined || 
-         record.value !== undefined || 
-         record.score !== undefined ||
+        ((record as any).area_id || (record as any).id || (record as any).ID) &&
+        ((record as any).anomaly_score !== undefined || 
+         (record as any).value !== undefined || 
+         (record as any).score !== undefined ||
          // Check for anomaly-relevant fields
-         record.value_MP30034A_B_P !== undefined || // Nike market share (raw format)
-         record.mp30034a_b_p !== undefined || // Nike market share for pattern analysis
-         record.strategic_value_score !== undefined ||
-         record.competitive_advantage_score !== undefined)
+         (record as any).value_MP30034A_B_P !== undefined || // Nike market share (raw format)
+         (record as any).mp30034a_b_p !== undefined || // Nike market share for pattern analysis
+         (record as any).strategic_value_score !== undefined ||
+         (record as any).competitive_advantage_score !== undefined)
       );
     
     return hasRequiredFields;
@@ -47,7 +47,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
       const areaName = this.generateAreaName(record);
       
       // Extract ID (updated for correlation_analysis format)
-      const recordId = record.ID || record.id || record.area_id;
+      const recordId = (record as any).ID || (record as any).id || (record as any).area_id;
       
       // Debug logging for records with missing ID
       if (!recordId) {
@@ -55,18 +55,18 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
           hasID: 'ID' in record,
           hasId: 'id' in record,
           hasAreaId: 'area_id' in record,
-          recordKeys: Object.keys(record).slice(0, 10)
+          recordKeys: Object.keys(record as any).slice(0, 10)
         });
       }
       
       // Extract anomaly-relevant metrics for properties
-      const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-      const strategicScore = Number(record.strategic_value_score) || 0;
-      const competitiveScore = Number(record.competitive_advantage_score) || 0;
-      const demographicScore = Number(record.demographic_opportunity_score) || 0;
-      const trendScore = Number(record.trend_strength_score) || 0;
-      const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-      const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
+      const nikeShare = Number((record as any).mp30034a_b_p || (record as any).value_MP30034A_B_P) || 0;
+      const strategicScore = Number((record as any).strategic_value_score) || 0;
+      const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+      const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+      const trendScore = Number((record as any).trend_strength_score) || 0;
+      const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+      const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
       
       // Calculate anomaly indicators
       const statisticalDeviation = this.calculateStatisticalDeviation(record);
@@ -81,7 +81,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
         anomaly_detection_score: Math.round(anomalyScore * 100) / 100, // Add target variable at top level
         rank: 0, // Will be calculated after sorting
         properties: {
-          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
+          DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           anomaly_detection_score: anomalyScore,
           score_source: 'anomaly_detection_score',
           nike_market_share: nikeShare,
@@ -134,8 +134,8 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
    * Extract anomaly detection score from record with fallback calculation
    */
   private extractAnomalyScore(record: any): number {
-    if (record.anomaly_score !== undefined && record.anomaly_score !== null) {
-      const preCalculatedScore = Number(record.anomaly_score);
+    if ((record as any).anomaly_score !== undefined && (record as any).anomaly_score !== null) {
+      const preCalculatedScore = Number((record as any).anomaly_score);
       console.log(`🔍 [AnomalyDetectionProcessor] Using pre-calculated anomaly score: ${preCalculatedScore}`);
       return preCalculatedScore;
     }
@@ -143,11 +143,11 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
     // FALLBACK: Calculate anomaly score from available data
     console.log('⚠️ [AnomalyDetectionProcessor] No anomaly_detection_score found, calculating from raw data');
     
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const competitiveScore = Number(record.competitive_advantage_score) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p || (record as any).value_MP30034A_B_P) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
     
     // Simple anomaly detection calculation based on extreme values
     let anomalyScore = 0;
@@ -186,8 +186,8 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
    * Calculate statistical deviation level
    */
   private calculateStatisticalDeviation(record: any): number {
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p) || 0;
     
     // Simple deviation based on extreme values (fallback when no baselines available)
     let deviation = 0;
@@ -207,10 +207,10 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
    * Calculate pattern anomaly level from score relationships
    */
   private calculatePatternAnomaly(record: any): number {
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const competitiveScore = Number(record.competitive_advantage_score) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p) || 0;
     
     let patternAnomaly = 0;
     
@@ -236,9 +236,9 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
    * Calculate performance outlier level
    */  
   private calculatePerformanceOutlier(record: any): number {
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p) || 0;
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
     
     let outlierLevel = 0;
     
@@ -264,10 +264,10 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
    * Calculate context anomaly level
    */
   private calculateContextAnomaly(record: any): number {
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-    const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const competitiveScore = Number(record.competitive_advantage_score) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+    const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
     
     let contextAnomaly = 0;
     
@@ -324,16 +324,16 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
    */
   private generateAreaName(record: any): string {
     // Try explicit name fields first (updated for correlation_analysis format)
-    if (record.value_DESCRIPTION && typeof record.value_DESCRIPTION === 'string') {
-      const description = record.value_DESCRIPTION.trim();
+    if ((record as any).value_DESCRIPTION && typeof (record as any).value_DESCRIPTION === 'string') {
+      const description = (record as any).value_DESCRIPTION.trim();
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
         return nameMatch[1].trim();
       }
       return description;
     }
-    if (record.DESCRIPTION && typeof record.DESCRIPTION === 'string') {
-      const description = record.DESCRIPTION.trim();
+    if ((record as any).DESCRIPTION && typeof (record as any).DESCRIPTION === 'string') {
+      const description = (record as any).DESCRIPTION.trim();
       // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
@@ -341,12 +341,12 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
       }
       return description;
     }
-    if (record.area_name) return record.area_name;
-    if (record.NAME) return record.NAME;
-    if (record.name) return record.name;
+    if ((record as any).area_name) return (record as any).area_name;
+    if ((record as any).NAME) return (record as any).NAME;
+    if ((record as any).name) return (record as any).name;
     
     // Create name from ID and location data
-    const id = record.ID || record.id || record.GEOID;
+    const id = (record as any).ID || (record as any).id || (record as any).GEOID;
     if (id) {
       // For ZIP codes, create format like "ZIP 12345"
       if (typeof id === 'string' && id.match(/^\d{5}$/)) {
@@ -363,7 +363,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
       return `Region ${id}`;
     }
     
-    return `Area ${record.OBJECTID || 'Unknown'}`;
+    return `Area ${(record as any).OBJECTID || 'Unknown'}`;
   }
 
   /**
@@ -384,9 +384,9 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
    */
   private processAnomalyFeatureImportance(rawFeatureImportance: any[]): any[] {
     const anomalyFeatures = rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getAnomalyFeatureDescription(item.feature || item.name)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getAnomalyFeatureDescription((item as any).feature || (item as any).name)
     }));
 
     // Add anomaly-specific synthetic features if none provided
@@ -532,7 +532,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
     // Anomaly type breakdown
     if (records.length > 0) {
       const anomalyTypes = records.reduce((acc, record) => {
-        const type = record.properties.anomaly_type || 'Unknown';
+        const type = (record as any).properties.anomaly_type || 'Unknown';
         acc[type] = (acc[type] || 0) + 1;
         return acc;
       }, {} as Record<string, number>);
@@ -553,13 +553,13 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
     // Statistical outliers
     if (records.length > 0) {
       const statisticalOutliers = records
-        .filter(r => (r.properties.statistical_deviation || 0) >= 50)
+        .filter(r => ((r.properties as any).statistical_deviation || 0) >= 50)
         .slice(0, 5);
       
       if (statisticalOutliers.length > 0) {
         summary += `**Statistical Outliers:** `;
         const outlierNames = statisticalOutliers.map(r => 
-          `${r.area_name} (${(r.properties.statistical_deviation || 0).toFixed(1)}% deviation)`
+          `${r.area_name} (${((r.properties as any).statistical_deviation || 0).toFixed(1)}% deviation)`
         );
         summary += `${outlierNames.join(', ')}. `;
         summary += `These markets show extreme statistical deviations from population norms. `;

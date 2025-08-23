@@ -18,15 +18,15 @@ export class TrendDataProcessor implements DataProcessorStrategy {
       rawData.results.some(record => 
         record && 
         // Check for trend-related fields
-        (record.trend_score !== undefined ||      // Trend score
-         record.growth_rate !== undefined ||      // Growth rate
-         record.momentum !== undefined ||         // Momentum indicator
-         record.trend_direction !== undefined ||  // Trend direction
-         record.seasonality !== undefined ||      // Seasonal patterns
-         record.volatility !== undefined ||       // Volatility measure
-         record.forecast !== undefined ||         // Forecast values
-         record.change_rate !== undefined ||      // Change rate
-         record.time_series !== undefined)        // Time series data
+        ((record as any).trend_score !== undefined ||      // Trend score
+         (record as any).growth_rate !== undefined ||      // Growth rate
+         (record as any).momentum !== undefined ||         // Momentum indicator
+         (record as any).trend_direction !== undefined ||  // Trend direction
+         (record as any).seasonality !== undefined ||      // Seasonal patterns
+         (record as any).volatility !== undefined ||       // Volatility measure
+         (record as any).forecast !== undefined ||         // Forecast values
+         (record as any).change_rate !== undefined ||      // Change rate
+         (record as any).time_series !== undefined)        // Time series data
       );
     
     return hasTrendFields;
@@ -69,8 +69,8 @@ export class TrendDataProcessor implements DataProcessorStrategy {
 
   private processTrendRecords(rawRecords: any[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
-      const area_id = record.area_id || record.id || record.GEOID || record.ID || `area_${index}`;
-      const area_name = record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || record.name || record.NAME || `Area ${index + 1}`;
+      const area_id = (record as any).area_id || (record as any).id || (record as any).GEOID || (record as any).ID || `area_${index}`;
+      const area_name = (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || (record as any).name || (record as any).NAME || `Area ${index + 1}`;
       
       // Extract trend score
       const trendScore = this.extractTrendScore(record);
@@ -82,11 +82,11 @@ export class TrendDataProcessor implements DataProcessorStrategy {
       const properties = {
         ...this.extractProperties(record),
         trend_score: trendScore,
-        growth_rate: record.growth_rate || 0,
-        momentum: record.momentum || 0,
-        trend_direction: record.trend_direction || 'stable',
-        seasonality: record.seasonality || 0,
-        volatility: record.volatility || 0,
+        growth_rate: (record as any).growth_rate || 0,
+        momentum: (record as any).momentum || 0,
+        trend_direction: (record as any).trend_direction || 'stable',
+        seasonality: (record as any).seasonality || 0,
+        volatility: (record as any).volatility || 0,
         forecast_confidence: this.calculateForecastConfidence(record),
         trend_strength: this.calculateTrendStrength(record),
         stability_index: this.calculateStabilityIndex(record)
@@ -104,7 +104,7 @@ export class TrendDataProcessor implements DataProcessorStrategy {
         value,
         rank: 0, // Will be calculated in ranking
         category,
-        coordinates: record.coordinates || [0, 0],
+        coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
@@ -114,10 +114,10 @@ export class TrendDataProcessor implements DataProcessorStrategy {
 
   private extractTrendScore(record: any): number {
     // Calculate trend score from available data
-    const growthRate = record.growth_rate || 0;
-    const momentum = record.momentum || 0;
-    const volatility = record.volatility || 0;
-    const seasonality = record.seasonality || 0;
+    const growthRate = (record as any).growth_rate || 0;
+    const momentum = (record as any).momentum || 0;
+    const volatility = (record as any).volatility || 0;
+    const seasonality = (record as any).seasonality || 0;
     
     // Calculate composite trend score (0-100)
     let trendScore = 0;
@@ -156,9 +156,9 @@ export class TrendDataProcessor implements DataProcessorStrategy {
 
   private calculateForecastConfidence(record: any): number {
     // Calculate confidence in trend forecasting
-    const volatility = record.volatility || 0.5;
-    const dataQuality = record.data_quality || 0.8;
-    const timeSpan = record.time_span || 12; // months
+    const volatility = (record as any).volatility || 0.5;
+    const dataQuality = (record as any).data_quality || 0.8;
+    const timeSpan = (record as any).time_span || 12; // months
     
     // Higher confidence with lower volatility, better data, longer timespan
     let confidence = 0;
@@ -171,9 +171,9 @@ export class TrendDataProcessor implements DataProcessorStrategy {
 
   private calculateTrendStrength(record: any): number {
     // Calculate overall trend strength
-    const growthRate = Math.abs(record.growth_rate || 0);
-    const momentum = Math.abs(record.momentum || 0);
-    const consistency = 1 - (record.volatility || 0.5);
+    const growthRate = Math.abs((record as any).growth_rate || 0);
+    const momentum = Math.abs((record as any).momentum || 0);
+    const consistency = 1 - ((record as any).volatility || 0.5);
     
     // Combine factors for overall strength
     const strength = (growthRate * 0.4 + momentum * 0.3 + consistency * 0.3);
@@ -182,9 +182,9 @@ export class TrendDataProcessor implements DataProcessorStrategy {
 
   private calculateStabilityIndex(record: any): number {
     // Calculate trend stability/predictability
-    const volatility = record.volatility || 0.5;
-    const seasonality = record.seasonality || 0;
-    const autocorrelation = record.autocorrelation || 0.5;
+    const volatility = (record as any).volatility || 0.5;
+    const seasonality = (record as any).seasonality || 0;
+    const autocorrelation = (record as any).autocorrelation || 0.5;
     
     // Higher stability with lower volatility, predictable seasonality, strong autocorrelation
     const stability = (1 - volatility) * 0.5 + Math.abs(seasonality) * 0.3 + autocorrelation * 0.2;
@@ -209,8 +209,8 @@ export class TrendDataProcessor implements DataProcessorStrategy {
   }
 
   private extractShapValues(record: any): Record<string, number> {
-    if (record.shap_values && typeof record.shap_values === 'object') {
-      return record.shap_values;
+    if ((record as any).shap_values && typeof (record as any).shap_values === 'object') {
+      return (record as any).shap_values;
     }
     
     const shapValues: Record<string, number> = {};
@@ -239,8 +239,8 @@ export class TrendDataProcessor implements DataProcessorStrategy {
 
   private calculateTrendStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
     const scores = records.map(r => r.value);
-    const growthRates = records.map(r => r.properties.growth_rate || 0);
-    const momentums = records.map(r => r.properties.momentum || 0);
+    const growthRates = records.map(r => (r.properties as any).growth_rate || 0);
+    const momentums = records.map(r => (r.properties as any).momentum || 0);
     
     if (scores.length === 0) {
       return {
@@ -264,7 +264,7 @@ export class TrendDataProcessor implements DataProcessorStrategy {
     // Trend-specific metrics
     const avgGrowthRate = growthRates.reduce((a, b) => a + b, 0) / total;
     const avgMomentum = momentums.reduce((a, b) => a + b, 0) / total;
-    const trendVolatility = records.reduce((sum, r) => sum + (r.properties.volatility || 0), 0) / total;
+    const trendVolatility = records.reduce((sum, r) => sum + ((r.properties as any).volatility || 0), 0) / total;
     
     return {
       total,
@@ -284,7 +284,7 @@ export class TrendDataProcessor implements DataProcessorStrategy {
     const categoryMap = new Map<string, GeographicDataPoint[]>();
     
     records.forEach(record => {
-      const category = record.category!;
+      const category = (record as any).category!;
       if (!categoryMap.has(category)) {
         categoryMap.set(category, []);
       }
@@ -294,7 +294,7 @@ export class TrendDataProcessor implements DataProcessorStrategy {
     // Analyze each category
     const categoryAnalysis = Array.from(categoryMap.entries()).map(([category, categoryRecords]) => {
       const avgScore = categoryRecords.reduce((sum, r) => sum + r.value, 0) / categoryRecords.length;
-      const avgGrowthRate = categoryRecords.reduce((sum, r) => sum + (r.properties.growth_rate || 0), 0) / categoryRecords.length;
+      const avgGrowthRate = categoryRecords.reduce((sum, r) => sum + ((r.properties as any).growth_rate || 0), 0) / categoryRecords.length;
       
       return {
         category,
@@ -308,8 +308,8 @@ export class TrendDataProcessor implements DataProcessorStrategy {
           .map(r => ({
             name: r.area_name,
             score: r.value,
-            growthRate: r.properties.growth_rate,
-            momentum: r.properties.momentum
+            growthRate: (r.properties as any).growth_rate,
+            momentum: (r.properties as any).momentum
           }))
       };
     });
@@ -321,8 +321,8 @@ export class TrendDataProcessor implements DataProcessorStrategy {
       .slice(0, 5);
     
     const acceleratingMarkets = records
-      .filter(r => r.properties.momentum > 0.5)
-      .sort((a, b) => b.properties.momentum - a.properties.momentum)
+      .filter(r => (r.properties as any).momentum > 0.5)
+      .sort((a, b) => (b.properties as any).momentum - (a.properties as any).momentum)
       .slice(0, 5);
     
     return {
@@ -330,14 +330,14 @@ export class TrendDataProcessor implements DataProcessorStrategy {
       trendLeaders: trendLeaders.map(r => ({
         area: r.area_name,
         score: r.value,
-        growthRate: r.properties.growth_rate,
-        momentum: r.properties.momentum,
-        stability: r.properties.stability_index
+        growthRate: (r.properties as any).growth_rate,
+        momentum: (r.properties as any).momentum,
+        stability: (r.properties as any).stability_index
       })),
       acceleratingMarkets: acceleratingMarkets.map(r => ({
         area: r.area_name,
-        momentum: r.properties.momentum,
-        growthRate: r.properties.growth_rate,
+        momentum: (r.properties as any).momentum,
+        growthRate: (r.properties as any).growth_rate,
         trend: 'accelerating'
       })),
       marketMomentum: this.analyzeMarketMomentum(categoryAnalysis)
@@ -356,10 +356,10 @@ export class TrendDataProcessor implements DataProcessorStrategy {
 
   private processTrendFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getTrendFeatureDescription(item.feature || item.name),
-      trendImpact: this.assessTrendImpact(item.importance || 0)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getTrendFeatureDescription((item as any).feature || (item as any).name),
+      trendImpact: this.assessTrendImpact((item as any).importance || 0)
     })).sort((a, b) => b.importance - a.importance);
   }
 
@@ -410,9 +410,9 @@ export class TrendDataProcessor implements DataProcessorStrategy {
     
     // Enhanced baseline and trend metrics section
     const avgScore = records.reduce((sum, r) => sum + r.value, 0) / records.length;
-    const avgGrowthRate = records.reduce((sum, r) => sum + (r.properties.growth_rate || 0), 0) / records.length;
-    const avgMomentum = records.reduce((sum, r) => sum + (r.properties.momentum || 0), 0) / records.length;
-    const avgTrendStrength = records.reduce((sum, r) => sum + (r.properties.trend_strength || 0), 0) / records.length;
+    const avgGrowthRate = records.reduce((sum, r) => sum + ((r.properties as any).growth_rate || 0), 0) / records.length;
+    const avgMomentum = records.reduce((sum, r) => sum + ((r.properties as any).momentum || 0), 0) / records.length;
+    const avgTrendStrength = records.reduce((sum, r) => sum + ((r.properties as any).trend_strength || 0), 0) / records.length;
     
     summary += `**📈 Trend Baseline & Market Averages:** `;
     summary += `Market average trend score: ${avgScore.toFixed(1)} (range: ${records[records.length - 1]?.value.toFixed(1) || '0'}-${records[0]?.value.toFixed(1) || '0'}). `;
@@ -458,14 +458,14 @@ export class TrendDataProcessor implements DataProcessorStrategy {
       if (strongCategory && strongCategory.size > 0) {
         summary += `**${strongCategory.size} Strong Growth Markets** (${strongCategory.percentage.toFixed(1)}%): `;
         const topStrong = strongCategory.topAreas.slice(0, 3);
-        summary += topStrong.map((area: any) => `${area.name} (${(area.growthRate * 100).toFixed(1)}%)`).join(', ');
+        summary += topStrong.map((area: any) => `${(area as any).name} (${((area as any).growthRate * 100).toFixed(1)}%)`).join(', ');
         summary += '. ';
       }
       
       if (moderateCategory && moderateCategory.size > 0) {
         summary += `**${moderateCategory.size} Moderate Growth Markets** (${moderateCategory.percentage.toFixed(1)}%): `;
         const topModerate = moderateCategory.topAreas.slice(0, 3);
-        summary += topModerate.map((area: any) => `${area.name} (${(area.growthRate * 100).toFixed(1)}%)`).join(', ');
+        summary += topModerate.map((area: any) => `${(area as any).name} (${((area as any).growthRate * 100).toFixed(1)}%)`).join(', ');
         summary += '. ';
       }
     }

@@ -47,16 +47,16 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     const hasCustomerProfileFields = dataArray.length === 0 || 
   dataArray.some((record: any) => 
         record && 
-        (record.purchase_propensity !== undefined || // Latest scoring field
-         record.customer_profile_score !== undefined || // Pre-calculated score
-         record.total_population !== undefined ||        // Population for analysis
-         record.median_income !== undefined ||          // Income demographics
-         record.value_TOTPOP_CY !== undefined ||        // Legacy population
-         record.value_AVGHINC_CY !== undefined ||       // Legacy income
-         record.value_MEDAGE_CY !== undefined ||        // Age demographics
+        ((record as any).purchase_propensity !== undefined || // Latest scoring field
+         (record as any).customer_profile_score !== undefined || // Pre-calculated score
+         (record as any).total_population !== undefined ||        // Population for analysis
+         (record as any).median_income !== undefined ||          // Income demographics
+         (record as any).value_TOTPOP_CY !== undefined ||        // Legacy population
+         (record as any).value_AVGHINC_CY !== undefined ||       // Legacy income
+         (record as any).value_MEDAGE_CY !== undefined ||        // Age demographics
          // Dynamic brand detection instead of hardcoded fields
          this.hasBrandFields(record) ||
-         record.demographic_opportunity_score !== undefined) // Demographic base
+         (record as any).demographic_opportunity_score !== undefined) // Demographic base
       );
     
     return hasCustomerProfileFields;
@@ -127,8 +127,8 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
   private processCustomerProfileRecords(rawRecords: any[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
-      const area_id = record.ID || record.area_id || record.id || record.GEOID || `area_${index}`;
-      const area_name = record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || record.name || record.NAME || `Area ${index + 1}`;
+      const area_id = (record as any).ID || (record as any).area_id || (record as any).id || (record as any).GEOID || `area_${index}`;
+      const area_name = (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || (record as any).name || (record as any).NAME || `Area ${index + 1}`;
       
       // Extract customer profile score
       const customerProfileScore = this.extractCustomerProfileScore(record);
@@ -140,21 +140,21 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       const properties = {
         ...this.extractProperties(record),
         customer_profile_score: customerProfileScore,
-        demographic_alignment: Number(record.demographic_alignment) || 0,
-        lifestyle_score: Number(record.lifestyle_score) || 0,
-        behavioral_score: Number(record.behavioral_score) || 0,
-        market_context_score: Number(record.market_context_score) || 0,
-        profile_category: record.profile_category || this.getCustomerProfileCategory(customerProfileScore),
-        persona_type: record.persona_type || this.identifyPersonaType(record),
-        target_confidence: Number(record.target_confidence) || 0,
-        brand_loyalty_indicator: Number(record.brand_loyalty_indicator) || 0,
-        lifestyle_alignment: Number(record.lifestyle_alignment) || 0,
-        purchase_propensity: Number(record.purchase_propensity) || 0,
-        population: record.total_population || record.value_TOTPOP_CY || record.population || 0,
-        avg_income: record.median_income || record.value_AVGHINC_CY || record.income || 0,
-        median_age: record.value_MEDAGE_CY || record.age || 0,
-        household_size: record.value_AVGHHSZ_CY || record.household_size || 0,
-        wealth_index: record.value_WLTHINDXCY || 100,
+        demographic_alignment: Number((record as any).demographic_alignment) || 0,
+        lifestyle_score: Number((record as any).lifestyle_score) || 0,
+        behavioral_score: Number((record as any).behavioral_score) || 0,
+        market_context_score: Number((record as any).market_context_score) || 0,
+        profile_category: (record as any).profile_category || this.getCustomerProfileCategory(customerProfileScore),
+        persona_type: (record as any).persona_type || this.identifyPersonaType(record),
+        target_confidence: Number((record as any).target_confidence) || 0,
+        brand_loyalty_indicator: Number((record as any).brand_loyalty_indicator) || 0,
+        lifestyle_alignment: Number((record as any).lifestyle_alignment) || 0,
+        purchase_propensity: Number((record as any).purchase_propensity) || 0,
+        population: (record as any).total_population || (record as any).value_TOTPOP_CY || (record as any).population || 0,
+        avg_income: (record as any).median_income || (record as any).value_AVGHINC_CY || (record as any).income || 0,
+        median_age: (record as any).value_MEDAGE_CY || (record as any).age || 0,
+        household_size: (record as any).value_AVGHHSZ_CY || (record as any).household_size || 0,
+        wealth_index: (record as any).value_WLTHINDXCY || 100,
         target_brand_affinity: this.extractTargetBrandAffinity(record)
       };
       
@@ -171,7 +171,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
         customer_profile_score: customerProfileScore, // Primary scoring field
         rank: 0, // Will be calculated in ranking
         category,
-        coordinates: record.coordinates || [0, 0],
+        coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
@@ -181,23 +181,23 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
   private extractCustomerProfileScore(record: any): number {
     // PRIORITY 1: Use the explicit customer profile score when available
-    if (record.customer_profile_score !== undefined && record.customer_profile_score !== null) {
-      const score = Number(record.customer_profile_score);
-      console.log(`👤 [CustomerProfileProcessor] Using customer_profile_score: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+    if ((record as any).customer_profile_score !== undefined && (record as any).customer_profile_score !== null) {
+      const score = Number((record as any).customer_profile_score);
+      console.log(`👤 [CustomerProfileProcessor] Using customer_profile_score: ${score} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
       return score;
     }
     
     // PRIORITY 2: Fallback to purchase propensity if explicit profile score not present
-    if (record.purchase_propensity !== undefined && record.purchase_propensity !== null) {
-      const score = Number(record.purchase_propensity);
-      console.log(`👤 [CustomerProfileProcessor] Fallback to purchase_propensity: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+    if ((record as any).purchase_propensity !== undefined && (record as any).purchase_propensity !== null) {
+      const score = Number((record as any).purchase_propensity);
+      console.log(`👤 [CustomerProfileProcessor] Fallback to purchase_propensity: ${score} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
       return score;
     }
     
     // PRIORITY 3: Fallback to demographic opportunity score if customer profile score not available
-    if (record.demographic_opportunity_score !== undefined && record.demographic_opportunity_score !== null) {
-      const score = Number(record.demographic_opportunity_score);
-      console.log(`👤 [CustomerProfileProcessor] Fallback to demographic_opportunity_score: ${score} for ${record.DESCRIPTION || record.area_name || 'Unknown'}`);
+    if ((record as any).demographic_opportunity_score !== undefined && (record as any).demographic_opportunity_score !== null) {
+      const score = Number((record as any).demographic_opportunity_score);
+      console.log(`👤 [CustomerProfileProcessor] Fallback to demographic_opportunity_score: ${score} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
       return score;
     }
     
@@ -215,11 +215,11 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   private identifyPersonaType(record: any): string {
-    const income = record.median_income || record.value_AVGHINC_CY || record.income || 0;
-    const age = record.median_age || record.value_MEDAGE_CY || record.age || 35;
+    const income = (record as any).median_income || (record as any).value_AVGHINC_CY || (record as any).income || 0;
+    const age = (record as any).median_age || (record as any).value_MEDAGE_CY || (record as any).age || 35;
     const targetBrandAffinity = this.extractTargetBrandAffinity(record);
-    const behavioralScore = Number(record.behavioral_score) || 0;
-  // const demographicScore = Number(record.demographic_alignment) || 0;
+    const behavioralScore = Number((record as any).behavioral_score) || 0;
+  // const demographicScore = Number((record as any).demographic_alignment) || 0;
 
     // Brand Enthusiasts: High target brand affinity + strong behavioral score
     if (targetBrandAffinity >= 25 && behavioralScore >= 70) {
@@ -227,7 +227,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     }
     
     // Fashion-Forward Professionals: High income + good lifestyle score
-    if (income >= 60000 && Number(record.lifestyle_score) >= 70) {
+    if (income >= 60000 && Number((record as any).lifestyle_score) >= 70) {
       return 'Fashion-Forward Professionals';
     }
     
@@ -253,8 +253,8 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
   private calculateBrandLoyalty(record: any): number {
     const targetBrandAffinity = this.extractTargetBrandAffinity(record);
-    const income = record.median_income || record.value_AVGHINC_CY || record.income || 0;
-    const age = record.value_MEDAGE_CY || record.age || 0;
+    const income = (record as any).median_income || (record as any).value_AVGHINC_CY || (record as any).income || 0;
+    const age = (record as any).value_MEDAGE_CY || (record as any).age || 0;
     
     let loyaltyScore = 0;
     
@@ -275,10 +275,10 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   private calculateLifestyleAlignment(record: any): number {
-    const age = record.value_MEDAGE_CY || record.age || 0;
-    const income = record.median_income || record.value_AVGHINC_CY || record.income || 0;
-    const wealthIndex = record.value_WLTHINDXCY || 100;
-    const householdSize = record.value_AVGHHSZ_CY || record.household_size || 0;
+    const age = (record as any).value_MEDAGE_CY || (record as any).age || 0;
+    const income = (record as any).median_income || (record as any).value_AVGHINC_CY || (record as any).income || 0;
+    const wealthIndex = (record as any).value_WLTHINDXCY || 100;
+    const householdSize = (record as any).value_AVGHHSZ_CY || (record as any).household_size || 0;
     
     let alignmentScore = 0;
     
@@ -308,10 +308,10 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   private calculatePurchasePropensity(record: any): number {
-    const age = record.value_MEDAGE_CY || record.age || 0;
-    const income = record.median_income || record.value_AVGHINC_CY || record.income || 0;
+    const age = (record as any).value_MEDAGE_CY || (record as any).age || 0;
+    const income = (record as any).median_income || (record as any).value_AVGHINC_CY || (record as any).income || 0;
     const targetBrandAffinity = this.extractTargetBrandAffinity(record);
-    const wealthIndex = record.value_WLTHINDXCY || 100;
+    const wealthIndex = (record as any).value_WLTHINDXCY || 100;
     
     let propensityScore = 0;
     
@@ -353,8 +353,8 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   private extractShapValues(record: any): Record<string, number> {
-    if (record.shap_values && typeof record.shap_values === 'object') {
-      return record.shap_values;
+    if ((record as any).shap_values && typeof (record as any).shap_values === 'object') {
+      return (record as any).shap_values;
     }
     
     const shapValues: Record<string, number> = {};
@@ -420,7 +420,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   const personaMap = new Map<string, GeographicDataPoint[]>();
     
     records.forEach(record => {
-      const persona = String((record.properties as any).persona_type || 'Unknown');
+      const persona = String(((record as any).properties as any).persona_type || 'Unknown');
       if (!personaMap.has(persona)) {
         personaMap.set(persona, []);
       }
@@ -492,10 +492,10 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
   private processCustomerProfileFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getCustomerProfileFeatureDescription(item.feature || item.name),
-      profileImpact: this.assessCustomerProfileImpact(item.importance || 0)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getCustomerProfileFeatureDescription((item as any).feature || (item as any).name),
+      profileImpact: this.assessCustomerProfileImpact((item as any).importance || 0)
     })).sort((a, b) => b.importance - a.importance);
   }
 
@@ -607,7 +607,7 @@ Higher scores indicate stronger alignment with the target brand's ideal customer
       // Top areas for dominant persona
   if (topPersonas[0] && topPersonas[0].topAreas.length > 0) {
         const topAreas = topPersonas[0].topAreas.slice(0, 3);
-        summary += `Top ${topPersonas[0].persona} markets: ${topAreas.map((area: any) => `${area.name} (${area.score.toFixed(1)})`).join(', ')}. `;
+        summary += `Top ${topPersonas[0].persona} markets: ${topAreas.map((area: any) => `${(area as any).name} (${(area as any).score.toFixed(1)})`).join(', ')}. `;
       }
     }
     
@@ -771,13 +771,13 @@ Higher scores indicate stronger alignment with the target brand's ideal customer
     // Filter for records with valid coordinates
     const validCoords = records
       .filter(record => 
-        record.coordinates && 
-        Array.isArray(record.coordinates) && 
-        record.coordinates.length >= 2 &&
-        isFinite(record.coordinates[0]) && 
-        isFinite(record.coordinates[1])
+        (record as any).coordinates && 
+        Array.isArray((record as any).coordinates) && 
+        (record as any).coordinates.length >= 2 &&
+        isFinite((record as any).coordinates[0]) && 
+        isFinite((record as any).coordinates[1])
       )
-      .map(record => record.coordinates);
+      .map(record => (record as any).coordinates);
 
     if (validCoords.length === 0) {
       console.warn('[CustomerProfileProcessor] No records with valid coordinates found.');

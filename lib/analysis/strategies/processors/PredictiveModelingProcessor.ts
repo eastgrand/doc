@@ -13,27 +13,27 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
    */
   private extractPredictiveScore(record: any): number {
     // PRIORITY 1: Use predictive_modeling_score if available
-    if (record.predictive_modeling_score !== undefined && record.predictive_modeling_score !== null) {
-      return Number(record.predictive_modeling_score);
+    if ((record as any).predictive_modeling_score !== undefined && (record as any).predictive_modeling_score !== null) {
+      return Number((record as any).predictive_modeling_score);
     }
     
     // PRIORITY 2: Use predictive_score
-    if (record.predictive_score !== undefined && record.predictive_score !== null) {
-      return Number(record.predictive_score);
+    if ((record as any).predictive_score !== undefined && (record as any).predictive_score !== null) {
+      return Number((record as any).predictive_score);
     }
     
     // PRIORITY 3: Use thematic_value (common in endpoint data)
-    if (record.thematic_value !== undefined && record.thematic_value !== null) {
-      return Number(record.thematic_value);
+    if ((record as any).thematic_value !== undefined && (record as any).thematic_value !== null) {
+      return Number((record as any).thematic_value);
     }
     
     // PRIORITY 4: Use generic value field
-    if (record.value !== undefined && record.value !== null) {
-      return Number(record.value);
+    if ((record as any).value !== undefined && (record as any).value !== null) {
+      return Number((record as any).value);
     }
     
     // FALLBACK: Find first suitable numeric field
-    const numericFields = Object.keys(record).filter(key => {
+    const numericFields = Object.keys(record as any).filter(key => {
       const value = record[key];
       return typeof value === 'number' && 
              !key.toLowerCase().includes('id') &&
@@ -89,23 +89,23 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
       
       // Check for ID field (flexible naming)
       const hasIdField = record && (
-        record.area_id !== undefined || 
-        record.id !== undefined || 
-        record.ID !== undefined ||
-        record.GEOID !== undefined ||
-        record.zipcode !== undefined ||
-        record.area_name !== undefined
+        (record as any).area_id !== undefined || 
+        (record as any).id !== undefined || 
+        (record as any).ID !== undefined ||
+        (record as any).GEOID !== undefined ||
+        (record as any).zipcode !== undefined ||
+        (record as any).area_name !== undefined
       );
       
       // Check for predictive modeling fields or any numeric field
       const hasScoringField = record && (
-        record.predictive_modeling_score !== undefined || 
-        record.predictive_score !== undefined ||
-        record.value !== undefined || 
-        record.score !== undefined ||
-        record.thematic_value !== undefined ||
+        (record as any).predictive_modeling_score !== undefined || 
+        (record as any).predictive_score !== undefined ||
+        (record as any).value !== undefined || 
+        (record as any).score !== undefined ||
+        (record as any).thematic_value !== undefined ||
         // Accept any numeric field that looks like data
-        Object.keys(record).some(key => 
+        Object.keys(record as any).some(key => 
           typeof record[key] === 'number' && 
           !key.toLowerCase().includes('date') &&
           !key.toLowerCase().includes('time') &&
@@ -118,7 +118,7 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
       console.log(`🔍 [PredictiveModelingProcessor] Record ${i} validation:`, {
         hasIdField,
         hasScoringField,
-        recordKeys: Object.keys(record).slice(0, 10)
+        recordKeys: Object.keys(record as any).slice(0, 10)
       });
       
       if (hasIdField && hasScoringField) {
@@ -141,13 +141,13 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
       const predictiveScore = this.extractPredictiveScore(record);
       
       // Extract related metrics for additional analysis (updated for actual dataset fields)
-      const nikeShare = Number(record.value_MP30034A_B_P || record.mp30034a_b_p) || 0;
-      const strategicScore = Number(record.strategic_value_score) || 0;
-      const correlationScore = Number(record.correlation_strength_score) || 0;
-      const trendScore = Number(record.trend_strength_score) || 0;
-      const demographicScore = Number(record.demographic_opportunity_score) || 0;
-      const totalPop = Number(record.value_TOTPOP_CY || record.TOTPOP_CY || record.total_population) || 0;
-      const medianIncome = Number(record.value_MEDDI_CY || record.value_AVGHINC_CY || record.median_income) || 0;
+      const nikeShare = Number((record as any).value_MP30034A_B_P || (record as any).mp30034a_b_p) || 0;
+      const strategicScore = Number((record as any).strategic_value_score) || 0;
+      const correlationScore = Number((record as any).correlation_strength_score) || 0;
+      const trendScore = Number((record as any).trend_strength_score) || 0;
+      const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+      const totalPop = Number((record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population) || 0;
+      const medianIncome = Number((record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income) || 0;
 
       // Calculate additional predictive indicators
       const indicators = this.calculatePredictiveIndicators({
@@ -162,8 +162,8 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
       });
 
       return {
-        area_id: record.area_id || record.ID || `area_${index}`,
-        area_name: record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || `Area ${index + 1}`,
+        area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
+        area_name: (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || `Area ${index + 1}`,
         value: predictiveScore,
         rank: index + 1, // Will be sorted later
         category: this.categorizePredictiveLevel(predictiveScore),
@@ -202,7 +202,7 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
           forecast_confidence: indicators.forecastConfidence,
           model_suitability: indicators.modelSuitability
         },
-        shapValues: record.shap_values || {}
+        shapValues: (record as any).shap_values || {}
       };
     });
 
@@ -211,7 +211,7 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
     
     // Update ranks after sorting
     records.forEach((record, index) => {
-      record.rank = index + 1;
+      (record as any).rank = index + 1;
     });
 
     // Calculate statistics
@@ -353,13 +353,13 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
   }
 
   private extractCoordinates(record: any): [number, number] {
-    if (record.coordinates && Array.isArray(record.coordinates)) {
-      return [record.coordinates[0] || 0, record.coordinates[1] || 0];
+    if ((record as any).coordinates && Array.isArray((record as any).coordinates)) {
+      return [(record as any).coordinates[0] || 0, (record as any).coordinates[1] || 0];
     }
     
     // Try to extract from latitude/longitude fields
-    const lat = Number(record.latitude || record.lat || record.LATITUDE) || 0;
-    const lng = Number(record.longitude || record.lng || record.lon || record.LONGITUDE) || 0;
+    const lat = Number((record as any).latitude || (record as any).lat || (record as any).LATITUDE) || 0;
+    const lng = Number((record as any).longitude || (record as any).lng || (record as any).lon || (record as any).LONGITUDE) || 0;
     
     return [lng, lat]; // GeoJSON format [longitude, latitude]
   }

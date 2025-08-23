@@ -22,12 +22,12 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     // Validate that we have expected fields for trend analysis
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => {
-        if (!record || !(record.area_id || record.id || record.ID)) {
+        if (!record || !((record as any).area_id || (record as any).id || (record as any).ID)) {
           return false;
         }
         
         // Check for standard score fields
-        if (record.trend_score !== undefined || record.value !== undefined || record.score !== undefined) {
+        if ((record as any).trend_score !== undefined || (record as any).value !== undefined || (record as any).score !== undefined) {
           return true;
         }
         
@@ -38,7 +38,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
         }
         
         // Check for other trend-relevant fields
-        return record.strategic_value_score !== undefined || record.competitive_advantage_score !== undefined;
+        return (record as any).strategic_value_score !== undefined || (record as any).competitive_advantage_score !== undefined;
       });
     
     return hasRequiredFields;
@@ -60,7 +60,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       const areaName = this.generateAreaName(record);
       
       // Extract ID (updated for correlation_analysis format)
-      const recordId = record.ID || record.id || record.area_id;
+      const recordId = (record as any).ID || (record as any).id || (record as any).area_id;
       
       // Debug logging for records with missing ID
       if (!recordId) {
@@ -68,7 +68,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
           hasID: 'ID' in record,
           hasId: 'id' in record,
           hasAreaId: 'area_id' in record,
-          recordKeys: Object.keys(record).slice(0, 10)
+          recordKeys: Object.keys(record as any).slice(0, 10)
         });
       }
       
@@ -77,11 +77,11 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       const targetBrand = brandFields.find(bf => bf.isTarget);
       const targetBrandShare = targetBrand?.value || 0;
       
-      const strategicScore = Number(record.strategic_value_score) || 0;
-      const competitiveScore = Number(record.competitive_advantage_score) || 0;
-      const demographicScore = Number(record.demographic_opportunity_score) || 0;
-      const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-      const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
+      const strategicScore = Number((record as any).strategic_value_score) || 0;
+      const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+      const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+      const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+      const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
       
       // Calculate trend indicators
       const growthPotential = this.calculateGrowthPotential(record);
@@ -95,7 +95,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
         trend_analysis_score: Math.round(trendScore * 100) / 100, // Add target variable at top level
         rank: 0, // Will be calculated after sorting
         properties: {
-          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
+          DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           trend_analysis_score: trendScore,
           score_source: 'trend_analysis_score',
           target_brand_share: targetBrandShare,
@@ -146,8 +146,8 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
    * Extract trend strength score from record with fallback calculation
    */
   private extractTrendScore(record: any): number {
-    if (record.trend_score !== undefined && record.trend_score !== null) {
-      const preCalculatedScore = Number(record.trend_score);
+    if ((record as any).trend_score !== undefined && (record as any).trend_score !== null) {
+      const preCalculatedScore = Number((record as any).trend_score);
       console.log(`📈 [TrendAnalysisProcessor] Using pre-calculated trend score: ${preCalculatedScore}`);
       return preCalculatedScore;
     }
@@ -155,9 +155,9 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     // FALLBACK: Calculate trend score from available data
     console.log('⚠️ [TrendAnalysisProcessor] No trend_strength_score found, calculating from raw data');
     
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const competitiveScore = Number(record.competitive_advantage_score) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
     
     // Use dynamic brand detection for target brand share
     const brandFields = this.brandResolver.detectBrandFields(record);
@@ -182,7 +182,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     const targetBrand = brandFields.find(bf => bf.isTarget);
     const targetBrandShare = targetBrand?.value || 0;
     
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
     const marketGap = Math.max(0, 100 - targetBrandShare);
     
     // Growth potential formula: Market Gap (60%) + Demographic Opportunity (40%)
@@ -196,9 +196,9 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
    * Calculate trend consistency from multiple score relationships
    */
   private calculateTrendConsistency(record: any): number {
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const competitiveScore = Number(record.competitive_advantage_score) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
     
     const scores = [strategicScore, competitiveScore, demographicScore].filter(s => s > 0);
     
@@ -240,16 +240,16 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
    */
   private generateAreaName(record: any): string {
     // Try explicit name fields first (updated for correlation_analysis format)
-    if (record.value_DESCRIPTION && typeof record.value_DESCRIPTION === 'string') {
-      const description = record.value_DESCRIPTION.trim();
+    if ((record as any).value_DESCRIPTION && typeof (record as any).value_DESCRIPTION === 'string') {
+      const description = (record as any).value_DESCRIPTION.trim();
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
         return nameMatch[1].trim();
       }
       return description;
     }
-    if (record.DESCRIPTION && typeof record.DESCRIPTION === 'string') {
-      const description = record.DESCRIPTION.trim();
+    if ((record as any).DESCRIPTION && typeof (record as any).DESCRIPTION === 'string') {
+      const description = (record as any).DESCRIPTION.trim();
       // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
@@ -257,12 +257,12 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       }
       return description;
     }
-    if (record.area_name) return record.area_name;
-    if (record.NAME) return record.NAME;
-    if (record.name) return record.name;
+    if ((record as any).area_name) return (record as any).area_name;
+    if ((record as any).NAME) return (record as any).NAME;
+    if ((record as any).name) return (record as any).name;
     
     // Create name from ID and location data
-    const id = record.ID || record.id || record.GEOID;
+    const id = (record as any).ID || (record as any).id || (record as any).GEOID;
     if (id) {
       // For ZIP codes, create format like "ZIP 12345"
       if (typeof id === 'string' && id.match(/^\d{5}$/)) {
@@ -279,7 +279,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       return `Region ${id}`;
     }
     
-    return `Area ${record.OBJECTID || 'Unknown'}`;
+    return `Area ${(record as any).OBJECTID || 'Unknown'}`;
   }
 
   /**
@@ -300,9 +300,9 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
    */
   private processTrendFeatureImportance(rawFeatureImportance: any[]): any[] {
     const trendFeatures = rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getTrendFeatureDescription(item.feature || item.name)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getTrendFeatureDescription((item as any).feature || (item as any).name)
     }));
 
     // Add trend-specific synthetic features if none provided
@@ -451,12 +451,12 @@ Higher scores indicate stronger, more consistent, and predictable market trends.
     // Growth potential markets
     if (records.length > 0) {
       const growthPotentialAreas = records
-        .filter(r => r.properties.growth_potential >= 60)
+        .filter(r => (r.properties as any).growth_potential >= 60)
         .slice(0, 5);
       
       if (growthPotentialAreas.length > 0) {
         summary += `**High Growth Potential:** `;
-        const growthNames = growthPotentialAreas.map(r => `${r.area_name} (${r.properties.growth_potential?.toFixed(1)}% potential)`);
+        const growthNames = growthPotentialAreas.map(r => `${r.area_name} (${(r.properties as any).growth_potential?.toFixed(1)}% potential)`);
         summary += `${growthNames.join(', ')}. `;
         summary += `These areas demonstrate strong growth trajectory patterns. `;
       }
@@ -465,12 +465,12 @@ Higher scores indicate stronger, more consistent, and predictable market trends.
     // Consistent performers
     if (records.length > 0) {
       const consistentPerformers = records
-        .filter(r => r.properties.trend_consistency >= 70)
+        .filter(r => (r.properties as any).trend_consistency >= 70)
         .slice(0, 5);
       
       if (consistentPerformers.length > 0) {
         summary += `**Most Consistent Trends:** `;
-        const consistentNames = consistentPerformers.map(r => `${r.area_name} (${r.properties.trend_consistency?.toFixed(1)}% consistency)`);
+        const consistentNames = consistentPerformers.map(r => `${r.area_name} (${(r.properties as any).trend_consistency?.toFixed(1)}% consistency)`);
         summary += `${consistentNames.join(', ')}. `;
         summary += `These markets offer predictable and stable performance patterns. `;
       }
@@ -479,7 +479,7 @@ Higher scores indicate stronger, more consistent, and predictable market trends.
     // Strategic insights
     summary += `**Trend Insights:** ${statistics.total} geographic areas analyzed for temporal patterns and trend strength. `;
     
-    const highVolatility = records.filter(r => (r.properties.volatility_index || 0) >= 70).length;
+    const highVolatility = records.filter(r => ((r.properties as any).volatility_index || 0) >= 70).length;
     if (highVolatility > 0) {
       summary += `${highVolatility} markets show high volatility (${(highVolatility/records.length*100).toFixed(1)}%) requiring careful monitoring. `;
     }

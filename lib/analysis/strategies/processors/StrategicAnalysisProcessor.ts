@@ -27,8 +27,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     const hasRequiredFields = rawData.results.length === 0 ||
       (rawData.results as any[]).some((record: any) =>
         record &&
-        (record.area_id || record.id || record.ID) &&
-        (record.strategic_analysis_score !== undefined || record.strategic_value_score !== undefined || record.strategic_score !== undefined)
+        ((record as any).area_id || (record as any).id || (record as any).ID) &&
+        ((record as any).strategic_analysis_score !== undefined || (record as any).strategic_value_score !== undefined || (record as any).strategic_score !== undefined)
       );
     
     return hasRequiredFields;
@@ -51,15 +51,15 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
 
   const processedRecords = (rawData.results as any[]).map((record: any, index: number) => {
       // Strategic analysis uses strategic_analysis_score as primary field
-      const primaryScore = Number(record.strategic_analysis_score || record.strategic_value_score || record.strategic_score);
+      const primaryScore = Number((record as any).strategic_analysis_score || (record as any).strategic_value_score || (record as any).strategic_score);
       
       if (isNaN(primaryScore)) {
-        throw new Error(`Strategic analysis record ${record.ID || index} is missing strategic_analysis_score`);
+        throw new Error(`Strategic analysis record ${(record as any).ID || index} is missing strategic_analysis_score`);
       }
       
       // Generate area name
       const areaName = this.generateAreaName(record);
-      const recordId = record.ID || record.id || record.area_id || `area_${index + 1}`;
+      const recordId = (record as any).ID || (record as any).id || (record as any).area_id || `area_${index + 1}`;
       
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
@@ -73,15 +73,15 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
-          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
+          DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           strategic_analysis_score: primaryScore,
           score_source: 'strategic_analysis_score',
           target_brand_share: this.extractTargetBrandShare(record),
           market_gap: this.calculateRealMarketGap(record),
-          total_population: Number(record.total_population || record.value_TOTPOP_CY) || 0,
-          median_income: Number(record.median_income || record.value_AVGHINC_CY) || 0,
-          competitive_advantage_score: Number(record.competitive_advantage_score) || 0,
-          demographic_opportunity_score: Number(record.demographic_opportunity_score) || 0
+          total_population: Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0,
+          median_income: Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0,
+          competitive_advantage_score: Number((record as any).competitive_advantage_score) || 0,
+          demographic_opportunity_score: Number((record as any).demographic_opportunity_score) || 0
         }
       };
     });
@@ -95,8 +95,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     // Debug: Check if values are being corrupted
     console.log('🚨 [STRATEGIC PROCESSOR] First 5 processed records with area names:');
     rankedRecords.slice(0, 5).forEach((record, i) => {
-      console.log(`🚨   ${i+1}. area_name="${record.area_name}", area_id="${record.area_id}", value=${record.value}`);
-      console.log(`🚨      Full record keys:`, Object.keys(record));
+      console.log(`🚨   ${i+1}. area_name="${(record as any).area_name}", area_id="${(record as any).area_id}", value=${(record as any).value}`);
+      console.log(`🚨      Full record keys:`, Object.keys(record as any));
     });
     
     // Extract feature importance
@@ -300,11 +300,11 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       .sort((a, b) => b.importance - a.importance)
       .slice(0, 5)
       .reduce((acc, item) => {
-        acc[item.field] = item.value;
+        acc[(item as any).field] = (item as any).value;
         return acc;
       }, {} as Record<string, number>);
     
-    console.log(`[StrategicAnalysisProcessor] Top contributing fields for ${record.ID}:`, topFields);
+    console.log(`[StrategicAnalysisProcessor] Top contributing fields for ${(record as any).ID}:`, topFields);
     return topFields;
   }
 

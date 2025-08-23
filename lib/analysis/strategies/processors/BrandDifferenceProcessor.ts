@@ -40,9 +40,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const hasBrandFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
-        (record.area_id || record.id || record.ID) &&
+        ((record as any).area_id || (record as any).id || (record as any).ID) &&
         // Look for any brand market share fields (MP101*A_B_P pattern)
-        Object.keys(record).some(key => 
+        Object.keys(record as any).some(key => 
           key.includes('MP101') && key.endsWith('A_B_P')
         )
       );
@@ -68,7 +68,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     // Debug: Show available fields in first record
     if (rawData.results && rawData.results.length > 0) {
       const firstRecord = rawData.results[0];
-      const brandFields = Object.keys(firstRecord).filter(key => key.includes('MP101') && key.includes('_P'));
+      const brandFields = Object.keys(firstRecord as any).filter(key => key.includes('MP101') && key.includes('_P'));
       console.log(`[BrandDifferenceProcessor] Available brand fields in data:`, brandFields);
     }
     
@@ -224,8 +224,8 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     console.log(`[BrandDifferenceProcessor] Using fields: ${brand1Field} vs ${brand2Field}`);
 
     return rawRecords.map((record, index) => {
-      const area_id = record.area_id || record.id || record.GEOID || `area_${index}`;
-      const area_name = record.value_DESCRIPTION || record.DESCRIPTION || record.area_name || record.name || record.NAME || `Area ${index + 1}`;
+      const area_id = (record as any).area_id || (record as any).id || (record as any).GEOID || `area_${index}`;
+      const area_name = (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || (record as any).name || (record as any).NAME || `Area ${index + 1}`;
       
       // Extract brand market shares
       const brand1Share = Number(record[brand1Field]) || 0; // Already in percentage format
@@ -249,9 +249,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
         [brand1 + '_market_share']: brand1Share,
         [brand2 + '_market_share']: brand2Share,
         absolute_difference: brand1Share - brand2Share,
-        competitive_advantage_score: record.competitive_advantage_score || 0,
-        total_population: Number(record.value_TOTPOP_CY) || 0,
-        wealth_index: Number(record.value_WLTHINDXCY) || 100,
+        competitive_advantage_score: (record as any).competitive_advantage_score || 0,
+        total_population: Number((record as any).value_TOTPOP_CY) || 0,
+        wealth_index: Number((record as any).value_WLTHINDXCY) || 100,
         difference_category: this.categorizeDifference(difference),
         market_dominance: this.determineMarketDominance(brand1Share, brand2Share)
       };
@@ -269,7 +269,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
         brand_difference_score: difference,
         rank: 0, // Will be calculated in ranking
         category,
-        coordinates: record.coordinates || [0, 0],
+        coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
@@ -387,7 +387,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const categoryMap = new Map<string, GeographicDataPoint[]>();
     
     records.forEach(record => {
-      const category = record.category!;
+      const category = (record as any).category!;
       if (!categoryMap.has(category)) {
         categoryMap.set(category, []);
       }
@@ -453,10 +453,10 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
 
   private processBrandFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getBrandFeatureDescription(item.feature || item.name),
-      brandImpact: this.assessBrandImpact(item.importance || 0)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getBrandFeatureDescription((item as any).feature || (item as any).name),
+      brandImpact: this.assessBrandImpact((item as any).importance || 0)
     })).sort((a, b) => b.importance - a.importance);
   }
 
@@ -531,9 +531,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     if (topBrand1Markets.length > 0) {
       summary += `**${brand1Name} Strongholds** (>20% advantage): `;
       topBrand1Markets.forEach((record, index) => {
-        const brand1Share = record.properties[`${brand1}_market_share`];
-        const brand2Share = record.properties[`${brand2}_market_share`];
-        summary += `${record.area_name} (${brand1Share.toFixed(1)}% vs ${brand2Share.toFixed(1)}%), `;
+        const brand1Share = (record as any).properties[`${brand1}_market_share`];
+        const brand2Share = (record as any).properties[`${brand2}_market_share`];
+        summary += `${(record as any).area_name} (${brand1Share.toFixed(1)}% vs ${brand2Share.toFixed(1)}%), `;
       });
       summary = summary.slice(0, -2) + '.\n\n';
     }
@@ -541,9 +541,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     if (topBrand2Markets.length > 0) {
       summary += `**${brand2Name} Strongholds** (>20% advantage): `;
       topBrand2Markets.forEach((record, index) => {
-        const brand1Share = record.properties[`${brand1}_market_share`];
-        const brand2Share = record.properties[`${brand2}_market_share`];
-        summary += `${record.area_name} (${brand2Share.toFixed(1)}% vs ${brand1Share.toFixed(1)}%), `;
+        const brand1Share = (record as any).properties[`${brand1}_market_share`];
+        const brand2Share = (record as any).properties[`${brand2}_market_share`];
+        summary += `${(record as any).area_name} (${brand2Share.toFixed(1)}% vs ${brand1Share.toFixed(1)}%), `;
       });
       summary = summary.slice(0, -2) + '.\n\n';
     }

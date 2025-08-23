@@ -17,18 +17,18 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
-        (record.area_id || record.id || record.ID) &&
-        (record.outlier_score !== undefined || 
-         record.value !== undefined || 
-         record.score !== undefined ||
+        ((record as any).area_id || (record as any).id || (record as any).ID) &&
+        ((record as any).outlier_score !== undefined || 
+         (record as any).value !== undefined || 
+         (record as any).score !== undefined ||
          // Check for outlier-relevant fields
-         record.value_MP30034A_B_P !== undefined || // Nike market share (raw format)
-         record.mp30034a_b_p !== undefined || // Nike market share for outlier analysis
-         record.strategic_value_score !== undefined ||
-         record.value_TOTPOP_CY !== undefined || // Total population (raw format)
-         record.total_population !== undefined ||
-         record.value_MEDDI_CY !== undefined || // Median income (raw format)
-         record.median_income !== undefined)
+         (record as any).value_MP30034A_B_P !== undefined || // Nike market share (raw format)
+         (record as any).mp30034a_b_p !== undefined || // Nike market share for outlier analysis
+         (record as any).strategic_value_score !== undefined ||
+         (record as any).value_TOTPOP_CY !== undefined || // Total population (raw format)
+         (record as any).total_population !== undefined ||
+         (record as any).value_MEDDI_CY !== undefined || // Median income (raw format)
+         (record as any).median_income !== undefined)
       );
     
     return hasRequiredFields;
@@ -50,7 +50,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
       const areaName = this.generateAreaName(record);
       
       // Extract ID (updated for correlation_analysis format)
-      const recordId = record.ID || record.id || record.area_id;
+      const recordId = (record as any).ID || (record as any).id || (record as any).area_id;
       
       // Debug logging for records with missing ID
       if (!recordId) {
@@ -58,19 +58,19 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
           hasID: 'ID' in record,
           hasId: 'id' in record,
           hasAreaId: 'area_id' in record,
-          recordKeys: Object.keys(record).slice(0, 10)
+          recordKeys: Object.keys(record as any).slice(0, 10)
         });
       }
       
       // Extract outlier-relevant metrics for properties
-      const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-      const strategicScore = Number(record.strategic_value_score) || 0;
-      const competitiveScore = Number(record.competitive_advantage_score) || 0;
-      const demographicScore = Number(record.demographic_opportunity_score) || 0;
-      const trendScore = Number(record.trend_strength_score) || 0;
-      const correlationScore = Number(record.correlation_strength_score) || 0;
-      const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-      const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
+      const nikeShare = Number((record as any).mp30034a_b_p || (record as any).value_MP30034A_B_P) || 0;
+      const strategicScore = Number((record as any).strategic_value_score) || 0;
+      const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+      const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+      const trendScore = Number((record as any).trend_strength_score) || 0;
+      const correlationScore = Number((record as any).correlation_strength_score) || 0;
+      const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+      const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
       
       // Calculate outlier indicators
       const statisticalOutlierLevel = this.calculateStatisticalOutlierLevel(record);
@@ -85,7 +85,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
         outlier_detection_score: Math.round(outlierScore * 100) / 100, // Add target variable at top level
         rank: 0, // Will be calculated after sorting
         properties: {
-          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
+          DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           outlier_detection_score: outlierScore,
           score_source: 'outlier_detection_score',
           nike_market_share: nikeShare,
@@ -140,8 +140,8 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
    * Extract outlier detection score from record with fallback calculation
    */
   private extractOutlierScore(record: any): number {
-    if (record.outlier_score !== undefined && record.outlier_score !== null) {
-      const preCalculatedScore = Number(record.outlier_score);
+    if ((record as any).outlier_score !== undefined && (record as any).outlier_score !== null) {
+      const preCalculatedScore = Number((record as any).outlier_score);
       console.log(`🎯 [OutlierDetectionProcessor] Using pre-calculated outlier score: ${preCalculatedScore}`);
       return preCalculatedScore;
     }
@@ -149,10 +149,10 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
     // FALLBACK: Calculate outlier score from available data
     console.log('⚠️ [OutlierDetectionProcessor] No outlier_detection_score found, calculating from raw data');
     
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-    const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p || (record as any).value_MP30034A_B_P) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+    const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
     
     // Simple outlier calculation based on extreme values
     let outlierScore = 0;
@@ -196,10 +196,10 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
    * Calculate statistical outlier level based on deviations
    */
   private calculateStatisticalOutlierLevel(record: any): number {
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p) || 0;
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-    const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+    const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
     
     let statisticalLevel = 0;
     
@@ -242,10 +242,10 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
    * Calculate performance extreme level
    */
   private calculatePerformanceExtremeLevel(record: any): number {
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
     
     let extremeLevel = 0;
     
@@ -284,11 +284,11 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
    * Calculate contextual uniqueness level
    */
   private calculateContextualUniquenessLevel(record: any): number {
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p) || 0;
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-    const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
-    const competitiveScore = Number(record.competitive_advantage_score) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+    const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
+    const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
     
     let uniquenessLevel = 0;
     
@@ -325,11 +325,11 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
    * Calculate rarity level of characteristic combinations
    */
   private calculateRarityLevel(record: any): number {
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-    const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+    const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
     
     let rarityLevel = 0;
     
@@ -399,11 +399,11 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
   private identifyExtremeCharacteristics(record: any): string[] {
     const characteristics: string[] = [];
     
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p) || 0;
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-    const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+    const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
     
     // Strategic extremes
     if (strategicScore >= 70) characteristics.push('Extremely High Strategic Value');
@@ -438,16 +438,16 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
    */
   private generateAreaName(record: any): string {
     // Try explicit name fields first (updated for correlation_analysis format)
-    if (record.value_DESCRIPTION && typeof record.value_DESCRIPTION === 'string') {
-      const description = record.value_DESCRIPTION.trim();
+    if ((record as any).value_DESCRIPTION && typeof (record as any).value_DESCRIPTION === 'string') {
+      const description = (record as any).value_DESCRIPTION.trim();
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
         return nameMatch[1].trim();
       }
       return description;
     }
-    if (record.DESCRIPTION && typeof record.DESCRIPTION === 'string') {
-      const description = record.DESCRIPTION.trim();
+    if ((record as any).DESCRIPTION && typeof (record as any).DESCRIPTION === 'string') {
+      const description = (record as any).DESCRIPTION.trim();
       // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
@@ -455,12 +455,12 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
       }
       return description;
     }
-    if (record.area_name) return record.area_name;
-    if (record.NAME) return record.NAME;
-    if (record.name) return record.name;
+    if ((record as any).area_name) return (record as any).area_name;
+    if ((record as any).NAME) return (record as any).NAME;
+    if ((record as any).name) return (record as any).name;
     
     // Create name from ID and location data
-    const id = record.ID || record.id || record.GEOID;
+    const id = (record as any).ID || (record as any).id || (record as any).GEOID;
     if (id) {
       // For ZIP codes, create format like "ZIP 12345"
       if (typeof id === 'string' && id.match(/^\d{5}$/)) {
@@ -477,7 +477,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
       return `Region ${id}`;
     }
     
-    return `Area ${record.OBJECTID || 'Unknown'}`;
+    return `Area ${(record as any).OBJECTID || 'Unknown'}`;
   }
 
   /**
@@ -498,9 +498,9 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
    */
   private processOutlierFeatureImportance(rawFeatureImportance: any[]): any[] {
     const outlierFeatures = rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getOutlierFeatureDescription(item.feature || item.name)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getOutlierFeatureDescription((item as any).feature || (item as any).name)
     }));
 
     // Add outlier-specific synthetic features if none provided
@@ -648,7 +648,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
     // Outlier type breakdown
     if (records.length > 0) {
       const outlierTypes = records.reduce((acc, record) => {
-        const type = record.properties.outlier_type || 'Unknown';
+        const type = (record as any).properties.outlier_type || 'Unknown';
         acc[type] = (acc[type] || 0) + 1;
         return acc;
       }, {} as Record<string, number>);
@@ -669,13 +669,13 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
     // Statistical outliers
     if (records.length > 0) {
       const statisticalOutliers = records
-        .filter(r => (r.properties.statistical_outlier_level || 0) >= 50)
+        .filter(r => ((r.properties as any).statistical_outlier_level || 0) >= 50)
         .slice(0, 5);
       
       if (statisticalOutliers.length > 0) {
         summary += `**Statistical Outliers:** `;
         const statNames = statisticalOutliers.map(r => 
-          `${r.area_name} (${(r.properties.statistical_outlier_level || 0).toFixed(1)}% deviation)`
+          `${r.area_name} (${((r.properties as any).statistical_outlier_level || 0).toFixed(1)}% deviation)`
         );
         summary += `${statNames.join(', ')}. `;
         summary += `These markets show extreme statistical deviations requiring investigation. `;
@@ -685,13 +685,13 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
     // Performance extremes
     if (records.length > 0) {
       const performanceExtremes = records
-        .filter(r => (r.properties.performance_extreme_level || 0) >= 60)
+        .filter(r => ((r.properties as any).performance_extreme_level || 0) >= 60)
         .slice(0, 5);
       
       if (performanceExtremes.length > 0) {
         summary += `**Performance Extremes:** `;
         const extremeNames = performanceExtremes.map(r => 
-          `${r.area_name} (${(r.properties.performance_extreme_level || 0).toFixed(1)}% extreme)`
+          `${r.area_name} (${((r.properties as any).performance_extreme_level || 0).toFixed(1)}% extreme)`
         );
         summary += `${extremeNames.join(', ')}. `;
         summary += `These markets demonstrate exceptional performance levels. `;
@@ -701,7 +701,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
     // Contextually unique markets
     if (records.length > 0) {
       const uniqueMarkets = records
-        .filter(r => (r.properties.contextual_uniqueness_level || 0) >= 50)
+        .filter(r => ((r.properties as any).contextual_uniqueness_level || 0) >= 50)
         .slice(0, 5);
       
       if (uniqueMarkets.length > 0) {
@@ -721,7 +721,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
     }
     
     // Rare combinations
-    const rareMarkets = records.filter(r => (r.properties.rarity_level || 0) >= 30).length;
+    const rareMarkets = records.filter(r => ((r.properties as any).rarity_level || 0) >= 30).length;
     if (rareMarkets > 0) {
       summary += `${rareMarkets} markets exhibit rare characteristic combinations offering unique opportunities or challenges. `;
     }

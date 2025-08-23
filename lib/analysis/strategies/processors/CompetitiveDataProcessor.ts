@@ -27,8 +27,8 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       rawData.results.some(r => {
         const record = r as any;
         return record &&
-          (record.area_id || record.id || record.ID) &&
-          (record.competitive_analysis_score !== undefined || record.competitive_advantage_score !== undefined || record.competitive_score !== undefined);
+          ((record as any).area_id || (record as any).id || (record as any).ID) &&
+          ((record as any).competitive_analysis_score !== undefined || (record as any).competitive_advantage_score !== undefined || (record as any).competitive_score !== undefined);
       });
     
     return hasCompetitiveFields;
@@ -96,7 +96,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
 
   private processCompetitiveRecords(rawRecords: any[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
-      const area_id = record.area_id || record.id || record.GEOID || `area_${index}`;
+      const area_id = (record as any).area_id || (record as any).id || (record as any).GEOID || `area_${index}`;
       const area_name = resolveAreaName(record, { mode: 'zipCity', neutralFallback: `Area ${area_id || index + 1}` });
       
       // Extract competitive metrics
@@ -123,11 +123,11 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
         competitor_shares: competitors.map(c => ({ name: c.brandName, share: c.value })),
         primary_competitor_share: competitors[0]?.value || 0,
         primary_competitor_name: competitors[0]?.brandName || 'Unknown',
-        brand_strength: record.brand_strength || 0,
+        brand_strength: (record as any).brand_strength || 0,
         competitive_position: this.determineCompetitivePosition(competitiveScore),
-        market_penetration: record.market_penetration || 0,
-        brand_awareness: record.brand_awareness || 0,
-        price_competitiveness: record.price_competitiveness || 0
+        market_penetration: (record as any).market_penetration || 0,
+        brand_awareness: (record as any).brand_awareness || 0,
+        price_competitiveness: (record as any).price_competitiveness || 0
       };
       
       // Extract SHAP values
@@ -144,7 +144,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
   competitive_analysis_score: competitiveScore,  // Add alias for renderer field
         rank: 0, // Will be calculated in ranking
         category,
-        coordinates: record.coordinates || [0, 0],
+        coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
@@ -154,13 +154,13 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
 
   private extractCompetitiveScore(record: any): number {
     // Priority order: competitive_analysis_score -> competitive_advantage_score -> competitive_score (legacy)
-    const score = Number(record.competitive_analysis_score || record.competitive_advantage_score || record.competitive_score);
+    const score = Number((record as any).competitive_analysis_score || (record as any).competitive_advantage_score || (record as any).competitive_score);
     
     if (isNaN(score)) {
-      throw new Error(`Competitive analysis record ${record.ID || 'unknown'} is missing competitive_analysis_score, competitive_advantage_score, or competitive_score`);
+      throw new Error(`Competitive analysis record ${(record as any).ID || 'unknown'} is missing competitive_analysis_score, competitive_advantage_score, or competitive_score`);
     }
     
-    console.log(`🔥 [CompetitiveDataProcessor] Using competitive score: ${score} from ${record.competitive_analysis_score ? 'competitive_analysis_score' : record.competitive_advantage_score ? 'competitive_advantage_score' : 'competitive_score'}`);
+    console.log(`🔥 [CompetitiveDataProcessor] Using competitive score: ${score} from ${(record as any).competitive_analysis_score ? 'competitive_analysis_score' : (record as any).competitive_advantage_score ? 'competitive_advantage_score' : 'competitive_score'}`);
     return score;
   }
 
@@ -210,8 +210,8 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
   }
 
   private extractShapValues(record: any): Record<string, number> {
-    if (record.shap_values && typeof record.shap_values === 'object') {
-      return record.shap_values;
+    if ((record as any).shap_values && typeof (record as any).shap_values === 'object') {
+      return (record as any).shap_values;
     }
     
     const shapValues: Record<string, number> = {};
@@ -331,7 +331,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     const categoryMap = new Map<string, GeographicDataPoint[]>();
     
     records.forEach(record => {
-      const category = record.category!;
+      const category = (record as any).category!;
       if (!categoryMap.has(category)) {
         categoryMap.set(category, []);
       }
@@ -402,8 +402,8 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
   private processCompetitiveFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map((it) => {
       const item = it as any;
-      const featureName = String(item.feature ?? item.name ?? 'unknown');
-      const importance = Number(item.importance ?? item.value ?? 0);
+      const featureName = String((item as any).feature ?? (item as any).name ?? 'unknown');
+      const importance = Number((item as any).importance ?? (item as any).value ?? 0);
       return {
         feature: featureName,
         importance,
@@ -528,7 +528,7 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
 \n**🎯 Top Expansion Opportunities** (Markets with GROWTH potential, not current ${targetBrandName} dominance): `;
       
       topExpansionTargets.slice(0, 8).forEach((record, index) => {
-        const props = (record.properties || {}) as any;
+        const props = ((record as any).properties || {}) as any;
         const targetShare = Number(props?.target_brand_share) || 0;
         const competitorShare = Number(props?.primary_competitor_share) || 0;
         const population = Number(props?.value_TOTPOP_CY) || 0;
@@ -536,7 +536,7 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
         const income = Number(props?.value_AVGHINC_CY) || (wealthIndex * 500); // Use wealth index to estimate income
         const marketGap = Math.max(0, 100 - targetShare - competitorShare);
         
-  summary += `${index + 1}. **${record.area_name}**: ${record.value.toFixed(1)} expansion score`;
+  summary += `${index + 1}. **${(record as any).area_name}**: ${(record as any).value.toFixed(1)} expansion score`;
         
         if (targetShare > 0) {
           summary += ` (${targetShare.toFixed(1)}% current ${targetBrandName} share`;
@@ -563,8 +563,8 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
       summary += `
 \n**🏆 Premium Expansion Targets** (80+ expansion scores - high growth potential): `;
       topTierMarkets.forEach((record) => {
-        const targetShare = Number(((record.properties || {}) as any)?.target_brand_share) || 0;
-        summary += `${record.area_name} (${record.value.toFixed(1)} score, ${targetShare.toFixed(1)}% ${targetBrandName} share), `;
+        const targetShare = Number((((record as any).properties || {}) as any)?.target_brand_share) || 0;
+        summary += `${(record as any).area_name} (${(record as any).value.toFixed(1)} score, ${targetShare.toFixed(1)}% ${targetBrandName} share), `;
       });
       summary = summary.slice(0, -2) + '. ';
     }
@@ -573,8 +573,8 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
       summary += `
 \n**📈 Strong Expansion Targets** (60-80 expansion scores - solid growth potential): `;
       strongMarkets.forEach((record) => {
-        const targetShare = Number(((record.properties || {}) as any)?.target_brand_share) || 0;
-        summary += `${record.area_name} (${record.value.toFixed(1)} score, ${targetShare.toFixed(1)}% ${targetBrandName} share), `;
+        const targetShare = Number((((record as any).properties || {}) as any)?.target_brand_share) || 0;
+        summary += `${(record as any).area_name} (${(record as any).value.toFixed(1)} score, ${targetShare.toFixed(1)}% ${targetBrandName} share), `;
       });
       summary = summary.slice(0, -2) + '. ';
     }
@@ -583,8 +583,8 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
       summary += `
 \n**🌱 Developing Expansion Markets** (40-60 expansion scores - moderate growth potential): `;
       emergingMarkets.forEach((record) => {
-        const targetShare = Number(((record.properties || {}) as any)?.target_brand_share) || 0;
-        summary += `${record.area_name} (${record.value.toFixed(1)} score, ${targetShare.toFixed(1)}% ${targetBrandName} share), `;
+        const targetShare = Number((((record as any).properties || {}) as any)?.target_brand_share) || 0;
+        summary += `${(record as any).area_name} (${(record as any).value.toFixed(1)} score, ${targetShare.toFixed(1)}% ${targetBrandName} share), `;
       });
       summary = summary.slice(0, -2) + '. ';
     }

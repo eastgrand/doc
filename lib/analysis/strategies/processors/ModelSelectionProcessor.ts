@@ -26,8 +26,8 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
-        (record.area_id || record.id || record.ID) &&
-        record.algorithm_category !== undefined
+        ((record as any).area_id || (record as any).id || (record as any).ID) &&
+        (record as any).algorithm_category !== undefined
       );
     
     return hasRequiredFields;
@@ -43,7 +43,7 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
     // Count algorithm categories to create numeric values for visualization
     const algorithmCounts = new Map<string, number>();
     rawData.results.forEach(record => {
-      const category = record.algorithm_category;
+      const category = (record as any).algorithm_category;
       if (category) {
         algorithmCounts.set(category, (algorithmCounts.get(category) || 0) + 1);
       }
@@ -56,10 +56,10 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
     const categoryMapping = new Map(sortedCategories as [string, number][]);
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
-      const algorithmCategory = record.algorithm_category;
+      const algorithmCategory = (record as any).algorithm_category;
       
       if (!algorithmCategory) {
-        throw new Error(`Model selection record ${record.ID || index} is missing algorithm_category`);
+        throw new Error(`Model selection record ${(record as any).ID || index} is missing algorithm_category`);
       }
       
       // Use category mapping for numeric value (for visualization)
@@ -67,7 +67,7 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
       
       // Generate area name
       const areaName = this.generateAreaName(record);
-      const recordId = record.ID || record.id || record.area_id || `area_${index + 1}`;
+      const recordId = (record as any).ID || (record as any).id || (record as any).area_id || `area_${index + 1}`;
       
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
@@ -81,13 +81,13 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
-          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
+          DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           algorithm_category: algorithmCategory,
           score_source: 'algorithm_category',
           category_numeric: numericValue,
           target_brand_share: this.extractTargetBrandShare(record),
-          total_population: Number(record.total_population || record.value_TOTPOP_CY) || 0,
-          median_income: Number(record.median_income || record.value_AVGHINC_CY) || 0
+          total_population: Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0,
+          median_income: Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0
         }
       };
     });
@@ -211,15 +211,15 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
       .sort((a, b) => b.importance - a.importance)
       .slice(0, 5)
       .reduce((acc, item) => {
-        acc[item.field] = item.value;
+        acc[(item as any).field] = (item as any).value;
         return acc;
       }, {} as Record<string, number>);
   }
 
   private generateAreaName(record: any): string {
     // Check for DESCRIPTION field first (common in strategic analysis data)
-    if (record.DESCRIPTION && typeof record.DESCRIPTION === 'string') {
-      const description = record.DESCRIPTION.trim();
+    if ((record as any).DESCRIPTION && typeof (record as any).DESCRIPTION === 'string') {
+      const description = (record as any).DESCRIPTION.trim();
       // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
@@ -230,8 +230,8 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
     }
     
     // Try value_DESCRIPTION with same extraction logic
-    if (record.value_DESCRIPTION && typeof record.value_DESCRIPTION === 'string') {
-      const description = record.value_DESCRIPTION.trim();
+    if ((record as any).value_DESCRIPTION && typeof (record as any).value_DESCRIPTION === 'string') {
+      const description = (record as any).value_DESCRIPTION.trim();
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
         return nameMatch[1].trim();
@@ -240,11 +240,11 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
     }
     
     // Other name fields
-    if (record.area_name) return record.area_name;
-    if (record.NAME) return record.NAME;
-    if (record.name) return record.name;
+    if ((record as any).area_name) return (record as any).area_name;
+    if ((record as any).NAME) return (record as any).NAME;
+    if ((record as any).name) return (record as any).name;
     
-    const id = record.ID || record.id || record.GEOID;
+    const id = (record as any).ID || (record as any).id || (record as any).GEOID;
     if (id) {
       if (typeof id === 'string' && id.match(/^\d{5}$/)) {
         return `ZIP ${id}`;
@@ -255,7 +255,7 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
       return `Area ${id}`;
     }
     
-    return `Area ${record.OBJECTID || 'Unknown'}`;
+    return `Area ${(record as any).OBJECTID || 'Unknown'}`;
   }
 
   private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
@@ -269,9 +269,9 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
 
   private processFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getFeatureDescription(item.feature || item.name)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getFeatureDescription((item as any).feature || (item as any).name)
     })).sort((a, b) => b.importance - a.importance);
   }
 

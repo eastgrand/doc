@@ -17,16 +17,16 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
-        (record.area_id || record.id || record.ID) &&
-        (record.interaction_score !== undefined || 
-         record.value !== undefined || 
-         record.score !== undefined ||
+        ((record as any).area_id || (record as any).id || (record as any).ID) &&
+        ((record as any).interaction_score !== undefined || 
+         (record as any).value !== undefined || 
+         (record as any).score !== undefined ||
          // Check for interaction-relevant fields
-         record.value_MP30034A_B_P !== undefined || // Nike market share (raw format)
-         record.mp30034a_b_p !== undefined || // Nike market share for interactions
-         record.strategic_value_score !== undefined ||
-         record.demographic_opportunity_score !== undefined ||
-         record.correlation_strength_score !== undefined)
+         (record as any).value_MP30034A_B_P !== undefined || // Nike market share (raw format)
+         (record as any).mp30034a_b_p !== undefined || // Nike market share for interactions
+         (record as any).strategic_value_score !== undefined ||
+         (record as any).demographic_opportunity_score !== undefined ||
+         (record as any).correlation_strength_score !== undefined)
       );
     
     return hasRequiredFields;
@@ -48,7 +48,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       const areaName = this.generateAreaName(record);
       
       // Extract ID (updated for correlation_analysis format)
-      const recordId = record.ID || record.id || record.area_id;
+      const recordId = (record as any).ID || (record as any).id || (record as any).area_id;
       
       // Debug logging for records with missing ID
       if (!recordId) {
@@ -56,19 +56,19 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
           hasID: 'ID' in record,
           hasId: 'id' in record,
           hasAreaId: 'area_id' in record,
-          recordKeys: Object.keys(record).slice(0, 10)
+          recordKeys: Object.keys(record as any).slice(0, 10)
         });
       }
       
       // Extract interaction-relevant metrics for properties
-      const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-      const strategicScore = Number(record.strategic_value_score) || 0;
-      const competitiveScore = Number(record.competitive_advantage_score) || 0;
-      const demographicScore = Number(record.demographic_opportunity_score) || 0;
-      const trendScore = Number(record.trend_strength_score) || 0;
-      const correlationScore = Number(record.correlation_strength_score) || 0;
-      const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-      const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
+      const nikeShare = Number((record as any).mp30034a_b_p || (record as any).value_MP30034A_B_P) || 0;
+      const strategicScore = Number((record as any).strategic_value_score) || 0;
+      const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+      const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+      const trendScore = Number((record as any).trend_strength_score) || 0;
+      const correlationScore = Number((record as any).correlation_strength_score) || 0;
+      const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+      const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
       
       // Calculate interaction indicators
       const correlationStrength = this.calculateCorrelationStrength(record);
@@ -84,7 +84,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
         feature_interaction_score: Math.round(interactionScore * 100) / 100, // Legacy compatibility
         rank: 0, // Will be calculated after sorting
         properties: {
-          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
+          DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           feature_interactions_score: interactionScore,
           feature_interaction_score: interactionScore, // Legacy compatibility
           score_source: 'feature_interactions_score',
@@ -140,15 +140,15 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
    * Extract feature interaction score from record with fallback calculation
    */
   private extractInteractionScore(record: any): number {
-    if (record.interaction_score !== undefined && record.interaction_score !== null) {
-      const preCalculatedScore = Number(record.interaction_score);
+    if ((record as any).interaction_score !== undefined && (record as any).interaction_score !== null) {
+      const preCalculatedScore = Number((record as any).interaction_score);
       console.log(`🔗 [FeatureInteractionProcessor] Using pre-calculated interaction score: ${preCalculatedScore}`);
       return preCalculatedScore;
     }
     
     // Check for feature_interactions_score (current field)
-    if (record.feature_interactions_score !== undefined && record.feature_interactions_score !== null) {
-      const currentScore = Number(record.feature_interactions_score);
+    if ((record as any).feature_interactions_score !== undefined && (record as any).feature_interactions_score !== null) {
+      const currentScore = Number((record as any).feature_interactions_score);
       console.log(`🔗 [FeatureInteractionProcessor] Using current feature_interactions_score: ${currentScore}`);
       return currentScore;
     }
@@ -156,11 +156,11 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     // FALLBACK: Calculate interaction score from available data
     console.log('⚠️ [FeatureInteractionProcessor] No feature_interactions_score found, calculating from raw data');
     
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
-    const correlationScore = Number(record.correlation_strength_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p || record.value_MP30034A_B_P) || 0;
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+    const correlationScore = Number((record as any).correlation_strength_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p || (record as any).value_MP30034A_B_P) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
     
     // Simple interaction calculation based on variable relationships
     let interactionScore = 0;
@@ -192,10 +192,10 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
    * Calculate correlation strength between variables
    */
   private calculateCorrelationStrength(record: any): number {
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
-    const correlationScore = Number(record.correlation_strength_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+    const correlationScore = Number((record as any).correlation_strength_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p) || 0;
     
     let correlationStrength = 0;
     
@@ -225,10 +225,10 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
    * Calculate synergy effect between variables
    */
   private calculateSynergyEffect(record: any): number {
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
-    const trendScore = Number(record.trend_strength_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+    const trendScore = Number((record as any).trend_strength_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p) || 0;
     
     let synergyEffect = 0;
     
@@ -259,9 +259,9 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
   private calculateInteractionComplexity(record: any): number {
     const activeVars = this.countActiveVariables(record);
     const scores = [
-      Number(record.strategic_value_score) || 0,
-      Number(record.demographic_opportunity_score) || 0,
-      Number(record.trend_strength_score) || 0
+      Number((record as any).strategic_value_score) || 0,
+      Number((record as any).demographic_opportunity_score) || 0,
+      Number((record as any).trend_strength_score) || 0
     ].filter(s => s > 0);
     
     let complexity = 0;
@@ -277,8 +277,8 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     }
     
     // Population-income complexity
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-    const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+    const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
     
     if (totalPop > 0 && medianIncome > 0) {
       const popIncomeComplexity = Math.min(Math.log(totalPop) * medianIncome / 1000000, 1) * 25;
@@ -292,10 +292,10 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
    * Calculate non-linear pattern indicators
    */
   private calculateNonLinearPatterns(record: any): number {
-    const strategicScore = Number(record.strategic_value_score) || 0;
-    const demographicScore = Number(record.demographic_opportunity_score) || 0;
-    const nikeShare = Number(record.mp30034a_b_p) || 0;
-    const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+    const nikeShare = Number((record as any).mp30034a_b_p) || 0;
+    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
     
     let nonLinearPatterns = 0;
     
@@ -333,13 +333,13 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
    */
   private countActiveVariables(record: any): number {
     const variables = [
-      Number(record.mp30034a_b_p) || 0,
-      Number(record.strategic_value_score) || 0,
-      Number(record.competitive_advantage_score) || 0,
-      Number(record.demographic_opportunity_score) || 0,
-      Number(record.trend_strength_score) || 0,
-      Number(record.correlation_strength_score) || 0,
-      Number(record.total_population || record.value_TOTPOP_CY) || 0
+      Number((record as any).mp30034a_b_p) || 0,
+      Number((record as any).strategic_value_score) || 0,
+      Number((record as any).competitive_advantage_score) || 0,
+      Number((record as any).demographic_opportunity_score) || 0,
+      Number((record as any).trend_strength_score) || 0,
+      Number((record as any).correlation_strength_score) || 0,
+      Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0
     ];
     
     return variables.filter(v => v > 0).length;
@@ -380,16 +380,16 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
    */
   private generateAreaName(record: any): string {
     // Try explicit name fields first (updated for correlation_analysis format)
-    if (record.value_DESCRIPTION && typeof record.value_DESCRIPTION === 'string') {
-      const description = record.value_DESCRIPTION.trim();
+    if ((record as any).value_DESCRIPTION && typeof (record as any).value_DESCRIPTION === 'string') {
+      const description = (record as any).value_DESCRIPTION.trim();
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
         return nameMatch[1].trim();
       }
       return description;
     }
-    if (record.DESCRIPTION && typeof record.DESCRIPTION === 'string') {
-      const description = record.DESCRIPTION.trim();
+    if ((record as any).DESCRIPTION && typeof (record as any).DESCRIPTION === 'string') {
+      const description = (record as any).DESCRIPTION.trim();
       // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
@@ -397,12 +397,12 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       }
       return description;
     }
-    if (record.area_name) return record.area_name;
-    if (record.NAME) return record.NAME;
-    if (record.name) return record.name;
+    if ((record as any).area_name) return (record as any).area_name;
+    if ((record as any).NAME) return (record as any).NAME;
+    if ((record as any).name) return (record as any).name;
     
     // Create name from ID and location data
-    const id = record.ID || record.id || record.GEOID;
+    const id = (record as any).ID || (record as any).id || (record as any).GEOID;
     if (id) {
       // For ZIP codes, create format like "ZIP 12345"
       if (typeof id === 'string' && id.match(/^\d{5}$/)) {
@@ -419,7 +419,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       return `Region ${id}`;
     }
     
-    return `Area ${record.OBJECTID || 'Unknown'}`;
+    return `Area ${(record as any).OBJECTID || 'Unknown'}`;
   }
 
   /**
@@ -440,9 +440,9 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
    */
   private processInteractionFeatureImportance(rawFeatureImportance: any[]): any[] {
     const interactionFeatures = rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getInteractionFeatureDescription(item.feature || item.name)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getInteractionFeatureDescription((item as any).feature || (item as any).name)
     }));
 
     // Add interaction-specific synthetic features if none provided
@@ -588,7 +588,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     // Interaction type breakdown
     if (records.length > 0) {
       const interactionTypes = records.reduce((acc, record) => {
-        const type = record.properties.dominant_interaction_type || 'Unknown';
+        const type = (record as any).properties.dominant_interaction_type || 'Unknown';
         acc[type] = (acc[type] || 0) + 1;
         return acc;
       }, {} as Record<string, number>);
@@ -609,13 +609,13 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     // Synergy effect markets
     if (records.length > 0) {
       const synergyMarkets = records
-        .filter(r => (r.properties.synergy_effect || 0) >= 60)
+        .filter(r => ((r.properties as any).synergy_effect || 0) >= 60)
         .slice(0, 5);
       
       if (synergyMarkets.length > 0) {
         summary += `**High Synergy Markets:** `;
         const synergyNames = synergyMarkets.map(r => 
-          `${r.area_name} (${(r.properties.synergy_effect || 0).toFixed(1)}% synergy)`
+          `${r.area_name} (${((r.properties as any).synergy_effect || 0).toFixed(1)}% synergy)`
         );
         summary += `${synergyNames.join(', ')}. `;
         summary += `These markets show strong synergistic effects between variables. `;
@@ -625,13 +625,13 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     // Complex interaction markets
     if (records.length > 0) {
       const complexMarkets = records
-        .filter(r => (r.properties.interaction_complexity || 0) >= 70)
+        .filter(r => ((r.properties as any).interaction_complexity || 0) >= 70)
         .slice(0, 5);
       
       if (complexMarkets.length > 0) {
         summary += `**Complex Interaction Markets:** `;
         const complexNames = complexMarkets.map(r => 
-          `${r.area_name} (${(r.properties.variable_count || 0)} active variables)`
+          `${r.area_name} (${((r.properties as any).variable_count || 0)} active variables)`
         );
         summary += `${complexNames.join(', ')}. `;
         summary += `These markets demonstrate multi-variable complexity requiring sophisticated analysis. `;
@@ -647,7 +647,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     }
     
     // Variable complexity insights
-    const avgVariableCount = records.reduce((sum, r) => sum + (r.properties.variable_count || 0), 0) / records.length;
+    const avgVariableCount = records.reduce((sum, r) => sum + ((r.properties as any).variable_count || 0), 0) / records.length;
     summary += `Average active variables per market: ${avgVariableCount.toFixed(1)}, indicating ${avgVariableCount >= 5 ? 'high' : avgVariableCount >= 3 ? 'moderate' : 'low'} data complexity. `;
     
     // Actionable recommendations
@@ -660,7 +660,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     }
     
     // Non-linear pattern insights
-    const nonLinearMarkets = records.filter(r => (r.properties.non_linear_patterns || 0) >= 40).length;
+    const nonLinearMarkets = records.filter(r => ((r.properties as any).non_linear_patterns || 0) >= 40).length;
     if (nonLinearMarkets > 0) {
       summary += `${nonLinearMarkets} markets show non-linear patterns requiring threshold-based strategies. `;
     }

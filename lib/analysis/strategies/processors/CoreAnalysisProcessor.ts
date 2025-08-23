@@ -23,12 +23,12 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     // Validate that we have the expected fields for core analysis - Dynamic brand detection
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => {
-        if (!record || !(record.area_id || record.id || record.ID)) {
+        if (!record || !((record as any).area_id || (record as any).id || (record as any).ID)) {
           return false;
         }
         
         // Check for standard score fields
-        if (record.value !== undefined || record.score !== undefined) {
+        if ((record as any).value !== undefined || (record as any).score !== undefined) {
           return true;
         }
         
@@ -39,7 +39,7 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         }
         
         // Check for demographic data that can be used for analysis
-        return record.value_TOTPOP_CY !== undefined || record.value_AVGHINC_CY !== undefined;
+        return (record as any).value_TOTPOP_CY !== undefined || (record as any).value_AVGHINC_CY !== undefined;
       });
     
     return hasRequiredFields;
@@ -56,9 +56,9 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     const processedRecords = rawData.results.map((record: any, index: number) => {
       // PRIORITIZE PRE-CALCULATED STRATEGIC VALUE SCORE
       let primaryScore;
-      if (record.strategic_value_score !== undefined && record.strategic_value_score !== null) {
-        primaryScore = Number(record.strategic_value_score);
-        console.log(`🎯 [CoreAnalysisProcessor] Using strategic value score: ${primaryScore} for ${record.DESCRIPTION || record.ID || 'Unknown'}`);
+      if ((record as any).strategic_value_score !== undefined && (record as any).strategic_value_score !== null) {
+        primaryScore = Number((record as any).strategic_value_score);
+        console.log(`🎯 [CoreAnalysisProcessor] Using strategic value score: ${primaryScore} for ${(record as any).DESCRIPTION || (record as any).ID || 'Unknown'}`);
       } else {
         // FALLBACK: Calculate opportunity score from available data
         console.log('⚠️ [CoreAnalysisProcessor] No strategic_value_score found, calculating from raw data');
@@ -70,13 +70,13 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         
         const targetValue = targetBrand?.value || 0;
         const competitorValue = primaryCompetitor?.value || 0;
-        const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 1;
-        const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 50000;
+        const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 1;
+        const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 50000;
         
         // DEBUG: Log raw data values to identify the calculation issue
         if (index < 5) {
           console.log(`🔍 [CoreAnalysisProcessor] Raw data analysis for record ${index + 1}:`, {
-            area_id: record.ID || record.id,
+            area_id: (record as any).ID || (record as any).id,
             target_brand: targetBrand?.brandName,
             target_value: targetValue,
             competitor_brand: primaryCompetitor?.brandName,
@@ -84,7 +84,7 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
             total_pop: totalPop,
             median_income: medianIncome,
             brand_fields_found: brandFields.length,
-            all_field_sample: Object.keys(record).slice(0, 10)
+            all_field_sample: Object.keys(record as any).slice(0, 10)
           });
         }
         
@@ -158,7 +158,7 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       const areaName = this.generateAreaName(record);
       
       // Extract ID (updated for correlation_analysis format)
-      const recordId = record.ID || record.id || record.area_id;
+      const recordId = (record as any).ID || (record as any).id || (record as any).area_id;
       
       // Debug logging for records with missing ID
       if (!recordId) {
@@ -166,10 +166,10 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
           hasID: 'ID' in record,
           hasId: 'id' in record,
           hasAreaId: 'area_id' in record,
-          ID_value: record.ID,
-          id_value: record.id,
-          area_id_value: record.area_id,
-          recordKeys: Object.keys(record).slice(0, 10)
+          ID_value: (record as any).ID,
+          id_value: (record as any).id,
+          area_id_value: (record as any).area_id,
+          recordKeys: Object.keys(record as any).slice(0, 10)
         });
       }
       
@@ -180,8 +180,8 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       
       const targetBrandValue = targetBrandInfo?.value || 0;
       const competitorBrandValue = competitorBrandInfo?.value || 0;
-      const totalPop = Number(record.total_population || record.value_TOTPOP_CY) || 0;
-      const medianIncome = Number(record.median_income || record.value_AVGHINC_CY) || 0;
+      const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+      const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
       const marketGap = Math.max(0, 100 - targetBrandValue - competitorBrandValue);
       const competitiveAdvantage = Math.max(0, targetBrandValue - competitorBrandValue);
       
@@ -196,7 +196,7 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
-          DESCRIPTION: record.DESCRIPTION, // Pass through original DESCRIPTION
+          DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           strategic_value_score: primaryScore,
           score_source: 'strategic_value_score',
           target_brand_share: targetBrandValue,
@@ -208,9 +208,9 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
           median_income: medianIncome,
           competitive_advantage: competitiveAdvantage,
           // Include other pre-calculated scores if available
-          demographic_opportunity_score: Number(record.demographic_opportunity_score) || 0,
-          correlation_strength_score: Number(record.correlation_strength_score) || 0,
-          cluster_performance_score: Number(record.cluster_performance_score) || 0
+          demographic_opportunity_score: Number((record as any).demographic_opportunity_score) || 0,
+          correlation_strength_score: Number((record as any).correlation_strength_score) || 0,
+          cluster_performance_score: Number((record as any).cluster_performance_score) || 0
         }
       };
     });
@@ -244,9 +244,9 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
   private processRecords(rawRecords: any[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
       // Extract core identifiers
-      const area_id = record.area_id || record.id || record.GEOID || `area_${index}`;
-      const area_name = record.area_name || record.name || record.NAME || 
-                       record.area_id || `Area ${index + 1}`;
+      const area_id = (record as any).area_id || (record as any).id || (record as any).GEOID || `area_${index}`;
+      const area_name = (record as any).area_name || (record as any).name || (record as any).NAME || 
+                       (record as any).area_id || `Area ${index + 1}`;
       
       // Extract value - try multiple field names
       const value = this.extractValue(record);
@@ -266,7 +266,7 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         value,
         rank: 0, // Will be calculated in rankRecords
         category,
-        coordinates: record.coordinates || [0, 0],
+        coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
@@ -278,8 +278,8 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
    */
   private extractValue(record: any): number {
     // First try standard value fields
-    const standardValue = record.value || record.score || record.result || 
-                         record.target_value || record.prediction;
+    const standardValue = (record as any).value || (record as any).score || (record as any).result || 
+                         (record as any).target_value || (record as any).prediction;
     
     if (standardValue !== undefined && standardValue !== null && standardValue !== 0) {
       return Number(standardValue);
@@ -295,9 +295,9 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     
     if (targetValue > 0 || competitorValue > 0) {
       // Calculate opportunity score from brand data
-      const totalPop = record.value_TOTPOP_CY || 1;
-      const wealthIndex = Number(record.value_WLTHINDXCY) || 100;
-      const avgIncome = record.value_AVGHINC_CY || (wealthIndex * 500);
+      const totalPop = (record as any).value_TOTPOP_CY || 1;
+      const wealthIndex = Number((record as any).value_WLTHINDXCY) || 100;
+      const avgIncome = (record as any).value_AVGHINC_CY || (wealthIndex * 500);
       
       // Market opportunity calculation
       const marketGap = Math.max(0, 100 - targetValue - competitorValue);
@@ -318,7 +318,7 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     }
     
     // Fallback to demographic indicators
-    return record.value_TOTPOP_CY || record.value_AVGHINC_CY || record.rank || 1;
+    return (record as any).value_TOTPOP_CY || (record as any).value_AVGHINC_CY || (record as any).rank || 1;
   }
 
   private extractProperties(record: any): Record<string, any> {
@@ -340,8 +340,8 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
   }
 
   private extractShapValues(record: any): Record<string, number> {
-    if (record.shap_values && typeof record.shap_values === 'object') {
-      return record.shap_values;
+    if ((record as any).shap_values && typeof (record as any).shap_values === 'object') {
+      return (record as any).shap_values;
     }
     
     // Look for SHAP-like fields (fields ending with _shap or _impact)
@@ -370,9 +370,9 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     
     const targetValue = targetBrand?.value || 0;
     const competitorValue = competitor?.value || 0;
-    const totalPop = record.value_TOTPOP_CY || 1;
-    const wealthIndex = Number(record.value_WLTHINDXCY) || 100;
-    const avgIncome = record.value_AVGHINC_CY || (wealthIndex * 500);
+    const totalPop = (record as any).value_TOTPOP_CY || 1;
+    const wealthIndex = Number((record as any).value_WLTHINDXCY) || 100;
+    const avgIncome = (record as any).value_AVGHINC_CY || (wealthIndex * 500);
     
     // Calculate brand preference strength (0-1 scale)
     const brandStrength = Math.max(targetValue, competitorValue) / 100;
@@ -386,13 +386,13 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     fallbackShap['competitor_preference'] = (competitorValue / 100) - 0.15; // Baseline 15%
     
     // Add demographic factors with realistic importance
-    if (record.value_MEDAGE_CY) {
-      const ageOptimality = 1 - Math.abs((record.value_MEDAGE_CY - 35) / 35); // Optimal age ~35
+    if ((record as any).value_MEDAGE_CY) {
+      const ageOptimality = 1 - Math.abs(((record as any).value_MEDAGE_CY - 35) / 35); // Optimal age ~35
       fallbackShap['age_factor'] = ageOptimality * brandStrength;
     }
     
-    if (record.value_AVGHHSZ_CY) {
-      const familyFactor = Math.min(record.value_AVGHHSZ_CY / 4, 1); // Family size factor
+    if ((record as any).value_AVGHHSZ_CY) {
+      const familyFactor = Math.min((record as any).value_AVGHHSZ_CY / 4, 1); // Family size factor
       fallbackShap['family_factor'] = familyFactor * brandStrength * 0.3;
     }
     
@@ -427,9 +427,9 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
 
   private processFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
-      feature: item.feature || item.name || 'unknown',
-      importance: Number(item.importance || item.value || 0),
-      description: this.getFeatureDescription(item.feature || item.name)
+      feature: (item as any).feature || (item as any).name || 'unknown',
+      importance: Number((item as any).importance || (item as any).value || 0),
+      description: this.getFeatureDescription((item as any).feature || (item as any).name)
     })).sort((a, b) => b.importance - a.importance);
   }
 
@@ -521,16 +521,16 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     summary += `Market average opportunity score: ${statistics.mean.toFixed(1)} (range: ${statistics.min.toFixed(1)}-${statistics.max.toFixed(1)}). `;
     
           // Calculate and show demographic baselines using dynamic brand detection
-      const avgTargetShare = records.reduce((sum, r) => sum + (r.properties.target_brand_share || 0), 0) / records.length;
-      const avgCompetitorShare = records.reduce((sum, r) => sum + (r.properties.competitor_brand_share || 0), 0) / records.length;
-      const avgMarketGap = records.reduce((sum, r) => sum + (r.properties.market_gap || 0), 0) / records.length;
-      const avgWealthIndex = records.reduce((sum, r) => sum + (r.properties.value_WLTHINDXCY || 100), 0) / records.length;
+      const avgTargetShare = records.reduce((sum, r) => sum + ((r.properties as any).target_brand_share || 0), 0) / records.length;
+      const avgCompetitorShare = records.reduce((sum, r) => sum + ((r.properties as any).competitor_brand_share || 0), 0) / records.length;
+      const avgMarketGap = records.reduce((sum, r) => sum + ((r.properties as any).market_gap || 0), 0) / records.length;
+      const avgWealthIndex = records.reduce((sum, r) => sum + ((r.properties as any).value_WLTHINDXCY || 100), 0) / records.length;
               const avgIncome = records.reduce((sum, r) => {
-          const wealth = r.properties.value_WLTHINDXCY || 100;
-          const income = r.properties.avg_income || r.properties.value_AVGHINC_CY || (wealth * 500);
+          const wealth = (r.properties as any).value_WLTHINDXCY || 100;
+          const income = (r.properties as any).avg_income || (r.properties as any).value_AVGHINC_CY || (wealth * 500);
           return sum + income;
         }, 0) / records.length;
-      const avgPopulation = records.reduce((sum, r) => sum + (r.properties.total_population || r.properties.value_TOTPOP_CY || 0), 0) / records.length;
+      const avgPopulation = records.reduce((sum, r) => sum + ((r.properties as any).total_population || (r.properties as any).value_TOTPOP_CY || 0), 0) / records.length;
     
       // Get brand names from the first record
       const targetBrandName = records[0]?.properties?.target_brand_name || this.brandResolver.getTargetBrandName();
@@ -595,8 +595,8 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     summary += `${highPerformers} areas significantly outperform market average (20%+ above mean). `;
     
     // Add demographic insights if available
-    const hasIncomeData = records.some(r => r.properties.avg_income || r.properties.value_AVGHINC_CY);
-    const hasPopulationData = records.some(r => r.properties.total_population || r.properties.value_TOTPOP_CY);
+    const hasIncomeData = records.some(r => (r.properties as any).avg_income || (r.properties as any).value_AVGHINC_CY);
+    const hasPopulationData = records.some(r => (r.properties as any).total_population || (r.properties as any).value_TOTPOP_CY);
     
     if (hasIncomeData || hasPopulationData) {
       summary += `Performance correlates with `;
@@ -632,7 +632,7 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
 
   private getCategoryBreakdown(records: GeographicDataPoint[]) {
     return records.reduce((acc, record) => {
-      acc[record.category!] = (acc[record.category!] || 0) + 1;
+      acc[(record as any).category!] = (acc[(record as any).category!] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
   }
@@ -690,11 +690,11 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       .sort((a, b) => b.importance - a.importance)
       .slice(0, 5)
       .reduce((acc, item) => {
-        acc[item.field] = item.value;
+        acc[(item as any).field] = (item as any).value;
         return acc;
       }, {} as Record<string, number>);
     
-    console.log(`[CoreAnalysisProcessor] Top contributing fields for ${record.ID}:`, topFields);
+    console.log(`[CoreAnalysisProcessor] Top contributing fields for ${(record as any).ID}:`, topFields);
     return topFields;
   }
 
@@ -703,16 +703,16 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
    */
   private generateAreaName(record: any): string {
     // Try explicit name fields first (updated for correlation_analysis format)
-    if (record.value_DESCRIPTION && typeof record.value_DESCRIPTION === 'string') {
-      const description = record.value_DESCRIPTION.trim();
+    if ((record as any).value_DESCRIPTION && typeof (record as any).value_DESCRIPTION === 'string') {
+      const description = (record as any).value_DESCRIPTION.trim();
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
         return nameMatch[1].trim();
       }
       return description;
     }
-    if (record.DESCRIPTION && typeof record.DESCRIPTION === 'string') {
-      const description = record.DESCRIPTION.trim();
+    if ((record as any).DESCRIPTION && typeof (record as any).DESCRIPTION === 'string') {
+      const description = (record as any).DESCRIPTION.trim();
       // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
       const nameMatch = description.match(/\(([^)]+)\)/);
       if (nameMatch && nameMatch[1]) {
@@ -720,12 +720,12 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       }
       return description;
     } // Primary field in correlation_analysis
-    if (record.area_name) return record.area_name;
-    if (record.NAME) return record.NAME;
-    if (record.name) return record.name;
+    if ((record as any).area_name) return (record as any).area_name;
+    if ((record as any).NAME) return (record as any).NAME;
+    if ((record as any).name) return (record as any).name;
     
     // Create name from ID and location data
-    const id = record.ID || record.id || record.GEOID;
+    const id = (record as any).ID || (record as any).id || (record as any).GEOID;
     if (id) {
       // For ZIP codes, create format like "ZIP 12345"
       if (typeof id === 'string' && id.match(/^\d{5}$/)) {
@@ -743,10 +743,10 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     }
     
     // Last resort: use coordinates or index
-    if (record.coordinates) {
-      return `Location ${record.coordinates[0].toFixed(2)},${record.coordinates[1].toFixed(2)}`;
+    if ((record as any).coordinates) {
+      return `Location ${(record as any).coordinates[0].toFixed(2)},${(record as any).coordinates[1].toFixed(2)}`;
     }
     
-    return `Area ${record.OBJECTID || 'Unknown'}`;
+    return `Area ${(record as any).OBJECTID || 'Unknown'}`;
   }
 } 

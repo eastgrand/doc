@@ -18,7 +18,7 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
     }
 
     const records = rawData.results.map((record: any, index: number) => {
-      const brandScore = Number(record.brand_analysis_score) || Number(record.brand_difference_score) || 0;
+      const brandScore = Number((record as any).brand_analysis_score) || Number((record as any).brand_difference_score) || 0;
       
       // Use dynamic brand detection instead of hardcoded fields
       const brandFields = this.brandResolver.detectBrandFields(record);
@@ -29,13 +29,13 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
       const competitorShare = topCompetitor?.value || 0;
       const brandDifference = targetBrandShare - competitorShare;
       
-      const strategicScore = Number(record.strategic_value_score) || 0;
-      const competitiveScore = Number(record.competitive_advantage_score) || 0;
-      const demographicScore = Number(record.demographic_opportunity_score) || 0;
+      const strategicScore = Number((record as any).strategic_value_score) || 0;
+      const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
+      const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
 
       return {
-        area_id: record.area_id || record.ID || `area_${index}`,
-        area_name: record.area_name || record.DESCRIPTION || `Area ${index + 1}`,
+        area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
+        area_name: (record as any).area_name || (record as any).DESCRIPTION || `Area ${index + 1}`,
         value: brandScore || brandDifference,
         rank: index + 1,
         category: this.categorizeBrandStrength(targetBrandShare, competitorShare, targetBrand?.brandName, topCompetitor?.brandName),
@@ -54,12 +54,12 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
           strategic_value: strategicScore,
           demographic_alignment: demographicScore
         },
-        shapValues: record.shap_values || {}
+        shapValues: (record as any).shap_values || {}
       };
     });
 
     records.sort((a, b) => b.value - a.value);
-    records.forEach((record, index) => { record.rank = index + 1; });
+    records.forEach((record, index) => { (record as any).rank = index + 1; });
 
     const values = records.map(r => r.value);
     const statistics = this.calculateStatistics(values);
@@ -122,19 +122,19 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
   }
 
   private extractCoordinates(record: any): [number, number] {
-    if (record.coordinates && Array.isArray(record.coordinates)) {
-      return [record.coordinates[0] || 0, record.coordinates[1] || 0];
+    if ((record as any).coordinates && Array.isArray((record as any).coordinates)) {
+      return [(record as any).coordinates[0] || 0, (record as any).coordinates[1] || 0];
     }
-    const lat = Number(record.latitude || record.lat || 0);
-    const lng = Number(record.longitude || record.lng || 0);
+    const lat = Number((record as any).latitude || (record as any).lat || 0);
+    const lng = Number((record as any).longitude || (record as any).lng || 0);
     return [lng, lat];
   }
 
   private generateBrandSummary(records: any[], statistics: any): string {
     const topBrands = records.slice(0, 5);
-    const targetAdvantage = records.filter(r => r.properties.brand_difference_score >= 5).length;
-    const competitorAdvantage = records.filter(r => r.properties.brand_difference_score <= -5).length;
-    const competitive = records.filter(r => Math.abs(r.properties.brand_difference_score) < 5).length;
+    const targetAdvantage = records.filter(r => (r.properties as any).brand_difference_score >= 5).length;
+    const competitorAdvantage = records.filter(r => (r.properties as any).brand_difference_score <= -5).length;
+    const competitive = records.filter(r => Math.abs((r.properties as any).brand_difference_score) < 5).length;
     const avgScore = statistics.mean.toFixed(1);
 
     const topNames = topBrands.map(r => `${r.area_name} (${r.value.toFixed(1)})`).join(', ');
