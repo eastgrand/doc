@@ -340,8 +340,8 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     // Calculate averages for numeric fields
     numericFields.forEach(field => {
       const values = clusterRecords
-        .map(r => r.properties[field])
-        .filter(v => typeof v === 'number' && !isNaN(v));
+        .map(r => (r.properties as any)[field])
+        .filter(v => typeof v === 'number' && !isNaN(v)) as number[];
       
       if (values.length > 0) {
         centroid[field] = values.reduce((a, b) => a + b, 0) / values.length;

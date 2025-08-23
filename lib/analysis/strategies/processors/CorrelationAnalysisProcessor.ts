@@ -248,8 +248,8 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
 
   private extractCorrelationMatrix(rawData: RawAnalysisResult): Record<string, any> {
     // Try to extract correlation matrix from dataset metadata
-    if (rawData.correlation_metadata?.correlation_matrix) {
-      return rawData.correlation_metadata.correlation_matrix;
+    if ((rawData as any).correlation_metadata?.correlation_matrix) {
+      return (rawData as any).correlation_metadata.correlation_matrix;
     }
     return {};
   }
@@ -298,8 +298,8 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
   }
 
   private extractKeyCorrelations(rawData: RawAnalysisResult): any[] {
-    if (rawData.correlation_metadata?.strong_correlations) {
-      return rawData.correlation_metadata.strong_correlations;
+    if ((rawData as any).correlation_metadata?.strong_correlations) {
+      return (rawData as any).correlation_metadata.strong_correlations;
     }
     return [];
   }

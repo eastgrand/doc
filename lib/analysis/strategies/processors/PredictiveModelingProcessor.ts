@@ -106,7 +106,7 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
         (record as any).thematic_value !== undefined ||
         // Accept any numeric field that looks like data
         Object.keys(record as any).some(key => 
-          typeof record[key] === 'number' && 
+          typeof (record as any)[key] === 'number' && 
           !key.toLowerCase().includes('date') &&
           !key.toLowerCase().includes('time') &&
           !key.toLowerCase().includes('area') &&
