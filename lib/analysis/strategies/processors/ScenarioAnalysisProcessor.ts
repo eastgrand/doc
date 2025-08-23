@@ -125,7 +125,9 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance: rawData.feature_importance || [],
       statistics,
-      targetVariable: 'scenario_analysis_score'
+      targetVariable: 'scenario_analysis_score',
+      renderer: this.createScenarioRenderer(records),
+      legend: this.createScenarioLegend(records)
     };
   }
 
@@ -405,5 +407,95 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
       max: sorted[sorted.length - 1],
       stdDev
     };
+  }
+
+  // ============================================================================
+  // RENDERING METHODS
+  // ============================================================================
+
+  private createScenarioRenderer(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use standard red-to-green color scheme: Red (low) -> Orange -> Light Green -> Dark Green (high)
+    const scenarioColors = [
+      [215, 48, 39, 0.6],   // #d73027 - Red (low scenario readiness)
+      [253, 174, 97, 0.6],  // #fdae61 - Orange  
+      [166, 217, 106, 0.6], // #a6d96a - Light Green
+      [26, 152, 80, 0.6]    // #1a9850 - Dark Green (high scenario readiness)
+    ];
+    
+    return {
+      type: 'class-breaks',
+      field: 'scenario_analysis_score',
+      classBreakInfos: quartileBreaks.map((breakRange, i) => ({
+        minValue: breakRange.min,
+        maxValue: breakRange.max,
+        symbol: {
+          type: 'simple-fill',
+          color: scenarioColors[i],
+          outline: { color: [0, 0, 0, 0], width: 0 }
+        },
+        label: this.formatClassLabel(i, quartileBreaks)
+      })),
+      defaultSymbol: {
+        type: 'simple-fill',
+        color: [200, 200, 200, 0.5],
+        outline: { color: [0, 0, 0, 0], width: 0 }
+      }
+    };
+  }
+
+  private createScenarioLegend(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    const colors = [
+      'rgba(215, 48, 39, 0.6)',   // Low scenario readiness
+      'rgba(253, 174, 97, 0.6)',  // Medium-low  
+      'rgba(166, 217, 106, 0.6)', // Medium-high
+      'rgba(26, 152, 80, 0.6)'    // High scenario readiness
+    ];
+    
+    const legendItems = [];
+    for (let i = 0; i < quartileBreaks.length; i++) {
+      legendItems.push({
+        label: this.formatClassLabel(i, quartileBreaks),
+        color: colors[i],
+        minValue: quartileBreaks[i].min,
+        maxValue: quartileBreaks[i].max
+      });
+    }
+    
+    return {
+      title: 'Scenario Readiness Score',
+      items: legendItems,
+      position: 'bottom-right'
+    };
+  }
+
+  private calculateQuartileBreaks(values: number[]): Array<{min: number, max: number}> {
+    if (values.length === 0) return [];
+    
+    const q1 = values[Math.floor(values.length * 0.25)];
+    const q2 = values[Math.floor(values.length * 0.5)];
+    const q3 = values[Math.floor(values.length * 0.75)];
+    
+    return [
+      { min: values[0], max: q1 },
+      { min: q1, max: q2 },
+      { min: q2, max: q3 },
+      { min: q3, max: values[values.length - 1] }
+    ];
+  }
+
+  private formatClassLabel(classIndex: number, breaks: Array<{min: number, max: number}>): string {
+    if (classIndex === 0) {
+      return `< ${breaks[classIndex].max.toFixed(1)}`;
+    } else if (classIndex === breaks.length - 1) {
+      return `> ${breaks[classIndex].min.toFixed(1)}`;
+    } else {
+      return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
+    }
   }
 }

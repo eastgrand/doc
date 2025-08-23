@@ -132,7 +132,9 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       summary,
       featureImportance: rawData.feature_importance || [],
       statistics,
-      targetVariable: 'segment_profiling_score' // Segment profiling score for segmentation
+      targetVariable: 'segment_profiling_score', // Segment profiling score for segmentation
+      renderer: this.createSegmentRenderer(records),
+      legend: this.createSegmentLegend(records)
     };
   }
 
@@ -428,5 +430,95 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       max: sorted[sorted.length - 1],
       stdDev
     };
+  }
+
+  // ============================================================================
+  // RENDERING METHODS
+  // ============================================================================
+
+  private createSegmentRenderer(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    // Use standard red-to-green color scheme: Red (low) -> Orange -> Light Green -> Dark Green (high)
+    const segmentColors = [
+      [215, 48, 39, 0.6],   // #d73027 - Red (low segment value)
+      [253, 174, 97, 0.6],  // #fdae61 - Orange  
+      [166, 217, 106, 0.6], // #a6d96a - Light Green
+      [26, 152, 80, 0.6]    // #1a9850 - Dark Green (high segment value)
+    ];
+    
+    return {
+      type: 'class-breaks',
+      field: 'segment_profiling_score',
+      classBreakInfos: quartileBreaks.map((breakRange, i) => ({
+        minValue: breakRange.min,
+        maxValue: breakRange.max,
+        symbol: {
+          type: 'simple-fill',
+          color: segmentColors[i],
+          outline: { color: [0, 0, 0, 0], width: 0 }
+        },
+        label: this.formatClassLabel(i, quartileBreaks)
+      })),
+      defaultSymbol: {
+        type: 'simple-fill',
+        color: [200, 200, 200, 0.5],
+        outline: { color: [0, 0, 0, 0], width: 0 }
+      }
+    };
+  }
+
+  private createSegmentLegend(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    const quartileBreaks = this.calculateQuartileBreaks(values);
+    
+    const colors = [
+      'rgba(215, 48, 39, 0.6)',   // Low segment value
+      'rgba(253, 174, 97, 0.6)',  // Medium-low  
+      'rgba(166, 217, 106, 0.6)', // Medium-high
+      'rgba(26, 152, 80, 0.6)'    // High segment value
+    ];
+    
+    const legendItems = [];
+    for (let i = 0; i < quartileBreaks.length; i++) {
+      legendItems.push({
+        label: this.formatClassLabel(i, quartileBreaks),
+        color: colors[i],
+        minValue: quartileBreaks[i].min,
+        maxValue: quartileBreaks[i].max
+      });
+    }
+    
+    return {
+      title: 'Segment Profile Score',
+      items: legendItems,
+      position: 'bottom-right'
+    };
+  }
+
+  private calculateQuartileBreaks(values: number[]): Array<{min: number, max: number}> {
+    if (values.length === 0) return [];
+    
+    const q1 = values[Math.floor(values.length * 0.25)];
+    const q2 = values[Math.floor(values.length * 0.5)];
+    const q3 = values[Math.floor(values.length * 0.75)];
+    
+    return [
+      { min: values[0], max: q1 },
+      { min: q1, max: q2 },
+      { min: q2, max: q3 },
+      { min: q3, max: values[values.length - 1] }
+    ];
+  }
+
+  private formatClassLabel(classIndex: number, breaks: Array<{min: number, max: number}>): string {
+    if (classIndex === 0) {
+      return `< ${breaks[classIndex].max.toFixed(1)}`;
+    } else if (classIndex === breaks.length - 1) {
+      return `> ${breaks[classIndex].min.toFixed(1)}`;
+    } else {
+      return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
+    }
   }
 }
