@@ -379,7 +379,7 @@ export class SensitivityAnalysisProcessor implements DataProcessorStrategy {
     
     // Model stability assessment
     const highSensitivity = records.filter(r => r.value >= (statistics.percentile75 || statistics.mean)).length;
-    const lowSensitivity = records.filter(r => r.value <= statistics.percentile25).length;
+    const lowSensitivity = records.filter(r => r.value <= (statistics.percentile25 || statistics.mean)).length;
     
     summary += `**🔬 Model Stability Assessment:** ${highSensitivity} areas (${(highSensitivity/records.length*100).toFixed(1)}%) show high parameter sensitivity indicating volatile predictions when inputs change. ${lowSensitivity} areas (${(lowSensitivity/records.length*100).toFixed(1)}%) show low sensitivity indicating stable, robust predictions. `;
     
@@ -399,7 +399,7 @@ export class SensitivityAnalysisProcessor implements DataProcessorStrategy {
 
   private generateParameterImpactExamples(records: GeographicDataPoint[]): string {
     // Sample parameter impacts from top sensitive areas
-    const examples = [];
+    const examples: string[] = [];
     const sampleRecords = records.slice(0, 3);
     
     sampleRecords.forEach((record, index) => {
@@ -422,6 +422,7 @@ export class SensitivityAnalysisProcessor implements DataProcessorStrategy {
       return examples.slice(0, 2).join('. ') + '.';
     }
     
-    return `Parameter adjustments of 20% typically change predictions by ${statistics.mean * 0.2 >= 20 ? 'significant' : 'moderate'} amounts (avg ${(statistics.mean * 0.2).toFixed(1)}% per market).`;
+    const avgValue = records.reduce((sum, r) => sum + r.value, 0) / records.length;
+    return `Parameter adjustments of 20% typically change predictions by ${avgValue * 0.2 >= 20 ? 'significant' : 'moderate'} amounts (avg ${(avgValue * 0.2).toFixed(1)}% per market).`;
   }
 }

@@ -367,12 +367,12 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
     
     // Add specific use cases
     summary += `**🎯 Unique Use Cases for Consensus Analysis:** `;
-    const useCaseExamples = this.generateUseCaseExamples(records, statistics);
+    const useCaseExamples = this.generateUseCaseExamples(records);
     summary += `${useCaseExamples} `;
     
     // Specific consensus patterns
     summary += `**🔍 Analytical Method Agreement Patterns:** `;
-    const consensusPatterns = this.generateConsensusPatterns(records, statistics);
+    const consensusPatterns = this.generateConsensusPatterns(records);
     summary += `${consensusPatterns} `;
     
     const topAreas = records.slice(0, 5);
@@ -382,9 +382,12 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
       summary += `${topNames.join(', ')}. `;
     }
     
-    const highConsensus = records.filter(r => r.value >= (statistics.percentile75 || statistics.mean)).length;
-    const moderateConsensus = records.filter(r => r.value >= statistics.percentile25 && r.value < (statistics.percentile75 || statistics.mean)).length;
-    const lowConsensus = records.filter(r => r.value < statistics.percentile25).length;
+    const highThreshold = statistics.percentile75 || statistics.mean;
+    const lowThreshold = statistics.percentile25 || statistics.mean * 0.5;
+    
+    const highConsensus = records.filter(r => r.value >= highThreshold).length;
+    const moderateConsensus = records.filter(r => r.value >= lowThreshold && r.value < highThreshold).length;
+    const lowConsensus = records.filter(r => r.value < lowThreshold).length;
     
     summary += `**📈 Analytical Agreement Distribution:** ${highConsensus} areas (${(highConsensus/records.length*100).toFixed(1)}%) show high cross-method consensus where strategic, competitive, and demographic analyses align. ${moderateConsensus} areas (${(moderateConsensus/records.length*100).toFixed(1)}%) show partial agreement between 2-3 methods. ${lowConsensus} areas (${(lowConsensus/records.length*100).toFixed(1)}%) show analytical disagreement requiring deeper investigation. `;
     
@@ -399,7 +402,7 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
     return summary;
   }
 
-  private generateUseCaseExamples(records: GeographicDataPoint[], statistics: AnalysisStatistics): string {
+  private generateUseCaseExamples(records: GeographicDataPoint[]): string {
     const useCases = [
       'Investment validation (do strategic, competitive, and demographic analyses all recommend this market?)',
       'Risk assessment (are there analytical disagreements that indicate uncertainty?)',
@@ -420,7 +423,7 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
     }
   }
 
-  private generateConsensusPatterns(records: GeographicDataPoint[], statistics: AnalysisStatistics): string {
+  private generateConsensusPatterns(records: GeographicDataPoint[]): string {
     const patterns = [];
     
     // Strong consensus markets

@@ -380,9 +380,12 @@ export class DimensionalityInsightsProcessor implements DataProcessorStrategy {
       summary += `${topNames.join(', ')}. `;
     }
     
-    const highComplexity = records.filter(r => r.value >= (statistics.percentile75 || statistics.mean)).length;
-    const mediumComplexity = records.filter(r => r.value >= statistics.percentile25 && r.value < (statistics.percentile75 || statistics.mean)).length;
-    const lowComplexity = records.filter(r => r.value < statistics.percentile25).length;
+    const highThreshold = statistics.percentile75 || statistics.mean;
+    const lowThreshold = statistics.percentile25 || statistics.mean * 0.5;
+    
+    const highComplexity = records.filter(r => r.value >= highThreshold).length;
+    const mediumComplexity = records.filter(r => r.value >= lowThreshold && r.value < highThreshold).length;
+    const lowComplexity = records.filter(r => r.value < lowThreshold).length;
     
     summary += `**📈 Dimensional Complexity Distribution:** ${highComplexity} areas (${(highComplexity/records.length*100).toFixed(1)}%) show high dimensional complexity with ${this.getComplexityInsights(records, 'high')}. ${mediumComplexity} areas (${(mediumComplexity/records.length*100).toFixed(1)}%) show moderate complexity with ${this.getComplexityInsights(records, 'medium')}. ${lowComplexity} areas (${(lowComplexity/records.length*100).toFixed(1)}%) show simple dimensional patterns with ${this.getComplexityInsights(records, 'low')}. `;
     
@@ -417,17 +420,18 @@ export class DimensionalityInsightsProcessor implements DataProcessorStrategy {
     }
     
     if (detectedFactors.length > 0) {
-      return `Primary complexity drivers include ${detectedFactors.slice(0, 3).join(', ')}, contributing to ${60 + Math.round(statistics.mean)}% of observed market dimensional variance.`;
+      const averageValue = records.reduce((sum, r) => sum + r.value, 0) / records.length;
+      return `Primary complexity drivers include ${detectedFactors.slice(0, 3).join(', ')}, contributing to ${60 + Math.round(averageValue)}% of observed market dimensional variance.`;
     }
     
     return factors.slice(0, 2).join('. ') + ', explaining majority of observed complexity patterns.';
   }
 
   private generateSpecificFieldExamples(records: GeographicDataPoint[]): string {
-    const examples = [];
+    const examples: string[] = [];
     const sampleRecords = records.slice(0, 3);
     
-    sampleRecords.forEach((record, index) => {
+    sampleRecords.forEach((record) => {
       const props = record.properties as any;
       const fieldExamples = [];
       

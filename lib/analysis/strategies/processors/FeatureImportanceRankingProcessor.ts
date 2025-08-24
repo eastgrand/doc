@@ -272,32 +272,6 @@ export class FeatureImportanceRankingProcessor implements DataProcessorStrategy 
     }));
   }
 
-  private processFeatureImportance(rawFeatureImportance: any[]): any[] {
-    return rawFeatureImportance.map(item => ({
-      feature: (item as any).feature || (item as any).name || 'unknown',
-      importance: Number((item as any).importance || (item as any).value || 0),
-      description: this.getFeatureDescription((item as any).feature || (item as any).name)
-    })).sort((a, b) => b.importance - a.importance);
-  }
-
-  private getFeatureDescription(featureName: string): string {
-    const descriptions: Record<string, string> = {
-      'feature': 'Feature variable impact',
-      'importance': 'Variable importance',
-      'ranking': 'Feature ranking',
-      'weight': 'Feature weight',
-      'contribution': 'Model contribution'
-    };
-    
-    const lowerName = featureName.toLowerCase();
-    for (const [key, desc] of Object.entries(descriptions)) {
-      if (lowerName.includes(key)) {
-        return desc;
-      }
-    }
-    
-    return `${featureName} impact`;
-  }
 
   private calculateStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
     const values = records.map(r => r.value).filter(v => !isNaN(v));
