@@ -123,10 +123,35 @@ function selectNumericFieldFromFeature(props: Record<string, any>): string | und
   const preferred = [
     'target_value',
     'value',
+    // All endpoint scoring fields from ENDPOINT_SCORING_FIELD_MAPPING.md
+    'strategic_analysis_score',
+    'competitive_analysis_score',
+    'demographic_insights_score',
+    'correlation_analysis_score',
+    'brand_difference_score',
+    'comparative_analysis_score',
+    'customer_profile_score',
+    'trend_analysis_score',
+    'segment_profiling_score',
+    'anomaly_detection_score',
+    'predictive_modeling_score',
+    'feature_interactions_score',
+    'outlier_detection_score',
+    'scenario_analysis_score',
+    'sensitivity_analysis_score',
+    'model_performance_score',
+    'ensemble_analysis_score',
+    'feature_importance_ranking_score',
+    'dimensionality_insights_score',
+    'spatial_clusters_score',
+    'consensus_analysis_score',
+    'algorithm_comparison_score',
+    'analyze_score',
+    'algorithm_category', // Special case for model-selection
+    // Legacy fields for backward compatibility
     'strategic_value_score',
     'competitive_advantage_score',
-    'comparative_score',
-    'brand_difference_score'
+    'comparative_score'
   ];
   for (const key of preferred) {
     if (isFiniteNumber(props?.[key])) return key;
