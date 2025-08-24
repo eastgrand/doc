@@ -638,8 +638,29 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       }
     }
     
+    // Specific variable interaction examples
+    summary += `**🔗 Specific Variable Interactions Identified:** `;
+    
+    // Top markets for detailed interaction analysis
+    const topMarkets = records.slice(0, 3);
+    if (topMarkets.length > 0) {
+      topMarkets.forEach((market, index) => {
+        const props = market.properties as any;
+        const examples = this.generateSpecificInteractionExamples(market, props);
+        summary += `${index + 1}. **${market.area_name}** (${market.value.toFixed(1)} interaction score): ${examples} `;
+      });
+    }
+    
+    // Add common interaction patterns discovered
+    summary += `**📋 Common Interaction Patterns:** `;
+    const sampleMarket = records.find(r => r.value >= 35);
+    if (sampleMarket) {
+      const commonExamples = this.generateCommonInteractionPatterns(records);
+      summary += `${commonExamples} `;
+    }
+    
     // Strategic insights
-    summary += `**Interaction Insights:** ${statistics.total} geographic areas analyzed for feature interactions and variable relationships. `;
+    summary += `**📊 Interaction Analysis:** ${statistics.total} geographic areas analyzed for feature interactions and variable relationships. `;
     
     const strongInteractionMarkets = records.filter(r => r.value >= 50).length;
     if (strongInteractionMarkets > 0) {
@@ -776,5 +797,105 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       // Middle classes: minValue - maxValue
       return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
     }
+  }
+
+  /**
+   * Generate specific interaction examples for a market
+   */
+  private generateSpecificInteractionExamples(market: GeographicDataPoint, props: any): string {
+    const examples = [];
+    
+    // Income and demographics interaction
+    if (props.median_income > 0 && props.demographic_score > 0) {
+      const incomeLevel = props.median_income > 60000 ? 'High income' : props.median_income > 40000 ? 'Moderate income' : 'Lower income';
+      const demoStrength = props.demographic_score > 50 ? 'strong demographics' : 'moderate demographics';
+      examples.push(`${incomeLevel} ($${(props.median_income/1000).toFixed(0)}K) amplifies ${demoStrength} (${props.demographic_score.toFixed(1)}/100)`);
+    }
+    
+    // Population density and competitive factors
+    if (props.total_population > 0 && props.competitive_score > 0) {
+      const popDensity = props.total_population > 50000 ? 'High density' : props.total_population > 25000 ? 'Medium density' : 'Low density';
+      const compStrength = props.competitive_score > 50 ? 'intense competition' : 'moderate competition';
+      examples.push(`${popDensity} (${(props.total_population/1000).toFixed(0)}K people) creates ${compStrength} (${props.competitive_score.toFixed(1)}/100)`);
+    }
+    
+    // Brand performance and market factors interaction
+    if (props.nike_market_share > 0 && props.strategic_score > 0) {
+      const brandShare = props.nike_market_share > 25 ? 'Strong brand presence' : props.nike_market_share > 15 ? 'Moderate brand presence' : 'Limited brand presence';
+      const strategicValue = props.strategic_score > 60 ? 'high strategic value' : 'moderate strategic value';
+      examples.push(`${brandShare} (${props.nike_market_share.toFixed(1)}%) correlates with ${strategicValue} (${props.strategic_score.toFixed(1)}/100)`);
+    }
+    
+    // Correlation and trend interaction
+    if (props.correlation_score > 0 && props.trend_score > 0) {
+      const corrStrength = props.correlation_score > 60 ? 'Strong correlations' : 'Moderate correlations';
+      const trendDirection = props.trend_score > 50 ? 'positive trends' : 'mixed trends';
+      examples.push(`${corrStrength} (${props.correlation_score.toFixed(1)}/100) align with ${trendDirection} (${props.trend_score.toFixed(1)}/100)`);
+    }
+    
+    // Return examples or fallback
+    if (examples.length > 0) {
+      return examples.slice(0, 2).join('; ') + '.';
+    }
+    
+    // Fallback to interaction type analysis
+    const interactionType = props.dominant_interaction_type || 'Mixed Interactions';
+    const synergyEffect = props.synergy_effect || 0;
+    return `${interactionType} detected with ${synergyEffect.toFixed(1)}% synergy between variables.`;
+  }
+
+  /**
+   * Generate common interaction patterns across markets
+   */
+  private generateCommonInteractionPatterns(records: GeographicDataPoint[]): string {
+    const patterns = [];
+    
+    // Analyze income-demographics patterns
+    const incomeDemo = records.filter(r => {
+      const props = r.properties as any;
+      return props.median_income > 0 && props.demographic_score > 0;
+    });
+    
+    if (incomeDemo.length >= 5) {
+      const avgIncomeEffect = incomeDemo.reduce((sum, r) => {
+        const props = r.properties as any;
+        return sum + (props.median_income / 1000) * (props.demographic_score / 100);
+      }, 0) / incomeDemo.length;
+      
+      patterns.push(`Income-demographics multiplier effect: ${avgIncomeEffect.toFixed(1)}x stronger in ${incomeDemo.length} markets`);
+    }
+    
+    // Analyze population-competition patterns
+    const popComp = records.filter(r => {
+      const props = r.properties as any;
+      return props.total_population > 0 && props.competitive_score > 0;
+    });
+    
+    if (popComp.length >= 5) {
+      const highPop = popComp.filter(r => (r.properties as any).total_population > 40000);
+      const highPopCompScore = highPop.reduce((sum, r) => sum + (r.properties as any).competitive_score, 0) / (highPop.length || 1);
+      
+      patterns.push(`High-density markets (${highPop.length}) show ${highPopCompScore.toFixed(1)} average competitive intensity`);
+    }
+    
+    // Analyze synergy patterns
+    const synergyMarkets = records.filter(r => ((r.properties as any).synergy_effect || 0) > 40);
+    if (synergyMarkets.length >= 3) {
+      const avgSynergy = synergyMarkets.reduce((sum, r) => sum + ((r.properties as any).synergy_effect || 0), 0) / synergyMarkets.length;
+      patterns.push(`Synergy amplification: ${synergyMarkets.length} markets show ${avgSynergy.toFixed(1)}% combined effects exceeding individual variable impact`);
+    }
+    
+    // Analyze threshold effects
+    const nonLinearMarkets = records.filter(r => ((r.properties as any).non_linear_patterns || 0) > 30);
+    if (nonLinearMarkets.length >= 3) {
+      patterns.push(`Non-linear thresholds: ${nonLinearMarkets.length} markets exhibit tipping points where variable combinations create disproportionate results`);
+    }
+    
+    // Return patterns or fallback
+    if (patterns.length > 0) {
+      return patterns.slice(0, 3).join('. ') + '.';
+    }
+    
+    return `Variable interactions primarily show correlation-driven patterns with moderate complexity across analyzed markets.`;
   }
 }

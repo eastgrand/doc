@@ -221,7 +221,7 @@ export class ConfigurationManager {
           analysis_depth: 'standard'
         },
         responseProcessor: 'AnalyzeProcessor',
-        keywords: ['analyze', 'general', 'overview', 'summary', 'insights'],
+        keywords: ['analyze', 'general', 'overview', 'summary', 'insights', 'comprehensive', 'market insights', 'business intelligence', 'comprehensive market insights', 'general analysis', 'overall analysis'],
         targetVariable: 'analyze_score',
         scoreFieldName: 'analyze_score',
         requiredFields: ['target_variable'],
@@ -305,7 +305,7 @@ export class ConfigurationManager {
           analysis_type: 'market_share'
         },
         responseProcessor: 'CompetitiveDataProcessor',
-        keywords: ['compete', 'competition', 'competitive', 'vs', 'versus', 'brand comparison', 'market share', 'nike vs adidas', 'competitive advantage', 'competitive positioning', 'competitive landscape', 'brand dominance'],
+        keywords: ['compete', 'competition', 'competitive', 'positioning', 'vs', 'versus', 'brand comparison', 'market share', 'nike vs adidas', 'competitive advantage', 'competitive positioning', 'competitive landscape', 'competitive analysis', 'brand dominance'],
   targetVariable: 'competitive_analysis_score',
   scoreFieldName: 'competitive_analysis_score',
         requiredFields: ['target_variable'],
@@ -376,7 +376,7 @@ export class ConfigurationManager {
         defaultVisualization: 'choropleth',
         payloadTemplate: { target_variable: '', sample_size: 5000 },
         responseProcessor: 'DemographicDataProcessor', // Demographic data processor
-        keywords: ['demographic', 'demographics', 'population', 'age', 'income', 'lifestyle', 'demographic opportunity', 'demographic score', 'demographic insights', 'yoga', 'fitness', 'gym', 'athletic', 'running', 'health', 'wellness', 'active lifestyle', 'exercise'],
+        keywords: ['demographic', 'demographics', 'customer demographics', 'population', 'age', 'income', 'lifestyle', 'demographic opportunity', 'demographic score', 'demographic insights', 'demographic analysis', 'demographic breakdown', 'yoga', 'fitness', 'gym', 'athletic', 'running', 'health', 'wellness', 'active lifestyle', 'exercise'],
         targetVariable: 'demographic_insights_score',
         scoreFieldName: 'demographic_insights_score',
         requiredFields: ['target_variable'],

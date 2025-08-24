@@ -105,12 +105,12 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
-    // Consensus colors: Red (low agreement) -> Orange -> Yellow -> Green (high consensus)
+    // Use standard red-to-green gradient: Red (low) -> Orange -> Light Green -> Dark Green (high)
     const consensusColors = [
-      [215, 48, 39, 0.6],    // Red (low consensus)
-      [244, 109, 67, 0.6],   // Orange-red
-      [254, 224, 139, 0.6],  // Light yellow
-      [26, 152, 80, 0.6]     // Green (high consensus)
+      [215, 48, 39, 0.6],   // #d73027 - Red (low consensus)
+      [253, 174, 97, 0.6],  // #fdae61 - Orange
+      [166, 217, 106, 0.6], // #a6d96a - Light Green
+      [26, 152, 80, 0.6]    // #1a9850 - Dark Green (high consensus)
     ];
     
     const classBreakInfos = [];
@@ -144,10 +144,10 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
     const consensusColors = [
-      'rgba(215, 48, 39, 0.6)',    // Red
-      'rgba(244, 109, 67, 0.6)',   // Orange-red
-      'rgba(254, 224, 139, 0.6)',  // Light yellow
-      'rgba(26, 152, 80, 0.6)'     // Green
+      'rgba(215, 48, 39, 0.6)',   // Red (low consensus)
+      'rgba(253, 174, 97, 0.6)',  // Orange
+      'rgba(166, 217, 106, 0.6)', // Light Green
+      'rgba(26, 152, 80, 0.6)'    // Dark Green (high consensus)
     ];
     
     const legendItems = [];
@@ -356,24 +356,96 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
     let summary = getScoreExplanationForAnalysis('consensus-analysis', 'consensus_analysis');
     
     const targetBrandName = this.brandResolver.getTargetBrandName();
-    summary += `**Consensus Analysis Complete:** ${statistics.total} geographic areas evaluated for ${targetBrandName} model agreement. `;
+    
+    // Clear differentiation from ensemble analysis
+    summary += `**🤝 Consensus Analysis vs Ensemble Analysis:** Consensus analysis measures **agreement across different analytical approaches** (strategic, competitive, demographic methods), while ensemble analysis measures **combined model performance** (ML algorithms working together). Consensus identifies where different analytical frameworks reach similar conclusions about market opportunities.
+
+`;
+
+    summary += `**📊 Cross-Method Consensus Analysis Complete:** ${statistics.total} geographic areas evaluated for ${targetBrandName} analytical agreement across multiple business intelligence approaches. `;
     summary += `Consensus scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
+    
+    // Add specific use cases
+    summary += `**🎯 Unique Use Cases for Consensus Analysis:** `;
+    const useCaseExamples = this.generateUseCaseExamples(records, statistics);
+    summary += `${useCaseExamples} `;
+    
+    // Specific consensus patterns
+    summary += `**🔍 Analytical Method Agreement Patterns:** `;
+    const consensusPatterns = this.generateConsensusPatterns(records, statistics);
+    summary += `${consensusPatterns} `;
     
     const topAreas = records.slice(0, 5);
     if (topAreas.length > 0) {
-      summary += `**Highest Consensus:** `;
-      const topNames = topAreas.map(r => `${r.area_name} (${r.value.toFixed(1)})`);
+      summary += `**Highest Cross-Method Consensus:** `;
+      const topNames = topAreas.map(r => `${r.area_name} (${r.value.toFixed(1)} consensus score)`);
       summary += `${topNames.join(', ')}. `;
     }
     
     const highConsensus = records.filter(r => r.value >= (statistics.percentile75 || statistics.mean)).length;
-    summary += `**Model Agreement:** ${highConsensus} areas (${(highConsensus/records.length*100).toFixed(1)}%) show strong cross-model consensus. `;
+    const moderateConsensus = records.filter(r => r.value >= statistics.percentile25 && r.value < (statistics.percentile75 || statistics.mean)).length;
+    const lowConsensus = records.filter(r => r.value < statistics.percentile25).length;
     
-    const lowVariance = records.filter(r => r.value >= 8).length;
-    if (lowVariance > 0) {
-      summary += `${lowVariance} areas have exceptionally high agreement (score > 8.0), indicating robust predictions. `;
+    summary += `**📈 Analytical Agreement Distribution:** ${highConsensus} areas (${(highConsensus/records.length*100).toFixed(1)}%) show high cross-method consensus where strategic, competitive, and demographic analyses align. ${moderateConsensus} areas (${(moderateConsensus/records.length*100).toFixed(1)}%) show partial agreement between 2-3 methods. ${lowConsensus} areas (${(lowConsensus/records.length*100).toFixed(1)}%) show analytical disagreement requiring deeper investigation. `;
+    
+    const strongConsensus = records.filter(r => r.value >= 80).length;
+    if (strongConsensus > 0) {
+      summary += `${strongConsensus} areas have exceptionally strong consensus (score ≥ 80), indicating high-confidence opportunities where all analytical approaches agree. `;
     }
     
+    // Decision-making implications
+    summary += `**🚀 Strategic Decision Making:** High-consensus areas offer low-risk investment opportunities with analytical validation. Moderate-consensus areas require focused analysis to resolve disagreements. Low-consensus areas present either hidden opportunities (if one method identifies unique value) or high-risk investments requiring additional validation.`;
+    
     return summary;
+  }
+
+  private generateUseCaseExamples(records: GeographicDataPoint[], statistics: AnalysisStatistics): string {
+    const useCases = [
+      'Investment validation (do strategic, competitive, and demographic analyses all recommend this market?)',
+      'Risk assessment (are there analytical disagreements that indicate uncertainty?)',
+      'Portfolio diversification (balance high-consensus safe bets with low-consensus high-potential areas)',
+      'Resource allocation confidence (allocate more resources to markets with high analytical agreement)'
+    ];
+    
+    // Determine primary use case based on consensus patterns
+    const highConsensusCount = records.filter(r => r.value >= 75).length;
+    const lowConsensusCount = records.filter(r => r.value <= 30).length;
+    
+    if (highConsensusCount > records.length * 0.3) {
+      return `Primary application: **Investment validation** - ${highConsensusCount} markets show strong agreement across analytical methods, ideal for confident strategic decisions. Additional uses: ${useCases.slice(1, 3).join(', ')}.`;
+    } else if (lowConsensusCount > records.length * 0.4) {
+      return `Primary application: **Risk assessment** - ${lowConsensusCount} markets show analytical disagreements requiring investigation. Consider ${useCases[2]} and ${useCases[3]}.`;
+    } else {
+      return useCases.slice(0, 2).join('. ') + '. Balanced consensus distribution supports comprehensive strategic planning.';
+    }
+  }
+
+  private generateConsensusPatterns(records: GeographicDataPoint[], statistics: AnalysisStatistics): string {
+    const patterns = [];
+    
+    // Strong consensus markets
+    const strongConsensus = records.filter(r => r.value >= 75);
+    if (strongConsensus.length >= 3) {
+      const avgScore = strongConsensus.reduce((sum, r) => sum + r.value, 0) / strongConsensus.length;
+      patterns.push(`${strongConsensus.length} markets show strong analytical alignment (avg ${avgScore.toFixed(1)}) where strategic opportunity + competitive advantage + demographic fit all agree`);
+    }
+    
+    // Disagreement patterns
+    const lowConsensus = records.filter(r => r.value <= 40);
+    if (lowConsensus.length >= 3) {
+      patterns.push(`${lowConsensus.length} markets have analytical disagreements potentially indicating either hidden opportunities or high-risk scenarios requiring deeper investigation`);
+    }
+    
+    // Mixed signals
+    const moderateConsensus = records.filter(r => r.value >= 50 && r.value <= 70);
+    if (moderateConsensus.length >= 5) {
+      patterns.push(`${moderateConsensus.length} markets show partial consensus suggesting 2 out of 3 analytical approaches align while requiring focused resolution of the disagreement`);
+    }
+    
+    if (patterns.length > 0) {
+      return patterns.slice(0, 2).join('. ') + '.';
+    }
+    
+    return 'Analysis reveals mixed consensus patterns requiring case-by-case evaluation to understand analytical agreement sources.';
   }
 }

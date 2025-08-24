@@ -68,7 +68,7 @@ export const ENDPOINT_DESCRIPTIONS: Record<string, EndpointDescription> = {
     fieldMappings: ['market_share', 'competitive_metrics', 'brand_performance', 'competitive_positioning'],
     useCases: ['Competitive intelligence', 'Market share analysis', 'Brand positioning', 'Competitive benchmarking'],
     businessContext: 'Understanding competitive dynamics and market share performance against rivals',
-    keywords: ['market share', 'competitive', 'competitors', 'brands', 'positioning', 'market dynamics'],
+    keywords: ['market share', 'competitive', 'competitors', 'brands', 'positioning', 'competitive positioning', 'competitive analysis', 'market dynamics', 'competitive landscape', 'market competition'],
     semanticConcepts: ['competitive analysis', 'market share', 'brand competition', 'competitive intelligence', 'market positioning']
   },
 
@@ -86,7 +86,7 @@ export const ENDPOINT_DESCRIPTIONS: Record<string, EndpointDescription> = {
     fieldMappings: ['demographics', 'age', 'income', 'population', 'ethnicity', 'customer_characteristics'],
     useCases: ['Customer targeting', 'Market sizing', 'Demographic profiling', 'Location planning'],
     businessContext: 'Understanding who lives where and their demographic characteristics for targeting',
-    keywords: ['demographic', 'demographics', 'age', 'income', 'population', 'customers', 'ethnicity'],
+    keywords: ['demographic', 'demographics', 'customer demographics', 'age', 'income', 'population', 'customers', 'ethnicity', 'demographic insights', 'demographic analysis', 'demographic breakdown'],
     semanticConcepts: ['demographic analysis', 'population characteristics', 'customer demographics', 'market composition', 'target audience']
   },
 
@@ -464,7 +464,7 @@ export const ENDPOINT_DESCRIPTIONS: Record<string, EndpointDescription> = {
     fieldMappings: ['comprehensive_analysis', 'general_insights', 'broad_analysis', 'overall_assessment'],
     useCases: ['General analysis', 'Comprehensive insights', 'Broad assessment', 'General intelligence'],
     businessContext: 'Providing broad, comprehensive insights when specific analysis type is not specified',
-    keywords: ['comprehensive', 'general', 'overall', 'complete', 'broad analysis'],
+    keywords: ['comprehensive', 'general', 'overall', 'complete', 'broad analysis', 'insights', 'market insights', 'analyze', 'analysis', 'comprehensive market insights', 'business intelligence', 'general analysis'],
     semanticConcepts: ['comprehensive analysis', 'general insights', 'broad assessment', 'overall analysis', 'general intelligence']
   }
 };

@@ -611,10 +611,10 @@ export class EnhancedQueryAnalyzer {
       weight: 1.0
     },
     '/competitive-analysis': {
-      primaryKeywords: ['competitive advantage', 'competitive position', 'competitive landscape', 'competitive opportunities', 'competitive scoring'],
-      contextKeywords: ['competitive analysis', 'advantage score', 'competitive strength', 'market competitiveness'],
+      primaryKeywords: ['competitive advantage', 'competitive position', 'competitive landscape', 'competitive opportunities', 'competitive scoring', 'competitive positioning', 'positioning'],
+      contextKeywords: ['competitive analysis', 'advantage score', 'competitive strength', 'market competitiveness', 'best competitive positioning', 'areas with the best competitive'],
       avoidTerms: ['brand positioning', 'brand difference', 'vs', 'versus', 'h&r block and turbotax'],
-      weight: 1.2
+      weight: 1.3
     },
     '/brand-difference': {
       primaryKeywords: ['market share difference', 'difference between', 'brand difference', 'vs', 'versus', 'market share', 'brand positioning', 'positioning vs', 'strongest brand'],
@@ -624,9 +624,9 @@ export class EnhancedQueryAnalyzer {
     },
     '/demographic-insights': {
       primaryKeywords: ['demographic', 'demographics', 'population', 'age', 'income', 'race', 'ethnicity'],
-      contextKeywords: ['customer demographics', 'demographic opportunity', 'demographic score'],
-      avoidTerms: [],
-      weight: 1.0
+      contextKeywords: ['customer demographics', 'best customer demographics', 'demographic opportunity', 'demographic score', 'areas have the best customer demographics', 'which areas have', 'demographics for'],
+      avoidTerms: ['customer personas', 'ideal customer'],
+      weight: 1.2
     },
     '/customer-profile': {
       primaryKeywords: ['customer', 'profile', 'persona', 'personas', 'lifestyle', 'behavior', 'values', 'psychographic', 'psychographics'],
@@ -707,10 +707,10 @@ export class EnhancedQueryAnalyzer {
       weight: 1.0
     },
     '/analyze': {
-      primaryKeywords: ['analyze', 'analysis', 'analytical', 'overview', 'comprehensive'],
-      contextKeywords: ['complete overview', 'analytical overview', 'comprehensive analysis'],
-      avoidTerms: [],
-      weight: 1.0
+      primaryKeywords: ['analyze', 'analysis', 'analytical', 'overview', 'comprehensive', 'insights', 'market insights'],
+      contextKeywords: ['complete overview', 'analytical overview', 'comprehensive analysis', 'comprehensive market insights', 'market insights for', 'insights for tax preparation'],
+      avoidTerms: ['customer personas', 'ideal customer', 'customer profile'],
+      weight: 1.3
     },
     '/algorithm-comparison': {
       primaryKeywords: ['algorithm', 'algorithms', 'ml algorithm', 'accurate predictions', 'ai model', 'model performs best', 'performs best'],

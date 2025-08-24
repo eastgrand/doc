@@ -223,14 +223,16 @@ export class CachedEndpointRouter {
       for (const keyword of config.keywords) {
         if (lowerQuery.includes(keyword.toLowerCase())) {
           // Give higher weight to more specific endpoint keywords
-          if (config.id === '/demographic-insights' && keyword === 'demographic') {
-            score += 3; // Strong boost for demographic queries
-          } else if (config.id === '/competitive-analysis' && (keyword === 'competitive' || keyword === 'competition')) {
-            score += 3; // Strong boost for competitive queries
+          if (config.id === '/demographic-insights' && (keyword === 'demographic' || keyword === 'demographics' || keyword === 'customer demographics')) {
+            score += 6; // Very strong boost for demographic queries
+          } else if (config.id === '/competitive-analysis' && (keyword === 'competitive' || keyword === 'competition' || keyword === 'positioning' || keyword === 'competitive positioning')) {
+            score += 6; // Very strong boost for competitive queries
           } else if (config.id === '/comparative-analysis' && keyword === 'compare') {
             score += 3; // Strong boost for comparative queries
           } else if (config.id === '/strategic-analysis' && keyword === 'strategic') {
             score += 3; // Strong boost for strategic queries
+          } else if (config.id === '/analyze' && (keyword === 'comprehensive' || keyword === 'insights' || keyword === 'analyze' || keyword === 'market insights' || keyword === 'comprehensive market insights')) {
+            score += 6; // Very strong boost for general analysis queries
           } else if (keyword.length > 6) {
             score += 1.5; // Moderate boost for longer, more specific keywords
           } else {
