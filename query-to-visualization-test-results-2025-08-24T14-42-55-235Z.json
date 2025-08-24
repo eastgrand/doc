@@ -1,23 +1,25 @@
 {
   "metadata": {
     "testSuite": "Query-to-Visualization Pipeline Integration",
-    "timestamp": "2025-08-24T00:56:32.160Z",
+    "timestamp": "2025-08-24T14:42:55.235Z",
     "version": "1.0.0",
     "totalQueries": 22,
-    "successCount": 19,
-    "errorCount": 3,
-    "successRate": "86.4%",
-    "totalDuration": "70ms",
-    "averageDuration": "3.2ms"
+    "successCount": 22,
+    "errorCount": 0,
+    "successRate": "100.0%",
+    "totalDuration": "53ms",
+    "averageDuration": "2.4ms"
   },
   "categoryBreakdown": {
     "successful": [
       "Strategic Analysis",
       "Comparative Analysis",
       "Brand Difference",
+      "Demographic Insights",
       "Customer Profile",
       "Spatial Clusters",
       "Outlier Detection",
+      "Competitive Analysis",
       "Scenario Analysis",
       "Feature Interactions",
       "Segment Profiling",
@@ -30,19 +32,16 @@
       "Dimensionality Insights",
       "Consensus Analysis",
       "Anomaly Insights",
-      "Cluster Analysis"
-    ],
-    "failed": [
-      "Demographic Insights",
-      "Competitive Analysis",
+      "Cluster Analysis",
       "Analyze"
-    ]
+    ],
+    "failed": []
   },
   "results": [
     {
       "query": "Show me the top strategic markets for H&R Block tax service expansion",
       "category": "Strategic Analysis",
-      "timestamp": "2025-08-24T00:56:32.087Z",
+      "timestamp": "2025-08-24T14:42:55.181Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -50,7 +49,7 @@
       ],
       "actualEndpoint": "/strategic-analysis",
       "routingMethod": "keyword",
-      "routingTime": 0,
+      "routingTime": 4,
       "expectedEndpoint": "/strategic-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
@@ -92,12 +91,12 @@
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
       "routingAccurate": true,
-      "totalProcessingTime": 3
+      "totalProcessingTime": 7
     },
     {
       "query": "Compare H&R Block usage between Alachua County and Miami-Dade County",
       "category": "Comparative Analysis",
-      "timestamp": "2025-08-24T00:56:32.090Z",
+      "timestamp": "2025-08-24T14:42:55.188Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -154,7 +153,7 @@
     {
       "query": "Show me the market share difference between H&R Block and TurboTax",
       "category": "Brand Difference",
-      "timestamp": "2025-08-24T00:56:32.092Z",
+      "timestamp": "2025-08-24T14:42:55.190Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -209,14 +208,13 @@
     {
       "query": "Which areas have the best customer demographics for tax preparation services?",
       "category": "Demographic Insights",
-      "timestamp": "2025-08-24T00:56:32.094Z",
-      "success": false,
+      "timestamp": "2025-08-24T14:42:55.192Z",
+      "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
-        "Keyword routing: /customer-profile (score: 7.7) - Primary keywords: customer; Context matches: for tax preparation, tax preparation services",
-        "❌ ROUTING MISMATCH: Expected /demographic-insights, got /customer-profile"
+        "Keyword routing: /demographic-insights (score: 16.6) - Primary keywords: demographics; Context matches: customer demographics, best customer demographics, areas have the best customer demographics, which areas have, demographics for; Intent bonus: ranking (+1)"
       ],
-      "actualEndpoint": "/customer-profile",
+      "actualEndpoint": "/demographic-insights",
       "routingMethod": "keyword",
       "routingTime": 1,
       "expectedEndpoint": "/demographic-insights",
@@ -231,9 +229,9 @@
       "competitorBrands": [
         "TurboTax"
       ],
-      "configurationUsed": "/customer-profile",
+      "configurationUsed": "/demographic-insights",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "customer_profile_score",
+      "targetVariable": "demographic_insights_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -259,15 +257,13 @@
       "legendValidationPassed": true,
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "routingAccurate": false,
-      "error": "Error: Routing failed: Expected endpoint /demographic-insights but got /customer-profile for query \"Which areas have the best customer demographics for tax preparation services?\"",
-      "errorStack": "Error: Routing failed: Expected endpoint /demographic-insights but got /customer-profile for query \"Which areas have the best customer demographics for tax preparation services?\"\n    at Object.<anonymous> (/Users/voldeck/code/mpiq-ai-chat/__tests__/query-to-visualization-pipeline.test.ts:1221:19)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)",
+      "routingAccurate": true,
       "totalProcessingTime": 2
     },
     {
       "query": "Show me areas with ideal customer personas for tax preparation services",
       "category": "Customer Profile",
-      "timestamp": "2025-08-24T00:56:32.096Z",
+      "timestamp": "2025-08-24T14:42:55.194Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -322,7 +318,7 @@
     {
       "query": "Show me geographic clusters of similar tax service markets",
       "category": "Spatial Clusters",
-      "timestamp": "2025-08-24T00:56:32.098Z",
+      "timestamp": "2025-08-24T14:42:55.196Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -377,7 +373,7 @@
     {
       "query": "Show me markets that have outliers with unique tax service characteristics",
       "category": "Outlier Detection",
-      "timestamp": "2025-08-24T00:56:32.100Z",
+      "timestamp": "2025-08-24T14:42:55.198Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -432,14 +428,13 @@
     {
       "query": "Show me areas with the best competitive positioning",
       "category": "Competitive Analysis",
-      "timestamp": "2025-08-24T00:56:32.102Z",
-      "success": false,
+      "timestamp": "2025-08-24T14:42:55.200Z",
+      "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
-        "Keyword routing: /strategic-analysis (score: 3.0) - Intent bonus: ranking (+3)",
-        "❌ ROUTING MISMATCH: Expected /competitive-analysis, got /strategic-analysis"
+        "Keyword routing: /competitive-analysis (score: 15.0) - Primary keywords: competitive positioning, positioning; Context matches: best competitive positioning, areas with the best competitive; Intent bonus: ranking (+2)"
       ],
-      "actualEndpoint": "/strategic-analysis",
+      "actualEndpoint": "/competitive-analysis",
       "routingMethod": "keyword",
       "routingTime": 0,
       "expectedEndpoint": "/competitive-analysis",
@@ -454,9 +449,9 @@
       "competitorBrands": [
         "TurboTax"
       ],
-      "configurationUsed": "/strategic-analysis",
+      "configurationUsed": "/competitive-analysis",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "strategic_analysis_score",
+      "targetVariable": "competitive_analysis_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -482,15 +477,13 @@
       "legendValidationPassed": true,
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "routingAccurate": false,
-      "error": "Error: Routing failed: Expected endpoint /competitive-analysis but got /strategic-analysis for query \"Show me areas with the best competitive positioning\"",
-      "errorStack": "Error: Routing failed: Expected endpoint /competitive-analysis but got /strategic-analysis for query \"Show me areas with the best competitive positioning\"\n    at Object.<anonymous> (/Users/voldeck/code/mpiq-ai-chat/__tests__/query-to-visualization-pipeline.test.ts:1221:19)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)",
-      "totalProcessingTime": 2
+      "routingAccurate": true,
+      "totalProcessingTime": 1
     },
     {
       "query": "What if H&R Block changes its pricing strategy - which markets would be most resilient?",
       "category": "Scenario Analysis",
-      "timestamp": "2025-08-24T00:56:32.104Z",
+      "timestamp": "2025-08-24T14:42:55.201Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -498,7 +491,7 @@
       ],
       "actualEndpoint": "/scenario-analysis",
       "routingMethod": "keyword",
-      "routingTime": 0,
+      "routingTime": 1,
       "expectedEndpoint": "/scenario-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
@@ -540,12 +533,12 @@
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
       "routingAccurate": true,
-      "totalProcessingTime": 2
+      "totalProcessingTime": 9
     },
     {
       "query": "Which markets have the strongest interactions between demographics and tax service usage?",
       "category": "Feature Interactions",
-      "timestamp": "2025-08-24T00:56:32.106Z",
+      "timestamp": "2025-08-24T14:42:55.210Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -553,7 +546,7 @@
       ],
       "actualEndpoint": "/feature-interactions",
       "routingMethod": "keyword",
-      "routingTime": 0,
+      "routingTime": 1,
       "expectedEndpoint": "/feature-interactions",
       "geographicEntities": [],
       "zipCodesDetected": 0,
@@ -600,7 +593,7 @@
     {
       "query": "Which markets have the clearest customer segmentation profiles for tax services?",
       "category": "Segment Profiling",
-      "timestamp": "2025-08-24T00:56:32.108Z",
+      "timestamp": "2025-08-24T14:42:55.212Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -650,12 +643,12 @@
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
       "routingAccurate": true,
-      "totalProcessingTime": 3
+      "totalProcessingTime": 2
     },
     {
       "query": "How do tax service rankings change if we adjust income weights by 20%?",
       "category": "Sensitivity Analysis",
-      "timestamp": "2025-08-24T00:56:32.111Z",
+      "timestamp": "2025-08-24T14:42:55.214Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -663,7 +656,7 @@
       ],
       "actualEndpoint": "/sensitivity-analysis",
       "routingMethod": "keyword",
-      "routingTime": 1,
+      "routingTime": 0,
       "expectedEndpoint": "/sensitivity-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
@@ -705,12 +698,12 @@
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
       "routingAccurate": true,
-      "totalProcessingTime": 14
+      "totalProcessingTime": 1
     },
     {
       "query": "What are the most important factors predicting H&R Block online usage?",
       "category": "Feature Importance Ranking",
-      "timestamp": "2025-08-24T00:56:32.125Z",
+      "timestamp": "2025-08-24T14:42:55.216Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -718,7 +711,7 @@
       ],
       "actualEndpoint": "/feature-importance-ranking",
       "routingMethod": "keyword",
-      "routingTime": 1,
+      "routingTime": 0,
       "expectedEndpoint": "/feature-importance-ranking",
       "geographicEntities": [],
       "zipCodesDetected": 0,
@@ -760,12 +753,12 @@
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
       "routingAccurate": true,
-      "totalProcessingTime": 2
+      "totalProcessingTime": 1
     },
     {
       "query": "How accurate are our predictions for tax service market performance?",
       "category": "Model Performance",
-      "timestamp": "2025-08-24T00:56:32.127Z",
+      "timestamp": "2025-08-24T14:42:55.217Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -820,7 +813,7 @@
     {
       "query": "Which AI model performs best for predicting tax service usage in each area?",
       "category": "Algorithm Comparison",
-      "timestamp": "2025-08-24T00:56:32.130Z",
+      "timestamp": "2025-08-24T14:42:55.219Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -828,7 +821,7 @@
       ],
       "actualEndpoint": "/algorithm-comparison",
       "routingMethod": "keyword",
-      "routingTime": 0,
+      "routingTime": 1,
       "expectedEndpoint": "/algorithm-comparison",
       "geographicEntities": [],
       "zipCodesDetected": 0,
@@ -870,12 +863,12 @@
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
       "routingAccurate": true,
-      "totalProcessingTime": 4
+      "totalProcessingTime": 3
     },
     {
       "query": "Show me the highest confidence predictions using our best ensemble model",
       "category": "Ensemble Analysis",
-      "timestamp": "2025-08-24T00:56:32.134Z",
+      "timestamp": "2025-08-24T14:42:55.222Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -883,7 +876,7 @@
       ],
       "actualEndpoint": "/ensemble-analysis",
       "routingMethod": "keyword",
-      "routingTime": 1,
+      "routingTime": 0,
       "expectedEndpoint": "/ensemble-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
@@ -925,12 +918,12 @@
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
       "routingAccurate": true,
-      "totalProcessingTime": 6
+      "totalProcessingTime": 2
     },
     {
       "query": "What is the optimal AI algorithm for predictions in each geographic area?",
       "category": "Model Selection",
-      "timestamp": "2025-08-24T00:56:32.140Z",
+      "timestamp": "2025-08-24T14:42:55.224Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -980,12 +973,12 @@
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
       "routingAccurate": true,
-      "totalProcessingTime": 3
+      "totalProcessingTime": 2
     },
     {
       "query": "Which factors explain most of the variation in tax service market performance?",
       "category": "Dimensionality Insights",
-      "timestamp": "2025-08-24T00:56:32.144Z",
+      "timestamp": "2025-08-24T14:42:55.226Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -1035,12 +1028,12 @@
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
       "routingAccurate": true,
-      "totalProcessingTime": 4
+      "totalProcessingTime": 1
     },
     {
       "query": "Where do all our AI models agree on tax service predictions?",
       "category": "Consensus Analysis",
-      "timestamp": "2025-08-24T00:56:32.148Z",
+      "timestamp": "2025-08-24T14:42:55.227Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -1048,7 +1041,7 @@
       ],
       "actualEndpoint": "/consensus-analysis",
       "routingMethod": "keyword",
-      "routingTime": 0,
+      "routingTime": 1,
       "expectedEndpoint": "/consensus-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
@@ -1090,12 +1083,12 @@
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
       "routingAccurate": true,
-      "totalProcessingTime": 4
+      "totalProcessingTime": 2
     },
     {
       "query": "Which unusual market patterns represent the biggest business opportunities?",
       "category": "Anomaly Insights",
-      "timestamp": "2025-08-24T00:56:32.152Z",
+      "timestamp": "2025-08-24T14:42:55.229Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -1150,7 +1143,7 @@
     {
       "query": "How should we segment tax service markets for targeted strategies?",
       "category": "Cluster Analysis",
-      "timestamp": "2025-08-24T00:56:32.154Z",
+      "timestamp": "2025-08-24T14:42:55.231Z",
       "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
@@ -1158,7 +1151,7 @@
       ],
       "actualEndpoint": "/cluster-analysis",
       "routingMethod": "keyword",
-      "routingTime": 1,
+      "routingTime": 0,
       "expectedEndpoint": "/cluster-analysis",
       "geographicEntities": [],
       "zipCodesDetected": 0,
@@ -1205,16 +1198,15 @@
     {
       "query": "Provide comprehensive market insights for tax preparation services",
       "category": "Analyze",
-      "timestamp": "2025-08-24T00:56:32.156Z",
-      "success": false,
+      "timestamp": "2025-08-24T14:42:55.233Z",
+      "success": true,
       "troubleshootingNotes": [
         "Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback",
-        "Keyword routing: /customer-profile (score: 4.4) - Context matches: for tax preparation, tax preparation services",
-        "❌ ROUTING MISMATCH: Expected /analyze, got /customer-profile"
+        "Keyword routing: /analyze (score: 19.5) - Primary keywords: comprehensive, insights, market insights; Context matches: comprehensive market insights, market insights for, insights for tax preparation"
       ],
-      "actualEndpoint": "/customer-profile",
+      "actualEndpoint": "/analyze",
       "routingMethod": "keyword",
-      "routingTime": 1,
+      "routingTime": 0,
       "expectedEndpoint": "/analyze",
       "geographicEntities": [],
       "zipCodesDetected": 0,
@@ -1227,9 +1219,9 @@
       "competitorBrands": [
         "TurboTax"
       ],
-      "configurationUsed": "/customer-profile",
+      "configurationUsed": "/analyze",
       "processorUsed": "StrategicAnalysisProcessor",
-      "targetVariable": "customer_profile_score",
+      "targetVariable": "analyze_score",
       "recordCount": 2,
       "scoreRange": [
         85.3,
@@ -1255,10 +1247,8 @@
       "legendValidationPassed": true,
       "legendAccuracy": true,
       "fieldConsistencyPassed": true,
-      "routingAccurate": false,
-      "error": "Error: Routing failed: Expected endpoint /analyze but got /customer-profile for query \"Provide comprehensive market insights for tax preparation services\"",
-      "errorStack": "Error: Routing failed: Expected endpoint /analyze but got /customer-profile for query \"Provide comprehensive market insights for tax preparation services\"\n    at Object.<anonymous> (/Users/voldeck/code/mpiq-ai-chat/__tests__/query-to-visualization-pipeline.test.ts:1221:19)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)",
-      "totalProcessingTime": 3
+      "routingAccurate": true,
+      "totalProcessingTime": 2
     }
   ]
 }

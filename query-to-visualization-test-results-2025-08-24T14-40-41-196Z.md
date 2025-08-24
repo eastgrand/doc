@@ -1,13 +1,13 @@
 # Query-to-Visualization Pipeline Test Results
 
 ## Test Summary
-- **Test Date**: 2025-08-24T01:00:07.372Z
+- **Test Date**: 2025-08-24T14:40:41.197Z
 - **Total Queries**: 22
 - **Successful**: 22
 - **Failed**: 0
 - **Success Rate**: 100.0%
-- **Total Duration**: 23ms
-- **Average Duration**: 1.0ms per query
+- **Total Duration**: 49ms
+- **Average Duration**: 2.2ms per query
 
 ## Category Results
 ### ✅ Successful Categories
@@ -42,28 +42,28 @@
 - **keyword**: 22 queries (100.0%)
 
 ### Average Performance by Category
-- **Strategic Analysis**: 7.0ms avg, 100.0% success rate (1/1)
-- **Comparative Analysis**: 1.0ms avg, 100.0% success rate (1/1)
-- **Brand Difference**: 1.0ms avg, 100.0% success rate (1/1)
-- **Demographic Insights**: 1.0ms avg, 100.0% success rate (1/1)
-- **Customer Profile**: 0.0ms avg, 100.0% success rate (1/1)
-- **Spatial Clusters**: 1.0ms avg, 100.0% success rate (1/1)
-- **Outlier Detection**: 1.0ms avg, 100.0% success rate (1/1)
-- **Competitive Analysis**: 0.0ms avg, 100.0% success rate (1/1)
-- **Scenario Analysis**: 1.0ms avg, 100.0% success rate (1/1)
-- **Feature Interactions**: 1.0ms avg, 100.0% success rate (1/1)
-- **Segment Profiling**: 1.0ms avg, 100.0% success rate (1/1)
+- **Strategic Analysis**: 4.0ms avg, 100.0% success rate (1/1)
+- **Comparative Analysis**: 2.0ms avg, 100.0% success rate (1/1)
+- **Brand Difference**: 2.0ms avg, 100.0% success rate (1/1)
+- **Demographic Insights**: 2.0ms avg, 100.0% success rate (1/1)
+- **Customer Profile**: 2.0ms avg, 100.0% success rate (1/1)
+- **Spatial Clusters**: 2.0ms avg, 100.0% success rate (1/1)
+- **Outlier Detection**: 2.0ms avg, 100.0% success rate (1/1)
+- **Competitive Analysis**: 1.0ms avg, 100.0% success rate (1/1)
+- **Scenario Analysis**: 2.0ms avg, 100.0% success rate (1/1)
+- **Feature Interactions**: 9.0ms avg, 100.0% success rate (1/1)
+- **Segment Profiling**: 2.0ms avg, 100.0% success rate (1/1)
 - **Sensitivity Analysis**: 1.0ms avg, 100.0% success rate (1/1)
-- **Feature Importance Ranking**: 0.0ms avg, 100.0% success rate (1/1)
-- **Model Performance**: 1.0ms avg, 100.0% success rate (1/1)
-- **Algorithm Comparison**: 1.0ms avg, 100.0% success rate (1/1)
-- **Ensemble Analysis**: 0.0ms avg, 100.0% success rate (1/1)
-- **Model Selection**: 1.0ms avg, 100.0% success rate (1/1)
-- **Dimensionality Insights**: 1.0ms avg, 100.0% success rate (1/1)
-- **Consensus Analysis**: 1.0ms avg, 100.0% success rate (1/1)
-- **Anomaly Insights**: 1.0ms avg, 100.0% success rate (1/1)
+- **Feature Importance Ranking**: 2.0ms avg, 100.0% success rate (1/1)
+- **Model Performance**: 2.0ms avg, 100.0% success rate (1/1)
+- **Algorithm Comparison**: 2.0ms avg, 100.0% success rate (1/1)
+- **Ensemble Analysis**: 2.0ms avg, 100.0% success rate (1/1)
+- **Model Selection**: 2.0ms avg, 100.0% success rate (1/1)
+- **Dimensionality Insights**: 2.0ms avg, 100.0% success rate (1/1)
+- **Consensus Analysis**: 2.0ms avg, 100.0% success rate (1/1)
+- **Anomaly Insights**: 2.0ms avg, 100.0% success rate (1/1)
 - **Cluster Analysis**: 1.0ms avg, 100.0% success rate (1/1)
-- **Analyze**: 0.0ms avg, 100.0% success rate (1/1)
+- **Analyze**: 1.0ms avg, 100.0% success rate (1/1)
 
 ## Detailed Test Results
 
@@ -73,8 +73,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.365Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.181Z
 
 **Query Routing:**
 - Expected Endpoint: `/algorithm-comparison`
@@ -122,8 +122,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 0ms
-- Timestamp: 2025-08-24T01:00:07.371Z
+- Processing Time: 1ms
+- Timestamp: 2025-08-24T14:40:41.195Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
@@ -171,8 +171,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.369Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.191Z
 
 **Query Routing:**
 - Expected Endpoint: `/anomaly-insights`
@@ -220,8 +220,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.356Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.152Z
 
 **Query Routing:**
 - Expected Endpoint: `/brand-difference`
@@ -270,7 +270,7 @@
 **Basic Info:**
 - Status: SUCCESS
 - Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.370Z
+- Timestamp: 2025-08-24T14:40:41.193Z
 
 **Query Routing:**
 - Expected Endpoint: `/cluster-analysis`
@@ -318,14 +318,14 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.355Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.150Z
 
 **Query Routing:**
 - Expected Endpoint: `/comparative-analysis`
 - Actual Endpoint: `/comparative-analysis` ✅
 - Routing Method: keyword
-- Routing Time: 1ms
+- Routing Time: 0ms
 
 **Geographic Processing:**
 - Entities Detected: detected-county
@@ -372,8 +372,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 0ms
-- Timestamp: 2025-08-24T01:00:07.360Z
+- Processing Time: 1ms
+- Timestamp: 2025-08-24T14:40:41.162Z
 
 **Query Routing:**
 - Expected Endpoint: `/competitive-analysis`
@@ -421,8 +421,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.368Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.189Z
 
 **Query Routing:**
 - Expected Endpoint: `/consensus-analysis`
@@ -470,14 +470,14 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 0ms
-- Timestamp: 2025-08-24T01:00:07.358Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.156Z
 
 **Query Routing:**
 - Expected Endpoint: `/customer-profile`
 - Actual Endpoint: `/customer-profile` ✅
 - Routing Method: keyword
-- Routing Time: 0ms
+- Routing Time: 1ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -519,14 +519,14 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.357Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.154Z
 
 **Query Routing:**
 - Expected Endpoint: `/demographic-insights`
 - Actual Endpoint: `/demographic-insights` ✅
 - Routing Method: keyword
-- Routing Time: 0ms
+- Routing Time: 1ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -568,8 +568,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.367Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.187Z
 
 **Query Routing:**
 - Expected Endpoint: `/dimensionality-insights`
@@ -617,8 +617,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 0ms
-- Timestamp: 2025-08-24T01:00:07.366Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.183Z
 
 **Query Routing:**
 - Expected Endpoint: `/ensemble-analysis`
@@ -666,14 +666,14 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 0ms
-- Timestamp: 2025-08-24T01:00:07.364Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.177Z
 
 **Query Routing:**
 - Expected Endpoint: `/feature-importance-ranking`
 - Actual Endpoint: `/feature-importance-ranking` ✅
 - Routing Method: keyword
-- Routing Time: 0ms
+- Routing Time: 1ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -715,8 +715,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.361Z
+- Processing Time: 9ms
+- Timestamp: 2025-08-24T14:40:41.165Z
 
 **Query Routing:**
 - Expected Endpoint: `/feature-interactions`
@@ -764,8 +764,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.364Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.179Z
 
 **Query Routing:**
 - Expected Endpoint: `/model-performance`
@@ -813,14 +813,14 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.366Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.185Z
 
 **Query Routing:**
 - Expected Endpoint: `/model-selection`
 - Actual Endpoint: `/model-selection` ✅
 - Routing Method: keyword
-- Routing Time: 1ms
+- Routing Time: 0ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -862,8 +862,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.359Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.160Z
 
 **Query Routing:**
 - Expected Endpoint: `/outlier-detection`
@@ -911,8 +911,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.360Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.163Z
 
 **Query Routing:**
 - Expected Endpoint: `/scenario-analysis`
@@ -960,8 +960,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.362Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.174Z
 
 **Query Routing:**
 - Expected Endpoint: `/segment-profiling`
@@ -1010,7 +1010,7 @@
 **Basic Info:**
 - Status: SUCCESS
 - Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.363Z
+- Timestamp: 2025-08-24T14:40:41.176Z
 
 **Query Routing:**
 - Expected Endpoint: `/sensitivity-analysis`
@@ -1058,8 +1058,8 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 1ms
-- Timestamp: 2025-08-24T01:00:07.358Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:41.158Z
 
 **Query Routing:**
 - Expected Endpoint: `/spatial-clusters`
@@ -1107,14 +1107,14 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 7ms
-- Timestamp: 2025-08-24T01:00:07.348Z
+- Processing Time: 4ms
+- Timestamp: 2025-08-24T14:40:41.146Z
 
 **Query Routing:**
 - Expected Endpoint: `/strategic-analysis`
 - Actual Endpoint: `/strategic-analysis` ✅
 - Routing Method: keyword
-- Routing Time: 3ms
+- Routing Time: 1ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -1156,7 +1156,7 @@ This comprehensive test report covers the complete query-to-visualization pipeli
 
 **Key Findings:**
 - 22/22 queries processed successfully
-- Average processing time: 1.0ms per query
+- Average processing time: 2.2ms per query
 - Routing method distribution shows semantic vs keyword vs fallback usage
 - Field consistency and validation results identify areas for improvement
 

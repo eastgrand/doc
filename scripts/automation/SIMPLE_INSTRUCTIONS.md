@@ -1686,6 +1686,50 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
 
 ---
 
+## 🧪 **Required Test Execution**
+
+**CRITICAL**: Run these tests every time you change data/project to ensure system integrity:
+
+### 1. Hybrid Routing Detailed Test
+**Location**: `__tests__/hybrid-routing-detailed.test.ts`  
+**Purpose**: Validates that predefined queries achieve 100% routing accuracy  
+**When to run**: After any data change, endpoint modification, or routing configuration update
+
+```bash
+npm test -- __tests__/hybrid-routing-detailed.test.ts --verbose
+```
+
+**What it tests**:
+- All 22 analysis categories from `ANALYSIS_CATEGORIES`
+- Query-by-query routing accuracy
+- Intent classification performance 
+- Domain relevance calculation
+- Endpoint mapping validation
+
+### 2. Random Query Optimization Test
+**Location**: `__tests__/hybrid-routing-random-query-optimization.test.ts`  
+**Purpose**: Optimizes routing for open-ended user queries while maintaining predefined accuracy  
+**When to run**: During optimization phases or when improving user experience
+
+```bash
+npm test -- __tests__/hybrid-routing-random-query-optimization.test.ts --verbose
+```
+
+**What it tests**:
+- Open-ended business analysis queries
+- Edge cases and ambiguous queries
+- Out-of-scope query rejection (weather, recipes, etc.)
+- Novel phrasing understanding
+- Compound query handling
+
+**Test Reports Generated**:
+- `hybrid-routing-detailed-results-[timestamp].json/md` - Comprehensive routing validation
+- `random-query-optimization-[timestamp].json/md` - Optimization insights and recommendations
+
+**⚠️ IMPORTANT**: These tests are completely separate and won't interfere with each other. The detailed test maintains your 100% predefined accuracy while the optimization test improves handling of user creativity.
+
+---
+
 **Time to complete**: 20-30 minutes total
 **Automation time**: 2-5 minutes (much faster than expected!)
 **Manual steps**: 3 (deploy microservice + update client code + generate map constraints)

@@ -1,22 +1,24 @@
 # Query-to-Visualization Pipeline Test Results
 
 ## Test Summary
-- **Test Date**: 2025-08-24T00:57:00.939Z
+- **Test Date**: 2025-08-24T14:40:56.386Z
 - **Total Queries**: 22
-- **Successful**: 19
-- **Failed**: 3
-- **Success Rate**: 86.4%
-- **Total Duration**: 362ms
-- **Average Duration**: 16.5ms per query
+- **Successful**: 22
+- **Failed**: 0
+- **Success Rate**: 100.0%
+- **Total Duration**: 55ms
+- **Average Duration**: 2.5ms per query
 
 ## Category Results
 ### ✅ Successful Categories
 - Strategic Analysis
 - Comparative Analysis
 - Brand Difference
+- Demographic Insights
 - Customer Profile
 - Spatial Clusters
 - Outlier Detection
+- Competitive Analysis
 - Scenario Analysis
 - Feature Interactions
 - Segment Profiling
@@ -30,39 +32,38 @@
 - Consensus Analysis
 - Anomaly Insights
 - Cluster Analysis
+- Analyze
 
 ### ❌ Failed Categories
-- Demographic Insights
-- Competitive Analysis
-- Analyze
+- None
 
 ## Performance Analysis
 ### Routing Method Distribution
 - **keyword**: 22 queries (100.0%)
 
 ### Average Performance by Category
-- **Strategic Analysis**: 13.0ms avg, 100.0% success rate (1/1)
-- **Comparative Analysis**: 7.0ms avg, 100.0% success rate (1/1)
-- **Brand Difference**: 8.0ms avg, 100.0% success rate (1/1)
-- **Demographic Insights**: 4.0ms avg, 0.0% success rate (0/1)
-- **Customer Profile**: 6.0ms avg, 100.0% success rate (1/1)
-- **Spatial Clusters**: 5.0ms avg, 100.0% success rate (1/1)
-- **Outlier Detection**: 7.0ms avg, 100.0% success rate (1/1)
-- **Competitive Analysis**: 5.0ms avg, 0.0% success rate (0/1)
-- **Scenario Analysis**: 5.0ms avg, 100.0% success rate (1/1)
-- **Feature Interactions**: 17.0ms avg, 100.0% success rate (1/1)
-- **Segment Profiling**: 6.0ms avg, 100.0% success rate (1/1)
-- **Sensitivity Analysis**: 5.0ms avg, 100.0% success rate (1/1)
-- **Feature Importance Ranking**: 18.0ms avg, 100.0% success rate (1/1)
-- **Model Performance**: 49.0ms avg, 100.0% success rate (1/1)
-- **Algorithm Comparison**: 42.0ms avg, 100.0% success rate (1/1)
-- **Ensemble Analysis**: 80.0ms avg, 100.0% success rate (1/1)
-- **Model Selection**: 7.0ms avg, 100.0% success rate (1/1)
-- **Dimensionality Insights**: 19.0ms avg, 100.0% success rate (1/1)
-- **Consensus Analysis**: 19.0ms avg, 100.0% success rate (1/1)
-- **Anomaly Insights**: 18.0ms avg, 100.0% success rate (1/1)
-- **Cluster Analysis**: 17.0ms avg, 100.0% success rate (1/1)
-- **Analyze**: 5.0ms avg, 0.0% success rate (0/1)
+- **Strategic Analysis**: 3.0ms avg, 100.0% success rate (1/1)
+- **Comparative Analysis**: 1.0ms avg, 100.0% success rate (1/1)
+- **Brand Difference**: 2.0ms avg, 100.0% success rate (1/1)
+- **Demographic Insights**: 2.0ms avg, 100.0% success rate (1/1)
+- **Customer Profile**: 3.0ms avg, 100.0% success rate (1/1)
+- **Spatial Clusters**: 3.0ms avg, 100.0% success rate (1/1)
+- **Outlier Detection**: 3.0ms avg, 100.0% success rate (1/1)
+- **Competitive Analysis**: 2.0ms avg, 100.0% success rate (1/1)
+- **Scenario Analysis**: 10.0ms avg, 100.0% success rate (1/1)
+- **Feature Interactions**: 2.0ms avg, 100.0% success rate (1/1)
+- **Segment Profiling**: 2.0ms avg, 100.0% success rate (1/1)
+- **Sensitivity Analysis**: 1.0ms avg, 100.0% success rate (1/1)
+- **Feature Importance Ranking**: 2.0ms avg, 100.0% success rate (1/1)
+- **Model Performance**: 2.0ms avg, 100.0% success rate (1/1)
+- **Algorithm Comparison**: 2.0ms avg, 100.0% success rate (1/1)
+- **Ensemble Analysis**: 3.0ms avg, 100.0% success rate (1/1)
+- **Model Selection**: 2.0ms avg, 100.0% success rate (1/1)
+- **Dimensionality Insights**: 2.0ms avg, 100.0% success rate (1/1)
+- **Consensus Analysis**: 2.0ms avg, 100.0% success rate (1/1)
+- **Anomaly Insights**: 2.0ms avg, 100.0% success rate (1/1)
+- **Cluster Analysis**: 2.0ms avg, 100.0% success rate (1/1)
+- **Analyze**: 2.0ms avg, 100.0% success rate (1/1)
 
 ## Detailed Test Results
 
@@ -72,14 +73,14 @@
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 42ms
-- Timestamp: 2025-08-24T00:57:00.291Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.368Z
 
 **Query Routing:**
 - Expected Endpoint: `/algorithm-comparison`
 - Actual Endpoint: `/algorithm-comparison` ✅
 - Routing Method: keyword
-- Routing Time: 1ms
+- Routing Time: 0ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -117,16 +118,16 @@
 
 ### Analyze
 
-#### ❌ Query 2: "Provide comprehensive market insights for tax preparation services"
+#### ✅ Query 2: "Provide comprehensive market insights for tax preparation services"
 
 **Basic Info:**
-- Status: FAILED
-- Processing Time: 5ms
-- Timestamp: 2025-08-24T00:57:00.496Z
+- Status: SUCCESS
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.383Z
 
 **Query Routing:**
 - Expected Endpoint: `/analyze`
-- Actual Endpoint: `/customer-profile` ⚠️
+- Actual Endpoint: `/analyze` ✅
 - Routing Method: keyword
 - Routing Time: 0ms
 
@@ -136,9 +137,9 @@
 - Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /customer-profile
+- Configuration: /analyze
 - Processor: StrategicAnalysisProcessor
-- Target Variable: customer_profile_score
+- Target Variable: analyze_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -160,20 +161,7 @@
 
 **Troubleshooting Notes:**
 - Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback
-- Keyword routing: /customer-profile (score: 4.4) - Context matches: for tax preparation, tax preparation services
-- ❌ ROUTING MISMATCH: Expected /analyze, got /customer-profile
-
-**Error Details:**
-```
-Error: Routing failed: Expected endpoint /analyze but got /customer-profile for query "Provide comprehensive market insights for tax preparation services"
-```
-
-**Stack Trace:**
-```
-Error: Routing failed: Expected endpoint /analyze but got /customer-profile for query "Provide comprehensive market insights for tax preparation services"
-    at Object.<anonymous> (/Users/voldeck/code/mpiq-ai-chat/__tests__/query-to-visualization-pipeline.test.ts:1221:19)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-```
+- Keyword routing: /analyze (score: 19.5) - Primary keywords: comprehensive, insights, market insights; Context matches: comprehensive market insights, market insights for, insights for tax preparation
 
 ---
 
@@ -183,14 +171,14 @@ Error: Routing failed: Expected endpoint /analyze but got /customer-profile for 
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 18ms
-- Timestamp: 2025-08-24T00:57:00.460Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.379Z
 
 **Query Routing:**
 - Expected Endpoint: `/anomaly-insights`
 - Actual Endpoint: `/anomaly-insights` ✅
 - Routing Method: keyword
-- Routing Time: 1ms
+- Routing Time: 0ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -232,14 +220,14 @@ Error: Routing failed: Expected endpoint /analyze but got /customer-profile for 
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 8ms
-- Timestamp: 2025-08-24T00:57:00.153Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.334Z
 
 **Query Routing:**
 - Expected Endpoint: `/brand-difference`
 - Actual Endpoint: `/brand-difference` ✅
 - Routing Method: keyword
-- Routing Time: 1ms
+- Routing Time: 0ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -281,8 +269,8 @@ Error: Routing failed: Expected endpoint /analyze but got /customer-profile for 
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 17ms
-- Timestamp: 2025-08-24T00:57:00.479Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.381Z
 
 **Query Routing:**
 - Expected Endpoint: `/cluster-analysis`
@@ -330,14 +318,14 @@ Error: Routing failed: Expected endpoint /analyze but got /customer-profile for 
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 7ms
-- Timestamp: 2025-08-24T00:57:00.145Z
+- Processing Time: 1ms
+- Timestamp: 2025-08-24T14:40:56.333Z
 
 **Query Routing:**
 - Expected Endpoint: `/comparative-analysis`
 - Actual Endpoint: `/comparative-analysis` ✅
 - Routing Method: keyword
-- Routing Time: 1ms
+- Routing Time: 0ms
 
 **Geographic Processing:**
 - Entities Detected: detected-county
@@ -380,16 +368,16 @@ Error: Routing failed: Expected endpoint /analyze but got /customer-profile for 
 
 ### Competitive Analysis
 
-#### ❌ Query 7: "Show me areas with the best competitive positioning"
+#### ✅ Query 7: "Show me areas with the best competitive positioning"
 
 **Basic Info:**
-- Status: FAILED
-- Processing Time: 5ms
-- Timestamp: 2025-08-24T00:57:00.184Z
+- Status: SUCCESS
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.347Z
 
 **Query Routing:**
 - Expected Endpoint: `/competitive-analysis`
-- Actual Endpoint: `/strategic-analysis` ⚠️
+- Actual Endpoint: `/competitive-analysis` ✅
 - Routing Method: keyword
 - Routing Time: 1ms
 
@@ -399,9 +387,9 @@ Error: Routing failed: Expected endpoint /analyze but got /customer-profile for 
 - Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /strategic-analysis
+- Configuration: /competitive-analysis
 - Processor: StrategicAnalysisProcessor
-- Target Variable: strategic_analysis_score
+- Target Variable: competitive_analysis_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -423,20 +411,7 @@ Error: Routing failed: Expected endpoint /analyze but got /customer-profile for 
 
 **Troubleshooting Notes:**
 - Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback
-- Keyword routing: /strategic-analysis (score: 3.0) - Intent bonus: ranking (+3)
-- ❌ ROUTING MISMATCH: Expected /competitive-analysis, got /strategic-analysis
-
-**Error Details:**
-```
-Error: Routing failed: Expected endpoint /competitive-analysis but got /strategic-analysis for query "Show me areas with the best competitive positioning"
-```
-
-**Stack Trace:**
-```
-Error: Routing failed: Expected endpoint /competitive-analysis but got /strategic-analysis for query "Show me areas with the best competitive positioning"
-    at Object.<anonymous> (/Users/voldeck/code/mpiq-ai-chat/__tests__/query-to-visualization-pipeline.test.ts:1221:19)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-```
+- Keyword routing: /competitive-analysis (score: 15.0) - Primary keywords: competitive positioning, positioning; Context matches: best competitive positioning, areas with the best competitive; Intent bonus: ranking (+2)
 
 ---
 
@@ -446,14 +421,14 @@ Error: Routing failed: Expected endpoint /competitive-analysis but got /strategi
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 19ms
-- Timestamp: 2025-08-24T00:57:00.441Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.377Z
 
 **Query Routing:**
 - Expected Endpoint: `/consensus-analysis`
 - Actual Endpoint: `/consensus-analysis` ✅
 - Routing Method: keyword
-- Routing Time: 1ms
+- Routing Time: 0ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -495,14 +470,14 @@ Error: Routing failed: Expected endpoint /competitive-analysis but got /strategi
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 6ms
-- Timestamp: 2025-08-24T00:57:00.166Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-24T14:40:56.338Z
 
 **Query Routing:**
 - Expected Endpoint: `/customer-profile`
 - Actual Endpoint: `/customer-profile` ✅
 - Routing Method: keyword
-- Routing Time: 0ms
+- Routing Time: 1ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -540,16 +515,16 @@ Error: Routing failed: Expected endpoint /competitive-analysis but got /strategi
 
 ### Demographic Insights
 
-#### ❌ Query 10: "Which areas have the best customer demographics for tax preparation services?"
+#### ✅ Query 10: "Which areas have the best customer demographics for tax preparation services?"
 
 **Basic Info:**
-- Status: FAILED
-- Processing Time: 4ms
-- Timestamp: 2025-08-24T00:57:00.161Z
+- Status: SUCCESS
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.336Z
 
 **Query Routing:**
 - Expected Endpoint: `/demographic-insights`
-- Actual Endpoint: `/customer-profile` ⚠️
+- Actual Endpoint: `/demographic-insights` ✅
 - Routing Method: keyword
 - Routing Time: 1ms
 
@@ -559,9 +534,9 @@ Error: Routing failed: Expected endpoint /competitive-analysis but got /strategi
 - Competitors: TurboTax
 
 **Configuration:**
-- Configuration: /customer-profile
+- Configuration: /demographic-insights
 - Processor: StrategicAnalysisProcessor
-- Target Variable: customer_profile_score
+- Target Variable: demographic_insights_score
 
 **Data Analysis:**
 - Record Count: 2
@@ -583,20 +558,7 @@ Error: Routing failed: Expected endpoint /competitive-analysis but got /strategi
 
 **Troubleshooting Notes:**
 - Semantic routing failed, used keyword fallback: Error: Semantic routing disabled for testing - using keyword fallback
-- Keyword routing: /customer-profile (score: 7.7) - Primary keywords: customer; Context matches: for tax preparation, tax preparation services
-- ❌ ROUTING MISMATCH: Expected /demographic-insights, got /customer-profile
-
-**Error Details:**
-```
-Error: Routing failed: Expected endpoint /demographic-insights but got /customer-profile for query "Which areas have the best customer demographics for tax preparation services?"
-```
-
-**Stack Trace:**
-```
-Error: Routing failed: Expected endpoint /demographic-insights but got /customer-profile for query "Which areas have the best customer demographics for tax preparation services?"
-    at Object.<anonymous> (/Users/voldeck/code/mpiq-ai-chat/__tests__/query-to-visualization-pipeline.test.ts:1221:19)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-```
+- Keyword routing: /demographic-insights (score: 16.6) - Primary keywords: demographics; Context matches: customer demographics, best customer demographics, areas have the best customer demographics, which areas have, demographics for; Intent bonus: ranking (+1)
 
 ---
 
@@ -606,14 +568,14 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 19ms
-- Timestamp: 2025-08-24T00:57:00.422Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.375Z
 
 **Query Routing:**
 - Expected Endpoint: `/dimensionality-insights`
 - Actual Endpoint: `/dimensionality-insights` ✅
 - Routing Method: keyword
-- Routing Time: 1ms
+- Routing Time: 0ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -655,14 +617,14 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 80ms
-- Timestamp: 2025-08-24T00:57:00.334Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-24T14:40:56.370Z
 
 **Query Routing:**
 - Expected Endpoint: `/ensemble-analysis`
 - Actual Endpoint: `/ensemble-analysis` ✅
 - Routing Method: keyword
-- Routing Time: 18ms
+- Routing Time: 0ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -704,8 +666,8 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 18ms
-- Timestamp: 2025-08-24T00:57:00.224Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.364Z
 
 **Query Routing:**
 - Expected Endpoint: `/feature-importance-ranking`
@@ -753,8 +715,8 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 17ms
-- Timestamp: 2025-08-24T00:57:00.195Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.359Z
 
 **Query Routing:**
 - Expected Endpoint: `/feature-interactions`
@@ -802,8 +764,8 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 49ms
-- Timestamp: 2025-08-24T00:57:00.242Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.366Z
 
 **Query Routing:**
 - Expected Endpoint: `/model-performance`
@@ -851,14 +813,14 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 7ms
-- Timestamp: 2025-08-24T00:57:00.415Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.373Z
 
 **Query Routing:**
 - Expected Endpoint: `/model-selection`
 - Actual Endpoint: `/model-selection` ✅
 - Routing Method: keyword
-- Routing Time: 1ms
+- Routing Time: 0ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -900,8 +862,8 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 7ms
-- Timestamp: 2025-08-24T00:57:00.177Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-24T14:40:56.344Z
 
 **Query Routing:**
 - Expected Endpoint: `/outlier-detection`
@@ -949,8 +911,8 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 5ms
-- Timestamp: 2025-08-24T00:57:00.189Z
+- Processing Time: 10ms
+- Timestamp: 2025-08-24T14:40:56.349Z
 
 **Query Routing:**
 - Expected Endpoint: `/scenario-analysis`
@@ -998,8 +960,8 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 6ms
-- Timestamp: 2025-08-24T00:57:00.212Z
+- Processing Time: 2ms
+- Timestamp: 2025-08-24T14:40:56.361Z
 
 **Query Routing:**
 - Expected Endpoint: `/segment-profiling`
@@ -1047,14 +1009,14 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 5ms
-- Timestamp: 2025-08-24T00:57:00.219Z
+- Processing Time: 1ms
+- Timestamp: 2025-08-24T14:40:56.363Z
 
 **Query Routing:**
 - Expected Endpoint: `/sensitivity-analysis`
 - Actual Endpoint: `/sensitivity-analysis` ✅
 - Routing Method: keyword
-- Routing Time: 1ms
+- Routing Time: 0ms
 
 **Brand Analysis:**
 - Target Brand: H&R Block
@@ -1096,8 +1058,8 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 5ms
-- Timestamp: 2025-08-24T00:57:00.172Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-24T14:40:56.341Z
 
 **Query Routing:**
 - Expected Endpoint: `/spatial-clusters`
@@ -1145,8 +1107,8 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 
 **Basic Info:**
 - Status: SUCCESS
-- Processing Time: 13ms
-- Timestamp: 2025-08-24T00:57:00.132Z
+- Processing Time: 3ms
+- Timestamp: 2025-08-24T14:40:56.329Z
 
 **Query Routing:**
 - Expected Endpoint: `/strategic-analysis`
@@ -1193,13 +1155,11 @@ Error: Routing failed: Expected endpoint /demographic-insights but got /customer
 This comprehensive test report covers the complete query-to-visualization pipeline for all queries in ANALYSIS_CATEGORIES. Each query was tested through all pipeline steps including semantic routing, geographic processing, brand analysis, configuration management, data processing, renderer generation, and validation.
 
 **Key Findings:**
-- 19/22 queries processed successfully
-- Average processing time: 16.5ms per query
+- 22/22 queries processed successfully
+- Average processing time: 2.5ms per query
 - Routing method distribution shows semantic vs keyword vs fallback usage
 - Field consistency and validation results identify areas for improvement
 
 **Recommendations:**
-- Review failed queries and error patterns to improve routing accuracy
-- Focus on categories with lower success rates for targeted improvements
 - Monitor performance metrics for queries exceeding average processing time
 - Validate field mappings for queries with field consistency failures
