@@ -1539,21 +1539,64 @@ const states = [
 ];
 ```
 
-2. **Replace counties** with your target state's counties:
+2. **Replace counties** with your target state's counties (ALL major counties):
 ```typescript
 const caCounties = [
   {
     name: 'Los Angeles County',
     aliases: ['Los Angeles', 'LA County', 'LAC'],
-    cities: ['Los Angeles', 'Long Beach', 'Pasadena', 'Glendale']
+    cities: ['Los Angeles', 'Long Beach', 'Pasadena', 'Glendale', 'Santa Monica', 'Burbank', 'Torrance', 'Pomona', 'West Covina', 'Lancaster', 'Palmdale', 'El Monte']
   },
-  // ... add all major counties for your state
+  {
+    name: 'Orange County',
+    aliases: ['OC', 'The OC', 'Orange'],
+    cities: ['Anaheim', 'Santa Ana', 'Irvine', 'Huntington Beach', 'Garden Grove', 'Fullerton', 'Orange', 'Costa Mesa', 'Mission Viejo', 'Westminster', 'Newport Beach']
+  },
+  // ... add ALL 32+ major counties for comprehensive coverage
 ];
 ```
 
-3. **Replace cities** with comprehensive city list and ZIP code mappings
-4. **Replace metro areas** with regional groupings for your state
-5. **Update documentation** in `docs/geo-awareness-system.md`
+3. **Replace cities** with comprehensive city list (80+ cities) and ZIP code mappings:
+```typescript
+{
+  name: 'Los Angeles',
+  aliases: ['LA', 'L.A.', 'City of Angels', 'LAX'],
+  parentCounty: 'los angeles county',
+  zipCodes: ['90001', '90002', '90003', /* ... comprehensive ZIP list */]
+},
+{
+  name: 'San Diego',
+  aliases: ['SD', "America's Finest City", 'SAN'],
+  parentCounty: 'san diego county',
+  zipCodes: ['92101', '92102', '92103', /* ... comprehensive ZIP list */]
+}
+// ... add 80+ major California cities
+```
+
+4. **Replace metro areas** with comprehensive regional groupings:
+```typescript
+const caMetros = [
+  {
+    name: 'Greater Los Angeles Area',
+    aliases: ['LA Metro', 'Los Angeles Metropolitan Area', 'Greater LA', 'Southland'],
+    childEntities: ['Los Angeles County', 'Orange County', 'Ventura County']
+  },
+  {
+    name: 'San Francisco Bay Area',
+    aliases: ['Bay Area', 'SF Bay Area', 'San Francisco Metro', 'The Bay'],
+    childEntities: ['San Francisco County', 'Santa Clara County', 'Alameda County', 'San Mateo County', 'Contra Costa County', 'Marin County', 'Solano County', 'Sonoma County']
+  },
+  // ... add 11 metro regions for complete coverage
+];
+```
+
+5. **Update method names** to match your state:
+   - `loadFloridaCities()` → `loadCaliforniaCities()` 
+   - `loadFloridaMetros()` → `loadCaliforniaMetros()`
+
+6. **Update documentation** in `docs/geo-awareness-system.md`
+
+**⚠️ CRITICAL**: For California, you need ALL 32 counties, 80+ cities, and 11 metro areas for comprehensive coverage. Don't just add the top 5 cities - this will leave gaps in geographic query handling.
 
 **What this enables**:
 - Geographic filtering queries: "compare LA County and Orange County"
