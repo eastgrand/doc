@@ -56,7 +56,9 @@ export function applyMapConstraints(view: __esri.MapView): void {
   }
   
   // Remove all constraints to allow unlimited panning and zooming
-  view.constraints = null;
+  view.constraints = {
+    // Empty constraints object allows unlimited panning and zooming
+  };
   
   console.log('[MapConstraints] Removed all map constraints - unlimited panning and zoom enabled');
 }

@@ -5,7 +5,7 @@ import React, { useEffect, useRef, memo, useCallback, useState } from 'react';
 import { loadArcGISModules } from '@/lib/arcgis-imports';
 import { LegendType } from '@/types/legend';
 import { LegendItem } from '@/components/MapLegend';
-import { MAP_CONSTRAINTS, DATA_EXTENT, applyMapConstraints, zoomToDataExtent } from '@/config/mapConstraints';
+import { MAP_CONSTRAINTS, DATA_EXTENT, zoomToDataExtent } from '@/config/mapConstraints';
 import { useTheme } from '@/components/theme/ThemeProvider';
 import SampleHotspots, { SampleHotspot } from './SampleHotspots';
 
@@ -408,11 +408,11 @@ const MapClient = memo(({
           // Add a small delay to ensure basemap is loaded  
           setTimeout(() => {
             try {
-              console.log('[MapClient] Applying feature service extent constraints with spatial reference...');
-              applyMapConstraints(view);
-              console.log('[MapClient] Map constraints applied successfully - initial extent preserved');
+              console.log('[MapClient] Skipping map constraints - unlimited panning and zoom enabled');
+              // applyMapConstraints(view); // DISABLED - allows unlimited panning and zoom
+              console.log('[MapClient] Map ready with no restrictions');
             } catch (error) {
-              console.error('[MapClient] Error applying constraints:', error);
+              console.error('[MapClient] Error:', error);
             }
           }, 1000);
         }).catch(error => {
