@@ -103,9 +103,11 @@ const Switch = ({ checked, onCheckedChange, disabled }: {
         role="switch"
         aria-checked={checked}
         onClick={() => {
-          console.log('Switch clicked, current checked:', checked);
+          console.log('Switch clicked, current checked:', checked, 'disabled:', disabled);
           if (!disabled) {
             onCheckedChange(!checked);
+          } else {
+            console.warn('Switch click ignored - component is disabled (likely loading)');
           }
         }}
         disabled={disabled}
@@ -119,13 +121,15 @@ const Switch = ({ checked, onCheckedChange, disabled }: {
           border: 'none',
           padding: 0,
           margin: 0,
-          cursor: disabled ? 'wait' : 'pointer',
-          opacity: disabled ? 0.5 : 1,
-          background: checked 
-            ? 'linear-gradient(to right, #21c55d, #21c55d)' 
-            : 'linear-gradient(to right, #e0e0e0, #e0e0e0)',
+          cursor: disabled ? 'not-allowed' : 'pointer',
+          opacity: disabled ? 0.6 : 1,
+          background: disabled 
+            ? 'linear-gradient(to right, #f3f4f6, #f3f4f6)' // Gray when loading
+            : checked 
+              ? 'linear-gradient(to right, #21c55d, #21c55d)' 
+              : 'linear-gradient(to right, #e0e0e0, #e0e0e0)',
           boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.1)',
-          transition: 'background 200ms ease-in-out',
+          transition: 'background 200ms ease-in-out, opacity 200ms ease-in-out',
           WebkitAppearance: 'none',
           MozAppearance: 'none',
           appearance: 'none'
@@ -135,13 +139,15 @@ const Switch = ({ checked, onCheckedChange, disabled }: {
           style={{
             position: 'absolute',
             top: '2px',
-            left: checked ? '18px' : '2px',
+            left: disabled ? '9px' : checked ? '18px' : '2px', // Center when disabled
             width: '14px',
             height: '14px',
             borderRadius: '50%',
-            background: 'linear-gradient(to bottom, #ffffff, #f9fafb)',
+            background: disabled
+              ? 'linear-gradient(to bottom, #d1d5db, #9ca3af)' // Gray when loading
+              : 'linear-gradient(to bottom, #ffffff, #f9fafb)',
             boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
-            transition: 'left 200ms ease-in-out',
+            transition: 'left 200ms ease-in-out, background 200ms ease-in-out',
             pointerEvents: 'none'
           }}
         />
@@ -844,11 +850,27 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
           newStates[layerId].loading = true;
           handleLayerStatesChange(newStates); // Update UI to show loading state
           
+          // Timeout safety mechanism - clear loading state after 45 seconds
+          const timeoutId = setTimeout(() => {
+            console.error(`[LayerController] ⏰ Layer creation timeout for ${layerId} - clearing loading state`);
+            const timeoutStates = { ...layerStatesRef.current };
+            timeoutStates[layerId].loading = false;
+            timeoutStates[layerId].visible = false;
+            handleLayerStatesChange(timeoutStates);
+          }, 45000);
+          
           // Find the layer config
           const layerConfig = config?.groups?.find(g => g.layers?.find(l => l.id === layerId))?.layers?.find(l => l.id === layerId);
           if (layerConfig) {
             try {
               const [layer, errors] = await createLayer(layerConfig, config!, view, layerStatesRef);
+              
+              // Clear timeout since we got a response
+              clearTimeout(timeoutId);
+              
+              // Get fresh state to avoid stale closures
+              const currentStates = { ...layerStatesRef.current };
+              
               if (layer) {
                 view.map.add(layer);
                 layer.visible = true;
@@ -856,22 +878,42 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
                 const layerOpacity = layerConfig.name?.toLowerCase().includes('locations') ? layer.opacity : 0.6;
                 layer.opacity = layerOpacity;
                 
-                newStates[layerId].layer = layer;
-                newStates[layerId].opacity = layerOpacity;
-                newStates[layerId].loading = false;
+                currentStates[layerId].layer = layer;
+                currentStates[layerId].opacity = layerOpacity;
+                currentStates[layerId].loading = false;
+                currentStates[layerId].visible = true;
                 
                 console.log(`[LayerController] ✅ Successfully created layer on demand: ${layerConfig.name}`);
+                handleLayerStatesChange(currentStates);
               } else {
                 console.error(`[LayerController] ❌ Failed to create layer: ${layerConfig.name}`, errors);
-                newStates[layerId].visible = false;
-                newStates[layerId].loading = false;
+                currentStates[layerId].visible = false;
+                currentStates[layerId].loading = false;
+                handleLayerStatesChange(currentStates);
               }
             } catch (error) {
               console.error(`[LayerController] ❌ Error creating layer: ${layerConfig.name}`, error);
-              newStates[layerId].visible = false;
-              newStates[layerId].loading = false;
+              // Clear timeout on error
+              clearTimeout(timeoutId);
+              // Get fresh state for error handling
+              const currentStates = { ...layerStatesRef.current };
+              currentStates[layerId].visible = false;
+              currentStates[layerId].loading = false;
+              handleLayerStatesChange(currentStates);
             }
+          } else {
+            console.error(`[LayerController] ❌ Layer config not found for: ${layerId}`);
+            // Clear timeout on config error
+            clearTimeout(timeoutId);
+            // Get fresh state for config error
+            const currentStates = { ...layerStatesRef.current };
+            currentStates[layerId].visible = false;
+            currentStates[layerId].loading = false;
+            handleLayerStatesChange(currentStates);
           }
+          
+          // Early return to prevent further execution with potentially stale state
+          return;
         }
         
         // Special debugging for Google Pay layer
