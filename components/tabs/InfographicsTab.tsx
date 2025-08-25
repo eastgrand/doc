@@ -1401,11 +1401,11 @@ export default function InfographicsTab({
       return;
     }
 
-    // Check if this is the endpoint scoring report
-    if (reportTemplate === 'endpoint-scoring-combined') {
-      console.log('Opening endpoint scoring report modal...');
-      // For now, we'll still open the modal but we'll handle the scoring report in the modal
-      // TODO: In future implementation, this could open a dedicated endpoint scoring modal
+    // Check if this is an AI-powered report (market intelligence or endpoint scoring)
+    if (reportTemplate === 'market-intelligence-report' || reportTemplate === 'endpoint-scoring-combined') {
+      console.log('Opening AI-powered report modal...', { reportType: reportTemplate });
+      // Both market intelligence and endpoint scoring use the same underlying scoring service
+      // The difference is in the presentation and focus of the report
       setIsModalOpen(true);
     } else {
       // Standard ArcGIS report
@@ -1550,12 +1550,13 @@ export default function InfographicsTab({
             )}
             
             {isModalOpen && hasDependencies && (
-              reportTemplate === 'endpoint-scoring-combined' ? (
+              (reportTemplate === 'market-intelligence-report' || reportTemplate === 'endpoint-scoring-combined') ? (
                 <EndpointScoringReport
                   geometry={geometry}
                   view={view}
                   onExportPDF={exportToPDF}
-                  key={`endpoint-scoring-${geometry.type}-${Date.now()}`}
+                  reportType={reportTemplate === 'market-intelligence-report' ? 'market-intelligence' : 'endpoint-scoring'}
+                  key={`${reportTemplate}-${geometry.type}-${Date.now()}`}
                 />
               ) : (
                 <Infographics
@@ -1865,17 +1866,28 @@ export default function InfographicsTab({
         } else {
           console.log(`[FetchReports] Report template already set: ${reportTemplate}`);
         }
-        // Add the endpoint scoring report to the available reports
-        const endpointScoringReport: Report = {
-          id: 'endpoint-scoring-combined',
-          title: 'AI Endpoint Scoring Analysis',
-          description: 'Comprehensive scoring analysis combining strategic, competitive, demographic, and predictive insights',
+        // Add the AI-powered market intelligence reports to the available reports
+        const marketIntelligenceReport: Report = {
+          id: 'market-intelligence-report',
+          title: 'AI-Powered Market Intelligence Report',
+          description: 'Professional market analysis combining AI scoring, competitive positioning, demographics, and strategic recommendations',
           thumbnail: '', // Will use fallback icon
-          categories: ['AI Analysis', 'Scoring'],
+          categories: ['Market Intelligence', 'AI Analysis'],
           type: 'endpoint-scoring'
         };
         
-        finalReports.unshift(endpointScoringReport); // Add to beginning of list
+        const endpointScoringReport: Report = {
+          id: 'endpoint-scoring-combined',
+          title: 'AI Endpoint Scoring Analysis',
+          description: 'Technical scoring analysis with detailed metrics and endpoint performance data',
+          thumbnail: '', // Will use fallback icon
+          categories: ['AI Analysis', 'Technical'],
+          type: 'endpoint-scoring'
+        };
+        
+        // Add both reports, with market intelligence first
+        finalReports.unshift(marketIntelligenceReport);
+        finalReports.unshift(endpointScoringReport);
         
         console.log('[FetchReports] Final Reports after exclusion (including endpoint scoring):', finalReports); // Log the final reports being set
         

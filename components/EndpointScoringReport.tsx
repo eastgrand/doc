@@ -23,6 +23,7 @@ interface EndpointScoringReportProps {
   geometry: __esri.Geometry | null;
   view?: __esri.MapView | __esri.SceneView | null;
   onExportPDF?: () => void;
+  reportType?: 'market-intelligence' | 'endpoint-scoring';
 }
 
 // Icon mapping for endpoint types
@@ -38,7 +39,12 @@ const getIconForEndpoint = (iconName: string) => {
   return iconMap[iconName] || Target;
 };
 
-export default function EndpointScoringReport({ geometry, view, onExportPDF }: EndpointScoringReportProps) {
+export default function EndpointScoringReport({ 
+  geometry, 
+  view, 
+  onExportPDF, 
+  reportType = 'endpoint-scoring' 
+}: EndpointScoringReportProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [endpointData, setEndpointData] = useState<{ [key: string]: EndpointData }>({});
@@ -430,10 +436,16 @@ export default function EndpointScoringReport({ geometry, view, onExportPDF }: E
             color: 'var(--arcgis-gray-900)',
             fontFamily: 'var(--arcgis-font-family)'
           }}>
-            AI Endpoint Scoring Analysis
+            {reportType === 'market-intelligence' 
+              ? 'AI-Powered Market Intelligence Report' 
+              : 'AI Endpoint Scoring Analysis'
+            }
           </h1>
           <p className="text-lg" style={{ color: 'var(--arcgis-gray-600)' }}>
-            Comprehensive Area Intelligence Report
+            {reportType === 'market-intelligence' 
+              ? 'Professional Market Analysis with Strategic Recommendations' 
+              : 'Comprehensive Area Intelligence Report'
+            }
           </p>
           <p className="text-sm mt-2" style={{ color: 'var(--arcgis-gray-600)' }}>
             Generated on {new Date().toLocaleDateString()}
