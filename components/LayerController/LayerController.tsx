@@ -594,23 +594,44 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       for (const group of (config.groups || [])) {
         if (group.layers) {
           for (const layerConfig of group.layers) {
-            const [layer, errors] = await createLayer(layerConfig, config, view, layerStatesRef);
-            if (layer) {
-              const shouldBeVisible = config.defaultVisibility?.[layerConfig.id] || false;
-              // Add ALL layers to the map so they appear in LayerList widget
-              view.map.add(layer);
-              layer.visible = shouldBeVisible;
-              
-              // Preserve higher opacity for location layers, use 0.6 for others
-              const layerOpacity = layerConfig.name?.toLowerCase().includes('locations') ? layer.opacity : 0.6;
-              layer.opacity = layerOpacity;
-              
+            const shouldBeVisible = config.defaultVisibility?.[layerConfig.id] || false;
+            
+            // LAZY LOADING: Only create layers that should be visible by default
+            // This prevents "Failed to create layerview" errors for unused layers
+            if (shouldBeVisible) {
+              console.log(`[LayerController] Creating visible layer: ${layerConfig.name}`);
+              const [layer, errors] = await createLayer(layerConfig, config, view, layerStatesRef);
+              if (layer) {
+                view.map.add(layer);
+                layer.visible = true;
+                
+                // Preserve higher opacity for location layers, use 0.6 for others
+                const layerOpacity = layerConfig.name?.toLowerCase().includes('locations') ? layer.opacity : 0.6;
+                layer.opacity = layerOpacity;
+                
+                newLayerStates[layerConfig.id] = {
+                  id: layerConfig.id,
+                  name: layerConfig.name,
+                  layer,
+                  visible: true,
+                  opacity: layerOpacity,
+                  order: 0,
+                  group: group.id,
+                  loading: false,
+                  filters: [],
+                  isVirtual: false,
+                  active: false
+                };
+              }
+            } else {
+              // Create placeholder state for hidden layers - they'll be created when needed
+              console.log(`[LayerController] Creating placeholder for hidden layer: ${layerConfig.name}`);
               newLayerStates[layerConfig.id] = {
                 id: layerConfig.id,
                 name: layerConfig.name,
-                layer,
-                visible: shouldBeVisible,
-                opacity: layerOpacity,
+                layer: null, // No layer created yet
+                visible: false,
+                opacity: layerConfig.name?.toLowerCase().includes('locations') ? 1.0 : 0.6,
                 order: 0,
                 group: group.id,
                 loading: false,
@@ -809,13 +830,49 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       }
     };
 
-    const handleToggleLayer = (layerId: string) => {
+    const handleToggleLayer = async (layerId: string) => {
       console.log('handleToggleLayer called for:', layerId);
       const newStates = { ...layerStatesRef.current };
       if (newStates[layerId]) {
         const oldVisible = newStates[layerId].visible;
         newStates[layerId].visible = !oldVisible;
         console.log('Toggling layer visibility from', oldVisible, 'to', newStates[layerId].visible);
+        
+        // LAZY LOADING: Create layer if it doesn't exist and is being turned on
+        if (newStates[layerId].visible && !newStates[layerId].layer) {
+          console.log(`[LayerController] Creating layer on demand: ${layerId}`);
+          newStates[layerId].loading = true;
+          handleLayerStatesChange(newStates); // Update UI to show loading state
+          
+          // Find the layer config
+          const layerConfig = config?.groups?.find(g => g.layers?.find(l => l.id === layerId))?.layers?.find(l => l.id === layerId);
+          if (layerConfig) {
+            try {
+              const [layer, errors] = await createLayer(layerConfig, config!, view, layerStatesRef);
+              if (layer) {
+                view.map.add(layer);
+                layer.visible = true;
+                
+                const layerOpacity = layerConfig.name?.toLowerCase().includes('locations') ? layer.opacity : 0.6;
+                layer.opacity = layerOpacity;
+                
+                newStates[layerId].layer = layer;
+                newStates[layerId].opacity = layerOpacity;
+                newStates[layerId].loading = false;
+                
+                console.log(`[LayerController] ✅ Successfully created layer on demand: ${layerConfig.name}`);
+              } else {
+                console.error(`[LayerController] ❌ Failed to create layer: ${layerConfig.name}`, errors);
+                newStates[layerId].visible = false;
+                newStates[layerId].loading = false;
+              }
+            } catch (error) {
+              console.error(`[LayerController] ❌ Error creating layer: ${layerConfig.name}`, error);
+              newStates[layerId].visible = false;
+              newStates[layerId].loading = false;
+            }
+          }
+        }
         
         // Special debugging for Google Pay layer
         if (layerStates[layerId]?.name?.includes('Google Pay')) {

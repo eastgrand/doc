@@ -5,7 +5,7 @@ import React, { useEffect, useRef, memo, useCallback, useState } from 'react';
 import { loadArcGISModules } from '@/lib/arcgis-imports';
 import { LegendType } from '@/types/legend';
 import { LegendItem } from '@/components/MapLegend';
-import { MAP_CONSTRAINTS, DATA_EXTENT, applyMapConstraints } from '@/config/mapConstraints';
+import { MAP_CONSTRAINTS, DATA_EXTENT, applyMapConstraints, zoomToDataExtent } from '@/config/mapConstraints';
 import { useTheme } from '@/components/theme/ThemeProvider';
 import SampleHotspots, { SampleHotspot } from './SampleHotspots';
 
@@ -376,20 +376,21 @@ const MapClient = memo(({
         
         console.log('[MapClient] Creating MapView...');
         
-        // Hardcoded Jacksonville metro area coordinates
-        const jacksonvilleCenter = [-82.3096907401495, 30.220957986146445];
-        const jacksonvilleZoom = 7;
+        // Use Los Angeles coordinates - center of first sample area (ZIP 90650)
+        // Based on bounds from sample_areas_data_real.json first area
+        const losAngelesCenter = [-118.077, 33.908]; // Center of Los Angeles ZIP 90650
+        const losAngelesZoom = 10; // Zoom level to focus on Los Angeles area
         
-        console.log('[MapClient] Using hardcoded Jacksonville center and zoom:', {
-          center: jacksonvilleCenter,
-          zoom: jacksonvilleZoom
+        console.log('[MapClient] Using Los Angeles center and zoom for first sample area:', {
+          center: losAngelesCenter,
+          zoom: losAngelesZoom
         });
         
         const view = new MapView({
           container: mapRef.current,
           map: map,
-          center: jacksonvilleCenter,
-          zoom: jacksonvilleZoom,
+          center: losAngelesCenter,
+          zoom: losAngelesZoom,
           ui: {
             components: []
           }

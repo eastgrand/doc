@@ -93,19 +93,19 @@ export interface SampleAreaData {
   lastUpdated: string;
 }
 
-// Individual ZIP code interface - only real demographic data fields
+// Individual ZIP code interface - Red Bull energy drink project data fields
 export interface ZipCodeArea {
   zipCode: string;
   city: string;
-  // Only include fields that actually exist in real demographic data
+  // Red Bull project specific demographic data fields
+  redBull_percent: number;              // 'Red Bull Drinkers (%)'
+  energyDrink_percent: number;          // 'Energy Drink Consumers (%)'
+  monsterEnergy_percent: number;        // 'Monster Energy Drinkers (%)'
+  fiveHourEnergy_percent: number;       // '5-Hour Energy Drinkers (%)'
+  exerciseRegularly_percent: number;    // 'Exercise Regularly Users (%)'
+  seekNutritionInfo_percent: number;    // 'Seek Nutrition Info Users (%)'
+  sugarFreeFoods_percent: number;       // 'Sugar-Free Foods Buyers (%)'
   genZ_percent: number;                 // 'Generation Z Population (%)'
-  applePay_percent: number;             // 'Apple Pay Users (%)'
-  creditCardDebt_percent: number;       // 'Credit Card Balance Carriers (%)'
-  savingsAccount_percent: number;       // 'Savings Account Holders (%)'
-  investmentAssets_avg: number;         // 'Investment Assets Value (Avg)'
-  googlePay_percent: number;            // 'Google Pay Users (%)'
-  turboTax_percent: number;             // 'TurboTax Users (%)'
-  hrBlockOnline_percent: number;        // 'H&R Block Online Users (%)'
   geometry: {
     type: "Polygon";
     coordinates: number[][][];
@@ -201,20 +201,20 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
   }, [visible]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Select random metrics once when component mounts or data changes
-  // Only include fields that actually exist in real demographic data
+  // Red Bull project specific metrics from the actual data
   const selectRandomMetrics = () => {
-    const realMetricKeys = [
-      'genZ_percent',               // 'Generation Z Population (%)'
-      'applePay_percent',           // 'Apple Pay Users (%)'
-      'googlePay_percent',          // 'Google Pay Users (%)'
-      'turboTax_percent',           // 'TurboTax Users (%)'
-      'hrBlockOnline_percent',      // 'H&R Block Online Users (%)'
-      'creditCardDebt_percent',     // 'Credit Card Balance Carriers (%)'
-      'savingsAccount_percent',     // 'Savings Account Holders (%)'
-      'investmentAssets_avg'        // 'Investment Assets Value (Avg)'
+    const redBullMetricKeys = [
+      'redBull_percent',             // 'Red Bull Drinkers (%)'
+      'energyDrink_percent',         // 'Energy Drink Consumers (%)'
+      'monsterEnergy_percent',       // 'Monster Energy Drinkers (%)'
+      'fiveHourEnergy_percent',      // '5-Hour Energy Drinkers (%)'
+      'exerciseRegularly_percent',   // 'Exercise Regularly Users (%)'
+      'seekNutritionInfo_percent',   // 'Seek Nutrition Info Users (%)'
+      'sugarFreeFoods_percent',      // 'Sugar-Free Foods Buyers (%)'
+      'genZ_percent'                 // 'Generation Z Population (%)'
     ];
     
-    const shuffled = [...realMetricKeys].sort(() => 0.5 - Math.random());
+    const shuffled = [...redBullMetricKeys].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 4);
   };
 
@@ -289,12 +289,12 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         if (index < 3) {
           console.log(`[DEBUG] ${cityName} ZIP ${area.zipCode}:`);
           console.log('  Demographics keys:', demo ? Object.keys(demo) : 'NO DEMO');
-          console.log('  GenZ value:', demo ? demo['Generation Z Population (%)'] : 'NO DEMO');
-          console.log('  GenZ type:', demo ? typeof demo['Generation Z Population (%)'] : 'NO DEMO');
-          console.log('  Apple Pay value:', demo ? demo['Apple Pay Users (%)'] : 'NO DEMO');
-          console.log('  Apple Pay type:', demo ? typeof demo['Apple Pay Users (%)'] : 'NO DEMO');
-          console.log('  After safeNumber - GenZ:', safeNumber(demo['Generation Z Population (%)']));
-          console.log('  After safeNumber - Apple Pay:', safeNumber(demo['Apple Pay Users (%)']));
+          console.log('  Red Bull value:', demo ? demo['Red Bull Drinkers (%)'] : 'NO DEMO');
+          console.log('  Red Bull type:', demo ? typeof demo['Red Bull Drinkers (%)'] : 'NO DEMO');
+          console.log('  Energy Drink value:', demo ? demo['Energy Drink Consumers (%)'] : 'NO DEMO');
+          console.log('  Energy Drink type:', demo ? typeof demo['Energy Drink Consumers (%)'] : 'NO DEMO');
+          console.log('  After safeNumber - Red Bull:', safeNumber(demo['Red Bull Drinkers (%)']));
+          console.log('  After safeNumber - Energy Drink:', safeNumber(demo['Energy Drink Consumers (%)']));
         }
         
         return {
@@ -302,15 +302,15 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
           city: area.city,
           geometry: area.geometry, // Use real polygon geometry
           bounds: area.bounds,
-          // Only include fields that actually exist in real demographic data - convert to numbers for ArcGIS
-          genZ_percent: safeNumber(demo['Generation Z Population (%)']),
-          applePay_percent: safeNumber(demo['Apple Pay Users (%)']),
-          creditCardDebt_percent: safeNumber(demo['Credit Card Balance Carriers (%)']),
-          savingsAccount_percent: safeNumber(demo['Savings Account Holders (%)']),
-          investmentAssets_avg: safeNumber(demo['Investment Assets Value (Avg)']),
-          googlePay_percent: safeNumber(demo['Google Pay Users (%)']),
-          turboTax_percent: safeNumber(demo['TurboTax Users (%)']),
-          hrBlockOnline_percent: safeNumber(demo['H&R Block Online Users (%)'])
+          // Red Bull project specific fields from the actual data
+          redBull_percent: safeNumber(demo['Red Bull Drinkers (%)']),
+          energyDrink_percent: safeNumber(demo['Energy Drink Consumers (%)']),
+          monsterEnergy_percent: safeNumber(demo['Monster Energy Drinkers (%)']),
+          fiveHourEnergy_percent: safeNumber(demo['5-Hour Energy Drinkers (%)']),
+          exerciseRegularly_percent: safeNumber(demo['Exercise Regularly Users (%)']),
+          seekNutritionInfo_percent: safeNumber(demo['Seek Nutrition Info Users (%)']),
+          sugarFreeFoods_percent: safeNumber(demo['Sugar-Free Foods Buyers (%)']),
+          genZ_percent: safeNumber(demo['Generation Z Population (%)'])
         };
       });
       
@@ -391,15 +391,15 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
             OBJECTID: globalObjectId++,
             zipCode: zipCode.zipCode,
             city: zipCode.city,
-            // Only include attributes that exist in real demographic data
-            genZ_percent: zipCode.genZ_percent,
-            applePay_percent: zipCode.applePay_percent,
-            creditCardDebt_percent: zipCode.creditCardDebt_percent,
-            savingsAccount_percent: zipCode.savingsAccount_percent,
-            investmentAssets_avg: zipCode.investmentAssets_avg,
-            googlePay_percent: zipCode.googlePay_percent,
-            turboTax_percent: zipCode.turboTax_percent,
-            hrBlockOnline_percent: zipCode.hrBlockOnline_percent
+            // Red Bull project specific attributes
+            redBull_percent: zipCode.redBull_percent,
+            energyDrink_percent: zipCode.energyDrink_percent,
+            monsterEnergy_percent: zipCode.monsterEnergy_percent,
+            fiveHourEnergy_percent: zipCode.fiveHourEnergy_percent,
+            exerciseRegularly_percent: zipCode.exerciseRegularly_percent,
+            seekNutritionInfo_percent: zipCode.seekNutritionInfo_percent,
+            sugarFreeFoods_percent: zipCode.sugarFreeFoods_percent,
+            genZ_percent: zipCode.genZ_percent
           };
           
           // Log first few attributes to see what we're passing to ArcGIS
@@ -427,7 +427,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         console.log(`[SampleAreasPanel] STEP 6d - Adding ${cityGraphics.length} graphics directly to map for ${area.name}`);
         
         // Calculate city-specific quartiles for coloring
-        const firstMetric = selectedMetrics[0] || 'genZ_percent';
+        const firstMetric = selectedMetrics[0] || 'redBull_percent';
         const metricValues = area.zipCodes.map(z => z[firstMetric as keyof ZipCodeArea] as number).sort((a, b) => a - b);
         const cityBreaks = calculateMetricQuartiles(metricValues, firstMetric);
         
@@ -712,69 +712,69 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
   // Removed formatPercent as it's no longer used
 
   const getMetricDisplayName = (metricKey: string) => {
-    // Only include real fields that exist in demographic data
+    // Red Bull project specific display names
     const metricDisplayNames: Record<string, string> = {
-      genZ_percent: 'Gen Z %',
-      creditCardDebt_percent: 'Credit Debt %',
-      savingsAccount_percent: 'Savings %',
-      investmentAssets_avg: 'Investment Assets',
-      applePay_percent: 'Apple Pay %',
-      googlePay_percent: 'Google Pay %',
-      turboTax_percent: 'TurboTax %',
-      hrBlockOnline_percent: 'H&R Block Online %'
+      redBull_percent: 'Red Bull Drinkers',
+      energyDrink_percent: 'Energy Drink Consumers', 
+      monsterEnergy_percent: 'Monster Energy Drinkers',
+      fiveHourEnergy_percent: '5-Hour Energy Drinkers',
+      exerciseRegularly_percent: 'Exercise Regularly',
+      seekNutritionInfo_percent: 'Seek Nutrition Info',
+      sugarFreeFoods_percent: 'Sugar-Free Foods',
+      genZ_percent: 'Generation Z'
     };
     return metricDisplayNames[metricKey] || metricKey;
   };
 
   const getQuickStats = (area: DisplaySampleArea) => {
-    // Only include metric calculators for real data fields that exist in demographic data
+    // Red Bull project specific metric calculators
     const metricCalculators: Record<string, { calculate: () => any, label: string, icon: any, format: (val: any) => string }> = {
+      redBull_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.redBull_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'Red Bull %',
+        icon: DollarSign,
+        format: (val) => `${val}%`
+      },
+      energyDrink_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.energyDrink_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'Energy Drinks %',
+        icon: DollarSign,
+        format: (val) => `${val}%`
+      },
+      monsterEnergy_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.monsterEnergy_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'Monster %',
+        icon: DollarSign,
+        format: (val) => `${val}%`
+      },
+      fiveHourEnergy_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.fiveHourEnergy_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: '5-Hour Energy %',
+        icon: DollarSign,
+        format: (val) => `${val}%`
+      },
+      exerciseRegularly_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.exerciseRegularly_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'Exercise %',
+        icon: Users,
+        format: (val) => `${val}%`
+      },
+      seekNutritionInfo_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.seekNutritionInfo_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'Nutrition Info %',
+        icon: Users,
+        format: (val) => `${val}%`
+      },
+      sugarFreeFoods_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.sugarFreeFoods_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'Sugar-Free %',
+        icon: Users,
+        format: (val) => `${val}%`
+      },
       genZ_percent: {
         calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.genZ_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
         label: 'Gen Z %',
         icon: Users,
-        format: (val) => `${val}%`
-      },
-      creditCardDebt_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.creditCardDebt_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Credit Debt %',
-        icon: DollarSign,
-        format: (val) => `${val}%`
-      },
-      savingsAccount_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.savingsAccount_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Savings %',
-        icon: DollarSign,
-        format: (val) => `${val}%`
-      },
-      investmentAssets_avg: {
-        calculate: () => Math.round(area.zipCodes.reduce((sum, zip) => sum + (zip.investmentAssets_avg || 0), 0) / area.zipCodes.length),
-        label: 'Avg Investment',
-        icon: DollarSign,
-        format: (val) => formatCurrency(val)
-      },
-      applePay_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.applePay_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Apple Pay %',
-        icon: DollarSign,
-        format: (val) => `${val}%`
-      },
-      googlePay_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.googlePay_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Google Pay %',
-        icon: DollarSign,
-        format: (val) => `${val}%`
-      },
-      turboTax_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.turboTax_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'TurboTax %',
-        icon: DollarSign,
-        format: (val) => `${val}%`
-      },
-      hrBlockOnline_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.hrBlockOnline_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'H&R Block Online %',
-        icon: DollarSign,
         format: (val) => `${val}%`
       }
     };
@@ -971,7 +971,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                     {/* Choropleth Info */}
                     <div className="flex items-center justify-between">
                       <p className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>
-                        Showing: {getMetricDisplayName(selectedMetrics[0] || 'genZ_percent')}
+                        Showing: {getMetricDisplayName(selectedMetrics[0] || 'redBull_percent')}
                       </p>
                     </div>
                   </div>
@@ -987,7 +987,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
               backgroundColor: 'var(--theme-bg-secondary)'
             }}>
               <h4 className="text-xs font-medium mb-2" style={{ color: 'var(--theme-text-primary)' }}>
-                {getMetricDisplayName(selectedMetrics[0] || 'genZ_percent')} Legend
+                {getMetricDisplayName(selectedMetrics[0] || 'redBull_percent')} Legend
               </h4>
               <div className="flex flex-col space-y-1">
                 <div className="flex items-center space-x-2">

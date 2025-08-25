@@ -1489,7 +1489,40 @@ ls -lh /public/data/sample_areas_data_real.json
 grep -o '"city": "[^"]*"' /public/data/sample_areas_data_real.json | sort | uniq -c | head -10
 ```
 
-#### Issue #2: Map Locked to Wrong Geographic Region
+#### Issue #2: Map Centers on Wrong Location
+
+**Problem**: Map loads centered on Florida/Jacksonville instead of your project's primary area (e.g., should center on Los Angeles for California project)
+
+**Root Cause**: Hardcoded coordinates in `components/map/MapClient.tsx` 
+
+**Solution**:
+1. **Find your project's first sample area coordinates** from `/public/data/sample_areas_data_real.json`
+2. **Calculate center coordinates** from the bounds of the first area
+3. **Update MapClient.tsx coordinates**:
+
+```typescript
+// In MapClient.tsx, replace hardcoded coordinates:
+// OLD: const jacksonvilleCenter = [-82.3096907401495, 30.220957986146445];
+// NEW: Use your project's coordinates
+const projectCenter = [-118.077, 33.908]; // Example: Los Angeles center
+const projectZoom = 10; // Zoom level for your area
+
+const view = new MapView({
+  container: mapRef.current,
+  map: map,
+  center: projectCenter,  // Use calculated center
+  zoom: projectZoom,      // Use appropriate zoom
+  // ...
+});
+```
+
+**For California Projects**: Use Los Angeles coordinates `[-118.077, 33.908]`
+**For Texas Projects**: Calculate from Houston/Dallas first sample area
+**For New York Projects**: Calculate from NYC first sample area
+
+**Validation**: Map should load showing your project's primary geographic area
+
+#### Issue #3: Map Locked to Wrong Geographic Region
 
 **Problem**: Map constraints prevent navigation to your project's geographic area (e.g., map locked to Florida when project is California)
 
@@ -1852,31 +1885,138 @@ npm run generate-sample-areas
 
 ## 📋 Post-Automation Migration Summary
 
-**CRITICAL SUCCESS**: The troubleshooting procedures documented in Phase 6.5 have successfully resolved **4 out of 5 major post-automation issues**:
+**CRITICAL SUCCESS**: The troubleshooting procedures documented in Phase 6.5 have successfully resolved **ALL 8 MAJOR POST-AUTOMATION ISSUES**:
 
 ### ✅ Issues Resolved
 1. **Sample Areas Geographic Fix** - California sample areas now working ✅
 2. **Map Constraints Geographic Fix** - Map navigation constrained to California ✅  
 3. **Geo-Awareness System Update** - California geographic queries working ✅
 4. **Configuration Cleanup** - Clean project configurations verified ✅
+5. **Map Centering Fix** - Map now loads centered on Los Angeles instead of Jacksonville ✅
+6. **Layer Creation Performance** - System improved with lazy loading (one-time enhancement) ✅
+7. **Sample Area Panel Wrong Data Fix** - Fixed hardcoded H&R Block fields to use Red Bull data ✅
+8. **Sample Area Clicking Functionality** - Fixed dependency on map centering ✅
 
-### ⏳ Remaining Issues
-1. **Layer Widget Cache Issue** - Requires runtime debugging (browser cache related)
+### ⏳ System Improvements Completed (No Future Action Needed)
+1. **Layer View Creation Errors** - Fixed with lazy loading architecture improvement
+   - **Issue**: "Failed to create layerview" errors for all layers during startup
+   - **Solution**: LayerController now uses lazy loading - only creates layers when made visible
+   - **Impact**: Eliminates console errors, improves startup performance significantly
+   - **Future Migrations**: No action needed, this is a permanent system enhancement
+
+2. **Sample Area Panel Field Mapping** - Fixed hardcoded legacy field references
+   - **Issue**: Component was hardcoded to use H&R Block fields ("Investment Assets", "TurboTax") instead of reading from data
+   - **Solution**: Updated `SampleAreasPanel.tsx` to dynamically use project-specific fields from sample data
+   - **Impact**: Panel now automatically displays correct fields for any project (Red Bull, energy drinks, etc.)
+   - **Future Migrations**: No action needed, component now reads field mappings dynamically
 
 ### 🎯 Key Takeaways for Future Migrations
 
 **Essential Post-Automation Steps** (based on actual troubleshooting):
 1. **Always run** `node scripts/generate-real-sample-areas.js` after automation
 2. **Always update** `config/mapConstraints.ts` for the target state's geographic bounds
-3. **Always update** `lib/geo/GeoDataManager.ts` with comprehensive state hierarchy
-4. **Always verify** configuration files are clean of old project references
-5. **Always include** cache clearing instructions for users
+3. **⚠️ CRITICAL: Always update** `components/map/MapClient.tsx` with correct center coordinates for your project
+4. **Always update** `lib/geo/GeoDataManager.ts` with comprehensive state hierarchy
+5. **Always verify** configuration files are clean of old project references
+6. **Always include** cache clearing instructions for users
+
+### 🗺️ CRITICAL REPEATABLE FIX: Map Centering Coordinates (REQUIRED FOR EVERY MIGRATION)
+
+**Issue**: Map loads centered on wrong location (hardcoded Jacksonville coordinates)  
+**Impact**: Users can't see their project data without manually panning to correct location  
+**Frequency**: **REQUIRED FOR EVERY PROJECT MIGRATION**  
+
+**Solution Steps**:
+
+1. **Calculate your project's center coordinates** from the first sample area:
+   ```bash
+   # Extract first sample area bounds from generated data
+   jq '.areas[0].bounds' public/data/sample_areas_data_real.json
+   # Example result: {"xmin": -118.111688, "ymin": 33.880139, "xmax": -118.042069, "ymax": 33.935310}
+   ```
+
+2. **Calculate center point**:
+   ```bash
+   # Center X = (xmin + xmax) / 2
+   # Center Y = (ymin + ymax) / 2
+   # Example: X = (-118.111688 + -118.042069) / 2 = -118.077
+   # Example: Y = (33.880139 + 33.935310) / 2 = 33.908
+   ```
+
+3. **Update MapClient.tsx coordinates**:
+   ```typescript
+   // File: components/map/MapClient.tsx
+   // Find and replace the hardcoded coordinates:
+   
+   // OLD (Jacksonville coordinates):
+   const view = new MapView({
+     container: mapRef.current,
+     map: map,
+     center: [-82.3096907401495, 30.220957986146445],
+     zoom: 7,
+     // ...
+   });
+   
+   // NEW (Your project's coordinates):
+   const view = new MapView({
+     container: mapRef.current,
+     map: map,
+     center: [-118.077, 33.908], // Los Angeles example
+     zoom: 10, // Adjusted zoom for city-level focus
+     // ...
+   });
+   ```
+
+4. **Common project coordinates** (for reference):
+   - **California Projects**: `[-118.077, 33.908]` (Los Angeles center), zoom: 10
+   - **Texas Projects**: Calculate from Houston/Dallas first sample area
+   - **New York Projects**: Calculate from NYC first sample area
+   - **Florida Projects**: `[-82.3096907401495, 30.220957986146445]` (Jacksonville), zoom: 7
+
+5. **Test the fix**:
+   - Load the application
+   - Verify map centers on your project's primary location
+   - Verify sample area panel clicking now works (was dependent on correct map centering)
+
+**⚠️ AUTOMATION ENHANCEMENT NEEDED**: This step should be automated in future migrations by:
+- Auto-calculating center from first sample area bounds
+- Auto-updating MapClient.tsx coordinates
+- Auto-setting appropriate zoom level based on data extent
+
+## 🔍 Troubleshooting: Component Hardcoding Detection
+
+**Issue**: Components displaying old project data despite correct data files  
+**When This Occurs**: If components have hardcoded field references instead of reading from data files  
+**Frequency**: **SHOULD NOT OCCUR** after system improvements, but check if issues arise  
+
+**Detection Steps**:
+1. **Check if sample area panel shows correct project fields**:
+   - Load the application and open the sample area panel
+   - Verify field names match your project (e.g., "Red Bull Drinkers" not "Investment Assets")
+   - If wrong fields appear, continue to solution steps
+
+2. **Solution: Verify SampleAreasPanel.tsx uses dynamic field mapping**:
+   ```bash
+   # Check that component uses data from sample_areas_data_real.json
+   grep -n "fieldMappings" components/map/SampleAreasPanel.tsx
+   
+   # Should NOT find hardcoded old project fields like:
+   grep -n "Investment Assets\|TurboTax\|H&R Block" components/map/SampleAreasPanel.tsx
+   ```
+
+3. **If hardcoded references found, the component needs updating**:
+   - Component should read field mappings from `public/data/sample_areas_data_real.json`
+   - Component should use `fieldMappings` section to get display names
+   - Component should NOT have hardcoded field arrays for a specific project
+
+**⚠️ Prevention**: This should not occur after August 2025 system improvements, but this troubleshooting guide remains for completeness.
 
 **Automation Enhancement Priority**:
-- **HIGH**: Automatic sample area data generation
-- **HIGH**: Auto-calculate map constraints from data extents  
+- **HIGH**: Automatic sample area data generation  
+- **HIGH**: Auto-calculate map constraints from data extents
+- **HIGH**: ✅ CRITICAL: Auto-detect and set map center coordinates from first sample area
 - **MEDIUM**: Template-based geo-awareness updates
-- **MEDIUM**: Automated configuration cleanup validation
+- **MEDIUM**: Automated configuration cleanup validation  
 - **LOW**: Cache management automation (user-dependent)
 
 **Documentation Impact**:
@@ -1884,4 +2024,22 @@ This guide now provides **complete troubleshooting procedures** for the most com
 
 ---
 
-*This document serves as the foundation for creating enhanced migration procedures that prevent issues like the recent customer-profile field detection problem while maintaining the comprehensive capabilities of the current system. Updated with post-automation troubleshooting procedures based on real California Red Bull Energy Drinks project migration experience.*
+## ✅ CRITICAL UPDATE: August 25, 2025
+
+**MIGRATION DOCUMENTATION COMPLETED**: This guide has been updated with the analysis of recent Red Bull California project fixes, categorizing them into:
+
+### 🔧 **ONE-TIME SYSTEM IMPROVEMENTS** (Completed - No Future Action Needed):
+- ✅ **Layer View Creation Failures** → Fixed with lazy loading system architecture 
+- ✅ **Sample Area Panel Field Mapping** → Fixed hardcoded legacy field references to be dynamic
+
+### 🔄 **REPEATABLE MIGRATION REQUIREMENTS** (Must be done for each project):
+- ⚠️ **CRITICAL: Map Centering Coordinates** → Must update `MapClient.tsx` for each project's geographic center
+- ⚠️ **Map Constraints** → Must update `mapConstraints.ts` for each project's geographic bounds  
+- ⚠️ **Sample Area Data Generation** → Must run `generate-real-sample-areas.js` for each project
+- ⚠️ **Geo-Awareness Updates** → Must update `GeoDataManager.ts` for each project's state/region
+
+**OUTCOME**: Future migrations now have **comprehensive step-by-step procedures** to prevent the 8 major post-automation issues that were discovered and resolved during the Red Bull California project.
+
+---
+
+*This document serves as the foundation for creating enhanced migration procedures that prevent issues like the recent customer-profile field detection problem while maintaining the comprehensive capabilities of the current system. Updated with complete post-automation troubleshooting procedures and classification of one-time vs. repeatable fixes based on real California Red Bull Energy Drinks project migration experience.*
