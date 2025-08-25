@@ -270,88 +270,22 @@ export default function UnifiedAnalysisWorkflow({
     };
   }, []);
 
-  // Load infographics reports on component mount (same logic as InfographicsTab)
+  // Load infographics reports using centralized ReportsService
   useEffect(() => {
-    const fetchReports = async () => {
+    const loadReports = async () => {
       try {
-        // console.log('[UnifiedWorkflow] Loading infographics reports...');
-        
-        const reportApiKey = process.env.NEXT_PUBLIC_ARCGIS_API_KEY_2;
-        const token = reportApiKey || 'AAPTxy8BH1VEsoebNVZXo8HurEs9TD-3BH9IvorrjVWQR4uGhbHZOyV9S-QJcwJfNyPyN6IDTc6dX1pscXuVgb4-GEQ70Mrk6FUuIcuO2Si45rlSIepAJkP92iyuw5nBPxpTjI0ga_Aau9Cr6xaQ2DJnJfzaCkTor0cB9UU6pcNyFqxJlYt_26boxHYqnnu7vWlqt7SVFcWKmYq6kh8anIAmEi0hXY1ThVhKIupAS_Mure0.AT1_VqzOv0Y5';
-        
-        const endpointsToTry = [
-          {
-            name: 'Report Template Search',
-            url: `https://www.arcgis.com/sharing/rest/search?q=owner:Synapse54 AND type:"Report Template"&f=pjson&token=${token}&num=100`
-          }
-        ];
-
-        let allItems: any[] = [];
-        
-        for (const endpoint of endpointsToTry) {
-          try {
-            const response = await fetch(endpoint.url);
-            if (!response.ok) continue;
-            
-            const data = await response.json();
-            let items: any[] = [];
-            
-            if (data.results && Array.isArray(data.results)) {
-              items = data.results;
-            } else if (data.items && Array.isArray(data.items)) {
-              items = data.items;
-            }
-            
-            allItems = allItems.concat(items);
-            break; // Use first successful endpoint
-          } catch (error) {
-            console.warn(`[UnifiedWorkflow] ${endpoint.name} failed:`, error);
-          }
-        }
-
-        // Filter and format reports (same logic as InfographicsTab)
-        const exclusionList = [
-          '2023 Community Portrait', 'Community Profile 2023', 'Executive Summary 2023',
-          'Community Health', 'Health Profile', 'Market Potential for Restaurant',
-          'Business Summary', 'Site Analysis', 'Shopping Centers Summary',
-          'Demographic and Income Comparison', 'Locator'
-        ];
-
-        const finalReports = allItems
-          .filter(item => !exclusionList.some(excluded => item.title?.includes(excluded)))
-          .map(item => {
-            // Construct proper thumbnail URL if thumbnail exists
-            let thumbnailUrl = '';
-            if (item.thumbnail) {
-              // If it's just the thumbnail filename, construct the full URL
-              if (!item.thumbnail.startsWith('http')) {
-                thumbnailUrl = `https://www.arcgis.com/sharing/rest/content/items/${item.id}/info/${item.thumbnail}?token=${token}`;
-              } else {
-                thumbnailUrl = item.thumbnail;
-              }
-            } else {
-              // Fallback thumbnail URL for items without thumbnails
-              thumbnailUrl = `https://www.arcgis.com/sharing/rest/content/items/${item.id}/info/thumbnail/thumbnail.png?token=${token}`;
-            }
-            
-            return {
-              id: item.id,
-              title: item.title || 'Untitled Report',
-              description: item.snippet || item.description || '',
-              thumbnail: thumbnailUrl,
-              categories: ['Summary Reports'] // Default category
-            };
-          });
-
-        // console.log('[UnifiedWorkflow] Loaded', finalReports.length, 'infographics reports');
-        setInfographicsReports(finalReports);
+        console.log('[UnifiedWorkflow] Loading reports from ReportsService...');
+        const { fetchReports } = await import('@/services/ReportsService');
+        const reports = await fetchReports();
+        console.log('[UnifiedWorkflow] Loaded', reports.length, 'reports from ReportsService');
+        setInfographicsReports(reports);
       } catch (error) {
-        console.error('[UnifiedWorkflow] Failed to load infographics reports:', error);
+        console.error('[UnifiedWorkflow] Failed to load reports:', error);
         setInfographicsReports([]);
       }
     };
     
-    fetchReports();
+    loadReports();
   }, []);
 
   // Handle area selection

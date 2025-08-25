@@ -2125,6 +2125,148 @@ This guide now provides **complete troubleshooting procedures** for the most com
 
 ---
 
+## Infographics Report Template Configuration
+
+### Overview
+The infographics report system uses a centralized service to manage report templates from ArcGIS servers. This section documents how to configure country filtering, custom reports, and exclusion lists for different projects.
+
+### Architecture
+- **Centralized Service**: `/services/ReportsService.ts` - Single source of truth for all report dialogs
+- **Primary Dialog**: UnifiedAnalysisWorkflow.tsx (lines 2019-2026) - Main report selection used in current UI
+- **Legacy Dialog**: InfographicsTab.tsx - Older implementation, may not be actively used
+
+### Country Filtering Configuration
+
+Reports are filtered to show only templates for the target country. Currently configured for **US-only** reports.
+
+**Location**: `/services/ReportsService.ts` lines 150-160
+
+```typescript
+// Filter for United States reports only
+const usOnlyItems = uniqueItems.filter((item: any) => {
+  const countries = item.properties?.countries;
+  const isUS = countries === 'US';
+  
+  if (!isUS) {
+    console.log(`[ReportsService] Excluding non-US item: "${item.title}" (countries: ${countries})`);
+  }
+  
+  return isUS;
+});
+```
+
+**Migration Steps**:
+1. **For US Projects**: No changes needed - current configuration is correct
+2. **For Canadian Projects**: Update filter to `countries === 'CA'`
+3. **For Global Projects**: Remove country filtering or allow multiple countries: `['US', 'CA', 'UK'].includes(countries)`
+
+### "Do Not Show" Exclusion List
+
+Reports that should never appear in the dialog selection.
+
+**Location**: `/services/ReportsService.ts` lines 42-85
+
+**Categories of Excluded Reports**:
+- **Test/Demo Reports**: 'Test', 'Demo Report', 'Sample Report', 'Blank test', etc.
+- **Brand-Specific**: 'Nike', 'Accenture', 'custom invesco', etc. 
+- **Canadian Reports**: 'Canada Demographics', 'Canadian Demographics', 'Toronto Market', etc.
+- **Legacy/Old Reports**: '2023 Community Portrait', 'Community Health', etc.
+- **Draft/Development**: 'Draft', 'DUPLICATE', etc.
+
+**Migration Steps**:
+1. **Review Current List**: Check if your project has specific reports to exclude
+2. **Add Project-Specific Exclusions**: Add any project templates that shouldn't be shown
+3. **Remove Irrelevant Exclusions**: For Canadian projects, remove US-specific exclusions
+
+**Example Addition**:
+```typescript
+// Add to DO_NOT_DISPLAY_LIST Set
+'YourProject Specific Template',
+'Old Legacy Report Name',
+'Internal Test Template',
+```
+
+### Custom Reports Configuration
+
+Custom reports that are always added to the dialog, regardless of what's fetched from ArcGIS servers.
+
+**Location**: `/services/ReportsService.ts` lines 11-40
+
+**Current Custom Reports**:
+1. **Market Intelligence Report** - AI-powered market analysis
+2. **Endpoint Scoring Analysis** - Technical scoring data 
+3. **Market Profile Custom Report** - Comprehensive market analysis
+
+**Migration Steps**:
+1. **Update Descriptions**: Modify descriptions to match your project domain
+2. **Add Project-Specific Reports**: Add any custom reports for your project
+3. **Remove Irrelevant Reports**: Remove custom reports not applicable to your domain
+
+**Example Customization**:
+```typescript
+{
+  id: 'energy-drink-market-analysis',
+  title: 'Energy Drink Market Analysis',
+  description: 'Comprehensive analysis of energy drink consumption patterns and competitor positioning',
+  thumbnail: '',
+  categories: ['Market Analysis', 'Beverage Industry'],
+  type: 'custom'
+}
+```
+
+### Canadian Term Filtering
+
+Additional filtering to catch Canadian templates that may not be properly tagged.
+
+**Location**: `/services/ReportsService.ts` lines 89-93
+
+**Current Terms**:
+```typescript
+const CANADIAN_TERMS = [
+  'canada', 'canadian', 'bc ', 'ontario', 'quebec', 'alberta', 'manitoba', 
+  'saskatchewan', 'nova scotia', 'new brunswick', 'newfoundland', 'prince edward', 
+  'yukon', 'northwest territories', 'nunavut', 'postal code', 'fsa'
+];
+```
+
+**Migration Steps**:
+1. **US Projects**: Keep current configuration
+2. **Canadian Projects**: Remove or invert this filtering
+3. **Global Projects**: Modify terms list based on regions to exclude/include
+
+### Testing Report Configuration
+
+After making changes, verify the configuration is working:
+
+1. **Check Console Logs**:
+```bash
+# Look for these log messages in browser console:
+[ReportsService] Loaded X reports from ArcGIS servers...
+[ReportsService] US-only items: X
+[ReportsService] Items after exclusion filtering: X
+[ReportsService] Final report count (including custom): X
+```
+
+2. **Open Report Dialog**: Click "Select Report Template" in analysis workflow
+3. **Verify Filtering**: Check that only appropriate reports appear
+4. **Check Custom Reports**: Verify custom reports appear at the top of the list
+
+### Migration Checklist
+
+**For Each New Project**:
+- [ ] Update country filtering (US/CA/Global)
+- [ ] Review and update "do not show" exclusion list  
+- [ ] Customize descriptions of existing custom reports
+- [ ] Add any project-specific custom reports
+- [ ] Remove irrelevant custom reports
+- [ ] Update Canadian terms list if applicable
+- [ ] Test report dialog shows correct templates
+- [ ] Verify exclusions are working properly
+
+**File to Modify**: `/services/ReportsService.ts` (centralized configuration)
+
+---
+
 ## ✅ CRITICAL UPDATE: August 25, 2025
 
 **MIGRATION DOCUMENTATION COMPLETED**: This guide has been updated with the analysis of recent Red Bull California project fixes, categorizing them into:
