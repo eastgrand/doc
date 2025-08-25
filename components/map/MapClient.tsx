@@ -540,10 +540,34 @@ const MapClient = memo(({
   const handleHotspotClick = useCallback((hotspot: SampleHotspot) => {
     console.log('[MapClient] Sample hotspot clicked:', hotspot);
     
-    // Zoom to the hotspot
+    // Zoom to the hotspot with offset compensation for sidebar positioning
     if (viewRef.current) {
+      // Calculate offset to compensate for the map being visually shifted by sidebars
+      // The map container has a right margin that shifts the visual center
+      const view = viewRef.current;
+      const extent = view.extent;
+      const mapWidth = extent.width;
+      
+      // Estimate the sidebar offset effect - typical sidebar is ~640px, map shifts right by ~288px
+      // This creates a visual center offset that needs compensation
+      const offsetFactor = 0.15; // Adjust this value to fine-tune centering
+      const longitudeOffset = mapWidth * offsetFactor;
+      
+      // Adjust the longitude (x-coordinate) to compensate for visual shift
+      const adjustedCenter = [
+        hotspot.coordinates[0] - longitudeOffset,
+        hotspot.coordinates[1]
+      ] as [number, number];
+      
+      console.log('[MapClient] Centering with offset compensation:', {
+        original: hotspot.coordinates,
+        adjusted: adjustedCenter,
+        offsetFactor,
+        longitudeOffset
+      });
+      
       viewRef.current.goTo({
-        center: hotspot.coordinates,
+        center: adjustedCenter,
         zoom: 12
       }, {
         duration: 1500,
