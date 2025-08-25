@@ -5,7 +5,37 @@ interface EndpointData {
   overall_score?: number;
   confidence_score?: number;
   recommendation?: string;
-  [key: string]: any;
+  aggregation_info?: {
+    source_count: number;
+    aggregation_method: string;
+    total_population: number;
+    confidence_adjustment: number;
+  };
+  demographic_breakdown?: string | Record<string, unknown>;
+  feature_importance?: Array<{
+    feature_name?: string;
+    name?: string;
+    importance_score?: number;
+    importance?: number;
+    rank?: number;
+  }>;
+  population?: number;
+  total_population?: number;
+  households?: number;
+  total_households?: number;
+  median_income?: number;
+  median_age?: number;
+  average_household_size?: number;
+  score?: number;
+  confidence?: number;
+  summary?: string;
+  description?: string;
+  coordinates?: [number, number];
+  longitude?: number;
+  latitude?: number;
+  lng?: number;
+  lat?: number;
+  [key: string]: unknown;
 }
 
 interface EndpointConfig {
@@ -145,7 +175,7 @@ class EndpointScoringService {
 
     const loadedData = await Promise.all(loadPromises);
     loadedData.forEach(([id, data]) => {
-      results[id] = data;
+      results[id as string] = data as EndpointData;
     });
 
     console.log('[EndpointScoringService] Loaded data for endpoints:', Object.keys(results));
@@ -190,7 +220,7 @@ class EndpointScoringService {
   /**
    * Perform spatial filtering based on geometry
    */
-  private async spatialFilter(data: any, geometry: __esri.Geometry): Promise<any> {
+  private async spatialFilter(data: EndpointData | EndpointData[], geometry: __esri.Geometry): Promise<EndpointData> {
     // If data is an array of features with coordinates, filter by geometry bounds
     if (Array.isArray(data)) {
       const filteredItems = data.filter(item => this.isWithinGeometry(item, geometry));
@@ -211,7 +241,7 @@ class EndpointScoringService {
   /**
    * Aggregate multiple data points when study area contains multiple features
    */
-  private aggregateMultipleDataPoints(dataPoints: any[]): any {
+  private aggregateMultipleDataPoints(dataPoints: EndpointData[]): EndpointData {
     if (dataPoints.length === 0) return {};
     if (dataPoints.length === 1) return dataPoints[0];
 
@@ -240,7 +270,8 @@ class EndpointScoringService {
         .filter(val => typeof val === 'number' && !isNaN(val));
       
       if (values.length > 0) {
-        aggregated[field] = Math.round(values.reduce((sum, val) => sum + val, 0) / values.length * 100) / 100;
+        const total = values.reduce((sum, val) => (sum as number) + (val as number), 0) as number;
+        aggregated[field] = Math.round(total / values.length * 100) / 100;
       }
     });
 
@@ -251,7 +282,7 @@ class EndpointScoringService {
         .filter(val => typeof val === 'number' && !isNaN(val));
       
       if (values.length > 0) {
-        aggregated[field] = values.reduce((sum, val) => sum + val, 0);
+        aggregated[field] = values.reduce((sum, val) => (sum as number) + (val as number), 0);
       }
     });
 
@@ -283,7 +314,7 @@ class EndpointScoringService {
     // Aggregate array fields (like feature importance)
     if (dataPoints[0].feature_importance && Array.isArray(dataPoints[0].feature_importance)) {
       aggregated.feature_importance = this.aggregateFeatureImportance(
-        dataPoints.map(item => item.feature_importance).filter(Boolean)
+        dataPoints.map(item => item.feature_importance).filter((arr): arr is NonNullable<EndpointData['feature_importance']> => Boolean(arr))
       );
     }
 
@@ -314,7 +345,7 @@ class EndpointScoringService {
   /**
    * Aggregate feature importance arrays from multiple data points
    */
-  private aggregateFeatureImportance(importanceArrays: any[][]): any[] {
+  private aggregateFeatureImportance(importanceArrays: NonNullable<EndpointData['feature_importance']>[]): NonNullable<EndpointData['feature_importance']> {
     if (importanceArrays.length === 0) return [];
     if (importanceArrays.length === 1) return importanceArrays[0];
 
@@ -356,24 +387,30 @@ class EndpointScoringService {
   /**
    * Check if a data point is within the given geometry
    */
-  private isWithinGeometry(dataPoint: any, geometry: __esri.Geometry): boolean {
+  private isWithinGeometry(dataPoint: EndpointData, geometry: __esri.Geometry): boolean {
     // Extract coordinates from data point (this would vary based on data structure)
-    let longitude: number, latitude: number;
+    let longitude: number | undefined;
+    let latitude: number | undefined;
     
-    if (dataPoint.coordinates) {
-      [longitude, latitude] = dataPoint.coordinates;
-    } else if (dataPoint.longitude !== undefined && dataPoint.latitude !== undefined) {
+    const coords = dataPoint.coordinates as [number, number] | undefined;
+    if (coords) {
+      [longitude, latitude] = coords;
+    } else if (typeof dataPoint.longitude === 'number' && typeof dataPoint.latitude === 'number') {
       longitude = dataPoint.longitude;
       latitude = dataPoint.latitude;
-    } else if (dataPoint.lng !== undefined && dataPoint.lat !== undefined) {
-      longitude = dataPoint.lng;
-      latitude = dataPoint.lat;
+    } else if (typeof dataPoint.lng === 'number' && typeof dataPoint.lat === 'number') {
+      longitude = dataPoint.lng as number;
+      latitude = dataPoint.lat as number;
     } else {
       // If no coordinates available, include the point
       return true;
     }
 
     try {
+      if (longitude === undefined || latitude === undefined) {
+        return true; // Include if we can't determine location
+      }
+      
       const point = new Point({
         longitude,
         latitude,
@@ -387,8 +424,15 @@ class EndpointScoringService {
         return true;
       }
 
-      // Perform contains test
-      return geometryEngine.contains(geometry, point);
+      // Perform contains test - cast geometry to appropriate type
+      if (geometry.type === 'polygon') {
+        return geometryEngine.contains(geometry as __esri.Polygon, point);
+      } else if (geometry.type === 'extent') {
+        return geometryEngine.contains(geometry as __esri.Extent, point);
+      } else {
+        // For other geometry types, use intersects as fallback
+        return geometryEngine.intersects(geometry as any, point);
+      }
     } catch (error) {
       console.warn('[EndpointScoringService] Error in spatial filtering:', error);
       // If spatial filtering fails, include the point
@@ -399,7 +443,7 @@ class EndpointScoringService {
   /**
    * Process raw endpoint data into standardized format
    */
-  private processEndpointData(rawData: any, endpointId: string): EndpointData {
+  private processEndpointData(rawData: EndpointData, endpointId: string): EndpointData {
     const config = ENDPOINT_CONFIGS.find(c => c.id === endpointId);
     if (!config) {
       return this.getDefaultEndpointData({ id: endpointId } as EndpointConfig);
@@ -411,10 +455,13 @@ class EndpointScoringService {
     let recommendation = 'Analysis completed';
 
     if (config.primaryScoreField && rawData[config.primaryScoreField] !== undefined) {
-      overall_score = Math.round(rawData[config.primaryScoreField]);
-    } else if (rawData.overall_score !== undefined) {
+      const scoreValue = rawData[config.primaryScoreField];
+      if (typeof scoreValue === 'number') {
+        overall_score = Math.round(scoreValue);
+      }
+    } else if (rawData.overall_score !== undefined && typeof rawData.overall_score === 'number') {
       overall_score = Math.round(rawData.overall_score);
-    } else if (rawData.score !== undefined) {
+    } else if (rawData.score !== undefined && typeof rawData.score === 'number') {
       overall_score = Math.round(rawData.score);
     } else {
       // Generate a mock score for testing
@@ -422,18 +469,18 @@ class EndpointScoringService {
     }
 
     // Extract confidence if available
-    if (rawData.confidence_score !== undefined) {
+    if (rawData.confidence_score !== undefined && typeof rawData.confidence_score === 'number') {
       confidence_score = Math.round(rawData.confidence_score);
-    } else if (rawData.confidence !== undefined) {
+    } else if (rawData.confidence !== undefined && typeof rawData.confidence === 'number') {
       confidence_score = Math.round(rawData.confidence * 100); // Convert from 0-1 to 0-100
     }
 
     // Extract recommendation
-    if (rawData.recommendation) {
+    if (rawData.recommendation && typeof rawData.recommendation === 'string') {
       recommendation = rawData.recommendation;
-    } else if (rawData.summary) {
+    } else if (rawData.summary && typeof rawData.summary === 'string') {
       recommendation = rawData.summary;
-    } else if (rawData.description) {
+    } else if (rawData.description && typeof rawData.description === 'string') {
       recommendation = rawData.description;
     }
 
@@ -449,7 +496,8 @@ class EndpointScoringService {
   /**
    * Get default data for an endpoint when loading fails
    */
-  private getDefaultEndpointData(config: EndpointConfig): EndpointData {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private getDefaultEndpointData(_config: EndpointConfig): EndpointData {
     return {
       overall_score: 0,
       confidence_score: 0,
