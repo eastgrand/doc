@@ -9,18 +9,18 @@ The Geo-Awareness System provides intelligent geographic query processing and fi
 The system uses a hierarchical structure for geographic entities:
 
 ```
-State (Florida)
-  └── Metro Areas (Miami Metro, Tampa Bay Area, Central Florida, Southwest Florida)
-      └── Counties (Miami-Dade, Broward, Palm Beach, Hillsborough, etc.)
-          └── Cities (Miami, Tampa, Orlando, etc.)
+State (California)
+  └── Metro Areas (Greater LA Area, Bay Area, San Diego Metro, Central Valley, etc.)
+      └── Counties (Los Angeles, Orange, San Diego, San Francisco, Santa Clara, etc.)
+          └── Cities (Los Angeles, San Francisco, San Diego, San Jose, etc.)
               └── ZIP Codes (mapped at ALL levels)
 ```
 
 ### Entity Types Supported
-- **State**: Florida
-- **Metro Areas**: Miami Metro, Tampa Bay Area, Central Florida, Southwest Florida
-- **Counties**: Miami-Dade County, Broward County, Palm Beach County, Hillsborough County, Pinellas County, Orange County, Duval County, Alachua County, Leon County, Lee County, Collier County, St. Lucie County
-- **Cities**: Miami, Tampa, Orlando, Jacksonville, Gainesville, Fort Lauderdale, St. Petersburg, Hialeah, Tallahassee, Port St. Lucie, Cape Coral, West Palm Beach, Coral Springs, Pembroke Pines, Hollywood
+- **State**: California
+- **Metro Areas**: Greater Los Angeles Area, San Francisco Bay Area, San Diego Metro, Central Valley, Inland Empire, Sacramento Metro, Central Coast, North Bay, East Bay, South Bay, Peninsula
+- **Counties**: Los Angeles, Orange, Riverside, San Bernardino, San Diego, Imperial, San Francisco, Alameda, Contra Costa, Marin, San Mateo, Santa Clara, Solano, Sonoma, Napa, Fresno, Kern, Kings, Tulare, Madera, Merced, Stanislaus, San Joaquin, Sacramento, Yolo, Placer, El Dorado, Santa Barbara, Ventura, San Luis Obispo, Monterey, San Benito, Santa Cruz
+- **Cities**: Los Angeles, San Francisco, San Diego, San Jose, Fresno, Sacramento, Long Beach, Oakland, Bakersfield, Anaheim, Santa Ana, Riverside, Stockton, Irvine, Chula Vista, Fremont, and 60+ other major California cities
 
 ### Current Capabilities
 1. **Entity Recognition**: Detects geographic entities in queries using:
@@ -97,20 +97,20 @@ State (Florida)
 
 4. **✅ Updated Filtering Logic**
    - ✅ Metro/county queries use aggregated ZIP codes
-   - ✅ Hierarchical support: "Miami Metro" → Miami-Dade + Broward + Palm Beach counties
+   - ✅ Hierarchical support: "Bay Area" → San Francisco + Alameda + Santa Clara + other counties
    - ✅ Real-time ZIP aggregation during database initialization
 
 #### ✅ Geographic Entities Loaded:
-- **1 State**: Florida
-- **4 Metro Areas**: Miami Metro, Tampa Bay Area, Central Florida, Southwest Florida  
-- **12 Counties**: Miami-Dade, Broward, Palm Beach, Hillsborough, Pinellas, Orange, Duval, Alachua, Leon, Lee, Collier, St. Lucie
-- **15 Cities**: Miami, Tampa, Orlando, Jacksonville, Gainesville, Fort Lauderdale, St. Petersburg, Hialeah, Tallahassee, Port St. Lucie, Cape Coral, West Palm Beach, Coral Springs, Pembroke Pines, Hollywood
+- **1 State**: California
+- **11 Metro Areas**: Greater Los Angeles Area, San Francisco Bay Area, San Diego Metro, Central Valley, Inland Empire, Sacramento Metro, Central Coast, North Bay, East Bay, South Bay, Peninsula  
+- **32 Counties**: Los Angeles, Orange, Riverside, San Bernardino, San Diego, Imperial, San Francisco, Alameda, Contra Costa, Marin, San Mateo, Santa Clara, Solano, Sonoma, Napa, Fresno, Kern, Kings, Tulare, Madera, Merced, Stanislaus, San Joaquin, Sacramento, Yolo, Placer, El Dorado, Santa Barbara, Ventura, San Luis Obispo, Monterey, San Benito, Santa Cruz
+- **80+ Cities**: Los Angeles, San Francisco, San Diego, San Jose, Fresno, Sacramento, Long Beach, Oakland, Bakersfield, Anaheim, Santa Ana, Riverside, Stockton, Irvine, Chula Vista, Fremont, San Bernardino, Modesto, Fontana, Oxnard, Moreno Valley, Huntington Beach, Glendale, Santa Clarita, Garden Grove, Oceanside, Rancho Cucamonga, Santa Rosa, Ontario, Lancaster, Elk Grove, Corona, Palmdale, Salinas, Pomona, Hayward, Escondido, Torrance, Sunnyvale, Orange, Fullerton, Pasadena, Thousand Oaks, Visalia, Simi Valley, Concord, Roseville, Victorville, Santa Clara, Vallejo, Berkeley, El Monte, Downey, Costa Mesa, Inglewood, Carlsbad, San Buenaventura, Fairfield, West Covina, Richmond, Norwalk, Antioch, Temecula, Burbank, Daly City, Rialto, Santa Maria, El Cajon, San Mateo, Clovis, Compton, Jurupa Valley, Vista, South Gate, Mission Viejo, Vacaville, Carson, Hesperia, Santa Monica, Westminster, Santa Barbara, Redding, Chico, Newport Beach, San Marcos, Whittier
 
 #### ✅ ZIP Code Coverage:
-- **Cities**: ~400+ ZIP codes mapped directly to cities
+- **Cities**: 2000+ ZIP codes mapped directly to cities across California
 - **Counties**: ZIP codes auto-aggregated from child cities
 - **Metros**: ZIP codes auto-aggregated from child counties  
-- **State**: All Florida ZIP codes mapped to state level
+- **State**: All California ZIP codes (90000-96999 ranges) mapped to state level
 
 ### Phase 2: Proximity Filtering (FUTURE)
 **Goal**: Implement actual spatial filtering based on detected relations
@@ -177,23 +177,23 @@ State (Florida)
 
 ### ✅ Currently Working Queries (Phase 1 Complete)
 ```
-"Compare Miami and Tampa"                          // City level
-"Show data for Orlando"                           // City level  
-"Sales in Jacksonville"                           // City level
-"Compare Miami-Dade County and Broward County"   // County level ✅ NEW
-"Show Tampa Bay Area metrics"                    // Metro level ✅ NEW
-"South Florida analysis"                         // Metro level ✅ NEW
-"Compare Alachua County and Orange County"       // County level ✅ NEW
-"Central Florida vs Southwest Florida"           // Metro vs Metro ✅ NEW
-"Miami Metro vs Tampa Bay Area"                  // Metro comparison ✅ NEW
+"Compare Los Angeles and San Francisco"                    // City level
+"Show data for San Diego"                                 // City level  
+"Sales in San Jose"                                       // City level
+"Compare Los Angeles County and Orange County"             // County level ✅ NEW
+"Show Bay Area metrics"                                   // Metro level ✅ NEW
+"Southern California analysis"                            // Metro level ✅ NEW
+"Compare Fresno County and San Diego County"              // County level ✅ NEW
+"Central Valley vs Bay Area"                             // Metro vs Metro ✅ NEW
+"Greater LA Area vs San Francisco Bay Area"               // Metro comparison ✅ NEW
 ```
 
 ### After Full Implementation (All Phases)
 ```
-"Stores within 20 miles of Orlando"
-"Compare areas near Miami"
-"Adjacent counties to Palm Beach"
-"Shops around downtown Tampa"
+"Stores within 20 miles of Los Angeles"
+"Compare areas near San Francisco"
+"Adjacent counties to Orange County"
+"Shops around downtown San Diego"
 ```
 
 ## Technical Architecture
@@ -241,9 +241,9 @@ docs/
 ### ✅ Completed
 1. ✅ **Phase 1: Multi-Level ZIP Code Mapping** - COMPLETE
    - Extended GeographicDatabase interface with multi-level mappings
-   - Implemented Florida geographic hierarchy (state → metros → counties → cities)
+   - Implemented California geographic hierarchy (state → metros → counties → cities)
    - Added automatic ZIP code aggregation for higher-level entities
-   - Updated GeoDataManager.ts with comprehensive Florida data
+   - Updated GeoDataManager.ts with comprehensive California data
    - Enabled county and metro-level geographic queries
 
 ### 🎯 Current Status
@@ -264,4 +264,5 @@ docs/
 - **Important**: When updating project geographic scope, maintain the same hierarchical data structure in `GeoDataManager.ts`
 - Follow the established pattern: State → Metros → Counties → Cities → ZIP codes
 - Ensure proper parent-child relationships and ZIP code aggregation
+- California implementation now provides comprehensive statewide coverage
 - See this documentation for reference implementation structure

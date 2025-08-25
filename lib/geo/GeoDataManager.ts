@@ -1,8 +1,8 @@
 /**
- * Geographic Data Manager - Florida Edition
+ * Geographic Data Manager - California Edition
  * 
- * Manages geographic data for Florida.
- * Optimized for the project's specific geographic scope.
+ * Manages geographic data for California.
+ * Optimized for the Red Bull Energy Drinks project's specific geographic scope.
  */
 
 export interface GeographicDatabase {
@@ -48,22 +48,22 @@ export class GeoDataManager {
   }
 
   private initializeDatabase(): void {
-    console.log('[GeoDataManager] Initializing comprehensive Florida geographic database...');
+    console.log('[GeoDataManager] Initializing comprehensive California geographic database...');
     
     // Core geographic entities
     this.loadStates();
-    this.loadFloridaCounties();
-    this.loadFloridaCities();
-    this.loadFloridaMetros();
+    this.loadCaliforniaCounties();
+    this.loadCaliforniaCities();
+    this.loadCaliforniaMetros();
     this.aggregateZipCodesForHigherLevels();
     
-    console.log(`[GeoDataManager] Comprehensive Florida database initialized with ${this.database.entities.size} entities`);
+    console.log(`[GeoDataManager] Comprehensive California database initialized with ${this.database.entities.size} entities`);
   }
 
   private loadStates(): void {
-    // Project covers Florida only
+    // Project covers California only
     const states = [
-      { name: 'Florida', abbr: 'FL', aliases: ['FL', 'Sunshine State', 'Fla', 'Flordia'] }
+      { name: 'California', abbr: 'CA', aliases: ['CA', 'Golden State', 'Cali', 'Calif'] }
     ];
 
     states.forEach(state => {
@@ -79,76 +79,41 @@ export class GeoDataManager {
     });
   }
 
-  private loadFloridaCounties(): void {
-    const flCounties = [
+  private loadCaliforniaCounties(): void {
+    const caCounties = [
       {
-        name: 'Miami-Dade County',
-        aliases: ['Miami-Dade', 'Dade County', 'Dade', 'Miami Dade Co'],
-        cities: ['Miami', 'Hialeah', 'Miami Beach', 'Coral Gables', 'Homestead', 'Aventura', 'Miami Gardens']
+        name: 'Los Angeles County',
+        aliases: ['Los Angeles', 'LA County', 'LAC'],
+        cities: ['Los Angeles', 'Long Beach', 'Pasadena', 'Glendale', 'Santa Monica', 'Burbank']
       },
       {
-        name: 'Broward County',
-        aliases: ['Broward', 'Broward Co'],
-        cities: ['Fort Lauderdale', 'Hollywood', 'Pembroke Pines', 'Coral Springs', 'Pompano Beach', 'Davie', 'Plantation']
+        name: 'San Diego County',
+        aliases: ['San Diego', 'SD County'],
+        cities: ['San Diego', 'Chula Vista', 'Oceanside', 'Escondido', 'Carlsbad', 'El Cajon']
       },
       {
-        name: 'Palm Beach County',
-        aliases: ['Palm Beach', 'Palm Beach Co'],
-        cities: ['West Palm Beach', 'Boca Raton', 'Boynton Beach', 'Delray Beach', 'Jupiter', 'Wellington']
+        name: 'San Francisco County',
+        aliases: ['San Francisco', 'SF County', 'San Francisco City and County'],
+        cities: ['San Francisco']
       },
       {
-        name: 'Hillsborough County',
-        aliases: ['Hillsborough', 'Hillsborough Co'],
-        cities: ['Tampa', 'Brandon', 'Riverview', 'Plant City']
+        name: 'Santa Clara County',
+        aliases: ['Santa Clara', 'Silicon Valley'],
+        cities: ['San Jose', 'Santa Clara', 'Sunnyvale', 'Mountain View', 'Palo Alto', 'Cupertino']
       },
       {
-        name: 'Pinellas County',
-        aliases: ['Pinellas', 'Pinellas Co'],
-        cities: ['St. Petersburg', 'Clearwater', 'Largo', 'Pinellas Park']
-      },
-      {
-        name: 'Orange County',
-        aliases: ['Orange', 'Orange Co'],
-        cities: ['Orlando', 'Winter Park', 'Apopka', 'Ocoee']
-      },
-      {
-        name: 'Duval County',
-        aliases: ['Duval', 'Duval Co'],
-        cities: ['Jacksonville'] // Jacksonville is consolidated with Duval County
-      },
-      {
-        name: 'Alachua County',
-        aliases: ['Alachua', 'Alachua Co'],
-        cities: ['Gainesville', 'Alachua', 'Newberry', 'High Springs']
-      },
-      {
-        name: 'Leon County',
-        aliases: ['Leon', 'Leon Co'],
-        cities: ['Tallahassee']
-      },
-      {
-        name: 'Lee County',
-        aliases: ['Lee', 'Lee Co'],
-        cities: ['Cape Coral', 'Fort Myers', 'Bonita Springs']
-      },
-      {
-        name: 'Collier County',
-        aliases: ['Collier', 'Collier Co'],
-        cities: ['Naples', 'Marco Island']
-      },
-      {
-        name: 'St. Lucie County',
-        aliases: ['St. Lucie', 'St Lucie', 'Saint Lucie'],
-        cities: ['Port St. Lucie', 'Fort Pierce']
+        name: 'Fresno County',
+        aliases: ['Fresno'],
+        cities: ['Fresno', 'Clovis', 'Selma', 'Reedley']
       }
     ];
 
-    flCounties.forEach(county => {
+    caCounties.forEach(county => {
       const entity: GeographicEntity = {
         name: county.name,
         type: 'county',
         aliases: county.aliases,
-        parentEntity: 'florida',
+        parentEntity: 'california',
         childEntities: county.cities.map(city => city.toLowerCase()),
         confidence: 1.0
       };
@@ -398,9 +363,9 @@ export class GeoDataManager {
       }
     }
 
-    // Map all ZIP codes to Florida state
+    // Map all ZIP codes to California state
     for (const [zip, city] of this.database.zipCodeToCity) {
-      this.database.zipCodeToState.set(zip, 'florida');
+      this.database.zipCodeToState.set(zip, 'california');
     }
 
     console.log(`[GeoDataManager] ZIP code mappings created:`, {

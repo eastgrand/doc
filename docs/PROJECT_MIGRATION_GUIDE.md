@@ -1287,6 +1287,8 @@ ls public/data/endpoints/ | wc -l  # Should show 18+
 
 **⚠️ REQUIRED**: These steps are explicitly mentioned in SIMPLE_INSTRUCTIONS.md and must be completed:
 
+> **⚠️ TROUBLESHOOTING ALERT**: If you encounter issues after automation, see [Phase 6.5: Post-Automation Troubleshooting](#phase-65-post-automation-troubleshooting) for common fixes.
+
 #### 6.1 Update Map Constraints (MANDATORY)
 ```bash
 # This constrains the map view to the Red Bull project's geographic area
@@ -1452,6 +1454,169 @@ npm test -- __tests__/hybrid-routing-random-query-optimization.test.ts
 ```
 
 **Why this is critical**: Ensures the routing system works correctly with Red Bull data and queries.
+
+---
+
+### Phase 6.5: Post-Automation Troubleshooting
+
+**⚠️ WHEN TO USE**: If you encounter issues after running the automation process, these are the most common fixes based on actual troubleshooting sessions.
+
+#### Issue #1: Sample Areas Show Wrong Cities/State
+
+**Problem**: Sample area panel shows Florida cities instead of your target state (e.g., California)
+
+**Root Cause**: Missing sample area data file for the new project's geographic region
+
+**Solution**:
+```bash
+# Generate sample area data for your project's geographic region
+node scripts/generate-real-sample-areas.js
+```
+
+**What this does**:
+- Generates `/public/data/sample_areas_data_real.json` file
+- Maps ZIP codes to correct cities for your project's geographic area
+- Includes demographic data with project-specific metrics
+- Creates proper GeoJSON geometries for choropleth visualizations
+
+**Validation**:
+```bash
+# Check file was created and has correct geographic data
+ls -lh /public/data/sample_areas_data_real.json
+# Should be 10MB+ file
+
+# Check it contains your target state's cities
+grep -o '"city": "[^"]*"' /public/data/sample_areas_data_real.json | sort | uniq -c | head -10
+```
+
+#### Issue #2: Map Locked to Wrong Geographic Region
+
+**Problem**: Map constraints prevent navigation to your project's geographic area (e.g., map locked to Florida when project is California)
+
+**Root Cause**: Map constraints not updated for new project's geographic bounds
+
+**Solution**:
+```bash
+# Update config/mapConstraints.ts with correct geographic bounds
+```
+
+**Manual Fix Steps**:
+1. **Calculate your project's bounds** in Web Mercator projection (WKID: 102100)
+2. **Update MAP_CONSTRAINTS geometry**:
+   - For California: `xmin: -14080000, xmax: -12500000, ymin: 3750000, ymax: 5280000`
+   - For Florida: `xmin: -13969553, xmax: -12532913, ymin: 3635704, ymax: 5450884`
+3. **Update DATA_EXTENT** with core bounds (without buffer)
+4. **Update comments** to reflect new project
+
+**Example Fix** (California):
+```typescript
+// California project extent with 10% buffer
+export const MAP_CONSTRAINTS: MapConstraintsConfig = {
+  geometry: {
+    xmin: -14080000,  // California west with buffer
+    ymin: 3750000,    // California south with buffer  
+    xmax: -12500000,  // California east with buffer
+    ymax: 5280000,    // California north with buffer
+    spatialReference: { wkid: 102100 }
+  }
+};
+```
+
+#### Issue #3: Geo-Awareness System Doesn't Recognize New State
+
+**Problem**: Geographic queries like "Bay Area analysis" or "Los Angeles County" fail to filter data
+
+**Root Cause**: Geo-awareness system still configured for previous project's state
+
+**Solution**: Update the geographic hierarchy in `lib/geo/GeoDataManager.ts`
+
+**Steps**:
+1. **Update state configuration**:
+```typescript
+// Change from Florida to your target state
+const states = [
+  { name: 'California', abbr: 'CA', aliases: ['CA', 'Golden State', 'Cali', 'Calif'] }
+];
+```
+
+2. **Replace counties** with your target state's counties:
+```typescript
+const caCounties = [
+  {
+    name: 'Los Angeles County',
+    aliases: ['Los Angeles', 'LA County', 'LAC'],
+    cities: ['Los Angeles', 'Long Beach', 'Pasadena', 'Glendale']
+  },
+  // ... add all major counties for your state
+];
+```
+
+3. **Replace cities** with comprehensive city list and ZIP code mappings
+4. **Replace metro areas** with regional groupings for your state
+5. **Update documentation** in `docs/geo-awareness-system.md`
+
+**What this enables**:
+- Geographic filtering queries: "compare LA County and Orange County"
+- Metro area analysis: "Bay Area vs Central Valley"
+- City-level filtering: "show data for San Francisco"
+
+#### Issue #4: Configuration Contains Irrelevant References
+
+**Problem**: Old project references or layer definitions affecting new project
+
+**Root Cause**: Incomplete configuration cleanup during automation
+
+**Solution**: Verify and clean configuration files
+
+**Steps**:
+```bash
+# Search for old project references
+grep -r "old_project_name" config/ types/ lib/
+grep -r "old_brand_name" config/ types/ lib/
+
+# Remove any found references and replace with new project terms
+```
+
+**Common locations to check**:
+- `config/layers.ts` - Layer definitions and display names
+- `types/layers.ts` - Type definitions
+- `lib/geo/GeoDataManager.ts` - Geographic references
+- `adapters/layerConfigAdapter.ts` - Layer classification logic
+
+#### Issue #5: Layer Widget Shows Wrong Brand/Project
+
+**Problem**: Layer widget displays layers from previous project instead of new project
+
+**Root Cause**: Usually browser cache or localStorage persistence issue
+
+**Investigation Steps**:
+1. **Verify configuration files are correct**:
+```bash
+# Check layers contain correct project data
+grep -i "your_brand_name" config/layers.ts
+grep -i "target_field" config/layers.ts
+```
+
+2. **Clear browser cache and storage**:
+   - Clear browser cache completely
+   - Clear localStorage for the domain
+   - Hard refresh (Ctrl+Shift+R or Cmd+Shift+R)
+
+3. **Check for cached service definitions**:
+   - Look for any hardcoded service URLs
+   - Verify ArcGIS service endpoints are correct
+
+**Note**: This issue typically requires runtime debugging to identify the exact cache source.
+
+#### Automation Enhancement Recommendations
+
+Based on these common issues, future automation should include:
+
+1. **Sample Area Data Generation**: Automatically run `generate-real-sample-areas.js`
+2. **Map Constraints Calculation**: Auto-calculate bounds from project data extents
+3. **Geo-Awareness Updates**: Template-based geographic hierarchy updates
+4. **Configuration Verification**: Automated cleanup validation
+5. **Cache Management**: Clear browser cache instructions
 
 ---
 
@@ -1642,4 +1807,38 @@ npm run generate-sample-areas
 
 ---
 
-*This document serves as the foundation for creating enhanced migration procedures that prevent issues like the recent customer-profile field detection problem while maintaining the comprehensive capabilities of the current system.*
+## 📋 Post-Automation Migration Summary
+
+**CRITICAL SUCCESS**: The troubleshooting procedures documented in Phase 6.5 have successfully resolved **4 out of 5 major post-automation issues**:
+
+### ✅ Issues Resolved
+1. **Sample Areas Geographic Fix** - California sample areas now working ✅
+2. **Map Constraints Geographic Fix** - Map navigation constrained to California ✅  
+3. **Geo-Awareness System Update** - California geographic queries working ✅
+4. **Configuration Cleanup** - Clean project configurations verified ✅
+
+### ⏳ Remaining Issues
+1. **Layer Widget Cache Issue** - Requires runtime debugging (browser cache related)
+
+### 🎯 Key Takeaways for Future Migrations
+
+**Essential Post-Automation Steps** (based on actual troubleshooting):
+1. **Always run** `node scripts/generate-real-sample-areas.js` after automation
+2. **Always update** `config/mapConstraints.ts` for the target state's geographic bounds
+3. **Always update** `lib/geo/GeoDataManager.ts` with comprehensive state hierarchy
+4. **Always verify** configuration files are clean of old project references
+5. **Always include** cache clearing instructions for users
+
+**Automation Enhancement Priority**:
+- **HIGH**: Automatic sample area data generation
+- **HIGH**: Auto-calculate map constraints from data extents  
+- **MEDIUM**: Template-based geo-awareness updates
+- **MEDIUM**: Automated configuration cleanup validation
+- **LOW**: Cache management automation (user-dependent)
+
+**Documentation Impact**:
+This guide now provides **complete troubleshooting procedures** for the most common post-automation issues, reducing future migration failure rates and improving success predictability.
+
+---
+
+*This document serves as the foundation for creating enhanced migration procedures that prevent issues like the recent customer-profile field detection problem while maintaining the comprehensive capabilities of the current system. Updated with post-automation troubleshooting procedures based on real California Red Bull Energy Drinks project migration experience.*
