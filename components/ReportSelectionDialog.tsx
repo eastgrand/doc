@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, Card, CardMedia, CardContent, Typography, TextField, MenuItem, Select, InputLabel, FormControl, GridProps } from '@mui/material';
 import mpiqPin2Logo from '../public/mpiq_pin2.png'; // Import the logo
 import Image from 'next/image';
-import { FileSpreadsheet } from 'lucide-react'; // Import the icon
+import { FileSpreadsheet, Target, TrendingUp, Users, BarChart3, Zap, Shield } from 'lucide-react'; // Import the icon
 
 // Redefine DisplayReport interface here for simplicity
 interface DisplayReport {

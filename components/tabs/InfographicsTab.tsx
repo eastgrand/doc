@@ -33,6 +33,7 @@ import ServiceAreaParameters from "@arcgis/core/rest/support/ServiceAreaParamete
 import FeatureSet from "@arcgis/core/rest/support/FeatureSet";
 import esriConfig from "@arcgis/core/config";
 import Infographics from '../Infographics';
+import EndpointScoringReport from '../EndpointScoringReport';
 import DrawingTools from './DrawingTools';
 import { Alert, AlertDescription } from '../ui/alert';
 import * as projection from "@arcgis/core/geometry/projection";
@@ -1399,13 +1400,18 @@ export default function InfographicsTab({
       console.warn('No geometry available for report generation');
       return;
     }
-  
-    // Don't automatically open the modal
-    // Let the user decide when to open it
-    // console.log('Geometry is ready for report generation, user can now open the modal if desired'); // Old log
-    // Open the modal when generate is clicked
-    console.log('Opening report modal...');
-    setIsModalOpen(true);
+
+    // Check if this is the endpoint scoring report
+    if (reportTemplate === 'endpoint-scoring-combined') {
+      console.log('Opening endpoint scoring report modal...');
+      // For now, we'll still open the modal but we'll handle the scoring report in the modal
+      // TODO: In future implementation, this could open a dedicated endpoint scoring modal
+      setIsModalOpen(true);
+    } else {
+      // Standard ArcGIS report
+      console.log('Opening standard ArcGIS report modal...');
+      setIsModalOpen(true);
+    }
 
   }, [geometry, reportTemplate, setIsModalOpen]);
 
@@ -1544,21 +1550,30 @@ export default function InfographicsTab({
             )}
             
             {isModalOpen && hasDependencies && (
-              <Infographics
-                view={view}
-                geometry={geometry}
-                reportTemplate={reportTemplate}
-                onReportTemplateChange={(newTemplate) => {
-                  console.log('Report template changed:', {
-                    oldTemplate: reportTemplate,
-                    newTemplate
-                  });
-                  setReportTemplate(newTemplate || 'whats-in-my-neighbourhood-km');                }}
-                layerStates={memoizedLayerStates}
-                generateStandardReport={generateStandardReport}
-                onExportPDF={exportToPDF}
-                key={`${reportTemplate}-${geometry.type}-${Date.now()}`} /* Add key to force remount */
-              />
+              reportTemplate === 'endpoint-scoring-combined' ? (
+                <EndpointScoringReport
+                  geometry={geometry}
+                  view={view}
+                  onExportPDF={exportToPDF}
+                  key={`endpoint-scoring-${geometry.type}-${Date.now()}`}
+                />
+              ) : (
+                <Infographics
+                  view={view}
+                  geometry={geometry}
+                  reportTemplate={reportTemplate}
+                  onReportTemplateChange={(newTemplate) => {
+                    console.log('Report template changed:', {
+                      oldTemplate: reportTemplate,
+                      newTemplate
+                    });
+                    setReportTemplate(newTemplate || 'whats-in-my-neighbourhood-km');                }}
+                  layerStates={memoizedLayerStates}
+                  generateStandardReport={generateStandardReport}
+                  onExportPDF={exportToPDF}
+                  key={`${reportTemplate}-${geometry.type}-${Date.now()}`} /* Add key to force remount */
+                />
+              )
             )}
           </div>
         </DialogContent>
@@ -1850,7 +1865,19 @@ export default function InfographicsTab({
         } else {
           console.log(`[FetchReports] Report template already set: ${reportTemplate}`);
         }
-        console.log('[FetchReports] Final Reports after exclusion:', finalReports); // Log the final reports being set
+        // Add the endpoint scoring report to the available reports
+        const endpointScoringReport: Report = {
+          id: 'endpoint-scoring-combined',
+          title: 'AI Endpoint Scoring Analysis',
+          description: 'Comprehensive scoring analysis combining strategic, competitive, demographic, and predictive insights',
+          thumbnail: '', // Will use fallback icon
+          categories: ['AI Analysis', 'Scoring'],
+          type: 'endpoint-scoring'
+        };
+        
+        finalReports.unshift(endpointScoringReport); // Add to beginning of list
+        
+        console.log('[FetchReports] Final Reports after exclusion (including endpoint scoring):', finalReports); // Log the final reports being set
         
         // DEBUG: Log final report titles that will show in dialog
         console.log('[FetchReports] DEBUG - Final reports that will appear in dialog:');

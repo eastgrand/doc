@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import ReportSelectionDialog from './ReportSelectionDialog';
+import EndpointScoringReport from './EndpointScoringReport';
 
 type ReportTemplateName = string;
 
@@ -438,43 +439,50 @@ const Infographics: React.FC<InfographicsProps> = ({
     <Card className="h-full flex flex-col shadow-none border-0">
        {renderHeader()}
       <CardContent className="flex-1 overflow-auto p-0">
-        {loading && (
-          <div className="flex items-center justify-center p-8">
-            <div className="text-center">
-            <Loader2 className="h-8 w-8 animate-spin text-blue-500 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">Generating report...</p>
-            </div>
-          </div>
-        )}
-        {error && (
-          <Alert variant="destructive" className="m-4">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-        {pdfUrl && !loading && !error && (
-          <iframe
-            src={pdfUrl}
-            title="Infographic Report"
-            className="w-full border-0"
-            style={{ 
-              height: '800px', 
-              minHeight: '100%'
-            }}
+        {/* Check if this is the endpoint scoring report */}
+        {reportTemplate === 'endpoint-scoring-combined' ? (
+          <EndpointScoringReport geometry={geometry} onExportPDF={onExportPDF} />
+        ) : (
+          <>
+            {loading && (
+              <div className="flex items-center justify-center p-8">
+                <div className="text-center">
+                <Loader2 className="h-8 w-8 animate-spin text-blue-500 mx-auto mb-2" />
+                  <p className="text-sm text-gray-600">Generating report...</p>
+                </div>
+              </div>
+            )}
+            {error && (
+              <Alert variant="destructive" className="m-4">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            {pdfUrl && !loading && !error && (
+              <iframe
+                src={pdfUrl}
+                title="Infographic Report"
+                className="w-full border-0"
+                style={{ 
+                  height: '800px', 
+                  minHeight: '100%'
+                }}
           />
         )}
-        {mockData && !loading && !error && !pdfUrl && (
-          <div className="min-h-0 flex-1">
-            {renderMockReport()}
-          </div>
-        )}
-        {!loading && !error && !pdfUrl && !mockData && (
-           <div className="flex items-center justify-center p-8">
-             <div className="text-center text-gray-500">
-             <FileSpreadsheet className="h-12 w-12 mx-auto mb-2 text-gray-300" />
-             <p>Report will be displayed here once generated.</p>
-             </div>
-           </div>
+            {mockData && !loading && !error && !pdfUrl && (
+              <div className="min-h-0 flex-1">
+                {renderMockReport()}
+              </div>
+            )}
+            {!loading && !error && !pdfUrl && !mockData && (
+               <div className="flex items-center justify-center p-8">
+                 <div className="text-center text-gray-500">
+                 <FileSpreadsheet className="h-12 w-12 mx-auto mb-2 text-gray-300" />
+                 <p>Report will be displayed here once generated.</p>
+                 </div>
+               </div>
+            )}
+          </>
         )}
       </CardContent>
        {(pdfUrl || mockData) && !loading && (
