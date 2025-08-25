@@ -146,6 +146,15 @@ const safeNumber = (value: any): number => {
   return isNaN(num) ? 0 : num;
 };
 
+// Bookmark extents to ensure sample areas zoom to same view as bookmarks
+const BOOKMARK_EXTENTS: { [key: string]: { xmin: number; ymin: number; xmax: number; ymax: number } } = {
+  'fresno': { xmin: -119.9, ymin: 36.6, xmax: -119.6, ymax: 36.9 },
+  'los angeles': { xmin: -118.7, ymin: 33.9, xmax: -118.0, ymax: 34.3 },
+  'san diego': { xmin: -117.3, ymin: 32.6, xmax: -116.9, ymax: 33.0 },
+  'san francisco': { xmin: -122.6, ymin: 37.6, xmax: -122.3, ymax: 37.9 },
+  'san jose': { xmin: -122.0, ymin: 37.2, xmax: -121.7, ymax: 37.5 }
+};
+
 export default function SampleAreasPanel({ view, onClose, visible }: SampleAreasPanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   // Removed preJoinedData state as we're using simplified mock data
@@ -314,24 +323,27 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         };
       });
       
-      // Calculate combined bounds
-      const combinedBounds = zipCodes.reduce((bounds, zip) => {
-        if (!zip.bounds) {
-          console.log(`[SampleAreasPanel] WARNING: ZIP ${zip.zipCode} has no bounds`);
-          return bounds;
-        }
-        return {
-          xmin: Math.min(bounds.xmin, zip.bounds.xmin),
-          ymin: Math.min(bounds.ymin, zip.bounds.ymin),
-          xmax: Math.max(bounds.xmax, zip.bounds.xmax),
-          ymax: Math.max(bounds.ymax, zip.bounds.ymax)
-        };
-      }, {
-        xmin: Infinity,
-        ymin: Infinity,
-        xmax: -Infinity,
-        ymax: -Infinity
-      });
+      // Use bookmark extents to ensure same zoom level as bookmarks widget
+      const combinedBounds = BOOKMARK_EXTENTS[cityKey] || {
+        // Fallback: calculate from ZIP codes if no bookmark extent available
+        ...zipCodes.reduce((bounds, zip) => {
+          if (!zip.bounds) {
+            console.log(`[SampleAreasPanel] WARNING: ZIP ${zip.zipCode} has no bounds`);
+            return bounds;
+          }
+          return {
+            xmin: Math.min(bounds.xmin, zip.bounds.xmin),
+            ymin: Math.min(bounds.ymin, zip.bounds.ymin),
+            xmax: Math.max(bounds.xmax, zip.bounds.xmax),
+            ymax: Math.max(bounds.ymax, zip.bounds.ymax)
+          };
+        }, {
+          xmin: Infinity,
+          ymin: Infinity,
+          xmax: -Infinity,
+          ymax: -Infinity
+        })
+      };
       
       areas.push({
         id: cityKey,
@@ -341,6 +353,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
       });
       
       console.log(`[SampleAreasPanel] STEP 4d - ${cityName} final area created with bounds:`, combinedBounds);
+      console.log(`[SampleAreasPanel] Using ${BOOKMARK_EXTENTS[cityKey] ? 'bookmark' : 'calculated'} extent for ${cityName}`);
     });
     
     setDisplayAreas(() => areas);
@@ -473,13 +486,14 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
       console.log('[zoomToLosAngeles] Found Los Angeles area, zooming...');
       handleAreaClick(losAngelesArea);
     } else {
-      console.log('[zoomToLosAngeles] Los Angeles area not found, using fallback coordinates');
-      // Fallback: manually zoom to Los Angeles coordinates
+      console.log('[zoomToLosAngeles] Los Angeles area not found, using bookmark extent');
+      // Fallback: use bookmark extent for Los Angeles
+      const bookmarkExtent = BOOKMARK_EXTENTS['los angeles'];
       const losAngelesExtent = new Extent({
-        xmin: -118.7,
-        ymin: 33.9,
-        xmax: -118.0,
-        ymax: 34.3,
+        xmin: bookmarkExtent.xmin,
+        ymin: bookmarkExtent.ymin,
+        xmax: bookmarkExtent.xmax,
+        ymax: bookmarkExtent.ymax,
         spatialReference: { wkid: 4326 }
       });
       
