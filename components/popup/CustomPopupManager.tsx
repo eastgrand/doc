@@ -99,7 +99,7 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
         
         // For point layers, only show address field in content
         // First try exact field names for known layers like H&R Block
-        let addressFields: string[] = [];
+        const addressFields: string[] = [];
         const availableFieldNames = featureLayer.fields?.map(f => f.name) || [];
         
         console.log('[CustomPopupManager] 🔍 Available fields for point layer:', availableFieldNames);

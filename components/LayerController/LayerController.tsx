@@ -600,38 +600,36 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       for (const group of (config.groups || [])) {
         if (group.layers) {
           for (const layerConfig of group.layers) {
-            const shouldBeVisible = config.defaultVisibility?.[layerConfig.id] || false;
-            
-            // LAZY LOADING: Only create layers that should be visible by default
-            // This prevents "Failed to create layerview" errors for unused layers
-            if (shouldBeVisible) {
-              console.log(`[LayerController] Creating visible layer: ${layerConfig.name}`);
-              const [layer, errors] = await createLayer(layerConfig, config, view, layerStatesRef);
-              if (layer) {
-                view.map.add(layer);
-                layer.visible = true;
-                
-                // Preserve higher opacity for location layers, use 0.6 for others
-                const layerOpacity = layerConfig.name?.toLowerCase().includes('locations') ? layer.opacity : 0.6;
-                layer.opacity = layerOpacity;
-                
-                newLayerStates[layerConfig.id] = {
-                  id: layerConfig.id,
-                  name: layerConfig.name,
-                  layer,
-                  visible: true,
-                  opacity: layerOpacity,
-                  order: 0,
-                  group: group.id,
-                  loading: false,
-                  filters: [],
-                  isVirtual: false,
-                  active: false
-                };
-              }
+            console.log(`[LayerController] Creating layer: ${layerConfig.name}`);
+            const [layer, errors] = await createLayer(layerConfig, config, view, layerStatesRef);
+            if (layer) {
+              // Add ALL layers to the map (aligned with GitHub unified repo)
+              view.map.add(layer);
+              
+              // Set visibility based on config
+              const shouldBeVisible = config.defaultVisibility?.[layerConfig.id] || false;
+              layer.visible = shouldBeVisible;
+              
+              // Preserve higher opacity for location layers, use 0.6 for others
+              const layerOpacity = layerConfig.name?.toLowerCase().includes('locations') ? layer.opacity : 0.6;
+              layer.opacity = layerOpacity;
+              
+              newLayerStates[layerConfig.id] = {
+                id: layerConfig.id,
+                name: layerConfig.name,
+                layer,
+                visible: shouldBeVisible,
+                opacity: layerOpacity,
+                order: 0,
+                group: group.id,
+                loading: false,
+                filters: [],
+                isVirtual: false,
+                active: false
+              };
             } else {
-              // Create placeholder state for hidden layers - they'll be created when needed
-              console.log(`[LayerController] Creating placeholder for hidden layer: ${layerConfig.name}`);
+              // Create placeholder state for layers that failed to create
+              console.log(`[LayerController] Failed to create layer: ${layerConfig.name}`);
               newLayerStates[layerConfig.id] = {
                 id: layerConfig.id,
                 name: layerConfig.name,
