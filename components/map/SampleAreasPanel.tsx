@@ -483,7 +483,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         spatialReference: { wkid: 4326 }
       });
       
-      view.goTo(losAngelesExtent.expand(1.2), {
+      view.goTo(losAngelesExtent, {
         duration: 2000,
         easing: 'ease-in-out'
       }).catch(error => {
@@ -519,7 +519,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         spatialReference: { wkid: 4326 }
       });
 
-      view.goTo(extent.expand(1.2), {
+      view.goTo(extent, {
         duration: 2000,
         easing: 'ease-in-out'
       }).catch(error => {
@@ -620,22 +620,20 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         spatialReference: { wkid: 4326 }
       });
       
-      const expandedExtent = extent.expand(1.3);
-      
       // DEBUG: Log the exact extent being used for Los Angeles
       if (area.id === 'los angeles') {
         console.log('[handleAreaClick] Los Angeles extent:', {
           original: bounds,
-          expanded: {
-            xmin: expandedExtent.xmin,
-            ymin: expandedExtent.ymin,
-            xmax: expandedExtent.xmax,
-            ymax: expandedExtent.ymax
+          used: {
+            xmin: extent.xmin,
+            ymin: extent.ymin,
+            xmax: extent.xmax,
+            ymax: extent.ymax
           }
         });
       }
 
-      await view.goTo(expandedExtent, {
+      await view.goTo(extent, {
         duration: 1500,
         easing: 'ease-in-out'
       });

@@ -807,6 +807,106 @@ npm test -- __tests__/hybrid-routing-random-query-optimization.test.ts
 
 **Remaining Task**: Hybrid routing tests verification
 
+## Scoring Field Configuration Validation
+
+### Overview
+During the migration process, a critical issue was discovered where scoring field names in the ConfigurationManager did not match the actual field names in the endpoint data. This caused the "query to visualization" pipeline to fail with "NO RECORDS PROVIDED TO VISUALIZATION" errors.
+
+### The Problem
+The ConfigurationManager (`lib/analysis/ConfigurationManager.ts`) contained scoring field configurations that used outdated or incorrect field names that didn't match the actual JSON data structure returned by endpoints. This created a mismatch between:
+- **Configuration**: What the system expected to find (`strategic_analysis_score`)
+- **Reality**: What actually existed in the data (`strategic_score`)
+
+### Root Cause Analysis
+12 scoring field mismatches were identified across the configuration:
+
+**Examples of Mismatches Fixed**:
+```typescript
+// BEFORE (incorrect):
+targetVariable: 'strategic_analysis_score',
+scoreFieldName: 'strategic_analysis_score',
+
+// AFTER (correct):
+targetVariable: 'strategic_score', 
+scoreFieldName: 'strategic_score',
+
+// BEFORE (incorrect):
+targetVariable: 'competitive_analysis_score',
+scoreFieldName: 'competitive_analysis_score',
+
+// AFTER (correct):
+targetVariable: 'competitive_score',
+scoreFieldName: 'competitive_score',
+```
+
+### Migration Requirements
+This is **both a one-time fix AND a recurring validation requirement**:
+
+#### One-Time Fix (Completed)
+- ✅ Updated all 12 mismatched field names in ConfigurationManager
+- ✅ Verified field names match actual endpoint JSON data structure
+- ✅ Tested query-to-visualization pipeline functionality
+
+#### Recurring Migration Requirement
+**⚠️ CRITICAL**: For every project migration, you MUST validate scoring field configuration:
+
+1. **Verify Field Names Match Data**:
+```bash
+# Check what fields actually exist in your endpoint data
+jq -r '.results[0] | keys[]' public/data/endpoints/strategic-analysis.json | grep -i score
+
+# Compare with ConfigurationManager settings
+grep -A 3 -B 3 "scoreFieldName" lib/analysis/ConfigurationManager.ts
+```
+
+2. **Test Query-to-Visualization Flow**:
+```bash
+# This should NOT show "NO RECORDS PROVIDED" errors
+# Test a scoring query and check browser console for errors
+```
+
+3. **Common Field Name Patterns**:
+- **Correct**: `strategic_score`, `competitive_score`, `demographic_score`
+- **Incorrect**: `strategic_analysis_score`, `competitive_analysis_score`
+- **Pattern**: Often the `_analysis` suffix is added incorrectly to field names
+
+### Validation Script (Recommended)
+Create an automated validation to prevent this issue:
+
+```bash
+#!/bin/bash
+# validate-scoring-fields.sh
+echo "Validating scoring field configuration..."
+
+# Extract configured field names
+configured_fields=$(grep -o '"scoreFieldName": "[^"]*"' lib/analysis/ConfigurationManager.ts | cut -d'"' -f4)
+
+# Extract actual field names from endpoint data
+actual_fields=$(jq -r '.results[0] | keys[]' public/data/endpoints/strategic-analysis.json | grep -i score)
+
+# Compare and report mismatches
+for field in $configured_fields; do
+  if ! echo "$actual_fields" | grep -q "^$field$"; then
+    echo "❌ MISMATCH: Configured field '$field' not found in actual data"
+    echo "   Available fields: $actual_fields"
+  else
+    echo "✅ MATCH: Field '$field' exists in data"
+  fi
+done
+```
+
+### Impact of This Issue
+- **User Experience**: Queries fail silently with no visualization data
+- **Error Messages**: Cryptic "NO RECORDS PROVIDED" console errors
+- **Diagnosis Difficulty**: Issue occurs deep in the processing pipeline
+- **System Reliability**: Critical functionality breaks without obvious cause
+
+### Prevention Strategy
+1. **Pre-Migration Validation**: Always run scoring field validation before deployment
+2. **Documentation Sync**: Keep ConfigurationManager aligned with actual data structure  
+3. **Integration Testing**: Include query-to-visualization pipeline in test suite
+4. **Change Management**: Update configuration whenever data structure changes
+
 ## Knowledge Base
 
 ### Key Files for Migration
@@ -816,6 +916,7 @@ npm test -- __tests__/hybrid-routing-random-query-optimization.test.ts
 - `/app/api/claude/generate-response/route.ts` - Claude processing
 - `/lib/routing/` - Hybrid routing system
 - `/lib/analysis/strategies/processors/` - Data processors
+- `/lib/analysis/ConfigurationManager.ts` - **CRITICAL**: Scoring field configuration (validate after every migration)
 
 ### Configuration Files
 - Domain configurations (to be defined)

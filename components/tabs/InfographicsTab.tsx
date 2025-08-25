@@ -1809,7 +1809,7 @@ export default function InfographicsTab({
           'Paragon (Esri 2024)', // Corrected casing
           'Sports',
           'Sports (Esri 2024)', // Corrected casing
-          // New CA exclusions
+          // Canada/Non-US exclusions  
           'BC Crime Stats by Policing Jurisdiction',
           'Custom template',
           'decode54',
@@ -1818,7 +1818,19 @@ export default function InfographicsTab({
           'OLG',
           'Crime by Metro Area',
           'Crime by Policing Jurisdiction',
-          'Visible Minority, Religion, Mother Tongue' // Added new exclusion
+          'Visible Minority, Religion, Mother Tongue',
+          // Additional Canadian templates to exclude
+          'Canadian Demographics',
+          'Canada Population',
+          'Canadian Market Analysis',
+          'Postal Code',
+          'FSA',
+          'Province',
+          'Provincial',
+          'Canadian Crime',
+          'Statistics Canada',
+          'Census Canada',
+          'Canadian Business'
         ]);
 
         const finalReports = parsedReports.filter(report => {
@@ -1831,6 +1843,14 @@ export default function InfographicsTab({
           
           // Check for "(Esri 2025)" substring
           if (trimmedTitle.includes('(Esri 2025)')) {
+            return false;
+          }
+          
+          // Additional check for Canadian-related terms in title
+          const titleLower = trimmedTitle.toLowerCase();
+          const canadianTerms = ['canada', 'canadian', 'bc ', 'ontario', 'quebec', 'alberta', 'manitoba', 'saskatchewan', 'nova scotia', 'new brunswick', 'newfoundland', 'prince edward', 'yukon', 'northwest territories', 'nunavut', 'postal code', 'fsa'];
+          if (canadianTerms.some(term => titleLower.includes(term))) {
+            console.log(`[FetchReports] ❌ Excluding Canadian template: "${trimmedTitle}"`);
             return false;
           }
           
