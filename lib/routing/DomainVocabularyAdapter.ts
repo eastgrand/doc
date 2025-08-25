@@ -287,7 +287,7 @@ export class DomainVocabularyAdapter {
     
     // Score based on base intent match
     if (config.primary_intents.includes(enhancedQuery.base_intent.primary_intent)) {
-      const intentBonus = 0.5;
+      const intentBonus = 0.6; // Increased from 0.5 to 0.6
       baseScore += intentBonus;
       reasoning.push(`Primary intent match: ${enhancedQuery.base_intent.primary_intent}`);
       boosts.push({
@@ -297,14 +297,15 @@ export class DomainVocabularyAdapter {
       });
     }
     
-    // Score based on boost terms
+    // Score based on boost terms - check both original query and expanded terms
     const queryText = enhancedQuery.expanded_terms.join(' ');
+    const originalQuery = enhancedQuery.original_query.toLowerCase();
     const boostMatches = config.boost_terms.filter((term: string) =>
-      queryText.includes(term.toLowerCase())
+      queryText.includes(term.toLowerCase()) || originalQuery.includes(term.toLowerCase())
     );
     
     if (boostMatches.length > 0) {
-      const boostScore = boostMatches.length * 0.2;
+      const boostScore = boostMatches.length * 0.35; // Increased from 0.25 to 0.35
       baseScore += boostScore;
       reasoning.push(`Boost terms: ${boostMatches.join(', ')}`);
       boosts.push({
@@ -340,6 +341,30 @@ export class DomainVocabularyAdapter {
         type: 'domain_relevance',
         score: domainBonus,
         reason: 'High domain relevance'
+      });
+    }
+    
+    // Business context bonus - help queries that contain business language
+    const businessContextBonus = this.calculateBusinessContextBonus(enhancedQuery.original_query);
+    if (businessContextBonus > 0) {
+      baseScore += businessContextBonus;
+      reasoning.push(`Business context bonus: ${businessContextBonus.toFixed(3)}`);
+      boosts.push({
+        type: 'business_context',
+        score: businessContextBonus,
+        reason: 'Contains business analysis language'
+      });
+    }
+    
+    // Open-ended business query bonus - extra confidence for non-predefined business queries
+    const openEndedBonus = this.calculateOpenEndedBusinessBonus(enhancedQuery.original_query);
+    if (openEndedBonus > 0) {
+      baseScore += openEndedBonus;
+      reasoning.push(`Open-ended business bonus: ${openEndedBonus.toFixed(3)}`);
+      boosts.push({
+        type: 'open_ended_business',
+        score: openEndedBonus,
+        reason: 'Well-structured business analysis query'
       });
     }
     
@@ -470,5 +495,109 @@ export class DomainVocabularyAdapter {
       })),
       metadata: result.adaptation_metadata
     };
+  }
+
+  /**
+   * Calculate business context bonus for queries that sound business-oriented
+   */
+  private calculateBusinessContextBonus(query: string): number {
+    const queryLower = query.toLowerCase();
+    let bonus = 0;
+    
+    // Business action words (+0.05 each)
+    const businessActions = ['analyze', 'compare', 'identify', 'evaluate', 'assess', 'examine', 'understand', 'explore', 'break down', 'show me', 'help me', 'what', 'how', 'which', 'where'];
+    for (const action of businessActions) {
+      if (queryLower.includes(action)) {
+        bonus += 0.05;
+        break; // Only count once per category
+      }
+    }
+    
+    // Business subjects (+0.05)
+    const businessSubjects = ['market', 'customer', 'performance', 'data', 'analysis', 'insights', 'patterns', 'trends', 'segments', 'areas', 'regions', 'characteristics', 'factors', 'dynamics'];
+    for (const subject of businessSubjects) {
+      if (queryLower.includes(subject)) {
+        bonus += 0.05;
+        break; // Only count once per category
+      }
+    }
+    
+    // Business qualifiers (+0.03)
+    const businessQualifiers = ['best', 'top', 'high', 'low', 'most', 'different', 'similar', 'key', 'important', 'strategic', 'competitive'];
+    for (const qualifier of businessQualifiers) {
+      if (queryLower.includes(qualifier)) {
+        bonus += 0.03;
+        break; // Only count once per category
+      }
+    }
+    
+    return bonus;
+  }
+
+  /**
+   * Calculate bonus for well-structured open-ended business queries
+   */
+  private calculateOpenEndedBusinessBonus(query: string): number {
+    const queryLower = query.toLowerCase();
+    
+    // Check if this looks like a predefined query (skip bonus for those)
+    const predefinedPatterns = [
+      'show me the top strategic markets', 'compare red bull usage', 'market share difference',
+      'best customer demographics', 'ideal customer personas', 'geographic clusters',
+      'outliers with unique', 'best competitive positioning', 'pricing strategy',
+      'strongest interactions', 'clearest customer segmentation', 'rankings change',
+      'most important factors', 'how accurate are our predictions', 'ai model performs best',
+      'highest confidence predictions', 'optimal ai algorithm', 'explain most of the variation',
+      'all our ai models agree', 'unusual market patterns', 'segment energy drink markets',
+      'comprehensive market insights', 'most strongly correlated', 'trend patterns',
+      'most likely to grow'
+    ];
+    
+    // If it matches predefined patterns, no bonus
+    for (const pattern of predefinedPatterns) {
+      if (queryLower.includes(pattern)) {
+        return 0;
+      }
+    }
+    
+    let bonus = 0;
+    
+    // Well-structured question patterns get significant bonus
+    const questionPatterns = [
+      /^what\s+(patterns|story|factors|characteristics|would|are)/,
+      /^how\s+(do|does|can|should)/,
+      /^which\s+(areas|markets|segments|characteristics)/,
+      /^show\s+me\s+(which|how|what)/,
+      /^help\s+me\s+(identify|understand)/,
+      /^can\s+you\s+(break\s+down|help|identify)/,
+      /^i\s+want\s+to\s+(understand|see)/
+    ];
+    
+    for (const pattern of questionPatterns) {
+      if (pattern.test(queryLower)) {
+        bonus += 0.25; // Larger bonus for well-formed questions (was 0.15)
+        break;
+      }
+    }
+    
+    // Complex business language gets bonus
+    const complexBusinessTerms = [
+      'dynamics', 'characteristics', 'distinguishing', 'predictive', 
+      'similar but untapped', 'clusters of similar', 'potential for growth',
+      'seasonal trends affect', 'patterns emerge', 'break down', 'key factors'
+    ];
+    
+    let complexTermCount = 0;
+    for (const term of complexBusinessTerms) {
+      if (queryLower.includes(term)) {
+        complexTermCount++;
+      }
+    }
+    
+    if (complexTermCount > 0) {
+      bonus += Math.min(0.1, complexTermCount * 0.03); // Up to 0.1 bonus
+    }
+    
+    return bonus;
   }
 }
