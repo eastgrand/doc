@@ -13,38 +13,37 @@ import { ProjectLayerConfig, LayerConfig, LayerGroup } from '../types/layers';
 export function createProjectConfig(): ProjectLayerConfig {
   const adaptedLayers: Record<string, LayerConfig> = {};
 
-  // Helper to classify a layer into one of the business groups
+  // Helper to classify a layer into one of the business groups for Red Bull Energy Drinks project
   const classifyGroup = (layerName: string): string => {
     const n = layerName.toLowerCase();
     
-    // Consumer Behavior - PRIORITIZE "Used" behavior first, even if financial
-    // This captures usage behavior regardless of the service type
-    if (/^used |used.*online|used.*service|used.*app|used.*bank|used.*pay|used.*digital/.test(n)) {
+    // Energy Drinks - Primary category for Red Bull, Monster, 5-Hour Energy, etc.
+    if (/red bull|energy drink|monster|5-hour|energy|drank.*energy|energy.*drink/.test(n)) {
+      return 'energy-drinks';
+    }
+    
+    // Consumer Behavior - Food, beverage consumption, lifestyle activities, purchasing
+    if (/drank|bought|purchase|shopping|consume|diet|food|beverage|drink|spent|lifestyle|activity|behavior|buy.*food|organic|sugar-free|low.*fat|healthy/.test(n)) {
       return 'consumer-behavior';
     }
     
-    // Consumer Behavior - Shopping, purchasing, spending, brand preferences, lifestyle activities
-    if (/spent|bought|purchase|shopping|sports rec|shopped|consumer|brand|participat|fan|super fan|sports|exercise|running|jogging|yoga|weight lifting|lifestyle|activity|behavior/.test(n)) {
-      return 'consumer-behavior';
-    }
-    
-    // Demographics - Population, age, generation, race, ethnicity, household characteristics
+    // Demographics - Population, age, generation, race, ethnicity, household characteristics  
     if (/population|total population|diversity|generation|gen |age|white|black|asian|american indian|pacific islander|hispanic|male|female|household|family|residents|demographics/.test(n)) {
       return 'demographics';
     }
     
-    // Financial - Banking, credit, investments, income, wealth, financial services
-    if (/bank|credit|debt|savings|investment|cryptocurrency|line of credit|checking|money|stocks|bonds|mutual funds|income|disposable|wealth|earnings|salary|median income|financial|pay|turbotax|h&r block|taxes/.test(n)) {
+    // Financial - Income, wealth, spending patterns (relevant for energy drink purchasing power)
+    if (/income|disposable|wealth|earnings|salary|median income|financial|economic|spending|money/.test(n)) {
       return 'financial';
     }
     
-    // Look for specific financial keywords (Google Pay, Apple Pay, etc.)
-    if (/google pay|apple pay|digital payment|payment/.test(n)) {
-      return 'financial';
+    // Geographic - ZIP codes and location-based data
+    if (/zip|postal|geographic|location|boundary/.test(n)) {
+      return 'geographic';
     }
     
-    // Fallback to demographics for any unclassified layers
-    return 'demographics';
+    // Fallback to consumer behavior for food/beverage related layers
+    return 'consumer-behavior';
   };
 
   for (const layerConfig of Object.values(allLayersConfig)) {
@@ -95,20 +94,26 @@ export function createProjectConfig(): ProjectLayerConfig {
 
     if (!groupData[groupId]) {
       // This is the first time we've seen this group ID. Initialize it.
-      // Use specific titles for our main groups
+      // Use specific titles for Red Bull Energy Drinks project groups
       let title: string;
       switch (groupId) {
+        case 'energy-drinks':
+          title = 'Energy Drinks';
+          break;
+        case 'consumer-behavior':
+          title = 'Consumer Behavior';
+          break;
         case 'demographics':
           title = 'Demographics';
           break;
         case 'financial':
           title = 'Financial';
           break;
-        case 'consumer-behavior':
-          title = 'Consumer Behavior';
+        case 'geographic':
+          title = 'Geographic Data';
           break;
         case 'locations':
-          title = 'Locations'; // Top-level group for location-based layers
+          title = 'Locations';
           break;
         default:
           // For any other groups, convert ID to title
@@ -135,11 +140,34 @@ export function createProjectConfig(): ProjectLayerConfig {
     layers: data.layers,
   }));
 
-  // Sort groups to put Locations first, then alphabetical order
+  // Sort groups with point layers first, then target variable and competitors, then logical order
   const groups: LayerGroup[] = allGroups.sort((a, b) => {
-    if (a.id === 'locations') return -1; // Locations goes first
-    if (b.id === 'locations') return 1;
-    return a.title.localeCompare(b.title); // Alphabetical for the rest
+    // Check if groups have point layers (these should always be first)
+    const aHasPointLayers = a.layers?.some(layer => layer.type === 'point') || false;
+    const bHasPointLayers = b.layers?.some(layer => layer.type === 'point') || false;
+    
+    if (aHasPointLayers && !bHasPointLayers) return -1; // Point layers first
+    if (!aHasPointLayers && bHasPointLayers) return 1;
+    
+    // If both or neither have point layers, use priority order for project
+    const priority: Record<string, number> = {
+      'energy-drinks': 1,      // Most important - target variable and competitors
+      'consumer-behavior': 2,  // Secondary - related consumption patterns
+      'demographics': 3,       // Third - target audience data
+      'financial': 4,          // Fourth - purchasing power data
+      'geographic': 5,         // Fifth - location data
+      'locations': 6           // Last - generic location layers
+    };
+    
+    const aPriority = priority[a.id] || 999;
+    const bPriority = priority[b.id] || 999;
+    
+    if (aPriority !== bPriority) {
+      return aPriority - bPriority;
+    }
+    
+    // If same priority, sort alphabetically
+    return a.title.localeCompare(b.title);
   });
 
   // Set the default visibility for all layers to hidden.

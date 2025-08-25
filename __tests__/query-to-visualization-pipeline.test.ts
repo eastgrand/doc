@@ -40,9 +40,13 @@
  * - Detailed error analysis and actionable recommendations
  * 
  * 📈 OUTPUT:
- * Generates timestamped reports:
+ * Generates timestamped reports ONLY when GENERATE_TEST_REPORTS=true:
  * - query-to-visualization-test-results-[timestamp].json (machine-readable)
  * - query-to-visualization-test-results-[timestamp].md (human-readable)
+ * 
+ * 🚀 USAGE:
+ * - Standard test (no files): npm run test:critical-pipeline
+ * - With reports: npm run test:pipeline-with-reports
  * 
  * 🛠️ MAINTENANCE:
  * - Update chat-constants.ts queries as needed for new analysis types
@@ -1242,22 +1246,27 @@ describe('Query-to-Visualization Pipeline Integration', () => {
         testResults.push(result);
       }
 
-      // Generate comprehensive output file
-      await generateTestResultsReport(testResults, {
-        totalQueries: allAnalysisQueries.length,
-        successCount,
-        errorCount,
-        successfulCategories: Array.from(successfulCategories),
-        failedCategories: Array.from(failedCategories),
-        testDuration: testResults.reduce((sum, r) => sum + (r.totalProcessingTime || 0), 0)
-      });
+      // Generate comprehensive output file (only if GENERATE_TEST_REPORTS is set)
+      if (process.env.GENERATE_TEST_REPORTS === 'true') {
+        await generateTestResultsReport(testResults, {
+          totalQueries: allAnalysisQueries.length,
+          successCount,
+          errorCount,
+          successfulCategories: Array.from(successfulCategories),
+          failedCategories: Array.from(failedCategories),
+          testDuration: testResults.reduce((sum, r) => sum + (r.totalProcessingTime || 0), 0)
+        });
+        console.log(`📊 Test reports generated (GENERATE_TEST_REPORTS=true)`);
+      } else {
+        console.log(`📊 Test reports skipped (set GENERATE_TEST_REPORTS=true to generate files)`);
+      }
 
       console.log(`\n=== FINAL RESULTS ===`);
       console.log(`Total queries tested: ${allAnalysisQueries.length}`);
       console.log(`Successful: ${successCount}`);
       console.log(`Failed: ${errorCount}`);
       console.log(`Success rate: ${((successCount / allAnalysisQueries.length) * 100).toFixed(1)}%`);
-      console.log(`Results saved to: query-to-visualization-test-results.json and .md`);
+      console.log(`📊 Test completed successfully. Use GENERATE_TEST_REPORTS=true to save result files.`);
 
       // Validate we tested all categories
       expect(successfulCategories.size + failedCategories.size).toBe(Object.keys(ANALYSIS_CATEGORIES).length);

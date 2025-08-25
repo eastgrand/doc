@@ -421,6 +421,7 @@ describe('Hybrid Routing System Detailed Analysis', () => {
       'Cluster Analysis': '/cluster-analysis',
       'Correlation Analysis': '/correlation-analysis',
       'Trend Analysis': '/trend-analysis',
+      'Predictive Modeling': '/predictive-modeling',
       'Outlier Detection': '/anomaly-insights'  // Fix mapping
     };
 

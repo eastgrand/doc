@@ -1,0 +1,168 @@
+{
+  "layer_id": 18,
+  "layer_name": "2024 Shopped at Whole Foods Market Grocery",
+  "description": "Business Analyst Layer: 2024 Shopped at Whole Foods Market Grocery",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-08-24T13:10:12.464456",
+  "record_count": 1778,
+  "field_count": 12,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "90660 (Pico Rivera)",
+        "90670 (Santa Fe Springs)",
+        "90680 (Stanton)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ID",
+      "type": "esriFieldTypeString",
+      "alias": "ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "90660",
+        "90670",
+        "90680"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP13023A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2024 Shopped at Whole Foods Market Grocery Store Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        6102,
+        2057,
+        3924
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP13023A_B_I",
+      "type": "esriFieldTypeDouble",
+      "alias": "2024 Shopped at Whole Foods Market Grocery Store Last 6 Mo (Index)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        118,
+        134,
+        149
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "Internal",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        118,
+        134,
+        149
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        32145000,
+        32260000,
+        9910000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        29572.79336298238,
+        52615.073446094386,
+        24427.003458636504
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1756054039623,
+        1756054039623,
+        1756054039623
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1756054039623,
+        1756054039623,
+        1756054039623
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_18_2024_Shopped_at_Whole_Foods_Market_Grocery.csv"
+}

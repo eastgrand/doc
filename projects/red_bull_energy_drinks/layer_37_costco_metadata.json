@@ -1,0 +1,424 @@
+{
+  "layer_id": 37,
+  "layer_name": "costco",
+  "description": "Business Analyst Layer: costco",
+  "geometry_type": "esriGeometryPoint",
+  "extraction_timestamp": "2025-08-24T13:10:23.213418",
+  "record_count": 127,
+  "field_count": 32,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CONAME",
+      "type": "esriFieldTypeString",
+      "alias": "Company/Business Name",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Costco Wholesale",
+        "Costco Wholesale",
+        "Costco Wholesale"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ADDR",
+      "type": "esriFieldTypeString",
+      "alias": "Address",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Expo Pkwy",
+        "W Burbank Blvd",
+        "4th St"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CITY",
+      "type": "esriFieldTypeString",
+      "alias": "City",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Sacramento",
+        "Burbank",
+        "Rancho Cucamonga"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "STATE_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "State Name",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "California",
+        "California",
+        "California"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "STATE",
+      "type": "esriFieldTypeString",
+      "alias": "State Abbreviation",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "CA",
+        "CA",
+        "CA"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ZIP",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "95815",
+        "91506",
+        "91730"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ZIP4",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP+4 Extension",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "4228",
+        "1421",
+        "6129"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "NAICS",
+      "type": "esriFieldTypeString",
+      "alias": "Primary NAICS",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "45521101",
+        "45521101",
+        "45521101"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "NAICS_ALL",
+      "type": "esriFieldTypeString",
+      "alias": "All NAICS Codes",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "45521101, 45511001, 45511003, 44511003, 44529202, 45811041, 44911012, 44912936, 44921002, 44921003, 44921038, 44921094, 45941007, 45619903, 44529821, 44912951",
+        "45521101, 45511001, 45511003, 44511003, 44529202, 44134001, 45811041, 44911012, 44912936, 44921002, 44921003, 44921038, 44921094, 45941007, 62133002, 44529821, 44912951",
+        "45521101, 42392023, 42441005, 44511003, 44529202, 45811041, 44911012, 44912936, 44921002, 44921003, 44921038, 44921094, 45941007, 45511001, 44529821, 45511003, 44912951"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "SIC",
+      "type": "esriFieldTypeString",
+      "alias": "Primary SIC",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "531110",
+        "531110",
+        "531110"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "SIC_ALL",
+      "type": "esriFieldTypeString",
+      "alias": "All SIC Codes",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "531110, 531102, 531104, 541105, 544101, 565101, 571216, 571929, 572202, 572207, 573117, 573501, 594301, 599979, 549999, 571999",
+        "531110, 531102, 531104, 541105, 544101, 553123, 565101, 571216, 571929, 572202, 572207, 573117, 573501, 594301, 804939, 549999, 571999",
+        "531110, 509223, 514105, 541105, 544101, 565101, 571216, 571929, 572202, 572207, 573117, 573501, 594301, 531102, 549999, 531104, 571999"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "INDUSTRY_DESC",
+      "type": "esriFieldTypeString",
+      "alias": "Industry Description",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Wholesale Clubs, Department Stores, Retail Shops, Grocers-Retail, Candy & Confectionery-Retail, Clothing-Retail, Furniture-Dealers-Retail, Housewares-Retail, Appliances-Household-Major-Dealers, Appliances-Household-Small-Dealers, Electronic Equipment & Supplies-Retail, Records Tapes & Compact Discs-Retail, Office Supplies, Hearing Aids, Miscellaneous Food Stores, Miscellaneous Homefurnishings Stores",
+        "Wholesale Clubs, Department Stores, Retail Shops, Grocers-Retail, Candy & Confectionery-Retail, Tire-Dealers-Retail, Clothing-Retail, Furniture-Dealers-Retail, Housewares-Retail, Appliances-Household-Major-Dealers, Appliances-Household-Small-Dealers, Electronic Equipment & Supplies-Retail, Records Tapes & Compact Discs-Retail, Office Supplies, Pharmacists, Miscellaneous Food Stores, Miscellaneous Homefurnishings Stores",
+        "Wholesale Clubs, Wholesalers, Grocers-Wholesale, Grocers-Retail, Candy & Confectionery-Retail, Clothing-Retail, Furniture-Dealers-Retail, Housewares-Retail, Appliances-Household-Major-Dealers, Appliances-Household-Small-Dealers, Electronic Equipment & Supplies-Retail, Records Tapes & Compact Discs-Retail, Office Supplies, Department Stores, Miscellaneous Food Stores, Retail Shops, Miscellaneous Homefurnishings Stores"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "AFFILIATE",
+      "type": "esriFieldTypeString",
+      "alias": "Affiliated Orgs",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "",
+        "",
+        ""
+      ],
+      "has_data": true
+    },
+    {
+      "name": "BRAND",
+      "type": "esriFieldTypeString",
+      "alias": "Brands",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "",
+        "Michelin",
+        ""
+      ],
+      "has_data": true
+    },
+    {
+      "name": "HQNAME",
+      "type": "esriFieldTypeString",
+      "alias": "Headquarters Name",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Costco Wholesale Corporation",
+        "Costco Wholesale Corporation",
+        "Costco Wholesale Corporation"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "LOC_CONF",
+      "type": "esriFieldTypeString",
+      "alias": "Location Confidence",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Very High",
+        "Very High",
+        "Very High"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "PLACETYPE",
+      "type": "esriFieldTypeString",
+      "alias": "Business Category",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Branch",
+        "Branch",
+        "Branch"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "SQFOOTAGE",
+      "type": "esriFieldTypeString",
+      "alias": "Square Footage",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "100000+",
+        "100000+",
+        "100000+"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MIN_SQFT",
+      "type": "esriFieldTypeInteger",
+      "alias": "Square Foot Minimum",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        100000,
+        100000,
+        100000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MAX_SQFT",
+      "type": "esriFieldTypeInteger",
+      "alias": "Square Foot Maximum",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [],
+      "has_data": false
+    },
+    {
+      "name": "EMPNUM",
+      "type": "esriFieldTypeInteger",
+      "alias": "Employee Count",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        300,
+        200,
+        4
+      ],
+      "has_data": true
+    },
+    {
+      "name": "SALESVOL",
+      "type": "esriFieldTypeDouble",
+      "alias": "Sales Volume",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        59548000,
+        40149000,
+        748000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "SOURCE",
+      "type": "esriFieldTypeString",
+      "alias": "Source",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Data Axle",
+        "Data Axle",
+        "Data Axle"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ESRI_PID",
+      "type": "esriFieldTypeString",
+      "alias": "Esri PID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "89eff58084c01cae6b5cc20701c341d1",
+        "112b626785ef2b600bc05703fcb3e13c",
+        "f4bcb4c0f0c2cd5aa71f3d077e9cfc62"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "DESC_",
+      "type": "esriFieldTypeString",
+      "alias": "Description",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "CONAME, Sacramento, California",
+        "CONAME, Burbank, California",
+        "CONAME, Rancho Cucamonga, California"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "LATITUDE",
+      "type": "esriFieldTypeDouble",
+      "alias": "Latitude",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        38.5971519998113,
+        34.18603099968211,
+        34.0789659999316
+      ],
+      "has_data": true
+    },
+    {
+      "name": "LONGITUDE",
+      "type": "esriFieldTypeDouble",
+      "alias": "Longitude",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        -121.45207000009864,
+        -118.32435799999094,
+        -117.54815400027573
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1756054383988,
+        1756054383988,
+        1756054383988
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1756054383988,
+        1756054383988,
+        1756054383988
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_37_costco.csv"
+}

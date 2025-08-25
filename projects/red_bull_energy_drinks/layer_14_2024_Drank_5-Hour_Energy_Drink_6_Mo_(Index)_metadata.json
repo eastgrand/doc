@@ -1,0 +1,168 @@
+{
+  "layer_id": 14,
+  "layer_name": "2024 Drank 5-Hour Energy Drink 6 Mo (Index)",
+  "description": "Business Analyst Layer: 2024 Drank 5-Hour Energy Drink 6 Mo (Index)",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-08-24T13:10:08.337114",
+  "record_count": 1778,
+  "field_count": 12,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "90001 (Los Angeles)",
+        "90002 (Los Angeles)",
+        "90003 (Los Angeles)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ID",
+      "type": "esriFieldTypeString",
+      "alias": "ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "90001",
+        "90002",
+        "90003"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP12205A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2024 Drank 5-Hour Energy Drink Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        505,
+        555,
+        667
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP12205A_B_I",
+      "type": "esriFieldTypeDouble",
+      "alias": "2024 Drank 5-Hour Energy Drink Last 6 Mo (Index)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        88,
+        101,
+        92
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "Internal",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        88,
+        101,
+        92
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        13386250,
+        11663750,
+        13235000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        16233.854040357846,
+        16035.555808070421,
+        18952.41108655517
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1756053968684,
+        1756053968684,
+        1756053968684
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1756053968684,
+        1756053968684,
+        1756053968684
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_14_2024_Drank_5-Hour_Energy_Drink_6_Mo_(Index).csv"
+}

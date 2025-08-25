@@ -1,43 +1,58 @@
 const fs = require('fs');
 const path = require('path');
 
-// Field mappings from layers.ts - converting MP codes to human-readable names
+// Field mappings for Red Bull energy drinks data - converting MP codes to human-readable names
 const fieldMappings = {
-  'MP10104A_B': 'TurboTax Users',
-  'MP10104A_B_P': 'TurboTax Users (%)',
-  'MP10128A_B': 'H&R Block Online Users', 
-  'MP10128A_B_P': 'H&R Block Online Users (%)',
-  'MP10120A_B': 'Google Pay Users',
-  'MP10120A_B_P': 'Google Pay Users (%)',
-  'MP10110A_B': 'Apple Pay Users',
-  'MP10110A_B_P': 'Apple Pay Users (%)',
-  'MP10002A_B': 'Bank of America Users',
-  'MP10002A_B_P': 'Bank of America Users (%)',
-  'MP10138A_B': 'Cryptocurrency Investors',
-  'MP10138A_B_P': 'Cryptocurrency Investors (%)',
-  'MP10028A_B': 'Personal Line of Credit Holders',
-  'MP10028A_B_P': 'Personal Line of Credit Holders (%)',
-  'MP10020A_B': 'Savings Account Holders',
-  'MP10020A_B_P': 'Savings Account Holders (%)',
-  'MP10116A_B': 'Credit Card Balance Carriers',
-  'MP10116A_B_P': 'Credit Card Balance Carriers (%)',
-  'X14068_X': 'Credit Card Debt Value',
-  'X14068_X_A': 'Credit Card Debt Value (Avg)',
-  'X14060_X': 'Banking Assets Value',
-  'X14060_X_A': 'Banking Assets Value (Avg)',
-  'X14058_X': 'Investment Assets Value',
-  'X14058_X_A': 'Investment Assets Value (Avg)',
+  'MP28591A_B': 'Exercise Regularly Users',
+  'MP28591A_B_P': 'Exercise Regularly Users (%)',
+  'MP13026A_B': 'Seek Nutrition Info Users',
+  'MP13026A_B_P': 'Seek Nutrition Info Users (%)', 
+  'MP13023A_B': 'Sugar-Free Foods Buyers',
+  'MP13023A_B_P': 'Sugar-Free Foods Buyers (%)',
+  'MP13019A_B': 'Trader Joes Shoppers',
+  'MP13019A_B_P': 'Trader Joes Shoppers (%)',
+  'MP12207A_B': 'Costco Shoppers',
+  'MP12207A_B_P': 'Costco Shoppers (%)',
+  'MP12206A_B': 'Target Shoppers',
+  'MP12206A_B_P': 'Target Shoppers (%)',
+  'MP12205A_B': 'Whole Foods Shoppers',
+  'MP12205A_B_P': 'Whole Foods Shoppers (%)',
+  'MP12097A_B': 'Red Bull Drinkers',
+  'MP12097A_B_P': 'Red Bull Drinkers (%)',
+  'MP28646A_B': '5-Hour Energy Drinkers',
+  'MP28646A_B_P': '5-Hour Energy Drinkers (%)',
+  'MP14029A_B': 'Monster Energy Drinkers',
+  'MP14029A_B_P': 'Monster Energy Drinkers (%)',
+  'MP13029A_B': 'Energy Drink Consumers',
+  'MP13029A_B_P': 'Energy Drink Consumers (%)',
   'GENZ_CY': 'Generation Z Population',
   'GENZ_CY_P': 'Generation Z Population (%)',
   'GENALPHACY': 'Generation Alpha Population',
-  'GENALPHACY_P': 'Generation Alpha Population (%)'
+  'GENALPHACY_P': 'Generation Alpha Population (%)',
+  'TOTPOP_CY': 'Total Population',
+  'MEDAGE_CY': 'Median Age',
+  'MEDHINC_CY': 'Median Household Income',
+  'DIVINDX_CY': 'Diversity Index'
 };
 
 console.log('Loading demographic data and ZIP boundaries...');
 
-// Load the demographic insights data
-const demographicPath = path.join(__dirname, '../public/data/endpoints/demographic-insights.json');
-const demographicData = JSON.parse(fs.readFileSync(demographicPath, 'utf8'));
+// Load the Red Bull demographic data (California)
+const demographicPath = path.join(__dirname, '../projects/red_bull_energy_drinks/merged_dataset.csv');
+const fs2 = require('fs');
+const csvData = fs2.readFileSync(demographicPath, 'utf8');
+const lines = csvData.split('\n');
+const headers = lines[0].split(',');
+const demographicData = {
+  results: lines.slice(1).filter(line => line.trim()).map(line => {
+    const values = line.split(',');
+    const record = {};
+    headers.forEach((header, index) => {
+      record[header] = values[index];
+    });
+    return record;
+  })
+};
 
 // Load the ZIP boundaries data
 const boundariesPath = path.join(__dirname, '../public/data/boundaries/zip_boundaries.json');
@@ -129,92 +144,90 @@ function transformDemographicData(rawData) {
   return transformed;
 }
 
-// Function to determine city from ZIP code (comprehensive mapping for Florida)
+// Function to determine city from ZIP code (comprehensive mapping for California)
 function getCityFromZip(zipCode) {
   const zip = zipCode.toString();
   
-  // Jacksonville area (Duval County)
-  if (zip.startsWith('320') || zip.startsWith('322')) {
-    return 'Jacksonville';
+  // Los Angeles area (Los Angeles County)
+  if (zip.startsWith('900') || zip.startsWith('901') || zip.startsWith('902') || 
+      zip.startsWith('903') || zip.startsWith('904') || zip.startsWith('905')) {
+    return 'Los Angeles';
   }
   
-  // Miami area (Miami-Dade County)
-  if (zip.startsWith('331') || zip.startsWith('330')) {
-    return 'Miami';
+  // San Diego area (San Diego County)
+  if (zip.startsWith('920') || zip.startsWith('921')) {
+    return 'San Diego';
   }
   
-  // Tampa area (Hillsborough County)
-  if (zip.startsWith('336') || zip.startsWith('335')) {
-    return 'Tampa';
+  // San Francisco area (San Francisco County)
+  if (zip.startsWith('941')) {
+    return 'San Francisco';
   }
   
-  // Orlando area (Orange County)
-  if (zip.startsWith('328') || zip.startsWith('327')) {
-    return 'Orlando';
+  // San Jose area (Santa Clara County)
+  if (zip.startsWith('950') || zip.startsWith('951')) {
+    return 'San Jose';
   }
   
-  // Fort Lauderdale area (Broward County)
-  if (zip.startsWith('333')) {
-    return 'Fort Lauderdale';
+  // Fresno area (Fresno County)
+  if (zip.startsWith('937')) {
+    return 'Fresno';
   }
   
-  // St. Petersburg area (Pinellas County)
-  if (zip.startsWith('337')) {
-    return 'St. Petersburg';
+  // Sacramento area (Sacramento County)
+  if (zip.startsWith('942') || zip.startsWith('956') || zip.startsWith('957')) {
+    return 'Sacramento';
   }
   
-  // Tallahassee area (Leon County)
-  if (zip.startsWith('323')) {
-    return 'Tallahassee';
+  // Oakland area (Alameda County)
+  if (zip.startsWith('946')) {
+    return 'Oakland';
   }
   
-  // Gainesville area (Alachua County)
-  if (zip.startsWith('326')) {
-    return 'Gainesville';
+  // Long Beach area (Los Angeles County)
+  if (zip.startsWith('908')) {
+    return 'Long Beach';
   }
   
-  // West Palm Beach area (Palm Beach County)
-  if (zip.startsWith('334')) {
-    return 'West Palm Beach';
+  // Bakersfield area (Kern County)
+  if (zip.startsWith('933')) {
+    return 'Bakersfield';
   }
   
-  // Cape Coral/Fort Myers area (Lee County)
-  if (zip.startsWith('339')) {
-    return 'Fort Myers';
+  // Anaheim area (Orange County)
+  if (zip.startsWith('926') || zip.startsWith('927') || zip.startsWith('928')) {
+    return 'Anaheim';
   }
   
-  // Pensacola area (Escambia County)
-  if (zip.startsWith('325')) {
-    return 'Pensacola';
+  // Santa Ana area (Orange County)
+  if (zip.startsWith('927')) {
+    return 'Santa Ana';
   }
   
-  // Daytona Beach area (Volusia County)
-  if (zip.startsWith('321')) {
-    return 'Daytona Beach';
+  // Riverside area (Riverside County)
+  if (zip.startsWith('925')) {
+    return 'Riverside';
   }
   
-  // Naples area (Collier County)
-  if (zip.startsWith('341')) {
-    return 'Naples';
-  }
-  
-  // Sarasota area (Sarasota County)
-  if (zip.startsWith('342')) {
-    return 'Sarasota';
+  // Stockton area (San Joaquin County)
+  if (zip.startsWith('952')) {
+    return 'Stockton';
   }
   
   // If still no match, assign to the nearest major city based on ZIP code range
   const zipNum = parseInt(zip);
-  if (zipNum >= 32000 && zipNum < 32300) {
-    return 'Jacksonville'; // North Florida
-  } else if (zipNum >= 32700 && zipNum < 32900) {
-    return 'Orlando'; // Central Florida
-  } else if (zipNum >= 33000 && zipNum < 33500) {
-    return 'Miami'; // South Florida
-  } else if (zipNum >= 33500 && zipNum < 33800) {
-    return 'Tampa'; // West Central Florida
+  if (zipNum >= 90000 && zipNum < 91000) {
+    return 'Los Angeles'; // Greater LA area
+  } else if (zipNum >= 92000 && zipNum < 93000) {
+    return 'San Diego'; // San Diego County
+  } else if (zipNum >= 93000 && zipNum < 94000) {
+    return 'Fresno'; // Central Valley
+  } else if (zipNum >= 94000 && zipNum < 95000) {
+    return 'San Francisco'; // Bay Area
+  } else if (zipNum >= 95000 && zipNum < 96000) {
+    return 'San Jose'; // South Bay
   } else {
-    return 'Other Florida Cities'; // Last resort for any remaining codes
+    return 'Other California Cities'; // Last resort for any remaining codes
   }
 }
 
@@ -224,9 +237,9 @@ const sampleAreasData = {
   generated: new Date().toISOString(),
   dataSource: "Real Demographic Data",
   project: {
-    name: "H&R Block Market Analysis",
-    industry: "Tax Services", 
-    primaryBrand: "H&R Block"
+    name: "Red Bull Energy Drinks Market Analysis",
+    industry: "Energy Drinks", 
+    primaryBrand: "Red Bull"
   },
   fieldMappings: fieldMappings,
   areas: []
@@ -245,7 +258,7 @@ for (const zipCode of zipBoundaryMap.keys()) {
 console.log(`Found ${joinedZipCodes.length} ZIP codes with both boundary and demographic data`);
 
 // Define the cities we want to include
-const allowedCities = ['Jacksonville', 'Miami', 'Tampa', 'St. Petersburg', 'Orlando'];
+const allowedCities = ['Los Angeles', 'San Diego', 'San Francisco', 'San Jose', 'Fresno'];
 
 // Process each joined ZIP code
 joinedZipCodes.forEach(zipCode => {
@@ -264,20 +277,25 @@ joinedZipCodes.forEach(zipCode => {
     const area = {
       zipCode: zipCode,
       city: city,
-      county: city === 'Jacksonville' ? 'Duval County' :
-              city === 'Miami' ? 'Miami-Dade County' :
-              city === 'Tampa' ? 'Hillsborough County' :
-              city === 'Orlando' ? 'Orange County' : 'Unknown County',
-      state: 'Florida',
+      county: city === 'Los Angeles' ? 'Los Angeles County' :
+              city === 'San Diego' ? 'San Diego County' :
+              city === 'San Francisco' ? 'San Francisco County' :
+              city === 'San Jose' ? 'Santa Clara County' :
+              city === 'Fresno' ? 'Fresno County' : 'Unknown County',
+      state: 'California',
       geometry: boundary.geometry,
       bounds: calculateBounds(boundary.geometry),
       demographics: transformedDemo,
       analysisScores: {
         youngProfessional: transformedDemo['Generation Z Population (%)'] || 0,
-        financialTechAdoption: transformedDemo['Financial Tech Adoption Score'] || 0,
-        taxServiceEngagement: transformedDemo['Tax Service Usage Score'] || 0,
-        digitalEngagement: transformedDemo['Digital Financial Engagement Score'] || 0,
-        investmentActivity: transformedDemo['Cryptocurrency Investors (%)'] || 0
+        energyDrinkConsumption: transformedDemo['Energy Drink Consumers (%)'] || 0,
+        redBullUsage: transformedDemo['Red Bull Drinkers (%)'] || 0,
+        fitnessEngagement: transformedDemo['Exercise Regularly Users (%)'] || 0,
+        healthConsciousness: transformedDemo['Sugar-Free Foods Buyers (%)'] || 0,
+        premiumShopping: (
+          (transformedDemo['Whole Foods Shoppers (%)'] || 0) + 
+          (transformedDemo['Trader Joes Shoppers (%)'] || 0)
+        ) / 2
       },
       dataQuality: 1.0 // Real data has 100% quality
     };
@@ -286,9 +304,9 @@ joinedZipCodes.forEach(zipCode => {
   }
 });
 
-// Sort areas by digital engagement score for better sample selection
+// Sort areas by Red Bull usage for better sample selection
 sampleAreasData.areas.sort((a, b) => 
-  (b.analysisScores.digitalEngagement || 0) - (a.analysisScores.digitalEngagement || 0)
+  (b.analysisScores.redBullUsage || 0) - (a.analysisScores.redBullUsage || 0)
 );
 
 // Write the output file
@@ -297,11 +315,12 @@ fs.writeFileSync(outputPath, JSON.stringify(sampleAreasData, null, 2));
 
 console.log(`\nGenerated real sample areas data:`);
 console.log(`- Total areas: ${sampleAreasData.areas.length}`);
-console.log(`- Jacksonville: ${sampleAreasData.areas.filter(a => a.city === 'Jacksonville').length} ZIP codes`);
-console.log(`- Miami: ${sampleAreasData.areas.filter(a => a.city === 'Miami').length} ZIP codes`);
-console.log(`- Tampa: ${sampleAreasData.areas.filter(a => a.city === 'Tampa').length} ZIP codes`);
-console.log(`- Orlando: ${sampleAreasData.areas.filter(a => a.city === 'Orlando').length} ZIP codes`);
-console.log(`- Other Florida: ${sampleAreasData.areas.filter(a => a.city === 'Florida').length} ZIP codes`);
+console.log(`- Los Angeles: ${sampleAreasData.areas.filter(a => a.city === 'Los Angeles').length} ZIP codes`);
+console.log(`- San Diego: ${sampleAreasData.areas.filter(a => a.city === 'San Diego').length} ZIP codes`);
+console.log(`- San Francisco: ${sampleAreasData.areas.filter(a => a.city === 'San Francisco').length} ZIP codes`);
+console.log(`- San Jose: ${sampleAreasData.areas.filter(a => a.city === 'San Jose').length} ZIP codes`);
+console.log(`- Fresno: ${sampleAreasData.areas.filter(a => a.city === 'Fresno').length} ZIP codes`);
+console.log(`- Other California: ${sampleAreasData.areas.filter(a => a.city === 'Other California Cities').length} ZIP codes`);
 console.log(`\nSaved to: ${outputPath}`);
 
 console.log(`\nSample field mappings applied:`);

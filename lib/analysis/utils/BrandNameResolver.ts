@@ -23,7 +23,7 @@ export interface BrandField {
 // ============================================================================
 
 /**
- * Current Project: Tax Software Analysis (H&R Block focus)
+ * Current Project: Red Bull Energy Drinks Market Analysis
  * 
  * To change to a different project:
  * 1. Update TARGET_BRAND with the primary brand field and name
@@ -31,17 +31,21 @@ export interface BrandField {
  * 3. Update PROJECT_INDUSTRY name
  */
 const TARGET_BRAND = {
-  fieldName: 'MP10128A_B_P',
-  brandName: 'H&R Block'
+  fieldName: 'MP12207A_B_P',
+  brandName: 'Red Bull'
 };
 
 const COMPETITOR_BRANDS = [
-  { fieldName: 'MP10104A_B_P', brandName: 'TurboTax' },
-  { fieldName: 'MP10001A_B_P', brandName: 'FreeTaxUSA' },
-  { fieldName: 'MP10002A_B_P', brandName: 'TaxAct' }
+  { fieldName: 'MP12205A_B_P', brandName: '5-Hour Energy' },
+  { fieldName: 'MP12206A_B_P', brandName: 'Monster Energy' }
 ];
 
-const PROJECT_INDUSTRY = 'Tax Software';
+const MARKET_CATEGORY = {
+  fieldName: 'MP12097A_B_P',
+  brandName: 'All Energy Drinks'
+};
+
+const PROJECT_INDUSTRY = 'Energy Drinks';
 
 // ============================================================================
 

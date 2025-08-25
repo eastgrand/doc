@@ -1,5 +1,5 @@
 // Layer configuration with preserved structure
-// Auto-generated on 2025-08-10T18:48:14.589746
+// Auto-generated on 2025-08-24T13:11:08.482988
 // This file maintains compatibility with existing system components
 
 import { LayerConfig } from '../types/layers';
@@ -61,52 +61,6 @@ export const concepts = {
       'consumer',
       'expense',
       'shopping'
-    ],
-    weight: 25,
-  },
-  'consumer-behavior': {
-    terms: [
-      'consumer',
-      'behavior',
-      'lifestyle',
-      'activity',
-      'purchase',
-      'bought',
-      'shopped',
-      'used',
-      'service',
-      'online',
-      'app'
-    ],
-    weight: 20,
-  },
-  demographics: {
-    terms: [
-      'demographics',
-      'population',
-      'age',
-      'generation',
-      'race',
-      'ethnicity',
-      'household',
-      'family',
-      'residents'
-    ],
-    weight: 15,
-  },
-  financial: {
-    terms: [
-      'financial',
-      'bank',
-      'credit',
-      'debt',
-      'savings',
-      'investment',
-      'income',
-      'wealth',
-      'money',
-      'pay',
-      'payment'
     ],
     weight: 25,
   },
@@ -269,15 +223,15 @@ const updateRendererFieldForPercentage = (layerConfig: LayerConfig): LayerConfig
 export const baseLayerConfigs: LayerConfig[] = [
   {
     id: 'Unknown_Service_layer_0',
-    name: 'Generation Alpha Pop',
+    name: '2030 Diversity Index',
     type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/0',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/0',
     group: 'general',
-    description: 'Business Analyst Layer: Generation Alpha Pop',
+    description: 'Business Analyst Layer: 2030 Diversity Index',
     isVisible: false,
     isPrimary: false,
     skipLayerList: false,
-    rendererField: 'GENALPHACY_P',
+    rendererField: 'DIVINDX_FY',
     status: 'active',
     geographicType: 'postal',
     geographicLevel: 'local',
@@ -298,14 +252,9 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "ID"
       },
       {
-            "name": "GENALPHACY",
+            "name": "DIVINDX_FY",
             "type": "double",
-            "alias": "2025 Generation Alpha Population (Born 2017 or Later) (Esri)"
-      },
-      {
-            "name": "GENALPHACY_P",
-            "type": "double",
-            "alias": "2025 Generation Alpha Population (Born 2017 or Later) (Esri) (%)"
+            "alias": "2030 Diversity Index (Esri)"
       },
       {
             "name": "thematic_value",
@@ -378,11 +327,2721 @@ export const baseLayerConfigs: LayerConfig[] = [
   },
   {
     id: 'Unknown_Service_layer_1',
-    name: 'Generation Z Pop',
+    name: '2025 Make Sure I Exercise Regularly 4-Agr C',
     type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/1',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/1',
     group: 'general',
-    description: 'Business Analyst Layer: Generation Z Pop',
+    description: 'Business Analyst Layer: 2025 Make Sure I Exercise Regularly 4-Agr C',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP28646A_B_P',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP28646A_B",
+            "type": "double",
+            "alias": "2025 Make Sure I Exercise Regularly: 4-Agree Completely"
+      },
+      {
+            "name": "MP28646A_B_P",
+            "type": "double",
+            "alias": "2025 Make Sure I Exercise Regularly: 4-Agree Completely (%)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "thematic_value"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_2',
+    name: '2025 Seek Info on Nutrition Healthy Diet 4-',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/2',
+    group: 'general',
+    description: 'Business Analyst Layer: 2025 Seek Info on Nutrition Healthy Diet 4-',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP28591A_B_P',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP28591A_B",
+            "type": "double",
+            "alias": "2025 Actively Seek Info on Nutrition/Healthy Diet: 4-Agree Completely"
+      },
+      {
+            "name": "MP28591A_B_P",
+            "type": "double",
+            "alias": "2025 Actively Seek Info on Nutrition/Healthy Diet: 4-Agree Completely (%)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "thematic_value"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_3',
+    name: '2025 Buy Foods Specifically Labeled Sugar-F',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/3',
+    group: 'general',
+    description: 'Business Analyst Layer: 2025 Buy Foods Specifically Labeled Sugar-F',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP14029A_B_P',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP14029A_B",
+            "type": "double",
+            "alias": "2025 Buy Foods Specifically Labeled as Sugar-Free"
+      },
+      {
+            "name": "MP14029A_B_P",
+            "type": "double",
+            "alias": "2025 Buy Foods Specifically Labeled as Sugar-Free (%)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "thematic_value"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_4',
+    name: '2025 Shopped at Trader Joe`s Grocery Store',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/4',
+    group: 'general',
+    description: 'Business Analyst Layer: 2025 Shopped at Trader Joe`s Grocery Store',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP13019A_B_P',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP13019A_B",
+            "type": "double",
+            "alias": "2025 Shopped at Trader Joe`s Grocery Store Last 6 Mo"
+      },
+      {
+            "name": "MP13019A_B_P",
+            "type": "double",
+            "alias": "2025 Shopped at Trader Joe`s Grocery Store Last 6 Mo (%)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "thematic_value"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_5',
+    name: '2025 Shopped at Costco Warehouse Club Store',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/5',
+    group: 'general',
+    description: 'Business Analyst Layer: 2025 Shopped at Costco Warehouse Club Store',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP13026A_B_P',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP13026A_B",
+            "type": "double",
+            "alias": "2025 Shopped at Costco Warehouse or Club Store Last 6 Mo"
+      },
+      {
+            "name": "MP13026A_B_P",
+            "type": "double",
+            "alias": "2025 Shopped at Costco Warehouse or Club Store Last 6 Mo (%)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "thematic_value"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_6',
+    name: '2025 Shopped at Target Grocery Store 6 Mo',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/6',
+    group: 'general',
+    description: 'Business Analyst Layer: 2025 Shopped at Target Grocery Store 6 Mo',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP13029A_B_P',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP13029A_B",
+            "type": "double",
+            "alias": "2025 Shopped at Target Grocery Store Last 6 Mo"
+      },
+      {
+            "name": "MP13029A_B_P",
+            "type": "double",
+            "alias": "2025 Shopped at Target Grocery Store Last 6 Mo (%)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "thematic_value"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_7',
+    name: '2025 Shopped at Whole Foods Market Grocery',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/7',
+    group: 'general',
+    description: 'Business Analyst Layer: 2025 Shopped at Whole Foods Market Grocery',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP13023A_B_P',
+    status: 'active',
+    geographicType: 'dma',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP13023A_B",
+            "type": "double",
+            "alias": "2025 Shopped at Whole Foods Market Grocery Store Last 6 Mo"
+      },
+      {
+            "name": "MP13023A_B_P",
+            "type": "double",
+            "alias": "2025 Shopped at Whole Foods Market Grocery Store Last 6 Mo (%)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "thematic_value"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "dma",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_8',
+    name: '2025 Drank Red Bull',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/8',
+    group: 'general',
+    description: 'Business Analyst Layer: 2025 Drank Red Bull',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP12207A_B_P',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP12207A_B",
+            "type": "double",
+            "alias": "2025 Drank Red Bull Energy Drink Last 6 Mo"
+      },
+      {
+            "name": "MP12207A_B_P",
+            "type": "double",
+            "alias": "2025 Drank Red Bull Energy Drink Last 6 Mo (%)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "thematic_value"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_9',
+    name: '2025 Drank 5-Hour',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/9',
+    group: 'general',
+    description: 'Business Analyst Layer: 2025 Drank 5-Hour',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP12205A_B_P',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP12205A_B",
+            "type": "double",
+            "alias": "2025 Drank 5-Hour Energy Drink Last 6 Mo"
+      },
+      {
+            "name": "MP12205A_B_P",
+            "type": "double",
+            "alias": "2025 Drank 5-Hour Energy Drink Last 6 Mo (%)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "thematic_value"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_10',
+    name: '2025 Drank Monster',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/10',
+    group: 'general',
+    description: 'Business Analyst Layer: 2025 Drank Monster',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP12206A_B_P',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP12206A_B",
+            "type": "double",
+            "alias": "2025 Drank Monster Energy Drink Last 6 Mo"
+      },
+      {
+            "name": "MP12206A_B_P",
+            "type": "double",
+            "alias": "2025 Drank Monster Energy Drink Last 6 Mo (%)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "thematic_value"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_11',
+    name: '2025 Drank Energy Drink',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/11',
+    group: 'general',
+    description: 'Business Analyst Layer: 2025 Drank Energy Drink',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP12097A_B_P',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP12097A_B",
+            "type": "double",
+            "alias": "2025 Drank Energy Drink Last 6 Mo"
+      },
+      {
+            "name": "MP12097A_B_P",
+            "type": "double",
+            "alias": "2025 Drank Energy Drink Last 6 Mo (%)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "thematic_value"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_12',
+    name: '2024 Drank Energy Drink 6 Mo ( )',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/12',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Drank Energy Drink 6 Mo ( )',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP12097A_B_P',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP12097A_B",
+            "type": "double",
+            "alias": "2024 Drank Energy Drink Last 6 Mo"
+      },
+      {
+            "name": "MP12097A_B_P",
+            "type": "double",
+            "alias": "2024 Drank Energy Drink Last 6 Mo (%)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_13',
+    name: '2024 Drank Monster Energy Drink 6 Mo (Index',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/13',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Drank Monster Energy Drink 6 Mo (Index',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP12206A_B',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP12206A_B",
+            "type": "double",
+            "alias": "2024 Drank Monster Energy Drink Last 6 Mo"
+      },
+      {
+            "name": "MP12206A_B_I",
+            "type": "double",
+            "alias": "2024 Drank Monster Energy Drink Last 6 Mo (Index)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_14',
+    name: '2024 Drank 5-Hour Energy Drink 6 Mo (Index)',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/14',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Drank 5-Hour Energy Drink 6 Mo (Index)',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP12205A_B',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP12205A_B",
+            "type": "double",
+            "alias": "2024 Drank 5-Hour Energy Drink Last 6 Mo"
+      },
+      {
+            "name": "MP12205A_B_I",
+            "type": "double",
+            "alias": "2024 Drank 5-Hour Energy Drink Last 6 Mo (Index)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_15',
+    name: '2024 Drank Red Bull Energy Drink 6 Mo (Index)',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/15',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Drank Red Bull Energy Drink 6 Mo (Index)',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP12207A_B',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP12207A_B",
+            "type": "double",
+            "alias": "2024 Drank Red Bull Energy Drink Last 6 Mo"
+      },
+      {
+            "name": "MP12207A_B_I",
+            "type": "double",
+            "alias": "2024 Drank Red Bull Energy Drink Last 6 Mo (Index)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_16',
+    name: '2024 Shopped at Trader Joe`s Grocery Store',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/16',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Shopped at Trader Joe`s Grocery Store',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP13019A_B',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP13019A_B",
+            "type": "double",
+            "alias": "2024 Shopped at Trader Joe`s Grocery Store Last 6 Mo"
+      },
+      {
+            "name": "MP13019A_B_I",
+            "type": "double",
+            "alias": "2024 Shopped at Trader Joe`s Grocery Store Last 6 Mo (Index)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_17',
+    name: '2024 Shopped at Target Grocery Store 6 Mo',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/17',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Shopped at Target Grocery Store 6 Mo',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP13029A_B',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP13029A_B",
+            "type": "double",
+            "alias": "2024 Shopped at Target Grocery Store Last 6 Mo"
+      },
+      {
+            "name": "MP13029A_B_I",
+            "type": "double",
+            "alias": "2024 Shopped at Target Grocery Store Last 6 Mo (Index)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_18',
+    name: '2024 Shopped at Whole Foods Market Grocery',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/18',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Shopped at Whole Foods Market Grocery',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP13023A_B',
+    status: 'active',
+    geographicType: 'dma',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP13023A_B",
+            "type": "double",
+            "alias": "2024 Shopped at Whole Foods Market Grocery Store Last 6 Mo"
+      },
+      {
+            "name": "MP13023A_B_I",
+            "type": "double",
+            "alias": "2024 Shopped at Whole Foods Market Grocery Store Last 6 Mo (Index)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "dma",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_19',
+    name: '2024 Shopped at Costco Warehouse Club Store',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/19',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Shopped at Costco Warehouse Club Store',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP13026A_B',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP13026A_B",
+            "type": "double",
+            "alias": "2024 Shopped at Costco Warehouse or Club Store Last 6 Mo"
+      },
+      {
+            "name": "MP13026A_B_I",
+            "type": "double",
+            "alias": "2024 Shopped at Costco Warehouse or Club Store Last 6 Mo (Index)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_20',
+    name: '2024 Buy Foods Specifically Labeled Sugar-Free',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/20',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Buy Foods Specifically Labeled Sugar-Free',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP14029A_B',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP14029A_B",
+            "type": "double",
+            "alias": "2024 Buy Foods Specifically Labeled as Sugar-Free"
+      },
+      {
+            "name": "MP14029A_B_I",
+            "type": "double",
+            "alias": "2024 Buy Foods Specifically Labeled as Sugar-Free (Index)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_21',
+    name: '2024 Seek Info on Nutrition Healthy Diet',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/21',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Seek Info on Nutrition Healthy Diet',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP28591A_B',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP28591A_B",
+            "type": "double",
+            "alias": "2024 Actively Seek Info on Nutrition/Healthy Diet: 4-Agree Completely"
+      },
+      {
+            "name": "MP28591A_B_I",
+            "type": "double",
+            "alias": "2024 Actively Seek Info on Nutrition/Healthy Diet: 4-Agree Completely (Index)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_22',
+    name: '2024 Make Sure I Exercise Regularly 4-Agr',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/22',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Make Sure I Exercise Regularly 4-Agr',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MP28646A_B',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MP28646A_B",
+            "type": "double",
+            "alias": "2024 Make Sure I Exercise Regularly: 4-Agree Completely"
+      },
+      {
+            "name": "MP28646A_B_I",
+            "type": "double",
+            "alias": "2024 Make Sure I Exercise Regularly: 4-Agree Completely (Index)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_23',
+    name: '2024 Diversity Index',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/23',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Diversity Index',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'DIVINDX_CY',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "DIVINDX_CY",
+            "type": "double",
+            "alias": "2024 Diversity Index (Esri)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_24',
+    name: '2024 Total Population',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/24',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Total Population',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'TOTPOP_CY',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "TOTPOP_CY",
+            "type": "double",
+            "alias": "2024 Total Population (Esri)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_25',
+    name: '2024 Median Age',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/25',
+    group: 'general',
+    description: 'Business Analyst Layer: 2024 Median Age',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'MEDAGE_CY',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "DESCRIPTION",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ID",
+            "type": "string",
+            "alias": "ID"
+      },
+      {
+            "name": "MEDAGE_CY",
+            "type": "double",
+            "alias": "2024 Median Age (Esri)"
+      },
+      {
+            "name": "thematic_value",
+            "type": "double",
+            "alias": "Internal"
+      },
+      {
+            "name": "Shape__Area",
+            "type": "double",
+            "alias": "Shape__Area"
+      },
+      {
+            "name": "Shape__Length",
+            "type": "double",
+            "alias": "Shape__Length"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_26',
+    name: '2025 Generation Z Pop',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/26',
+    group: 'general',
+    description: 'Business Analyst Layer: 2025 Generation Z Pop',
     isVisible: false,
     isPrimary: false,
     skipLayerList: false,
@@ -486,16 +3145,16 @@ export const baseLayerConfigs: LayerConfig[] = [
     }
   },
   {
-    id: 'Unknown_Service_layer_2',
-    name: 'Used Google Pay Digital Payment Svc',
+    id: 'Unknown_Service_layer_27',
+    name: '2025 Generation Alpha Pop ( )',
     type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/2',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/27',
     group: 'general',
-    description: 'Business Analyst Layer: Used Google Pay Digital Payment Svc',
+    description: 'Business Analyst Layer: 2025 Generation Alpha Pop ( )',
     isVisible: false,
     isPrimary: false,
     skipLayerList: false,
-    rendererField: 'MP10120A_B_P',
+    rendererField: 'GENALPHACY_P',
     status: 'active',
     geographicType: 'postal',
     geographicLevel: 'local',
@@ -516,14 +3175,14 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "ID"
       },
       {
-            "name": "MP10120A_B",
+            "name": "GENALPHACY",
             "type": "double",
-            "alias": "2025 Used Google Pay Digital Payment Service Last 30 Days"
+            "alias": "2025 Generation Alpha Population (Born 2017 or Later) (Esri)"
       },
       {
-            "name": "MP10120A_B_P",
+            "name": "GENALPHACY_P",
             "type": "double",
-            "alias": "2025 Used Google Pay Digital Payment Service Last 30 Days (%)"
+            "alias": "2025 Generation Alpha Population (Born 2017 or Later) (Esri) (%)"
       },
       {
             "name": "thematic_value",
@@ -595,16 +3254,16 @@ export const baseLayerConfigs: LayerConfig[] = [
     }
   },
   {
-    id: 'Unknown_Service_layer_3',
-    name: 'Used Apple Pay Digital Payment Svc',
+    id: 'Unknown_Service_layer_28',
+    name: '2030 Generation Alpha Pop',
     type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/3',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/28',
     group: 'general',
-    description: 'Business Analyst Layer: Used Apple Pay Digital Payment Svc',
+    description: 'Business Analyst Layer: 2030 Generation Alpha Pop',
     isVisible: false,
     isPrimary: false,
     skipLayerList: false,
-    rendererField: 'MP10110A_B_P',
+    rendererField: 'GENALPHAFY_P',
     status: 'active',
     geographicType: 'postal',
     geographicLevel: 'local',
@@ -625,14 +3284,14 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "ID"
       },
       {
-            "name": "MP10110A_B",
+            "name": "GENALPHAFY",
             "type": "double",
-            "alias": "2025 Used Apple Pay Digital Payment Service Last 30 Days"
+            "alias": "2030 Generation Alpha Population (Born 2017 or Later) (Esri)"
       },
       {
-            "name": "MP10110A_B_P",
+            "name": "GENALPHAFY_P",
             "type": "double",
-            "alias": "2025 Used Apple Pay Digital Payment Service Last 30 Days (%)"
+            "alias": "2030 Generation Alpha Population (Born 2017 or Later) (Esri) (%)"
       },
       {
             "name": "thematic_value",
@@ -704,16 +3363,16 @@ export const baseLayerConfigs: LayerConfig[] = [
     }
   },
   {
-    id: 'Unknown_Service_layer_4',
-    name: 'Used Bank of America Bank 12 Mo',
+    id: 'Unknown_Service_layer_29',
+    name: '2030 Generation Z Pop',
     type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/4',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/29',
     group: 'general',
-    description: 'Business Analyst Layer: Used Bank of America Bank 12 Mo',
+    description: 'Business Analyst Layer: 2030 Generation Z Pop',
     isVisible: false,
     isPrimary: false,
     skipLayerList: false,
-    rendererField: 'MP10002A_B_P',
+    rendererField: 'GENZ_FY_P',
     status: 'active',
     geographicType: 'postal',
     geographicLevel: 'local',
@@ -734,14 +3393,14 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "ID"
       },
       {
-            "name": "MP10002A_B",
+            "name": "GENZ_FY",
             "type": "double",
-            "alias": "2025 Used Bank of America Bank Last 12 Mo"
+            "alias": "2030 Generation Z Population (Born 1999 to 2016) (Esri)"
       },
       {
-            "name": "MP10002A_B_P",
+            "name": "GENZ_FY_P",
             "type": "double",
-            "alias": "2025 Used Bank of America Bank Last 12 Mo (%)"
+            "alias": "2030 Generation Z Population (Born 1999 to 2016) (Esri) (%)"
       },
       {
             "name": "thematic_value",
@@ -813,16 +3472,16 @@ export const baseLayerConfigs: LayerConfig[] = [
     }
   },
   {
-    id: 'Unknown_Service_layer_5',
-    name: 'Own Cryptocurrency Investment',
+    id: 'Unknown_Service_layer_30',
+    name: '2030 Median Age',
     type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/5',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/30',
     group: 'general',
-    description: 'Business Analyst Layer: Own Cryptocurrency Investment',
+    description: 'Business Analyst Layer: 2030 Median Age',
     isVisible: false,
     isPrimary: false,
     skipLayerList: false,
-    rendererField: 'MP10138A_B_P',
+    rendererField: 'MEDAGE_FY',
     status: 'active',
     geographicType: 'postal',
     geographicLevel: 'local',
@@ -843,14 +3502,9 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "ID"
       },
       {
-            "name": "MP10138A_B",
+            "name": "MEDAGE_FY",
             "type": "double",
-            "alias": "2025 Own Cryptocurrency Investment"
-      },
-      {
-            "name": "MP10138A_B_P",
-            "type": "double",
-            "alias": "2025 Own Cryptocurrency Investment (%)"
+            "alias": "2030 Median Age (Esri)"
       },
       {
             "name": "thematic_value",
@@ -922,16 +3576,16 @@ export const baseLayerConfigs: LayerConfig[] = [
     }
   },
   {
-    id: 'Unknown_Service_layer_6',
-    name: 'Have Personal Line of Credit',
+    id: 'Unknown_Service_layer_31',
+    name: '2025 Median Household Income',
     type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/6',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/31',
     group: 'general',
-    description: 'Business Analyst Layer: Have Personal Line of Credit',
+    description: 'Business Analyst Layer: 2025 Median Household Income',
     isVisible: false,
     isPrimary: false,
     skipLayerList: false,
-    rendererField: 'MP10028A_B_P',
+    rendererField: 'MEDHINC_CY',
     status: 'active',
     geographicType: 'postal',
     geographicLevel: 'local',
@@ -952,14 +3606,9 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "ID"
       },
       {
-            "name": "MP10028A_B",
+            "name": "MEDHINC_CY",
             "type": "double",
-            "alias": "2025 Have Personal Line of Credit"
-      },
-      {
-            "name": "MP10028A_B_P",
-            "type": "double",
-            "alias": "2025 Have Personal Line of Credit (%)"
+            "alias": "2025 Median Household Income (Esri)"
       },
       {
             "name": "thematic_value",
@@ -1031,16 +3680,16 @@ export const baseLayerConfigs: LayerConfig[] = [
     }
   },
   {
-    id: 'Unknown_Service_layer_7',
-    name: 'Have Savings Account',
+    id: 'Unknown_Service_layer_32',
+    name: '2030 Median Household Income',
     type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/7',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/32',
     group: 'general',
-    description: 'Business Analyst Layer: Have Savings Account',
+    description: 'Business Analyst Layer: 2030 Median Household Income',
     isVisible: false,
     isPrimary: false,
     skipLayerList: false,
-    rendererField: 'MP10020A_B_P',
+    rendererField: 'MEDHINC_FY',
     status: 'active',
     geographicType: 'postal',
     geographicLevel: 'local',
@@ -1061,14 +3710,9 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "ID"
       },
       {
-            "name": "MP10020A_B",
+            "name": "MEDHINC_FY",
             "type": "double",
-            "alias": "2025 Have Savings Account"
-      },
-      {
-            "name": "MP10020A_B_P",
-            "type": "double",
-            "alias": "2025 Have Savings Account (%)"
+            "alias": "2030 Median Household Income (Esri)"
       },
       {
             "name": "thematic_value",
@@ -1140,16 +3784,16 @@ export const baseLayerConfigs: LayerConfig[] = [
     }
   },
   {
-    id: 'Unknown_Service_layer_8',
-    name: 'Carry Credit Card Balance 3-Usually Always',
+    id: 'Unknown_Service_layer_33',
+    name: '2030 Total Population',
     type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/8',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/33',
     group: 'general',
-    description: 'Business Analyst Layer: Carry Credit Card Balance 3-Usually Always',
+    description: 'Business Analyst Layer: 2030 Total Population',
     isVisible: false,
     isPrimary: false,
     skipLayerList: false,
-    rendererField: 'MP10116A_B_P',
+    rendererField: 'TOTPOP_FY',
     status: 'active',
     geographicType: 'postal',
     geographicLevel: 'local',
@@ -1170,14 +3814,9 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "ID"
       },
       {
-            "name": "MP10116A_B",
+            "name": "TOTPOP_FY",
             "type": "double",
-            "alias": "2025 Carry Credit Card Balance: 3-Usually or Always"
-      },
-      {
-            "name": "MP10116A_B_P",
-            "type": "double",
-            "alias": "2025 Carry Credit Card Balance: 3-Usually or Always (%)"
+            "alias": "2030 Total Population (Esri)"
       },
       {
             "name": "thematic_value",
@@ -1249,16 +3888,25 @@ export const baseLayerConfigs: LayerConfig[] = [
     }
   },
   {
-    id: 'Unknown_Service_layer_9',
-    name: 'Used TurboTax Online to Prepare Taxes',
+    id: 'Unknown_Service_layer_34',
+    name: 'target',
     type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/9',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/34',
     group: 'general',
-    description: 'Business Analyst Layer: Used TurboTax Online to Prepare Taxes',
+    description: 'Business Analyst Layer: target',
     isVisible: false,
     isPrimary: false,
     skipLayerList: false,
-    rendererField: 'MP10104A_B_P',
+    rendererField: 'ESRI_PID',
+    symbolConfig: {
+      color: [198, 2, 2, 0.8],
+      size: 12,
+      outline: {
+        color: [255, 255, 255, 1],
+        width: 1
+      },
+      shape: 'square'
+    },
     status: 'active',
     geographicType: 'postal',
     geographicLevel: 'local',
@@ -1269,693 +3917,59 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Object ID"
       },
       {
-            "name": "DESCRIPTION",
+            "name": "CONAME",
             "type": "string",
-            "alias": "ZIP Code"
+            "alias": "Company/Business Name"
       },
       {
-            "name": "ID",
-            "type": "string",
-            "alias": "ID"
-      },
-      {
-            "name": "MP10104A_B",
-            "type": "double",
-            "alias": "2025 Used TurboTax Online to Prepare Taxes"
-      },
-      {
-            "name": "MP10104A_B_P",
-            "type": "double",
-            "alias": "2025 Used TurboTax Online to Prepare Taxes (%)"
-      },
-      {
-            "name": "thematic_value",
-            "type": "double",
-            "alias": "thematic_value"
-      },
-      {
-            "name": "Shape__Area",
-            "type": "double",
-            "alias": "Shape__Area"
-      },
-      {
-            "name": "Shape__Length",
-            "type": "double",
-            "alias": "Shape__Length"
-      },
-      {
-            "name": "CreationDate",
-            "type": "date",
-            "alias": "CreationDate"
-      },
-      {
-            "name": "Creator",
-            "type": "string",
-            "alias": "Creator"
-      },
-      {
-            "name": "EditDate",
-            "type": "date",
-            "alias": "EditDate"
-      },
-      {
-            "name": "Editor",
-            "type": "string",
-            "alias": "Editor"
-      },
-    ],
-    metadata: {
-      "provider": "ArcGIS FeatureServer",
-      "updateFrequency": "daily",
-      "version": "1.0",
-      "tags": ["business-analyst", "demographics"],
-      "sourceSystems": ["ArcGIS Online"],
-      "geographicType": "postal",
-      "geographicLevel": "local"
-    },
-    processing: {
-      "cacheable": true,
-      "timeout": 30000,
-      "retries": 2
-    },
-    caching: {
-      "enabled": true,
-      "ttl": 3600,
-      "strategy": "memory"
-    },
-    performance: {
-      "timeoutMs": 30000
-    },
-    security: {
-      "accessLevels": [
-            "read"
-      ]
-    },
-    analysis: {
-      "availableOperations": [
-            "query"
-      ]
-    }
-  },
-  {
-    id: 'Unknown_Service_layer_10',
-    name: 'Used H&R Block Online to Prepare Taxes',
-    type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/10',
-    group: 'general',
-    description: 'Business Analyst Layer: Used H&R Block Online to Prepare Taxes',
-    isVisible: false,
-    isPrimary: false,
-    skipLayerList: false,
-    rendererField: 'MP10128A_B_P',
-    status: 'active',
-    geographicType: 'postal',
-    geographicLevel: 'local',
-    fields: [
-      {
-            "name": "OBJECTID",
-            "type": "oid",
-            "alias": "Object ID"
-      },
-      {
-            "name": "DESCRIPTION",
-            "type": "string",
-            "alias": "ZIP Code"
-      },
-      {
-            "name": "ID",
-            "type": "string",
-            "alias": "ID"
-      },
-      {
-            "name": "MP10128A_B",
-            "type": "double",
-            "alias": "2025 Used H&R Block Online to Prepare Taxes"
-      },
-      {
-            "name": "MP10128A_B_P",
-            "type": "double",
-            "alias": "2025 Used H&R Block Online to Prepare Taxes (%)"
-      },
-      {
-            "name": "thematic_value",
-            "type": "double",
-            "alias": "thematic_value"
-      },
-      {
-            "name": "Shape__Area",
-            "type": "double",
-            "alias": "Shape__Area"
-      },
-      {
-            "name": "Shape__Length",
-            "type": "double",
-            "alias": "Shape__Length"
-      },
-      {
-            "name": "CreationDate",
-            "type": "date",
-            "alias": "CreationDate"
-      },
-      {
-            "name": "Creator",
-            "type": "string",
-            "alias": "Creator"
-      },
-      {
-            "name": "EditDate",
-            "type": "date",
-            "alias": "EditDate"
-      },
-      {
-            "name": "Editor",
-            "type": "string",
-            "alias": "Editor"
-      },
-    ],
-    metadata: {
-      "provider": "ArcGIS FeatureServer",
-      "updateFrequency": "daily",
-      "version": "1.0",
-      "tags": ["business-analyst", "demographics"],
-      "sourceSystems": ["ArcGIS Online"],
-      "geographicType": "postal",
-      "geographicLevel": "local"
-    },
-    processing: {
-      "cacheable": true,
-      "timeout": 30000,
-      "retries": 2
-    },
-    caching: {
-      "enabled": true,
-      "ttl": 3600,
-      "strategy": "memory"
-    },
-    performance: {
-      "timeoutMs": 30000
-    },
-    security: {
-      "accessLevels": [
-            "read"
-      ]
-    },
-    analysis: {
-      "availableOperations": [
-            "query"
-      ]
-    }
-  },
-  {
-    id: 'Unknown_Service_layer_11',
-    name: 'Value of Credit Card Debt',
-    type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/11',
-    group: 'general',
-    description: 'Business Analyst Layer: Value of Credit Card Debt',
-    isVisible: false,
-    isPrimary: false,
-    skipLayerList: false,
-    rendererField: 'X14068_X',
-    status: 'active',
-    geographicType: 'postal',
-    geographicLevel: 'local',
-    fields: [
-      {
-            "name": "OBJECTID",
-            "type": "oid",
-            "alias": "Object ID"
-      },
-      {
-            "name": "DESCRIPTION",
-            "type": "string",
-            "alias": "ZIP Code"
-      },
-      {
-            "name": "ID",
-            "type": "string",
-            "alias": "ID"
-      },
-      {
-            "name": "X14068_X",
-            "type": "double",
-            "alias": "2025 Value of Credit Card Debt"
-      },
-      {
-            "name": "X14068_X_A",
-            "type": "double",
-            "alias": "2025 Value of Credit Card Debt (Avg)"
-      },
-      {
-            "name": "thematic_value",
-            "type": "double",
-            "alias": "thematic_value"
-      },
-      {
-            "name": "Shape__Area",
-            "type": "double",
-            "alias": "Shape__Area"
-      },
-      {
-            "name": "Shape__Length",
-            "type": "double",
-            "alias": "Shape__Length"
-      },
-      {
-            "name": "CreationDate",
-            "type": "date",
-            "alias": "CreationDate"
-      },
-      {
-            "name": "Creator",
-            "type": "string",
-            "alias": "Creator"
-      },
-      {
-            "name": "EditDate",
-            "type": "date",
-            "alias": "EditDate"
-      },
-      {
-            "name": "Editor",
-            "type": "string",
-            "alias": "Editor"
-      },
-    ],
-    metadata: {
-      "provider": "ArcGIS FeatureServer",
-      "updateFrequency": "daily",
-      "version": "1.0",
-      "tags": ["business-analyst", "demographics"],
-      "sourceSystems": ["ArcGIS Online"],
-      "geographicType": "postal",
-      "geographicLevel": "local"
-    },
-    processing: {
-      "cacheable": true,
-      "timeout": 30000,
-      "retries": 2
-    },
-    caching: {
-      "enabled": true,
-      "ttl": 3600,
-      "strategy": "memory"
-    },
-    performance: {
-      "timeoutMs": 30000
-    },
-    security: {
-      "accessLevels": [
-            "read"
-      ]
-    },
-    analysis: {
-      "availableOperations": [
-            "query"
-      ]
-    }
-  },
-  {
-    id: 'Unknown_Service_layer_12',
-    name: 'Value of Checking Savings Money Mkt CD',
-    type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/12',
-    group: 'general',
-    description: 'Business Analyst Layer: Value of Checking Savings Money Mkt CD',
-    isVisible: false,
-    isPrimary: false,
-    skipLayerList: false,
-    rendererField: 'X14060_X',
-    status: 'active',
-    geographicType: 'postal',
-    geographicLevel: 'local',
-    fields: [
-      {
-            "name": "OBJECTID",
-            "type": "oid",
-            "alias": "Object ID"
-      },
-      {
-            "name": "DESCRIPTION",
-            "type": "string",
-            "alias": "ZIP Code"
-      },
-      {
-            "name": "ID",
-            "type": "string",
-            "alias": "ID"
-      },
-      {
-            "name": "X14060_X",
-            "type": "double",
-            "alias": "2025 Value of Checking/Savings/Money Mkt/CDs"
-      },
-      {
-            "name": "X14060_X_A",
-            "type": "double",
-            "alias": "2025 Value of Checking/Savings/Money Mkt/CDs (Avg)"
-      },
-      {
-            "name": "thematic_value",
-            "type": "double",
-            "alias": "thematic_value"
-      },
-      {
-            "name": "Shape__Area",
-            "type": "double",
-            "alias": "Shape__Area"
-      },
-      {
-            "name": "Shape__Length",
-            "type": "double",
-            "alias": "Shape__Length"
-      },
-      {
-            "name": "CreationDate",
-            "type": "date",
-            "alias": "CreationDate"
-      },
-      {
-            "name": "Creator",
-            "type": "string",
-            "alias": "Creator"
-      },
-      {
-            "name": "EditDate",
-            "type": "date",
-            "alias": "EditDate"
-      },
-      {
-            "name": "Editor",
-            "type": "string",
-            "alias": "Editor"
-      },
-    ],
-    metadata: {
-      "provider": "ArcGIS FeatureServer",
-      "updateFrequency": "daily",
-      "version": "1.0",
-      "tags": ["business-analyst", "demographics"],
-      "sourceSystems": ["ArcGIS Online"],
-      "geographicType": "postal",
-      "geographicLevel": "local"
-    },
-    processing: {
-      "cacheable": true,
-      "timeout": 30000,
-      "retries": 2
-    },
-    caching: {
-      "enabled": true,
-      "ttl": 3600,
-      "strategy": "memory"
-    },
-    performance: {
-      "timeoutMs": 30000
-    },
-    security: {
-      "accessLevels": [
-            "read"
-      ]
-    },
-    analysis: {
-      "availableOperations": [
-            "query"
-      ]
-    }
-  },
-  {
-    id: 'Unknown_Service_layer_13',
-    name: 'Value of Stocks Bonds Mutual Funds',
-    type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/13',
-    group: 'general',
-    description: 'Business Analyst Layer: Value of Stocks Bonds Mutual Funds',
-    isVisible: false,
-    isPrimary: false,
-    skipLayerList: false,
-    rendererField: 'X14058_X',
-    status: 'active',
-    geographicType: 'postal',
-    geographicLevel: 'local',
-    fields: [
-      {
-            "name": "OBJECTID",
-            "type": "oid",
-            "alias": "Object ID"
-      },
-      {
-            "name": "DESCRIPTION",
-            "type": "string",
-            "alias": "ZIP Code"
-      },
-      {
-            "name": "ID",
-            "type": "string",
-            "alias": "ID"
-      },
-      {
-            "name": "X14058_X",
-            "type": "double",
-            "alias": "2025 Value of Stocks/Bonds/Mutual Funds"
-      },
-      {
-            "name": "X14058_X_A",
-            "type": "double",
-            "alias": "2025 Value of Stocks/Bonds/Mutual Funds (Avg)"
-      },
-      {
-            "name": "thematic_value",
-            "type": "double",
-            "alias": "thematic_value"
-      },
-      {
-            "name": "Shape__Area",
-            "type": "double",
-            "alias": "Shape__Area"
-      },
-      {
-            "name": "Shape__Length",
-            "type": "double",
-            "alias": "Shape__Length"
-      },
-      {
-            "name": "CreationDate",
-            "type": "date",
-            "alias": "CreationDate"
-      },
-      {
-            "name": "Creator",
-            "type": "string",
-            "alias": "Creator"
-      },
-      {
-            "name": "EditDate",
-            "type": "date",
-            "alias": "EditDate"
-      },
-      {
-            "name": "Editor",
-            "type": "string",
-            "alias": "Editor"
-      },
-    ],
-    metadata: {
-      "provider": "ArcGIS FeatureServer",
-      "updateFrequency": "daily",
-      "version": "1.0",
-      "tags": ["business-analyst", "demographics"],
-      "sourceSystems": ["ArcGIS Online"],
-      "geographicType": "postal",
-      "geographicLevel": "local"
-    },
-    processing: {
-      "cacheable": true,
-      "timeout": 30000,
-      "retries": 2
-    },
-    caching: {
-      "enabled": true,
-      "ttl": 3600,
-      "strategy": "memory"
-    },
-    performance: {
-      "timeoutMs": 30000
-    },
-    security: {
-      "accessLevels": [
-            "read"
-      ]
-    },
-    analysis: {
-      "availableOperations": [
-            "query"
-      ]
-    }
-  },
-  {
-    id: 'Unknown_Service_layer_14',
-    name: 'H&R Block by ZIP',
-    type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/14',
-    group: 'general',
-    description: 'Business Analyst Layer: H&R Block by ZIP',
-    isVisible: false,
-    isPrimary: false,
-    skipLayerList: false,
-    rendererField: 'pointCount',
-    status: 'active',
-    geographicType: 'postal',
-    geographicLevel: 'local',
-    fields: [
-      {
-            "name": "OBJECTID",
-            "type": "oid",
-            "alias": "Object ID"
-      },
-      {
-            "name": "DESCRIPTION",
-            "type": "string",
-            "alias": "ZIP Code"
-      },
-      {
-            "name": "ID",
-            "type": "string",
-            "alias": "ID"
-      },
-      {
-            "name": "pointCount",
-            "type": "double",
-            "alias": "pointCount"
-      },
-      {
-            "name": "thematic_value",
-            "type": "double",
-            "alias": "thematic_value"
-      },
-      {
-            "name": "Shape__Area",
-            "type": "double",
-            "alias": "Shape__Area"
-      },
-      {
-            "name": "Shape__Length",
-            "type": "double",
-            "alias": "Shape__Length"
-      },
-      {
-            "name": "CreationDate",
-            "type": "date",
-            "alias": "CreationDate"
-      },
-      {
-            "name": "Creator",
-            "type": "string",
-            "alias": "Creator"
-      },
-      {
-            "name": "EditDate",
-            "type": "date",
-            "alias": "EditDate"
-      },
-      {
-            "name": "Editor",
-            "type": "string",
-            "alias": "Editor"
-      },
-    ],
-    metadata: {
-      "provider": "ArcGIS FeatureServer",
-      "updateFrequency": "daily",
-      "version": "1.0",
-      "tags": ["business-analyst", "demographics"],
-      "sourceSystems": ["ArcGIS Online"],
-      "geographicType": "postal",
-      "geographicLevel": "local"
-    },
-    processing: {
-      "cacheable": true,
-      "timeout": 30000,
-      "retries": 2
-    },
-    caching: {
-      "enabled": true,
-      "ttl": 3600,
-      "strategy": "memory"
-    },
-    performance: {
-      "timeoutMs": 30000
-    },
-    security: {
-      "accessLevels": [
-            "read"
-      ]
-    },
-    analysis: {
-      "availableOperations": [
-            "query"
-      ]
-    }
-  },
-  {
-    id: 'Unknown_Service_layer_15',
-    name: 'H&R Block points',
-    type: 'feature-service',
-    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/15',
-    group: 'general',
-    description: 'Business Analyst Layer: H&R Block points',
-    isVisible: false,
-    isPrimary: false,
-    skipLayerList: false,
-    rendererField: 'esri_pid',
-    status: 'active',
-    geographicType: 'postal',
-    geographicLevel: 'local',
-    fields: [
-      {
-            "name": "OBJECTID",
-            "type": "oid",
-            "alias": "Object ID"
-      },
-      {
-            "name": "name",
-            "type": "string",
-            "alias": "POI Name"
-      },
-      {
-            "name": "address",
+            "name": "ADDR",
             "type": "string",
             "alias": "Address"
       },
       {
-            "name": "locality",
+            "name": "CITY",
             "type": "string",
-            "alias": "Locality"
+            "alias": "City"
       },
       {
-            "name": "region",
+            "name": "STATE_NAME",
             "type": "string",
-            "alias": "Region"
+            "alias": "State Name"
       },
       {
-            "name": "postcode",
+            "name": "STATE",
             "type": "string",
-            "alias": "Postcode"
+            "alias": "State Abbreviation"
       },
       {
-            "name": "country",
+            "name": "ZIP",
             "type": "string",
-            "alias": "Country Abbreviation"
+            "alias": "ZIP Code"
       },
       {
-            "name": "fsq_category",
+            "name": "ZIP4",
             "type": "string",
-            "alias": "Foursquare Categories"
+            "alias": "ZIP+4 Extension"
       },
       {
-            "name": "fsq_category_all",
+            "name": "NAICS",
             "type": "string",
-            "alias": "All Foursquare Categories"
+            "alias": "Primary NAICS"
+      },
+      {
+            "name": "NAICS_ALL",
+            "type": "string",
+            "alias": "All NAICS Codes"
+      },
+      {
+            "name": "SIC",
+            "type": "string",
+            "alias": "Primary SIC"
+      },
+      {
+            "name": "SIC_ALL",
+            "type": "string",
+            "alias": "All SIC Codes"
       },
       {
             "name": "INDUSTRY_DESC",
@@ -1963,14 +3977,718 @@ export const baseLayerConfigs: LayerConfig[] = [
             "alias": "Industry Description"
       },
       {
-            "name": "source",
+            "name": "AFFILIATE",
+            "type": "string",
+            "alias": "Affiliated Orgs"
+      },
+      {
+            "name": "BRAND",
+            "type": "string",
+            "alias": "Brands"
+      },
+      {
+            "name": "HQNAME",
+            "type": "string",
+            "alias": "Headquarters Name"
+      },
+      {
+            "name": "LOC_CONF",
+            "type": "string",
+            "alias": "Location Confidence"
+      },
+      {
+            "name": "PLACETYPE",
+            "type": "string",
+            "alias": "Business Category"
+      },
+      {
+            "name": "SQFOOTAGE",
+            "type": "string",
+            "alias": "Square Footage"
+      },
+      {
+            "name": "MIN_SQFT",
+            "type": "integer",
+            "alias": "Square Foot Minimum"
+      },
+      {
+            "name": "MAX_SQFT",
+            "type": "integer",
+            "alias": "Square Foot Maximum"
+      },
+      {
+            "name": "EMPNUM",
+            "type": "integer",
+            "alias": "Employee Count"
+      },
+      {
+            "name": "SALESVOL",
+            "type": "double",
+            "alias": "Sales Volume"
+      },
+      {
+            "name": "SOURCE",
             "type": "string",
             "alias": "Source"
       },
       {
-            "name": "esri_pid",
+            "name": "ESRI_PID",
             "type": "string",
-            "alias": "Esri ID"
+            "alias": "Esri PID"
+      },
+      {
+            "name": "DESC_",
+            "type": "string",
+            "alias": "Description"
+      },
+      {
+            "name": "LATITUDE",
+            "type": "double",
+            "alias": "Latitude"
+      },
+      {
+            "name": "LONGITUDE",
+            "type": "double",
+            "alias": "Longitude"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_35',
+    name: 'whole foods',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/35',
+    group: 'general',
+    description: 'Business Analyst Layer: whole foods',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'ESRI_PID',
+    symbolConfig: {
+      color: [3, 107, 68, 0.8],
+      size: 12,
+      outline: {
+        color: [255, 255, 255, 1],
+        width: 1
+      },
+      shape: 'square'
+    },
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "CONAME",
+            "type": "string",
+            "alias": "Company/Business Name"
+      },
+      {
+            "name": "ADDR",
+            "type": "string",
+            "alias": "Address"
+      },
+      {
+            "name": "CITY",
+            "type": "string",
+            "alias": "City"
+      },
+      {
+            "name": "STATE_NAME",
+            "type": "string",
+            "alias": "State Name"
+      },
+      {
+            "name": "STATE",
+            "type": "string",
+            "alias": "State Abbreviation"
+      },
+      {
+            "name": "ZIP",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ZIP4",
+            "type": "string",
+            "alias": "ZIP+4 Extension"
+      },
+      {
+            "name": "NAICS",
+            "type": "string",
+            "alias": "Primary NAICS"
+      },
+      {
+            "name": "NAICS_ALL",
+            "type": "string",
+            "alias": "All NAICS Codes"
+      },
+      {
+            "name": "SIC",
+            "type": "string",
+            "alias": "Primary SIC"
+      },
+      {
+            "name": "SIC_ALL",
+            "type": "string",
+            "alias": "All SIC Codes"
+      },
+      {
+            "name": "INDUSTRY_DESC",
+            "type": "string",
+            "alias": "Industry Description"
+      },
+      {
+            "name": "AFFILIATE",
+            "type": "string",
+            "alias": "Affiliated Orgs"
+      },
+      {
+            "name": "BRAND",
+            "type": "string",
+            "alias": "Brands"
+      },
+      {
+            "name": "HQNAME",
+            "type": "string",
+            "alias": "Headquarters Name"
+      },
+      {
+            "name": "LOC_CONF",
+            "type": "string",
+            "alias": "Location Confidence"
+      },
+      {
+            "name": "PLACETYPE",
+            "type": "string",
+            "alias": "Business Category"
+      },
+      {
+            "name": "SQFOOTAGE",
+            "type": "string",
+            "alias": "Square Footage"
+      },
+      {
+            "name": "MIN_SQFT",
+            "type": "integer",
+            "alias": "Square Foot Minimum"
+      },
+      {
+            "name": "MAX_SQFT",
+            "type": "integer",
+            "alias": "Square Foot Maximum"
+      },
+      {
+            "name": "EMPNUM",
+            "type": "integer",
+            "alias": "Employee Count"
+      },
+      {
+            "name": "SALESVOL",
+            "type": "double",
+            "alias": "Sales Volume"
+      },
+      {
+            "name": "SOURCE",
+            "type": "string",
+            "alias": "Source"
+      },
+      {
+            "name": "ESRI_PID",
+            "type": "string",
+            "alias": "Esri PID"
+      },
+      {
+            "name": "DESC_",
+            "type": "string",
+            "alias": "Description"
+      },
+      {
+            "name": "LATITUDE",
+            "type": "double",
+            "alias": "Latitude"
+      },
+      {
+            "name": "LONGITUDE",
+            "type": "double",
+            "alias": "Longitude"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_36',
+    name: 'trader joes',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/36',
+    group: 'general',
+    description: 'Business Analyst Layer: trader joes',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'ESRI_PID',
+    symbolConfig: {
+      color: [247, 117, 0, 0.8],
+      size: 12,
+      outline: {
+        color: [255, 255, 255, 1],
+        width: 1
+      },
+      shape: 'square'
+    },
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "CONAME",
+            "type": "string",
+            "alias": "Company/Business Name"
+      },
+      {
+            "name": "ADDR",
+            "type": "string",
+            "alias": "Address"
+      },
+      {
+            "name": "CITY",
+            "type": "string",
+            "alias": "City"
+      },
+      {
+            "name": "STATE_NAME",
+            "type": "string",
+            "alias": "State Name"
+      },
+      {
+            "name": "STATE",
+            "type": "string",
+            "alias": "State Abbreviation"
+      },
+      {
+            "name": "ZIP",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ZIP4",
+            "type": "string",
+            "alias": "ZIP+4 Extension"
+      },
+      {
+            "name": "NAICS",
+            "type": "string",
+            "alias": "Primary NAICS"
+      },
+      {
+            "name": "NAICS_ALL",
+            "type": "string",
+            "alias": "All NAICS Codes"
+      },
+      {
+            "name": "SIC",
+            "type": "string",
+            "alias": "Primary SIC"
+      },
+      {
+            "name": "SIC_ALL",
+            "type": "string",
+            "alias": "All SIC Codes"
+      },
+      {
+            "name": "INDUSTRY_DESC",
+            "type": "string",
+            "alias": "Industry Description"
+      },
+      {
+            "name": "AFFILIATE",
+            "type": "string",
+            "alias": "Affiliated Orgs"
+      },
+      {
+            "name": "BRAND",
+            "type": "string",
+            "alias": "Brands"
+      },
+      {
+            "name": "HQNAME",
+            "type": "string",
+            "alias": "Headquarters Name"
+      },
+      {
+            "name": "LOC_CONF",
+            "type": "string",
+            "alias": "Location Confidence"
+      },
+      {
+            "name": "PLACETYPE",
+            "type": "string",
+            "alias": "Business Category"
+      },
+      {
+            "name": "SQFOOTAGE",
+            "type": "string",
+            "alias": "Square Footage"
+      },
+      {
+            "name": "MIN_SQFT",
+            "type": "integer",
+            "alias": "Square Foot Minimum"
+      },
+      {
+            "name": "MAX_SQFT",
+            "type": "integer",
+            "alias": "Square Foot Maximum"
+      },
+      {
+            "name": "EMPNUM",
+            "type": "integer",
+            "alias": "Employee Count"
+      },
+      {
+            "name": "SALESVOL",
+            "type": "double",
+            "alias": "Sales Volume"
+      },
+      {
+            "name": "SOURCE",
+            "type": "string",
+            "alias": "Source"
+      },
+      {
+            "name": "ESRI_PID",
+            "type": "string",
+            "alias": "Esri PID"
+      },
+      {
+            "name": "DESC_",
+            "type": "string",
+            "alias": "Description"
+      },
+      {
+            "name": "LATITUDE",
+            "type": "double",
+            "alias": "Latitude"
+      },
+      {
+            "name": "LONGITUDE",
+            "type": "double",
+            "alias": "Longitude"
+      },
+      {
+            "name": "CreationDate",
+            "type": "date",
+            "alias": "CreationDate"
+      },
+      {
+            "name": "Creator",
+            "type": "string",
+            "alias": "Creator"
+      },
+      {
+            "name": "EditDate",
+            "type": "date",
+            "alias": "EditDate"
+      },
+      {
+            "name": "Editor",
+            "type": "string",
+            "alias": "Editor"
+      },
+    ],
+    metadata: {
+      "provider": "ArcGIS FeatureServer",
+      "updateFrequency": "daily",
+      "version": "1.0",
+      "tags": ["business-analyst", "demographics"],
+      "sourceSystems": ["ArcGIS Online"],
+      "geographicType": "postal",
+      "geographicLevel": "local"
+    },
+    processing: {
+      "cacheable": true,
+      "timeout": 30000,
+      "retries": 2
+    },
+    caching: {
+      "enabled": true,
+      "ttl": 3600,
+      "strategy": "memory"
+    },
+    performance: {
+      "timeoutMs": 30000
+    },
+    security: {
+      "accessLevels": [
+            "read"
+      ]
+    },
+    analysis: {
+      "availableOperations": [
+            "query"
+      ]
+    }
+  },
+  {
+    id: 'Unknown_Service_layer_37',
+    name: 'costco',
+    type: 'feature-service',
+    url: 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/37',
+    group: 'general',
+    description: 'Business Analyst Layer: costco',
+    isVisible: false,
+    isPrimary: false,
+    skipLayerList: false,
+    rendererField: 'ESRI_PID',
+    symbolConfig: {
+      color: [23, 92, 166, 0.8],
+      size: 12,
+      outline: {
+        color: [255, 255, 255, 1],
+        width: 1
+      },
+      shape: 'square'
+    },
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'local',
+    fields: [
+      {
+            "name": "OBJECTID",
+            "type": "oid",
+            "alias": "Object ID"
+      },
+      {
+            "name": "CONAME",
+            "type": "string",
+            "alias": "Company/Business Name"
+      },
+      {
+            "name": "ADDR",
+            "type": "string",
+            "alias": "Address"
+      },
+      {
+            "name": "CITY",
+            "type": "string",
+            "alias": "City"
+      },
+      {
+            "name": "STATE_NAME",
+            "type": "string",
+            "alias": "State Name"
+      },
+      {
+            "name": "STATE",
+            "type": "string",
+            "alias": "State Abbreviation"
+      },
+      {
+            "name": "ZIP",
+            "type": "string",
+            "alias": "ZIP Code"
+      },
+      {
+            "name": "ZIP4",
+            "type": "string",
+            "alias": "ZIP+4 Extension"
+      },
+      {
+            "name": "NAICS",
+            "type": "string",
+            "alias": "Primary NAICS"
+      },
+      {
+            "name": "NAICS_ALL",
+            "type": "string",
+            "alias": "All NAICS Codes"
+      },
+      {
+            "name": "SIC",
+            "type": "string",
+            "alias": "Primary SIC"
+      },
+      {
+            "name": "SIC_ALL",
+            "type": "string",
+            "alias": "All SIC Codes"
+      },
+      {
+            "name": "INDUSTRY_DESC",
+            "type": "string",
+            "alias": "Industry Description"
+      },
+      {
+            "name": "AFFILIATE",
+            "type": "string",
+            "alias": "Affiliated Orgs"
+      },
+      {
+            "name": "BRAND",
+            "type": "string",
+            "alias": "Brands"
+      },
+      {
+            "name": "HQNAME",
+            "type": "string",
+            "alias": "Headquarters Name"
+      },
+      {
+            "name": "LOC_CONF",
+            "type": "string",
+            "alias": "Location Confidence"
+      },
+      {
+            "name": "PLACETYPE",
+            "type": "string",
+            "alias": "Business Category"
+      },
+      {
+            "name": "SQFOOTAGE",
+            "type": "string",
+            "alias": "Square Footage"
+      },
+      {
+            "name": "MIN_SQFT",
+            "type": "integer",
+            "alias": "Square Foot Minimum"
+      },
+      {
+            "name": "MAX_SQFT",
+            "type": "integer",
+            "alias": "Square Foot Maximum"
+      },
+      {
+            "name": "EMPNUM",
+            "type": "integer",
+            "alias": "Employee Count"
+      },
+      {
+            "name": "SALESVOL",
+            "type": "double",
+            "alias": "Sales Volume"
+      },
+      {
+            "name": "SOURCE",
+            "type": "string",
+            "alias": "Source"
+      },
+      {
+            "name": "ESRI_PID",
+            "type": "string",
+            "alias": "Esri PID"
       },
       {
             "name": "DESC_",
@@ -2050,70 +4768,85 @@ export const layerConfigs: LayerConfig[] = baseLayerConfigs
 
 // Group layers by category for easier management
 export const layerGroups = {
-  'tax_services': {
-    displayName: 'Tax Preparation Services',
-    description: 'Tax software, tax preparers, tax services',
+  'group_energy_drinks': {
+    displayName: 'Energy Drinks',
+    description: 'Energy drink consumption and brand preferences',
     layerCount: 4,
     confidence: 1.00,
     layers: [
-      'Unknown_Service_layer_9',
-      'Unknown_Service_layer_10',
-      'Unknown_Service_layer_14',
-      'Unknown_Service_layer_15'
+      'Unknown_Service_layer_8',  // Red Bull
+      'Unknown_Service_layer_9',  // 5-Hour Energy
+      'Unknown_Service_layer_10', // Monster Energy  
+      'Unknown_Service_layer_11'  // All Energy Drinks
     ]
   },
-  'financial_services': {
-    displayName: 'Financial Services & Banking',
-    description: 'Bank usage, financial accounts, credit services',
-    layerCount: 3,
+  'group_consumer_behavior': {
+    displayName: 'Consumer Behavior',
+    description: 'Food and beverage consumption patterns',
+    layerCount: 18,
     confidence: 1.00,
     layers: [
-      'Unknown_Service_layer_4',
-      'Unknown_Service_layer_7',
-      'Unknown_Service_layer_12'
-    ]
-  },
-  'credit_debt': {
-    displayName: 'Credit & Debt Management',
-    description: 'Credit cards, debt, credit behavior',
-    layerCount: 3,
-    confidence: 1.00,
-    layers: [
-      'Unknown_Service_layer_6',
-      'Unknown_Service_layer_8',
-      'Unknown_Service_layer_11'
-    ]
-  },
-  'demographics': {
-    displayName: 'Demographics & Population',
-    description: 'Age groups, generations, population characteristics',
-    layerCount: 2,
-    confidence: 1.00,
-    layers: [
-      'Unknown_Service_layer_0',
-      'Unknown_Service_layer_1'
-    ]
-  },
-  'digital_payments': {
-    displayName: 'Digital Payment Services',
-    description: 'Mobile payments, digital wallets, payment apps',
-    layerCount: 2,
-    confidence: 1.00,
-    layers: [
+      'Unknown_Service_layer_1',
       'Unknown_Service_layer_2',
-      'Unknown_Service_layer_3'
+      'Unknown_Service_layer_3',
+      'Unknown_Service_layer_4',
+      'Unknown_Service_layer_5',
+      'Unknown_Service_layer_6',
+      'Unknown_Service_layer_7',
+      'Unknown_Service_layer_12',
+      'Unknown_Service_layer_13',
+      'Unknown_Service_layer_14',
+      'Unknown_Service_layer_15',
+      'Unknown_Service_layer_16',
+      'Unknown_Service_layer_17',
+      'Unknown_Service_layer_18',
+      'Unknown_Service_layer_19',
+      'Unknown_Service_layer_20',
+      'Unknown_Service_layer_21',
+      'Unknown_Service_layer_22'
     ]
   },
-  'investments': {
-    displayName: 'Investments & Assets',
-    description: 'Stocks, bonds, crypto, investment accounts',
-    layerCount: 2,
+  'group_demographics': {
+    displayName: 'Demographics',
+    description: 'Population and demographic characteristics',
+    layerCount: 8,
     confidence: 1.00,
     layers: [
-      'Unknown_Service_layer_5',
-      'Unknown_Service_layer_13'
+      'Unknown_Service_layer_23', // Generation data
+      'Unknown_Service_layer_24',
+      'Unknown_Service_layer_25', 
+      'Unknown_Service_layer_31',
+      'Unknown_Service_layer_0',  // Population data
+      'Unknown_Service_layer_30',
+      'Unknown_Service_layer_32',
+      'Unknown_Service_layer_33'
     ]
   },
+  'group_market_metrics': {
+    displayName: 'Market Metrics',
+    description: 'Market size and performance indicators',
+    layerCount: 4,
+    confidence: 0.95,
+    layers: [
+      'Unknown_Service_layer_26',
+      'Unknown_Service_layer_27',
+      'Unknown_Service_layer_28',
+      'Unknown_Service_layer_29'
+    ]
+  },
+  'group_geographic_data': {
+    displayName: 'Geographic Data',
+    description: 'ZIP code and location-based information',
+    layerCount: 4,
+    confidence: 1.00,
+    layers: [
+      'Unknown_Service_layer_34',
+      'Unknown_Service_layer_35',
+      'Unknown_Service_layer_36',
+      'Unknown_Service_layer_37'
+    ]
+  },
+
 };
 
 // Export individual layers for direct access
@@ -2127,16 +4860,10 @@ export const layerCount = layerConfigs.length;
 
 // Export generation metadata
 export const generationMetadata = {
-  generatedAt: '2025-08-10T18:48:14.589746',
-  layerCount: 16,
-  groupCount: 1,
-  automationVersion: '1.0.0'
+  generatedAt: '2025-08-24T13:11:08.482988',
+  layerCount: 38,
+  groupCount: 5,
+  automationVersion: '1.0.0',
+  lastGroupUpdate: '2025-08-24T22:00:00.000Z',
+  projectDomain: 'Red Bull Energy Drinks'
 };
-
-// Missing function exports
-export function getLayerConfigById(layerId: string): LayerConfig | undefined {
-  return layers[layerId];
-}
-
-// Spatial reference layer ID - using first layer as default
-export const SPATIAL_REFERENCE_LAYER_ID = 'Unknown_Service_layer_0';

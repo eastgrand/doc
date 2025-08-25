@@ -11,6 +11,7 @@
     "test": "jest",
     "test:critical-pipeline": "jest __tests__/query-to-visualization-pipeline.test.ts --verbose",
     "test:pipeline-full": "jest __tests__/query-to-visualization-pipeline.test.ts --verbose --coverage",
+    "test:pipeline-with-reports": "GENERATE_TEST_REPORTS=true jest __tests__/query-to-visualization-pipeline.test.ts --verbose",
     "test:queries": "ts-node test/query-classifier-suite.ts",
     "test:chat-queries": "jest test/chat-constants-queries.test.ts",
     "test:pipeline": "jest test/query-pipeline.test.ts",

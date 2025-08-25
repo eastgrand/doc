@@ -18,9 +18,9 @@ def main():
     print("🚀 Uploading Comprehensive Endpoints and Boundary Files to Blob Storage")
     print("=" * 70)
     
-    # Initialize blob uploader for HRB project
+    # Initialize blob uploader for Red Bull Energy Drinks project
     project_root = Path("/Users/voldeck/code/mpiq-ai-chat")
-    uploader = BlobUploader(project_root, project_prefix="hrb")
+    uploader = BlobUploader(project_root, project_prefix="red_bull_energy_drinks")
     
     # Check for blob token
     if not uploader.blob_token:

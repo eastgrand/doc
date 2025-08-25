@@ -1,0 +1,168 @@
+{
+  "layer_id": 7,
+  "layer_name": "2025 Shopped at Whole Foods Market Grocery",
+  "description": "Business Analyst Layer: 2025 Shopped at Whole Foods Market Grocery",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-08-24T13:10:05.102651",
+  "record_count": 1804,
+  "field_count": 12,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "92322 (Cedarpines Park)",
+        "92325 (Crestline)",
+        "92327 (Daggett)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ID",
+      "type": "esriFieldTypeString",
+      "alias": "ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "92322",
+        "92325",
+        "92327"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP13023A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Shopped at Whole Foods Market Grocery Store Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        67,
+        834,
+        12
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP13023A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Shopped at Whole Foods Market Grocery Store Last 6 Mo (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        6.71,
+        10.47,
+        3.64
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        6.71,
+        10.47,
+        3.64
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        23482500,
+        40745000,
+        117928750
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        36314.45693055894,
+        36360.74748998447,
+        70424.41944943395
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1756053841507,
+        1756053841507,
+        1756053841507
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1756053841507,
+        1756053841507,
+        1756053841507
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_7_2025_Shopped_at_Whole_Foods_Market_Grocery.csv"
+}

@@ -1,8 +1,8 @@
 {
-  "generated_timestamp": "2025-08-11T19:47:59.201Z",
-  "total_fields": 132,
-  "files_processed": 25,
-  "total_records": 24600,
+  "generated_timestamp": "2025-08-24T17:10:52.910Z",
+  "total_fields": 210,
+  "files_processed": 24,
+  "total_records": 23616,
   "field_categories": {
     "system": [
       "CreationDate",
@@ -62,91 +62,169 @@
     ],
     "analysis_scores": [
       "algorithm_agreement_score",
+      "algorithm_comparison_score",
       "algorithm_performance_score",
+      "algorithm_reliability_score",
+      "algorithm_suitability_score",
+      "alternative_algorithm_score",
       "analysis_score",
+      "analyze_score",
       "anomaly_detection_score",
       "anomaly_insight_score",
+      "anomaly_insights_score",
       "anomaly_performance_score",
+      "anomaly_reliability_score",
       "anomaly_score",
+      "anomaly_significance_score",
+      "best_algorithm_confidence_score",
       "brand_difference_score",
+      "cluster_analysis_score",
       "cluster_performance_score",
       "cluster_score",
+      "comparative_analysis_score",
       "comparative_score",
       "comparison_score",
       "competitive_advantage_score",
+      "competitive_analysis_score",
       "competitive_score",
+      "component_significance_score",
+      "consensus_analysis_score",
+      "consensus_confidence_score",
       "consensus_performance_score",
       "consensus_score",
+      "correlation_analysis_score",
       "correlation_score",
       "correlation_strength_score",
       "customer_profile_score",
+      "data_complexity_score",
+      "demographic_insights_score",
       "demographic_opportunity_score",
       "demographic_score",
+      "dimensionality_insights_score",
       "dimensionality_performance_score",
+      "dimensionality_reduction_benefit_score",
       "dimensionality_score",
+      "ensemble_analysis_score",
+      "ensemble_confidence_score",
+      "ensemble_opportunity_score",
       "ensemble_performance_score",
+      "ensemble_reliability_score",
       "ensemble_strength_score",
+      "feature_compression_score",
+      "feature_importance_clarity_score",
+      "feature_importance_ranking_score",
       "feature_importance_score",
       "feature_interaction_score",
+      "feature_interactions_score",
+      "feature_relationship_strength_score",
       "importance_score",
       "interaction_score",
+      "interpretability_benefit_score",
+      "investigation_priority_score",
+      "market_anomaly_value_score",
+      "model_agreement_score",
+      "model_component_strength_score",
+      "model_diversity_benefit_score",
+      "model_performance_prediction_score",
+      "model_performance_score",
       "model_selection_performance_score",
       "model_selection_score",
+      "multi_model_value_score",
+      "opportunity_detection_score",
+      "opportunity_score",
       "outlier_detection_score",
       "outlier_score",
+      "outlier_strength_score",
       "performance_score",
+      "prediction_consensus_score",
+      "prediction_precision_score",
+      "prediction_reliability_score",
       "predictive_modeling_score",
       "predictive_score",
+      "recommendation_confidence_score",
       "scenario_analysis_score",
       "scenario_score",
       "segment_profiling_score",
       "segment_score",
+      "selection_reliability_score",
+      "sensitivity_analysis_score",
       "sensitivity_score",
+      "spatial_clusters_score",
+      "strategic_analysis_score",
       "strategic_score",
       "strategic_value_score",
+      "trend_analysis_score",
       "trend_score",
-      "trend_strength_score"
+      "trend_strength_score",
+      "uncertainty_quantification_score",
+      "voting_consensus_strength_score"
     ],
     "other": [
       "DESC_",
       "INDUSTRY_DESC",
       "algorithm_agreement",
+      "algorithm_category",
       "algorithm_predictions",
       "alternative_algorithms",
+      "anomaly_category",
       "anomaly_explanation",
       "anomaly_type",
       "best_algorithm",
+      "clear_feature_hierarchy",
       "cluster_id",
       "cluster_label",
+      "competitive_components",
       "competitive_position",
       "component_contributions",
       "component_weights",
       "consensus_prediction",
       "consensus_quality",
+      "data_complexity_category",
       "data_reliability",
       "demographic_advantage",
       "economic_advantage",
+      "ensemble_included",
       "ensemble_prediction",
       "esri_pid",
+      "exceptional_confidence",
       "feature_loadings",
       "fsq_category",
       "fsq_category_all",
+      "high_compression_efficiency",
+      "high_confidence_recommendation",
+      "high_model_agreement",
+      "high_opportunity_anomaly",
+      "high_performance_expected",
+      "high_performance_prediction",
+      "interpretable_choice",
+      "investigation_recommended",
       "is_anomaly",
+      "low_uncertainty",
       "market_dominance",
       "market_opportunity",
       "market_scale",
+      "model_contributions",
       "model_predictions",
       "opportunity_rating",
+      "optimal_algorithm_match",
       "performance_metrics",
       "pointCount",
       "population_advantage",
+      "positive_market_signal",
       "prediction_confidence",
       "prediction_interval",
       "primary_component_interpretation",
+      "recommendation_confidence",
       "recommended_algorithm",
+      "reliable_consensus",
       "selection_reasoning",
+      "significant_dimensionality_reduction",
       "source",
+      "strong_feature_relationships",
+      "strong_outlier",
+      "strong_voting_consensus",
       "uncertainty_measures",
+      "value",
       "variance_explained",
       "voting_results"
     ]
@@ -196,93 +274,171 @@
     "address",
     "algorithm_agreement",
     "algorithm_agreement_score",
+    "algorithm_category",
+    "algorithm_comparison_score",
     "algorithm_performance_score",
     "algorithm_predictions",
+    "algorithm_reliability_score",
+    "algorithm_suitability_score",
+    "alternative_algorithm_score",
     "alternative_algorithms",
     "analysis_score",
+    "analyze_score",
+    "anomaly_category",
     "anomaly_detection_score",
     "anomaly_explanation",
     "anomaly_insight_score",
+    "anomaly_insights_score",
     "anomaly_performance_score",
+    "anomaly_reliability_score",
     "anomaly_score",
+    "anomaly_significance_score",
     "anomaly_type",
     "best_algorithm",
+    "best_algorithm_confidence_score",
     "brand_difference_score",
+    "clear_feature_hierarchy",
+    "cluster_analysis_score",
     "cluster_id",
     "cluster_label",
     "cluster_performance_score",
     "cluster_score",
+    "comparative_analysis_score",
     "comparative_score",
     "comparison_score",
     "competitive_advantage_score",
+    "competitive_analysis_score",
+    "competitive_components",
     "competitive_position",
     "competitive_score",
     "component_contributions",
+    "component_significance_score",
     "component_weights",
+    "consensus_analysis_score",
+    "consensus_confidence_score",
     "consensus_performance_score",
     "consensus_prediction",
     "consensus_quality",
     "consensus_score",
+    "correlation_analysis_score",
     "correlation_score",
     "correlation_strength_score",
     "country",
     "customer_profile_score",
+    "data_complexity_category",
+    "data_complexity_score",
     "data_reliability",
     "demographic_advantage",
+    "demographic_insights_score",
     "demographic_opportunity_score",
     "demographic_score",
+    "dimensionality_insights_score",
     "dimensionality_performance_score",
+    "dimensionality_reduction_benefit_score",
     "dimensionality_score",
     "economic_advantage",
+    "ensemble_analysis_score",
+    "ensemble_confidence_score",
+    "ensemble_included",
+    "ensemble_opportunity_score",
     "ensemble_performance_score",
     "ensemble_prediction",
+    "ensemble_reliability_score",
     "ensemble_strength_score",
     "esri_pid",
+    "exceptional_confidence",
+    "feature_compression_score",
+    "feature_importance_clarity_score",
+    "feature_importance_ranking_score",
     "feature_importance_score",
     "feature_interaction_score",
+    "feature_interactions_score",
     "feature_loadings",
+    "feature_relationship_strength_score",
     "fsq_category",
     "fsq_category_all",
+    "high_compression_efficiency",
+    "high_confidence_recommendation",
+    "high_model_agreement",
+    "high_opportunity_anomaly",
+    "high_performance_expected",
+    "high_performance_prediction",
     "importance_score",
     "interaction_score",
+    "interpretability_benefit_score",
+    "interpretable_choice",
+    "investigation_priority_score",
+    "investigation_recommended",
     "is_anomaly",
     "locality",
+    "low_uncertainty",
+    "market_anomaly_value_score",
     "market_dominance",
     "market_opportunity",
     "market_scale",
+    "model_agreement_score",
+    "model_component_strength_score",
+    "model_contributions",
+    "model_diversity_benefit_score",
+    "model_performance_prediction_score",
+    "model_performance_score",
     "model_predictions",
     "model_selection_performance_score",
     "model_selection_score",
+    "multi_model_value_score",
     "name",
+    "opportunity_detection_score",
     "opportunity_rating",
+    "opportunity_score",
+    "optimal_algorithm_match",
     "outlier_detection_score",
     "outlier_score",
+    "outlier_strength_score",
     "performance_metrics",
     "performance_score",
     "pointCount",
     "population_advantage",
+    "positive_market_signal",
     "postcode",
     "prediction_confidence",
+    "prediction_consensus_score",
     "prediction_interval",
+    "prediction_precision_score",
+    "prediction_reliability_score",
     "predictive_modeling_score",
     "predictive_score",
     "primary_component_interpretation",
+    "recommendation_confidence",
+    "recommendation_confidence_score",
     "recommended_algorithm",
     "region",
+    "reliable_consensus",
     "scenario_analysis_score",
     "scenario_score",
     "segment_profiling_score",
     "segment_score",
     "selection_reasoning",
+    "selection_reliability_score",
+    "sensitivity_analysis_score",
     "sensitivity_score",
+    "significant_dimensionality_reduction",
     "source",
+    "spatial_clusters_score",
+    "strategic_analysis_score",
     "strategic_score",
     "strategic_value_score",
+    "strong_feature_relationships",
+    "strong_outlier",
+    "strong_voting_consensus",
     "thematic_value",
+    "trend_analysis_score",
     "trend_score",
     "trend_strength_score",
     "uncertainty_measures",
+    "uncertainty_quantification_score",
+    "value",
     "variance_explained",
+    "voting_consensus_strength_score",
     "voting_results"
   ],
   "field_sources": {
@@ -296,7 +452,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -323,7 +478,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -350,7 +504,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -377,7 +530,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -404,7 +556,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -431,7 +582,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -458,7 +608,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -485,7 +634,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -512,7 +660,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -539,7 +686,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -566,7 +712,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -593,7 +738,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -620,7 +764,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -647,7 +790,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -674,7 +816,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -701,7 +842,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -728,7 +868,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -755,7 +894,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -782,7 +920,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -809,7 +946,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -836,7 +972,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -859,10 +994,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "address": [
       "algorithm-comparison",
@@ -870,10 +1020,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "locality": [
       "algorithm-comparison",
@@ -881,10 +1046,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "region": [
       "algorithm-comparison",
@@ -892,10 +1072,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "postcode": [
       "algorithm-comparison",
@@ -903,10 +1098,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "country": [
       "algorithm-comparison",
@@ -914,10 +1124,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "fsq_category": [
       "algorithm-comparison",
@@ -925,10 +1150,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "fsq_category_all": [
       "algorithm-comparison",
@@ -936,10 +1176,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "INDUSTRY_DESC": [
       "algorithm-comparison",
@@ -947,10 +1202,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "source": [
       "algorithm-comparison",
@@ -958,10 +1228,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "esri_pid": [
       "algorithm-comparison",
@@ -969,10 +1254,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "DESC_": [
       "algorithm-comparison",
@@ -980,10 +1280,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "LATITUDE": [
       "algorithm-comparison",
@@ -991,10 +1306,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "LONGITUDE": [
       "algorithm-comparison",
@@ -1002,10 +1332,25 @@
       "anomaly-detection",
       "anomaly-insights",
       "brand-difference",
+      "comparative-analysis",
+      "competitive-analysis",
+      "consensus-analysis",
+      "correlation-analysis",
+      "demographic-insights",
+      "dimensionality-insights",
+      "ensemble-analysis",
       "feature-importance-ranking",
+      "feature-interactions",
+      "model-performance",
+      "model-selection",
       "outlier-detection",
       "predictive-modeling",
-      "sensitivity-analysis"
+      "scenario-analysis",
+      "segment-profiling",
+      "sensitivity-analysis",
+      "spatial-clusters",
+      "strategic-analysis",
+      "trend-analysis"
     ],
     "MP10128A_B": [
       "algorithm-comparison",
@@ -1017,7 +1362,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1044,7 +1388,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1071,7 +1414,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1098,7 +1440,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1125,7 +1466,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1152,7 +1492,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1179,7 +1518,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1206,7 +1544,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1233,7 +1570,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1260,7 +1596,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1287,7 +1622,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1314,7 +1648,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1341,7 +1674,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1368,7 +1700,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1395,7 +1726,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1422,7 +1752,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1449,7 +1778,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1476,7 +1804,6 @@
       "competitive-analysis",
       "consensus-analysis",
       "correlation-analysis",
-      "customer-profile",
       "demographic-insights",
       "dimensionality-insights",
       "ensemble-analysis",
@@ -1511,15 +1838,42 @@
     "algorithm_agreement_score": [
       "algorithm-comparison"
     ],
+    "algorithm_reliability_score": [
+      "algorithm-comparison"
+    ],
+    "prediction_consensus_score": [
+      "algorithm-comparison"
+    ],
+    "best_algorithm_confidence_score": [
+      "algorithm-comparison"
+    ],
+    "model_diversity_benefit_score": [
+      "algorithm-comparison"
+    ],
+    "algorithm_comparison_score": [
+      "algorithm-comparison",
+      "correlation-analysis"
+    ],
     "analysis_score": [
       "analyze"
+    ],
+    "opportunity_score": [
+      "analyze"
+    ],
+    "value": [
+      "analyze"
+    ],
+    "analyze_score": [
+      "analyze",
+      "correlation-analysis"
     ],
     "anomaly_score": [
       "anomaly-detection",
       "anomaly-insights"
     ],
     "anomaly_detection_score": [
-      "anomaly-detection"
+      "anomaly-detection",
+      "correlation-analysis"
     ],
     "anomaly_performance_score": [
       "anomaly-insights"
@@ -1539,14 +1893,56 @@
     "anomaly_insight_score": [
       "anomaly-insights"
     ],
+    "anomaly_significance_score": [
+      "anomaly-insights"
+    ],
+    "opportunity_detection_score": [
+      "anomaly-insights"
+    ],
+    "outlier_strength_score": [
+      "anomaly-insights"
+    ],
+    "market_anomaly_value_score": [
+      "anomaly-insights"
+    ],
+    "investigation_priority_score": [
+      "anomaly-insights"
+    ],
+    "anomaly_reliability_score": [
+      "anomaly-insights"
+    ],
+    "high_opportunity_anomaly": [
+      "anomaly-insights"
+    ],
+    "strong_outlier": [
+      "anomaly-insights"
+    ],
+    "investigation_recommended": [
+      "anomaly-insights"
+    ],
+    "positive_market_signal": [
+      "anomaly-insights"
+    ],
+    "anomaly_category": [
+      "anomaly-insights"
+    ],
+    "anomaly_insights_score": [
+      "anomaly-insights",
+      "correlation-analysis"
+    ],
     "brand_difference_score": [
-      "brand-difference"
+      "brand-difference",
+      "correlation-analysis"
     ],
     "comparison_score": [
       "comparative-analysis"
     ],
     "comparative_score": [
       "comparative-analysis"
+    ],
+    "comparative_analysis_score": [
+      "comparative-analysis",
+      "correlation-analysis"
     ],
     "competitive_score": [
       "competitive-analysis"
@@ -1566,6 +1962,13 @@
     "population_advantage": [
       "competitive-analysis"
     ],
+    "competitive_components": [
+      "competitive-analysis"
+    ],
+    "competitive_analysis_score": [
+      "competitive-analysis",
+      "correlation-analysis"
+    ],
     "consensus_performance_score": [
       "consensus-analysis"
     ],
@@ -1584,14 +1987,127 @@
     "consensus_score": [
       "consensus-analysis"
     ],
+    "model_agreement_score": [
+      "consensus-analysis"
+    ],
+    "consensus_confidence_score": [
+      "consensus-analysis"
+    ],
+    "prediction_reliability_score": [
+      "consensus-analysis"
+    ],
+    "uncertainty_quantification_score": [
+      "consensus-analysis"
+    ],
+    "voting_consensus_strength_score": [
+      "consensus-analysis"
+    ],
+    "multi_model_value_score": [
+      "consensus-analysis"
+    ],
+    "high_model_agreement": [
+      "consensus-analysis"
+    ],
+    "reliable_consensus": [
+      "consensus-analysis"
+    ],
+    "low_uncertainty": [
+      "consensus-analysis"
+    ],
+    "strong_voting_consensus": [
+      "consensus-analysis"
+    ],
+    "ensemble_included": [
+      "consensus-analysis"
+    ],
+    "recommendation_confidence": [
+      "consensus-analysis"
+    ],
+    "model_contributions": [
+      "consensus-analysis"
+    ],
+    "consensus_analysis_score": [
+      "consensus-analysis",
+      "correlation-analysis"
+    ],
     "correlation_score": [
       "correlation-analysis"
     ],
     "correlation_strength_score": [
       "correlation-analysis"
     ],
+    "strategic_score": [
+      "correlation-analysis",
+      "strategic-analysis"
+    ],
+    "strategic_analysis_score": [
+      "correlation-analysis",
+      "strategic-analysis"
+    ],
+    "demographic_insights_score": [
+      "correlation-analysis",
+      "demographic-insights"
+    ],
+    "cluster_analysis_score": [
+      "correlation-analysis"
+    ],
+    "correlation_analysis_score": [
+      "correlation-analysis"
+    ],
     "customer_profile_score": [
-      "customer-profile"
+      "correlation-analysis"
+    ],
+    "dimensionality_insights_score": [
+      "correlation-analysis",
+      "dimensionality-insights"
+    ],
+    "ensemble_analysis_score": [
+      "correlation-analysis",
+      "ensemble-analysis"
+    ],
+    "feature_importance_ranking_score": [
+      "correlation-analysis",
+      "feature-importance-ranking"
+    ],
+    "feature_interactions_score": [
+      "correlation-analysis",
+      "feature-interactions"
+    ],
+    "model_performance_score": [
+      "correlation-analysis",
+      "model-performance"
+    ],
+    "model_selection_score": [
+      "correlation-analysis",
+      "model-selection"
+    ],
+    "outlier_detection_score": [
+      "correlation-analysis",
+      "outlier-detection"
+    ],
+    "predictive_modeling_score": [
+      "correlation-analysis",
+      "predictive-modeling"
+    ],
+    "scenario_analysis_score": [
+      "correlation-analysis",
+      "scenario-analysis"
+    ],
+    "segment_profiling_score": [
+      "correlation-analysis",
+      "segment-profiling"
+    ],
+    "sensitivity_analysis_score": [
+      "correlation-analysis",
+      "sensitivity-analysis"
+    ],
+    "spatial_clusters_score": [
+      "correlation-analysis",
+      "spatial-clusters"
+    ],
+    "trend_analysis_score": [
+      "correlation-analysis",
+      "trend-analysis"
     ],
     "demographic_score": [
       "demographic-insights"
@@ -1617,6 +2133,39 @@
     "dimensionality_score": [
       "dimensionality-insights"
     ],
+    "feature_compression_score": [
+      "dimensionality-insights"
+    ],
+    "component_significance_score": [
+      "dimensionality-insights"
+    ],
+    "feature_relationship_strength_score": [
+      "dimensionality-insights"
+    ],
+    "dimensionality_reduction_benefit_score": [
+      "dimensionality-insights"
+    ],
+    "data_complexity_score": [
+      "dimensionality-insights"
+    ],
+    "feature_importance_clarity_score": [
+      "dimensionality-insights"
+    ],
+    "high_compression_efficiency": [
+      "dimensionality-insights"
+    ],
+    "strong_feature_relationships": [
+      "dimensionality-insights"
+    ],
+    "clear_feature_hierarchy": [
+      "dimensionality-insights"
+    ],
+    "significant_dimensionality_reduction": [
+      "dimensionality-insights"
+    ],
+    "data_complexity_category": [
+      "dimensionality-insights"
+    ],
     "ensemble_performance_score": [
       "ensemble-analysis"
     ],
@@ -1633,6 +2182,27 @@
       "ensemble-analysis"
     ],
     "ensemble_strength_score": [
+      "ensemble-analysis"
+    ],
+    "ensemble_confidence_score": [
+      "ensemble-analysis"
+    ],
+    "prediction_precision_score": [
+      "ensemble-analysis"
+    ],
+    "ensemble_opportunity_score": [
+      "ensemble-analysis"
+    ],
+    "model_component_strength_score": [
+      "ensemble-analysis"
+    ],
+    "ensemble_reliability_score": [
+      "ensemble-analysis"
+    ],
+    "high_performance_prediction": [
+      "ensemble-analysis"
+    ],
+    "exceptional_confidence": [
       "ensemble-analysis"
     ],
     "importance_score": [
@@ -1665,31 +2235,49 @@
     "selection_reasoning": [
       "model-selection"
     ],
-    "model_selection_score": [
+    "recommendation_confidence_score": [
+      "model-selection"
+    ],
+    "algorithm_suitability_score": [
+      "model-selection"
+    ],
+    "model_performance_prediction_score": [
+      "model-selection"
+    ],
+    "interpretability_benefit_score": [
+      "model-selection"
+    ],
+    "alternative_algorithm_score": [
+      "model-selection"
+    ],
+    "selection_reliability_score": [
+      "model-selection"
+    ],
+    "high_confidence_recommendation": [
+      "model-selection"
+    ],
+    "optimal_algorithm_match": [
+      "model-selection"
+    ],
+    "interpretable_choice": [
+      "model-selection"
+    ],
+    "high_performance_expected": [
+      "model-selection"
+    ],
+    "algorithm_category": [
       "model-selection"
     ],
     "outlier_score": [
       "outlier-detection"
     ],
-    "outlier_detection_score": [
-      "outlier-detection"
-    ],
     "predictive_score": [
-      "predictive-modeling"
-    ],
-    "predictive_modeling_score": [
       "predictive-modeling"
     ],
     "scenario_score": [
       "scenario-analysis"
     ],
-    "scenario_analysis_score": [
-      "scenario-analysis"
-    ],
     "segment_score": [
-      "segment-profiling"
-    ],
-    "segment_profiling_score": [
       "segment-profiling"
     ],
     "sensitivity_score": [
@@ -1706,9 +2294,6 @@
     ],
     "cluster_label": [
       "spatial-clusters"
-    ],
-    "strategic_score": [
-      "strategic-analysis"
     ],
     "strategic_value_score": [
       "strategic-analysis"

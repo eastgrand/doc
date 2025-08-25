@@ -1,0 +1,2703 @@
+{
+  "xgboost": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "xgboost",
+    "target_variable": "MP12207A_B_P",
+    "training_duration_seconds": 3.924166,
+    "data_info": {
+      "total_records": 1804,
+      "features_used": 49,
+      "train_records": 1082,
+      "test_records": 361
+    },
+    "hyperparameters": {
+      "n_estimators": 300,
+      "max_depth": 5,
+      "learning_rate": 0.1,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42
+    },
+    "performance": {
+      "r2_score": 0.9732417424429205,
+      "rmse": 0.34672788459236764,
+      "mae": 0.17512027269656255,
+      "mape": Infinity,
+      "train_r2": 0.9999486878574568,
+      "train_rmse": 0.015185523269320633,
+      "overfitting_ratio": 1.0274412247747406
+    },
+    "feature_importance": [
+      {
+        "feature": "MP13029A_B",
+        "importance": 0.264697402715683,
+        "rank": 1
+      },
+      {
+        "feature": "MP12097A_B",
+        "importance": 0.08870681375265121,
+        "rank": 2
+      },
+      {
+        "feature": "MP13023A_B",
+        "importance": 0.03958568349480629,
+        "rank": 3
+      },
+      {
+        "feature": "MP12207A_B_I",
+        "importance": 0.03890039026737213,
+        "rank": 4
+      },
+      {
+        "feature": "thematic_value",
+        "importance": 0.012684113346040249,
+        "rank": 5
+      },
+      {
+        "feature": "MP12097A_B_P",
+        "importance": 0.011592463590204716,
+        "rank": 6
+      },
+      {
+        "feature": "MP28591A_B_P",
+        "importance": 0.006561770103871822,
+        "rank": 7
+      },
+      {
+        "feature": "GENZ_FY_P",
+        "importance": 0.0043899076990783215,
+        "rank": 8
+      },
+      {
+        "feature": "GENALPHACY",
+        "importance": 0.004096646327525377,
+        "rank": 9
+      },
+      {
+        "feature": "MP13023A_B_P",
+        "importance": 0.003169021336361766,
+        "rank": 10
+      },
+      {
+        "feature": "MP12205A_B_P",
+        "importance": 0.0028464002534747124,
+        "rank": 11
+      },
+      {
+        "feature": "MP13029A_B_P",
+        "importance": 0.0028323261067271233,
+        "rank": 12
+      },
+      {
+        "feature": "MP14029A_B_I",
+        "importance": 0.002310663228854537,
+        "rank": 13
+      },
+      {
+        "feature": "MEDAGE_FY",
+        "importance": 0.0023052857723087072,
+        "rank": 14
+      },
+      {
+        "feature": "MP13023A_B_I",
+        "importance": 0.0022327029146254063,
+        "rank": 15
+      },
+      {
+        "feature": "MP13029A_B_I",
+        "importance": 0.0021449588239192963,
+        "rank": 16
+      },
+      {
+        "feature": "MP12206A_B_P",
+        "importance": 0.0019790425430983305,
+        "rank": 17
+      },
+      {
+        "feature": "MP12205A_B_I",
+        "importance": 0.0018325994024053216,
+        "rank": 18
+      },
+      {
+        "feature": "MP14029A_B_P",
+        "importance": 0.0017560662236064672,
+        "rank": 19
+      },
+      {
+        "feature": "MP13026A_B_I",
+        "importance": 0.0013843445340171456,
+        "rank": 20
+      },
+      {
+        "feature": "MP12206A_B_I",
+        "importance": 0.0013256279053166509,
+        "rank": 21
+      },
+      {
+        "feature": "MP28591A_B_I",
+        "importance": 0.0010622786357998848,
+        "rank": 22
+      },
+      {
+        "feature": "MP12207A_B",
+        "importance": 0.0009974128333851695,
+        "rank": 23
+      },
+      {
+        "feature": "TOTPOP_CY",
+        "importance": 0.0009215149912051857,
+        "rank": 24
+      },
+      {
+        "feature": "GENZ_CY",
+        "importance": 0.0009032578091137111,
+        "rank": 25
+      },
+      {
+        "feature": "MP13026A_B_P",
+        "importance": 0.0008030859171412885,
+        "rank": 26
+      },
+      {
+        "feature": "GENALPHACY_P",
+        "importance": 0.0006499799783341587,
+        "rank": 27
+      },
+      {
+        "feature": "GENALPHAFY_P",
+        "importance": 0.0006248079007491469,
+        "rank": 28
+      },
+      {
+        "feature": "Shape__Length",
+        "importance": 0.0006038842257112265,
+        "rank": 29
+      },
+      {
+        "feature": "MEDHINC_CY",
+        "importance": 0.0005796439945697784,
+        "rank": 30
+      },
+      {
+        "feature": "MEDAGE_CY",
+        "importance": 0.000576155842281878,
+        "rank": 31
+      },
+      {
+        "feature": "MP12206A_B",
+        "importance": 0.0005439536762423813,
+        "rank": 32
+      },
+      {
+        "feature": "MP13019A_B",
+        "importance": 0.0005111731588840485,
+        "rank": 33
+      },
+      {
+        "feature": "MP13026A_B",
+        "importance": 0.00043910869862884283,
+        "rank": 34
+      },
+      {
+        "feature": "DIVINDX_FY",
+        "importance": 0.00040162436198443174,
+        "rank": 35
+      },
+      {
+        "feature": "MEDHINC_FY",
+        "importance": 0.0003940915921702981,
+        "rank": 36
+      },
+      {
+        "feature": "MP14029A_B",
+        "importance": 0.00037837441777810454,
+        "rank": 37
+      },
+      {
+        "feature": "DIVINDX_CY",
+        "importance": 0.00036611640825867653,
+        "rank": 38
+      },
+      {
+        "feature": "GENZ_FY",
+        "importance": 0.0003171036660205573,
+        "rank": 39
+      },
+      {
+        "feature": "GENZ_CY_P",
+        "importance": 0.00028397448477335274,
+        "rank": 40
+      },
+      {
+        "feature": "TOTPOP_FY",
+        "importance": 0.0002709170221351087,
+        "rank": 41
+      },
+      {
+        "feature": "MP28591A_B",
+        "importance": 0.00025601708330214024,
+        "rank": 42
+      },
+      {
+        "feature": "GENALPHAFY",
+        "importance": 0.0002540342102292925,
+        "rank": 43
+      },
+      {
+        "feature": "ZIP",
+        "importance": 0.00016316966502927244,
+        "rank": 44
+      },
+      {
+        "feature": "MP28646A_B",
+        "importance": 0.0001441266358597204,
+        "rank": 45
+      },
+      {
+        "feature": "MP12205A_B",
+        "importance": 0.00012124078057240695,
+        "rank": 46
+      },
+      {
+        "feature": "LATITUDE",
+        "importance": 0.0001142933324445039,
+        "rank": 47
+      },
+      {
+        "feature": "ZIP4",
+        "importance": 4.148699372308329e-05,
+        "rank": 48
+      },
+      {
+        "feature": "LONGITUDE",
+        "importance": 2.284112633788027e-05,
+        "rank": 49
+      }
+    ],
+    "shap_analysis": {
+      "shap_importance": [
+        {
+          "feature": "MP12097A_B_P",
+          "mean_shap_value": 0.37790992856025696,
+          "rank": 1
+        },
+        {
+          "feature": "MP12207A_B_I",
+          "mean_shap_value": 0.26033860445022583,
+          "rank": 2
+        },
+        {
+          "feature": "MP28591A_B_P",
+          "mean_shap_value": 0.13110630214214325,
+          "rank": 3
+        },
+        {
+          "feature": "MP13029A_B",
+          "mean_shap_value": 0.1074889600276947,
+          "rank": 4
+        },
+        {
+          "feature": "thematic_value",
+          "mean_shap_value": 0.049892958253622055,
+          "rank": 5
+        },
+        {
+          "feature": "MP12097A_B",
+          "mean_shap_value": 0.04773922264575958,
+          "rank": 6
+        },
+        {
+          "feature": "MP13023A_B_P",
+          "mean_shap_value": 0.047472186386585236,
+          "rank": 7
+        },
+        {
+          "feature": "GENZ_FY_P",
+          "mean_shap_value": 0.04233960062265396,
+          "rank": 8
+        },
+        {
+          "feature": "MP14029A_B_P",
+          "mean_shap_value": 0.04064517840743065,
+          "rank": 9
+        },
+        {
+          "feature": "MP12205A_B_P",
+          "mean_shap_value": 0.036193665117025375,
+          "rank": 10
+        },
+        {
+          "feature": "MP12206A_B_P",
+          "mean_shap_value": 0.031048273667693138,
+          "rank": 11
+        },
+        {
+          "feature": "MP14029A_B_I",
+          "mean_shap_value": 0.027915501967072487,
+          "rank": 12
+        },
+        {
+          "feature": "MP13029A_B_P",
+          "mean_shap_value": 0.027614831924438477,
+          "rank": 13
+        },
+        {
+          "feature": "MP13023A_B_I",
+          "mean_shap_value": 0.02686845324933529,
+          "rank": 14
+        },
+        {
+          "feature": "MP12205A_B_I",
+          "mean_shap_value": 0.02373593859374523,
+          "rank": 15
+        },
+        {
+          "feature": "MP13026A_B_P",
+          "mean_shap_value": 0.01982087455689907,
+          "rank": 16
+        },
+        {
+          "feature": "MP13023A_B",
+          "mean_shap_value": 0.017664551734924316,
+          "rank": 17
+        },
+        {
+          "feature": "MP13026A_B_I",
+          "mean_shap_value": 0.01537313126027584,
+          "rank": 18
+        },
+        {
+          "feature": "MEDHINC_CY",
+          "mean_shap_value": 0.01360954251140356,
+          "rank": 19
+        },
+        {
+          "feature": "MP13029A_B_I",
+          "mean_shap_value": 0.012973818928003311,
+          "rank": 20
+        },
+        {
+          "feature": "DIVINDX_CY",
+          "mean_shap_value": 0.012338230386376381,
+          "rank": 21
+        },
+        {
+          "feature": "MEDAGE_FY",
+          "mean_shap_value": 0.012303781695663929,
+          "rank": 22
+        },
+        {
+          "feature": "MP12206A_B_I",
+          "mean_shap_value": 0.011895768344402313,
+          "rank": 23
+        },
+        {
+          "feature": "MEDHINC_FY",
+          "mean_shap_value": 0.011248968541622162,
+          "rank": 24
+        },
+        {
+          "feature": "Shape__Length",
+          "mean_shap_value": 0.01122281327843666,
+          "rank": 25
+        },
+        {
+          "feature": "DIVINDX_FY",
+          "mean_shap_value": 0.00951473694294691,
+          "rank": 26
+        },
+        {
+          "feature": "MEDAGE_CY",
+          "mean_shap_value": 0.008657321333885193,
+          "rank": 27
+        },
+        {
+          "feature": "MP12207A_B",
+          "mean_shap_value": 0.007843481376767159,
+          "rank": 28
+        },
+        {
+          "feature": "GENZ_CY_P",
+          "mean_shap_value": 0.007729718461632729,
+          "rank": 29
+        },
+        {
+          "feature": "GENALPHACY",
+          "mean_shap_value": 0.007641076575964689,
+          "rank": 30
+        },
+        {
+          "feature": "GENALPHACY_P",
+          "mean_shap_value": 0.0072362395003438,
+          "rank": 31
+        },
+        {
+          "feature": "MP13026A_B",
+          "mean_shap_value": 0.005056862253695726,
+          "rank": 32
+        },
+        {
+          "feature": "TOTPOP_CY",
+          "mean_shap_value": 0.005046391393989325,
+          "rank": 33
+        },
+        {
+          "feature": "GENALPHAFY_P",
+          "mean_shap_value": 0.004808024037629366,
+          "rank": 34
+        },
+        {
+          "feature": "MP12206A_B",
+          "mean_shap_value": 0.003739685518667102,
+          "rank": 35
+        },
+        {
+          "feature": "MP13019A_B",
+          "mean_shap_value": 0.0031592973973602057,
+          "rank": 36
+        },
+        {
+          "feature": "GENALPHAFY",
+          "mean_shap_value": 0.0029121767729520798,
+          "rank": 37
+        },
+        {
+          "feature": "GENZ_CY",
+          "mean_shap_value": 0.0028559479396790266,
+          "rank": 38
+        },
+        {
+          "feature": "MP28591A_B",
+          "mean_shap_value": 0.0028384653851389885,
+          "rank": 39
+        },
+        {
+          "feature": "MP14029A_B",
+          "mean_shap_value": 0.002481326926499605,
+          "rank": 40
+        },
+        {
+          "feature": "GENZ_FY",
+          "mean_shap_value": 0.0024304476100951433,
+          "rank": 41
+        },
+        {
+          "feature": "MP28591A_B_I",
+          "mean_shap_value": 0.0023201596923172474,
+          "rank": 42
+        },
+        {
+          "feature": "MP12205A_B",
+          "mean_shap_value": 0.0022722571156919003,
+          "rank": 43
+        },
+        {
+          "feature": "MP28646A_B",
+          "mean_shap_value": 0.002171205123886466,
+          "rank": 44
+        },
+        {
+          "feature": "TOTPOP_FY",
+          "mean_shap_value": 0.0012357491068542004,
+          "rank": 45
+        },
+        {
+          "feature": "ZIP",
+          "mean_shap_value": 0.0007688317564316094,
+          "rank": 46
+        },
+        {
+          "feature": "ZIP4",
+          "mean_shap_value": 0.0006335965590551496,
+          "rank": 47
+        },
+        {
+          "feature": "LATITUDE",
+          "mean_shap_value": 0.00018081674352288246,
+          "rank": 48
+        },
+        {
+          "feature": "LONGITUDE",
+          "mean_shap_value": 0.0001707683113636449,
+          "rank": 49
+        }
+      ],
+      "sample_size": 100,
+      "base_value": 6.32342004776001
+    },
+    "cross_validation": {
+      "mean_cv_score": 0.9593692884043781,
+      "std_cv_score": 0.010780585342624,
+      "cv_scores": [
+        0.952497049960261,
+        0.9543735609263286,
+        0.9561781553670294,
+        0.9807795544827477,
+        0.9530181212855238
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/xgboost_model/model.joblib",
+      "features_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/xgboost_model/features.json",
+      "hyperparameters_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/xgboost_model/hyperparameters.json",
+      "model_directory": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/xgboost_model"
+    },
+    "feature_columns": [
+      "MP12207A_B_I",
+      "MP12097A_B_P",
+      "MP12206A_B_I",
+      "MP12205A_B_P",
+      "MP12206A_B_P",
+      "MP13029A_B_P",
+      "GENZ_FY_P",
+      "DIVINDX_CY",
+      "DIVINDX_FY",
+      "MP28591A_B_P",
+      "MP13029A_B_I",
+      "GENZ_CY_P",
+      "thematic_value",
+      "MP28591A_B_I",
+      "MP12207A_B",
+      "MEDAGE_CY",
+      "MP12206A_B",
+      "MP12205A_B_I",
+      "MEDAGE_FY",
+      "MP14029A_B_P",
+      "MP12097A_B",
+      "GENZ_FY",
+      "MP12205A_B",
+      "GENZ_CY",
+      "GENALPHACY",
+      "GENALPHAFY_P",
+      "GENALPHAFY",
+      "MP13029A_B",
+      "MP28591A_B",
+      "MP14029A_B",
+      "TOTPOP_FY",
+      "TOTPOP_CY",
+      "MP14029A_B_I",
+      "GENALPHACY_P",
+      "MP28646A_B",
+      "MP13026A_B",
+      "MP13023A_B",
+      "MP13023A_B_I",
+      "MP13019A_B",
+      "MP13023A_B_P",
+      "MP13026A_B_P",
+      "MP13026A_B_I",
+      "Shape__Length",
+      "ZIP4",
+      "ZIP",
+      "LATITUDE",
+      "LONGITUDE",
+      "MEDHINC_CY",
+      "MEDHINC_FY"
+    ]
+  },
+  "random_forest": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "random_forest",
+    "target_variable": "MP12207A_B_P",
+    "training_duration_seconds": 10.939034,
+    "data_info": {
+      "total_records": 1804,
+      "features_used": 49,
+      "train_records": 1082,
+      "test_records": 361
+    },
+    "hyperparameters": {
+      "n_estimators": 200,
+      "max_depth": 10,
+      "min_samples_split": 5,
+      "min_samples_leaf": 2,
+      "random_state": 42
+    },
+    "performance": {
+      "r2_score": 0.9657045145735464,
+      "rmse": 0.3925349512300123,
+      "mae": 0.21061403354619884,
+      "mape": Infinity,
+      "train_r2": 0.9877234177907585,
+      "train_rmse": 0.23488669940369086,
+      "overfitting_ratio": 1.0228008701263405
+    },
+    "feature_importance": [
+      {
+        "feature": "MP12207A_B_I",
+        "importance": 0.09075115139197563,
+        "rank": 1
+      },
+      {
+        "feature": "MP13029A_B",
+        "importance": 0.05295911955799915,
+        "rank": 2
+      },
+      {
+        "feature": "MP12097A_B_P",
+        "importance": 0.02259217607921527,
+        "rank": 3
+      },
+      {
+        "feature": "MP28591A_B_P",
+        "importance": 0.014421431034440487,
+        "rank": 4
+      },
+      {
+        "feature": "MP12097A_B",
+        "importance": 0.01159924381142228,
+        "rank": 5
+      },
+      {
+        "feature": "GENZ_FY",
+        "importance": 0.005913635521848586,
+        "rank": 6
+      },
+      {
+        "feature": "MP13023A_B_I",
+        "importance": 0.005697831187025936,
+        "rank": 7
+      },
+      {
+        "feature": "MP12206A_B_P",
+        "importance": 0.005368978512999912,
+        "rank": 8
+      },
+      {
+        "feature": "MEDAGE_FY",
+        "importance": 0.004306788022215857,
+        "rank": 9
+      },
+      {
+        "feature": "MP13023A_B_P",
+        "importance": 0.0038317962173565843,
+        "rank": 10
+      },
+      {
+        "feature": "MP14029A_B_P",
+        "importance": 0.0035620154757512786,
+        "rank": 11
+      },
+      {
+        "feature": "MP14029A_B_I",
+        "importance": 0.0030658923458858497,
+        "rank": 12
+      },
+      {
+        "feature": "MP28591A_B_I",
+        "importance": 0.0028388559673859096,
+        "rank": 13
+      },
+      {
+        "feature": "MP13029A_B_P",
+        "importance": 0.002716345554145765,
+        "rank": 14
+      },
+      {
+        "feature": "TOTPOP_CY",
+        "importance": 0.002664493732199113,
+        "rank": 15
+      },
+      {
+        "feature": "GENALPHAFY",
+        "importance": 0.002486496256708602,
+        "rank": 16
+      },
+      {
+        "feature": "thematic_value",
+        "importance": 0.0020342325390090526,
+        "rank": 17
+      },
+      {
+        "feature": "TOTPOP_FY",
+        "importance": 0.0018703918172497589,
+        "rank": 18
+      },
+      {
+        "feature": "GENZ_FY_P",
+        "importance": 0.0015001988785803917,
+        "rank": 19
+      },
+      {
+        "feature": "MP12205A_B_I",
+        "importance": 0.0013167547477395437,
+        "rank": 20
+      },
+      {
+        "feature": "GENALPHACY_P",
+        "importance": 0.0012883809159874634,
+        "rank": 21
+      },
+      {
+        "feature": "GENALPHAFY_P",
+        "importance": 0.0010476456254245974,
+        "rank": 22
+      },
+      {
+        "feature": "MP12205A_B_P",
+        "importance": 0.0010474246677742345,
+        "rank": 23
+      },
+      {
+        "feature": "MEDAGE_CY",
+        "importance": 0.000947240740920494,
+        "rank": 24
+      },
+      {
+        "feature": "MP13029A_B_I",
+        "importance": 0.0008741769166945751,
+        "rank": 25
+      },
+      {
+        "feature": "GENZ_CY_P",
+        "importance": 0.0007781905945960012,
+        "rank": 26
+      },
+      {
+        "feature": "MP13026A_B_P",
+        "importance": 0.0007533368154508383,
+        "rank": 27
+      },
+      {
+        "feature": "MP12206A_B_I",
+        "importance": 0.0006398897936467386,
+        "rank": 28
+      },
+      {
+        "feature": "MEDHINC_CY",
+        "importance": 0.0006365925215641792,
+        "rank": 29
+      },
+      {
+        "feature": "GENZ_CY",
+        "importance": 0.0005495310482537644,
+        "rank": 30
+      },
+      {
+        "feature": "MP13026A_B_I",
+        "importance": 0.0005224338091753687,
+        "rank": 31
+      },
+      {
+        "feature": "MEDHINC_FY",
+        "importance": 0.0005076060998304811,
+        "rank": 32
+      },
+      {
+        "feature": "Shape__Length",
+        "importance": 0.00048008036098753595,
+        "rank": 33
+      },
+      {
+        "feature": "MP13026A_B",
+        "importance": 0.00046446223875969703,
+        "rank": 34
+      },
+      {
+        "feature": "DIVINDX_FY",
+        "importance": 0.00037814898184160067,
+        "rank": 35
+      },
+      {
+        "feature": "DIVINDX_CY",
+        "importance": 0.0003546561656697841,
+        "rank": 36
+      },
+      {
+        "feature": "MP28591A_B",
+        "importance": 0.00027588733556630017,
+        "rank": 37
+      },
+      {
+        "feature": "MP13023A_B",
+        "importance": 0.0002665332550676942,
+        "rank": 38
+      },
+      {
+        "feature": "GENALPHACY",
+        "importance": 0.00024683243055611994,
+        "rank": 39
+      },
+      {
+        "feature": "MP12206A_B",
+        "importance": 0.00023728629293923062,
+        "rank": 40
+      },
+      {
+        "feature": "MP28646A_B",
+        "importance": 0.00020269929017725788,
+        "rank": 41
+      },
+      {
+        "feature": "MP13019A_B",
+        "importance": 0.00018569724435112163,
+        "rank": 42
+      },
+      {
+        "feature": "MP12205A_B",
+        "importance": 0.00016852702538302226,
+        "rank": 43
+      },
+      {
+        "feature": "MP12207A_B",
+        "importance": 0.00015708880597842235,
+        "rank": 44
+      },
+      {
+        "feature": "MP14029A_B",
+        "importance": 0.0001152598824831989,
+        "rank": 45
+      },
+      {
+        "feature": "LATITUDE",
+        "importance": 5.399713251967739e-05,
+        "rank": 46
+      },
+      {
+        "feature": "ZIP4",
+        "importance": 3.184255259982722e-05,
+        "rank": 47
+      },
+      {
+        "feature": "LONGITUDE",
+        "importance": 2.9963688303293926e-05,
+        "rank": 48
+      },
+      {
+        "feature": "ZIP",
+        "importance": 2.3121314087518483e-05,
+        "rank": 49
+      }
+    ],
+    "shap_analysis": {
+      "shap_importance": [
+        {
+          "feature": "MP12207A_B_I",
+          "mean_shap_value": 0.2166840682719062,
+          "rank": 1
+        },
+        {
+          "feature": "MP12097A_B_P",
+          "mean_shap_value": 0.13448294743661326,
+          "rank": 2
+        },
+        {
+          "feature": "MP28591A_B_P",
+          "mean_shap_value": 0.11587909801270085,
+          "rank": 3
+        },
+        {
+          "feature": "MP13029A_B",
+          "mean_shap_value": 0.07641667396465902,
+          "rank": 4
+        },
+        {
+          "feature": "MP28591A_B_I",
+          "mean_shap_value": 0.02889631900016766,
+          "rank": 5
+        },
+        {
+          "feature": "MP13029A_B_P",
+          "mean_shap_value": 0.02816534153741117,
+          "rank": 6
+        },
+        {
+          "feature": "thematic_value",
+          "mean_shap_value": 0.02251757885706949,
+          "rank": 7
+        },
+        {
+          "feature": "MEDAGE_FY",
+          "mean_shap_value": 0.022063950009621577,
+          "rank": 8
+        },
+        {
+          "feature": "MP14029A_B_I",
+          "mean_shap_value": 0.01913062172759234,
+          "rank": 9
+        },
+        {
+          "feature": "MP12097A_B",
+          "mean_shap_value": 0.01761117602610681,
+          "rank": 10
+        },
+        {
+          "feature": "MP14029A_B_P",
+          "mean_shap_value": 0.014319584657654356,
+          "rank": 11
+        },
+        {
+          "feature": "MP13023A_B_I",
+          "mean_shap_value": 0.013995557491631932,
+          "rank": 12
+        },
+        {
+          "feature": "MP13023A_B_P",
+          "mean_shap_value": 0.01253131025541771,
+          "rank": 13
+        },
+        {
+          "feature": "MP12206A_B_P",
+          "mean_shap_value": 0.01195505989648424,
+          "rank": 14
+        },
+        {
+          "feature": "GENZ_FY_P",
+          "mean_shap_value": 0.010251226323137796,
+          "rank": 15
+        },
+        {
+          "feature": "MP12205A_B_I",
+          "mean_shap_value": 0.008615348294243185,
+          "rank": 16
+        },
+        {
+          "feature": "GENZ_FY",
+          "mean_shap_value": 0.00851213047020381,
+          "rank": 17
+        },
+        {
+          "feature": "MP13029A_B_I",
+          "mean_shap_value": 0.008242234046274324,
+          "rank": 18
+        },
+        {
+          "feature": "MP12205A_B_P",
+          "mean_shap_value": 0.006348605230415869,
+          "rank": 19
+        },
+        {
+          "feature": "GENALPHACY_P",
+          "mean_shap_value": 0.005414821926898953,
+          "rank": 20
+        },
+        {
+          "feature": "Shape__Length",
+          "mean_shap_value": 0.0052897870506396485,
+          "rank": 21
+        },
+        {
+          "feature": "MEDAGE_CY",
+          "mean_shap_value": 0.004571971596239056,
+          "rank": 22
+        },
+        {
+          "feature": "TOTPOP_FY",
+          "mean_shap_value": 0.004406714955527327,
+          "rank": 23
+        },
+        {
+          "feature": "MEDHINC_CY",
+          "mean_shap_value": 0.004343209876469886,
+          "rank": 24
+        },
+        {
+          "feature": "TOTPOP_CY",
+          "mean_shap_value": 0.00413016459384794,
+          "rank": 25
+        },
+        {
+          "feature": "GENALPHAFY",
+          "mean_shap_value": 0.003789284104261708,
+          "rank": 26
+        },
+        {
+          "feature": "MP12206A_B_I",
+          "mean_shap_value": 0.0032841732836837805,
+          "rank": 27
+        },
+        {
+          "feature": "GENALPHAFY_P",
+          "mean_shap_value": 0.0030395730239066387,
+          "rank": 28
+        },
+        {
+          "feature": "GENZ_CY_P",
+          "mean_shap_value": 0.0029839578833099913,
+          "rank": 29
+        },
+        {
+          "feature": "MEDHINC_FY",
+          "mean_shap_value": 0.002946837016096622,
+          "rank": 30
+        },
+        {
+          "feature": "MP13026A_B_P",
+          "mean_shap_value": 0.002802730317790452,
+          "rank": 31
+        },
+        {
+          "feature": "DIVINDX_FY",
+          "mean_shap_value": 0.0023026035570058814,
+          "rank": 32
+        },
+        {
+          "feature": "MP13026A_B_I",
+          "mean_shap_value": 0.0022152769577397273,
+          "rank": 33
+        },
+        {
+          "feature": "MP13023A_B",
+          "mean_shap_value": 0.002214960227786941,
+          "rank": 34
+        },
+        {
+          "feature": "GENZ_CY",
+          "mean_shap_value": 0.002135361560289471,
+          "rank": 35
+        },
+        {
+          "feature": "MP28591A_B",
+          "mean_shap_value": 0.0016353547066389699,
+          "rank": 36
+        },
+        {
+          "feature": "DIVINDX_CY",
+          "mean_shap_value": 0.001499503496323065,
+          "rank": 37
+        },
+        {
+          "feature": "GENALPHACY",
+          "mean_shap_value": 0.0014916808931141493,
+          "rank": 38
+        },
+        {
+          "feature": "MP13026A_B",
+          "mean_shap_value": 0.0014009710123912096,
+          "rank": 39
+        },
+        {
+          "feature": "MP13019A_B",
+          "mean_shap_value": 0.0013780169066877413,
+          "rank": 40
+        },
+        {
+          "feature": "MP12205A_B",
+          "mean_shap_value": 0.0011593699069845918,
+          "rank": 41
+        },
+        {
+          "feature": "MP12207A_B",
+          "mean_shap_value": 0.0010805256909307704,
+          "rank": 42
+        },
+        {
+          "feature": "MP12206A_B",
+          "mean_shap_value": 0.0007771274963596806,
+          "rank": 43
+        },
+        {
+          "feature": "MP14029A_B",
+          "mean_shap_value": 0.0006272459809077371,
+          "rank": 44
+        },
+        {
+          "feature": "MP28646A_B",
+          "mean_shap_value": 0.000517394291494049,
+          "rank": 45
+        },
+        {
+          "feature": "ZIP4",
+          "mean_shap_value": 0.00041932396545560406,
+          "rank": 46
+        },
+        {
+          "feature": "LATITUDE",
+          "mean_shap_value": 0.00028894428291562416,
+          "rank": 47
+        },
+        {
+          "feature": "LONGITUDE",
+          "mean_shap_value": 0.0001307347010826964,
+          "rank": 48
+        },
+        {
+          "feature": "ZIP",
+          "mean_shap_value": 0.0001069507625789271,
+          "rank": 49
+        }
+      ],
+      "sample_size": 100,
+      "base_value": 6.310758456561922
+    },
+    "cross_validation": {
+      "mean_cv_score": 0.9533882969462704,
+      "std_cv_score": 0.012361165464255175,
+      "cv_scores": [
+        0.9400404808108626,
+        0.9495446397538496,
+        0.965535411274064,
+        0.9702418929258768,
+        0.9415790599666989
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/random_forest_model/model.joblib",
+      "features_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/random_forest_model/features.json",
+      "hyperparameters_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/random_forest_model/hyperparameters.json",
+      "model_directory": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/random_forest_model"
+    },
+    "feature_columns": [
+      "MP12207A_B_I",
+      "MP12097A_B_P",
+      "MP12206A_B_I",
+      "MP12205A_B_P",
+      "MP12206A_B_P",
+      "MP13029A_B_P",
+      "GENZ_FY_P",
+      "DIVINDX_CY",
+      "DIVINDX_FY",
+      "MP28591A_B_P",
+      "MP13029A_B_I",
+      "GENZ_CY_P",
+      "thematic_value",
+      "MP28591A_B_I",
+      "MP12207A_B",
+      "MEDAGE_CY",
+      "MP12206A_B",
+      "MP12205A_B_I",
+      "MEDAGE_FY",
+      "MP14029A_B_P",
+      "MP12097A_B",
+      "GENZ_FY",
+      "MP12205A_B",
+      "GENZ_CY",
+      "GENALPHACY",
+      "GENALPHAFY_P",
+      "GENALPHAFY",
+      "MP13029A_B",
+      "MP28591A_B",
+      "MP14029A_B",
+      "TOTPOP_FY",
+      "TOTPOP_CY",
+      "MP14029A_B_I",
+      "GENALPHACY_P",
+      "MP28646A_B",
+      "MP13026A_B",
+      "MP13023A_B",
+      "MP13023A_B_I",
+      "MP13019A_B",
+      "MP13023A_B_P",
+      "MP13026A_B_P",
+      "MP13026A_B_I",
+      "Shape__Length",
+      "ZIP4",
+      "ZIP",
+      "LATITUDE",
+      "LONGITUDE",
+      "MEDHINC_CY",
+      "MEDHINC_FY"
+    ]
+  },
+  "linear_regression": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "linear_regression",
+    "target_variable": "MP12207A_B_P",
+    "training_duration_seconds": 0.961842,
+    "data_info": {
+      "total_records": 1804,
+      "features_used": 49,
+      "train_records": 1082,
+      "test_records": 361
+    },
+    "hyperparameters": {},
+    "performance": {
+      "r2_score": 0.9432472233694114,
+      "rmse": 0.5049558550041803,
+      "mae": 0.28410386347509614,
+      "mape": Infinity,
+      "train_r2": 0.9600674432697648,
+      "train_rmse": 0.4236266230359583,
+      "overfitting_ratio": 1.017832249577443
+    },
+    "feature_importance": [
+      {
+        "feature": "MP12207A_B_I",
+        "importance": 1.179981078984192,
+        "rank": 1
+      },
+      {
+        "feature": "MP12097A_B",
+        "importance": 0.7922971510537737,
+        "rank": 2
+      },
+      {
+        "feature": "MP28591A_B",
+        "importance": 0.6909671848308201,
+        "rank": 3
+      },
+      {
+        "feature": "MP12207A_B",
+        "importance": 0.643568579046276,
+        "rank": 4
+      },
+      {
+        "feature": "MP13029A_B",
+        "importance": 0.6411762009232906,
+        "rank": 5
+      },
+      {
+        "feature": "GENZ_FY",
+        "importance": 0.5754734715921126,
+        "rank": 6
+      },
+      {
+        "feature": "MP28646A_B",
+        "importance": 0.571819254901283,
+        "rank": 7
+      },
+      {
+        "feature": "MP12206A_B_P",
+        "importance": 0.4842786135682745,
+        "rank": 8
+      },
+      {
+        "feature": "MP13023A_B",
+        "importance": 0.46024479451756706,
+        "rank": 9
+      },
+      {
+        "feature": "GENALPHACY",
+        "importance": 0.4070315660366164,
+        "rank": 10
+      },
+      {
+        "feature": "MP13023A_B_P",
+        "importance": 0.3870918225688005,
+        "rank": 11
+      },
+      {
+        "feature": "GENALPHAFY",
+        "importance": 0.3808968700896467,
+        "rank": 12
+      },
+      {
+        "feature": "MP13029A_B_I",
+        "importance": 0.3627148467730344,
+        "rank": 13
+      },
+      {
+        "feature": "GENZ_CY",
+        "importance": 0.3509808702732091,
+        "rank": 14
+      },
+      {
+        "feature": "MP12097A_B_P",
+        "importance": 0.3458268556320806,
+        "rank": 15
+      },
+      {
+        "feature": "MP12206A_B_I",
+        "importance": 0.26325356574855685,
+        "rank": 16
+      },
+      {
+        "feature": "DIVINDX_CY",
+        "importance": 0.2580463026413452,
+        "rank": 17
+      },
+      {
+        "feature": "MP14029A_B_P",
+        "importance": 0.24282762127749358,
+        "rank": 18
+      },
+      {
+        "feature": "MP13029A_B_P",
+        "importance": 0.23967905839309048,
+        "rank": 19
+      },
+      {
+        "feature": "DIVINDX_FY",
+        "importance": 0.22960970448250392,
+        "rank": 20
+      },
+      {
+        "feature": "MP12205A_B_P",
+        "importance": 0.22423475665461381,
+        "rank": 21
+      },
+      {
+        "feature": "MP14029A_B",
+        "importance": 0.20923224504515564,
+        "rank": 22
+      },
+      {
+        "feature": "GENALPHACY_P",
+        "importance": 0.2004926051382128,
+        "rank": 23
+      },
+      {
+        "feature": "MP13026A_B_I",
+        "importance": 0.17859730195203105,
+        "rank": 24
+      },
+      {
+        "feature": "MP12205A_B",
+        "importance": 0.1781080088288336,
+        "rank": 25
+      },
+      {
+        "feature": "TOTPOP_CY",
+        "importance": 0.1596941936063927,
+        "rank": 26
+      },
+      {
+        "feature": "MP13023A_B_I",
+        "importance": 0.1510494142742433,
+        "rank": 27
+      },
+      {
+        "feature": "MP28591A_B_P",
+        "importance": 0.14009149497628925,
+        "rank": 28
+      },
+      {
+        "feature": "GENZ_FY_P",
+        "importance": 0.13533979125404055,
+        "rank": 29
+      },
+      {
+        "feature": "MP14029A_B_I",
+        "importance": 0.10828170720843033,
+        "rank": 30
+      },
+      {
+        "feature": "GENALPHAFY_P",
+        "importance": 0.09652958528258448,
+        "rank": 31
+      },
+      {
+        "feature": "TOTPOP_FY",
+        "importance": 0.08531126107399045,
+        "rank": 32
+      },
+      {
+        "feature": "MP13026A_B_P",
+        "importance": 0.07590824477071251,
+        "rank": 33
+      },
+      {
+        "feature": "MEDAGE_CY",
+        "importance": 0.06411266713618585,
+        "rank": 34
+      },
+      {
+        "feature": "MEDHINC_CY",
+        "importance": 0.05967393313597613,
+        "rank": 35
+      },
+      {
+        "feature": "LATITUDE",
+        "importance": 0.052772953808401246,
+        "rank": 36
+      },
+      {
+        "feature": "MEDAGE_FY",
+        "importance": 0.05086812880084535,
+        "rank": 37
+      },
+      {
+        "feature": "MP13019A_B",
+        "importance": 0.0352012917969412,
+        "rank": 38
+      },
+      {
+        "feature": "GENZ_CY_P",
+        "importance": 0.03473840962339842,
+        "rank": 39
+      },
+      {
+        "feature": "MEDHINC_FY",
+        "importance": 0.03376887154202879,
+        "rank": 40
+      },
+      {
+        "feature": "LONGITUDE",
+        "importance": 0.03161884893992445,
+        "rank": 41
+      },
+      {
+        "feature": "MP12205A_B_I",
+        "importance": 0.031596645222361275,
+        "rank": 42
+      },
+      {
+        "feature": "MP12206A_B",
+        "importance": 0.030195343011177517,
+        "rank": 43
+      },
+      {
+        "feature": "Shape__Length",
+        "importance": 0.02122213744599183,
+        "rank": 44
+      },
+      {
+        "feature": "ZIP4",
+        "importance": 0.019207659820393574,
+        "rank": 45
+      },
+      {
+        "feature": "ZIP",
+        "importance": 0.015016988421382826,
+        "rank": 46
+      },
+      {
+        "feature": "MP28591A_B_I",
+        "importance": 0.01252136105361799,
+        "rank": 47
+      },
+      {
+        "feature": "thematic_value",
+        "importance": 0.012521361053612914,
+        "rank": 48
+      },
+      {
+        "feature": "MP13026A_B",
+        "importance": 0.006667075271214573,
+        "rank": 49
+      }
+    ],
+    "shap_analysis": {},
+    "cross_validation": {
+      "mean_cv_score": 0.9240249087130726,
+      "std_cv_score": 0.03425709029988128,
+      "cv_scores": [
+        0.8659744163023326,
+        0.9511202030495725,
+        0.9461311758951166,
+        0.9533078505512267,
+        0.9035908977671147
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/linear_regression_model/model.joblib",
+      "features_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/linear_regression_model/features.json",
+      "hyperparameters_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/linear_regression_model/hyperparameters.json",
+      "model_directory": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/linear_regression_model"
+    },
+    "feature_columns": [
+      "MP12207A_B_I",
+      "MP12097A_B_P",
+      "MP12206A_B_I",
+      "MP12205A_B_P",
+      "MP12206A_B_P",
+      "MP13029A_B_P",
+      "GENZ_FY_P",
+      "DIVINDX_CY",
+      "DIVINDX_FY",
+      "MP28591A_B_P",
+      "MP13029A_B_I",
+      "GENZ_CY_P",
+      "thematic_value",
+      "MP28591A_B_I",
+      "MP12207A_B",
+      "MEDAGE_CY",
+      "MP12206A_B",
+      "MP12205A_B_I",
+      "MEDAGE_FY",
+      "MP14029A_B_P",
+      "MP12097A_B",
+      "GENZ_FY",
+      "MP12205A_B",
+      "GENZ_CY",
+      "GENALPHACY",
+      "GENALPHAFY_P",
+      "GENALPHAFY",
+      "MP13029A_B",
+      "MP28591A_B",
+      "MP14029A_B",
+      "TOTPOP_FY",
+      "TOTPOP_CY",
+      "MP14029A_B_I",
+      "GENALPHACY_P",
+      "MP28646A_B",
+      "MP13026A_B",
+      "MP13023A_B",
+      "MP13023A_B_I",
+      "MP13019A_B",
+      "MP13023A_B_P",
+      "MP13026A_B_P",
+      "MP13026A_B_I",
+      "Shape__Length",
+      "ZIP4",
+      "ZIP",
+      "LATITUDE",
+      "LONGITUDE",
+      "MEDHINC_CY",
+      "MEDHINC_FY"
+    ]
+  },
+  "ridge_regression": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "ridge_regression",
+    "target_variable": "MP12207A_B_P",
+    "training_duration_seconds": 0.074965,
+    "data_info": {
+      "total_records": 1804,
+      "features_used": 49,
+      "train_records": 1082,
+      "test_records": 361
+    },
+    "hyperparameters": {
+      "alpha": 1.0,
+      "random_state": 42
+    },
+    "performance": {
+      "r2_score": 0.945460564368839,
+      "rmse": 0.49501137055184596,
+      "mae": 0.28458858899118905,
+      "mape": Infinity,
+      "train_r2": 0.9594101589685455,
+      "train_rmse": 0.4270988109157172,
+      "overfitting_ratio": 1.0147542849754065
+    },
+    "feature_importance": [
+      {
+        "feature": "MP12207A_B_I",
+        "importance": 1.0816450889621025,
+        "rank": 1
+      },
+      {
+        "feature": "MP28591A_B",
+        "importance": 0.6027208420311475,
+        "rank": 2
+      },
+      {
+        "feature": "MP13029A_B",
+        "importance": 0.5279707289203516,
+        "rank": 3
+      },
+      {
+        "feature": "MP12097A_B",
+        "importance": 0.5210974139678561,
+        "rank": 4
+      },
+      {
+        "feature": "MP13023A_B",
+        "importance": 0.5050415452052485,
+        "rank": 5
+      },
+      {
+        "feature": "MP12207A_B",
+        "importance": 0.4643801489139261,
+        "rank": 6
+      },
+      {
+        "feature": "MP12097A_B_P",
+        "importance": 0.4582759720242559,
+        "rank": 7
+      },
+      {
+        "feature": "MP13029A_B_I",
+        "importance": 0.4077982423055381,
+        "rank": 8
+      },
+      {
+        "feature": "MP28646A_B",
+        "importance": 0.4058001698992452,
+        "rank": 9
+      },
+      {
+        "feature": "MP12206A_B_P",
+        "importance": 0.3952469574692991,
+        "rank": 10
+      },
+      {
+        "feature": "GENZ_FY",
+        "importance": 0.3629651486775651,
+        "rank": 11
+      },
+      {
+        "feature": "MP13023A_B_P",
+        "importance": 0.306664578531495,
+        "rank": 12
+      },
+      {
+        "feature": "MP14029A_B_P",
+        "importance": 0.29375412857083416,
+        "rank": 13
+      },
+      {
+        "feature": "DIVINDX_CY",
+        "importance": 0.2900974774123237,
+        "rank": 14
+      },
+      {
+        "feature": "MP14029A_B",
+        "importance": 0.2583352954962039,
+        "rank": 15
+      },
+      {
+        "feature": "DIVINDX_FY",
+        "importance": 0.25603212215685933,
+        "rank": 16
+      },
+      {
+        "feature": "MP13029A_B_P",
+        "importance": 0.24385388871627892,
+        "rank": 17
+      },
+      {
+        "feature": "GENZ_CY",
+        "importance": 0.24274308165258524,
+        "rank": 18
+      },
+      {
+        "feature": "MP12205A_B",
+        "importance": 0.2381672170009803,
+        "rank": 19
+      },
+      {
+        "feature": "MP12206A_B_I",
+        "importance": 0.23572075689575153,
+        "rank": 20
+      },
+      {
+        "feature": "MP12205A_B_P",
+        "importance": 0.21016292705142045,
+        "rank": 21
+      },
+      {
+        "feature": "MP13023A_B_I",
+        "importance": 0.20535330584961517,
+        "rank": 22
+      },
+      {
+        "feature": "TOTPOP_CY",
+        "importance": 0.1944005393829157,
+        "rank": 23
+      },
+      {
+        "feature": "GENALPHACY_P",
+        "importance": 0.16830292127350394,
+        "rank": 24
+      },
+      {
+        "feature": "MP28591A_B_P",
+        "importance": 0.16073830459305483,
+        "rank": 25
+      },
+      {
+        "feature": "MP13026A_B_P",
+        "importance": 0.1454099781170645,
+        "rank": 26
+      },
+      {
+        "feature": "MP14029A_B_I",
+        "importance": 0.13326690175312728,
+        "rank": 27
+      },
+      {
+        "feature": "GENZ_FY_P",
+        "importance": 0.1320884991831962,
+        "rank": 28
+      },
+      {
+        "feature": "MP13026A_B_I",
+        "importance": 0.10728998003942244,
+        "rank": 29
+      },
+      {
+        "feature": "GENALPHAFY_P",
+        "importance": 0.08396797889760083,
+        "rank": 30
+      },
+      {
+        "feature": "GENALPHAFY",
+        "importance": 0.0767286585484102,
+        "rank": 31
+      },
+      {
+        "feature": "GENALPHACY",
+        "importance": 0.06689477179584306,
+        "rank": 32
+      },
+      {
+        "feature": "MEDAGE_CY",
+        "importance": 0.0656341242005,
+        "rank": 33
+      },
+      {
+        "feature": "MEDHINC_CY",
+        "importance": 0.06456188152036552,
+        "rank": 34
+      },
+      {
+        "feature": "MP13026A_B",
+        "importance": 0.05667331856556463,
+        "rank": 35
+      },
+      {
+        "feature": "MEDAGE_FY",
+        "importance": 0.05037870406565119,
+        "rank": 36
+      },
+      {
+        "feature": "MEDHINC_FY",
+        "importance": 0.047375164553728054,
+        "rank": 37
+      },
+      {
+        "feature": "MP12205A_B_I",
+        "importance": 0.04615151811322753,
+        "rank": 38
+      },
+      {
+        "feature": "LATITUDE",
+        "importance": 0.04364961409770634,
+        "rank": 39
+      },
+      {
+        "feature": "MP13019A_B",
+        "importance": 0.03748217681139072,
+        "rank": 40
+      },
+      {
+        "feature": "GENZ_CY_P",
+        "importance": 0.036755869776374885,
+        "rank": 41
+      },
+      {
+        "feature": "LONGITUDE",
+        "importance": 0.029835923809822244,
+        "rank": 42
+      },
+      {
+        "feature": "Shape__Length",
+        "importance": 0.024666186561158217,
+        "rank": 43
+      },
+      {
+        "feature": "ZIP4",
+        "importance": 0.02042727144029016,
+        "rank": 44
+      },
+      {
+        "feature": "MP28591A_B_I",
+        "importance": 0.018163716139938176,
+        "rank": 45
+      },
+      {
+        "feature": "thematic_value",
+        "importance": 0.018163716139763583,
+        "rank": 46
+      },
+      {
+        "feature": "MP12206A_B",
+        "importance": 0.013352587184884069,
+        "rank": 47
+      },
+      {
+        "feature": "ZIP",
+        "importance": 0.009013175548574838,
+        "rank": 48
+      },
+      {
+        "feature": "TOTPOP_FY",
+        "importance": 0.0006197630018522319,
+        "rank": 49
+      }
+    ],
+    "shap_analysis": {},
+    "cross_validation": {
+      "mean_cv_score": 0.9269819593024374,
+      "std_cv_score": 0.03350837642383285,
+      "cv_scores": [
+        0.8729212385363807,
+        0.9509283987075815,
+        0.9565009819209711,
+        0.952244695323088,
+        0.9023144820241664
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/ridge_regression_model/model.joblib",
+      "features_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/ridge_regression_model/features.json",
+      "hyperparameters_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/ridge_regression_model/hyperparameters.json",
+      "model_directory": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/ridge_regression_model"
+    },
+    "feature_columns": [
+      "MP12207A_B_I",
+      "MP12097A_B_P",
+      "MP12206A_B_I",
+      "MP12205A_B_P",
+      "MP12206A_B_P",
+      "MP13029A_B_P",
+      "GENZ_FY_P",
+      "DIVINDX_CY",
+      "DIVINDX_FY",
+      "MP28591A_B_P",
+      "MP13029A_B_I",
+      "GENZ_CY_P",
+      "thematic_value",
+      "MP28591A_B_I",
+      "MP12207A_B",
+      "MEDAGE_CY",
+      "MP12206A_B",
+      "MP12205A_B_I",
+      "MEDAGE_FY",
+      "MP14029A_B_P",
+      "MP12097A_B",
+      "GENZ_FY",
+      "MP12205A_B",
+      "GENZ_CY",
+      "GENALPHACY",
+      "GENALPHAFY_P",
+      "GENALPHAFY",
+      "MP13029A_B",
+      "MP28591A_B",
+      "MP14029A_B",
+      "TOTPOP_FY",
+      "TOTPOP_CY",
+      "MP14029A_B_I",
+      "GENALPHACY_P",
+      "MP28646A_B",
+      "MP13026A_B",
+      "MP13023A_B",
+      "MP13023A_B_I",
+      "MP13019A_B",
+      "MP13023A_B_P",
+      "MP13026A_B_P",
+      "MP13026A_B_I",
+      "Shape__Length",
+      "ZIP4",
+      "ZIP",
+      "LATITUDE",
+      "LONGITUDE",
+      "MEDHINC_CY",
+      "MEDHINC_FY"
+    ]
+  },
+  "lasso_regression": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "lasso_regression",
+    "target_variable": "MP12207A_B_P",
+    "training_duration_seconds": 0.091094,
+    "data_info": {
+      "total_records": 1804,
+      "features_used": 49,
+      "train_records": 1082,
+      "test_records": 361
+    },
+    "hyperparameters": {
+      "alpha": 0.1,
+      "random_state": 42
+    },
+    "performance": {
+      "r2_score": 0.9120968328877205,
+      "rmse": 0.6284375350764884,
+      "mae": 0.42736389950230214,
+      "mape": Infinity,
+      "train_r2": 0.9147861908004282,
+      "train_rmse": 0.6188347268620167,
+      "overfitting_ratio": 1.0029485442945714
+    },
+    "feature_importance": [
+      {
+        "feature": "MP12207A_B_I",
+        "importance": 0.6870646945388759,
+        "rank": 1
+      },
+      {
+        "feature": "MP12097A_B_P",
+        "importance": 0.2707777549061384,
+        "rank": 2
+      },
+      {
+        "feature": "MP12205A_B_P",
+        "importance": 0.2613824551263436,
+        "rank": 3
+      },
+      {
+        "feature": "MP13029A_B_P",
+        "importance": 0.2318953876980988,
+        "rank": 4
+      },
+      {
+        "feature": "MP28591A_B_P",
+        "importance": 0.08587991972952334,
+        "rank": 5
+      },
+      {
+        "feature": "MP13023A_B_I",
+        "importance": 0.06678798873036135,
+        "rank": 6
+      },
+      {
+        "feature": "MP12097A_B",
+        "importance": 0.04259896173292217,
+        "rank": 7
+      },
+      {
+        "feature": "thematic_value",
+        "importance": 0.016311350927391024,
+        "rank": 8
+      },
+      {
+        "feature": "MP28591A_B_I",
+        "importance": 4.0155028254650594e-17,
+        "rank": 9
+      },
+      {
+        "feature": "MP12206A_B_I",
+        "importance": 0.0,
+        "rank": 10
+      },
+      {
+        "feature": "MP12206A_B_P",
+        "importance": 0.0,
+        "rank": 11
+      },
+      {
+        "feature": "GENZ_FY_P",
+        "importance": 0.0,
+        "rank": 12
+      },
+      {
+        "feature": "DIVINDX_CY",
+        "importance": 0.0,
+        "rank": 13
+      },
+      {
+        "feature": "DIVINDX_FY",
+        "importance": 0.0,
+        "rank": 14
+      },
+      {
+        "feature": "MP13029A_B_I",
+        "importance": 0.0,
+        "rank": 15
+      },
+      {
+        "feature": "GENZ_CY_P",
+        "importance": 0.0,
+        "rank": 16
+      },
+      {
+        "feature": "MP12207A_B",
+        "importance": 0.0,
+        "rank": 17
+      },
+      {
+        "feature": "MEDAGE_CY",
+        "importance": 0.0,
+        "rank": 18
+      },
+      {
+        "feature": "MP12206A_B",
+        "importance": 0.0,
+        "rank": 19
+      },
+      {
+        "feature": "MP12205A_B_I",
+        "importance": 0.0,
+        "rank": 20
+      },
+      {
+        "feature": "MEDAGE_FY",
+        "importance": 0.0,
+        "rank": 21
+      },
+      {
+        "feature": "MP14029A_B_P",
+        "importance": 0.0,
+        "rank": 22
+      },
+      {
+        "feature": "GENZ_FY",
+        "importance": 0.0,
+        "rank": 23
+      },
+      {
+        "feature": "MP12205A_B",
+        "importance": 0.0,
+        "rank": 24
+      },
+      {
+        "feature": "GENZ_CY",
+        "importance": 0.0,
+        "rank": 25
+      },
+      {
+        "feature": "GENALPHACY",
+        "importance": 0.0,
+        "rank": 26
+      },
+      {
+        "feature": "GENALPHAFY_P",
+        "importance": 0.0,
+        "rank": 27
+      },
+      {
+        "feature": "GENALPHAFY",
+        "importance": 0.0,
+        "rank": 28
+      },
+      {
+        "feature": "MP13029A_B",
+        "importance": 0.0,
+        "rank": 29
+      },
+      {
+        "feature": "MP28591A_B",
+        "importance": 0.0,
+        "rank": 30
+      },
+      {
+        "feature": "MP14029A_B",
+        "importance": 0.0,
+        "rank": 31
+      },
+      {
+        "feature": "TOTPOP_FY",
+        "importance": 0.0,
+        "rank": 32
+      },
+      {
+        "feature": "TOTPOP_CY",
+        "importance": 0.0,
+        "rank": 33
+      },
+      {
+        "feature": "MP14029A_B_I",
+        "importance": 0.0,
+        "rank": 34
+      },
+      {
+        "feature": "GENALPHACY_P",
+        "importance": 0.0,
+        "rank": 35
+      },
+      {
+        "feature": "MP28646A_B",
+        "importance": 0.0,
+        "rank": 36
+      },
+      {
+        "feature": "MP13026A_B",
+        "importance": 0.0,
+        "rank": 37
+      },
+      {
+        "feature": "MP13023A_B",
+        "importance": 0.0,
+        "rank": 38
+      },
+      {
+        "feature": "MP13019A_B",
+        "importance": 0.0,
+        "rank": 39
+      },
+      {
+        "feature": "MP13023A_B_P",
+        "importance": 0.0,
+        "rank": 40
+      },
+      {
+        "feature": "MP13026A_B_P",
+        "importance": 0.0,
+        "rank": 41
+      },
+      {
+        "feature": "MP13026A_B_I",
+        "importance": 0.0,
+        "rank": 42
+      },
+      {
+        "feature": "Shape__Length",
+        "importance": 0.0,
+        "rank": 43
+      },
+      {
+        "feature": "ZIP4",
+        "importance": 0.0,
+        "rank": 44
+      },
+      {
+        "feature": "ZIP",
+        "importance": 0.0,
+        "rank": 45
+      },
+      {
+        "feature": "LATITUDE",
+        "importance": 0.0,
+        "rank": 46
+      },
+      {
+        "feature": "LONGITUDE",
+        "importance": 0.0,
+        "rank": 47
+      },
+      {
+        "feature": "MEDHINC_CY",
+        "importance": 0.0,
+        "rank": 48
+      },
+      {
+        "feature": "MEDHINC_FY",
+        "importance": 0.0,
+        "rank": 49
+      }
+    ],
+    "shap_analysis": {},
+    "cross_validation": {
+      "mean_cv_score": 0.9072665270182488,
+      "std_cv_score": 0.021597987011562896,
+      "cv_scores": [
+        0.8818488608056418,
+        0.9239568713329858,
+        0.9289223049888954,
+        0.921480725638541,
+        0.8801238723251801
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/lasso_regression_model/model.joblib",
+      "features_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/lasso_regression_model/features.json",
+      "hyperparameters_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/lasso_regression_model/hyperparameters.json",
+      "model_directory": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/lasso_regression_model"
+    },
+    "feature_columns": [
+      "MP12207A_B_I",
+      "MP12097A_B_P",
+      "MP12206A_B_I",
+      "MP12205A_B_P",
+      "MP12206A_B_P",
+      "MP13029A_B_P",
+      "GENZ_FY_P",
+      "DIVINDX_CY",
+      "DIVINDX_FY",
+      "MP28591A_B_P",
+      "MP13029A_B_I",
+      "GENZ_CY_P",
+      "thematic_value",
+      "MP28591A_B_I",
+      "MP12207A_B",
+      "MEDAGE_CY",
+      "MP12206A_B",
+      "MP12205A_B_I",
+      "MEDAGE_FY",
+      "MP14029A_B_P",
+      "MP12097A_B",
+      "GENZ_FY",
+      "MP12205A_B",
+      "GENZ_CY",
+      "GENALPHACY",
+      "GENALPHAFY_P",
+      "GENALPHAFY",
+      "MP13029A_B",
+      "MP28591A_B",
+      "MP14029A_B",
+      "TOTPOP_FY",
+      "TOTPOP_CY",
+      "MP14029A_B_I",
+      "GENALPHACY_P",
+      "MP28646A_B",
+      "MP13026A_B",
+      "MP13023A_B",
+      "MP13023A_B_I",
+      "MP13019A_B",
+      "MP13023A_B_P",
+      "MP13026A_B_P",
+      "MP13026A_B_I",
+      "Shape__Length",
+      "ZIP4",
+      "ZIP",
+      "LATITUDE",
+      "LONGITUDE",
+      "MEDHINC_CY",
+      "MEDHINC_FY"
+    ]
+  },
+  "svr": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "svr",
+    "target_variable": "MP12207A_B_P",
+    "training_duration_seconds": 0.272577,
+    "data_info": {
+      "total_records": 1804,
+      "features_used": 49,
+      "train_records": 1082,
+      "test_records": 361
+    },
+    "hyperparameters": {
+      "kernel": "rbf",
+      "C": 1.0,
+      "gamma": "scale"
+    },
+    "performance": {
+      "r2_score": 0.8889033863920915,
+      "rmse": 0.7064969083702785,
+      "mae": 0.2704021244663083,
+      "mape": Infinity,
+      "train_r2": 0.8837709610933768,
+      "train_rmse": 0.7227315444705819,
+      "overfitting_ratio": 0.9942261157092152
+    },
+    "feature_importance": [],
+    "shap_analysis": {},
+    "cross_validation": {
+      "mean_cv_score": 0.8298027671306007,
+      "std_cv_score": 0.1250196232195439,
+      "cv_scores": [
+        0.6147809676231678,
+        0.7816101482222083,
+        0.8554026668695515,
+        0.9674108716555399,
+        0.9298091812825363
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/svr_model/model.joblib",
+      "features_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/svr_model/features.json",
+      "hyperparameters_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/svr_model/hyperparameters.json",
+      "model_directory": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/svr_model"
+    },
+    "feature_columns": [
+      "MP12207A_B_I",
+      "MP12097A_B_P",
+      "MP12206A_B_I",
+      "MP12205A_B_P",
+      "MP12206A_B_P",
+      "MP13029A_B_P",
+      "GENZ_FY_P",
+      "DIVINDX_CY",
+      "DIVINDX_FY",
+      "MP28591A_B_P",
+      "MP13029A_B_I",
+      "GENZ_CY_P",
+      "thematic_value",
+      "MP28591A_B_I",
+      "MP12207A_B",
+      "MEDAGE_CY",
+      "MP12206A_B",
+      "MP12205A_B_I",
+      "MEDAGE_FY",
+      "MP14029A_B_P",
+      "MP12097A_B",
+      "GENZ_FY",
+      "MP12205A_B",
+      "GENZ_CY",
+      "GENALPHACY",
+      "GENALPHAFY_P",
+      "GENALPHAFY",
+      "MP13029A_B",
+      "MP28591A_B",
+      "MP14029A_B",
+      "TOTPOP_FY",
+      "TOTPOP_CY",
+      "MP14029A_B_I",
+      "GENALPHACY_P",
+      "MP28646A_B",
+      "MP13026A_B",
+      "MP13023A_B",
+      "MP13023A_B_I",
+      "MP13019A_B",
+      "MP13023A_B_P",
+      "MP13026A_B_P",
+      "MP13026A_B_I",
+      "Shape__Length",
+      "ZIP4",
+      "ZIP",
+      "LATITUDE",
+      "LONGITUDE",
+      "MEDHINC_CY",
+      "MEDHINC_FY"
+    ]
+  },
+  "knn": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "knn",
+    "target_variable": "MP12207A_B_P",
+    "training_duration_seconds": 0.261935,
+    "data_info": {
+      "total_records": 1804,
+      "features_used": 49,
+      "train_records": 1082,
+      "test_records": 361
+    },
+    "hyperparameters": {
+      "n_neighbors": 5,
+      "weights": "distance"
+    },
+    "performance": {
+      "r2_score": 0.9252480468483691,
+      "rmse": 0.5795236012424737,
+      "mae": 0.36666819243715354,
+      "mape": Infinity,
+      "train_r2": 0.9999999999999984,
+      "train_rmse": 8.212073128173894e-08,
+      "overfitting_ratio": 1.0807912574430754
+    },
+    "feature_importance": [],
+    "shap_analysis": {},
+    "cross_validation": {
+      "mean_cv_score": 0.916780965199338,
+      "std_cv_score": 0.014871902210660265,
+      "cv_scores": [
+        0.893680562975245,
+        0.9116646850318845,
+        0.9304779102810907,
+        0.9352890510642019,
+        0.9127926166442686
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/knn_model/model.joblib",
+      "features_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/knn_model/features.json",
+      "hyperparameters_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/knn_model/hyperparameters.json",
+      "model_directory": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/knn_model"
+    },
+    "feature_columns": [
+      "MP12207A_B_I",
+      "MP12097A_B_P",
+      "MP12206A_B_I",
+      "MP12205A_B_P",
+      "MP12206A_B_P",
+      "MP13029A_B_P",
+      "GENZ_FY_P",
+      "DIVINDX_CY",
+      "DIVINDX_FY",
+      "MP28591A_B_P",
+      "MP13029A_B_I",
+      "GENZ_CY_P",
+      "thematic_value",
+      "MP28591A_B_I",
+      "MP12207A_B",
+      "MEDAGE_CY",
+      "MP12206A_B",
+      "MP12205A_B_I",
+      "MEDAGE_FY",
+      "MP14029A_B_P",
+      "MP12097A_B",
+      "GENZ_FY",
+      "MP12205A_B",
+      "GENZ_CY",
+      "GENALPHACY",
+      "GENALPHAFY_P",
+      "GENALPHAFY",
+      "MP13029A_B",
+      "MP28591A_B",
+      "MP14029A_B",
+      "TOTPOP_FY",
+      "TOTPOP_CY",
+      "MP14029A_B_I",
+      "GENALPHACY_P",
+      "MP28646A_B",
+      "MP13026A_B",
+      "MP13023A_B",
+      "MP13023A_B_I",
+      "MP13019A_B",
+      "MP13023A_B_P",
+      "MP13026A_B_P",
+      "MP13026A_B_I",
+      "Shape__Length",
+      "ZIP4",
+      "ZIP",
+      "LATITUDE",
+      "LONGITUDE",
+      "MEDHINC_CY",
+      "MEDHINC_FY"
+    ]
+  },
+  "neural_network": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "neural_network",
+    "target_variable": "MP12207A_B_P",
+    "training_duration_seconds": 1.007716,
+    "data_info": {
+      "total_records": 1804,
+      "features_used": 49,
+      "train_records": 1082,
+      "test_records": 361
+    },
+    "hyperparameters": {
+      "hidden_layer_sizes": [
+        100,
+        50
+      ],
+      "max_iter": 500,
+      "random_state": 42,
+      "early_stopping": true
+    },
+    "performance": {
+      "r2_score": 0.8188228865468142,
+      "rmse": 0.9022180743611526,
+      "mae": 0.33138948029853726,
+      "mape": Infinity,
+      "train_r2": 0.9857509559704931,
+      "train_rmse": 0.2530536182117092,
+      "overfitting_ratio": 1.2038634632303176
+    },
+    "feature_importance": [],
+    "shap_analysis": {},
+    "cross_validation": {
+      "mean_cv_score": 0.34662730216960097,
+      "std_cv_score": 1.0717232996299877,
+      "cv_scores": [
+        -1.7953532723897005,
+        0.8445027787287802,
+        0.9085131083973101,
+        0.9410212136421969,
+        0.8344526824694181
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/neural_network_model/model.joblib",
+      "features_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/neural_network_model/features.json",
+      "hyperparameters_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/neural_network_model/hyperparameters.json",
+      "model_directory": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/neural_network_model"
+    },
+    "feature_columns": [
+      "MP12207A_B_I",
+      "MP12097A_B_P",
+      "MP12206A_B_I",
+      "MP12205A_B_P",
+      "MP12206A_B_P",
+      "MP13029A_B_P",
+      "GENZ_FY_P",
+      "DIVINDX_CY",
+      "DIVINDX_FY",
+      "MP28591A_B_P",
+      "MP13029A_B_I",
+      "GENZ_CY_P",
+      "thematic_value",
+      "MP28591A_B_I",
+      "MP12207A_B",
+      "MEDAGE_CY",
+      "MP12206A_B",
+      "MP12205A_B_I",
+      "MEDAGE_FY",
+      "MP14029A_B_P",
+      "MP12097A_B",
+      "GENZ_FY",
+      "MP12205A_B",
+      "GENZ_CY",
+      "GENALPHACY",
+      "GENALPHAFY_P",
+      "GENALPHAFY",
+      "MP13029A_B",
+      "MP28591A_B",
+      "MP14029A_B",
+      "TOTPOP_FY",
+      "TOTPOP_CY",
+      "MP14029A_B_I",
+      "GENALPHACY_P",
+      "MP28646A_B",
+      "MP13026A_B",
+      "MP13023A_B",
+      "MP13023A_B_I",
+      "MP13019A_B",
+      "MP13023A_B_P",
+      "MP13026A_B_P",
+      "MP13026A_B_I",
+      "Shape__Length",
+      "ZIP4",
+      "ZIP",
+      "LATITUDE",
+      "LONGITUDE",
+      "MEDHINC_CY",
+      "MEDHINC_FY"
+    ]
+  },
+  "anomaly_detection": {
+    "success": true,
+    "model_type": "unsupervised",
+    "algorithm": "anomaly_detection",
+    "training_duration_seconds": 0.147898,
+    "data_info": {
+      "total_records": 1778,
+      "features_used": 65
+    },
+    "hyperparameters": {
+      "contamination": 0.1,
+      "random_state": 42
+    },
+    "performance": {
+      "n_outliers": "178",
+      "outlier_ratio": 0.10011248593925759,
+      "normal_points": "1600"
+    },
+    "model_artifacts": {
+      "model_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/anomaly_detection_model/model.joblib",
+      "features_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/anomaly_detection_model/features.json",
+      "hyperparameters_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/anomaly_detection_model/hyperparameters.json",
+      "scaler_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/anomaly_detection_model/scaler.joblib",
+      "model_directory": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/anomaly_detection_model"
+    },
+    "feature_columns": [
+      "MP28591A_B",
+      "MP28591A_B_I",
+      "thematic_value",
+      "Shape__Area",
+      "Shape__Length",
+      "CreationDate",
+      "EditDate",
+      "MEDAGE_CY",
+      "TOTPOP_CY",
+      "MEDHINC_CY",
+      "DIVINDX_CY",
+      "ZIP",
+      "ZIP4",
+      "NAICS",
+      "SIC",
+      "AFFILIATE",
+      "BRAND",
+      "MIN_SQFT",
+      "MAX_SQFT",
+      "EMPNUM",
+      "SALESVOL",
+      "LATITUDE",
+      "LONGITUDE",
+      "GENZ_CY",
+      "GENZ_CY_P",
+      "DIVINDX_FY",
+      "MP13026A_B",
+      "MP13026A_B_I",
+      "MP12207A_B",
+      "MP12207A_B_I",
+      "MP13023A_B",
+      "MP13023A_B_P",
+      "MEDAGE_FY",
+      "GENALPHACY",
+      "GENALPHACY_P",
+      "MP13019A_B",
+      "MP13019A_B_P",
+      "MP13026A_B_P",
+      "MP12206A_B",
+      "MP12206A_B_I",
+      "MP28591A_B_P",
+      "MEDHINC_FY",
+      "TOTPOP_FY",
+      "GENZ_FY",
+      "GENZ_FY_P",
+      "MP12205A_B",
+      "MP12205A_B_I",
+      "MP14029A_B",
+      "MP14029A_B_I",
+      "MP12097A_B",
+      "MP12097A_B_P",
+      "MP28646A_B",
+      "MP28646A_B_P",
+      "GENALPHAFY",
+      "GENALPHAFY_P",
+      "MP14029A_B_P",
+      "MP28646A_B_I",
+      "MP13029A_B",
+      "MP13029A_B_P",
+      "MP13029A_B_I",
+      "MP12206A_B_P",
+      "MP12207A_B_P",
+      "MP12205A_B_P",
+      "MP13023A_B_I",
+      "MP13019A_B_I"
+    ]
+  },
+  "clustering": {
+    "success": false,
+    "model_type": "unsupervised",
+    "algorithm": "clustering",
+    "error": "Input X contains NaN.\nKMeans does not accept missing values encoded as NaN natively. For supervised learning, you might want to consider sklearn.ensemble.HistGradientBoostingClassifier and Regressor which accept missing values encoded as NaNs natively. Alternatively, it is possible to preprocess the data, for instance by using an imputer transformer in a pipeline or drop samples with missing values. See https://scikit-learn.org/stable/modules/impute.html You can find a list of all estimators that handle NaN values at the following page: https://scikit-learn.org/stable/modules/impute.html#estimators-that-handle-nan-values",
+    "training_duration_seconds": 0.01569
+  },
+  "dimensionality_reduction": {
+    "success": false,
+    "model_type": "unsupervised",
+    "algorithm": "dimensionality_reduction",
+    "error": "Input X contains NaN.\nPCA does not accept missing values encoded as NaN natively. For supervised learning, you might want to consider sklearn.ensemble.HistGradientBoostingClassifier and Regressor which accept missing values encoded as NaNs natively. Alternatively, it is possible to preprocess the data, for instance by using an imputer transformer in a pipeline or drop samples with missing values. See https://scikit-learn.org/stable/modules/impute.html You can find a list of all estimators that handle NaN values at the following page: https://scikit-learn.org/stable/modules/impute.html#estimators-that-handle-nan-values",
+    "training_duration_seconds": 0.013047
+  },
+  "ensemble": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "ensemble",
+    "target_variable": "MP12207A_B_P",
+    "component_models": [
+      "xgboost",
+      "random_forest",
+      "linear_regression",
+      "ridge_regression",
+      "lasso_regression",
+      "svr",
+      "knn",
+      "neural_network"
+    ],
+    "performance": {
+      "r2_score": 0.9895468843033994,
+      "rmse": 0.20321647563267414,
+      "mae": 0.1423203941145887,
+      "mape": Infinity,
+      "train_r2": 0.987137531367032,
+      "train_rmse": 0.24195113947857344,
+      "overfitting_ratio": 0.9975651957733528
+    },
+    "model_artifacts": {
+      "model_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/ensemble_model/model.joblib",
+      "features_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/ensemble_model/features.json",
+      "hyperparameters_file": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/ensemble_model/hyperparameters.json",
+      "model_directory": "/Users/voldeck/code/mpiq-ai-chat/projects/red_bull_energy_drinks/trained_models/ensemble_model"
+    },
+    "feature_columns": [
+      "MP13029A_B_I",
+      "MP13026A_B_P",
+      "MP13023A_B_I",
+      "MP14029A_B_I",
+      "DIVINDX_FY",
+      "thematic_value",
+      "GENALPHAFY",
+      "MP12205A_B_I",
+      "MP12207A_B",
+      "MP13023A_B",
+      "LATITUDE",
+      "MP12206A_B_I",
+      "MP12205A_B_P",
+      "DIVINDX_CY",
+      "MP13026A_B_I",
+      "GENZ_FY_P",
+      "GENALPHACY",
+      "MP14029A_B_P",
+      "GENZ_CY",
+      "MEDAGE_CY",
+      "ZIP",
+      "MP12205A_B",
+      "MP13029A_B",
+      "LONGITUDE",
+      "GENZ_CY_P",
+      "MP28591A_B_P",
+      "MP12097A_B",
+      "ZIP4",
+      "MP14029A_B",
+      "Shape__Length",
+      "MP13019A_B",
+      "MP13023A_B_P",
+      "TOTPOP_FY",
+      "MEDHINC_CY",
+      "MP12207A_B_I",
+      "MP12206A_B_P",
+      "GENALPHAFY_P",
+      "MP28591A_B_I",
+      "MP13029A_B_P",
+      "MP13026A_B",
+      "MP28646A_B",
+      "MEDHINC_FY",
+      "TOTPOP_CY",
+      "GENZ_FY",
+      "MP28591A_B",
+      "GENALPHACY_P",
+      "MP12097A_B_P",
+      "MEDAGE_FY",
+      "MP12206A_B"
+    ],
+    "data_info": {
+      "total_records": 1804,
+      "features_used": 49
+    }
+  }
+}

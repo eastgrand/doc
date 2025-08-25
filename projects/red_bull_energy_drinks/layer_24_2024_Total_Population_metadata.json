@@ -1,0 +1,155 @@
+{
+  "layer_id": 24,
+  "layer_name": "2024 Total Population",
+  "description": "Business Analyst Layer: 2024 Total Population",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-08-24T13:10:15.820208",
+  "record_count": 1778,
+  "field_count": 11,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "DESCRIPTION",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "90660 (Pico Rivera)",
+        "90670 (Santa Fe Springs)",
+        "90680 (Stanton)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ID",
+      "type": "esriFieldTypeString",
+      "alias": "ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "90660",
+        "90670",
+        "90680"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "TOTPOP_CY",
+      "type": "esriFieldTypeDouble",
+      "alias": "2024 Total Population (Esri)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        59054,
+        17298,
+        30232
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "Internal",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        59054,
+        17298,
+        30232
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        32145000,
+        32260000,
+        9910000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        29572.79336298238,
+        52615.073446094386,
+        24427.003458636504
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1756054155778,
+        1756054155778,
+        1756054155778
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1756054155778,
+        1756054155778,
+        1756054155778
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_24_2024_Total_Population.csv"
+}

@@ -14,8 +14,8 @@ import requests
 import time
 from pathlib import Path
 
-# ZIP Code boundaries service URL - Updated for HRB project 
-ZIP_BOUNDARIES_SERVICE = "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__ca07eefffe5b4914/FeatureServer/14"
+# ZIP Code boundaries service URL - Updated for Red Bull Energy Drinks project 
+ZIP_BOUNDARIES_SERVICE = "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/0"
 
 def export_zip_boundaries():
     """Export ZIP Code polygon boundaries to local cache file"""
