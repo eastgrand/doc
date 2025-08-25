@@ -55,27 +55,19 @@ export function applyMapConstraints(view: __esri.MapView): void {
     return;
   }
   
-  // Create proper Extent object for constraints
-  const constraintExtent = {
-    type: "extent" as const,
-    xmin: MAP_CONSTRAINTS.geometry.xmin,
-    ymin: MAP_CONSTRAINTS.geometry.ymin,
-    xmax: MAP_CONSTRAINTS.geometry.xmax,
-    ymax: MAP_CONSTRAINTS.geometry.ymax,
-    spatialReference: MAP_CONSTRAINTS.geometry.spatialReference
-  };
-  
   view.constraints = {
-    geometry: constraintExtent,
+    // No geometry constraint - allow panning anywhere
+    // geometry: constraintExtent,
     minZoom: MAP_CONSTRAINTS.minZoom,
     maxZoom: MAP_CONSTRAINTS.maxZoom,
     snapToZoom: MAP_CONSTRAINTS.snapToZoom,
     rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
   };
   
-  console.log('[MapConstraints] Applied geographic constraints to MapView (panning boundaries only)', {
-    extent: constraintExtent,
-    rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
+  console.log('[MapConstraints] Applied map constraints to MapView (no panning restrictions, unlimited zoom)', {
+    rotationEnabled: MAP_CONSTRAINTS.rotationEnabled,
+    minZoom: MAP_CONSTRAINTS.minZoom,
+    maxZoom: MAP_CONSTRAINTS.maxZoom
   });
 }
 
