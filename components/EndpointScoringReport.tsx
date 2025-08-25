@@ -473,7 +473,7 @@ export default function EndpointScoringReport({ geometry, view, onExportPDF }: E
                     </div>
                   )}
                   <div className="text-xs mt-2 p-2 bg-blue-50 rounded" style={{ color: 'var(--arcgis-blue-primary)' }}>
-                    Analysis covers {Object.keys(endpointData).filter(key => endpointData[key]?.overall_score > 0).length} active endpoints
+                    Analysis covers {Object.keys(endpointData).filter(key => endpointData[key]?.overall_score && endpointData[key]?.overall_score > 0).length} active endpoints
                   </div>
                 </div>
               </CardContent>
@@ -513,7 +513,7 @@ export default function EndpointScoringReport({ geometry, view, onExportPDF }: E
                 <div className="text-5xl font-bold text-blue-600 mb-2">{compositeScore}</div>
                 <div className="text-lg font-semibold text-gray-700">Overall Intelligence Score</div>
                 <div className="text-sm text-gray-600 mt-1">
-                  Combined analysis across {Object.keys(endpointData).filter(key => endpointData[key]?.overall_score > 0).length} active endpoints
+                  Combined analysis across {Object.keys(endpointData).filter(key => endpointData[key]?.overall_score && endpointData[key]?.overall_score > 0).length} active endpoints
                 </div>
               </div>
               <div className="space-y-3">
@@ -648,8 +648,8 @@ export default function EndpointScoringReport({ geometry, view, onExportPDF }: E
                           </div>
                         </div>
                         <p className="text-sm text-gray-600">
-                          {trendData.overall_score >= 80 ? 'Excellent trend alignment with strong market momentum' :
-                           trendData.overall_score >= 60 ? 'Positive trends with moderate growth indicators' :
+                          {(trendData.overall_score || 0) >= 80 ? 'Excellent trend alignment with strong market momentum' :
+                           (trendData.overall_score || 0) >= 60 ? 'Positive trends with moderate growth indicators' :
                            'Mixed trends requiring strategic attention'}
                         </p>
                       </div>
@@ -671,8 +671,8 @@ export default function EndpointScoringReport({ geometry, view, onExportPDF }: E
                           </div>
                         </div>
                         <p className="text-sm text-gray-600">
-                          {predictiveData.overall_score >= 80 ? 'Highly favorable future performance indicators' :
-                           predictiveData.overall_score >= 60 ? 'Positive future outlook with growth potential' :
+                          {(predictiveData.overall_score || 0) >= 80 ? 'Highly favorable future performance indicators' :
+                           (predictiveData.overall_score || 0) >= 60 ? 'Positive future outlook with growth potential' :
                            'Conservative future projections with some uncertainty'}
                         </p>
                       </div>
@@ -696,8 +696,8 @@ export default function EndpointScoringReport({ geometry, view, onExportPDF }: E
                           </div>
                         </div>
                         <p className="text-sm text-gray-600">
-                          {resilienceData.overall_score >= 80 ? 'Highly resilient to market disruptions' :
-                           resilienceData.overall_score >= 60 ? 'Moderately resilient with manageable risks' :
+                          {(resilienceData.overall_score || 0) >= 80 ? 'Highly resilient to market disruptions' :
+                           (resilienceData.overall_score || 0) >= 60 ? 'Moderately resilient with manageable risks' :
                            'Vulnerability to market changes requires risk mitigation'}
                         </p>
                       </div>
@@ -708,9 +708,9 @@ export default function EndpointScoringReport({ geometry, view, onExportPDF }: E
                         <p className="text-sm text-blue-800">
                           The combination of trend analysis ({trendData.overall_score || 0}/100), predictive modeling ({predictiveData.overall_score || 0}/100), 
                           and resilience assessment ({resilienceData.overall_score || 0}/100) suggests {
-                            (trendData.overall_score + predictiveData.overall_score + resilienceData.overall_score) / 3 >= 75 ? 
+                            ((trendData.overall_score || 0) + (predictiveData.overall_score || 0) + (resilienceData.overall_score || 0)) / 3 >= 75 ? 
                             'a robust economic environment with strong fundamentals and positive outlook.' :
-                            (trendData.overall_score + predictiveData.overall_score + resilienceData.overall_score) / 3 >= 60 ?
+                            ((trendData.overall_score || 0) + (predictiveData.overall_score || 0) + (resilienceData.overall_score || 0)) / 3 >= 60 ?
                             'stable economic conditions with moderate growth potential.' :
                             'challenging economic conditions requiring careful strategic planning.'
                           }
