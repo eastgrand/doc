@@ -150,16 +150,82 @@ export async function createEnhancedLayer(
     // Skip feature loading for performance - load on demand only when layer is made visible
     console.log(`✅ Layer created without loading features: ${layerConfig.name}`);
 
-    // Let CustomPopupManager handle popup template creation with standardized approach
-    // Don't create popup template here to avoid conflicts
-    console.log(`✅ Layer ${layerConfig.name} prepared for CustomPopupManager popup handling`);
+    // Apply popup template using exact same approach as AI layers
+    try {
+      // Get available fields from the layer
+      const availableFields = layer.fields?.map(f => f.name) || [];
+      console.log(`[Popup Debug] Available fields for ${layerConfig.name}:`, availableFields);
+      
+      // Use same default fields as AI layers, but check if they exist
+      let popupFields: string[] = [];
+      if (layerConfig.rendererField && availableFields.includes(layerConfig.rendererField)) {
+        popupFields.push(layerConfig.rendererField);
+      }
+      
+      // Add common fields if they exist
+      const commonFields = ['area_name', 'NAME', 'name', 'Name', 'value', 'thematic_value'];
+      commonFields.forEach(field => {
+        if (availableFields.includes(field) && !popupFields.includes(field)) {
+          popupFields.push(field);
+        }
+      });
+      
+      // If no fields found, use first few available fields
+      if (popupFields.length === 0) {
+        popupFields = availableFields.slice(0, 3);
+      }
+      
+      console.log(`[Popup Debug] Selected popup fields for ${layerConfig.name}:`, popupFields);
+      
+      // Create field infos using same formatting as AI layers
+      const fieldInfos = popupFields.map(field => ({
+        fieldName: field,
+        label: field
+          .replace(/_/g, ' ')
+          .replace(/\b\w/g, l => l.toUpperCase()),
+        format: field.includes('value') || field.includes('score') ? 
+          { places: 2, digitSeparator: true } : 
+          (field.includes('percent') || field.includes('rate') ? 
+            { places: 1, digitSeparator: true } : null)
+      }));
+
+      // Find a good title field
+      const titleField = popupFields.find(f => ['area_name', 'NAME', 'name', 'Name'].includes(f)) || popupFields[0] || 'OBJECTID';
+
+      // Create popup template with exact same structure as AI layers
+      layer.popupTemplate = new PopupTemplate({
+        title: `{${titleField}}`,
+        content: [
+          {
+            type: 'fields',
+            fieldInfos
+          }
+        ]
+      });
+      
+      console.log(`✅ AI-style popup template created for ${layerConfig.name} with title field: ${titleField}`);
+    } catch (popupError) {
+      console.warn(`❌ Popup template creation failed for ${layerConfig.name}:`, popupError);
+      // Fallback to basic popup template
+      layer.popupTemplate = new PopupTemplate({
+        title: layerConfig.name,
+        content: [
+          {
+            type: "fields",
+            fieldInfos: layer.fields?.slice(0, 5).map(field => ({
+              fieldName: field.name,
+              label: field.alias || field.name,
+              format: field.type === 'double' || field.type === 'single' ? {
+                places: 2,
+                digitSeparator: true
+              } : undefined
+            })) || []
+          }
+        ]
+      });
+    }
     // Enable popups for CustomPopupManager to handle them
     layer.popupEnabled = true; // Enable for CustomPopupManager
-    
-    // Additional popup configuration to ensure click events work
-    if (!layer.popupTemplate) {
-      console.warn(`Layer ${layerConfig.name} missing popup template - this may prevent popup functionality`);
-    }
 
     return [layer, []]; // No features loaded - load on demand only
 
