@@ -1531,4 +1531,115 @@ boost_terms: [
 
 ---
 
+## 📍 UI Component Migration: Bookmarks and Sample Areas
+
+### Update Map Bookmarks Widget
+
+**Required for**: Replacing default Florida cities with project-relevant locations
+
+**Files to Update**:
+- `/components/MapWidgets.tsx` - Main bookmarks configuration
+
+**Step 1: Update City Bookmarks Data**
+```typescript
+// Replace CITY_BOOKMARKS_DATA in MapWidgets.tsx
+const CITY_BOOKMARKS_DATA = [
+  { name: "Fresno", extent: { xmin: -119.9, ymin: 36.6, xmax: -119.6, ymax: 36.9 } },
+  { name: "Los Angeles", extent: { xmin: -118.7, ymin: 33.9, xmax: -118.0, ymax: 34.3 } },
+  { name: "San Diego", extent: { xmin: -117.3, ymin: 32.6, xmax: -116.9, ymax: 33.0 } },
+  { name: "San Francisco", extent: { xmin: -122.6, ymin: 37.6, xmax: -122.3, ymax: 37.9 } },
+  { name: "San Jose", extent: { xmin: -122.0, ymin: 37.2, xmax: -121.7, ymax: 37.5 } }
+];
+```
+
+**Step 2: Update Comment References**
+```typescript
+// Change from:
+// Create Bookmark instances from Florida city data
+// To:
+// Create Bookmark instances from California city data
+```
+
+### Update Sample Areas Panel
+
+**Required for**: Project-relevant sample areas with choropleth visualization
+
+**Files to Update**:
+- `/scripts/sample-areas-config.json` - Sample areas configuration
+- `/components/map/SampleAreasPanel.tsx` - Panel component references
+
+**Step 1: Update Sample Areas Configuration**
+```json
+{
+  "name": "Red Bull Energy Drinks Market Analysis",
+  "industry": "Energy Drinks", 
+  "primaryBrand": "Red Bull",
+  "targetCities": [
+    { "name": "Los Angeles", "zipCount": 4 },
+    { "name": "San Diego", "zipCount": 4 },
+    { "name": "San Francisco", "zipCount": 4 },
+    { "name": "San Jose", "zipCount": 4 },
+    { "name": "Fresno", "zipCount": 4 }
+  ]
+}
+```
+
+**Step 2: Update Component References**
+Replace hardcoded Florida city references in `SampleAreasPanel.tsx`:
+```typescript
+// Change zoom function name and coordinates:
+const zoomToLosAngeles = () => {
+  // Los Angeles extent: { xmin: -118.7, ymin: 33.9, xmax: -118.0, ymax: 34.3 }
+}
+
+// Update debug logging references:
+if (area.id === 'los angeles') {
+  console.log('[handleAreaClick] Los Angeles extent:', { ... });
+}
+```
+
+**Step 3: Regenerate Sample Areas Data**
+```bash
+# Run sample areas data generator (if available)
+npm run generate-sample-areas
+
+# Or manually trigger data regeneration based on new config
+```
+
+### Geographic Coordinates Reference
+
+**California Cities Extents** (for bookmarks and sample areas):
+- **Los Angeles**: xmin: -118.7, ymin: 33.9, xmax: -118.0, ymax: 34.3
+- **San Diego**: xmin: -117.3, ymin: 32.6, xmax: -116.9, ymax: 33.0  
+- **San Francisco**: xmin: -122.6, ymin: 37.6, xmax: -122.3, ymax: 37.9
+- **San Jose**: xmin: -122.0, ymin: 37.2, xmax: -121.7, ymax: 37.5
+- **Fresno**: xmin: -119.9, ymin: 36.6, xmax: -119.6, ymax: 36.9
+
+### Testing Updated Components
+
+**Verify Bookmarks Widget**:
+1. Open map application
+2. Click bookmarks widget button
+3. Confirm 5 California cities appear
+4. Test zoom-to functionality for each city
+
+**Verify Sample Areas Panel**:
+1. Open Quick Stats panel
+2. Confirm California cities load with choropleth visualization
+3. Test area selection and zoom functionality
+4. Verify statistics display correctly
+
+**Common Issues**:
+- **Bookmarks not loading**: Check `CITY_BOOKMARKS_DATA` syntax
+- **Sample areas empty**: Verify `sample-areas-config.json` cities match available data
+- **Wrong coordinates**: Double-check extent values match California geography
+- **Panel not displaying**: Check if sample areas data file exists at `/data/sample_areas_data_real.json`
+
+**Geographic Data Requirements**:
+- California ZIP code boundaries file
+- Updated `zip_boundaries.json` covering California areas
+- Sample demographic data for California ZIP codes
+
+---
+
 *This document serves as the foundation for creating enhanced migration procedures that prevent issues like the recent customer-profile field detection problem while maintaining the comprehensive capabilities of the current system.*

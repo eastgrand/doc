@@ -47,13 +47,13 @@ interface MapWidgetsProps {
   showQuickStatsPanel?: boolean; // NEW: For quickStats button active state
 }
 
-// Define Florida City Bookmarks Data (Alphabetical Order)
+// Define California City Bookmarks Data (Alphabetical Order)
 const CITY_BOOKMARKS_DATA = [
-  { name: "Jacksonville", extent: { xmin: -81.9, ymin: 30.1, xmax: -81.4, ymax: 30.5 } },
-  { name: "Miami", extent: { xmin: -80.5, ymin: 25.6, xmax: -80.0, ymax: 26.0 } },
-  { name: "Orlando", extent: { xmin: -81.6, ymin: 28.3, xmax: -81.1, ymax: 28.7 } },
-  { name: "St. Petersburg", extent: { xmin: -82.9, ymin: 27.6, xmax: -82.5, ymax: 28.0 } },
-  { name: "Tampa", extent: { xmin: -82.7, ymin: 27.8, xmax: -82.3, ymax: 28.2 } }
+  { name: "Fresno", extent: { xmin: -119.9, ymin: 36.6, xmax: -119.6, ymax: 36.9 } },
+  { name: "Los Angeles", extent: { xmin: -118.7, ymin: 33.9, xmax: -118.0, ymax: 34.3 } },
+  { name: "San Diego", extent: { xmin: -117.3, ymin: 32.6, xmax: -116.9, ymax: 33.0 } },
+  { name: "San Francisco", extent: { xmin: -122.6, ymin: 37.6, xmax: -122.3, ymax: 37.9 } },
+  { name: "San Jose", extent: { xmin: -122.0, ymin: 37.2, xmax: -121.7, ymax: 37.5 } }
 ];
 
 // +++ REMOVE LEGEND GENERATION LOGIC +++
@@ -331,7 +331,7 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
             // Wait for view to be ready before setting bookmarks
             view.when(() => {
               try {
-                // Create Bookmark instances from Florida city data
+                // Create Bookmark instances from California city data
                 const cityBookmarks = new Collection(
                   CITY_BOOKMARKS_DATA.map(city => {
                     return new Bookmark({

@@ -351,7 +351,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
     createChoroplethLayers(areas);
     
     // Don't auto-zoom - let MapClient handle initial view
-    // setTimeout(() => zoomToJacksonville(), 1000);
+    // setTimeout(() => zoomToLosAngeles(), 1000);
   };
 
   // This function is no longer needed with the new simplified approach
@@ -462,35 +462,35 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
     setChoroplethLayers(newLayers);
   };
   
-  const zoomToJacksonville = () => {
+  const zoomToLosAngeles = () => {
     if (!view) return;
 
-    console.log('[zoomToJacksonville] Looking for Jacksonville in areas:', displayAreas.map(a => a.id));
+    console.log('[zoomToLosAngeles] Looking for Los Angeles in areas:', displayAreas.map(a => a.id));
     
-    // Find Jacksonville area in displayAreas
-    const jacksonvilleArea = displayAreas.find(area => area.id === 'jacksonville');
-    if (jacksonvilleArea) {
-      console.log('[zoomToJacksonville] Found Jacksonville area, zooming...');
-      handleAreaClick(jacksonvilleArea);
+    // Find Los Angeles area in displayAreas
+    const losAngelesArea = displayAreas.find(area => area.id === 'los angeles');
+    if (losAngelesArea) {
+      console.log('[zoomToLosAngeles] Found Los Angeles area, zooming...');
+      handleAreaClick(losAngelesArea);
     } else {
-      console.log('[zoomToJacksonville] Jacksonville area not found, using fallback coordinates');
-      // Fallback: manually zoom to Jacksonville coordinates
-      const jacksonvilleExtent = new Extent({
-        xmin: -81.9,
-        ymin: 30.1,
-        xmax: -81.3,
-        ymax: 30.6,
+      console.log('[zoomToLosAngeles] Los Angeles area not found, using fallback coordinates');
+      // Fallback: manually zoom to Los Angeles coordinates
+      const losAngelesExtent = new Extent({
+        xmin: -118.7,
+        ymin: 33.9,
+        xmax: -118.0,
+        ymax: 34.3,
         spatialReference: { wkid: 4326 }
       });
       
-      view.goTo(jacksonvilleExtent.expand(1.2), {
+      view.goTo(losAngelesExtent.expand(1.2), {
         duration: 2000,
         easing: 'ease-in-out'
       }).catch(error => {
-        console.error('Error zooming to Jacksonville:', error);
+        console.error('Error zooming to Los Angeles:', error);
       });
       
-      console.log('[SampleAreasPanel] Zoomed to Jacksonville fallback coordinates');
+      console.log('[SampleAreasPanel] Zoomed to Los Angeles fallback coordinates');
     }
   };
   
@@ -622,9 +622,9 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
       
       const expandedExtent = extent.expand(1.3);
       
-      // DEBUG: Log the exact extent being used for Jacksonville
-      if (area.id === 'jacksonville') {
-        console.log('[handleAreaClick] Jacksonville extent:', {
+      // DEBUG: Log the exact extent being used for Los Angeles
+      if (area.id === 'los angeles') {
+        console.log('[handleAreaClick] Los Angeles extent:', {
           original: bounds,
           expanded: {
             xmin: expandedExtent.xmin,

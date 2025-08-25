@@ -1,22 +1,26 @@
 {
-  "name": "H&R Block Market Analysis",
-  "industry": "Tax Services",
-  "primaryBrand": "H&R Block",
+  "name": "Red Bull Energy Drinks Market Analysis",
+  "industry": "Energy Drinks",
+  "primaryBrand": "Red Bull",
   "targetCities": [
     {
-      "name": "Miami",
+      "name": "Los Angeles",
       "zipCount": 4
     },
     {
-      "name": "Tampa", 
+      "name": "San Diego", 
       "zipCount": 4
     },
     {
-      "name": "Orlando",
+      "name": "San Francisco",
       "zipCount": 4
     },
     {
-      "name": "Jacksonville",
+      "name": "San Jose",
+      "zipCount": 4
+    },
+    {
+      "name": "Fresno",
       "zipCount": 4
     }
   ],
