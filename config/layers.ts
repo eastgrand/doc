@@ -4867,3 +4867,15 @@ export const generationMetadata = {
   lastGroupUpdate: '2025-08-24T22:00:00.000Z',
   projectDomain: 'Red Bull Energy Drinks'
 };
+
+// Utility function to get layer configuration by ID
+export function getLayerConfigById(layerId: string): LayerConfig | undefined {
+  return layers[layerId];
+}
+
+// Spatial reference layer ID (using the first geographic layer as reference)
+export const SPATIAL_REFERENCE_LAYER_ID = layerConfigs.find(layer => 
+  layer.id.includes('zip') || 
+  layer.id.includes('geographic') || 
+  layer.type === 'point'
+)?.id || layerConfigs[0]?.id;
