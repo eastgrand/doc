@@ -48,27 +48,17 @@ export const DATA_EXTENT = {
 };
 
 // Helper function to apply constraints to a MapView
-// Note: This only constrains panning boundaries, does not change initial map center
+// Note: No constraints applied - allows unlimited panning and zooming
 export function applyMapConstraints(view: __esri.MapView): void {
   if (!view) {
     console.warn('[MapConstraints] No MapView provided');
     return;
   }
   
-  view.constraints = {
-    // No geometry constraint - allow panning anywhere
-    // geometry: constraintExtent,
-    minZoom: MAP_CONSTRAINTS.minZoom,
-    maxZoom: MAP_CONSTRAINTS.maxZoom,
-    snapToZoom: MAP_CONSTRAINTS.snapToZoom,
-    rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
-  };
+  // Remove all constraints to allow unlimited panning and zooming
+  view.constraints = null;
   
-  console.log('[MapConstraints] Applied map constraints to MapView (no panning restrictions, unlimited zoom)', {
-    rotationEnabled: MAP_CONSTRAINTS.rotationEnabled,
-    minZoom: MAP_CONSTRAINTS.minZoom,
-    maxZoom: MAP_CONSTRAINTS.maxZoom
-  });
+  console.log('[MapConstraints] Removed all map constraints - unlimited panning and zoom enabled');
 }
 
 // Helper function to zoom to data extent
