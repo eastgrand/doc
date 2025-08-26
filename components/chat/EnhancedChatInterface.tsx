@@ -8,7 +8,7 @@ import {
   DialogHeader, 
   DialogTitle 
 } from '@/components/ui/dialog';
-import { Send, Bot, User, Loader2, Copy, Check, X, Download, RotateCcw, Share, FileText, Target, Database, Brain, Settings, Zap, FileDown } from 'lucide-react';
+import { Send, Bot, User, Loader2, Copy, Check, X, Download, RotateCcw, Share, FileText, Target, Database, Brain, Settings, Zap, FileDown, BookOpen, Activity, BarChart3 } from 'lucide-react';
 import { 
   calculateBasicStats, 
   calculateDistribution, 
@@ -36,6 +36,12 @@ import { AIReasoning } from '@/components/ai-elements/AIReasoning';
 import { InteractiveAnalysisConfig } from '@/components/ai-elements/InteractiveAnalysisConfig';
 import { WhatIfAnalysisPreview } from '@/components/ai-elements/WhatIfAnalysisPreview';
 import { ConfigurationTemplates } from '@/components/ai-elements/ConfigurationTemplates';
+
+// Import Phase 4 Modules (modular, feature-flagged)
+import { ScholarlyResearchPanel } from '@/components/phase4/ScholarlyResearchPanel';
+import { RealTimeDataDashboard } from '@/components/phase4/RealTimeDataDashboard';
+import { AdvancedVisualizationSuite } from '@/components/phase4/AdvancedVisualizationSuite';
+import { AIInsightGenerator } from '@/components/phase4/AIInsightGenerator';
 
 // Same interfaces as original ChatInterface
 type LocalChatMetadata = Partial<AnalysisMetadata> & {
@@ -153,6 +159,18 @@ const EnhancedChatInterfaceInner: React.FC<ChatInterfaceProps> = ({
   const [showTemplates, setShowTemplates] = useState(false);
   const [analysisConfig, setAnalysisConfig] = useState<any>(null); // Interactive config state
   const [configTemplates, setConfigTemplates] = useState<any[]>([]); // User templates
+
+  // Phase 4 Advanced Modules state (all modular and feature-flagged)
+  const [showScholarlyResearch, setShowScholarlyResearch] = useState(false);
+  const [showRealTimeData, setShowRealTimeData] = useState(false);
+  const [showAdvancedViz, setShowAdvancedViz] = useState(false);
+  const [showAIInsights, setShowAIInsights] = useState(false);
+  const [phase4Data, setPhase4Data] = useState<{
+    scholarlyQuery?: string;
+    realTimeLocation?: string;
+    vizConfig?: any;
+    insightContext?: any;
+  }>({});
   
   // Abort controller for cancelling chat requests
   const chatAbortControllerRef = useRef<AbortController | null>(null);
@@ -792,6 +810,64 @@ ${conversationText}
             >
               <FileDown className="w-3 h-3" />
             </Action>
+            
+            {/* Phase 4 Advanced Module Actions - Only show if feature flags are enabled */}
+            <Action
+              tooltip="Scholarly research integration"
+              onClick={() => {
+                if (handleAIElementInteraction('toggle-scholarly-research')) {
+                  setShowScholarlyResearch(!showScholarlyResearch);
+                  if (!showScholarlyResearch) {
+                    setPhase4Data(prev => ({
+                      ...prev,
+                      scholarlyQuery: (analysisResult?.metadata as any)?.analysisType || 'demographic analysis'
+                    }));
+                  }
+                }
+              }}
+              className={showScholarlyResearch ? "bg-indigo-100 dark:bg-indigo-900/30" : ""}
+            >
+              <BookOpen className="w-3 h-3" />
+            </Action>
+            <Action
+              tooltip="Real-time economic data"
+              onClick={() => {
+                if (handleAIElementInteraction('toggle-real-time-data')) {
+                  setShowRealTimeData(!showRealTimeData);
+                  if (!showRealTimeData) {
+                    setPhase4Data(prev => ({
+                      ...prev,
+                      realTimeLocation: (analysisResult?.metadata as any)?.location || 'Selected Region'
+                    }));
+                  }
+                }
+              }}
+              className={showRealTimeData ? "bg-green-100 dark:bg-green-900/30" : ""}
+            >
+              <Activity className="w-3 h-3" />
+            </Action>
+            <Action
+              tooltip="Advanced visualization engine"
+              onClick={() => {
+                if (handleAIElementInteraction('toggle-advanced-viz')) {
+                  setShowAdvancedViz(!showAdvancedViz);
+                }
+              }}
+              className={showAdvancedViz ? "bg-purple-100 dark:bg-purple-900/30" : ""}
+            >
+              <BarChart3 className="w-3 h-3" />
+            </Action>
+            <Action
+              tooltip="AI-powered insights"
+              onClick={() => {
+                if (handleAIElementInteraction('toggle-ai-insights')) {
+                  setShowAIInsights(!showAIInsights);
+                }
+              }}
+              className={showAIInsights ? "bg-yellow-100 dark:bg-yellow-900/30" : ""}
+            >
+              <Brain className="w-3 h-3" />
+            </Action>
           </Actions>
           
           <Button
@@ -948,6 +1024,96 @@ ${conversationText}
             }}
             onExportTemplate={(template) => {
               console.log('Exporting template:', template);
+            }}
+          />
+        </div>
+      )}
+
+      {/* Phase 4 Advanced Modules - Modular and feature-flagged */}
+      {shouldShowPhase2Components && showScholarlyResearch && (
+        <div className="mt-4 p-4 border-t border-border">
+          <ScholarlyResearchPanel
+            query={phase4Data.scholarlyQuery}
+            analysisContext={{
+              location: (analysisResult?.metadata as any)?.location,
+              brand: (analysisResult?.metadata as any)?.brand,
+              analysisType: (analysisResult?.metadata as any)?.analysisType,
+              demographics: (analysisResult as any)?.zipCodes?.map((z: any) => z.zipCode)
+            }}
+            onPaperSelect={(paper) => {
+              console.log('Selected paper:', paper);
+              // Could add to analysis context or generate follow-up questions
+            }}
+            onCiteInReport={(paper) => {
+              console.log('Citing paper in report:', paper);
+              // Could integrate with report generation
+            }}
+          />
+        </div>
+      )}
+
+      {shouldShowPhase2Components && showRealTimeData && (
+        <div className="mt-4 p-4 border-t border-border">
+          <RealTimeDataDashboard
+            location={phase4Data.realTimeLocation || (analysisResult?.metadata as any)?.location || 'Selected Region'}
+            analysisContext={{
+              brand: (analysisResult?.metadata as any)?.brand,
+              analysisType: (analysisResult?.metadata as any)?.analysisType,
+              zipCodes: (analysisResult as any)?.zipCodes?.map((z: any) => z.zipCode)
+            }}
+            onDataUpdate={(streams) => {
+              console.log('Real-time data updated:', streams);
+              // Could trigger analysis updates or alerts
+            }}
+            onAlertTriggered={(alert) => {
+              console.log('Alert triggered:', alert);
+              // Could show notifications or update analysis
+            }}
+          />
+        </div>
+      )}
+
+      {shouldShowPhase2Components && showAdvancedViz && (
+        <div className="mt-4 p-4 border-t border-border">
+          <AdvancedVisualizationSuite
+            analysisData={analysisResult}
+            geoData={{
+              zipCodes: (analysisResult as any)?.zipCodes?.map((z: any) => z.zipCode),
+              bounds: (analysisResult?.metadata as any)?.bounds
+            }}
+            onVisualizationChange={(viz) => {
+              console.log('Visualization changed:', viz);
+              // Could update analysis or generate insights
+            }}
+            onExport={(format) => {
+              console.log('Exporting visualization as:', format);
+              // Could trigger download or save
+            }}
+          />
+        </div>
+      )}
+
+      {shouldShowPhase2Components && showAIInsights && (
+        <div className="mt-4 p-4 border-t border-border">
+          <AIInsightGenerator
+            analysisData={analysisResult}
+            analysisContext={{
+              location: (analysisResult?.metadata as any)?.location,
+              brand: (analysisResult?.metadata as any)?.brand,
+              analysisType: (analysisResult?.metadata as any)?.analysisType,
+              zipCodes: (analysisResult as any)?.zipCodes?.map((z: any) => z.zipCode)
+            }}
+            onInsightGenerated={(insight) => {
+              console.log('AI insight generated:', insight);
+              // Could add to chat or update analysis
+            }}
+            onSummaryGenerated={(summary) => {
+              console.log('Executive summary generated:', summary);
+              // Could add to reports or analysis
+            }}
+            onCopyInsight={(insight) => {
+              console.log('Insight copied:', insight);
+              // Could show feedback
             }}
           />
         </div>
