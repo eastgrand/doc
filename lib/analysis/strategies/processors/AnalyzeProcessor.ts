@@ -6,7 +6,7 @@ import { BrandNameResolver } from '../../utils/BrandNameResolver';
 /**
  * AnalyzeProcessor - Handles data processing for general analysis
  * 
- * Processes general analysis results with analyze_score to provide
+ * Processes general analysis results with analysis_score to provide
  * comprehensive market insights across geographic areas.
  */
 export class AnalyzeProcessor implements DataProcessorStrategy {
@@ -21,12 +21,12 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Analyze requires analyze_score
+    // Analyze requires analysis_score (correct endpoint field)
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
         ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        (record as any).analyze_score !== undefined
+        ((record as any).analysis_score !== undefined || (record as any).analyze_score !== undefined)
       );
     
     return hasRequiredFields;
@@ -40,10 +40,10 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
     }
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
-      const primaryScore = Number((record as any).analyze_score);
+      const primaryScore = Number((record as any).analysis_score || (record as any).analyze_score);
       
       if (isNaN(primaryScore)) {
-        throw new Error(`Analyze record ${(record as any).ID || index} is missing analyze_score`);
+        throw new Error(`Analyze record ${(record as any).ID || index} is missing analysis_score`);
       }
       
       // Generate area name
@@ -57,14 +57,14 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
         area_id: recordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
-        analyze_score: Math.round(primaryScore * 100) / 100,
+        analysis_score: Math.round(primaryScore * 100) / 100,
         rank: 0, // Will be calculated after sorting
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
-          analyze_score: primaryScore,
-          score_source: 'analyze_score',
+          analysis_score: primaryScore,
+          score_source: 'analysis_score',
           target_brand_share: this.extractTargetBrandShare(record),
           total_population: Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0,
           median_income: Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0
@@ -93,7 +93,7 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'analyze_score',
+      targetVariable: 'analysis_score',
       renderer: renderer,
       legend: legend
     };

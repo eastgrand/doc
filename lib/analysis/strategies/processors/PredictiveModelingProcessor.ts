@@ -12,12 +12,17 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
    * Extract predictive modeling score from record with fallback calculation
    */
   private extractPredictiveScore(record: any): number {
-    // PRIORITY 1: Use predictive_modeling_score if available
+    // PRIORITY 1: Use prediction_score (correct endpoint field)
+    if ((record as any).prediction_score !== undefined && (record as any).prediction_score !== null) {
+      return Number((record as any).prediction_score);
+    }
+    
+    // PRIORITY 2: Use predictive_modeling_score (legacy)
     if ((record as any).predictive_modeling_score !== undefined && (record as any).predictive_modeling_score !== null) {
       return Number((record as any).predictive_modeling_score);
     }
     
-    // PRIORITY 2: Use predictive_score
+    // PRIORITY 3: Use predictive_score (legacy)
     if ((record as any).predictive_score !== undefined && (record as any).predictive_score !== null) {
       return Number((record as any).predictive_score);
     }
@@ -99,6 +104,7 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
       
       // Check for predictive modeling fields or any numeric field
       const hasScoringField = record && (
+        (record as any).prediction_score !== undefined || 
         (record as any).predictive_modeling_score !== undefined || 
         (record as any).predictive_score !== undefined ||
         (record as any).value !== undefined || 

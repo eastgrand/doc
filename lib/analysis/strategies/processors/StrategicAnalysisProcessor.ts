@@ -23,12 +23,12 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Strategic analysis requires strategic_analysis_score (primary) with fallbacks
+    // Strategic analysis requires strategic_score (primary) with fallbacks
     const hasRequiredFields = rawData.results.length === 0 ||
       (rawData.results as any[]).some((record: any) =>
         record &&
         ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        ((record as any).strategic_analysis_score !== undefined || (record as any).strategic_value_score !== undefined || (record as any).strategic_score !== undefined)
+        ((record as any).strategic_score !== undefined || (record as any).strategic_analysis_score !== undefined || (record as any).strategic_value_score !== undefined)
       );
     
     return hasRequiredFields;
@@ -50,11 +50,11 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     }
 
   const processedRecords = (rawData.results as any[]).map((record: any, index: number) => {
-      // Strategic analysis uses strategic_analysis_score as primary field
-      const primaryScore = Number((record as any).strategic_analysis_score || (record as any).strategic_value_score || (record as any).strategic_score);
+      // Strategic analysis uses strategic_score as primary field
+      const primaryScore = Number((record as any).strategic_score || (record as any).strategic_analysis_score || (record as any).strategic_value_score);
       
       if (isNaN(primaryScore)) {
-        throw new Error(`Strategic analysis record ${(record as any).ID || index} is missing strategic_analysis_score`);
+        throw new Error(`Strategic analysis record ${(record as any).ID || index} is missing strategic_score`);
       }
       
       // Generate area name
@@ -68,14 +68,14 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         area_id: recordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
-        strategic_analysis_score: Math.round(primaryScore * 100) / 100, // Add at top level for visualization
+        strategic_score: Math.round(primaryScore * 100) / 100, // Add at top level for visualization
         rank: 0, // Will be calculated after sorting
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
-          strategic_analysis_score: primaryScore,
-          score_source: 'strategic_analysis_score',
+          strategic_score: primaryScore,
+          score_source: 'strategic_score',
           target_brand_share: this.extractTargetBrandShare(record),
           market_gap: this.calculateRealMarketGap(record),
           total_population: Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0,
@@ -114,7 +114,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'strategic_analysis_score',
+      targetVariable: 'strategic_score',
       renderer: renderer, // Add direct renderer
       legend: legend // Add direct legend with correct formatting
     };
