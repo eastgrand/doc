@@ -200,24 +200,26 @@ const Infographics: React.FC<InfographicsProps> = ({
   }, [geometry, reportTemplate, generateStandardReport]);
 
   const renderHeader = () => {
-    const selectedTemplate = REPORT_TEMPLATES.find(t => t.id === reportTemplate);
+    // Convert reportTemplate ID to display name
+    const getDisplayName = (templateId: string | null): string => {
+      if (!templateId) return '';
+      // Convert kebab-case to title case
+      return templateId
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    };
 
     return (
       <div className="p-4 border-b flex justify-between items-center">
-        <h2 className="text-base font-medium">{selectedTemplate?.name || ''}</h2>
+        <h2 className="text-base font-medium">{getDisplayName(reportTemplate)}</h2>
         <div className="flex items-center gap-4">
           <Button onClick={handleDialogOpen} className="w-[220px] h-8 bg-white text-black border border-gray-300 hover:bg-gray-50">
-            {selectedTemplate?.name || 'Select Report'}
+            {getDisplayName(reportTemplate) || 'Select Report'}
           </Button>
           <ReportSelectionDialog
             open={isDialogOpen}
-            reports={REPORT_TEMPLATES.map(template => ({
-              id: template.id,
-              title: template.name,
-              description: template.description || '',
-              thumbnail: template.thumbnail || '',
-              categories: template.categories
-            }))}
+            reports={[]}
             onClose={handleDialogClose}
             onSelect={handleReportSelect as any}
           />
