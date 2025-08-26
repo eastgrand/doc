@@ -4,6 +4,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, AlertCircle, TrendingUp, Target, Users, BarChart3, Zap, Shield, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import endpointScoringService, { ENDPOINT_CONFIGS } from '@/lib/services/EndpointScoringService';
+import MapLogo from '@/components/MapLogo';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import Graphic from '@arcgis/core/Graphic';
@@ -48,6 +49,7 @@ export default function EndpointScoringReport({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [endpointData, setEndpointData] = useState<{ [key: string]: EndpointData }>({});
+  const [mapLoading, setMapLoading] = useState(false);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapViewRef = useRef<MapView | null>(null);
 
@@ -80,10 +82,28 @@ export default function EndpointScoringReport({
 
   // Initialize mini map to show geometry
   useEffect(() => {
-    if (!geometry || !mapContainerRef.current) return;
+    if (!geometry) {
+      console.log('[MiniMap] No geometry provided');
+      return;
+    }
+
+    if (!mapContainerRef.current) {
+      console.log('[MiniMap] Map container ref not available');
+      return;
+    }
 
     const initializeMiniMap = async () => {
       try {
+        console.log('[MiniMap] Initializing mini map...');
+        setMapLoading(true);
+        
+        // Clean up any existing map view first
+        if (mapViewRef.current) {
+          console.log('[MiniMap] Cleaning up existing map view');
+          mapViewRef.current.destroy();
+          mapViewRef.current = null;
+        }
+
         // Create a simple map
         const map = new Map({
           basemap: "gray-vector"
@@ -93,6 +113,7 @@ export default function EndpointScoringReport({
         const graphicsLayer = new GraphicsLayer();
         map.add(graphicsLayer);
 
+        console.log('[MiniMap] Creating MapView...');
         // Create the map view
         const mapView = new MapView({
           container: mapContainerRef.current!,
@@ -106,13 +127,18 @@ export default function EndpointScoringReport({
 
         mapViewRef.current = mapView;
 
+        console.log('[MiniMap] Waiting for map view to load...');
         await mapView.when();
+        console.log('[MiniMap] Map view loaded successfully');
 
         // Add the study area geometry to the map
+        console.log('[MiniMap] Geometry type:', geometry.type);
+        console.log('[MiniMap] Geometry extent:', geometry.extent);
+        
         const fillSymbol = new SimpleFillSymbol({
-          color: [0, 121, 193, 0.3], // ArcGIS blue with transparency
+          color: [27, 154, 89, 0.25], // Green fill with transparency  
           outline: new SimpleLineSymbol({
-            color: [0, 121, 193, 1], // Solid blue outline
+            color: [27, 154, 89, 1], // Solid green outline (Esri style)
             width: 2
           })
         });
@@ -123,23 +149,42 @@ export default function EndpointScoringReport({
         });
 
         graphicsLayer.add(graphic);
+        console.log('[MiniMap] Added study area graphic with geometry:', {
+          type: geometry.type,
+          hasExtent: !!geometry.extent,
+          spatialReference: geometry.spatialReference?.wkid
+        });
 
         // Zoom to the geometry extent
         const extent = geometry.extent;
         if (extent) {
-          await mapView.goTo(extent.expand(1.2)); // Add some padding
+          console.log('[MiniMap] Zooming to geometry extent');
+          await mapView.goTo(extent.expand(1.3), { 
+            duration: 1000 
+          }); // Add some padding with animation
+        } else {
+          console.warn('[MiniMap] Geometry has no extent, cannot zoom to area');
         }
 
+        console.log('[MiniMap] Mini map initialization complete');
+        setMapLoading(false);
+
       } catch (error) {
-        console.error('Error initializing mini map:', error);
+        console.error('[MiniMap] Error initializing mini map:', error);
+        setMapLoading(false);
       }
     };
 
-    initializeMiniMap();
+    // Add a small delay to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      initializeMiniMap();
+    }, 100);
 
     // Cleanup
     return () => {
+      clearTimeout(timeoutId);
       if (mapViewRef.current) {
+        console.log('[MiniMap] Cleaning up map view on unmount');
         mapViewRef.current.destroy();
         mapViewRef.current = null;
       }
@@ -356,7 +401,7 @@ export default function EndpointScoringReport({
   if (!geometry) {
     return (
       <div className="flex flex-col items-center justify-center p-8">
-        <AlertCircle className="h-8 w-8 text-amber-500 mb-2" />
+        <AlertCircle className="h-8 w-8 text-red-600 mb-2" />
         <p className="text-sm text-gray-600">No geometry selected for analysis</p>
       </div>
     );
@@ -366,7 +411,7 @@ export default function EndpointScoringReport({
     return (
       <div className="flex items-center justify-center p-8">
         <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-500 mx-auto mb-2" />
+          <Loader2 className="h-8 w-8 animate-spin text-green-600 mx-auto mb-2" />
           <p className="text-sm text-gray-600">Loading endpoint scoring data...</p>
         </div>
       </div>
@@ -383,10 +428,20 @@ export default function EndpointScoringReport({
   }
 
   return (
-    <div className="endpoint-scoring-report" style={{ 
+    <div className="endpoint-scoring-report relative" style={{ 
       fontFamily: '"Avenir Next", "Avenir", "Helvetica Neue", sans-serif',
       background: '#ffffff'
     }}>
+      {/* Background Logo Watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 opacity-10">
+        <MapLogo 
+          position="center"
+          style="permanent"
+          size="xlarge"
+          sidebarWidth={0}
+        />
+      </div>
+      
       {/* CSS Variables matching ArcGIS theme */}
       <style>{`
         .endpoint-scoring-report {
@@ -426,7 +481,7 @@ export default function EndpointScoringReport({
         .arcgis-progress-fill--primary { background: linear-gradient(90deg, var(--arcgis-blue-primary), var(--arcgis-blue-light)); }
       `}</style>
 
-      <div className="p-6 max-w-6xl mx-auto">
+      <div className="p-6 max-w-6xl mx-auto relative z-10">
         {/* Header matching ArcGIS style */}
         <div className="text-center mb-8 border-b pb-6" style={{ 
           borderColor: 'var(--arcgis-gray-200)',
@@ -459,7 +514,7 @@ export default function EndpointScoringReport({
             <Card className="lg:col-span-1 arcgis-score-card">
               <CardHeader className="bg-gray-50 pb-3">
                 <div className="flex items-center gap-3">
-                  <MapPin className="h-5 w-5 text-blue-600" />
+                  <MapPin className="h-5 w-5 text-green-600" />
                   <h3 className="font-semibold text-gray-900" style={{ fontFamily: 'var(--arcgis-font-family)' }}>
                     Study Area
                   </h3>
@@ -484,7 +539,7 @@ export default function EndpointScoringReport({
                       Center: {geometryStats.center[0].toFixed(3)}, {geometryStats.center[1].toFixed(3)}
                     </div>
                   )}
-                  <div className="text-xs mt-2 p-2 bg-blue-50 rounded" style={{ color: 'var(--arcgis-blue-primary)' }}>
+                  <div className="text-xs mt-2 p-2 bg-green-50 rounded" style={{ color: 'var(--arcgis-green-primary)' }}>
                     Analysis covers {Object.keys(endpointData).filter(key => endpointData[key]?.overall_score && endpointData[key]?.overall_score > 0).length} active endpoints
                   </div>
                 </div>
@@ -504,9 +559,30 @@ export default function EndpointScoringReport({
                   style={{ 
                     width: '100%', 
                     height: '300px',
-                    border: '1px solid var(--arcgis-gray-200)'
+                    minHeight: '300px',
+                    border: '1px solid #e5e7eb',
+                    backgroundColor: '#f9fafb',
+                    borderRadius: '0.375rem',
+                    position: 'relative',
+                    overflow: 'hidden'
                   }}
-                />
+                >
+                  {/* Loading indicator while map initializes */}
+                  {mapLoading && (
+                    <div 
+                      className="absolute inset-0 flex items-center justify-center text-gray-500"
+                      style={{
+                        backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                        zIndex: 1
+                      }}
+                    >
+                      <div className="flex flex-col items-center">
+                        <Loader2 className="h-8 w-8 animate-spin mb-2" />
+                        <span className="text-sm">Loading study area map...</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -522,7 +598,7 @@ export default function EndpointScoringReport({
           <CardContent className="pt-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
               <div className="text-center">
-                <div className="text-5xl font-bold text-blue-600 mb-2">{compositeScore}</div>
+                <div className="text-5xl font-bold text-green-600 mb-2">{compositeScore}</div>
                 <div className="text-lg font-semibold text-gray-700">Overall Intelligence Score</div>
                 <div className="text-sm text-gray-600 mt-1">
                   Combined analysis across {Object.keys(endpointData).filter(key => endpointData[key]?.overall_score && endpointData[key]?.overall_score > 0).length} active endpoints
@@ -561,7 +637,7 @@ export default function EndpointScoringReport({
               })}
             </div>
             {aiInsights?.strengths && (
-              <div className="mt-4 p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+              <div className="mt-4 p-4 bg-green-50 rounded-lg border-l-4 border-green-600">
                 <h4 className="font-semibold text-green-900 mb-2 text-sm">Key Insights</h4>
                 <p className="text-sm text-green-800 leading-relaxed">{aiInsights.strengths}</p>
               </div>
@@ -586,14 +662,14 @@ export default function EndpointScoringReport({
                     {renderDetailedBreakdownEndpoint(config, data)}
                     {/* Add demographic context if available */}
                     {config.id === 'customer-profile' && data.demographic_breakdown && (
-                      <div className="text-xs text-gray-600 bg-blue-50 p-3 rounded">
+                      <div className="text-xs text-gray-600 bg-gray-50 p-3 rounded border">
                         <strong>Demographics:</strong> {typeof data.demographic_breakdown === 'string' 
                           ? data.demographic_breakdown 
                           : 'Detailed customer segment analysis available'}
                       </div>
                     )}
                     {config.id === 'demographic-insights' && (
-                      <div className="text-xs text-gray-600 bg-blue-50 p-3 rounded">
+                      <div className="text-xs text-gray-600 bg-gray-50 p-3 rounded border">
                         <strong>Population Insights:</strong> Analysis covers demographic patterns, income distributions, and lifestyle segments within the study area.
                       </div>
                     )}
@@ -668,11 +744,11 @@ export default function EndpointScoringReport({
                       
                       <div>
                         <h4 className="font-semibold text-gray-900 mb-2 text-sm flex items-center gap-2">
-                          <BarChart3 className="h-4 w-4 text-purple-600" />
+                          <BarChart3 className="h-4 w-4 text-gray-600" />
                           Future Performance
                         </h4>
                         <div className="flex items-center gap-3 mb-2">
-                          <span className="text-2xl font-bold text-purple-600">{predictiveData.overall_score || 0}</span>
+                          <span className="text-2xl font-bold text-gray-600">{predictiveData.overall_score || 0}</span>
                           <div className="flex-1">
                             <div className="arcgis-progress-track">
                               <div 
@@ -693,11 +769,11 @@ export default function EndpointScoringReport({
                     <div className="space-y-4">
                       <div>
                         <h4 className="font-semibold text-gray-900 mb-2 text-sm flex items-center gap-2">
-                          <Shield className="h-4 w-4 text-orange-600" />
+                          <Shield className="h-4 w-4 text-red-600" />
                           Market Resilience
                         </h4>
                         <div className="flex items-center gap-3 mb-2">
-                          <span className="text-2xl font-bold text-orange-600">{resilienceData.overall_score || 0}</span>
+                          <span className="text-2xl font-bold text-red-600">{resilienceData.overall_score || 0}</span>
                           <div className="flex-1">
                             <div className="arcgis-progress-track">
                               <div 
@@ -715,9 +791,9 @@ export default function EndpointScoringReport({
                       </div>
 
                       {/* Economic Context */}
-                      <div className="bg-blue-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-blue-900 mb-2 text-sm">Economic Context</h4>
-                        <p className="text-sm text-blue-800">
+                      <div className="bg-gray-50 p-4 rounded-lg border">
+                        <h4 className="font-semibold text-gray-900 mb-2 text-sm">Economic Context</h4>
+                        <p className="text-sm text-gray-800">
                           The combination of trend analysis ({trendData.overall_score || 0}/100), predictive modeling ({predictiveData.overall_score || 0}/100), 
                           and resilience assessment ({resilienceData.overall_score || 0}/100) suggests {
                             ((trendData.overall_score || 0) + (predictiveData.overall_score || 0) + (resilienceData.overall_score || 0)) / 3 >= 75 ? 
@@ -739,9 +815,9 @@ export default function EndpointScoringReport({
         {/* Strategic Recommendations & Market Position */}
         {aiInsights && (
           <Card className="mb-8 arcgis-score-card">
-            <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50 pb-3">
+            <CardHeader className="bg-gray-50 pb-3">
               <div className="flex items-center gap-3">
-                <Zap className="h-5 w-5 text-purple-600" />
+                <Zap className="h-5 w-5 text-green-600" />
                 <div>
                   <h3 className="font-semibold text-gray-900" style={{ fontFamily: 'var(--arcgis-font-family)' }}>
                     Strategic Recommendations
@@ -757,9 +833,9 @@ export default function EndpointScoringReport({
                   <h4 className="font-semibold text-gray-900 mb-3 text-sm">Priority Actions</h4>
                   
                   {aiInsights.opportunities && (
-                    <div className="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-500">
-                      <h5 className="font-semibold text-orange-900 mb-2 text-sm">Focus Areas</h5>
-                      <p className="text-sm text-orange-800 leading-relaxed">{aiInsights.opportunities}</p>
+                    <div className="p-4 bg-red-50 rounded-lg border-l-4 border-red-600">
+                      <h5 className="font-semibold text-red-900 mb-2 text-sm">Focus Areas</h5>
+                      <p className="text-sm text-red-800 leading-relaxed">{aiInsights.opportunities}</p>
                     </div>
                   )}
 
@@ -770,9 +846,9 @@ export default function EndpointScoringReport({
                     const brandScore = endpointData['brand-difference']?.overall_score || 0;
                     
                     return (
-                      <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-                        <h5 className="font-semibold text-blue-900 mb-2 text-sm">Market Positioning</h5>
-                        <div className="space-y-2 text-sm text-blue-800">
+                      <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-600">
+                        <h5 className="font-semibold text-green-900 mb-2 text-sm">Market Positioning</h5>
+                        <div className="space-y-2 text-sm text-green-800">
                           <div>• Strategic Position: {strategicScore >= 80 ? 'Dominant' : strategicScore >= 60 ? 'Strong' : 'Developing'} ({strategicScore}/100)</div>
                           <div>• Competitive Edge: {competitiveScore >= 80 ? 'Superior' : competitiveScore >= 60 ? 'Competitive' : 'Challenged'} ({competitiveScore}/100)</div>
                           <div>• Brand Differentiation: {brandScore >= 80 ? 'Exceptional' : brandScore >= 60 ? 'Solid' : 'Limited'} ({brandScore}/100)</div>
@@ -789,14 +865,14 @@ export default function EndpointScoringReport({
                   {/* Data Quality & Methodology */}
                   <div className="space-y-3">
                     {aiInsights.confidence && (
-                      <div className="p-3 bg-indigo-50 rounded-lg">
-                        <h5 className="font-semibold text-indigo-900 mb-1 text-xs">Data Confidence</h5>
-                        <p className="text-xs text-indigo-800">{aiInsights.confidence}</p>
+                      <div className="p-3 bg-gray-50 rounded-lg border">
+                        <h5 className="font-semibold text-gray-900 mb-1 text-xs">Data Confidence</h5>
+                        <p className="text-xs text-gray-800">{aiInsights.confidence}</p>
                       </div>
                     )}
                     
                     {aiInsights.methodology && (
-                      <div className="p-3 bg-gray-50 rounded-lg">
+                      <div className="p-3 bg-white rounded-lg border">
                         <h5 className="font-semibold text-gray-900 mb-1 text-xs">Analysis Coverage</h5>
                         <p className="text-xs text-gray-700">{aiInsights.methodology}</p>
                       </div>
@@ -819,23 +895,23 @@ export default function EndpointScoringReport({
               <div className="mt-6 pt-4 border-t border-gray-200">
                 <h4 className="font-semibold text-gray-900 mb-3 text-sm">Next Steps</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  <div className="p-3 bg-yellow-50 rounded-lg">
-                    <strong className="text-yellow-800">Short Term (30 days)</strong>
-                    <p className="text-yellow-700 mt-1">
+                  <div className="p-3 bg-red-50 rounded-lg border">
+                    <strong className="text-red-800">Short Term (30 days)</strong>
+                    <p className="text-red-700 mt-1">
                       {compositeScore >= 80 ? 'Leverage high-performing areas for expansion opportunities' :
                        compositeScore >= 60 ? 'Optimize current strengths while addressing moderate weaknesses' :
                        'Focus on foundational improvements in lowest-scoring areas'}
                     </p>
                   </div>
-                  <div className="p-3 bg-blue-50 rounded-lg">
-                    <strong className="text-blue-800">Medium Term (90 days)</strong>
-                    <p className="text-blue-700 mt-1">
+                  <div className="p-3 bg-gray-50 rounded-lg border">
+                    <strong className="text-gray-800">Medium Term (90 days)</strong>
+                    <p className="text-gray-700 mt-1">
                       Implement strategic recommendations from priority focus areas and monitor performance improvements
                     </p>
                   </div>
-                  <div className="p-3 bg-purple-50 rounded-lg">
-                    <strong className="text-purple-800">Long Term (6+ months)</strong>
-                    <p className="text-purple-700 mt-1">
+                  <div className="p-3 bg-green-50 rounded-lg border">
+                    <strong className="text-green-800">Long Term (6+ months)</strong>
+                    <p className="text-green-700 mt-1">
                       Re-evaluate market position and expand analysis to adjacent areas showing similar patterns
                     </p>
                   </div>

@@ -2267,6 +2267,197 @@ After making changes, verify the configuration is working:
 
 ---
 
+## EndpointScoringService Combined Dataset Creation
+
+### Overview
+The EndpointScoringService requires a combined dataset that aggregates scores from multiple endpoint analysis files into a single comprehensive market intelligence dataset. This section documents how to create, upload, and configure this combined dataset.
+
+### Purpose
+- **Problem**: Original system fetched from 9+ separate endpoint JSON files (strategic-analysis.json, competitive-analysis.json, etc.)
+- **Solution**: Single combined dataset with all scores and demographics in one file
+- **Benefits**: Faster loading, simplified data management, consistent score availability
+
+### Dataset Creation Process
+
+#### Step 1: Run the Dataset Creation Script
+
+**Script Location**: `/scripts/create-market-intelligence-dataset.js`
+
+**Purpose**: Combines multiple endpoint files into single market intelligence dataset
+
+**Usage**:
+```bash
+node scripts/create-market-intelligence-dataset.js
+```
+
+**Input Files Required**:
+- `/public/data/endpoints/strategic-analysis.json` → Primary scores + demographics
+- `/public/data/endpoints/competitive-analysis.json` → Competitive positioning 
+- `/public/data/endpoints/brand-difference.json` → Brand differentiation
+- `/public/data/endpoints/trend-analysis.json` → Market trends
+- `/public/data/endpoints/predictive-modeling.json` → Future predictions
+- `/public/data/endpoints/scenario-analysis.json` → Market resilience 
+- `/public/data/endpoints/demographic-insights.json` → Population insights
+- `/public/data/endpoints/customer-profile.json` → Customer segmentation
+- `/public/data/endpoints/feature-importance-ranking.json` → Success factor rankings
+
+**Output Files**:
+- `/public/data/endpoints/market-intelligence-report.json` → Combined dataset
+- `/public/data/endpoints/market-intelligence-sample.json` → Sample record for inspection
+
+#### Step 2: Verify Dataset Creation
+
+**Check Console Output**:
+```bash
+✅ Loaded 1779 base records from strategic analysis
+✅ competitive: merged 1804 records, 0 missing IDs
+✅ brand: merged 1804 records, 0 missing IDs
+✅ trend: merged 1804 records, 0 missing IDs
+✅ predictive: merged 1804 records, 0 missing IDs
+# ... other endpoints
+📊 Final report count: 1779
+```
+
+**Inspect Sample Record**:
+```bash
+cat public/data/endpoints/market-intelligence-sample.json
+```
+
+**Expected Fields in Combined Dataset**:
+```typescript
+{
+  "OBJECTID": number,
+  "ID": "string",
+  "DESCRIPTION": "string",
+  
+  // Primary Performance Scores  
+  "strategic_score": number,
+  "competitive_score": number,
+  "brand_difference_score": number,
+  "trend_score": number,
+  "prediction_score": number,
+  
+  // Supporting Analysis Scores
+  "scenario_score": number,
+  "demographic_insights_score": number,
+  "customer_profile_score": number,
+  "importance_score": number,
+  
+  // Demographics (Current Year)
+  "TOTPOP_CY": number,
+  "MEDHINC_CY": number,
+  "MEDAGE_CY": number,
+  "DIVINDX_CY": number,
+  
+  // Demographics (Forecast Year)
+  "TOTPOP_FY": number,
+  "MEDHINC_FY": number,
+  "MEDAGE_FY": number,
+  "DIVINDX_FY": number,
+  
+  // Feature Analysis
+  "feature_importance": array,
+  
+  // Timestamps
+  "CreationDate": number,
+  "EditDate": number
+}
+```
+
+#### Step 3: Upload to Blob Storage
+
+**Manual Upload Process**:
+1. **File to Upload**: `/public/data/endpoints/market-intelligence-report.json`
+2. **Upload to your blob storage provider** (Vercel, AWS S3, Azure Blob, etc.)
+3. **Get public URL** for the uploaded dataset
+4. **Note the URL** for the next step
+
+**Example Blob URLs**:
+- Vercel Blob: `https://[hash].public.blob.vercel-storage.com/market-intelligence-report.json`
+- AWS S3: `https://bucket.s3.amazonaws.com/market-intelligence-report.json`
+- Azure Blob: `https://account.blob.core.windows.net/container/market-intelligence-report.json`
+
+#### Step 4: Update EndpointScoringService Configuration
+
+**File to Modify**: `/lib/services/EndpointScoringService.ts`
+
+**Add Blob URL Constant** (after imports):
+```typescript
+// Market Intelligence Dataset URL (hosted on blob storage)
+const MARKET_INTELLIGENCE_DATASET_URL = 'YOUR_BLOB_URL_HERE';
+```
+
+**Update Fetch Call** (around line 200):
+```typescript
+// OLD:
+const response = await fetch('/data/endpoints/market-intelligence-report.json');
+
+// NEW:
+const response = await fetch(MARKET_INTELLIGENCE_DATASET_URL);
+```
+
+**Example Configuration**:
+```typescript
+// Market Intelligence Dataset URL (hosted on Vercel blob storage)
+const MARKET_INTELLIGENCE_DATASET_URL = 'https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/market-intelligence-report.json';
+```
+
+### Migration Checklist
+
+**For Each New Project**:
+- [ ] Ensure all required endpoint JSON files are available in `/public/data/endpoints/`
+- [ ] Run dataset creation script: `node scripts/create-market-intelligence-dataset.js`
+- [ ] Verify console output shows successful merging of all endpoints
+- [ ] Check sample file for expected score fields and demographic data
+- [ ] Upload `market-intelligence-report.json` to blob storage
+- [ ] Get public URL from blob storage provider
+- [ ] Update `MARKET_INTELLIGENCE_DATASET_URL` in EndpointScoringService.ts
+- [ ] Update fetch call to use blob URL instead of local path
+- [ ] Test market intelligence report shows proper scores (not zeros)
+- [ ] Verify all performance indicators display correctly
+
+### Data Quality Validation
+
+**Expected Score Coverage**:
+- Strategic Analysis: 100% (base dataset)
+- Competitive Analysis: 100%
+- Brand Differentiation: 100%  
+- Trend Analysis: 100%
+- Predictive Modeling: 100%
+- Customer Profile: May vary (44.7% in example)
+- Feature Importance: 99.9%
+
+**Common Issues**:
+1. **Missing Endpoint Files**: Script will show "file_error" for missing inputs
+2. **ID Mismatch**: Records may not join if ID formats differ between files
+3. **Zero Scores**: Check if score fields exist in source endpoint files
+4. **Blob Access**: Verify blob URL is publicly accessible
+
+### Troubleshooting
+
+**Dataset Creation Issues**:
+```bash
+# Check if all endpoint files exist
+ls -la public/data/endpoints/*.json
+
+# Verify file formats
+head -10 public/data/endpoints/strategic-analysis.json
+```
+
+**Blob URL Issues**:
+```bash
+# Test blob URL accessibility
+curl -I "YOUR_BLOB_URL"
+# Should return 200 OK
+```
+
+**Service Integration Issues**:
+- Check browser console for fetch errors
+- Verify CORS policy allows access to blob URL
+- Test market intelligence report shows actual scores, not zeros
+
+---
+
 ## ✅ CRITICAL UPDATE: August 25, 2025
 
 **MIGRATION DOCUMENTATION COMPLETED**: This guide has been updated with the analysis of recent Red Bull California project fixes, categorizing them into:

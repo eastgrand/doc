@@ -38,17 +38,7 @@ interface InfographicsProps {
   onExportPDF?: () => void;
 }
 
-const REPORT_TEMPLATES: ReadonlyArray<ReportTemplate> = [
-  { id: 'whats-in-my-neighbourhood-km', name: "What's in my Neighbourhood?", icon: FileSpreadsheet, categories: ['Summary Reports'] },
-  { id: 'community-profile', name: 'Community Demographics Report', icon: FileSpreadsheet, categories: ['Summary Reports'] },
-  { id: 'demographic-and-income', name: 'Demographic and Income', icon: FileSpreadsheet, categories: ['Demographics'] },
-  { id: 'demographic-profile', name: 'Demographic Profile', icon: FileSpreadsheet, categories: ['Demographics'] },
-  { id: 'work-and-occupation', name: 'Work and Occupation', icon: FileSpreadsheet, categories: ['Demographics'] },
-  { id: 'prizm-profile', name: 'PRIZM Profile', icon: FileSpreadsheet, categories: ['Market Analysis'] },
-  { id: 'eating-places-in-canada', name: 'Eating Places in Canada', icon: FileSpreadsheet, categories: ['Market Analysis'] },
-  { id: 'poverty-indicators', name: 'Community Risk and Equitability', icon: FileSpreadsheet, categories: ['Health & Risk'] },
-  { id: 'emergency-community-information', name: 'Emergency Community Information', icon: FileSpreadsheet, categories: ['Health & Risk'] }
-];
+// Legacy hardcoded templates - now using ReportsService for all report dialogs
 
 // Mock demographic data generator
 const generateMockDemographicData = (reportTemplate: string) => {

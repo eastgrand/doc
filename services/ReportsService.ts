@@ -17,15 +17,15 @@ const CUSTOM_REPORTS: Report[] = [
     thumbnail: '',
     categories: ['Market Intelligence', 'AI Analysis'],
     type: 'endpoint-scoring'
-  },
-  {
+  }
+  /*{
     id: 'endpoint-scoring-combined',
     title: 'AI Endpoint Scoring Analysis',
     description: 'Technical scoring analysis with detailed metrics and endpoint performance data',
     thumbnail: '',
     categories: ['AI Analysis', 'Technical'],
     type: 'endpoint-scoring'
-  },
+  },*/
   // {
   //   id: 'market-profile-custom',
   //   title: 'Market Profile Custom Report',
@@ -67,7 +67,8 @@ const DO_NOT_DISPLAY_LIST: Set<string> = new Set([
   'Draft',
   'DRAFT',
   'Market Analysis for Nike',
-  
+  'AI Endpoint Scoring Analysis',
+
   // Canadian/Non-US reports
   'Canada Demographics',
   'Canadian Demographics',

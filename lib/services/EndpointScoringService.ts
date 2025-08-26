@@ -1,6 +1,9 @@
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 import Point from "@arcgis/core/geometry/Point";
 
+// Market Intelligence Dataset URL (hosted on Vercel blob storage)
+const MARKET_INTELLIGENCE_DATASET_URL = 'https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/market-intelligence-report.json';
+
 interface EndpointData {
   overall_score?: number;
   confidence_score?: number;
@@ -57,7 +60,7 @@ export const ENDPOINT_CONFIGS: EndpointConfig[] = [
     description: 'Overall strategic positioning and market opportunity',
     icon: 'target',
     type: 'single-score',
-    color: 'blue',
+    color: 'green',
     primaryScoreField: 'strategic_score'
   },
   {
@@ -66,7 +69,7 @@ export const ENDPOINT_CONFIGS: EndpointConfig[] = [
     description: 'Unique positioning and competitive advantage',
     icon: 'zap',
     type: 'single-score',
-    color: 'purple',
+    color: 'red',
     primaryScoreField: 'brand_difference_score'
   },
   {
@@ -93,7 +96,7 @@ export const ENDPOINT_CONFIGS: EndpointConfig[] = [
     description: 'Future performance predictions',
     icon: 'bar-chart-3',
     type: 'single-score',
-    color: 'orange',
+    color: 'gray',
     primaryScoreField: 'prediction_score'
   },
   {
@@ -102,7 +105,7 @@ export const ENDPOINT_CONFIGS: EndpointConfig[] = [
     description: 'Target customer characteristics and behavior',
     icon: 'users',
     type: 'hybrid',
-    color: 'cyan',
+    color: 'gray',
     primaryScoreField: 'thematic_value',
     detailFields: ['demographic_breakdown', 'spending_patterns']
   },
@@ -112,7 +115,7 @@ export const ENDPOINT_CONFIGS: EndpointConfig[] = [
     description: 'Risk assessment and scenario planning',
     icon: 'shield',
     type: 'hybrid',
-    color: 'amber',
+    color: 'red',
     primaryScoreField: 'scenario_score',
     detailFields: ['stress_test_results', 'risk_factors', 'recovery_metrics']
   },
@@ -122,7 +125,7 @@ export const ENDPOINT_CONFIGS: EndpointConfig[] = [
     description: 'Population and demographic characteristics',
     icon: 'users',
     type: 'detailed-breakdown',
-    color: 'indigo',
+    color: 'black',
     primaryScoreField: 'demographic_insights_score',
     detailFields: ['age_groups', 'income_brackets']
   },
@@ -132,7 +135,7 @@ export const ENDPOINT_CONFIGS: EndpointConfig[] = [
     description: 'Key factors driving performance',
     icon: 'bar-chart-3',
     type: 'detailed-breakdown',
-    color: 'pink',
+    color: 'gray',
     primaryScoreField: 'importance_score',
     detailFields: ['feature_importance']
   },
@@ -142,7 +145,7 @@ export const ENDPOINT_CONFIGS: EndpointConfig[] = [
     description: 'Data structure and complexity analysis',
     icon: 'target',
     type: 'detailed-breakdown',
-    color: 'emerald',
+    color: 'green',
     primaryScoreField: 'dimensionality_insights_score',
     detailFields: ['variance_explained', 'reduction_benefits', 'performance_metrics']
   }
@@ -183,7 +186,7 @@ class EndpointScoringService {
   }
 
   /**
-   * Load data from a single endpoint with caching
+   * Load data from the combined market intelligence dataset
    */
   private async loadSingleEndpoint(endpointId: string, geometry: __esri.Geometry): Promise<EndpointData> {
     const cacheKey = `${endpointId}-${this.getGeometryHash(geometry)}`;
@@ -194,9 +197,9 @@ class EndpointScoringService {
       return this.cache.get(cacheKey)!;
     }
 
-    // Load from JSON file
-    console.log(`[EndpointScoringService] Loading fresh data for ${endpointId}`);
-    const response = await fetch(`/data/endpoints/${endpointId}.json`);
+    // Load from combined market intelligence dataset
+    console.log(`[EndpointScoringService] Loading market intelligence data for ${endpointId}`);
+    const response = await fetch(MARKET_INTELLIGENCE_DATASET_URL);
     
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -207,8 +210,8 @@ class EndpointScoringService {
     // Filter data based on geometry (spatial filtering)
     const filteredData = await this.spatialFilter(rawData, geometry);
     
-    // Process and aggregate the filtered data
-    const processedData = this.processEndpointData(filteredData, endpointId);
+    // Extract scores relevant to this endpoint
+    const processedData = this.processMarketIntelligenceData(filteredData, endpointId);
     
     // Cache the result
     this.cache.set(cacheKey, processedData);
@@ -220,22 +223,220 @@ class EndpointScoringService {
   /**
    * Perform spatial filtering based on geometry
    */
-  private async spatialFilter(data: EndpointData | EndpointData[], geometry: __esri.Geometry): Promise<EndpointData> {
-    // If data is an array of features with coordinates, filter by geometry bounds
-    if (Array.isArray(data)) {
-      const filteredItems = data.filter(item => this.isWithinGeometry(item, geometry));
-      
-      // If we have multiple items after filtering, we need to aggregate them
-      if (filteredItems.length > 1) {
-        console.log(`[EndpointScoringService] Found ${filteredItems.length} items in study area, aggregating...`);
-        return this.aggregateMultipleDataPoints(filteredItems);
-      }
-      
-      return filteredItems.length > 0 ? filteredItems[0] : data[0] || {};
+  private async spatialFilter(data: any, geometry: __esri.Geometry): Promise<any[]> {
+    // Handle the combined dataset structure
+    let records: any[] = [];
+    
+    if (data.results && Array.isArray(data.results)) {
+      records = data.results;
+    } else if (Array.isArray(data)) {
+      records = data;
+    } else {
+      console.warn('[EndpointScoringService] Unexpected data structure:', typeof data);
+      return [];
     }
     
-    // For single objects or already aggregated data, return as-is
-    return data;
+    console.log(`[EndpointScoringService] Filtering ${records.length} records by geometry`);
+    
+    // Filter records based on geometry intersection
+    const filteredRecords = records.filter(record => this.isWithinGeometry(record, geometry));
+    
+    console.log(`[EndpointScoringService] Found ${filteredRecords.length} records within geometry`);
+    
+    return filteredRecords;
+  }
+
+  /**
+   * Process market intelligence data for a specific endpoint type
+   */
+  private processMarketIntelligenceData(filteredRecords: any[], endpointId: string): EndpointData {
+    console.log(`[EndpointScoringService] Processing ${filteredRecords.length} records for ${endpointId}`);
+    
+    if (filteredRecords.length === 0) {
+      console.warn(`[EndpointScoringService] No data found for ${endpointId}`);
+      const config = ENDPOINT_CONFIGS.find(c => c.id === endpointId);
+      return this.getDefaultEndpointData(config || {
+        id: endpointId,
+        name: endpointId,
+        description: 'Unknown endpoint',
+        icon: 'help-circle',
+        type: 'single-score',
+        color: 'gray'
+      });
+    }
+    
+    // Find the endpoint configuration
+    const config = ENDPOINT_CONFIGS.find(c => c.id === endpointId);
+    const scoreField = config?.primaryScoreField || 'strategic_score';
+    
+    // If single record, extract data directly
+    if (filteredRecords.length === 1) {
+      const record = filteredRecords[0];
+      return this.extractEndpointDataFromRecord(record, scoreField);
+    }
+    
+    // Multiple records - aggregate scores and demographics
+    console.log(`[EndpointScoringService] Aggregating ${filteredRecords.length} records for ${endpointId}`);
+    return this.aggregateMarketIntelligenceRecords(filteredRecords, scoreField);
+  }
+
+  /**
+   * Extract endpoint data from a single market intelligence record
+   */
+  private extractEndpointDataFromRecord(record: any, scoreField: string): EndpointData {
+    return {
+      overall_score: record[scoreField] || 0,
+      confidence_score: record.overall_confidence || 85,
+      
+      // Demographics
+      population: record.TOTPOP_CY || 0,
+      total_population: record.TOTPOP_CY || 0,
+      households: record.TOTPOP_CY ? Math.round(record.TOTPOP_CY / 2.5) : 0,
+      median_income: record.MEDHINC_CY || 0,
+      median_age: record.MEDAGE_CY || 0,
+      
+      // Feature importance data
+      feature_importance: record.feature_importance || [],
+      
+      // Location data
+      coordinates: record.center_point || [0, 0],
+      
+      // Aggregation info
+      aggregation_info: {
+        source_count: 1,
+        aggregation_method: 'single_record',
+        total_population: record.TOTPOP_CY || 0,
+        confidence_adjustment: 1.0
+      },
+      
+      description: record.DESCRIPTION || 'Unknown Area'
+    };
+  }
+
+  /**
+   * Aggregate multiple market intelligence records
+   */
+  private aggregateMarketIntelligenceRecords(records: any[], scoreField: string): EndpointData {
+    const validScores = records
+      .map(r => r[scoreField])
+      .filter(score => typeof score === 'number' && score > 0);
+    
+    const totalPopulation = records.reduce((sum, r) => sum + (r.TOTPOP_CY || 0), 0);
+    const avgScore = validScores.length > 0 
+      ? validScores.reduce((sum, score) => sum + score, 0) / validScores.length 
+      : 0;
+    
+    // Population-weighted demographics
+    const avgIncome = this.calculatePopulationWeightedAverage(
+      records, 'MEDHINC_CY', 'TOTPOP_CY'
+    );
+    const avgAge = this.calculatePopulationWeightedAverage(
+      records, 'MEDAGE_CY', 'TOTPOP_CY'
+    );
+    
+    // Calculate confidence based on data completeness
+    const confidence = Math.min(95, 60 + (validScores.length / records.length) * 35);
+    
+    return {
+      overall_score: Math.round(avgScore),
+      confidence_score: Math.round(confidence),
+      
+      population: totalPopulation,
+      total_population: totalPopulation,
+      households: totalPopulation ? Math.round(totalPopulation / 2.5) : 0,
+      median_income: Math.round(avgIncome),
+      median_age: Math.round(avgAge),
+      
+      // Combined feature importance
+      feature_importance: this.combineFeatureImportance(records),
+      
+      // Centroid coordinates
+      coordinates: this.calculateCentroid(records),
+      
+      aggregation_info: {
+        source_count: records.length,
+        aggregation_method: 'population_weighted',
+        total_population: totalPopulation,
+        confidence_adjustment: validScores.length / records.length
+      },
+      
+      description: `Aggregated data from ${records.length} areas`
+    };
+  }
+
+  /**
+   * Calculate population-weighted average for demographic fields
+   */
+  private calculatePopulationWeightedAverage(
+    records: any[], 
+    valueField: string, 
+    weightField: string
+  ): number {
+    let totalWeightedValue = 0;
+    let totalWeight = 0;
+    
+    for (const record of records) {
+      const value = record[valueField];
+      const weight = record[weightField];
+      
+      if (typeof value === 'number' && typeof weight === 'number' && weight > 0) {
+        totalWeightedValue += value * weight;
+        totalWeight += weight;
+      }
+    }
+    
+    return totalWeight > 0 ? totalWeightedValue / totalWeight : 0;
+  }
+
+  /**
+   * Combine feature importance data from multiple records
+   */
+  private combineFeatureImportance(records: any[]): Array<{feature_name?: string; name?: string; importance_score?: number; importance?: number; rank?: number}> {
+    const featureMap = new Map<string, {total: number; count: number}>();
+    
+    for (const record of records) {
+      if (Array.isArray(record.feature_importance)) {
+        for (const feature of record.feature_importance) {
+          const name = feature.feature_name || feature.name || 'unknown';
+          const importance = feature.importance_score || feature.importance || 0;
+          
+          if (!featureMap.has(name)) {
+            featureMap.set(name, {total: 0, count: 0});
+          }
+          
+          const existing = featureMap.get(name)!;
+          existing.total += importance;
+          existing.count += 1;
+        }
+      }
+    }
+    
+    // Convert to array and sort by average importance
+    return Array.from(featureMap.entries())
+      .map(([name, data]) => ({
+        feature_name: name,
+        importance_score: data.total / data.count,
+        rank: 0 // Will be set after sorting
+      }))
+      .sort((a, b) => (b.importance_score || 0) - (a.importance_score || 0))
+      .map((item, index) => ({...item, rank: index + 1}));
+  }
+
+  /**
+   * Calculate centroid from multiple records
+   */
+  private calculateCentroid(records: any[]): [number, number] {
+    const validCoords = records
+      .map(r => r.center_point)
+      .filter(coords => Array.isArray(coords) && coords.length === 2 && 
+                       typeof coords[0] === 'number' && typeof coords[1] === 'number');
+    
+    if (validCoords.length === 0) return [0, 0];
+    
+    const sumLng = validCoords.reduce((sum, coord) => sum + coord[0], 0);
+    const sumLat = validCoords.reduce((sum, coord) => sum + coord[1], 0);
+    
+    return [sumLng / validCoords.length, sumLat / validCoords.length];
   }
 
   /**

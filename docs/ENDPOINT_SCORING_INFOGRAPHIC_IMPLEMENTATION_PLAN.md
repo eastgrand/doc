@@ -45,6 +45,234 @@ Integrate endpoint scoring data into the existing ArcGIS infographic system, all
    - Endpoint → EndpointScoreInfographic.tsx (enhanced)
 ```
 
+## 📊 Market Intelligence Report Data Requirements
+
+### Template Section Field Mapping
+
+#### **Executive Summary Section**
+**Required Fields:**
+- `strategic_score` - Overall strategic positioning score
+- `competitive_score` - Competitive advantage score  
+- `trend_score` - Market trend alignment score
+- `prediction_score` - Future performance indicator
+- `brand_difference_score` - Brand differentiation score
+
+**Demographic Context Fields:**
+- `TOTPOP_CY` - Current year total population
+- `MEDHINC_CY` - Current year median household income
+- `MEDAGE_CY` - Current year median age
+- `DIVINDX_CY` - Diversity index
+
+**Source Endpoints:**
+- `strategic-analysis.json` → `strategic_score`
+- `competitive-analysis.json` → `competitive_score`
+- `trend-analysis.json` → `trend_score`
+- `predictive-modeling.json` → `prediction_score`
+- `brand-difference.json` → `brand_difference_score`
+
+#### **Key Performance Indicators Section**
+**Required Fields:**
+- `strategic_score` - Strategic analysis KPI
+- `brand_difference_score` - Brand differentiation KPI
+- `competitive_score` - Competitive position KPI
+- `trend_score` - Market trends KPI
+- `prediction_score` - Predictive modeling KPI
+
+**Additional Context Fields:**
+- Confidence scores (if available): `strategic_confidence`, `competitive_confidence`, etc.
+- Methodology indicators for transparency
+
+**Source Endpoints:**
+- Same as Executive Summary section
+- Additional confidence data from model performance endpoints if available
+
+#### **Market Intelligence & Demographics Section**
+**Required Fields:**
+- Customer profile data from `customer-profile.json`:
+  - Primary customer score field (TBD - need to check what's in customer-profile.json)
+  - Demographic breakdown fields
+- `demographic_insights_score` from `demographic-insights.json`
+- Population and demographic fields:
+  - `TOTPOP_CY`, `TOTPOP_FY` - Population current/forecast year
+  - `MEDHINC_CY`, `MEDHINC_FY` - Income current/forecast year
+  - `MEDAGE_CY`, `MEDAGE_FY` - Age current/forecast year
+  - `DIVINDX_CY`, `DIVINDX_FY` - Diversity current/forecast year
+
+**Source Endpoints:**
+- `customer-profile.json` → customer segment data
+- `demographic-insights.json` → `demographic_insights_score`
+- All endpoint files contain demographic context fields
+
+#### **Economic Conditions & Future Outlook Section**
+**Required Fields:**
+- `trend_score` - Market trend analysis
+- `prediction_score` - Future performance predictions
+- `scenario_score` from `scenario-analysis.json` - Market resilience
+- Economic indicators:
+  - Income trends: `MEDHINC_CY` vs `MEDHINC_FY`
+  - Population growth: `TOTPOP_CY` vs `TOTPOP_FY`
+  - Age demographics: `MEDAGE_CY` vs `MEDAGE_FY`
+
+**Source Endpoints:**
+- `trend-analysis.json` → `trend_score`
+- `predictive-modeling.json` → `prediction_score`
+- `scenario-analysis.json` → `scenario_score`
+
+#### **Strategic Recommendations Section**
+**Required Fields:**
+- All primary scores for analysis synthesis:
+  - `strategic_score`, `competitive_score`, `brand_difference_score`
+  - `trend_score`, `prediction_score`, `scenario_score`
+- Feature importance data from `feature-importance-ranking.json`:
+  - `feature_importance` array with rankings
+  - `importance_score` overall score
+- Aggregation metadata:
+  - Source count, confidence adjustments, methodology info
+
+**Source Endpoints:**
+- All primary scoring endpoints for recommendation synthesis
+- `feature-importance-ranking.json` → feature rankings and importance data
+
+#### **Geographic Context Section**
+**Required Fields:**
+- Geometry data from zip boundaries:
+  - Area polygon coordinates
+  - Center point coordinates
+  - Area size in square kilometers
+- Location identifiers:
+  - `DESCRIPTION` - Area description
+  - ZIP code or geographic identifier
+  - State/region information
+
+**Source Data:**
+- `/public/data/boundaries/zip_boundaries.json` - Geometry data
+- All endpoint files contain `DESCRIPTION` and location context
+
+### **Combined Dataset Structure**
+
+**Proposed Combined Dataset: `market-intelligence-report.json`**
+
+```json
+{
+  "success": true,
+  "total_records": XXXX,
+  "results": [
+    {
+      // Geographic Identifiers
+      "OBJECTID": number,
+      "ID": "string",
+      "DESCRIPTION": "string",
+      "ZIP": "string",
+      
+      // Geometry (from boundaries file)
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[...]]]
+      },
+      "center_point": [longitude, latitude],
+      "area_sq_km": number,
+      
+      // Primary Scores
+      "strategic_score": number,
+      "competitive_score": number, 
+      "brand_difference_score": number,
+      "trend_score": number,
+      "prediction_score": number,
+      "scenario_score": number,
+      "demographic_insights_score": number,
+      "importance_score": number,
+      
+      // Demographic Context
+      "TOTPOP_CY": number,
+      "TOTPOP_FY": number,
+      "MEDHINC_CY": number,
+      "MEDHINC_FY": number,
+      "MEDAGE_CY": number,
+      "MEDAGE_FY": number,
+      "DIVINDX_CY": number,
+      "DIVINDX_FY": number,
+      
+      // Feature Importance (from feature-importance-ranking.json)
+      "feature_importance": [
+        {
+          "feature_name": "string",
+          "importance_score": number,
+          "rank": number
+        }
+      ],
+      
+      // Customer Profile Data (from customer-profile.json)
+      "customer_score": number, // TBD - need to check field name
+      "demographic_breakdown": "string or object", // TBD
+      
+      // Confidence/Quality Indicators
+      "overall_confidence": number,
+      "data_quality_score": number,
+      
+      // Timestamps
+      "CreationDate": number,
+      "EditDate": number
+    }
+  ]
+}
+```
+
+### **Data Collection Requirements**
+
+**Step 1: Analyze Existing Endpoint Fields**
+- [ ] Check `customer-profile.json` for primary score field name and demographic data structure
+- [ ] Verify `feature-importance-ranking.json` structure for feature importance arrays
+- [ ] Confirm confidence score availability across endpoints
+- [ ] Identify any missing fields that need to be generated
+
+**Step 2: Create Field Mapping**
+```typescript
+const ENDPOINT_FIELD_MAPPING = {
+  'strategic-analysis.json': ['strategic_score', 'TOTPOP_CY', 'MEDHINC_CY', 'MEDAGE_CY', 'DIVINDX_CY'],
+  'competitive-analysis.json': ['competitive_score'],
+  'brand-difference.json': ['brand_difference_score'],
+  'trend-analysis.json': ['trend_score'],
+  'predictive-modeling.json': ['prediction_score'],
+  'scenario-analysis.json': ['scenario_score'],
+  'demographic-insights.json': ['demographic_insights_score'],
+  'customer-profile.json': ['customer_score', 'demographic_breakdown'], // TBD - verify field names
+  'feature-importance-ranking.json': ['importance_score', 'feature_importance']
+};
+```
+
+**Step 3: Geographic Data Integration**
+- [ ] Join with `/public/data/boundaries/zip_boundaries.json` by matching geographic identifiers
+- [ ] Calculate center points and area sizes for each polygon
+- [ ] Ensure proper spatial reference system alignment
+
+### **Script Requirements**
+
+**Input Files:**
+- `/public/data/endpoints/strategic-analysis.json`
+- `/public/data/endpoints/competitive-analysis.json`
+- `/public/data/endpoints/brand-difference.json`
+- `/public/data/endpoints/trend-analysis.json`
+- `/public/data/endpoints/predictive-modeling.json`
+- `/public/data/endpoints/scenario-analysis.json`
+- `/public/data/endpoints/demographic-insights.json`
+- `/public/data/endpoints/customer-profile.json`
+- `/public/data/endpoints/feature-importance-ranking.json`
+- `/public/data/boundaries/zip_boundaries.json`
+
+**Output File:**
+- `/public/data/endpoints/market-intelligence-report.json`
+
+**Join Strategy:**
+- Primary key: Match by `OBJECTID` or `ID` field across all endpoint files
+- Secondary key: Match by `DESCRIPTION` if primary key fails
+- Geographic join: Use spatial intersection with boundary geometries if needed
+
+**Data Quality Checks:**
+- [ ] Ensure all required score fields are present and numeric
+- [ ] Validate demographic fields are reasonable (population > 0, income > 0, etc.)
+- [ ] Check for missing data and implement fallback strategies
+- [ ] Verify geometry data is valid and properly formatted
+
 ## ✅ Implementation Status - COMPLETED
 
 ### ✅ Phase 1: Core Integration (COMPLETED)
