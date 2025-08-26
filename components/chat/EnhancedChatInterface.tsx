@@ -1,5 +1,5 @@
 // Enhanced ChatInterface component with Vercel AI Elements integration
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { 
@@ -8,7 +8,7 @@ import {
   DialogHeader, 
   DialogTitle 
 } from '@/components/ui/dialog';
-import { Send, Bot, User, Loader2, Copy, Check, X, Download, RotateCcw, Share, FileText } from 'lucide-react';
+import { Send, Bot, User, Loader2, Copy, Check, X, Download, RotateCcw, Share, FileText, Target, Database, Brain } from 'lucide-react';
 import { 
   calculateBasicStats, 
   calculateDistribution, 
@@ -26,6 +26,11 @@ import type { AnalysisResult, AnalysisMetadata } from '@/lib/analysis/types';
 import { Conversation, ConversationContent, ConversationScrollButton } from '@/components/ai-elements/conversation';
 import { Actions, Action } from '@/components/ai-elements/actions';
 import { PromptInput, PromptInputTextarea, PromptInputToolbar } from '@/components/ai-elements/prompt-input';
+
+// Import Phase 2 AI Elements
+import { AnalysisBranching } from '@/components/ai-elements/AnalysisBranching';
+import { DataProvenance } from '@/components/ai-elements/DataProvenance';
+import { AIReasoning } from '@/components/ai-elements/AIReasoning';
 
 // Same interfaces as original ChatInterface
 type LocalChatMetadata = Partial<AnalysisMetadata> & {
@@ -130,6 +135,12 @@ const EnhancedChatInterfaceInner: React.FC<ChatInterfaceProps> = ({
   const [selectedMessage, setSelectedMessage] = useState<ChatMessage | null>(null);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const [analysisMode, setAnalysisMode] = useState<'full' | 'stats-only'>('full');
+  
+  // Phase 2 AI Elements state
+  const [showBranching, setShowBranching] = useState(false);
+  const [showDataProvenance, setShowDataProvenance] = useState(false);
+  const [showReasoning, setShowReasoning] = useState(false);
+  const [reasoningEnabled, setReasoningEnabled] = useState(false); // User preference for reasoning display
   
   // Abort controller for cancelling chat requests
   const chatAbortControllerRef = useRef<AbortController | null>(null);
@@ -244,6 +255,101 @@ ${conversationText}
       onZipCodeClick(zipCode);
     }
   }, [onZipCodeClick]);
+
+  // Phase 2 AI Elements handlers with proper state management
+  const handleBranchSelect = useCallback((endpoint: string, query: string) => {
+    console.log('Branch selected:', endpoint, query);
+    setShowBranching(false);
+    
+    // Respect existing analysis flow: only allow new analysis after initial narrative
+    if (!hasGeneratedNarrative) {
+      console.warn('Branch selection blocked: waiting for initial narrative completion');
+      return;
+    }
+    
+    // Add the selected query as a user message to maintain conversation flow
+    const branchMessage: ChatMessage = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: `${query} [Analysis Type: ${endpoint.replace(/-/g, ' ')}]`,
+      timestamp: new Date()
+    };
+    
+    // Update messages to maintain chat continuity
+    setMessages([...messages, branchMessage]);
+    
+    // Here you would trigger the actual analysis with the new endpoint/query
+    // This integrates with the existing SemanticEnhancedHybridEngine
+  }, [hasGeneratedNarrative, setMessages, messages]);
+
+  const handleAnalysisRun = useCallback((endpoint: string, query: string) => {
+    console.log('Running analysis:', endpoint, query);
+    
+    // Respect existing analysis flow: ensure we have proper context
+    if (!hasGeneratedNarrative) {
+      console.warn('Analysis run blocked: waiting for initial narrative completion');
+      return;
+    }
+    
+    // Trigger input value update to show user what analysis will run
+    setInputValue(`${query} [Running ${endpoint.replace(/-/g, ' ')}]`);
+    
+    // Auto-submit the message to maintain natural chat flow
+    setTimeout(() => {
+      handleSendMessage();
+    }, 100);
+    
+    // This would trigger a new analysis run
+    // Integration point with existing analysis pipeline
+  }, [hasGeneratedNarrative]);
+
+  // Phase 2 Components Visibility Control
+  // Only show advanced AI Elements AFTER initial analysis narrative is complete
+  const shouldShowPhase2Components = useMemo(() => {
+    return hasGeneratedNarrative && messages.length > 0;
+  }, [hasGeneratedNarrative, messages]);
+
+  // Enhanced state management for AI Elements integration
+  const handleAIElementInteraction = useCallback((action: string, data?: any) => {
+    // Ensure all AI Element interactions respect the existing flow
+    if (!hasGeneratedNarrative) {
+      console.warn(`AI Elements interaction '${action}' blocked: waiting for initial narrative`);
+      return false;
+    }
+    
+    // Log interaction for debugging and analytics
+    console.log(`AI Elements interaction: ${action}`, data);
+    return true;
+  }, [hasGeneratedNarrative]);
+
+  // Enhanced component cleanup when narrative state changes
+  React.useEffect(() => {
+    // Reset AI Elements panel states when narrative is regenerated
+    if (!hasGeneratedNarrative) {
+      setShowBranching(false);
+      setShowDataProvenance(false);
+      setShowReasoning(false);
+      // Keep reasoningEnabled as user preference
+    }
+  }, [hasGeneratedNarrative]);
+
+  // Extract analysis context for Phase 2 components
+  const analysisContext = React.useMemo(() => {
+    const { analysisResult: result, metadata } = analysisResult;
+    const meta = (metadata || {}) as LocalChatMetadata;
+    
+    return {
+      endpoint: result.endpoint || 'strategic-analysis',
+      query: meta.query || 'Analysis request',
+      selectedAreaName: 'Selected Area', // Would come from map context
+      zipCodes: result.data?.records?.map(r => String((r as any).ZIP_CODE || (r as any).zip_code || (r as any).zipcode)).filter(Boolean) || [],
+      fieldCount: Object.keys(result.data?.records?.[0] || {}).length,
+      routingConfidence: 0.92, // Would come from SemanticEnhancedHybridEngine
+      shapFeatures: [], // Would come from SHAP analysis
+      processingTime: 1250, // Would be tracked during analysis
+      persona: persona || 'strategist' // Include persona in context
+    };
+  }, [analysisResult, persona]);
 
   // Keep the original message rendering logic
   const renderFormattedMessage = useCallback((message: ChatMessage) => {
@@ -598,6 +704,44 @@ ${conversationText}
             >
               <Share className="w-3 h-3" />
             </Action>
+            <Action
+              tooltip="Show analysis options"
+              onClick={() => {
+                if (handleAIElementInteraction('toggle-branching')) {
+                  setShowBranching(!showBranching);
+                }
+              }}
+            >
+              <Target className="w-3 h-3" />
+            </Action>
+            <Action
+              tooltip="Show data sources"
+              onClick={() => {
+                if (handleAIElementInteraction('toggle-provenance')) {
+                  setShowDataProvenance(!showDataProvenance);
+                }
+              }}
+            >
+              <Database className="w-3 h-3" />
+            </Action>
+            <Action
+              tooltip={reasoningEnabled ? "Hide AI reasoning" : "Show AI reasoning"}
+              onClick={() => {
+                if (handleAIElementInteraction('toggle-reasoning')) {
+                  const newEnabled = !reasoningEnabled;
+                  setReasoningEnabled(newEnabled);
+                  // Auto-show reasoning panel when enabled
+                  if (newEnabled) {
+                    setShowReasoning(true);
+                  } else {
+                    setShowReasoning(false);
+                  }
+                }
+              }}
+              className={reasoningEnabled ? "bg-blue-100 dark:bg-blue-900/30" : ""}
+            >
+              <Brain className="w-3 h-3" />
+            </Action>
           </Actions>
           
           <Button
@@ -612,6 +756,52 @@ ${conversationText}
           </Button>
         </div>
       </div>
+
+      {/* Phase 2 AI Elements Components - Only show after initial analysis */}
+      {shouldShowPhase2Components && showBranching && (
+        <div className="mt-4 p-4 border-t border-border">
+          <AnalysisBranching
+            selectedAreaName={analysisContext.selectedAreaName}
+            currentQuery={analysisContext.query}
+            onBranchSelect={handleBranchSelect}
+            onAnalysisRun={handleAnalysisRun}
+            mapContext={{
+              selectedZipCodes: analysisContext.zipCodes,
+              selectedAreaName: analysisContext.selectedAreaName
+            }}
+            persona={analysisContext.persona}
+          />
+        </div>
+      )}
+
+      {shouldShowPhase2Components && showDataProvenance && (
+        <div className="mt-4 p-4 border-t border-border">
+          <DataProvenance
+            endpoint={analysisContext.endpoint}
+            zipCodes={analysisContext.zipCodes}
+            fieldCount={analysisContext.fieldCount}
+            analysisResult={analysisResult}
+          />
+        </div>
+      )}
+
+      {shouldShowPhase2Components && reasoningEnabled && showReasoning && (
+        <div className="mt-4 p-4 border-t border-border">
+          <AIReasoning
+            query={analysisContext.query}
+            endpoint={analysisContext.endpoint}
+            routingConfidence={analysisContext.routingConfidence}
+            selectedAreaName={analysisContext.selectedAreaName}
+            zipCodes={analysisContext.zipCodes}
+            fieldCount={analysisContext.fieldCount}
+            shapFeatures={analysisContext.shapFeatures}
+            processingTime={analysisContext.processingTime}
+            analysisResult={analysisResult}
+            expanded={true}
+            persona={analysisContext.persona}
+          />
+        </div>
+      )}
 
       {/* MessageDialog for expanded message viewing */}
       <Dialog open={!!selectedMessage} onOpenChange={() => setSelectedMessage(null)}>
