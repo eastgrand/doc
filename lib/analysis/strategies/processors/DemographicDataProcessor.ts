@@ -615,7 +615,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'demographic_insights_score', // Use the current scoring system field
+      field: 'value', // Use the main value field that ArcGIS can access
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,
