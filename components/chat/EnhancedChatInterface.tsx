@@ -8,7 +8,7 @@ import {
   DialogHeader, 
   DialogTitle 
 } from '@/components/ui/dialog';
-import { Send, Bot, User, Loader2, Copy, Check, X, Download, RotateCcw, Share, FileText, Target, Database, Brain } from 'lucide-react';
+import { Send, Bot, User, Loader2, Copy, Check, X, Download, RotateCcw, Share, FileText, Target, Database, Brain, Settings, Zap, FileDown } from 'lucide-react';
 import { 
   calculateBasicStats, 
   calculateDistribution, 
@@ -31,6 +31,11 @@ import { PromptInput, PromptInputTextarea, PromptInputToolbar } from '@/componen
 import { AnalysisBranching } from '@/components/ai-elements/AnalysisBranching';
 import { DataProvenance } from '@/components/ai-elements/DataProvenance';
 import { AIReasoning } from '@/components/ai-elements/AIReasoning';
+
+// Import Phase 3 AI Elements
+import { InteractiveAnalysisConfig } from '@/components/ai-elements/InteractiveAnalysisConfig';
+import { WhatIfAnalysisPreview } from '@/components/ai-elements/WhatIfAnalysisPreview';
+import { ConfigurationTemplates } from '@/components/ai-elements/ConfigurationTemplates';
 
 // Same interfaces as original ChatInterface
 type LocalChatMetadata = Partial<AnalysisMetadata> & {
@@ -141,6 +146,13 @@ const EnhancedChatInterfaceInner: React.FC<ChatInterfaceProps> = ({
   const [showDataProvenance, setShowDataProvenance] = useState(false);
   const [showReasoning, setShowReasoning] = useState(false);
   const [reasoningEnabled, setReasoningEnabled] = useState(false); // User preference for reasoning display
+  
+  // Phase 3 AI Elements state
+  const [showInteractiveConfig, setShowInteractiveConfig] = useState(false);
+  const [showWhatIfPreview, setShowWhatIfPreview] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(false);
+  const [analysisConfig, setAnalysisConfig] = useState<any>(null); // Interactive config state
+  const [configTemplates, setConfigTemplates] = useState<any[]>([]); // User templates
   
   // Abort controller for cancelling chat requests
   const chatAbortControllerRef = useRef<AbortController | null>(null);
@@ -330,6 +342,11 @@ ${conversationText}
       setShowDataProvenance(false);
       setShowReasoning(false);
       // Keep reasoningEnabled as user preference
+      
+      // Reset Phase 3 components
+      setShowInteractiveConfig(false);
+      setShowWhatIfPreview(false);
+      setShowTemplates(false);
     }
   }, [hasGeneratedNarrative]);
 
@@ -742,6 +759,39 @@ ${conversationText}
             >
               <Brain className="w-3 h-3" />
             </Action>
+            <Action
+              tooltip="Interactive configuration"
+              onClick={() => {
+                if (handleAIElementInteraction('toggle-config')) {
+                  setShowInteractiveConfig(!showInteractiveConfig);
+                }
+              }}
+              className={showInteractiveConfig ? "bg-green-100 dark:bg-green-900/30" : ""}
+            >
+              <Settings className="w-3 h-3" />
+            </Action>
+            <Action
+              tooltip="What-if analysis preview"
+              onClick={() => {
+                if (handleAIElementInteraction('toggle-what-if')) {
+                  setShowWhatIfPreview(!showWhatIfPreview);
+                }
+              }}
+              className={showWhatIfPreview ? "bg-purple-100 dark:bg-purple-900/30" : ""}
+            >
+              <Zap className="w-3 h-3" />
+            </Action>
+            <Action
+              tooltip="Configuration templates"
+              onClick={() => {
+                if (handleAIElementInteraction('toggle-templates')) {
+                  setShowTemplates(!showTemplates);
+                }
+              }}
+              className={showTemplates ? "bg-orange-100 dark:bg-orange-900/30" : ""}
+            >
+              <FileDown className="w-3 h-3" />
+            </Action>
           </Actions>
           
           <Button
@@ -799,6 +849,106 @@ ${conversationText}
             analysisResult={analysisResult}
             expanded={true}
             persona={analysisContext.persona}
+          />
+        </div>
+      )}
+
+      {/* Phase 3 AI Elements Components - Interactive Configuration */}
+      {shouldShowPhase2Components && showInteractiveConfig && (
+        <div className="mt-4 p-4 border-t border-border">
+          <InteractiveAnalysisConfig
+            initialConfig={analysisConfig}
+            onConfigChange={(config) => setAnalysisConfig(config)}
+            onRunAnalysis={(config) => {
+              console.log('Running analysis with config:', config);
+              setAnalysisConfig(config);
+              // Here you would trigger the actual analysis
+            }}
+            onSaveTemplate={(template) => {
+              const newTemplate = {
+                ...template,
+                id: `template-${Date.now()}`,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                usageCount: 0
+              };
+              setConfigTemplates(prev => [...prev, newTemplate]);
+            }}
+            onLoadTemplate={(templateId) => {
+              console.log('Loading template:', templateId);
+            }}
+            availableTemplates={configTemplates}
+            validationEnabled={true}
+          />
+        </div>
+      )}
+
+      {/* Phase 3 AI Elements Components - What-If Analysis */}
+      {shouldShowPhase2Components && showWhatIfPreview && analysisConfig && (
+        <div className="mt-4 p-4 border-t border-border">
+          <WhatIfAnalysisPreview
+            baseConfig={analysisConfig}
+            proposedConfig={analysisConfig}
+            onRunScenario={(scenario) => {
+              console.log('Running scenario:', scenario);
+              // Here you would execute the what-if scenario
+            }}
+            onApplyChanges={(config) => {
+              setAnalysisConfig(config);
+              console.log('Applied config changes:', config);
+            }}
+          />
+        </div>
+      )}
+
+      {/* Phase 3 AI Elements Components - Configuration Templates */}
+      {shouldShowPhase2Components && showTemplates && (
+        <div className="mt-4 p-4 border-t border-border">
+          <ConfigurationTemplates
+            templates={configTemplates}
+            currentConfig={analysisConfig}
+            onLoadTemplate={(template) => {
+              setAnalysisConfig({ ...analysisConfig, ...template.config });
+              setShowTemplates(false);
+              setShowInteractiveConfig(true);
+            }}
+            onSaveTemplate={(template) => {
+              const newTemplate = {
+                ...template,
+                id: `template-${Date.now()}`,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                usageCount: 0
+              };
+              setConfigTemplates(prev => [...prev, newTemplate]);
+            }}
+            onUpdateTemplate={(id, updates) => {
+              setConfigTemplates(prev =>
+                prev.map(t => t.id === id ? { ...t, ...updates, updatedAt: new Date() } : t)
+              );
+            }}
+            onDeleteTemplate={(id) => {
+              setConfigTemplates(prev => prev.filter(t => t.id !== id));
+            }}
+            onToggleFavorite={(id) => {
+              setConfigTemplates(prev =>
+                prev.map(t => t.id === id ? { ...t, isFavorite: !t.isFavorite } : t)
+              );
+            }}
+            onImportTemplates={(templates) => {
+              const importedTemplates = templates.map((template: any) => ({
+                ...template,
+                id: template.id || `imported-${Date.now()}-${Math.random()}`,
+                createdAt: template.createdAt ? new Date(template.createdAt) : new Date(),
+                updatedAt: template.updatedAt ? new Date(template.updatedAt) : new Date(),
+                usageCount: template.usageCount || 0,
+                isBuiltIn: false
+              }));
+              setConfigTemplates(prev => [...prev, ...importedTemplates]);
+            }}
+            onExportTemplate={(template) => {
+              console.log('Exporting template:', template);
+            }}
           />
         </div>
       )}
