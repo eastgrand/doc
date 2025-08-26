@@ -1401,30 +1401,56 @@ npm run generate-map-constraints
 - Prevents accidental navigation to irrelevant map regions
 - Updates `config/mapConstraints.ts` with project-specific geographic bounds
 
-#### 6.2 Verify/Upload Endpoints to Vercel Blob Storage (CRITICAL)
+#### 6.2 Upload Endpoints to Vercel Blob Storage with Project-Specific Directory (CRITICAL)
 
-**⚠️ IMPORTANT**: Before uploading, update the upload script for the new project:
+**⚠️ MANDATORY**: Each project MUST use its own blob storage directory to prevent data conflicts.
 
+**Step 1: Configure Project-Specific Directory**
 ```bash
-# 1. Update upload script for Red Bull project (CRITICAL - prevents overwriting existing data)
+# 1. Update upload script for your project (CRITICAL - prevents overwriting existing data)
 # Edit scripts/automation/upload_comprehensive_endpoints.py
 # Change: project_prefix="hrb" 
-# To: project_prefix="red_bull_energy_drinks"
+# To: project_prefix="your_project_name"  # e.g., "red_bull_energy_drinks", "nike_analysis", etc.
 ```
 
+**Step 2: Upload Endpoints to Blob Storage**
 ```bash
 # 2. Check if blob token exists
 grep BLOB_READ_WRITE_TOKEN .env.local
 
-# 3. Upload endpoints to project-specific directory
+# 3. Upload all endpoints to project-specific directory
 export BLOB_READ_WRITE_TOKEN=$(grep BLOB_READ_WRITE_TOKEN .env.local | cut -d= -f2)
 python upload_comprehensive_endpoints.py
 ```
 
-**Why this is critical**:
-- **Data Isolation**: Each project gets its own blob directory (`red_bull_energy_drinks/`, `hrb/`, etc.)
-- **Prevents Overwriting**: Protects existing project data from being replaced
-- **Deployment Size**: Prevents 100MB+ deployment failures
+**Step 3: Update Blob URL Configuration**
+```bash
+# 4. Update the blob URL configuration file with your project's URLs
+# Create or update: public/data/blob-urls-hrb.json (rename to match your project)
+# The upload script will output the blob URLs - copy them to this file
+```
+
+**Expected Directory Structure in Blob Storage**:
+```
+your-blob-storage/
+├── your_project_name/              # ← PROJECT-SPECIFIC DIRECTORY
+│   ├── strategic-analysis.json
+│   ├── competitive-analysis.json
+│   ├── demographic-insights.json
+│   └── ... (all other endpoints)
+├── hrb/                           # ← Existing H&R Block project
+│   ├── strategic-analysis.json
+│   └── ...
+└── other_projects/                # ← Other client projects
+    ├── strategic-analysis.json
+    └── ...
+```
+
+**Why project-specific directories are mandatory**:
+- **Data Isolation**: Each project gets its own namespace (`your_project/`, `hrb/`, etc.)
+- **Prevents Data Loss**: Protects existing project data from being overwritten
+- **Multi-Client Support**: Allows hosting multiple client projects simultaneously
+- **Deployment Size**: Keeps deployments under 100MB limit
 - **Performance**: Blob storage provides faster access for large files
 
 #### 6.3 Boundary Files Verification (CRITICAL FOR GEO)
