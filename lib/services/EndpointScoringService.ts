@@ -1,8 +1,8 @@
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 import Point from "@arcgis/core/geometry/Point";
 
-// Market Intelligence Dataset URL (hosted on Vercel blob storage)
-const MARKET_INTELLIGENCE_DATASET_URL = 'https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/market-intelligence-report.json';
+// Market Intelligence Dataset URL (hosted on Vercel blob storage - Energy project)
+const MARKET_INTELLIGENCE_DATASET_URL = 'https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/energy/market-intelligence-report-D5xZDbbpegscu6PqQqQX8bmowhfIxu.json';
 
 interface EndpointData {
   overall_score?: number;

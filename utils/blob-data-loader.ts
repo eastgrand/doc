@@ -22,20 +22,34 @@ async function loadBlobUrlMappings(): Promise<Record<string, string>> {
   try {
     // Check if we're running in browser or server context
     if (typeof window !== 'undefined') {
-      // Browser context - use relative URL
-      const response = await fetch('/data/blob-urls-hrb.json');
+      // Browser context - use relative URL (try energy first, then fallback to hrb)
+      let response = await fetch('/data/blob-urls-energy.json');
+      if (!response.ok) {
+        console.log('[BlobLoader] Energy mapping not found, falling back to hrb mapping');
+        response = await fetch('/data/blob-urls-hrb.json');
+      }
       if (response.ok) {
         blobUrlMappings = await response.json();
         return blobUrlMappings!;
       }
     } else {
-      // Server context - load directly from file system
+      // Server context - load directly from file system (try energy first, then fallback to hrb)
       const fs = await import('fs/promises');
       const path = await import('path');
-      const filePath = path.join(process.cwd(), 'public/data/blob-urls-hrb.json');
-      const fileContent = await fs.readFile(filePath, 'utf-8');
-      blobUrlMappings = JSON.parse(fileContent);
-      return blobUrlMappings!;
+      
+      try {
+        const energyFilePath = path.join(process.cwd(), 'public/data/blob-urls-energy.json');
+        const fileContent = await fs.readFile(energyFilePath, 'utf-8');
+        blobUrlMappings = JSON.parse(fileContent);
+        console.log('[BlobLoader] Using energy project blob URLs');
+        return blobUrlMappings!;
+      } catch (error) {
+        console.log('[BlobLoader] Energy mapping not found, falling back to hrb mapping');
+        const hrbFilePath = path.join(process.cwd(), 'public/data/blob-urls-hrb.json');
+        const fileContent = await fs.readFile(hrbFilePath, 'utf-8');
+        blobUrlMappings = JSON.parse(fileContent);
+        return blobUrlMappings!;
+      }
     }
   } catch (error) {
     console.warn('Failed to load blob URL mappings:', error);
@@ -109,24 +123,31 @@ export async function loadEndpointData(endpoint: string): Promise<BlobEndpointDa
 }
 
 /**
- * Upload endpoint data to Vercel Blob storage
+ * Upload endpoint data to Vercel Blob storage with project-specific directory
  * This would be used in a migration script
  */
-export async function uploadEndpointData(endpoint: string, data: any): Promise<boolean> {
+export async function uploadEndpointData(endpoint: string, data: any, projectDir: string = 'endpoints'): Promise<string | null> {
   try {
     const { put } = await import('@vercel/blob');
     
-    const blob = await put(`endpoints/${endpoint}.json`, JSON.stringify(data), {
+    const blob = await put(`${projectDir}/${endpoint}.json`, JSON.stringify(data), {
       access: 'public',
       token: process.env.BLOB_READ_WRITE_TOKEN,
     });
 
-    console.log(`Uploaded ${endpoint} to blob storage:`, blob.url);
-    return true;
+    console.log(`Uploaded ${endpoint} to blob storage (${projectDir}):`, blob.url);
+    return blob.url;
   } catch (error) {
     console.error(`Failed to upload ${endpoint} to blob storage:`, error);
-    return false;
+    return null;
   }
+}
+
+/**
+ * Upload endpoint data to energy project directory
+ */
+export async function uploadEnergyEndpointData(endpoint: string, data: any): Promise<string | null> {
+  return uploadEndpointData(endpoint, data, 'energy');
 }
 
 /**
