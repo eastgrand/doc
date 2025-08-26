@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 
 /**
  * ClusterDataProcessor - Handles data processing for the /spatial-clusters endpoint
@@ -632,4 +633,17 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
     
     return [totalLon / validCoords, totalLat / validCoords];
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 } 

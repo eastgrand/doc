@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 
 /**
  * RiskDataProcessor - Handles data processing for risk analysis
@@ -511,4 +512,17 @@ export class RiskDataProcessor implements DataProcessorStrategy {
     
     return summary;
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 } 

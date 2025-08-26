@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -66,8 +67,8 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
           consensus_analysis_score: primaryScore,
           score_source: 'consensus_analysis_score',
           target_brand_share: this.extractTargetBrandShare(record),
-          total_population: Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0,
-          median_income: Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0
+          total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
+          median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
         }
       };
     });
@@ -194,13 +195,11 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
   private getTopContributingFields(record: any): Record<string, number> {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
-    const fieldDefinitions = [
-      { field: 'model_agreement', source: 'model_agreement', importance: 25 },
-      { field: 'prediction_consensus', source: 'prediction_consensus', importance: 20 },
-      { field: 'confidence_level', source: 'confidence_level', importance: 18 },
-      { field: 'variance_measure', source: 'variance_measure', importance: 15 },
-      { field: 'reliability_score', source: 'reliability_score', importance: 12 }
-    ];
+    // Use dynamic field detection instead of hardcoded mappings
+    const detectedFields = DynamicFieldDetector.detectFields([record], 'consensus-analysis', 6);
+    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
+    
+    console.log(`[ConsensusAnalysisProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
     
     fieldDefinitions.forEach(fieldDef => {
       const value = Number(record[fieldDef.source]);
@@ -451,4 +450,17 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
     
     return 'Analysis reveals mixed consensus patterns requiring case-by-case evaluation to understand analytical agreement sources.';
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 }

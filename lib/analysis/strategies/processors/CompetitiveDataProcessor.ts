@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { calculateEqualCountQuintiles } from '../../utils/QuintileUtils';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 import { resolveAreaName } from '../../../shared/AreaName';
@@ -727,4 +728,17 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
       return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
     }
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 } 

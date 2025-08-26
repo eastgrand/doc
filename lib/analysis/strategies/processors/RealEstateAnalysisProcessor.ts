@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 
 export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
   validate(rawData: RawAnalysisResult): boolean {
@@ -122,13 +123,11 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
     // Define field importance weights based on real estate analysis factors
-    const fieldDefinitions = [
-      { field: 'real_estate_analysis_score', source: 'real_estate_analysis_score', importance: 30 },
-      { field: 'total_population', source: ['total_population', 'population'], importance: 25 },
-      { field: 'strategic_value_score', source: 'strategic_value_score', importance: 20 },
-      { field: 'median_income', source: 'median_income', importance: 15 },
-      { field: 'nike_market_share', source: ['mp30034a_b_p', 'nike_presence'], importance: 10 }
-    ];
+    // Use dynamic field detection instead of hardcoded mappings
+    const detectedFields = DynamicFieldDetector.detectFields([record], 'real-estate-analysis', 6);
+    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
+    
+    console.log(`[RealEstateAnalysisProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
     
     fieldDefinitions.forEach(fieldDef => {
       let value = 0;
@@ -196,4 +195,17 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
     const median = total % 2 === 0 ? (sorted[total / 2 - 1] + sorted[total / 2]) / 2 : sorted[Math.floor(total / 2)];
     return { total, mean, median, min: sorted[0], max: sorted[sorted.length - 1], stdDev };
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 }

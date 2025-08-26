@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 
 /**
  * FeatureInteractionProcessor - Handles data processing for the /feature-interactions endpoint
@@ -67,8 +68,8 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
       const trendScore = Number((record as any).trend_strength_score) || 0;
       const correlationScore = Number((record as any).correlation_strength_score) || 0;
-      const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
-      const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
+      const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
+      const medianIncome = Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0;
       
       // Calculate interaction indicators
       const correlationStrength = this.calculateCorrelationStrength(record);
@@ -160,7 +161,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
     const correlationScore = Number((record as any).correlation_strength_score) || 0;
     const nikeShare = Number((record as any).mp30034a_b_p || (record as any).value_MP30034A_B_P) || 0;
-    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+    const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
     
     // Simple interaction calculation based on variable relationships
     let interactionScore = 0;
@@ -277,8 +278,8 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     }
     
     // Population-income complexity
-    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
-    const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
+    const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
+    const medianIncome = Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0;
     
     if (totalPop > 0 && medianIncome > 0) {
       const popIncomeComplexity = Math.min(Math.log(totalPop) * medianIncome / 1000000, 1) * 25;
@@ -295,7 +296,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     const strategicScore = Number((record as any).strategic_value_score) || 0;
     const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
     const nikeShare = Number((record as any).mp30034a_b_p) || 0;
-    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+    const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
     
     let nonLinearPatterns = 0;
     
@@ -339,7 +340,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       Number((record as any).demographic_opportunity_score) || 0,
       Number((record as any).trend_strength_score) || 0,
       Number((record as any).correlation_strength_score) || 0,
-      Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0
+      Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0
     ];
     
     return variables.filter(v => v > 0).length;
@@ -898,4 +899,17 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     
     return `Variable interactions primarily show correlation-driven patterns with moderate complexity across analyzed markets.`;
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 }

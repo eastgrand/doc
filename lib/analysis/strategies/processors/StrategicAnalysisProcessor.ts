@@ -4,6 +4,7 @@ import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, Geogra
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 import { resolveAreaName } from '../../../shared/AreaName';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 
 /**
  * StrategicAnalysisProcessor - Handles data processing for the /strategic-analysis endpoint
@@ -86,10 +87,10 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
           score_source: 'strategic_score',
           target_brand_share: this.extractTargetBrandShare(record),
           market_gap: this.calculateRealMarketGap(record),
-          total_population: Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0,
-          median_income: Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0,
-          competitive_advantage_score: Number((record as any).competitive_advantage_score) || 0,
-          demographic_opportunity_score: Number((record as any).demographic_opportunity_score) || 0
+          total_population: this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population']),
+          median_income: this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income']),
+          competitive_advantage_score: this.extractFieldValue(record, ['competitive_advantage_score', 'comp_advantage', 'advantage_score']),
+          demographic_opportunity_score: this.extractFieldValue(record, ['demographic_opportunity_score', 'demo_opportunity', 'opportunity_score'])
         }
       };
     });
@@ -260,21 +261,17 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
   }
 
   /**
-   * Identify top 5 fields that contribute most to the strategic value score
-   * Returns them as a flattened object for popup display
+   * Identify top fields that contribute most to the strategic value score
+   * Uses dynamic field detection instead of hardcoded mappings
    */
   private getTopContributingFields(record: any): Record<string, number> {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
-    // Define field importance weights based on strategic analysis factors
-    const fieldDefinitions = [
-      { field: 'competitive_advantage_score', source: 'competitive_advantage_score', importance: 25 },
-      { field: 'total_population', source: ['total_population', 'value_TOTPOP_CY'], importance: 20 },
-      { field: 'median_income', source: ['median_income', 'value_AVGHINC_CY', 'value_MEDDI_CY'], importance: 18 },
-      { field: 'demographic_opportunity_score', source: 'demographic_opportunity_score', importance: 15 },
-      { field: 'market_gap', source: ['market_gap'], importance: 12, calculated: true },
-      { field: 'diversity_index', source: ['diversity_index', 'value_DIVINDX_CY'], importance: 10 }
-    ];
+    // Use dynamic field detection to find relevant fields for this record
+    const detectedFields = DynamicFieldDetector.detectFields([record], 'strategic-analysis', 6);
+    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
+    
+    console.log(`[StrategicAnalysisProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
     
     fieldDefinitions.forEach(fieldDef => {
       let value = 0;
@@ -316,10 +313,23 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     return topFields;
   }
 
-    private generateAreaName(record: any): string {
-      const fallbackId = record?.ID || record?.id || record?.area_id || record?.GEOID || record?.OBJECTID || 'Unknown';
-      return resolveAreaName(record, { mode: 'cityOnly', neutralFallback: `Area ${fallbackId}` });
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
     }
+    return 0;
+  }
+
+  private generateAreaName(record: any): string {
+    const fallbackId = record?.ID || record?.id || record?.area_id || record?.GEOID || record?.OBJECTID || 'Unknown';
+    return resolveAreaName(record, { mode: 'cityOnly', neutralFallback: `Area ${fallbackId}` });
+  }
 
   private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
     const sorted = [...records].sort((a, b) => b.value - a.value);

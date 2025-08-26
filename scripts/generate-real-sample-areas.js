@@ -37,15 +37,48 @@ const fieldMappings = {
 
 console.log('Loading demographic data and ZIP boundaries...');
 
+// Function to properly parse CSV line handling quoted fields
+function parseCSVLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+  
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    const nextChar = line[i + 1];
+    
+    if (char === '"') {
+      if (inQuotes && nextChar === '"') {
+        // Escaped quote
+        current += '"';
+        i++; // Skip next character
+      } else {
+        // Toggle quote state
+        inQuotes = !inQuotes;
+      }
+    } else if (char === ',' && !inQuotes) {
+      // End of field
+      result.push(current);
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  
+  // Don't forget last field
+  result.push(current);
+  return result;
+}
+
 // Load the Red Bull demographic data (California)
 const demographicPath = path.join(__dirname, '../projects/red_bull_energy_drinks/merged_dataset.csv');
 const fs2 = require('fs');
 const csvData = fs2.readFileSync(demographicPath, 'utf8');
 const lines = csvData.split('\n');
-const headers = lines[0].split(',');
+const headers = parseCSVLine(lines[0]);
 const demographicData = {
   results: lines.slice(1).filter(line => line.trim()).map(line => {
-    const values = line.split(',');
+    const values = parseCSVLine(line);
     const record = {};
     headers.forEach((header, index) => {
       record[header] = values[index];

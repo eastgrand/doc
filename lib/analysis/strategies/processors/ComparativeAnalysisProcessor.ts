@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { GeoDataManager } from '../../../geo/GeoDataManager';
 import { resolveAreaName } from '../../../shared/AreaName';
 interface BrandMetric {
@@ -186,8 +187,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
       const trendScore = Number((record as any).trend_strength_score) || 0;
-      const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
-      const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
+      const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
+      const medianIncome = Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0;
       
       // Calculate comparative indicators
       const brandPerformanceGap = this.calculateBrandPerformanceGap(record);
@@ -576,7 +577,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     const strategicScore = Number((record as any).strategic_value_score) || 0;
     const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
     const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
-    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+    const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
     
     let positionStrength = 0;
     
@@ -692,7 +693,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     const trendScore = Number((record as any).trend_strength_score) || 0;
     const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
     const strategicScore = Number((record as any).strategic_value_score) || 0;
-    const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
+    const medianIncome = Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0;
     
     let growthDifferential = 0;
     
@@ -1075,4 +1076,17 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     
     return summary;
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 }

@@ -3688,7 +3688,7 @@ export const baseLayerConfigs: LayerConfig[] = [
     description: 'Business Analyst Layer: 2030 Median Household Income',
     isVisible: false,
     isPrimary: false,
-    skipLayerList: false,
+    skipLayerList: true,
     rendererField: 'MEDHINC_FY',
     status: 'active',
     geographicType: 'postal',

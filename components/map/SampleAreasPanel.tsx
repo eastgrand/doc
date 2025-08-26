@@ -967,7 +967,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       {quickStats.map((stat, idx) => stat && (
                         <div key={idx} className="flex items-center space-x-1">
-                          <stat.icon className="h-3 w-3" style={{ color: 'var(--theme-text-secondary)' }} />
+                          <stat.icon className="h-3 w-3" style={{ color: '#33a852' }} />
                           <div>
                             <p className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>
                               {stat.label}

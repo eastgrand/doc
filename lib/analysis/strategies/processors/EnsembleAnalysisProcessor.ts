@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -66,8 +67,8 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
           ensemble_analysis_score: primaryScore,
           score_source: 'ensemble_analysis_score',
           target_brand_share: this.extractTargetBrandShare(record),
-          total_population: Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0,
-          median_income: Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0
+          total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
+          median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
         }
       };
     });
@@ -194,13 +195,11 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
   private getTopContributingFields(record: any): Record<string, number> {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
-    const fieldDefinitions = [
-      { field: 'base_model_accuracy', source: 'base_model_accuracy', importance: 25 },
-      { field: 'ensemble_gain', source: 'ensemble_gain', importance: 20 },
-      { field: 'diversity_score', source: 'diversity_score', importance: 18 },
-      { field: 'voting_confidence', source: 'voting_confidence', importance: 15 },
-      { field: 'bias_reduction', source: 'bias_reduction', importance: 12 }
-    ];
+    // Use dynamic field detection instead of hardcoded mappings
+    const detectedFields = DynamicFieldDetector.detectFields([record], 'ensemble-analysis', 6);
+    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
+    
+    console.log(`[EnsembleAnalysisProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
     
     fieldDefinitions.forEach(fieldDef => {
       const value = Number(record[fieldDef.source]);
@@ -371,4 +370,17 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
     
     return summary;
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 }

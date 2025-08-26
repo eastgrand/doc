@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 export class BrandAnalysisProcessor implements DataProcessorStrategy {
@@ -157,4 +158,17 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
     const median = total % 2 === 0 ? (sorted[total / 2 - 1] + sorted[total / 2]) / 2 : sorted[Math.floor(total / 2)];
     return { total, mean, median, min: sorted[0], max: sorted[sorted.length - 1], stdDev };
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 }

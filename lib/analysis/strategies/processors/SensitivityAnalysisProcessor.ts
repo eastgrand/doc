@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -66,8 +67,8 @@ export class SensitivityAnalysisProcessor implements DataProcessorStrategy {
           sensitivity_analysis_score: primaryScore,
           score_source: 'sensitivity_analysis_score',
           target_brand_share: this.extractTargetBrandShare(record),
-          total_population: Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0,
-          median_income: Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0
+          total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
+          median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
         }
       };
     });
@@ -194,13 +195,11 @@ export class SensitivityAnalysisProcessor implements DataProcessorStrategy {
   private getTopContributingFields(record: any): Record<string, number> {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
-    const fieldDefinitions = [
-      { field: 'parameter_sensitivity', source: 'parameter_sensitivity', importance: 25 },
-      { field: 'variable_impact', source: 'variable_impact', importance: 20 },
-      { field: 'elasticity_measure', source: 'elasticity_measure', importance: 18 },
-      { field: 'volatility_index', source: 'volatility_index', importance: 15 },
-      { field: 'stability_score', source: 'stability_score', importance: 12 }
-    ];
+    // Use dynamic field detection instead of hardcoded mappings
+    const detectedFields = DynamicFieldDetector.detectFields([record], 'sensitivity-analysis', 6);
+    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
+    
+    console.log(`[SensitivityAnalysisProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
     
     fieldDefinitions.forEach(fieldDef => {
       const value = Number(record[fieldDef.source]);
@@ -425,4 +424,17 @@ export class SensitivityAnalysisProcessor implements DataProcessorStrategy {
     const avgValue = records.reduce((sum, r) => sum + r.value, 0) / records.length;
     return `Parameter adjustments of 20% typically change predictions by ${avgValue * 0.2 >= 20 ? 'significant' : 'moderate'} amounts (avg ${(avgValue * 0.2).toFixed(1)}% per market).`;
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 }

@@ -140,7 +140,8 @@ export async function createEnhancedLayer(
         ["point", "index", "demographic", "percentage", "feature-service"].includes(layerConfig.type)
           ? (layerConfig.type as "point" | "index" | "demographic" | "percentage" | "feature-service")
           : "index",
-        layerConfig.rendererField || 'thematic_value'
+        layerConfig.rendererField || 'thematic_value',
+        layerConfig.name // Pass layer name for point color selection
       );
     }
     console.log(`✅ Simple renderer applied to ${layerConfig.name}`);
@@ -278,7 +279,8 @@ async function createMockLayer(
         ["point", "index", "demographic", "percentage", "feature-service"].includes(layerConfig.type)
           ? (layerConfig.type as "point" | "index" | "demographic" | "percentage" | "feature-service")
           : "index",
-        'thematic_value'
+        'thematic_value',
+        layerConfig.name // Pass layer name for point color selection
       ),
       popupEnabled: true,
       visible: false,

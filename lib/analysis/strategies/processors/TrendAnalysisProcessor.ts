@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 /**
@@ -80,8 +81,8 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       const strategicScore = Number((record as any).strategic_value_score) || 0;
       const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
-      const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
-      const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
+      const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
+      const medianIncome = Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0;
       
       // Calculate trend indicators
       const growthPotential = this.calculateGrowthPotential(record);
@@ -608,4 +609,17 @@ Higher scores indicate stronger, more consistent, and predictable market trends.
       return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
     }
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 }

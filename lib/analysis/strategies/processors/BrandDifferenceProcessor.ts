@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics, ProcessingContext } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { calculateEqualCountQuintiles } from '../../utils/QuintileUtils';
 
 /**
@@ -764,4 +765,17 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     console.warn(`[BrandDifferenceProcessor] Could not find field code for brand: ${brandName}, using Red Bull as fallback`);
     return 'MP12207A_B_P';
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 }

@@ -144,24 +144,35 @@ async function generateHybridTestReport(testResults: HybridTestResult[], summary
     results: testResults
   };
 
-  try {
-    writeFileSync(
-      join(process.cwd(), `${baseFileName}.json`), 
-      JSON.stringify(jsonReport, null, 2)
-    );
+  // Only write test reports if explicitly enabled via environment variable
+  if (process.env.WRITE_TEST_REPORTS === 'true') {
+    try {
+      // Write to test-results directory instead of root
+      const testResultsDir = join(process.cwd(), '__tests__', 'test-results');
+      if (!require('fs').existsSync(testResultsDir)) {
+        require('fs').mkdirSync(testResultsDir, { recursive: true });
+      }
+      
+      writeFileSync(
+        join(testResultsDir, `${baseFileName}.json`), 
+        JSON.stringify(jsonReport, null, 2)
+      );
 
-    // Generate markdown report
-    const markdown = generateHybridMarkdownReport(testResults, summary);
-    writeFileSync(
-      join(process.cwd(), `${baseFileName}.md`), 
-      markdown
-    );
+      // Generate markdown report
+      const markdown = generateHybridMarkdownReport(testResults, summary);
+      writeFileSync(
+        join(testResultsDir, `${baseFileName}.md`), 
+        markdown
+      );
 
-    console.log(`\n📊 Hybrid routing test reports generated:`);
-    console.log(`   📋 ${baseFileName}.json - Detailed JSON data`);
-    console.log(`   📄 ${baseFileName}.md - Human-readable report`);
-  } catch (error) {
-    console.log('Could not write report files:', error);
+      console.log(`\n📊 Hybrid routing test reports generated:`);
+      console.log(`   📋 ${testResultsDir}/${baseFileName}.json - Detailed JSON data`);
+      console.log(`   📄 ${testResultsDir}/${baseFileName}.md - Human-readable report`);
+    } catch (error) {
+      console.log('Could not write report files:', error);
+    }
+  } else {
+    console.log('\n📊 Test report generation skipped (set WRITE_TEST_REPORTS=true to enable)');
   }
 }
 

@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -70,8 +71,8 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         
         const targetValue = targetBrand?.value || 0;
         const competitorValue = primaryCompetitor?.value || 0;
-        const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 1;
-        const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 50000;
+        const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 1;
+        const medianIncome = Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 50000;
         
         // DEBUG: Log raw data values to identify the calculation issue
         if (index < 5) {
@@ -180,8 +181,8 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       
       const targetBrandValue = targetBrandInfo?.value || 0;
       const competitorBrandValue = competitorBrandInfo?.value || 0;
-      const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
-      const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
+      const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
+      const medianIncome = Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0;
       const marketGap = Math.max(0, 100 - targetBrandValue - competitorBrandValue);
       const competitiveAdvantage = Math.max(0, targetBrandValue - competitorBrandValue);
       
@@ -645,13 +646,11 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
     // Define field importance weights based on core analysis factors
-    const fieldDefinitions = [
-      { field: 'strategic_value_score', source: 'strategic_value_score', importance: 30 },
-      { field: 'target_brand_share', source: ['target_brand_share'], importance: 25 },
-      { field: 'total_population', source: ['total_population', 'value_TOTPOP_CY'], importance: 20 },
-      { field: 'median_income', source: ['median_income', 'value_AVGHINC_CY'], importance: 15 },
-      { field: 'market_gap', source: 'market_gap', importance: 10, calculated: true }
-    ];
+    // Use dynamic field detection instead of hardcoded mappings
+    const detectedFields = DynamicFieldDetector.detectFields([record], 'core-analysis', 6);
+    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
+    
+    console.log(`[CoreAnalysisProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
     
     fieldDefinitions.forEach(fieldDef => {
       let value = 0;
@@ -749,4 +748,17 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     
     return `Area ${(record as any).OBJECTID || 'Unknown'}`;
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 } 

@@ -1,4 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 
 /**
  * AnomalyDetectionProcessor - Handles data processing for the /anomaly-detection endpoint
@@ -65,8 +66,8 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
       const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
       const trendScore = Number((record as any).trend_strength_score) || 0;
-      const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
-      const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
+      const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
+      const medianIncome = Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0;
       
       // Calculate anomaly indicators
       const statisticalDeviation = this.calculateStatisticalDeviation(record);
@@ -147,7 +148,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
     const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
     const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
     const nikeShare = Number((record as any).mp30034a_b_p || (record as any).value_MP30034A_B_P) || 0;
-    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+    const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
     
     // Simple anomaly detection calculation based on extreme values
     let anomalyScore = 0;
@@ -238,7 +239,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
   private calculatePerformanceOutlier(record: any): number {
     const strategicScore = Number((record as any).strategic_value_score) || 0;
     const nikeShare = Number((record as any).mp30034a_b_p) || 0;
-    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
+    const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
     
     let outlierLevel = 0;
     
@@ -264,8 +265,8 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
    * Calculate context anomaly level
    */
   private calculateContextAnomaly(record: any): number {
-    const totalPop = Number((record as any).total_population || (record as any).value_TOTPOP_CY) || 0;
-    const medianIncome = Number((record as any).median_income || (record as any).value_AVGHINC_CY) || 0;
+    const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
+    const medianIncome = Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0;
     const strategicScore = Number((record as any).strategic_value_score) || 0;
     const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
     
@@ -698,4 +699,17 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
       return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
     }
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 }

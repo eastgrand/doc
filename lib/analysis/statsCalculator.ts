@@ -606,25 +606,25 @@ export function formatBrandDifferenceStatsForChat(stats: BasicStats, brandNames?
   
   // For brand difference, show largest advantages instead of "top performers"
   const allAreas = [...stats.top5, ...stats.bottom5].sort((a, b) => b.score - a.score);
-  const hrBlockAdvantages = allAreas.filter(item => item.score > 2).slice(0, 3);
-  const turboTaxAdvantages = allAreas.filter(item => item.score < -2).slice(-3).reverse();
+  const brand1Advantages = allAreas.filter(item => item.score > 2).slice(0, 3);
+  const brand2Advantages = allAreas.filter(item => item.score < -2).slice(-3).reverse();
   const competitiveParity = allAreas.filter(item => Math.abs(item.score) <= 2).slice(0, 3);
   
   // Use dynamic brand names if provided, otherwise use generic terms
   const brand1Name = brandNames?.brand1 || 'Brand A';
   const brand2Name = brandNames?.brand2 || 'Brand B';
   
-  if (hrBlockAdvantages.length > 0) {
+  if (brand1Advantages.length > 0) {
     lines.push(`**${brand1Name} Strongholds** (largest advantages):`);
-    hrBlockAdvantages.forEach((item, index) => {
+    brand1Advantages.forEach((item, index) => {
       lines.push(`**${index + 1}.** ${item.area} (**+${item.score.toFixed(1)}%**)`);
     });
     lines.push('');
   }
   
-  if (turboTaxAdvantages.length > 0) {
+  if (brand2Advantages.length > 0) {
     lines.push(`**${brand2Name} Strongholds** (competitor advantages):`);
-    turboTaxAdvantages.forEach((item, index) => {
+    brand2Advantages.forEach((item, index) => {
       lines.push(`**${index + 1}.** ${item.area} (**${item.score.toFixed(1)}%**)`);
     });
     lines.push('');

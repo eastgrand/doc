@@ -1,5 +1,6 @@
 import { ComparativeAnalysisProcessor } from './ComparativeAnalysisProcessor';
 import { RawAnalysisResult } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 
 describe('ComparativeAnalysisProcessor Integration', () => {
   it('should use actual brand names from field aliases in analysis output', () => {

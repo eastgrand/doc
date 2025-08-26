@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { DynamicFieldDetector } from './DynamicFieldDetector';
 import Extent from '@arcgis/core/geometry/Extent';
 import { BrandNameResolver, BrandField } from '../../utils/BrandNameResolver';
 
@@ -150,8 +151,8 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
         brand_loyalty_indicator: Number((record as any).brand_loyalty_indicator) || 0,
         lifestyle_alignment: Number((record as any).lifestyle_alignment) || 0,
         purchase_propensity: Number((record as any).purchase_propensity) || 0,
-        population: (record as any).total_population || (record as any).value_TOTPOP_CY || (record as any).population || 0,
-        avg_income: (record as any).median_income || (record as any).value_AVGHINC_CY || (record as any).income || 0,
+        population: this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population']) || (record as any).population || 0,
+        avg_income: this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income']) || (record as any).income || 0,
         median_age: (record as any).value_MEDAGE_CY || (record as any).age || 0,
         household_size: (record as any).value_AVGHHSZ_CY || (record as any).household_size || 0,
         wealth_index: (record as any).value_WLTHINDXCY || 100,
@@ -249,7 +250,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   private identifyPersonaType(record: any): string {
-    const income = (record as any).median_income || (record as any).value_AVGHINC_CY || (record as any).income || 0;
+    const income = this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income']) || (record as any).income || 0;
     const age = (record as any).median_age || (record as any).value_MEDAGE_CY || (record as any).age || 35;
     const targetBrandAffinity = this.extractTargetBrandAffinity(record);
     const behavioralScore = Number((record as any).behavioral_score) || 0;
@@ -287,7 +288,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
   private calculateBrandLoyalty(record: any): number {
     const targetBrandAffinity = this.extractTargetBrandAffinity(record);
-    const income = (record as any).median_income || (record as any).value_AVGHINC_CY || (record as any).income || 0;
+    const income = this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income']) || (record as any).income || 0;
     const age = (record as any).value_MEDAGE_CY || (record as any).age || 0;
     
     let loyaltyScore = 0;
@@ -310,7 +311,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
   private calculateLifestyleAlignment(record: any): number {
     const age = (record as any).value_MEDAGE_CY || (record as any).age || 0;
-    const income = (record as any).median_income || (record as any).value_AVGHINC_CY || (record as any).income || 0;
+    const income = this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income']) || (record as any).income || 0;
     const wealthIndex = (record as any).value_WLTHINDXCY || 100;
     const householdSize = (record as any).value_AVGHHSZ_CY || (record as any).household_size || 0;
     
@@ -343,7 +344,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
   private calculatePurchasePropensity(record: any): number {
     const age = (record as any).value_MEDAGE_CY || (record as any).age || 0;
-    const income = (record as any).median_income || (record as any).value_AVGHINC_CY || (record as any).income || 0;
+    const income = this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income']) || (record as any).income || 0;
     const targetBrandAffinity = this.extractTargetBrandAffinity(record);
     const wealthIndex = (record as any).value_WLTHINDXCY || 100;
     
@@ -855,4 +856,17 @@ Higher scores indicate stronger alignment with the target brand's ideal customer
     console.log(`[CustomerProfileProcessor] Calculated extent: ${JSON.stringify(extent.toJSON())}`);
     return extent;
   }
+  /**
+   * Extract field value from multiple possible field names
+   */
+  private extractFieldValue(record: any, fieldNames: string[]): number {
+    for (const fieldName of fieldNames) {
+      const value = Number(record[fieldName]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    return 0;
+  }
+
 }
