@@ -67,6 +67,7 @@ const DO_NOT_DISPLAY_LIST: Set<string> = new Set([
   'Draft',
   'DRAFT',
   'Market Analysis for Nike',
+  'Market Analysis for Red Bull',
   'AI Endpoint Scoring Analysis',
 
   // Canadian/Non-US reports

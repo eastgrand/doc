@@ -8,6 +8,7 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import ReportSelectionDialog from './ReportSelectionDialog';
 import EndpointScoringReport from './EndpointScoringReport';
+import { fetchReports, Report } from '@/services/ReportsService';
 
 // Removed unused ReportTemplateName, ReportCategory and ReportTemplate interfaces
 
@@ -62,6 +63,7 @@ const Infographics: React.FC<InfographicsProps> = ({
   const cleanupTimeoutRef = useRef<NodeJS.Timeout>();
   const isMountedRef = useRef(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [availableReports, setAvailableReports] = useState<Report[]>([]);
   // Removed unused selectedReport state
 
   const handleDialogOpen = () => setIsDialogOpen(true);
@@ -70,6 +72,21 @@ const Infographics: React.FC<InfographicsProps> = ({
     onReportTemplateChange(reportId);
     setIsDialogOpen(false);
   };
+
+  // Load available reports when component mounts
+  useEffect(() => {
+    const loadReports = async () => {
+      try {
+        const reports = await fetchReports();
+        setAvailableReports(reports);
+        console.log('[Infographics] Loaded reports:', reports.map(r => r.title));
+      } catch (error) {
+        console.error('[Infographics] Error loading reports:', error);
+      }
+    };
+
+    loadReports();
+  }, []);
 
   // Removed unused handleCardClick function
 
@@ -198,7 +215,13 @@ const Infographics: React.FC<InfographicsProps> = ({
           </Button>
           <ReportSelectionDialog
             open={isDialogOpen}
-            reports={[]}
+            reports={availableReports.map(report => ({
+              id: report.id,
+              title: report.title,
+              description: report.description,
+              thumbnail: report.thumbnail || '',
+              categories: report.categories
+            }))}
             onClose={handleDialogClose}
             onSelect={handleReportSelect as any}
           />
@@ -411,8 +434,8 @@ const Infographics: React.FC<InfographicsProps> = ({
     <Card className="h-full flex flex-col shadow-none border-0">
        {renderHeader()}
       <CardContent className="flex-1 overflow-auto p-0">
-        {/* Check if this is the endpoint scoring report */}
-        {reportTemplate === 'endpoint-scoring-combined' ? (
+        {/* Check if this is an endpoint scoring report */}
+        {(reportTemplate === 'endpoint-scoring-combined' || reportTemplate === 'market-intelligence-report') ? (
           <EndpointScoringReport geometry={geometry} onExportPDF={onExportPDF} />
         ) : (
           <>
