@@ -724,22 +724,28 @@ class EndpointGenerator:
     def _ensure_geographic_identifiers(self, data: pd.DataFrame) -> pd.DataFrame:
         """Ensure all records have proper geographic identifiers"""
         
-        # Common geographic ID field patterns
-        geo_id_patterns = ['id', 'geoid', 'zip', 'postal', 'area_id', 'objectid']
-        
-        # Find the best geographic ID field
+        # Prioritize exact 'ID' field first (contains ZIP codes), then fallback to others
         geo_id_field = None
-        for pattern in geo_id_patterns:
-            potential_fields = [col for col in data.columns if pattern in col.lower()]
-            if potential_fields:
-                geo_id_field = potential_fields[0]
-                break
+        
+        # First priority: exact 'ID' field (contains ZIP codes)
+        if 'ID' in data.columns:
+            geo_id_field = 'ID'
+        else:
+            # Fallback patterns (avoid OBJECTID as it contains record IDs, not ZIP codes)
+            geo_id_patterns = ['zip', 'postal', 'geoid', 'area_id']
+            
+            # Find the best geographic ID field
+            for pattern in geo_id_patterns:
+                potential_fields = [col for col in data.columns if pattern in col.lower()]
+                if potential_fields:
+                    geo_id_field = potential_fields[0]
+                    break
         
         # Ensure ID field exists and is properly formatted
         if geo_id_field:
             data['ID'] = data[geo_id_field].astype(str)
         else:
-            # Generate sequential IDs
+            # Generate sequential IDs as last resort
             data['ID'] = [f"area_{i+1:05d}" for i in range(len(data))]
         
         # Ensure DESCRIPTION field exists

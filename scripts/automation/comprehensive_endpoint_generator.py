@@ -656,9 +656,9 @@ class ComprehensiveEndpointGenerator:
                                    models: Dict[str, Any], endpoint_type: str, primary_model: str) -> Dict[str, Any]:
         """Create a record with comprehensive model features"""
         
-        # Base record
+        # Base record - use ID field which contains ZIP codes
         record = {
-            'ID': row.get('OBJECTID', row.get('ID', f'R_{row.name}')),
+            'ID': row.get('ID', f'R_{row.name}'),
             'DESCRIPTION': row.get('DESCRIPTION', f'Area {row.name}')
         }
         

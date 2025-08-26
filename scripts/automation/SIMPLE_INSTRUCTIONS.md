@@ -1634,6 +1634,16 @@ Your microservice now includes **17 comprehensive AI models** with algorithm div
 
 - **Solution**: Use the enhanced category selector to create custom categories with your own keywords
 
+**Problem**: Generated endpoints use OBJECTID values instead of ZIP codes in ID field
+
+- **Cause**: Endpoint generators were prioritizing OBJECTID field over the actual ID field that contains ZIP codes
+- **Solution**: This has been fixed in the automation scripts. The `ComprehensiveEndpointGenerator` (primary) and `EndpointGenerator` (fallback) now properly use the ID field which contains ZIP codes
+- **Files fixed**: 
+  - `/scripts/automation/comprehensive_endpoint_generator.py` (line 661)
+  - `/scripts/automation/endpoint_generator.py` (_ensure_geographic_identifiers function)
+- **Technical details**: Changed `row.get('OBJECTID', row.get('ID', ...))` to `row.get('ID', ...)` to prioritize ZIP codes over record IDs
+- **Impact**: Future endpoint generation will use proper ZIP codes for geographic matching instead of sequential record IDs
+
 ## Getting Help
 
 **If you're stuck:**
