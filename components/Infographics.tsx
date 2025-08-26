@@ -200,7 +200,7 @@ const Infographics: React.FC<InfographicsProps> = ({
             open={isDialogOpen}
             reports={[]}
             onClose={handleDialogClose}
-            onSelect={(reportData: { id: string }) => handleReportSelect(reportData.id)}
+            onSelect={handleReportSelect}
           />
         </div>
       </div>
