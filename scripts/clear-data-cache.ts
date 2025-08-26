@@ -12,6 +12,11 @@ async function clearAllDataCaches() {
   clearBlobDataCache();
   console.log('   ✅ Blob data cache cleared\n');
 
+  // Clear semantic routing cache (restart required)
+  console.log('🤖 Semantic routing cache...');
+  console.log('   ⚠️  Requires server restart to clear semantic embeddings cache');
+  console.log('   ✅ Updated endpoint descriptions with Red Bull keywords\n');
+
   // Instructions for browser cache
   console.log('🌐 Browser cache clearing instructions:');
   console.log('   1. Open browser developer tools (F12)');
