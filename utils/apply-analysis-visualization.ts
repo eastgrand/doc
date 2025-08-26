@@ -201,8 +201,9 @@ export const applyAnalysisEngineVisualization = async (
         ID: String(record.properties?.ID || record.area_id || ''),
         DESCRIPTION: record.properties?.DESCRIPTION || resolvedName || record.area_name || `Area ${record.area_id ?? index + 1}`,
         
-        // Target variable field (dynamic based on analysis type)
-        [data.targetVariable]: typeof record.value === 'number' ? record.value : 
+        // Target variable field (dynamic based on analysis type) - prioritize record[targetVariable] for proper field mapping
+        [data.targetVariable]: typeof record[data.targetVariable] === 'number' ? record[data.targetVariable] :
+                               typeof record.value === 'number' ? record.value : 
                                typeof record.properties?.[data.targetVariable] === 'number' ? record.properties[data.targetVariable] : 0
       };
 
