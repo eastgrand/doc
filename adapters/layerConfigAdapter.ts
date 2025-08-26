@@ -17,8 +17,8 @@ export function createProjectConfig(): ProjectLayerConfig {
   const classifyGroup = (layerName: string): string => {
     const n = layerName.toLowerCase();
     
-    // Store locations - Target, Trader Joe's, Whole Foods, Costco
-    if (/target$|trader joe|whole foods|costco$/.test(n)) {
+    // Store locations - Only the actual location layers, not shopping behavior layers
+    if (/^target$|^trader joes$|^whole foods$|^costco$/.test(n)) {
       return 'stores';
     }
     
@@ -114,13 +114,13 @@ export function createProjectConfig(): ProjectLayerConfig {
       // Special name handling for store locations
       let displayName = cleanedName;
       if (classifiedGroup === 'stores') {
-        if (layerNameLower.includes('target') && !layerNameLower.includes('shopped')) {
+        if (layerNameLower === 'target') {
           displayName = 'Target';
-        } else if (layerNameLower.includes('trader joe')) {
+        } else if (layerNameLower === 'trader joes') {
           displayName = "Trader Joe's";
-        } else if (layerNameLower.includes('whole foods')) {
+        } else if (layerNameLower === 'whole foods') {
           displayName = 'Whole Foods';
-        } else if (layerNameLower.includes('costco') && !layerNameLower.includes('shopped')) {
+        } else if (layerNameLower === 'costco') {
           displayName = 'Costco';
         }
       }
