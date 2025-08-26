@@ -168,7 +168,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     
     const renderer = {
       type: 'class-breaks',
-      field: 'strategic_analysis_score', // Use the correct scoring field
+      field: 'strategic_score', // Use the field that matches the processed data
       classBreakInfos,
       defaultSymbol: {
         type: 'simple-fill',

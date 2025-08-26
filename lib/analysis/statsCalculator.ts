@@ -547,13 +547,13 @@ function detectScoreClustering(data: any[]): Patterns['trends'][0] | null {
 /**
  * Format statistics for display in chat
  */
-export function formatStatsForChat(stats: BasicStats, analysisType?: string): string {
+export function formatStatsForChat(stats: BasicStats, analysisType?: string, brandNames?: { brand1: string; brand2: string }): string {
   console.log(`[formatStatsForChat] Called with analysisType: "${analysisType}"`);
   
   // Use specialized formatter for brand difference analysis
   if (analysisType === 'brand_difference' || analysisType === 'brand-difference') {
     console.log(`[formatStatsForChat] Using brand difference formatter`);
-    return formatBrandDifferenceStatsForChat(stats);
+    return formatBrandDifferenceStatsForChat(stats, brandNames);
   }
   
   console.log(`[formatStatsForChat] Using generic formatter`);
@@ -588,7 +588,7 @@ export function formatStatsForChat(stats: BasicStats, analysisType?: string): st
 /**
  * Format brand difference statistics for display in chat
  */
-export function formatBrandDifferenceStatsForChat(stats: BasicStats): string {
+export function formatBrandDifferenceStatsForChat(stats: BasicStats, brandNames?: { brand1: string; brand2: string }): string {
   const lines: string[] = [];
   
   lines.push(`**Brand Difference Statistics**`);
@@ -610,8 +610,12 @@ export function formatBrandDifferenceStatsForChat(stats: BasicStats): string {
   const turboTaxAdvantages = allAreas.filter(item => item.score < -2).slice(-3).reverse();
   const competitiveParity = allAreas.filter(item => Math.abs(item.score) <= 2).slice(0, 3);
   
+  // Use dynamic brand names if provided, otherwise use generic terms
+  const brand1Name = brandNames?.brand1 || 'Brand A';
+  const brand2Name = brandNames?.brand2 || 'Brand B';
+  
   if (hrBlockAdvantages.length > 0) {
-    lines.push('**H&R Block Strongholds** (largest advantages):');
+    lines.push(`**${brand1Name} Strongholds** (largest advantages):`);
     hrBlockAdvantages.forEach((item, index) => {
       lines.push(`**${index + 1}.** ${item.area} (**+${item.score.toFixed(1)}%**)`);
     });
@@ -619,7 +623,7 @@ export function formatBrandDifferenceStatsForChat(stats: BasicStats): string {
   }
   
   if (turboTaxAdvantages.length > 0) {
-    lines.push('**TurboTax Strongholds** (competitor advantages):');
+    lines.push(`**${brand2Name} Strongholds** (competitor advantages):`);
     turboTaxAdvantages.forEach((item, index) => {
       lines.push(`**${index + 1}.** ${item.area} (**${item.score.toFixed(1)}%**)`);
     });
@@ -639,11 +643,11 @@ export function formatBrandDifferenceStatsForChat(stats: BasicStats): string {
 /**
  * Format distribution for display in chat
  */
-export function formatDistributionForChat(dist: Distribution, analysisType?: string): string {
+export function formatDistributionForChat(dist: Distribution, analysisType?: string, brandNames?: { brand1: string; brand2: string }): string {
   // Use specialized formatter for brand difference analysis
   if (analysisType === 'brand_difference' || analysisType === 'brand-difference') {
     console.log(`[formatDistributionForChat] Using brand difference distribution formatter`);
-    return formatBrandDifferenceDistributionForChat(dist);
+    return formatBrandDifferenceDistributionForChat(dist, brandNames);
   }
   
   console.log(`[formatDistributionForChat] Using generic distribution formatter`);
@@ -679,7 +683,7 @@ export function formatDistributionForChat(dist: Distribution, analysisType?: str
 /**
  * Format brand difference distribution for display in chat
  */
-export function formatBrandDifferenceDistributionForChat(dist: Distribution): string {
+export function formatBrandDifferenceDistributionForChat(dist: Distribution, brandNames?: { brand1: string; brand2: string }): string {
   const lines: string[] = [];
   
   lines.push(`**Competitive Distribution Analysis**`);
@@ -687,13 +691,16 @@ export function formatBrandDifferenceDistributionForChat(dist: Distribution): st
   
   // Skip technical distribution details for brand difference
   // Focus on competitive landscape summary instead
+  const brand1Name = brandNames?.brand1 || 'Brand A';
+  const brand2Name = brandNames?.brand2 || 'Brand B';
+  
   const avgDiff = (dist.quartiles.q1 + dist.quartiles.q2 + dist.quartiles.q3) / 3;
   if (avgDiff < -5) {
-    lines.push('**Competitive Landscape:** TurboTax holds significant advantages across most markets');
+    lines.push(`**Competitive Landscape:** ${brand2Name} holds significant advantages across most markets`);
   } else if (avgDiff < -2) {
-    lines.push('**Competitive Landscape:** TurboTax maintains moderate competitive leads');
+    lines.push(`**Competitive Landscape:** ${brand2Name} maintains moderate competitive leads`);
   } else if (avgDiff > 2) {
-    lines.push('**Competitive Landscape:** H&R Block shows competitive strength');
+    lines.push(`**Competitive Landscape:** ${brand1Name} shows competitive strength`);
   } else {
     lines.push('**Competitive Landscape:** Highly competitive markets with mixed brand performance');
   }
@@ -716,13 +723,13 @@ export function formatBrandDifferenceDistributionForChat(dist: Distribution): st
 /**
  * Format patterns for display in chat
  */
-export function formatPatternsForChat(patterns: Patterns, analysisType?: string): string {
+export function formatPatternsForChat(patterns: Patterns, analysisType?: string, brandNames?: { brand1: string; brand2: string }): string {
   console.log(`[formatPatternsForChat] Called with analysisType: "${analysisType}"`);
   
   // Use specialized formatter for brand difference analysis
   if (analysisType === 'brand_difference' || analysisType === 'brand-difference') {
     console.log(`[formatPatternsForChat] Using brand difference patterns formatter`);
-    return formatBrandDifferencePatternsForChat(patterns);
+    return formatBrandDifferencePatternsForChat(patterns, brandNames);
   }
   
   console.log(`[formatPatternsForChat] Using generic patterns formatter`);
@@ -771,7 +778,7 @@ export function formatPatternsForChat(patterns: Patterns, analysisType?: string)
 /**
  * Format brand difference patterns for display in chat
  */
-export function formatBrandDifferencePatternsForChat(patterns: Patterns): string {
+export function formatBrandDifferencePatternsForChat(patterns: Patterns, brandNames?: { brand1: string; brand2: string }): string {
   const lines: string[] = [];
   
   lines.push(`**Competitive Patterns**`);
@@ -779,11 +786,14 @@ export function formatBrandDifferencePatternsForChat(patterns: Patterns): string
   
   // Skip market clusters for brand difference - not meaningful for competitive analysis
   
+  const brand1Name = brandNames?.brand1 || 'Brand A';
+  const brand2Name = brandNames?.brand2 || 'Brand B';
+  
   if (patterns.correlations.length > 0) {
     lines.push('**Brand Success Drivers:**');
     patterns.correlations.slice(0, 5).forEach(corr => {
       const sign = corr.correlation > 0 ? '+' : '';
-      const direction = corr.correlation > 0 ? 'favors H&R Block' : 'favors competitor';
+      const direction = corr.correlation > 0 ? `favors ${brand1Name}` : `favors ${brand2Name}`;
       lines.push(`• **${corr.factor}**: **${sign}${(corr.correlation * 100).toFixed(0)}%** correlation (${direction})`);
     });
     lines.push('');

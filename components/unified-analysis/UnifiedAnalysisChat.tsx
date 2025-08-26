@@ -399,7 +399,22 @@ ${conversationText}
       const basicStats = calculateBasicStats(analysisData);
       const analysisType = result.endpoint?.replace('/', '') || result.data?.type;
       console.log(`[UnifiedAnalysisChat] Analysis type for stats: "${analysisType}" (from endpoint: "${result.endpoint}")`);
-      messageContent += '\n\n' + formatStatsForChat(basicStats, analysisType);
+      
+      // Extract brand names for brand difference analysis
+      let brandNames: { brand1: string; brand2: string } | undefined;
+      if (analysisType === 'brand-difference' && result.data?.brandAnalysis) {
+        const brandAnalysis = result.data.brandAnalysis as any;
+        if (brandAnalysis.brandComparison) {
+          const { brand1, brand2 } = brandAnalysis.brandComparison;
+          brandNames = { 
+            brand1: brand1.charAt(0).toUpperCase() + brand1.slice(1), 
+            brand2: brand2.charAt(0).toUpperCase() + brand2.slice(1) 
+          };
+          console.log(`[UnifiedAnalysisChat] Extracted brand names:`, brandNames);
+        }
+      }
+      
+      messageContent += '\n\n' + formatStatsForChat(basicStats, analysisType, brandNames);
       
       setMessages([{
         ...initialMessage,
@@ -410,7 +425,7 @@ ${conversationText}
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const distribution = calculateDistribution(analysisData);
-      messageContent += '\n\n' + formatDistributionForChat(distribution, analysisType);
+      messageContent += '\n\n' + formatDistributionForChat(distribution, analysisType, brandNames);
       
       setMessages([{
         ...initialMessage,
@@ -421,7 +436,7 @@ ${conversationText}
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const patterns = detectPatterns(analysisData);
-      messageContent += '\n\n' + formatPatternsForChat(patterns, analysisType);
+      messageContent += '\n\n' + formatPatternsForChat(patterns, analysisType, brandNames);
       
       setMessages([{
         ...initialMessage,
