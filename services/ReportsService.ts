@@ -67,8 +67,8 @@ const DO_NOT_DISPLAY_LIST: Set<string> = new Set([
   'Draft',
   'DRAFT',
   'Market Analysis for Nike',
-  'Market Analysis for Red Bull',
   'AI Endpoint Scoring Analysis',
+  'AI-Powered Market Intelligence Report',
 
   // Canadian/Non-US reports
   'Canada Demographics',
@@ -164,6 +164,10 @@ export const fetchReports = async (): Promise<Report[]> => {
       {
         name: 'Content API',
         url: `https://synapse54.maps.arcgis.com/sharing/rest/content/users/Synapse54/search?f=pjson&token=${token}&num=100`
+      },
+      {
+        name: 'Specific Red Bull Report',
+        url: `https://www.arcgis.com/sharing/rest/content/items/3accb353abb34e258fe6d69493ed1a16?f=pjson&token=${token}`
       }
     ];
 
@@ -189,6 +193,9 @@ export const fetchReports = async (): Promise<Report[]> => {
           items = data.results;
         } else if (data.items && Array.isArray(data.items)) {
           items = data.items;
+        } else if (data.id && data.title) {
+          // Single item response (for specific item ID requests)
+          items = [data];
         }
         
         if (items.length > 0) {
