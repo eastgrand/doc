@@ -39,14 +39,22 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     
     // Brand difference analysis requires brand market share data
     const hasBrandFields = rawData.results.length === 0 || 
-      rawData.results.some(record => 
-        record && 
-        ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        // Look for any brand market share fields (MP122*A_B_P pattern for energy drinks)
-        Object.keys(record as any).some(key => 
-          key.includes('MP122') && key.endsWith('A_B_P')
-        )
-      );
+      rawData.results.some(record => {
+        const hasIdField = record && ((record as any).area_id || (record as any).id || (record as any).ID);
+        const recordKeys = record ? Object.keys(record as any) : [];
+        const brandFields = recordKeys.filter(key => key.includes('MP122') && key.endsWith('A_B_P'));
+        
+        console.log('🔍 [BrandDifferenceProcessor] Validation debug for record:', {
+          hasRecord: !!record,
+          hasIdField,
+          totalKeys: recordKeys.length,
+          brandFieldsFound: brandFields,
+          brandFieldCount: brandFields.length
+        });
+        
+        const hasBrandFieldsForRecord = brandFields.length > 0;
+        return hasIdField && hasBrandFieldsForRecord;
+      });
     
     console.log('🔍 [BrandDifferenceProcessor] Brand fields validation result:', hasBrandFields);
     if (!hasBrandFields) {
