@@ -17,6 +17,11 @@ export function createProjectConfig(): ProjectLayerConfig {
   const classifyGroup = (layerName: string): string => {
     const n = layerName.toLowerCase();
     
+    // Store locations - Target, Trader Joe's, Whole Foods, Costco
+    if (/target$|trader joe|whole foods|costco$/.test(n)) {
+      return 'stores';
+    }
+    
     // Energy Drinks - Primary category for Red Bull, Monster, 5-Hour Energy, etc.
     if (/red bull|energy drink|monster|5-hour|energy|drank.*energy|energy.*drink/.test(n)) {
       return 'energy-drinks';
@@ -46,17 +51,53 @@ export function createProjectConfig(): ProjectLayerConfig {
     return 'consumer-behavior';
   };
 
+  // Helper to remove dates from layer names for display
+  const cleanLayerName = (name: string): string => {
+    // Remove years (2024, 2025, 2030) from the beginning of layer names
+    return name.replace(/^(2024|2025|2030)\s+/, '');
+  };
+
+  // Helper to check if layer should be filtered out
+  const shouldFilterLayer = (layerName: string): boolean => {
+    const n = layerName.toLowerCase();
+    
+    // Filter out 2024 energy drink layers
+    if (n.startsWith('2024') && /energy.*drink|red bull|monster|5-hour/.test(n)) {
+      return true;
+    }
+    
+    // Filter out 2024 consumer behavior layers (shopping, purchasing, consumption)
+    if (n.startsWith('2024') && /shop|bought|purchase|drank|consume/.test(n)) {
+      return true;
+    }
+    
+    // Filter out 2024 and 2030 demographics layers
+    if ((n.startsWith('2024') || n.startsWith('2030')) && /population|diversity|generation|age|demographics/.test(n)) {
+      return true;
+    }
+    
+    return false;
+  };
+
   for (const layerConfig of Object.values(allLayersConfig)) {
     if (layerConfig && layerConfig.id) {
+      const layerName = layerConfig.name || layerConfig.id;
+      const layerNameLower = layerName.toLowerCase();
+      
+      // Filter out layers that should not be displayed
+      if (shouldFilterLayer(layerName)) {
+        console.log(`[LayerAdapter] Filtering out layer: ${layerName}`);
+        continue;
+      }
+      
       // Hide specific layers that should not be displayed
-      const layerName = (layerConfig.name || layerConfig.id).toLowerCase();
-      if (layerName.includes('h&r block by zip')) {
-        console.log(`[LayerAdapter] Hiding layer: ${layerConfig.name}`);
+      if (layerNameLower.includes('h&r block by zip')) {
+        console.log(`[LayerAdapter] Hiding layer: ${layerName}`);
         continue; // Skip this layer - don't add it to adaptedLayers
       }
       
       // Special handling for H&R Block points - move to top level and rename
-      if (layerName.includes('h&r block points')) {
+      if (layerNameLower.includes('h&r block points')) {
         console.log(`[LayerAdapter] Moving H&R Block points to top level and renaming`);
         adaptedLayers[layerConfig.id] = { 
           ...layerConfig, 
@@ -67,15 +108,35 @@ export function createProjectConfig(): ProjectLayerConfig {
         continue;
       }
       
-      const classifiedGroup = classifyGroup(layerConfig.name || layerConfig.id);
+      const classifiedGroup = classifyGroup(layerName);
+      const cleanedName = cleanLayerName(layerName);
+      
+      // Special name handling for store locations
+      let displayName = cleanedName;
+      if (classifiedGroup === 'stores') {
+        if (layerNameLower.includes('target') && !layerNameLower.includes('shopped')) {
+          displayName = 'Target';
+        } else if (layerNameLower.includes('trader joe')) {
+          displayName = "Trader Joe's";
+        } else if (layerNameLower.includes('whole foods')) {
+          displayName = 'Whole Foods';
+        } else if (layerNameLower.includes('costco') && !layerNameLower.includes('shopped')) {
+          displayName = 'Costco';
+        }
+      }
+      
       // Store the lowercase id but human title will capitalize later
-      const adaptedLayer = { ...layerConfig, group: classifiedGroup } as any;
+      const adaptedLayer = { 
+        ...layerConfig, 
+        name: displayName,
+        group: classifiedGroup 
+      } as any;
       
       // Debug logging to verify renderer fields are preserved
       if (layerConfig.rendererField) {
-        console.log(`[LayerAdapter] ✅ Preserved rendererField '${layerConfig.rendererField}' for layer: ${layerConfig.name}`);
+        console.log(`[LayerAdapter] ✅ Preserved rendererField '${layerConfig.rendererField}' for layer: ${displayName}`);
       } else {
-        console.log(`[LayerAdapter] ⚠️ No rendererField for layer: ${layerConfig.name}`);
+        console.log(`[LayerAdapter] ⚠️ No rendererField for layer: ${displayName}`);
       }
       
       adaptedLayers[layerConfig.id] = adaptedLayer;
@@ -97,6 +158,9 @@ export function createProjectConfig(): ProjectLayerConfig {
       // Use specific titles for Red Bull Energy Drinks project groups
       let title: string;
       switch (groupId) {
+        case 'stores':
+          title = 'Stores';
+          break;
         case 'energy-drinks':
           title = 'Energy Drinks';
           break;
@@ -151,12 +215,13 @@ export function createProjectConfig(): ProjectLayerConfig {
     
     // If both or neither have point layers, use priority order for project
     const priority: Record<string, number> = {
-      'energy-drinks': 1,      // Most important - target variable and competitors
-      'consumer-behavior': 2,  // Secondary - related consumption patterns
-      'demographics': 3,       // Third - target audience data
-      'financial': 4,          // Fourth - purchasing power data
-      'geographic': 5,         // Fifth - location data
-      'locations': 6           // Last - generic location layers
+      'stores': 1,             // First - store locations
+      'energy-drinks': 2,      // Second - target variable and competitors
+      'consumer-behavior': 3,  // Third - related consumption patterns
+      'demographics': 4,       // Fourth - target audience data
+      'financial': 5,          // Fifth - purchasing power data
+      'geographic': 6,         // Sixth - location data
+      'locations': 7           // Last - generic location layers
     };
     
     const aPriority = priority[a.id] || 999;
