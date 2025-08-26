@@ -35,116 +35,149 @@ This document outlines the comprehensive plan to integrate Vercel's React AI Ele
 9. **Image** - AI-generated image handling
 10. **Web Preview** - External content preview
 
-## Phase 1: Core Integration (Weeks 1-2)
+## Phase 1: Core Integration (Week 1)
 
 ### 1.1 SDK Installation and Setup
 ```bash
-npx ai-elements@latest
+npm install @ai-sdk/react @ai-sdk/anthropic
 ```
 
-### 1.2 Replace Basic Chat Components
-- **Current**: `ChatInterface.tsx` → **New**: Vercel `Conversation` component
-- **Current**: `ChatMessage.tsx` → **New**: Vercel `Response` + `Message` components
-- **Current**: `ChatInput.tsx` → **New**: Vercel `Prompt Input` component
+### 1.2 Enhance Existing Chat Components (Map-Centric Approach)
+**Current Architecture**: 
+```
+components/chat/ChatInterface.tsx (w-96 sidebar)  |  MapContainer.tsx (flex-1 main)
+```
 
-### 1.3 Enhanced Message Interactions
-- Add `Actions` component with:
-  - **Retry** - Re-run analysis with same parameters
-  - **Copy** - Copy analysis results/insights
-  - **Share** - Share analysis findings
+**Enhanced Components**:
+- **Enhance**: `components/chat/ChatInterface.tsx` → Integrate Vercel `<Conversation>` wrapper
+- **Enhance**: `components/chat/MessageList.tsx` → Add `<Actions>` (retry, copy, share)  
+- **Enhance**: `components/chat/InputField.tsx` → Upgrade to `<PromptInput>` with suggestions
+- **Maintain**: Existing `w-96` sidebar layout and map-first approach
 
-### 1.4 Loading States Enhancement
-- Replace basic spinners with `Loader` component
-- Add progressive loading for complex analyses
-- Show analysis step indicators
+### 1.3 Map-Linked Message Actions
+Add `Actions` component integrated with current map state:
+- **Retry Analysis** - Re-run with same area selection and query type
+- **Copy Map Link** - Share current map state + analysis  
+- **Export Results** - Save analysis + visualization
+- **Modify Query** - Edit parameters without losing map selection
 
-## Phase 2: Advanced Analysis Features (Weeks 3-4)
+### 1.4 Enhanced Loading States for Analysis Pipeline
+Replace existing loading states in the query-to-visualization flow:
+- **SemanticEnhancedHybridEngine** → Add `<Loader>` with routing progress
+- **Analysis Endpoints** → Progressive loading indicators per processing step
+- **Map Rendering** → Show visualization preparation status
 
-### 2.1 Branch Component for Analysis Variations
-**Use Case**: Multiple analysis approaches for same query
+## Phase 2: Advanced Analysis Features (Week 2)
+
+### 2.1 Branch Component for Multi-Endpoint Analysis
+**Current Flow**: User selects analysis type → single endpoint → results
+**Enhanced Flow**: Automatically generate multiple analysis perspectives
+
+Integration with existing routing system:
 ```jsx
 <Branch defaultBranch={0}>
   <BranchMessages>
-    <Message>Strategic Analysis: Red Bull expansion markets</Message>
-    <Message>Demographic Analysis: Red Bull target segments</Message>
-    <Message>Competitive Analysis: Red Bull vs Monster</Message>
+    <Message>Strategic Analysis: {selectedAreaName} expansion potential</Message>
+    <Message>Demographic Analysis: {selectedAreaName} target segments</Message>  
+    <Message>Competitive Analysis: {selectedAreaName} market gaps</Message>
   </BranchMessages>
-  <BranchSelector>
-    <BranchPrevious />
-    <BranchPage />
-    <BranchNext />
-  </BranchSelector>
+  <BranchSelector />
 </Branch>
 ```
 
 **Implementation**: 
-- Generate multiple analysis perspectives per query
-- Allow users to compare different analysis angles
-- Persist branching choices in chat history
+- Integrate with `SemanticEnhancedHybridEngine` to suggest related endpoints
+- Use existing `ConfigurationManager` to determine compatible analysis types
+- Preserve current map selection across branch switches
+- Cache results to avoid re-computation
 
-### 2.2 Sources Component for Data Citations
-**Use Case**: Show data sources and methodology
-we need to go deeper here - find exact sources, not just Business Analyst Demographics, but where does Business Analysts get them, etc.
+### 2.2 Sources Component for Data Provenance 
+**Current Issue**: Users don't know data sources behind 102+ fields
+**Enhancement**: Deep source tracking through the entire pipeline
+
+Integration with existing data flow:
 ```jsx
 <Sources>
   <SourcesTrigger count={dataSourcesCount} />
   <SourcesContent>
-    <Source href="/api/data/demographics" title="US Census Bureau ACS 2022" />
-    <Source href="/api/data/business" title="Business Analyst Demographics" />
-    <Source href="/methodology/strategic-analysis" title="Strategic Analysis Methodology" />
+    {/* Dynamic sources from actual analysis */}
+    <Source href="/api/census/acs-2022" title="US Census Bureau ACS 2022" 
+           coverage="Demographic data for 3,983 ZIP codes" />
+    <Source href="/api/business-analyst" title="Esri Business Analyst Demographics" 
+           source="Derived from Census, Postal Service, and proprietary surveys" />
+    <Source href="/methodology/shap-analysis" title="SHAP Feature Importance" 
+           technical="Explainable AI using Shapley values" />
   </SourcesContent>
 </Sources>
 ```
 
 **Implementation**:
-- Track data sources used in each analysis
-- Link to methodology documentation
-- Show confidence levels and data freshness
+- Track data lineage from ZIP code → analysis endpoint → visualization
+- Integrate with existing `BrandNameResolver` and field detection systems
+- Show confidence scores from `DynamicFieldDetector`
+- Link to actual methodology docs for each of the 16 endpoints
 
-### 2.3 Reasoning Component for Analysis Process
-**Use Case**: Show AI reasoning behind analysis conclusions
+### 2.3 Reasoning Component for AI Transparency
+**Current Issue**: AI analysis is "black box" to users  
+**Enhancement**: Show step-by-step reasoning from query to insights
+
+Integration with existing analysis pipeline:
 ```jsx
 <Reasoning>
-  <ReasoningStep title="Data Collection">
-    Gathered demographic data for 2,847 ZIP codes in target region...
+  <ReasoningStep title="Query Routing">
+    Semantic Enhanced Hybrid Engine routed "{query}" to {selectedEndpoint} 
+    (confidence: {routingConfidence})
   </ReasoningStep>
-  <ReasoningStep title="Pattern Recognition">
-    Identified 3 key demographic clusters with high energy drink affinity...
+  <ReasoningStep title="Geographic Processing">
+    Selected area contains {zipCount} ZIP codes in {selectedAreaName}
   </ReasoningStep>
-  <ReasoningStep title="Strategic Insights">
-    Ranked markets by expansion potential using 7 weighted factors...
+  <ReasoningStep title="Data Processing">
+    Applied {processorName} strategy, detected {fieldCount} relevant fields
+  </ReasoningStep>
+  <ReasoningStep title="SHAP Analysis">
+    Top contributing factors: {topFeatures.join(', ')}
   </ReasoningStep>
 </Reasoning>
 ```
 
-## Phase 3: Innovative Analysis Data Interactions (Weeks 5-6)
+**Implementation**:
+- Capture metadata from each stage of the query-to-visualization flow
+- Integrate with existing SHAP microservice for explainable insights  
+- Show field detection results from `DynamicFieldDetector`
+- Display geographic processing from `GeoAwarenessEngine`
 
-### 3.1 Interactive Code Block for Analysis Queries
-**Use Case**: Show and edit analysis parameters
+## Phase 3: Interactive Data Analysis (Week 3)
+
+### 3.1 Interactive Analysis Parameter Editor
+**Current Flow**: User types query → system infers parameters → runs analysis  
+**Enhanced Flow**: Show and edit the actual parameters used by the system
+
+Integration with existing analysis pipeline:
 ```jsx
-<CodeBlock language="json" title="Analysis Parameters" editable={true}>
-{`{
-  "analysisType": "strategic-analysis",
-  "targetBrand": "Red Bull",
-  "geographicScope": "California",
-  "filters": {
-    "minPopulation": 50000,
-    "ageRange": [18, 34],
-    "incomeRange": [40000, 150000],
-    "lifestyle": ["urban", "suburban"]
-  },
-  "visualizations": ["heatmap", "scatter", "trends"],
-  "confidence": 0.85
-}`}
+<CodeBlock language="json" title="Analysis Configuration" editable={true}>
+{JSON.stringify({
+  // From SemanticEnhancedHybridEngine
+  endpoint: selectedEndpoint,
+  confidence: routingConfidence,
+  // From GeoAwarenessEngine  
+  geographicScope: selectedAreaName,
+  zipCodes: selectedZipCodes,
+  // From BrandNameResolver
+  targetBrand: detectedBrand,
+  // From DynamicFieldDetector
+  detectedFields: relevantFields,
+  // From ConfigurationManager
+  scoreConfig: endpointConfig
+}, null, 2)}
 </CodeBlock>
 ```
 
 **Advanced Features**:
-- **Real-time Parameter Validation**: Instant feedback on parameter validity
-- **Smart Suggestions**: AI-powered parameter recommendations based on analysis type
-- **Parameter Templates**: Pre-built templates for common analysis patterns
-- **Version History**: Track and revert parameter changes
-- **Export/Import**: Share parameter configurations between users
+- **Real-time Validation**: Check parameter validity against actual data availability
+- **Smart Suggestions**: Recommend related ZIP codes or similar analysis configurations
+- **Parameter Templates**: Save common configurations for quick reuse
+- **What-If Analysis**: Preview how parameter changes affect results before re-running
+- **Configuration Export**: Share exact parameters with team members
 
 ### 3.2 Web Preview for External Data with Smart Caching
 **Use Case**: Preview external sources with intelligent content extraction
@@ -531,66 +564,73 @@ we need to go deeper here - find exact sources, not just Business Analyst Demogr
 
 ## Implementation Timeline
 
-### Week 1-2: Foundation
-- [ ] Install Vercel AI Elements SDK
-- [ ] Replace core chat components
-- [ ] Implement basic Actions (retry, copy, share)
-- [ ] Add enhanced loading states
+### Week 1: Core SDK Integration
+- [ ] Install and configure Vercel AI Elements SDK
+- [ ] Enhance existing `ChatInterface.tsx` with `<Conversation>` wrapper
+- [ ] Add `<Actions>` to `MessageList.tsx` (retry, copy, share, export)
+- [ ] Upgrade `InputField.tsx` to `<PromptInput>` with query suggestions
+- [ ] Integrate enhanced loading states in analysis pipeline
 
-### Week 3-4: Core Features
-- [ ] Implement Branch component for analysis variations
-- [ ] Add Sources component for data citations
-- [ ] Integrate Reasoning component for analysis transparency
-- [ ] Enhanced Code Block for parameters
+### Week 2: Analysis Transparency 
+- [ ] Implement `<Branch>` component for multi-endpoint analysis
+- [ ] Add `<Sources>` component with data provenance tracking
+- [ ] Integrate `<Reasoning>` component showing AI decision process
+- [ ] Connect components to existing routing and processing systems
+- [ ] Test with actual ZIP code data and analysis results
 
-### Week 5-6: Advanced Interactions
-- [ ] Web Preview integration
-- [ ] Image generation for visualizations
-- [ ] Interactive parameter editing
-- [ ] Export and sharing capabilities
+### Week 3: Interactive Configuration
+- [ ] Create interactive `<CodeBlock>` for analysis parameters  
+- [ ] Add real-time parameter validation and suggestions
+- [ ] Implement what-if analysis preview functionality
+- [ ] Add configuration templates and export capabilities
+- [ ] Integration testing with map state preservation
 
-### Week 7-8: External Integrations
-- [ ] Scholarly article integration
-- [ ] Live data connectors
-- [ ] Inline interactive charts
-- [ ] Insight extraction system
+### Week 4: Production Ready
+- [ ] Performance optimization and caching strategies
+- [ ] Error handling and fallback UI components
+- [ ] Accessibility and responsive design improvements  
+- [ ] User acceptance testing and feedback collection
+- [ ] Documentation and deployment preparation
 
-### Week 9-10: Advanced Features
-- [ ] Multi-model comparison
-- [ ] Collaborative features
-- [ ] Voice input support
-- [ ] Performance optimization
+### Future Phases (Optional):
+- **Phase 2** (Week 5-6): External integrations (scholarly APIs, live data)
+- **Phase 3** (Week 7-8): Advanced features (voice input, collaborative analysis)
+- **Phase 4** (Week 9-10): Innovation features (AR/VR, AI-generated visualizations)
 
 ## Technical Architecture
 
-### Component Structure
+### Enhanced Component Structure (Preserving Existing)
 ```
-src/
-├── components/
-│   ├── ai-chat/
-│   │   ├── EnhancedConversation.tsx    # Vercel Conversation wrapper
-│   │   ├── AnalysisBranches.tsx        # Branch component for analysis types
-│   │   ├── DataSources.tsx             # Sources component
-│   │   ├── AnalysisReasoning.tsx       # Reasoning display
-│   │   └── InteractiveParams.tsx       # Code Block for parameters
-│   ├── analysis/
-│   │   ├── ScholarlyReferences.tsx     # Academic paper integration
-│   │   ├── LiveDataDashboard.tsx       # Real-time data widgets
-│   │   ├── InlineCharts.tsx            # Interactive visualizations
-│   │   └── InsightExtraction.tsx       # Key quote/insight highlighting
-│   └── external/
-│       ├── WebPreviewWrapper.tsx       # External content preview
-│       ├── VoiceInput.tsx              # Speech-to-text integration
-│       └── ModelComparison.tsx         # Multi-AI model results
+components/
+├── chat/ (ENHANCED - existing components)
+│   ├── ChatInterface.tsx              # Enhanced with <Conversation> wrapper
+│   ├── MessageList.tsx                # Enhanced with <Actions> component  
+│   ├── InputField.tsx                 # Upgraded to <PromptInput>
+│   └── PersonaSelector.tsx            # Maintained - no changes
+├── ai-elements/ (NEW - Vercel AI Elements integration)
+│   ├── AnalysisBranching.tsx          # <Branch> for multi-endpoint analysis
+│   ├── DataProvenance.tsx             # <Sources> for data lineage
+│   ├── AIReasoning.tsx                # <Reasoning> for transparency
+│   ├── InteractiveConfig.tsx          # <CodeBlock> for parameters
+│   └── EnhancedActions.tsx            # Map-aware actions (retry, export, etc.)
+├── map/ (MAINTAINED - existing components)
+│   ├── MapContainer.tsx               # No changes - maintains flex-1 layout
+│   ├── MapControls.tsx                # No changes
+│   └── Legend.tsx                     # No changes
+└── core/ (MAINTAINED - existing layout)
+    ├── Layout.tsx                     # Maintains current w-96 | flex-1 layout
+    └── Navigation.tsx                 # No changes
 ```
 
-### Data Flow
-1. **User Input** → Prompt Input component
-2. **Query Processing** → Analysis engine (existing)
-3. **Multi-branch Generation** → Branch component
-4. **Source Tracking** → Sources component
-5. **Reasoning Display** → Reasoning component
-6. **Result Presentation** → Enhanced Response components
+### Enhanced Data Flow (Integrating with Existing Architecture)
+1. **User Input** → Enhanced `<PromptInput>` with suggestions
+2. **Query Routing** → `SemanticEnhancedHybridEngine` (existing) + `<Reasoning>` display
+3. **Geographic Processing** → `GeoAwarenessEngine` (existing) + parameter capture  
+4. **Multi-Endpoint Analysis** → `<Branch>` component suggests related endpoints
+5. **Data Processing** → Analysis processors (existing) + `<Sources>` tracking
+6. **SHAP Analysis** → SHAP microservice (existing) + feature importance display
+7. **Map Visualization** → `MapContainer` (existing) + `<Actions>` for interaction
+8. **Result Presentation** → Enhanced chat with transparency and interactivity
 
 ## Success Metrics
 
