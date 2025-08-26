@@ -394,7 +394,20 @@ Based on analysis of current instructions and recent fixes, here's the enhanced 
   ```
 - [ ] **Verify predefined query routing**: All ANALYSIS_CATEGORIES queries must route to correct endpoints
 
-#### 3.4.1 Update Layer Widget Grouping (CRITICAL)
+#### 3.4.1 Update Endpoint Descriptions for Semantic Routing (CRITICAL)
+- [ ] **Update EndpointDescriptions.ts**: Replace all domain-specific references with new project terminology
+  ```bash
+  # Update lib/embedding/EndpointDescriptions.ts
+  # Replace all H&R Block/tax service references with new brand/industry terms
+  # Update sample queries to match new project domain (e.g., "Red Bull expansion")
+  # Update keywords arrays to include new brand and industry terms
+  # Update semantic concepts to reflect new business context
+  # This ensures proper query routing - CRITICAL for avoiding "0 areas analyzed"
+  ```
+- [ ] **Test semantic routing**: Verify strategic queries route to correct endpoints (not /analyze)
+- [ ] **Restart development server**: Clear semantic embeddings cache after updates
+
+#### 3.4.2 Update Layer Widget Grouping (CRITICAL)
 - [ ] **Check layer widget groupings**: Verify layer categories match new project domain
   ```bash
   # Check current layer groupings and update if necessary

@@ -11,8 +11,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
   
   // Brand code mappings for market share data
   private readonly BRAND_MAPPINGS = {
-    'h&r block': 'MP10128A_B_P',
-    'turbotax': 'MP10104A_B_P'
+    'red bull': 'MP12207A_B_P',
+    'monster energy': 'MP12206A_B_P',
+    '5-hour energy': 'MP12205A_B_P'
   };
 
   validate(rawData: RawAnalysisResult): boolean {
@@ -41,9 +42,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       rawData.results.some(record => 
         record && 
         ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        // Look for any brand market share fields (MP101*A_B_P pattern)
+        // Look for any brand market share fields (MP122*A_B_P pattern for energy drinks)
         Object.keys(record as any).some(key => 
-          key.includes('MP101') && key.endsWith('A_B_P')
+          key.includes('MP122') && key.endsWith('A_B_P')
         )
       );
     
@@ -68,7 +69,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     // Debug: Show available fields in first record
     if (rawData.results && rawData.results.length > 0) {
       const firstRecord = rawData.results[0];
-      const brandFields = Object.keys(firstRecord as any).filter(key => key.includes('MP101') && key.includes('_P'));
+      const brandFields = Object.keys(firstRecord as any).filter(key => key.includes('MP122') && key.includes('_P'));
       console.log(`[BrandDifferenceProcessor] Available brand fields in data:`, brandFields);
     }
     
@@ -94,13 +95,13 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     // If no brands from context, use the first two available brands from data
     if (!brand1 || !brand2) {
       const detectedBrands = availableBrandFields.slice(0, 2);
-      brand1 = brand1 || detectedBrands[0] || 'h&r block';
-      brand2 = brand2 || detectedBrands[1] || 'turbotax';
+      brand1 = brand1 || detectedBrands[0] || 'red bull';
+      brand2 = brand2 || detectedBrands[1] || 'monster energy';
     }
     
     // Ensure brands are never null
-    brand1 = brand1 || 'h&r block';
-    brand2 = brand2 || 'turbotax';
+    brand1 = brand1 || 'red bull';
+    brand2 = brand2 || 'monster energy';
     
     console.log(`[BrandDifferenceProcessor] Comparing brands: ${brand1} vs ${brand2} (from ${extractedBrands.length > 0 ? 'query' : 'auto-detected from data'})`);
     
@@ -182,10 +183,11 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     if (!rawData.results || rawData.results.length === 0) {
       // Fallback to known brand field mappings
       const brandFieldMap: Record<string, string> = {
-        'H&R Block': 'MP10128A_B_P',
-        'TurboTax': 'MP10104A_B_P'
+        'Red Bull': 'MP12207A_B_P',
+        'Monster Energy': 'MP12206A_B_P',
+        '5-Hour Energy': 'MP12205A_B_P'
       };
-      return brandFieldMap[brandName] || 'MP10128A_B_P';
+      return brandFieldMap[brandName] || 'MP12207A_B_P';
     }
     
     // Look through the first record to find fields that might match the brand
@@ -194,19 +196,20 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     
     // Find fields that contain data and might be brand fields
     for (const [key, value] of Object.entries(sampleRecord as any)) {
-      // Check if this is a percentage field for tax software
-      if (key.includes('MP101') && key.endsWith('A_B_P') && typeof value === 'number') {
-        // Use the field code directly (e.g., MP10128A_B_P)
+      // Check if this is a percentage field for energy drinks
+      if (key.includes('MP122') && key.endsWith('A_B_P') && typeof value === 'number') {
+        // Use the field code directly (e.g., MP12207A_B_P)
         const baseField = key;
         // Try to match based on known patterns
-        if (brandName === 'H&R Block' && key.includes('128A_B')) return baseField;
-        if (brandName === 'TurboTax' && key.includes('104A_B')) return baseField;
+        if (brandName === 'Red Bull' && key.includes('207A_B')) return baseField;
+        if (brandName === 'Monster Energy' && key.includes('206A_B')) return baseField;
+        if (brandName === '5-Hour Energy' && key.includes('205A_B')) return baseField;
       }
     }
     
     // Default fallback
     console.warn(`[BrandDifferenceProcessor] Could not find field for brand: ${brandName}`);
-    return brandName === 'H&R Block' ? 'MP10128A_B_P' : 'MP10104A_B_P';
+    return brandName === 'Red Bull' ? 'MP12207A_B_P' : 'MP12206A_B_P';
   }
 
   // ============================================================================
@@ -672,9 +675,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const brandFieldsFound = new Map<string, string>(); // brand name -> field code
     const sampleRecord = rawData.results[0];
     
-    // Look for ALL tax software brand fields in the data (MP101XX_B_P pattern)
+    // Look for ALL energy drink brand fields in the data (MP122XX_B_P pattern)
     for (const [key, value] of Object.entries(sampleRecord as any)) {
-      if (key.includes('MP101') && key.endsWith('A_B_P') && typeof value === 'number') {
+      if (key.includes('MP122') && key.endsWith('A_B_P') && typeof value === 'number') {
         // Use the field code directly (e.g., MP10128A_B_P)
         const fieldCode = key;
         
@@ -690,9 +693,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
         // If we don't know this brand, create a generic name from the field code
         if (!brandName) {
           // Extract the numeric part to create a generic brand name
-          const match = fieldCode.match(/MP101(\d+)A_B_P/);
+          const match = fieldCode.match(/MP122(\d+)A_B_P/);
           if (match) {
-            brandName = `taxsoftware${match[1]}`;
+            brandName = `energydrink${match[1]}`;
             console.log(`[BrandDifferenceProcessor] Found unknown brand field ${fieldCode}, naming it: ${brandName}`);
           } else {
             brandName = fieldCode; // Use field code as brand name if pattern doesn't match
@@ -721,7 +724,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     
     // Otherwise, search for the field in the data
     for (const [key, value] of Object.entries(sampleRecord as any)) {
-      if (key.includes('MP101') && key.endsWith('A_B_P') && typeof value === 'number') {
+      if (key.includes('MP122') && key.endsWith('A_B_P') && typeof value === 'number') {
         const fieldCode = key;
         
         // Check if this field matches any known brand
@@ -731,9 +734,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
           }
         }
         
-        // If brandName looks like a field code pattern (e.g., "taxsoftware128" for H&R Block), try to match it
-        if (brandName.startsWith('taxsoftware')) {
-          const brandNum = brandName.replace('taxsoftware', '');
+        // If brandName looks like a field code pattern (e.g., "energydrink207" for Red Bull), try to match it
+        if (brandName.startsWith('energydrink')) {
+          const brandNum = brandName.replace('energydrink', '');
           if (fieldCode.includes(brandNum)) {
             console.log(`[BrandDifferenceProcessor] Matched ${brandName} to field ${fieldCode}`);
             return fieldCode;
@@ -742,7 +745,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       }
     }
     
-    console.warn(`[BrandDifferenceProcessor] Could not find field code for brand: ${brandName}, using H&R Block as fallback`);
-    return 'MP10128A_B_P';
+    console.warn(`[BrandDifferenceProcessor] Could not find field code for brand: ${brandName}, using Red Bull as fallback`);
+    return 'MP12207A_B_P';
   }
 }

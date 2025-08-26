@@ -391,27 +391,27 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   // ============================================================================
 
   /**
-   * Extract brand metric from record using hardcoded TurboTax/H&R Block fields
+   * Extract brand metric from record using Red Bull energy drink brand fields
    */
   private extractBrandMetric(record: any, brandType: 'brand_a' | 'brand_b'): BrandMetric {
-    // Use hardcoded TurboTax and H&R Block field mappings
-    const turbotaxField = (record as any).value_TURBOTAX_P !== undefined ? 'value_TURBOTAX_P' : 'TURBOTAX_P';
-    const hrblockField = (record as any).value_HRBLOCK_P !== undefined ? 'value_HRBLOCK_P' : 'HRBLOCK_P';
+    // Use Red Bull energy drink brand field mappings
+    const redBullField = (record as any).MP12207A_B_P !== undefined ? 'MP12207A_B_P' : 'value_MP12207A_B_P';
+    const monsterField = (record as any).MP12206A_B_P !== undefined ? 'MP12206A_B_P' : 'value_MP12206A_B_P';
     
     let fieldName = '';
     let value = 0;
     let brandName = '';
     
     if (brandType === 'brand_a') {
-      // Brand A = TurboTax
-      fieldName = turbotaxField;
-      value = Number(record[turbotaxField]) || 0;
-      brandName = 'TurboTax';
+      // Brand A = Red Bull
+      fieldName = redBullField;
+      value = Number(record[redBullField]) || 0;
+      brandName = 'Red Bull';
     } else {
-      // Brand B = H&R Block
-      fieldName = hrblockField;
-      value = Number(record[hrblockField]) || 0;
-      brandName = 'H&R Block';
+      // Brand B = Monster Energy
+      fieldName = monsterField;
+      value = Number(record[monsterField]) || 0;
+      brandName = 'Monster Energy';
     }
     
     console.log(`🔍 [extractBrandMetric] ${brandType} result:`, {

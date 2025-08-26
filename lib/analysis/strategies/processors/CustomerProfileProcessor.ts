@@ -192,8 +192,8 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     const targetConfidence = Number((record as any).target_confidence) || 0;
     const lifestyleAlignment = Number((record as any).lifestyle_alignment) || 0;
     
-    // Also consider H&R Block specific fields if available
-    const hrbShare = Number((record as any).MP10104A_B_P) || 0; // H&R Block market share percentage
+    // Also consider Red Bull specific fields if available
+    const redBullShare = Number((record as any).MP12207A_B_P) || 0; // Red Bull market share percentage
     const thematicValue = Number((record as any).thematic_value) || 0;
     const strategicScore = Number((record as any).strategic_score) || 0;
     
@@ -213,10 +213,10 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     compositeScore += marketContextScore * 0.10;
     compositeScore += behavioralScore * 0.05;
     
-    // Add bonus for actual H&R Block presence (up to 15 points)
-    if (hrbShare > 0) {
-      const hrbBonus = Math.min(hrbShare * 1.5, 15); // 1.5x the market share percentage, max 15 points
-      compositeScore += hrbBonus;
+    // Add bonus for actual Red Bull presence (up to 15 points)
+    if (redBullShare > 0) {
+      const redBullBonus = Math.min(redBullShare * 1.5, 15); // 1.5x the market share percentage, max 15 points
+      compositeScore += redBullBonus;
     }
     
     // Add small bonus for high strategic score (up to 5 points)
@@ -233,7 +233,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     compositeScore = Math.max(0, Math.min(100, compositeScore));
     
     if (compositeScore > 50) { // Only log high scores for debugging
-      console.log(`👤 [CustomerProfileProcessor] High composite score: ${compositeScore.toFixed(1)} for ${(record as any).DESCRIPTION || 'Unknown'} (purchase: ${purchasePropensity}, demographic: ${demographicAlignment}, HRB: ${hrbShare}%)`);
+      console.log(`👤 [CustomerProfileProcessor] High composite score: ${compositeScore.toFixed(1)} for ${(record as any).DESCRIPTION || 'Unknown'} (purchase: ${purchasePropensity}, demographic: ${demographicAlignment}, RedBull: ${redBullShare}%)`);
     }
     
     return compositeScore;
