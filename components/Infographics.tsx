@@ -9,24 +9,7 @@ import { jsPDF } from 'jspdf';
 import ReportSelectionDialog from './ReportSelectionDialog';
 import EndpointScoringReport from './EndpointScoringReport';
 
-type ReportTemplateName = string;
-
-type ReportCategory = 
-  | 'Summary Reports'
-  | 'Demographics'
-  | 'Market Analysis'
-  | 'Health & Risk'
-  | 'Real Estate'
-  | 'Financial';
-
-interface ReportTemplate {
-  id: ReportTemplateName;
-  name: string;
-  icon: any;
-  categories: string[];
-  description?: string;
-  thumbnail?: string;
-}
+// Removed unused ReportTemplateName, ReportCategory and ReportTemplate interfaces
 
 interface InfographicsProps {
   geometry: __esri.Geometry | null;
@@ -69,19 +52,17 @@ const Infographics: React.FC<InfographicsProps> = ({
   geometry,
   reportTemplate,
   onReportTemplateChange,
-  layerStates,
-  view,
   generateStandardReport,
   onExportPDF
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-  const [mockData, setMockData] = useState<any>(null);
+  const [mockData, setMockData] = useState<Record<string, number | string> | null>(null);
   const cleanupTimeoutRef = useRef<NodeJS.Timeout>();
   const isMountedRef = useRef(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedReport, setSelectedReport] = useState<string | null>(null);
+  // Removed unused selectedReport state
 
   const handleDialogOpen = () => setIsDialogOpen(true);
   const handleDialogClose = () => setIsDialogOpen(false);
@@ -90,9 +71,7 @@ const Infographics: React.FC<InfographicsProps> = ({
     setIsDialogOpen(false);
   };
 
-  const handleCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    // Handle click event if needed
-  };
+  // Removed unused handleCardClick function
 
   useEffect(() => {
     return () => {
@@ -199,17 +178,17 @@ const Infographics: React.FC<InfographicsProps> = ({
     };
   }, [geometry, reportTemplate, generateStandardReport]);
 
-  const renderHeader = () => {
-    // Convert reportTemplate ID to display name
-    const getDisplayName = (templateId: string | null): string => {
-      if (!templateId) return '';
-      // Convert kebab-case to title case
-      return templateId
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-    };
+  // Convert reportTemplate ID to display name
+  const getDisplayName = (templateId: string | null): string => {
+    if (!templateId) return '';
+    // Convert kebab-case to title case
+    return templateId
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
 
+  const renderHeader = () => {
     return (
       <div className="p-4 border-b flex justify-between items-center">
         <h2 className="text-base font-medium">{getDisplayName(reportTemplate)}</h2>
@@ -221,7 +200,7 @@ const Infographics: React.FC<InfographicsProps> = ({
             open={isDialogOpen}
             reports={[]}
             onClose={handleDialogClose}
-            onSelect={handleReportSelect as any}
+            onSelect={(reportData: { id: string }) => handleReportSelect(reportData.id)}
           />
         </div>
       </div>
@@ -231,13 +210,14 @@ const Infographics: React.FC<InfographicsProps> = ({
   const renderMockReport = () => {
     if (!mockData) return null;
 
-    const selectedTemplate = REPORT_TEMPLATES.find(t => t.id === reportTemplate);
+    // Get display name for the selected template
+    const templateDisplayName = getDisplayName(reportTemplate);
     
     return (
       <div className="report-content p-6 max-w-4xl mx-auto bg-white">
         {/* Header */}
         <div className="text-center mb-8 border-b pb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{selectedTemplate?.name}</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{templateDisplayName}</h1>
           <p className="text-lg text-gray-600">Area Analysis Report</p>
           <p className="text-sm text-gray-500 mt-2">Generated on {new Date().toLocaleDateString()}</p>
         </div>
