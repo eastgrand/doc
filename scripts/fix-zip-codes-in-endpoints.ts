@@ -51,10 +51,18 @@ function fixZipCodesInData(data: EndpointData): { fixed: EndpointData; stats: an
       };
     } else {
       errorCount++;
-      errors.push(`Record ${index}: Could not extract ZIP from "${record.DESCRIPTION}"`);
-      return record; // Return unchanged if we can't extract ZIP
+      const originalId = record.ID || record.OBJECTID || `unknown_${index}`;
+      errors.push(`Record ${index} (ID: ${originalId}): Could not extract ZIP from "${record.DESCRIPTION}"`);
+      // CRITICAL: Always return the record, even if we can't extract ZIP
+      // This ensures we never lose records
+      return record;
     }
   });
+
+  // Verify we didn't lose any records
+  if (fixedResults.length !== data.results.length) {
+    throw new Error(`CRITICAL: Lost records during processing! Original: ${data.results.length}, Fixed: ${fixedResults.length}`);
+  }
 
   return {
     fixed: {
@@ -128,19 +136,30 @@ async function fixAllEndpointFiles() {
         // Fix ZIP codes in the data
         const { fixed, stats } = fixZipCodesInData(data);
         
+        // CRITICAL CHECK: Verify record count hasn't changed
+        if (fixed.results.length !== data.results.length) {
+          console.error(`❌ CRITICAL ERROR: Record count mismatch for ${endpoint}!`);
+          console.error(`   Original: ${data.results.length} records`);
+          console.error(`   Fixed: ${fixed.results.length} records`);
+          console.error(`   Lost ${data.results.length - fixed.results.length} records!`);
+          failedCount++;
+          continue; // Skip this file - don't upload incomplete data
+        }
+        
         // Update overall stats
         overallStats.totalRecords += stats.totalRecords;
         overallStats.totalFixed += stats.fixedCount;
         overallStats.totalErrors += stats.errorCount;
         
         console.log(`   📊 Stats: ${stats.fixedCount}/${stats.totalRecords} records fixed (${stats.successRate}%)`);
+        console.log(`   ✅ Record count verified: ${fixed.results.length} records (no records lost)`);
         
         if (stats.errorCount > 0) {
           console.log(`   ⚠️  ${stats.errorCount} errors - first few:`);
           stats.errors.forEach((error: string) => console.log(`      ${error}`));
         }
         
-        // Upload fixed data to blob storage
+        // Upload fixed data to blob storage only after validation
         console.log(`   📤 Uploading fixed data to /energy/...`);
         const blobUrl = await uploadEnergyEndpointData(endpoint, fixed);
         

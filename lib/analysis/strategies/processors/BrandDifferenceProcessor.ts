@@ -189,18 +189,18 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
   private extractBrandFieldCode(rawData: RawAnalysisResult, brandName: string): string {
     // Check the first result record to find which field corresponds to the brand
     if (!rawData.results || rawData.results.length === 0) {
-      // Fallback to known brand field mappings
-      const brandFieldMap: Record<string, string> = {
-        'Red Bull': 'MP12207A_B_P',
-        'Monster Energy': 'MP12206A_B_P',
-        '5-Hour Energy': 'MP12205A_B_P'
-      };
-      return brandFieldMap[brandName] || 'MP12207A_B_P';
+      // Fallback to known brand field mappings (case-insensitive)
+      const brandLower = brandName.toLowerCase();
+      
+      if (brandLower.includes('red bull')) return 'MP12207A_B_P';
+      if (brandLower.includes('monster')) return 'MP12206A_B_P';
+      if (brandLower.includes('5-hour')) return 'MP12205A_B_P';
+      
+      return 'MP12207A_B_P'; // Default fallback
     }
     
     // Look through the first record to find fields that might match the brand
     const sampleRecord = rawData.results[0];
-    const brandUpper = brandName.toUpperCase();
     
     // Find fields that contain data and might be brand fields
     for (const [key, value] of Object.entries(sampleRecord as any)) {
@@ -208,16 +208,24 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       if (key.includes('MP122') && key.endsWith('A_B_P') && typeof value === 'number') {
         // Use the field code directly (e.g., MP12207A_B_P)
         const baseField = key;
-        // Try to match based on known patterns
-        if (brandName === 'Red Bull' && key.includes('207A_B')) return baseField;
-        if (brandName === 'Monster Energy' && key.includes('206A_B')) return baseField;
-        if (brandName === '5-Hour Energy' && key.includes('205A_B')) return baseField;
+        // Try to match based on known patterns (case-insensitive)
+        const brandLower = brandName.toLowerCase();
+        if (brandLower.includes('red bull') && key.includes('207A_B')) return baseField;
+        if (brandLower.includes('monster') && key.includes('206A_B')) return baseField;
+        if (brandLower.includes('5-hour') && key.includes('205A_B')) return baseField;
       }
     }
     
-    // Default fallback
+    // Default fallback with case-insensitive matching
+    const brandLower = brandName.toLowerCase();
     console.warn(`[BrandDifferenceProcessor] Could not find field for brand: ${brandName}`);
-    return brandName === 'Red Bull' ? 'MP12207A_B_P' : 'MP12206A_B_P';
+    
+    if (brandLower.includes('red bull')) return 'MP12207A_B_P';
+    if (brandLower.includes('monster')) return 'MP12206A_B_P';
+    if (brandLower.includes('5-hour')) return 'MP12205A_B_P';
+    
+    // Ultimate fallback
+    return 'MP12207A_B_P';
   }
 
   // ============================================================================

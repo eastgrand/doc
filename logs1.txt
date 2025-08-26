@@ -1,323 +1,1398 @@
-:3000/map:1 The resource http://localhost:3000/_next/static/media/e4af272ccee01ff0-s.p.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
-index.mjs:468 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
-eval @ index.mjs:468
-commitHookEffectListMount @ react-dom.development.js:21102
-commitHookPassiveMountEffects @ react-dom.development.js:23154
-commitPassiveMountOnFiber @ react-dom.development.js:23259
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23334
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23256
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-recursivelyTraversePassiveMountEffects @ react-dom.development.js:23237
-commitPassiveMountOnFiber @ react-dom.development.js:23370
-:3000/map:1 The resource http://localhost:3000/_next/static/media/e4af272ccee01ff0-s.p.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
- [SpatialFilterConfig] Using configured spatial reference layer: Unknown_Service_layer_0
- [UnifiedAnalysisWrapper] Processing request: {analysisType: 'query', hasGeometry: false, query: 'Show me areas with ideal customer personas for tax'}
- [UnifiedAnalysisWrapper] Spatial filter skipped - missing required parameters: {hasGeometry: false, hasView: true, hasDataSourceLayerId: true}
- [AnalysisEngine] Starting analysis: "Show me areas with ideal customer personas for tax preparation services"
- [AnalysisEngine] Using frontend cache as primary data source
- 🔥 [CachedEndpointRouter] selectEndpoint called with query: "Show me areas with ideal customer personas for tax preparation services"
- 🔥 [CachedEndpointRouter] Options: {clusterConfig: undefined, spatialFilterIds: undefined, spatialFilterGeometry: undefined, spatialFilterMethod: 'project-area', persona: 'strategist'}
- [CachedEndpointRouter] Multi-endpoint detection: {query: 'Show me areas with ideal customer personas for tax...', hasMultiPattern: false, endpointMentions: 0, shouldRoute: false}
- [CachedEndpointRouter] Using Semantic-Enhanced Hybrid routing for: "Show me areas with ideal customer personas for tax preparation services"
- [CachedEndpointRouter] Hybrid routing result: /customer-profile (confidence: 90.0%)
- [CachedEndpointRouter] Alternative endpoints: /demographic-insights (70.0%), /strategic-analysis (40.0%), /spatial-clusters (40.0%)
- [CachedEndpointRouter] Recognized 'ideal customer personas' in query.
- [CachedEndpointRouter] Auto-selected endpoint: /customer-profile for query: "Show me areas with ideal customer personas for tax preparation services"
- [AnalysisEngine] Selected endpoint: /customer-profile
- [CachedEndpointRouter] Loading cached data for /customer-profile
- [CachedEndpointRouter] Called with query: "Show me areas with ideal customer personas for tax preparation services"
- [CachedEndpointRouter] Called with options: {clusterConfig: undefined, spatialFilterIds: undefined, spatialFilterGeometry: undefined, spatialFilterMethod: 'project-area', persona: 'strategist'}
- [CachedEndpointRouter] Processing direct array format with 984 records
- [CachedEndpointRouter] Processed 984 cached records
- [CachedEndpointRouter] Loaded 984 records from cache in 1ms
- 🔥 [DataProcessor] processResults called for endpoint: /customer-profile, query: "Show me areas with ideal customer personas for tax preparation services"
- 🔥 [DataProcessor] Raw data structure: {success: true, resultsLength: 984, firstRecordKeys: Array(10)}
- 🔥 [DataProcessor] Using processor: CustomerProfileProcessor for endpoint: /customer-profile
- 👤 [CUSTOMER PROFILE PROCESSOR] CALLED WITH 984 RECORDS (wrapped) 👤
- 👤 [CustomerProfileProcessor] High composite score: 50.5 for 33558 (Lutz) (purchase: 48.33, demographic: 40, HRB: 10.93%)
- 👤 [CustomerProfileProcessor] High composite score: 50.4 for 33004 (Dania) (purchase: 48.33, demographic: 40, HRB: 10.72%)
- 👤 [CustomerProfileProcessor] High composite score: 50.4 for 33054 (Opa Locka) (purchase: 48.33, demographic: 40, HRB: 10.02%)
- 👤 [CustomerProfileProcessor] High composite score: 50.4 for 33712 (Saint Petersburg) (purchase: 48.33, demographic: 40, HRB: 11%)
- 👤 [CustomerProfileProcessor] High composite score: 50.4 for 34231 (Sarasota) (purchase: 48.33, demographic: 40, HRB: 10.28%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.4 for 32034 (Fernandina Beach) (purchase: 48.33, demographic: 40, HRB: 10.35%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.4 for 32214 (Jacksonville) (purchase: 48.33, demographic: 40, HRB: 17.39%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.4 for 34287 (North Port) (purchase: 48.33, demographic: 40, HRB: 10.98%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.4 for 33175 (Miami) (purchase: 48.33, demographic: 40, HRB: 10.36%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.3 for 32221 (Jacksonville) (purchase: 48.33, demographic: 40, HRB: 11.48%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.3 for 33767 (Clearwater Beach) (purchase: 48.33, demographic: 40, HRB: 10.28%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.3 for 32579 (Shalimar) (purchase: 48.33, demographic: 40, HRB: 10.96%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.3 for 33778 (Largo) (purchase: 48.33, demographic: 40, HRB: 11.16%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.3 for 33001 (Long Key) (purchase: 48.33, demographic: 40, HRB: 11.11%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.3 for 33134 (Miami) (purchase: 48.33, demographic: 40, HRB: 10.37%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.3 for 32765 (Oviedo) (purchase: 48.33, demographic: 40, HRB: 12.13%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.3 for 32073 (Orange Park) (purchase: 48.33, demographic: 40, HRB: 11.86%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.2 for 33480 (Palm Beach) (purchase: 48.33, demographic: 40, HRB: 10.07%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.2 for 34609 (Spring Hill) (purchase: 48.33, demographic: 40, HRB: 10.68%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.2 for 33326 (Fort Lauderdale) (purchase: 48.33, demographic: 40, HRB: 10.65%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.2 for 32351 (Quincy) (purchase: 48.33, demographic: 40, HRB: 12.34%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.2 for 32904 (Melbourne) (purchase: 48.33, demographic: 40, HRB: 10.91%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.2 for 33896 (Davenport) (purchase: 48.33, demographic: 40, HRB: 13.02%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.2 for 33015 (Hialeah) (purchase: 48.33, demographic: 40, HRB: 10.13%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.2 for 32046 (Hilliard) (purchase: 48.33, demographic: 40, HRB: 10.92%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.2 for 32968 (Vero Beach) (purchase: 48.33, demographic: 40, HRB: 10.85%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.1 for 32503 (Pensacola) (purchase: 48.33, demographic: 40, HRB: 11.69%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.1 for 34241 (Sarasota) (purchase: 48.33, demographic: 40, HRB: 10.76%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.1 for 33566 (Plant City) (purchase: 48.33, demographic: 40, HRB: 10.99%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.1 for 34947 (Fort Pierce) (purchase: 48.33, demographic: 40, HRB: 11.3%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.1 for 32628 (Cross City) (purchase: 48.33, demographic: 40, HRB: 14.19%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.1 for 32801 (Orlando) (purchase: 48.33, demographic: 40, HRB: 11.93%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.0 for 32514 (Pensacola) (purchase: 48.33, demographic: 40, HRB: 12.11%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.0 for 32181 (Pomona Park) (purchase: 48.33, demographic: 40, HRB: 14.06%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.0 for 33859 (Lake Wales) (purchase: 48.33, demographic: 40, HRB: 11.26%)
-CustomerProfileProcessor.ts:236 👤 [CustomerProfileProcessor] High composite score: 50.0 for 34484 (Oxford) (purchase: 48.33, demographic: 40, HRB: 10.05%)
-CustomerProfileProcessor.ts:803 [CustomerProfileProcessor] Calculating extent for 984 customer profile records.
-CustomerProfileProcessor.ts:821 [CustomerProfileProcessor] Found 984 records with valid coordinates.
-CustomerProfileProcessor.ts:855 [CustomerProfileProcessor] Calculated extent: {"spatialReference":{"wkid":4326},"xmin":-0.01,"ymin":-0.01,"xmax":0.01,"ymax":0.01}
-DataProcessor.ts:352 🚨🚨🚨 [DataProcessor] Set targetVariable from ConfigurationManager: customer_profile_score 🚨🚨🚨
-DataProcessor.ts:355 [DataProcessor] Successfully processed 984 records using /customer-profile processor
-DataProcessor.ts:356 🔥 [DataProcessor] First processed record value: 50.46
-DataProcessor.ts:357 🔥 [DataProcessor] First processed record properties: {ID: 33558, DESCRIPTION: '33558 (Lutz)', OBJECTID: 603, MP10104A_B: 2619, MP10104A_B_P: 10.93, …}
-GeoAwarenessEngine.ts:108 [GeoAwarenessEngine] Processing geo query: Show me areas with ideal customer personas for tax preparation services
-GeoAwarenessEngine.ts:166 🔍 [GEO DEBUG] Parsing query: "Show me areas with ideal customer personas for tax preparation services"
-GeoAwarenessEngine.ts:172 🚫 [GEO DEBUG] Query lacks explicit geographic intent - skipping geographic filtering
-AnalysisEngine.ts:243 [AnalysisEngine] Processed data returned: {type: 'customer_profile', recordCount: 984, targetVariable: 'customer_profile_score', firstRecord: {…}}
-AnalysisEngine.ts:314 [AnalysisEngine] 🎯 About to create visualization (AFTER clustering): {endpoint: '/customer-profile', dataType: 'customer_profile', recordCount: 984, isClustered: undefined, hasGeometry: 'NO', …}
-VisualizationRenderer.ts:100 [VisualizationRenderer] Creating visualization for /customer-profile with 984 records
-VisualizationRenderer.ts:107 [VisualizationRenderer] Data type: customer_profile, target variable: customer_profile_score
-VisualizationRenderer.ts:108 [VisualizationRenderer] Is clustered data: undefined
-VisualizationRenderer.ts:109 [VisualizationRenderer] Sample record: {area_id: 33558, area_name: '33558 (Lutz)', value: 50.46, hasProperties: true, propertyKeys: Array(5), …}
-VisualizationRenderer.ts:393 [VisualizationRenderer] 🎯 Getting renderer for type: choropleth
-VisualizationRenderer.ts:398 [VisualizationRenderer] ✅ Found specific renderer for choropleth: ChoroplethRenderer
-VisualizationRenderer.ts:456 [VisualizationRenderer] 🔍 detectGeometryType: Analyzing 984 records for geometry type
-VisualizationRenderer.ts:461 [VisualizationRenderer] 🔍 detectGeometryType: Record 0 (33558 (Lutz)): {hasProperties: true, hasGeometry: false, geometryType: undefined, hasCoordinates: true, coordinatesType: 'array', …}
-VisualizationRenderer.ts:512 [VisualizationRenderer] 🔍 detectGeometryType: Found coordinates array, inferring POINT
-VisualizationRenderer.ts:542 [VisualizationRenderer] Using targetVariable for customer_profile: customer_profile_score
-VisualizationRenderer.ts:137 [VisualizationRenderer] 🔍 Direct rendering condition check: {hasRenderer: true, hasLegend: true, isClustered: false, rendererType: 'class-breaks', legendTitle: 'Customer Profile Score', …}
-VisualizationRenderer.ts:148 [VisualizationRenderer] 🎯 Using DIRECT RENDERING from processor
-VisualizationRenderer.ts:158 [VisualizationRenderer] Direct renderer result: {type: 'choropleth', hasRenderer: true, rendererType: 'class-breaks', hasPopupTemplate: true, hasLegend: true, …}
-AnalysisEngine.ts:334 [AnalysisEngine] 🎯 Visualization created: {success: true, type: 'choropleth', hasRenderer: true, hasConfig: true, hasLegend: true}
-AnalysisEngine.ts:407 [AnalysisEngine] Cache-based analysis complete: {records: 984, endpoint: '/customer-profile', executionTime: 44}
-UnifiedAnalysisWrapper.tsx:138 [UnifiedAnalysisWrapper] Request completed: {processingTime: 65, hasResults: true}
-apply-analysis-visualization.ts:32 [applyAnalysisEngineVisualization] Starting with: {visualizationType: 'choropleth', hasRenderer: true, rendererType: 'class-breaks', rendererKeys: Array(4), recordCount: 984, …}
-apply-analysis-visualization.ts:63 [applyAnalysisEngineVisualization] ✅ Records found, checking geometry...
-apply-analysis-visualization.ts:67 [applyAnalysisEngineVisualization] Geometry check: {totalRecords: 984, recordsWithGeometry: 984, geometryTypes: Array(1), sampleGeometry: {…}, isClustered: undefined}
-apply-analysis-visualization.ts:99 [applyAnalysisEngineVisualization] ✅ ArcGIS modules imported successfully
-apply-analysis-visualization.ts:245 [applyAnalysisEngineVisualization] Created features: {totalFeatures: 984, skippedFeatures: 0, geometryType: 'polygon'}
-apply-analysis-visualization.ts:275 [applyAnalysisEngineVisualization] ✨ Creating analysis layer with ID: analysis-layer-1756049840251
-apply-analysis-visualization.ts:291 [applyAnalysisEngineVisualization] FeatureLayer created successfully: {layerId: 'analysis-layer-1756049840251', layerType: 'feature', layerTitle: 'AnalysisEngine - customer_profile_score'}
-layer-protection.ts:55 ✅ [LAYER PROTECTION] Allowing removeMany (not theme switch)
-apply-analysis-visualization.ts:318 [applyAnalysisEngineVisualization] 🎯 Adding analysis layer to map
-apply-analysis-visualization.ts:325 [applyAnalysisEngineVisualization] ✅ Analysis layer added with protection metadata
-apply-analysis-visualization.ts:334 [applyAnalysisEngineVisualization] 🎯 Creating legend from renderer
-apply-analysis-visualization.ts:352 [applyAnalysisEngineVisualization] 🎯 Setting legend data from renderer
-apply-analysis-visualization.ts:363 [applyAnalysisEngineVisualization] 🎯 Calling onVisualizationLayerCreated for CustomPopupManager integration
-apply-analysis-visualization.ts:369 [applyAnalysisEngineVisualization] 🎯 Preparing to zoom to new layer extent...
-SampleAreasPanel.tsx:796 [SampleAreasPanel] Final render check: {visible: false, displayAreasCount: 5, loading: false}
-CustomPopupManager.tsx:90 [CustomPopupManager] Applying standardized popup to layer: AnalysisEngine - customer_profile_score
-CustomPopupManager.tsx:154 [CustomPopupManager] Configuring standard popup with value bars
-CustomPopupManager.tsx:184 [CustomPopupManager] ✅ Applied standard popup with value bars
-apply-analysis-visualization.ts:443 [applyAnalysisEngineVisualization] 🔭 goTo target prepared, executing view.goTo...
-MapClient.tsx:71 [MapClient MapLegend] Rendering legend: {title: 'Customer Profile Score', type: 'standard', visible: true, itemCount: 4, sampleItems: Array(4)}
-MapClient.tsx:86 [MapClient MapLegend] Size values check: (4) [{…}, {…}, {…}, {…}]
-SampleAreasPanel.tsx:796 [SampleAreasPanel] Final render check: {visible: false, displayAreasCount: 5, loading: false}
-apply-analysis-visualization.ts:445 [applyAnalysisEngineVisualization] ✅ View centered and zoomed to new layer extent
-apply-analysis-visualization.ts:456 [applyAnalysisEngineVisualization] ✅ Visualization applied successfully
-statsCalculator.ts:551 [formatStatsForChat] Called with analysisType: "customer-profile"
-statsCalculator.ts:559 [formatStatsForChat] Using generic formatter
-statsCalculator.ts:649 [formatDistributionForChat] Using generic distribution formatter
-statsCalculator.ts:720 [formatPatternsForChat] Called with analysisType: "customer-profile"
-statsCalculator.ts:728 [formatPatternsForChat] Using generic patterns formatter
-chat-service.ts:29 [ChatService] Preparing compact chat payload
-chat-service.ts:47 [ChatService] Chat response received successfully
-:3000/map:1 The resource http://localhost:3000/_next/static/media/e4af272ccee01ff0-s.p.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Analysis starting - closing sample areas panel
+6546.846fb6bb1a31b64f.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [SpatialFilterConfig] Using configured spatial reference layer: Unknown_Service_layer_0
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedAnalysisWrapper] Processing request: {analysisType: 'query', hasGeometry: false, query: 'Show me the market share difference between Red Bu'}
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedAnalysisWrapper] Spatial filter skipped - missing required parameters: {hasGeometry: false, hasView: true, hasDataSourceLayerId: true}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [AnalysisEngine] Using frontend cache as primary data source
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🔥 [CachedEndpointRouter] selectEndpoint called with query: "Show me the market share difference between Red Bull and Monster Energy"
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🔥 [CachedEndpointRouter] Options: {clusterConfig: undefined, spatialFilterIds: undefined, spatialFilterGeometry: undefined, spatialFilterMethod: 'project-area', persona: 'strategist'}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CachedEndpointRouter] Multi-endpoint detection: {query: 'Show me the market share difference between Red Bu...', hasMultiPattern: false, endpointMentions: 0, shouldRoute: false}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CachedEndpointRouter] Using Semantic-Enhanced Hybrid routing for: "Show me the market share difference between Red Bull and Monster Energy"
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CachedEndpointRouter] Hybrid routing result: /brand-difference (confidence: 125.0%)
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CachedEndpointRouter] Alternative endpoints: /competitive-analysis (90.0%), /strategic-analysis (65.0%), /comparative-analysis (65.0%)
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CachedEndpointRouter] Auto-selected endpoint: /brand-difference for query: "Show me the market share difference between Red Bull and Monster Energy"
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [AnalysisEngine] Selected endpoint: /brand-difference
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CachedEndpointRouter] Loading cached data for /brand-difference
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CachedEndpointRouter] Called with query: "Show me the market share difference between Red Bull and Monster Energy"
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CachedEndpointRouter] Called with options: {clusterConfig: undefined, spatialFilterIds: undefined, spatialFilterGeometry: undefined, spatialFilterMethod: 'project-area', persona: 'strategist'}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CachedEndpointRouter] Looking for dataset with key: "brand-difference"
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 ✅ Loaded brand-difference from blob storage
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CachedEndpointRouter] ✅ Loaded data for brand-difference from blob storage
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CachedEndpointRouter] Processing wrapped format with 1804 records
+ [CachedEndpointRouter] Processed 1804 cached records
+ [CachedEndpointRouter] Loaded 1804 records from cache in 342ms
+ 🔥 [DataProcessor] processResults called for endpoint: /brand-difference, query: "Show me the market share difference between Red Bull and Monster Energy"
+ 🔥 [DataProcessor] Raw data structure: {success: true, resultsLength: 1804, firstRecordKeys: Array(10)}
+ 🔥 [DataProcessor] Using processor: x for endpoint: /brand-difference
+ 🔍 [BrandDifferenceProcessor] VALIDATE CALLED
+ 🔍 [BrandDifferenceProcessor] Raw data structure: {success: true, resultsLength: 1804, firstRecordKeys: Array(86)}
+ 🔍 [BrandDifferenceProcessor] Validation debug for record: {hasRecord: true, hasIdField: '00065', totalKeys: 86, brandFieldsFound: Array(3), brandFieldCount: 3}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🔍 [BrandDifferenceProcessor] Brand fields validation result: true
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 ✅ [BrandDifferenceProcessor] VALIDATION PASSED: Brand fields found
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [DataProcessor] Extracted brands from query "Show me the market share difference between Red Bull and Monster Energy": []
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🔥 [DataProcessor] Brand-difference context created: {query: 'Show me the market share difference between Red Bull and Monster Energy', extractedBrands: Array(0)}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] ===== BRAND DIFFERENCE PROCESSOR CALLED =====
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Processing 1804 records for brand difference analysis
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Context: {query: 'Show me the market share difference between Red Bull and Monster Energy', endpoint: '/brand-difference', extractedBrands: Array(0)}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Available brand fields in data: (3) ['MP12206A_B_P', 'MP12207A_B_P', 'MP12205A_B_P']
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🔍 [BrandDifferenceProcessor] VALIDATE CALLED
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🔍 [BrandDifferenceProcessor] Raw data structure: {success: true, resultsLength: 1804, firstRecordKeys: Array(86)}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🔍 [BrandDifferenceProcessor] Validation debug for record: {hasRecord: true, hasIdField: '00065', totalKeys: 86, brandFieldsFound: Array(3), brandFieldCount: 3}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🔍 [BrandDifferenceProcessor] Brand fields validation result: true
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 ✅ [BrandDifferenceProcessor] VALIDATION PASSED: Brand fields found
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Detected 3 brands in data: (3) ['monster energy', 'red bull', '5-hour energy']
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Brand field mapping: {monster energy: 'MP12206A_B_P', red bull: 'MP12207A_B_P', 5-hour energy: 'MP12205A_B_P'}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Available brand fields: (3) ['monster energy', 'red bull', '5-hour energy']
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Context received: {hasContext: true, extractedBrands: Array(0), query: 'Show me the market share difference between Red Bull and Monster Energy'}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Comparing brands: monster energy vs red bull (from auto-detected from data)
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Processing comparison for: monster energy vs red bull
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Using fields: MP12206A_B_P vs MP12207A_B_P
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Record 0: monster energy=11.11%, red bull=0%, difference=11.11%
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Record 1: monster energy=0%, red bull=0%, difference=0%
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Record 2: monster energy=0%, red bull=0%, difference=0%
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Processed 1804 records for monster energy vs red bull
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Sample difference: 11.11%
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Difference quintiles calculated: (5) [-1.8099999999999996, -1.2599999999999998, -0.6100000000000003, 0.6100000000000003, 11.11]
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Final result summary: {type: 'brand_difference', recordCount: 1804, comparison: 'monster energy vs red bull', avgDifference: -0.6628991130820391}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Could not find field for brand: Monster energy
+extractBrandFieldCode @ 8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+process @ 8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+processResults @ 8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+processResultsWithGeographicAnalysis @ 8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+executeAnalysis @ 8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in executeAnalysis
+processQueryAnalysis @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in processQueryAnalysis
+processUnifiedRequest @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Could not find field for brand: Red bull
+extractBrandFieldCode @ 8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+process @ 8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+processResults @ 8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+processResultsWithGeographicAnalysis @ 8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+executeAnalysis @ 8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in executeAnalysis
+processQueryAnalysis @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in processQueryAnalysis
+processUnifiedRequest @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🔥 [BrandDifferenceProcessor] Created renderer and legend: {rendererType: 'class-breaks', rendererField: 'brand_difference_score', classBreakCount: 4, firstLabel: '< -1.7%', legendTitle: 'Brand Market Share Difference (%)', …}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] ===== RETURNING PROCESSED DATA =====
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Brand comparison: monster energy (MP12206A_B_P) vs red bull (MP12206A_B_P)
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Relevant fields for visualization: (2) ['MP12206A_B_P', 'MP12206A_B_P']
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [BrandDifferenceProcessor] Records generated: 1804
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🚨🚨🚨 [DataProcessor] Set targetVariable from ConfigurationManager: brand_difference_score 🚨🚨🚨
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [DataProcessor] Successfully processed 1804 records using /brand-difference processor
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🔥 [DataProcessor] First processed record value: 11.11
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🔥 [DataProcessor] First processed record properties: {OBJECTID: 1778, DESCRIPTION: '00065 (Plumas National Park)', ID: '00065', MP28591A_B: 1, MP28591A_B_I: 78, …}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [GeoAwarenessEngine] Processing geo query: Show me the market share difference between Red Bull and Monster Energy
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🔍 [GEO DEBUG] Parsing query: "Show me the market share difference between Red Bull and Monster Energy"
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 🚫 [GEO DEBUG] Query lacks explicit geographic intent - skipping geographic filtering
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [AnalysisEngine] Processed data returned: {type: 'brand_difference', recordCount: 1804, targetVariable: 'brand_difference_score', firstRecord: {…}}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [AnalysisEngine] 🎯 About to create visualization (AFTER clustering): {endpoint: '/brand-difference', dataType: 'brand_difference', recordCount: 1804, isClustered: undefined, hasGeometry: 'NO', …}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] Creating visualization for /brand-difference with 1804 records
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] Data type: brand_difference, target variable: brand_difference_score
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] Is clustered data: undefined
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] Sample record: {area_id: 'area_0', area_name: '00065 (Plumas National Park)', value: 11.11, hasProperties: true, propertyKeys: Array(5), …}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] 🎯 Getting renderer for type: choropleth
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] ✅ Found specific renderer for choropleth: o
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] 🔍 detectGeometryType: Analyzing 1804 records for geometry type
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] 🔍 detectGeometryType: Record 0 (00065 (Plumas National Park)): {hasProperties: true, hasGeometry: false, geometryType: undefined, hasCoordinates: true, coordinatesType: 'array', …}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] 🔍 detectGeometryType: Found coordinates array, inferring POINT
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] Using targetVariable for brand_difference: brand_difference_score
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] 🔍 Direct rendering condition check: {hasRenderer: true, hasLegend: true, isClustered: false, rendererType: 'class-breaks', legendTitle: 'Brand Market Share Difference (%)', …}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] 🎯 Using DIRECT RENDERING from processor
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [VisualizationRenderer] Direct renderer result: {type: 'choropleth', hasRenderer: true, rendererType: 'class-breaks', hasPopupTemplate: true, hasLegend: true, …}
+8021.8daf64da87ea798c.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [AnalysisEngine] 🎯 Visualization created: {success: true, type: 'choropleth', hasRenderer: true, hasConfig: true, hasLegend: true}
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedAnalysisWrapper] Request completed: {processingTime: 457, hasResults: true}
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [UnifiedWorkflow] No geometry found for ZIP: 00nan
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] Starting with: {visualizationType: 'choropleth', hasRenderer: true, rendererType: 'class-breaks', rendererKeys: Array(4), recordCount: 1804, …}
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ✅ Records found, checking geometry...
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] Geometry check: {totalRecords: 1804, recordsWithGeometry: 1778, geometryTypes: Array(1), sampleGeometry: {…}, isClustered: undefined}
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ✅ ArcGIS modules imported successfully
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 9 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 13 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 17 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 18 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 19 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 47 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 54 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 68 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 80 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 116 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 174 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 212 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 224 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 236 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 257 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 280 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 290 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 311 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 326 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 423 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 433 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 562 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 589 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 671 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 1144 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ❌ Skipping record 1596 - no valid geometry
+(anonymous) @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+l @ 2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in l
+(anonymous) @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+await in (anonymous)
+onClick @ 2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+a_ @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+aR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sF @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+(anonymous) @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+o4 @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+iV @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+sU @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uR @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+uM @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] Created features: {totalFeatures: 1778, skippedFeatures: 26, geometryType: 'polygon'}
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ✨ Creating analysis layer with ID: analysis-layer-1756186166754
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] FeatureLayer created successfully: {layerId: 'analysis-layer-1756186166754', layerType: 'feature', layerTitle: 'AnalysisEngine - brand_difference_score'}
+2802.30df877689869690.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 ✅ [LAYER PROTECTION] Allowing removeMany (not theme switch)
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] 🎯 Adding analysis layer to map
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ✅ Analysis layer added with protection metadata
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] 🎯 Creating legend from renderer
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] 🎯 Setting legend data from renderer
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] 🎯 Calling onVisualizationLayerCreated for CustomPopupManager integration
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] ★★★ handleVisualizationLayerCreated CALLED ★★★ {hasLayer: true, layerId: 'analysis-layer-1756186166754', layerTitle: 'AnalysisEngine - brand_difference_score', shouldReplace: true}
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] 🎯 Preparing to zoom to new layer extent...
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] 🔭 goTo target prepared, executing view.goTo...
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Adding visualization layer to featureLayers for CustomPopupManager: analysis-layer-1756186166754
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Render state: {mounted: true, mapView: true, activeWidget: null}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_34', layerTitle: 'Target', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_35', layerTitle: 'Whole Foods', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_36', layerTitle: "Trader Joe's", layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_37', layerTitle: 'Costco', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_8', layerTitle: 'Drank Red Bull', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_9', layerTitle: 'Drank 5-Hour', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_10', layerTitle: 'Drank Monster', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_11', layerTitle: 'Drank Energy Drink', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_1', layerTitle: 'Make Sure I Exercise Regularly 4-Agr C', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_2', layerTitle: 'Seek Info on Nutrition Healthy Diet 4-', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_3', layerTitle: 'Buy Foods Specifically Labeled Sugar-F', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_4', layerTitle: 'Shopped at Trader Joe`s Grocery Store', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_5', layerTitle: 'Shopped at Costco Warehouse Club Store', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_6', layerTitle: 'Shopped at Target Grocery Store 6 Mo', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_7', layerTitle: 'Shopped at Whole Foods Market Grocery', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_20', layerTitle: 'Buy Foods Specifically Labeled Sugar-Free', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_21', layerTitle: 'Seek Info on Nutrition Healthy Diet', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_22', layerTitle: 'Make Sure I Exercise Regularly 4-Agr', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_26', layerTitle: 'Generation Z Pop', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_27', layerTitle: 'Generation Alpha Pop ( )', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_31', layerTitle: 'Median Household Income', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_32', layerTitle: 'Median Household Income', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'analysis-layer-1756186166754', layerTitle: 'AnalysisEngine - brand_difference_score', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [SampleAreasPanel] Final render check: {visible: false, displayAreasCount: 5, loading: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CustomPopupManager] Applying standardized popup to layer: AnalysisEngine - brand_difference_score
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CustomPopupManager] Configuring standard popup with value bars
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [CustomPopupManager] ✅ Applied standard popup with value bars
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Setting map legend from formattedLegendData: {title: 'Brand Difference Score', type: undefined, itemCount: 4, componentCount: 0, isDualVariable: false, …}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Render state: {mounted: true, mapView: true, activeWidget: null}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_34', layerTitle: 'Target', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_35', layerTitle: 'Whole Foods', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_36', layerTitle: "Trader Joe's", layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_37', layerTitle: 'Costco', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_8', layerTitle: 'Drank Red Bull', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_9', layerTitle: 'Drank 5-Hour', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_10', layerTitle: 'Drank Monster', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_11', layerTitle: 'Drank Energy Drink', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_1', layerTitle: 'Make Sure I Exercise Regularly 4-Agr C', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_2', layerTitle: 'Seek Info on Nutrition Healthy Diet 4-', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_3', layerTitle: 'Buy Foods Specifically Labeled Sugar-F', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_4', layerTitle: 'Shopped at Trader Joe`s Grocery Store', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_5', layerTitle: 'Shopped at Costco Warehouse Club Store', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_6', layerTitle: 'Shopped at Target Grocery Store 6 Mo', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_7', layerTitle: 'Shopped at Whole Foods Market Grocery', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_20', layerTitle: 'Buy Foods Specifically Labeled Sugar-Free', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_21', layerTitle: 'Seek Info on Nutrition Healthy Diet', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_22', layerTitle: 'Make Sure I Exercise Regularly 4-Agr', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_26', layerTitle: 'Generation Z Pop', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_27', layerTitle: 'Generation Alpha Pop ( )', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_31', layerTitle: 'Median Household Income', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'Unknown_Service_layer_32', layerTitle: 'Median Household Income', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Creating CustomPopupManager for layer: {layerId: 'analysis-layer-1756186166754', layerTitle: 'AnalysisEngine - brand_difference_score', layerType: 'feature', popupEnabled: false}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapClient MapLegend] Rendering legend: {title: 'Brand Difference Score', type: 'standard', visible: true, itemCount: 4, sampleItems: Array(4)}
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapClient MapLegend] Size values check: (4) [{…}, {…}, {…}, {…}]
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [SampleAreasPanel] Final render check: {visible: false, displayAreasCount: 5, loading: false}
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ✅ View centered and zoomed to new layer extent
+2948.bbe650e065df6c35.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [applyAnalysisEngineVisualization] ✅ Visualization applied successfully
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] ★★★ handleUnifiedAnalysisComplete CALLED ★★★
+9374.a79c44c79c40edae.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [MapApp] Analysis complete - UnifiedAnalysisWorkflow handles visualization now
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [formatStatsForChat] Called with analysisType: "brand-difference"
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [formatStatsForChat] Using brand difference formatter
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [formatDistributionForChat] Using brand difference distribution formatter
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [formatPatternsForChat] Called with analysisType: "brand-difference"
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [formatPatternsForChat] Using brand difference patterns formatter
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [ChatService] Preparing compact chat payload
+2637.362deeef435977c7.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1 [ChatService] Chat response received successfully
+vendors-b9f70e77-62452c66265f999a.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:5 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ vendors-b9f70e77-62452c66265f999a.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:5
+aW @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+oe @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+or @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+ol @ fd9d1056-5a1c3f82dd100484.js?dpl=dpl_GQmVi2ANBp2sMaypiU11cygfcdaL:1
+
+**Query:** "Show me the market share difference between Red Bull and Monster Energy"
+
+---
+
+Analyzing 1804 areas...
+
+**Brand Difference Statistics**
+• Markets analyzed: **1804**
+• Average difference: **-0.66%**
+• Median difference: **-0.96%**
+• Standard deviation: **1.62%**
+• Difference range: **-10.0%** to **11.1%**
+
+**H&R Block Strongholds** (largest advantages):
+**1.** 00065 (Plumas National Park) (**+11.1%**)
+**2.** 00048 (Mendocino Ntl Forest) (**+11.1%**)
+**3.** 93262 (Sequoia National Park) (**+11.1%**)
+
+**TurboTax Strongholds** (competitor advantages):
+**1.** 00040 (Yosemite Ntl Park) (**-10.0%**)
+**2.** 93042 (Point Mugu Nawc) (**-8.3%**)
+**3.** 95652 (McClellan) (**-4.6%**)
+
+
+**Competitive Distribution Analysis**
+
+**Competitive Landscape:** Highly competitive markets with mixed brand performance
+
+**Market Variation:** Consistent competitive landscape across markets
+
+**Competitive Patterns**
+
+**Brand Success Drivers:** Correlations based on cross-sectional data - temporal analysis requires time-series data
+
+
+
+
+**AI Analysis**
+COMPETITIVE LANDSCAPE ANALYSIS
+
+Market Share Difference Overview:
+The brand difference analysis reveals a market share difference range from -10.00% to 11.11% across 8 markets, indicating significant variation in H&R Block's competitive positioning relative to its main competitor.
+
+H&R Block Strongholds:
+1. 00065 (Plumas National Park): 11.11%
+2. 00048 (Mendocino Ntl Forest): 11.11%
+3. 93262 (Sequoia National Park): 11.11%
+4. 00019 (Lassen Ntl Forest): 10.00%
+5. 96017 (Castella): 9.09%
+
+H&R Block demonstrates a strong competitive advantage in national parks and forest areas, with a significant market share lead of 11.11% in Plumas, Mendocino, and Sequoia. These regions likely attract outdoor enthusiasts, seasonal workers, and park employees who may prefer H&R Block's services.
+
+Competitor Strongholds:
+1. 00040 (Yosemite Ntl Park): -10.00%
+2. 93042 (Point Mugu Nawc): -8.34%
+3. 95652 (McClellan): -4.62%
+
+The competitor holds a substantial advantage in Yosemite National Park, with a 10% higher market share. They also maintain strong positions in Point Mugu NAWC (Naval Air Weapons Station) and McClellan, suggesting better penetration in military-affiliated and certain park locations.
+
+Competitive Battlegrounds:
+No areas in the sample show exact parity (0% difference). The closest to parity is 96017 (Castella) with a 9.09% advantage for H&R Block, indicating a somewhat competitive market.
+
+Comparative Analysis:
+H&R Block Strongholds:
+• Predominantly in national forests and parks (Plumas, Mendocino, Sequoia, Lassen)
+• Strong presence in more remote, nature-oriented locations
+• Possibly better at serving seasonal workforce and outdoor recreation communities
+
+Competitor Strongholds:
+• Strong in one major national park (Yosemite)
+• Better penetration in military-affiliated areas (Point Mugu NAWC)
+• More competitive in certain urban/suburban locations (McClellan)
+
+Strategic Recommendations:
+1. Leverage National Park Expertise: Capitalize on the strong performance in national parks and forests by developing targeted marketing campaigns and service offerings for park employees, seasonal workers, and frequent visitors.
+
+2. Address Yosemite Gap: Investigate the factors behind the competitor's significant advantage in Yosemite National Park. Develop a tailored strategy to improve H&R Block's market share in this high-profile location.
+
+3. Military Market Penetration: Enhance services and marketing efforts targeting military personnel and their families to compete more effectively in areas like Point Mugu NAWC.
+
+4. Urban/Suburban Focus: Analyze the competitor's success in McClellan to identify opportunities for improving H&R Block's performance in similar urban/suburban markets.
+
+5. Seasonal Workforce Solutions: Develop specialized tax preparation services and education programs for seasonal workers in the hospitality and recreation industries associated with national parks and forests.
+
+6. Cross-Pollination Strategy: Apply successful tactics from stronghold areas (e.g., Plumas, Mendocino) to underperforming locations like Yosemite to improve market share.
+
+7. Digital Accessibility: Enhance online and mobile tax preparation services to cater to the potentially limited physical access in remote park and forest locations.
+
+8. Local Partnerships: Forge partnerships with park authorities, local businesses, and community organizations in both stronghold and competitor-dominated areas to increase brand visibility and customer acquisition.
+
+By focusing on these strategic initiatives, H&R Block can leverage its strengths in national park and forest regions while addressing competitive gaps in key markets. This approach will help solidify its market position and drive long-term growth in diverse geographic segments.
+
+---
+**Model Attribution:**
+• **Model Used:** Competitive Analysis Model
+• **R² Score:** 0.879

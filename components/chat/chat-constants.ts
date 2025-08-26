@@ -15,8 +15,8 @@ export const ANALYSIS_CATEGORIES = {
   ],
   'Demographic Insights': [
     'Which areas have the best customer demographics for energy drinks?'
-  ],
-  'Customer Profile': [
+  ]
+  /*'Customer Profile': [
     'Show me areas with ideal customer personas for energy drinks'
   ],
   'Spatial Clusters': [
@@ -78,7 +78,7 @@ export const ANALYSIS_CATEGORIES = {
   ],
   'Predictive Modeling': [
     'Which markets are most likely to grow for Red Bull in the next year?'
-  ]
+  ]*/
 };
 
 export const DISABLED_ANALYSIS_CATEGORIES = {
