@@ -202,7 +202,8 @@ export class DimensionalityInsightsProcessor implements DataProcessorStrategy {
     console.log(`[DimensionalityInsightsProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
     
     fieldDefinitions.forEach(fieldDef => {
-      const value = Number(record[fieldDef.source]);
+      const sourceKey = Array.isArray(fieldDef.source) ? fieldDef.source[0] : fieldDef.source;
+      const value = Number(record[sourceKey]);
       if (!isNaN(value) && value > 0) {
         contributingFields.push({
           field: fieldDef.field,
