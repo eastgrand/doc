@@ -18,6 +18,7 @@
 - [8. Unified UI Components](#8-unified-ui-components)
 - [8.5. Vercel AI Elements Integration](#85-vercel-ai-elements-integration)
 - [9. Chat System Architecture](#9-chat-system-architecture)
+  - [📖 Chat User Guide](/docs/CHAT_USER_GUIDE.md) - Complete user documentation
 - [10. Data Pipeline & Management](#10-data-pipeline--management)
 - [11. Performance & Optimization](#11-performance--optimization)
 - [12. Configuration Management](#12-configuration-management)
@@ -2592,9 +2593,73 @@ export function EnhancedChatInterface() {
 - ✅ **Extensible Architecture**: Easy addition of new AI Elements components
 - ✅ **Feature Flag Management**: Granular control over advanced capabilities
 
+### 8.5.10 Phase 4 Features Usage Guide 🚀 **PRODUCTION READY**
+
+**How to Use Phase 4 Advanced Features**:
+
+After running any demographic analysis, Phase 4 features appear automatically when enabled:
+
+1. **Access Phase 4 Features**:
+   ```
+   1. Run demographic analysis: "Show me energy drink consumers in Orange County"
+   2. Look for "Phase 4 Advanced Features" panel in results
+   3. Click tabs: Research | Live Data | AI Insights
+   ```
+
+2. **📚 Scholarly Research (4.1)**:
+   - **What it does**: Finds academic papers validating your analysis
+   - **Data sources**: CrossRef API (free, 100M+ papers)
+   - **Usage**: Automatically searches based on your analysis topic
+   - **Output**: Peer-reviewed papers with DOI links and citations
+   - **Business value**: Adds academic credibility to market reports
+
+3. **📊 Real-Time Data (4.2)**:
+   - **What it does**: Shows live economic indicators for your region
+   - **Data sources**: FRED (Federal Reserve) + Alpha Vantage (market data)
+   - **Usage**: Updates every 15 minutes with live economic conditions
+   - **Output**: GDP, unemployment, consumer spending, market sentiment
+   - **Business value**: Current economic context for strategic decisions
+
+4. **🧠 AI Insights (4.4)**:
+   - **What it does**: Generates structured business recommendations
+   - **Data sources**: Claude AI analysis of your demographic + economic data
+   - **Usage**: Click "Generate Insights" for AI-powered business analysis
+   - **Output**: Opportunities, risks, ROI projections, actionable recommendations
+   - **Business value**: Executive-level strategic insights with confidence scores
+
+**Example Workflow**:
+```
+Query: "Show me energy drink consumers in Orange County"
+├── Standard Analysis: Demographics + market size
+├── 📚 Scholarly Research: "Geographic Patterns in Energy Drink Consumption"
+├── 📊 Real-Time Data: Orange County unemployment 3.2%, GDP growth +2.1%
+└── 🧠 AI Insights: "34% higher affinity than state average. Recommend 
+    Irvine expansion. Projected ROI: 18-52%. Risk: Newport Beach saturation."
+```
+
+**Feature Management**:
+```typescript
+// Enable/disable features in config/phase4-features.ts
+export const PHASE4_FEATURES = {
+  scholarlyResearch: { enabled: true },     // ✅ Academic validation
+  realTimeDataStreams: { enabled: true },  // ✅ Live economic data  
+  aiInsights: { enabled: true }            // ✅ Business intelligence
+};
+```
+
+**API Requirements**:
+- ✅ **FRED API**: Free key required (already configured)
+- ✅ **Alpha Vantage**: Free key required (already configured)
+- ✅ **Claude API**: Existing key used (no additional cost)
+- ✅ **CrossRef**: No key required (completely free)
+
 ---
 
 ## 9. Chat System Architecture
+
+> **📖 For Users**: See the complete [Chat User Guide](/docs/CHAT_USER_GUIDE.md) for step-by-step instructions on using the chat interface, including examples, best practices, and feature explanations.
+
+This section covers the technical architecture of the chat system. For user-focused documentation, refer to the guide above.
 
 ### 9.1 AI Personas System
 
