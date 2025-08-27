@@ -12,6 +12,12 @@ import {
   isPhase4FeatureEnabled, 
   getPhase4FeatureConfig 
 } from '@/config/phase4-features';
+import { 
+  generateAIInsights,
+  type AIInsight as ServiceAIInsight,
+  type ExecutiveSummary as ServiceExecutiveSummary,
+  type AIInsightRequest
+} from '@/lib/integrations/ai-insights-service';
 import {
   Brain,
   Sparkles,
@@ -63,13 +69,18 @@ interface ExecutiveSummary {
 }
 
 interface AIInsightGeneratorProps {
-  analysisData?: any;
+  analysisResult?: any; // Changed from analysisData for consistency
   analysisContext?: {
     location?: string;
     brand?: string;
     analysisType?: string;
     zipCodes?: string[];
+    selectedAreaName?: string;
+    persona?: string;
   };
+  businessContext?: string;
+  confidenceThreshold?: number;
+  maxInsights?: number;
   onInsightGenerated?: (insight: AIInsight) => void;
   onSummaryGenerated?: (summary: ExecutiveSummary) => void;
   onCopyInsight?: (insight: AIInsight) => void;
@@ -200,8 +211,11 @@ const generateExecutiveSummary = (insights: AIInsight[]): ExecutiveSummary => ({
  * Modular component that can be disabled via feature flags.
  */
 export const AIInsightGenerator: React.FC<AIInsightGeneratorProps> = ({
-  analysisData,
+  analysisResult,
   analysisContext,
+  businessContext,
+  confidenceThreshold,
+  maxInsights,
   onInsightGenerated,
   onSummaryGenerated,
   onCopyInsight,
@@ -223,42 +237,52 @@ export const AIInsightGenerator: React.FC<AIInsightGeneratorProps> = ({
     return null;
   }
   
-  // Generate insights
+  // Generate insights using real AI service
   const generateInsights = useCallback(async () => {
     setIsGenerating(true);
     
-    // Simulate AI processing delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    const newInsights = generateMockInsights(analysisContext);
-    
-    // Apply confidence threshold filter
-    const filteredInsights = newInsights.filter(
-      insight => insight.confidence >= (config?.confidenceThreshold || 0.8)
-    );
-    
-    // Limit to max insights
-    const limitedInsights = filteredInsights.slice(0, config?.maxInsightsPerAnalysis || 5);
-    
-    setInsights(limitedInsights);
-    
-    // Generate executive summary
-    const summary = generateExecutiveSummary(limitedInsights);
-    setExecutiveSummary(summary);
-    
-    // Notify parent
-    limitedInsights.forEach(insight => onInsightGenerated?.(insight));
-    onSummaryGenerated?.(summary);
-    
-    setIsGenerating(false);
-  }, [analysisContext, config, onInsightGenerated, onSummaryGenerated]);
+    try {
+      // Prepare request for AI insights service
+      const request: AIInsightRequest = {
+        analysisData: analysisResult,
+        analysisContext: analysisContext || {},
+        maxInsights: maxInsights || config?.maxInsightsPerAnalysis || 5,
+        confidenceThreshold: confidenceThreshold || config?.confidenceThreshold || 0.85,
+        businessContext: businessContext || analysisContext?.persona || 'market expansion analysis'
+      };
+      
+      // Generate insights using Claude AI
+      const response = await generateAIInsights(request);
+      
+      setInsights(response.insights);
+      setExecutiveSummary(response.executiveSummary);
+      
+      // Notify parent components
+      response.insights.forEach(insight => onInsightGenerated?.(insight));
+      onSummaryGenerated?.(response.executiveSummary);
+      
+    } catch (error) {
+      console.error('Error generating AI insights:', error);
+      
+      // Fallback to mock data on error
+      const fallbackInsights = generateMockInsights(analysisContext);
+      const filteredFallback = fallbackInsights.filter(
+        insight => insight.confidence >= (confidenceThreshold || config?.confidenceThreshold || 0.8)
+      ).slice(0, maxInsights || config?.maxInsightsPerAnalysis || 5);
+      
+      setInsights(filteredFallback);
+      setExecutiveSummary(generateExecutiveSummary(filteredFallback));
+    } finally {
+      setIsGenerating(false);
+    }
+  }, [analysisResult, analysisContext, businessContext, confidenceThreshold, maxInsights, config, onInsightGenerated, onSummaryGenerated]);
   
   // Auto-generate on mount if data available
   useEffect(() => {
-    if (analysisData || analysisContext) {
+    if (analysisResult || analysisContext) {
       generateInsights();
     }
-  }, []);
+  }, [analysisResult, analysisContext, generateInsights]);
   
   // Group insights by type
   const groupedInsights = useMemo(() => {

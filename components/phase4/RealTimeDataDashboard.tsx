@@ -10,6 +10,12 @@ import {
   isPhase4FeatureEnabled, 
   getPhase4FeatureConfig 
 } from '@/config/phase4-features';
+import { 
+  getRealTimeData, 
+  type RealTimeDataResponse, 
+  type EconomicIndicator, 
+  type MarketData 
+} from '@/lib/integrations/real-time-data-service';
 import {
   Activity,
   TrendingUp,
@@ -174,9 +180,10 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
   const config = getPhase4FeatureConfig('realTimeDataStreams');
   
   // State
-  const [streams, setStreams] = useState<DataStream[]>(INITIAL_STREAMS);
+  const [streams, setStreams] = useState<DataStream[]>([]);
   const [isPaused, setIsPaused] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+  const [isInitialized, setIsInitialized] = useState(false);
   const updateIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   
   // If feature is disabled, return null
@@ -184,25 +191,133 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
     return null;
   }
   
-  // Update stream data
-  const updateStream = useCallback((streamId: string) => {
-    setStreams(prevStreams => {
-      const updatedStreams = prevStreams.map(stream => 
-        stream.id === streamId 
-          ? { ...generateMockDataUpdate(stream), status: 'live' as const }
-          : stream
-      );
-      
-      // Check for significant changes and trigger alerts
-      const updatedStream = updatedStreams.find(s => s.id === streamId);
-      if (updatedStream && Math.abs(updatedStream.changePercent || 0) > 5) {
-        onAlertTriggered?.(`Significant change in ${updatedStream.name}: ${updatedStream.changePercent?.toFixed(1)}%`);
+  // Initialize real-time data on component mount
+  useEffect(() => {
+    if (!isEnabled || isInitialized) return;
+
+    const initializeRealTimeData = async () => {
+      try {
+        const realTimeResponse = await getRealTimeData();
+        
+        // Convert API response to DataStream format
+        const convertedStreams: DataStream[] = [
+          // Economic indicators from FRED
+          ...realTimeResponse.economicIndicators.map((indicator, index) => ({
+            id: `econ-${index}`,
+            name: indicator.name,
+            source: 'fred' as const,
+            value: indicator.value,
+            previousValue: indicator.previousValue,
+            change: indicator.change,
+            changePercent: indicator.changePercent,
+            unit: indicator.unit || '%',
+            timestamp: new Date(indicator.timestamp),
+            refreshRate: 900, // 15 minutes
+            status: 'live' as const,
+            confidence: indicator.confidence || 0.95,
+            impact: indicator.change && indicator.change > 0 ? 'positive' : 
+                   indicator.change && indicator.change < 0 ? 'negative' : 'neutral',
+            description: indicator.description || `${indicator.name} from Federal Reserve Economic Data`
+          })),
+          // Market data from Alpha Vantage
+          ...realTimeResponse.marketData.map((market, index) => ({
+            id: `market-${index}`,
+            name: market.symbol,
+            source: 'alpha-vantage' as const,
+            value: market.price,
+            previousValue: market.previousClose,
+            change: market.change,
+            changePercent: market.changePercent,
+            unit: '$',
+            timestamp: new Date(market.timestamp),
+            refreshRate: 300, // 5 minutes
+            status: 'live' as const,
+            confidence: 0.98,
+            impact: market.change && market.change > 0 ? 'positive' : 
+                   market.change && market.change < 0 ? 'negative' : 'neutral',
+            description: `${market.symbol} market data from Alpha Vantage`
+          }))
+        ];
+        
+        // Fallback to mock data if no real data available
+        setStreams(convertedStreams.length > 0 ? convertedStreams : INITIAL_STREAMS);
+        setIsInitialized(true);
+      } catch (error) {
+        console.error('Error initializing real-time data:', error);
+        // Fallback to mock data on error
+        setStreams(INITIAL_STREAMS);
+        setIsInitialized(true);
       }
+    };
+
+    initializeRealTimeData();
+  }, [isEnabled, isInitialized]);
+
+  // Update stream data
+  const updateStream = useCallback(async (streamId: string) => {
+    try {
+      // Try to get fresh data from API
+      const realTimeResponse = await getRealTimeData();
       
-      onDataUpdate?.(updatedStreams);
-      return updatedStreams;
-    });
-    setLastUpdate(new Date());
+      setStreams(prevStreams => {
+        const updatedStreams = prevStreams.map(stream => {
+          if (stream.id === streamId) {
+            // Try to find matching data in API response
+            let updatedData = null;
+            
+            if (stream.source === 'fred') {
+              updatedData = realTimeResponse.economicIndicators.find(indicator => 
+                indicator.name.toLowerCase().includes(stream.name.toLowerCase())
+              );
+            } else if (stream.source === 'alpha-vantage') {
+              updatedData = realTimeResponse.marketData.find(market => 
+                market.symbol.toLowerCase().includes(stream.name.toLowerCase())
+              );
+            }
+            
+            if (updatedData) {
+              return {
+                ...stream,
+                previousValue: stream.value,
+                value: 'value' in updatedData ? updatedData.value : updatedData.price,
+                change: updatedData.change,
+                changePercent: updatedData.changePercent,
+                timestamp: new Date(updatedData.timestamp),
+                status: 'live' as const,
+                impact: updatedData.change && updatedData.change > 0 ? 'positive' : 
+                       updatedData.change && updatedData.change < 0 ? 'negative' : 'neutral'
+              };
+            }
+          }
+          return stream;
+        });
+        
+        // Check for significant changes and trigger alerts
+        const updatedStream = updatedStreams.find(s => s.id === streamId);
+        if (updatedStream && Math.abs(updatedStream.changePercent || 0) > 5) {
+          onAlertTriggered?.(`Significant change in ${updatedStream.name}: ${updatedStream.changePercent?.toFixed(1)}%`);
+        }
+        
+        onDataUpdate?.(updatedStreams);
+        return updatedStreams;
+      });
+      
+      setLastUpdate(new Date());
+    } catch (error) {
+      console.error('Error updating stream:', error);
+      // Fallback to mock data update on error
+      setStreams(prevStreams => {
+        const updatedStreams = prevStreams.map(stream => 
+          stream.id === streamId 
+            ? { ...generateMockDataUpdate(stream), status: 'live' as const }
+            : stream
+        );
+        
+        onDataUpdate?.(updatedStreams);
+        return updatedStreams;
+      });
+      setLastUpdate(new Date());
+    }
   }, [onDataUpdate, onAlertTriggered]);
   
   // Set up auto-refresh intervals

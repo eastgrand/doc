@@ -81,30 +81,32 @@ export interface Phase4Features {
 export const PHASE4_FEATURES: Phase4Features = {
   // 4.1 - Scholarly Research Integration
   scholarlyResearch: {
-    enabled: false,  // Set to true to enable scholarly research
+    enabled: true,  // ✅ ENABLED - Using CrossRef + arXiv
     config: {
       maxResultsPerQuery: 10,
-      cacheTimeMinutes: 60,
+      cacheTimeMinutes: 120,  // Extended cache for research
       apiEndpoints: {
-        googleScholar: false,  // Requires API key
-        pubmed: true,  // Free, no API key required
-        arxiv: true,   // Free, no API key required
-        semanticScholar: true  // Free with optional API key
+        googleScholar: false,  // Not available
+        pubmed: false,  // Not relevant to consumer demographics
+        arxiv: false,   // Currently not working
+        semanticScholar: false,  // Not accessible
+        crossref: true,  // ✅ Working
+        core: false  // Currently not working
       }
     }
   },
 
   // 4.2 - Real-Time Data Streams
   realTimeDataStreams: {
-    enabled: false,  // Set to true to enable live data streams
+    enabled: true,  // ✅ ENABLED - Using FRED + Alpha Vantage
     config: {
-      updateIntervalSeconds: 300,  // 5 minutes
-      maxConcurrentStreams: 3,
+      updateIntervalSeconds: 900,  // 15 minutes for production
+      maxConcurrentStreams: 2,  // Conservative limit
       dataSources: {
-        fred: true,  // Free, requires API key
-        censusEconomic: true,  // Free, no key required
-        alphaVantage: false,  // Free tier limited
-        newsApi: false  // Requires API key
+        fred: true,  // ✅ Working - Economic indicators
+        censusEconomic: false,  // Use FRED instead
+        alphaVantage: true,  // ✅ Working - Market data
+        newsApi: false  // No API key
       }
     }
   },
@@ -127,7 +129,7 @@ export const PHASE4_FEATURES: Phase4Features = {
 
   // 4.4 - AI-Powered Insights
   aiInsights: {
-    enabled: false,  // Set to true to enable AI insights
+    enabled: true,  // ✅ ENABLED - Using existing Claude integration
     config: {
       confidenceThreshold: 0.85,
       maxInsightsPerAnalysis: 5,

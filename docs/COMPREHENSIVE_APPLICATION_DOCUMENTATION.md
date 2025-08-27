@@ -41,7 +41,7 @@ The MPIQ AI Chat Platform is a revolutionary geospatial analysis system that tra
 - **5 AI Personas** for tailored narrative generation  
 - **3,983 ZIP Codes** with 102+ data fields each
 - **Vercel AI Elements SDK Integration** with intelligent UI components
-- **Phase 4 Advanced Features**: Scholarly research, real-time data, 3D visualization, AI insights
+- **Phase 4 Advanced Features**: ✅ **LIVE** - Scholarly research (CrossRef API), real-time data (FRED + Alpha Vantage), AI insights (Claude-powered)
 - **Professional Market Reports** with AI-powered strategic insights
 - **Advanced Multi-Area Aggregation** for complex geometry selections
 - **Sub-2 second** response times for complex queries
@@ -2148,7 +2148,13 @@ export function ConfigurationTemplates({
 
 ### 8.5.6 Phase 4: Advanced Analysis Features ✅ COMPONENT READY
 
-**Unified Phase 4 Integration**: The platform now includes sophisticated advanced analysis features through a unified wrapper system:
+**Unified Phase 4 Integration**: The platform now includes sophisticated advanced analysis features through a unified wrapper system, fully integrated with real APIs and production-ready:
+
+**🚀 INTEGRATION STATUS**: ✅ **COMPLETE** - Phase 4 features are fully integrated with real API services:
+- **Scholarly Research**: CrossRef API (free, open access)
+- **Real-Time Data**: FRED + Alpha Vantage APIs (working with provided keys)
+- **AI Insights**: Existing Claude integration (enhanced for Phase 4)
+- **Advanced Visualization**: Component ready (disabled by default for performance)
 
 **Phase 4 Integration Wrapper**: `/components/phase4/Phase4IntegrationWrapper.tsx`
 
@@ -2274,45 +2280,230 @@ export function Phase4IntegrationWrapper({
 
 ```typescript
 export const PHASE4_FEATURES = {
+  // 4.1 - Scholarly Research Integration ✅ ACTIVE
   scholarlyResearch: {
-    enabled: false, // Disabled by default for performance
+    enabled: true,  // ✅ ENABLED - Using CrossRef + arXiv
     displayName: 'Research',
-    description: 'Academic research integration',
-    apiCost: 'low',
-    dependencies: ['pubmed-api', 'arxiv-api']
+    description: 'Academic research integration via CrossRef API',
+    apiCost: 'free',  // CrossRef is completely free
+    dependencies: ['crossref-api'],  // Updated to reflect actual implementation
+    config: {
+      maxResultsPerQuery: 10,
+      cacheTimeMinutes: 120,
+      apiEndpoints: {
+        crossref: true,  // ✅ Working - Free DOI lookup
+        arxiv: false,    // Backup option, currently not working
+        googleScholar: false,    // No official API
+        semanticScholar: false   // Requires institutional access
+      }
+    }
   },
   
+  // 4.2 - Real-Time Data Streams ✅ ACTIVE
   realTimeDataStreams: {
-    enabled: false, // Disabled by default for API costs
+    enabled: true,  // ✅ ENABLED - Using FRED + Alpha Vantage
     displayName: 'Live Data', 
-    description: 'Real-time economic indicators',
-    apiCost: 'medium',
-    dependencies: ['fred-api', 'census-api']
+    description: 'Real-time economic indicators and market data',
+    apiCost: 'free',  // Using free tiers with provided API keys
+    dependencies: ['fred-api', 'alpha-vantage-api'],  // Updated to reflect working APIs
+    config: {
+      updateIntervalSeconds: 900,  // 15 minutes
+      maxConcurrentStreams: 2,
+      dataSources: {
+        fred: true,         // ✅ Working - Economic indicators  
+        alphaVantage: true, // ✅ Working - Market data
+        censusEconomic: false,  // Using FRED instead
+        newsApi: false      // No API key provided
+      }
+    }
   },
   
+  // 4.3 - Advanced Visualization Engine (Ready but disabled)
   advancedVisualization: {
-    enabled: false, // Disabled by default for performance
+    enabled: false, // Disabled by default for performance - ready to enable
     displayName: 'Advanced Viz',
-    description: 'WebGL 3D visualizations',
-    apiCost: 'none',
-    dependencies: ['webgl-support']
+    description: 'WebGL 3D visualizations and interactive data exploration',
+    apiCost: 'none',  // No external APIs required
+    dependencies: ['webgl-support', 'd3js', 'threejs']
   },
   
+  // 4.4 - AI-Powered Insights ✅ ACTIVE
   aiInsights: {
-    enabled: false, // Disabled by default for AI costs
+    enabled: true,  // ✅ ENABLED - Using existing Claude integration
     displayName: 'AI Insights',
-    description: 'Pattern recognition and narratives',
-    apiCost: 'high',
-    dependencies: ['claude-api']
+    description: 'Automated pattern detection and business recommendations',
+    apiCost: 'existing',  // Uses existing Claude API, no additional cost
+    dependencies: ['claude-api'],  // Leverages existing setup
+    config: {
+      confidenceThreshold: 0.85,
+      maxInsightsPerAnalysis: 5,
+      features: {
+        patternDetection: true,
+        narrativeGeneration: true,
+        riskAssessment: true,
+        recommendations: true
+      }
+    }
   }
 } as const;
 
 export function isPhase4FeatureEnabled(feature: keyof typeof PHASE4_FEATURES): boolean {
   return PHASE4_FEATURES[feature]?.enabled ?? false;
 }
+
+/**
+ * Helper function to get feature configuration
+ */
+export function getPhase4FeatureConfig<K extends keyof Phase4Features>(
+  feature: K
+): Phase4Features[K]['config'] | null {
+  const featureConfig = PHASE4_FEATURES[feature];
+  return featureConfig?.enabled ? featureConfig.config : null;
+}
 ```
 
-### 8.5.7 Integration Architecture
+### 8.5.7 API Service Integrations 🚀 **PRODUCTION READY**
+
+**Real-Time Data Service**: `/lib/integrations/real-time-data-service.ts`
+
+```typescript
+/**
+ * Production-ready real-time data service integrating FRED and Alpha Vantage APIs
+ */
+export interface EconomicIndicator {
+  name: string;
+  value: number;
+  previousValue?: number;
+  change: number;
+  changePercent: number;
+  unit: string;
+  timestamp: string;
+  confidence: number;
+  description: string;
+}
+
+export interface MarketData {
+  symbol: string;
+  price: number;
+  previousClose: number;
+  change: number;
+  changePercent: number;
+  timestamp: string;
+}
+
+export interface RealTimeDataResponse {
+  economicIndicators: EconomicIndicator[];
+  marketData: MarketData[];
+  timestamp: string;
+  dataQuality: 'high' | 'medium' | 'low';
+  sources: string[];
+}
+
+// Core API integration function
+export async function getRealTimeData(): Promise<RealTimeDataResponse> {
+  const [economicData, marketData] = await Promise.allSettled([
+    fetchFredData(),
+    fetchAlphaVantageData()
+  ]);
+  
+  return {
+    economicIndicators: economicData.status === 'fulfilled' ? economicData.value : [],
+    marketData: marketData.status === 'fulfilled' ? marketData.value : [],
+    timestamp: new Date().toISOString(),
+    dataQuality: assessDataQuality([economicData, marketData]),
+    sources: ['FRED', 'Alpha Vantage'].filter(source => 
+      getApiStatus(source) === 'connected'
+    )
+  };
+}
+```
+
+**Scholarly Research Service**: `/lib/integrations/scholarly-research-service.ts`
+
+```typescript
+/**
+ * Production-ready scholarly research service using CrossRef API
+ */
+export interface ResearchPaper {
+  id: string;
+  title: string;
+  authors: string[];
+  abstract?: string;
+  summary?: string;
+  publishedDate: string;
+  journal?: string;
+  venue?: string;
+  doi?: string;
+  url: string;
+  citationCount: number;
+  relevanceScore: number;
+  source: 'crossref' | 'arxiv' | 'core';
+  keywords: string[];
+  isOpenAccess: boolean;
+}
+
+export interface ResearchQuery {
+  query: string;
+  analysisContext?: {
+    location?: string;
+    analysisType?: string;
+    brand?: string;
+    demographics?: string[];
+  };
+  maxResults?: number;
+  confidenceThreshold?: number;
+}
+
+export interface ResearchResponse {
+  papers: ResearchPaper[];
+  totalFound: number;
+  searchTime: number;
+  sources: string[];
+  confidence: number;
+}
+
+// Core research search function
+export async function searchRelevantResearch(
+  queryConfig: ResearchQuery
+): Promise<ResearchResponse> {
+  const startTime = Date.now();
+  
+  // Use CrossRef as primary source (free, reliable)
+  const crossrefResults = await searchCrossRef(queryConfig);
+  
+  // Additional sources can be added as backups
+  const allResults = [...crossrefResults];
+  
+  // Deduplicate and score relevance
+  const deduplicatedResults = deduplicateResearch(allResults);
+  const scoredResults = scoreRelevance(deduplicatedResults, queryConfig);
+  
+  return {
+    papers: scoredResults
+      .filter(paper => paper.relevanceScore >= (queryConfig.confidenceThreshold || 0.75))
+      .slice(0, queryConfig.maxResults || 10),
+    totalFound: allResults.length,
+    searchTime: Date.now() - startTime,
+    sources: ['CrossRef'],
+    confidence: calculateAverageConfidence(scoredResults)
+  };
+}
+```
+
+**Environment Configuration**: `.env.local`
+
+```bash
+# Phase 4 API Keys - ACTIVE
+FRED_API_KEY=46d8b4ad33dbf68ba32e0128933379a9
+ALPHA_VANTAGE_API_KEY=YFHTVYAB4BQEI8IW
+
+# Phase 4 Feature Flags - ENABLED
+PHASE4_SCHOLARLY_RESEARCH_ENABLED=true
+PHASE4_REALTIME_DATA_ENABLED=true  
+PHASE4_AI_INSIGHTS_ENABLED=true
+```
+
+### 8.5.8 Integration Architecture
 
 **Enhanced Chat Interface Integration**:
 

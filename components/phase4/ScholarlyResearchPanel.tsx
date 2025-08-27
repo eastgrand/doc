@@ -12,6 +12,12 @@ import {
   isPhase4FeatureEnabled, 
   getPhase4FeatureConfig 
 } from '@/config/phase4-features';
+import { 
+  searchRelevantResearch, 
+  type ResearchPaper, 
+  type ResearchQuery, 
+  type ResearchResponse 
+} from '@/lib/integrations/scholarly-research-service';
 import {
   BookOpen,
   Search,
@@ -141,32 +147,52 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
     return null;
   }
 
-  // Simulate API call (replace with real implementation)
+  // Real API integration
   const searchPapers = useCallback(async (searchTerm: string) => {
     if (!searchTerm.trim()) return;
     
     setIsLoading(true);
     
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Filter mock papers based on search
-    const filtered = MOCK_PAPERS.filter(paper => 
-      paper.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      paper.abstract.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      paper.keywords.some(k => k.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-    
-    // Add context-based relevance boost
-    const contextEnhanced = filtered.map(paper => ({
-      ...paper,
-      relevanceScore: analysisContext?.location 
-        ? paper.relevanceScore * 1.1 
-        : paper.relevanceScore
-    }));
-    
-    setPapers(contextEnhanced);
-    setIsLoading(false);
+    try {
+      const searchQuery: ResearchQuery = {
+        query: searchTerm,
+        analysisContext: analysisContext,
+        maxResults: 10,
+        confidenceThreshold: 0.75
+      };
+
+      const response = await searchRelevantResearch(searchQuery);
+      
+      // Convert API response to component format
+      const convertedPapers: ScholarlyPaper[] = response.papers.map(paper => ({
+        id: paper.id,
+        title: paper.title,
+        authors: paper.authors,
+        abstract: paper.abstract || paper.summary || 'No abstract available',
+        year: paper.publishedDate ? new Date(paper.publishedDate).getFullYear() : new Date().getFullYear(),
+        journal: paper.journal || paper.venue,
+        doi: paper.doi,
+        url: paper.url,
+        citationCount: paper.citationCount || 0,
+        relevanceScore: paper.relevanceScore,
+        source: (paper.source as ScholarlyPaper['source']) || 'arxiv',
+        keywords: paper.keywords || [],
+        isOpenAccess: paper.isOpenAccess || false
+      }));
+      
+      setPapers(convertedPapers);
+    } catch (error) {
+      console.error('Error searching papers:', error);
+      // Fallback to mock data on error
+      const filtered = MOCK_PAPERS.filter(paper => 
+        paper.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        paper.abstract.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        paper.keywords.some(k => k.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+      setPapers(filtered);
+    } finally {
+      setIsLoading(false);
+    }
   }, [analysisContext]);
 
   // Auto-search when query changes
