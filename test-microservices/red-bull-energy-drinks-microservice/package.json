@@ -1,0 +1,30 @@
+{
+  "name": "red-bull-energy-drinks-microservice",
+  "version": "1.0.0",
+  "description": "AI-powered microservice for Red Bull energy drinks analysis",
+  "main": "app.py",
+  "scripts": {
+    "start": "python app.py",
+    "train": "python train_models.py",
+    "test": "python -m pytest tests/ -v",
+    "health": "curl -f http://localhost:5000/health || exit 1"
+  },
+  "engines": {
+    "python": ">=3.8"
+  },
+  "keywords": [
+    "ai",
+    "microservice",
+    "machine-learning",
+    "flask",
+    "data-analysis",
+    "energy-drinks",
+    "red-bull"
+  ],
+  "author": "MPIQ Migration System",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mpiq-ai/red-bull-energy-drinks-microservice"
+  }
+}

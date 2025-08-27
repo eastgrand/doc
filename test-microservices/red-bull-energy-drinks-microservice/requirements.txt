@@ -1,0 +1,18 @@
+# Red Bull Energy Drinks Microservice Dependencies
+# Generated automatically by MPIQ Migration System
+
+# Core Framework
+Flask==2.3.3
+flask-cors==4.0.0
+
+# Data Processing (for full implementation)
+pandas==2.1.4
+numpy==1.24.3
+
+# Machine Learning (for full implementation)
+scikit-learn==1.3.2
+joblib==1.3.2
+
+# Utilities
+python-dateutil==2.8.2
+requests==2.31.0

@@ -182,3 +182,146 @@ export class MigrationError extends Error {
     this.name = 'MigrationError';
   }
 }
+
+// Phase 3 interfaces for microservice automation
+
+export interface MicroservicePackage {
+  projectName: string;
+  template: ProjectTemplate;
+  configuration: MicroserviceConfig;
+  deploymentManifest: DeploymentManifest;
+  healthChecks: HealthCheck[];
+  generatedFiles: Map<string, string>;
+}
+
+export interface MicroserviceConfig {
+  serviceName: string;
+  targetVariable: string;
+  dataFields: string[];
+  routingEndpoints: string[];
+  modelConfig: ModelConfiguration;
+  environmentVars: Record<string, string>;
+  repositoryName: string;
+}
+
+export interface ModelConfiguration {
+  modelType: 'classification' | 'regression' | 'ensemble';
+  features: string[];
+  targetField: string;
+  hyperparameters: Record<string, any>;
+  trainingDataPath: string;
+}
+
+export interface DeploymentManifest {
+  platform: 'render' | 'vercel' | 'aws' | 'local';
+  repositoryUrl: string;
+  buildCommand: string;
+  startCommand: string;
+  environmentVariables: Record<string, string>;
+  healthCheckUrl: string;
+  deploymentConfig: PlatformConfig;
+}
+
+export interface PlatformConfig {
+  render?: {
+    serviceType: 'web_service' | 'private_service';
+    plan: 'free' | 'starter' | 'standard' | 'pro';
+    region: string;
+    autoDeploy: boolean;
+    dockerFile?: string;
+  };
+  vercel?: {
+    framework: string;
+    buildCommand: string;
+    outputDirectory: string;
+  };
+}
+
+export interface HealthCheck {
+  name: string;
+  url: string;
+  method: 'GET' | 'POST';
+  expectedStatus: number;
+  timeout: number;
+  retries: number;
+  body?: any;
+  headers?: Record<string, string>;
+}
+
+export interface MicroserviceGenerationResult {
+  success: boolean;
+  packagePath: string;
+  configuration: MicroserviceConfig;
+  generatedFiles: string[];
+  repositoryUrl?: string;
+  errors: ValidationError[];
+  warnings: ValidationWarning[];
+  validationResults: ValidationResult[];
+  buildLogs: string[];
+}
+
+export interface MicroserviceDeploymentResult {
+  success: boolean;
+  serviceUrl?: string;
+  deploymentId?: string;
+  platform: string;
+  healthCheckResults: HealthCheckResult[];
+  errors: ValidationError[];
+  warnings: ValidationWarning[];
+  logs: string[];
+  duration: number;
+  rollbackAvailable: boolean;
+}
+
+export interface HealthCheckResult {
+  check: HealthCheck;
+  success: boolean;
+  responseTime: number;
+  statusCode?: number;
+  error?: string;
+  response?: any;
+  timestamp: Date;
+}
+
+export interface RenderCredentials {
+  apiKey: string;
+  userId?: string;
+  teamId?: string;
+}
+
+export interface GitHubCredentials {
+  token: string;
+  username: string;
+  organization?: string;
+}
+
+export interface MicroserviceValidationResult {
+  success: boolean;
+  serviceHealth: boolean;
+  targetVariableValid: boolean;
+  modelsLoaded: boolean;
+  endpointsResponding: boolean;
+  dataIntegrationValid: boolean;
+  errors: ValidationError[];
+  warnings: ValidationWarning[];
+  performanceMetrics: MicroservicePerformanceMetrics;
+}
+
+export interface MicroservicePerformanceMetrics extends PerformanceMetrics {
+  responseTime: number;
+  memoryUsage: number;
+  cpuUsage: number;
+  throughput: number;
+  uptime: number;
+  diskUsage: number;
+}
+
+export interface IntegrationTestResult {
+  query: string;
+  expectedEndpoint: string;
+  actualEndpoint: string;
+  success: boolean;
+  responseTime: number;
+  dataQuality: number;
+  error?: string;
+}

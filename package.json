@@ -30,7 +30,12 @@
     "generate-config": "node scripts/migration/generate-config.js",
     "generate-config:list": "node scripts/migration/generate-config.js --list",
     "deploy-config": "node scripts/migration/generate-config.js --deploy",
-    "deploy-config:dry-run": "node scripts/migration/generate-config.js --deploy --dry-run"
+    "deploy-config:dry-run": "node scripts/migration/generate-config.js --deploy --dry-run",
+    "deploy-microservice": "node scripts/migration/deploy-microservice.js",
+    "deploy-microservice:generate": "node scripts/migration/deploy-microservice.js generate",
+    "deploy-microservice:deploy": "node scripts/migration/deploy-microservice.js deploy",
+    "deploy-microservice:validate": "node scripts/migration/deploy-microservice.js validate",
+    "deploy-microservice:list": "node scripts/migration/deploy-microservice.js list-templates"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.8",
@@ -83,6 +88,7 @@
     "chart.js": "^4.4.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "commander": "^14.0.0",
     "csv-parse": "^5.6.0",
     "date-fns": "^4.1.0",
     "deepmerge": "^4.3.1",
