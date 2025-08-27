@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Send, Bot, User, Loader2, Copy, Check, X, Download } from 'lucide-react';
 import { UnifiedAnalysisResponse } from './UnifiedAnalysisWrapper';
+import { sendEnhancedChatMessage, type EnhancedChatResponse } from '@/services/enhanced-chat-service';
 // import { renderPerformanceMetrics } from '@/lib/utils/performanceMetrics'; // Commented out - badges no longer displayed
 import { 
   calculateBasicStats, 
@@ -539,22 +540,22 @@ ${conversationText}
         controller.abort();
       }, 290000); // Set to 290 seconds - 10 seconds less than server timeout (300s) to avoid race condition
 
-      const response = await fetch('/api/claude/generate-response', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestPayload),
-        signal: controller.signal
-      });
+      // Use enhanced chat service with multi-endpoint support for initial analysis
+      const enhancedRequest = {
+        messages: requestPayload.messages,
+        metadata: {
+          ...requestPayload.metadata,
+          enableMultiEndpoint: false, // Don't auto-fetch for initial analysis to keep it fast
+          conversationHistory: []
+        },
+        featureData: requestPayload.featureData,
+        persona: requestPayload.persona,
+        analysisResult: analysisResult
+      };
+
+      const claudeResponse = await sendEnhancedChatMessage(enhancedRequest, { signal: controller.signal });
 
       clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('[UnifiedAnalysisChat] API Error Response:', errorText);
-        throw new Error(`API request failed: ${response.status} ${response.statusText} - ${errorText}`);
-      }
-
-      const claudeResponse = await response.json();
       
       if (claudeResponse.content) {
         // Clean the response content to remove any leaked prompt instructions
@@ -802,30 +803,60 @@ ${conversationText}
       const totalChars = optimizedMessages.reduce((sum, msg) => sum + msg.content.length, 0);
       console.log(`[UnifiedAnalysisChat] Context optimization: ${contextSize} messages, ${totalChars} chars, avg: ${Math.round(totalChars/contextSize)}chars/msg`);
 
-      const response = await fetch('/api/claude/generate-response', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestPayload)
-      });
+      // Use enhanced chat service with multi-endpoint support
+      const enhancedRequest = {
+        messages: optimizedMessages,
+        metadata: {
+          query: userMessage.content,
+          analysisType: result.endpoint?.replace('/', '').replace(/-/g, '_') || 'strategic_analysis',
+          relevantLayers: ['unified_analysis'],
+          spatialFilterIds: (metadata as any)?.spatialFilterIds,
+          filterType: (metadata as any)?.filterType,
+          rankingContext: (metadata as any)?.rankingContext,
+          isClustered: result.data?.isClustered,
+          targetVariable: result.data?.targetVariable,
+          endpoint: result.endpoint,
+          isContextualChat: true,
+          enableMultiEndpoint: true,
+          conversationHistory: messages.slice(-5).map(m => m.content)
+        },
+        featureData: [{
+          layerId: 'unified_analysis',
+          layerName: 'Analysis Results',
+          layerType: 'polygon',
+          features: (() => {
+            const records = result.data?.records || [];
+            return records;
+          })()
+        }],
+        persona: persona,
+        analysisResult: analysisResult
+      };
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('[UnifiedAnalysisChat] API Error Response:', errorText);
-        throw new Error(`API request failed: ${response.status} ${response.statusText} - ${errorText}`);
-      }
-
-      const claudeResponse = await response.json();
+      const claudeResponse = await sendEnhancedChatMessage(enhancedRequest);
       
       if (claudeResponse.content) {
+        // Enhanced response with multi-endpoint context
+        let responseContent = claudeResponse.content;
+        
+        // Add multi-endpoint context information if available
+        if (claudeResponse.multiEndpointContext?.additionalDataFetched) {
+          const { endpointsFetched, fetchTime, reasoning } = claudeResponse.multiEndpointContext;
+          responseContent += `\n\n---\n**📊 Enhanced Analysis**: Included data from ${endpointsFetched.length} additional endpoint${endpointsFetched.length > 1 ? 's' : ''}: ${endpointsFetched.map(e => e.replace('/', '').replace(/-/g, ' ')).join(', ')} (fetched in ${fetchTime.toFixed(0)}ms)\n*${reasoning}*`;
+        }
+
         const aiMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: claudeResponse.content,
+          content: responseContent,
           timestamp: new Date()
         };
         const finalMessages = [...updatedMessages, aiMessage];
         setMessages(finalMessages);
-        console.log('[UnifiedAnalysisChat] Chat response received successfully');
+        console.log('[UnifiedAnalysisChat] Enhanced chat response received successfully', {
+          multiEndpoint: claudeResponse.multiEndpointContext?.additionalDataFetched,
+          suggestions: claudeResponse.suggestions?.length || 0
+        });
       } else {
         throw new Error('No content in API response');
       }

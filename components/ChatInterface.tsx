@@ -20,7 +20,7 @@ import {
   formatPatternsForChat
 } from '@/lib/analysis/statsCalculator';
 import { ErrorBoundary } from './ErrorBoundary';
-import { sendChatMessage } from '@/services/chat-service';
+import { sendEnhancedChatMessage, type EnhancedChatResponse } from '@/services/enhanced-chat-service';
 import { StatsWithInfo } from '@/components/stats/StatsWithInfo';
 import type { AnalysisResult, AnalysisMetadata } from '@/lib/analysis/types';
 
@@ -613,8 +613,20 @@ ${conversationText}
         controller.abort();
       }, 290000); // Set to 290 seconds - 10 seconds less than server timeout (300s) to avoid race condition
 
-      // Use external service with FormData format (same as analysis)
-      const claudeResponse = await sendChatMessage(requestPayload, { signal: controller.signal });
+      // Use enhanced chat service with multi-endpoint support for initial analysis
+      const enhancedRequest = {
+        messages: requestPayload.messages,
+        metadata: {
+          ...requestPayload.metadata,
+          enableMultiEndpoint: false, // Don't auto-fetch for initial analysis to keep it fast
+          conversationHistory: []
+        },
+        featureData: requestPayload.featureData,
+        persona: requestPayload.persona,
+        analysisResult: analysisResult
+      };
+
+      const claudeResponse = await sendEnhancedChatMessage(enhancedRequest, { signal: controller.signal });
       
       clearTimeout(timeoutId);
       
@@ -858,19 +870,45 @@ ${conversationText}
       const totalChars = optimizedMessages.reduce((sum, msg) => sum + msg.content.length, 0);
       console.log(`[ChatInterface] Context optimization: ${contextSize} messages, ${totalChars} chars, avg: ${Math.round(totalChars/contextSize)}chars/msg`);
       
-      // Use external service with FormData format (same as analysis)
-      const claudeResponse = await sendChatMessage(requestPayload);
+      // Use enhanced chat service with multi-endpoint support
+      const enhancedRequest = {
+        messages: optimizedMessages,
+        metadata: {
+          ...requestPayload.metadata,
+          enableMultiEndpoint: true,
+          conversationHistory: messages.slice(-5).map(m => m.content) // Last 5 messages for context
+        },
+        featureData: requestPayload.featureData,
+        persona: requestPayload.persona,
+        analysisResult: analysisResult
+      };
+
+      const claudeResponse = await sendEnhancedChatMessage(enhancedRequest);
       
       if (claudeResponse.content) {
+        // Enhanced response with multi-endpoint context
+        let responseContent = claudeResponse.content;
+        
+        // Add multi-endpoint context information if available
+        if (claudeResponse.multiEndpointContext?.additionalDataFetched) {
+          const { endpointsFetched, fetchTime, reasoning } = claudeResponse.multiEndpointContext;
+          responseContent += `\n\n---\n**📊 Enhanced Analysis**: Included data from ${endpointsFetched.length} additional endpoint${endpointsFetched.length > 1 ? 's' : ''}: ${endpointsFetched.map(e => e.replace('/', '').replace(/-/g, ' ')).join(', ')} (fetched in ${fetchTime.toFixed(0)}ms)\n*${reasoning}*`;
+        }
+
         const aiMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: claudeResponse.content,
+          content: responseContent,
           timestamp: new Date()
         };
+        
         const finalMessages = [...updatedMessages, aiMessage];
         setMessages(finalMessages);
-        // console.log('[ChatInterface] Chat response received successfully');
+        
+        console.log('[ChatInterface] Enhanced chat response received successfully', {
+          multiEndpoint: claudeResponse.multiEndpointContext?.additionalDataFetched,
+          suggestions: claudeResponse.suggestions?.length || 0
+        });
       } else {
         throw new Error('No content in API response');
       }

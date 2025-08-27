@@ -141,6 +141,48 @@ AI: Provides comprehensive analysis:
   * "Risk: Newport Beach market saturation"
 ```
 
+## **🚀 Advanced Multi-Dataset Intelligence**
+
+### **Cross-Analysis Conversations**
+The chat system now automatically detects when you need data from multiple analysis types and fetches it in real-time:
+
+**Smart Detection Examples:**
+```
+You: "Show me demographic insights for Orange County"
+AI: [Provides demographic analysis]
+
+You: "What about competitive landscape in these areas?"
+AI: [Automatically fetches competitive data for same areas]
+📊 Enhanced Analysis: Included data from competitive analysis (fetched in 1,200ms)
+```
+
+**Available Data Combinations:**
+- **Demographics** + **Competition**: "How do demographics affect our competitive position?"
+- **Strategic** + **Competitive**: "What strategic moves should we consider given the competition?"
+- **Demographics** + **Strategic**: "What demographic factors create the biggest opportunities?"
+- **Brand** + **Demographics**: "Which demographics prefer our brand over competitors?"
+
+### **Intelligent Context Switching**
+The system automatically:
+- **Detects** when you need additional data types
+- **Fetches** relevant datasets for the same geographic areas
+- **Combines** insights from multiple analysis endpoints
+- **Maintains** conversation flow without interruption
+
+**Example Multi-Dataset Conversation:**
+```
+You: "Analyze beverage market in Miami"
+AI: [Strategic analysis results]
+
+You: "What demographics drive this performance?"
+AI: [Fetches demographic data for Miami]
+📊 Enhanced Analysis: Included data from demographic insights
+
+You: "How does our brand perform against competitors here?"
+AI: [Fetches competitive + brand data for Miami]
+📊 Enhanced Analysis: Included data from competitive analysis, brand difference
+```
+
 ## **What Makes This Different**
 
 ### **🎯 vs. Traditional Market Research**
@@ -148,12 +190,15 @@ AI: Provides comprehensive analysis:
 - **Interactive exploration** rather than static reports
 - **Natural language** instead of complex interfaces
 - **Cost-effective** compared to hiring research firms
+- **🆕 Cross-dataset intelligence** - automatically combines multiple data sources
 
 ### **🤖 vs. Basic AI Chatbots**
 - **Real demographic data** from authoritative sources
 - **Geographic intelligence** with precise location targeting
 - **Business-focused insights** not just general answers
 - **Professional analysis quality** suitable for business decisions
+- **🆕 Multi-endpoint awareness** - accesses 15+ specialized analysis types
+- **🆕 Contextual data fetching** - gets additional data when you need it
 
 ## **Technical Features (Behind the Scenes)**
 
@@ -181,6 +226,14 @@ Your analysis draws from:
 - **Spatial clustering** for geographic insights
 - **Statistical modeling** for predictions and projections
 - **Machine learning** for pattern recognition
+
+### **🔗 Multi-Endpoint Intelligence**
+- **15+ Analysis Types**: Demographics, competitive, strategic, brand, clustering, correlations, and more
+- **Smart Detection**: Automatically identifies when you need additional data types
+- **Real-Time Fetching**: Retrieves complementary datasets in 1-3 seconds
+- **Geographic Consistency**: Maintains same geographic scope across different analyses
+- **Intelligent Caching**: Avoids redundant API calls for better performance
+- **Graceful Fallback**: Continues conversation even if additional data unavailable
 
 ## **Getting Help**
 
