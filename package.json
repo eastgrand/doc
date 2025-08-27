@@ -26,7 +26,11 @@
     "remove-gis-metadata": "ts-node scripts/remove-gis-metadata.ts",
     "validate-migration-readiness": "node scripts/migration/validate-migration-readiness.js",
     "validate-migration-readiness:verbose": "node scripts/migration/validate-migration-readiness.js --verbose",
-    "validate-migration-readiness:json": "node scripts/migration/validate-migration-readiness.js --json"
+    "validate-migration-readiness:json": "node scripts/migration/validate-migration-readiness.js --json",
+    "generate-config": "node scripts/migration/generate-config.js",
+    "generate-config:list": "node scripts/migration/generate-config.js --list",
+    "deploy-config": "node scripts/migration/generate-config.js --deploy",
+    "deploy-config:dry-run": "node scripts/migration/generate-config.js --deploy --dry-run"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.8",
