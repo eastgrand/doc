@@ -245,6 +245,11 @@ const ChatInterfaceInner: React.FC<ChatInterfaceProps> = ({
       case 'status':
         const { analysisResult: result } = analysisResult;
         const recordCount = result.data?.records?.length || 0;
+        const contextSize = messages.length > 5 ? 
+          (messages.reduce((sum, msg) => sum + msg.content.length, 0) / messages.length > 3000 ? 4 :
+           messages.reduce((sum, msg) => sum + msg.content.length, 0) / messages.length > 1500 ? 6 : 7) :
+          messages.length;
+        
         return { 
           isCommand: true, 
           response: `📊 **Analysis Status**
@@ -253,6 +258,11 @@ const ChatInterfaceInner: React.FC<ChatInterfaceProps> = ({
 • Areas analyzed: ${recordCount}
 • Analysis type: ${result.endpoint?.replace('/', '').replace(/-/g, ' ') || 'Unknown'}
 • Mode: ${analysisMode === 'full' ? 'Full Analysis' : 'Stats Only'}
+
+**Chat Context:**
+• Total messages: ${messages.length}
+• Context window: ${contextSize} messages (adaptive)
+• Avg message length: ${messages.length ? Math.round(messages.reduce((sum, msg) => sum + msg.content.length, 0) / messages.length) : 0} chars
 
 **Available Data:**
 • Basic statistics ✅
@@ -764,12 +774,42 @@ ${conversationText}
       // Smart payload optimization for follow-up questions
       const isFollowUpQuestion = messages.length > 1;
       
-      // For follow-ups, keep only recent context to avoid token limits
+      // Adaptive context management for better conversation flow
+      const getOptimalContextSize = (msgs: ChatMessage[]): number => {
+        if (msgs.length <= 5) return msgs.length; // Keep all if few messages
+        
+        // Calculate average message length to determine context size
+        const avgLength = msgs.reduce((sum, msg) => sum + msg.content.length, 0) / msgs.length;
+        
+        // Adaptive sizing: fewer messages if they're very long, more if they're short
+        if (avgLength > 3000) return 4;      // Large messages (initial analysis) - keep fewer
+        if (avgLength > 1500) return 6;      // Medium messages - balanced approach  
+        return 7;                            // Short messages - keep more for context
+      };
+      
+      const truncateMessage = (content: string, maxLength: number = 4000): string => {
+        if (content.length <= maxLength) return content;
+        
+        // Try to truncate at a natural break point (paragraph, sentence, etc.)
+        const truncated = content.substring(0, maxLength);
+        const lastParagraph = truncated.lastIndexOf('\n\n');
+        const lastSentence = truncated.lastIndexOf('. ');
+        
+        if (lastParagraph > maxLength * 0.7) {
+          return truncated.substring(0, lastParagraph) + '\n\n...[message truncated for context efficiency]';
+        } else if (lastSentence > maxLength * 0.7) {
+          return truncated.substring(0, lastSentence + 1) + ' ...[truncated]';
+        } else {
+          return truncated + '...[truncated]';
+        }
+      };
+      
+      // For follow-ups, use adaptive context with smart truncation
       const optimizedMessages = isFollowUpQuestion ? 
         [
-          ...messages.slice(-3).map(msg => ({ // Keep last 3 messages for context
+          ...messages.slice(-getOptimalContextSize(messages)).map(msg => ({
             role: msg.role,
-            content: msg.content
+            content: truncateMessage(msg.content)
           })),
           {
             role: 'user' as const,
@@ -779,7 +819,7 @@ ${conversationText}
         [
           ...messages.map(msg => ({
             role: msg.role,
-            content: msg.content
+            content: msg.content // Keep full content for initial conversations
           })),
           {
             role: 'user' as const,
@@ -813,7 +853,10 @@ ${conversationText}
         persona: persona
       };
 
-      // console.log('[ChatInterface] Request payload prepared');
+      // Debug: Log context optimization results
+      const contextSize = optimizedMessages.length - 1; // -1 for current message
+      const totalChars = optimizedMessages.reduce((sum, msg) => sum + msg.content.length, 0);
+      console.log(`[ChatInterface] Context optimization: ${contextSize} messages, ${totalChars} chars, avg: ${Math.round(totalChars/contextSize)}chars/msg`);
       
       // Use external service with FormData format (same as analysis)
       const claudeResponse = await sendChatMessage(requestPayload);

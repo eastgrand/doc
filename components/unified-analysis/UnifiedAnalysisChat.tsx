@@ -711,12 +711,42 @@ ${conversationText}
       // Smart payload optimization for follow-up questions
       const isFollowUpQuestion = messages.length > 1;
       
-      // For follow-ups, keep only recent context to avoid token limits
+      // Adaptive context management for better conversation flow
+      const getOptimalContextSize = (msgs: ChatMessage[]): number => {
+        if (msgs.length <= 5) return msgs.length; // Keep all if few messages
+        
+        // Calculate average message length to determine context size
+        const avgLength = msgs.reduce((sum, msg) => sum + msg.content.length, 0) / msgs.length;
+        
+        // Adaptive sizing: fewer messages if they're very long, more if they're short
+        if (avgLength > 3000) return 4;      // Large messages (initial analysis) - keep fewer
+        if (avgLength > 1500) return 6;      // Medium messages - balanced approach  
+        return 7;                            // Short messages - keep more for context
+      };
+      
+      const truncateMessage = (content: string, maxLength: number = 4000): string => {
+        if (content.length <= maxLength) return content;
+        
+        // Try to truncate at a natural break point (paragraph, sentence, etc.)
+        const truncated = content.substring(0, maxLength);
+        const lastParagraph = truncated.lastIndexOf('\n\n');
+        const lastSentence = truncated.lastIndexOf('. ');
+        
+        if (lastParagraph > maxLength * 0.7) {
+          return truncated.substring(0, lastParagraph) + '\n\n...[message truncated for context efficiency]';
+        } else if (lastSentence > maxLength * 0.7) {
+          return truncated.substring(0, lastSentence + 1) + ' ...[truncated]';
+        } else {
+          return truncated + '...[truncated]';
+        }
+      };
+      
+      // For follow-ups, use adaptive context with smart truncation
       const optimizedMessages = isFollowUpQuestion ? 
         [
-          ...messages.slice(-3).map(msg => ({ // Keep last 3 messages for context
+          ...messages.slice(-getOptimalContextSize(messages)).map(msg => ({
             role: msg.role,
-            content: msg.content
+            content: truncateMessage(msg.content)
           })),
           {
             role: 'user' as const,
@@ -726,7 +756,7 @@ ${conversationText}
         [
           ...messages.map(msg => ({
             role: msg.role,
-            content: msg.content
+            content: msg.content // Keep full content for initial conversations
           })),
           {
             role: 'user' as const,
@@ -767,51 +797,11 @@ ${conversationText}
         persona: persona
       };
 
-      console.log('[UnifiedAnalysisChat] Request payload prepared - MINIMAL LOG');
+      // Debug: Log context optimization results  
+      const contextSize = optimizedMessages.length - 1; // -1 for current message
+      const totalChars = optimizedMessages.reduce((sum, msg) => sum + msg.content.length, 0);
+      console.log(`[UnifiedAnalysisChat] Context optimization: ${contextSize} messages, ${totalChars} chars, avg: ${Math.round(totalChars/contextSize)}chars/msg`);
 
-      // TEST: Is it the JSON.stringify?
-      console.log('🧪 [TEST] About to stringify...');
-      try {
-        const stringified = JSON.stringify(requestPayload);
-        console.log('🧪 [TEST] Stringify success, length:', stringified.length);
-      } catch (e) {
-        console.error('🧪 [TEST] Stringify failed:', e);
-      }
-      
-      // TEST: Is it ANY fetch from this component to our API routes?
-      console.log('🧪 [COMPONENT TEST] Testing if issue is component-specific...');
-      
-      // Test 1: External URL from this component
-      console.log('🧪 [TEST 1] External fetch from UnifiedAnalysisChat...');
-      try {
-        await fetch('https://jsonplaceholder.typicode.com/posts/1');
-        console.log('🧪 [TEST 1] External fetch SUCCESS - no Fast Refresh?');
-      } catch {
-        console.log('🧪 [TEST 1] External fetch failed');
-      }
-      
-      // Test 2: Different internal endpoint
-      console.log('🧪 [TEST 2] Fetching different internal endpoint...');
-      try {
-        await fetch('/api/blob/upload', { method: 'GET' }).catch(() => null);
-        console.log('🧪 [TEST 2] Internal endpoint completed - Fast Refresh?');
-      } catch {
-        console.log('🧪 [TEST 2] Internal endpoint failed');
-      }
-      
-      // Test 3: Our problematic endpoint
-      console.log('🧪 [TEST 3] Fetching /api/claude/generate-response...');
-      await fetch('/api/claude/generate-response', {
-        method: 'POST',
-        body: new FormData()
-      });
-      console.log('🧪 [TEST 3] Claude endpoint completed - definitely Fast Refresh?');
-      
-      setIsProcessing(false);
-      return;
-
-      // TODO: Re-enable this code after testing
-      /*
       const response = await fetch('/api/claude/generate-response', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -833,13 +823,12 @@ ${conversationText}
           content: claudeResponse.content,
           timestamp: new Date()
         };
-        const finalMessages = [...messages, aiMessage];
+        const finalMessages = [...updatedMessages, aiMessage];
         setMessages(finalMessages);
         console.log('[UnifiedAnalysisChat] Chat response received successfully');
       } else {
         throw new Error('No content in API response');
       }
-      */
     } catch (error) {
       console.error('[UnifiedAnalysisChat] Failed to get chat response:', error);
       
