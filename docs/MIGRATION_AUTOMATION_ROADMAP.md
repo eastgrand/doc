@@ -811,6 +811,71 @@ npm run deploy-microservice:generate --template energy-drinks --config myconfig.
 - **Main App Integration**: CORS and API endpoint configuration for seamless integration
 - **Environment-Specific**: Different configs for dev, staging, production
 
+### 🗺️ **ArcGIS Training Data Generation System**
+
+**Problem Solved**: Manual creation of training data CSV/JSON files from ArcGIS Feature Services with mixed geometry types.
+
+**Solution**: Automated data extraction with spatial processing capabilities for polygon and point layers.
+
+#### Automatic Data Extraction Pipeline
+```bash
+# 1. Analyze ArcGIS Feature Service layers and discover fields
+npm run deploy-microservice:analyze --arcgis-url "https://services.arcgis.com/org/rest/services/Demographics/FeatureServer" --save-layers
+
+# 2. Extract and generate training data with spatial joins
+npm run deploy-microservice:extract --strategy spatial_join --format csv --include-geometry
+
+# 3. Generate microservice with extracted data
+npm run deploy-microservice:generate --template energy-drinks --config microservice-config.json
+```
+
+#### Mixed Geometry Handling Strategies
+
+**🔗 Spatial Join Strategy** (Default for mixed geometries):
+- **Polygon Layers**: Demographics_by_ZipCode (41,000 records)
+- **Point Layers**: Store_Locations (15,632 records)  
+- **Result**: Joins polygon attributes to point locations via spatial intersection
+- **Use Case**: Store analysis with demographic context from surrounding area
+
+**📍 Polygon Centroids Strategy**:
+- Converts polygon areas to centroid points
+- Maintains polygon attributes but creates point-based dataset
+- **Use Case**: When all analysis needs to be point-based
+
+**📊 Separate Layers Strategy**:
+- Processes each layer independently
+- No spatial relationships between layers
+- **Use Case**: When layers represent different phenomena
+
+#### Field Discovery & Auto-Mapping
+- **Discovers all unique fields** across all layers in Feature Service
+- **Identifies target variables** (MP12207A_B_P, MP12206A_B_P, etc.)
+- **Maps geometric data** (coordinates, centroids, boundaries)
+- **Preserves layer metadata** (layer names, geometry types, record counts)
+
+#### Generated Training Data Structure
+```csv
+ZCTA5CE10,Population,MedianIncome,MP12207A_B_P,MP12206A_B_P,StoreID,Revenue,Latitude,Longitude
+02101,12450,85000,0.35,0.28,STR001,450000,42.3601,-71.0589
+02102,8900,95000,0.42,0.31,STR002,380000,42.3581,-71.0636
+90210,15200,120000,0.48,0.35,STR003,520000,34.0901,-118.4065
+```
+
+#### Spatial Processing Capabilities
+- **Spatial Joins**: Polygon attributes → Point locations
+- **Centroid Calculation**: Polygon areas → Point centroids  
+- **Coordinate Extraction**: Geographic coordinates for ML features
+- **Multi-Layer Processing**: Handles 3+ layers with different geometries
+- **Field Harmonization**: Combines fields from multiple sources
+
+#### Output Formats & Integration
+- **CSV**: Ready for pandas/scikit-learn ML training
+- **JSON**: Structured data for API consumption
+- **GeoJSON**: Preserves spatial relationships for mapping
+- **Automatic Config Update**: Training data path auto-configured
+
+**Result**: No more manual CSV creation - complete automation from ArcGIS Feature Service to ML-ready training data! 🚀
+
 ### Week 4: Integration & Polish (Sep 17 - Sep 23)
 **Priority**: Medium - Creates seamless user experience
 

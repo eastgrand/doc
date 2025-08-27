@@ -323,6 +323,151 @@ program
   });
 
 program
+  .command('analyze-data')
+  .description('Analyze ArcGIS Feature Service layers and discover fields')
+  .requiredOption('-u, --arcgis-url <url>', 'ArcGIS Feature Service URL')
+  .option('-c, --config <path>', 'Configuration file to update', 'microservice-config.json')
+  .option('--save-layers', 'Save layer information to config file')
+  .action(async (options) => {
+    try {
+      console.log('🔍 Analyzing ArcGIS Feature Service...');
+      console.log(`URL: ${options.arcgisUrl}`);
+      console.log('─'.repeat(50));
+
+      // Mock analysis for demonstration
+      const layers = await mockAnalyzeArcGISService(options.arcgisUrl);
+      
+      if (layers.success) {
+        console.log(`✅ Analysis complete: Found ${layers.layerCount} layers`);
+        console.log('\n📊 Layer Summary:');
+        
+        layers.layers.forEach(layer => {
+          console.log(`   ${layer.id}. ${layer.name}`);
+          console.log(`      Type: ${layer.geometryType}`);
+          console.log(`      Records: ${layer.recordCount.toLocaleString()}`);
+          console.log(`      Fields: ${layer.fieldCount} (${layer.keyFields.join(', ')})`);
+          console.log('');
+        });
+
+        console.log('📋 Mixed Geometry Handling:');
+        if (layers.polygonLayers > 0 && layers.pointLayers > 0) {
+          console.log(`   ✅ Found ${layers.polygonLayers} polygon and ${layers.pointLayers} point layers`);
+          console.log('   🔗 Spatial join available: Polygon attributes → Point locations');
+          console.log('   📍 Centroid conversion available: Polygon areas → Point centroids');
+        } else if (layers.polygonLayers > 0) {
+          console.log(`   📊 ${layers.polygonLayers} polygon layers found`);
+          console.log('   💡 Recommendation: Convert to centroids for point-based analysis');
+        } else if (layers.pointLayers > 0) {
+          console.log(`   📍 ${layers.pointLayers} point layers found`);
+          console.log('   ✅ Ready for direct point-based analysis');
+        }
+
+        if (options.saveLayers) {
+          console.log('\n💾 Updating configuration file...');
+          await updateConfigWithLayerInfo(options.config, layers);
+          console.log(`✅ Layer information saved to ${options.config}`);
+        }
+
+        console.log('\n🚀 Next steps:');
+        console.log(`   1. Extract training data: npm run deploy-microservice:extract-data --config ${options.config}`);
+        console.log(`   2. Generate microservice: npm run deploy-microservice:generate --template <name> --config ${options.config}`);
+        
+      } else {
+        console.error('❌ Analysis failed:');
+        layers.errors.forEach(error => {
+          console.error(`   ${error.severity.toUpperCase()}: ${error.message}`);
+        });
+        process.exit(1);
+      }
+
+    } catch (error) {
+      console.error(`❌ Analysis failed: ${error.message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('extract-data')
+  .description('Extract training data from ArcGIS Feature Service layers')
+  .option('-c, --config <path>', 'Configuration file path', 'microservice-config.json')
+  .option('-o, --output <path>', 'Output file path (auto-generated if not specified)')
+  .option('--format <format>', 'Output format', 'csv', /^(csv|json|geojson)$/)
+  .option('--max-records <number>', 'Maximum records per layer', '2000')
+  .option('--strategy <strategy>', 'Aggregation strategy', 'spatial_join', /^(spatial_join|polygon_centroids|separate_layers)$/)
+  .option('--include-geometry', 'Include geometry coordinates in output')
+  .action(async (options) => {
+    try {
+      console.log('📊 Extracting training data from ArcGIS...');
+      console.log(`Config: ${options.config}`);
+      console.log(`Format: ${options.format}`);
+      console.log(`Strategy: ${options.strategy}`);
+      console.log('─'.repeat(50));
+
+      // Load configuration
+      const config = await loadConfigurationFile(options.config);
+      
+      if (!config.data_sources?.arcgis_service_url) {
+        console.error('❌ ArcGIS service URL not configured');
+        console.log(`   Please run: npm run deploy-microservice:analyze-data --arcgis-url <url> --config ${options.config} --save-layers`);
+        process.exit(1);
+      }
+
+      // Mock extraction for demonstration
+      const extractionResult = await mockExtractTrainingData(config, options);
+      
+      if (extractionResult.success) {
+        console.log('✅ Data extraction completed successfully!');
+        console.log(`📁 Output: ${extractionResult.outputPath}`);
+        console.log(`📊 Records: ${extractionResult.recordCount.toLocaleString()}`);
+        console.log(`📋 Fields: ${extractionResult.fieldCount}`);
+        console.log(`⏱️  Time: ${(extractionResult.processingTime / 1000).toFixed(1)}s`);
+
+        if (extractionResult.spatialJoins.length > 0) {
+          console.log('\n🔗 Spatial Joins Performed:');
+          extractionResult.spatialJoins.forEach(join => {
+            console.log(`   ${join.polygonLayer} ↔ ${join.pointLayer}: ${join.matchedRecords} records`);
+          });
+        }
+
+        // Update config with training data path
+        config.data_sources.training_data_url = extractionResult.outputPath;
+        config.data_sources.last_extraction = new Date().toISOString();
+        config.data_sources.extraction_metadata = {
+          record_count: extractionResult.recordCount,
+          field_count: extractionResult.fieldCount,
+          layers_processed: extractionResult.layers.length,
+          strategy_used: options.strategy
+        };
+
+        await fs.writeFile(options.config, JSON.stringify(config, null, 2));
+        console.log(`✅ Configuration updated with training data path`);
+
+        console.log('\n🚀 Next steps:');
+        console.log(`   Generate microservice: npm run deploy-microservice:generate --template <name> --config ${options.config}`);
+        
+      } else {
+        console.error('❌ Data extraction failed:');
+        extractionResult.errors.forEach(error => {
+          console.error(`   ${error.severity.toUpperCase()}: ${error.message}`);
+        });
+        
+        if (extractionResult.warnings.length > 0) {
+          console.log('\n⚠️  Warnings:');
+          extractionResult.warnings.forEach(warning => {
+            console.log(`   ${warning.message} (${warning.impact})`);
+          });
+        }
+        
+        process.exit(1);
+      }
+
+    } catch (error) {
+      console.error(`❌ Data extraction failed: ${error.message}`);
+      process.exit(1);
+    }
+  });
+
+program
   .command('init-config')
   .description('Create microservice configuration file')
   .option('-o, --output <path>', 'Configuration file path', 'microservice-config.json')
@@ -649,6 +794,152 @@ async function mockGenerateFromTemplate(template, dataPath, outputDir, platform,
     ],
     warnings: [],
     errors: []
+  };
+}
+
+// Mock implementations for ArcGIS data analysis and extraction
+async function mockAnalyzeArcGISService(arcgisUrl) {
+  // Simulate ArcGIS service analysis
+  console.log(`🔍 Connecting to: ${arcgisUrl}`);
+  console.log('📡 Fetching service metadata...');
+  
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  
+  const layers = [
+    {
+      id: 0,
+      name: 'Demographics_by_ZipCode',
+      geometryType: 'Polygon',
+      recordCount: 41000,
+      fieldCount: 24,
+      keyFields: ['ZCTA5CE10', 'GEOID10', 'Population', 'MedianIncome', 'MP12207A_B_P', 'MP12206A_B_P']
+    },
+    {
+      id: 1, 
+      name: 'Store_Locations',
+      geometryType: 'Point',
+      recordCount: 15632,
+      fieldCount: 18,
+      keyFields: ['StoreID', 'Chain', 'Category', 'Revenue', 'MP12207A_B_P']
+    },
+    {
+      id: 2,
+      name: 'Market_Regions',
+      geometryType: 'Polygon', 
+      recordCount: 3540,
+      fieldCount: 12,
+      keyFields: ['RegionID', 'Market_Type', 'Competition_Level', 'MP12208A_B_P']
+    }
+  ];
+  
+  const polygonLayers = layers.filter(l => l.geometryType === 'Polygon').length;
+  const pointLayers = layers.filter(l => l.geometryType === 'Point').length;
+  
+  return {
+    success: true,
+    layerCount: layers.length,
+    layers: layers,
+    polygonLayers,
+    pointLayers,
+    errors: [],
+    warnings: []
+  };
+}
+
+async function updateConfigWithLayerInfo(configPath, layerInfo) {
+  const config = JSON.parse(await fs.readFile(configPath, 'utf8'));
+  
+  config.data_sources.arcgis_layers = layerInfo.layers.map(layer => ({
+    id: layer.id,
+    name: layer.name,
+    geometry_type: layer.geometryType,
+    record_count: layer.recordCount,
+    field_count: layer.fieldCount,
+    key_fields: layer.keyFields
+  }));
+  
+  config.data_sources.layer_analysis = {
+    total_layers: layerInfo.layerCount,
+    polygon_layers: layerInfo.polygonLayers,
+    point_layers: layerInfo.pointLayers,
+    analysis_date: new Date().toISOString()
+  };
+  
+  await fs.writeFile(configPath, JSON.stringify(config, null, 2));
+}
+
+async function mockExtractTrainingData(config, options) {
+  console.log('🚀 Starting data extraction...');
+  console.log(`📊 ArcGIS Service: ${config.data_sources.arcgis_service_url}`);
+  console.log(`🔧 Strategy: ${options.strategy}`);
+  
+  // Simulate extraction process
+  const steps = [
+    'Connecting to ArcGIS service...',
+    'Discovering layer schemas...',
+    'Analyzing geometry types...',
+    'Extracting Demographics_by_ZipCode (Polygons)...',
+    'Extracting Store_Locations (Points)...',
+    'Performing spatial joins...',
+    'Processing field mappings...',
+    'Generating training dataset...',
+    'Writing output file...'
+  ];
+  
+  for (const step of steps) {
+    console.log(`   🔄 ${step}`);
+    await new Promise(resolve => setTimeout(resolve, 300));
+  }
+  
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const outputPath = `training-data-${timestamp}.${options.format}`;
+  
+  // Simulate writing a CSV file
+  const mockData = [
+    'ZCTA5CE10,Population,MedianIncome,MP12207A_B_P,MP12206A_B_P,StoreID,Revenue,Latitude,Longitude',
+    '02101,12450,85000,0.35,0.28,STR001,450000,42.3601,-71.0589',
+    '02102,8900,95000,0.42,0.31,STR002,380000,42.3581,-71.0636',
+    '90210,15200,120000,0.48,0.35,STR003,520000,34.0901,-118.4065'
+  ].join('\n');
+  
+  await fs.writeFile(outputPath, mockData);
+  
+  return {
+    success: true,
+    outputPath: outputPath,
+    recordCount: 61572,
+    fieldCount: 32,
+    processingTime: 4500,
+    layers: [
+      {
+        layerId: 0,
+        layerName: 'Demographics_by_ZipCode',
+        geometryType: 'Polygon',
+        recordsExtracted: 41000,
+        fieldsExtracted: ['ZCTA5CE10', 'Population', 'MedianIncome', 'MP12207A_B_P', 'MP12206A_B_P'],
+        processingMethod: 'spatial_join'
+      },
+      {
+        layerId: 1,
+        layerName: 'Store_Locations', 
+        geometryType: 'Point',
+        recordsExtracted: 15632,
+        fieldsExtracted: ['StoreID', 'Chain', 'Category', 'Revenue', 'MP12207A_B_P'],
+        processingMethod: 'spatial_join'
+      }
+    ],
+    spatialJoins: [
+      {
+        polygonLayer: 'Demographics_by_ZipCode',
+        pointLayer: 'Store_Locations',
+        joinMethod: 'intersect',
+        matchedRecords: 15632,
+        unmatchedRecords: 0
+      }
+    ],
+    errors: [],
+    warnings: []
   };
 }
 

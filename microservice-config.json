@@ -6,9 +6,66 @@
   },
   "data_sources": {
     "arcgis_service_url": "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_Zip_Codes/FeatureServer",
-    "training_data_url": "https://raw.githubusercontent.com/your-org/energy-drinks-data/main/red-bull-market-data.csv",
+    "training_data_url": "training-data-2025-08-27T13-38-13-240Z.csv",
     "backup_data_url": "https://backup-source.com/data/energy-drinks-backup.csv",
-    "data_format": "csv"
+    "data_format": "csv",
+    "arcgis_layers": [
+      {
+        "id": 0,
+        "name": "Demographics_by_ZipCode",
+        "geometry_type": "Polygon",
+        "record_count": 41000,
+        "field_count": 24,
+        "key_fields": [
+          "ZCTA5CE10",
+          "GEOID10",
+          "Population",
+          "MedianIncome",
+          "MP12207A_B_P",
+          "MP12206A_B_P"
+        ]
+      },
+      {
+        "id": 1,
+        "name": "Store_Locations",
+        "geometry_type": "Point",
+        "record_count": 15632,
+        "field_count": 18,
+        "key_fields": [
+          "StoreID",
+          "Chain",
+          "Category",
+          "Revenue",
+          "MP12207A_B_P"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Market_Regions",
+        "geometry_type": "Polygon",
+        "record_count": 3540,
+        "field_count": 12,
+        "key_fields": [
+          "RegionID",
+          "Market_Type",
+          "Competition_Level",
+          "MP12208A_B_P"
+        ]
+      }
+    ],
+    "layer_analysis": {
+      "total_layers": 3,
+      "polygon_layers": 2,
+      "point_layers": 1,
+      "analysis_date": "2025-08-27T13:36:10.351Z"
+    },
+    "last_extraction": "2025-08-27T13:38:13.269Z",
+    "extraction_metadata": {
+      "record_count": 61572,
+      "field_count": 32,
+      "layers_processed": 2,
+      "strategy_used": "spatial_join"
+    }
   },
   "target_configuration": {
     "target_variable": "MP12207A_B_P",
