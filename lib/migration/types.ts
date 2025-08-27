@@ -195,13 +195,80 @@ export interface MicroservicePackage {
 }
 
 export interface MicroserviceConfig {
-  serviceName: string;
-  targetVariable: string;
-  dataFields: string[];
-  routingEndpoints: string[];
-  modelConfig: ModelConfiguration;
-  environmentVars: Record<string, string>;
-  repositoryName: string;
+  project: {
+    name: string;
+    description: string;
+    version: string;
+  };
+  data_sources: {
+    arcgis_service_url: string;
+    training_data_url: string;
+    backup_data_url: string;
+    data_format: string;
+    arcgis_layers: ArcGISLayer[];
+    layer_analysis?: {
+      total_layers: number;
+      polygon_layers: number;
+      point_layers: number;
+      analysis_date: string;
+    };
+    last_extraction?: string;
+    extraction_metadata?: any;
+  };
+  target_configuration: {
+    target_variable: string;
+    target_brand: string;
+    custom_field_mapping: Record<string, string>;
+  };
+  geographic_configuration: {
+    boundary_service: string;
+    default_extent: {
+      xmin: number;
+      ymin: number;
+      xmax: number;
+      ymax: number;
+    };
+    coordinate_system: string;
+    sample_cities?: string[];
+  };
+  deployment: {
+    environment: string;
+    platform: string;
+    region: string;
+    plan: string;
+    auto_deploy: boolean;
+    health_check_enabled: boolean;
+  };
+  integration: {
+    main_app_url: string;
+    api_endpoints: string[];
+    auth_required: boolean;
+    cors_origins: string[];
+  };
+  model_configuration: {
+    algorithms: string[];
+    hyperparameter_tuning: boolean;
+    cross_validation_folds: number;
+    test_size: number;
+    random_state: number;
+    model_storage: string;
+  };
+  monitoring: {
+    health_check_interval: number;
+    performance_alerts: boolean;
+    error_threshold: number;
+    response_time_threshold: number;
+    log_level: string;
+  };
+  security: {
+    api_key_required: boolean;
+    rate_limiting: {
+      enabled: boolean;
+      requests_per_minute: number;
+    };
+    allowed_ips: string[];
+    https_only: boolean;
+  };
 }
 
 export interface ModelConfiguration {
@@ -324,4 +391,56 @@ export interface IntegrationTestResult {
   responseTime: number;
   dataQuality: number;
   error?: string;
+}
+
+export interface DeploymentResult {
+  success: boolean;
+  url?: string;
+  error?: string;
+  deploymentId?: string;
+  status?: 'pending' | 'building' | 'live' | 'failed';
+  buildLogs?: string[];
+  healthCheck?: {
+    status: 'healthy' | 'unhealthy' | 'unknown';
+    responseTime?: number;
+    lastChecked?: string;
+  };
+}
+
+// Phase 4: Migration Orchestration Types
+export interface OrchestrationOptions {
+  projectName: string;
+  arcgisServiceUrl?: string;
+  targetVariable?: string;
+  deploy?: boolean;
+  dryRun?: boolean;
+  verbose?: boolean;
+}
+
+export interface OrchestrationStep {
+  name: string;
+  type: 'validation' | 'data_analysis' | 'data_extraction' | 'config_generation' | 
+        'code_generation' | 'code_validation' | 'deployment' | 'deployment_validation' | 
+        'sample_areas_generation' | 'post_deployment_config';
+  description: string;
+  estimatedTime: number; // seconds
+}
+
+export interface StepResultData {
+  step: string;
+  success: boolean;
+  duration: number;
+  error?: string;
+  data?: any;
+}
+
+export interface MigrationOrchestrationResult {
+  success: boolean;
+  steps: StepResultData[];
+  totalTime: number;
+  deploymentUrl?: string;
+  generatedFiles?: string[];
+  config: MicroserviceConfig;
+  error?: string;
+  failedStep?: number;
 }

@@ -38,7 +38,11 @@
     "deploy-microservice:list": "node scripts/migration/deploy-microservice.js list-templates",
     "deploy-microservice:init": "node scripts/migration/deploy-microservice.js init-config",
     "deploy-microservice:analyze": "node scripts/migration/deploy-microservice.js analyze-data",
-    "deploy-microservice:extract": "node scripts/migration/deploy-microservice.js extract-data"
+    "deploy-microservice:extract": "node scripts/migration/deploy-microservice.js extract-data",
+    "migrate": "node scripts/migration/migrate.js",
+    "migrate:run": "node scripts/migration/migrate.js run",
+    "migrate:status": "node scripts/migration/migrate.js status",
+    "migrate:examples": "node scripts/migration/migrate.js examples"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.8",
