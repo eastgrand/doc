@@ -23,7 +23,10 @@
     "deduplicate-endpoints": "ts-node scripts/deduplicate-endpoints.ts",
     "generate-map-constraints": "node scripts/generate-map-constraints.js",
     "nike-optimize": "ts-node scripts/nike-focused-optimization.ts",
-    "remove-gis-metadata": "ts-node scripts/remove-gis-metadata.ts"
+    "remove-gis-metadata": "ts-node scripts/remove-gis-metadata.ts",
+    "validate-migration-readiness": "node scripts/migration/validate-migration-readiness.js",
+    "validate-migration-readiness:verbose": "node scripts/migration/validate-migration-readiness.js --verbose",
+    "validate-migration-readiness:json": "node scripts/migration/validate-migration-readiness.js --json"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.8",
