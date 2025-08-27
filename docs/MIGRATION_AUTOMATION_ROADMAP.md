@@ -758,6 +758,58 @@ npm run validate-migration-readiness:json
 - CLI interface with generate, deploy, and validate commands
 - Template-driven microservice creation (Python Flask + ML stack)
 - Docker containerization for cloud deployment
+- **Configuration-driven deployment** with project-specific customization
+
+### ⚙️ **Configuration Management System**
+
+**Problem Solved**: The original system didn't capture project-specific requirements like ArcGIS URLs, custom target variables, or training data sources.
+
+**Solution**: JSON-based configuration file system with template generation and validation.
+
+#### Configuration Structure
+```json
+{
+  "project": {
+    "name": "red-bull-energy-drinks",
+    "description": "Red Bull market analysis microservice"
+  },
+  "data_sources": {
+    "arcgis_service_url": "https://services.arcgis.com/your-org/rest/services",
+    "training_data_url": "https://your-data-source.com/training.csv"
+  },
+  "target_configuration": {
+    "target_variable": "MP12207A_B_P",
+    "target_brand": "Red Bull",
+    "custom_field_mapping": {
+      "red_bull_field": "MP12207A_B_P",
+      "monster_field": "MP12206A_B_P"
+    }
+  },
+  "integration": {
+    "main_app_url": "https://your-main-app.vercel.app",
+    "cors_origins": ["https://your-main-app.vercel.app"]
+  }
+}
+```
+
+#### Available Commands
+```bash
+# Create configuration file from template
+npm run deploy-microservice:init --template energy-drinks
+
+# Generate microservice with custom configuration
+npm run deploy-microservice:generate --template energy-drinks --config microservice-config.json
+
+# Override config values from command line
+npm run deploy-microservice:generate --template energy-drinks --config myconfig.json --data https://custom-data.csv
+```
+
+#### Integration Benefits
+- **ArcGIS Service Integration**: Direct connection to your geographic data services
+- **Custom Target Variables**: Support for any field mapping, not just template defaults
+- **Training Data Sources**: Flexible data source configuration (CSV, JSON, Excel)
+- **Main App Integration**: CORS and API endpoint configuration for seamless integration
+- **Environment-Specific**: Different configs for dev, staging, production
 
 ### Week 4: Integration & Polish (Sep 17 - Sep 23)
 **Priority**: Medium - Creates seamless user experience

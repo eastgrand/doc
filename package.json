@@ -35,7 +35,8 @@
     "deploy-microservice:generate": "node scripts/migration/deploy-microservice.js generate",
     "deploy-microservice:deploy": "node scripts/migration/deploy-microservice.js deploy",
     "deploy-microservice:validate": "node scripts/migration/deploy-microservice.js validate",
-    "deploy-microservice:list": "node scripts/migration/deploy-microservice.js list-templates"
+    "deploy-microservice:list": "node scripts/migration/deploy-microservice.js list-templates",
+    "deploy-microservice:init": "node scripts/migration/deploy-microservice.js init-config"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.8",

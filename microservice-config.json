@@ -1,0 +1,80 @@
+{
+  "project": {
+    "name": "red-bull-energy-drinks",
+    "description": "Red Bull energy drinks market analysis microservice",
+    "version": "1.0.0"
+  },
+  "data_sources": {
+    "arcgis_service_url": "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Census_Zip_Codes/FeatureServer",
+    "training_data_url": "https://raw.githubusercontent.com/your-org/energy-drinks-data/main/red-bull-market-data.csv",
+    "backup_data_url": "https://backup-source.com/data/energy-drinks-backup.csv",
+    "data_format": "csv"
+  },
+  "target_configuration": {
+    "target_variable": "MP12207A_B_P",
+    "target_brand": "Red Bull",
+    "custom_field_mapping": {
+      "red_bull_field": "MP12207A_B_P",
+      "monster_field": "MP12206A_B_P",
+      "rockstar_field": "MP12208A_B_P"
+    }
+  },
+  "geographic_configuration": {
+    "boundary_service": "https://services.arcgis.com/boundaries/zip-codes",
+    "default_extent": {
+      "xmin": -125,
+      "ymin": 25,
+      "xmax": -66,
+      "ymax": 49
+    },
+    "coordinate_system": "EPSG:4326"
+  },
+  "deployment": {
+    "environment": "production",
+    "platform": "render",
+    "region": "oregon",
+    "plan": "free",
+    "auto_deploy": true,
+    "health_check_enabled": true
+  },
+  "integration": {
+    "main_app_url": "https://mpiq-ai-chat.vercel.app",
+    "api_endpoints": [
+      "/api/microservice-proxy",
+      "/api/analysis-request"
+    ],
+    "auth_required": false,
+    "cors_origins": [
+      "https://mpiq-ai-chat.vercel.app",
+      "http://localhost:3000"
+    ]
+  },
+  "model_configuration": {
+    "algorithms": [
+      "random_forest",
+      "gradient_boosting",
+      "logistic_regression"
+    ],
+    "hyperparameter_tuning": true,
+    "cross_validation_folds": 5,
+    "test_size": 0.2,
+    "random_state": 42,
+    "model_storage": "local"
+  },
+  "monitoring": {
+    "health_check_interval": 300,
+    "performance_alerts": true,
+    "error_threshold": 0.05,
+    "response_time_threshold": 5000,
+    "log_level": "INFO"
+  },
+  "security": {
+    "api_key_required": false,
+    "rate_limiting": {
+      "enabled": true,
+      "requests_per_minute": 100
+    },
+    "allowed_ips": [],
+    "https_only": true
+  }
+}

@@ -32,17 +32,25 @@ program
   .command('generate')
   .description('Generate microservice package from template')
   .requiredOption('-t, --template <name>', `Template name (${AVAILABLE_TEMPLATES.join(', ')})`)
+  .option('-c, --config <path>', 'Configuration file path', 'microservice-config.json')
   .option('-o, --output <dir>', 'Output directory', './microservice-packages')
-  .option('-d, --data <path>', 'Training data path', 'data/training_data.csv')
-  .option('-p, --platform <platform>', 'Deployment platform', 'render')
+  .option('-d, --data <path>', 'Training data path (overrides config)', null)
+  .option('-p, --platform <platform>', 'Deployment platform (overrides config)', null)
   .option('--dry-run', 'Generate package without creating files')
   .action(async (options) => {
     try {
       console.log('🏗️  Generating microservice package...');
       console.log(`Template: ${options.template}`);
+      console.log(`Config: ${options.config}`);
       console.log(`Output: ${options.output}`);
-      console.log(`Platform: ${options.platform}`);
       console.log('─'.repeat(50));
+
+      // Load configuration file
+      const config = await loadConfigurationFile(options.config);
+      console.log(`📋 Loaded configuration for: ${config.project?.name || 'Unknown Project'}`);
+      
+      // Override config with command line options
+      const finalConfig = applyCommandLineOverrides(config, options);
 
       // Validate template exists
       if (!AVAILABLE_TEMPLATES.includes(options.template)) {
@@ -53,14 +61,15 @@ program
 
       // Load template
       const templatePath = path.join(process.cwd(), 'templates', `${options.template}.template.ts`);
-      const template = await loadTemplate(templatePath);
+      const template = await loadTemplate(templatePath, finalConfig);
 
       // Generate microservice (mock implementation for testing)
       const result = await mockGenerateFromTemplate(
         template,
-        options.data,
+        finalConfig.data_sources?.training_data_url || finalConfig.data_sources?.training_data_path || 'data/training_data.csv',
         options.output,
-        options.platform
+        finalConfig.deployment?.platform || 'render',
+        finalConfig
       );
 
       if (result.success) {
@@ -314,6 +323,67 @@ program
   });
 
 program
+  .command('init-config')
+  .description('Create microservice configuration file')
+  .option('-o, --output <path>', 'Configuration file path', 'microservice-config.json')
+  .option('--template <name>', 'Base configuration on template', 'energy-drinks')
+  .option('--force', 'Overwrite existing configuration file')
+  .action(async (options) => {
+    try {
+      console.log('📋 Creating microservice configuration...');
+      
+      // Check if config already exists
+      const configExists = await fs.access(options.output).then(() => true).catch(() => false);
+      
+      if (configExists && !options.force) {
+        console.log(`⚠️  Configuration file already exists: ${options.output}`);
+        console.log('   Use --force to overwrite, or specify a different --output path');
+        return;
+      }
+      
+      // Load template configuration
+      const templateConfig = path.join(process.cwd(), 'microservice-config.template.json');
+      let configContent;
+      
+      try {
+        configContent = await fs.readFile(templateConfig, 'utf8');
+        console.log(`📖 Using template: ${templateConfig}`);
+      } catch (error) {
+        console.error(`❌ Template configuration not found: ${templateConfig}`);
+        console.log('   Please ensure microservice-config.template.json exists');
+        process.exit(1);
+      }
+      
+      // Parse and customize for the specified template
+      const config = JSON.parse(configContent);
+      
+      if (options.template === 'energy-drinks') {
+        config.project.name = 'red-bull-energy-drinks';
+        config.project.description = 'Red Bull energy drinks market analysis microservice';
+        config.target_configuration.target_brand = 'Red Bull';
+        config.target_configuration.target_variable = 'MP12207A_B_P';
+      }
+      // Add more template customizations here as needed
+      
+      // Write configuration file
+      await fs.writeFile(options.output, JSON.stringify(config, null, 2));
+      
+      console.log(`✅ Configuration created: ${options.output}`);
+      console.log('\n📝 Next steps:');
+      console.log(`   1. Edit ${options.output} with your specific values:`);
+      console.log('      - ArcGIS service URL');
+      console.log('      - Training data URL');
+      console.log('      - Target variable (if different)');
+      console.log('      - Main application URL');
+      console.log(`   2. Generate microservice: npm run deploy-microservice:generate --template ${options.template} --config ${options.output}`);
+      
+    } catch (error) {
+      console.error(`❌ Configuration creation failed: ${error.message}`);
+      process.exit(1);
+    }
+  });
+
+program
   .command('list-templates')
   .description('List available microservice templates')
   .action(async () => {
@@ -342,31 +412,85 @@ program
   });
 
 // Helper functions
-async function loadTemplate(templatePath) {
+async function loadConfigurationFile(configPath) {
   try {
-    // Mock template for testing - in production this would load from actual template files
-    return {
-      name: 'red-bull-energy-drinks',
+    console.log(`📖 Loading configuration from: ${configPath}`);
+    
+    // Check if config file exists
+    try {
+      await fs.access(configPath);
+    } catch (error) {
+      console.log(`⚠️  Configuration file not found: ${configPath}`);
+      console.log(`📋 Creating default configuration...`);
+      
+      // Copy template config if main config doesn't exist
+      const templateConfig = path.join(process.cwd(), 'microservice-config.template.json');
+      const templateExists = await fs.access(templateConfig).then(() => true).catch(() => false);
+      
+      if (templateExists) {
+        const templateContent = await fs.readFile(templateConfig, 'utf8');
+        await fs.writeFile(configPath, templateContent);
+        console.log(`✅ Created ${configPath} from template`);
+      } else {
+        console.log(`❌ Template configuration not found: ${templateConfig}`);
+        throw new Error(`Configuration file required: ${configPath}`);
+      }
+    }
+
+    const configContent = await fs.readFile(configPath, 'utf8');
+    const config = JSON.parse(configContent);
+    
+    console.log(`✅ Configuration loaded successfully`);
+    return config;
+  } catch (error) {
+    throw new Error(`Failed to load configuration: ${error.message}`);
+  }
+}
+
+async function applyCommandLineOverrides(config, options) {
+  const finalConfig = JSON.parse(JSON.stringify(config)); // Deep copy
+  
+  // Override with command line options
+  if (options.data) {
+    if (!finalConfig.data_sources) finalConfig.data_sources = {};
+    finalConfig.data_sources.training_data_url = options.data;
+    console.log(`🔧 Override: Training data = ${options.data}`);
+  }
+  
+  if (options.platform) {
+    if (!finalConfig.deployment) finalConfig.deployment = {};
+    finalConfig.deployment.platform = options.platform;
+    console.log(`🔧 Override: Platform = ${options.platform}`);
+  }
+  
+  return finalConfig;
+}
+
+async function loadTemplate(templatePath, config) {
+  try {
+    // Mock template for testing - enhanced with configuration integration
+    const baseTemplate = {
+      name: config.project?.name || 'red-bull-energy-drinks',
       domain: 'beverages',
       industry: 'Energy Drinks',
       brands: [
         {
-          name: 'Red Bull',
-          fieldName: 'MP12207A_B_P',
+          name: config.target_configuration?.target_brand || 'Red Bull',
+          fieldName: config.target_configuration?.target_variable || 'MP12207A_B_P',
           role: 'target',
           aliases: ['red bull', 'redbull', 'energy drink', 'bull energy'],
           industry: 'Energy Drinks'
         },
         {
           name: 'Monster Energy',
-          fieldName: 'MP12206A_B_P',
+          fieldName: config.target_configuration?.custom_field_mapping?.monster_field || 'MP12206A_B_P',
           role: 'competitor',
           aliases: ['monster', 'monster energy', 'green monster'],
           industry: 'Energy Drinks'
         },
         {
           name: 'Rockstar Energy',
-          fieldName: 'MP12208A_B_P',
+          fieldName: config.target_configuration?.custom_field_mapping?.rockstar_field || 'MP12208A_B_P',
           role: 'competitor',
           aliases: ['rockstar', 'rock star', 'rockstar energy'],
           industry: 'Energy Drinks'
@@ -411,6 +535,18 @@ async function loadTemplate(templatePath) {
         }
       ]
     };
+
+    // Add configuration-specific data
+    baseTemplate.config = config;
+    baseTemplate.arcgisServiceUrl = config.data_sources?.arcgis_service_url;
+    baseTemplate.trainingDataUrl = config.data_sources?.training_data_url;
+    
+    console.log(`🎯 Target Variable: ${baseTemplate.brands[0].fieldName}`);
+    console.log(`🌐 ArcGIS Service: ${baseTemplate.arcgisServiceUrl || 'Not configured'}`);
+    console.log(`📊 Training Data: ${baseTemplate.trainingDataUrl || 'Not configured'}`);
+    console.log(`🔗 Main App URL: ${config.integration?.main_app_url || 'Not configured'}`);
+    
+    return baseTemplate;
   } catch (error) {
     throw new Error(`Failed to load template: ${error.message}`);
   }
@@ -469,7 +605,7 @@ async function loadMicroservicePackage(packagePath) {
 }
 
 // Mock implementations for testing CLI interface
-async function mockGenerateFromTemplate(template, dataPath, outputDir, platform) {
+async function mockGenerateFromTemplate(template, dataPath, outputDir, platform, config) {
   // Simulate microservice generation
   const serviceName = `${template.name}-microservice`;
   const packagePath = path.join(outputDir, serviceName);
@@ -479,6 +615,9 @@ async function mockGenerateFromTemplate(template, dataPath, outputDir, platform)
   console.log(`📊 Target Variable: ${template.brands?.find(b => b.role === 'target')?.fieldName || 'unknown'}`);
   console.log(`🏭 Industry: ${template.industry}`);
   console.log(`🌐 Platform: ${platform}`);
+  console.log(`🗺️  ArcGIS Service: ${config.data_sources?.arcgis_service_url ? '✅ Configured' : '⚠️  Not set'}`);
+  console.log(`📈 Training Data: ${config.data_sources?.training_data_url ? '✅ Configured' : '⚠️  Not set'}`);
+  console.log(`🔗 Main App URL: ${config.integration?.main_app_url || 'Not configured'}`);
   
   return {
     success: true,
@@ -502,7 +641,11 @@ async function mockGenerateFromTemplate(template, dataPath, outputDir, platform)
       '🤖 Generated ML model training script',
       '📊 Generated data processing pipeline',
       '🐳 Generated Dockerfile for containerization',
-      '📋 Generated comprehensive README'
+      '📋 Generated comprehensive README',
+      `🎯 Configured target variable: ${template.brands?.find(b => b.role === 'target')?.fieldName}`,
+      `🗺️  Integrated ArcGIS service: ${config.data_sources?.arcgis_service_url ? 'Yes' : 'No'}`,
+      `📈 Training data source: ${config.data_sources?.training_data_url ? 'Configured' : 'Default'}`,
+      `🔗 Main app integration: ${config.integration?.main_app_url ? 'Enabled' : 'Disabled'}`
     ],
     warnings: [],
     errors: []
