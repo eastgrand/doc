@@ -29,7 +29,8 @@ import {
   RotateCcw,
   Sparkles,
   UserCog,
-  Zap
+  Zap,
+  Sliders
 } from 'lucide-react';
 import { PiStrategy, PiLightning, PiLightbulb, PiWrench, PiHeart } from 'react-icons/pi';
 
@@ -61,9 +62,17 @@ import QueryDialog from '@/components/chat/QueryDialog';
 import { ANALYSIS_CATEGORIES, DISABLED_ANALYSIS_CATEGORIES } from '@/components/chat/chat-constants';
 import { personaMetadata } from '@/app/api/claude/prompts';
 
-// Clustering Components
-import { ClusterConfigPanel } from '@/components/clustering/ClusterConfigPanel';
+// Clustering Components  
 import { ClusterConfig, DEFAULT_CLUSTER_CONFIG } from '@/lib/clustering/types';
+
+// Advanced Filtering System
+import AdvancedFilterDialog from '@/components/filtering/AdvancedFilterDialog';
+import { 
+  AdvancedFilterConfig, 
+  DEFAULT_FIELD_FILTER_CONFIG,
+  DEFAULT_VISUALIZATION_CONFIG,
+  DEFAULT_PERFORMANCE_CONFIG
+} from '@/components/filtering/types';
 
 // Import chat interface for contextual analysis
 import { useChatContext } from '@/components/chat-context-provider';
@@ -226,12 +235,20 @@ export default function UnifiedAnalysisWorkflow({
   const [chatMessages, setChatMessages] = useState<any[]>([]);
   const [hasGeneratedNarrative, setHasGeneratedNarrative] = useState(false);
   
-  // Clustering configuration state
-  const [clusterConfig, setClusterConfig] = useState<ClusterConfig>({
-    ...DEFAULT_CLUSTER_CONFIG,
-    minScorePercentile: DEFAULT_CLUSTER_CONFIG.minScorePercentile ?? 70
+  // Advanced filtering configuration state
+  const [advancedFilterConfig, setAdvancedFilterConfig] = useState<AdvancedFilterConfig>({
+    clustering: {
+      ...DEFAULT_CLUSTER_CONFIG,
+      minScorePercentile: DEFAULT_CLUSTER_CONFIG.minScorePercentile ?? 70
+    },
+    fieldFilters: DEFAULT_FIELD_FILTER_CONFIG,
+    visualization: DEFAULT_VISUALIZATION_CONFIG,
+    performance: DEFAULT_PERFORMANCE_CONFIG,
   });
-  const [clusterDialogOpen, setClusterDialogOpen] = useState(false);
+  const [advancedFilterDialogOpen, setAdvancedFilterDialogOpen] = useState(false);
+  
+  // Legacy clustering config for backward compatibility
+  const clusterConfig = advancedFilterConfig.clustering;
   
   // Phase 4 features state
   const [showPhase4Features, setShowPhase4Features] = useState(false);
@@ -398,6 +415,9 @@ export default function UnifiedAnalysisWorkflow({
         infographicType: type === 'infographic' ? selectedInfographicType : undefined,
         includeChat: enableChat,
         clusterConfig: type === 'query' && clusterConfig.enabled ? clusterConfig : undefined,
+        fieldFilters: advancedFilterConfig.fieldFilters, // Phase 2: Pass field filters
+        visualizationConfig: advancedFilterConfig.visualization, // Phase 3: Pass visualization config
+        performanceConfig: advancedFilterConfig.performance, // Phase 4: Pass performance config
         view: view,                          // NEW: Pass the map view
         dataSourceLayerId: dataSourceLayerId, // NEW: Pass the layer ID
         spatialFilterIds: spatialFilterIds,   // NEW: Pass the spatial filter IDs
@@ -1587,25 +1607,29 @@ export default function UnifiedAnalysisWorkflow({
                           </DialogContent>
                         </Dialog>
                         
-                        <Dialog open={clusterDialogOpen} onOpenChange={setClusterDialogOpen}>
-                          <DialogTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-xs h-6 flex items-center gap-1"
-                            >
-                              <Target className="h-3 w-3" />
-                              {clusterConfig.enabled ? `${clusterConfig.numClusters} Clusters` : 'Clustering'}
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto theme-dialog">
-                            <ClusterConfigPanel
-                              config={clusterConfig}
-                              onConfigChange={setClusterConfig}
-                              onSave={() => setClusterDialogOpen(false)}
-                            />
-                          </DialogContent>
-                        </Dialog>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-xs h-6 flex items-center gap-1"
+                          onClick={() => setAdvancedFilterDialogOpen(true)}
+                        >
+                          <Sliders className="h-3 w-3" />
+                          {(() => {
+                            const activeFilters = (clusterConfig.enabled ? 1 : 0);
+                            if (activeFilters > 0) {
+                              return `Filters (${activeFilters})`;
+                            }
+                            return 'Filters & Advanced';
+                          })()}
+                        </Button>
+                        
+                        <AdvancedFilterDialog
+                          open={advancedFilterDialogOpen}
+                          onOpenChange={setAdvancedFilterDialogOpen}
+                          config={advancedFilterConfig}
+                          onConfigChange={setAdvancedFilterConfig}
+                          endpoint={selectedEndpoint}
+                        />
                       </div>
                     </div>
                     <textarea

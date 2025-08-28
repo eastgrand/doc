@@ -11,6 +11,7 @@ import {
   VisualizationResult 
 } from '@/lib/analysis/types';
 import { ClusterConfig } from '@/lib/clustering/types';
+import { FieldFilterConfig } from '@/components/filtering/types';
 
 export interface UnifiedAnalysisRequest {
   // Area selection from UnifiedAreaSelector
@@ -38,6 +39,15 @@ export interface UnifiedAnalysisRequest {
   
   // Clustering options
   clusterConfig?: ClusterConfig;
+  
+  // Field filtering options (Phase 2)
+  fieldFilters?: FieldFilterConfig;
+  
+  // Visualization customization options (Phase 3)
+  visualizationConfig?: any;
+  
+  // Performance optimization options (Phase 4)
+  performanceConfig?: any;
   
   // Persona selection
   persona?: string;
@@ -247,6 +257,9 @@ export class UnifiedAnalysisWrapper {
     const options: AnalysisOptions = {
       // Remove explicit endpoint to allow intelligent classification like original UI
       clusterConfig: request.clusterConfig,
+      fieldFilters: request.fieldFilters,         // Phase 2: Pass field filters
+      visualizationConfig: request.visualizationConfig, // Phase 3: Pass visualization config
+      performanceConfig: request.performanceConfig, // Phase 4: Pass performance config
       spatialFilterIds,                          // Pass feature IDs
       spatialFilterGeometry: request.geometry,   // Pass geometry for reference
       spatialFilterMethod: request.geometryMethod, // Track how it was selected
@@ -269,6 +282,9 @@ export class UnifiedAnalysisWrapper {
     const options: AnalysisOptions = {
       // Remove explicit endpoint to allow intelligent classification like original UI
       visualizationType: 'scorecard', // Focus on scorecard visualization for infographics
+      fieldFilters: request.fieldFilters,         // Phase 2: Pass field filters
+      visualizationConfig: request.visualizationConfig, // Phase 3: Pass visualization config
+      performanceConfig: request.performanceConfig, // Phase 4: Pass performance config
       spatialFilterIds,                          // Pass feature IDs
       spatialFilterGeometry: request.geometry,   // Pass geometry for reference
       spatialFilterMethod: request.geometryMethod, // Track how it was selected
@@ -291,6 +307,9 @@ export class UnifiedAnalysisWrapper {
     const query = 'Comprehensive area analysis';
     const options: AnalysisOptions = {
       // Remove explicit endpoint to allow intelligent classification like original UI
+      fieldFilters: request.fieldFilters,         // Phase 2: Pass field filters
+      visualizationConfig: request.visualizationConfig, // Phase 3: Pass visualization config
+      performanceConfig: request.performanceConfig, // Phase 4: Pass performance config
       spatialFilterIds,                          // Pass feature IDs
       spatialFilterGeometry: request.geometry,   // Pass geometry for reference
       spatialFilterMethod: request.geometryMethod, // Track how it was selected

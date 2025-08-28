@@ -2,6 +2,7 @@
 // Enhanced with Multi-Endpoint Analysis Support
 
 import { ClusterConfig } from '@/lib/clustering/types';
+import { FieldFilterConfig, VisualizationConfig as FilterVisualizationConfig, PerformanceConfig } from '@/components/filtering/types';
 
 // ============================================================================
 // ANALYSIS ENGINE CORE TYPES
@@ -16,6 +17,15 @@ export interface AnalysisOptions {
   
   // Clustering options
   clusterConfig?: ClusterConfig;
+  
+  // Field filtering options (Phase 2)
+  fieldFilters?: FieldFilterConfig;
+  
+  // Visualization customization options (Phase 3)
+  visualizationConfig?: FilterVisualizationConfig;
+  
+  // Performance optimization options (Phase 4)
+  performanceConfig?: PerformanceConfig;
   
   // Spatial filtering options (NEW)
   spatialFilterIds?: string[];      // Feature IDs to include
