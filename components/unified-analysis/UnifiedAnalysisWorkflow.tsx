@@ -28,7 +28,8 @@ import {
   FootprintsIcon as Walk,
   RotateCcw,
   Sparkles,
-  UserCog
+  UserCog,
+  Zap
 } from 'lucide-react';
 import { PiStrategy, PiLightning, PiLightbulb, PiWrench, PiHeart } from 'react-icons/pi';
 
@@ -66,6 +67,10 @@ import { ClusterConfig, DEFAULT_CLUSTER_CONFIG } from '@/lib/clustering/types';
 
 // Import chat interface for contextual analysis
 import { useChatContext } from '@/components/chat-context-provider';
+
+// Import Phase 4 Integration
+import Phase4IntegrationWrapper from '@/components/phase4/Phase4IntegrationWrapper';
+import { isPhase4FeatureEnabled } from '@/config/phase4-features';
 
 // Import ArcGIS geometry engine for buffering
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
@@ -227,6 +232,13 @@ export default function UnifiedAnalysisWorkflow({
     minScorePercentile: DEFAULT_CLUSTER_CONFIG.minScorePercentile ?? 70
   });
   const [clusterDialogOpen, setClusterDialogOpen] = useState(false);
+  
+  // Phase 4 features state
+  const [showPhase4Features, setShowPhase4Features] = useState(false);
+  const hasPhase4Features = isPhase4FeatureEnabled('scholarlyResearch') || 
+                           isPhase4FeatureEnabled('realTimeDataStreams') || 
+                           isPhase4FeatureEnabled('advancedVisualization') || 
+                           isPhase4FeatureEnabled('aiInsights');
 
   // Initialize analysis wrapper
   const [analysisWrapper] = useState(() => new UnifiedAnalysisWrapper());
@@ -1871,10 +1883,10 @@ export default function UnifiedAnalysisWorkflow({
 
     return (
       <div className="flex flex-col h-full animate-entrance">
-        {/* Results content with Analysis/Chat, Data Table, and Insights */}
+        {/* Results content with Analysis/Chat, Data Table, Insights, and Phase 4 Advanced Features */}
         <div className="flex-1 flex flex-col min-h-0">
           <Tabs value={activeResultsTab} onValueChange={setActiveResultsTab} className="flex-1 flex flex-col min-h-0">
-            <TabsList className="grid w-full grid-cols-3 flex-shrink-0 theme-bg-primary border-b dark:border-gray-700 mb-2">
+            <TabsList className={`grid w-full ${hasPhase4Features ? 'grid-cols-4' : 'grid-cols-3'} flex-shrink-0 theme-bg-primary border-b dark:border-gray-700 mb-2`}>
               <TabsTrigger value="analysis" className="flex items-center gap-2">
                 <MessageCircle className="h-3 w-3" />
                 Analysis
@@ -1887,6 +1899,12 @@ export default function UnifiedAnalysisWorkflow({
                 <BarChart className="h-3 w-3" />
                 Chart
               </TabsTrigger>
+              {hasPhase4Features && (
+                <TabsTrigger value="advanced" className="flex items-center gap-2">
+                  <Zap className="h-3 w-3" />
+                  Advanced
+                </TabsTrigger>
+              )}
             </TabsList>
 
             <TabsContent value="analysis" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-hidden animate-entrance">
@@ -1917,6 +1935,26 @@ export default function UnifiedAnalysisWorkflow({
                 onExportChart={handleExportChart}
               />
             </TabsContent>
+
+            {hasPhase4Features && (
+              <TabsContent value="advanced" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-y-auto animate-entrance">
+                {/* Phase 4 Advanced Features */}
+                <Phase4IntegrationWrapper
+                  analysisResult={workflowState.analysisResult?.analysisResult}
+                  analysisContext={{
+                    selectedAreaName: workflowState.areaSelection?.displayName || '',
+                    zipCodes: workflowState.analysisResult?.metadata?.spatialFilterIds || [],
+                    endpoint: workflowState.analysisResult?.metadata?.endpoint || '',
+                    query: workflowState.analysisResult?.metadata?.query || selectedQuery || '',
+                    persona: selectedPersona,
+                    fieldCount: workflowState.analysisResult?.analysisResult?.data?.records?.length || 0,
+                    shapFeatures: workflowState.analysisResult?.analysisResult?.data?.featureImportance
+                  }}
+                  className="h-full"
+                  onClose={() => setShowPhase4Features(false)}
+                />
+              </TabsContent>
+            )}
           </Tabs>
         </div>
       </div>

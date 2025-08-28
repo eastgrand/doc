@@ -1,8 +1,14 @@
 # Query to Visualization Flow Documentation
 
+**Created**: Original documentation date  
+**Updated**: August 28, 2025  
+**Status**: ✅ **Phase 4 Integration Complete** - Advanced features integrated into results flow  
+
 ## Overview
 
 This document provides a comprehensive explanation of how a user query flows through the system from initial input to final visualization on the map. The system now features a sophisticated **Semantic Enhanced Hybrid Architecture** that combines the robust validation and structure of hybrid routing with the semantic understanding power of AI for optimal query processing.
+
+**UPDATE (Aug 28, 2025)**: The visualization flow has been extended with **Phase 4 advanced features**, accessible through the "Advanced" tab in the UnifiedAnalysisWorkflow results section.
 
 ## Architecture Components
 
@@ -494,6 +500,58 @@ The **Semantic Enhanced Hybrid Architecture** represents the culmination of rout
 
 ---
 
-*Last Updated: August 2025*  
+## ✅ **PHASE 4 ADVANCED VISUALIZATION FLOW EXTENSION** (August 28, 2025)
+
+### **Enhanced Results Processing**
+
+The standard query-to-visualization flow now extends into advanced analysis through the Phase 4 integration:
+
+```text
+Standard Visualization Flow (existing)
+    ↓
+UnifiedAnalysisWorkflow Results
+    ├── Analysis Tab (Chat Interface)
+    ├── Data Tab (Tabular Results)
+    ├── Chart Tab (Feature Importance)
+    └── Advanced Tab (Phase 4 Features) ← NEW!
+        ├── Scholarly Research Panel
+        │   ├── Academic paper validation
+        │   ├── Citation system (CrossRef/arXiv)
+        │   └── Research context integration
+        ├── Real-Time Data Dashboard
+        │   ├── Live economic indicators (FRED)
+        │   ├── Financial market data (Alpha Vantage)
+        │   └── Contextual data streaming
+        ├── AI Insight Generator
+        │   ├── Advanced pattern detection
+        │   ├── Narrative generation
+        │   └── Recommendation engine
+        └── Advanced Visualization Suite
+            ├── 3D mapping capabilities
+            ├── Interactive data exploration
+            └── Enhanced geospatial rendering
+```
+
+### **Extended Flow Architecture**
+
+1. **Standard Flow Completion**: User query → Analysis → Visualization (existing)
+2. **Context Preservation**: Analysis results and metadata preserved
+3. **Advanced Feature Access**: "Advanced" tab reveals Phase 4 capabilities
+4. **Contextual Enhancement**: Phase 4 components receive full analysis context
+5. **Progressive Disclosure**: Users can explore standard results first, then advanced features
+
+### **Integration Benefits**
+
+- **Seamless UX**: No disruption to existing workflow
+- **Feature Flag Control**: Advanced features show only when enabled
+- **Full Context Access**: Phase 4 components have complete analysis data
+- **Academic Validation**: Research backing for analysis results
+- **Live Intelligence**: Real-time data enhancement of static analysis
+- **AI-Powered Insights**: Automated pattern detection and recommendations
+
+---
+
+*Last Updated: August 28, 2025*  
 *Current Production: **Semantic Enhanced Hybrid Architecture** ✅ DEPLOYED*  
+*Phase 4 Integration: **Advanced Features** ✅ INTEGRATED*  
 *Status: Operational and handling all production queries*
