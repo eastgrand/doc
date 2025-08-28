@@ -5,6 +5,27 @@
 **Status**: PHASE 4 COMPLETE ✅ - One-Command Migration System Implemented  
 **Achievement**: Reduced migration time from 4-6 hours to 6-13 seconds with 95%+ reliability
 
+## 🚨 CRITICAL POST-AUTOMATION REQUIREMENTS
+
+### **EnhancedQueryAnalyzer Field Validation** (MANDATORY)
+**Status**: ⚠️ **REQUIRED POST-AUTOMATION** - Cannot skip this step
+
+**Problem**: EnhancedQueryAnalyzer templates may reference fields that don't exist in project data layers, causing runtime failures.
+
+**Required Actions**:
+1. **🚨 Implement Field Discovery**: Create `npm run discover-fields` to extract actual fields from project data layers
+2. **🚨 Validate Templates**: Always run field validation before deploying EnhancedQueryAnalyzer configurations
+3. **🚨 Update Migration Scripts**: Integrate field validation into automation pipeline
+
+**Documentation**: See `lib/analysis/FIELD_VALIDATION_REQUIREMENTS.md` for complete implementation guide.
+
+**Critical Command Pattern**:
+```bash
+# MANDATORY: Validate fields before any EnhancedQueryAnalyzer deployment
+npm run discover-fields --project $PROJECT_NAME --output fields.json
+npm run validate-field-mappings --template $TEMPLATE --fields fields.json
+```
+
 ---
 
 ## Executive Summary
@@ -327,6 +348,46 @@ node scripts/migration/generate-configurations.js --template="energy-drinks" --o
 ### 🏷️ **BrandNameResolver Configuration Automation** (NEW ENHANCEMENT)
 
 **Problem Addressed**: BrandNameResolver is currently hardcoded and requires manual updates for each new project, affecting 16+ analysis processors.
+
+### 🧠 **EnhancedQueryAnalyzer Overhaul** (🚨 CRITICAL - AUGUST 2025)
+
+**Problem Addressed**: EnhancedQueryAnalyzer contained 1,046 lines of hardcoded, project-specific mappings with wrong project data (H&R Block/TurboTax instead of Red Bull), 600+ lines of unused SHAP fields, and required manual updates for each migration.
+
+**✅ COMPLETED OVERHAUL**:
+- **Code Reduction**: 1,046 lines → 363 lines (66% reduction) 
+- **Template System**: Implemented `FieldMappingTemplate` interface for automated configuration
+- **Technical Debt Elimination**: Removed all unused SHAP fields and irrelevant mappings
+- **Automation Integration**: Created `FieldMappingGenerator` for migration automation
+
+**🚨 CRITICAL FIELD VALIDATION REQUIREMENT**:
+**Fields in EnhancedQueryAnalyzer templates MUST only include fields that exist in the project's actual data layers.**
+
+#### Field Validation Integration Required Post-Automation
+
+```typescript
+// CRITICAL: Always validate fields against actual project data
+const { config, validation } = generator.generateAndValidateConfig(
+  template,
+  availableFields  // ← Must come from actual project data layers
+);
+
+if (!validation.fieldExistenceValidated) {
+  throw new Error('🚨 FIELD VALIDATION REQUIRED - Cannot deploy without field validation');
+}
+```
+
+#### Required Post-Automation Actions
+
+1. **🚨 Field Discovery System**: Create utilities to extract available fields from project data layers
+2. **🚨 Validation Pipeline**: Integrate field existence validation into migration scripts  
+3. **🚨 Developer Alerts**: Clear warnings when field validation is skipped
+
+**📚 Complete Documentation**:
+- `lib/analysis/EnhancedQueryAnalyzer_OVERHAUL_SUMMARY.md` - Complete overhaul documentation
+- `lib/analysis/FIELD_VALIDATION_REQUIREMENTS.md` - **🚨 CRITICAL FIELD VALIDATION GUIDE**
+- `lib/analysis/EnhancedQueryAnalyzer_LEGACY.ts` - Backup of original 1,046-line version
+
+#### EnhancedQueryAnalyzer Template Structure
 
 #### BrandNameResolver Template Integration
 
@@ -1365,10 +1426,15 @@ npm run generate-config --template energy-drinks                 # Includes Bran
 npm run validate-brand-config --template energy-drinks           # NEW: Brand validation
 npm run deploy-microservice:generate --template energy-drinks
 
-# BrandNameResolver-specific commands
-npm run generate-config --template energy-drinks --include BrandNameResolver  # Generate only brand config
-npm run deploy-config --template energy-drinks --validate-brands              # Deploy with brand validation
-npm run validate-brand-fields --template energy-drinks --data-source "..."   # Validate brand fields exist
+# Component-specific commands
+npm run generate-config --template energy-drinks --include BrandNameResolver    # Generate only brand config
+npm run generate-config --template energy-drinks --include EnhancedQueryAnalyzer # Generate only query analyzer config
+npm run deploy-config --template energy-drinks --validate-brands                # Deploy with brand validation
+
+# 🚨 CRITICAL: Field validation commands (REQUIRED for EnhancedQueryAnalyzer)
+npm run discover-fields --project energy-drinks --output available-fields.json  # Extract fields from data layers
+npm run validate-field-mappings --template energy-drinks --fields available-fields.json  # Validate template against actual data
+npm run generate-config --template energy-drinks --validate-fields available-fields.json # Generate with field validation
 ```
 
 **EXCEEDED ALL ORIGINAL TARGETS** 🚀
