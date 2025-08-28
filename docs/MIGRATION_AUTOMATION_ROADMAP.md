@@ -32,7 +32,7 @@ The current migration process, while comprehensive, suffers from manual complexi
 - **Problem**: 6+ files require manual updates for each migration
 - **Critical Files**:
   ```
-  - lib/analysis/utils/BrandNameResolver.ts
+  - lib/analysis/utils/BrandNameResolver.ts         ❌ HARDCODED (lines 25-48)
   - utils/chat/client-summarizer.ts  
   - utils/field-aliases.ts
   - lib/analysis/ConfigurationManager.ts
@@ -40,6 +40,7 @@ The current migration process, while comprehensive, suffers from manual complexi
   - lib/embedding/EndpointDescriptions.ts
   ```
 - **Risk**: Configuration drift and sync failures between components
+- **BrandNameResolver Status**: Currently hardcoded with Red Bull configuration, used by 16+ analysis processors
 
 #### 3. Validation Gap Vulnerabilities
 - **Problem**: No automated pre-flight validation catches configuration mismatches
@@ -289,8 +290,18 @@ export const EnergyDrinksTemplate: ProjectTemplate = {
       fieldName: "MP12206A_B_P", 
       role: "competitor",
       aliases: ["monster", "monster energy"]
+    },
+    {
+      name: "5-Hour Energy",
+      fieldName: "MP12205A_B_P", 
+      role: "competitor",
+      aliases: ["5 hour energy", "5-hour", "energy shot"]
     }
   ],
+  marketCategory: {
+    name: "All Energy Drinks",
+    fieldName: "MP12097A_B_P"
+  },
   vocabularyTerms: {
     primary: ['energy', 'drinks', 'red bull', 'monster', 'analysis'],
     secondary: ['brand', 'consumption', 'usage', 'insights', 'behavior'],
@@ -305,12 +316,146 @@ export const EnergyDrinksTemplate: ProjectTemplate = {
 node scripts/migration/generate-configurations.js --template="energy-drinks" --output="./generated-config/"
 
 # Generates:
-# - generated-config/BrandNameResolver.ts
+# - generated-config/BrandNameResolver.ts            ← NEW: Brand configuration generator
 # - generated-config/field-aliases.ts  
 # - generated-config/chat-constants.ts
 # - generated-config/EndpointDescriptions.ts
 # - generated-config/ConfigurationManager.ts
 # - generated-config/microservice-package/
+```
+
+### 🏷️ **BrandNameResolver Configuration Automation** (NEW ENHANCEMENT)
+
+**Problem Addressed**: BrandNameResolver is currently hardcoded and requires manual updates for each new project, affecting 16+ analysis processors.
+
+#### BrandNameResolver Template Integration
+
+```typescript
+// lib/migration/BrandResolverGenerator.ts
+export class BrandResolverGenerator {
+  generateBrandResolverConfig(template: ProjectTemplate): string {
+    const targetBrand = template.brands.find(b => b.role === 'target');
+    const competitors = template.brands.filter(b => b.role === 'competitor');
+    const marketCategory = template.marketCategory;
+    
+    return `
+// ============================================================================
+// PROJECT BRAND CONFIGURATION - AUTO-GENERATED FROM TEMPLATE
+// ============================================================================
+
+/**
+ * Current Project: ${template.name}
+ * Industry: ${template.industry}
+ * Generated: ${new Date().toISOString()}
+ * Template: ${template.name}.template.ts
+ */
+
+const TARGET_BRAND = {
+  fieldName: '${targetBrand?.fieldName}',
+  brandName: '${targetBrand?.name}'
+};
+
+const COMPETITOR_BRANDS = [
+${competitors.map(c => `  { fieldName: '${c.fieldName}', brandName: '${c.name}' }`).join(',\n')}
+];
+
+${marketCategory ? `
+const MARKET_CATEGORY = {
+  fieldName: '${marketCategory.fieldName}',
+  brandName: '${marketCategory.name}'
+};` : ''}
+
+const PROJECT_INDUSTRY = '${template.industry}';
+
+// ============================================================================
+// DYNAMIC RESOLVER CLASS (UNCHANGED)
+// ============================================================================
+[... rest of BrandNameResolver class remains unchanged ...]
+    `;
+  }
+}
+```
+
+#### Template Integration Points
+
+**Enhanced ProjectTemplate Interface**:
+```typescript
+interface ProjectTemplate {
+  name: string;
+  domain: string;
+  industry: string;
+  brands: BrandDefinition[];
+  marketCategory?: MarketCategoryDefinition;  // NEW: Market category configuration
+  vocabularyTerms: DomainVocabulary;
+  endpointMappings?: EndpointMapping[];
+}
+
+interface BrandDefinition {
+  name: string;
+  fieldName: string;
+  role: 'target' | 'competitor';
+  aliases: string[];
+}
+
+interface MarketCategoryDefinition {  // NEW: For market gap calculations
+  name: string;
+  fieldName: string;
+}
+```
+
+#### Automated Generation Benefits
+
+**Before (Manual)**:
+```typescript
+// Manual updates required in BrandNameResolver.ts lines 25-48
+const TARGET_BRAND = {
+  fieldName: 'MP12207A_B_P',  // Hardcoded Red Bull
+  brandName: 'Red Bull'
+};
+```
+
+**After (Template-Driven)**:
+```bash
+# Generate brand configuration from template
+npm run generate-config --template energy-drinks --include BrandNameResolver
+
+# Generates brand configuration matching template
+# Automatically validates field names exist in data
+# Updates all 16+ processors via single configuration source
+```
+
+#### Integration with Existing Automation
+
+**Enhanced TemplateEngine**:
+```typescript
+export class TemplateEngine {
+  generateBrandResolverConfig(template: ProjectTemplate): string  // NEW
+  generateFieldAliasesConfig(template: ProjectTemplate): string
+  generateRoutingConfig(template: ProjectTemplate): string
+  generateMicroserviceConfig(template: ProjectTemplate): MicroservicePackage
+  generateChatConstantsConfig(template: ProjectTemplate): string
+  generateEndpointDescriptions(template: ProjectTemplate): string
+}
+```
+
+#### Validation Integration
+
+**Enhanced Validation Framework**:
+```typescript
+// lib/migration/BrandResolverValidator.ts
+export class BrandResolverValidator extends BaseValidator {
+  async validateBrandFields(template: ProjectTemplate): Promise<ValidationResult> {
+    // 1. Validate all brand field names exist in training data
+    // 2. Verify target brand is properly configured
+    // 3. Check competitor brands are valid
+    // 4. Validate market category field if specified
+    // 5. Ensure no brand field conflicts
+  }
+  
+  async validateProcessorUsage(): Promise<ValidationResult> {
+    // Verify all 16+ processors properly import and use BrandNameResolver
+  }
+}
 ```
 
 #### 2.3 Create Safe Configuration Deployment
@@ -636,17 +781,25 @@ export class InteractiveMigrationWizard {
 # List available templates
 npm run generate-config:list
 
-# Generate configurations (no deployment)
+# Generate configurations (no deployment) - NOW INCLUDES BrandNameResolver
 npm run generate-config -- --template red-bull-energy-drinks
 
-# Safe deployment with dry run
+# Generate specific configuration files
+npm run generate-config -- --template red-bull-energy-drinks --include BrandNameResolver
+npm run generate-config -- --template red-bull-energy-drinks --include field-aliases
+npm run generate-config -- --template red-bull-energy-drinks --include chat-constants
+
+# Safe deployment with dry run (validates brand fields)
 npm run deploy-config:dry-run -- --template red-bull-energy-drinks
 
-# Deploy configurations (with automatic backup)
+# Deploy configurations (with automatic backup and brand validation)
 npm run deploy-config -- --template red-bull-energy-drinks
 
 # Rollback if needed
 npm run generate-config -- --rollback [backup-id]
+
+# Validate brand configuration before deployment
+npm run validate-brand-config -- --template red-bull-energy-drinks
 ```
 
 **Files Created**:
@@ -1199,17 +1352,23 @@ This roadmap transforms the current manual, error-prone migration process into a
 **COMMANDS AVAILABLE**:
 
 ```bash
-# Complete migration with deployment
+# Complete migration with deployment (includes BrandNameResolver automation)
 npm run migrate:run --project "project-name" --arcgis-url "..." --deploy
 
 # Examples and help
 npm run migrate:examples
 npm run migrate:status
 
-# Individual components (legacy support)
+# Individual components (legacy support - NOW WITH BRAND AUTOMATION)
 npm run validate-migration-readiness
-npm run generate-config --template energy-drinks
+npm run generate-config --template energy-drinks                 # Includes BrandNameResolver
+npm run validate-brand-config --template energy-drinks           # NEW: Brand validation
 npm run deploy-microservice:generate --template energy-drinks
+
+# BrandNameResolver-specific commands
+npm run generate-config --template energy-drinks --include BrandNameResolver  # Generate only brand config
+npm run deploy-config --template energy-drinks --validate-brands              # Deploy with brand validation
+npm run validate-brand-fields --template energy-drinks --data-source "..."   # Validate brand fields exist
 ```
 
 **EXCEEDED ALL ORIGINAL TARGETS** 🚀

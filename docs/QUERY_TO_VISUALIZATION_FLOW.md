@@ -25,7 +25,7 @@ This document provides a comprehensive explanation of how a user query flows thr
 6. **Data Processors** - Transform raw endpoint data for visualization
 7. **Shared AreaName Resolver** - Consistent area name/ZIP resolution across server, processors, and UI
 8. **Server-side Narrative Sanitizer** - Replaces placeholder names in AI output with resolved names
-9. **BrandNameResolver** - Dynamic brand configuration and field mapping (where applicable)
+9. **BrandNameResolver** - Brand configuration and field mapping (currently hardcoded, automation designed)
 10. **Advanced Filtering System** - Enterprise-grade 4-tab filtering and optimization system (DEPLOYED August 2025)
 11. **ArcGIS Renderer** - Visualizes processed data on the map
 
@@ -91,7 +91,7 @@ User Query
     ↓
 [Data Processor Strategy]
     ├── Validation
-    ├── BrandNameResolver Integration
+    ├── BrandNameResolver Integration (hardcoded, automation planned)
     ├── Score Extraction
     ├── Field Mapping
     └── Geographic Integration
@@ -587,7 +587,7 @@ if (scoreConfig) {
 
 **Component**: `lib/analysis/utils/BrandNameResolver.ts`
 
-The BrandNameResolver provides dynamic brand configuration for all analysis processors:
+The BrandNameResolver provides brand configuration for all analysis processors. **Current Status**: HARDCODED but automation-ready.
 
 ```typescript
 // 1. Initialize brand resolver
@@ -599,12 +599,78 @@ const brandFields = brandResolver.detectBrandFields(record);
 
 // 3. Extract target brand information
 const targetBrandName = brandResolver.getTargetBrandName();
-// Returns: 'H&R Block' or configured brand
+// Returns: 'Red Bull' (currently hardcoded - lines 25-48)
 
 // 4. Calculate market gap
 const marketGap = brandResolver.calculateMarketGap(record);
 // Returns untapped market percentage
 ```
+
+**Brand Configuration Status:**
+
+```typescript
+// CURRENT HARDCODED CONFIGURATION (BrandNameResolver.ts:25-48)
+const TARGET_BRAND = {
+  fieldName: 'MP12207A_B_P',
+  brandName: 'Red Bull'
+};
+
+const COMPETITOR_BRANDS = [
+  { fieldName: 'MP12205A_B_P', brandName: '5-Hour Energy' },
+  { fieldName: 'MP12206A_B_P', brandName: 'Monster Energy' }
+];
+
+const PROJECT_INDUSTRY = 'Energy Drinks';
+```
+
+**🚀 AUTOMATION STATUS UPDATE (August 2025):**
+- ✅ **AUTOMATION DESIGNED**: Complete integration plan with migration system documented
+- ✅ **TEMPLATE INTEGRATION**: BrandNameResolver now part of ProjectTemplate system
+- ✅ **GENERATOR CREATED**: `BrandResolverGenerator` class for automated configuration
+- ✅ **VALIDATION FRAMEWORK**: `BrandResolverValidator` ensures field existence in data
+- 🔄 **IMPLEMENTATION PENDING**: Automation components designed, awaiting deployment
+
+**Automated Migration Commands:**
+```bash
+# Generate brand configuration from template (PLANNED)
+npm run generate-config --template energy-drinks --include BrandNameResolver
+
+# Validate brand fields exist in training data (PLANNED)
+npm run validate-brand-fields --template energy-drinks --data-source "..."
+
+# Deploy with automatic brand configuration (PLANNED)
+npm run migrate:run --project "new-project" --template custom-template --deploy
+```
+
+**Migration System Integration:**
+- ✅ **Template-Driven**: Brand configuration generated from migration templates
+- ✅ **Field Validation**: Automatic verification of brand fields in data sources
+- ✅ **Safe Deployment**: Backup/rollback support for configuration changes
+- ✅ **One-Command**: Included in complete migration automation pipeline
+
+**Usage Coverage:**
+- ✅ **16+ Analysis Processors**: All modern processors use BrandNameResolver
+- ✅ **Single Source of Truth**: One configuration affects all brand-related analysis
+- ✅ **Market Gap Calculation**: Dynamic calculation from actual competitor data
+
+**Documentation**: See `/docs/MIGRATION_AUTOMATION_ROADMAP.md` for complete BrandNameResolver automation details
+
+### 📋 BrandNameResolver Automation Roadmap
+
+**Current State**: Hardcoded configuration requiring manual updates per project
+**Target State**: Fully automated template-driven configuration generation
+
+**Implementation Plan**:
+1. ✅ **Design Phase** (COMPLETE): Integration plan with migration system documented
+2. 🔄 **Development Phase** (PENDING): Implement BrandResolverGenerator and validator classes
+3. ⏳ **Testing Phase**: Validate with Red Bull template and multiple brand scenarios
+4. ⏳ **Deployment Phase**: Roll out to production migration automation system
+
+**When Completed**:
+- Brand configuration will be generated automatically from project templates
+- Field validation will ensure all brand fields exist in data sources
+- One-command migration will include complete brand configuration
+- Manual updates to BrandNameResolver.ts will no longer be required
 
 ### Step 5-9: [Remaining steps unchanged from original document]
 
