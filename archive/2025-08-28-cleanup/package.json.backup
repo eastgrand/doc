@@ -45,6 +45,8 @@
     "migrate:examples": "node scripts/migration/migrate.js examples"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^2.0.8",
+    "@ai-sdk/react": "^2.0.25",
     "@anthropic-ai/sdk": "^0.36.3",
     "@arcgis/core": "4.32.10",
     "@dnd-kit/core": "^6.1.0",
@@ -79,6 +81,7 @@
     "@radix-ui/react-toast": "^1.2.6",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@radix-ui/react-use-controllable-state": "^1.2.2",
+    "@reduxjs/toolkit": "^2.8.2",
     "@supabase/supabase-js": "^2.39.0",
     "@types/density-clustering": "^1.3.3",
     "@types/memoizee": "^0.4.12",
@@ -102,6 +105,7 @@
     "framer-motion": "^12.4.3",
     "geojson": "^0.5.0",
     "geolib": "^3.3.4",
+    "google-trends-api": "^4.9.2",
     "html2canvas": "^1.4.1",
     "https-proxy-agent": "^7.0.6",
     "idb": "^7.1.1",
@@ -118,6 +122,7 @@
     "react-dom": "^18.3.1",
     "react-icons": "^5.5.0",
     "react-markdown": "^9.0.1",
+    "react-palm": "^3.3.11",
     "react-redux": "^9.2.0",
     "react-resizable-panels": "^3.0.2",
     "react-syntax-highlighter": "^15.6.6",
