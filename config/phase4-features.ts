@@ -88,10 +88,8 @@ export const PHASE4_FEATURES: Phase4Features = {
       apiEndpoints: {
         googleScholar: false,  // Not available
         pubmed: false,  // Not relevant to consumer demographics
-        arxiv: false,   // Currently not working
-        semanticScholar: false,  // Not accessible
-        crossref: true,  // ✅ Working
-        core: false  // Currently not working
+        arxiv: true,   // ✅ Working
+        semanticScholar: false  // Not accessible
       }
     }
   },

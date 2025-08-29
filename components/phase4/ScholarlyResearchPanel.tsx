@@ -3,7 +3,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -14,22 +13,16 @@ import {
 } from '@/config/phase4-features';
 import { 
   searchRelevantResearch, 
-  type ResearchPaper, 
-  type ResearchQuery, 
-  type ResearchResponse 
+  type ResearchQuery as ServiceResearchQuery
 } from '@/lib/integrations/scholarly-research-service';
 import {
   BookOpen,
-  Search,
   ExternalLink,
   Star,
   Calendar,
-  Users,
   FileText,
-  AlertCircle,
   CheckCircle,
   Copy,
-  Download,
   Filter,
   RefreshCw
 } from 'lucide-react';
@@ -51,19 +44,15 @@ interface ScholarlyPaper {
   isOpenAccess: boolean;
 }
 
-interface ResearchQuery {
-  query: string;
-  analysisContext?: {
-    location?: string;
-    analysisType?: string;
-    brand?: string;
-    demographics?: string[];
-  };
-}
-
 interface ScholarlyResearchPanelProps {
-  query?: string;
-  analysisContext?: ResearchQuery['analysisContext'];
+  analysisResult?: any;
+  analysisContext?: {
+    query: string;
+    selectedAreaName: string;
+    zipCodes: string[];
+    endpoint: string;
+    persona?: string;
+  };
   onPaperSelect?: (paper: ScholarlyPaper) => void;
   onCiteInReport?: (paper: ScholarlyPaper) => void;
   className?: string;
@@ -125,7 +114,7 @@ const MOCK_PAPERS: ScholarlyPaper[] = [
  * when the feature is disabled via feature flags.
  */
 export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
-  query = '',
+  analysisResult,
   analysisContext,
   onPaperSelect,
   onCiteInReport,
@@ -133,32 +122,67 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
 }) => {
   // Check if feature is enabled
   const isEnabled = isPhase4FeatureEnabled('scholarlyResearch');
-  const config = getPhase4FeatureConfig('scholarlyResearch');
   
   // State
-  const [searchQuery, setSearchQuery] = useState(query);
   const [papers, setPapers] = useState<ScholarlyPaper[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSource, setSelectedSource] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'relevance' | 'citations' | 'year'>('relevance');
+  const [hasSearched, setHasSearched] = useState(false);
 
   // If feature is disabled, return null (no UI)
   if (!isEnabled) {
     return null;
   }
 
-  // Real API integration
-  const searchPapers = useCallback(async (searchTerm: string) => {
-    if (!searchTerm.trim()) return;
+  // Build contextual search query from analysis
+  const buildContextualQuery = useCallback(() => {
+    if (!analysisContext) return '';
+    
+    const { query, selectedAreaName, endpoint } = analysisContext;
+    let searchTerms = [];
+    
+    // Add context-specific terms based on endpoint
+    if (endpoint?.includes('demographic')) {
+      searchTerms.push('demographic analysis', 'population statistics');
+    }
+    if (endpoint?.includes('strategic')) {
+      searchTerms.push('market strategy', 'consumer behavior');
+    }
+    if (endpoint?.includes('competitive')) {
+      searchTerms.push('competitive analysis', 'market competition');
+    }
+    
+    // Add location context
+    if (selectedAreaName && selectedAreaName !== 'Custom Area') {
+      searchTerms.push(selectedAreaName, 'geographic analysis');
+    }
+    
+    // Add original query terms
+    if (query) {
+      searchTerms.push(query);
+    }
+    
+    // Add domain-specific terms
+    searchTerms.push('retail analytics', 'spatial clustering', 'GIS');
+    
+    return searchTerms.join(' ');
+  }, [analysisContext]);
+
+  // Automatic paper search based on analysis context
+  const searchPapers = useCallback(async () => {
+    const searchTerm = buildContextualQuery();
+    if (!searchTerm || hasSearched) return;
     
     setIsLoading(true);
+    setHasSearched(true);
     
     try {
-      const searchQuery: ResearchQuery = {
+      const searchQuery: ServiceResearchQuery = {
         query: searchTerm,
-        analysisContext: analysisContext,
-        maxResults: 10,
-        confidenceThreshold: 0.75
+        max_results: 10,
+        relevance_threshold: 0.6,
+        include_preprints: true
       };
 
       const response = await searchRelevantResearch(searchQuery);
@@ -168,39 +192,34 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
         id: paper.id,
         title: paper.title,
         authors: paper.authors,
-        abstract: paper.abstract || paper.summary || 'No abstract available',
-        year: paper.publishedDate ? new Date(paper.publishedDate).getFullYear() : new Date().getFullYear(),
-        journal: paper.journal || paper.venue,
-        doi: paper.doi,
+        abstract: paper.abstract || 'No abstract available',
+        year: paper.published_date ? new Date(paper.published_date).getFullYear() : new Date().getFullYear(),
+        journal: paper.journal || undefined,
+        doi: paper.doi || undefined,
         url: paper.url,
-        citationCount: paper.citationCount || 0,
-        relevanceScore: paper.relevanceScore,
-        source: (paper.source as ScholarlyPaper['source']) || 'arxiv',
+        citationCount: paper.citation_count || 0,
+        relevanceScore: paper.relevance_score,
+        source: paper.source as ScholarlyPaper['source'],
         keywords: paper.keywords || [],
-        isOpenAccess: paper.isOpenAccess || false
+        isOpenAccess: true // Assume true for now
       }));
       
       setPapers(convertedPapers);
     } catch (error) {
       console.error('Error searching papers:', error);
-      // Fallback to mock data on error
-      const filtered = MOCK_PAPERS.filter(paper => 
-        paper.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        paper.abstract.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        paper.keywords.some(k => k.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
-      setPapers(filtered);
+      // Use mock data as fallback
+      setPapers(MOCK_PAPERS);
     } finally {
       setIsLoading(false);
     }
-  }, [analysisContext]);
+  }, [buildContextualQuery, hasSearched]);
 
-  // Auto-search when query changes
+  // Auto-search when component mounts or context changes
   useEffect(() => {
-    if (query) {
-      searchPapers(query);
+    if (analysisContext && !hasSearched) {
+      searchPapers();
     }
-  }, [query, searchPapers]);
+  }, [analysisContext, searchPapers, hasSearched]);
 
   // Sort papers
   const sortedPapers = useMemo(() => {
@@ -272,30 +291,35 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
         </Badge>
       </div>
 
-      {/* Search Bar */}
-      <div className="flex gap-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && searchPapers(searchQuery)}
-            placeholder="Search academic papers..."
-            className="pl-10 text-sm"
-          />
+      {/* Auto-search Status */}
+      {isLoading && (
+        <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded">
+          <RefreshCw className="w-4 h-4 animate-spin text-blue-600 dark:text-blue-400" />
+          <span className="text-xs text-blue-600 dark:text-blue-400">
+            Searching for relevant academic papers based on your analysis...
+          </span>
         </div>
-        <Button
-          size="sm"
-          onClick={() => searchPapers(searchQuery)}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <RefreshCw className="w-3 h-3 animate-spin" />
-          ) : (
-            <Search className="w-3 h-3" />
-          )}
-        </Button>
-      </div>
+      )}
+      
+      {!isLoading && papers.length > 0 && (
+        <div className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-900/20 rounded">
+          <span className="text-xs text-green-600 dark:text-green-400">
+            Found {papers.length} relevant papers supporting your analysis
+          </span>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => {
+              setHasSearched(false);
+              searchPapers();
+            }}
+            className="h-6 text-xs"
+          >
+            <RefreshCw className="w-3 h-3 mr-1" />
+            Refresh
+          </Button>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="flex items-center gap-2 flex-wrap">
@@ -329,7 +353,7 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
         
         {analysisContext && (
           <Badge variant="secondary" className="text-xs">
-            Context: {analysisContext.location || analysisContext.analysisType}
+            Context: {analysisContext.selectedAreaName || analysisContext.endpoint}
           </Badge>
         )}
       </div>
@@ -464,8 +488,20 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
               <CardContent className="p-8 text-center">
                 <BookOpen className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                 <p className="text-sm text-muted-foreground">
-                  {searchQuery ? 'No papers found' : 'Enter a search query to find relevant papers'}
+                  No relevant papers found for this analysis
                 </p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setHasSearched(false);
+                    searchPapers();
+                  }}
+                  className="mt-4"
+                >
+                  <RefreshCw className="w-3 h-3 mr-1" />
+                  Try Again
+                </Button>
               </CardContent>
             </Card>
           )}

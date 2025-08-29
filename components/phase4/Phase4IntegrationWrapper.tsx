@@ -206,12 +206,7 @@ export function Phase4IntegrationWrapper({
       case 'scholarly-research':
         return {
           ...baseProps,
-          searchQuery: analysisContext.query,
-          demographicContext: {
-            area: analysisContext.selectedAreaName,
-            zipCodes: analysisContext.zipCodes,
-            endpoint: analysisContext.endpoint
-          }
+          analysisContext: analysisContext
         };
       
       case 'real-time-data':
@@ -360,7 +355,7 @@ export function Phase4IntegrationWrapper({
         </div>
       </CardHeader>
 
-      <CardContent className={isExpanded ? "h-[600px]" : "h-[400px]"}>
+      <CardContent className={`${isExpanded ? "h-[600px]" : "h-[400px]"} overflow-y-auto`}>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full">
           <TabsList className="grid w-full grid-cols-4 mb-4">
             {availableComponents.map((component) => {

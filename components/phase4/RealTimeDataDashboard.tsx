@@ -13,7 +13,7 @@ import {
 import { 
   getRealTimeData, 
   type RealTimeDataResponse, 
-  type EconomicIndicator, 
+  type EconomicIndicator as ServiceEconomicIndicator, 
   type MarketData 
 } from '@/lib/integrations/real-time-data-service';
 import {
@@ -202,39 +202,39 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
         // Convert API response to DataStream format
         const convertedStreams: DataStream[] = [
           // Economic indicators from FRED
-          ...realTimeResponse.economicIndicators.map((indicator, index) => ({
+          ...realTimeResponse.economic_indicators.map((indicator: ServiceEconomicIndicator, index: number) => ({
             id: `econ-${index}`,
-            name: indicator.name,
+            name: indicator.title,
             source: 'fred' as const,
             value: indicator.value,
-            previousValue: indicator.previousValue,
-            change: indicator.change,
-            changePercent: indicator.changePercent,
-            unit: indicator.unit || '%',
-            timestamp: new Date(indicator.timestamp),
+            previousValue: indicator.value,
+            change: 0,
+            changePercent: indicator.change_percent || 0,
+            unit: indicator.units || '%',
+            timestamp: new Date(indicator.date),
             refreshRate: 900, // 15 minutes
             status: 'live' as const,
-            confidence: indicator.confidence || 0.95,
-            impact: indicator.change && indicator.change > 0 ? 'positive' : 
-                   indicator.change && indicator.change < 0 ? 'negative' : 'neutral',
-            description: indicator.description || `${indicator.name} from Federal Reserve Economic Data`
+            confidence: 0.95,
+            impact: (indicator.change_percent && indicator.change_percent > 0 ? 'positive' : 
+                   indicator.change_percent && indicator.change_percent < 0 ? 'negative' : 'neutral') as 'positive' | 'negative' | 'neutral',
+            description: `${indicator.title} from Federal Reserve Economic Data`
           })),
           // Market data from Alpha Vantage
-          ...realTimeResponse.marketData.map((market, index) => ({
+          ...realTimeResponse.market_data.map((market: MarketData, index: number) => ({
             id: `market-${index}`,
             name: market.symbol,
             source: 'alpha-vantage' as const,
             value: market.price,
-            previousValue: market.previousClose,
+            previousValue: market.price - market.change,
             change: market.change,
-            changePercent: market.changePercent,
+            changePercent: parseFloat(market.change_percent.replace('%', '')),
             unit: '$',
             timestamp: new Date(market.timestamp),
             refreshRate: 300, // 5 minutes
             status: 'live' as const,
             confidence: 0.98,
-            impact: market.change && market.change > 0 ? 'positive' : 
-                   market.change && market.change < 0 ? 'negative' : 'neutral',
+            impact: (market.change > 0 ? 'positive' : 
+                   market.change < 0 ? 'negative' : 'neutral') as 'positive' | 'negative' | 'neutral',
             description: `${market.symbol} market data from Alpha Vantage`
           }))
         ];
@@ -266,26 +266,32 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
             let updatedData = null;
             
             if (stream.source === 'fred') {
-              updatedData = realTimeResponse.economicIndicators.find(indicator => 
-                indicator.name.toLowerCase().includes(stream.name.toLowerCase())
+              updatedData = realTimeResponse.economic_indicators.find((indicator: ServiceEconomicIndicator) => 
+                indicator.title.toLowerCase().includes(stream.name.toLowerCase())
               );
             } else if (stream.source === 'alpha-vantage') {
-              updatedData = realTimeResponse.marketData.find(market => 
+              updatedData = realTimeResponse.market_data.find((market: MarketData) => 
                 market.symbol.toLowerCase().includes(stream.name.toLowerCase())
               );
             }
             
             if (updatedData) {
+              const change = 'change' in updatedData ? updatedData.change : 0;
+              const changePercent = 'change_percent' in updatedData ? 
+                (typeof updatedData.change_percent === 'string' ? 
+                  parseFloat(updatedData.change_percent.replace('%', '')) : 
+                  updatedData.change_percent) : 0;
+              
               return {
                 ...stream,
                 previousValue: stream.value,
                 value: 'value' in updatedData ? updatedData.value : updatedData.price,
-                change: updatedData.change,
-                changePercent: updatedData.changePercent,
-                timestamp: new Date(updatedData.timestamp),
+                change: change,
+                changePercent: changePercent,
+                timestamp: new Date('date' in updatedData ? updatedData.date : updatedData.timestamp),
                 status: 'live' as const,
-                impact: updatedData.change && updatedData.change > 0 ? 'positive' : 
-                       updatedData.change && updatedData.change < 0 ? 'negative' : 'neutral'
+                impact: (change > 0 ? 'positive' : 
+                       change < 0 ? 'negative' : 'neutral') as 'positive' | 'negative' | 'neutral'
               };
             }
           }

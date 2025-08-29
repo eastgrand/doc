@@ -129,7 +129,7 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
   // State
   const [activeVisualization, setActiveVisualization] = useState<'3d-map' | 'time-series' | 'linked'>('3d-map');
   const [isAnimating, setIsAnimating] = useState(false);
-  const [timeSliderValue, setTimeSliderValue] = useState([0]);
+  const [timeSliderValue, setTimeSliderValue] = useState(0);
   const [layers, setLayers] = useState<VisualizationLayer[]>([
     {
       id: 'demographic',
@@ -374,8 +374,8 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
                       </div>
                       {layer.visible && (
                         <Slider
-                          value={[layer.opacity * 100]}
-                          onValueChange={([v]) => updateLayerOpacity(layer.id, v / 100)}
+                          value={layer.opacity * 100}
+                          onValueChange={(value) => updateLayerOpacity(layer.id, value / 100)}
                           max={100}
                           className="w-24"
                         />
@@ -395,7 +395,7 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
                         max={100}
                         className="flex-1"
                       />
-                      <span className="text-xs">{timeSliderValue[0]}%</span>
+                      <span className="text-xs">{timeSliderValue}%</span>
                     </div>
                   </div>
                 )}
