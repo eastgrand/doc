@@ -1003,63 +1003,27 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
               </h4>
               <div className="flex flex-col space-y-1">
                 <div className="flex items-center space-x-2">
-                  <div 
-                    className="w-3 h-3 rounded-sm"
-                    style={{ 
-                      backgroundColor: ACTIVE_COLOR_SCHEME[0], // Red
-                      border: '1px solid #ddd',
-                      opacity: 1,
-                      boxShadow: 'none',
-                      backgroundClip: 'padding-box',
-                      zIndex: 1,
-                      position: 'relative'
-                    }}
-                  ></div>
+                  <svg width="12" height="12" style={{ border: '1px solid #ddd', borderRadius: '2px' }}>
+                    <rect width="10" height="10" fill="#D6191C" />
+                  </svg>
                   <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Lowest</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div 
-                    className="w-3 h-3 rounded-sm"
-                    style={{ 
-                      backgroundColor: ACTIVE_COLOR_SCHEME[1], // Orange
-                      border: '1px solid #ddd',
-                      opacity: 1,
-                      boxShadow: 'none',
-                      backgroundClip: 'padding-box',
-                      zIndex: 1,
-                      position: 'relative'
-                    }}
-                  ></div>
+                  <svg width="12" height="12" style={{ border: '1px solid #ddd', borderRadius: '2px' }}>
+                    <rect width="10" height="10" fill="#FCAD61" />
+                  </svg>
                   <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Low</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div 
-                    className="w-3 h-3 rounded-sm"
-                    style={{ 
-                      backgroundColor: ACTIVE_COLOR_SCHEME[2], // Light Green
-                      border: '1px solid #ddd',
-                      opacity: 1,
-                      boxShadow: 'none',
-                      backgroundClip: 'padding-box',
-                      zIndex: 1,
-                      position: 'relative'
-                    }}
-                  ></div>
+                  <svg width="12" height="12" style={{ border: '1px solid #ddd', borderRadius: '2px' }}>
+                    <rect width="10" height="10" fill="#A6D96A" />
+                  </svg>
                   <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>High</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div 
-                    className="w-3 h-3 rounded-sm"
-                    style={{ 
-                      backgroundColor: ACTIVE_COLOR_SCHEME[3], // Green
-                      border: '1px solid #ddd',
-                      opacity: 1,
-                      boxShadow: 'none',
-                      backgroundClip: 'padding-box',
-                      zIndex: 1,
-                      position: 'relative'
-                    }}
-                  ></div>
+                  <svg width="12" height="12" style={{ border: '1px solid #ddd', borderRadius: '2px' }}>
+                    <rect width="10" height="10" fill="#1A9641" />
+                  </svg>
                   <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Highest</span>
                 </div>
               </div>

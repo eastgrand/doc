@@ -12,17 +12,17 @@
 **Location**: `/components/map/MapClient.tsx` & `/components/MapApp.tsx`
 
 ### 1.1 Initial Load
-- [ ] Map loads without console errors
-- [ ] Map centers on Los Angeles (ZIP 90650) area
-- [ ] Basemap displays correctly (gray-vector for light theme)
-- [ ] No ArcGIS widget errors in console
-- [ ] Assets load from `/assets/esri/` path
+- [x] Map loads without console errors
+- [x] Map centers on Los Angeles (ZIP 90650) area
+- [x] Basemap displays correctly (gray-vector for light theme)
+- [x] No ArcGIS widget errors in console
+- [x] Assets load from `/assets/esri/` path
 
 ### 1.2 Map Controls
-- [ ] Zoom controls appear and function
-- [ ] Attribution widget loads without errors
-- [ ] Map constraints work (if enabled)
-- [ ] Theme-appropriate basemap (light/dark mode)
+- [x] Zoom controls appear and function
+- [x] Attribution widget loads without errors
+- [x] Map constraints work (if enabled)
+- [x] Theme-appropriate basemap (light/dark mode)
 
 **Issues Found**: _________________________________
 
@@ -32,28 +32,28 @@
 **Location**: `/components/MapWidgets.tsx`
 
 ### 2.1 Search Widget
-- [ ] Search widget initializes without errors
-- [ ] Can search for locations
-- [ ] Search results display properly
-- [ ] No t9n/locale errors
+- [x] Search widget initializes without errors
+- [x] Can search for locations
+- [x] Search results display properly
+- [x] No t9n/locale errors
 
 ### 2.2 Print Widget
-- [ ] Print widget loads
-- [ ] Print service URL works
-- [ ] Can generate print preview
-- [ ] No locale errors
+- [x] Print widget loads
+- [x] Print service URL works
+- [x] Can generate print preview
+- [x] No locale errors
 
 ### 2.3 Bookmarks Widget
-- [ ] Bookmarks widget loads
-- [ ] California city bookmarks display (Fresno, LA, San Diego, SF, San Jose)
-- [ ] Clicking bookmark navigates to location
-- [ ] No errors when switching bookmarks
+- [x] Bookmarks widget loads
+- [x] California city bookmarks display (Fresno, LA, San Diego, SF, San Jose)
+- [x] Clicking bookmark navigates to location
+- [x] No errors when switching bookmarks
 
 ### 2.4 Layer List
-- [ ] Layer list displays
-- [ ] Layers can be toggled on/off
-- [ ] Layer ordering works (if drag-drop enabled)
-- [ ] Layer visibility persists
+- [x] Layer list displays
+- [x] Layers can be toggled on/off
+- [x] Layer ordering works (if drag-drop enabled)
+- [x] Layer visibility persists
 
 **Issues Found**: _________________________________
 
@@ -63,24 +63,24 @@
 **Location**: `/components/map/SampleAreasPanel.tsx`
 
 ### 3.1 Panel Display
-- [ ] Panel shows on right side
-- [ ] 5 sample areas display with correct data
-- [ ] Color scheme shows correctly (Red → Orange → Light Green → Green)
-- [ ] No semicolon errors in console
-- [ ] Hover effects work on area cards
+- [x] Panel shows on right side
+- [x] 5 sample areas display with correct data
+- [x] Color scheme shows correctly (Red → Orange → Light Green → Green)
+- [x] No semicolon errors in console
+- [x] Hover effects work on area cards
 
 ### 3.2 Area Interaction
-- [ ] Clicking area card navigates map to that location
-- [ ] Active area highlighted
-- [ ] Statistics display correctly
-- [ ] Graphics render on map (204 per area)
+- [x] Clicking area card navigates map to that location
+- [x] Active area highlighted
+- [x] Statistics display correctly
+- [x] Graphics render on map (204 per area)
 
 ### 3.3 Data Display
-- [ ] Strategic scores show (0-100)
-- [ ] Population data displays
-- [ ] Income data displays
-- [ ] Age data displays
-- [ ] All 5 ZIP codes present (90650, 90731, 90745, 90805, 90813)
+- [x] Strategic scores show (0-100)
+- [x] Population data displays
+- [x] Income data displays
+- [x] Age data displays
+- [x] All 5 ZIP codes present (90650, 90731, 90745, 90805, 90813)
 
 **Issues Found**: _________________________________
 
