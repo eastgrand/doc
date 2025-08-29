@@ -113,7 +113,7 @@ export const PHASE4_FEATURES: Phase4Features = {
 
   // 4.3 - Advanced Visualization Engine
   advancedVisualization: {
-    enabled: false,  // Set to true to enable advanced visualizations
+    enabled: true,  // ✅ ENABLED - Advanced visualizations now active
     config: {
       webglEnabled: true,
       maxDataPoints: 100000,
