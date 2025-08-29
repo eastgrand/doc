@@ -108,7 +108,7 @@ const MOCK_PAPERS: ScholarlyPaper[] = [
 ];
 
 /**
- * ScholarlyResearchPanel - Phase 4.1 Implementation
+ * ScholarlyResearchPanel - Advanced Feature Implementation
  * 
  * This component is completely modular and will gracefully degrade
  * when the feature is disabled via feature flags.

@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
@@ -109,7 +108,7 @@ const generateTimeSeriesData = () => {
 };
 
 /**
- * AdvancedVisualizationSuite - Phase 4.3 Implementation
+ * AdvancedVisualizationSuite - Advanced Feature Implementation
  * 
  * Advanced visualization engine with 3D maps, animations, and linked charts.
  * Modular and can be disabled via feature flags.
@@ -289,9 +288,6 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
         </div>
         
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="text-xs">
-            Phase 4.3
-          </Badge>
           <Button
             size="sm"
             variant="outline"

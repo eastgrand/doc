@@ -205,7 +205,7 @@ const generateExecutiveSummary = (insights: AIInsight[]): ExecutiveSummary => ({
 });
 
 /**
- * AIInsightGenerator - Phase 4.4 Implementation
+ * AIInsightGenerator - Advanced Feature Implementation
  * 
  * AI-powered insight extraction and narrative generation.
  * Modular component that can be disabled via feature flags.
@@ -340,9 +340,6 @@ export const AIInsightGenerator: React.FC<AIInsightGeneratorProps> = ({
         </div>
         
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="text-xs">
-            Phase 4.4
-          </Badge>
           <Button
             size="sm"
             onClick={generateInsights}

@@ -163,7 +163,7 @@ const INITIAL_STREAMS: DataStream[] = [
 ];
 
 /**
- * RealTimeDataDashboard - Phase 4.2 Implementation
+ * RealTimeDataDashboard - Advanced Feature Implementation
  * 
  * Modular component that displays live economic data streams.
  * Gracefully degrades when disabled via feature flags.
@@ -410,9 +410,6 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
         </div>
         
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="text-xs">
-            Phase 4.2
-          </Badge>
           <Button
             size="sm"
             variant="outline"

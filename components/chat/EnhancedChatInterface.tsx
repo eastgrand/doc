@@ -594,7 +594,7 @@ ${conversationText}
                   <div 
                     className={`inline-block p-3 rounded-lg text-xs cursor-pointer transition-all hover:shadow-md ${
                       message.role === 'user'
-                        ? 'bg-[var(--firefly-19)] text-white hover:bg-[var(--firefly-20)]'
+                        ? 'bg-blue-500/80 text-white hover:bg-blue-600/80'
                         : 'theme-message-container'
                     }`}
                     onClick={() => setSelectedMessage(message)}
@@ -994,6 +994,7 @@ ${conversationText}
               query: analysisContext.query,
               persona: analysisContext.persona
             }}
+            onClose={() => setShowPhase4Integration(false)}
           />
         </div>
       )}

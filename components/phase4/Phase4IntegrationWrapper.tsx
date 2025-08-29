@@ -63,15 +63,15 @@ interface Phase4ComponentStatus {
 }
 
 /**
- * Phase 4 Integration Wrapper
+ * Advanced Features Integration Wrapper
  * 
- * This component serves as the main integration point for all Phase 4 advanced features.
+ * This component serves as the main integration point for all advanced features.
  * It handles feature flag management, component lifecycle, and data flow coordination.
  * 
  * Key Features:
  * - Feature flag-based component enablement
  * - Transparent error handling with no misleading fallbacks
- * - Data flow coordination between analysis results and Phase 4 components
+ * - Data flow coordination between analysis results and advanced components
  * - Performance monitoring and resource management
  * - User-friendly status indicators and controls
  */
@@ -143,7 +143,7 @@ export function Phase4IntegrationWrapper({
       enabled: comp.enabled,
       available: true,
       status: 'ready',
-      message: `${comp.name} ready for analysis`
+      message: `${comp.name} is available`
     }));
 
     setComponentStatuses(statuses);
@@ -248,7 +248,7 @@ export function Phase4IntegrationWrapper({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-gray-400" />
-            Phase 4 Advanced Features
+            Advanced Features
           </CardTitle>
           <CardDescription>
             Advanced analysis features are currently disabled
@@ -310,6 +310,7 @@ export function Phase4IntegrationWrapper({
               size="sm"
               onClick={() => setIsExpanded(!isExpanded)}
               className="h-8 w-8 p-0"
+              title={isExpanded ? "Minimize" : "Expand"}
             >
               {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
             </Button>
@@ -320,6 +321,7 @@ export function Phase4IntegrationWrapper({
                 size="sm"
                 onClick={onClose}
                 className="h-8 w-8 p-0"
+                title="Hide Advanced Features"
               >
                 <EyeOff className="w-4 h-4" />
               </Button>
@@ -339,11 +341,12 @@ export function Phase4IntegrationWrapper({
               const Component = availableComponents.find(c => c.id === status.component);
               if (!Component) return null;
               
+              if (status.status === 'ready') return null;
+              
               return (
                 <Badge 
                   key={status.component}
-                  variant={status.status === 'ready' ? 'default' : 
-                           status.status === 'loading' ? 'secondary' : 'destructive'}
+                  variant={status.status === 'loading' ? 'secondary' : 'destructive'}
                   className="text-xs"
                 >
                   <Component.icon className="w-2 h-2 mr-1" />
@@ -355,9 +358,9 @@ export function Phase4IntegrationWrapper({
         </div>
       </CardHeader>
 
-      <CardContent className={`${isExpanded ? "h-[600px]" : "h-[400px]"} overflow-y-auto`}>
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full">
-          <TabsList className="grid w-full grid-cols-4 mb-4">
+      <CardContent className={`${isExpanded ? "h-[600px]" : "h-[400px]"} overflow-hidden`}>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
+          <TabsList className="grid w-full grid-cols-4 flex-shrink-0">
             {availableComponents.map((component) => {
               const status = componentStatuses.find(s => s.component === component.id);
               return (
@@ -380,7 +383,7 @@ export function Phase4IntegrationWrapper({
             const props = getComponentProps(component.id);
 
             return (
-              <TabsContent key={component.id} value={component.id} className="h-[calc(100%-60px)]">
+              <TabsContent key={component.id} value={component.id} className="flex-1 overflow-y-auto mt-4">
                 {status?.status === 'error' ? (
                   <Alert variant="destructive">
                     <AlertTriangle className="w-4 h-4" />
@@ -423,7 +426,7 @@ export function Phase4IntegrationWrapper({
 }
 
 /**
- * Error Boundary for Phase 4 Components
+ * Error Boundary for Advanced Components
  * Implements transparency-first error handling
  */
 class ErrorBoundary extends React.Component<
@@ -440,7 +443,7 @@ class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error(`Phase 4 ${this.props.componentName} Error:`, error, errorInfo);
+    console.error(`Advanced Feature ${this.props.componentName} Error:`, error, errorInfo);
   }
 
   render() {
