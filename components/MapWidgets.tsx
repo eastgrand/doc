@@ -15,6 +15,7 @@ import { Root } from 'react-dom/client';
 // Layer config and loading imports removed - handled by MapContainer
 
 // ArcGIS Imports
+import * as intl from '@arcgis/core/intl';
 import LayerList from '@arcgis/core/widgets/LayerList';
 import Search from '@arcgis/core/widgets/Search';
 import Print from '@arcgis/core/widgets/Print';
@@ -290,6 +291,10 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
       const cleanupHandles = widgetCleanupHandles.current;
 
       try {
+        // Set locale to ensure t9n files load properly
+        intl.setLocale("en");
+        console.log('MapWidgets: Locale set to "en"');
+        
         // Initialize Search widget
         if (!widgets.search && containers.get('search')) {
           const searchWidget = new Search({ view, container: containers.get('search') });

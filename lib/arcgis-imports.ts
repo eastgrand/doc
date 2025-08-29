@@ -1,5 +1,9 @@
 // Centralized ArcGIS imports
 export const loadArcGISModules = async () => {
+  // Import intl first to set locale before loading any widgets
+  const intl = await import('@arcgis/core/intl');
+  intl.setLocale("en");
+  
   const [
     Map,
     MapView,

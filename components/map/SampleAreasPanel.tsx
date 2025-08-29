@@ -1012,10 +1012,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                       boxShadow: 'none',
                       backgroundClip: 'padding-box',
                       zIndex: 1,
-                      position: 'relative',
-                      // Use !important to override any global CSS
-                      // @ts-ignore
-                      cssText: `background-color: ${ACTIVE_COLOR_SCHEME[0]} !important;`
+                      position: 'relative'
                     }}
                   ></div>
                   <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Lowest</span>
@@ -1030,10 +1027,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                       boxShadow: 'none',
                       backgroundClip: 'padding-box',
                       zIndex: 1,
-                      position: 'relative',
-                      // Use !important to override any global CSS
-                      // @ts-ignore
-                      cssText: `background-color: ${ACTIVE_COLOR_SCHEME[1]} !important;`
+                      position: 'relative'
                     }}
                   ></div>
                   <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Low</span>
@@ -1048,10 +1042,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                       boxShadow: 'none',
                       backgroundClip: 'padding-box',
                       zIndex: 1,
-                      position: 'relative',
-                      // Use !important to override any global CSS
-                      // @ts-ignore
-                      cssText: `background-color: ${ACTIVE_COLOR_SCHEME[2]} !important;`
+                      position: 'relative'
                     }}
                   ></div>
                   <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>High</span>
@@ -1066,10 +1057,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                       boxShadow: 'none',
                       backgroundClip: 'padding-box',
                       zIndex: 1,
-                      position: 'relative',
-                      // Use !important to override any global CSS
-                      // @ts-ignore
-                      cssText: `background-color: ${ACTIVE_COLOR_SCHEME[3]} !important;`
+                      position: 'relative'
                     }}
                   ></div>
                   <span className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>Highest</span>

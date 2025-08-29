@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import '@/components/widget-styles.css';
 import '@/components/popup-styles.css';
 import esriConfig from "@arcgis/core/config";
+import * as intl from "@arcgis/core/intl";
 import MapClient from '@/components/map/MapClient';
 import MapContainer from '@/components/MapContainer';
 import CustomPopupManager from './popup/CustomPopupManager';
@@ -19,8 +20,10 @@ import SampleAreasPanel from '@/components/map/SampleAreasPanel';
 
 console.log('[MAP_APP] MapApp component function body executing');
 
-// Configure ArcGIS assets path
+// Configure ArcGIS assets path and locale
 esriConfig.assetsPath = "/assets";
+// Set locale to ensure t9n files load properly
+intl.setLocale("en");
 
 // Dynamic imports
 const ResizableSidebar = dynamic(() => import('@/components/ResizableSidebar'), { 
