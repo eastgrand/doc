@@ -83,7 +83,7 @@ export const PHASE4_FEATURES: Phase4Features = {
   scholarlyResearch: {
     enabled: true,  // ✅ ENABLED - Using CrossRef + arXiv
     config: {
-      maxResultsPerQuery: 10,
+      maxResultsPerQuery: 25,
       cacheTimeMinutes: 120,  // Extended cache for research
       apiEndpoints: {
         googleScholar: false,  // Not available
@@ -130,7 +130,7 @@ export const PHASE4_FEATURES: Phase4Features = {
     enabled: true,  // ✅ ENABLED - Using existing Claude integration
     config: {
       confidenceThreshold: 0.85,
-      maxInsightsPerAnalysis: 5,
+      maxInsightsPerAnalysis: 20,
       features: {
         patternDetection: true,
         narrativeGeneration: true,

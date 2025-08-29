@@ -258,7 +258,7 @@ export function Phase4IntegrationWrapper({
           <Alert>
             <AlertTriangle className="w-4 h-4" />
             <AlertDescription>
-              Phase 4 features are disabled by default. To enable advanced capabilities, 
+              Advanced features are disabled by default. To enable advanced capabilities, 
               update the feature flags in <code>config/phase4-features.ts</code> or 
               contact your administrator.
             </AlertDescription>
@@ -297,7 +297,7 @@ export function Phase4IntegrationWrapper({
           <div className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-blue-500" />
             <div>
-              <CardTitle className="text-base">Phase 4 Advanced Features</CardTitle>
+              <CardTitle className="text-base">Advanced Features</CardTitle>
               <CardDescription className="text-xs">
                 {availableComponents.length} of 4 components enabled
               </CardDescription>

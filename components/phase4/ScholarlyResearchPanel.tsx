@@ -287,7 +287,7 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
         </div>
         
         <Badge variant="outline" className="text-xs">
-          Phase 4.1
+          Research
         </Badge>
       </div>
 
