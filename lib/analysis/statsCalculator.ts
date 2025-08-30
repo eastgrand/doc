@@ -617,26 +617,62 @@ export function formatStatsForChat(stats: BasicStats, analysisType?: string, bra
   
   const lines: string[] = [];
   
-  lines.push(`**Quick Statistics**`);
-  lines.push(`• Areas analyzed: **${stats.count}**`);
-  lines.push(`• Average score: **${stats.mean.toFixed(2)}/100**`);
-  lines.push(`• Median score: **${stats.median.toFixed(2)}/100**`);
-  lines.push(`• Standard deviation: **${stats.stdDev.toFixed(2)}**`);
-  lines.push(`• Score range: **${stats.min.score.toFixed(1)}** to **${stats.max.score.toFixed(1)}**`);
+  lines.push(`**Market Analysis Overview**`);
+  lines.push(`• **${stats.count}** markets analyzed across the region`);
+  lines.push(`• Average performance: **${stats.mean.toFixed(1)}/100** ${stats.mean >= 70 ? '(strong overall)' : stats.mean >= 50 ? '(moderate overall)' : '(developing overall)'}`);
+  lines.push(`• Performance range: **${Math.abs(stats.max.score - stats.min.score).toFixed(1)} points** between highest and lowest markets`);
+  lines.push(`• Market consistency: **${stats.stdDev.toFixed(1)}** std dev ${stats.stdDev > 20 ? '(highly variable)' : stats.stdDev > 10 ? '(moderately variable)' : '(consistent)'}`);
   
   if (stats.coverage?.totalPopulation) {
-    lines.push(`• Total population: **${(stats.coverage.totalPopulation / 1000000).toFixed(1)}M**`);
+    lines.push(`• Population coverage: **${(stats.coverage.totalPopulation / 1000000).toFixed(1)}M** people`);
   }
   if (stats.coverage?.totalArea) {
-    lines.push(`• Total area: **${stats.coverage.totalArea.toFixed(0)} sq mi**`);
+    lines.push(`• Geographic coverage: **${stats.coverage.totalArea.toFixed(0)} sq mi**`);
   }
   
-  if (stats.top5.length > 0) {
-    lines.push('');
-    lines.push('**Top Performers:**');
-    stats.top5.forEach((area, i) => {
-      lines.push(`**${i + 1}.** ${area.area} (**${area.score.toFixed(2)}**)`);
-    });
+  lines.push('');
+  
+  // Strategic insights based on performance distribution
+  const performanceInsights = [];
+  if (allData && allData.length > 0) {
+    const highPerformers = allData.filter(d => extractScore(d) >= 70).length;
+    const moderatePerformers = allData.filter(d => extractScore(d) >= 50 && extractScore(d) < 70).length;
+    const developingMarkets = allData.filter(d => extractScore(d) >= 30 && extractScore(d) < 50).length;
+    
+    lines.push(`**Strategic Insights:**`);
+    
+    if (highPerformers > 0) {
+      performanceInsights.push(`**${highPerformers}** high-performing markets (70+ score)`);
+    }
+    if (moderatePerformers > 0) {
+      performanceInsights.push(`**${moderatePerformers}** moderate-performing markets (50-70 score)`);
+    }
+    if (developingMarkets > 0) {
+      performanceInsights.push(`**${developingMarkets}** developing markets (30-50 score)`);
+    }
+    
+    if (performanceInsights.length > 0) {
+      lines.push(`• Market distribution: ${performanceInsights.join(', ')}`);
+    }
+    
+    // Performance pattern analysis
+    if (stats.mean >= 60 && stats.stdDev < 15) {
+      lines.push(`• **Strong Consistent Performance:** Most markets show solid results with minimal variation`);
+    } else if (stats.mean >= 50 && stats.stdDev > 20) {
+      lines.push(`• **Mixed Performance Pattern:** High variation suggests market-specific factors drive outcomes`);
+    } else if (stats.mean < 40) {
+      lines.push(`• **Development Opportunity:** Most markets show potential for improvement across key metrics`);
+    } else {
+      lines.push(`• **Balanced Market Landscape:** Performance varies significantly across different market conditions`);
+    }
+  } else {
+    // Fallback when no allData is available - show key performers as examples
+    if (stats.top5.length > 0) {
+      lines.push(`**Market Leaders** (top examples): ${stats.top5.slice(0, 3).map(area => `${area.area} (${area.score.toFixed(1)})`).join(', ')}`);
+    }
+    if (stats.bottom5.length > 0) {
+      lines.push(`**Development opportunities** (lower examples): ${stats.bottom5.slice(0, 2).map(area => `${area.area} (${area.score.toFixed(1)})`).join(', ')}`);
+    }
   }
   
   return lines.join('\n');
@@ -648,79 +684,97 @@ export function formatStatsForChat(stats: BasicStats, analysisType?: string, bra
 export function formatBrandDifferenceStatsForChat(stats: BasicStats, brandNames?: { brand1: string; brand2: string }, allData?: any[]): string {
   const lines: string[] = [];
   
-  lines.push(`**Brand Difference Statistics**`);
-  lines.push(`• Markets analyzed: **${stats.count}**`);
-  lines.push(`• Average difference: **${stats.mean.toFixed(2)}%**`);
-  lines.push(`• Median difference: **${stats.median.toFixed(2)}%**`);
-  lines.push(`• Standard deviation: **${stats.stdDev.toFixed(2)}%**`);
-  lines.push(`• Difference range: **${stats.min.score.toFixed(1)}%** to **${stats.max.score.toFixed(1)}%**`);
-  
-  if (stats.coverage?.totalPopulation) {
-    lines.push(`• Total population: **${(stats.coverage.totalPopulation / 1000000).toFixed(1)}M**`);
-  }
-  
-  lines.push('');
-  
-  // Use all data if provided, otherwise fall back to limited data
-  let allAreas: { area: string; score: number }[] = [];
-  
-  if (allData && allData.length > 0) {
-    // Process all data for comprehensive market display
-    const getScore = extractScore;
-    const getAreaName = (record: any): string => {
-      return record.area_name || 
-             record.area_id || 
-             record.name ||
-             record.properties?.area_name ||
-             record.properties?.area_id ||
-             'Unknown';
-    };
-    
-    allAreas = allData
-      .map(d => ({ area: getAreaName(d), score: getScore(d) }))
-      .sort((a, b) => b.score - a.score);
-  } else {
-    // Fallback to limited data
-    allAreas = [...stats.top5, ...stats.bottom5].sort((a, b) => b.score - a.score);
-  }
-  
-  // Show more markets for better insights
-  const brand1Advantages = allAreas.filter(item => item.score > 2).slice(0, 8);
-  const brand2Advantages = allAreas.filter(item => item.score < -2).slice(-8).reverse();
-  const competitiveParity = allAreas.filter(item => Math.abs(item.score) <= 2).slice(0, 6);
-  
   // Use dynamic brand names if provided, otherwise use generic terms
   const brand1Name = brandNames?.brand1 || 'Brand A';
   const brand2Name = brandNames?.brand2 || 'Brand B';
   
-  if (brand1Advantages.length > 0) {
-    lines.push(`**${brand1Name} Strongholds** (${brand1Advantages.length} markets with significant advantages):`);
-    brand1Advantages.forEach((item, index) => {
-      lines.push(`**${index + 1}.** ${item.area} (**+${item.score.toFixed(1)}%**)`);
-    });
+  lines.push(`**Brand Competitive Analysis: ${brand1Name} vs ${brand2Name}**`);
+  lines.push('');
+  
+  // Focus on analytical insights first
+  lines.push(`**Overall Market Analysis:**`);
+  lines.push(`• **${stats.count}** markets analyzed across the competitive landscape`);
+  lines.push(`• Average brand difference: **${stats.mean.toFixed(2)}%** (${stats.mean > 0 ? brand1Name + ' leads' : brand2Name + ' leads'})`);
+  lines.push(`• Competition intensity: **${stats.stdDev.toFixed(2)}%** standard deviation ${stats.stdDev > 15 ? '(highly variable)' : stats.stdDev > 8 ? '(moderately variable)' : '(consistent)'}`);
+  lines.push(`• Market range: **${Math.abs(stats.max.score - stats.min.score).toFixed(1)}%** difference between most/least competitive markets`);
+  
+  if (stats.coverage?.totalPopulation) {
+    lines.push(`• Total population coverage: **${(stats.coverage.totalPopulation / 1000000).toFixed(1)}M** people`);
+  }
+  
+  lines.push('');
+  
+  // Analytical insights based on the data patterns
+  const strongAdvantageThreshold = 5;
+  const moderateAdvantageThreshold = 2;
+  
+  let marketAnalysis = '';
+  if (Math.abs(stats.mean) > strongAdvantageThreshold) {
+    marketAnalysis = `**Market Dominance Pattern:** ${stats.mean > 0 ? brand1Name : brand2Name} shows strong overall dominance with clear competitive advantages across most markets.`;
+  } else if (Math.abs(stats.mean) > moderateAdvantageThreshold) {
+    marketAnalysis = `**Market Leadership Pattern:** ${stats.mean > 0 ? brand1Name : brand2Name} maintains moderate leadership, but competition remains active across markets.`;
+  } else {
+    marketAnalysis = `**Balanced Competition:** Both brands compete closely with no clear overall dominance. Success likely depends on local market factors.`;
+  }
+  
+  if (stats.stdDev > 15) {
+    marketAnalysis += ` High variation suggests significant market-specific factors drive competitive outcomes.`;
+  } else if (stats.stdDev > 8) {
+    marketAnalysis += ` Moderate variation indicates some regional competitive differences.`;
+  } else {
+    marketAnalysis += ` Low variation suggests consistent competitive patterns across markets.`;
+  }
+  
+  lines.push(`**Strategic Insights:**`);
+  lines.push(marketAnalysis);
+  lines.push('');
+  
+  // Distribution analysis
+  const highAdvantageCount = allData?.filter(d => extractScore(d) > strongAdvantageThreshold).length || 0;
+  const highDisadvantageCount = allData?.filter(d => extractScore(d) < -strongAdvantageThreshold).length || 0;
+  const competitiveCount = allData?.filter(d => Math.abs(extractScore(d)) <= moderateAdvantageThreshold).length || 0;
+  
+  if (highAdvantageCount + highDisadvantageCount + competitiveCount > 0) {
+    lines.push(`**Market Distribution:**`);
+    if (highAdvantageCount > 0) {
+      lines.push(`• **${highAdvantageCount}** markets where ${brand1Name} has strong advantages (>${strongAdvantageThreshold}%)`);
+    }
+    if (highDisadvantageCount > 0) {
+      lines.push(`• **${highDisadvantageCount}** markets where ${brand2Name} has strong advantages (>${strongAdvantageThreshold}%)`);
+    }
+    if (competitiveCount > 0) {
+      lines.push(`• **${competitiveCount}** highly competitive markets (within ±${moderateAdvantageThreshold}%)`);
+    }
     lines.push('');
   }
   
-  if (brand2Advantages.length > 0) {
-    lines.push(`**${brand2Name} Strongholds** (${brand2Advantages.length} markets with competitor advantages):`);
-    brand2Advantages.forEach((item, index) => {
-      lines.push(`**${index + 1}.** ${item.area} (**${item.score.toFixed(1)}%**)`);
-    });
-    lines.push('');
-  }
-  
-  if (competitiveParity.length > 0) {
-    lines.push(`**Competitive Battlegrounds** (${competitiveParity.length} markets near parity):`);
-    competitiveParity.forEach((item, index) => {
-      lines.push(`**${index + 1}.** ${item.area} (**${item.score >= 0 ? '+' : ''}${item.score.toFixed(1)}%**)`);
-    });
-  }
-  
-  // Add total market count information
-  if (allData && allData.length > (brand1Advantages.length + brand2Advantages.length + competitiveParity.length)) {
-    const displayedCount = brand1Advantages.length + brand2Advantages.length + competitiveParity.length;
-    lines.push('');
-    lines.push(`*Showing ${displayedCount} key markets out of ${allData.length} total markets analyzed.*`);
+  // Include key market examples to illustrate strategic insights
+  if (allData && allData.length > 0) {
+    lines.push(`**Key Market Examples** (illustrating strategic patterns):`);
+    
+    // Show 3-4 examples of each category to illustrate the insights
+    const getAreaName = (record: any): string => {
+      return record.area_name || record.area_id || record.name || 
+             record.properties?.area_name || record.properties?.area_id || 'Unknown';
+    };
+    
+    const sortedAreas = allData
+      .map(d => ({ area: getAreaName(d), score: extractScore(d) }))
+      .sort((a, b) => b.score - a.score);
+    
+    const topAdvantages = sortedAreas.filter(item => item.score > strongAdvantageThreshold).slice(0, 3);
+    const bottomAdvantages = sortedAreas.filter(item => item.score < -strongAdvantageThreshold).slice(-3).reverse();
+    const competitive = sortedAreas.filter(item => Math.abs(item.score) <= moderateAdvantageThreshold).slice(0, 2);
+    
+    if (topAdvantages.length > 0) {
+      lines.push(`• **${brand1Name} strongholds:** ${topAdvantages.map(item => `${item.area} (+${item.score.toFixed(1)}%)`).join(', ')}`);
+    }
+    if (bottomAdvantages.length > 0) {
+      lines.push(`• **${brand2Name} strongholds:** ${bottomAdvantages.map(item => `${item.area} (${item.score.toFixed(1)}%)`).join(', ')}`);
+    }
+    if (competitive.length > 0) {
+      lines.push(`• **Competitive battlegrounds:** ${competitive.map(item => `${item.area} (${item.score >= 0 ? '+' : ''}${item.score.toFixed(1)}%)`).join(', ')}`);
+    }
   }
   
   return lines.join('\n');
