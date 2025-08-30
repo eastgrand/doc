@@ -337,7 +337,7 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white">
+          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white">
             <BarChart3 className="w-4 h-4" />
           </div>
           <div>
@@ -390,7 +390,18 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
                   </CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button size="sm" variant="outline" className="text-xs">
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="text-xs"
+                    onClick={() => {
+                      // Reset visualization state
+                      setActiveVisualization('scatter-plot');
+                      setIsAnimating(false);
+                      setTimeSliderValue(0);
+                    }}
+                    title="Reset visualization to default state"
+                  >
                     <RotateCw className="w-3 h-3 mr-1" />
                     Reset
                   </Button>

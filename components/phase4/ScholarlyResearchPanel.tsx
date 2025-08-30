@@ -227,7 +227,7 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white">
+          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white">
             <BookOpen className="w-4 h-4" />
           </div>
           <div>
