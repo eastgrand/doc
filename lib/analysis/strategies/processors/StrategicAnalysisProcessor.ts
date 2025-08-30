@@ -99,14 +99,17 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
+      // Remove strategic_score from topContributingFields to avoid overwriting the correct value
+      const { strategic_score: _, ...filteredTopFields } = topContributingFields;
+      
       return {
         area_id: finalRecordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
         strategic_score: Math.round(primaryScore * 100) / 100, // Add at top level for visualization
         rank: 0, // Will be calculated after sorting
-        // Flatten top contributing fields to top level for popup access
-        ...topContributingFields,
+        // Flatten top contributing fields to top level for popup access (excluding strategic_score)
+        ...filteredTopFields,
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           strategic_score: primaryScore,
