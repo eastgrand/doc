@@ -157,12 +157,75 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     // Priority order: competitive_score -> competitive_analysis_score -> competitive_advantage_score (legacy)
     const score = Number((record as any).competitive_score || (record as any).competitive_analysis_score || (record as any).competitive_advantage_score);
     
+    const recordId = (record as any).ID || (record as any).id || 'unknown';
+    
     if (isNaN(score)) {
-      throw new Error(`Competitive analysis record ${(record as any).ID || 'unknown'} is missing competitive_score`);
+      console.warn(`[CompetitiveDataProcessor] No competitive score found for record ${recordId}, calculating composite score`);
+      return this.calculateCompositeCompetitiveScore(record);
+    }
+    
+    // Check if competitive score looks like market share data (very small values)
+    if (score < 10) {
+      console.warn(`[CompetitiveDataProcessor] Record ${recordId}: Competitive score ${score} appears to be market share data, calculating composite score instead`);
+      return this.calculateCompositeCompetitiveScore(record);
     }
     
     console.log(`🔥 [CompetitiveDataProcessor] Using competitive score: ${score} from ${(record as any).competitive_score ? 'competitive_score' : (record as any).competitive_analysis_score ? 'competitive_analysis_score' : 'competitive_advantage_score'}`);
     return score;
+  }
+
+  /**
+   * Calculate a composite competitive score when no direct competitive score is available
+   * Uses market positioning, brand performance, and demographic factors
+   */
+  private calculateCompositeCompetitiveScore(record: any): number {
+    let compositeScore = 0;
+    let factorCount = 0;
+
+    // Factor 1: Brand market position (use dynamic brand detection)
+    const brandFields = this.brandResolver.detectBrandFields(record);
+    const targetBrand = brandFields.find(bf => bf.isTarget);
+    const targetBrandShare = targetBrand?.value || 0;
+    
+    if (targetBrandShare > 0) {
+      // Convert brand share to competitive advantage (0-30 points)
+      const brandCompetitiveness = Math.min(30, targetBrandShare * 1.5);
+      compositeScore += brandCompetitiveness;
+      factorCount++;
+    }
+
+    // Factor 2: Market size (larger markets = more competitive value)
+    const population = Number((record as any).value_TOTPOP_CY) || Number((record as any).TOTPOP_CY) || 0;
+    if (population > 0) {
+      // Normalize population to 0-25 scale
+      const populationScore = Math.min(25, (population / 500000) * 25);
+      compositeScore += populationScore;
+      factorCount++;
+    }
+
+    // Factor 3: Economic strength (higher income = more competitive market)
+    const income = Number((record as any).value_AVGHINC_CY) || Number((record as any).AVGHINC_CY) || 0;
+    if (income > 0) {
+      // Normalize income to 0-25 scale
+      const incomeScore = Math.min(25, (income / 100000) * 25);
+      compositeScore += incomeScore;
+      factorCount++;
+    }
+
+    // Factor 4: Strategic positioning
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    if (strategicScore > 10) { // Only use if it's likely a real strategic score
+      const strategicContribution = Math.min(20, strategicScore * 0.2);
+      compositeScore += strategicContribution;
+      factorCount++;
+    }
+
+    // Average the factors if any were found, otherwise use moderate baseline
+    const finalScore = factorCount > 0 ? compositeScore / factorCount * (100/25) : 35;
+    
+    console.log(`[CompetitiveDataProcessor] Calculated composite competitive score: ${finalScore.toFixed(2)} from ${factorCount} factors`);
+    
+    return Math.max(10, Math.min(100, finalScore)); // Ensure score is between 10-100
   }
 
   private extractMarketShare(record: any): number {

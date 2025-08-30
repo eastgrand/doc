@@ -149,12 +149,19 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
   private extractTrendScore(record: any): number {
     if ((record as any).trend_score !== undefined && (record as any).trend_score !== null) {
       const preCalculatedScore = Number((record as any).trend_score);
-      console.log(`📈 [TrendAnalysisProcessor] Using pre-calculated trend score: ${preCalculatedScore}`);
-      return preCalculatedScore;
+      
+      // Check if trend score looks like market share data (very small values)
+      if (preCalculatedScore < 10) {
+        console.warn(`[TrendAnalysisProcessor] Trend score ${preCalculatedScore} appears to be market share data, calculating composite instead`);
+        // Fall through to composite calculation below
+      } else {
+        console.log(`📈 [TrendAnalysisProcessor] Using pre-calculated trend score: ${preCalculatedScore}`);
+        return preCalculatedScore;
+      }
     }
     
-    // FALLBACK: Calculate trend score from available data
-    console.log('⚠️ [TrendAnalysisProcessor] No trend_strength_score found, calculating from raw data');
+    // COMPOSITE CALCULATION: Calculate trend score from available data
+    console.log('⚠️ [TrendAnalysisProcessor] Calculating composite trend score from raw data');
     
     const strategicScore = Number((record as any).strategic_value_score) || 0;
     const competitiveScore = Number((record as any).competitive_advantage_score) || 0;

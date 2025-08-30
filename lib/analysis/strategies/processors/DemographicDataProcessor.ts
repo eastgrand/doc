@@ -156,8 +156,17 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
         ((record as any).demographic_opportunity_score !== undefined && (record as any).demographic_opportunity_score !== null) ||
         ((record as any).demographic_score !== undefined && (record as any).demographic_score !== null)) {
       const preCalculatedScore = Number((record as any).demographic_insights_score || (record as any).demographic_opportunity_score || (record as any).demographic_score);
-      console.log(`🎯 [DemographicDataProcessor] Using pre-calculated score: ${preCalculatedScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
-      return preCalculatedScore;
+      
+      const recordId = (record as any).ID || (record as any).id || 'unknown';
+      
+      // Check if demographic score looks like market share data (very small values)
+      if (preCalculatedScore < 10 && preCalculatedScore > 0) {
+        console.warn(`[DemographicDataProcessor] Record ${recordId}: Demographic score ${preCalculatedScore} appears to be market share data, using fallback calculation`);
+        // Fall through to calculate composite demographic score below
+      } else {
+        console.log(`🎯 [DemographicDataProcessor] Using pre-calculated score: ${preCalculatedScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
+        return preCalculatedScore;
+      }
     }
     
     // Fallback: Calculate demographic fit score from available data

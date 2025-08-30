@@ -22,7 +22,17 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
 
     const records = rawData.results.map((record: any, index: number) => {
       // Extract the pre-calculated scenario analysis score
-      const scenarioScore = Number((record as any).scenario_analysis_score || (record as any).scenario_score) || 0;
+      let scenarioScore = Number((record as any).scenario_analysis_score || (record as any).scenario_score);
+      
+      // Check if scenario score looks like market share data (very small values)
+      if (!isNaN(scenarioScore) && scenarioScore < 10) {
+        console.warn(`[ScenarioAnalysisProcessor] Scenario score ${scenarioScore} appears to be market share data for record ${(record as any).ID || index}, using composite calculation`);
+        // Calculate a composite scenario score based on available data
+        scenarioScore = this.calculateCompositeScenarioScore(record);
+      } else if (isNaN(scenarioScore)) {
+        console.warn(`[ScenarioAnalysisProcessor] No scenario score found for record ${(record as any).ID || index}, using composite calculation`);
+        scenarioScore = this.calculateCompositeScenarioScore(record);
+      }
       
       // Extract related metrics for additional analysis (updated for actual dataset fields)
       const nikeShare = Number((record as any).value_MP30034A_B_P || (record as any).mp30034a_b_p) || 0;
@@ -338,6 +348,56 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
       planningComplexity,
       scenarioRiskAssessment
     };
+  }
+
+  /**
+   * Calculate a composite scenario score when no direct scenario score is available
+   * Uses strategic factors, demographic stability, and market characteristics
+   */
+  private calculateCompositeScenarioScore(record: any): number {
+    let compositeScore = 0;
+    let factorCount = 0;
+
+    // Factor 1: Strategic stability (markets with higher strategic value are better for scenario planning)
+    const strategicScore = Number((record as any).strategic_value_score);
+    if (strategicScore && strategicScore > 10) { // Only use if it's likely a real strategic score
+      const strategicContribution = Math.min(30, strategicScore * 0.3);
+      compositeScore += strategicContribution;
+      factorCount++;
+    }
+
+    // Factor 2: Population Size (larger markets = more scenario planning opportunity)
+    const population = Number((record as any).value_TOTPOP_CY) || Number((record as any).TOTPOP_CY) || 0;
+    if (population > 0) {
+      // Normalize population to 0-25 scale
+      const populationScore = Math.min(25, (population / 500000) * 25);
+      compositeScore += populationScore;
+      factorCount++;
+    }
+
+    // Factor 3: Income Stability (higher income = more stable for scenarios)
+    const income = Number((record as any).value_AVGHINC_CY) || Number((record as any).AVGHINC_CY) || 0;
+    if (income > 0) {
+      // Normalize income to 0-25 scale
+      const incomeScore = Math.min(25, (income / 100000) * 25);
+      compositeScore += incomeScore;
+      factorCount++;
+    }
+
+    // Factor 4: Demographic Opportunity (areas with better demographics = better scenario potential)
+    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+    if (demographicScore > 10) { // Only use if it's likely a real demographic score
+      const demographicContribution = Math.min(20, demographicScore * 0.2);
+      compositeScore += demographicContribution;
+      factorCount++;
+    }
+
+    // Average the factors if any were found, otherwise use moderate baseline
+    const finalScore = factorCount > 0 ? compositeScore / factorCount * (100/25) : 40;
+    
+    console.log(`[ScenarioAnalysisProcessor] Calculated composite scenario score: ${finalScore.toFixed(2)} from ${factorCount} factors`);
+    
+    return Math.max(15, Math.min(100, finalScore)); // Ensure score is between 15-100
   }
 
   private categorizeScenarioReadiness(score: number): string {
