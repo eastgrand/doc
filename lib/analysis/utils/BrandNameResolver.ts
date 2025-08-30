@@ -31,19 +31,19 @@ export interface BrandField {
  * 3. Update PROJECT_INDUSTRY name
  */
 const TARGET_BRAND = {
-  fieldName: 'MP28591A_B',  // Updated to match actual data field
+  fieldName: 'MP12207A_B_P',  // Red Bull market share percentage
   brandName: 'Red Bull'
 };
 
 const COMPETITOR_BRANDS = [
-  { fieldName: 'MP28591A_B_I', brandName: 'Monster Energy' },  // Using available index field
-  { fieldName: 'MP12205A_B_P', brandName: '5-Hour Energy' },
-  { fieldName: 'MP12206A_B_P', brandName: 'Other Energy Drinks' }
+  { fieldName: 'MP12206A_B_P', brandName: 'Monster Energy' },  // Monster market share percentage
+  { fieldName: 'MP12205A_B_P', brandName: '5-Hour Energy' },   // 5-Hour Energy market share percentage
+  { fieldName: 'MP12097A_B_P', brandName: 'All Energy Drinks' } // Total energy drinks market
 ];
 
 const MARKET_CATEGORY = {
-  fieldName: 'MP28591A_B',  // Using the same field as target for total market
-  brandName: 'Energy Drinks Market'
+  fieldName: 'MP12097A_B_P',  // Total energy drinks market share percentage
+  brandName: 'Total Energy Drinks Market'
 };
 
 const PROJECT_INDUSTRY = 'Energy Drinks';
