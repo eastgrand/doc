@@ -10,32 +10,33 @@ All endpoints have corresponding scoring scripts in `/scripts/scoring/`. The end
 
 ## Endpoint to Scoring Field Mapping
 
-| Endpoint File | Processor Name | Scoring Field | Status |
-|---------------|----------------|---------------|---------|
-| strategic-analysis.json | StrategicAnalysisProcessor | `strategic_analysis_score` | ✅ |
-| competitive-analysis.json | CompetitiveDataProcessor | `competitive_analysis_score` | ✅ |
-| demographic-insights.json | DemographicDataProcessor | `demographic_insights_score` | ✅ |
-| correlation-analysis.json | CorrelationAnalysisProcessor | `correlation_analysis_score` | ✅ |
-| brand-difference.json | BrandDifferenceProcessor | `brand_difference_score` | ✅ |
-| comparative-analysis.json | ComparativeAnalysisProcessor | `comparative_analysis_score` | ✅ |
-| customer-profile.json | CustomerProfileProcessor | `customer_profile_score` | ✅ |
-| trend-analysis.json | TrendAnalysisProcessor | `trend_analysis_score` | ✅ |
-| segment-profiling.json | SegmentProfilingProcessor | `segment_profiling_score` | ✅ |
-| anomaly-detection.json | AnomalyDetectionProcessor | `anomaly_detection_score` | ✅ |
-| predictive-modeling.json | PredictiveModelingProcessor | `predictive_modeling_score` | ✅ |
-| feature-interactions.json | FeatureInteractionProcessor | `feature_interactions_score` | ✅ |
-| outlier-detection.json | OutlierDetectionProcessor | `outlier_detection_score` | ✅ |
-| scenario-analysis.json | ScenarioAnalysisProcessor | `scenario_analysis_score` | ✅ |
-| sensitivity-analysis.json | SensitivityAnalysisProcessor | `sensitivity_analysis_score` | ✅ |
-| model-performance.json | ModelPerformanceProcessor | `model_performance_score` | ✅ |
-| model-selection.json | ModelSelectionProcessor | `algorithm_category` | ✅ |
-| ensemble-analysis.json | EnsembleAnalysisProcessor | `ensemble_analysis_score` | ✅ |
-| feature-importance-ranking.json | FeatureImportanceRankingProcessor | `feature_importance_ranking_score` | ✅ |
-| dimensionality-insights.json | DimensionalityInsightsProcessor | `dimensionality_insights_score` | ✅ |
-| spatial-clusters.json | SpatialClustersProcessor | `spatial_clusters_score` | ✅ |
-| consensus-analysis.json | ConsensusAnalysisProcessor | `consensus_analysis_score` | ✅ |
-| algorithm-comparison.json | AlgorithmComparisonProcessor | `algorithm_comparison_score` | ✅ |
-| analyze.json | AnalyzeProcessor | `analyze_score` | ✅ |
+| Endpoint File | Processor Name | Scoring Field | Claude API Field | Status |
+|---------------|----------------|---------------|------------------|---------|
+| strategic-analysis.json | StrategicAnalysisProcessor | `strategic_score` | `strategic_score` | ✅ |
+| competitive-analysis.json | CompetitiveDataProcessor | `competitive_analysis_score` | `competitive_analysis_score` | ✅ |
+| demographic-insights.json | DemographicDataProcessor | `demographic_insights_score` | `demographic_insights_score` | ✅ |
+| correlation-analysis.json | CorrelationAnalysisProcessor | `correlation_analysis_score` | `correlation_analysis_score` | ✅ |
+| brand-difference.json | BrandDifferenceProcessor | `brand_difference_score` | `brand_difference_score` | ✅ |
+| brand-analysis.json | BrandAnalysisProcessor | `brand_analysis_score` | `brand_analysis_score` | ✅ |
+| comparative-analysis.json | ComparativeAnalysisProcessor | `comparison_score` | `comparison_score` | ✅ |
+| customer-profile.json | CustomerProfileProcessor | `customer_profile_score` | `customer_profile_score` | ✅ |
+| trend-analysis.json | TrendAnalysisProcessor | `trend_analysis_score` | `trend_analysis_score` | ✅ |
+| segment-profiling.json | SegmentProfilingProcessor | `segment_profiling_score` | `segment_profiling_score` | ✅ |
+| anomaly-detection.json | AnomalyDetectionProcessor | `anomaly_detection_score` | `anomaly_detection_score` | ✅ |
+| predictive-modeling.json | PredictiveModelingProcessor | `predictive_modeling_score` | `predictive_modeling_score` | ✅ |
+| feature-interactions.json | FeatureInteractionProcessor | `feature_interactions_score` | `feature_interactions_score` | ✅ |
+| outlier-detection.json | OutlierDetectionProcessor | `outlier_detection_score` | `outlier_detection_score` | ✅ |
+| scenario-analysis.json | ScenarioAnalysisProcessor | `scenario_analysis_score` | `scenario_analysis_score` | ✅ |
+| sensitivity-analysis.json | SensitivityAnalysisProcessor | `sensitivity_analysis_score` | `sensitivity_analysis_score` | ✅ |
+| model-performance.json | ModelPerformanceProcessor | `model_performance_score` | `model_performance_score` | ✅ |
+| model-selection.json | ModelSelectionProcessor | `algorithm_category` | `algorithm_category` | ✅ |
+| ensemble-analysis.json | EnsembleAnalysisProcessor | `ensemble_analysis_score` | `ensemble_analysis_score` | ✅ |
+| feature-importance-ranking.json | FeatureImportanceRankingProcessor | `feature_importance_ranking_score` | `feature_importance_ranking_score` | ✅ |
+| dimensionality-insights.json | DimensionalityInsightsProcessor | `dimensionality_insights_score` | `dimensionality_insights_score` | ✅ |
+| spatial-clusters.json | SpatialClustersProcessor | `spatial_clusters_score` | `spatial_clusters_score` | ✅ |
+| consensus-analysis.json | ConsensusAnalysisProcessor | `consensus_analysis_score` | `consensus_analysis_score` | ✅ |
+| algorithm-comparison.json | AlgorithmComparisonProcessor | `algorithm_comparison_score` | `algorithm_comparison_score` | ✅ |
+| analyze.json | AnalyzeProcessor | `analysis_score` | `analysis_score` | ✅ |
 
 ## Key Findings
 
@@ -50,13 +51,15 @@ Most endpoints follow the pattern: `{endpoint_name}_score` as the final field.
 - **model-selection.json**: Uses `algorithm_category` as the last field (not a score)
 - **customer-profile.json**: The primary score is `customer_profile_score`. Older datasets may include `purchase_propensity`; processors treat it as a fallback only.
 
-### Processors That Need Updates
+### Field Mapping Alignment Status
 
  
-#### ❌ Immediate Fixes Required
+#### ✅ All Processors and Claude API Fields Now Aligned
 
-1. **CompetitiveAnalysisProcessor** - Currently uses `competitive_analysis_score` ✅ (correct)
-2. **CorrelationAnalysisProcessor** - Currently uses `correlation_score`, should use `correlation_analysis_score`
+All processors and Claude API field mappings have been systematically verified and aligned:
+- Strategic analysis now correctly uses `strategic_score` (was using `strategic_value_score`)
+- Comparative analysis now correctly uses `comparison_score` (was using `comparative_analysis_score`)
+- All other processors verified to match between processor output and Claude API expectations
 
 #### ✅ All Processors Completed
 

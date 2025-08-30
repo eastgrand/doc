@@ -79,16 +79,59 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     switch (normalized) {
       case 'strategic_analysis':
       case 'strategic':
-        return 'strategic_value_score';
+        return 'strategic_score';
       case 'competitive_analysis':
       case 'competitive':
-        return 'competitive_advantage_score';
+        return 'competitive_analysis_score';
+      case 'correlation_analysis':
+      case 'correlation':
+        return 'correlation_analysis_score';
       case 'comparative_analysis':
       case 'comparative':
-        return 'comparative_score';
+        return 'comparison_score';
       case 'brand_difference':
-      case 'brand_analysis':
         return 'brand_difference_score';
+      case 'brand_analysis':
+        return 'brand_analysis_score';
+      case 'demographic_insights':
+      case 'demographic':
+        return 'demographic_insights_score';
+      case 'customer_profile':
+        return 'customer_profile_score';
+      case 'trend_analysis':
+        return 'trend_analysis_score';
+      case 'anomaly_detection':
+        return 'anomaly_detection_score';
+      case 'outlier_detection':
+        return 'outlier_detection_score';
+      case 'predictive_modeling':
+        return 'predictive_modeling_score';
+      case 'feature_interactions':
+        return 'feature_interactions_score';
+      case 'segment_profiling':
+        return 'segment_profiling_score';
+      case 'scenario_analysis':
+        return 'scenario_analysis_score';
+      case 'model_performance':
+        return 'model_performance_score';
+      case 'model_selection':
+        return 'algorithm_category';
+      case 'ensemble_analysis':
+        return 'ensemble_analysis_score';
+      case 'feature_importance_ranking':
+        return 'feature_importance_ranking_score';
+      case 'dimensionality_insights':
+        return 'dimensionality_insights_score';
+      case 'spatial_clusters':
+        return 'spatial_clusters_score';
+      case 'consensus_analysis':
+        return 'consensus_analysis_score';
+      case 'algorithm_comparison':
+        return 'algorithm_comparison_score';
+      case 'sensitivity_analysis':
+        return 'sensitivity_analysis_score';
+      case 'analyze':
+        return 'analysis_score';
       default:
         return 'value'; // Generic fallback
     }

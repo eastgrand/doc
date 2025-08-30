@@ -917,7 +917,7 @@ Implementation Priorities:
 • **Confidence:** [Level]
 
 DATA STRUCTURE:
-- strategic_value_score: Primary ranking metric (precise decimal values like 79.34, 79.17)
+- strategic_score: Primary ranking metric (precise decimal values like 79.34, 79.17)
 - market_gap: Untapped market potential percentages (dynamically calculated as 100% - our brand share - competitor shares)
 - demographic_fit: Population alignment indicators
 - expansion_potential: Growth opportunity scores
@@ -927,7 +927,7 @@ CRITICAL REQUIREMENTS:
 1. ALWAYS preserve exact score precision - use 79.34, NOT 79.3 or 79.30
 2. When you see a target_value like 79.34, you MUST report it as 79.34, not 79.30
 3. DO NOT round strategic value scores - report them EXACTLY as provided in the data
-4. Rank and prioritize by strategic_value_score with full decimal places
+4. Rank and prioritize by strategic_score with full decimal places
 5. Use market gap and demographic data to EXPLAIN WHY certain areas have high strategic scores
 6. Focus on expansion opportunities, not current market dominance
 7. Scores incorporate: market potential + demographic alignment + competitive landscape + growth capacity
