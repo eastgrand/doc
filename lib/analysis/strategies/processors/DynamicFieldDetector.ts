@@ -97,8 +97,8 @@ export class DynamicFieldDetector {
         dataType: 'number'
       },
       {
-        field: 'strategic_value_score',
-        patterns: ['strategic_value_score', 'strategic_score', 'value_score'],
+        field: 'strategic_score',
+        patterns: ['strategic_score', 'strategic_value_score', 'strategic_analysis_score', 'value_score'],
         importance: 30,
         category: 'score',
         dataType: 'number'
