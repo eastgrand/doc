@@ -150,9 +150,9 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     if ((record as any).trend_score !== undefined && (record as any).trend_score !== null) {
       const preCalculatedScore = Number((record as any).trend_score);
       
-      // Check if trend score looks like market share data (very small values)
-      if (preCalculatedScore < 10) {
-        console.warn(`[TrendAnalysisProcessor] Trend score ${preCalculatedScore} appears to be market share data, calculating composite instead`);
+      // Check if trend score looks like market share data (values under 20 are likely market shares)
+      if (preCalculatedScore < 20) {
+        console.warn(`[TrendAnalysisProcessor] Trend score ${preCalculatedScore} appears to be market share data (valid trend scores should be 20+), calculating composite instead`);
         // Fall through to composite calculation below
       } else {
         console.log(`📈 [TrendAnalysisProcessor] Using pre-calculated trend score: ${preCalculatedScore}`);

@@ -63,11 +63,11 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       const recordId = (record as any).ID || (record as any).id || index;
       console.log(`[StrategicAnalysisProcessor] Record ${recordId}: Found primaryScore = ${primaryScore} from fields: strategic_score=${(record as any).strategic_score}, strategic_analysis_score=${(record as any).strategic_analysis_score}, strategic_value_score=${(record as any).strategic_value_score}`);
       
-      // Check if the score looks like a market share percentage (very small values)
+      // Check if the score looks like a market share percentage (values under 20 are likely market shares)
       if (primaryScore !== null && !isNaN(primaryScore)) {
-        if (primaryScore < 10) {
+        if (primaryScore < 20) {
           // This looks like a market share percentage or other small value, not a proper strategic score
-          console.warn(`[StrategicAnalysisProcessor] Record ${recordId}: Strategic score ${primaryScore} appears to be market share data, calculating composite score instead`);
+          console.warn(`[StrategicAnalysisProcessor] Record ${recordId}: Strategic score ${primaryScore} appears to be market share data (valid strategic scores should be 20+), calculating composite score instead`);
           primaryScore = this.calculateCompositeStrategicScore(record);
         }
       } else {

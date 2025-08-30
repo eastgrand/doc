@@ -159,9 +159,9 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       
       const recordId = (record as any).ID || (record as any).id || 'unknown';
       
-      // Check if demographic score looks like market share data (very small values)
-      if (preCalculatedScore < 10 && preCalculatedScore > 0) {
-        console.warn(`[DemographicDataProcessor] Record ${recordId}: Demographic score ${preCalculatedScore} appears to be market share data, using fallback calculation`);
+      // Check if demographic score looks like market share data (values under 20 are likely market shares)
+      if (preCalculatedScore < 20 && preCalculatedScore > 0) {
+        console.warn(`[DemographicDataProcessor] Record ${recordId}: Demographic score ${preCalculatedScore} appears to be market share data (valid demographic scores should be 20+), using fallback calculation`);
         // Fall through to calculate composite demographic score below
       } else {
         console.log(`🎯 [DemographicDataProcessor] Using pre-calculated score: ${preCalculatedScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);

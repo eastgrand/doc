@@ -24,9 +24,9 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
       // Extract the pre-calculated scenario analysis score
       let scenarioScore = Number((record as any).scenario_analysis_score || (record as any).scenario_score);
       
-      // Check if scenario score looks like market share data (very small values)
-      if (!isNaN(scenarioScore) && scenarioScore < 10) {
-        console.warn(`[ScenarioAnalysisProcessor] Scenario score ${scenarioScore} appears to be market share data for record ${(record as any).ID || index}, using composite calculation`);
+      // Check if scenario score looks like market share data (values under 20 are likely market shares)
+      if (!isNaN(scenarioScore) && scenarioScore < 20) {
+        console.warn(`[ScenarioAnalysisProcessor] Scenario score ${scenarioScore} appears to be market share data for record ${(record as any).ID || index} (valid scenario scores should be 20+), using composite calculation`);
         // Calculate a composite scenario score based on available data
         scenarioScore = this.calculateCompositeScenarioScore(record);
       } else if (isNaN(scenarioScore)) {

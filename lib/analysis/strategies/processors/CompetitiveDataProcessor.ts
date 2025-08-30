@@ -164,9 +164,9 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       return this.calculateCompositeCompetitiveScore(record);
     }
     
-    // Check if competitive score looks like market share data (very small values)
-    if (score < 10) {
-      console.warn(`[CompetitiveDataProcessor] Record ${recordId}: Competitive score ${score} appears to be market share data, calculating composite score instead`);
+    // Check if competitive score looks like market share data (values under 20 are likely market shares)
+    if (score < 20) {
+      console.warn(`[CompetitiveDataProcessor] Record ${recordId}: Competitive score ${score} appears to be market share data (valid competitive scores should be 20+), calculating composite score instead`);
       return this.calculateCompositeCompetitiveScore(record);
     }
     
