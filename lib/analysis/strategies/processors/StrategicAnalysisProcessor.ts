@@ -509,6 +509,16 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
   private extractTargetBrandShare(record: any): number {
     const brandFields = this.brandResolver.detectBrandFields(record);
     const targetBrand = brandFields.find(bf => bf.isTarget);
+    
+    // Debug logging for first record
+    if (record.ID === (record as any).ID && brandFields.length > 0) {
+      console.log(`[StrategicAnalysisProcessor] Brand detection for ${record.ID}:`, {
+        brandFieldsCount: brandFields.length,
+        targetBrand: targetBrand ? { name: targetBrand.brandName, value: targetBrand.value } : 'none',
+        allBrands: brandFields.map(bf => ({ name: bf.brandName, value: bf.value, isTarget: bf.isTarget }))
+      });
+    }
+    
     return targetBrand?.value || 0;
   }
 

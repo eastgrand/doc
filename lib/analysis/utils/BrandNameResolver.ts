@@ -31,18 +31,19 @@ export interface BrandField {
  * 3. Update PROJECT_INDUSTRY name
  */
 const TARGET_BRAND = {
-  fieldName: 'MP12207A_B_P',
+  fieldName: 'MP28591A_B',  // Updated to match actual data field
   brandName: 'Red Bull'
 };
 
 const COMPETITOR_BRANDS = [
+  { fieldName: 'MP28591A_B_I', brandName: 'Monster Energy' },  // Using available index field
   { fieldName: 'MP12205A_B_P', brandName: '5-Hour Energy' },
-  { fieldName: 'MP12206A_B_P', brandName: 'Monster Energy' }
+  { fieldName: 'MP12206A_B_P', brandName: 'Other Energy Drinks' }
 ];
 
 const MARKET_CATEGORY = {
-  fieldName: 'MP12097A_B_P',
-  brandName: 'All Energy Drinks'
+  fieldName: 'MP28591A_B',  // Using the same field as target for total market
+  brandName: 'Energy Drinks Market'
 };
 
 const PROJECT_INDUSTRY = 'Energy Drinks';
@@ -410,27 +411,37 @@ export class BrandNameResolver {
   detectBrandFields(record: any): BrandField[] {
     const brandFields: BrandField[] = [];
     
-    // Add target brand if present
+    // Add target brand if present (check both original and lowercase versions)
     const targetField = TARGET_BRAND.fieldName;
-    if (record[targetField] !== undefined && typeof record[targetField] === 'number') {
-      brandFields.push({
-        fieldName: targetField,
-        value: record[targetField],
-        brandName: TARGET_BRAND.brandName,
-        isTarget: true
-      });
+    const targetValue = record[targetField] ?? record[targetField.toLowerCase()];
+    
+    if (targetValue !== undefined && targetValue !== null) {
+      const numValue = Number(targetValue);
+      if (!isNaN(numValue)) {
+        brandFields.push({
+          fieldName: targetField,
+          value: numValue,
+          brandName: TARGET_BRAND.brandName,
+          isTarget: true
+        });
+      }
     }
     
-    // Add competitor brands if present
+    // Add competitor brands if present (check both original and lowercase versions)
     for (const competitor of COMPETITOR_BRANDS) {
       const fieldName = competitor.fieldName;
-      if (record[fieldName] !== undefined && typeof record[fieldName] === 'number') {
-        brandFields.push({
-          fieldName,
-          value: record[fieldName],
-          brandName: competitor.brandName,
-          isTarget: false
-        });
+      const fieldValue = record[fieldName] ?? record[fieldName.toLowerCase()];
+      
+      if (fieldValue !== undefined && fieldValue !== null) {
+        const numValue = Number(fieldValue);
+        if (!isNaN(numValue)) {
+          brandFields.push({
+            fieldName,
+            value: numValue,
+            brandName: competitor.brandName,
+            isTarget: false
+          });
+        }
       }
     }
     
@@ -464,7 +475,7 @@ export class BrandNameResolver {
    */
   calculateMarketGap(record: any): number {
     const target = this.getTargetBrandField();
-    const targetShare = Number(record[target] || record[target.toLowerCase()]) || 0;
+    const targetShare = Number(record[target] ?? record[target.toLowerCase()]) || 0;
     
     // Get all competitor brand shares
     const allBrandFields = this.detectBrandFields(record);
