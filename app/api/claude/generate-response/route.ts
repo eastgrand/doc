@@ -2463,9 +2463,15 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
             }
           }
 
-          // Add top performers (sanitized to remove parks)
+          // Add top performers (sanitized to remove parks and properly sorted)
           if (originalSummary.performanceAnalysis?.topPerformers?.length > 0) {
-            const sanitizedTopPerformers = sanitizeRankingArrayForAnalysis(originalSummary.performanceAnalysis.topPerformers);
+            const sanitizedTopPerformers = sanitizeRankingArrayForAnalysis(originalSummary.performanceAnalysis.topPerformers)
+              // Ensure proper descending sort by competitive_advantage_score or strategic_value_score
+              .sort((a: any, b: any) => {
+                const scoreA = a.competitive_advantage_score ?? a.strategic_value_score ?? a.thematic_value ?? 0;
+                const scoreB = b.competitive_advantage_score ?? b.strategic_value_score ?? b.thematic_value ?? 0;
+                return scoreB - scoreA; // Descending order - highest scores first
+              });
             if (sanitizedTopPerformers.length > 0) {
               dataSummary += `=== TOP EXPANSION OPPORTUNITIES (ranked by competitive_advantage_score) ===\n`;
               sanitizedTopPerformers.forEach((performer: any, index: number) => {

@@ -581,11 +581,11 @@ const AnalysisWidget: React.FC<AnalysisWidgetProps> = ({
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="1">Draw</TabsTrigger>
-            <TabsTrigger value="2" disabled={!geometry || drawMode === 'polygon'}>
+            <TabsTrigger value="1" className="text-xs">Draw</TabsTrigger>
+            <TabsTrigger value="2" disabled={!geometry || drawMode === 'polygon'} className="text-xs">
               Buffer
             </TabsTrigger>
-            <TabsTrigger value="3" disabled={!geometry}>
+            <TabsTrigger value="3" disabled={!geometry} className="text-xs">
               Report
             </TabsTrigger>
           </TabsList>

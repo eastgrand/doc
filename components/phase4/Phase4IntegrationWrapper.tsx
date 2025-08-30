@@ -265,7 +265,7 @@ export function Phase4IntegrationWrapper({
           </Alert>
           
           <div className="mt-4 space-y-2">
-            <div className="text-sm font-medium">Available Features (when enabled):</div>
+            <div className="text-xs font-medium">Available Features (when enabled):</div>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="flex items-center gap-1">
                 <BookOpen className="w-3 h-3" />
@@ -297,9 +297,9 @@ export function Phase4IntegrationWrapper({
           <div className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-blue-500" />
             <div>
-              <CardTitle className="text-base">Advanced Features</CardTitle>
+              <CardTitle className="text-xs">Advanced Features</CardTitle>
               <CardDescription className="text-xs">
-                {availableComponents.length} of 4 components enabled
+                Enhanced analysis tools and insights
               </CardDescription>
             </div>
           </div>
@@ -358,7 +358,7 @@ export function Phase4IntegrationWrapper({
         </div>
       </CardHeader>
 
-      <CardContent className={`${isExpanded ? "h-[600px]" : "h-[400px]"} overflow-hidden`}>
+      <CardContent className={`${isExpanded ? "h-[600px]" : "h-[400px]"} flex flex-col`}>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
           <TabsList className="grid w-full grid-cols-4 flex-shrink-0">
             {availableComponents.map((component) => {
@@ -383,7 +383,7 @@ export function Phase4IntegrationWrapper({
             const props = getComponentProps(component.id);
 
             return (
-              <TabsContent key={component.id} value={component.id} className="flex-1 overflow-y-auto mt-4">
+              <TabsContent key={component.id} value={component.id} className="flex-1 min-h-0 overflow-y-auto mt-4">
                 {status?.status === 'error' ? (
                   <Alert variant="destructive">
                     <AlertTriangle className="w-4 h-4" />
@@ -406,7 +406,7 @@ export function Phase4IntegrationWrapper({
                       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex items-center justify-center">
                         <div className="flex items-center gap-2">
                           <RefreshCw className="w-4 h-4 animate-spin" />
-                          <span className="text-sm">{status.message}</span>
+                          <span className="text-xs">{status.message}</span>
                         </div>
                       </div>
                     )}

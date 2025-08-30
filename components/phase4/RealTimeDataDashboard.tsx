@@ -86,22 +86,37 @@ const convertEconomicIndicator = (data: ServiceEconomicIndicator): DataStream =>
 };
 
 const convertMarketData = (data: MarketData): DataStream => {
-  const changePercent = parseFloat(data.change_percent.replace('%', ''));
+  // Safely parse change percent with fallbacks
+  let changePercent = 0;
+  try {
+    if (data.change_percent && typeof data.change_percent === 'string') {
+      changePercent = parseFloat(data.change_percent.replace('%', '')) || 0;
+    } else if (typeof data.change_percent === 'number') {
+      changePercent = data.change_percent;
+    }
+  } catch (error) {
+    console.warn('Error parsing change_percent:', error);
+    changePercent = 0;
+  }
+
+  const change = data.change || 0;
+  const price = data.price || 0;
+
   return {
-    id: data.symbol.toLowerCase(),
-    name: data.symbol,
+    id: (data.symbol || 'unknown').toLowerCase(),
+    name: data.symbol || 'Unknown Symbol',
     source: 'alpha-vantage',
-    value: data.price,
-    previousValue: data.price - data.change,
-    change: data.change,
+    value: price,
+    previousValue: price - change,
+    change: change,
     changePercent: changePercent,
     unit: '$',
-    timestamp: new Date(data.timestamp),
+    timestamp: new Date(data.timestamp || Date.now()),
     refreshRate: 300, // 5 minutes for market data
     status: 'live',
     confidence: 0.98,
-    impact: data.change > 0 ? 'positive' : data.change < 0 ? 'negative' : 'neutral',
-    description: `${data.symbol} market data from Alpha Vantage`
+    impact: change > 0 ? 'positive' : change < 0 ? 'negative' : 'neutral',
+    description: `${data.symbol || 'Market data'} from Alpha Vantage`
   };
 };
 
@@ -311,7 +326,7 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
             <Activity className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold">Real-Time Economic Data</h3>
+            <h3 className="text-xs font-semibold">Real-Time Economic Data</h3>
             <p className="text-xs text-muted-foreground">
               Live indicators for {location}
             </p>
@@ -345,7 +360,7 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-sm">Market Health</CardTitle>
+              <CardTitle className="text-xs">Market Health</CardTitle>
               <CardDescription className="text-xs">
                 Overall economic conditions
               </CardDescription>
@@ -417,7 +432,7 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
                       {typeof stream.value === 'number' 
                         ? stream.value.toFixed(stream.unit === '%' ? 1 : 0)
                         : stream.value}
-                      <span className="text-sm font-normal text-muted-foreground ml-1">
+                      <span className="text-xs font-normal text-muted-foreground ml-1">
                         {stream.unit}
                       </span>
                     </p>
@@ -463,7 +478,7 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
       {analysisContext && (
         <Card className="border-l-4 border-l-blue-500">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm flex items-center gap-2">
+            <CardTitle className="text-xs flex items-center gap-2">
               <Zap className="w-4 h-4 text-blue-500" />
               Contextual Insights
             </CardTitle>
@@ -487,7 +502,7 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
               <li className="flex items-start gap-2">
                 <Building2 className="w-3 h-3 mt-0.5 text-blue-500" />
                 <span>
-                  New business applications trending {streams[3].changePercent && streams[3].changePercent > 0 ? 'up' : 'down'} this quarter
+                  New business applications trending {streams[3] && streams[3].changePercent && streams[3].changePercent > 0 ? 'up' : streams[3] && streams[3].changePercent && streams[3].changePercent < 0 ? 'down' : 'stable'} this quarter
                 </span>
               </li>
             </ul>

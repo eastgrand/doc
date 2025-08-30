@@ -358,9 +358,9 @@ export const WhatIfAnalysisPreview: React.FC<WhatIfAnalysisPreviewProps> = ({
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="scenarios">Scenarios</TabsTrigger>
-          <TabsTrigger value="comparison">Comparison</TabsTrigger>
+          <TabsTrigger value="overview" className="text-xs">Overview</TabsTrigger>
+          <TabsTrigger value="scenarios" className="text-xs">Scenarios</TabsTrigger>
+          <TabsTrigger value="comparison" className="text-xs">Comparison</TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}

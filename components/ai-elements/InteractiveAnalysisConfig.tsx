@@ -498,10 +498,10 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
       {/* Configuration Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="basic">Basic</TabsTrigger>
-          <TabsTrigger value="advanced">Advanced</TabsTrigger>
-          <TabsTrigger value="templates">Templates</TabsTrigger>
-          <TabsTrigger value="json">JSON View</TabsTrigger>
+          <TabsTrigger value="basic" className="text-xs">Basic</TabsTrigger>
+          <TabsTrigger value="advanced" className="text-xs">Advanced</TabsTrigger>
+          <TabsTrigger value="templates" className="text-xs">Templates</TabsTrigger>
+          <TabsTrigger value="json" className="text-xs">JSON View</TabsTrigger>
         </TabsList>
 
         {/* Basic Configuration */}

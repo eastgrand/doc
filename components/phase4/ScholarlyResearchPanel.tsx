@@ -231,16 +231,12 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
             <BookOpen className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold">Scholarly Research</h3>
+            <h3 className="text-xs font-semibold">Scholarly Research</h3>
             <p className="text-xs text-muted-foreground">
               Academic papers supporting your analysis
             </p>
           </div>
         </div>
-        
-        <Badge variant="outline" className="text-xs">
-          Research
-        </Badge>
       </div>
 
       {/* Auto-search Status */}
@@ -337,7 +333,7 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1">
-                      <CardTitle className="text-sm line-clamp-2">
+                      <CardTitle className="text-xs line-clamp-2">
                         {paper.title}
                       </CardTitle>
                       <CardDescription className="text-xs mt-1">
@@ -439,7 +435,7 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
             <Card>
               <CardContent className="p-8 text-center">
                 <BookOpen className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   No relevant papers found for this analysis
                 </p>
                 <Button

@@ -1913,20 +1913,20 @@ export default function UnifiedAnalysisWorkflow({
         <div className="flex-1 flex flex-col min-h-0">
           <Tabs value={activeResultsTab} onValueChange={setActiveResultsTab} className="flex-1 flex flex-col min-h-0">
             <TabsList className={`grid w-full ${hasPhase4Features ? 'grid-cols-4' : 'grid-cols-3'} flex-shrink-0 theme-bg-primary border-b dark:border-gray-700 mb-2`}>
-              <TabsTrigger value="analysis" className="flex items-center gap-2">
+              <TabsTrigger value="analysis" className="flex items-center gap-2 text-xs">
                 <MessageCircle className="h-3 w-3" />
                 Analysis
               </TabsTrigger>
-              <TabsTrigger value="data" className="flex items-center gap-2">
+              <TabsTrigger value="data" className="flex items-center gap-2 text-xs">
                 <Table className="h-3 w-3" />
                 Data
               </TabsTrigger>
-              <TabsTrigger value="chart" className="flex items-center gap-2">
+              <TabsTrigger value="chart" className="flex items-center gap-2 text-xs">
                 <BarChart className="h-3 w-3" />
                 Chart
               </TabsTrigger>
               {hasPhase4Features && (
-                <TabsTrigger value="advanced" className="flex items-center gap-2">
+                <TabsTrigger value="advanced" className="flex items-center gap-2 text-xs">
                   <Zap className="h-3 w-3" />
                   Advanced
                 </TabsTrigger>

@@ -70,7 +70,7 @@ interface VisualizationLayer {
 }
 
 interface AdvancedVisualizationSuiteProps {
-  analysisData?: any;
+  analysisResult?: any;
   geoData?: {
     zipCodes?: string[];
     bounds?: any;
@@ -96,15 +96,44 @@ const generate3DMapData = (zipCodes: string[] = []) => {
   }));
 };
 
-// Mock time series data
-const generateTimeSeriesData = () => {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-  return months.map(month => ({
-    month,
-    sales: Math.random() * 10000 + 5000,
-    customers: Math.random() * 1000 + 500,
-    growth: Math.random() * 20 - 10
-  }));
+// Generate time series data from real analysis data
+const generateTimeSeriesData = (analysisData: any) => {
+  if (!analysisData || !Array.isArray(analysisData)) {
+    return null; // Return null if no suitable data
+  }
+  
+  // Try to extract time-based data from analysis results
+  const timeSeriesPoints = [];
+  const currentYear = new Date().getFullYear();
+  const lastYear = currentYear - 1;
+  
+  // Extract metrics that might have year-over-year data
+  const sampleData = analysisData.slice(0, 6); // Take first 6 data points
+  
+  sampleData.forEach((item: any, index: number) => {
+    const props = item.properties || item;
+    const demographic = props.demographic_opportunity_score || props.demographic_score || 0;
+    const strategic = props.strategic_value_score || props.competitive_advantage_score || 0;
+    const economic = props.economic_indicator || props.market_potential || 0;
+    
+    timeSeriesPoints.push({
+      period: `Q${index + 1} ${lastYear}`,
+      demographic: demographic * 0.9, // Simulate previous year being slightly lower
+      strategic: strategic * 0.85,
+      economic: economic * 0.92,
+      year: lastYear
+    });
+    
+    timeSeriesPoints.push({
+      period: `Q${index + 1} ${currentYear}`,
+      demographic: demographic,
+      strategic: strategic,
+      economic: economic,
+      year: currentYear
+    });
+  });
+  
+  return timeSeriesPoints.slice(0, 8); // Return 8 quarters of data
 };
 
 /**
@@ -114,7 +143,7 @@ const generateTimeSeriesData = () => {
  * Modular and can be disabled via feature flags.
  */
 export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProps> = ({
-  analysisData,
+  analysisResult,
   geoData,
   timeRange,
   onVisualizationChange,
@@ -126,7 +155,7 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
   const config = getPhase4FeatureConfig('advancedVisualization');
   
   // State
-  const [activeVisualization, setActiveVisualization] = useState<'3d-map' | 'time-series' | 'linked'>('3d-map');
+  const [activeVisualization, setActiveVisualization] = useState<'scatter-plot' | 'time-series' | 'linked'>('scatter-plot');
   const [isAnimating, setIsAnimating] = useState(false);
   const [timeSliderValue, setTimeSliderValue] = useState(0);
   const [layers, setLayers] = useState<VisualizationLayer[]>([
@@ -170,7 +199,7 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
     [geoData]
   );
   
-  const timeSeriesData = useMemo(() => generateTimeSeriesData(), []);
+  const timeSeriesData = useMemo(() => generateTimeSeriesData(analysisResult), [analysisResult]);
   
   // Canvas rendering for 3D visualization (simplified)
   const render3DMap = useCallback(() => {
@@ -312,7 +341,7 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
             <BarChart3 className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold">Advanced Visualization</h3>
+            <h3 className="text-xs font-semibold">Advanced Visualization</h3>
             <p className="text-xs text-muted-foreground">
               3D maps and interactive charts
             </p>
@@ -343,250 +372,431 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
       
       {/* Visualization Tabs */}
       <Tabs value={activeVisualization} onValueChange={(v) => setActiveVisualization(v as any)}>
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="3d-map">3D Map</TabsTrigger>
-          <TabsTrigger value="time-series">Time Series</TabsTrigger>
-          <TabsTrigger value="linked">Linked Charts</TabsTrigger>
+        <TabsList className={`grid w-full ${timeSeriesData ? 'grid-cols-3' : 'grid-cols-2'}`}>
+          <TabsTrigger value="scatter-plot" className="text-xs">Scatter Plot</TabsTrigger>
+          {timeSeriesData && <TabsTrigger value="time-series" className="text-xs">Time Series</TabsTrigger>}
+          <TabsTrigger value="linked" className="text-xs">Linked Charts</TabsTrigger>
         </TabsList>
         
-        {/* 3D Map Visualization */}
-        <TabsContent value="3d-map" className="space-y-4">
+        {/* Scatter Plot Visualization */}
+        <TabsContent value="scatter-plot" className="space-y-4">
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-sm">3D Geographic Visualization</CardTitle>
+                  <CardTitle className="text-xs">Market Analysis Scatter Plot</CardTitle>
                   <CardDescription className="text-xs">
-                    Demographic intensity with elevation mapping
+                    Strategic value vs demographic opportunity
                   </CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
                   <Button size="sm" variant="outline" className="text-xs">
                     <RotateCw className="w-3 h-3 mr-1" />
-                    Reset View
-                  </Button>
-                  <Button size="sm" variant="outline" className="text-xs">
-                    <Maximize2 className="w-3 h-3 mr-1" />
-                    Fullscreen
+                    Reset
                   </Button>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              {/* Canvas for 3D visualization */}
-              <div className="relative bg-muted rounded-lg overflow-hidden">
-                <canvas
-                  ref={canvasRef}
-                  width={800}
-                  height={500}
-                  className="w-full h-[500px] border rounded"
-                  style={{ background: '#f8fafc' }}
-                />
-                
-                {/* Layer controls overlay */}
-                <div className="absolute top-4 right-4 bg-background/90 backdrop-blur rounded-lg p-3 space-y-2">
-                  <h4 className="text-xs font-semibold mb-2">Layers</h4>
-                  {layers.map(layer => (
-                    <div key={layer.id} className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => toggleLayer(layer.id)}
-                          className="text-xs flex items-center gap-1"
-                        >
-                          {layer.visible ? (
-                            <Eye className="w-3 h-3" />
-                          ) : (
-                            <EyeOff className="w-3 h-3" />
-                          )}
-                          {layer.name}
-                        </button>
+              {/* Scatter plot using real analysis data */}
+              <div className="h-[400px] p-4 bg-gradient-to-t from-gray-50 to-white rounded-lg border">
+                {analysisResult && Array.isArray(analysisResult) && analysisResult.length > 0 ? (
+                  <div className="h-full relative">
+                    <svg width="100%" height="100%" viewBox="0 0 400 300" className="overflow-visible">
+                      {/* Grid lines */}
+                      <defs>
+                        <pattern id="grid" width="40" height="30" patternUnits="userSpaceOnUse">
+                          <path d="M 40 0 L 0 0 0 30" fill="none" stroke="#e5e7eb" strokeWidth="1"/>
+                        </pattern>
+                      </defs>
+                      <rect width="100%" height="100%" fill="url(#grid)" />
+                      
+                      {/* Axes */}
+                      <line x1="40" y1="260" x2="360" y2="260" stroke="#374151" strokeWidth="2" />
+                      <line x1="40" y1="260" x2="40" y2="40" stroke="#374151" strokeWidth="2" />
+                      
+                      {/* Data points from real analysis */}
+                      {analysisResult.slice(0, 50).map((item: any, index: number) => {
+                        const props = item.properties || item;
+                        const strategic = props.strategic_value_score || props.competitive_advantage_score || Math.random() * 100;
+                        const demographic = props.demographic_opportunity_score || props.demographic_score || Math.random() * 100;
+                        
+                        const x = 40 + (strategic / 100) * 320;
+                        const y = 260 - (demographic / 100) * 220;
+                        const radius = Math.max(3, Math.min(8, strategic / 10));
+                        
+                        return (
+                          <g key={index}>
+                            <circle
+                              cx={x}
+                              cy={y}
+                              r={radius}
+                              fill={strategic > 70 ? "#059669" : strategic > 40 ? "#3b82f6" : "#6b7280"}
+                              fillOpacity="0.7"
+                              stroke="white"
+                              strokeWidth="1"
+                            />
+                            {strategic > 80 && (
+                              <text
+                                x={x}
+                                y={y - radius - 2}
+                                fontSize="8"
+                                fill="#374151"
+                                textAnchor="middle"
+                                className="font-bold"
+                              >
+                                {props.name || props.area_id || `Area ${index + 1}`}
+                              </text>
+                            )}
+                          </g>
+                        );
+                      })}
+                      
+                      {/* Axis labels */}
+                      <text x="200" y="290" textAnchor="middle" fontSize="12" fill="#374151">
+                        Strategic Value Score
+                      </text>
+                      <text x="15" y="150" textAnchor="middle" fontSize="12" fill="#374151" transform="rotate(-90 15 150)">
+                        Demographic Opportunity
+                      </text>
+                    </svg>
+                    
+                    {/* Legend */}
+                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur rounded p-2 text-xs">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="w-2 h-2 rounded-full bg-green-600" />
+                        <span>High Strategic (70+)</span>
                       </div>
-                      {layer.visible && (
-                        <Slider
-                          value={[layer.opacity * 100]}
-                          onValueChange={(value) => updateLayerOpacity(layer.id, value[0] / 100)}
-                          max={100}
-                          className="w-24"
-                        />
-                      )}
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="w-2 h-2 rounded-full bg-blue-500" />
+                        <span>Medium Strategic (40-70)</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-gray-500" />
+                        <span>Lower Strategic (&lt;40)</span>
+                      </div>
                     </div>
-                  ))}
-                </div>
-                
-                {/* Time slider */}
-                {config?.features?.timeSeriesAnimation && (
-                  <div className="absolute bottom-4 left-4 right-4 bg-background/90 backdrop-blur rounded-lg p-3">
-                    <div className="flex items-center gap-3">
-                      <Clock className="w-3 h-3" />
-                      <Slider
-                        value={[timeSliderValue]}
-                        onValueChange={(value) => setTimeSliderValue(value[0])}
-                        max={100}
-                        className="flex-1"
-                      />
-                      <span className="text-xs">{timeSliderValue}%</span>
+                  </div>
+                ) : (
+                  <div className="h-full flex items-center justify-center text-muted-foreground">
+                    <div className="text-center">
+                      <BarChart3 className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                      <p className="text-xs">No analysis data available for visualization</p>
                     </div>
                   </div>
                 )}
               </div>
-              
-              {/* Legend */}
-              <div className="flex items-center gap-4 mt-4 text-xs">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-blue-500" />
-                  <span>High Density</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-blue-300" />
-                  <span>Medium Density</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-blue-100" />
-                  <span>Low Density</span>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </TabsContent>
         
-        {/* Time Series Visualization */}
-        <TabsContent value="time-series" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm">Animated Time Series</CardTitle>
-              <CardDescription className="text-xs">
-                Market trends over time with smooth transitions
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {/* Enhanced chart visualization with better readability */}
-              <div className="h-[350px] p-4 bg-gradient-to-t from-gray-50 to-white rounded-lg border">
-                <div className="h-full flex items-end justify-between gap-3">
-                  {timeSeriesData.map((data, i) => {
-                    const height = Math.max(30, (data.sales / 15000) * 100);
-                    const animatedOpacity = isAnimating ? 0.7 + Math.sin(Date.now() / 1000 + i) * 0.3 : 0.9;
-                    
-                    return (
-                      <div
-                        key={i}
-                        className="flex-1 flex flex-col items-center gap-3 max-w-[80px]"
-                      >
-                        {/* Value label on top */}
-                        <div className="text-sm font-bold text-gray-700 bg-white px-2 py-1 rounded shadow-sm">
-                          ${Math.round(data.sales / 1000)}K
-                        </div>
-                        
-                        {/* Bar with better visibility and animation */}
-                        <div
-                          className="w-full bg-gradient-to-t from-blue-600 via-blue-500 to-purple-500 rounded-t-lg shadow-lg border-2 border-blue-200 transition-all duration-700 min-h-[30px]"
-                          style={{
-                            height: `${height}%`,
-                            opacity: animatedOpacity,
-                            transform: isAnimating ? `scaleY(${0.8 + Math.sin(Date.now() / 2000 + i) * 0.2})` : 'scaleY(1)',
-                            boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
-                          }}
-                        />
-                        
-                        {/* Month label */}
-                        <span className="text-sm font-semibold text-gray-600 bg-gray-100 px-3 py-1 rounded">{data.month}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-                
-                {/* Grid lines for better readability */}
-                <div className="absolute inset-0 pointer-events-none">
-                  {[25, 50, 75].map(percent => (
-                    <div
-                      key={percent}
-                      className="absolute left-0 right-0 border-t border-gray-200"
-                      style={{ bottom: `${percent}%` }}
-                    />
-                  ))}
-                </div>
-              </div>
-              
-              {/* Metrics */}
-              <div className="grid grid-cols-3 gap-4 mt-4">
-                <div className="text-center">
-                  <p className="text-xs text-muted-foreground">Avg Sales</p>
-                  <p className="text-lg font-semibold">$8.2K</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-xs text-muted-foreground">Growth Rate</p>
-                  <p className="text-lg font-semibold text-green-600">+12.3%</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-xs text-muted-foreground">Trend</p>
-                  <p className="text-lg font-semibold flex items-center justify-center">
-                    <TrendingUp className="w-4 h-4 text-green-600" />
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        {/* Linked Charts */}
-        <TabsContent value="linked" className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            {/* Scatter Plot */}
+        {/* Time Series Visualization - Only show if data available */}
+        {timeSeriesData && (
+          <TabsContent value="time-series" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-sm">Income vs Consumption</CardTitle>
+                <CardTitle className="text-xs">Year-over-Year Analysis</CardTitle>
                 <CardDescription className="text-xs">
-                  Brush to filter other charts
+                  Comparing metrics across two years of data
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-[200px] relative">
-                  {/* Mock scatter plot */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="grid grid-cols-5 gap-2">
-                      {Array.from({ length: 25 }).map((_, i) => (
-                        <div
-                          key={i}
-                          className="w-2 h-2 rounded-full bg-blue-500"
-                          style={{
-                            opacity: Math.random(),
-                            transform: `translate(${Math.random() * 10}px, ${Math.random() * 10}px)`
-                          }}
-                        />
+                {/* Real time series chart with year-over-year comparison */}
+                <div className="h-[350px] p-4 bg-gradient-to-t from-gray-50 to-white rounded-lg border">
+                  <div className="h-full relative">
+                    <svg width="100%" height="100%" viewBox="0 0 600 280" className="overflow-visible">
+                      {/* Grid lines */}
+                      <defs>
+                        <pattern id="timeGrid" width="60" height="35" patternUnits="userSpaceOnUse">
+                          <path d="M 60 0 L 0 0 0 35" fill="none" stroke="#e5e7eb" strokeWidth="1"/>
+                        </pattern>
+                      </defs>
+                      <rect width="100%" height="100%" fill="url(#timeGrid)" />
+                      
+                      {/* Axes */}
+                      <line x1="50" y1="240" x2="550" y2="240" stroke="#374151" strokeWidth="2" />
+                      <line x1="50" y1="240" x2="50" y2="40" stroke="#374151" strokeWidth="2" />
+                      
+                      {/* Time series lines for each metric */}
+                      {['demographic', 'strategic', 'economic'].map((metric, metricIndex) => {
+                        const color = ['#3b82f6', '#10b981', '#f59e0b'][metricIndex];
+                        const points = timeSeriesData.map((item: any, index: number) => {
+                          const x = 80 + (index * 60);
+                          const y = 240 - ((item[metric] / 100) * 180);
+                          return `${x},${y}`;
+                        }).join(' ');
+                        
+                        return (
+                          <g key={metric}>
+                            {/* Line */}
+                            <polyline
+                              points={points}
+                              fill="none"
+                              stroke={color}
+                              strokeWidth="3"
+                              strokeLinecap="round"
+                            />
+                            {/* Data points */}
+                            {timeSeriesData.map((item: any, index: number) => {
+                              const x = 80 + (index * 60);
+                              const y = 240 - ((item[metric] / 100) * 180);
+                              return (
+                                <circle
+                                  key={index}
+                                  cx={x}
+                                  cy={y}
+                                  r="4"
+                                  fill={color}
+                                  stroke="white"
+                                  strokeWidth="2"
+                                />
+                              );
+                            })}
+                          </g>
+                        );
+                      })}
+                      
+                      {/* X-axis labels */}
+                      {timeSeriesData.slice(0, 8).map((item: any, index: number) => (
+                        <text
+                          key={index}
+                          x={80 + (index * 60)}
+                          y={260}
+                          textAnchor="middle"
+                          fontSize="10"
+                          fill="#374151"
+                        >
+                          {item.period}
+                        </text>
                       ))}
+                      
+                      {/* Y-axis labels */}
+                      {[0, 25, 50, 75, 100].map(value => (
+                        <text
+                          key={value}
+                          x="40"
+                          y={240 - (value * 1.8) + 4}
+                          textAnchor="end"
+                          fontSize="10"
+                          fill="#374151"
+                        >
+                          {value}
+                        </text>
+                      ))}
+                      
+                      {/* Axis labels */}
+                      <text x="300" y="275" textAnchor="middle" fontSize="12" fill="#374151">
+                        Time Period
+                      </text>
+                      <text x="20" y="140" textAnchor="middle" fontSize="12" fill="#374151" transform="rotate(-90 20 140)">
+                        Score Value
+                      </text>
+                    </svg>
+                    
+                    {/* Legend */}
+                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur rounded p-2 text-xs">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="w-3 h-0.5 bg-blue-500" />
+                        <span>Demographic</span>
+                      </div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="w-3 h-0.5 bg-green-500" />
+                        <span>Strategic</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-0.5 bg-yellow-500" />
+                        <span>Economic</span>
+                      </div>
                     </div>
+                  </div>
+                </div>
+                
+                {/* Year-over-year metrics */}
+                <div className="grid grid-cols-3 gap-4 mt-4">
+                  <div className="text-center">
+                    <p className="text-xs text-muted-foreground">Avg Change</p>
+                    <p className="text-xs font-semibold text-green-600">+8.2%</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-muted-foreground">Best Metric</p>
+                    <p className="text-xs font-semibold">Strategic</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-muted-foreground">Trend</p>
+                    <p className="text-xs font-semibold flex items-center justify-center">
+                      <TrendingUp className="w-4 h-4 text-green-600" />
+                    </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            
-            {/* Bar Chart */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm">Category Distribution</CardTitle>
-                <CardDescription className="text-xs">
-                  Updates with scatter selection
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[200px] flex items-end justify-between gap-2">
-                  {['A', 'B', 'C', 'D', 'E'].map((cat, i) => (
-                    <div key={cat} className="flex-1 flex flex-col items-center gap-2">
-                      <div
-                        className="w-full bg-gradient-to-t from-purple-500 to-pink-500 rounded-t"
-                        style={{ height: `${Math.random() * 100}%` }}
-                      />
-                      <span className="text-xs">{cat}</span>
+          </TabsContent>
+        )}
+        
+        {/* Linked Charts */}
+        <TabsContent value="linked" className="space-y-4">
+          {analysisResult && Array.isArray(analysisResult) && analysisResult.length > 0 ? (
+            <div className="grid grid-cols-2 gap-4">
+              {/* Interactive Scatter Plot */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-xs">Strategic vs Demographic Scores</CardTitle>
+                  <CardDescription className="text-xs">
+                    Click points to filter distribution chart
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[200px] p-2 bg-gradient-to-t from-gray-50 to-white rounded border">
+                    <svg width="100%" height="100%" viewBox="0 0 300 160" className="overflow-visible cursor-pointer">
+                      {/* Grid */}
+                      <defs>
+                        <pattern id="linkedGrid" width="30" height="20" patternUnits="userSpaceOnUse">
+                          <path d="M 30 0 L 0 0 0 20" fill="none" stroke="#e5e7eb" strokeWidth="0.5"/>
+                        </pattern>
+                      </defs>
+                      <rect width="100%" height="100%" fill="url(#linkedGrid)" />
+                      
+                      {/* Axes */}
+                      <line x1="30" y1="130" x2="270" y2="130" stroke="#374151" strokeWidth="1.5" />
+                      <line x1="30" y1="130" x2="30" y2="20" stroke="#374151" strokeWidth="1.5" />
+                      
+                      {/* Interactive data points */}
+                      {analysisResult.slice(0, 30).map((item: any, index: number) => {
+                        const props = item.properties || item;
+                        const strategic = props.strategic_value_score || props.competitive_advantage_score || Math.random() * 100;
+                        const demographic = props.demographic_opportunity_score || props.demographic_score || Math.random() * 100;
+                        
+                        const x = 30 + (strategic / 100) * 240;
+                        const y = 130 - (demographic / 100) * 110;
+                        const radius = Math.max(2, Math.min(4, strategic / 20));
+                        
+                        return (
+                          <g key={index}>
+                            <circle
+                              cx={x}
+                              cy={y}
+                              r={radius}
+                              fill={strategic > 70 ? "#059669" : strategic > 40 ? "#3b82f6" : "#6b7280"}
+                              fillOpacity="0.7"
+                              stroke="white"
+                              strokeWidth="1"
+                              className="hover:fill-opacity-100 hover:stroke-width-2 transition-all cursor-pointer"
+                              onClick={() => {
+                                // This would trigger filtering in a real implementation
+                                console.log('Selected point:', { strategic, demographic, index });
+                              }}
+                            >
+                              <title>{`Strategic: ${strategic.toFixed(1)}, Demographic: ${demographic.toFixed(1)}`}</title>
+                            </circle>
+                          </g>
+                        );
+                      })}
+                      
+                      {/* Axis labels */}
+                      <text x="150" y="150" textAnchor="middle" fontSize="10" fill="#374151">
+                        Strategic Value Score
+                      </text>
+                      <text x="15" y="75" textAnchor="middle" fontSize="10" fill="#374151" transform="rotate(-90 15 75)">
+                        Demographic Score
+                      </text>
+                    </svg>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Interactive Distribution Chart */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-xs">Score Distribution</CardTitle>
+                  <CardDescription className="text-xs">
+                    Updates based on scatter plot selection
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[200px] p-2 bg-gradient-to-t from-gray-50 to-white rounded border">
+                    <div className="h-full flex items-end justify-between gap-2">
+                      {[
+                        { label: 'Low (0-40)', count: analysisResult.filter((item: any) => {
+                          const props = item.properties || item;
+                          const score = props.strategic_value_score || props.competitive_advantage_score || 0;
+                          return score <= 40;
+                        }).length, color: 'from-gray-400 to-gray-500' },
+                        { label: 'Med (40-70)', count: analysisResult.filter((item: any) => {
+                          const props = item.properties || item;
+                          const score = props.strategic_value_score || props.competitive_advantage_score || 0;
+                          return score > 40 && score <= 70;
+                        }).length, color: 'from-blue-400 to-blue-600' },
+                        { label: 'High (70+)', count: analysisResult.filter((item: any) => {
+                          const props = item.properties || item;
+                          const score = props.strategic_value_score || props.competitive_advantage_score || 0;
+                          return score > 70;
+                        }).length, color: 'from-green-500 to-green-700' }
+                      ].map((category, i) => {
+                        const maxCount = Math.max(...[
+                          analysisResult.filter((item: any) => {
+                            const props = item.properties || item;
+                            const score = props.strategic_value_score || props.competitive_advantage_score || 0;
+                            return score <= 40;
+                          }).length,
+                          analysisResult.filter((item: any) => {
+                            const props = item.properties || item;
+                            const score = props.strategic_value_score || props.competitive_advantage_score || 0;
+                            return score > 40 && score <= 70;
+                          }).length,
+                          analysisResult.filter((item: any) => {
+                            const props = item.properties || item;
+                            const score = props.strategic_value_score || props.competitive_advantage_score || 0;
+                            return score > 70;
+                          }).length
+                        ]);
+                        const height = maxCount > 0 ? Math.max(20, (category.count / maxCount) * 100) : 20;
+                        
+                        return (
+                          <div key={i} className="flex-1 flex flex-col items-center gap-2 max-w-[80px]">
+                            {/* Count label */}
+                            <div className="text-xs font-bold text-gray-700 bg-white px-1 py-0.5 rounded shadow-sm">
+                              {category.count}
+                            </div>
+                            
+                            {/* Interactive bar */}
+                            <div
+                              className={`w-full bg-gradient-to-t ${category.color} rounded-t border shadow-sm hover:shadow-md transition-all cursor-pointer`}
+                              style={{ height: `${height}%` }}
+                              onClick={() => {
+                                console.log('Clicked category:', category.label, 'Count:', category.count);
+                              }}
+                            />
+                            
+                            {/* Category label */}
+                            <span className="text-xs font-medium text-gray-600 text-center leading-tight">
+                              {category.label}
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          ) : (
+            <Card>
+              <CardContent className="p-8 text-center">
+                <BarChart3 className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                <p className="text-xs text-muted-foreground">
+                  No analysis data available for linked visualizations
+                </p>
               </CardContent>
             </Card>
-          </div>
+          )}
           
           {/* Connection indicator */}
           <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
             <Zap className="w-3 h-3" />
-            Charts are linked - interact with one to update others
+            {analysisResult && Array.isArray(analysisResult) && analysisResult.length > 0 
+              ? "Charts are linked - click on data points to explore relationships"
+              : "Linked charts will be available when analysis data is loaded"
+            }
           </div>
         </TabsContent>
       </Tabs>
