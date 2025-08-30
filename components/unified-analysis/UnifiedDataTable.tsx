@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Table } from 'lucide-react';
 import { AnalysisResult } from '@/lib/analysis/types';
+import { analysisFeatures } from '@/lib/analysis/analysisLens';
+import { FieldMappingHelper } from '@/utils/visualizations/field-mapping-helper';
 
 interface UnifiedDataTableProps {
   analysisResult: AnalysisResult;
@@ -10,22 +12,25 @@ interface UnifiedDataTableProps {
 
 export default function UnifiedDataTable({ analysisResult, onExport }: UnifiedDataTableProps) {
   const data = analysisResult?.data;
-  // Prepare table data with only essential columns
+  // Prepare table data with only essential columns and filtered data
   const tableData = useMemo(() => {
     if (!data?.records || data.records.length === 0) {
-      return { headers: [], rows: [] };
+      return { headers: [], rows: [], filteredCount: 0 };
     }
 
-    // Create headers - only essential columns
+    // Filter out national parks from the data table
+    const filteredRecords = analysisFeatures(data.records);
+
+    // Create headers - only essential columns with human-readable names
     const headers = [
       'Area ID',
       'Area Name', 
-      data.targetVariable || 'Score',
+      FieldMappingHelper.getFriendlyFieldName(data.targetVariable || 'score'),
       'Rank'
     ];
 
-    // Create rows from records - only essential data
-    const rows = data.records.map((record, index) => {
+    // Create rows from filtered records - only essential data
+    const rows = filteredRecords.map((record, index) => {
       const row = [
         record.area_id || '',
         record.area_name || '',
@@ -35,7 +40,7 @@ export default function UnifiedDataTable({ analysisResult, onExport }: UnifiedDa
       return row;
     });
 
-    return { headers, rows };
+    return { headers, rows, filteredCount: data.records.length - filteredRecords.length };
   }, [data]);
 
   const stats = useMemo(() => {
@@ -120,7 +125,10 @@ export default function UnifiedDataTable({ analysisResult, onExport }: UnifiedDa
       {/* Footer with record count */}
       <div className="p-2 border-t dark:border-gray-700 theme-bg-secondary text-center">
         <span className="text-xs theme-text-secondary">
-          Showing {tableData.rows.length} of {data.totalRecords || tableData.rows.length} records
+          Showing {tableData.rows.length} of {data.totalRecords || (tableData.rows.length + (tableData.filteredCount || 0))} records
+          {(tableData.filteredCount || 0) > 0 && (
+            <span className="ml-2 text-muted-foreground">({tableData.filteredCount} national parks filtered)</span>
+          )}
         </span>
       </div>
     </div>

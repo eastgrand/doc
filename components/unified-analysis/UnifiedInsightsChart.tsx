@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { BarChart, Download, TrendingUp, Info } from 'lucide-react';
 import { AnalysisResult } from '@/lib/analysis/types';
+import { FieldMappingHelper } from '@/utils/visualizations/field-mapping-helper';
 
 interface UnifiedInsightsChartProps {
   analysisResult: AnalysisResult;
@@ -16,13 +17,22 @@ export default function UnifiedInsightsChart({ analysisResult, onExportChart }: 
       return null;
     }
 
+    // Filter to only show fields used in score calculation (exclude system fields)
+    const scoreRelevantFields = data.featureImportance.filter(item => {
+      const fieldName = item.feature || '';
+      // Exclude system/metadata fields
+      const systemFields = ['OBJECTID', 'ID', 'Shape__Area', 'Shape__Length', 'CreationDate', 'EditDate', 'Creator', 'Editor'];
+      return !systemFields.includes(fieldName);
+    });
+
     // Sort by importance and take top 10
-    return data.featureImportance
+    return scoreRelevantFields
       .sort((a, b) => b.importance - a.importance)
       .slice(0, 10)
       .map(item => ({
         ...item,
-        normalizedImportance: item.importance * 100 // Convert to percentage for display
+        normalizedImportance: item.importance * 100, // Convert to percentage for display
+        friendlyName: FieldMappingHelper.getFriendlyFieldName(item.feature || '')
       }));
   }, [data?.featureImportance]);
 
@@ -85,7 +95,7 @@ export default function UnifiedInsightsChart({ analysisResult, onExportChart }: 
               {/* Feature name and value */}
               <div className="flex justify-between items-center">
                 <span className="text-xs font-medium theme-text-primary">
-                  {item.description || item.feature}
+                  {item.friendlyName || item.description || item.feature}
                 </span>
                 <span className="text-xs font-mono theme-text-secondary">
                   {item.normalizedImportance.toFixed(1)}%
@@ -116,7 +126,7 @@ export default function UnifiedInsightsChart({ analysisResult, onExportChart }: 
           <h4 className="text-xs font-semibold mb-2">Interpretation</h4>
           <p className="text-xs theme-text-secondary">
             Feature importance shows which variables have the strongest influence on predicting{' '}
-            <strong>{data.targetVariable}</strong>. Higher values indicate greater predictive power.
+            <strong>{FieldMappingHelper.getFriendlyFieldName(data.targetVariable || 'score')}</strong>. Higher values indicate greater predictive power.
           </p>
         </div>
 
