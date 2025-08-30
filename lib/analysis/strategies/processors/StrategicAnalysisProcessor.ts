@@ -60,33 +60,36 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         null // Remove fallback to market share
       );
       
-      // If no strategic score found, calculate a composite strategic score
-      if (primaryScore === null || isNaN(primaryScore)) {
-        console.warn(`[StrategicAnalysisProcessor] No strategic score found for record ${(record as any).ID || index}, calculating composite score`);
+      const recordId = (record as any).ID || (record as any).id || index;
+      console.log(`[StrategicAnalysisProcessor] Record ${recordId}: Found primaryScore = ${primaryScore} from fields: strategic_score=${(record as any).strategic_score}, strategic_analysis_score=${(record as any).strategic_analysis_score}, strategic_value_score=${(record as any).strategic_value_score}`);
+      
+      // Check if the score looks like a market share percentage (very small values)
+      if (primaryScore !== null && !isNaN(primaryScore)) {
+        if (primaryScore < 10) {
+          // This looks like a market share percentage or other small value, not a proper strategic score
+          console.warn(`[StrategicAnalysisProcessor] Record ${recordId}: Strategic score ${primaryScore} appears to be market share data, calculating composite score instead`);
+          primaryScore = this.calculateCompositeStrategicScore(record);
+        }
+      } else {
+        // If no strategic score found, calculate a composite strategic score
+        console.warn(`[StrategicAnalysisProcessor] Record ${recordId}: No strategic score found, calculating composite score`);
         primaryScore = this.calculateCompositeStrategicScore(record);
       }
       
-      // Ensure strategic scores are in proper range (0-100 scale)
-      if (primaryScore < 1 && primaryScore > 0) {
-        // If score is a small decimal (like market share %), scale it up
-        console.log(`[StrategicAnalysisProcessor] Scaling small strategic score from ${primaryScore} to ${primaryScore * 100} for record ${(record as any).ID || index}`);
-        primaryScore = primaryScore * 100;
-      }
-      
       if (isNaN(primaryScore) || primaryScore < 0) {
-        console.warn(`[StrategicAnalysisProcessor] Invalid strategic score for record ${(record as any).ID || index}, using default of 25`);
+        console.warn(`[StrategicAnalysisProcessor] Record ${recordId}: Invalid strategic score, using default of 25`);
         primaryScore = 25; // Use moderate strategic value as fallback
       }
       
       // Generate area name
       const areaName = this.generateAreaName(record);
-      const recordId = (record as any).ID || (record as any).id || (record as any).area_id || `area_${index + 1}`;
+      const finalRecordId = (record as any).ID || (record as any).id || (record as any).area_id || `area_${index + 1}`;
       
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
       return {
-        area_id: recordId,
+        area_id: finalRecordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
         strategic_score: Math.round(primaryScore * 100) / 100, // Add at top level for visualization
