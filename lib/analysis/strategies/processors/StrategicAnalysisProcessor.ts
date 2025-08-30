@@ -50,7 +50,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for StrategicAnalysisProcessor');
     }
 
-  const processedRecords = (rawData.results as any[]).map((record: any, index: number) => {
+  const rawRecords = rawData.results as any[];
+  const processedRecords = rawRecords.map((record: any, index: number) => {
       // Strategic analysis requires actual strategic scores, not market share percentages
       // Use nullish coalescing to handle 0 values correctly
       let primaryScore = Number(
@@ -62,6 +63,16 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       
       const recordId = (record as any).ID || (record as any).id || index;
       console.log(`[StrategicAnalysisProcessor] Record ${recordId}: Found primaryScore = ${primaryScore} from fields: strategic_score=${(record as any).strategic_score}, strategic_analysis_score=${(record as any).strategic_analysis_score}, strategic_value_score=${(record as any).strategic_value_score}`);
+      
+      // Debug brand fields and market gap calculation
+      if (recordId === (rawRecords as any[])[0]?.ID) {
+        console.log(`[StrategicAnalysisProcessor] DEBUG First Record Brand Detection:`, {
+          recordKeys: Object.keys(record).slice(0, 20),
+          brandFields: this.brandResolver.detectBrandFields(record),
+          marketGap: this.calculateRealMarketGap(record),
+          targetBrandShare: this.extractTargetBrandShare(record)
+        });
+      }
       
       // Check if the score looks like a market share percentage (values under 20 are likely market shares)
       if (primaryScore !== null && !isNaN(primaryScore)) {
