@@ -415,7 +415,7 @@ ${conversationText}
         }
       }
       
-      messageContent += '\n\n' + formatStatsForChat(basicStats, analysisType, brandNames);
+      messageContent += '\n\n' + formatStatsForChat(basicStats, analysisType, brandNames, analysisData);
       
       setMessages([{
         ...initialMessage,

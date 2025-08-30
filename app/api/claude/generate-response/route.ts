@@ -18,6 +18,7 @@ import { multiEndpointFormatting, strategicSynthesis } from '../shared/base-prom
 import { GeoAwarenessEngine } from '../../../../lib/geo/GeoAwarenessEngine';
 import { getAnalysisPrompt } from '../shared/analysis-prompts';
 import { resolveAreaName as resolveSharedAreaName, getZip as getSharedZip, resolveRegionName as resolveSharedRegionName } from '@/lib/shared/AreaName';
+import { getAnalysisLayers, sanitizeSummaryForAnalysis, sanitizeRankingArrayForAnalysis } from '@/lib/analysis/analysisLens';
 
 /**
  * Validate cluster response for hallucinated data
@@ -2057,6 +2058,13 @@ export async function POST(req: NextRequest) {
         if (process.env.NODE_ENV === 'development' && processedLayersData.length > 0) {
             console.log(`[Claude DEBUG] First layer: ${processedLayersData[0]?.layerId} with ${processedLayersData[0]?.features?.length} features`);
         }
+
+        // Apply analysis lens to filter out national parks from AI analysis
+        const processedLayersDataForAI = getAnalysisLayers(processedLayersData);
+        console.log(`[Claude] Applied analysis lens: ${processedLayersData.length} layers -> ${processedLayersDataForAI.length} layers for AI`);
+        
+        // Use filtered data for AI processing from this point forward
+        processedLayersData = processedLayersDataForAI;
     
           // --- Simplified Data Processing (Focus on prompt relevant info) ---
               if (!processedLayersData || processedLayersData.length === 0) {
@@ -2263,7 +2271,10 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
         if (hasComprehensiveSummary) {
           console.log('[Claude Prompt Gen] Processing comprehensive data summary...');
           const summaryLayer = processedLayersData.find((layer: any) => layer.isComprehensiveSummary) as any;
-          const originalSummary = summaryLayer.originalSummary;
+          const rawSummary = summaryLayer.originalSummary;
+          
+          // Apply analysis lens to sanitize comprehensive summary rankings
+          const originalSummary = sanitizeSummaryForAnalysis(rawSummary);
           
           // Build rich data summary from comprehensive analysis
           dataSummary += `\n=== COMPREHENSIVE DATASET ANALYSIS ===\n`;
@@ -2452,10 +2463,12 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
             }
           }
 
-          // Add top performers
+          // Add top performers (sanitized to remove parks)
           if (originalSummary.performanceAnalysis?.topPerformers?.length > 0) {
-            dataSummary += `=== TOP EXPANSION OPPORTUNITIES (ranked by competitive_advantage_score) ===\n`;
-            originalSummary.performanceAnalysis.topPerformers.forEach((performer: any, index: number) => {
+            const sanitizedTopPerformers = sanitizeRankingArrayForAnalysis(originalSummary.performanceAnalysis.topPerformers);
+            if (sanitizedTopPerformers.length > 0) {
+              dataSummary += `=== TOP EXPANSION OPPORTUNITIES (ranked by competitive_advantage_score) ===\n`;
+              sanitizedTopPerformers.forEach((performer: any, index: number) => {
               // Debug what fields the performer object actually contains
               console.log(`🔍 [Claude API] Performer object fields:`, Object.keys(performer));
               console.log(`🔍 [Claude API] competitive_advantage_score:`, performer.competitive_advantage_score);
@@ -2481,7 +2494,8 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 if (context.asics > 0) dataSummary += `      Asics: ${context.asics}%\n`;
               }
               dataSummary += `\n`;
-            });
+              });
+            }
           }
           
           dataSummary += `=== CONVERSATION CONTEXT ===\n`;

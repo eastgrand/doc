@@ -503,7 +503,7 @@ ${conversationText}
       
       const basicStats = calculateBasicStats(analysisData);
       const analysisType = result.endpoint?.replace('/', '') || result.data?.type;
-      messageContent += '\n\n' + formatStatsForChat(basicStats, analysisType);
+      messageContent += '\n\n' + formatStatsForChat(basicStats, analysisType, undefined, analysisData);
       
       setMessages([{
         ...initialMessage,

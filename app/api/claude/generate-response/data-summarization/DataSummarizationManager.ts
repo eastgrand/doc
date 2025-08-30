@@ -8,6 +8,7 @@
 
 import { createStatisticalFoundation } from './StatisticalFoundation';
 import { createAnalysisSpecificSummary } from './AnalysisTypeProcessors';
+import { analysisFeatures } from '@/lib/analysis/analysisLens';
 
 // Re-export types for external usage
 export type { FeatureProperties } from './StatisticalFoundation';
@@ -159,10 +160,17 @@ function createLayerSummary(
   
   try {
     const layerName = getLayerDisplayName(layerResult, layerConfig);
-    const features = layerResult.features || [];
+    const originalFeatures = layerResult.features || [];
+    
+    if (originalFeatures.length === 0) {
+      return `\n=== ${layerName.toUpperCase()} ===\nNo features available for analysis.\n\n`;
+    }
+    
+    // Filter features for analysis (exclude national parks)
+    const features = analysisFeatures(originalFeatures);
     
     if (features.length === 0) {
-      return `\n=== ${layerName.toUpperCase()} ===\nNo features available for analysis.\n\n`;
+      return `\n=== ${layerName.toUpperCase()} ===\nNo features available for analysis after filtering.\n\n`;
     }
     
     // Extract primary field for analysis

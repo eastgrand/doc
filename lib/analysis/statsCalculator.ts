@@ -3,6 +3,8 @@
  * Provides fast statistical computations for immediate user feedback
  */
 
+import { analysisFeatures } from './analysisLens';
+
 
 // Shared function to extract score from various field names
 function extractScore(record: any): number {
@@ -107,6 +109,32 @@ export function calculateBasicStats(data: any[]): BasicStats {
     };
   }
 
+  // Filter out national parks from analysis
+  const originalCount = data.length;
+  const filteredData = analysisFeatures(data);
+  
+  if (filteredData.length !== originalCount) {
+    const filteredCount = originalCount - filteredData.length;
+    console.log(`[calculateBasicStats] Filtered out ${filteredCount} national parks from statistics (${originalCount} -> ${filteredData.length})`);
+  }
+  
+  if (filteredData.length === 0) {
+    return {
+      count: 0,
+      mean: 0,
+      median: 0,
+      stdDev: 0,
+      min: { area: 'N/A', score: 0 },
+      max: { area: 'N/A', score: 0 },
+      top5: [],
+      bottom5: [],
+      coverage: {}
+    };
+  }
+  
+  // Use filtered data for all calculations
+  data = filteredData;
+
   // Use shared score extraction function
   const getScore = extractScore;
 
@@ -191,6 +219,21 @@ export function calculateDistribution(data: any[]): Distribution {
     };
   }
 
+  // Filter out national parks from analysis
+  const filteredData = analysisFeatures(data);
+  
+  if (filteredData.length === 0) {
+    return {
+      quartiles: { q1: 0, q2: 0, q3: 0 },
+      iqr: 0,
+      outliers: [],
+      shape: 'uniform',
+      buckets: []
+    };
+  }
+  
+  // Use filtered data for all calculations
+  data = filteredData;
   const getScore = extractScore;
 
   const getAreaName = (record: any): string => {
@@ -295,6 +338,20 @@ export function detectPatterns(data: any[]): Patterns {
       trends: []
     };
   }
+
+  // Filter out national parks from analysis
+  const filteredData = analysisFeatures(data);
+  
+  if (filteredData.length === 0) {
+    return {
+      clusters: [],
+      correlations: [],
+      trends: []
+    };
+  }
+  
+  // Use filtered data for all calculations
+  data = filteredData;
 
   // Simple clustering by score ranges
   const clusters = identifyClusters(data);
@@ -547,13 +604,13 @@ function detectScoreClustering(data: any[]): Patterns['trends'][0] | null {
 /**
  * Format statistics for display in chat
  */
-export function formatStatsForChat(stats: BasicStats, analysisType?: string, brandNames?: { brand1: string; brand2: string }): string {
+export function formatStatsForChat(stats: BasicStats, analysisType?: string, brandNames?: { brand1: string; brand2: string }, allData?: any[]): string {
   console.log(`[formatStatsForChat] Called with analysisType: "${analysisType}"`);
   
   // Use specialized formatter for brand difference analysis
   if (analysisType === 'brand_difference' || analysisType === 'brand-difference') {
     console.log(`[formatStatsForChat] Using brand difference formatter`);
-    return formatBrandDifferenceStatsForChat(stats, brandNames);
+    return formatBrandDifferenceStatsForChat(stats, brandNames, allData);
   }
   
   console.log(`[formatStatsForChat] Using generic formatter`);
@@ -588,7 +645,7 @@ export function formatStatsForChat(stats: BasicStats, analysisType?: string, bra
 /**
  * Format brand difference statistics for display in chat
  */
-export function formatBrandDifferenceStatsForChat(stats: BasicStats, brandNames?: { brand1: string; brand2: string }): string {
+export function formatBrandDifferenceStatsForChat(stats: BasicStats, brandNames?: { brand1: string; brand2: string }, allData?: any[]): string {
   const lines: string[] = [];
   
   lines.push(`**Brand Difference Statistics**`);
@@ -604,18 +661,40 @@ export function formatBrandDifferenceStatsForChat(stats: BasicStats, brandNames?
   
   lines.push('');
   
-  // For brand difference, show largest advantages instead of "top performers"
-  const allAreas = [...stats.top5, ...stats.bottom5].sort((a, b) => b.score - a.score);
-  const brand1Advantages = allAreas.filter(item => item.score > 2).slice(0, 3);
-  const brand2Advantages = allAreas.filter(item => item.score < -2).slice(-3).reverse();
-  const competitiveParity = allAreas.filter(item => Math.abs(item.score) <= 2).slice(0, 3);
+  // Use all data if provided, otherwise fall back to limited data
+  let allAreas: { area: string; score: number }[] = [];
+  
+  if (allData && allData.length > 0) {
+    // Process all data for comprehensive market display
+    const getScore = extractScore;
+    const getAreaName = (record: any): string => {
+      return record.area_name || 
+             record.area_id || 
+             record.name ||
+             record.properties?.area_name ||
+             record.properties?.area_id ||
+             'Unknown';
+    };
+    
+    allAreas = allData
+      .map(d => ({ area: getAreaName(d), score: getScore(d) }))
+      .sort((a, b) => b.score - a.score);
+  } else {
+    // Fallback to limited data
+    allAreas = [...stats.top5, ...stats.bottom5].sort((a, b) => b.score - a.score);
+  }
+  
+  // Show more markets for better insights
+  const brand1Advantages = allAreas.filter(item => item.score > 2).slice(0, 8);
+  const brand2Advantages = allAreas.filter(item => item.score < -2).slice(-8).reverse();
+  const competitiveParity = allAreas.filter(item => Math.abs(item.score) <= 2).slice(0, 6);
   
   // Use dynamic brand names if provided, otherwise use generic terms
   const brand1Name = brandNames?.brand1 || 'Brand A';
   const brand2Name = brandNames?.brand2 || 'Brand B';
   
   if (brand1Advantages.length > 0) {
-    lines.push(`**${brand1Name} Strongholds** (largest advantages):`);
+    lines.push(`**${brand1Name} Strongholds** (${brand1Advantages.length} markets with significant advantages):`);
     brand1Advantages.forEach((item, index) => {
       lines.push(`**${index + 1}.** ${item.area} (**+${item.score.toFixed(1)}%**)`);
     });
@@ -623,7 +702,7 @@ export function formatBrandDifferenceStatsForChat(stats: BasicStats, brandNames?
   }
   
   if (brand2Advantages.length > 0) {
-    lines.push(`**${brand2Name} Strongholds** (competitor advantages):`);
+    lines.push(`**${brand2Name} Strongholds** (${brand2Advantages.length} markets with competitor advantages):`);
     brand2Advantages.forEach((item, index) => {
       lines.push(`**${index + 1}.** ${item.area} (**${item.score.toFixed(1)}%**)`);
     });
@@ -631,10 +710,17 @@ export function formatBrandDifferenceStatsForChat(stats: BasicStats, brandNames?
   }
   
   if (competitiveParity.length > 0) {
-    lines.push('**Competitive Battlegrounds** (near parity):');
+    lines.push(`**Competitive Battlegrounds** (${competitiveParity.length} markets near parity):`);
     competitiveParity.forEach((item, index) => {
       lines.push(`**${index + 1}.** ${item.area} (**${item.score >= 0 ? '+' : ''}${item.score.toFixed(1)}%**)`);
     });
+  }
+  
+  // Add total market count information
+  if (allData && allData.length > (brand1Advantages.length + brand2Advantages.length + competitiveParity.length)) {
+    const displayedCount = brand1Advantages.length + brand2Advantages.length + competitiveParity.length;
+    lines.push('');
+    lines.push(`*Showing ${displayedCount} key markets out of ${allData.length} total markets analyzed.*`);
   }
   
   return lines.join('\n');

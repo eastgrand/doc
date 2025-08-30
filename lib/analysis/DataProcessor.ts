@@ -2,6 +2,7 @@ import { RawAnalysisResult, ProcessedAnalysisData, DataProcessorStrategy } from 
 import { ConfigurationManager } from './ConfigurationManager';
 import { CityAnalysisUtils, CityAnalysisResult } from './CityAnalysisUtils';
 import { GeoAwarenessEngine } from '../geo/GeoAwarenessEngine';
+import { analysisFeatures } from './analysisLens';
 
 // Import specialized processors
 import { CoreAnalysisProcessor } from './strategies/processors/CoreAnalysisProcessor';
@@ -638,4 +639,30 @@ class DefaultDataProcessor implements DataProcessorStrategy {
       stdDev
     };
   }
+}
+
+/**
+ * Legacy function name for filtering national parks
+ * Now delegates to the centralized analysis lens
+ * 
+ * @deprecated Use analysisFeatures() directly from analysisLens.ts
+ */
+export function filterNationalParksFromAnalysis(records: any[]): any[] {
+  return analysisFeatures(records);
+}
+
+/**
+ * Alternative legacy name
+ * @deprecated Use analysisFeatures() directly from analysisLens.ts
+ */
+export function excludeParksFromAnalysis(records: any[]): any[] {
+  return analysisFeatures(records);
+}
+
+/**
+ * Process analysis data with filtering
+ * @deprecated Use analysisFeatures() directly from analysisLens.ts
+ */
+export function processAnalysisData(data: any[]): any[] {
+  return analysisFeatures(data);
 } 
