@@ -51,19 +51,31 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     }
 
   const processedRecords = (rawData.results as any[]).map((record: any, index: number) => {
-      // Strategic analysis uses Red Bull market share as strategic value indicator
+      // Strategic analysis requires actual strategic scores, not market share percentages
       // Use nullish coalescing to handle 0 values correctly
-      const primaryScore = Number(
+      let primaryScore = Number(
         (record as any).strategic_score ?? 
         (record as any).strategic_analysis_score ?? 
         (record as any).strategic_value_score ??
-        (record as any).MP12207A_B_P ?? // Red Bull market share as strategic indicator
-        0 // Fallback to 0 if no strategic field available
+        null // Remove fallback to market share
       );
       
-      if (isNaN(primaryScore)) {
-        console.warn(`[StrategicAnalysisProcessor] Strategic analysis record ${(record as any).ID || index} has no valid strategic score, using 0`);
-        // Don't throw error, just use 0 as fallback
+      // If no strategic score found, calculate a composite strategic score
+      if (primaryScore === null || isNaN(primaryScore)) {
+        console.warn(`[StrategicAnalysisProcessor] No strategic score found for record ${(record as any).ID || index}, calculating composite score`);
+        primaryScore = this.calculateCompositeStrategicScore(record);
+      }
+      
+      // Ensure strategic scores are in proper range (0-100 scale)
+      if (primaryScore < 1 && primaryScore > 0) {
+        // If score is a small decimal (like market share %), scale it up
+        console.log(`[StrategicAnalysisProcessor] Scaling small strategic score from ${primaryScore} to ${primaryScore * 100} for record ${(record as any).ID || index}`);
+        primaryScore = primaryScore * 100;
+      }
+      
+      if (isNaN(primaryScore) || primaryScore < 0) {
+        console.warn(`[StrategicAnalysisProcessor] Invalid strategic score for record ${(record as any).ID || index}, using default of 25`);
+        primaryScore = 25; // Use moderate strategic value as fallback
       }
       
       // Generate area name
@@ -491,5 +503,55 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
    */
   private calculateRealMarketGap(record: any): number {
     return this.brandResolver.calculateMarketGap(record);
+  }
+
+  /**
+   * Calculate a composite strategic score when no direct strategic score is available
+   * Uses market opportunity, demographics, and competitive factors
+   */
+  private calculateCompositeStrategicScore(record: any): number {
+    let compositeScore = 0;
+    let factorCount = 0;
+
+    // Factor 1: Market Gap (higher gap = better strategic opportunity)
+    const marketGap = this.calculateRealMarketGap(record);
+    if (marketGap > 0) {
+      compositeScore += Math.min(marketGap, 100); // Cap at 100%
+      factorCount++;
+    }
+
+    // Factor 2: Population Size (larger markets = better strategic value)
+    const population = this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY']);
+    if (population > 0) {
+      // Normalize population to 0-100 scale (assuming 1M+ is max strategic value)
+      const populationScore = Math.min((population / 1000000) * 100, 100);
+      compositeScore += populationScore;
+      factorCount++;
+    }
+
+    // Factor 3: Income Level (higher income = better strategic opportunity)
+    const income = this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY']);
+    if (income > 0) {
+      // Normalize income to 0-100 scale (assuming $100K+ is max strategic value)
+      const incomeScore = Math.min((income / 100000) * 100, 100);
+      compositeScore += incomeScore;
+      factorCount++;
+    }
+
+    // Factor 4: Competitive Position
+    const competitiveScore = this.extractFieldValue(record, ['competitive_advantage_score', 'comp_advantage']);
+    if (competitiveScore > 0) {
+      // If on 1-10 scale, convert to 0-100
+      const normalizedCompetitive = competitiveScore <= 10 ? competitiveScore * 10 : competitiveScore;
+      compositeScore += normalizedCompetitive;
+      factorCount++;
+    }
+
+    // Average the factors if any were found
+    const finalScore = factorCount > 0 ? compositeScore / factorCount : 25; // Default to 25 if no factors
+    
+    console.log(`[StrategicAnalysisProcessor] Calculated composite strategic score: ${finalScore.toFixed(2)} from ${factorCount} factors for record ${record.ID || 'unknown'}`);
+    
+    return Math.max(1, Math.min(100, finalScore)); // Ensure score is between 1-100
   }
 }

@@ -19,7 +19,8 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
     }
 
     const records = rawData.results.map((record: any, index: number) => {
-      const brandScore = Number((record as any).brand_analysis_score) || Number((record as any).brand_difference_score) || 0;
+      // Brand analysis requires actual brand scores, not market share differences
+      let brandScore = Number((record as any).brand_analysis_score) || Number((record as any).brand_difference_score) || null;
       
       // Use dynamic brand detection instead of hardcoded fields
       const brandFields = this.brandResolver.detectBrandFields(record);
@@ -30,6 +31,18 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
       const competitorShare = topCompetitor?.value || 0;
       const brandDifference = targetBrandShare - competitorShare;
       
+      // If no brand score found, calculate a composite brand score
+      if (brandScore === null || isNaN(brandScore)) {
+        console.warn(`[BrandAnalysisProcessor] No brand score found for record ${(record as any).ID || index}, calculating composite score`);
+        brandScore = this.calculateCompositeBrandScore(record, targetBrandShare, competitorShare, brandDifference);
+      }
+      
+      // Ensure brand scores are in proper range (0-100 scale for brand analysis)
+      if (brandScore < 1 && brandScore !== 0) {
+        // If score is a small decimal, it might need scaling
+        console.log(`[BrandAnalysisProcessor] Small brand score detected (${brandScore}), may need review for record ${(record as any).ID || index}`);
+      }
+      
       const strategicScore = Number((record as any).strategic_value_score) || 0;
       const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
@@ -37,7 +50,7 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
       return {
         area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
         area_name: (record as any).area_name || (record as any).DESCRIPTION || `Area ${index + 1}`,
-        value: brandScore || brandDifference,
+        value: brandScore,
         rank: index + 1,
         category: this.categorizeBrandStrength(targetBrandShare, competitorShare, targetBrand?.brandName, topCompetitor?.brandName),
         coordinates: this.extractCoordinates(record),
@@ -120,6 +133,54 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
     if (Math.abs(difference) <= 5 && strategic >= 50) return 'Competitive Battle';
     if (difference >= 5) return 'Brand Strengthening';
     return 'Brand Development';
+  }
+
+  /**
+   * Calculate a composite brand score when no direct brand score is available
+   * Uses brand positioning, market share dynamics, and strategic factors
+   */
+  private calculateCompositeBrandScore(record: any, targetBrandShare: number, competitorShare: number, brandDifference: number): number {
+    let compositeScore = 0;
+    let factorCount = 0;
+
+    // Factor 1: Brand Market Position (0-30 points)
+    if (targetBrandShare > 0 || competitorShare > 0) {
+      const totalMarketShare = targetBrandShare + competitorShare;
+      const positionScore = Math.min(30, (totalMarketShare / 50) * 30); // Normalize to 30 points
+      compositeScore += positionScore;
+      factorCount++;
+    }
+
+    // Factor 2: Brand Competitive Advantage (0-25 points)
+    const brandAdvantage = Math.abs(brandDifference);
+    if (brandAdvantage > 0) {
+      const advantageScore = Math.min(25, (brandAdvantage / 20) * 25); // Normalize to 25 points
+      compositeScore += advantageScore;
+      factorCount++;
+    }
+
+    // Factor 3: Strategic Value (0-25 points)
+    const strategicScore = Number((record as any).strategic_value_score) || 0;
+    if (strategicScore > 0) {
+      const normalizedStrategic = strategicScore <= 10 ? strategicScore * 2.5 : Math.min(25, strategicScore / 4);
+      compositeScore += normalizedStrategic;
+      factorCount++;
+    }
+
+    // Factor 4: Market Size/Population (0-20 points)
+    const population = Number((record as any).total_population) || Number((record as any).value_TOTPOP_CY) || 0;
+    if (population > 0) {
+      const populationScore = Math.min(20, (population / 500000) * 20); // Normalize to 20 points
+      compositeScore += populationScore;
+      factorCount++;
+    }
+
+    // Average the factors if any were found, otherwise use a baseline
+    const finalScore = factorCount > 0 ? compositeScore / factorCount * (100/25) : 40; // Scale to 0-100 and provide moderate fallback
+    
+    console.log(`[BrandAnalysisProcessor] Calculated composite brand score: ${finalScore.toFixed(2)} from ${factorCount} factors for record ${record.ID || 'unknown'}`);
+    
+    return Math.max(1, Math.min(100, finalScore)); // Ensure score is between 1-100
   }
 
   private extractCoordinates(record: any): [number, number] {

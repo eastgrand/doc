@@ -877,6 +877,13 @@ ${UNIVERSAL_REQUIREMENTS}
 STRATEGIC ANALYSIS TECHNICAL CONTEXT:
 You are analyzing strategic value data with pre-calculated scores for market expansion opportunities.
 
+⚠️ CRITICAL SCORE INTERPRETATION REQUIREMENTS:
+- Strategic scores range from 0-100, where higher scores indicate better expansion opportunities
+- If strategic scores are very low (under 30), acknowledge this indicates LIMITED strategic potential
+- DO NOT present low-scoring markets as great opportunities - analyze WHY scores are low
+- When scores are universally low, focus on identifying the BEST AVAILABLE options and explaining market constraints
+- ALWAYS contextualize whether strategic potential is strong, moderate, or limited across analyzed markets
+
 REQUIRED RESPONSE FORMAT:
 You MUST structure your response with these sections:
 
@@ -888,6 +895,7 @@ Top Strategic Markets:
    • Market Gap: [%] (dynamically calculated from actual competitor market shares)
    • Brand Share: [%] (our current market share)
    • Demographics: [key insight]
+   • Strategic Assessment: [Honest evaluation - is this genuinely promising OR the best of limited options?]
 
 2. [Next area with details...]
 

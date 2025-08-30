@@ -193,8 +193,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     const targetConfidence = Number((record as any).target_confidence) || 0;
     const lifestyleAlignment = Number((record as any).lifestyle_alignment) || 0;
     
-    // Also consider Red Bull specific fields if available
-    const redBullShare = Number((record as any).MP12207A_B_P) || 0; // Red Bull market share percentage
+    // Consider strategic context fields if available (but don't use raw market shares)
     const thematicValue = Number((record as any).thematic_value) || 0;
     const strategicScore = Number((record as any).strategic_score) || 0;
     
@@ -214,27 +213,24 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     compositeScore += marketContextScore * 0.10;
     compositeScore += behavioralScore * 0.05;
     
-    // Add bonus for actual Red Bull presence (up to 15 points)
-    if (redBullShare > 0) {
-      const redBullBonus = Math.min(redBullShare * 1.5, 15); // 1.5x the market share percentage, max 15 points
-      compositeScore += redBullBonus;
+    // Add bonus for high strategic score (up to 10 points) - but only if it's a proper strategic score
+    if (strategicScore > 10) { // Only use if it's likely a real strategic score, not a tiny market share
+      const strategicBonus = Math.min((strategicScore - 10) * 0.15, 10); // 0.15 points per point above 10, max 10 points
+      compositeScore += strategicBonus;
     }
     
-    // Add small bonus for high strategic score (up to 5 points)
-    if (strategicScore > 80) {
-      compositeScore += (strategicScore - 80) * 0.25; // 0.25 points per point above 80
-    }
-    
-    // If we still have a very low score, use thematic value as floor
+    // If we still have a very low score, use thematic value as floor (but scale it properly)
     if (compositeScore < 25 && thematicValue > 0) {
-      compositeScore = Math.max(compositeScore, thematicValue * 2.5); // Use thematic value as floor
+      // If thematic value is very small (< 1), it might be a percentage that needs scaling
+      const scaledThematic = thematicValue < 1 ? thematicValue * 100 : thematicValue;
+      compositeScore = Math.max(compositeScore, scaledThematic * 0.4); // Use scaled thematic value as floor
     }
     
     // Ensure score is in reasonable range
     compositeScore = Math.max(0, Math.min(100, compositeScore));
     
     if (compositeScore > 50) { // Only log high scores for debugging
-      console.log(`👤 [CustomerProfileProcessor] High composite score: ${compositeScore.toFixed(1)} for ${(record as any).DESCRIPTION || 'Unknown'} (purchase: ${purchasePropensity}, demographic: ${demographicAlignment}, RedBull: ${redBullShare}%)`);
+      console.log(`👤 [CustomerProfileProcessor] High composite score: ${compositeScore.toFixed(1)} for ${(record as any).DESCRIPTION || 'Unknown'} (purchase: ${purchasePropensity}, demographic: ${demographicAlignment}, strategic: ${strategicScore})`);
     }
     
     return compositeScore;
