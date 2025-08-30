@@ -51,13 +51,6 @@ interface DataStream {
   description: string;
 }
 
-interface EconomicIndicator {
-  name: string;
-  value: number;
-  change: number;
-  trend: 'up' | 'down' | 'stable';
-  impact: string;
-}
 
 interface RealTimeDataDashboardProps {
   location?: string;
@@ -71,96 +64,46 @@ interface RealTimeDataDashboardProps {
   className?: string;
 }
 
-// Mock real-time data generator (replace with real API calls)
-const generateMockDataUpdate = (stream: DataStream): DataStream => {
-  const variation = (Math.random() - 0.5) * 0.1; // ±5% variation
-  const newValue = typeof stream.value === 'number' 
-    ? stream.value * (1 + variation)
-    : stream.value;
-    
-  const change = typeof newValue === 'number' && typeof stream.value === 'number'
-    ? newValue - stream.value
-    : 0;
-    
+// Convert service data to DataStream format  
+const convertEconomicIndicator = (data: ServiceEconomicIndicator): DataStream => {
   return {
-    ...stream,
-    previousValue: stream.value,
-    value: newValue,
-    change,
-    changePercent: stream.value ? (change / (stream.value as number)) * 100 : 0,
-    timestamp: new Date(),
-    impact: change > 0.02 ? 'positive' : change < -0.02 ? 'negative' : 'neutral'
+    id: data.series_id,
+    name: data.title,
+    source: 'fred',
+    value: data.value,
+    previousValue: data.value, // No previous value available
+    change: 0,
+    changePercent: data.change_percent || 0,
+    unit: data.units,
+    timestamp: new Date(data.date),
+    refreshRate: 900, // 15 minutes for economic data
+    status: 'live',
+    confidence: 0.95,
+    impact: (data.change_percent && data.change_percent > 0) ? 'positive' : 
+           (data.change_percent && data.change_percent < 0) ? 'negative' : 'neutral',
+    description: `${data.title} from Federal Reserve Economic Data`
   };
 };
 
-// Initial mock data streams
-const INITIAL_STREAMS: DataStream[] = [
-  {
-    id: 'unemployment',
-    name: 'Unemployment Rate',
-    source: 'fred',
-    value: 3.8,
-    unit: '%',
-    timestamp: new Date(),
-    refreshRate: 300, // 5 minutes
+const convertMarketData = (data: MarketData): DataStream => {
+  const changePercent = parseFloat(data.change_percent.replace('%', ''));
+  return {
+    id: data.symbol.toLowerCase(),
+    name: data.symbol,
+    source: 'alpha-vantage',
+    value: data.price,
+    previousValue: data.price - data.change,
+    change: data.change,
+    changePercent: changePercent,
+    unit: '$',
+    timestamp: new Date(data.timestamp),
+    refreshRate: 300, // 5 minutes for market data
     status: 'live',
-    confidence: 0.99,
-    impact: 'positive',
-    description: 'County unemployment rate from Federal Reserve Economic Data'
-  },
-  {
-    id: 'gdp-growth',
-    name: 'GDP Growth',
-    source: 'fred',
-    value: 2.1,
-    unit: '%',
-    timestamp: new Date(),
-    refreshRate: 300,
-    status: 'live',
-    confidence: 0.97,
-    impact: 'positive',
-    description: 'Quarterly GDP growth rate, seasonally adjusted'
-  },
-  {
-    id: 'consumer-spending',
-    name: 'Consumer Spending Index',
-    source: 'census',
-    value: 112.3,
-    unit: 'index',
-    timestamp: new Date(),
-    refreshRate: 600,
-    status: 'live',
-    confidence: 0.94,
-    impact: 'positive',
-    description: 'Monthly retail and food services sales'
-  },
-  {
-    id: 'business-applications',
-    name: 'New Business Applications',
-    source: 'census',
-    value: 487,
-    unit: 'count',
-    timestamp: new Date(),
-    refreshRate: 600,
-    status: 'live',
-    confidence: 0.92,
-    impact: 'positive',
-    description: 'Weekly new business applications in the region'
-  },
-  {
-    id: 'market-sentiment',
-    name: 'Market Sentiment',
-    source: 'news',
-    value: 0.72,
-    unit: 'score',
-    timestamp: new Date(),
-    refreshRate: 180,
-    status: 'live',
-    confidence: 0.85,
-    impact: 'positive',
-    description: 'AI-analyzed news sentiment for the region (0-1 scale)'
-  }
-];
+    confidence: 0.98,
+    impact: data.change > 0 ? 'positive' : data.change < 0 ? 'negative' : 'neutral',
+    description: `${data.symbol} market data from Alpha Vantage`
+  };
+};
 
 /**
  * RealTimeDataDashboard - Advanced Feature Implementation
@@ -202,50 +145,22 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
         // Convert API response to DataStream format
         const convertedStreams: DataStream[] = [
           // Economic indicators from FRED
-          ...realTimeResponse.economic_indicators.map((indicator: ServiceEconomicIndicator, index: number) => ({
-            id: `econ-${index}`,
-            name: indicator.title,
-            source: 'fred' as const,
-            value: indicator.value,
-            previousValue: indicator.value,
-            change: 0,
-            changePercent: indicator.change_percent || 0,
-            unit: indicator.units || '%',
-            timestamp: new Date(indicator.date),
-            refreshRate: 900, // 15 minutes
-            status: 'live' as const,
-            confidence: 0.95,
-            impact: (indicator.change_percent && indicator.change_percent > 0 ? 'positive' : 
-                   indicator.change_percent && indicator.change_percent < 0 ? 'negative' : 'neutral') as 'positive' | 'negative' | 'neutral',
-            description: `${indicator.title} from Federal Reserve Economic Data`
-          })),
+          ...realTimeResponse.economic_indicators.map((indicator: ServiceEconomicIndicator) => 
+            convertEconomicIndicator(indicator)
+          ),
           // Market data from Alpha Vantage
-          ...realTimeResponse.market_data.map((market: MarketData, index: number) => ({
-            id: `market-${index}`,
-            name: market.symbol,
-            source: 'alpha-vantage' as const,
-            value: market.price,
-            previousValue: market.price - market.change,
-            change: market.change,
-            changePercent: parseFloat(market.change_percent.replace('%', '')),
-            unit: '$',
-            timestamp: new Date(market.timestamp),
-            refreshRate: 300, // 5 minutes
-            status: 'live' as const,
-            confidence: 0.98,
-            impact: (market.change > 0 ? 'positive' : 
-                   market.change < 0 ? 'negative' : 'neutral') as 'positive' | 'negative' | 'neutral',
-            description: `${market.symbol} market data from Alpha Vantage`
-          }))
+          ...realTimeResponse.market_data.map((market: MarketData) => 
+            convertMarketData(market)
+          )
         ];
         
-        // Fallback to mock data if no real data available
-        setStreams(convertedStreams.length > 0 ? convertedStreams : INITIAL_STREAMS);
+        // Set converted streams or empty array if no data
+        setStreams(convertedStreams.length > 0 ? convertedStreams : []);
         setIsInitialized(true);
       } catch (error) {
         console.error('Error initializing real-time data:', error);
-        // Fallback to mock data on error
-        setStreams(INITIAL_STREAMS);
+        // Set empty array on error - no mock data in production
+        setStreams([]);
         setIsInitialized(true);
       }
     };
@@ -263,36 +178,30 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
         const updatedStreams = prevStreams.map(stream => {
           if (stream.id === streamId) {
             // Try to find matching data in API response
-            let updatedData = null;
-            
             if (stream.source === 'fred') {
-              updatedData = realTimeResponse.economic_indicators.find((indicator: ServiceEconomicIndicator) => 
-                indicator.title.toLowerCase().includes(stream.name.toLowerCase())
+              const indicator = realTimeResponse.economic_indicators.find((indicator: ServiceEconomicIndicator) => 
+                indicator.series_id === stream.id || indicator.title.toLowerCase().includes(stream.name.toLowerCase())
               );
+              if (indicator) {
+                return {
+                  ...stream,
+                  ...convertEconomicIndicator(indicator),
+                  previousValue: stream.value, // Keep previous value
+                  status: 'live' as const
+                };
+              }
             } else if (stream.source === 'alpha-vantage') {
-              updatedData = realTimeResponse.market_data.find((market: MarketData) => 
-                market.symbol.toLowerCase().includes(stream.name.toLowerCase())
+              const market = realTimeResponse.market_data.find((market: MarketData) => 
+                market.symbol.toLowerCase() === stream.id || market.symbol.toLowerCase() === stream.name.toLowerCase()
               );
-            }
-            
-            if (updatedData) {
-              const change = 'change' in updatedData ? updatedData.change : 0;
-              const changePercent = 'change_percent' in updatedData ? 
-                (typeof updatedData.change_percent === 'string' ? 
-                  parseFloat(updatedData.change_percent.replace('%', '')) : 
-                  updatedData.change_percent) : 0;
-              
-              return {
-                ...stream,
-                previousValue: stream.value,
-                value: 'value' in updatedData ? updatedData.value : updatedData.price,
-                change: change,
-                changePercent: changePercent,
-                timestamp: new Date('date' in updatedData ? updatedData.date : updatedData.timestamp),
-                status: 'live' as const,
-                impact: (change > 0 ? 'positive' : 
-                       change < 0 ? 'negative' : 'neutral') as 'positive' | 'negative' | 'neutral'
-              };
+              if (market) {
+                return {
+                  ...stream,
+                  ...convertMarketData(market),
+                  previousValue: stream.value, // Keep previous value
+                  status: 'live' as const
+                };
+              }
             }
           }
           return stream;
@@ -311,11 +220,11 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
       setLastUpdate(new Date());
     } catch (error) {
       console.error('Error updating stream:', error);
-      // Fallback to mock data update on error
+      // Update stream status to error on failure
       setStreams(prevStreams => {
         const updatedStreams = prevStreams.map(stream => 
           stream.id === streamId 
-            ? { ...generateMockDataUpdate(stream), status: 'live' as const }
+            ? { ...stream, status: 'error' as const, timestamp: new Date() }
             : stream
         );
         

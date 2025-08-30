@@ -1596,8 +1596,10 @@ export default function UnifiedAnalysisWorkflow({
                                     { className: 'h-4 w-4 flex-shrink-0 mt-0.5 text-[#33a852]' }
                                   )}
                                   <div className="flex-1 min-w-0">
-                                    <div className="font-medium text-xs">{persona.name}</div>
-                                    <div className="text-xs text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">
+                                    <div className={`font-medium text-xs ${selectedPersona === persona.id ? 'text-white' : ''}`}>
+                                      {persona.name}
+                                    </div>
+                                    <div className={`text-xs mt-1 leading-relaxed ${selectedPersona === persona.id ? 'text-white/80' : 'text-gray-600 dark:text-gray-400'}`}>
                                       {persona.description}
                                     </div>
                                   </div>

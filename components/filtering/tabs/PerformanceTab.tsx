@@ -1,8 +1,34 @@
 /**
- * Performance Tab Component
+ * Performance Tab Component - Advanced Analysis Optimization
  * 
- * Provides comprehensive performance optimization controls including data sampling,
- * caching management, timeout configuration, and quality thresholds.
+ * This tab provides comprehensive performance optimization controls for large-scale analysis:
+ * 
+ * ## DATA SAMPLING
+ * - Reduces processing time for large datasets (>10K records)
+ * - Three strategies: Random, Systematic, and Stratified sampling
+ * - Maintains statistical significance while improving speed
+ * - Configurable sample sizes from 100 to 50K records
+ * 
+ * ## CACHING & STORAGE  
+ * - Dramatically improves performance for repeated queries
+ * - Configurable TTL from 5 minutes to 24 hours
+ * - Enables offline analysis and reduces API calls
+ * - Recommended: 1 hour for most workflows
+ * 
+ * ## TIMEOUT CONTROLS
+ * - Prevents hung requests and improves user experience
+ * - Configurable from 30 seconds to 10 minutes
+ * - Balances responsiveness vs. complex analysis completion
+ * - Recommended: 2 minutes for most analysis
+ * 
+ * ## QUALITY CONTROLS
+ * - Filters out low-confidence data points
+ * - Ensures reliable results by setting minimum quality thresholds
+ * - Considers data completeness, spatial coverage, and analysis confidence
+ * - Recommended: 85% minimum quality threshold
+ * 
+ * **Impact**: These optimizations can reduce analysis time from minutes to seconds
+ * while maintaining accuracy for business decision-making.
  */
 
 import React, { useCallback, useMemo } from 'react';
@@ -249,7 +275,7 @@ export default function PerformanceTab({
             <span className="font-medium">Performance Options</span>
             {activeOptimizations > 0 && (
               <Badge variant="secondary">
-                {activeOptimizations} active
+                {activeOptimizations} active optimization{activeOptimizations !== 1 ? 's' : ''}
               </Badge>
             )}
           </div>

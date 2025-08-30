@@ -142,16 +142,18 @@ export async function generateAIInsights(
 function buildInsightPrompt(request: AIInsightRequest): string {
   const { analysisData, analysisContext, businessContext } = request;
   
-  return `You are an expert market analyst and business strategist. Analyze the following demographic and market data to generate actionable business insights.
+  return `You are a senior business strategist and investment analyst. The user has already received demographic analysis. Your role is to provide HIGH-LEVEL STRATEGIC INSIGHTS that go beyond the raw demographic data.
 
-**Analysis Context:**
+Focus on BUSINESS STRATEGY, not demographic descriptions. Provide insights a CEO or CMO would need for decision-making.
+
+**Business Context:**
 - Location: ${analysisContext.selectedAreaName || analysisContext.location || 'Not specified'}
 - Brand/Business: ${analysisContext.brand || 'General market analysis'}
 - Analysis Type: ${analysisContext.analysisType || 'Market research'}
-- Business Context: ${businessContext || 'Consumer market expansion'}
-- ZIP Codes: ${analysisContext.zipCodes?.join(', ') || 'Regional analysis'}
+- Strategic Context: ${businessContext || 'Consumer market expansion'}
+- Markets: ${analysisContext.zipCodes?.join(', ') || 'Regional analysis'}
 
-**Data to Analyze:**
+**Demographic Data for Strategic Analysis:**
 ${JSON.stringify(analysisData, null, 2)}
 
 **Required Output Format (JSON):**
@@ -200,22 +202,23 @@ ${JSON.stringify(analysisData, null, 2)}
   }
 }
 
-**Analysis Guidelines:**
-1. Focus on actionable insights that drive business decisions
-2. Include specific data points and percentages where possible
-3. Identify geographic patterns, demographic trends, and market opportunities
-4. Consider competitive landscape and market saturation
-5. Provide ROI estimates based on market data
-6. Highlight both opportunities and risks
-7. Generate 3-5 high-quality insights rather than many low-quality ones
-8. Ensure all insights have confidence scores based on data quality
+**Strategic Analysis Guidelines:**
+1. AVOID repeating demographic facts - focus on strategic implications
+2. Identify COMPETITIVE ADVANTAGES and market positioning opportunities
+3. Provide ROI estimates and revenue projections with conservative/aggressive scenarios
+4. Highlight STRATEGIC RISKS and mitigation strategies
+5. Suggest MARKET ENTRY strategies, timing, and resource allocation
+6. Identify cross-market synergies and expansion sequencing
+7. Assess competitive threats and first-mover advantages
+8. Generate 3-5 high-impact strategic insights, not demographic summaries
 
 Generate insights that are:
-- Data-driven and specific
-- Actionable with clear next steps
-- Relevant to the business context
-- Confidence-scored based on data reliability
-- Focused on market expansion and growth opportunities
+- Executive-level strategic (not operational demographic facts)
+- Investment-focused with ROI implications
+- Risk-assessed with mitigation strategies
+- Competitively positioned
+- Growth and expansion oriented
+- Confidence-scored for strategic decision-making
 
 Return only the JSON response, no additional text.`;
 }

@@ -112,7 +112,7 @@ function getTabDefinitions(availableFields?: any[], endpoint?: string): FilterTa
       label: 'Performance',
       icon: Zap,
       description: 'Advanced performance and sampling options',
-      enabled: true, // ✅ Enabled in Phase 4 with performance optimization
+      enabled: false, // Hidden for typical users - advanced optimization settings
     },
   ];
 }

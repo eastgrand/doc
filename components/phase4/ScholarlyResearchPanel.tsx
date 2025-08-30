@@ -58,54 +58,6 @@ interface ScholarlyResearchPanelProps {
   className?: string;
 }
 
-// Mock data for demonstration (replace with real API calls)
-const MOCK_PAPERS: ScholarlyPaper[] = [
-  {
-    id: 'paper-1',
-    title: 'Geographic Patterns in Energy Drink Consumption: A Multi-State Analysis',
-    authors: ['Smith, J.', 'Martinez, A.', 'Chen, L.'],
-    abstract: 'This study examines geographic variations in energy drink consumption across 50 US states, revealing strong correlations between urban density and consumption patterns. Our analysis of 50,000 consumers shows that college-educated millennials in urban areas consume 2.3x more energy drinks than suburban counterparts.',
-    year: 2024,
-    journal: 'Journal of Consumer Research',
-    doi: '10.1086/jcr.2024.12.001',
-    url: 'https://doi.org/10.1086/jcr.2024.12.001',
-    citationCount: 127,
-    relevanceScore: 0.94,
-    source: 'google-scholar',
-    keywords: ['energy drinks', 'geographic analysis', 'consumer behavior', 'demographics'],
-    isOpenAccess: true
-  },
-  {
-    id: 'paper-2',
-    title: 'Demographic Predictors of Premium Beverage Market Expansion',
-    authors: ['Johnson, R.', 'Williams, K.'],
-    abstract: 'Using machine learning models on demographic data from 500 metropolitan areas, we identify key predictors for premium beverage market success. Income levels, education, and age demographics emerge as primary factors.',
-    year: 2023,
-    journal: 'Marketing Science',
-    doi: '10.1287/mksc.2023.1402',
-    url: 'https://doi.org/10.1287/mksc.2023.1402',
-    citationCount: 89,
-    relevanceScore: 0.87,
-    source: 'semantic-scholar',
-    keywords: ['market expansion', 'demographics', 'predictive modeling', 'beverages'],
-    isOpenAccess: false
-  },
-  {
-    id: 'paper-3',
-    title: 'Spatial Clustering Methods for Retail Site Selection',
-    authors: ['Park, S.', 'Kumar, V.', 'Thompson, D.'],
-    abstract: 'We present a novel HDBSCAN-based approach for identifying optimal retail locations using demographic and economic data. Our method outperforms traditional approaches by 34% in predicting store success.',
-    year: 2024,
-    journal: 'arXiv preprint',
-    doi: null,
-    url: 'https://arxiv.org/abs/2024.03.15',
-    citationCount: 12,
-    relevanceScore: 0.82,
-    source: 'arxiv',
-    keywords: ['spatial clustering', 'HDBSCAN', 'retail analytics', 'site selection'],
-    isOpenAccess: true
-  }
-];
 
 /**
  * ScholarlyResearchPanel - Advanced Feature Implementation
@@ -142,29 +94,29 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
     const { query, selectedAreaName, endpoint } = analysisContext;
     let searchTerms = [];
     
-    // Add context-specific terms based on endpoint
+    // Add energy drink market-specific terms based on endpoint
     if (endpoint?.includes('demographic')) {
-      searchTerms.push('demographic analysis', 'population statistics');
+      searchTerms.push('energy drink consumer demographics', 'beverage market demographics');
     }
     if (endpoint?.includes('strategic')) {
-      searchTerms.push('market strategy', 'consumer behavior');
+      searchTerms.push('energy drink market strategy', 'beverage consumer behavior');
     }
     if (endpoint?.includes('competitive')) {
-      searchTerms.push('competitive analysis', 'market competition');
+      searchTerms.push('energy drink brand competition', 'beverage market share');
     }
     
-    // Add location context
+    // Add location context with energy drink focus
     if (selectedAreaName && selectedAreaName !== 'Custom Area') {
-      searchTerms.push(selectedAreaName, 'geographic analysis');
+      searchTerms.push(selectedAreaName + ' energy drink market', 'regional beverage preferences');
     }
     
-    // Add original query terms
+    // Add original query terms with energy drink context
     if (query) {
-      searchTerms.push(query);
+      searchTerms.push(query + ' energy drinks');
     }
     
-    // Add domain-specific terms
-    searchTerms.push('retail analytics', 'spatial clustering', 'GIS');
+    // Add energy drink industry-specific terms
+    searchTerms.push('energy drink consumption patterns', 'caffeine beverage market', 'functional beverage demographics');
     
     return searchTerms.join(' ');
   }, [analysisContext]);
@@ -207,8 +159,8 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
       setPapers(convertedPapers);
     } catch (error) {
       console.error('Error searching papers:', error);
-      // Use mock data as fallback
-      setPapers(MOCK_PAPERS);
+      // Set empty array on error - no mock data in production
+      setPapers([]);
     } finally {
       setIsLoading(false);
     }

@@ -2408,8 +2408,8 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
             });
           }
           
-          // Add model attribution information if available
-          if (originalSummary.model_attribution || (originalSummary.performanceAnalysis?.topPerformers?.[0]?._model_attribution)) {
+          // Add model attribution information if available (only for initial analysis, not chat responses)
+          if (!isContextualChat && (originalSummary.model_attribution || (originalSummary.performanceAnalysis?.topPerformers?.[0]?._model_attribution))) {
             dataSummary += `=== MODEL ATTRIBUTION ===\n`;
             
             // Check for endpoint-level attribution
@@ -3192,8 +3192,8 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
         const normalizedPersonaAnalysisType = personaAnalysisType.replace(/-/g, '_');
         console.log(`[Claude] Normalized analysis type for persona: ${normalizedPersonaAnalysisType}`);
         
-        // Add model attribution information if available (for regular processing)
-        if (Array.isArray(featureData) && featureData.length > 0) {
+        // Add model attribution information if available (for regular processing, not chat responses)
+        if (!isContextualChat && Array.isArray(featureData) && featureData.length > 0) {
           // Check if endpoint data contains model attribution
           let modelAttributionFound = false;
           const endpointData = featureData[0];

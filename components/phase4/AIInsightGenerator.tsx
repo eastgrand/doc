@@ -207,7 +207,16 @@ const generateExecutiveSummary = (insights: AIInsight[]): ExecutiveSummary => ({
 /**
  * AIInsightGenerator - Advanced Feature Implementation
  * 
- * AI-powered insight extraction and narrative generation.
+ * AI-powered strategic business insights that complement demographic analysis.
+ * While standard analysis shows "what" the data reveals, AI Insights focus on:
+ * 
+ * - Strategic business implications and ROI projections
+ * - Pattern recognition across multiple data dimensions
+ * - Competitive positioning and market opportunity assessment
+ * - Executive-level recommendations with confidence scoring
+ * - Predictive modeling and risk assessment
+ * 
+ * This provides a higher-level business perspective beyond raw demographic data.
  * Modular component that can be disabled via feature flags.
  */
 export const AIInsightGenerator: React.FC<AIInsightGeneratorProps> = ({
@@ -334,7 +343,7 @@ export const AIInsightGenerator: React.FC<AIInsightGeneratorProps> = ({
           <div>
             <h3 className="text-sm font-semibold">AI-Powered Insights</h3>
             <p className="text-xs text-muted-foreground">
-              Intelligent pattern detection and recommendations
+              Strategic business intelligence beyond demographic analysis
             </p>
           </div>
         </div>

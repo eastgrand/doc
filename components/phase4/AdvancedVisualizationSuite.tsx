@@ -180,43 +180,75 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Set background for better visibility
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Simple 3D projection (replace with WebGL in production)
+    // Simple 3D projection with better scaling
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const scale = 100;
+    const scale = Math.min(canvas.width, canvas.height) / 8;
     
-    // Draw data points
+    // Draw data points with better visibility
     mapData.forEach((point, i) => {
       const x = centerX + (point.lng + 117.5) * scale;
       const y = centerY - (point.lat - 33.5) * scale;
       const z = point.elevation;
       
-      // Simple 3D effect
-      const size = 5 + z / 20;
-      const opacity = layers[0].visible ? layers[0].opacity : 0;
+      // Ensure points are within canvas bounds
+      if (x < 0 || x > canvas.width || y < 0 || y > canvas.height) return;
       
+      // Larger, more visible points
+      const size = Math.max(8, 12 + z / 10);
+      const opacity = layers[0].visible ? Math.max(0.7, layers[0].opacity) : 0;
+      
+      // Draw shadow for depth
+      ctx.fillStyle = `rgba(0, 0, 0, 0.1)`;
+      ctx.beginPath();
+      ctx.arc(x + 2, y + 2, size, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Draw main point with better contrast
       ctx.fillStyle = `rgba(59, 130, 246, ${opacity})`;
+      ctx.strokeStyle = `rgba(255, 255, 255, 0.8)`;
+      ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(x, y, size, 0, Math.PI * 2);
       ctx.fill();
+      ctx.stroke();
       
-      // Draw elevation as vertical bar
-      if (config?.features?.threeDMaps) {
-        ctx.fillStyle = `rgba(59, 130, 246, ${opacity * 0.3})`;
-        ctx.fillRect(x - 2, y - z / 2, 4, z / 2);
+      // Draw elevation as vertical bar with better visibility
+      if (config?.features?.threeDMaps && z > 0) {
+        const barHeight = Math.max(10, z / 2);
+        ctx.fillStyle = `rgba(16, 185, 129, ${opacity * 0.8})`;
+        ctx.fillRect(x - 3, y - barHeight, 6, barHeight);
+        
+        // Add value label
+        ctx.fillStyle = '#1f2937';
+        ctx.font = 'bold 10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(Math.round(point.value).toString(), x, y - barHeight - 5);
       }
     });
     
-    // Add labels
-    ctx.fillStyle = '#666';
-    ctx.font = '10px sans-serif';
+    // Add labels with better readability
+    ctx.fillStyle = '#1f2937';
+    ctx.font = 'bold 11px sans-serif';
+    ctx.textAlign = 'left';
     mapData.forEach((point, i) => {
       const x = centerX + (point.lng + 117.5) * scale;
       const y = centerY - (point.lat - 33.5) * scale;
-      ctx.fillText(point.zipCode, x + 10, y);
+      
+      // Ensure labels are within canvas bounds
+      if (x + 60 > canvas.width || y < 10 || y > canvas.height - 10) return;
+      
+      // White background for better readability
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.fillRect(x + 12, y - 8, 50, 16);
+      
+      // Black text for contrast
+      ctx.fillStyle = '#1f2937';
+      ctx.fillText(point.zipCode, x + 15, y + 3);
     });
   }, [mapData, layers, config]);
   
@@ -225,8 +257,8 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
     if (!isAnimating) return;
     
     setTimeSliderValue(prev => {
-      const next = prev[0] + 1;
-      return [next > 100 ? 0 : next];
+      const next = prev + 1;
+      return next > 100 ? 0 : next;
     });
     
     render3DMap();
@@ -345,9 +377,10 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
               <div className="relative bg-muted rounded-lg overflow-hidden">
                 <canvas
                   ref={canvasRef}
-                  width={600}
-                  height={400}
-                  className="w-full h-[400px]"
+                  width={800}
+                  height={500}
+                  className="w-full h-[500px] border rounded"
+                  style={{ background: '#f8fafc' }}
                 />
                 
                 {/* Layer controls overlay */}
@@ -370,8 +403,8 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
                       </div>
                       {layer.visible && (
                         <Slider
-                          value={layer.opacity * 100}
-                          onValueChange={(value) => updateLayerOpacity(layer.id, value / 100)}
+                          value={[layer.opacity * 100]}
+                          onValueChange={(value) => updateLayerOpacity(layer.id, value[0] / 100)}
                           max={100}
                           className="w-24"
                         />
@@ -386,8 +419,8 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
                     <div className="flex items-center gap-3">
                       <Clock className="w-3 h-3" />
                       <Slider
-                        value={timeSliderValue}
-                        onValueChange={setTimeSliderValue}
+                        value={[timeSliderValue]}
+                        onValueChange={(value) => setTimeSliderValue(value[0])}
                         max={100}
                         className="flex-1"
                       />
@@ -426,23 +459,51 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {/* Simplified chart visualization */}
-              <div className="h-[300px] flex items-end justify-between gap-2">
-                {timeSeriesData.map((data, i) => (
-                  <div
-                    key={i}
-                    className="flex-1 flex flex-col items-center gap-2"
-                  >
+              {/* Enhanced chart visualization with better readability */}
+              <div className="h-[350px] p-4 bg-gradient-to-t from-gray-50 to-white rounded-lg border">
+                <div className="h-full flex items-end justify-between gap-3">
+                  {timeSeriesData.map((data, i) => {
+                    const height = Math.max(30, (data.sales / 15000) * 100);
+                    const animatedOpacity = isAnimating ? 0.7 + Math.sin(Date.now() / 1000 + i) * 0.3 : 0.9;
+                    
+                    return (
+                      <div
+                        key={i}
+                        className="flex-1 flex flex-col items-center gap-3 max-w-[80px]"
+                      >
+                        {/* Value label on top */}
+                        <div className="text-sm font-bold text-gray-700 bg-white px-2 py-1 rounded shadow-sm">
+                          ${Math.round(data.sales / 1000)}K
+                        </div>
+                        
+                        {/* Bar with better visibility and animation */}
+                        <div
+                          className="w-full bg-gradient-to-t from-blue-600 via-blue-500 to-purple-500 rounded-t-lg shadow-lg border-2 border-blue-200 transition-all duration-700 min-h-[30px]"
+                          style={{
+                            height: `${height}%`,
+                            opacity: animatedOpacity,
+                            transform: isAnimating ? `scaleY(${0.8 + Math.sin(Date.now() / 2000 + i) * 0.2})` : 'scaleY(1)',
+                            boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                          }}
+                        />
+                        
+                        {/* Month label */}
+                        <span className="text-sm font-semibold text-gray-600 bg-gray-100 px-3 py-1 rounded">{data.month}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                
+                {/* Grid lines for better readability */}
+                <div className="absolute inset-0 pointer-events-none">
+                  {[25, 50, 75].map(percent => (
                     <div
-                      className="w-full bg-gradient-to-t from-blue-500 to-purple-500 rounded-t transition-all duration-500"
-                      style={{
-                        height: `${(data.sales / 15000) * 100}%`,
-                        opacity: isAnimating ? 0.8 + Math.sin(Date.now() / 1000 + i) * 0.2 : 0.8
-                      }}
+                      key={percent}
+                      className="absolute left-0 right-0 border-t border-gray-200"
+                      style={{ bottom: `${percent}%` }}
                     />
-                    <span className="text-xs">{data.month}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
               
               {/* Metrics */}
