@@ -3822,6 +3822,39 @@ Present this analysis in your professional ${selectedPersona.name} style while p
           console.warn('[Claude] Name placeholder sanitation failed:', e);
         }
 
+        // If Top Strategic Markets list is present but too short, inject top 10 based on provided data
+        try {
+          const listHeaderMatch = finalContent.match(/Top Strategic Markets:\s*(?:\n|\r\n)/i);
+          if (listHeaderMatch) {
+            // Gather candidates from processedLayersData
+            const allFeatures = (processedLayersData || []).flatMap(layer => Array.isArray((layer as any)?.features) ? (layer as any).features : []);
+            const scoreField = (metadata?.targetVariable || metadata?.scoreType || 'strategic_analysis_score') as string;
+            const ranked = allFeatures
+              .map((feat: any) => {
+                const props = feat?.properties || feat || {};
+                const score = Number(
+                  props?.[scoreField] ??
+                  props?.strategic_analysis_score ??
+                  props?.strategic_value_score ??
+                  props?.target_value
+                );
+                const name = resolveSharedAreaName(feat, { mode: 'zipCity', neutralFallback: props?.area_name || props?.name || props?.area_id || '' });
+                return { name, score };
+              })
+              .filter((x: any) => x.name && !Number.isNaN(x.score))
+              .sort((a: any, b: any) => b.score - a.score)
+              .slice(0, 10);
+
+            if (ranked.length >= 5) {
+              const formatted = ranked.map((r: any, i: number) => `${i + 1}. ${r.name} (Strategic Score: ${r.score.toFixed(2)})`).join('\n');
+              // Replace existing numbered list after header with our computed list
+              finalContent = finalContent.replace(/(Top Strategic Markets:\s*)([\s\S]*?)(\n\n|$)/i, (_m, p1, _list, p3) => `${p1}\n${formatted}\n\n`);
+            }
+          }
+        } catch (e) {
+          console.warn('[Claude] Top Strategic Markets post-process failed:', e);
+        }
+
         // Remove confidence and feature-count lines from final narrative (chat dialog cleanliness)
         try {
           // Strip any "Confidence:" lines (including bold variants and bullet prefixes)

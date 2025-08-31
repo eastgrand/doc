@@ -28,6 +28,10 @@ async function loadBlobUrlMappings(): Promise<Record<string, string>> {
         console.log('[BlobLoader] Energy mapping not found, falling back to hrb mapping');
         response = await fetch('/data/blob-urls-hrb.json');
       }
+      if (!response.ok) {
+        console.log('[BlobLoader] HRB mapping not found, falling back to default blob-urls.json');
+        response = await fetch('/data/blob-urls.json');
+      }
       if (response.ok) {
         blobUrlMappings = await response.json();
         return blobUrlMappings!;
@@ -46,9 +50,17 @@ async function loadBlobUrlMappings(): Promise<Record<string, string>> {
       } catch (error) {
         console.log('[BlobLoader] Energy mapping not found, falling back to hrb mapping');
         const hrbFilePath = path.join(process.cwd(), 'public/data/blob-urls-hrb.json');
-        const fileContent = await fs.readFile(hrbFilePath, 'utf-8');
-        blobUrlMappings = JSON.parse(fileContent);
-        return blobUrlMappings!;
+        try {
+          const fileContent = await fs.readFile(hrbFilePath, 'utf-8');
+          blobUrlMappings = JSON.parse(fileContent);
+          return blobUrlMappings!;
+        } catch (hrbError) {
+          console.log('[BlobLoader] HRB mapping not found, falling back to default blob-urls.json');
+          const defaultFilePath = path.join(process.cwd(), 'public/data/blob-urls.json');
+          const fileContent = await fs.readFile(defaultFilePath, 'utf-8');
+          blobUrlMappings = JSON.parse(fileContent);
+          return blobUrlMappings!;
+        }
       }
     }
   } catch (error) {

@@ -18,28 +18,28 @@ const mockStrategicData = {
       area_id: '11234',
       area_name: '11234 (Brooklyn)',
       value: 79.34,
-      strategic_value_score: 79.34,
+      strategic_analysis_score: 79.34,
       rank: 1,
       properties: {
         ID: '11234',
         DESCRIPTION: '11234 (Brooklyn)',
-        strategic_value_score: 79.34
+        strategic_analysis_score: 79.34
       }
     },
     {
       area_id: '10025',
       area_name: '10025 (New York)',
       value: 78.93,
-      strategic_value_score: 78.93,
+      strategic_analysis_score: 78.93,
       rank: 2,
       properties: {
         ID: '10025',
         DESCRIPTION: '10025 (New York)',
-        strategic_value_score: 78.93
+        strategic_analysis_score: 78.93
       }
     }
   ],
-  targetVariable: 'strategic_value_score',
+  targetVariable: 'strategic_analysis_score',
   summary: 'Strategic analysis complete',
   statistics: {},
   featureImportance: []
@@ -50,12 +50,11 @@ console.log('1️⃣ Mock data for VisualizationRenderer:', {
   targetVariable: mockStrategicData.targetVariable,
   recordCount: mockStrategicData.records.length,
   sampleValue: mockStrategicData.records[0].value,
-  sampleStrategicScore: mockStrategicData.records[0].strategic_value_score
+  sampleStrategicScore: mockStrategicData.records[0].strategic_analysis_score
 });
 
 // Test the determineVisualizationType logic
 console.log('\n2️⃣ Testing determineVisualizationType...');
-let visualizationType = 'choropleth'; // Default for strategic analysis
 if (mockStrategicData.type === 'strategic_analysis') {
   console.log('✅ Strategic analysis → choropleth visualization');
 } else {
@@ -66,7 +65,7 @@ if (mockStrategicData.type === 'strategic_analysis') {
 console.log('\n3️⃣ Testing determineValueField...');
 let valueField = 'value'; // Default
 if (mockStrategicData.type === 'strategic_analysis' && mockStrategicData.targetVariable) {
-  valueField = mockStrategicData.targetVariable; // Should be 'strategic_value_score'
+  valueField = mockStrategicData.targetVariable; // Should be 'strategic_analysis_score'
   console.log(`✅ Strategic analysis → using targetVariable: ${valueField}`);
 } else {
   console.log('❌ Wrong value field determined');

@@ -87,14 +87,14 @@ User Query
     ├── Visualization Customization (8 color schemes)
     └── Performance Optimization (sampling, caching, timeouts)
     ↓
-[Microservice API Call]
-  ├── /strategic-analysis
-  ├── /analyze
-  ├── /demographic-insights
-  ├── /brand-difference
-  ├── /competitive-analysis
-  ├── /comparative-analysis
-  └── /correlation-analysis
+[Blob Data Fetch (Vercel Blob Storage)]
+  ├── strategic-analysis → public/data/blob-urls.json["strategic-analysis"]
+  ├── analyze → public/data/blob-urls.json["analyze"]
+  ├── demographic-insights → public/data/blob-urls.json["demographic-insights"]
+  ├── brand-difference → public/data/blob-urls.json["brand-difference"]
+  ├── competitive-analysis → public/data/blob-urls.json["competitive-analysis"]
+  ├── comparative-analysis → public/data/blob-urls.json["comparative-analysis"]
+  └── correlation-analysis → public/data/blob-urls.json["correlation-analysis"]
     ↓
 [Data Processor Strategy]
     ├── Validation
@@ -568,7 +568,7 @@ Advanced Filtering Dialog (User Configuration)
   ↓
 Configuration Applied to Analysis Request
   ↓
-Microservice API Call (with filtering parameters) → 
+Blob Data Fetch (from mapped blob URL) → 
 Data Processing → Enhanced Visualization
 ```
 
@@ -1119,7 +1119,7 @@ flowchart TD
   C -->|Endpoint Selected| F[Endpoint Router]
   A --> G[GeoAwarenessEngine]
   G --> F
-  F --> H[Microservice API Calls]
+  F --> H[Blob Data Fetch]
   H --> I[Data Processor Strategy]
   I --> J[Processed Data targetVariable + renderer]
   J --> K[ArcGIS Visualization]

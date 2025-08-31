@@ -19,9 +19,9 @@ const queryLower = query.toLowerCase();
 let detectedFields = [];
 if (queryLower.includes('strategic') || queryLower.includes('expansion') || 
     queryLower.includes('invest') || queryLower.includes('opportunity')) {
-  // This should find strategic fields
-  detectedFields = ['strategic_value_score']; // Simulate finding the field
-  console.log('✅ Field detection would find:', detectedFields);
+  // This should find strategic fields (with fallbacks)
+  detectedFields = ['strategic_analysis_score', 'strategic_score', 'strategic_value_score'];
+  console.log('✅ Field detection would find (with fallbacks):', detectedFields);
 } else {
   console.log('❌ Field detection would miss strategic keywords');
 }
@@ -43,7 +43,11 @@ try {
     console.log('✅ Sample record:', {
       ID: sample.ID,
       DESCRIPTION: sample.DESCRIPTION,
+      has_strategic_analysis_score: sample.strategic_analysis_score !== undefined,
+      has_strategic_score: sample.strategic_score !== undefined,
       has_strategic_value_score: sample.strategic_value_score !== undefined,
+      strategic_analysis_score: sample.strategic_analysis_score,
+      strategic_score: sample.strategic_score,
       strategic_value_score: sample.strategic_value_score
     });
   }
@@ -58,11 +62,11 @@ if (strategicData && strategicData.results) {
   const hasSuccess = strategicData.success === true;
   const hasResultsArray = Array.isArray(strategicData.results);
   const hasStrategicFields = strategicData.results.length === 0 || 
-    strategicData.results.some(record => 
-      record && 
-      (record.area_id || record.id || record.ID) &&
-      record.strategic_value_score !== undefined
-    );
+    strategicData.results.some(record => {
+      const id = record && (record.area_id || record.id || record.ID);
+      const primary = record && (record.strategic_analysis_score ?? record.strategic_score ?? record.strategic_value_score);
+      return id && primary !== undefined;
+    });
   
   console.log('Processor validation checks:', {
     hasSuccess: hasSuccess ? '✅' : '❌',
@@ -81,26 +85,33 @@ if (strategicData && strategicData.results) {
 console.log('\n4️⃣ Testing Processor Output Format...');
 if (strategicData && strategicData.results && strategicData.results.length > 0) {
   const sampleRecord = strategicData.results[0];
-  
+  const chosenField = sampleRecord.strategic_analysis_score !== undefined
+    ? 'strategic_analysis_score'
+    : (sampleRecord.strategic_score !== undefined ? 'strategic_score' : 'strategic_value_score');
+  const primaryScore = sampleRecord[chosenField];
+
   // Simulate what StrategicAnalysisProcessor.processStrategicRecords() produces
   const processedRecord = {
     area_id: sampleRecord.ID || sampleRecord.id,
     area_name: sampleRecord.DESCRIPTION || sampleRecord.description || 'Unknown Area',
-    value: sampleRecord.strategic_value_score, // This should be the score
-    strategic_value_score: sampleRecord.strategic_value_score, // Also at top level
+    value: typeof primaryScore === 'number' ? primaryScore : 0,
+    // Normalize both the chosen field and strategic_analysis_score for renderer
+    [chosenField]: typeof primaryScore === 'number' ? primaryScore : undefined,
+    strategic_analysis_score: typeof primaryScore === 'number' ? primaryScore : undefined,
     rank: 1,
     properties: {
       ...sampleRecord,
-      strategic_value_score: sampleRecord.strategic_value_score
+      __chosenScoreField: chosenField
     }
   };
   
   console.log('✅ Simulated processor output:', {
     area_name: processedRecord.area_name,
     value: processedRecord.value,
-    strategic_value_score: processedRecord.strategic_value_score,
+    chosenField,
     has_properties: !!processedRecord.properties,
-    properties_has_score: processedRecord.properties.strategic_value_score !== undefined
+    normalized_strategic_analysis_score: processedRecord.strategic_analysis_score,
+    properties_chosenField: processedRecord.properties.__chosenScoreField
   });
   
   // Step 5: Simulate feature attribute creation
@@ -109,12 +120,12 @@ if (strategicData && strategicData.results && strategicData.results.length > 0) 
     OBJECTID: 1,
     area_name: processedRecord.area_name || 'Unknown Area',
     value: typeof processedRecord.value === 'number' ? processedRecord.value : 0,
-    // The critical part - strategic_value_score in attributes
-    strategic_value_score: typeof processedRecord.strategic_value_score === 'number' ? 
-      processedRecord.strategic_value_score : 
-      (typeof processedRecord.properties?.strategic_value_score === 'number' ? 
-        processedRecord.properties.strategic_value_score : 
-        (typeof processedRecord.value === 'number' ? processedRecord.value : 0))
+    // Normalize renderer field to strategic_analysis_score
+    strategic_analysis_score: typeof processedRecord.strategic_analysis_score === 'number'
+      ? processedRecord.strategic_analysis_score
+      : (typeof processedRecord[chosenField] === 'number'
+          ? processedRecord[chosenField]
+          : (typeof processedRecord.value === 'number' ? processedRecord.value : 0))
   };
   
   console.log('✅ Simulated feature attributes:', {
@@ -127,7 +138,7 @@ if (strategicData && strategicData.results && strategicData.results.length > 0) 
   
   // Step 6: Test quartile renderer requirements
   console.log('\n6️⃣ Testing Quartile Renderer Requirements...');
-  const rendererField = 'strategic_value_score';
+  const rendererField = 'strategic_analysis_score';
   const fieldValue = featureAttributes[rendererField];
   
   console.log('Quartile renderer check:', {
@@ -150,7 +161,7 @@ console.log('===========');
 console.log('If all checks above show ✅, then strategic analysis should work.');
 console.log('If any show ❌, that\'s where the issue is.');
 console.log('\nMost likely issues:');
-console.log('1. Field detection not finding strategic_value_score');
-console.log('2. Processor not putting strategic_value_score at record top level');
-console.log('3. Feature attributes missing strategic_value_score field');
-console.log('4. Quartile renderer not finding the field in feature.attributes[]');
+console.log('1. Field detection not considering fallback fields (strategic_analysis_score | strategic_score | strategic_value_score)');
+console.log('2. Processor not normalizing targetVariable (strategic_analysis_score)');
+console.log('3. Feature attributes missing normalized strategic_analysis_score');
+console.log('4. Quartile renderer not finding the normalized field in feature.attributes[]');

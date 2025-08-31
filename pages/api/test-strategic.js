@@ -13,36 +13,49 @@ export default async function handler(req, res) {
     console.log('📊 Data loaded:', strategicData.results.length, 'records');
     
     // Test first few records
-    const sampleRecords = strategicData.results.slice(0, 5);
+    const sampleRecords = strategicData.results.slice(0, 5).map(r => ({
+      ...r,
+      __chosenScoreField: r.strategic_analysis_score !== undefined
+        ? 'strategic_analysis_score'
+        : (r.strategic_score !== undefined ? 'strategic_score' : 'strategic_value_score'),
+      __primaryScore: r.strategic_analysis_score ?? r.strategic_score ?? r.strategic_value_score
+    }));
     const testResults = {
       totalRecords: strategicData.results.length,
       sampleRecords: sampleRecords.map(record => ({
         id: record.ID,
         description: record.DESCRIPTION,
+        strategic_analysis_score: record.strategic_analysis_score,
+        strategic_score: record.strategic_score,
         strategic_value_score: record.strategic_value_score,
-        hasStrategicScore: typeof record.strategic_value_score === 'number'
+        chosenScoreField: record.__chosenScoreField,
+        primaryScore: record.__primaryScore,
+        hasStrategicScore: typeof record.__primaryScore === 'number'
       })),
       scoreRange: {
-        min: Math.min(...sampleRecords.map(r => r.strategic_value_score)),
-        max: Math.max(...sampleRecords.map(r => r.strategic_value_score))
+        min: Math.min(...sampleRecords.map(r => r.__primaryScore)),
+        max: Math.max(...sampleRecords.map(r => r.__primaryScore))
       },
       processorSimulation: {
         type: 'strategic_analysis',
-        targetVariable: 'strategic_value_score',
+        targetVariable: 'strategic_analysis_score',
         recordCount: sampleRecords.length,
         sampleProcessedRecord: {
           area_id: sampleRecords[0].ID,
           area_name: sampleRecords[0].DESCRIPTION,
-          value: sampleRecords[0].strategic_value_score,
-          strategic_value_score: sampleRecords[0].strategic_value_score,
-          properties: sampleRecords[0]
+          value: sampleRecords[0].__primaryScore,
+          strategic_analysis_score: sampleRecords[0].__primaryScore,
+          properties: {
+            ...sampleRecords[0],
+            __chosenScoreField: sampleRecords[0].__chosenScoreField
+          }
         }
       },
       rendererSimulation: {
-        valueField: 'strategic_value_score',
-        extractedValues: sampleRecords.map(r => r.strategic_value_score),
+        valueField: 'strategic_analysis_score',
+        extractedValues: sampleRecords.map(r => r.__primaryScore),
         classBreaks: (() => {
-          const values = sampleRecords.map(r => r.strategic_value_score).sort((a, b) => a - b);
+          const values = sampleRecords.map(r => r.__primaryScore).sort((a, b) => a - b);
           return [
             values[0],
             values[Math.floor(values.length * 0.25)],
@@ -55,8 +68,8 @@ export default async function handler(req, res) {
     };
     
     console.log('✅ Test results generated');
-    console.log('   - Strategic scores found:', testResults.sampleRecords.every(r => r.hasStrategicScore));
-    console.log('   - Score range:', testResults.scoreRange.min, 'to', testResults.scoreRange.max);
+  console.log('   - Strategic scores found (with fallbacks):', testResults.sampleRecords.every(r => r.hasStrategicScore));
+  console.log('   - Score range:', testResults.scoreRange.min, 'to', testResults.scoreRange.max);
     
     res.status(200).json({
       success: true,
@@ -65,11 +78,11 @@ export default async function handler(req, res) {
       debugInfo: {
         shouldWork: 'YES - All data structures are correct',
         expectedFlow: [
-          '1. StrategicAnalysisProcessor sets targetVariable: strategic_value_score',
-          '2. VisualizationRenderer uses config.valueField: strategic_value_score', 
-          '3. ChoroplethRenderer extracts values using strategic_value_score field',
-          '4. ArcGIS renderer uses field: strategic_value_score',
-          '5. Feature attributes contain strategic_value_score: 79.34'
+          '1. StrategicAnalysisProcessor normalizes to targetVariable: strategic_analysis_score',
+          '2. VisualizationRenderer uses config.valueField: strategic_analysis_score', 
+          '3. ChoroplethRenderer extracts values using strategic_analysis_score field',
+          '4. ArcGIS renderer uses field: strategic_analysis_score',
+          '5. Feature attributes contain strategic_analysis_score'
         ],
         possibleIssues: [
           'ArcGIS field name case sensitivity',
