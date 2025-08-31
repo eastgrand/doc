@@ -1113,26 +1113,19 @@ UnifiedAnalysisWorkflow Results
 flowchart TD
   A[User Query] --> B[SemanticEnhancedHybridEngine]
   B -->|High confidence| C[HybridRoutingEngine]
-  B -->|Creative/low confidence| D[SemanticRouter]
+  B -->|Creative or low confidence| D[SemanticRouter]
   D --> C
-  C --> E[EnhancedQueryAnalyzer (Template Fallback)]
+  C --> E[EnhancedQueryAnalyzer Template Fallback]
   C -->|Endpoint Selected| F[Endpoint Router]
   A --> G[GeoAwarenessEngine]
   G --> F
-  F --> H[/Microservice API Calls/]
+  F --> H[Microservice API Calls]
   H --> I[Data Processor Strategy]
-  I --> J[Processed Data (targetVariable + renderer)]
+  I --> J[Processed Data targetVariable + renderer]
   J --> K[ArcGIS Visualization]
-  I --> L[FieldMappingConfig & ScoreTerminology]
-  L -. ensures .-> J
+  I --> L[FieldMappingConfig and ScoreTerminology]
+  L -- ensures --> J
   I --> M[BrandNameResolver]
-  M -. brand fields .-> I
-  J --> N[UI: Top Markets & Legend]
-
-  subgraph Notes
-    note1[Renderer.field == targetVariable]
-    note2[Top Markets sorted by targetVariable]
-  end
-  J --> note1
-  N --> note2
+  M -- brand fields --> I
+  J --> N[UI Top Markets and Legend]
 ```
