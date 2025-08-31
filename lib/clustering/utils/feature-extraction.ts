@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * Feature Extraction for Analysis-Driven Clustering
  * 
@@ -243,8 +245,8 @@ function extractStrategicFeatures(
   baseFeature: Partial<ClusteringFeature>
 ): ClusteringFeature {
   const strategicScore = extractScore(props, [
-    'strategic_value_score',
     'strategic_score',
+    'strategic_value_score',
     'score',
     'value'
   ]);
@@ -348,7 +350,7 @@ function extractAnalysisGeographicFeatures(
   let secondaryScore: number | undefined;
   
   if (analysisType?.includes('strategic')) {
-    primaryScore = extractScore(props, ['strategic_value_score', 'strategic_score']);
+    primaryScore = extractScore(props, ['strategic_score', 'strategic_value_score']);
     secondaryScore = extractScore(props, ['demographic_opportunity_score']);
   } else if (analysisType?.includes('competitive')) {
     const nikeShare = extractScore(props, ['nike_market_share', 'mp30034a_b_p', 'value_mp30034a_b_p']);

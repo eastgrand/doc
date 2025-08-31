@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics, ProcessingContext } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { calculateEqualCountQuintiles } from '../../utils/QuintileUtils';
 
 /**
@@ -14,7 +14,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
   private readonly BRAND_MAPPINGS = {
     'red bull': 'MP12207A_B_P',
     'monster energy': 'MP12206A_B_P',
-    '5-hour energy': 'MP12205A_B_P'
+  '5-hour energy': 'MP12205A_B_P',
+  'h&r block': 'MP10128A_B_P',
+  'turbotax': 'MP10104A_B_P'
   };
 
   validate(rawData: RawAnalysisResult): boolean {
@@ -43,7 +45,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       rawData.results.some(record => {
         const hasIdField = record && ((record as any).area_id || (record as any).id || (record as any).ID);
         const recordKeys = record ? Object.keys(record as any) : [];
-        const brandFields = recordKeys.filter(key => key.includes('MP122') && key.endsWith('A_B_P'));
+  const brandFields = recordKeys.filter(key => (key.includes('MP122') || key.includes('MP101')) && key.endsWith('A_B_P'));
         
         console.log('🔍 [BrandDifferenceProcessor] Validation debug for record:', {
           hasRecord: !!record,
@@ -78,7 +80,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     // Debug: Show available fields in first record
     if (rawData.results && rawData.results.length > 0) {
       const firstRecord = rawData.results[0];
-      const brandFields = Object.keys(firstRecord as any).filter(key => key.includes('MP122') && key.includes('_P'));
+  const brandFields = Object.keys(firstRecord as any).filter(key => (key.includes('MP122') || key.includes('MP101')) && key.includes('_P'));
       console.log(`[BrandDifferenceProcessor] Available brand fields in data:`, brandFields);
     }
     
@@ -196,6 +198,8 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       if (brandLower.includes('red bull')) return 'MP12207A_B_P';
       if (brandLower.includes('monster')) return 'MP12206A_B_P';
       if (brandLower.includes('5-hour')) return 'MP12205A_B_P';
+      if (brandLower.includes('h&r block')) return 'MP10128A_B_P';
+      if (brandLower.includes('turbotax')) return 'MP10104A_B_P';
       
       return 'MP12207A_B_P'; // Default fallback
     }
@@ -214,6 +218,8 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
         if (brandLower.includes('red bull') && key.includes('207A_B')) return baseField;
         if (brandLower.includes('monster') && key.includes('206A_B')) return baseField;
         if (brandLower.includes('5-hour') && key.includes('205A_B')) return baseField;
+        if (brandLower.includes('h&r block') && key.includes('10128A_B')) return baseField;
+        if (brandLower.includes('turbotax') && key.includes('10104A_B')) return baseField;
       }
     }
     
@@ -224,6 +230,8 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     if (brandLower.includes('red bull')) return 'MP12207A_B_P';
     if (brandLower.includes('monster')) return 'MP12206A_B_P';
     if (brandLower.includes('5-hour')) return 'MP12205A_B_P';
+    if (brandLower.includes('h&r block')) return 'MP10128A_B_P';
+    if (brandLower.includes('turbotax')) return 'MP10104A_B_P';
     
     // Ultimate fallback
     return 'MP12207A_B_P';
@@ -446,6 +454,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private assessBrandLeadership(records: GeographicDataPoint[], brand1: string, brand2: string): any {
     const brand1Leading = records.filter(r => r.value > 0).length;
     const brand2Leading = records.filter(r => r.value < 0).length;
@@ -513,7 +522,8 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     brandAnalysis: any, 
     brand1: string, 
     brand2: string,
-    rawSummary?: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  rawSummary?: string
   ): string {
     
     const recordCount = records.length;
@@ -550,7 +560,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     
     if (topBrand1Markets.length > 0) {
       summary += `**${brand1Name} Strongholds** (>20% advantage): `;
-      topBrand1Markets.forEach((record, index) => {
+  topBrand1Markets.forEach((record) => {
         const brand1Share = (record as any).properties[`${brand1}_market_share`];
         const brand2Share = (record as any).properties[`${brand2}_market_share`];
         summary += `${(record as any).area_name} (${brand1Share.toFixed(1)}% vs ${brand2Share.toFixed(1)}%), `;
@@ -560,7 +570,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     
     if (topBrand2Markets.length > 0) {
       summary += `**${brand2Name} Strongholds** (>20% advantage): `;
-      topBrand2Markets.forEach((record, index) => {
+  topBrand2Markets.forEach((record) => {
         const brand1Share = (record as any).properties[`${brand1}_market_share`];
         const brand2Share = (record as any).properties[`${brand2}_market_share`];
         summary += `${(record as any).area_name} (${brand2Share.toFixed(1)}% vs ${brand1Share.toFixed(1)}%), `;

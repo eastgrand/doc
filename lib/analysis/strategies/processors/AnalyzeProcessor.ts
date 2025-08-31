@@ -130,7 +130,7 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'analyze_score',
+  field: 'analysis_score',
       classBreakInfos,
       defaultSymbol: {
         type: 'simple-fill',

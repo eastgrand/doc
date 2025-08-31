@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * Statistics Calculator for Progressive Analysis
  * Provides fast statistical computations for immediate user feedback
@@ -32,6 +34,7 @@ function extractScore(record: any): number {
   if (record.trend_strength !== undefined) return record.trend_strength;
   
   // Generic scores (medium priority)
+  if (record.strategic_score !== undefined) return record.strategic_score;
   if (record.strategic_value_score !== undefined) return record.strategic_value_score;
   if (record.competitive_advantage_score !== undefined) return record.competitive_advantage_score;
   

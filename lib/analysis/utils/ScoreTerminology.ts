@@ -25,7 +25,7 @@ export interface ScoreConfig {
 export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   '/analyze': {
     primaryScoreType: 'strategic value scores',
-    scoreFieldName: 'strategic_value_score',
+  scoreFieldName: 'analysis_score',
     scoreDescription: 'Comprehensive strategic importance rating combining market opportunity (0-3 pts), economic attractiveness (0-2 pts), competitive position (0-2 pts), growth potential (0-2 pts), and strategic fit (0-1 pts)',
     scoreRange: '0-10',
     interpretationHigh: 'high strategic value for expansion',
@@ -35,7 +35,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   '/competitive-analysis': {
     primaryScoreType: 'competitive advantage scores',
     secondaryScoreType: 'market share percentages',
-    scoreFieldName: 'competitive_advantage_score',
+  scoreFieldName: 'competitive_analysis_score',
     scoreDescription: 'Competitive positioning strength relative to key competitors',
     scoreRange: '0-10',
     interpretationHigh: 'strong competitive advantage',
@@ -44,7 +44,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/correlation-analysis': {
     primaryScoreType: 'correlation coefficients',
-    scoreFieldName: 'correlation_score',
+  scoreFieldName: 'correlation_analysis_score',
     scoreDescription: 'Statistical relationship strength between variables',
     scoreRange: '-1 to +1',
     interpretationHigh: 'strong positive correlation',
@@ -53,7 +53,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/spatial-clusters': {
     primaryScoreType: 'cluster similarity scores',
-    scoreFieldName: 'cluster_score',
+  scoreFieldName: 'spatial_clusters_score',
     scoreDescription: 'Geographic similarity and cluster membership strength',
     scoreRange: '0-1',
     interpretationHigh: 'high cluster coherence',
@@ -62,7 +62,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/demographic-insights': {
     primaryScoreType: 'demographic compatibility scores',
-    scoreFieldName: 'demographic_score',
+  scoreFieldName: 'demographic_insights_score',
     scoreDescription: 'Population and demographic alignment with target market',
     scoreRange: '0-100',
     interpretationHigh: 'excellent demographic match',
@@ -72,7 +72,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   '/trend-analysis': {
     primaryScoreType: 'trend strength scores',
     secondaryScoreType: 'growth rates',
-    scoreFieldName: 'trend_score',
+  scoreFieldName: 'trend_analysis_score',
     scoreDescription: 'Temporal trend magnitude and consistency',
     scoreRange: '0-10',
     interpretationHigh: 'strong positive trend',
@@ -81,7 +81,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/anomaly-detection': {
     primaryScoreType: 'anomaly scores',
-    scoreFieldName: 'anomaly_score',
+  scoreFieldName: 'anomaly_detection_score',
     scoreDescription: 'Statistical deviation from expected patterns',
     scoreRange: '0-10',
     interpretationHigh: 'significant anomaly detected',
@@ -90,7 +90,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/feature-interactions': {
     primaryScoreType: 'interaction strength scores',
-    scoreFieldName: 'interaction_score',
+  scoreFieldName: 'feature_interactions_score',
     scoreDescription: 'Combined effect magnitude of multiple variables',
     scoreRange: '0-1',
     interpretationHigh: 'strong feature interaction',
@@ -99,7 +99,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/outlier-detection': {
     primaryScoreType: 'outlier deviation scores',
-    scoreFieldName: 'outlier_score',
+  scoreFieldName: 'outlier_detection_score',
     scoreDescription: 'Statistical distance from population center',
     scoreRange: '0-10',
     interpretationHigh: 'significant outlier',
@@ -108,7 +108,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/comparative-analysis': {
     primaryScoreType: 'comparative performance scores',
-    scoreFieldName: 'comparative_score',
+  scoreFieldName: 'comparison_score',
     scoreDescription: 'Relative performance comparison between groups',
     scoreRange: '0-100',
     interpretationHigh: 'superior comparative performance',
@@ -118,7 +118,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   '/predictive-modeling': {
     primaryScoreType: 'prediction confidence scores',
     secondaryScoreType: 'forecasted values',
-    scoreFieldName: 'prediction_score',
+  scoreFieldName: 'predictive_modeling_score',
     scoreDescription: 'Model confidence in future performance predictions',
     scoreRange: '0-1',
     interpretationHigh: 'high prediction confidence',
@@ -127,7 +127,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/segment-profiling': {
     primaryScoreType: 'segment affinity scores',
-    scoreFieldName: 'segment_score',
+  scoreFieldName: 'segment_profiling_score',
     scoreDescription: 'Market segment membership and characteristics strength',
     scoreRange: '0-10',
     interpretationHigh: 'strong segment alignment',
@@ -145,7 +145,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/scenario-analysis': {
     primaryScoreType: 'scenario impact scores',
-    scoreFieldName: 'scenario_score',
+  scoreFieldName: 'scenario_analysis_score',
     scoreDescription: 'Projected impact magnitude under different scenarios',
     scoreRange: '0-10',
     interpretationHigh: 'high scenario impact potential',
@@ -155,7 +155,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   '/market-sizing': {
     primaryScoreType: 'market potential scores',
     secondaryScoreType: 'addressable market size',
-    scoreFieldName: 'market_size_score',
+  scoreFieldName: 'market_sizing_score',
     scoreDescription: 'Total addressable market opportunity rating',
     scoreRange: '0-10',
     interpretationHigh: 'large market opportunity',
@@ -165,7 +165,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   '/brand-analysis': {
     primaryScoreType: 'brand performance scores',
     secondaryScoreType: 'brand awareness metrics',
-    scoreFieldName: 'brand_score',
+  scoreFieldName: 'brand_analysis_score',
     scoreDescription: 'Overall brand strength and market positioning',
     scoreRange: '0-100',
     interpretationHigh: 'strong brand performance',
@@ -175,7 +175,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   '/real-estate-analysis': {
     primaryScoreType: 'location suitability scores',
     secondaryScoreType: 'property value indices',
-    scoreFieldName: 'location_score',
+  scoreFieldName: 'real_estate_analysis_score',
     scoreDescription: 'Real estate location attractiveness for business purposes',
     scoreRange: '0-10',
     interpretationHigh: 'excellent location potential',
@@ -184,7 +184,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/strategic-analysis': {
     primaryScoreType: 'strategic value scores',
-    scoreFieldName: 'strategic_value_score',
+  scoreFieldName: 'strategic_analysis_score',
     scoreDescription: 'Comprehensive measure of market potential for Nike expansion combining market share, competitive landscape, demographic fit, and growth opportunities',
     scoreRange: '0-100',
     interpretationHigh: 'high strategic value for expansion',
@@ -193,7 +193,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/risk-analysis': {
     primaryScoreType: 'risk-adjusted scores',
-    scoreFieldName: 'risk_score',
+  scoreFieldName: 'risk_adjusted_score',
     scoreDescription: 'Risk assessment rating incorporating market volatility, competitive threats, and operational challenges',
     scoreRange: '0-100',
     interpretationHigh: 'high risk level',
@@ -211,7 +211,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/feature-importance-ranking': {
     primaryScoreType: 'importance scores',
-    scoreFieldName: 'importance_score',
+  scoreFieldName: 'feature_importance_ranking_score',
     scoreDescription: 'Relative importance of features in driving business outcomes',
     scoreRange: '0-1',
     interpretationHigh: 'highly influential feature',
@@ -220,7 +220,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/sensitivity-analysis': {
     primaryScoreType: 'sensitivity coefficients',
-    scoreFieldName: 'sensitivity_score',
+  scoreFieldName: 'sensitivity_analysis_score',
     scoreDescription: 'Market response sensitivity to changes in key variables',
     scoreRange: '0-100',
     interpretationHigh: 'highly sensitive to changes',
@@ -229,7 +229,7 @@ export const ENDPOINT_SCORE_CONFIG: Record<string, ScoreConfig> = {
   
   '/model-performance': {
     primaryScoreType: 'performance metrics',
-    scoreFieldName: 'performance_score',
+  scoreFieldName: 'model_performance_score',
     scoreDescription: 'Model accuracy and reliability in predictions',
     scoreRange: '0-1',
     interpretationHigh: 'excellent model performance',

@@ -106,6 +106,18 @@ export class EnhancedQueryAnalyzer {
         avoidTerms: [],
         weight: 1.0
       },
+      '/brand-difference': {
+        primaryKeywords: ['difference', 'vs', 'versus', 'compare', 'market share'],
+        contextKeywords: ['brand difference', 'brand gap', 'percent difference', 'market share difference'],
+        avoidTerms: ['correlation'],
+        weight: 1.25
+      },
+      '/competitive-analysis': {
+        primaryKeywords: ['competitive', 'competition', 'advantage', 'positioning', 'competitor'],
+        contextKeywords: ['competitive positioning', 'market position', 'brand positioning'],
+        avoidTerms: [],
+        weight: 1.15
+      },
       '/demographic-insights': {
         primaryKeywords: ['demographic', 'demographics', 'population', 'age', 'income'],
         contextKeywords: ['customer demographics', 'demographic opportunity'],
@@ -127,7 +139,7 @@ export class EnhancedQueryAnalyzer {
       '/analyze': {
         primaryKeywords: ['analyze', 'analysis', 'overview', 'insights'],
         contextKeywords: ['comprehensive analysis', 'market insights'],
-        avoidTerms: [],
+  avoidTerms: ['strategic'],
         weight: 1.3
       }
     };
@@ -193,14 +205,29 @@ export class EnhancedQueryAnalyzer {
    * Get the best endpoint for a query
    */
   public getBestEndpoint(query: string): string {
-    const scores = this.analyzeQuery(query);
+  const scores = this.analyzeQuery(query);
     
     // Default to strategic-analysis if no good match
     if (scores.length === 0 || scores[0].score <= 0) {
       return '/strategic-analysis';
     }
 
-    return scores[0].endpoint;
+    // Prefer more specific endpoints when tied to generic comparison words and brand terms
+    const top = scores[0];
+    const q = query.toLowerCase();
+    if (/(vs|versus|difference|market share)/i.test(q)) {
+      // steer to brand-difference when comparing brands
+      const mentionsBrands = /(h&r\s*block|turbotax|nike|adidas|red bull|monster)/i.test(q);
+      if (mentionsBrands) {
+        const bd = scores.find(s => s.endpoint === '/brand-difference');
+        if (bd && bd.score >= top.score - 1) return '/brand-difference';
+      }
+    }
+    // If the query is just "strategic analysis" or similar, force strategic endpoint
+    if (/^\s*(strategic\s+analysis|strategic)\s*$/i.test(q)) {
+      return '/strategic-analysis';
+    }
+    return top.endpoint;
   }
 
   /**

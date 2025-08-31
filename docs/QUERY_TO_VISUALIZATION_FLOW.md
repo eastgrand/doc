@@ -1,8 +1,8 @@
 # Query to Visualization Flow Documentation
 
 **Created**: Original documentation date  
-**Updated**: August 29, 2025  
-**Status**: ✅ **Phase 4 Integration Complete** - All advanced features now enabled and integrated into results flow  
+**Updated**: August 31, 2025  
+**Status**: ✅ Core flow verified — routing, endpoints, and renderer/score alignment updated; availability of advanced features is configuration-dependent  
 
 ## Overview
 
@@ -87,10 +87,13 @@ User Query
     └── Performance Optimization (sampling, caching, timeouts)
     ↓
 [Microservice API Call]
-    ├── /comparative-analysis
-    ├── /strategic-analysis
-    ├── /demographic-analysis
-    └── /correlation-analysis
+  ├── /strategic-analysis
+  ├── /analyze
+  ├── /demographic-insights
+  ├── /brand-difference
+  ├── /competitive-analysis
+  ├── /comparative-analysis
+  └── /correlation-analysis
     ↓
 [Data Processor Strategy]
     ├── Validation
@@ -108,6 +111,15 @@ User Query
     ├── Feature Layer
     ├── Choropleth Map
     └── Interactive Popups
+
+Note on renderer and Top Markets consistency (current behavior):
+- Renderer.field equals the endpoint’s targetVariable as defined by ConfigurationManager.
+- Top Markets are computed by sorting records by the same targetVariable.
+- Endpoint score fields used by processors and UI:
+  - /strategic-analysis → strategic_analysis_score
+  - /analyze → analysis_score
+  - /brand-difference → brand_difference_score
+- Legends mirror renderer class breaks; opacity and color scheme remain consistent with renderer.
 ```
 
 ## DEPLOYED: Semantic Enhanced Hybrid Architecture (August 2025)
@@ -880,6 +892,12 @@ const fieldMappings = analyzer.getFieldMappings();
 4. **🎯 Accuracy**: 100% accuracy on production test suite
 5. **🔄 Project Agnostic**: Adapts to any domain through templates
 
+### Current tie-breakers and penalties (as implemented)
+
+- Prefer /brand-difference when the query compares brands (e.g., contains vs/versus/difference/market share) and mentions brand names like “h&r block”, “turbotax”, “nike”, “adidas”, “red bull”, or “monster”.
+- Force /strategic-analysis when the query is just “strategic analysis” or “strategic”.
+- Penalize /analyze when the term “strategic” is present (to avoid generic fallback in clearly strategic intents).
+
 ### **🚨 Critical Integration Requirement**
 
 **Field Validation**: EnhancedQueryAnalyzer templates must only reference fields that exist in project data layers.
@@ -970,7 +988,7 @@ UnifiedAnalysisWorkflow Results
 
 ---
 
-*Last Updated: August 29, 2025*  
+*Last Updated: August 31, 2025*  
 *Current Production: **Semantic Enhanced Hybrid Architecture** ✅ DEPLOYED*  
 *Phase 4 Integration: **All Advanced Features** ✅ FULLY ENABLED*  
 *Advanced Visualization: **3D Mapping & WebGL** ✅ NOW ACTIVE*  

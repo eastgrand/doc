@@ -207,10 +207,20 @@ const createAnalysisSummary = (
   
   // Add key findings from enhanced result
   if (enhancedResult?.results?.length > 0) {
-    const topResults = enhancedResult.results.slice(0, 5);
+    // Determine the correct value field based on analysis type/target
+    const valueField =
+      analysisResult.data?.targetVariable ||
+      (analysisResult.endpoint === '/strategic-analysis' ? 'strategic_score' : 'value');
+
+    // Sort descending by the chosen value field to get true top markets
+    const topResults = [...enhancedResult.results]
+      .sort((a: any, b: any) =>
+        (Number(b[valueField] ?? b.value ?? 0)) - (Number(a[valueField] ?? a.value ?? 0))
+      )
+      .slice(0, 5);
     summary += `**Top Performing Areas:**\n`;
     topResults.forEach((result: any, index: number) => {
-      const value = result.value || result[currentTargetValue] || 0;
+  const value = Number(result[valueField] ?? result.value ?? result[currentTargetValue] ?? 0);
       summary += `${index + 1}. ${result.area_name || result.area_id || 'Area'}: ${value.toLocaleString()}\n`;
     });
     summary += `\n`;
@@ -411,6 +421,20 @@ const EnhancedGeospatialChat = memo(({
       lastAnalysisEndpoint,
       timestamp: new Date().toISOString()
     });
+
+    // Reset endpoint-scoped UI state to prevent cross-endpoint contamination
+    if (selectedEndpoint !== 'auto') {
+      console.log('[ENDPOINT CHANGE] 🔄 Clearing endpoint-scoped state to avoid contamination');
+      setProcessingSteps([]);
+      setProcessingError(null);
+      setError(null);
+      setFeatures([]);
+      setFormattedLegendData(null);
+  setCachedDatasetSummary(null);
+  setDatasetCacheTimestamp(null);
+  setDatasetCacheKey(null);
+      // Do not clear messages so conversation context remains
+    }
     
     // Log what clustering button state would be
     const supportsClusteringEndpoints = ['/strategic-analysis', '/demographic-insights'];
@@ -443,6 +467,7 @@ const EnhancedGeospatialChat = memo(({
   // Cache comprehensive dataset summary for consistent follow-up chat
   const [cachedDatasetSummary, setCachedDatasetSummary] = useState<any>(null);
   const [datasetCacheTimestamp, setDatasetCacheTimestamp] = useState<string | null>(null);
+  const [datasetCacheKey, setDatasetCacheKey] = useState<string | null>(null);
 
   // Debug: Monitor features state changes
   useEffect(() => {
@@ -1943,7 +1968,21 @@ const EnhancedGeospatialChat = memo(({
       });
       console.log('🎯 [CLUSTER DEBUG] ABOUT TO CALL executeAnalysis with query:', query);
       
-      const analysisResult: AnalysisResult = await executeAnalysis(query, analysisOptions);
+      // If switching endpoints between runs, clear previous engine state
+      if (lastAnalysisEndpoint && selectedEndpoint !== 'auto') {
+        const nextEndpointPath = `/${selectedEndpoint}`;
+        if (nextEndpointPath !== lastAnalysisEndpoint) {
+          console.log('[AnalysisEngine] 🔄 Endpoint changed between runs. Clearing previous analysis state.');
+          clearAnalysis();
+        }
+      }
+
+  // Set dataset cache key using endpoint + target + geometry presence
+  const endpointKey = selectedEndpoint !== 'auto' ? `/${selectedEndpoint}` : (lastAnalysisEndpoint || 'auto');
+  const newCacheKey = `${endpointKey}|target=${currentTarget}|geom=${Boolean(selectedGeometry)}`;
+  setDatasetCacheKey(newCacheKey);
+
+  const analysisResult: AnalysisResult = await executeAnalysis(query, analysisOptions);
       
       console.log('🎯 [CLUSTER DEBUG] AnalysisResult received:', {
         success: analysisResult.success,

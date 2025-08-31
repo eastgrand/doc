@@ -24,12 +24,12 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Strategic analysis requires strategic_score (primary) with fallbacks
+  // Strategic analysis requires strategic_analysis_score (primary) with fallbacks
     const hasRequiredFields = rawData.results.length === 0 ||
       (rawData.results as any[]).some((record: any) =>
         record &&
         ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        ((record as any).strategic_score !== undefined || (record as any).strategic_analysis_score !== undefined || (record as any).strategic_value_score !== undefined)
+  ((record as any).strategic_analysis_score !== undefined || (record as any).strategic_score !== undefined || (record as any).strategic_value_score !== undefined)
       );
     
     return hasRequiredFields;
@@ -55,14 +55,14 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       // Strategic analysis requires actual strategic scores, not market share percentages
       // Use nullish coalescing to handle 0 values correctly
       let primaryScore = Number(
-        (record as any).strategic_score ?? 
         (record as any).strategic_analysis_score ?? 
+        (record as any).strategic_score ?? 
         (record as any).strategic_value_score ??
-        null // Remove fallback to market share
+        null
       );
       
       const recordId = (record as any).ID || (record as any).id || index;
-      console.log(`[StrategicAnalysisProcessor] Record ${recordId}: Found primaryScore = ${primaryScore} from fields: strategic_score=${(record as any).strategic_score}, strategic_analysis_score=${(record as any).strategic_analysis_score}, strategic_value_score=${(record as any).strategic_value_score}`);
+  console.log(`[StrategicAnalysisProcessor] Record ${recordId}: Found primaryScore = ${primaryScore} from fields: strategic_analysis_score=${(record as any).strategic_analysis_score}, strategic_score=${(record as any).strategic_score}, strategic_value_score=${(record as any).strategic_value_score}`);
       
       // Debug brand fields and market gap calculation
       if (recordId === (rawRecords as any[])[0]?.ID) {
@@ -97,23 +97,22 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       const finalRecordId = (record as any).ID || (record as any).id || (record as any).area_id || `area_${index + 1}`;
       
       // Get top contributing fields for popup display
-      const topContributingFields = this.getTopContributingFields(record);
-      
-      // Remove strategic_score from topContributingFields to avoid overwriting the correct value
-      const { strategic_score: _, ...filteredTopFields } = topContributingFields;
+  const topContributingFields = this.getTopContributingFields(record);
+  // Remove strategic_analysis_score and strategic_score from topContributingFields to avoid overwrite
+  const { strategic_analysis_score: __, strategic_score: _, ...filteredTopFields } = topContributingFields as any;
       
       return {
         area_id: finalRecordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
-        strategic_score: Math.round(primaryScore * 100) / 100, // Add at top level for visualization
+  strategic_analysis_score: Math.round(primaryScore * 100) / 100, // Add at top level for visualization
         rank: 0, // Will be calculated after sorting
         // Flatten top contributing fields to top level for popup access (excluding strategic_score)
         ...filteredTopFields,
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
-          strategic_score: primaryScore,
-          score_source: 'strategic_score',
+          strategic_analysis_score: primaryScore,
+          score_source: 'strategic_analysis_score',
           target_brand_share: this.extractTargetBrandShare(record),
           market_gap: this.calculateRealMarketGap(record),
           total_population: this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population']),
@@ -143,8 +142,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     // Generate strategic summary
     const summary = this.generateStrategicSummary(rankedRecords, statistics);
 
-    const renderer = this.createStrategicRenderer(rankedRecords);
-    const legend = this.createStrategicLegend(rankedRecords);
+  const renderer = this.createStrategicRenderer(rankedRecords);
+  const legend = this.createStrategicLegend(rankedRecords);
     
     return {
       type: 'strategic_analysis',
@@ -152,7 +151,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'strategic_score',
+  targetVariable: 'strategic_analysis_score',
       renderer: renderer, // Add direct renderer
       legend: legend // Add direct legend with correct formatting
     };
@@ -198,7 +197,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     
     const renderer = {
       type: 'class-breaks',
-      field: 'strategic_score', // Use the field that matches the processed data
+  field: 'strategic_analysis_score', // Use the field that matches the processed data
       classBreakInfos,
       defaultSymbol: {
         type: 'simple-fill',
@@ -216,7 +215,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       lastClassMinValue: classBreakInfos[classBreakInfos.length - 1]?.minValue,
       lastClassMaxValue: classBreakInfos[classBreakInfos.length - 1]?.maxValue,
       sampleRecordValue: records[0]?.value,
-      sampleRecordStrategicScore: (records[0]?.properties as any)?.strategic_value_score
+  sampleRecordStrategicScore: (records[0] as any)?.strategic_analysis_score || (records[0]?.properties as any)?.strategic_analysis_score
     });
     
     return renderer;
@@ -449,7 +448,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       statistics: AnalysisStatistics
     ): string {
       // Start with score explanation
-      let summary = getScoreExplanationForAnalysis('strategic-analysis', 'strategic_value');
+  let summary = getScoreExplanationForAnalysis('strategic-analysis', 'strategic_analysis_score');
     
       // We don't reference BrandNameResolver target brand here to avoid tight coupling in tests
       summary += `**Strategic Market Analysis Complete:** ${statistics.total} geographic areas evaluated for expansion potential. `;

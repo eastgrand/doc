@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Centralized Field Mapping Configuration
  * 
@@ -39,43 +40,47 @@ export interface EndpointFieldMapping {
 export const ENDPOINT_FIELD_MAPPINGS: Record<string, EndpointFieldMapping> = {
   // Strategic Analysis
   'strategic_analysis': {
-    primaryScoreField: 'strategic_value_score',
+  primaryScoreField: 'strategic_score',
     displayName: 'Strategic Value Score',
     expectedRange: { min: 0, max: 100 }
   },
   
   // Competitive Analysis
   'competitive_analysis': {
-    primaryScoreField: 'competitive_advantage_score',
+    primaryScoreField: 'competitive_analysis_score',
+    fallbackFields: ['competitive_score', 'competitive_advantage_score'],
     displayName: 'Competitive Advantage Score',
-    expectedRange: { min: 1, max: 10 },
+    expectedRange: { min: 0, max: 100 },
     formatter: (value) => value.toFixed(1)
   },
   
   // Demographic Analysis
   'demographic_analysis': {
-    primaryScoreField: 'demographic_score',
+    primaryScoreField: 'demographic_insights_score',
+    fallbackFields: ['demographic_opportunity_score', 'demographic_score'],
     displayName: 'Demographic Score',
     expectedRange: { min: 0, max: 100 }
   },
   
   // Market Sizing
   'market_sizing': {
-    primaryScoreField: 'market_size_score',
+    primaryScoreField: 'market_sizing_score',
     displayName: 'Market Size Score',
     expectedRange: { min: 0, max: 100 }
   },
   
   // Trend Analysis
   'trend_analysis': {
-    primaryScoreField: 'trend_score',
+    primaryScoreField: 'trend_analysis_score',
+    fallbackFields: ['trend_strength', 'trend_score'],
     displayName: 'Trend Score',
     expectedRange: { min: 0, max: 100 }
   },
   
   // Correlation Analysis
   'correlation_analysis': {
-    primaryScoreField: 'correlation_score',
+    primaryScoreField: 'correlation_analysis_score',
+    fallbackFields: ['correlation_score', 'correlation_strength_score'],
     displayName: 'Correlation Score',
     expectedRange: { min: -1, max: 1 },
     formatter: (value) => value.toFixed(3)
@@ -83,7 +88,7 @@ export const ENDPOINT_FIELD_MAPPINGS: Record<string, EndpointFieldMapping> = {
   
   // Anomaly Detection
   'anomaly_detection': {
-    primaryScoreField: 'anomaly_score',
+    primaryScoreField: 'anomaly_detection_score',
     displayName: 'Anomaly Score',
     expectedRange: { min: 0, max: 1 },
     formatter: (value) => (value * 100).toFixed(1) + '%'
@@ -91,14 +96,14 @@ export const ENDPOINT_FIELD_MAPPINGS: Record<string, EndpointFieldMapping> = {
   
   // Predictive Analysis
   'predictive_analysis': {
-    primaryScoreField: 'prediction_score',
+    primaryScoreField: 'predictive_modeling_score',
     displayName: 'Prediction Score',
     expectedRange: { min: 0, max: 100 }
   },
   
   // Risk Analysis
   'risk_analysis': {
-    primaryScoreField: 'risk_score',
+    primaryScoreField: 'risk_adjusted_score',
     displayName: 'Risk Score',
     expectedRange: { min: 0, max: 100 }
   },
@@ -108,6 +113,12 @@ export const ENDPOINT_FIELD_MAPPINGS: Record<string, EndpointFieldMapping> = {
     primaryScoreField: 'cluster_performance_score',
     fallbackFields: ['cluster_score'],
     displayName: 'Cluster Performance Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+  // Spatial Clusters (alternative endpoint used by SpatialClustersProcessor)
+  'spatial_clusters': {
+    primaryScoreField: 'spatial_clusters_score',
+    displayName: 'Spatial Clusters Score',
     expectedRange: { min: 0, max: 100 }
   },
   
@@ -120,36 +131,130 @@ export const ENDPOINT_FIELD_MAPPINGS: Record<string, EndpointFieldMapping> = {
   
   // Brand Analysis
   'brand_analysis': {
-    primaryScoreField: 'brand_score',
+    primaryScoreField: 'brand_analysis_score',
     displayName: 'Brand Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+  // Brand Difference
+  'brand_difference': {
+    primaryScoreField: 'brand_difference_score',
+    displayName: 'Brand Difference Score',
     expectedRange: { min: 0, max: 100 }
   },
   
   // Segment Profiling
   'segment_profiling': {
-    primaryScoreField: 'segment_score',
+    primaryScoreField: 'segment_profiling_score',
     displayName: 'Segment Score',
     expectedRange: { min: 0, max: 100 }
   },
   
   // Real Estate Analysis
   'real_estate_analysis': {
-    primaryScoreField: 'real_estate_score',
+    primaryScoreField: 'real_estate_analysis_score',
     displayName: 'Real Estate Score',
     expectedRange: { min: 0, max: 100 }
   },
   
   // Scenario Analysis
   'scenario_analysis': {
-    primaryScoreField: 'scenario_score',
+    primaryScoreField: 'scenario_analysis_score',
     displayName: 'Scenario Score',
     expectedRange: { min: 0, max: 100 }
   },
   
   // Comparative Analysis
   'comparative_analysis': {
-    primaryScoreField: 'comparative_score',
+    primaryScoreField: 'comparison_score',
+    fallbackFields: ['comparative_score', 'thematic_value', 'value'],
     displayName: 'Comparative Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+
+  // Analyze (general analysis)
+  'analyze': {
+    primaryScoreField: 'analysis_score',
+    fallbackFields: ['analyze_score', 'value'],
+    displayName: 'Analysis Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+
+  // Consensus Analysis
+  'consensus_analysis': {
+    primaryScoreField: 'consensus_analysis_score',
+    displayName: 'Consensus Analysis Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+
+  // Ensemble Analysis
+  'ensemble_analysis': {
+    primaryScoreField: 'ensemble_analysis_score',
+    displayName: 'Ensemble Analysis Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+
+  // Feature Importance Ranking
+  'feature_importance_ranking': {
+    primaryScoreField: 'feature_importance_ranking_score',
+    displayName: 'Feature Importance Ranking Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+
+  // Feature Interactions
+  'feature_interactions': {
+    primaryScoreField: 'feature_interactions_score',
+    fallbackFields: ['feature_interaction_score'],
+    displayName: 'Feature Interaction Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+
+  // Outlier Detection
+  'outlier_detection': {
+    primaryScoreField: 'outlier_detection_score',
+    displayName: 'Outlier Detection Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+
+  // Sensitivity Analysis
+  'sensitivity_analysis': {
+    primaryScoreField: 'sensitivity_analysis_score',
+    displayName: 'Sensitivity Analysis Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+
+  // Algorithm Comparison
+  'algorithm_comparison': {
+    primaryScoreField: 'algorithm_comparison_score',
+    displayName: 'Algorithm Comparison Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+
+  // Dimensionality Insights
+  'dimensionality_insights': {
+    primaryScoreField: 'dimensionality_insights_score',
+    displayName: 'Dimensionality Insights Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+
+  // Model Performance
+  'model_performance': {
+    primaryScoreField: 'model_performance_score',
+    displayName: 'Model Performance Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+
+  // Customer Profile
+  'customer_profile': {
+    primaryScoreField: 'customer_profile_score',
+    displayName: 'Customer Profile Score',
+    expectedRange: { min: 0, max: 100 }
+  },
+
+  // Core Analysis (legacy)
+  'core_analysis': {
+    primaryScoreField: 'strategic_value_score',
+    fallbackFields: ['strategic_score'],
+    displayName: 'Core Strategic Score',
     expectedRange: { min: 0, max: 100 }
   },
   
