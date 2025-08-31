@@ -12,7 +12,7 @@ All endpoints have corresponding scoring scripts in `/scripts/scoring/`. The end
 
 | Endpoint File | Processor Name | Scoring Field | Claude API Field | Status |
 |---------------|----------------|---------------|------------------|---------|
-| strategic-analysis.json | StrategicAnalysisProcessor | `strategic_score` | `strategic_score` | ✅ |
+| strategic-analysis.json | StrategicAnalysisProcessor | `strategic_analysis_score` | `strategic_analysis_score` | ✅ |
 | competitive-analysis.json | CompetitiveDataProcessor | `competitive_analysis_score` | `competitive_analysis_score` | ✅ |
 | demographic-insights.json | DemographicDataProcessor | `demographic_insights_score` | `demographic_insights_score` | ✅ |
 | correlation-analysis.json | CorrelationAnalysisProcessor | `correlation_analysis_score` | `correlation_analysis_score` | ✅ |
@@ -57,7 +57,8 @@ Most endpoints follow the pattern: `{endpoint_name}_score` as the final field.
 #### ✅ All Processors and Claude API Fields Now Aligned
 
 All processors and Claude API field mappings have been systematically verified and aligned:
-- Strategic analysis now correctly uses `strategic_score` (was using `strategic_value_score`)
+
+- Strategic analysis now correctly uses `strategic_analysis_score` (legacy datasets may include `strategic_value_score`; processors normalize to `strategic_analysis_score`)
 - Comparative analysis now correctly uses `comparison_score` (was using `comparative_analysis_score`)
 - All other processors verified to match between processor output and Claude API expectations
 
@@ -141,3 +142,17 @@ validate(rawData: RawAnalysisResult): boolean {
 
 Generated: 2025-08-17
 Based on: Systematic audit of all endpoint JSON files in `/public/data/endpoints/`
+
+## Legacy Precision Note (Strategic)
+
+- System-wide normalization uses `strategic_analysis_score` for sorting, renderer.field, and Top Markets.
+- Legacy datasets may include `strategic_value_score` and `strategic_score`. Processors expose `strategic_analysis_score` and preserve legacy values in properties.
+- Strategic narrative prompts may reference `strategic_value_score` explicitly to preserve exact decimals in text. This does not affect sorting/ranking, which always use `strategic_analysis_score` with legacy fallbacks.
+
+## Quick Verification Checklist
+
+- Renderer field equals `targetVariable` for each processor output.
+- Top 5/Top Markets in UI are sorted by the same field as the renderer.
+- Claude API route ranks by the endpoint’s score with fallbacks to legacy fields; no hard 3-item cap in narratives.
+- FieldMappingConfig.getPrimaryScoreField returns the same field the processor uses as `targetVariable`.
+- ScoreTerminology scoreFieldName matches the endpoint mapping (e.g., `/strategic-analysis` → `strategic_analysis_score`).

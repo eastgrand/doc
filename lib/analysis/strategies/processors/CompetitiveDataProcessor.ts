@@ -97,7 +97,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
 
   private processCompetitiveRecords(rawRecords: any[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
-      const area_id = (record as any).area_id || (record as any).id || (record as any).GEOID || `area_${index}`;
+      const area_id = (record as any).ID || (record as any).area_id || (record as any).id || (record as any).GEOID || `area_${index}`;
       const area_name = resolveAreaName(record, { mode: 'zipCity', neutralFallback: `Area ${area_id || index + 1}` });
       
       // Extract competitive metrics

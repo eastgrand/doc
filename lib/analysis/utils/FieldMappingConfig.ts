@@ -40,7 +40,7 @@ export interface EndpointFieldMapping {
 export const ENDPOINT_FIELD_MAPPINGS: Record<string, EndpointFieldMapping> = {
   // Strategic Analysis
   'strategic_analysis': {
-  primaryScoreField: 'strategic_score',
+  primaryScoreField: 'strategic_analysis_score',
     displayName: 'Strategic Value Score',
     expectedRange: { min: 0, max: 100 }
   },

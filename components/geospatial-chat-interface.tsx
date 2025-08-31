@@ -210,7 +210,7 @@ const createAnalysisSummary = (
     // Determine the correct value field based on analysis type/target
     const valueField =
       analysisResult.data?.targetVariable ||
-      (analysisResult.endpoint === '/strategic-analysis' ? 'strategic_score' : 'value');
+      (analysisResult.endpoint === '/strategic-analysis' ? 'strategic_analysis_score' : 'value');
 
     // Sort descending by the chosen value field to get true top markets
     const topResults = [...enhancedResult.results]
@@ -2670,12 +2670,47 @@ const EnhancedGeospatialChat = memo(({
         console.log('🎯 [CLAUDE PAYLOAD] isClusteredAnalysis:', isClusteredAnalysis);
         console.log('🎯 [CLAUDE PAYLOAD] hasClusterAnalysis:', hasClusterAnalysis);
         
+        // Build deterministic top-5 for strategic-analysis (server-ranked) to guide Claude
+        const scoreCfg = getScoreConfigForEndpoint(finalAnalysisResult.endpoint);
+        const primaryFieldForTop = finalAnalysisResult?.data?.targetVariable || scoreCfg.scoreFieldName;
+        const allFeatureCount = (finalAnalysisResult?.data?.isClustered
+          ? ((finalAnalysisResult.data as any)?.namedClusters || (finalAnalysisResult.data as any)?.clusters || [])
+          : finalAnalysisResult?.data?.records || []).length;
+    type SimpleItem = { name: string | undefined; id: string | undefined; value: number };
+    const systemTop5: SimpleItem[] = (() => {
+          try {
+            const items = finalAnalysisResult?.data?.isClustered
+      ? (((finalAnalysisResult.data as any)?.namedClusters || (finalAnalysisResult.data as any)?.clusters || []).map((c: any): SimpleItem => ({
+                  name: c.area_name || c.name,
+                  id: c.area_id || c.id,
+                  value: typeof c.avgScore === 'number' ? c.avgScore : (typeof c[primaryFieldForTop] === 'number' ? c[primaryFieldForTop] : (c.value ?? 0))
+                })))
+      : ((finalAnalysisResult?.data?.records || []).map((r: any): SimpleItem => ({
+                  name: r.area_name,
+                  id: r.area_id,
+                  value: typeof r[primaryFieldForTop] === 'number' ? r[primaryFieldForTop] : (r.value ?? 0)
+                })));
+            return items
+      .filter((it: SimpleItem) => it && !Number.isNaN(Number(it.value)))
+      .sort((a: SimpleItem, b: SimpleItem) => Number(b.value) - Number(a.value))
+              .slice(0, 5);
+          } catch { return []; }
+        })();
+
         const claudePayload = {
             messages: [{ 
               role: 'user', 
-              content: hasClusterAnalysis 
-                ? `${generateScoreDescription(finalAnalysisResult.endpoint, query)}\n\nIMPORTANT: This is a TERRITORY CLUSTERING analysis. The data has been organized into geographic territories/clusters. Base your response on the territory clustering analysis provided in the metadata. Focus on territories rather than individual ZIP codes.`
-                : generateScoreDescription(finalAnalysisResult.endpoint, query)
+              content: (() => {
+                const base = generateScoreDescription(finalAnalysisResult.endpoint, query);
+                const scopeNote = `\n\nDATASET SCOPE: Analyze ALL ${allFeatureCount} ${finalAnalysisResult?.data?.isClustered ? 'territories' : 'areas'} in the selection. DO NOT limit your analysis to preview samples.`;
+                const top5Note = (finalAnalysisResult.endpoint === '/strategic-analysis' && systemTop5.length)
+                  ? `\n\nSYSTEM-COMPUTED TOP 5 STRATEGIC MARKETS (ranked by ${primaryFieldForTop}):\n${systemTop5.map((t: SimpleItem, i: number) => `${i+1}. ${t.name || t.id} — ${Number(t.value).toFixed(2)}`).join('\n')}\n\nUse these as the Top Strategic Markets list.`
+                  : '';
+                const clusteringNote = hasClusterAnalysis 
+                  ? `\n\nIMPORTANT: This is a TERRITORY CLUSTERING analysis. The data has been organized into geographic territories/clusters. Base your response on the territory clustering analysis provided in the metadata. Focus on territories rather than individual ZIP codes.`
+                  : '';
+                return `${base}${scopeNote}${top5Note}${clusteringNote}`;
+              })()
             }],
             metadata: {
               query,

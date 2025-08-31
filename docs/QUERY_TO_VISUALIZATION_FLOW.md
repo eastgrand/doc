@@ -9,6 +9,7 @@
 This document provides a comprehensive explanation of how a user query flows through the system from initial input to final visualization on the map. The system now features a sophisticated **Semantic Enhanced Hybrid Architecture** that combines the robust validation and structure of hybrid routing with the semantic understanding power of AI for optimal query processing.
 
 **UPDATE (Aug 29, 2025)**: The visualization flow has been revolutionized with:
+
 1. **Phase 4 Advanced Features**: All components now enabled - Accessible through the "Advanced" tab in UnifiedAnalysisWorkflow results
 2. **Advanced Filtering System**: Complete 6-phase implementation providing enterprise-grade filtering and optimization controls
 3. **Advanced Visualization Suite**: Now fully enabled with 3D mapping, WebGL rendering, and enhanced geospatial capabilities
@@ -20,15 +21,15 @@ This document provides a comprehensive explanation of how a user query flows thr
 1. **SemanticEnhancedHybridEngine** - Revolutionary system combining hybrid validation with semantic understanding (DEPLOYED August 2025)
 2. **HybridRoutingEngine** - Advanced 5-layer routing system with query validation (Integrated August 2025)
 3. **SemanticRouter** - AI-powered semantic similarity routing (Integrated as enhancement layer August 2025)
-3. **EnhancedQueryAnalyzer** - Template-based query understanding (🚀 OVERHAULED August 2025 - 66% code reduction)
-4. **GeoAwarenessEngine** - Geographic entity recognition and filtering
-5. **Endpoint Router** - Determines which analysis endpoint to call
-6. **Data Processors** - Transform raw endpoint data for visualization
-7. **Shared AreaName Resolver** - Consistent area name/ZIP resolution across server, processors, and UI
-8. **Server-side Narrative Sanitizer** - Replaces placeholder names in AI output with resolved names
-9. **BrandNameResolver** - Brand configuration and field mapping (currently hardcoded, automation designed)
-10. **Advanced Filtering System** - Enterprise-grade 4-tab filtering and optimization system (DEPLOYED August 2025)
-11. **ArcGIS Renderer** - Visualizes processed data on the map
+4. **EnhancedQueryAnalyzer** - Template-based query understanding (🚀 OVERHAULED August 2025 - 66% code reduction)
+5. **GeoAwarenessEngine** - Geographic entity recognition and filtering
+6. **Endpoint Router** - Determines which analysis endpoint to call
+7. **Data Processors** - Transform raw endpoint data for visualization
+8. **Shared AreaName Resolver** - Consistent area name/ZIP resolution across server, processors, and UI
+9. **Server-side Narrative Sanitizer** - Replaces placeholder names in AI output with resolved names
+10. **BrandNameResolver** - Brand configuration and field mapping (currently hardcoded, automation designed)
+11. **Advanced Filtering System** - Enterprise-grade 4-tab filtering and optimization system (DEPLOYED August 2025)
+12. **ArcGIS Renderer** - Visualizes processed data on the map
 
 ## Complete Flow Diagram
 
@@ -112,7 +113,10 @@ User Query
     ├── Choropleth Map
     └── Interactive Popups
 
+```
+
 Note on renderer and Top Markets consistency (current behavior):
+
 - Renderer.field equals the endpoint’s targetVariable as defined by ConfigurationManager.
 - Top Markets are computed by sorting records by the same targetVariable.
 - Endpoint score fields used by processors and UI:
@@ -120,17 +124,108 @@ Note on renderer and Top Markets consistency (current behavior):
   - /analyze → analysis_score
   - /brand-difference → brand_difference_score
 - Legends mirror renderer class breaks; opacity and color scheme remain consistent with renderer.
+
+Visual snapshot:
+
+![Query to Visualization Flow](./query-to-viz-flow.svg)
+
+## End-to-end file trace (query → analysis → visualization) — Verified Aug 31, 2025
+
+This concise file-by-file trace reflects the exact code paths exercised in the current build.
+
+- Input + UI orchestration
+  - `components/geospatial-chat-interface.tsx`
+    - Captures user query, orchestrates endpoint suggestion and analysis execution.
+    - Builds Top Markets from `analysisResult.data.targetVariable` (strategic uses `strategic_analysis_score` fallback).
+    - Applies visualization via `applyAnalysisEngineVisualization` and maintains renderer/summary invariants.
+
+- Routing and intent resolution
+  - `lib/routing/SemanticEnhancedHybridEngine.ts`
+    - Primary router. Runs hybrid routing, optionally enhances with semantic verification and confidence boost.
+  - `lib/analysis/SemanticRouter.ts`
+    - Semantic enhancement layer used when creative/low-confidence queries are detected.
+  - `lib/analysis/EnhancedQueryAnalyzer.ts`
+    - Tertiary fallback. Template-driven keyword/field mapping and endpoint scoring.
+
+- Geographic awareness
+  - `lib/geo/GeoAwarenessEngine.ts`
+    - Extracts geographic entities and maps to ZIPs/regions used by downstream requests.
+
+- API route and narrative generation
+  - `app/api/claude/generate-response/route.ts`
+    - Aggregates features, selects score field per endpoint, ranks by score, and composes analysis prompts.
+    - Strategic: uses `strategic_analysis_score` and robust fallbacks (nested/legacy) via score resolution helpers.
+
+- Score field mapping and terminology
+  - `lib/analysis/utils/FieldMappingConfig.ts`
+    - Authoritative endpoint → primaryScoreField mapping; `strategic_analysis` → `strategic_analysis_score`.
+    - Provides `extractScoreValue()` and `getPrimaryScoreField()` used across UI/processors.
+  - `lib/analysis/utils/ScoreTerminology.ts`
+    - Endpoint → scoreFieldName terminology for prompts and validation.
+
+- Data processing strategies (emit targetVariable and renderer)
+  - `lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts` → `targetVariable = 'strategic_analysis_score'`.
+  - `lib/analysis/strategies/processors/CompetitiveDataProcessor.ts` → `competitive_analysis_score`.
+  - `lib/analysis/strategies/processors/DemographicDataProcessor.ts` → `demographic_insights_score`.
+  - `lib/analysis/strategies/processors/ComparativeAnalysisProcessor.ts` → `comparison_score` for viz.
+
+- Visualization bridge
+  - `utils/apply-analysis-visualization.ts`
+    - Creates ArcGIS renderer bound to `analysisResult.data.targetVariable` and applies to the map layer.
+  - `config/layers` and ArcGIS dependencies
+    - Provide layer configuration and arcgis rendering primitives used by the map.
+
+- Shared helpers used in both API and UI
+  - `lib/shared/AreaName.ts`
+    - Consistent area/ZIP name resolution for narratives, tooltips, and summaries.
+
+### Flow summary (runtime path)
+
+- Query → `SemanticEnhancedHybridEngine` → (optional) `SemanticRouter` → (fallback) `EnhancedQueryAnalyzer` → endpoint
+- Geo context via `GeoAwarenessEngine` → API route consolidates features → processors compute `targetVariable`
+- `FieldMappingConfig`/`ScoreTerminology` ensure correct score fields → UI sorts Top Markets and applies renderer
+- Map renders with renderer.field == `targetVariable`; narratives reference consistent area naming
+
+## Runtime verification status — Aug 31, 2025
+
+- Endpoint score mapping alignment
+  - Diagnostic: `node check_field_mappings.js`
+  - Result: All endpoints ✅ aligned (e.g., strategic → strategic_analysis_score; competitive → competitive_analysis_score; demographic → demographic_insights_score).
+
+- Renderer/summary invariants
+  - Renderer field equals `analysisResult.data.targetVariable` across processors.
+  - Top Markets sorted by the same field; strategic path falls back to `strategic_analysis_score` when needed.
+
+- API route strategic corrections
+  - Sorting and metrics use `strategic_analysis_score` with nested/legacy fallbacks; no artificial 3-item cap.
+
+- Quick local checks (optional)
+  - Task smoke test: “Test geospatial-chat-interface” echoes test message (task wiring OK).
+  - Mapping diagnostic: `node check_field_mappings.js` prints per-endpoint comparison with all checks green.
+
+## How to quickly validate locally (optional)
+
+```bash
+# 1) Run the UI smoke test task (confirms task wiring)
+# VS Code: Run Task → "Test geospatial-chat-interface"
+
+# 2) Verify endpoint score mappings
+node check_field_mappings.js
+
+# 3) Launch your usual dev flow and trigger a few analyses
+# - Strategic: confirm Top Markets and legend sort by strategic_analysis_score
+# - Competitive/Demographic/Comparative: confirm targetVariable and legend align with mapping
 ```
 
 ## DEPLOYED: Semantic Enhanced Hybrid Architecture (August 2025)
 
-### Overview
+### Overview (Semantic Enhanced Hybrid)
 
 The **Semantic Enhanced Hybrid Architecture** represents a revolutionary advancement combining the best of both hybrid validation and semantic understanding. This system is fully deployed and operational in production, maintaining 100% backward compatibility while adding advanced AI-powered query enhancement.
 
 **Full Documentation**: See `docs/SEMANTIC_ENHANCED_HYBRID_UPGRADE_PLAN.md` for complete implementation details and `docs/SEMANTIC_HYBRID_INTEGRATION_GUIDE.md` for integration guide.
 
-### Key Achievements
+### Key Achievements (Semantic Enhanced Hybrid)
 
 ✅ **Semantic Enhancement**: Creative and novel queries now enhanced with AI understanding  
 ✅ **Multi-Layer Fallback**: Hybrid → Semantic → Keyword routing for maximum reliability  
@@ -175,7 +270,7 @@ if (isCreativeQuery(query) || hybridResult.confidence < 0.6) {
 return hybridResult;
 ```
 
-### Revolutionary Features
+### Revolutionary Features (Semantic Enhanced Hybrid)
 
 #### 1. Query Validation Framework
 
@@ -228,7 +323,7 @@ domainConfigLoader.loadConfiguration(healthcareDomain);
 // System now understands healthcare queries!
 ```
 
-### Deployment Status
+### Deployment Status (Semantic Enhanced Hybrid)
 
 **Implementation**: ✅ Complete and Deployed (SemanticEnhancedHybridEngine)  
 **Testing**: ✅ Comprehensive test suites passing (100% predefined accuracy)  
@@ -282,13 +377,13 @@ See `docs/HYBRID_ROUTING_REFACTOR_PLAN.md` Section "Adding New Endpoints/Analysi
 
 ## DEPLOYED: Advanced Filtering System (August 2025)
 
-### Overview
+### Overview (Advanced Filtering System)
 
 The **Advanced Filtering System** represents a revolutionary enhancement to the analysis workflow, transforming the platform from basic query processing to enterprise-grade data analysis with sophisticated filtering and optimization controls. This system is fully deployed and operational in production.
 
 **Full Documentation**: See `docs/ADVANCED_FILTERING_SYSTEM_COMPLETE.md` for complete implementation details and all 6 phase completion documents.
 
-### Key Achievements
+### Key Achievements (Advanced Filtering System)
 
 ✅ **4-Tab Progressive Interface**: Intuitive organization of complex filtering capabilities  
 ✅ **74+ Field Discovery**: Comprehensive field schema across 5 major analysis endpoints  
@@ -323,7 +418,7 @@ const analysisRequest: UnifiedAnalysisRequest = {
 const result = await analysisWrapper.processUnifiedRequest(analysisRequest);
 ```
 
-### Revolutionary Features
+### Revolutionary Features (Advanced Filtering System)
 
 #### 1. Comprehensive Field Discovery System
 
@@ -449,7 +544,7 @@ const CACHE_TTL_PRESETS = [
 ];
 ```
 
-### Deployment Status
+### Deployment Status (Advanced Filtering System)
 
 **Implementation**: ✅ Complete and Deployed (Advanced Filtering System)  
 **Components**: ✅ 5 major components + 2 services + complete type system  
@@ -552,6 +647,7 @@ if (shouldApplySemanticEnhancement(query, hybridResult)) {
 **Major Achievement**: Transformed from 1,046-line hardcoded component to 363-line template-driven system (66% code reduction).
 
 **Template-Based Architecture**:
+
 ```typescript
 // NEW: Template-driven configuration (August 2025)
 const analyzer = new EnhancedQueryAnalyzer(templateConfig);
@@ -575,11 +671,13 @@ const fieldMappings = {
 ```
 
 **🚨 CRITICAL Field Validation**:
+
 - Fields must exist in actual project data layers
 - Template validation ensures no runtime failures
 - See `lib/analysis/FIELD_VALIDATION_REQUIREMENTS.md`
 
 **Overhaul Benefits**:
+
 - ✅ **66% Code Reduction**: 1,046 → 363 lines
 - ✅ **Technical Debt Elimination**: Removed 600+ lines of unused SHAP fields
 - ✅ **Project Agnostic**: Adapts to any project through templates
@@ -673,6 +771,7 @@ const PROJECT_INDUSTRY = 'Energy Drinks';
 ```
 
 **🚀 AUTOMATION STATUS UPDATE (August 2025):**
+
 - ✅ **AUTOMATION DESIGNED**: Complete integration plan with migration system documented
 - ✅ **TEMPLATE INTEGRATION**: BrandNameResolver now part of ProjectTemplate system
 - ✅ **GENERATOR CREATED**: `BrandResolverGenerator` class for automated configuration
@@ -680,6 +779,7 @@ const PROJECT_INDUSTRY = 'Energy Drinks';
 - 🔄 **IMPLEMENTATION PENDING**: Automation components designed, awaiting deployment
 
 **Automated Migration Commands:**
+
 ```bash
 # Generate brand configuration from template (PLANNED)
 npm run generate-config --template energy-drinks --include BrandNameResolver
@@ -692,12 +792,14 @@ npm run migrate:run --project "new-project" --template custom-template --deploy
 ```
 
 **Migration System Integration:**
+
 - ✅ **Template-Driven**: Brand configuration generated from migration templates
 - ✅ **Field Validation**: Automatic verification of brand fields in data sources
 - ✅ **Safe Deployment**: Backup/rollback support for configuration changes
 - ✅ **One-Command**: Included in complete migration automation pipeline
 
 **Usage Coverage:**
+
 - ✅ **16+ Analysis Processors**: All modern processors use BrandNameResolver
 - ✅ **Single Source of Truth**: One configuration affects all brand-related analysis
 - ✅ **Market Gap Calculation**: Dynamic calculation from actual competitor data
@@ -710,12 +812,14 @@ npm run migrate:run --project "new-project" --template custom-template --deploy
 **Target State**: Fully automated template-driven configuration generation
 
 **Implementation Plan**:
+
 1. ✅ **Design Phase** (COMPLETE): Integration plan with migration system documented
-2. 🔄 **Development Phase** (PENDING): Implement BrandResolverGenerator and validator classes
-3. ⏳ **Testing Phase**: Validate with Red Bull template and multiple brand scenarios
-4. ⏳ **Deployment Phase**: Roll out to production migration automation system
+1. 🔄 **Development Phase** (PENDING): Implement BrandResolverGenerator and validator classes
+1. ⏳ **Testing Phase**: Validate with Red Bull template and multiple brand scenarios
+1. ⏳ **Deployment Phase**: Roll out to production migration automation system
 
 **When Completed**:
+
 - Brand configuration will be generated automatically from project templates
 - Field validation will ensure all brand fields exist in data sources
 - One-command migration will include complete brand configuration
@@ -763,8 +867,10 @@ npm run migrate:run --project "new-project" --template custom-template --deploy
 ```bash
 # Run comprehensive test suite
 npm test -- __tests__/semantic-enhanced-hybrid.test.ts
+```
 
-# Results:
+Results:
+
 ✅ Creative query enhancement: Working
 ✅ Structured query efficiency: Working
 ✅ Out-of-scope rejection: 100%
@@ -772,11 +878,11 @@ npm test -- __tests__/semantic-enhanced-hybrid.test.ts
 ✅ Semantic verification: Working
 ✅ Multi-layer fallback: Working
 ✅ Performance: <100ms average
-```
 
 ### Production Validation
 
 The semantic enhanced hybrid system includes extensive testing:
+
 - Comprehensive test suites for all query types
 - Creative and metaphorical query handling
 - Performance benchmarking with semantic enhancement
@@ -786,18 +892,22 @@ The semantic enhanced hybrid system includes extensive testing:
 ## Migration Completed ✅
 
 ### ✅ Phase 1: Pre-Upgrade Validation (COMPLETE)
+
 - Current system baseline documented
 - Semantic-enhanced hybrid engine created and tested
 
 ### ✅ Phase 2: Integration (COMPLETE)
+
 - CachedEndpointRouter updated to use SemanticEnhancedHybridEngine
 - Multi-layer fallback system implemented and tested
 
 ### ✅ Phase 3: Validation & Testing (COMPLETE)
+
 - All test suites passing with 100% predefined accuracy maintained
 - Creative query optimization verified at 57/100 score
 
 ### ✅ Phase 4: Production Deployment (COMPLETE)
+
 - System deployed and operational since August 2025
 - All production queries now routed through semantic-enhanced hybrid engine
 
@@ -861,13 +971,15 @@ Returns: {
 ### **Integration Points in Query Flow**
 
 1. **Field Discovery**: Provides field mappings for data processing
+
 ```typescript
 // Step 3: EnhancedQueryAnalyzer field extraction
 const queryFields = analyzer.getQueryFields(query);
 // Returns: [{ field: 'MP12207A_B_P', description: 'Red Bull usage' }]
 ```
 
-2. **Endpoint Routing**: Fallback routing when primary systems fail
+1. **Endpoint Routing**: Fallback routing when primary systems fail
+
 ```typescript
 // Fallback routing activation
 if (!hybridResult.success && !semanticResult.success) {
@@ -876,7 +988,8 @@ if (!hybridResult.success && !semanticResult.success) {
 }
 ```
 
-3. **Data Processing Context**: Brand and field context for processors
+1. **Data Processing Context**: Brand and field context for processors
+
 ```typescript
 // Data processors use analyzer field mappings
 const brandContext = analyzer.getBrandContext(query);
@@ -993,3 +1106,33 @@ UnifiedAnalysisWorkflow Results
 *Phase 4 Integration: **All Advanced Features** ✅ FULLY ENABLED*  
 *Advanced Visualization: **3D Mapping & WebGL** ✅ NOW ACTIVE*  
 *Status: All systems operational and handling production queries*
+
+## GitHub-friendly flow diagram (Mermaid)
+
+```mermaid
+flowchart TD
+  A[User Query] --> B[SemanticEnhancedHybridEngine]
+  B -->|High confidence| C[HybridRoutingEngine]
+  B -->|Creative/low confidence| D[SemanticRouter]
+  D --> C
+  C --> E[EnhancedQueryAnalyzer<br/>(Template Fallback)]
+  C -->|Endpoint Selected| F[Endpoint Router]
+  A --> G[GeoAwarenessEngine]
+  G --> F
+  F --> H[/Microservice API Calls/]
+  H --> I[Data Processor Strategy]
+  I --> J[Processed Data<br/>targetVariable + renderer]
+  J --> K[ArcGIS Visualization]
+  I --> L[FieldMappingConfig & ScoreTerminology]
+  L -. ensures .-> J
+  I --> M[BrandNameResolver]
+  M -. brand fields .-> I
+  J --> N[UI: Top Markets & Legend]
+
+  subgraph Notes
+    note1[Renderer.field == targetVariable]
+    note2[Top Markets sorted by targetVariable]
+  end
+  J --> note1
+  N --> note2
+```

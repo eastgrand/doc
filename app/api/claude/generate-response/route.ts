@@ -79,7 +79,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     switch (normalized) {
       case 'strategic_analysis':
       case 'strategic':
-        return 'strategic_score';
+  // Normalize to the unified field name; downstream will also check legacy fallbacks
+  return 'strategic_analysis_score';
       case 'competitive_analysis':
       case 'competitive':
         return 'competitive_analysis_score';
@@ -218,9 +219,45 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
   
   // Sort by the appropriate score field to get full range representation
   const sorted = [...features].sort((a, b) => {
-    const scoreA = a.properties?.[scoreField] ?? a[scoreField] ?? a.value ?? 0;
-    const scoreB = b.properties?.[scoreField] ?? b[scoreField] ?? b.value ?? 0;
-    return scoreB - scoreA; // Highest scores first
+    // Handle both flat and double-nested properties (feature.properties.properties)
+    const propsA = (a && typeof a === 'object') ? (a as any).properties || a : {};
+    const propsB = (b && typeof b === 'object') ? (b as any).properties || b : {};
+    const nestedA = (propsA && typeof propsA === 'object') ? (propsA as any).properties || propsA : propsA;
+    const nestedB = (propsB && typeof propsB === 'object') ? (propsB as any).properties || propsB : propsB;
+
+    // Prefer normalized score field, then legacy, then generic target/value fallbacks
+    const scoreCandidatesA = [
+      nestedA?.[scoreField],
+      propsA?.[scoreField],
+      // Strategic legacy fallbacks
+      nestedA?.strategic_value_score,
+      propsA?.strategic_value_score,
+      nestedA?.strategic_score,
+      propsA?.strategic_score,
+      // Generic fallbacks
+      nestedA?.target_value,
+      propsA?.target_value,
+      (a as any)?.[scoreField],
+      (a as any)?.value
+    ];
+    const scoreCandidatesB = [
+      nestedB?.[scoreField],
+      propsB?.[scoreField],
+      // Strategic legacy fallbacks
+      nestedB?.strategic_value_score,
+      propsB?.strategic_value_score,
+      nestedB?.strategic_score,
+      propsB?.strategic_score,
+      // Generic fallbacks
+      nestedB?.target_value,
+      propsB?.target_value,
+      (b as any)?.[scoreField],
+      (b as any)?.value
+    ];
+
+    const numA = Number(scoreCandidatesA.find((v) => typeof v === 'number' || (typeof v === 'string' && v !== '' && !isNaN(Number(v)))) ?? 0);
+    const numB = Number(scoreCandidatesB.find((v) => typeof v === 'number' || (typeof v === 'string' && v !== '' && !isNaN(Number(v)))) ?? 0);
+    return numB - numA; // Highest scores first
   });
   
   // Use FULL dataset for accurate analysis - no sampling limits
@@ -465,9 +502,9 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         }
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
-        // Use strategic_value_score from nested properties first
-        const strategicScore = nestedProps?.strategic_analysis_score || props?.strategic_value_score || feature?.strategic_value_score || props?.target_value;
-        metricsSection += `   Strategic Value Score: ${strategicScore || 'N/A'}\n`;
+        // Use normalized strategic_analysis_score with legacy fallbacks (preserve exact decimals)
+  const strategicScore = resolveScore(feature, 'strategic_analysis_score', ['strategic_value_score', 'strategic_score']);
+  metricsSection += `   Strategic Value Score: ${strategicScore !== undefined ? strategicScore : 'N/A'}\n`;
         
         if (nestedProps?.demographic_opportunity_score || props?.demographic_opportunity_score) {
           const demoScore = nestedProps?.demographic_opportunity_score || props?.demographic_opportunity_score;
@@ -1185,6 +1222,29 @@ const formatFieldValue = (value: any, fieldName: string, layerConfig: LayerConfi
   // Default to string conversion for any other type
   return String(value);
 };
+
+// Resolve a numeric score from a feature for a given field, handling nested properties and legacy fallbacks
+function resolveScore(feature: any, primaryField: string, legacyFields: string[] = []): number | undefined {
+  try {
+    const props = feature?.properties || feature || {};
+    const nested = props?.properties || props;
+    const candidates: any[] = [
+      nested?.[primaryField],
+      props?.[primaryField],
+      ...legacyFields.flatMap((f) => [nested?.[f], props?.[f]]),
+      nested?.target_value,
+      props?.target_value,
+      feature?.[primaryField],
+      feature?.value
+    ];
+    const chosen = candidates.find((v) => typeof v === 'number' || (typeof v === 'string' && v !== '' && !isNaN(Number(v))));
+    if (chosen === undefined) return undefined;
+    const num = Number(chosen);
+    return isNaN(num) ? undefined : num;
+  } catch {
+    return undefined;
+  }
+}
 
 // **MODIFIED** Sorts a list of attribute objects by a field value
 function sortAttributesByField(attributeList: FeatureProperties[], field: string): FeatureProperties[] {

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" aria-label="Query to Visualization Flow">
+  <style>
+    .box { fill:#f8fafc; stroke:#334155; stroke-width:1.5; rx:8; }
+    .title { font: 600 14px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; fill:#0f172a; }
+    .text { font: 12px system-ui, -apple-system, Segoe UI, Roboto, sans-serif; fill:#334155; }
+    .arrow { stroke:#64748b; stroke-width:1.5; marker-end:url(#arrowHead); }
+    .pill { fill:#e2e8f0; stroke:#cbd5e1; rx:10; }
+  </style>
+  <defs>
+    <marker id="arrowHead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <!-- Row 1 -->
+  <rect class="box" x="20" y="20" width="200" height="70"/>
+  <text class="title" x="40" y="45">User Query</text>
+  <text class="text" x="40" y="66">Natural language request</text>
+
+  <line class="arrow" x1="220" y1="55" x2="270" y2="55"/>
+
+  <rect class="box" x="270" y="20" width="270" height="70"/>
+  <text class="title" x="290" y="45">SemanticEnhancedHybridEngine</text>
+  <text class="text" x="290" y="66">Hybrid validation + semantic verification</text>
+
+  <line class="arrow" x1="540" y1="55" x2="590" y2="55"/>
+
+  <rect class="box" x="590" y="20" width="170" height="70"/>
+  <text class="title" x="610" y="45">GeoAwareness</text>
+  <text class="text" x="610" y="66">Locations, ZIPs, areas</text>
+
+  <line class="arrow" x1="760" y1="55" x2="810" y2="55"/>
+
+  <rect class="box" x="810" y="20" width="150" height="70"/>
+  <text class="title" x="830" y="45">Endpoint</text>
+  <text class="text" x="830" y="66">/strategic, /competitive…</text>
+
+  <!-- Row 2 -->
+  <rect class="box" x="20" y="130" width="250" height="70"/>
+  <text class="title" x="40" y="155">API Route</text>
+  <text class="text" x="40" y="176">Rank by endpoint score, compose prompt</text>
+
+  <line class="arrow" x1="270" y1="165" x2="320" y2="165"/>
+
+  <rect class="box" x="320" y="130" width="270" height="70"/>
+  <text class="title" x="340" y="155">Processor Strategy</text>
+  <text class="text" x="340" y="176">Emit records + targetVariable + renderer</text>
+
+  <line class="arrow" x1="590" y1="165" x2="640" y2="165"/>
+
+  <rect class="box" x="640" y="130" width="320" height="70"/>
+  <text class="title" x="660" y="155">FieldMapping + Terminology</text>
+  <text class="text" x="660" y="176">Normalize score fields, invariant checks</text>
+
+  <!-- Row 3 -->
+  <rect class="box" x="20" y="240" width="300" height="90"/>
+  <text class="title" x="40" y="265">UI: Geospatial Chat</text>
+  <text class="text" x="40" y="286">Top Markets sorted by targetVariable</text>
+  <rect class="pill" x="40" y="295" width="180" height="24"/>
+  <text class="text" x="50" y="312">renderer.field == targetVariable</text>
+
+  <line class="arrow" x1="320" y1="285" x2="370" y2="285"/>
+
+  <rect class="box" x="370" y="240" width="260" height="90"/>
+  <text class="title" x="390" y="265">ArcGIS Visualization</text>
+  <text class="text" x="390" y="286">Class-breaks renderer + legend</text>
+
+  <line class="arrow" x1="630" y1="285" x2="680" y2="285"/>
+
+  <rect class="box" x="680" y="240" width="280" height="90"/>
+  <text class="title" x="700" y="265">Unified Results</text>
+  <text class="text" x="700" y="286">Chat summary + data + charts</text>
+</svg>
