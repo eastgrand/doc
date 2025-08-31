@@ -1115,13 +1115,13 @@ flowchart TD
   B -->|High confidence| C[HybridRoutingEngine]
   B -->|Creative/low confidence| D[SemanticRouter]
   D --> C
-  C --> E[EnhancedQueryAnalyzer<br/>(Template Fallback)]
+  C --> E[EnhancedQueryAnalyzer (Template Fallback)]
   C -->|Endpoint Selected| F[Endpoint Router]
   A --> G[GeoAwarenessEngine]
   G --> F
   F --> H[/Microservice API Calls/]
   H --> I[Data Processor Strategy]
-  I --> J[Processed Data<br/>targetVariable + renderer]
+  I --> J[Processed Data (targetVariable + renderer)]
   J --> K[ArcGIS Visualization]
   I --> L[FieldMappingConfig & ScoreTerminology]
   L -. ensures .-> J
