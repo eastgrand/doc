@@ -12,6 +12,8 @@ import { BrandNameResolver } from '../../utils/BrandNameResolver';
  */
 export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
+  // Prefer canonical; fallback to last numeric field for energy dataset
+  private scoreField: string = 'ensemble_analysis_score';
 
   constructor() {
     this.brandResolver = new BrandNameResolver();
@@ -21,16 +23,7 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
     if (!rawData || typeof rawData !== 'object') return false;
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
-    
-    // Ensemble analysis requires ensemble_analysis_score
-    const hasRequiredFields = rawData.results.length === 0 || 
-      rawData.results.some(record => 
-        record && 
-        ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        (record as any).ensemble_analysis_score !== undefined
-      );
-    
-    return hasRequiredFields;
+    return true; // Dynamic-only: basic shape is enough
   }
 
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {
@@ -40,11 +33,29 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for EnsembleAnalysisProcessor');
     }
 
+    // Determine dynamic field: last numeric only (energy dataset)
+    const detectLastNumericField = (records: any[]): string | null => {
+      if (!Array.isArray(records) || records.length === 0) return null;
+      const sample = records[0];
+      if (!sample || typeof sample !== 'object') return null;
+      const numericKeys = Object.keys(sample).filter(key => {
+        if (key === 'ID' || key === 'id' || key === 'area_id') return false;
+        if (key.toLowerCase().includes('name') || key.toLowerCase().includes('description')) return false;
+        const val = (sample as any)[key];
+        return typeof val === 'number' && !isNaN(val);
+      });
+      return numericKeys.length > 0 ? numericKeys[numericKeys.length - 1] : null;
+    };
+    const dynamic = detectLastNumericField(rawData.results as any[]);
+    if (!dynamic) {
+      throw new Error('[EnsembleAnalysisProcessor] Could not detect a numeric scoring field (last numeric) from records.');
+    }
+    this.scoreField = dynamic;
+
     const processedRecords = rawData.results.map((record: any, index: number) => {
-      const primaryScore = Number((record as any).ensemble_analysis_score);
-      
+      const primaryScore = Number((record as any)[this.scoreField]);
       if (isNaN(primaryScore)) {
-        throw new Error(`Ensemble analysis record ${(record as any).ID || index} is missing ensemble_analysis_score`);
+        throw new Error(`Ensemble analysis record ${(record as any).ID || index} is missing ${this.scoreField}`);
       }
       
       // Generate area name
@@ -54,7 +65,7 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
-      return {
+      const out: any = {
         area_id: recordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
@@ -65,12 +76,20 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           ensemble_analysis_score: primaryScore,
-          score_source: 'ensemble_analysis_score',
+          score_source: this.scoreField,
           target_brand_share: this.extractTargetBrandShare(record),
           total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
           median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
         }
       };
+
+  // Mirror dynamic field value for renderer/consumers when field name differs from ensemble_analysis_score
+  if (this.scoreField && this.scoreField !== 'ensemble_analysis_score') {
+        out[this.scoreField] = out.value;
+        (out.properties as any)[this.scoreField] = out.value;
+      }
+
+      return out;
     });
     
     // Calculate statistics
@@ -94,7 +113,7 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'ensemble_analysis_score',
+      targetVariable: this.scoreField,
       renderer: renderer,
       legend: legend
     };
@@ -130,7 +149,7 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'ensemble_analysis_score',
+      field: this.scoreField,
       classBreakInfos,
       defaultSymbol: {
         type: 'simple-fill',

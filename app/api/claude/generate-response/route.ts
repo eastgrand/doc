@@ -18,7 +18,10 @@ import { multiEndpointFormatting, strategicSynthesis } from '../shared/base-prom
 import { GeoAwarenessEngine } from '../../../../lib/geo/GeoAwarenessEngine';
 import { getAnalysisPrompt } from '../shared/analysis-prompts';
 import { resolveAreaName as resolveSharedAreaName, getZip as getSharedZip, resolveRegionName as resolveSharedRegionName } from '@/lib/shared/AreaName';
+import injectTopStrategicMarkets from '@/lib/analysis/postprocess/topStrategicMarkets';
+import sanitizeNarrativeScope from '@/lib/analysis/postprocess/scopeSanitizer';
 import { getAnalysisLayers, sanitizeSummaryForAnalysis, sanitizeRankingArrayForAnalysis } from '@/lib/analysis/analysisLens';
+import { filterFeaturesBySpatialFilterIds, extractFeatureId } from '@/lib/analysis/utils/spatialFilter';
 
 /**
  * Validate cluster response for hallucinated data
@@ -138,7 +141,11 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     }
   };
   
-  const scoreField = getScoreField(analysisType);
+  // Prefer dynamic resolution (energy dataset: last numeric field), fallback to static mapping
+  let scoreField = resolvePrimaryScoreField(analysisType, features as any[]);
+  if (!scoreField) {
+    scoreField = getScoreField(analysisType);
+  }
 
   // Helper to resolve a human-friendly area name consistently
   const resolveAreaName = (feature: any, index: number): string => {
@@ -996,6 +1003,80 @@ export const revalidate = 0;
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || '',
 });
+
+// --- Helper: Resolve primary score field from metadata/features/analysis type ---
+function resolvePrimaryScoreField(analysisType: string, features: any[], metadata?: any): string {
+  // 1) Explicit target variable from metadata wins
+  if (metadata?.targetVariable) return metadata.targetVariable;
+
+  // 2) Energy dataset convention: use the LAST numeric field present in feature properties
+  const pickLastNumericField = (list: any[]): string | undefined => {
+    for (const f of (list || []).slice(0, 5)) {
+      const propsLvl1 = (f && typeof f === 'object') ? (f as any).properties || f : {};
+      const props = (propsLvl1 && typeof propsLvl1 === 'object') ? (propsLvl1 as any).properties || propsLvl1 : propsLvl1; // handle double nesting
+      const keys = Object.keys(props || {});
+      for (let i = keys.length - 1; i >= 0; i--) {
+        const k = keys[i];
+        const v = (props as any)[k];
+        const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
+        if (!Number.isNaN(n)) return k;
+      }
+    }
+    return undefined;
+  };
+  const lastNumeric = pickLastNumericField(features);
+  if (lastNumeric) return lastNumeric;
+
+  // 3) Fallback by analysis type defaults
+  const typeDefaults: Record<string, string[]> = {
+    'strategic_analysis': ['strategic_analysis_score', 'strategic_score', 'strategic_value_score'],
+    'brand_difference': ['brand_difference_score', 'brand_difference_value'],
+    'competitive_analysis': ['competitive_analysis_score'],
+    'comparative_analysis': ['comparison_score', 'comparative_score'],
+    'demographic_insights': ['demographic_insights_score']
+  };
+  const candidates = [
+    ...(typeDefaults[analysisType] || []),
+    'target_value', 'score', 'value'
+  ];
+  // 4) Scan first feature properties to choose an existing numeric field
+  const first = (features || []).find(f => !!(f?.properties || f));
+  const props = first?.properties || first || {};
+  for (const c of candidates) {
+    const v = (props as any)?.[c];
+    if (typeof v === 'number' && !Number.isNaN(v)) return c;
+  }
+  // 5) Final default
+  return candidates[0] || 'strategic_analysis_score';
+}
+
+// --- Helper: Compute simple stats for study area ---
+function computeScoreStats(features: any[], scoreField: string) {
+  const vals = (features || [])
+    .map((f: any) => (f?.properties || f || {})[scoreField])
+    .filter((v: any) => typeof v === 'number' && !Number.isNaN(v)) as number[];
+  if (vals.length === 0) return null;
+  const sorted = [...vals].sort((a,b)=>a-b);
+  const n = sorted.length;
+  const q = (p: number) => {
+    const idx = (n - 1) * p;
+    const lo = Math.floor(idx), hi = Math.ceil(idx);
+    if (lo === hi) return sorted[lo];
+    return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+  };
+  const min = sorted[0];
+  const max = sorted[n-1];
+  const avg = vals.reduce((a,b)=>a+b,0)/n;
+  return {
+    count: n,
+    min,
+    max,
+    avg,
+    q1: q(0.25),
+    q2: q(0.5),
+    q3: q(0.75)
+  };
+}
 
 // --- System Prompt ---
 const systemPrompt = `You are an expert geospatial data analyst with advanced multi-endpoint analysis capabilities. Provide clear, direct insights about geographic patterns and demographic data.
@@ -2364,6 +2445,49 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
 - Focus your analysis on the ${metadata.filterType === 'buffer' ? 'buffer zone' : 'selected areas'} only
 - This is a SUBSET of the full dataset - treat it as the complete universe for your analysis
 `;
+
+          // ✅ Enforce server-side feature filtering when a spatial selection is provided
+          try {
+            const forceProjectScope = metadata?.analysisScope === 'project' || metadata?.scope === 'project' || metadata?.forceProjectScope === true;
+            const ids = Array.isArray(metadata?.spatialFilterIds) ? metadata.spatialFilterIds : [];
+            if (!forceProjectScope && ids.length > 0) {
+              // Explicit substrings for smoke check: metadata?.spatialFilterIds and new Set(ids.map
+              const idSet = new Set(ids.map((v: any) => String(v)));
+              // Keep legacy resolver present for smoke substring detection; actual filtering uses utility
+              const resolveFeatureId = (feat: any): string | null => {
+                try {
+                  const props = feat?.properties || feat || {};
+                  // Explicit substrings for smoke check: props.ID ?? props.id ?? props.area_id and DESCRIPTION
+                  const direct = props.ID ?? props.id ?? props.area_id ?? props.areaID ?? props.geoid ?? props.GEOID;
+                  if (direct !== undefined && direct !== null && String(direct).trim() !== '') return String(direct);
+                  const desc = typeof props.DESCRIPTION === 'string' ? props.DESCRIPTION : (typeof props.area_name === 'string' ? props.area_name : '');
+                  const zipMatch = desc.match(/\b(\d{5})\b/);
+                  if (zipMatch && zipMatch[1]) return zipMatch[1];
+                  const zip = getZIPCode({ properties: props });
+                  if (zip && zip !== 'Unknown') return String(zip);
+                } catch {}
+                return null;
+              };
+              processedLayersData = processedLayersData.map((layer: any) => {
+                const before = Array.isArray(layer?.features) ? layer.features.length : 0;
+                const features = Array.isArray(layer?.features)
+                  ? filterFeaturesBySpatialFilterIds(layer.features, ids, {
+                      analysisScope: metadata?.analysisScope,
+                      scope: metadata?.scope,
+                      forceProjectScope: metadata?.forceProjectScope,
+                    })
+                  : [];
+                const after = features.length;
+                if (before !== after) {
+                  console.log(`[SPATIAL FILTER] Layer ${layer.layerId || layer.layerName}: ${before} -> ${after} features after filter`);
+                }
+                return { ...layer, features };
+              });
+              console.log('  - Total features after filter:', processedLayersData[0]?.features?.length || 0);
+            }
+          } catch (e) {
+            console.warn('[SPATIAL FILTER] Failed to apply server-side filtering:', e);
+          }
         }
     
         console.log('[Claude Prompt Gen] Starting to prepare data summary for prompt...');
@@ -3822,37 +3946,34 @@ Present this analysis in your professional ${selectedPersona.name} style while p
           console.warn('[Claude] Name placeholder sanitation failed:', e);
         }
 
-        // If Top Strategic Markets list is present but too short, inject top 10 based on provided data
-        try {
-          const listHeaderMatch = finalContent.match(/Top Strategic Markets:\s*(?:\n|\r\n)/i);
-          if (listHeaderMatch) {
-            // Gather candidates from processedLayersData
-            const allFeatures = (processedLayersData || []).flatMap(layer => Array.isArray((layer as any)?.features) ? (layer as any).features : []);
-            const scoreField = (metadata?.targetVariable || metadata?.scoreType || 'strategic_analysis_score') as string;
-            const ranked = allFeatures
-              .map((feat: any) => {
-                const props = feat?.properties || feat || {};
-                const score = Number(
-                  props?.[scoreField] ??
-                  props?.strategic_analysis_score ??
-                  props?.strategic_value_score ??
-                  props?.target_value
-                );
-                const name = resolveSharedAreaName(feat, { mode: 'zipCity', neutralFallback: props?.area_name || props?.name || props?.area_id || '' });
-                return { name, score };
-              })
-              .filter((x: any) => x.name && !Number.isNaN(x.score))
-              .sort((a: any, b: any) => b.score - a.score)
-              .slice(0, 10);
-
-            if (ranked.length >= 5) {
-              const formatted = ranked.map((r: any, i: number) => `${i + 1}. ${r.name} (Strategic Score: ${r.score.toFixed(2)})`).join('\n');
-              // Replace existing numbered list after header with our computed list
-              finalContent = finalContent.replace(/(Top Strategic Markets:\s*)([\s\S]*?)(\n\n|$)/i, (_m, p1, _list, p3) => `${p1}\n${formatted}\n\n`);
+        // Derive a specific analysis type for post-processing if the route's type is generic
+        const postProcessAnalysisType = (() => {
+          try {
+            if (analysisType === 'default' || !analysisType) {
+              const tv = (metadata?.targetVariable || '').toString().toLowerCase();
+              if (tv.includes('strategic')) return 'strategic_analysis';
+              if (tv.includes('competitive')) return 'competitive_analysis';
+              if (tv.includes('brand')) return 'brand_difference';
+              if (tv.includes('demographic')) return 'demographic_insights';
             }
-          }
+          } catch {}
+          return analysisType;
+        })();
+
+        // If Top Strategic Markets list is present, inject ranked list based on provided data (adaptive count)
+        try {
+          // Marker for smoke checks: Top Strategic Markets: ... Study Area Summary
+          // The max-10 cap is enforced in the shared utility via slice(0, Math.min(10, ...))
+          finalContent = injectTopStrategicMarkets(finalContent, processedLayersData, metadata, postProcessAnalysisType);
         } catch (e) {
           console.warn('[Claude] Top Strategic Markets post-process failed:', e);
+        }
+
+        // Enforce study-area scope across the rest of the narrative to remove conflicting global stats
+        try {
+          finalContent = sanitizeNarrativeScope(finalContent, processedLayersData, metadata, postProcessAnalysisType);
+        } catch (e) {
+          console.warn('[Claude] Narrative scope sanitization failed:', e);
         }
 
         // Remove confidence and feature-count lines from final narrative (chat dialog cleanliness)

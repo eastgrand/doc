@@ -1,22 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from 'react';
-import MapView from '@arcgis/core/views/MapView';
+import React, { useEffect, useRef } from 'react';
 import PopupTemplate from '@arcgis/core/PopupTemplate';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import { CustomContent } from '@arcgis/core/popup/content';
-import StatisticDefinition from '@arcgis/core/rest/support/StatisticDefinition';
 import { PopupConfig } from '../../types/popup-config';
 import { createRoot } from 'react-dom/client';
 import { ZoomIn, BarChartBig } from 'lucide-react';
 import './popup-styles.css';
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
-import HitTestOptions from '@arcgis/core/views/HitTestOptions';
 import { getLayerConfigById } from '../../config/layers';
 import { FIELD_ALIASES } from '../../utils/field-aliases';
 import { FieldMappingHelper } from '../../utils/visualizations/field-mapping-helper';
 import { determinePopupTitle, createStandardizedPopupTemplate, StandardizedPopupConfig } from '../../utils/popup-utils';
 import Graphic from '@arcgis/core/Graphic';
-import Handles from '@arcgis/core/core/Handles';
 import { BrandNameResolver } from '../../lib/analysis/utils/BrandNameResolver';
 
 interface CustomPopupManagerProps {
@@ -35,18 +31,7 @@ interface CustomPopupManagerProps {
   zoomToFeature?: (feature: __esri.Graphic) => void;
 }
 
-interface PopupPadding {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-}
-
-interface HitTestResult {
-  type: string;
-  graphic?: __esri.Graphic;
-  layer?: __esri.Layer;
-}
+// Removed unused internal interfaces and imports
 
 interface Metric { 
   label: string; 
@@ -72,14 +57,13 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
 }) => {
   const clickHandleRef = useRef<__esri.Handle | null>(null);
   const intervalRef = useRef<number | null>(null);
-  const popupVisibleRef = useRef<boolean>(false);
-  const selectedFeatureRef = useRef<__esri.Graphic | null>(null);
+  // Removed unused refs
   const observerRef = useRef<MutationObserver | null>(null);
   const viewRef = useRef<__esri.MapView | null>(null);
   const featureLayerRef = useRef<__esri.FeatureLayer | null>(null);
   const initializedRef = useRef<boolean>(false);
   const visibilityHandleRef = useRef<__esri.Handle | null>(null);
-  const [handles] = useState(new Handles());
+  // Removed unused Handles state
   const popupRef = useRef<HTMLDivElement>(null);
 
   // **NEW: Apply standardized popup template (same as AI analysis layers)**
@@ -242,7 +226,7 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
       // Watch layer visibility
       const visibilityHandle = reactiveUtils.watch(
         () => featureLayerRef.current?.visible ?? false,
-        (newValue: boolean) => {
+        () => {
           // Layer visibility changed
         }
       );
@@ -323,8 +307,6 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
       mapView.popup.actions = [];
       
       // 3. Use a safer approach to override popup methods
-      const originalOpen = mapView.popup.open;
-      
       mapView.popup.open = function() {
         return null;
       };
@@ -336,23 +318,12 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
     if (mapView.map) {
       mapView.map.allLayers.forEach(layer => {
         if (layer.type === 'feature') {
-          const featureLayer = layer as __esri.FeatureLayer;
-          featureLayer.popupEnabled = false;
+          (layer as __esri.FeatureLayer).popupEnabled = false;
         }
       });
     }
   }, [mapView]);
-  
-  // Ensure feature layer visibility can be controlled by application
-  useEffect(() => {
-    if (mapView.map) {
-      mapView.map.allLayers.forEach(layer => {
-        if (layer.type === 'feature') {
-          const featureLayer = layer as __esri.FeatureLayer;
-        }
-      });
-    }
-  }, [mapView]);
+  // Removed unused visibility effect
   
   // Define classes that should be protected (never modified)
   const protectedClassNames = [
@@ -472,7 +443,7 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
                   ADDRESSValue: attrs.ADDRESS
                 });
                 
-                createCustomPopup(fullFeature, event.mapPoint);
+                createCustomPopup(fullFeature);
               }
             }).catch(queryError => {
               console.error('[CustomPopupManager] Failed to query for full feature:', queryError);
@@ -485,11 +456,11 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
               });
               
               // Fallback to the original hit feature if the query fails for some reason
-              createCustomPopup(hitFeature, event.mapPoint);
+              createCustomPopup(hitFeature);
             });
           } else {
             // If there's no objectId for some reason, just use the hit feature
-            createCustomPopup(hitFeature, event.mapPoint);
+            createCustomPopup(hitFeature);
           }
         }
       }
@@ -499,7 +470,7 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
   });
   
   // Function to create a custom popup for a feature
-  const createCustomPopup = (feature: __esri.Graphic, location: __esri.Point) => {
+  const createCustomPopup = (feature: __esri.Graphic) => {
     // Create the popup container
     const popupContainer = document.createElement('div');
     popupContainer.className = 'custom-popup theme-popup-container';
@@ -737,7 +708,8 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
     }
     
     // ----------------- SHAP FEATURE IMPORTANCE (optional) -----------------
-    const shapImportanceData = (layer as any).shapFeatureImportance as Array<{ feature: string; importance: number }> | undefined;
+  const shapLayer = layer as FeatureLayer & { shapFeatureImportance?: Array<{ feature: string; importance: number }> };
+  const shapImportanceData = shapLayer.shapFeatureImportance;
     if (shapImportanceData && shapImportanceData.length > 0) {
       const shapContainer = document.createElement('div');
       shapContainer.style.marginTop = '12px';
@@ -867,18 +839,10 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
   window.addEventListener('zoom-to-feature', zoomToFeatureHandler);
   // NOTE: show-infographics handler removed - now handled directly in popup button
   
-  const view = mapView; // No casting needed since interface now specifies MapView
+  // No local alias for view needed
 
   const resizeObserver = new ResizeObserver(() => {
-    if (popupRef.current && popupRef.current.style.display !== 'none') {
-      const popupRect = popupRef.current.getBoundingClientRect();
-      if (view.container) {
-        const viewRect = view.container.getBoundingClientRect();
-        
-        // Adjust padding based on popup position
-        // ... (rest of the padding logic)
-      }
-    }
+    // Placeholder for future responsive adjustments
   });
 
   const popupNode = popupRef.current;
@@ -1013,44 +977,7 @@ const generateBarChart = (
     'var(--firefly-18)', 'var(--firefly-20)', 'var(--firefly-19)', 'var(--firefly-2)'
   ];
   
-  // Helper function to clean layer names for display purposes only
-  const cleanLayerNameForDisplay = (name: string): string => {
-    let cleanName = name;
-    
-    // Remove "2024" from the beginning
-    cleanName = cleanName.replace(/^2024\s+/, '');
-    
-    // Convert "()" to "(%)" at the end
-    if (cleanName.endsWith(' ( )')) {
-      cleanName = cleanName.replace(' ( )', ' (%)');
-    }
-    
-    return cleanName;
-  };
-  
-  // Helper function to clean widget titles for display purposes only
-  const cleanWidgetTitleForDisplay = (name: string): string => {
-    let cleanName = name;
-    
-    // Remove "2024" from the beginning
-    cleanName = cleanName.replace(/^2024\s+/, '');
-    
-    // Remove "()" or "(%)" from the end for widget titles
-    cleanName = cleanName.replace(/\s+\(\s*%?\s*\)$/, '');
-    
-    return cleanName;
-  };
-  
-  // Data type for chart
-  interface LayerData {
-    id: string;
-    name: string;
-    value: number;
-    min: number;
-    max: number;
-    median: number;
-    color: string;
-  }
+  // Removed unused helper functions and interfaces
 
   // Clear the container
   container.innerHTML = "";
@@ -1079,15 +1006,22 @@ const generateBarChart = (
       hasAttributes: !!attrs,
       attributeKeys: Object.keys(attrs),
       attributeValues: attrs,
-      nonZeroValues: Object.entries(attrs).filter(([key, value]) => typeof value === 'number' && value !== 0),
-      allNumericValues: Object.entries(attrs).filter(([key, value]) => typeof value === 'number'),
+  nonZeroValues: Object.entries(attrs).filter(([, value]) => typeof value === 'number' && value !== 0),
+  allNumericValues: Object.entries(attrs).filter(([, value]) => typeof value === 'number'),
       brandFields: brandFields.map(bf => ({ field: bf.fieldName, brand: bf.brandName, value: bf.value })),
       isBrandAnalysis: isBrandAnalysis
     });
     
   const metrics: Metric[] = [];
     
-    // Find the main score field - look for analysis-specific score fields
+  // Prefer the renderer's active field when available
+  let rendererField: string | undefined;
+  const layerRendererUnknown = (feature.layer as __esri.FeatureLayer).renderer as unknown;
+  if (layerRendererUnknown && typeof layerRendererUnknown === 'object' && 'field' in (layerRendererUnknown as Record<string, unknown>)) {
+    rendererField = (layerRendererUnknown as { field?: string }).field;
+  }
+
+  // Find the main score field - prefer renderer.field, then known analysis-specific score fields
     const scoreFields = [
       'brand_difference_score',        // Brand difference analysis
       'strategic_value_score',         // Strategic analysis  
@@ -1115,12 +1049,19 @@ const generateBarChart = (
     ];
     let mainScoreField: string | null = null;
     let mainScoreValue: number = 0;
-    
-    for (const field of scoreFields) {
-      if (typeof attrs[field] === 'number') {
-        mainScoreField = field;
-        mainScoreValue = attrs[field];
-        break;
+
+    // 1) Try renderer.field first if it's numeric on the feature
+    if (rendererField && typeof attrs[rendererField] === 'number') {
+      mainScoreField = rendererField;
+      mainScoreValue = attrs[rendererField];
+    } else {
+      // 2) Fall back to known score fields order
+      for (const field of scoreFields) {
+        if (typeof attrs[field] === 'number') {
+          mainScoreField = field;
+          mainScoreValue = attrs[field];
+          break;
+        }
       }
     }
     
@@ -1128,8 +1069,17 @@ const generateBarChart = (
       // Get all features from the layer to calculate statistics
       const layer = feature.layer as __esri.FeatureLayer;
       if (layer.source) {
-        const allFeatures = (layer.source as any).items || [];
-        const allValues = allFeatures.map((f: any) => f.attributes?.[mainScoreField]).filter((v: any) => typeof v === 'number');
+        const sourceUnknown = layer.source as unknown;
+        let allFeatures: Array<{ attributes?: Record<string, unknown> }> = [];
+        if (sourceUnknown && typeof sourceUnknown === 'object' && 'items' in (sourceUnknown as Record<string, unknown>)) {
+          allFeatures = (sourceUnknown as { items?: Array<{ attributes?: Record<string, unknown> }> }).items ?? [];
+        }
+        const allValues = allFeatures
+          .map((f) => {
+            const v = f.attributes?.[(mainScoreField as string)];
+            return typeof v === 'number' ? v : NaN;
+          })
+          .filter((v) => typeof v === 'number');
         const maxValue = Math.max(...allValues);
         const minValue = Math.min(...allValues);
         const sortedValues = [...allValues].sort((a, b) => a - b);
@@ -1331,9 +1281,9 @@ const generateBarChart = (
     }
 
     // Retrieve friendly names for the underlying fields, if stored on the layer
-    const layerAny = feature.layer as any;
-    const rawPrimaryField = layerAny?.primaryField || 'primary_value';
-    const rawComparisonField = layerAny?.comparisonField || 'comparison_value';
+  const layerWithFields = feature.layer as FeatureLayer & { primaryField?: string; comparisonField?: string };
+  const rawPrimaryField = layerWithFields?.primaryField || 'primary_value';
+  const rawComparisonField = layerWithFields?.comparisonField || 'comparison_value';
 
     // 2) Primary metric
     if (typeof attrs[rawPrimaryField] === 'number') {
@@ -1438,11 +1388,22 @@ const generateBarChart = (
           const layerConfig = getLayerConfigById(layer.id);
 
           // Find a numeric field (exclude the object ID field)
-          const oidField = (layer as any).objectIdField;
+          const oidField = layer.objectIdField;
           
-          // Prioritize rendererField from the config if it exists
-          const rendererField = layerConfig?.rendererField;
-          let numericFieldInfo = rendererField ? layer.fields?.find(f => f.name === rendererField) : undefined;
+          // Prefer the actual renderer.field when present, then config, then first numeric (safe access)
+          let activeRendererField: string | undefined;
+          const layerRendererUnknown = layer.renderer as unknown;
+          if (layerRendererUnknown && typeof layerRendererUnknown === 'object' && 'field' in (layerRendererUnknown as Record<string, unknown>)) {
+            activeRendererField = (layerRendererUnknown as { field?: string }).field;
+          }
+          const configRendererField: string | undefined = layerConfig?.rendererField;
+          let numericFieldInfo = activeRendererField
+            ? layer.fields?.find(f => f.name === activeRendererField)
+            : undefined;
+
+          if (!numericFieldInfo && configRendererField) {
+            numericFieldInfo = layer.fields?.find(f => f.name === configRendererField);
+          }
 
           if (!numericFieldInfo) {
             numericFieldInfo = layer.fields?.find(f =>

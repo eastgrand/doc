@@ -12,6 +12,7 @@ import { BrandNameResolver } from '../../utils/BrandNameResolver';
  */
 export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
+  private scoreField: string = 'consensus_analysis_score';
 
   constructor() {
     this.brandResolver = new BrandNameResolver();
@@ -40,6 +41,26 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for ConsensusAnalysisProcessor');
     }
 
+    // Determine dynamic field: last numeric only (energy dataset convention)
+    const detectLastNumericField = (records: any[]): string | null => {
+      for (const rec of (records || []).slice(0, 5)) {
+        const obj = rec && typeof rec === 'object' ? rec : {};
+        const keys = Object.keys(obj);
+        for (let i = keys.length - 1; i >= 0; i--) {
+          const k = keys[i];
+          const v = (obj as any)[k];
+          const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
+          if (!Number.isNaN(n)) return k;
+        }
+      }
+      return null;
+    };
+    const dynamic = detectLastNumericField(rawData.results as any[]);
+    if (!dynamic) {
+      throw new Error('[ConsensusAnalysisProcessor] Could not detect a numeric scoring field (last numeric) from records.');
+    }
+    this.scoreField = dynamic;
+
     const processedRecords = rawData.results.map((record: any, index: number) => {
       const primaryScore = Number((record as any).consensus_analysis_score);
       
@@ -54,7 +75,7 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
-      return {
+      const out: any = {
         area_id: recordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
@@ -65,12 +86,17 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           consensus_analysis_score: primaryScore,
-          score_source: 'consensus_analysis_score',
+          score_source: this.scoreField,
           target_brand_share: this.extractTargetBrandShare(record),
           total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
           median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
         }
       };
+      if (this.scoreField && this.scoreField !== 'consensus_analysis_score') {
+        out[this.scoreField] = out.value;
+        (out.properties as any)[this.scoreField] = out.value;
+      }
+      return out;
     });
     
     // Calculate statistics
@@ -94,7 +120,7 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'consensus_analysis_score',
+      targetVariable: this.scoreField,
       renderer: renderer,
       legend: legend
     };
@@ -130,7 +156,7 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'consensus_analysis_score',
+      field: this.scoreField,
       classBreakInfos,
       defaultSymbol: {
         type: 'simple-fill',

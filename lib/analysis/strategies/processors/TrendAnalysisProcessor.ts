@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 /**
@@ -10,6 +10,7 @@ import { BrandNameResolver } from '../../utils/BrandNameResolver';
  */
 export class TrendAnalysisProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
+  private scoreField: string = 'trend_analysis_score';
 
   constructor() {
     this.brandResolver = new BrandNameResolver();
@@ -52,6 +53,26 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for TrendAnalysisProcessor');
     }
 
+    // Determine dynamic field: last numeric only (energy dataset)
+    const detectLastNumericField = (records: any[]): string | null => {
+      for (const rec of (records || []).slice(0, 5)) {
+        const obj = rec && typeof rec === 'object' ? rec : {};
+        const keys = Object.keys(obj);
+        for (let i = keys.length - 1; i >= 0; i--) {
+          const k = keys[i];
+          const v = (obj as any)[k];
+          const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
+          if (!Number.isNaN(n)) return k;
+        }
+      }
+      return null;
+    };
+    const dynamic = detectLastNumericField(rawData.results as any[]);
+    if (!dynamic) {
+      throw new Error('[TrendAnalysisProcessor] Could not detect a numeric scoring field (last numeric) from records.');
+    }
+    this.scoreField = dynamic;
+
     // Process records with trend strength scoring priority
     const processedRecords = rawData.results.map((record: any, index: number) => {
       // PRIORITIZE PRE-CALCULATED TREND STRENGTH SCORE
@@ -89,7 +110,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       const trendConsistency = this.calculateTrendConsistency(record);
       const volatilityIndex = this.calculateVolatilityIndex(record);
       
-      return {
+      const out: any = {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         value: Math.round(trendScore * 100) / 100, // Use trend score as primary value
@@ -98,7 +119,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           trend_analysis_score: trendScore,
-          score_source: 'trend_analysis_score',
+          score_source: this.scoreField,
           target_brand_share: targetBrandShare,
           target_brand_name: targetBrand?.brandName || 'Unknown',
           strategic_score: strategicScore,
@@ -113,6 +134,11 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
           trend_category: this.getTrendCategory(trendScore)
         }
       };
+      if (this.scoreField && this.scoreField !== 'trend_analysis_score') {
+        out[this.scoreField] = out.value;
+        (out.properties as any)[this.scoreField] = out.value;
+      }
+      return out;
     });
     
     // Calculate comprehensive statistics
@@ -133,7 +159,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'trend_analysis_score', // Use exact field name from endpoint mapping
+      targetVariable: this.scoreField, // Use dynamic or canonical
       renderer: this.createTrendRenderer(rankedRecords), // Add direct renderer
       legend: this.createTrendLegend(rankedRecords) // Add direct legend
     };
@@ -190,12 +216,12 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     const targetBrand = brandFields.find(bf => bf.isTarget);
     const targetBrandShare = targetBrand?.value || 0;
     
-    const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
-    const marketGap = Math.max(0, 100 - targetBrandShare);
+  const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
+  const marketGap = Math.max(0, 100 - targetBrandShare);
     
     // Growth potential formula: Market Gap (60%) + Demographic Opportunity (40%)
     const gapPotential = (marketGap / 100) * 60;
-    const demoPotential = demographicScore > 0 ? (demographicScore / 100) * 40 : 20;
+  const demoPotential = demographicScore > 0 ? (demographicScore / 100) * 40 : 20;
     
     return Math.round((gapPotential + demoPotential) * 100) / 100;
   }
@@ -532,7 +558,7 @@ Higher scores indicate stronger, more consistent, and predictable market trends.
     
     return {
       type: 'class-breaks',
-      field: 'trend_analysis_score', // Use correct scoring field
+      field: this.scoreField, // Use dynamic or canonical scoring field
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

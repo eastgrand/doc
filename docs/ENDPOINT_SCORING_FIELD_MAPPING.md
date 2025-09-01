@@ -1,6 +1,8 @@
 # Endpoint Scoring Field Mapping
 
-This document provides the definitive mapping between endpoint files and their corresponding scoring fields that processors should use. The scoring field is always the **last field** in each data object.
+This document provides the definitive mapping between endpoint files and their corresponding scoring fields that processors should use.
+
+Important for current project (Energy dataset): The scoring field is dynamically detected as the last numeric field in each record. This accommodates datasets where the canonical name (e.g., strategic_analysis_score) may appear as strategic_score or similar but remains the last numeric property. Dynamic-only is enforced: if a scoring field cannot be detected, processing fails fast with an explicit error (no canonical fallbacks).
 
 ## Key Finding: All Scoring Scripts Exist
 
@@ -10,7 +12,7 @@ All endpoints have corresponding scoring scripts in `/scripts/scoring/`. The end
 
 ## Endpoint to Scoring Field Mapping
 
-| Endpoint File | Processor Name | Scoring Field | Claude API Field | Status |
+| Endpoint File | Processor Name | Canonical Score (legacy docs) | Claude API Field | Status |
 |---------------|----------------|---------------|------------------|---------|
 | strategic-analysis.json | StrategicAnalysisProcessor | `strategic_analysis_score` | `strategic_analysis_score` | ✅ |
 | competitive-analysis.json | CompetitiveDataProcessor | `competitive_analysis_score` | `competitive_analysis_score` | ✅ |
@@ -38,12 +40,26 @@ All endpoints have corresponding scoring scripts in `/scripts/scoring/`. The end
 | algorithm-comparison.json | AlgorithmComparisonProcessor | `algorithm_comparison_score` | `algorithm_comparison_score` | ✅ |
 | analyze.json | AnalyzeProcessor | `analysis_score` | `analysis_score` | ✅ |
 
+### Project Overrides (Energy Dataset)
+
+Dynamic-only policy is enforced. For the current energy dataset, the runtime system detects the scoring field dynamically as the last numeric field per record.
+
+Observed examples:
+
+- strategic-analysis: last numeric field often appears as `strategic_score` (renderer.field and targetVariable will be set to that key). For compatibility, processors may mirror the detected value into canonical-named fields in the output object/properties.
+- Other endpoints follow the same “last numeric field wins” rule. If no numeric field can be detected, processors throw an explicit error. No canonical fallbacks are used.
+
+Runtime behavior summary:
+
+- Ranking, renderer.field, legend, and targetVariable all reference the dynamically detected field.
+- Processor output may also include the canonical score name for downstream compatibility, but it is not used to select the scoring field.
+
 ## Key Findings
 
  
 ### Standard Pattern
 
-Most endpoints follow the pattern: `{endpoint_name}_score` as the final field.
+Most endpoints follow the pattern: `{endpoint_name}_score` as the final field. For the energy dataset, we enforce “last numeric field wins,” which typically corresponds to that pattern (e.g., `strategic_score` as last field).
 
  
 ### Special Cases
@@ -84,75 +100,52 @@ All processors have been created and are now fully functional:
  
 ### For Existing Processors
 
-Update the `targetVariable` property to use the exact scoring field name from this mapping.
-
-Example:
- 
-```typescript
-return {
-  // ... other properties
-  targetVariable: 'strategic_analysis_score', // Use exact field name
-  // ... rest of return object
-};
-```
+- Set `targetVariable` to the dynamically detected field (last numeric field).
+- Set `renderer.field` to the same detected field.
+- Optionally mirror the detected value into the canonical field name in the output for compatibility.
+- If detection fails, throw an explicit error; do not fallback to canonical names.
 
  
 ### For Score Extraction
 
-Update score extraction methods to prioritize the correct scoring field:
-
-```typescript
-private extractScore(record: any): number {
-  // Check for the correct scoring field first
-  if (record.strategic_analysis_score !== undefined && record.strategic_analysis_score !== null) {
-    return Number(record.strategic_analysis_score);
-  }
-  
-  // Fallback to legacy fields for backward compatibility
-  // ... fallback logic
-}
-```
+Prefer reading the value from the detected dynamic field. You may also copy that value into canonical-named fields for consumers that expect them, but field selection itself must be dynamic-only. If the detected field isn’t present or isn’t numeric, throw an error.
 
  
 ### Field Validation
 
-Update validation methods to check for the correct scoring field:
-
-```typescript
-validate(rawData: RawAnalysisResult): boolean {
-  // ... existing validation
-  
-  const hasCorrectScoringField = rawData.results.some(record => 
-    record.strategic_analysis_score !== undefined // Use correct field
-  );
-  
-  return hasCorrectScoringField;
-}
-```
+Validation should confirm basic shape (success flag and array of results). Don’t require canonical score fields. Rely on runtime dynamic detection to determine the score field; if none can be found, throw an explicit error in processing.
 
 ## Critical Rules
 
-1. **Always use the last field** from the endpoint JSON objects
-2. **Maintain backward compatibility** by checking legacy fields as fallbacks
-3. **Use exact field names** - no approximations or variations
-4. **Prioritize the current scoring field** over legacy alternatives
+1. Detect the scoring field as the **last numeric field** in each record (energy dataset convention), dynamic-only.
+2. If detection fails, **throw an explicit error**; do not fallback to canonical fields.
+3. Ensure `renderer.field === targetVariable === detectedField` for every processor.
+4. Optionally mirror values into canonical names for compatibility, but never to select the scoring field.
+
+## Spatial Filtering (server-side)
+
+ When `metadata.spatialFilterIds` is provided, the API route enforces server-side filtering of features unless the scope is `project`.
+ ID extraction sources (in order):
+
+ 1) `ID`, `id`, `area_id`, `areaID`, `geoid`, `GEOID`
+ 2) Extract ZIP-like token from `DESCRIPTION` or `area_name` (supports formats like `11234 (Brooklyn)`, `ZIP 08544 - Princeton`)
+ 3) Otherwise, feature is excluded from spatial filtering
+ A small utility `lib/analysis/utils/spatialFilter.ts` implements this logic with tests.
 
  
 ## Last Updated
 
-Generated: 2025-08-17
+Generated: 2025-08-31
 Based on: Systematic audit of all endpoint JSON files in `/public/data/endpoints/`
 
 ## Legacy Precision Note (Strategic)
 
-- System-wide normalization uses `strategic_analysis_score` for sorting, renderer.field, and Top Markets.
-- Legacy datasets may include `strategic_value_score` and `strategic_score`. Processors expose `strategic_analysis_score` and preserve legacy values in properties.
-- Strategic narrative prompts may reference `strategic_value_score` explicitly to preserve exact decimals in text. This does not affect sorting/ranking, which always use `strategic_analysis_score` with legacy fallbacks.
+- Processors may mirror values into `strategic_analysis_score` for compatibility, but selection is dynamic-only (last numeric field). No canonical fallbacks are used for field selection.
 
 ## Quick Verification Checklist
 
-- Renderer field equals `targetVariable` for each processor output.
-- Top 5/Top Markets in UI are sorted by the same field as the renderer.
-- Claude API route ranks by the endpoint’s score with fallbacks to legacy fields; no hard 3-item cap in narratives.
-- FieldMappingConfig.getPrimaryScoreField returns the same field the processor uses as `targetVariable`.
-- ScoreTerminology scoreFieldName matches the endpoint mapping (e.g., `/strategic-analysis` → `strategic_analysis_score`).
+- Renderer field equals `targetVariable` and both equal the detected dynamic field.
+- Top 5/Top Markets in UI are sorted by the same dynamic field as the renderer.
+- Claude API route never calls microservices; ranking uses the detected dynamic field; no legacy fallbacks.
+- FieldMappingConfig.getPrimaryScoreField (if present) must align with the detected dynamic field.
+- ScoreTerminology scoreFieldName remains consistent for narratives, but does not influence field selection.

@@ -3,6 +3,8 @@ import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 export class BrandAnalysisProcessor implements DataProcessorStrategy {
+  // Prefer canonical; fallback to last numeric field for energy dataset
+  private scoreField: string = 'brand_analysis_score';
   private brandResolver: BrandNameResolver;
 
   constructor() {
@@ -17,6 +19,23 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
     if (!rawData.success) {
       throw new Error(rawData.error || 'Brand analysis failed');
     }
+
+    // Detect dynamic score field (canonical-first, else last numeric field)
+    const canonical = 'brand_analysis_score';
+    const detectLastNumericField = (records: any[]): string | null => {
+      for (const r of (records || []).slice(0, 5)) {
+        const keys = Object.keys(r || {});
+        for (let i = keys.length - 1; i >= 0; i--) {
+          const k = keys[i];
+          const v = (r as any)[k];
+          const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
+          if (!Number.isNaN(n)) return k;
+        }
+      }
+      return null;
+    };
+    const anyHasCanonical = Array.isArray(rawData.results) && rawData.results.some((record: any) => (record?.[canonical] !== undefined));
+    this.scoreField = anyHasCanonical ? canonical : (detectLastNumericField(rawData.results as any[]) || canonical);
 
     const records = rawData.results.map((record: any, index: number) => {
       // Brand analysis requires actual brand scores, not market share differences
@@ -85,7 +104,7 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance: rawData.feature_importance || [],
       statistics,
-      targetVariable: 'brand_analysis_score'
+      targetVariable: this.scoreField
     };
   }
 

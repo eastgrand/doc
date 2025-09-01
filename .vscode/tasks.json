@@ -13,6 +13,59 @@
 			"type": "shell",
 			"command": "echo \"Testing geospatial-chat-interface visualization and analysis workings. The updated code should now display processing steps and a simulated analysis response.\"",
 			"group": "test"
+		},
+		{
+			"label": "Unit: strategic top markets post-process",
+			"type": "shell",
+			"command": "node -e \"const fs=require('fs');const text=fs.readFileSync('./app/api/claude/generate-response/route.ts','utf8');console.log(/Top Strategic Markets:[\\s\\S]*Study Area Summary|slice\\(0, Math.min\\(10/.test(text)?'OK':'MISSING')\"",
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Quick node smoke: spatialFilterIds filtering logic",
+			"type": "shell",
+			"command": "node - <<'NODE' \nconst fs=require('fs');\nconst path='./app/api/claude/generate-response/route.ts';\nconst src=fs.readFileSync(path,'utf8');\nconst hasFilter = src.includes('metadata?.spatialFilterIds') && src.includes('new Set(ids.map');\nconst hasIdExtraction = src.includes('props.ID ?? props.id ?? props.area_id') && src.includes('DESCRIPTION');\nconsole.log(JSON.stringify({hasFilter, hasIdExtraction}));\nNODE",
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Jest: strategic processor quick tests",
+			"type": "shell",
+			"command": "npm run -s test -- lib/analysis/strategies/processors/__tests__/StrategicAnalysisProcessor.name.test.ts lib/analysis/strategies/processors/__tests__/StrategicAnalysis.e2e.test.ts",
+			"problemMatcher": [
+				"$jest-stylish"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Jest: topStrategicMarkets tests",
+			"type": "shell",
+			"command": "npm run -s test -- lib/analysis/postprocess/__tests__/topStrategicMarkets.test.ts",
+			"problemMatcher": [
+				"$jest-stylish"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Unit: strategic top markets post-process",
+			"type": "shell",
+			"command": "node -e \"const fs=require('fs');const text=fs.readFileSync('./app/api/claude/generate-response/route.ts','utf8');console.log(/Top Strategic Markets:[\\s\\S]*Study Area Summary|slice\\(0, Math.min\\(10/.test(text)?'OK':'MISSING')\"",
+			"group": "test"
+		},
+		{
+			"label": "Unit: strategic top markets post-process",
+			"type": "shell",
+			"command": "node -e \"const fs=require('fs');const text=fs.readFileSync('./app/api/claude/generate-response/route.ts','utf8');console.log(/Top Strategic Markets:[\\s\\S]*Study Area Summary|slice\\(0, Math.min\\(10/.test(text)?'OK':'MISSING')\"",
+			"group": "test"
+		},
+		{
+			"label": "Jest: dynamic field alignment tests",
+			"type": "shell",
+			"command": "npm run -s test -- lib/analysis/strategies/processors/__tests__/DynamicFieldAlignment.e2e.test.ts",
+			"problemMatcher": [
+				"$jest-stylish"
+			],
+			"group": "test"
 		}
 	]
 }

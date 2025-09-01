@@ -12,6 +12,8 @@ import { BrandNameResolver } from '../../utils/BrandNameResolver';
  */
 export class ModelPerformanceProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
+  // Prefer canonical; fallback to last numeric field for energy dataset
+  private scoreField: string = 'model_performance_score';
 
   constructor() {
     this.brandResolver = new BrandNameResolver();
@@ -22,12 +24,26 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Model performance requires model_performance_score
+    // Detect last numeric score field for dynamic support
+    const detectLastNumericField = (records: any[]): string | null => {
+      if (!Array.isArray(records) || records.length === 0) return null;
+      const sample = records[0];
+      if (!sample || typeof sample !== 'object') return null;
+      const numericKeys = Object.keys(sample).filter(key => {
+        if (key === 'ID' || key === 'id' || key === 'area_id') return false;
+        if (key.toLowerCase().includes('name') || key.toLowerCase().includes('description')) return false;
+        const val = (sample as any)[key];
+        return typeof val === 'number' && !isNaN(val);
+      });
+      return numericKeys.length > 0 ? numericKeys[numericKeys.length - 1] : null;
+    };
+    
+    // Model performance prefers canonical; allow dynamic numeric field fallback
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
         ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        (record as any).model_performance_score !== undefined
+        (((record as any).model_performance_score !== undefined) || detectLastNumericField([record]) !== null)
       );
     
     return hasRequiredFields;
@@ -40,11 +56,28 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for ModelPerformanceProcessor');
     }
 
+    // Determine dynamic field: prefer canonical, else last numeric (energy dataset)
+    const canonical = 'model_performance_score';
+    const detectLastNumericField = (records: any[]): string | null => {
+      if (!Array.isArray(records) || records.length === 0) return null;
+      const sample = records[0];
+      if (!sample || typeof sample !== 'object') return null;
+      const numericKeys = Object.keys(sample).filter(key => {
+        if (key === 'ID' || key === 'id' || key === 'area_id') return false;
+        if (key.toLowerCase().includes('name') || key.toLowerCase().includes('description')) return false;
+        const val = (sample as any)[key];
+        return typeof val === 'number' && !isNaN(val);
+      });
+      return numericKeys.length > 0 ? numericKeys[numericKeys.length - 1] : null;
+    };
+    const anyHasCanonical = (rawData.results as any[]).some(record => (record as any)[canonical] !== undefined);
+    this.scoreField = anyHasCanonical ? canonical : (detectLastNumericField(rawData.results as any[]) || canonical);
+
     const processedRecords = rawData.results.map((record: any, index: number) => {
-      const primaryScore = Number((record as any).model_performance_score);
+      const primaryScore = Number((record as any)[this.scoreField]);
       
       if (isNaN(primaryScore)) {
-        throw new Error(`Model performance record ${(record as any).ID || index} is missing model_performance_score`);
+        throw new Error(`Model performance record ${(record as any).ID || index} is missing ${this.scoreField}`);
       }
       
       // Generate area name
@@ -54,7 +87,7 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
-      return {
+      const out: any = {
         area_id: recordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
@@ -65,12 +98,19 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           model_performance_score: primaryScore,
-          score_source: 'model_performance_score',
+          score_source: this.scoreField,
           target_brand_share: this.extractTargetBrandShare(record),
           total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
           median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
         }
       };
+
+      if (this.scoreField && this.scoreField !== canonical) {
+        out[this.scoreField] = out.value;
+        (out.properties as any)[this.scoreField] = out.value;
+      }
+
+      return out;
     });
     
     // Calculate statistics
@@ -94,7 +134,7 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'model_performance_score',
+      targetVariable: this.scoreField,
       renderer: renderer,
       legend: legend
     };
@@ -130,7 +170,7 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'model_performance_score',
+      field: this.scoreField,
       classBreakInfos,
       defaultSymbol: {
         type: 'simple-fill',

@@ -88,13 +88,13 @@ User Query
     └── Performance Optimization (sampling, caching, timeouts)
     ↓
 [Blob Data Fetch (Vercel Blob Storage)]
-  ├── strategic-analysis → public/data/blob-urls.json["strategic-analysis"]
-  ├── analyze → public/data/blob-urls.json["analyze"]
-  ├── demographic-insights → public/data/blob-urls.json["demographic-insights"]
-  ├── brand-difference → public/data/blob-urls.json["brand-difference"]
-  ├── competitive-analysis → public/data/blob-urls.json["competitive-analysis"]
-  ├── comparative-analysis → public/data/blob-urls.json["comparative-analysis"]
-  └── correlation-analysis → public/data/blob-urls.json["correlation-analysis"]
+  ├── strategic-analysis → public/data/blob-urls-energy.json["strategic-analysis"]
+  ├── analyze → public/data/blob-urls-energy.json["analyze"]
+  ├── demographic-insights → public/data/blob-urls-energy.json["demographic-insights"]
+  ├── brand-difference → public/data/blob-urls-energy.json["brand-difference"]
+  ├── competitive-analysis → public/data/blob-urls-energy.json["competitive-analysis"]
+  ├── comparative-analysis → public/data/blob-urls-energy.json["comparative-analysis"]
+  └── correlation-analysis → public/data/blob-urls-energy.json["correlation-analysis"]
     ↓
 [Data Processor Strategy]
     ├── Validation
@@ -155,6 +155,7 @@ This concise file-by-file trace reflects the exact code paths exercised in the c
   - `app/api/claude/generate-response/route.ts`
     - Aggregates features, selects score field per endpoint, ranks by score, and composes analysis prompts.
     - Strategic: uses `strategic_analysis_score` and robust fallbacks (nested/legacy) via score resolution helpers.
+  - Delegates the “Top Strategic Markets” block to a shared server-side injector. This enforces selection-only ranking, caps the list at max 10, and prepends a “Study Area Summary” without altering any other lines (e.g., “Data not available”).
 
 - Score field mapping and terminology
   - `lib/analysis/utils/FieldMappingConfig.ts`
@@ -178,6 +179,29 @@ This concise file-by-file trace reflects the exact code paths exercised in the c
 - Shared helpers used in both API and UI
   - `lib/shared/AreaName.ts`
     - Consistent area/ZIP name resolution for narratives, tooltips, and summaries.
+
+### Server-side Top Markets post-processing (selection-only, max-10, with summary)
+
+- Module: `lib/analysis/postprocess/topStrategicMarkets.ts`
+- Called from: `app/api/claude/generate-response/route.ts`
+- Behavior:
+  - Filters candidate features to the active study area via `metadata.spatialFilterIds` (robust ID/ZIP resolution).
+  - Resolves the appropriate score field per analysis type (e.g., `strategic_analysis_score`).
+  - Sorts descending, caps to at most 10 entries, and formats as a ranked list.
+  - Prepends a “Study Area Summary” (count, average, range, quartiles) above the list.
+  - Preserves all non-list narrative lines unchanged, including “Data not available”.
+  - Override: Set `metadata.analysisScope = 'project'` (or `forceProjectScope=true`) to bypass `spatialFilterIds` and rank across the entire dataset.
+
+### Server-side scope sanitizer (study-area consistency)
+
+- Module: `lib/analysis/postprocess/scopeSanitizer.ts`
+- Called from: `app/api/claude/generate-response/route.ts` after Top Markets injection
+- Behavior:
+  - Normalizes the top-line “Analyzing N areas…” and overview counts to match the active study area.
+  - Replaces average/range/std dev with server-computed study-area stats for the correct score field.
+  - Removes conflicting AI-generated distribution/cluster blocks that don’t reflect the selection.
+  - Collapses excess blank lines introduced by removals.
+  - Override: Honors `metadata.analysisScope = 'project'` (or `forceProjectScope=true`) to treat the entire dataset as the study area, even if `spatialFilterIds` are present.
 
 ### Flow summary (runtime path)
 
@@ -1122,6 +1146,9 @@ flowchart TD
   F --> H[Blob Data Fetch]
   H --> I[Data Processor Strategy]
   I --> J[Processed Data targetVariable + renderer]
+  J --> J2[Server Post-Processing: Top Markets Injector]
+  J2 -- selection-only, max-10, summary --> J3[Server Post-Processing: Scope Sanitizer]
+  J3 -- study-area metrics only --> K
   J --> K[ArcGIS Visualization]
   I --> L[FieldMappingConfig and ScoreTerminology]
   L -- ensures --> J

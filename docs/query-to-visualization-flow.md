@@ -26,7 +26,7 @@ This document provides a comprehensive walkthrough of the **current** query-to-v
 ### **Key Data Sources**
 1. **Blob Storage Data**: 16 optimized endpoint datasets (Nike-focused, GIS metadata removed)
 2. **EnhancedQueryAnalyzer**: Field mappings for brands, demographics, lifestyle terms
-3. **Vercel Blob URLs**: External hosting via `public/data/blob-urls.json`
+3. **Vercel Blob URLs**: External hosting via `public/data/blob-urls-energy.json`
 4. **No Live Services**: System operates on cached blob data for performance and reliability
 
 ---
@@ -111,7 +111,7 @@ const data = await this.callEndpoint("/demographic-insights", query, options);
 - **Cache Check**: Looks for cached data for `demographic-insights`
 - **Blob Storage Loading**: If not cached, loads from Vercel Blob storage
 - **Data Source**: `loadEndpointData()` from `utils/blob-data-loader.ts`
-- **URL Resolution**: Maps endpoint to blob URL via `public/data/blob-urls.json`
+- **URL Resolution**: Maps endpoint to blob URL via `public/data/blob-urls-energy.json`
 
 ---
 

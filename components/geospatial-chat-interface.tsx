@@ -1609,14 +1609,18 @@ const EnhancedGeospatialChat = memo(({
       }] : [];
       
       // Call Claude API for contextual response
-      requestPayload = {
+    requestPayload = {
         messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
         metadata: {
           query,
           analysisType: lastAnalysisEndpoint ? lastAnalysisEndpoint.replace('/', '').replace(/-/g, '_') : 'contextual_chat',
           relevantLayers: [dataSource.layerId],
           isContextualChat: true, // Flag to indicate this is contextual, not new analysis
-          contextualData // Include all the contextual analysis state
+      contextualData, // Include all the contextual analysis state
+      // Ensure server post-processing has explicit scope hints
+      analysisScope: 'project',
+      // Provide target variable when available to align score fields
+      targetVariable: currentTarget || undefined
         },
         featureData: processedLayersForClaude,
         persona: selectedPersona,
@@ -2698,7 +2702,7 @@ const EnhancedGeospatialChat = memo(({
           } catch { return []; }
         })();
 
-        const claudePayload = {
+  const claudePayload = {
             messages: [{ 
               role: 'user', 
               content: (() => {
@@ -2725,7 +2729,10 @@ const EnhancedGeospatialChat = memo(({
               processingTime: Date.now() - startTime,
               // CRITICAL: Include cluster analysis information
               isClustered: hasClusterAnalysis,
-              clusterAnalysis: hasClusterAnalysis ? finalAnalysisResult.data.summary : null
+              clusterAnalysis: hasClusterAnalysis ? finalAnalysisResult.data.summary : null,
+              // Explicit scope flags for server-side post-processing
+              analysisScope: 'project',
+              spatialFilterIds: []
             },
             // Use the expected ProcessedLayerResult format with REAL analysis data
             featureData: [{

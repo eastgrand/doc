@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
 
 /**
  * CorrelationAnalysisProcessor - Handles data processing for the /correlation-analysis endpoint
@@ -8,6 +8,8 @@ import { DynamicFieldDetector } from './DynamicFieldDetector';
  * across geographic areas, using pre-calculated correlation strength scores.
  */
 export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
+  // Prefer canonical; fallback to last numeric field for energy dataset
+  private scoreField: string = 'correlation_analysis_score';
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
@@ -42,6 +44,26 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for CorrelationAnalysisProcessor');
     }
 
+    // Choose dynamic score field: prefer canonical if present, else last numeric (energy dataset)
+    const detectLastNumericField = (records: any[]): string | null => {
+      for (const rec of (records || []).slice(0, 5)) {
+        const obj = rec && typeof rec === 'object' ? rec : {};
+        const keys = Object.keys(obj);
+        for (let i = keys.length - 1; i >= 0; i--) {
+          const k = keys[i];
+          const v = (obj as any)[k];
+          const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
+          if (!Number.isNaN(n)) return k;
+        }
+      }
+      return null;
+    };
+    const dynamic = detectLastNumericField(rawData.results as any[]);
+    if (!dynamic) {
+      throw new Error('[CorrelationAnalysisProcessor] Could not detect a numeric scoring field (last numeric) from records.');
+    }
+    this.scoreField = dynamic;
+
     // Process records with correlation information
     const records = this.processCorrelationRecords(rawData.results);
     
@@ -63,7 +85,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
     const featureImportance = this.processCorrelationFeatureImportance(rawData.feature_importance || []);
     
     // Generate correlation summary
-    const summary = this.generateCorrelationSummary(records, correlationAnalysis, rawData.summary);
+  const summary = this.generateCorrelationSummary(records, correlationAnalysis);
 
     console.log(`[CorrelationAnalysisProcessor] Final result summary:`, {
       type: 'correlation_analysis',
@@ -78,7 +100,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'correlation_analysis_score', // Use the correlation analysis specific score
+      targetVariable: this.scoreField, // dynamic or canonical
       renderer: this.createCorrelationRenderer(records), // Add direct renderer
       legend: this.createCorrelationLegend(records), // Add direct legend
       correlationAnalysis // Additional metadata for correlation visualization
@@ -101,7 +123,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       const value = correlationScore;
       
       // Extract correlation-specific properties (updated for actual dataset fields)
-      const properties = {
+  const properties = {
         ...this.extractProperties(record),
         correlation_analysis_score: correlationScore,
         correlation_score: correlationScore, // Alternative field
@@ -116,6 +138,8 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
         white_population: Number((record as any).value_WHITE_CY || (record as any).white_population) || 0,
         correlation_strength: this.getCorrelationStrengthLevel(correlationScore)
       };
+  // Also expose the dynamic score field for renderer parity
+  (properties as any)[this.scoreField] = correlationScore;
       
       // Extract SHAP values
       const shapValues = this.extractShapValues(record);
@@ -123,7 +147,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       // Category based on correlation strength
       const category = this.getCorrelationCategory(correlationScore);
 
-      return {
+      const out: any = {
         area_id,
         area_name,
         value,
@@ -136,6 +160,11 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
         properties,
         shapValues
       };
+      // Add dynamic score field at top level if different from canonical
+      if (this.scoreField && this.scoreField !== 'correlation_analysis_score') {
+        out[this.scoreField] = correlationScore;
+      }
+      return out;
     }).sort((a, b) => b.value - a.value) // Sort by correlation strength
       .map((record, index) => ({ ...record, rank: index + 1 })); // Assign ranks
   }
@@ -414,8 +443,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
 
   private generateCorrelationSummary(
     records: GeographicDataPoint[], 
-    correlationAnalysis: any, 
-    rawSummary?: string
+    correlationAnalysis: any
   ): string {
     const recordCount = records.length;
     const avgScore = records.reduce((sum, r) => sum + r.value, 0) / recordCount;
@@ -539,7 +567,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'correlation_analysis_score', // Use correct scoring field
+      field: this.scoreField, // Use dynamic or canonical scoring field
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

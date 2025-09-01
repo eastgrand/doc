@@ -12,6 +12,7 @@ import { BrandNameResolver } from '../../utils/BrandNameResolver';
  */
 export class AnalyzeProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
+  private scoreField: string = 'analysis_score';
 
   constructor() {
     this.brandResolver = new BrandNameResolver();
@@ -20,17 +21,9 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
     if (!rawData.success) return false;
-    if (!Array.isArray(rawData.results)) return false;
-    
-    // Analyze requires analysis_score (correct endpoint field)
-    const hasRequiredFields = rawData.results.length === 0 || 
-      rawData.results.some(record => 
-        record && 
-        ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        ((record as any).analysis_score !== undefined || (record as any).analyze_score !== undefined)
-      );
-    
-    return hasRequiredFields;
+  if (!Array.isArray(rawData.results)) return false;
+  // Dynamic-only: don't require canonical fields; basic shape is enough
+  return true;
   }
 
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {
@@ -40,8 +33,28 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for AnalyzeProcessor');
     }
 
+    // Determine dynamic field: last numeric field only (energy dataset contract)
+    const detectLastNumericField = (records: any[]): string | null => {
+      for (const rec of (records || []).slice(0, 5)) {
+        const obj = rec && typeof rec === 'object' ? rec : {};
+        const keys = Object.keys(obj);
+        for (let i = keys.length - 1; i >= 0; i--) {
+          const k = keys[i];
+          const v = (obj as any)[k];
+          const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
+          if (!Number.isNaN(n)) return k;
+        }
+      }
+      return null;
+    };
+    const dynamic = detectLastNumericField(rawData.results as any[]);
+    if (!dynamic) {
+      throw new Error('[AnalyzeProcessor] Could not detect a numeric scoring field (last numeric) from records.');
+    }
+    this.scoreField = dynamic;
+
     const processedRecords = rawData.results.map((record: any, index: number) => {
-      const primaryScore = Number((record as any).analysis_score || (record as any).analyze_score);
+  const primaryScore = Number((record as any)[this.scoreField]);
       
       if (isNaN(primaryScore)) {
         throw new Error(`Analyze record ${(record as any).ID || index} is missing analysis_score`);
@@ -54,23 +67,28 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
-      return {
+      const out: any = {
         area_id: recordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
-        analysis_score: Math.round(primaryScore * 100) / 100,
+  analysis_score: Math.round(primaryScore * 100) / 100,
         rank: 0, // Will be calculated after sorting
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           analysis_score: primaryScore,
-          score_source: 'analysis_score',
+          score_source: this.scoreField,
           target_brand_share: this.extractTargetBrandShare(record),
           total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
           median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
         }
       };
+  if (this.scoreField && this.scoreField !== 'analysis_score') {
+        out[this.scoreField] = out.value;
+        (out.properties as any)[this.scoreField] = out.value;
+      }
+      return out;
     });
     
     // Calculate statistics
@@ -94,7 +112,7 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'analysis_score',
+      targetVariable: this.scoreField,
       renderer: renderer,
       legend: legend
     };
@@ -130,7 +148,7 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-  field: 'analysis_score',
+  field: this.scoreField,
       classBreakInfos,
       defaultSymbol: {
         type: 'simple-fill',
