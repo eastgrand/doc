@@ -1,5 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 export class BrandAnalysisProcessor implements DataProcessorStrategy {
@@ -20,26 +20,12 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
       throw new Error(rawData.error || 'Brand analysis failed');
     }
 
-    // Detect dynamic score field (canonical-first, else last numeric field)
-    const canonical = 'brand_analysis_score';
-    const detectLastNumericField = (records: any[]): string | null => {
-      for (const r of (records || []).slice(0, 5)) {
-        const keys = Object.keys(r || {});
-        for (let i = keys.length - 1; i >= 0; i--) {
-          const k = keys[i];
-          const v = (r as any)[k];
-          const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
-          if (!Number.isNaN(n)) return k;
-        }
-      }
-      return null;
-    };
-    const anyHasCanonical = Array.isArray(rawData.results) && rawData.results.some((record: any) => (record?.[canonical] !== undefined));
-    this.scoreField = anyHasCanonical ? canonical : (detectLastNumericField(rawData.results as any[]) || canonical);
+  // Use canonical primary score field mapping (allows metadata override internally)
+  this.scoreField = getPrimaryScoreField('brand_analysis', (rawData as any)?.metadata ?? undefined) || 'brand_analysis_score';
 
     const records = rawData.results.map((record: any, index: number) => {
       // Brand analysis requires actual brand scores, not market share differences
-      let brandScore = Number((record as any).brand_analysis_score) || Number((record as any).brand_difference_score) || null;
+  let brandScore = Number((record as any)[this.scoreField]) || Number((record as any).brand_difference_score) || null;
       
       // Use dynamic brand detection instead of hardcoded fields
       const brandFields = this.brandResolver.detectBrandFields(record);
@@ -67,8 +53,8 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
 
       return {
-        area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
-        area_name: (record as any).area_name || (record as any).DESCRIPTION || `Area ${index + 1}`,
+        area_id: String((record as any).area_id ?? (record as any).ID ?? `area_${index}`),
+        area_name: String((record as any).area_name ?? (record as any).DESCRIPTION ?? `Area ${index + 1}`),
         value: brandScore,
         rank: index + 1,
         category: this.categorizeBrandStrength(targetBrandShare, competitorShare, targetBrand?.brandName, topCompetitor?.brandName),
@@ -91,7 +77,7 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
       };
     });
 
-    records.sort((a, b) => b.value - a.value);
+  records.sort((a, b) => b.value - a.value);
     records.forEach((record, index) => { (record as any).rank = index + 1; });
 
     const values = records.map(r => r.value);
@@ -104,7 +90,7 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance: rawData.feature_importance || [],
       statistics,
-      targetVariable: this.scoreField
+  targetVariable: this.scoreField
     };
   }
 

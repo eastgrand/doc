@@ -66,6 +66,24 @@
 				"$jest-stylish"
 			],
 			"group": "test"
+		},
+		{
+			"label": "Jest: topStrategicMarkets tests",
+			"type": "shell",
+			"command": "npm run -s test -- lib/analysis/postprocess/__tests__/topStrategicMarkets.test.ts",
+			"group": "test"
+		},
+		{
+			"label": "Jest: topStrategicMarkets tests",
+			"type": "shell",
+			"command": "npm run -s test -- lib/analysis/postprocess/__tests__/topStrategicMarkets.test.ts",
+			"group": "test"
+		},
+		{
+			"label": "Unit: strategic top markets post-process",
+			"type": "shell",
+			"command": "node -e \"const fs=require('fs');const text=fs.readFileSync('./app/api/claude/generate-response/route.ts','utf8');console.log(/Top Strategic Markets:[\\s\\S]*Study Area Summary|slice\\(0, Math.min\\(10/.test(text)?'OK':'MISSING')\"",
+			"group": "test"
 		}
 	]
 }

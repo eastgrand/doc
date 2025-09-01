@@ -1,5 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 
 export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
   validate(rawData: RawAnalysisResult): boolean {
@@ -11,8 +11,12 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
       throw new Error(rawData.error || 'Real estate analysis failed');
     }
 
-    const records = rawData.results.map((record: any, index: number) => {
-      const realEstateScore = Number((record as any).real_estate_analysis_score) || 0;
+  const rawResults = rawData.results as unknown[];
+  // Respect metadata override for target variable
+  const scoreField = getPrimaryScoreField('real_estate_analysis', (rawData as any)?.metadata ?? undefined) || 'real_estate_analysis_score';
+    const records = rawResults.map((recordRaw: unknown, index: number) => {
+      const record = (recordRaw && typeof recordRaw === 'object') ? recordRaw as Record<string, unknown> : {};
+      const realEstateScore = Number((record as any)[scoreField]) || 0;
       const totalPop = Number((record as any).total_population) || 0;
       const medianIncome = Number((record as any).median_income) || 0;
       const strategicScore = Number((record as any).strategic_value_score) || 0;
@@ -21,10 +25,10 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
 
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
-      
+
       return {
-        area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
-        area_name: (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || `Area ${index + 1}`,
+        area_id: String(record.area_id ?? (record as any).ID ?? `area_${index}`),
+        area_name: String((record as any).value_DESCRIPTION ?? (record as any).DESCRIPTION ?? record.area_name ?? `Area ${index + 1}`),
         value: realEstateScore,
         rank: index + 1,
         category: this.categorizeRealEstateOpportunity(realEstateScore),
@@ -32,7 +36,7 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
-          real_estate_analysis_score: realEstateScore,
+          [scoreField]: realEstateScore,
           location_quality: this.getLocationQuality(totalPop, strategicScore),
           demographic_fit: this.getDemographicFit(demographicScore),
           market_accessibility: this.getMarketAccessibility(medianIncome, nikeShare),
@@ -43,12 +47,12 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
           median_income: medianIncome,
           nike_presence: nikeShare
         },
-        shapValues: (record as any).shap_values || {}
+        shapValues: (record.shap_values || {}) as Record<string, number>
       };
     });
 
     records.sort((a, b) => b.value - a.value);
-    records.forEach((record, index) => { (record as any).rank = index + 1; });
+  records.forEach((record, index) => { (record as any).rank = index + 1; });
 
     const values = records.map(r => r.value);
     const statistics = this.calculateStatistics(values);
@@ -60,7 +64,7 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance: rawData.feature_importance || [],
       statistics,
-      targetVariable: 'real_estate_analysis_score'
+      targetVariable: scoreField
     };
   }
 
@@ -119,15 +123,13 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
    * Identify top 5 fields that contribute most to the real estate analysis score
    * Returns them as a flattened object for popup display
    */
-  private getTopContributingFields(record: any): Record<string, number> {
+  private getTopContributingFields(record: Record<string, unknown>): Record<string, number> {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
     // Define field importance weights based on real estate analysis factors
     // Use dynamic field detection instead of hardcoded mappings
-    const detectedFields = DynamicFieldDetector.detectFields([record], 'real-estate-analysis', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
-    
-    console.log(`[RealEstateAnalysisProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
+  const fieldDefinitions = getTopFieldDefinitions('real_estate_analysis');
+  console.log(`[RealEstateAnalysisProcessor] Using hardcoded top field definitions for real_estate_analysis`);
     
     fieldDefinitions.forEach(fieldDef => {
       let value = 0;
@@ -156,30 +158,31 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
       .sort((a, b) => b.importance - a.importance)
       .slice(0, 5)
       .reduce((acc, item) => {
-        acc[(item as any).field] = (item as any).value;
+        acc[item.field] = item.value;
         return acc;
       }, {} as Record<string, number>);
     
-    console.log(`[RealEstateAnalysisProcessor] Top contributing fields for ${(record as any).ID}:`, topFields);
+  console.log(`[RealEstateAnalysisProcessor] Top contributing fields for ${(record as any).ID}:`, topFields);
     return topFields;
   }
 
-  private extractCoordinates(record: any): [number, number] {
-    if ((record as any).coordinates && Array.isArray((record as any).coordinates)) {
-      return [(record as any).coordinates[0] || 0, (record as any).coordinates[1] || 0];
+  private extractCoordinates(record: Record<string, unknown>): [number, number] {
+    if (record['coordinates'] && Array.isArray(record['coordinates'])) {
+      const coords = record['coordinates'] as unknown as number[];
+      return [coords[0] || 0, coords[1] || 0];
     }
-    const lat = Number((record as any).latitude || (record as any).lat || 0);
-    const lng = Number((record as any).longitude || (record as any).lng || 0);
+    const lat = Number((record['latitude'] || record['lat'] || 0) as unknown as number);
+    const lng = Number((record['longitude'] || record['lng'] || 0) as unknown as number);
     return [lng, lat];
   }
 
-  private generateRealEstateSummary(records: any[], statistics: any): string {
-    const topLocations = records.slice(0, 5);
-    const primeCount = records.filter(r => r.value >= 80).length;
-    const excellentCount = records.filter(r => r.value >= 70 && r.value < 80).length;
-    const avgScore = statistics.mean.toFixed(1);
+  private generateRealEstateSummary(records: Array<Record<string, unknown>>, statistics: Record<string, unknown>): string {
+    const topLocations = records.slice(0, 5) as Array<Record<string, unknown>>;
+    const primeCount = topLocations.filter(r => (r['value'] as number) >= 80).length;
+    const excellentCount = topLocations.filter(r => (r['value'] as number) >= 70 && (r['value'] as number) < 80).length;
+    const avgScore = ((statistics['mean'] as number) || 0).toFixed(1);
 
-    const topNames = topLocations.map(r => `${r.area_name} (${r.value.toFixed(1)})`).join(', ');
+    const topNames = topLocations.map(r => `${r['area_name']} (${((r['value'] as number) || 0).toFixed(1)})`).join(', ');
 
     return `Real estate analysis of ${records.length} locations identified ${primeCount} prime real estate opportunities (80+) and ${excellentCount} excellent location potential areas (70-79). Average real estate score: ${avgScore}. Top real estate opportunities: ${topNames}. Analysis considers location quality, demographic fit, market accessibility, and growth trajectory for optimal retail location decisions.`;
   }
@@ -198,9 +201,9 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
   /**
    * Extract field value from multiple possible field names
    */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
+  private extractFieldValue(record: Record<string, unknown>, fieldNames: string[]): number {
     for (const fieldName of fieldNames) {
-      const value = Number(record[fieldName]);
+      const value = Number((record as any)[fieldName]);
       if (!isNaN(value) && value > 0) {
         return value;
       }

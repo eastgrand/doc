@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -33,24 +33,9 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for EnsembleAnalysisProcessor');
     }
 
-    // Determine dynamic field: last numeric only (energy dataset)
-    const detectLastNumericField = (records: any[]): string | null => {
-      if (!Array.isArray(records) || records.length === 0) return null;
-      const sample = records[0];
-      if (!sample || typeof sample !== 'object') return null;
-      const numericKeys = Object.keys(sample).filter(key => {
-        if (key === 'ID' || key === 'id' || key === 'area_id') return false;
-        if (key.toLowerCase().includes('name') || key.toLowerCase().includes('description')) return false;
-        const val = (sample as any)[key];
-        return typeof val === 'number' && !isNaN(val);
-      });
-      return numericKeys.length > 0 ? numericKeys[numericKeys.length - 1] : null;
-    };
-    const dynamic = detectLastNumericField(rawData.results as any[]);
-    if (!dynamic) {
-      throw new Error('[EnsembleAnalysisProcessor] Could not detect a numeric scoring field (last numeric) from records.');
-    }
-    this.scoreField = dynamic;
+    // Determine primary score field deterministically from hardcoded defs; allow metadata override
+  const primary = getPrimaryScoreField('ensemble_analysis', (rawData as any)?.metadata ?? undefined) || 'ensemble_analysis_score';
+  this.scoreField = primary;
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
       const primaryScore = Number((record as any)[this.scoreField]);
@@ -68,14 +53,14 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
       const out: any = {
         area_id: recordId,
         area_name: areaName,
-        value: Math.round(primaryScore * 100) / 100,
-        ensemble_analysis_score: Math.round(primaryScore * 100) / 100,
+  value: Math.round(primaryScore * 100) / 100,
+  [this.scoreField]: Math.round(primaryScore * 100) / 100,
         rank: 0, // Will be calculated after sorting
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
-          ensemble_analysis_score: primaryScore,
+          [this.scoreField]: primaryScore,
           score_source: this.scoreField,
           target_brand_share: this.extractTargetBrandShare(record),
           total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
@@ -214,11 +199,8 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
   private getTopContributingFields(record: any): Record<string, number> {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
-    // Use dynamic field detection instead of hardcoded mappings
-    const detectedFields = DynamicFieldDetector.detectFields([record], 'ensemble-analysis', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
-    
-    console.log(`[EnsembleAnalysisProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
+  const fieldDefinitions = getTopFieldDefinitions('ensemble_analysis');
+  console.log(`[EnsembleAnalysisProcessor] Using hardcoded top field definitions for ensemble_analysis`);
     
     fieldDefinitions.forEach(fieldDef => {
       const sourceKey = Array.isArray(fieldDef.source) ? fieldDef.source[0] : fieldDef.source;

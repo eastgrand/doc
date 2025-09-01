@@ -146,6 +146,53 @@ export class VisualizationRenderer {
       
       if (data.renderer && data.legend && !data.isClustered) {
         console.log(`[VisualizationRenderer] 🎯 Using DIRECT RENDERING from processor`);
+        // Diagnostics: verify renderer.field exists and is numeric in records
+        try {
+          const rf = (data.renderer as any)?.field;
+          if (rf) {
+            const totals = data.records.length;
+            let missingTop = 0, missingProps = 0, nonNumeric = 0;
+            const samples: any[] = [];
+            for (let i = 0; i < Math.min(25, totals); i++) {
+              const r: any = data.records[i];
+              const top = (r as any)?.[rf];
+              const prop = (r as any)?.properties?.[rf];
+              const hasTop = top !== undefined;
+              const hasProp = prop !== undefined;
+              const val = hasTop ? top : prop;
+              const isNum = typeof val === 'number' && !isNaN(val);
+              if (!hasTop) missingTop++;
+              if (!hasProp) missingProps++;
+              if (!isNum) nonNumeric++;
+              if (samples.length < 3 && (!hasTop || !isNum)) {
+                samples.push({ area: r?.area_name, value: r?.value, top, prop, typeofTop: typeof top, typeofProp: typeof prop });
+              }
+            }
+            console.log(`[VisualizationRenderer] 🔎 Renderer field check`, { field: rf, totals, missingTop, missingProps, nonNumeric, samples });
+            // Safe fallback: if most records lack numeric rf but targetVariable/value are valid, switch field to targetVariable or 'value'
+            if (totals > 0 && (nonNumeric > totals * 0.6)) {
+              const fallbackField = data.targetVariable || 'value';
+              const testVal = (data.records[0] as any)?.[fallbackField] ?? (data.records[0] as any)?.properties?.[fallbackField];
+              if (typeof testVal === 'number' && !isNaN(testVal)) {
+                const cloned = { ...(data.renderer as any), field: fallbackField };
+                console.warn(`[VisualizationRenderer] ⚠️ Switching renderer.field from "${rf}" to "${fallbackField}" due to invalid/missing values`);
+                const result = {
+                  type: visualizationType,
+                  config: visualizationConfig,
+                  renderer: cloned,
+                  popupTemplate: this.createMinimalPopupTemplate(),
+                  legend: (data.legend as any) as unknown as import('./types').LegendConfig,
+                  extent: data.extent || null,
+                  shouldZoom: data.shouldZoom || false
+                };
+                return result;
+              }
+            }
+          }
+        } catch (diagErr) {
+          console.warn('[VisualizationRenderer] Renderer field diagnostics failed:', diagErr);
+        }
+
         const result = {
           type: visualizationType,
           config: visualizationConfig,

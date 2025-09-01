@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
 import { calculateEqualCountQuintiles } from '../../utils/QuintileUtils';
+import { getPrimaryScoreField, getTopFieldDefinitions } from './HardcodedFieldDefs';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 import { resolveAreaName } from '../../../shared/AreaName';
 
@@ -44,8 +44,11 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for CompetitiveDataProcessor');
     }
 
-    // Process records with competitive information
-    const records = this.processCompetitiveRecords(rawData.results);
+  // Resolve canonical primary score field for this endpoint
+  const primaryField = getPrimaryScoreField('competitive_analysis', (rawData as any)?.metadata) || 'competitive_analysis_score';
+
+  // Process records with competitive information
+  const records = this.processCompetitiveRecords(rawData.results, primaryField);
     
     console.log(`[CompetitiveDataProcessor] Processed ${records.length} records`);
     console.log(`[CompetitiveDataProcessor] Sample processed record:`, {
@@ -84,9 +87,9 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'competitive_analysis_score',
-      renderer: this.createCompetitiveRenderer(records), // Add direct renderer  
-      legend: this.createCompetitiveLegend(records), // Add direct legend
+      targetVariable: primaryField,
+  renderer: this.createCompetitiveRenderer(records, primaryField), // Add direct renderer  
+  legend: this.createCompetitiveLegend(records), // Add direct legend
       competitiveAnalysis // Additional metadata for competitive visualization
     };
   }
@@ -95,13 +98,13 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
   // PRIVATE PROCESSING METHODS
   // ============================================================================
 
-  private processCompetitiveRecords(rawRecords: any[]): GeographicDataPoint[] {
+  private processCompetitiveRecords(rawRecords: any[], primaryField: string): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
       const area_id = (record as any).ID || (record as any).area_id || (record as any).id || (record as any).GEOID || `area_${index}`;
       const area_name = resolveAreaName(record, { mode: 'zipCity', neutralFallback: `Area ${area_id || index + 1}` });
       
       // Extract competitive metrics
-      const competitiveScore = this.extractCompetitiveScore(record);
+  const competitiveScore = this.extractCompetitiveScore(record, primaryField);
       const marketShare = this.extractMarketShare(record);
       
       // Use competitive score as the primary value
@@ -115,9 +118,11 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       // Extract competitive-specific properties
       const properties = {
         ...this.extractProperties(record),
+        // Mirror canonical scoring field for downstream consumers
+        [primaryField]: competitiveScore,
         competitive_advantage_score: competitiveScore,
-  competitive_analysis_score: competitiveScore, // ensure alias for renderer field
-        score_source: 'competitive_advantage_score',
+        competitive_analysis_score: competitiveScore, // ensure alias for renderer field
+        score_source: primaryField,
         market_share: marketShare,
         target_brand_share: targetBrand?.value || 0,
         target_brand_name: targetBrand?.brandName || 'Unknown',
@@ -137,25 +142,31 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       // Category based on competitive position
       const category = this.getCompetitiveCategory(competitiveScore, marketShare);
 
-      return {
+      const outRec: any = {
         area_id,
         area_name,
         value,
-  competitive_advantage_score: competitiveScore, // Add at top level for visualization
-  competitive_analysis_score: competitiveScore,  // Add alias for renderer field
         rank: 0, // Will be calculated in ranking
         category,
         coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
+
+      // Mirror canonical scoring field at top-level
+      outRec[primaryField] = competitiveScore;
+      // Keep legacy aliases for compatibility
+      outRec.competitive_advantage_score = competitiveScore;
+      outRec.competitive_analysis_score = competitiveScore;
+
+      return outRec;
     }).sort((a, b) => b.value - a.value) // Sort by competitive score
       .map((record, index) => ({ ...record, rank: index + 1 })); // Assign ranks
   }
 
-  private extractCompetitiveScore(record: any): number {
-    // Priority order: competitive_score -> competitive_analysis_score -> competitive_advantage_score (legacy)
-    const score = Number((record as any).competitive_score || (record as any).competitive_analysis_score || (record as any).competitive_advantage_score);
+  private extractCompetitiveScore(record: any, primaryField: string): number {
+  // Priority: use provided primary field first
+  const score = Number((record as any)[primaryField] || (record as any).competitive_score || (record as any).competitive_analysis_score || (record as any).competitive_advantage_score);
     
     const recordId = (record as any).ID || (record as any).id || 'unknown';
     
@@ -288,6 +299,20 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     }
     
     return shapValues;
+  }
+
+  // Use hardcoded top field definitions for competitive popups if available
+  private getTopContributingFields(record: any): Record<string, number> {
+    const contributingFields: Array<{field: string, value: number, importance: number}> = [];
+  const fieldDefinitions = getTopFieldDefinitions('competitive_analysis');
+    fieldDefinitions.forEach(fieldDef => {
+      const sourceKey = Array.isArray(fieldDef.source) ? fieldDef.source[0] : fieldDef.source;
+      const value = Number(record[sourceKey]);
+      if (!isNaN(value) && value > 0) {
+        contributingFields.push({ field: fieldDef.field, value: Math.round(value * 100) / 100, importance: fieldDef.importance });
+      }
+    });
+    return contributingFields.sort((a, b) => b.importance - a.importance).slice(0,5).reduce((acc, item) => { acc[item.field] = item.value; return acc; }, {} as Record<string, number>);
   }
 
   private determineCompetitivePosition(score: number): string {
@@ -693,7 +718,7 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
   /**
    * Create direct renderer for competitive analysis visualization
    */
-  private createCompetitiveRenderer(records: any[]): any {
+  private createCompetitiveRenderer(records: any[], primaryField?: string): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
@@ -707,7 +732,7 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
     
     return {
       type: 'class-breaks',
-      field: 'competitive_analysis_score', // Use correct scoring field
+      field: primaryField || 'competitive_analysis_score', // Use correct scoring field
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

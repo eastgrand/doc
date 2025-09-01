@@ -18,11 +18,11 @@ processorFiles.forEach(file => {
   let content = fs.readFileSync(filePath, 'utf8');
   let modified = false;
 
-  // Add DynamicFieldDetector import if not present
-  if (!content.includes('DynamicFieldDetector')) {
+  // Ensure processors reference the canonical HardcodedFieldDefs helper
+  if (!content.includes('HardcodedFieldDefs')) {
     content = content.replace(
       /import.*from.*types.*;/,
-      `$&\nimport { DynamicFieldDetector } from './DynamicFieldDetector';`
+      `$&\nimport { getTopFieldDefinitions } from './HardcodedFieldDefs';`
     );
     modified = true;
   }
@@ -39,11 +39,9 @@ processorFiles.forEach(file => {
 
     content = content.replace(fieldDefinitionsRegex, (match) => {
       modified = true;
-      return `// Use dynamic field detection instead of hardcoded mappings
-    const detectedFields = DynamicFieldDetector.detectFields([record], '${analysisType}', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
-    
-    console.log(\`[${file.replace('.ts', '')}] Dynamic fields detected:\`, detectedFields.map(df => df.field));`;
+      return `// Use canonical top field definitions for ${analysisType}
+    const fieldDefinitions = getTopFieldDefinitions('${analysisType}');
+    console.log(\`[${file.replace('.ts', '')}] Using hardcoded top field definitions\`);`;
     });
   }
 

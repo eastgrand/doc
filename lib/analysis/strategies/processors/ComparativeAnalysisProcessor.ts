@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { GeoDataManager } from '../../../geo/GeoDataManager';
 import { resolveAreaName } from '../../../shared/AreaName';
 interface BrandMetric {
@@ -104,22 +104,15 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
         (record as any).area_name !== undefined
       );
       
-      // Check for at least one scoring/value field
-      const hasScoringField = record && (
-        (record as any).comparative_score !== undefined || 
-        (record as any).value !== undefined || 
-        (record as any).score !== undefined ||
-        (record as any).thematic_value !== undefined ||
-        // Be more flexible - accept any field that looks like it contains numeric data
-        Object.keys(record as any).some((key: string) => 
-          typeof (record as any)[key] === 'number' && 
-          !key.toLowerCase().includes('date') &&
-          !key.toLowerCase().includes('time') &&
-          !key.toLowerCase().includes('area') &&
-          !key.toLowerCase().includes('length') &&
-          !key.toLowerCase().includes('objectid')
-        )
-      );
+      // Check for at least one scoring/value field using hardcoded primary
+    const primary = getPrimaryScoreField('comparative_analysis', (rawData as any)?.metadata) || 'comparison_score';
+        const hasScoringField = record && (
+          (record as any)[primary] !== undefined ||
+          (record as any).comparative_score !== undefined || 
+          (record as any).value !== undefined || 
+          (record as any).score !== undefined ||
+          (record as any).thematic_value !== undefined
+        );
       
       console.log(`🔍 [ComparativeAnalysisProcessor] Record ${i} validation:`, {
         hasIdField,
@@ -159,10 +152,13 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for ComparativeAnalysisProcessor');
     }
 
+    // Determine canonical primary score for comparative analysis (metadata override allowed)
+    const primary = getPrimaryScoreField('comparative_analysis', (rawData as any)?.metadata) || 'comparison_score';
+
     // Process records with comparative analysis scoring priority
   const processedRecords = (rawData.results as any[]).map((record: any, index: number) => {
       // PRIORITIZE PRE-CALCULATED COMPARATIVE ANALYSIS SCORE
-      const comparativeScore = this.extractComparativeScore(record);
+      const comparativeScore = this.extractComparativeScore(record, primary);
       
       // Generate area name from ID and location data
       const areaName = this.generateAreaName(record);
@@ -205,7 +201,9 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         value: Math.round(comparativeScore * 100) / 100, // Use comparative score as primary value
-        comparison_score: Math.round(comparativeScore * 100) / 100, // Add comparison_score at top level for visualization
+  comparison_score: Math.round(comparativeScore * 100) / 100, // Add comparison_score at top level for visualization
+  // Expose canonical primary field for consumers
+  [primary]: Math.round(comparativeScore * 100) / 100,
         competitive_advantage_score: Math.round(comparativeScore * 100) / 100, // Keep for compatibility
         rank: 0, // Will be calculated after sorting
         properties: {
@@ -275,7 +273,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'comparison_score', // Use the actual field name that matches the data
+  targetVariable: primary, // Use the actual canonical primary field
       renderer: this.createComparativeRenderer(rankedRecords), // Add back custom renderer
       legend: this.createComparativeLegend(rankedRecords) // Add back custom legend
     };
@@ -432,7 +430,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   /**
    * Extract comparative analysis score from record with fallback calculation
    */
-  private extractComparativeScore(record: any): number {
+  private extractComparativeScore(record: any, primary?: string): number {
     // DEBUG: Log all fields to identify the issue
     const recordId = (record as any).ID || (record as any).id || (record as any).area_id || 'unknown';
     console.log(`🔍 [ComparativeAnalysisProcessor] DEBUG - Record ${recordId} fields:`, {
@@ -443,28 +441,33 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       allNumericFields: Object.keys(record as any).filter((k: string) => typeof (record as any)[k] === 'number').slice(0, 10)
     });
     
-    // PRIORITY 1: Use comparison_score if available (this is the ACTUAL field in our data)
+    // Use canonical primary score field when available (primary passed in)
+    const fieldToUse = primary || getPrimaryScoreField('comparative_analysis', (null as any)) || 'comparison_score';
+    if ((record as any)[fieldToUse] !== undefined && (record as any)[fieldToUse] !== null) {
+      const val = Number((record as any)[fieldToUse]);
+      console.log(`⚖️ [ComparativeAnalysisProcessor] Using primary field ${fieldToUse}: ${val}`);
+      return val;
+    }
+
+    // PRIORITY: legacy fields as fallbacks
     if ((record as any).comparison_score !== undefined && (record as any).comparison_score !== null) {
       const comparisonScore = Number((record as any).comparison_score);
       console.log(`⚖️ [ComparativeAnalysisProcessor] Using comparison_score: ${comparisonScore}`);
       return comparisonScore;
     }
-    
-    // PRIORITY 2: Use comparative_score if available (alternative field name)
+
     if ((record as any).comparative_score !== undefined && (record as any).comparative_score !== null) {
       const comparativeScore = Number((record as any).comparative_score);
       console.log(`⚖️ [ComparativeAnalysisProcessor] Using comparative_score: ${comparativeScore}`);
       return comparativeScore;
     }
-    
-    // PRIORITY 3: Use thematic_value as fallback (common field in endpoint data)
+
     if ((record as any).thematic_value !== undefined && (record as any).thematic_value !== null) {
       const thematicScore = Number((record as any).thematic_value);
       console.log(`⚖️ [ComparativeAnalysisProcessor] Using thematic_value: ${thematicScore}`);
       return thematicScore;
     }
-    
-    // PRIORITY 4: Use value field if available
+
     if ((record as any).value !== undefined && (record as any).value !== null) {
       const valueScore = Number((record as any).value);
       console.log(`⚖️ [ComparativeAnalysisProcessor] Using value: ${valueScore}`);

@@ -31,10 +31,10 @@ Run this checklist immediately after updating data via the automation pipeline t
 - Task: Jest: topStrategicMarkets tests
 - Pass criteria: Max-10 cap, Study Area Summary present, respects spatialFilterIds unless scope=project
 
-1. Validate dynamic field alignment across processors
+1. Validate hardcoded field alignment across processors
 
-- Task: Jest: dynamic field alignment tests
-- Pass criteria: All pass; renderer.field equals targetVariable (last numeric field)
+- Task: Jest: hardcoded field alignment tests
+- Pass criteria: All pass; renderer.field equals targetVariable (deterministic from HardcodedFieldDefs)
 
 1. Run hybrid routing comprehensive suite
 
@@ -61,7 +61,7 @@ Run this checklist immediately after updating data via the automation pipeline t
 - Mapping audit: node check_field_mappings.js
 - Strategic suites: npm run -s test -- lib/analysis/strategies/processors/__tests__/StrategicAnalysisProcessor.name.test.ts lib/analysis/strategies/processors/__tests__/StrategicAnalysis.e2e.test.ts
 - Top Markets: npm run -s test -- lib/analysis/postprocess/__tests__/topStrategicMarkets.test.ts
-- Dynamic Field Alignment: npm run -s test -- lib/analysis/strategies/processors/__tests__/DynamicFieldAlignment.e2e.test.ts
+- Hardcoded Field Alignment: npm run -s test -- lib/analysis/strategies/processors/__tests__/HardcodedFieldAlignment.e2e.test.ts
 - Comprehensive routing: npm run -s test -- __tests__/hybrid-routing-comprehensive.test.ts
   - Optional reports: WRITE_TEST_REPORTS=true npm run -s test -- __tests__/hybrid-routing-comprehensive.test.ts
 

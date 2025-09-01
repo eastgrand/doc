@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -33,25 +33,8 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for AnalyzeProcessor');
     }
 
-    // Determine dynamic field: last numeric field only (energy dataset contract)
-    const detectLastNumericField = (records: any[]): string | null => {
-      for (const rec of (records || []).slice(0, 5)) {
-        const obj = rec && typeof rec === 'object' ? rec : {};
-        const keys = Object.keys(obj);
-        for (let i = keys.length - 1; i >= 0; i--) {
-          const k = keys[i];
-          const v = (obj as any)[k];
-          const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
-          if (!Number.isNaN(n)) return k;
-        }
-      }
-      return null;
-    };
-    const dynamic = detectLastNumericField(rawData.results as any[]);
-    if (!dynamic) {
-      throw new Error('[AnalyzeProcessor] Could not detect a numeric scoring field (last numeric) from records.');
-    }
-    this.scoreField = dynamic;
+  // Use hardcoded primary field list; metadata override still applies
+  this.scoreField = getPrimaryScoreField('analyze', (rawData as any)?.metadata ?? undefined) || 'analysis_score';
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
   const primaryScore = Number((record as any)[this.scoreField]);
@@ -67,7 +50,7 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
-      const out: any = {
+  const out: any = {
         area_id: recordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
@@ -84,10 +67,10 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
           median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
         }
       };
-  if (this.scoreField && this.scoreField !== 'analysis_score') {
-        out[this.scoreField] = out.value;
-        (out.properties as any)[this.scoreField] = out.value;
-      }
+  // Mirror canonical primary field into top-level and properties
+  out[this.scoreField] = out.value;
+  (out.properties as any)[this.scoreField] = primaryScore;
+  (out.properties as any).score_source = this.scoreField;
       return out;
     });
     
@@ -112,7 +95,7 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: this.scoreField,
+  targetVariable: this.scoreField,
       renderer: renderer,
       legend: legend
     };
@@ -214,11 +197,9 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
     // General analysis fields that might be available
-    // Use dynamic field detection instead of hardcoded mappings
-    const detectedFields = DynamicFieldDetector.detectFields([record], 'analyze', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
-    
-    console.log(`[AnalyzeProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
+  // Use hardcoded top field definitions
+  const fieldDefinitions = getTopFieldDefinitions('analyze');
+  // console.log(`[AnalyzeProcessor] Using hardcoded top field definitions for analyze`);
     
     fieldDefinitions.forEach(fieldDef => {
       const sourceKey = Array.isArray(fieldDef.source) ? fieldDef.source[0] : fieldDef.source;

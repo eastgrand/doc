@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getPrimaryScoreField } from './HardcodedFieldDefs';
 
 /**
  * ScenarioAnalysisProcessor - Specialized processor for scenario analysis
@@ -8,21 +9,28 @@ import { DynamicFieldDetector } from './DynamicFieldDetector';
  * scenario adaptability, market resilience, strategic flexibility, and planning readiness.
  */
 export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
+  private scoreField: string = 'scenario_analysis_score';
   validate(rawData: RawAnalysisResult): boolean {
-    return rawData && 
-           rawData.success && 
-           Array.isArray(rawData.results) && 
-           rawData.results.length > 0;
+    if (!rawData || typeof rawData !== 'object') return false;
+    if (!rawData.success) return false;
+    if (!Array.isArray(rawData.results)) return false;
+
+    const primary = getPrimaryScoreField('scenario_analysis', (rawData as any)?.metadata ?? undefined) || 'scenario_analysis_score';
+    return rawData.results.length === 0 || (rawData.results as any[]).some(record =>
+      record && ((record as any).area_id || (record as any).id || (record as any).ID) && ((record as any)[primary] !== undefined)
+    );
   }
 
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {
     if (!rawData.success) {
       throw new Error(rawData.error || 'Scenario analysis failed');
     }
+    // Determine canonical primary field (allow metadata override)
+    this.scoreField = getPrimaryScoreField('scenario_analysis', (rawData as any)?.metadata ?? undefined) || 'scenario_analysis_score';
 
     const records = rawData.results.map((record: any, index: number) => {
-      // Extract the pre-calculated scenario analysis score
-      let scenarioScore = Number((record as any).scenario_analysis_score || (record as any).scenario_score);
+      // Extract the pre-calculated scenario analysis score from canonical field first
+      let scenarioScore = Number((record as any)[this.scoreField] ?? (record as any).scenario_analysis_score ?? (record as any).scenario_score);
       
       // Check if scenario score looks like market share data (values under 20 are likely market shares)
       if (!isNaN(scenarioScore) && scenarioScore < 20) {
@@ -58,8 +66,8 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
       });
 
       return {
-        area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
-        area_name: (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || `Area ${index + 1}`,
+        area_id: String((record as any).area_id ?? (record as any).ID ?? `area_${index}`),
+        area_name: String((record as any).value_DESCRIPTION ?? (record as any).DESCRIPTION ?? (record as any).area_name ?? `Area ${index + 1}`),
         value: scenarioScore,
         rank: index + 1, // Will be sorted later
         category: this.categorizeScenarioReadiness(scenarioScore),
@@ -136,7 +144,7 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance: rawData.feature_importance || [],
       statistics,
-      targetVariable: 'scenario_analysis_score',
+  targetVariable: this.scoreField,
       renderer: this.createScenarioRenderer(records),
       legend: this.createScenarioLegend(records)
     };

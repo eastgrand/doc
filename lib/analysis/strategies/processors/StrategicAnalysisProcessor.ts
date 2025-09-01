@@ -4,7 +4,7 @@ import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, Geogra
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 import { resolveAreaName } from '../../../shared/AreaName';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getPrimaryScoreField, getTopFieldDefinitions } from './HardcodedFieldDefs';
 
 /**
  * StrategicAnalysisProcessor - Handles data processing for the /strategic-analysis endpoint
@@ -14,7 +14,7 @@ import { DynamicFieldDetector } from './DynamicFieldDetector';
  */
 export class StrategicAnalysisProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
-  // Use dynamic field name (energy dataset: last numeric field) with canonical fallback
+  // Use canonical primary score (hardcoded) with metadata override
   private scoreField: string = 'strategic_analysis_score';
 
   constructor() {
@@ -72,36 +72,24 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       };
     }
 
-    // Detect dynamic score field from first few records (energy dataset: last numeric field)
-    const detectLastNumericField = (records: any[]): string | null => {
-      for (const rec of (records || []).slice(0, 5)) {
-        const propsLvl1 = rec && typeof rec === 'object' ? rec : {};
-        const keys = Object.keys(propsLvl1);
-        for (let i = keys.length - 1; i >= 0; i--) {
-          const k = keys[i];
-          const v = (propsLvl1 as any)[k];
-          const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
-          if (!Number.isNaN(n)) return k;
-        }
-      }
-      return null;
-    };
-    const dynamicField = detectLastNumericField(rawData.results as any[]);
-    if (!dynamicField) {
-      throw new Error('[StrategicAnalysisProcessor] Could not detect a numeric scoring field (last numeric) from records.');
-    }
-    this.scoreField = dynamicField;
+  // Use the central hardcoded primary field mapping (metadata.targetVariable still wins)
+  this.scoreField = getPrimaryScoreField('strategic_analysis', (rawData as any)?.metadata ?? undefined) || 'strategic_analysis_score';
 
     const rawRecords = rawData.results as any[];
-  const processedRecords = rawRecords.map((record: any, index: number) => {
-      // Strategic analysis requires actual strategic scores, not market share percentages
-      // Use nullish coalescing to handle 0 values correctly
-      let primaryScore = Number(
-        (record as any).strategic_analysis_score ?? 
-        (record as any).strategic_score ?? 
+    const processedRecords = rawRecords.map((record: any, index: number) => {
+      // Prefer the dynamically detected score field; fall back to canonical chain
+      const dynamicFirst = (() => {
+        const candidate = (record as any)[this.scoreField];
+        const n = Number(candidate);
+        return Number.isFinite(n) ? n : NaN;
+      })();
+      const canonicalChain = Number(
+        (record as any).strategic_analysis_score ??
+        (record as any).strategic_score ??
         (record as any).strategic_value_score ??
         null
       );
+      let primaryScore = Number.isFinite(dynamicFirst) ? dynamicFirst : canonicalChain;
       
       const recordId = (record as any).ID || (record as any).id || index;
   console.log(`[StrategicAnalysisProcessor] Record ${recordId}: Found primaryScore = ${primaryScore} from fields: strategic_analysis_score=${(record as any).strategic_analysis_score}, strategic_score=${(record as any).strategic_score}, strategic_value_score=${(record as any).strategic_value_score}`);
@@ -116,11 +104,13 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         });
       }
       
-      // Check if the score looks like a market share percentage (values under 20 are likely market shares)
+      // Only switch to composite when the chosen field is explicitly share/rate/pct-like or missing
+      const looksLikeShare = /share|rate|pct|percent/i.test(this.scoreField || '') ||
+        ['strategic_score','strategic_value_score','strategic_analysis_score']
+          .every(f => (record as any)[f] === undefined);
       if (primaryScore !== null && !isNaN(primaryScore)) {
-        if (primaryScore < 20) {
-          // This looks like a market share percentage or other small value, not a proper strategic score
-          console.warn(`[StrategicAnalysisProcessor] Record ${recordId}: Strategic score ${primaryScore} appears to be market share data (valid strategic scores should be 20+), calculating composite score instead`);
+        if (looksLikeShare && primaryScore < 20) {
+          console.warn(`[StrategicAnalysisProcessor] Record ${recordId}: Score ${primaryScore} from "${this.scoreField}" appears to be share/rate data, using composite score`);
           primaryScore = this.calculateCompositeStrategicScore(record);
         }
       } else {
@@ -143,8 +133,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
   // Remove strategic_analysis_score and strategic_score from topContributingFields to avoid overwrite
   const { strategic_analysis_score: __, strategic_score: _, ...filteredTopFields } = topContributingFields as any;
       
-      // Build processed record ensuring both canonical and dynamic score fields exist at top level
-      const processed: any = {
+    // Build processed record ensuring both canonical and dynamic score fields exist at top level
+    const processed: any = {
         area_id: finalRecordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
@@ -153,15 +143,17 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         // Flatten top contributing fields to top level for popup access (excluding strategic_score)
         ...filteredTopFields,
         properties: {
-          DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
+      // Include full raw record first to avoid missing context, then overlay normalized fields
+      ...(record as any),
+      DESCRIPTION: (record as any).DESCRIPTION, // Normalize key casing
           strategic_analysis_score: primaryScore,
-          score_source: this.scoreField,
+  score_source: this.scoreField,
           target_brand_share: this.extractTargetBrandShare(record),
           market_gap: this.calculateRealMarketGap(record),
-          total_population: this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population']),
-          median_income: this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income']),
-          competitive_advantage_score: this.extractFieldValue(record, ['competitive_advantage_score', 'comp_advantage', 'advantage_score']),
-          demographic_opportunity_score: this.extractFieldValue(record, ['demographic_opportunity_score', 'demo_opportunity', 'opportunity_score'])
+      total_population: this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population']),
+      median_income: this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income']),
+      competitive_advantage_score: this.extractFieldValue(record, ['competitive_advantage_score', 'comp_advantage', 'advantage_score']),
+      demographic_opportunity_score: this.extractFieldValue(record, ['demographic_opportunity_score', 'demo_opportunity', 'opportunity_score'])
         }
       };
       // Add dynamic score field at top level for renderer parity if different from canonical
@@ -269,6 +261,15 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     
     return renderer;
   }
+
+  /** Ensure renderer field is a valid attribute name for clients (starts with letter or underscore) */
+  private sanitizeFieldName(name: string): string {
+    const n = String(name || '');
+    if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(n)) return n;
+    const sanitized = `dynamic_${n.replace(/[^A-Za-z0-9_]/g, '_')}`;
+    console.warn(`[StrategicAnalysisProcessor] Sanitized score field name from "${n}" to "${sanitized}" for renderer compatibility`);
+    return sanitized;
+  }
   
   /**
    * Calculate quartile breaks for strategic value scores
@@ -344,13 +345,10 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
   private getTopContributingFields(record: any): Record<string, number> {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
-    // Use dynamic field detection to find relevant fields for this record
-    const detectedFields = DynamicFieldDetector.detectFields([record], 'strategic-analysis', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
-    
-    console.log(`[StrategicAnalysisProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
-    
-    fieldDefinitions.forEach(fieldDef => {
+  // Use hardcoded top field definitions for strategic analysis
+  const fieldDefinitions = getTopFieldDefinitions('strategic_analysis');
+
+  fieldDefinitions.forEach(fieldDef => {
       let value = 0;
       const sources = Array.isArray(fieldDef.source) ? fieldDef.source : [fieldDef.source];
       
@@ -363,12 +361,12 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       }
       
       // Handle calculated fields
-      if (fieldDef.calculated && fieldDef.field === 'market_gap') {
+      if ((fieldDef as any).calculated && fieldDef.field === 'market_gap') {
         value = this.calculateRealMarketGap(record);
       }
       
-      // Only include fields with meaningful values
-      if (!isNaN(value) && value > 0) {
+  // Include finite values, even if 0, to avoid missing data
+  if (Number.isFinite(value)) {
         contributingFields.push({
           field: fieldDef.field,
           value: Math.round(value * 100) / 100,

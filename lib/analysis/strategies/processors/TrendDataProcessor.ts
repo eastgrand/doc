@@ -1,5 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 
 /**
  * TrendDataProcessor - Handles data processing for trend analysis
@@ -38,8 +38,10 @@ export class TrendDataProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for TrendDataProcessor');
     }
 
-    // Process records with trend information
-    const records = this.processTrendRecords(rawData.results);
+  // Determine canonical primary score field for trend_analysis (honor metadata override)
+  const primary = getPrimaryScoreField('trend_analysis', (rawData as any)?.metadata) || 'trend_score';
+  // Process records with trend information
+  const records = this.processTrendRecords(rawData.results, primary);
     
     // Calculate trend statistics
     const statistics = this.calculateTrendStatistics(records);
@@ -59,7 +61,7 @@ export class TrendDataProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'trend_strength',
+      targetVariable: primary,
       trendAnalysis // Additional metadata for trend visualization
     };
   }
@@ -68,7 +70,7 @@ export class TrendDataProcessor implements DataProcessorStrategy {
   // PRIVATE PROCESSING METHODS
   // ============================================================================
 
-  private processTrendRecords(rawRecords: any[]): GeographicDataPoint[] {
+  private processTrendRecords(rawRecords: any[], primaryField: string): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
       const area_id = (record as any).area_id || (record as any).id || (record as any).GEOID || (record as any).ID || `area_${index}`;
       const area_name = (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || (record as any).name || (record as any).NAME || `Area ${index + 1}`;
@@ -76,8 +78,8 @@ export class TrendDataProcessor implements DataProcessorStrategy {
       // Extract trend score
       const trendScore = this.extractTrendScore(record);
       
-      // Use trend score as the primary value
-      const value = trendScore;
+  // Use trend score as the primary value
+  const value = trendScore;
       
       // Extract trend-specific properties
       const properties = {
@@ -93,7 +95,10 @@ export class TrendDataProcessor implements DataProcessorStrategy {
         stability_index: this.calculateStabilityIndex(record)
       };
       
-      // Extract SHAP values
+  // Mirror primary canonical field at top-level and within properties for consistency
+  (properties as any)[primaryField] = trendScore;
+
+  // Extract SHAP values
       const shapValues = this.extractShapValues(record);
       
       // Category based on trend characteristics
@@ -106,7 +111,9 @@ export class TrendDataProcessor implements DataProcessorStrategy {
         rank: 0, // Will be calculated in ranking
         category,
         coordinates: (record as any).coordinates || [0, 0],
-        properties,
+  // Mirror primary trend field at top-level
+  [primaryField]: value,
+  properties,
         shapValues
       };
     }).sort((a, b) => b.value - a.value) // Sort by trend score

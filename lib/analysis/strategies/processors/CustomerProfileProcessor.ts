@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import Extent from '@arcgis/core/geometry/Extent';
 import { BrandNameResolver, BrandField } from '../../utils/BrandNameResolver';
 
@@ -12,6 +12,7 @@ import { BrandNameResolver, BrandField } from '../../utils/BrandNameResolver';
  */
 export class CustomerProfileProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
+  private scoreField: string | undefined;
 
   constructor() {
     this.brandResolver = new BrandNameResolver();
@@ -83,8 +84,11 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for CustomerProfileProcessor');
     }
 
-    // Process records with customer profile information
-    const records = this.processCustomerProfileRecords(dataArray);
+  // Resolve canonical primary score field for this endpoint
+  this.scoreField = getPrimaryScoreField('customer_profile', (rawData as any)?.metadata) || 'customer_profile_score';
+
+  // Process records with customer profile information
+  const records = this.processCustomerProfileRecords(dataArray);
     
     // Calculate customer profile statistics
     const statistics = this.calculateCustomerProfileStatistics(records);
@@ -113,7 +117,7 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'customer_profile_score', // Use dedicated customer profile score as primary
+      targetVariable: this.scoreField || 'customer_profile_score', // Use canonical primary field
       renderer: this.createCustomerProfileRenderer(records), // Add direct renderer
       legend: this.createCustomerProfileLegend(records), // Add direct legend
       customerProfileAnalysis, // Additional metadata for customer profile visualization
@@ -134,8 +138,8 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       // Extract customer profile score
       const customerProfileScore = this.extractCustomerProfileScore(record);
       
-      // Use customer profile score as the primary value
-      const value = customerProfileScore;
+  // Use customer profile score as the primary value
+  const value = customerProfileScore;
       
       // Extract customer profile-specific properties from pre-calculated data
       const properties = {
@@ -165,17 +169,22 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
       // Category based on customer profile strength
       const category = this.getCustomerProfileCategory(customerProfileScore);
 
-      return {
+      const outRec: any = {
         area_id,
         area_name,
         value,
-        customer_profile_score: customerProfileScore, // Primary scoring field
         rank: 0, // Will be calculated in ranking
         category,
         coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
+
+      // Mirror canonical scoring field to top-level and properties
+      outRec[this.scoreField!] = customerProfileScore;
+      (outRec.properties as any)[this.scoreField!] = customerProfileScore;
+
+      return outRec;
     }).sort((a, b) => b.value - a.value) // Sort by customer profile score
       .map((record, index) => ({ ...record, rank: index + 1 })); // Assign ranks
   }
@@ -700,9 +709,10 @@ Higher scores indicate stronger alignment with the target brand's ideal customer
       [26, 152, 80, 0.6]      // #1a9850 - Dark Green (high customer profile fit)
     ];
     
+    const fieldName = this.scoreField || 'customer_profile_score';
     return {
       type: 'class-breaks',
-      field: 'customer_profile_score', // Render on the primary customer profile score
+      field: fieldName, // Render on the primary customer profile score
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

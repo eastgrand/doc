@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { getPrimaryScoreField } from './HardcodedFieldDefs';
 
 /**
  * OutlierDetectionProcessor - Handles data processing for the /outlier-detection endpoint
@@ -43,30 +44,18 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for OutlierDetectionProcessor');
     }
 
-    // Determine dynamic field: last numeric only (energy dataset convention)
-    const detectLastNumericField = (records: any[]): string | null => {
-      for (const rec of (records || []).slice(0, 5)) {
-        const obj = rec && typeof rec === 'object' ? rec : {};
-        const keys = Object.keys(obj);
-        for (let i = keys.length - 1; i >= 0; i--) {
-          const k = keys[i];
-          const v = (obj as any)[k];
-          const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
-          if (!Number.isNaN(n)) return k;
-        }
-      }
-      return null;
-    };
-    const dynamic = detectLastNumericField(rawData.results as any[]);
-    if (!dynamic) {
-      throw new Error('[OutlierDetectionProcessor] Could not detect a numeric scoring field (last numeric) from records.');
+    // Determine primary score field deterministically from hardcoded definitions.
+    // Allow incoming metadata.targetVariable to override when present.
+  const primary = getPrimaryScoreField('outlier_detection', (rawData as any)?.metadata);
+    if (!primary) {
+      throw new Error('[OutlierDetectionProcessor] No primary score field defined for outlier_detection endpoint.');
     }
-    this.scoreField = dynamic;
+    this.scoreField = primary;
 
     // Process records with outlier detection scoring priority
     const processedRecords = rawData.results.map((record: any, index: number) => {
-      // PRIORITIZE PRE-CALCULATED OUTLIER DETECTION SCORE
-      const outlierScore = this.extractOutlierScore(record);
+  // PRIORITIZE defined primary score field
+  const outlierScore = this.extractOutlierScore(record);
       
       // Generate area name from ID and location data
       const areaName = this.generateAreaName(record);
@@ -85,7 +74,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
       }
       
       // Extract outlier-relevant metrics for properties
-      const nikeShare = Number((record as any).mp30034a_b_p || (record as any).value_MP30034A_B_P) || 0;
+  const nikeShare = Number((record as any).mp30034a_b_p || (record as any).value_MP30034A_B_P) || 0;
       const strategicScore = Number((record as any).strategic_value_score) || 0;
       const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
@@ -128,7 +117,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
           extreme_characteristics: this.identifyExtremeCharacteristics(record)
         }
       };
-      if (this.scoreField && this.scoreField !== 'outlier_detection_score') {
+  if (this.scoreField && this.scoreField !== 'outlier_detection_score') {
         out[this.scoreField] = out.value;
         (out.properties as any)[this.scoreField] = out.value;
       }

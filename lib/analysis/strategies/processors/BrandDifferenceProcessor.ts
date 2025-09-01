@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics, ProcessingContext } from '../../types';
+import { getPrimaryScoreField } from './HardcodedFieldDefs';
 import { calculateEqualCountQuintiles } from '../../utils/QuintileUtils';
 
 /**
@@ -88,7 +89,10 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for BrandDifferenceProcessor');
     }
 
-    // Auto-detect which brand fields are available in the data
+  // Resolve canonical primary field for this endpoint (allow metadata override)
+  const primaryField = getPrimaryScoreField('brand_difference', (rawData as any)?.metadata) || 'brand_difference_score';
+
+  // Auto-detect which brand fields are available in the data
     const availableBrandFields = this.detectAvailableBrandFields(rawData);
     console.log(`[BrandDifferenceProcessor] Available brand fields:`, availableBrandFields);
     
@@ -168,7 +172,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'brand_difference_score',
+      targetVariable: primaryField,
       renderer,
       legend,
       brandAnalysis: {

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
+import { getPrimaryScoreField } from './HardcodedFieldDefs';
 
 /**
  * TrendAnalysisProcessor - Handles data processing for the /trend-analysis endpoint
@@ -53,25 +54,8 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for TrendAnalysisProcessor');
     }
 
-    // Determine dynamic field: last numeric only (energy dataset)
-    const detectLastNumericField = (records: any[]): string | null => {
-      for (const rec of (records || []).slice(0, 5)) {
-        const obj = rec && typeof rec === 'object' ? rec : {};
-        const keys = Object.keys(obj);
-        for (let i = keys.length - 1; i >= 0; i--) {
-          const k = keys[i];
-          const v = (obj as any)[k];
-          const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
-          if (!Number.isNaN(n)) return k;
-        }
-      }
-      return null;
-    };
-    const dynamic = detectLastNumericField(rawData.results as any[]);
-    if (!dynamic) {
-      throw new Error('[TrendAnalysisProcessor] Could not detect a numeric scoring field (last numeric) from records.');
-    }
-    this.scoreField = dynamic;
+  // Use canonical primary score field (allows metadata override)
+  this.scoreField = getPrimaryScoreField('trend_analysis', (rawData as any)?.metadata ?? undefined) || 'trend_analysis_score';
 
     // Process records with trend strength scoring priority
     const processedRecords = rawData.results.map((record: any, index: number) => {

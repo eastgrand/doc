@@ -1,5 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 
 /**
  * FeatureInteractionProcessor - Handles data processing for the /feature-interactions endpoint
@@ -40,7 +40,10 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for FeatureInteractionProcessor');
     }
 
-    // Process records with feature interaction scoring priority
+  // Determine primary canonical field for this endpoint (allow metadata override)
+  const primary = getPrimaryScoreField('feature_interactions', (rawData as any)?.metadata) || 'feature_interactions_score';
+  console.log(`[FeatureInteractionProcessor] Using primary score field: ${primary}`);
+  // Process records with feature interaction scoring priority
     const processedRecords = rawData.results.map((record: any, index: number) => {
       // PRIORITIZE PRE-CALCULATED FEATURE INTERACTION SCORE
       const interactionScore = this.extractInteractionScore(record);
@@ -80,15 +83,15 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       return {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
-        value: Math.round(interactionScore * 100) / 100, // Use interaction score as primary value
-        feature_interactions_score: Math.round(interactionScore * 100) / 100, // Add target variable at top level
-        feature_interaction_score: Math.round(interactionScore * 100) / 100, // Legacy compatibility
+  value: Math.round(interactionScore * 100) / 100, // Use interaction score as primary value
+  [primary]: Math.round(interactionScore * 100) / 100, // Add target variable at top level using canonical name
+  feature_interaction_score: Math.round(interactionScore * 100) / 100, // Legacy compatibility
         rank: 0, // Will be calculated after sorting
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
-          feature_interactions_score: interactionScore,
+          [primary]: interactionScore,
           feature_interaction_score: interactionScore, // Legacy compatibility
-          score_source: 'feature_interactions_score',
+          score_source: primary,
           nike_market_share: nikeShare,
           strategic_score: strategicScore,
           competitive_score: competitiveScore,
@@ -127,9 +130,9 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'feature_interactions_score', // Primary ranking by interaction strength
-      renderer: this.createFeatureInteractionRenderer(rankedRecords), // Add direct renderer
-      legend: this.createFeatureInteractionLegend(rankedRecords) // Add direct legend
+      targetVariable: primary, // Primary ranking by interaction strength
+      renderer: this.createFeatureInteractionRenderer(rankedRecords, primary), // Add direct renderer
+      legend: this.createFeatureInteractionLegend(rankedRecords, primary) // Add direct legend
     };
   }
 
@@ -701,7 +704,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
   /**
    * Create direct renderer for feature interaction visualization
    */
-  private createFeatureInteractionRenderer(records: any[]): any {
+  private createFeatureInteractionRenderer(records: any[], primaryField: string): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
@@ -715,7 +718,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'feature_interaction_score', // Direct field reference
+  field: primaryField, // Use canonical primary field
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,
@@ -737,7 +740,7 @@ export class FeatureInteractionProcessor implements DataProcessorStrategy {
   /**
    * Create direct legend for feature interaction
    */
-  private createFeatureInteractionLegend(records: any[]): any {
+  private createFeatureInteractionLegend(records: any[], primaryField: string): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     

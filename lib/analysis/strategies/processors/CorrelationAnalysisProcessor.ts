@@ -7,6 +7,8 @@ import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, Geogra
  * Processes correlation analysis results to identify statistical relationships between variables
  * across geographic areas, using pre-calculated correlation strength scores.
  */
+import { getPrimaryScoreField } from './HardcodedFieldDefs';
+
 export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
   // Prefer canonical; fallback to last numeric field for energy dataset
   private scoreField: string = 'correlation_analysis_score';
@@ -15,24 +17,16 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
     if (!rawData || typeof rawData !== 'object') return false;
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
-    
-    // Validate correlation-specific fields - check for actual data structure
-    const hasCorrelationFields = rawData.results.length === 0 || 
-      rawData.results.some(record => 
-        record && 
-        // Check for actual correlation data fields present in the dataset
-        ((record as any).value_MP30034A_B_P !== undefined ||   // Nike market share (raw format)
-         (record as any).value_TOTPOP_CY !== undefined ||      // Total population (raw format)
-         (record as any).ID !== undefined ||                   // Area ID
-         // Fallback fields for other datasets
-         (record as any).correlation_score !== undefined ||
-         (record as any).target_value !== undefined ||
-         (record as any).median_income !== undefined ||
-         (record as any).total_population !== undefined ||
-         (record as any).demographic_opportunity_score !== undefined ||
-         (record as any).mp30034a_b_p !== undefined)
+    // Use canonical primary field (allow metadata override)
+    const primary = getPrimaryScoreField('correlation_analysis', (rawData as any)?.metadata ?? undefined) || 'correlation_analysis_score';
+
+    const hasCorrelationFields = rawData.results.length === 0 ||
+      rawData.results.some(record =>
+        record &&
+        ((record as any).ID || (record as any).area_id || (record as any).id) &&
+        ((record as any)[primary] !== undefined)
       );
-    
+
     return hasCorrelationFields;
   }
 
@@ -44,25 +38,8 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for CorrelationAnalysisProcessor');
     }
 
-    // Choose dynamic score field: prefer canonical if present, else last numeric (energy dataset)
-    const detectLastNumericField = (records: any[]): string | null => {
-      for (const rec of (records || []).slice(0, 5)) {
-        const obj = rec && typeof rec === 'object' ? rec : {};
-        const keys = Object.keys(obj);
-        for (let i = keys.length - 1; i >= 0; i--) {
-          const k = keys[i];
-          const v = (obj as any)[k];
-          const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
-          if (!Number.isNaN(n)) return k;
-        }
-      }
-      return null;
-    };
-    const dynamic = detectLastNumericField(rawData.results as any[]);
-    if (!dynamic) {
-      throw new Error('[CorrelationAnalysisProcessor] Could not detect a numeric scoring field (last numeric) from records.');
-    }
-    this.scoreField = dynamic;
+  // Use canonical primary score field (allows metadata override)
+  this.scoreField = getPrimaryScoreField('correlation_analysis', (rawData as any)?.metadata ?? undefined) || 'correlation_analysis_score';
 
     // Process records with correlation information
     const records = this.processCorrelationRecords(rawData.results);
@@ -113,11 +90,11 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
 
   private processCorrelationRecords(rawRecords: any[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
-      const area_id = (record as any).ID || (record as any).area_id || (record as any).id || (record as any).GEOID || `area_${index}`;
-      const area_name = (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || (record as any).name || (record as any).NAME || `Area ${index + 1}`;
+  const area_id = String((record as any).ID ?? (record as any).area_id ?? (record as any).id ?? (record as any).GEOID ?? `area_${index}`);
+  const area_name = String((record as any).value_DESCRIPTION ?? (record as any).DESCRIPTION ?? (record as any).area_name ?? (record as any).name ?? (record as any).NAME ?? `Area ${index + 1}`);
       
       // Extract correlation strength score
-      const correlationScore = this.extractCorrelationScore(record);
+  const correlationScore = this.extractCorrelationScore(record);
       
       // Use correlation strength score as the primary value
       const value = correlationScore;
@@ -125,9 +102,6 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       // Extract correlation-specific properties (updated for actual dataset fields)
   const properties = {
         ...this.extractProperties(record),
-        correlation_analysis_score: correlationScore,
-        correlation_score: correlationScore, // Alternative field
-        correlation_strength_score: correlationScore, // Legacy compatibility
         target_value: Number((record as any).value_MP30034A_B_P || (record as any).target_value) || 0,
         median_income: Number((record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income) || 0,
         total_population: Number((record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population) || 0,
@@ -138,7 +112,7 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
         white_population: Number((record as any).value_WHITE_CY || (record as any).white_population) || 0,
         correlation_strength: this.getCorrelationStrengthLevel(correlationScore)
       };
-  // Also expose the dynamic score field for renderer parity
+  // Expose the canonical primary score field in properties and top-level
   (properties as any)[this.scoreField] = correlationScore;
       
       // Extract SHAP values
@@ -151,19 +125,14 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
         area_id,
         area_name,
         value,
-        correlation_analysis_score: correlationScore, // Current scoring system
-        correlation_score: correlationScore, // Alternative field
-        correlation_strength_score: correlationScore, // Legacy compatibility
+        // Expose only the canonical primary field at top-level for parity
+  [this.scoreField]: correlationScore,
         rank: 0, // Will be calculated in ranking
         category,
         coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
-      // Add dynamic score field at top level if different from canonical
-      if (this.scoreField && this.scoreField !== 'correlation_analysis_score') {
-        out[this.scoreField] = correlationScore;
-      }
       return out;
     }).sort((a, b) => b.value - a.value) // Sort by correlation strength
       .map((record, index) => ({ ...record, rank: index + 1 })); // Assign ranks
@@ -171,21 +140,22 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
 
   private extractCorrelationScore(record: any): number {
     // PRIORITIZE PRE-CALCULATED CORRELATION STRENGTH SCORE
-    // Check for correlation_analysis_score first (primary field)
-    if ((record as any).correlation_analysis_score !== undefined && (record as any).correlation_analysis_score !== null) {
-      const primaryScore = Number((record as any).correlation_analysis_score);
-      console.log(`🔗 [CorrelationAnalysisProcessor] Using correlation_analysis_score: ${primaryScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
+    // Check for the canonical primary field first (may be overridden by metadata)
+    const primaryVal = (record as any)[this.scoreField];
+    if (primaryVal !== undefined && primaryVal !== null) {
+      const primaryScore = Number(primaryVal);
+      console.log(`[CorrelationAnalysisProcessor] Using ${this.scoreField}: ${primaryScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
       return primaryScore;
     }
-    
-    // Fallback to correlation_score
+
+    // Fallback to legacy alias fields if present (for backward compatibility)
     if ((record as any).correlation_score !== undefined && (record as any).correlation_score !== null) {
       const fallbackScore = Number((record as any).correlation_score);
-      console.log(`🔗 [CorrelationAnalysisProcessor] Using fallback correlation_score: ${fallbackScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
+      console.log(`[CorrelationAnalysisProcessor] Using fallback correlation_score: ${fallbackScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
       return fallbackScore;
     }
-    
-    console.log('⚠️ [CorrelationAnalysisProcessor] No pre-calculated correlation_analysis_score found, calculating composite score');
+
+    console.log('⚠️ [CorrelationAnalysisProcessor] No pre-calculated primary correlation score found, calculating composite score');
     
     // Calculate composite correlation score from available demographic/economic data
     let correlationScore = 0;

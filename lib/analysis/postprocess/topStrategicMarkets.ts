@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { resolveAreaName as resolveSharedAreaName, getZip as getSharedZip } from '@/lib/shared/AreaName';
+import { getPrimaryScoreField } from '@/lib/analysis/strategies/processors/HardcodedFieldDefs';
 
 // Local helper: robust ZIP extractor compatible with existing feature shapes
 function getZIPCode(feature: any): string {
@@ -27,53 +28,32 @@ function getZIPCode(feature: any): string {
   return 'Unknown';
 }
 
-// Resolve score field with analysis-type specific priorities and generic fallbacks
+// Resolve score field using endpoint mapping (no heuristics). Metadata targetVariable wins.
 function resolvePrimaryScoreField(analysisType: string, features: any[], metadata?: any): string {
-  if (metadata?.targetVariable) return metadata.targetVariable;
-  // Energy dataset convention: pick last numeric field from properties (handle double nesting)
-  const pickLastNumericField = (list: any[]): string | undefined => {
-    for (const f of (list || []).slice(0, 5)) {
-      const propsLvl1 = (f && typeof f === 'object') ? (f as any).properties || f : {};
-      const props = (propsLvl1 && typeof propsLvl1 === 'object') ? (propsLvl1 as any).properties || propsLvl1 : propsLvl1;
-      const keys = Object.keys(props || {});
-      for (let i = keys.length - 1; i >= 0; i--) {
-        const k = keys[i];
-        const v = (props as any)[k];
-        const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
-        if (!Number.isNaN(n)) return k;
-      }
-    }
-    return undefined;
-  };
-  const lastNumeric = pickLastNumericField(features);
-  if (lastNumeric) return lastNumeric;
-  // Fallbacks by analysis type
-  const typeDefaults: Record<string, string[]> = {
-    strategic_analysis: ['strategic_analysis_score', 'strategic_score', 'strategic_value_score'],
-    brand_difference: ['brand_difference_score', 'brand_difference_value'],
-    competitive_analysis: ['competitive_advantage_score'],
-    comparative_analysis: ['comparison_score', 'comparative_score'],
-    demographic_insights: ['demographic_insights_score']
-  };
-  const candidates = [
-    ...(typeDefaults[analysisType] || []),
-    'target_value',
-    'score',
-    'value'
-  ];
-  const first = (features || []).find(f => !!(f?.properties || f));
-  const props = first?.properties || first || {};
-  for (const c of candidates) {
-    const v = (props as any)[c];
-    if (typeof v === 'number' && !Number.isNaN(v)) return c;
+  // Delegate to central canonical mapping. getPrimaryScoreField respects metadata.targetVariable.
+  try {
+    const primary = getPrimaryScoreField(analysisType, metadata || undefined);
+    if (primary && typeof primary === 'string' && primary.trim()) return primary;
+  } catch {
+    // fall through to a conservative fallback below
   }
-  return candidates[0] || 'strategic_analysis_score';
+  return 'value';
 }
 
 // Compute simple descriptive stats used for the Study Area Summary
 function computeScoreStats(features: any[], scoreField: string) {
   const vals = (features || [])
-    .map((f: any) => (f?.properties || f || {})[scoreField])
+    .map((f: any) => {
+      const lvl1 = (f?.properties || f || {});
+      const nested = (lvl1 as any)?.properties || lvl1;
+      const v = (nested as any)?.[scoreField] ?? 
+               (lvl1 as any)?.[scoreField] ?? 
+               (nested as any)?.strategic_analysis_score ?? 
+               (lvl1 as any)?.strategic_analysis_score ?? 
+               (nested as any)?.value ?? 
+               (lvl1 as any)?.value;
+      return typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
+    })
     .filter((v: any) => typeof v === 'number' && !Number.isNaN(v)) as number[];
   if (vals.length === 0) return null;
   const sorted = [...vals].sort((a, b) => a - b);
@@ -163,21 +143,29 @@ export function injectTopStrategicMarkets(
   // Build ranked list with enriched per-item details
   let ranked = candidateFeatures
     .map((feat: any) => {
-      const props = feat?.properties || feat || {};
+      const lvl1 = feat?.properties || feat || {};
+      const nested = (lvl1 as any)?.properties || lvl1; // handle double nesting
       const score = Number(
-        props?.[resolvedScoreField] ??
-        props?.strategic_analysis_score ??
-        props?.strategic_score ??
-        props?.strategic_value_score ??
-        props?.target_value
+        (nested as any)?.[resolvedScoreField] ??
+        (lvl1 as any)?.[resolvedScoreField] ??
+        (nested as any)?.strategic_analysis_score ??
+        (lvl1 as any)?.strategic_analysis_score ??
+        (nested as any)?.strategic_score ??
+        (lvl1 as any)?.strategic_score ??
+        (nested as any)?.strategic_value_score ??
+        (lvl1 as any)?.strategic_value_score ??
+        (nested as any)?.value ??
+        (lvl1 as any)?.value ??
+        (nested as any)?.target_value ??
+        (lvl1 as any)?.target_value
       );
-      const name = resolveSharedAreaName(feat, { mode: 'zipCity', neutralFallback: props?.area_name || props?.name || props?.area_id || '' });
+      const name = resolveSharedAreaName(feat, { mode: 'zipCity', neutralFallback: (lvl1 as any)?.area_name || (lvl1 as any)?.name || (lvl1 as any)?.area_id || '' });
 
-      // Enrich: Market Gap, Brand Share, Demographics
-      const marketGapRaw = pickFirst(props, ['market_gap', 'opportunity_gap', 'market_gap_pct', 'gap_percent', 'gap']);
-      const brandShareRaw = pickFirst(props, ['brand_share', 'target_brand_share', 'red_bull_share', 'brand_penetration', 'brand_share_pct']);
-      const populationRaw = pickFirst(props, ['total_population', 'population', 'TOTPOP_CY', 'value_TOTPOP_CY']);
-      const incomeRaw = pickFirst(props, ['median_income', 'AVGHINC_CY', 'value_AVGHINC_CY', 'household_income']);
+      // Enrich: Market Gap, Brand Share, Demographics (check nested first, then lvl1)
+      const marketGapRaw = pickFirst(nested, ['market_gap', 'opportunity_gap', 'market_gap_pct', 'gap_percent', 'gap']) ?? pickFirst(lvl1, ['market_gap', 'opportunity_gap', 'market_gap_pct', 'gap_percent', 'gap']);
+      const brandShareRaw = pickFirst(nested, ['brand_share', 'target_brand_share', 'red_bull_share', 'brand_penetration', 'brand_share_pct']) ?? pickFirst(lvl1, ['brand_share', 'target_brand_share', 'red_bull_share', 'brand_penetration', 'brand_share_pct']);
+      const populationRaw = pickFirst(nested, ['total_population', 'population', 'TOTPOP_CY', 'value_TOTPOP_CY']) ?? pickFirst(lvl1, ['total_population', 'population', 'TOTPOP_CY', 'value_TOTPOP_CY']);
+      const incomeRaw = pickFirst(nested, ['median_income', 'AVGHINC_CY', 'value_AVGHINC_CY', 'household_income']) ?? pickFirst(lvl1, ['median_income', 'AVGHINC_CY', 'value_AVGHINC_CY', 'household_income']);
 
       const marketGap = marketGapRaw != null ? toNum(marketGapRaw) : null;
       const brandShare = brandShareRaw != null ? toNum(brandShareRaw) : null;

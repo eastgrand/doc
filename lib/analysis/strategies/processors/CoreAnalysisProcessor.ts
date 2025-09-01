@@ -1,5 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -11,6 +11,7 @@ import { BrandNameResolver } from '../../utils/BrandNameResolver';
  */
 export class CoreAnalysisProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
+  private scoreField: string | undefined;
 
   constructor() {
     this.brandResolver = new BrandNameResolver();
@@ -53,7 +54,10 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for CoreAnalysisProcessor');
     }
 
-    // --- ENHANCED: Use pre-calculated strategic value scores with fallback ---
+  // Resolve canonical primary score field for this endpoint
+  this.scoreField = getPrimaryScoreField('core_analysis', (rawData as any)?.metadata) || 'strategic_value_score';
+
+  // --- ENHANCED: Use pre-calculated strategic value scores with fallback ---
     const processedRecords = rawData.results.map((record: any, index: number) => {
       // PRIORITIZE PRE-CALCULATED STRATEGIC VALUE SCORE
       let primaryScore;
@@ -189,7 +193,7 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
-      return {
+      const outRecord: any = {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100, // Use strategic score as primary value
@@ -198,8 +202,9 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
         ...topContributingFields,
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
-          strategic_value_score: primaryScore,
-          score_source: 'strategic_value_score',
+          // Mirror the canonical scoring field into properties for downstream consumers
+          [this.scoreField!]: primaryScore,
+          score_source: this.scoreField!,
           target_brand_share: targetBrandValue,
           target_brand_name: targetBrandInfo?.brandName || 'Unknown',
           competitor_brand_share: competitorBrandValue,
@@ -214,6 +219,11 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
           cluster_performance_score: Number((record as any).cluster_performance_score) || 0
         }
       };
+
+      // Also expose canonical scoring field at top-level for compatibility
+      outRecord[this.scoreField!] = primaryScore;
+
+      return outRecord;
     });
     
     // Calculate comprehensive statistics
@@ -234,7 +244,7 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'strategic_value_score' // Primary ranking by strategic value
+      targetVariable: this.scoreField || 'strategic_value_score' // Primary ranking by strategic value
     };
   }
 
@@ -647,10 +657,8 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
     
     // Define field importance weights based on core analysis factors
     // Use dynamic field detection instead of hardcoded mappings
-    const detectedFields = DynamicFieldDetector.detectFields([record], 'core-analysis', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
-    
-    console.log(`[CoreAnalysisProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
+  const fieldDefinitions = getTopFieldDefinitions('core_analysis');
+  console.log(`[CoreAnalysisProcessor] Using hardcoded top field definitions for core_analysis`);
     
     fieldDefinitions.forEach(fieldDef => {
       let value = 0;

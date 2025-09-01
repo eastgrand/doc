@@ -1,5 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { BrandNameResolver, BrandField } from '../../utils/BrandNameResolver';
 
 /**
@@ -10,6 +10,7 @@ import { BrandNameResolver, BrandField } from '../../utils/BrandNameResolver';
  */
 export class DemographicDataProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
+  private scoreField: string | undefined;
 
   constructor() {
     this.brandResolver = new BrandNameResolver();
@@ -58,8 +59,11 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for DemographicDataProcessor');
     }
 
-    // Process records with demographic information
-    const records = this.processDemographicRecords(rawData.results);
+  // Resolve canonical primary score field for this endpoint
+  this.scoreField = getPrimaryScoreField('demographic_analysis', (rawData as any)?.metadata) || 'demographic_insights_score';
+
+  // Process records with demographic information
+  const records = this.processDemographicRecords(rawData.results);
     
     // Calculate demographic statistics
     const statistics = this.calculateDemographicStatistics(records);
@@ -79,7 +83,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'demographic_insights_score', // Use the current scoring system field
+      targetVariable: this.scoreField || 'demographic_insights_score', // Use canonical primary field
       renderer: this.createDemographicRenderer(records), // Add direct renderer
       legend: this.createDemographicLegend(records), // Add direct legend
       demographicAnalysis // Additional metadata for demographic visualization
@@ -98,8 +102,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       // Extract demographic score
       const demographicScore = this.extractDemographicScore(record);
       
-      // Use demographic score as the primary value
-      const value = demographicScore;
+  // Use demographic score as the primary value
+  const value = demographicScore;
       
       // Extract demographic-specific properties (updated for actual dataset fields)
       const properties = {
@@ -124,18 +128,22 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       // Category based on demographic characteristics
       const category = this.getDemographicCategory(demographicScore, properties);
 
-      return {
+      const outRec: any = {
         area_id,
         area_name,
         value,
-        demographic_insights_score: demographicScore, // Current scoring system
-        demographic_opportunity_score: demographicScore, // Legacy compatibility
         rank: 0, // Will be calculated in ranking
         category,
         coordinates: (record as any).coordinates || [0, 0],
         properties,
         shapValues
       };
+
+      // Mirror canonical scoring field into top-level and properties for downstream consumers
+      outRec[this.scoreField!] = demographicScore;
+      (outRec.properties as any)[this.scoreField!] = demographicScore;
+
+      return outRec;
     }).sort((a, b) => b.value - a.value) // Sort by demographic score
       .map((record, index) => ({ ...record, rank: index + 1 })); // Assign ranks
   }
@@ -623,9 +631,10 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       [26, 152, 80, 0.6]    // #1a9850 - Dark Green (highest demographic opportunity)
     ];
     
+    const fieldName = this.scoreField || 'value';
     return {
       type: 'class-breaks',
-      field: 'value', // Use the main value field that ArcGIS can access
+      field: fieldName, // Use the main value field that ArcGIS can access
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

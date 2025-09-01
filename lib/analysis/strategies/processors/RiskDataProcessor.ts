@@ -1,5 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 
 /**
  * RiskDataProcessor - Handles data processing for risk analysis
@@ -38,8 +38,10 @@ export class RiskDataProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for RiskDataProcessor');
     }
 
-    // Process records with risk information
-    const records = this.processRiskRecords(rawData.results);
+  // Determine canonical primary field for risk analysis
+  const primary = getPrimaryScoreField('risk_analysis', (rawData as any)?.metadata) || 'risk_adjusted_score';
+  // Process records with risk information
+  const records = this.processRiskRecords(rawData.results, primary);
     
     // Calculate risk statistics
     const statistics = this.calculateRiskStatistics(records);
@@ -59,7 +61,7 @@ export class RiskDataProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'risk_adjusted_score',
+      targetVariable: primary,
       riskAssessment: riskAnalysis // Additional metadata for risk visualization
     };
   }
@@ -68,7 +70,7 @@ export class RiskDataProcessor implements DataProcessorStrategy {
   // PRIVATE PROCESSING METHODS
   // ============================================================================
 
-  private processRiskRecords(rawRecords: any[]): GeographicDataPoint[] {
+  private processRiskRecords(rawRecords: any[], primaryField: string): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
       const area_id = (record as any).area_id || (record as any).id || (record as any).GEOID || (record as any).ID || `area_${index}`;
       const area_name = (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || (record as any).name || (record as any).NAME || `Area ${index + 1}`;
@@ -76,11 +78,11 @@ export class RiskDataProcessor implements DataProcessorStrategy {
       // Extract risk-adjusted score (higher is better - lower risk, higher opportunity)
       const riskScore = this.extractRiskScore(record);
       
-      // Use risk-adjusted score as the primary value
-      const value = riskScore;
+  // Use risk-adjusted score as the primary value
+  const value = riskScore;
       
-      // Extract risk-specific properties
-      const properties = {
+  // Extract risk-specific properties
+  const properties = {
         ...this.extractProperties(record),
         risk_score: riskScore,
         volatility: (record as any).volatility || 0,
@@ -92,6 +94,9 @@ export class RiskDataProcessor implements DataProcessorStrategy {
         mitigation_potential: this.calculateMitigationPotential(record),
         risk_confidence: this.calculateRiskConfidence(record)
       };
+
+  // Mirror canonical primary into properties and top-level
+  (properties as any)[primaryField] = riskScore;
       
       // Extract SHAP values
       const shapValues = this.extractShapValues(record);

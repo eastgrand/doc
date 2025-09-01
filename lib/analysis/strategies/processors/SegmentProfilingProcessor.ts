@@ -1,5 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 /**
@@ -27,7 +27,10 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       throw new Error(rawData.error || 'Segment profiling analysis failed');
     }
 
-    const records = rawData.results.map((record: any, index: number) => {
+  // Determine canonical primary score field (allow metadata override)
+  const primaryField = getPrimaryScoreField('segment_profiling', (rawData as any)?.metadata) || 'segment_profiling_score';
+
+  const records = rawData.results.map((record: any, index: number) => {
       // Extract or calculate segment profiling score with fallback logic
       const segmentScore = this.extractSegmentScore(record);
       
@@ -57,7 +60,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
         medianIncome
       });
 
-      return {
+      const out: any = {
         area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
         area_name: (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || `Area ${index + 1}`,
         value: segmentScore,
@@ -66,7 +69,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
         coordinates: this.extractCoordinates(record),
         properties: {
           // Core segmentation metrics
-          segment_profiling_score: segmentScore,
+          [primaryField]: segmentScore,
           demographic_distinctiveness: indicators.demographicDistinctiveness,
           behavioral_clustering_strength: indicators.behavioralClustering,
           market_segment_strength: indicators.marketSegmentStrength,
@@ -110,6 +113,15 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
         },
         shapValues: (record as any).shap_values || {}
       };
+      // Mirror canonical field into top-level for backward compatibility
+      if (primaryField && primaryField !== 'segment_profiling_score') {
+        out[primaryField] = out.value;
+      } else {
+        // ensure legacy key exists
+        out.segment_profiling_score = out.value;
+        (out.properties as any).segment_profiling_score = out.value;
+      }
+      return out;
     });
 
     // Sort by segment profiling score (highest first)
@@ -133,9 +145,9 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       summary,
       featureImportance: rawData.feature_importance || [],
       statistics,
-      targetVariable: 'segment_profiling_score', // Segment profiling score for segmentation
-      renderer: this.createSegmentRenderer(records),
-      legend: this.createSegmentLegend(records)
+      targetVariable: primaryField, // use canonical primary field
+      renderer: this.createSegmentRenderer(records, primaryField),
+      legend: this.createSegmentLegend(records, primaryField)
     };
   }
 
@@ -437,7 +449,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
   // RENDERING METHODS
   // ============================================================================
 
-  private createSegmentRenderer(records: any[]): any {
+  private createSegmentRenderer(records: any[], primaryField?: string): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
@@ -451,7 +463,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'segment_profiling_score',
+      field: primaryField || 'segment_profiling_score',
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,
@@ -470,7 +482,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
     };
   }
 
-  private createSegmentLegend(records: any[]): any {
+  private createSegmentLegend(records: any[], primaryField?: string): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     

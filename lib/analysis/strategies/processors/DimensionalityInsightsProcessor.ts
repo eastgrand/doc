@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -40,11 +40,14 @@ export class DimensionalityInsightsProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for DimensionalityInsightsProcessor');
     }
 
+    const primary = getPrimaryScoreField('dimensionality_insights', (rawData as any)?.metadata);
+    if (!primary) throw new Error('[DimensionalityInsightsProcessor] No primary score field defined for dimensionality_insights');
+
     const processedRecords = rawData.results.map((record: any, index: number) => {
-      const primaryScore = Number((record as any).dimensionality_insights_score);
+      const primaryScore = Number((record as any)[primary]);
       
       if (isNaN(primaryScore)) {
-        throw new Error(`Dimensionality insights record ${(record as any).ID || index} is missing dimensionality_insights_score`);
+        throw new Error(`Dimensionality insights record ${(record as any).ID || index} is missing ${primary}`);
       }
       
       // Generate area name
@@ -57,15 +60,15 @@ export class DimensionalityInsightsProcessor implements DataProcessorStrategy {
       return {
         area_id: recordId,
         area_name: areaName,
-        value: Math.round(primaryScore * 100) / 100,
-        dimensionality_insights_score: Math.round(primaryScore * 100) / 100,
+  value: Math.round(primaryScore * 100) / 100,
+  [primary]: Math.round(primaryScore * 100) / 100,
         rank: 0, // Will be calculated after sorting
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
-          dimensionality_insights_score: primaryScore,
-          score_source: 'dimensionality_insights_score',
+          [primary]: primaryScore,
+          score_source: primary,
           target_brand_share: this.extractTargetBrandShare(record),
           total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
           median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
@@ -94,7 +97,7 @@ export class DimensionalityInsightsProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'dimensionality_insights_score',
+  targetVariable: primary,
       renderer: renderer,
       legend: legend
     };
@@ -196,10 +199,8 @@ export class DimensionalityInsightsProcessor implements DataProcessorStrategy {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
     // Use dynamic field detection instead of hardcoded mappings
-    const detectedFields = DynamicFieldDetector.detectFields([record], 'dimensionality-insights', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
-    
-    console.log(`[DimensionalityInsightsProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
+  const fieldDefinitions = getTopFieldDefinitions('dimensionality_insights');
+  // console.log(`[DimensionalityInsightsProcessor] Using hardcoded top field definitions for dimensionality_insights`);
     
     fieldDefinitions.forEach(fieldDef => {
       const sourceKey = Array.isArray(fieldDef.source) ? fieldDef.source[0] : fieldDef.source;

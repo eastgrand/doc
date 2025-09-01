@@ -4,6 +4,50 @@
 **Updated**: August 31, 2025  
 **Status**: ✅ Core flow verified — routing, endpoints, and renderer/score alignment updated; availability of advanced features is configuration-dependent  
 
+## Baseline vs Current Flow (Comparison)
+
+This section compares the earlier “working flow” baseline with the current deployed flow so changes are explicit and verifiable.
+
+- Baseline reference: `docs/query-to-visualization-flow.md` (January 2025)
+- Current reference: this document (Semantic Enhanced Hybrid Architecture, August 2025)
+
+### Query routing
+
+- Baseline: AnalysisEngine → CachedEndpointRouter; deterministic endpoint selection with cached dataset join.
+- Current: Semantic Enhanced Hybrid: Validation + HybridRoutingEngine + SemanticRouter, with `EnhancedQueryAnalyzer` as template-based fallback. Confidence floors, brand tie‑breakers, and creative‑query handling added.
+
+### Geographic context & spatial filtering
+
+- Baseline: Load and join ZIP boundaries; basic study‑area behavior.
+- Current: Geo awareness + `metadata.spatialFilterIds` handling in the API route; project scope bypasses filtering while non‑project scope restricts candidates.
+
+### Field detection & score selection
+
+- Baseline: “last numeric wins” heuristic could select aggregates/IDs.
+- Current: Canonical‑first selection; excludes numeric‑only and aggregate/ID‑like names; requires cross‑sample variance; mirrors chosen score to `targetVariable`.
+
+### Renderer & legend alignment
+
+- Baseline: Choropleth rendering via factory; alignment expected but not enforced.
+- Current: Invariant `renderer.field === targetVariable` enforced; processors can return a direct renderer; synchronized legend; schema injection ensures the renderer field exists; safe fallbacks avoid grey maps.
+
+### Post‑process: Top Strategic Markets
+
+- Baseline: Ranked output expected but scoping/cap were inconsistent.
+- Current: Explicit injection capped at 10, includes “Study Area Summary,” respects/bypasses `spatialFilterIds` by scope.
+
+### UI integration
+
+- Baseline: Layer creation and popups from processed data.
+- Current: Bridge validates renderer field, adds schema fields, computes extent/zoom, removes prior layers; diagnostics added along the visualization path.
+
+Verification & references
+
+- Tests: strategic processor, dynamic field alignment, and Top Strategic Markets suites pass and assert the invariants above.
+- Route checks: `app/api/claude/generate-response/route.ts` includes `spatialFilterIds` handling and Top Markets injection.
+- Post‑data updates: run `docs/POST_DATA_UPDATE_TESTING.md` to re‑validate parity after data or endpoint changes.
+
+
 ## Overview
 
 This document provides a comprehensive explanation of how a user query flows through the system from initial input to final visualization on the map. The system now features a sophisticated **Semantic Enhanced Hybrid Architecture** that combines the robust validation and structure of hybrid routing with the semantic understanding power of AI for optimal query processing.

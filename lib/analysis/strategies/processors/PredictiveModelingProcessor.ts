@@ -1,5 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 
 /**
  * PredictiveModelingProcessor - Specialized processor for predictive modeling analysis
@@ -8,11 +8,16 @@ import { DynamicFieldDetector } from './DynamicFieldDetector';
  * by analyzing model confidence, pattern stability, forecast reliability, and data quality.
  */
 export class PredictiveModelingProcessor implements DataProcessorStrategy {
+  private scoreField: string = 'predictive_modeling_score';
   
   /**
    * Extract predictive modeling score from record with fallback calculation
    */
   private extractPredictiveScore(record: any): number {
+    // Prefer canonical primary field (may be provided via metadata override)
+    if ((record as any)[this.scoreField] !== undefined && (record as any)[this.scoreField] !== null) {
+      return Number((record as any)[this.scoreField]);
+    }
     // PRIORITY 1: Use prediction_score (correct endpoint field)
     if ((record as any).prediction_score !== undefined && (record as any).prediction_score !== null) {
       return Number((record as any).prediction_score);
@@ -39,7 +44,7 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
     }
     
     // FALLBACK: Find first suitable numeric field
-    const numericFields = Object.keys(record as any).filter(key => {
+  const numericFields = Object.keys(record as any).filter(key => {
       const value = record[key];
       return typeof value === 'number' && 
              !key.toLowerCase().includes('id') &&
@@ -143,6 +148,14 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
       throw new Error(rawData.error || 'Predictive modeling analysis failed');
     }
 
+    // Determine canonical primary score for predictive modeling (metadata override allowed)
+    try {
+      const primary = getPrimaryScoreField('predictive_modeling', (rawData as any)?.metadata ?? undefined) || 'predictive_modeling_score';
+      this.scoreField = primary;
+    } catch (e) {
+      // keep default
+    }
+
     const records = rawData.results.map((record: any, index: number) => {
       // Extract the pre-calculated predictive modeling score with flexible fallback
       const predictiveScore = this.extractPredictiveScore(record);
@@ -172,12 +185,15 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
         area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
         area_name: (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || `Area ${index + 1}`,
         value: predictiveScore,
+  // Mirror canonical primary score at top-level for downstream consumers
+  [this.scoreField]: predictiveScore,
         rank: index + 1, // Will be sorted later
         category: this.categorizePredictiveLevel(predictiveScore),
         coordinates: this.extractCoordinates(record),
         properties: {
           // Core predictive metrics
           predictive_modeling_score: predictiveScore,
+          [this.scoreField]: predictiveScore,
           model_confidence_level: indicators.modelConfidenceLevel,
           forecast_reliability: indicators.forecastReliability,
           pattern_stability: indicators.patternStability,
@@ -234,7 +250,7 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
       summary,
       featureImportance: rawData.feature_importance || [],
       statistics,
-      targetVariable: 'predictive_modeling_score'
+  targetVariable: this.scoreField
     };
   }
 

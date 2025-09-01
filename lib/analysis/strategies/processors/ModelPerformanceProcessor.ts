@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -23,27 +23,14 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
     if (!rawData || typeof rawData !== 'object') return false;
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
-    
-    // Detect last numeric score field for dynamic support
-    const detectLastNumericField = (records: any[]): string | null => {
-      if (!Array.isArray(records) || records.length === 0) return null;
-      const sample = records[0];
-      if (!sample || typeof sample !== 'object') return null;
-      const numericKeys = Object.keys(sample).filter(key => {
-        if (key === 'ID' || key === 'id' || key === 'area_id') return false;
-        if (key.toLowerCase().includes('name') || key.toLowerCase().includes('description')) return false;
-        const val = (sample as any)[key];
-        return typeof val === 'number' && !isNaN(val);
-      });
-      return numericKeys.length > 0 ? numericKeys[numericKeys.length - 1] : null;
-    };
-    
-    // Model performance prefers canonical; allow dynamic numeric field fallback
-    const hasRequiredFields = rawData.results.length === 0 || 
-      rawData.results.some(record => 
-        record && 
+    // Use canonical primary field (allow metadata override)
+    const primary = getPrimaryScoreField('model_performance', (rawData as any)?.metadata ?? undefined) || 'model_performance_score';
+
+    const hasRequiredFields = rawData.results.length === 0 ||
+      rawData.results.some(record =>
+        record &&
         ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        (((record as any).model_performance_score !== undefined) || detectLastNumericField([record]) !== null)
+        ((record as any)[primary] !== undefined)
       );
     
     return hasRequiredFields;
@@ -56,22 +43,9 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for ModelPerformanceProcessor');
     }
 
-    // Determine dynamic field: prefer canonical, else last numeric (energy dataset)
-    const canonical = 'model_performance_score';
-    const detectLastNumericField = (records: any[]): string | null => {
-      if (!Array.isArray(records) || records.length === 0) return null;
-      const sample = records[0];
-      if (!sample || typeof sample !== 'object') return null;
-      const numericKeys = Object.keys(sample).filter(key => {
-        if (key === 'ID' || key === 'id' || key === 'area_id') return false;
-        if (key.toLowerCase().includes('name') || key.toLowerCase().includes('description')) return false;
-        const val = (sample as any)[key];
-        return typeof val === 'number' && !isNaN(val);
-      });
-      return numericKeys.length > 0 ? numericKeys[numericKeys.length - 1] : null;
-    };
-    const anyHasCanonical = (rawData.results as any[]).some(record => (record as any)[canonical] !== undefined);
-    this.scoreField = anyHasCanonical ? canonical : (detectLastNumericField(rawData.results as any[]) || canonical);
+  // Determine canonical primary field (allow metadata override). Fall back to canonical name if not present.
+  const primary = getPrimaryScoreField('model_performance', (rawData as any)?.metadata ?? undefined) || 'model_performance_score';
+  this.scoreField = primary;
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
       const primaryScore = Number((record as any)[this.scoreField]);
@@ -81,8 +55,8 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
       }
       
       // Generate area name
-      const areaName = this.generateAreaName(record);
-      const recordId = (record as any).ID || (record as any).id || (record as any).area_id || `area_${index + 1}`;
+      const areaName = String(this.generateAreaName(record));
+      const recordId = String((record as any).ID ?? (record as any).id ?? (record as any).area_id ?? `area_${index + 1}`);
       
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
@@ -105,7 +79,7 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
         }
       };
 
-      if (this.scoreField && this.scoreField !== canonical) {
+      if (this.scoreField && this.scoreField !== 'model_performance_score') {
         out[this.scoreField] = out.value;
         (out.properties as any)[this.scoreField] = out.value;
       }
@@ -236,10 +210,9 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
     // Use dynamic field detection instead of hardcoded mappings
-    const detectedFields = DynamicFieldDetector.detectFields([record], 'model-performance', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
+  const fieldDefinitions = getTopFieldDefinitions('model_performance');
     
-    console.log(`[ModelPerformanceProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
+  console.log(`[ModelPerformanceProcessor] Using hardcoded top field definitions for model_performance`);
     
     fieldDefinitions.forEach(fieldDef => {
       const sourceKey = Array.isArray(fieldDef.source) ? fieldDef.source[0] : fieldDef.source;

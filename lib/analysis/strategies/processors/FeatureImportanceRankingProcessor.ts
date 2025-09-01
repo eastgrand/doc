@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -12,7 +12,7 @@ import { BrandNameResolver } from '../../utils/BrandNameResolver';
  */
 export class FeatureImportanceRankingProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
-  // Prefer canonical; fallback to last numeric field for energy dataset
+  // Prefer canonical mapping for primary score field
   private scoreField: string = 'feature_importance_ranking_score';
 
   constructor() {
@@ -23,27 +23,14 @@ export class FeatureImportanceRankingProcessor implements DataProcessorStrategy 
     if (!rawData || typeof rawData !== 'object') return false;
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
-    
-    // Detect last numeric score field for dynamic support
-    const detectLastNumericField = (records: any[]): string | null => {
-      if (!Array.isArray(records) || records.length === 0) return null;
-      const sample = records[0];
-      if (!sample || typeof sample !== 'object') return null;
-      const numericKeys = Object.keys(sample).filter(key => {
-        if (key === 'ID' || key === 'id' || key === 'area_id') return false;
-        if (key.toLowerCase().includes('name') || key.toLowerCase().includes('description')) return false;
-        const val = (sample as any)[key];
-        return typeof val === 'number' && !isNaN(val);
-      });
-      return numericKeys.length > 0 ? numericKeys[numericKeys.length - 1] : null;
-    };
-    
-    // Feature importance ranking prefers canonical; allow dynamic numeric field fallback
-    const hasRequiredFields = rawData.results.length === 0 || 
-      rawData.results.some(record => 
-        record && 
+    // Use canonical primary field (allow metadata override)
+    const primary = getPrimaryScoreField('feature_importance_ranking', (rawData as any)?.metadata ?? undefined) || 'feature_importance_ranking_score';
+
+    const hasRequiredFields = rawData.results.length === 0 ||
+      rawData.results.some(record =>
+        record &&
         ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        (((record as any).feature_importance_ranking_score !== undefined) || detectLastNumericField([record]) !== null)
+        ((record as any)[primary] !== undefined)
       );
     
     return hasRequiredFields;
@@ -56,33 +43,19 @@ export class FeatureImportanceRankingProcessor implements DataProcessorStrategy 
       throw new Error('Invalid data format for FeatureImportanceRankingProcessor');
     }
 
-    // Determine dynamic field: prefer canonical, else last numeric (energy dataset)
-    const canonical = 'feature_importance_ranking_score';
-    const detectLastNumericField = (records: any[]): string | null => {
-      if (!Array.isArray(records) || records.length === 0) return null;
-      const sample = records[0];
-      if (!sample || typeof sample !== 'object') return null;
-      const numericKeys = Object.keys(sample).filter(key => {
-        if (key === 'ID' || key === 'id' || key === 'area_id') return false;
-        if (key.toLowerCase().includes('name') || key.toLowerCase().includes('description')) return false;
-        const val = (sample as any)[key];
-        return typeof val === 'number' && !isNaN(val);
-      });
-      return numericKeys.length > 0 ? numericKeys[numericKeys.length - 1] : null;
-    };
-    const anyHasCanonical = (rawData.results as any[]).some(record => (record as any)[canonical] !== undefined);
-    this.scoreField = anyHasCanonical ? canonical : (detectLastNumericField(rawData.results as any[]) || canonical);
+  // Use canonical primary score field mapping (allows metadata override internally)
+  this.scoreField = getPrimaryScoreField('feature_importance_ranking', (rawData as any)?.metadata ?? undefined) || 'feature_importance_ranking_score';
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
-      const primaryScore = Number((record as any)[this.scoreField]);
+  const primaryScore = Number((record as any)[this.scoreField]);
       
       if (isNaN(primaryScore)) {
         throw new Error(`Feature importance ranking record ${(record as any).ID || index} is missing ${this.scoreField}`);
       }
       
       // Generate area name
-      const areaName = this.generateAreaName(record);
-      const recordId = (record as any).ID || (record as any).id || (record as any).area_id || `area_${index + 1}`;
+  const areaName = String(this.generateAreaName(record));
+  const recordId = String((record as any).ID ?? (record as any).id ?? (record as any).area_id ?? `area_${index + 1}`);
       
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
@@ -105,7 +78,7 @@ export class FeatureImportanceRankingProcessor implements DataProcessorStrategy 
         }
       };
 
-      if (this.scoreField && this.scoreField !== canonical) {
+      if (this.scoreField && this.scoreField !== 'feature_importance_ranking_score') {
         out[this.scoreField] = out.value;
         (out.properties as any)[this.scoreField] = out.value;
       }
@@ -113,7 +86,7 @@ export class FeatureImportanceRankingProcessor implements DataProcessorStrategy 
       return out;
     });
     
-    // Calculate statistics
+  // Calculate statistics
     const statistics = this.calculateStatistics(processedRecords);
     
     // Rank records by feature importance score
@@ -236,10 +209,8 @@ export class FeatureImportanceRankingProcessor implements DataProcessorStrategy 
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
     // Use dynamic field detection instead of hardcoded mappings
-    const detectedFields = DynamicFieldDetector.detectFields([record], 'feature-importance-ranking', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
-    
-    console.log(`[FeatureImportanceRankingProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
+  const fieldDefinitions = getTopFieldDefinitions('feature_importance_ranking');
+  console.log(`[FeatureImportanceRankingProcessor] Using hardcoded top field definitions for feature_importance_ranking`);
     
     fieldDefinitions.forEach(fieldDef => {
       const sourceKey = Array.isArray(fieldDef.source) ? fieldDef.source[0] : fieldDef.source;

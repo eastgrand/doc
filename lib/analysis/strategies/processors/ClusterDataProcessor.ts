@@ -1,5 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 
 /**
  * ClusterDataProcessor - Handles data processing for the /spatial-clusters endpoint
@@ -8,6 +8,7 @@ import { DynamicFieldDetector } from './DynamicFieldDetector';
  * and cluster characteristic analysis.
  */
 export class ClusterDataProcessor implements DataProcessorStrategy {
+  private scoreField: string | undefined;
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
@@ -31,8 +32,11 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for ClusterDataProcessor');
     }
 
-    // Process records with cluster information
-    const records = this.processClusterRecords(rawData.results);
+  // Resolve canonical primary score field for this endpoint
+  this.scoreField = getPrimaryScoreField('spatial_clustering', (rawData as any)?.metadata) || 'cluster_performance_score';
+
+  // Process records with cluster information
+  const records = this.processClusterRecords(rawData.results);
     
     // Calculate cluster statistics
     const statistics = this.calculateClusterStatistics(records);
@@ -52,7 +56,7 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'cluster_performance_score',
+  targetVariable: this.scoreField || 'cluster_performance_score',
       clusterAnalysis // Additional metadata for cluster visualization
     };
   }
@@ -128,8 +132,8 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
       const area_id = `cluster_${(record as any).clusterId || index}`;
       const area_name = `Cluster ${(record as any).clusterId || index + 1} (${(record as any).represented_areas} areas)`;
       
-      // Spatial clustering ONLY uses cluster_performance_score - no fallbacks
-      const clusterPerformanceScore = Number((record as any).cluster_performance_score);
+  // Spatial clustering ONLY uses cluster_performance_score - no fallbacks
+  const clusterPerformanceScore = Number((record as any).cluster_performance_score);
       
       if (isNaN(clusterPerformanceScore)) {
         throw new Error(`Spatial clustering record ${(record as any).ID || index} is missing cluster_performance_score`);
@@ -142,8 +146,9 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
       // Extract cluster-specific properties
       const properties = {
         ...record,
-        cluster_performance_score: clusterPerformanceScore,
-        score_source: 'cluster_performance_score',
+        // Mirror canonical scoring field name into properties
+        [this.scoreField || 'cluster_performance_score']: clusterPerformanceScore,
+        score_source: this.scoreField || 'cluster_performance_score',
         cluster_id: clusterId,
         cluster_label: (record as any).cluster_label || this.getClusterLabel(clusterId), // Use existing labels from dataset
         cluster_size: (record as any).cluster_size || 0,
@@ -156,7 +161,7 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
       // Category is the cluster name/label (use existing labels from dataset)
       const category = (record as any).cluster_label || this.getClusterLabel(clusterId);
 
-      return {
+      const outRec: any = {
         area_id,
         area_name,
         value,
@@ -166,6 +171,11 @@ export class ClusterDataProcessor implements DataProcessorStrategy {
         properties,
         shapValues
       };
+
+      // Mirror canonical field on top-level for downstream consumers
+      outRec[this.scoreField || 'cluster_performance_score'] = clusterPerformanceScore;
+
+      return outRec;
     });
   }
 

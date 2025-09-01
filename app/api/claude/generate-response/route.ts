@@ -18,10 +18,12 @@ import { multiEndpointFormatting, strategicSynthesis } from '../shared/base-prom
 import { GeoAwarenessEngine } from '../../../../lib/geo/GeoAwarenessEngine';
 import { getAnalysisPrompt } from '../shared/analysis-prompts';
 import { resolveAreaName as resolveSharedAreaName, getZip as getSharedZip, resolveRegionName as resolveSharedRegionName } from '@/lib/shared/AreaName';
-import injectTopStrategicMarkets from '@/lib/analysis/postprocess/topStrategicMarkets';
-import sanitizeNarrativeScope from '@/lib/analysis/postprocess/scopeSanitizer';
+// Commented out - not needed, didn't solve the 3-areas issue
+// import injectTopStrategicMarkets from '@/lib/analysis/postprocess/topStrategicMarkets';
+// import sanitizeNarrativeScope from '@/lib/analysis/postprocess/scopeSanitizer';
 import { getAnalysisLayers, sanitizeSummaryForAnalysis, sanitizeRankingArrayForAnalysis } from '@/lib/analysis/analysisLens';
 import { filterFeaturesBySpatialFilterIds, extractFeatureId } from '@/lib/analysis/utils/spatialFilter';
+import { getPrimaryScoreField, getTopFieldDefinitions } from '@/lib/analysis/strategies/processors/HardcodedFieldDefs';
 
 /**
  * Validate cluster response for hallucinated data
@@ -141,11 +143,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
     }
   };
   
-  // Prefer dynamic resolution (energy dataset: last numeric field), fallback to static mapping
-  let scoreField = resolvePrimaryScoreField(analysisType, features as any[]);
-  if (!scoreField) {
-    scoreField = getScoreField(analysisType);
-  }
+  // Prefer central hardcoded mapping, then legacy helper fallback
+  let scoreField = getPrimaryScoreField(analysisType) || getScoreField(analysisType);
 
   // Helper to resolve a human-friendly area name consistently
   const resolveAreaName = (feature: any, index: number): string => {
@@ -1006,48 +1005,14 @@ const anthropic = new Anthropic({
 
 // --- Helper: Resolve primary score field from metadata/features/analysis type ---
 function resolvePrimaryScoreField(analysisType: string, features: any[], metadata?: any): string {
-  // 1) Explicit target variable from metadata wins
-  if (metadata?.targetVariable) return metadata.targetVariable;
-
-  // 2) Energy dataset convention: use the LAST numeric field present in feature properties
-  const pickLastNumericField = (list: any[]): string | undefined => {
-    for (const f of (list || []).slice(0, 5)) {
-      const propsLvl1 = (f && typeof f === 'object') ? (f as any).properties || f : {};
-      const props = (propsLvl1 && typeof propsLvl1 === 'object') ? (propsLvl1 as any).properties || propsLvl1 : propsLvl1; // handle double nesting
-      const keys = Object.keys(props || {});
-      for (let i = keys.length - 1; i >= 0; i--) {
-        const k = keys[i];
-        const v = (props as any)[k];
-        const n = typeof v === 'number' ? v : (typeof v === 'string' && v.trim() !== '' ? Number(v) : NaN);
-        if (!Number.isNaN(n)) return k;
-      }
-    }
-    return undefined;
-  };
-  const lastNumeric = pickLastNumericField(features);
-  if (lastNumeric) return lastNumeric;
-
-  // 3) Fallback by analysis type defaults
-  const typeDefaults: Record<string, string[]> = {
-    'strategic_analysis': ['strategic_analysis_score', 'strategic_score', 'strategic_value_score'],
-    'brand_difference': ['brand_difference_score', 'brand_difference_value'],
-    'competitive_analysis': ['competitive_analysis_score'],
-    'comparative_analysis': ['comparison_score', 'comparative_score'],
-    'demographic_insights': ['demographic_insights_score']
-  };
-  const candidates = [
-    ...(typeDefaults[analysisType] || []),
-    'target_value', 'score', 'value'
-  ];
-  // 4) Scan first feature properties to choose an existing numeric field
-  const first = (features || []).find(f => !!(f?.properties || f));
-  const props = first?.properties || first || {};
-  for (const c of candidates) {
-    const v = (props as any)?.[c];
-    if (typeof v === 'number' && !Number.isNaN(v)) return c;
+  // Delegate to the centralized mapping (respects metadata.targetVariable)
+  try {
+    const p = getPrimaryScoreField(analysisType, metadata || undefined);
+    if (p && typeof p === 'string') return p;
+  } catch {
+    // ignore and fall back
   }
-  // 5) Final default
-  return candidates[0] || 'strategic_analysis_score';
+  return 'value';
 }
 
 // --- Helper: Compute simple stats for study area ---
@@ -3960,21 +3925,22 @@ Present this analysis in your professional ${selectedPersona.name} style while p
           return analysisType;
         })();
 
-        // If Top Strategic Markets list is present, inject ranked list based on provided data (adaptive count)
-        try {
-          // Marker for smoke checks: Top Strategic Markets: ... Study Area Summary
-          // The max-10 cap is enforced in the shared utility via slice(0, Math.min(10, ...))
-          finalContent = injectTopStrategicMarkets(finalContent, processedLayersData, metadata, postProcessAnalysisType);
-        } catch (e) {
-          console.warn('[Claude] Top Strategic Markets post-process failed:', e);
-        }
+        // Commented out - not needed, didn't solve the 3-areas issue
+        // // If Top Strategic Markets list is present, inject ranked list based on provided data (adaptive count)
+        // try {
+        //   // Marker for smoke checks: Top Strategic Markets: ... Study Area Summary
+        //   // The max-10 cap is enforced in the shared utility via slice(0, Math.min(10, ...))
+        //   finalContent = injectTopStrategicMarkets(finalContent, processedLayersData, metadata, postProcessAnalysisType);
+        // } catch (e) {
+        //   console.warn('[Claude] Top Strategic Markets post-process failed:', e);
+        // }
 
-        // Enforce study-area scope across the rest of the narrative to remove conflicting global stats
-        try {
-          finalContent = sanitizeNarrativeScope(finalContent, processedLayersData, metadata, postProcessAnalysisType);
-        } catch (e) {
-          console.warn('[Claude] Narrative scope sanitization failed:', e);
-        }
+        // // Enforce study-area scope across the rest of the narrative to remove conflicting global stats
+        // try {
+        //   finalContent = sanitizeNarrativeScope(finalContent, processedLayersData, metadata, postProcessAnalysisType);
+        // } catch (e) {
+        //   console.warn('[Claude] Narrative scope sanitization failed:', e);
+        // }
 
         // Remove confidence and feature-count lines from final narrative (chat dialog cleanliness)
         try {

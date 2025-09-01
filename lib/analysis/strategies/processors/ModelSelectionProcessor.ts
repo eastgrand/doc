@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -56,7 +56,10 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
       .map((entry, index) => [entry[0], index + 1]);
     const categoryMapping = new Map(sortedCategories as [string, number][]);
 
-    const processedRecords = rawData.results.map((record: any, index: number) => {
+  // Resolve a primary numeric field for visualization (allow metadata override)
+  const primaryField = getPrimaryScoreField('model_selection', (rawData as any)?.metadata) || 'algorithm_category';
+
+  const processedRecords = rawData.results.map((record: any, index: number) => {
       const algorithmCategory = (record as any).algorithm_category;
       
       if (!algorithmCategory) {
@@ -73,7 +76,7 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
-      return {
+      const out: any = {
         area_id: recordId,
         area_name: areaName,
         value: numericValue, // Numeric value for visualization
@@ -84,13 +87,19 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           algorithm_category: algorithmCategory,
-          score_source: 'algorithm_category',
+          score_source: primaryField,
           category_numeric: numericValue,
+          [primaryField]: numericValue,
           target_brand_share: this.extractTargetBrandShare(record),
           total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
           median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
         }
       };
+      // Mirror primary numeric field to top-level if not algorithm_category
+      if (primaryField && primaryField !== 'algorithm_category') {
+        out[primaryField] = out.value;
+      }
+      return out;
     });
     
     // Calculate statistics based on numeric values
@@ -105,8 +114,8 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
     // Generate summary
     const summary = this.generateSummary(rankedRecords, statistics, algorithmCounts);
 
-    const renderer = this.createRenderer(rankedRecords, categoryMapping);
-    const legend = this.createLegend(rankedRecords, categoryMapping);
+    const renderer = this.createRenderer(rankedRecords, categoryMapping, primaryField);
+    const legend = this.createLegend(rankedRecords, categoryMapping, primaryField);
     
     return {
       type: 'model_selection',
@@ -114,13 +123,13 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'algorithm_category',
+      targetVariable: primaryField,
       renderer: renderer,
       legend: legend
     };
   }
 
-  private createRenderer(records: GeographicDataPoint[], categoryMapping: Map<string, number>): any {
+  private createRenderer(records: GeographicDataPoint[], categoryMapping: Map<string, number>, primaryField?: string): any {
     console.log(`🎯 [MODEL SELECTION RENDERER] Creating renderer for ${records.length} records`);
     
     // Create unique value renderer based on algorithm categories
@@ -139,7 +148,7 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
     
     return {
       type: 'unique-value',
-      field: 'algorithm_category',
+      field: primaryField || 'algorithm_category',
       uniqueValueInfos,
       defaultSymbol: {
         type: 'simple-fill',
@@ -149,7 +158,7 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
     };
   }
 
-  private createLegend(records: GeographicDataPoint[], categoryMapping: Map<string, number>): any {
+  private createLegend(records: GeographicDataPoint[], categoryMapping: Map<string, number>, primaryField?: string): any {
     const categories = Array.from(categoryMapping.keys());
     const colors = this.generateCategoryColors(categories.length);
     
@@ -189,11 +198,8 @@ export class ModelSelectionProcessor implements DataProcessorStrategy {
   private getTopContributingFields(record: any): Record<string, number> {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
-    // Use dynamic field detection instead of hardcoded mappings
-    const detectedFields = DynamicFieldDetector.detectFields([record], 'model-selection', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
-    
-    console.log(`[ModelSelectionProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
+  const fieldDefinitions = getTopFieldDefinitions('model_selection');
+  // console.log('[ModelSelectionProcessor] Using hardcoded top field definitions for model_selection');
     
     fieldDefinitions.forEach(fieldDef => {
       const sourceKey = Array.isArray(fieldDef.source) ? fieldDef.source[0] : fieldDef.source;

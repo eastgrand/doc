@@ -1,5 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getPrimaryScoreField } from './HardcodedFieldDefs';
 
 /**
  * AnomalyDetectionProcessor - Handles data processing for the /anomaly-detection endpoint
@@ -39,6 +39,12 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for AnomalyDetectionProcessor');
     }
 
+    // Determine primary score field deterministically (allow metadata override)
+    const primary = getPrimaryScoreField('anomaly_detection', (rawData as any)?.metadata);
+    if (!primary) {
+      throw new Error('[AnomalyDetectionProcessor] No primary score field defined for anomaly_detection endpoint.');
+    }
+
     // Process records with anomaly detection scoring priority
     const processedRecords = rawData.results.map((record: any, index: number) => {
       // PRIORITIZE PRE-CALCULATED ANOMALY DETECTION SCORE
@@ -75,16 +81,17 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
       const performanceOutlierLevel = this.calculatePerformanceOutlier(record);
       const contextAnomalyLevel = this.calculateContextAnomaly(record);
       
+      const rounded = Math.round(anomalyScore * 100) / 100;
       return {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
-        value: Math.round(anomalyScore * 100) / 100, // Use anomaly score as primary value
-        anomaly_detection_score: Math.round(anomalyScore * 100) / 100, // Add target variable at top level
+        value: rounded, // Use anomaly score as primary value
+        [primary]: rounded, // Add target variable at top level using canonical name
         rank: 0, // Will be calculated after sorting
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
-          anomaly_detection_score: anomalyScore,
-          score_source: 'anomaly_detection_score',
+          [primary]: anomalyScore,
+          score_source: primary,
           nike_market_share: nikeShare,
           strategic_score: strategicScore,
           competitive_score: competitiveScore,
@@ -121,9 +128,9 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'anomaly_detection_score', // Primary ranking by anomaly score
-      renderer: this.createAnomalyRenderer(rankedRecords), // Add direct renderer
-      legend: this.createAnomalyLegend(rankedRecords) // Add direct legend
+      targetVariable: primary, // Primary ranking by anomaly score
+      renderer: this.createAnomalyRenderer(rankedRecords, primary), // Add direct renderer
+      legend: this.createAnomalyLegend(rankedRecords, primary) // Add direct legend
     };
   }
 
@@ -601,7 +608,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
   /**
    * Create direct renderer for anomaly detection visualization
    */
-  private createAnomalyRenderer(records: any[]): any {
+  private createAnomalyRenderer(records: any[], primaryField: string): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
@@ -615,7 +622,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'anomaly_detection_score', // Direct field reference
+      field: primaryField, // Use canonical primary field
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,
@@ -637,7 +644,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
   /**
    * Create direct legend for anomaly detection
    */
-  private createAnomalyLegend(records: any[]): any {
+  private createAnomalyLegend(records: any[], primaryField: string): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     
@@ -660,7 +667,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
     }
     
     return {
-      title: 'Anomaly Detection Score',
+      title: primaryField.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
       items: legendItems,
       position: 'bottom-right'
     };

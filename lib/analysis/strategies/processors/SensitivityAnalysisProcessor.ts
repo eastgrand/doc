@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -40,8 +40,11 @@ export class SensitivityAnalysisProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for SensitivityAnalysisProcessor');
     }
 
-    const processedRecords = rawData.results.map((record: any, index: number) => {
-      const primaryScore = Number((record as any).sensitivity_analysis_score);
+    // Resolve canonical primary score for sensitivity analysis (allow metadata override)
+    const primaryField = getPrimaryScoreField('sensitivity_analysis', (rawData as any)?.metadata) || 'sensitivity_analysis_score';
+
+  const processedRecords = rawData.results.map((record: any, index: number) => {
+      const primaryScore = Number((record as any)[primaryField] ?? (record as any).sensitivity_analysis_score);
       
       if (isNaN(primaryScore)) {
         throw new Error(`Sensitivity analysis record ${(record as any).ID || index} is missing sensitivity_analysis_score`);
@@ -54,24 +57,28 @@ export class SensitivityAnalysisProcessor implements DataProcessorStrategy {
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
-      return {
+      const out: any = {
         area_id: recordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
-        sensitivity_analysis_score: Math.round(primaryScore * 100) / 100,
         rank: 0, // Will be calculated after sorting
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
-          sensitivity_analysis_score: primaryScore,
-          score_source: 'sensitivity_analysis_score',
+          [primaryField]: primaryScore,
+          score_source: primaryField,
           target_brand_share: this.extractTargetBrandShare(record),
           total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
           median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
         }
       };
-    });
+      // Mirror canonical field into top-level if not the default key
+      if (primaryField && primaryField !== 'sensitivity_analysis_score') {
+        out[primaryField] = out.value;
+      }
+      return out;
+  });
     
     // Calculate statistics
     const statistics = this.calculateStatistics(processedRecords);
@@ -94,7 +101,7 @@ export class SensitivityAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: 'sensitivity_analysis_score',
+      targetVariable: primaryField,
       renderer: renderer,
       legend: legend
     };
@@ -196,10 +203,8 @@ export class SensitivityAnalysisProcessor implements DataProcessorStrategy {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
     // Use dynamic field detection instead of hardcoded mappings
-    const detectedFields = DynamicFieldDetector.detectFields([record], 'sensitivity-analysis', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
-    
-    console.log(`[SensitivityAnalysisProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
+  const fieldDefinitions = getTopFieldDefinitions('sensitivity_analysis');
+  console.log(`[SensitivityAnalysisProcessor] Using hardcoded top field definitions for sensitivity_analysis`);
     
     fieldDefinitions.forEach(fieldDef => {
       const sourceKey = Array.isArray(fieldDef.source) ? fieldDef.source[0] : fieldDef.source;

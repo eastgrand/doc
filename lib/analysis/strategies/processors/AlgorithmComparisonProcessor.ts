@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
@@ -12,7 +12,7 @@ import { BrandNameResolver } from '../../utils/BrandNameResolver';
  */
 export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
-  // Prefer canonical; fallback to last numeric field for energy dataset
+  // Prefer canonical hardcoded field
   private scoreField: string = 'algorithm_comparison_score';
 
   constructor() {
@@ -24,26 +24,13 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Detect last numeric score field for dynamic support
-    const detectLastNumericField = (records: any[]): string | null => {
-      if (!Array.isArray(records) || records.length === 0) return null;
-      const sample = records[0];
-      if (!sample || typeof sample !== 'object') return null;
-      const numericKeys = Object.keys(sample).filter(key => {
-        if (key === 'ID' || key === 'id' || key === 'area_id') return false;
-        if (key.toLowerCase().includes('name') || key.toLowerCase().includes('description')) return false;
-        const val = (sample as any)[key];
-        return typeof val === 'number' && !isNaN(val);
-      });
-      return numericKeys.length > 0 ? numericKeys[numericKeys.length - 1] : null;
-    };
-    
-    // Algorithm comparison prefers canonical; allow dynamic numeric field fallback
+    // Use hardcoded primary score field (metadata.targetVariable may override)
+    const primary = getPrimaryScoreField('algorithm_comparison', (rawData as any)?.metadata) || 'algorithm_comparison_score';
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
         ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        (((record as any).algorithm_comparison_score !== undefined) || detectLastNumericField([record]) !== null)
+        ((record as any)[primary] !== undefined)
       );
     
     return hasRequiredFields;
@@ -56,22 +43,9 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for AlgorithmComparisonProcessor');
     }
 
-    // Determine dynamic field: prefer canonical, else last numeric (energy dataset)
-    const canonical = 'algorithm_comparison_score';
-    const detectLastNumericField = (records: any[]): string | null => {
-      if (!Array.isArray(records) || records.length === 0) return null;
-      const sample = records[0];
-      if (!sample || typeof sample !== 'object') return null;
-      const numericKeys = Object.keys(sample).filter(key => {
-        if (key === 'ID' || key === 'id' || key === 'area_id') return false;
-        if (key.toLowerCase().includes('name') || key.toLowerCase().includes('description')) return false;
-        const val = (sample as any)[key];
-        return typeof val === 'number' && !isNaN(val);
-      });
-      return numericKeys.length > 0 ? numericKeys[numericKeys.length - 1] : null;
-    };
-    const anyHasCanonical = (rawData.results as any[]).some(record => (record as any)[canonical] !== undefined);
-    this.scoreField = anyHasCanonical ? canonical : (detectLastNumericField(rawData.results as any[]) || canonical);
+  // Determine primary score field using hardcoded defs with metadata override
+  const canonical = getPrimaryScoreField('algorithm_comparison', (rawData as any)?.metadata) || 'algorithm_comparison_score';
+  this.scoreField = canonical;
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
       const primaryScore = Number((record as any)[this.scoreField]);
@@ -87,7 +61,7 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
-      const out: any = {
+  const out: any = {
         area_id: recordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
@@ -105,10 +79,10 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
         }
       };
 
-      if (this.scoreField && this.scoreField !== canonical) {
-        out[this.scoreField] = out.value;
-        (out.properties as any)[this.scoreField] = out.value;
-      }
+  // Ensure canonical primary field exists at top-level and in properties
+  out[this.scoreField] = out.value;
+  (out.properties as any)[this.scoreField] = primaryScore;
+  (out.properties as any).score_source = this.scoreField;
 
       return out;
     });
@@ -134,7 +108,7 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: this.scoreField,
+  targetVariable: this.scoreField,
       renderer: renderer,
       legend: legend
     };
@@ -235,11 +209,9 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
   private getTopContributingFields(record: any): Record<string, number> {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
-    // Use dynamic field detection instead of hardcoded mappings
-    const detectedFields = DynamicFieldDetector.detectFields([record], 'algorithm-comparison', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
-    
-    console.log(`[AlgorithmComparisonProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
+  // Use hardcoded top field definitions
+  const fieldDefinitions = getTopFieldDefinitions('algorithm_comparison');
+  // console.log(`[AlgorithmComparisonProcessor] Using hardcoded top field definitions for algorithm_comparison`);
     
     fieldDefinitions.forEach(fieldDef => {
       const sourceKey = Array.isArray(fieldDef.source) ? fieldDef.source[0] : fieldDef.source;

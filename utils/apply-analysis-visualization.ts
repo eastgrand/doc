@@ -275,6 +275,25 @@ export const applyAnalysisEngineVisualization = async (
       const layerId = `analysis-layer-${Date.now()}`;
       console.log('[applyAnalysisEngineVisualization] ✨ Creating analysis layer with ID:', layerId);
       
+      // Prefer the renderer produced by VisualizationRenderer (it may have applied diagnostics/fallbacks)
+      const rendererFromVisualization = (visualization as any)?.renderer;
+      const rendererFromData = (data as any)?.renderer;
+      const chosenRenderer = rendererFromVisualization || rendererFromData;
+
+      // Ensure the renderer field exists in our field definitions (ArcGIS requires declared fields)
+      const rendererField: string | undefined = (chosenRenderer as any)?.field;
+      if (rendererField && !essentialFields.some(f => f.name === rendererField)) {
+        console.log('[applyAnalysisEngineVisualization] 🧩 Adding renderer field to layer schema:', rendererField);
+        essentialFields.push({ name: rendererField, type: 'double' });
+      }
+
+      // Log which renderer we will use
+      console.log('[applyAnalysisEngineVisualization] Renderer selection:', {
+        used: rendererFromVisualization ? 'visualization' : (rendererFromData ? 'data' : 'none'),
+        field: (chosenRenderer as any)?.field,
+        type: (chosenRenderer as any)?.type
+      });
+
       featureLayer = new FeatureLayer({
         id: layerId,
         source: arcgisFeatures,
@@ -282,7 +301,7 @@ export const applyAnalysisEngineVisualization = async (
         objectIdField: 'OBJECTID',
         geometryType: actualGeometryType,
         spatialReference: { wkid: 4326 },
-  renderer: (data.renderer as any) || (visualization.renderer as any),
+        renderer: chosenRenderer as any,
         popupEnabled: false,
         title: `AnalysisEngine - ${data.targetVariable || 'Analysis'}`,
         visible: true,

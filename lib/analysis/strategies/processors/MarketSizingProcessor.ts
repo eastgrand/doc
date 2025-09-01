@@ -1,5 +1,5 @@
 import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
-import { DynamicFieldDetector } from './DynamicFieldDetector';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 
 export class MarketSizingProcessor implements DataProcessorStrategy {
   validate(rawData: RawAnalysisResult): boolean {
@@ -12,7 +12,8 @@ export class MarketSizingProcessor implements DataProcessorStrategy {
     }
 
     const records = rawData.results.map((record: any, index: number) => {
-      const marketSizingScore = Number((record as any).market_sizing_score) || 0;
+  const primary = getPrimaryScoreField('market_sizing', (null as any)) || 'market_sizing_score';
+  const marketSizingScore = Number((record as any)[primary] || (record as any).market_sizing_score) || 0;
       const totalPop = Number((record as any).total_population) || 0;
       const medianIncome = Number((record as any).median_income) || 0;
       const strategicScore = Number((record as any).strategic_value_score) || 0;
@@ -56,8 +57,8 @@ export class MarketSizingProcessor implements DataProcessorStrategy {
       records,
       summary,
       featureImportance: rawData.feature_importance || [],
-      statistics,
-      targetVariable: 'market_sizing_score'
+  statistics,
+  targetVariable: getPrimaryScoreField('market_sizing', (null as any)) || 'market_sizing_score'
     };
   }
 
@@ -98,12 +99,9 @@ export class MarketSizingProcessor implements DataProcessorStrategy {
   private getTopContributingFields(record: any): Record<string, number> {
     const contributingFields: Array<{field: string, value: number, importance: number}> = [];
     
-    // Define field importance weights based on market sizing factors
-    // Use dynamic field detection instead of hardcoded mappings
-    const detectedFields = DynamicFieldDetector.detectFields([record], 'market-sizing', 6);
-    const fieldDefinitions = DynamicFieldDetector.createFieldDefinitions(detectedFields);
-    
-    console.log(`[MarketSizingProcessor] Dynamic fields detected:`, detectedFields.map(df => df.field));
+  // Define field importance weights based on market sizing factors
+  const fieldDefinitions = getTopFieldDefinitions('market_sizing');
+  // console.log(`[MarketSizingProcessor] Using hardcoded top field definitions for market_sizing`);
     
     fieldDefinitions.forEach(fieldDef => {
       let value = 0;
