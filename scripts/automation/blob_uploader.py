@@ -19,14 +19,13 @@ logger = logging.getLogger(__name__)
 class BlobUploader:
     """Upload endpoint files to Vercel Blob storage and manage URL mappings"""
     
-    def __init__(self, project_root: Path = None, project_prefix: str = "hrb"):
-        self.project_root = project_root or Path("/Users/voldeck/code/mpiq-ai-chat")
-        self.project_prefix = project_prefix
-        # Use project-specific blob URLs file
-        if project_prefix == "hrb":
-            self.blob_urls_file = self.project_root / "public" / "data" / f"blob-urls-{project_prefix}.json"
-        else:
-            self.blob_urls_file = self.project_root / "public" / "data" / "blob-urls.json"
+    def __init__(self, project_root: Path = None, project_prefix: str = None):
+        self.project_root = project_root or Path(__file__).resolve().parents[2]
+        # Allow env to override prefix; default to 'energy' for consistency
+        env_prefix = os.getenv('BLOB_PREFIX')
+        self.project_prefix = project_prefix or env_prefix or 'energy'
+        # Unified blob URLs file
+        self.blob_urls_file = self.project_root / "public" / "data" / "blob-urls.json"
         self.blob_token = os.getenv('BLOB_READ_WRITE_TOKEN')
         self.uploaded_endpoints = []
         self.failed_uploads = []
@@ -76,9 +75,9 @@ class BlobUploader:
             url = "https://blob.vercel-storage.com"
             # Use different paths for different file types
             if file_type == "boundary":
-                filename = f"hrb/boundaries/{file_name}.json"
+                filename = f"{self.project_prefix}/boundaries/{file_name}.json"
             else:
-                filename = f"hrb/{file_name}.json"
+                filename = f"{self.project_prefix}/{file_name}.json"
             
             # Upload to Vercel Blob
             response = requests.put(

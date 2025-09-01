@@ -1,12 +1,10 @@
 // Utility to load large endpoint data files from Vercel Blob storage
 // This avoids the 100MB deployment limit by storing large files externally
 
-interface BlobEndpointData {
-  [key: string]: any;
-}
+type BlobEndpointData = Record<string, unknown>;
 
 // Cache for blob data to avoid repeated fetches
-const blobDataCache = new Map<string, any>();
+const blobDataCache = new Map<string, unknown>();
 
 // Cache for blob URL mappings
 let blobUrlMappings: Record<string, string> | null = null;
@@ -22,46 +20,20 @@ async function loadBlobUrlMappings(): Promise<Record<string, string>> {
   try {
     // Check if we're running in browser or server context
     if (typeof window !== 'undefined') {
-      // Browser context - use relative URL (try energy first, then fallback to hrb)
-      let response = await fetch('/data/blob-urls-energy.json');
-      if (!response.ok) {
-        console.log('[BlobLoader] Energy mapping not found, falling back to hrb mapping');
-        response = await fetch('/data/blob-urls-hrb.json');
-      }
-      if (!response.ok) {
-        console.log('[BlobLoader] HRB mapping not found, falling back to default blob-urls.json');
-        response = await fetch('/data/blob-urls.json');
-      }
+      // Browser context - use standardized mapping file
+      const response = await fetch('/data/blob-urls.json');
       if (response.ok) {
         blobUrlMappings = await response.json();
         return blobUrlMappings!;
       }
     } else {
-      // Server context - load directly from file system (try energy first, then fallback to hrb)
+      // Server context - load directly from file system
       const fs = await import('fs/promises');
       const path = await import('path');
-      
-      try {
-        const energyFilePath = path.join(process.cwd(), 'public/data/blob-urls-energy.json');
-        const fileContent = await fs.readFile(energyFilePath, 'utf-8');
-        blobUrlMappings = JSON.parse(fileContent);
-        console.log('[BlobLoader] Using energy project blob URLs');
-        return blobUrlMappings!;
-      } catch (error) {
-        console.log('[BlobLoader] Energy mapping not found, falling back to hrb mapping');
-        const hrbFilePath = path.join(process.cwd(), 'public/data/blob-urls-hrb.json');
-        try {
-          const fileContent = await fs.readFile(hrbFilePath, 'utf-8');
-          blobUrlMappings = JSON.parse(fileContent);
-          return blobUrlMappings!;
-        } catch (hrbError) {
-          console.log('[BlobLoader] HRB mapping not found, falling back to default blob-urls.json');
-          const defaultFilePath = path.join(process.cwd(), 'public/data/blob-urls.json');
-          const fileContent = await fs.readFile(defaultFilePath, 'utf-8');
-          blobUrlMappings = JSON.parse(fileContent);
-          return blobUrlMappings!;
-        }
-      }
+      const filePath = path.join(process.cwd(), 'public/data/blob-urls.json');
+      const fileContent = await fs.readFile(filePath, 'utf-8');
+      blobUrlMappings = JSON.parse(fileContent);
+      return blobUrlMappings!;
     }
   } catch (error) {
     console.warn('Failed to load blob URL mappings:', error);
@@ -78,7 +50,7 @@ async function loadBlobUrlMappings(): Promise<Record<string, string>> {
 export async function loadEndpointData(endpoint: string): Promise<BlobEndpointData | null> {
   // Check cache first
   if (blobDataCache.has(endpoint)) {
-    return blobDataCache.get(endpoint);
+    return blobDataCache.get(endpoint) as BlobEndpointData;
   }
 
   try {
@@ -90,8 +62,8 @@ export async function loadEndpointData(endpoint: string): Promise<BlobEndpointDa
       const response = await fetch(actualBlobUrl);
       
       if (response.ok) {
-        const data = await response.json();
-        blobDataCache.set(endpoint, data);
+  const data = (await response.json()) as BlobEndpointData;
+  blobDataCache.set(endpoint, data);
         console.log(`✅ Loaded ${endpoint} from blob storage`);
         return data;
       }
@@ -119,11 +91,11 @@ export async function loadEndpointData(endpoint: string): Promise<BlobEndpointDa
       const filePath = path.join(process.cwd(), 'public/data/endpoints', `${endpoint}.json`);
       try {
         const fileContent = await fs.readFile(filePath, 'utf-8');
-        const data = JSON.parse(fileContent);
+        const data = JSON.parse(fileContent) as BlobEndpointData;
         blobDataCache.set(endpoint, data);
         console.log(`✅ Loaded ${endpoint} from local file system`);
         return data;
-      } catch (fsError) {
+      } catch {
         console.warn(`Local file not found: ${filePath}`);
       }
     }
@@ -138,11 +110,11 @@ export async function loadEndpointData(endpoint: string): Promise<BlobEndpointDa
  * Upload endpoint data to Vercel Blob storage with project-specific directory
  * This would be used in a migration script
  */
-export async function uploadEndpointData(endpoint: string, data: any, projectDir: string = 'endpoints'): Promise<string | null> {
+export async function uploadEndpointData(endpoint: string, data: unknown, projectDir: string = 'endpoints'): Promise<string | null> {
   try {
     const { put } = await import('@vercel/blob');
     
-    const blob = await put(`${projectDir}/${endpoint}.json`, JSON.stringify(data), {
+  const blob = await put(`${projectDir}/${endpoint}.json`, JSON.stringify(data as unknown as object), {
       access: 'public',
       token: process.env.BLOB_READ_WRITE_TOKEN,
     });
@@ -158,7 +130,7 @@ export async function uploadEndpointData(endpoint: string, data: any, projectDir
 /**
  * Upload endpoint data to energy project directory
  */
-export async function uploadEnergyEndpointData(endpoint: string, data: any): Promise<string | null> {
+export async function uploadEnergyEndpointData(endpoint: string, data: unknown): Promise<string | null> {
   return uploadEndpointData(endpoint, data, 'energy');
 }
 
@@ -166,7 +138,7 @@ export async function uploadEnergyEndpointData(endpoint: string, data: any): Pro
  * Load boundary data from Vercel Blob storage
  * Falls back to local files if blob storage fails
  */
-export async function loadBoundaryData(boundaryName: string): Promise<any | null> {
+export async function loadBoundaryData(boundaryName: string): Promise<unknown | null> {
   const cacheKey = `boundary_${boundaryName}`;
   
   // Check cache first
@@ -184,7 +156,7 @@ export async function loadBoundaryData(boundaryName: string): Promise<any | null
       const response = await fetch(actualBlobUrl);
       
       if (response.ok) {
-        const data = await response.json();
+  const data = (await response.json()) as unknown;
         blobDataCache.set(cacheKey, data);
         console.log(`✅ Loaded ${boundaryName} boundary from blob storage`);
         return data;
@@ -214,11 +186,11 @@ export async function loadBoundaryData(boundaryName: string): Promise<any | null
       const filePath = path.join(process.cwd(), 'public/data/boundaries', `${boundaryName}.json`);
       try {
         const fileContent = await fs.readFile(filePath, 'utf-8');
-        const data = JSON.parse(fileContent);
+        const data = JSON.parse(fileContent) as unknown;
         blobDataCache.set(cacheKey, data);
         console.log(`✅ Loaded ${boundaryName} boundary from local file system`);
         return data;
-      } catch (fsError) {
+      } catch {
         console.warn(`Local boundary file not found: ${filePath}`);
       }
     }

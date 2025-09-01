@@ -7,12 +7,12 @@ import { promises as fs } from 'fs';
 import { join } from 'path';
 
 const ENDPOINTS_DIR = join(process.cwd(), 'public/data/endpoints');
-const BLOB_MAPPING_FILE = join(process.cwd(), 'public/data/blob-urls-energy.json');
+const BLOB_MAPPING_FILE = join(process.cwd(), 'public/data/blob-urls.json');
 
 interface EndpointData {
   success: boolean;
   total_records: number;
-  results: any[];
+  results: unknown[];
 }
 
 interface VerificationResult {

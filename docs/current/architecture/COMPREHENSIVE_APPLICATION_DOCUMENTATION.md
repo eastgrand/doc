@@ -441,6 +441,12 @@ const taxDomainConfig = {
 };
 ```
 
+Current behavior notes (brand-vs routing):
+
+- When two brand/company tokens are present with explicit “vs/versus”, `/brand-difference` receives a stronger targeted bonus and `/competitive-analysis` receives a targeted penalty. A cap/floor normalization avoids 1.0 vs 1.0 ties and ensures Brand Difference wins.
+- “compare/between” with two brand/company tokens is supported with a slightly softer bias favoring Brand Difference.
+- Base intent treats “market positioning” as competitive context to maintain robust Layer 1 confidence even without the exact word “competitive”.
+
 #### 5.2.3 Context Enhancement Engine
 **File**: `/lib/routing/ContextEnhancementEngine.ts` (623 lines)
 
@@ -4505,6 +4511,10 @@ const TESTING_TECHNOLOGIES = {
   apiTesting: 'Jest + MSW (Mock Service Worker)'
 };
 ```
+
+Post-Data-Update Verification
+
+- After automation or endpoint/data changes, run the checklist in `docs/POST_DATA_UPDATE_TESTING.md` to validate routing (including brand-vs tie-breakers), processor alignment, post-processing, and performance.
 
 ### 13.2 Query Routing Tests
 

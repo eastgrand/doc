@@ -129,6 +129,8 @@ export interface DomainAdaptationResult {
   enhanced_query: EnhancedQuery;
   candidates: EndpointCandidate[];
   domain_confidence: number;
+  // Surface domain relevance directly for consumers/tests
+  domain_relevance?: number;
   adaptation_metadata: {
     synonyms_applied: number;
     entities_expanded: number;

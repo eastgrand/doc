@@ -187,6 +187,10 @@ cd scripts/automation
 8. **🏗️ Layer Configuration** - Generates TypeScript layer configs
 9. **🚀 Integration + URL Update** - Deploys files and provides microservice URL instructions
 
+10. ✅ Post-Automation Testing — REQUIRED
+
+- Run the comprehensive verification steps in docs/POST_DATA_UPDATE_TESTING.md to confirm routing, processors, and visualization remain aligned after data changes.
+
 ### File Modifications & Outputs
 
 The automation pipeline creates new files and modifies existing ones. Here's exactly what happens:
@@ -246,6 +250,12 @@ config/layers.ts.backup             # Your original file is safely backed up
 - **No data loss**: All existing configurations are preserved in `.backup` files  
 - **Reversible**: You can restore original files if needed
 - **Safe deployment**: New files are validated before replacing originals
+
+#### ✅ Post-Update Test Checklist
+
+After the automation completes and any manual deployment steps are done, execute the tests in `docs/POST_DATA_UPDATE_TESTING.md`.
+
+Reference: See `docs/POST_DATA_UPDATE_TESTING.md` for exact commands and pass criteria.
 
 #### 📊 **Generated Content Summary**
 After completion, you'll have:

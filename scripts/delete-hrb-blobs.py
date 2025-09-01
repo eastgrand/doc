@@ -15,12 +15,15 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger(__name__)
 
 def load_hrb_blob_urls(project_root: Path) -> Dict[str, str]:
-    """Load HRB blob URLs from the configuration file"""
-    blob_urls_file = project_root / "public" / "data" / "blob-urls-hrb.json"
-    
+    """Load HRB blob URLs from unified configuration and filter to hrb namespace."""
+    unified = project_root / "public" / "data" / "blob-urls.json"
+    legacy = project_root / "public" / "data" / "blob-urls-hrb.json"
     try:
-        with open(blob_urls_file, 'r') as f:
-            return json.load(f)
+        src = unified if unified.exists() else legacy
+        with open(src, 'r') as f:
+            data = json.load(f)
+            # Only include entries pointing at hrb/ namespace
+            return {k: v for k, v in data.items() if isinstance(v, str) and '/hrb/' in v}
     except (FileNotFoundError, json.JSONDecodeError) as e:
         logger.error(f"❌ Could not load HRB blob URLs: {e}")
         return {}
@@ -58,14 +61,14 @@ def delete_blob(blob_url: str, blob_token: str) -> bool:
 
 def delete_hrb_blobs() -> None:
     """Delete all HRB blobs from Vercel Blob storage"""
-    project_root = Path("/Users/voldeck/code/mpiq-ai-chat")
-    blob_token = os.getenv('HRB_READ_WRITE_TOKEN') or os.getenv('BLOB_READ_WRITE_TOKEN')
+    project_root = Path(__file__).resolve().parents[1]
+    blob_token = os.getenv('BLOB_READ_WRITE_TOKEN') or os.getenv('HRB_READ_WRITE_TOKEN')
     
     if not blob_token:
         logger.error("❌ HRB_READ_WRITE_TOKEN or BLOB_READ_WRITE_TOKEN environment variable not set")
         return
     
-    # Load HRB blob URLs
+    # Load HRB blob URLs (from unified file, filtered to hrb namespace)
     hrb_blob_urls = load_hrb_blob_urls(project_root)
     
     if not hrb_blob_urls:

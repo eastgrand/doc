@@ -7,7 +7,7 @@ module.exports = {
     '**/lib/**/*.test.[tj]s?(x)'
   ],
   transform: {
-    '^.+\\.[tj]sx?$': 'ts-jest',
+  '^.+\\.[tj]sx?$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
   },
   transformIgnorePatterns: [
     '/node_modules/(?!(?:@arcgis)/)', // Allow @arcgis/core to be transformed
@@ -42,11 +42,5 @@ module.exports = {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js',
     '^@/(.*)$': '<rootDir>/$1',
-  },
-  globals: {
-    'ts-jest': {
-      isolatedModules: true,
-      tsconfig: 'tsconfig.json',
-    },
   },
 }; 

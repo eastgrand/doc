@@ -12,13 +12,13 @@ import { uploadEnergyEndpointData } from '../utils/blob-data-loader';
 config({ path: join(process.cwd(), '.env.local') });
 
 const ENDPOINTS_DIR = join(process.cwd(), 'public/data/endpoints');
-const BLOB_MAPPING_FILE = join(process.cwd(), 'public/data/blob-urls-energy.json');
+const BLOB_MAPPING_FILE = join(process.cwd(), 'public/data/blob-urls.json');
 
 interface EndpointRecord {
   OBJECTID: number;
   DESCRIPTION: string;
   ID: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface EndpointData {
@@ -33,7 +33,7 @@ function extractZipFromDescription(description: string): string | null {
   return match ? match[1] : null;
 }
 
-function fixZipCodesInData(data: EndpointData): { fixed: EndpointData; stats: any } {
+function fixZipCodesInData(data: EndpointData): { fixed: EndpointData; stats: { totalRecords: number; fixedCount: number; errorCount: number; errors: string[]; successRate: string } } {
   let fixedCount = 0;
   let errorCount = 0;
   const errors: string[] = [];
@@ -93,7 +93,7 @@ async function fixAllEndpointFiles() {
     // Check if endpoints directory exists
     try {
       await fs.access(ENDPOINTS_DIR);
-    } catch (error) {
+  } catch {
       console.error('❌ Endpoints directory not found:', ENDPOINTS_DIR);
       process.exit(1);
     }

@@ -126,7 +126,7 @@ export class ContextEnhancementEngine {
     const historicalEnhancement = this.findHistoricalPatternBoost(
       enhancedQuery.original_query,
       candidate.endpoint,
-      datasetContext.routing_history
+      datasetContext?.routing_history ?? {}
     );
     if (historicalEnhancement) {
       contextualScore *= (1 + historicalEnhancement.impact);
@@ -137,7 +137,7 @@ export class ContextEnhancementEngine {
     // Data quality enhancement
     const dataQualityEnhancement = this.calculateDataQualityBoost(
       candidate.endpoint,
-      datasetContext.field_characteristics
+      datasetContext?.field_characteristics ?? {}
     );
     if (dataQualityEnhancement) {
       contextualScore *= dataQualityEnhancement.impact;
@@ -148,13 +148,13 @@ export class ContextEnhancementEngine {
     // Calculate field requirements dynamically
     const fieldRequirements = this.inferFieldRequirements(
       candidate.endpoint,
-      datasetContext.available_fields.categorized_fields
+      this.getCategorizedFieldsFromContext(datasetContext)
     );
     
     // Calculate historical performance
     const historicalPerformance = this.calculateHistoricalPerformance(
       candidate.endpoint,
-      datasetContext.routing_history
+      datasetContext?.routing_history ?? {}
     );
     
     const finalConfidence = Math.min(1.0, Math.max(0.0, contextualScore));
@@ -363,13 +363,13 @@ export class ContextEnhancementEngine {
     // Infer what types of fields this endpoint likely needs
     const requiredCategories = this.inferRequiredCategories(endpoint);
     
-    let availabilityScore = 0;
+  // Be resilient to missing dataset context pieces (support flat array form)
+  const categorizedFields = this.getCategorizedFieldsFromContext(datasetContext);
     const availableCategories: string[] = [];
     
     for (const category of requiredCategories) {
-      const fieldsInCategory = datasetContext.available_fields.categorized_fields[category] || [];
+      const fieldsInCategory = categorizedFields[category] || [];
       if (fieldsInCategory.length > 0) {
-        availabilityScore += 1;
         availableCategories.push(category);
       }
     }
@@ -392,6 +392,33 @@ export class ContextEnhancementEngine {
       reasoning: `Field availability: ${availableCategories.length}/${requiredCategories.length} categories (${availableCategories.join(', ')})`,
       confidence: 0.9
     };
+  }
+
+  /**
+   * Normalize datasetContext.available_fields which may be either an object with categorized_fields
+   * or a flat string[] of field names. Returns a categorized_fields map for downstream use.
+   */
+  private getCategorizedFieldsFromContext(datasetContext: DatasetContext | any): { [category: string]: string[] } {
+    // If already structured, return as-is
+    const structured = datasetContext?.available_fields?.categorized_fields;
+    if (structured && typeof structured === 'object') {
+      return structured as { [category: string]: string[] };
+    }
+    // If available_fields is an array, categorize on the fly
+    const flat: string[] | undefined = Array.isArray(datasetContext?.available_fields)
+      ? (datasetContext.available_fields as string[])
+      : (Array.isArray(datasetContext?.availableFields) ? datasetContext.availableFields : undefined);
+    const categorized: { [category: string]: string[] } = {};
+    if (flat && flat.length > 0) {
+      for (const f of flat) {
+        const cats = this.analyzeFieldName(f);
+        for (const c of cats) {
+          if (!categorized[c]) categorized[c] = [];
+          categorized[c].push(f);
+        }
+      }
+    }
+    return categorized;
   }
 
   /**
@@ -501,8 +528,13 @@ export class ContextEnhancementEngine {
       optional.push(...fieldsInCategory.slice(2)); // Rest are optional
     }
     
-    const totalAvailable = Object.values(categorizedFields).flat().length;
-    const coverageScore = (required.length + optional.length) / Math.max(1, totalAvailable);
+    // Compute total available fields; if none in categorized map, derive from combined unique fields
+    const categorizedLists = Object.values(categorizedFields);
+    const totalAvailable = categorizedLists.length > 0
+      ? categorizedLists.flat().length
+      : required.length + optional.length; // fallback to prevent zero coverage
+    const rawCoverage = (required.length + optional.length) / Math.max(1, totalAvailable);
+    const coverageScore = Math.max(0.05, Math.min(1.0, rawCoverage));
     
     return {
       required: [...new Set(required)],

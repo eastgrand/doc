@@ -67,7 +67,7 @@ export class AdaptiveConfidenceManager {
     alternatives?: Array<any>
   ): RoutingRecommendation {
     // Handle validation-based rejection first
-    if (validation.scope === QueryScope.OUT_OF_SCOPE && validation.confidence > 0.7) {
+  if (validation.scope === QueryScope.OUT_OF_SCOPE && validation.confidence >= 0.6) {
       return {
         action: 'reject',
         confidence: validation.confidence,
@@ -83,6 +83,20 @@ export class AdaptiveConfidenceManager {
       };
     }
     
+  // For borderline queries, always ask for clarification regardless of confidence
+  if (validation.scope === QueryScope.BORDERLINE) {
+      return {
+        action: 'request_clarification',
+        confidence,
+        message: "I'm not sure what type of analysis you're looking for. Could you clarify or choose from these options?",
+        alternatives: alternatives?.slice(0, 3).map(alt => ({
+          endpoint: alt.endpoint,
+          confidence: alt.confidence,
+          description: this.getEndpointDescription(alt.endpoint)
+        }))
+      };
+    }
+
     // Apply adaptive thresholds based on validation
     const adjustedThresholds = this.adjustThresholdsForValidation(validation);
     
@@ -99,8 +113,22 @@ export class AdaptiveConfidenceManager {
         message: `Routing with ${Math.round(confidence * 100)}% confidence. Let me know if this doesn't match what you're looking for.`
       };
     } else if (confidence >= adjustedThresholds.low_confidence) {
-      return { 
-        action: 'fallback_with_explanation', 
+      // For in-scope queries, prefer routing with a warning instead of fallback
+      if (validation.scope === QueryScope.IN_SCOPE) {
+        return {
+          action: 'route_with_warning',
+          confidence,
+          message: `Routing with ${Math.round(confidence * 100)}% confidence. Let me know if this doesn't match what you're looking for.`,
+          alternatives: alternatives?.slice(0, 2).map(alt => ({
+            endpoint: alt.endpoint,
+            confidence: alt.confidence,
+            description: this.getEndpointDescription(alt.endpoint)
+          }))
+        };
+      }
+      // For other cases, provide a gentle fallback
+      return {
+        action: 'fallback_with_explanation',
         confidence,
         message: `I'm not completely confident about this routing (${Math.round(confidence * 100)}%). I'll try my best with general analysis.`,
         alternatives: alternatives?.slice(0, 2).map(alt => ({
@@ -109,24 +137,11 @@ export class AdaptiveConfidenceManager {
           description: this.getEndpointDescription(alt.endpoint)
         }))
       };
-    } else if (confidence >= adjustedThresholds.validation_threshold && validation.scope === QueryScope.BORDERLINE) {
-      return { 
-        action: 'request_clarification', 
-        confidence,
-        message: "I'm not sure what type of analysis you're looking for. Could you clarify or choose from these options?",
-        alternatives: alternatives?.slice(0, 3).map(alt => ({
-          endpoint: alt.endpoint,
-          confidence: alt.confidence,
-          description: this.getEndpointDescription(alt.endpoint)
-        }))
-      };
-    } else {
+  } else {
       return {
         action: 'reject',
         confidence,
-        message: validation.scope === QueryScope.BORDERLINE 
-          ? 'Could you be more specific about what you want to analyze?'
-          : 'Query confidence too low for reliable routing. Please rephrase with more specific analysis terms.'
+    message: 'Query confidence too low for reliable routing. Please rephrase with more specific analysis terms.'
       };
     }
   }
@@ -250,7 +265,13 @@ export class AdaptiveConfidenceManager {
   /**
    * Get performance statistics
    */
-  getPerformanceStats(): any {
+  getPerformanceStats(): {
+    total_feedback: number;
+    success_rate: number | null;
+    avg_rating: number | null;
+    confidence_calibration: Array<{ threshold: number; accuracy: number | null; count: number }> | null;
+    current_thresholds?: ConfidenceThresholds;
+  } {
     if (this.feedbackHistory.length === 0) {
       return {
         total_feedback: 0,
@@ -276,7 +297,7 @@ export class AdaptiveConfidenceManager {
       return { threshold, accuracy, count: feedbackInBucket.length };
     });
     
-    return {
+  return {
       total_feedback: this.feedbackHistory.length,
       success_rate: successRate,
       avg_rating: avgRating,

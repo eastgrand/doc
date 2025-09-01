@@ -101,7 +101,7 @@ export class HybridRoutingEngine {
       const validation = this.queryValidator.validateQuery(query, domain);
       
       // Early exit for clearly out-of-scope queries
-      if (validation.scope === QueryScope.OUT_OF_SCOPE && validation.confidence > 0.8) {
+  if (validation.scope === QueryScope.OUT_OF_SCOPE && validation.confidence >= 0.6) {
         return this.createEarlyExitResult(
           query, 
           validation, 

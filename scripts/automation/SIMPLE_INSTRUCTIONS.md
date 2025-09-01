@@ -424,7 +424,7 @@ Now you need to tell your application where to find the microservice.
 
 **⚠️ CRITICAL FOR NEW PROJECTS**: When setting up a new project, you MUST update the blob storage configuration to prevent conflicts with existing projects and ensure proper data isolation.
 
-#### Required Changes for New Projects:
+#### Required Changes for New Projects
 
 1. **Update Token Configuration**:
    - Each project should have its own blob storage token
@@ -435,41 +435,18 @@ Now you need to tell your application where to find the microservice.
      ```
 
 2. **Update Upload Script Directory Paths**:
-   - **File**: `scripts/upload-endpoints-to-blob.js`
-   - **Change blob directory structure** (lines 21, 42):
-     ```javascript
-     // FROM (current project):
-     const filename = `hrb/${endpointName}.json`;
-     const filename = `hrb/boundaries/${boundaryName}.json`;
-     
-     // TO (new project):
-     const filename = `{project_name}/${endpointName}.json`;
-     const filename = `{project_name}/boundaries/${boundaryName}.json`;
-     ```
+  - **File**: `scripts/upload-endpoints-to-blob.js`
+  - The script now honors environment variable `BLOB_PREFIX` for your project namespace, e.g., `export BLOB_PREFIX=athletic-brands`
+  - Default is `energy` if not set. No code changes needed.
 
 3. **Update Environment Variable References**:
-   - **Change token variable name** (lines 12, 27, 48):
-     ```javascript
-     // FROM:
-     if (!process.env.HRB_READ_WRITE_TOKEN) {
-       token: process.env.HRB_READ_WRITE_TOKEN,
-     
-     // TO:
-     if (!process.env.{PROJECT_NAME}_READ_WRITE_TOKEN) {
-       token: process.env.{PROJECT_NAME}_READ_WRITE_TOKEN,
-     ```
+  - Use `BLOB_READ_WRITE_TOKEN` for auth (legacy `HRB_READ_WRITE_TOKEN` still supported as fallback).
 
 4. **Update Blob URLs Output File**:
-   - **Change output filename** (line 64):
-     ```javascript
-     // FROM:
-     const blobUrlsFile = path.join(__dirname, '../public/data/blob-urls-hrb.json');
-     
-     // TO:
-     const blobUrlsFile = path.join(__dirname, '../public/data/blob-urls-{project_name}.json');
-     ```
+  - The script writes to unified `public/data/blob-urls.json` by default.
+  - For multi-project setups, consider committing separate variant files manually (e.g., blob-urls-athletic-brands.json) and switch via deployment, but default code reads blob-urls.json.
 
-#### Why This Is Critical:
+#### Why This Is Critical
 
 - **Data Isolation**: Prevents overwriting data from other projects
 - **Project Separation**: Each project maintains its own blob storage namespace
@@ -477,38 +454,24 @@ Now you need to tell your application where to find the microservice.
 - **Deployment Safety**: Avoids conflicts when multiple projects use the same infrastructure
 - **Data Integrity**: Ensures correct data loads for each project's analysis
 
-#### Example Configuration:
+#### Example Configuration
 
 **For a project called "athletic-brands":**
 ```javascript
 // Environment variable
-ATHLETIC_BRANDS_READ_WRITE_TOKEN=vercel_blob_rw_xyz123
-
-// Blob paths
-const filename = `athletic-brands/${endpointName}.json`;
-const filename = `athletic-brands/boundaries/${boundaryName}.json`;
-
-// Output file
-const blobUrlsFile = '../public/data/blob-urls-athletic-brands.json';
+BLOB_READ_WRITE_TOKEN=vercel_blob_rw_xyz123
+BLOB_PREFIX=athletic-brands
+// Output remains unified: public/data/blob-urls.json
 ```
 
-**⚠️ REMEMBER**: After updating the upload script, also update your data loader configuration (Step 5.3) to use the correct blob URLs file for your new project.
+**⚠️ REMEMBER**: After updating the upload script, the app reads unified `/data/blob-urls.json` by default. For multi-project setups, swap the desired variant into `blob-urls.json` at deploy time rather than editing code.
 
 ### 5.3 Update Data Loader for New Project
 
 **CRITICAL**: Update the system to use your new project's blob URLs:
 
-1. **Edit** `utils/blob-data-loader.ts`
-2. **Change the blob URLs file path**:
-   ```typescript
-   // FROM (old project):
-   const response = await fetch('/data/blob-urls.json');
-   const filePath = path.join(process.cwd(), 'public/data/blob-urls.json');
-   
-   // TO (your new project):
-   const response = await fetch('/data/blob-urls-{project_name}.json');
-   const filePath = path.join(process.cwd(), 'public/data/blob-urls-{project_name}.json');
-   ```
+1. The data loader now uses unified path `public/data/blob-urls.json` (browser: `/data/blob-urls.json`). No change needed for single-project setups.
+2. If you keep multiple mapping variants, switch them at deploy-time (copy/rename to blob-urls.json) rather than editing code.
 
 ### 5.4 Why This Step is Critical
 

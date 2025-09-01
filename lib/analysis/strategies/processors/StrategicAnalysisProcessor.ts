@@ -52,6 +52,26 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for StrategicAnalysisProcessor');
     }
 
+    // Gracefully handle empty result sets without attempting dynamic field detection
+    if (!rawData.results || rawData.results.length === 0) {
+      const emptyStats = this.calculateStatistics([] as any);
+      // Keep default score field for empty case to ensure stable renderer field
+      this.scoreField = 'strategic_analysis_score';
+      const emptyRenderer = this.createStrategicRenderer([] as any);
+      const emptyLegend = this.createStrategicLegend([] as any);
+      return {
+        type: 'strategic_analysis',
+        records: [],
+        summary: getScoreExplanationForAnalysis('strategic-analysis', 'strategic_analysis_score') +
+          '**Strategic Market Analysis Complete:** 0 geographic areas evaluated for expansion potential. ',
+        featureImportance: this.processFeatureImportance((rawData.feature_importance as any[]) || []),
+        statistics: emptyStats,
+        targetVariable: this.scoreField,
+        renderer: emptyRenderer,
+        legend: emptyLegend
+      };
+    }
+
     // Detect dynamic score field from first few records (energy dataset: last numeric field)
     const detectLastNumericField = (records: any[]): string | null => {
       for (const rec of (records || []).slice(0, 5)) {

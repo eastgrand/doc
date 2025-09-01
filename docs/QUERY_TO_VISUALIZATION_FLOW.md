@@ -88,13 +88,13 @@ User Query
     └── Performance Optimization (sampling, caching, timeouts)
     ↓
 [Blob Data Fetch (Vercel Blob Storage)]
-  ├── strategic-analysis → public/data/blob-urls-energy.json["strategic-analysis"]
-  ├── analyze → public/data/blob-urls-energy.json["analyze"]
-  ├── demographic-insights → public/data/blob-urls-energy.json["demographic-insights"]
-  ├── brand-difference → public/data/blob-urls-energy.json["brand-difference"]
-  ├── competitive-analysis → public/data/blob-urls-energy.json["competitive-analysis"]
-  ├── comparative-analysis → public/data/blob-urls-energy.json["comparative-analysis"]
-  └── correlation-analysis → public/data/blob-urls-energy.json["correlation-analysis"]
+  ├── strategic-analysis → public/data/blob-urls.json["strategic-analysis"]
+  ├── analyze → public/data/blob-urls.json["analyze"]
+  ├── demographic-insights → public/data/blob-urls.json["demographic-insights"]
+  ├── brand-difference → public/data/blob-urls.json["brand-difference"]
+  ├── competitive-analysis → public/data/blob-urls.json["competitive-analysis"]
+  ├── comparative-analysis → public/data/blob-urls.json["comparative-analysis"]
+  └── correlation-analysis → public/data/blob-urls.json["correlation-analysis"]
     ↓
 [Data Processor Strategy]
     ├── Validation
@@ -227,6 +227,10 @@ This concise file-by-file trace reflects the exact code paths exercised in the c
   - Task smoke test: “Test geospatial-chat-interface” echoes test message (task wiring OK).
   - Mapping diagnostic: `node check_field_mappings.js` prints per-endpoint comparison with all checks green.
 
+Post-data-update testing (required):
+
+- Run the comprehensive checklist in `docs/POST_DATA_UPDATE_TESTING.md` after any data/endpoint changes. This validates routing (including brand-vs Brand Difference tie-breakers with cap/floor), processor renderer/score alignment, Top Markets post-process, and overall performance.
+
 ## How to quickly validate locally (optional)
 
 ```bash
@@ -326,6 +330,11 @@ const categories = analyzeFieldName(fieldName);
 // 'brand_share_nike' → ['brand', 'numeric']
 // Works with ANY dataset structure!
 ```
+
+#### 2.5 Brand-vs routing specifics (current)
+
+- Queries with two brand/company mentions and explicit “vs/versus” are routed to `/brand-difference` via targeted bonus/penalty and a cap/floor normalization that breaks ties against `/competitive-analysis`.
+- “market positioning” phrasing is treated as competitive at the base-intent layer for robust confidence without requiring the word “competitive”.
 
 #### 3. Configuration-Only Domain Switching
 

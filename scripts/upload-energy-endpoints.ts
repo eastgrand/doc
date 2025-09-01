@@ -1,7 +1,7 @@
 #!/usr/bin/env ts-node
 
 // Upload California endpoint data to /energy/ directory in blob storage
-// Generate blob-urls-energy.json mapping file
+// Generate blob-urls.json mapping file
 
 import { config } from 'dotenv';
 import { promises as fs } from 'fs';
@@ -12,7 +12,7 @@ import { uploadEnergyEndpointData } from '../utils/blob-data-loader';
 config({ path: join(process.cwd(), '.env.local') });
 
 const ENDPOINTS_DIR = join(process.cwd(), 'public/data/endpoints');
-const BLOB_MAPPING_FILE = join(process.cwd(), 'public/data/blob-urls-energy.json');
+const BLOB_MAPPING_FILE = join(process.cwd(), 'public/data/blob-urls.json');
 
 async function uploadEnergyEndpoints() {
   console.log('🚀 Starting upload of California endpoint data to /energy/ directory...');
@@ -28,7 +28,7 @@ async function uploadEnergyEndpoints() {
     // Check if endpoints directory exists
     try {
       await fs.access(ENDPOINTS_DIR);
-    } catch (error) {
+  } catch {
       console.error('❌ Endpoints directory not found:', ENDPOINTS_DIR);
       process.exit(1);
     }
@@ -114,7 +114,7 @@ async function uploadEnergyEndpoints() {
     console.log(`🗂️  Blob URL mappings saved to: ${BLOB_MAPPING_FILE}`);
     
     if (uploadedCount > 0) {
-      console.log('\n📝 Next step: Update the system to use blob-urls-energy.json');
+    console.log('\n📝 Next step: System already standardized on blob-urls.json');
     }
     
   } catch (error) {

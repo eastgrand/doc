@@ -3,7 +3,7 @@
 // Debug the entire analysis pipeline to find where data is lost
 
 import { loadEndpointData } from '../utils/blob-data-loader';
-import { ConfigurationManager } from '../lib/analysis/ConfigurationManager';
+// Note: ConfigurationManager import removed to avoid unused import warnings
 
 async function debugAnalysisPipeline() {
   console.log('🔍 DEBUGGING ANALYSIS PIPELINE\n');
@@ -14,14 +14,14 @@ async function debugAnalysisPipeline() {
     const fs = await import('fs/promises');
     const path = await import('path');
     
-    const energyFilePath = path.join(process.cwd(), 'public/data/blob-urls-energy.json');
-    const mappings = JSON.parse(await fs.readFile(energyFilePath, 'utf-8'));
+  const mappingFilePath = path.join(process.cwd(), 'public/data/blob-urls.json');
+  const mappings = JSON.parse(await fs.readFile(mappingFilePath, 'utf-8'));
     
     console.log(`   ✅ Loaded ${Object.keys(mappings).length} blob URL mappings`);
     console.log(`   📋 Available endpoints: ${Object.keys(mappings).join(', ')}`);
     
     // Test key endpoints
-    const testEndpoints = ['strategic-analysis', 'market-intelligence-report', 'analyze'];
+  const testEndpoints = ['strategic-analysis', 'market-intelligence-report', 'analyze'];
     for (const endpoint of testEndpoints) {
       if (mappings[endpoint]) {
         console.log(`   ✅ ${endpoint}: ${mappings[endpoint].substring(0, 50)}...`);
@@ -42,18 +42,20 @@ async function debugAnalysisPipeline() {
     console.log(`\n   📋 Testing ${endpoint}:`);
     
     try {
-      const data = await loadEndpointData(endpoint);
+  const data = (await loadEndpointData(endpoint)) as { results?: unknown[] } | null;
       
       if (data) {
         console.log(`      ✅ Data loaded successfully`);
         console.log(`      📊 Structure: ${JSON.stringify(Object.keys(data))}`);
-        console.log(`      🔢 Results length: ${data.results?.length || 'N/A'}`);
+        console.log(`      🔢 Results length: ${Array.isArray(data.results) ? data.results.length : 'N/A'}`);
         
-        if (data.results?.length > 0) {
-          const firstRecord = data.results[0];
+        if (Array.isArray(data.results) && data.results.length > 0) {
+          const firstRecord = data.results[0] as Record<string, unknown>;
           console.log(`      📝 First record keys: ${Object.keys(firstRecord).join(', ')}`);
-          console.log(`      🆔 First record ID: ${firstRecord.ID || firstRecord.OBJECTID || 'N/A'}`);
-          console.log(`      📍 First record DESC: ${firstRecord.DESCRIPTION?.substring(0, 30) || 'N/A'}...`);
+          const id = (firstRecord.ID as string) || (firstRecord.OBJECTID as string) || 'N/A';
+          const desc = typeof firstRecord.DESCRIPTION === 'string' ? firstRecord.DESCRIPTION.substring(0, 30) : 'N/A';
+          console.log(`      🆔 First record ID: ${id}`);
+          console.log(`      📍 First record DESC: ${desc}...`);
         } else {
           console.log(`      ❌ No results array or empty results`);
         }
@@ -100,8 +102,8 @@ async function debugAnalysisPipeline() {
   
   // Check if customer-profile endpoint exists (since logs show it's being used instead)
   try {
-    const data = await loadEndpointData('customer-profile');
-    if (data && data.results?.length > 0) {
+    const data = (await loadEndpointData('customer-profile')) as { results?: unknown[] } | null;
+    if (data && Array.isArray(data.results) && data.results.length > 0) {
       console.log(`   🎯 customer-profile endpoint: ✅ ${data.results.length} records`);
       console.log(`   📝 This might be why you're seeing customer profile data instead of strategic analysis`);
     } else {

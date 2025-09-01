@@ -4,14 +4,24 @@
  * Validates query scope and rejects out-of-domain requests gracefully
  */
 
-import { DomainConfiguration, QueryScope, ValidationResult } from './types/DomainTypes';
+import { DomainConfiguration, QueryScope, ValidationResult, QueryValidationConfig } from './types/DomainTypes';
+ 
+interface ScopeAnalysis {
+  length: number;
+  word_count: number;
+  has_question_words: boolean;
+  has_action_words: boolean;
+  has_subject_words: boolean;
+  domain_term_count: number;
+  rejection_pattern_matches: string[];
+}
 
 export class QueryValidator {
   /**
    * Validate query scope against domain configuration
    */
   validateQuery(query: string, domain: DomainConfiguration): ValidationResult {
-    const analysis = this.analyzeQueryScope(query, domain);
+  const analysis = this.analyzeQueryScope(query, domain);
     
     // CRITICAL FIX: Always accept predefined ANALYSIS_CATEGORIES queries
     if (this.isPredefinedAnalysisQuery(query)) {
@@ -23,8 +33,8 @@ export class QueryValidator {
     }
     
     // Check for clear out-of-scope indicators
-    const outOfScopeScore = this.calculateOutOfScopeScore(query, domain.validation);
-    if (outOfScopeScore > 0.8) {
+  const outOfScopeScore = this.calculateOutOfScopeScore(query, domain.validation);
+  if (outOfScopeScore >= 0.6) {
       return {
         scope: QueryScope.OUT_OF_SCOPE,
         confidence: outOfScopeScore,
@@ -33,18 +43,7 @@ export class QueryValidator {
       };
     }
     
-    // Check for domain relevance
-    const domainRelevance = this.calculateDomainRelevance(query, domain.validation.domain_indicators);
-    if (domainRelevance < 0.15) {  // Lower threshold from 0.3 to 0.15
-      return {
-        scope: domainRelevance < 0.05 ? QueryScope.OUT_OF_SCOPE : QueryScope.BORDERLINE,
-        confidence: 1 - domainRelevance,
-        reasons: ['Query lacks clear analysis intent or business context'],
-        suggestions: this.suggestAnalysisPhrasings(query)
-      };
-    }
-    
-    // Check for malformed queries
+    // Early check for malformed queries
     if (this.isMalformed(query)) {
       return {
         scope: QueryScope.MALFORMED,
@@ -55,6 +54,41 @@ export class QueryValidator {
           'Try using analysis terms like "analyze", "compare", or "show"',
           'Be specific about what you want to understand'
         ]
+      };
+    }
+
+    // Single-word queries: ask for clarification unless a clear action like 'analyze'
+    if (analysis.word_count === 1 && !/^analy(ze|sis)$/.test(query.toLowerCase())) {
+      return {
+        scope: QueryScope.BORDERLINE,
+        confidence: 0.65,
+        reasons: ['Single-word query lacks specificity'],
+        suggestions: this.suggestAnalysisPhrasings(query)
+      };
+    }
+
+    // Heuristic: very short, generic, or capability-style queries should be borderline
+    if (
+      (analysis.word_count <= 3 && analysis.has_action_words && !analysis.has_subject_words) ||
+      this.isCapabilityStyleQuery(query) ||
+      this.isGenericLowSpecificityQuery(query)
+    ) {
+      return {
+        scope: QueryScope.BORDERLINE,
+        confidence: 0.6,
+        reasons: ['Query is too generic and lacks a specific analysis subject'],
+        suggestions: this.suggestAnalysisPhrasings(query)
+      };
+    }
+
+    // Check for domain relevance
+  const domainRelevance = this.calculateDomainRelevance(query, domain.validation.domain_indicators);
+  if (domainRelevance < 0.12) {  // Slightly lower threshold to accept clear-but-brief in-scope queries
+      return {
+    scope: domainRelevance < 0.05 ? QueryScope.OUT_OF_SCOPE : QueryScope.BORDERLINE,
+        confidence: 1 - domainRelevance,
+        reasons: ['Query lacks clear analysis intent or business context'],
+        suggestions: this.suggestAnalysisPhrasings(query)
       };
     }
     
@@ -69,7 +103,7 @@ export class QueryValidator {
   /**
    * Analyze query scope comprehensively
    */
-  private analyzeQueryScope(query: string, domain: DomainConfiguration): any {
+  private analyzeQueryScope(query: string, domain: DomainConfiguration): ScopeAnalysis {
     const queryLower = query.toLowerCase();
     
     return {
@@ -86,14 +120,12 @@ export class QueryValidator {
   /**
    * Calculate out-of-scope score
    */
-  private calculateOutOfScopeScore(query: string, validation: any): number {
+  private calculateOutOfScopeScore(query: string, validation: QueryValidationConfig): number {
     const queryLower = query.toLowerCase();
     let outOfScopeScore = 0;
-    let totalPatterns = 0;
     
     // Check each rejection pattern category
     for (const [category, patterns] of Object.entries(validation.rejection_patterns)) {
-      totalPatterns += (patterns as string[]).length;
       
       for (const pattern of (patterns as string[])) {
         if (queryLower.includes(pattern.toLowerCase())) {
@@ -101,6 +133,21 @@ export class QueryValidator {
           const categoryWeight = this.getCategoryWeight(category);
           outOfScopeScore += categoryWeight;
         }
+      }
+    }
+
+    // Additional heuristic out-of-scope detection for common topics
+    const heuristics: Array<{ regex: RegExp; weight: number }> = [
+      { regex: /\b(capital of|capital\s+city|what\s+is\s+the\s+capital)\b/i, weight: 0.7 },
+      { regex: /\b(write(\s+me)?\s+a\s+story|poem|lyrics|fiction|dragons?)\b/i, weight: 0.8 },
+      { regex: /\b(restaurant|restaurants|cook|cooking|recipe|ingredients?)\b/i, weight: 0.8 },
+      { regex: /\b(relationship advice|dating advice|lose\s+weight|diet|exercise\s+plan)\b/i, weight: 0.8 },
+      { regex: /\b(stock\s+market|stocks?|nasdaq|s&p|dow jones|bitcoin|crypto|ethereum|price\s+analysis)\b/i, weight: 0.7 },
+      { regex: /\bweather\b/i, weight: 0.8 }
+    ];
+    for (const h of heuristics) {
+      if (h.regex.test(query)) {
+        outOfScopeScore = Math.max(outOfScopeScore, h.weight);
       }
     }
     
@@ -124,31 +171,40 @@ export class QueryValidator {
   /**
    * Calculate domain relevance score
    */
-  private calculateDomainRelevance(query: string, domainIndicators: any): number {
+  private calculateDomainRelevance(query: string, domainIndicators: QueryValidationConfig['domain_indicators']): number {
     const queryLower = query.toLowerCase();
     let relevanceScore = 0;
-    let maxPossibleScore = 0;
     
     // Check for required subjects (25% weight - reduced to allow for implicit context)
-    maxPossibleScore += 0.25;
     const subjectMatches = domainIndicators.required_subjects.filter((subject: string) =>
       queryLower.includes(subject.toLowerCase())
     );
     if (subjectMatches.length > 0) {
       relevanceScore += 0.25 * (subjectMatches.length / domainIndicators.required_subjects.length);
+      relevanceScore += 0.08; // Baseline bonus for having any subject words
     }
     
     // Check for required actions (35% weight)
-    maxPossibleScore += 0.35;
     const actionMatches = domainIndicators.required_actions.filter((action: string) =>
       queryLower.includes(action.toLowerCase())
     );
+    // Include implicit comparative/action phrases as valid actions (e.g., "stack up against", "vs")
+    const implicitActionPatterns: RegExp[] = [
+      /stack\s+up\s+against/i,
+      /how\s+we\s+stack\s+up/i,
+      /how\s+do\s+we\s+compare/i,
+      /\b(vs\.?|versus)\b/i
+    ];
+    const hasImplicitAction = implicitActionPatterns.some(p => p.test(query));
     if (actionMatches.length > 0) {
       relevanceScore += 0.35 * (actionMatches.length / domainIndicators.required_actions.length);
+      relevanceScore += 0.1; // Baseline bonus for having any action words
+    } else if (hasImplicitAction) {
+      // Grant a modest portion of action credit for implicit action phrasing
+      relevanceScore += 0.18; // smaller than explicit action but enough to avoid false OOS
     }
     
     // Check for valid contexts (20% weight - reduced)
-    maxPossibleScore += 0.20;
     const contextMatches = domainIndicators.valid_contexts.filter((context: string) =>
       queryLower.includes(context.toLowerCase())
     );
@@ -157,9 +213,24 @@ export class QueryValidator {
     }
     
     // Add implicit business context detection (20% weight)
-    maxPossibleScore += 0.20;
     const implicitBusinessScore = this.detectImplicitBusinessContext(queryLower);
     relevanceScore += 0.20 * implicitBusinessScore;
+    
+    // Phrase-based boost for clear analysis phrasing (accept analyze/analysis variants)
+    if (/\b(strategic|market|expansion|opportunit(y|ies))\b/.test(queryLower) && /\b(analysis|analyz(e|ing)?)\b/.test(queryLower)) {
+      relevanceScore += 0.08; // small but decisive boost
+    }
+
+    // Co-occurrence boost for strategic phrasing (strategic + expansion/growth + opportunity)
+    const hasStrategic = /\bstrategic\b/.test(queryLower);
+    const hasExpansionOrGrowth = /\b(expansion|expand|growth|growing)\b/.test(queryLower);
+    const hasOpportunity = /\bopportunit(y|ies)\b/.test(queryLower);
+    if (hasStrategic && hasExpansionOrGrowth) {
+      relevanceScore += 0.08;
+    }
+    if ((hasStrategic && hasOpportunity) || (hasExpansionOrGrowth && hasOpportunity)) {
+      relevanceScore += 0.08;
+    }
     
     return relevanceScore;
   }
@@ -197,7 +268,7 @@ export class QueryValidator {
     // Performance/business measurement patterns (weight: 0.3)
     maxScore += 0.3;
     const measurementPatterns = [
-      /\b(usage|performance|metrics|results|success|effectiveness|rate|share|growth|trends?)\b/i,
+      /\b(usage|performance|metrics|results|success|effectiveness|rate|share|growth|trends?|insights|analysis)\b/i,
       /\b(best|top|highest|optimal|leading|superior|worst|lowest)\b/i,
       /\b(customers?|clients?|users?|consumers?|segments?|profiles?)\b/i
     ];
@@ -255,7 +326,18 @@ export class QueryValidator {
    * Check for action words
    */
   private hasActionWords(queryLower: string, requiredActions: string[]): boolean {
-    return requiredActions.some(action => queryLower.includes(action.toLowerCase()));
+    if (requiredActions.some(action => queryLower.includes(action.toLowerCase()))) {
+      return true;
+    }
+    // Implicit comparative/action phrases
+    const implicitActions = [
+      /stack\s+up\s+against/i,
+      /how\s+we\s+stack\s+up/i,
+      /how\s+do\s+we\s+compare/i,
+      /versus/i,
+      /vs\.?/i
+    ];
+    return implicitActions.some(p => p.test(queryLower));
   }
 
   /**
@@ -288,7 +370,7 @@ export class QueryValidator {
   /**
    * Find matching rejection patterns
    */
-  private findRejectionPatterns(queryLower: string, rejectionPatterns: any): string[] {
+  private findRejectionPatterns(queryLower: string, rejectionPatterns: QueryValidationConfig['rejection_patterns']): string[] {
     const matches: string[] = [];
     
     for (const [category, patterns] of Object.entries(rejectionPatterns)) {
@@ -300,6 +382,35 @@ export class QueryValidator {
     }
     
     return matches;
+  }
+
+  /**
+   * Detect capability-style queries that ask what the system can do
+   */
+  private isCapabilityStyleQuery(query: string): boolean {
+    const q = query.toLowerCase();
+    const patterns = [
+      /what\s+can\s+you\s+do\??/i,
+      /tell\s+me\s+about\s+the\s+data/i,
+      /show\s+me\s+information/i,
+      /help\s+with\s+analysis/i,
+      /data\s+insights/i,
+      /^analyze$/i
+    ];
+    return patterns.some(p => p.test(q));
+  }
+
+  /**
+   * Detect generic low-specificity queries lacking subjects
+   */
+  private isGenericLowSpecificityQuery(query: string): boolean {
+    const q = query.toLowerCase().trim();
+    const words = q.split(/\s+/).filter(Boolean);
+    if (words.length <= 2) return true;
+    const genericTerms = ['data', 'information', 'insights', 'analysis'];
+    const hasGeneric = genericTerms.some(t => q.includes(t));
+  const hasSpecificNouns = /(customer|market|demographic|competitive|competition|trend|cluster|brand|segment|region|area|location|positioning)/i.test(q);
+    return hasGeneric && !hasSpecificNouns;
   }
 
   /**
@@ -494,7 +605,12 @@ export class QueryValidator {
   /**
    * Get validation summary for debugging
    */
-  getValidationSummary(query: string, domain: DomainConfiguration): any {
+  getValidationSummary(query: string, domain: DomainConfiguration): {
+    query: string;
+    validation_result: ValidationResult;
+    analysis_details: ScopeAnalysis;
+    recommendations: { redirect?: string } | { suggestions?: string[] } | { action: 'proceed_with_routing' };
+  } {
     const validation = this.validateQuery(query, domain);
     const analysis = this.analyzeQueryScope(query, domain);
     

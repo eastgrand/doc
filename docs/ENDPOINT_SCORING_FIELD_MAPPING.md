@@ -122,6 +122,27 @@ Validation should confirm basic shape (success flag and array of results). Don�
 3. Ensure `renderer.field === targetVariable === detectedField` for every processor.
 4. Optionally mirror values into canonical names for compatibility, but never to select the scoring field.
 
+## Endpoint Selection Tie-breakers (routing overview)
+
+While this document focuses on score field selection, endpoint selection is governed by a small set of deterministic tie-breakers. These ensure correct routing when multiple endpoints could apply:
+
+- Competitive vs Strategic: Prefer Competitive when the query contains explicit comparison intents (e.g., competitive positioning, stack up) or comparative operators (vs, versus) without broad strategic expansion phrasing.
+- Brand-difference vs Competitive: When two brand/company tokens are detected with vs/versus or clear brand-comparison phrasing, prefer Brand Difference. Explicit vs/versus gets a stronger targeted bonus for Brand Difference and a stronger penalty for Competitive. Additionally, a small cap/floor normalization is applied (cap Competitive near <1.0 and floor Brand Difference slightly higher) to avoid 1.0 vs 1.0 ties.
+- Strategic hijack guard: Generic strategic terms are down-weighted when a more specific domain signal (demographic, competitive, brand-difference) is present, preventing over-selection of Strategic.
+- Confidence handling: Low-confidence in-scope queries are still routed with a warning; malformed/out-of-scope queries are rejected.
+
+These tie-breakers live in the routing layer and don’t affect score field detection, which remains dynamic-only per this doc.
+
+Note: Base intent signals include “market positioning” as competitive context even without the exact word “competitive”, ensuring Layer 1 confidence clears thresholds for common phrasing like “Market positioning analysis”.
+
+## Brand-vs handling (routing specifics)
+
+When queries mention two brands with explicit comparison language:
+
+- Boost Brand Difference with brand-count-sensitive weighting (stronger when vs/versus is present).
+- Apply a targeted penalty to Competitive so Brand Difference wins; also apply a cap (Competitive) and floor (Brand Difference) to prevent ties in explicit brand-vs-brand cases.
+- Avoidance rules consider both reasoning and original query to prevent accidental fallback to unrelated endpoints.
+
 ## Spatial Filtering (server-side)
 
  When `metadata.spatialFilterIds` is provided, the API route enforces server-side filtering of features unless the scope is `project`.
@@ -132,11 +153,26 @@ Validation should confirm basic shape (success flag and array of results). Don�
  3) Otherwise, feature is excluded from spatial filtering
  A small utility `lib/analysis/utils/spatialFilter.ts` implements this logic with tests.
 
+## Post-process: Top Strategic Markets injection
+
+When a strategic analysis response is generated, a post-process step injects a ranked list titled “Top Strategic Markets”:
+
+- The list is capped at 10 entries: `slice(0, Math.min(10, results.length))`.
+- Always includes a “Study Area Summary” footer entry.
+- Respects `metadata.spatialFilterIds` unless `analysisScope === 'project'` (in which case the full dataset is considered).
+- Sorting is performed by the same dynamically detected score field used for `renderer.field` and `targetVariable`.
+
  
 ## Last Updated
 
 Generated: 2025-08-31
 Based on: Systematic audit of all endpoint JSON files in `/public/data/endpoints/`
+
+## Appendix: Implemented optional improvements
+
+- Avoidance filters enhanced to consider both the generated reasoning and the original user query text.
+- Narrowed generic strategic boosts to reduce hijacking in mixed-intent queries.
+- Added explicit comparative action recognition (e.g., “stack up”, “vs/versus”) to support correct endpoint selection.
 
 ## Legacy Precision Note (Strategic)
 

@@ -220,8 +220,8 @@ export class DomainConfigurationLoader {
           display_name: 'Strategic Market Analysis',
           description: 'Strategic opportunities and expansion analysis',
           primary_intents: ['strategic_analysis', 'performance_ranking'],
-          boost_terms: ['strategic', 'expansion', 'investment', 'opportunity', 'growth', 'top', 'markets', 'potential', 'areas', 'performing', 'differ', 'expanded', 'untapped', 'territories', 'dynamics', 'emerging', 'high-performing', 'dissect', 'anatomy', 'strategic analysis combined', 'performance rankings', 'top performing areas differ', 'key factors that drive usage', 'anatomy of our high-performing markets'],
-          penalty_terms: ['demographic', 'competitive', 'factors', 'model', 'algorithm', 'accuracy'],
+          boost_terms: ['strategic', 'expansion', 'investment', 'opportunity', 'growth', 'top', 'potential', 'performing', 'differ', 'expanded', 'untapped', 'territories', 'dynamics', 'emerging', 'high-performing', 'dissect', 'anatomy', 'strategic analysis combined', 'performance rankings', 'top performing areas differ', 'key factors that drive usage', 'anatomy of our high-performing markets'],
+          penalty_terms: ['demographic', 'demographics', 'competitive', 'factors', 'model', 'algorithm', 'accuracy', 'age', 'population'],
           confidence_threshold: 0.1
         },
         
@@ -229,7 +229,7 @@ export class DomainConfigurationLoader {
           display_name: 'Demographic Analysis',
           description: 'Population and demographic characteristics',
           primary_intents: ['demographic_analysis'],
-          boost_terms: ['demographic', 'population', 'age', 'income', 'race', 'segments behave', 'paint me a picture', 'how segments behave', 'demographic breakdown', 'show me both the demographic', 'want to see competitive analysis but also understand', 'paint me a picture of how different segments behave', 'segments behave'],
+          boost_terms: ['demographic', 'demographics', 'population', 'age', 'income', 'race', 'segments behave', 'paint me a picture', 'how segments behave', 'demographic breakdown', 'show me both the demographic', 'want to see competitive analysis but also understand', 'paint me a picture of how different segments behave', 'segments behave', 'customer base characteristics', 'customer demographics'],
           penalty_terms: ['customer personas', 'ideal customer'],
           confidence_threshold: 0.05
         },
@@ -238,7 +238,7 @@ export class DomainConfigurationLoader {
           display_name: 'Competitive Analysis',
           description: 'Market competition and positioning analysis',
           primary_intents: ['competitive_analysis'],
-          boost_terms: ['competitive', 'competition', 'positioning', 'advantage', 'landscape', 'walk', 'walk me through', 'position', 'market opportunities', 'talk', 'illuminate', 'dynamics', 'seasonal', 'trends', 'walk me through the landscape', 'walk me through the landscape of our competitive position', 'competitive position', 'competitive analysis', 'landscape of our competitive', 'through the landscape'],
+          boost_terms: ['competitive', 'competition', 'positioning', 'market positioning', 'advantage', 'landscape', 'walk', 'walk me through', 'position', 'market opportunities', 'talk', 'illuminate', 'dynamics', 'seasonal', 'trends', 'walk me through the landscape', 'walk me through the landscape of our competitive position', 'competitive position', 'competitive analysis', 'landscape of our competitive', 'through the landscape', 'stack up against', 'how we stack up', 'compare us against', 'competitive positioning between markets'],
           penalty_terms: ['brand difference', 'vs', 'versus', 'predictions', 'accurate', 'accuracy', 'correlation', 'correlated'],
           confidence_threshold: 0.1
         },
@@ -265,8 +265,8 @@ export class DomainConfigurationLoader {
           display_name: 'Brand Positioning Analysis',
           description: 'Brand differences and market positioning',
           primary_intents: ['difference_analysis', 'competitive_analysis'],
-          boost_terms: ['brand', 'difference', 'vs', 'versus', 'positioning'],
-          penalty_terms: ['competitive advantage', 'predictions', 'accurate', 'accuracy', 'model', 'performance', 'correlation', 'correlated', 'market factors'],
+          boost_terms: ['brand', 'difference', 'vs', 'versus', 'positioning', 'vs.', 'versus', 'market share difference', 'brand comparison', 'A vs B'],
+          penalty_terms: ['competitive advantage', 'predictions', 'accurate', 'accuracy', 'model', 'performance', 'correlation', 'correlated', 'market factors', 'landscape'],
           confidence_threshold: 0.35
         },
         

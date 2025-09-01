@@ -8,9 +8,14 @@ const { put } = require('@vercel/blob');
 const fs = require('fs');
 const path = require('path');
 
+// Resolve configuration
+const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN || process.env.HRB_READ_WRITE_TOKEN;
+const BLOB_PREFIX = process.env.BLOB_PREFIX || 'energy'; // default to 'energy' namespace
+
 // Check for required environment variable
-if (!process.env.HRB_READ_WRITE_TOKEN) {
-  console.error('❌ HRB_READ_WRITE_TOKEN environment variable is required');
+if (!BLOB_TOKEN) {
+  console.error('❌ BLOB_READ_WRITE_TOKEN environment variable is required');
+  console.error('ℹ️  (Legacy fallback HRB_READ_WRITE_TOKEN is also supported)');
   process.exit(1);
 }
 
@@ -18,13 +23,13 @@ async function uploadEndpointToBlob(endpointName, data) {
   try {
     console.log(`📤 Uploading ${endpointName}...`);
     
-    const filename = `hrb/${endpointName}.json`;
+  const filename = `${BLOB_PREFIX}/${endpointName}.json`;
     const jsonData = JSON.stringify(data, null, 2);
     
     const blob = await put(filename, jsonData, {
       access: 'public',
       addRandomSuffix: true,
-      token: process.env.HRB_READ_WRITE_TOKEN,
+  token: BLOB_TOKEN,
     });
     
     console.log(`✅ Uploaded ${endpointName}: ${blob.url}`);
@@ -39,13 +44,13 @@ async function uploadBoundaryFile(boundaryName, data) {
   try {
     console.log(`🗺️  Uploading boundary file ${boundaryName}...`);
     
-    const filename = `hrb/boundaries/${boundaryName}.json`;
+  const filename = `${BLOB_PREFIX}/boundaries/${boundaryName}.json`;
     const jsonData = JSON.stringify(data, null, 2);
     
     const blob = await put(filename, jsonData, {
       access: 'public',
       addRandomSuffix: true,
-      token: process.env.HRB_READ_WRITE_TOKEN,
+  token: BLOB_TOKEN,
     });
     
     console.log(`✅ Uploaded boundary ${boundaryName}: ${blob.url}`);
@@ -61,7 +66,8 @@ async function main() {
   
   const endpointsDir = path.join(__dirname, '../public/data/endpoints');
   const boundariesDir = path.join(__dirname, '../public/data/boundaries');
-  const blobUrlsFile = path.join(__dirname, '../public/data/blob-urls-hrb.json');
+  // Unified mapping file
+  const blobUrlsFile = path.join(__dirname, '../public/data/blob-urls.json');
   
   const blobUrls = {};
   let successCount = 0;

@@ -122,6 +122,20 @@ export class HybridRoutingTestSuite {
     const outOfScopeRejectionRate = outOfScopeTotal > 0 ? outOfScopeCorrect / outOfScopeTotal : 1;
     const borderlineHandlingRate = borderlineTotal > 0 ? borderlineAppropriate / borderlineTotal : 1;
     
+    // Optional debug output for failures
+    if (process.env.DEBUG_HYBRID_SUITE === 'true') {
+      const inScopeFailures = detailedResults.filter(r => r.test_case.category === 'in_scope' && !r.passed);
+      if (inScopeFailures.length > 0) {
+        console.log('[HybridRoutingTestSuite][DEBUG] In-scope failures:');
+        inScopeFailures.forEach(f => {
+          console.log(` - Q: ${f.test_case.query}`);
+          console.log(`   Expected: ${f.test_case.expected_endpoint || 'N/A'} minConf=${f.test_case.min_confidence ?? 'n/a'}`);
+          console.log(`   Got: ${f.result.endpoint || 'N/A'} conf=${(f.result.confidence ?? 0).toFixed(2)} scope=${f.result.validation?.scope}`);
+          console.log(`   Issues: ${f.issues.join('; ')}`);
+        });
+      }
+    }
+
     return {
       overall_accuracy: overallAccuracy,
       in_scope_accuracy: inScopeAccuracy,
@@ -509,6 +523,22 @@ export class HybridRoutingTestSuite {
     } else {
       report.push("All test cases passed! 🎉");
     }
+    // Add additional sections to enrich report content for debugging
+    report.push("");
+    report.push("## Passed Test Cases Summary");
+    const passed = result.detailed_results.filter(r => r.passed);
+    passed.slice(0, 50).forEach(success => {
+      report.push(`- "${success.test_case.query}" -> ${success.result.endpoint || 'N/A'} (${success.result.validation.scope}) conf=${(success.result.confidence ?? 0).toFixed(2)} time=${(success.result.processing_time ?? 0).toFixed(2)}ms`);
+    });
+    report.push("");
+    report.push("## Configuration & Thresholds Snapshot");
+    try {
+      const active = domainConfigLoader.getActiveConfiguration();
+      report.push(`- Domain: ${active.domain.name} v${active.domain.version}`);
+      report.push(`- Endpoints: ${Object.keys(active.endpoint_mappings).length}`);
+      report.push(`- Validation thresholds: accept=${active.validation.thresholds.accept_threshold}, clarify=${active.validation.thresholds.clarify_threshold}, reject=${active.validation.thresholds.reject_threshold}`);
+      report.push(`- Avoid terms configured for: ${Object.keys(active.avoid_terms).length} endpoints`);
+    } catch {}
     
     return report.join("\n");
   }
