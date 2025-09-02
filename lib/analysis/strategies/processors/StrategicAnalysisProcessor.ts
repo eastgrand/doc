@@ -142,6 +142,12 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         rank: 0, // Will be calculated after sorting
         // Flatten top contributing fields to top level for popup access (excluding strategic_score)
         ...filteredTopFields,
+        // Ensure key strategic fields are available at top level for route access
+        market_gap: this.calculateRealMarketGap(record),
+        total_population: this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population']),
+        median_income: this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income']),
+        competitive_advantage_score: this.extractFieldValue(record, ['competitive_advantage_score', 'comp_advantage', 'advantage_score']),
+        diversity_index: this.extractFieldValue(record, ['diversity_index', 'value_DIVINDX_CY', 'DIVINDX_CY']),
         properties: {
       // Include full raw record first to avoid missing context, then overlay normalized fields
       ...(record as any),
@@ -153,7 +159,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       total_population: this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population']),
       median_income: this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income']),
       competitive_advantage_score: this.extractFieldValue(record, ['competitive_advantage_score', 'comp_advantage', 'advantage_score']),
-      demographic_opportunity_score: this.extractFieldValue(record, ['demographic_opportunity_score', 'demo_opportunity', 'opportunity_score'])
+      demographic_opportunity_score: this.extractFieldValue(record, ['demographic_opportunity_score', 'demo_opportunity', 'opportunity_score']),
+      diversity_index: this.extractFieldValue(record, ['diversity_index', 'value_DIVINDX_CY', 'DIVINDX_CY'])
         }
       };
       // Add dynamic score field at top level for renderer parity if different from canonical
@@ -502,7 +509,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       summary += `Strategic value scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
     
       // Top strategic markets
-      const topMarkets = records.slice(0, 5);
+      const topMarkets = records.slice(0, 10);
       if (topMarkets.length > 0) {
         summary += `**Top Strategic Markets:** `;
         const topNames = topMarkets.map(r => `${r.area_name} (${r.value.toFixed(1)})`);

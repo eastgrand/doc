@@ -386,7 +386,7 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
     const consensusPatterns = this.generateConsensusPatterns(records);
     summary += `${consensusPatterns} `;
     
-    const topAreas = records.slice(0, 5);
+    const topAreas = records.slice(0, 10);
     if (topAreas.length > 0) {
       summary += `**Highest Cross-Method Consensus:** `;
       const topNames = topAreas.map(r => `${r.area_name} (${r.value.toFixed(1)} consensus score)`);

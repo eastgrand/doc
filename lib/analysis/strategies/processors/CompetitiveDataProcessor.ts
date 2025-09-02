@@ -616,7 +616,7 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
       summary += `
 \n**🎯 Top Expansion Opportunities** (Markets with GROWTH potential, not current ${targetBrandName} dominance): `;
       
-      topExpansionTargets.slice(0, 8).forEach((record, index) => {
+      topExpansionTargets.slice(0, 10).forEach((record, index) => {
         const props = ((record as any).properties || {}) as any;
         const targetShare = Number(props?.target_brand_share) || 0;
         const competitorShare = Number(props?.primary_competitor_share) || 0;
@@ -644,9 +644,9 @@ Higher scores indicate markets where ${targetBrandName} has the strongest compet
     }
     
     // Market segmentation based on expansion opportunity scores (not brand dominance)
-    const topTierMarkets = records.filter(r => r.value >= 80).slice(0, 5);
-    const strongMarkets = records.filter(r => r.value >= 60 && r.value < 80).slice(0, 5);
-    const emergingMarkets = records.filter(r => r.value >= 40 && r.value < 60).slice(0, 5);
+    const topTierMarkets = records.filter(r => r.value >= 80).slice(0, 10);
+    const strongMarkets = records.filter(r => r.value >= 60 && r.value < 80).slice(0, 10);
+    const emergingMarkets = records.filter(r => r.value >= 40 && r.value < 60).slice(0, 10);
     
     if (topTierMarkets.length > 0) {
       summary += `

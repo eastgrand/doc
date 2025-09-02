@@ -375,7 +375,7 @@ export class SensitivityAnalysisProcessor implements DataProcessorStrategy {
     const parameterExamples = this.generateParameterImpactExamples(records);
     summary += `${parameterExamples} `;
     
-    const topAreas = records.slice(0, 5);
+    const topAreas = records.slice(0, 10);
     if (topAreas.length > 0) {
       summary += `**Most Parameter-Sensitive Areas:** `;
       const topNames = topAreas.map(r => `${r.area_name} (${r.value.toFixed(1)})`);

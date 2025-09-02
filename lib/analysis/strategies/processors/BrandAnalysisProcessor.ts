@@ -198,7 +198,7 @@ export class BrandAnalysisProcessor implements DataProcessorStrategy {
   }
 
   private generateBrandSummary(records: any[], statistics: any): string {
-    const topBrands = records.slice(0, 5);
+    const topBrands = records.slice(0, 10);
     const targetAdvantage = records.filter(r => (r.properties as any).brand_difference_score >= 5).length;
     const competitorAdvantage = records.filter(r => (r.properties as any).brand_difference_score <= -5).length;
     const competitive = records.filter(r => Math.abs((r.properties as any).brand_difference_score) < 5).length;

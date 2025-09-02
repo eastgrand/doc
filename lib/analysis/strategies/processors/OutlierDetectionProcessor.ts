@@ -653,7 +653,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
       const significantOutliers = topOutliers.filter(r => r.value >= 50);
       if (significantOutliers.length > 0) {
         summary += `**Most Exceptional Markets:** `;
-        const outlierNames = significantOutliers.slice(0, 6).map(r => `${r.area_name} (${r.value.toFixed(1)})`);
+        const outlierNames = significantOutliers.slice(0, 10).map(r => `${r.area_name} (${r.value.toFixed(1)})`);;
         summary += `${outlierNames.join(', ')}. `;
         
         const avgTopOutlier = significantOutliers.reduce((sum, r) => sum + r.value, 0) / significantOutliers.length;

@@ -529,7 +529,7 @@ export class AnomalyDetectionProcessor implements DataProcessorStrategy {
       const significantAnomalies = topAnomalies.filter(r => r.value >= 40);
       if (significantAnomalies.length > 0) {
         summary += `**Most Anomalous Markets:** `;
-        const anomalyNames = significantAnomalies.slice(0, 6).map(r => `${r.area_name} (${r.value.toFixed(1)})`);
+        const anomalyNames = significantAnomalies.slice(0, 10).map(r => `${r.area_name} (${r.value.toFixed(1)})`);
         summary += `${anomalyNames.join(', ')}. `;
         
         const avgTopAnomaly = significantAnomalies.reduce((sum, r) => sum + r.value, 0) / significantAnomalies.length;

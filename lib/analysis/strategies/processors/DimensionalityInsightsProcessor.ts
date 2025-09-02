@@ -370,7 +370,7 @@ export class DimensionalityInsightsProcessor implements DataProcessorStrategy {
     const fieldExamples = this.generateSpecificFieldExamples(records);
     summary += `${fieldExamples} `;
     
-    const topAreas = records.slice(0, 5);
+    const topAreas = records.slice(0, 10);
     if (topAreas.length > 0) {
       summary += `**Most Dimensionally Complex Areas:** `;
       const topNames = topAreas.map((r, index) => {

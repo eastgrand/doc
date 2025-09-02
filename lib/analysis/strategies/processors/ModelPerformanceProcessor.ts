@@ -372,7 +372,7 @@ export class ModelPerformanceProcessor implements DataProcessorStrategy {
     summary += `**Model Performance Analysis Complete:** ${statistics.total} geographic areas evaluated for ${targetBrandName} model accuracy. `;
     summary += `Performance scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
     
-    const topAreas = records.slice(0, 5);
+    const topAreas = records.slice(0, 10);
     if (topAreas.length > 0) {
       summary += `**Best Performing Areas:** `;
       const topNames = topAreas.map(r => `${r.area_name} (${r.value.toFixed(1)})`);

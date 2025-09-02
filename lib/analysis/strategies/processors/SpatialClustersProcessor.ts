@@ -360,7 +360,7 @@ export class SpatialClustersProcessor implements DataProcessorStrategy {
     summary += `**Spatial Clustering Analysis Complete:** ${statistics.total} geographic areas analyzed for ${targetBrandName} spatial patterns. `;
     summary += `Clustering scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
     
-    const topAreas = records.slice(0, 5);
+    const topAreas = records.slice(0, 10);
     if (topAreas.length > 0) {
       summary += `**Highest Clustering:** `;
       const topNames = topAreas.map(r => `${r.area_name} (${r.value.toFixed(1)})`);

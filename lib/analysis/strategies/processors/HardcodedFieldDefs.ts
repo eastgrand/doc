@@ -61,7 +61,8 @@ export function getTopFieldDefinitions(analysisType: string): Array<{ field: str
         { field: 'total_population', source: ['total_population', 'population', 'TOTPOP_CY', 'value_TOTPOP_CY'], importance: 16 },
         { field: 'median_income', source: ['median_income', 'AVGHINC_CY', 'value_AVGHINC_CY', 'household_income'], importance: 15 },
         { field: 'competitive_advantage_score', source: ['competitive_advantage_score', 'competitive_score'], importance: 14 },
-        { field: 'demographic_opportunity_score', source: ['demographic_opportunity_score', 'demo_opportunity', 'opportunity_score'], importance: 12 }
+        { field: 'demographic_opportunity_score', source: ['demographic_opportunity_score', 'demo_opportunity', 'opportunity_score'], importance: 12 },
+        { field: 'diversity_index', source: ['diversity_index', 'value_DIVINDX_CY', 'DIVINDX_CY'], importance: 10 }
       ];
     case 'competitive':
     case 'competitiveanalysis':

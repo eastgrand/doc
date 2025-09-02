@@ -567,7 +567,7 @@ export class CoreAnalysisProcessor implements DataProcessorStrategy {
       const topTier = topPerformers.filter(r => r.value >= 70);
       if (topTier.length > 0) {
         summary += `**Top Performers** (Scores 70+): `;
-        const topNames = topTier.slice(0, 6).map(r => `${r.area_name} (${r.value.toFixed(1)})`);
+        const topNames = topTier.slice(0, 10).map(r => `${r.area_name} (${r.value.toFixed(1)})`);
         summary += `${topNames.join(', ')}. `;
         
         // Add insights about top performers

@@ -501,6 +501,8 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
   const nestedProps = props.properties || props; // Handle double nesting
+  // Also check top-level fields from StrategicAnalysisProcessor flattening
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         // Debug logging to trace area name resolution
         if (index < 3) {
@@ -512,16 +514,14 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
   const strategicScore = resolveScore(feature, 'strategic_analysis_score', ['strategic_value_score', 'strategic_score']);
   metricsSection += `   Strategic Value Score: ${strategicScore !== undefined ? strategicScore : 'N/A'}\n`;
         
-        if (nestedProps?.demographic_opportunity_score || props?.demographic_opportunity_score) {
-          const demoScore = nestedProps?.demographic_opportunity_score || props?.demographic_opportunity_score;
-          metricsSection += `   Demographic Opportunity: ${demoScore}\n`;
+        if (allProps?.demographic_opportunity_score) {
+          metricsSection += `   Demographic Opportunity: ${allProps.demographic_opportunity_score}\n`;
         }
-        if ((nestedProps?.market_gap !== undefined) || (props?.market_gap !== undefined)) {
-          const marketGap = nestedProps?.market_gap !== undefined ? nestedProps.market_gap : props?.market_gap;
-          metricsSection += `   Market Gap (Untapped): ${marketGap}%\n`;
+        if (allProps?.market_gap !== undefined) {
+          metricsSection += `   Market Gap (Untapped): ${allProps.market_gap}%\n`;
         }
-  // Add strategic-specific context fields - pass nested props (handles Market Size/Purchasing Power)
-        metricsSection = addStrategicFields(nestedProps || props, metricsSection);
+  // Add strategic-specific context fields - pass all available props to ensure data is found
+        metricsSection = addStrategicFields(allProps, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -531,15 +531,17 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Competitive Analysis - Enhanced with market share context:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use competitive_advantage_score directly instead of target_value for competitive analysis
-        const competitiveScore = props?.competitive_advantage_score || feature?.competitive_advantage_score || props?.target_value;
+        const competitiveScore = allProps?.competitive_advantage_score || allProps?.target_value;
         metricsSection += `   Competitive Advantage Score: ${competitiveScore || 'N/A'}\n`;
         
         // Add competitive-specific context fields
-        metricsSection = addCompetitiveFields(props, metricsSection);
+        metricsSection = addCompetitiveFields(allProps, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -549,15 +551,17 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Demographic Analysis - Enhanced with population characteristics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Demographic Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Demographic Score: ${allProps?.target_value || 'N/A'}\n`;
         
         // Add comprehensive demographic analysis (all age groups and socioeconomic factors)
-        metricsSection = addDemographicFields(props, metricsSection);
+        metricsSection = addDemographicFields(allProps, metricsSection);
         
-        if (props?.demographic_opportunity_score) {
-          metricsSection += `   Demographic Opportunity: ${props.demographic_opportunity_score}\n`;
+        if (allProps?.demographic_opportunity_score) {
+          metricsSection += `   Demographic Opportunity: ${allProps.demographic_opportunity_score}\n`;
         }
         metricsSection += '\n';
       });
@@ -567,12 +571,14 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Market Sizing Analysis - Enhanced with opportunity metrics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Market Sizing Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Market Sizing Score: ${allProps?.target_value || 'N/A'}\n`;
         
         // Add market sizing-specific context fields
-        metricsSection = addMarketSizingFields(props, metricsSection);
+        metricsSection = addMarketSizingFields(allProps, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -581,15 +587,17 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Brand Analysis - Enhanced with competitive positioning:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Brand Analysis Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Brand Analysis Score: ${allProps?.target_value || 'N/A'}\n`;
         
-        if (props?.nike_market_share) {
-          metricsSection += `   Nike Brand Strength: ${props.nike_market_share.toFixed(1)}% share\n`;
+        if (allProps?.nike_market_share) {
+          metricsSection += `   Nike Brand Strength: ${allProps.nike_market_share.toFixed(1)}% share\n`;
         }
-        if (props?.competitive_advantage_score) {
-          metricsSection += `   Competitive Position: ${props.competitive_advantage_score}\n`;
+        if (allProps?.competitive_advantage_score) {
+          metricsSection += `   Competitive Position: ${allProps.competitive_advantage_score}\n`;
         }
         metricsSection += '\n';
       });
@@ -601,33 +609,35 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Comparative Analysis - Brand vs competitor performance:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use comparative_analysis_score as primary metric
-        const comparativeScore = props?.comparative_analysis_score || props?.target_value;
+        const comparativeScore = allProps?.comparative_analysis_score || allProps?.target_value;
         metricsSection += `   Comparative Analysis Score: ${comparativeScore || 'N/A'}\n`;
         
         // Add competitive context with brand comparisons (external competitors only)
-        if (props?.nike_market_share) {
-          metricsSection += `   Nike Market Share: ${props.nike_market_share.toFixed(1)}%\n`;
+        if (allProps?.nike_market_share) {
+          metricsSection += `   Nike Market Share: ${allProps.nike_market_share.toFixed(1)}%\n`;
         }
-        if (props?.adidas_market_share) {
-          metricsSection += `   Adidas Market Share: ${props.adidas_market_share.toFixed(1)}%\n`;
+        if (allProps?.adidas_market_share) {
+          metricsSection += `   Adidas Market Share: ${allProps.adidas_market_share.toFixed(1)}%\n`;
         }
-        if (props?.puma_market_share) {
-          metricsSection += `   Puma Market Share: ${props.puma_market_share.toFixed(1)}%\n`;
+        if (allProps?.puma_market_share) {
+          metricsSection += `   Puma Market Share: ${allProps.puma_market_share.toFixed(1)}%\n`;
         }
-        if (props?.under_armour_market_share) {
-          metricsSection += `   Under Armour Market Share: ${props.under_armour_market_share.toFixed(1)}%\n`;
+        if (allProps?.under_armour_market_share) {
+          metricsSection += `   Under Armour Market Share: ${allProps.under_armour_market_share.toFixed(1)}%\n`;
         }
-        if (props?.new_balance_market_share) {
-          metricsSection += `   New Balance Market Share: ${props.new_balance_market_share.toFixed(1)}%\n`;
+        if (allProps?.new_balance_market_share) {
+          metricsSection += `   New Balance Market Share: ${allProps.new_balance_market_share.toFixed(1)}%\n`;
         }
         
         // Add performance gap indicators
-        if (props?.brand_performance_gap) {
-          metricsSection += `   Nike vs Competitor Gap: ${props.brand_performance_gap}\n`;
+        if (allProps?.brand_performance_gap) {
+          metricsSection += `   Nike vs Competitor Gap: ${allProps.brand_performance_gap}\n`;
         }
         if (props?.competitive_dynamics_level) {
           metricsSection += `   Competitive Intensity: ${props.competitive_dynamics_level}\n`;
@@ -644,18 +654,20 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Spatial Clusters Analysis - Geographic clustering patterns:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Cluster Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Cluster Score: ${allProps?.target_value || 'N/A'}\n`;
         
-        if (props?.cluster_id !== undefined) {
-          metricsSection += `   Cluster ID: ${props.cluster_id}\n`;
+        if (allProps?.cluster_id !== undefined) {
+          metricsSection += `   Cluster ID: ${allProps.cluster_id}\n`;
         }
-        if (props?.total_population) {
-          metricsSection += `   Population: ${(props.total_population / 1000).toFixed(1)}K\n`;
+        if (allProps?.total_population) {
+          metricsSection += `   Population: ${(allProps.total_population / 1000).toFixed(1)}K\n`;
         }
-        if (props?.median_income) {
-          metricsSection += `   Median Income: $${(props.median_income / 1000).toFixed(1)}K\n`;
+        if (allProps?.median_income) {
+          metricsSection += `   Median Income: $${(allProps.median_income / 1000).toFixed(1)}K\n`;
         }
         metricsSection += '\n';
       });
@@ -667,19 +679,21 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Correlation Analysis - Statistical relationships:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Correlation Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Correlation Score: ${allProps?.target_value || 'N/A'}\n`;
         
-        if (props?.correlation_strength) {
-          metricsSection += `   Correlation Strength: ${props.correlation_strength}\n`;
+        if (allProps?.correlation_strength) {
+          metricsSection += `   Correlation Strength: ${allProps.correlation_strength}\n`;
         }
-        if (props?.statistical_significance) {
-          metricsSection += `   Statistical Significance: ${props.statistical_significance}\n`;
+        if (allProps?.statistical_significance) {
+          metricsSection += `   Statistical Significance: ${allProps.statistical_significance}\n`;
         }
         
         // Add correlation analysis specific fields
-        metricsSection = addCorrelationFields(props, metricsSection);
+        metricsSection = addCorrelationFields(allProps, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -689,22 +703,24 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Segment Profiling Analysis - Customer segmentation:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Segment Profiling Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Segment Profiling Score: ${allProps?.target_value || 'N/A'}\n`;
         
-        if (props?.primary_segment_type) {
-          metricsSection += `   Primary Segment: ${props.primary_segment_type}\n`;
+        if (allProps?.primary_segment_type) {
+          metricsSection += `   Primary Segment: ${allProps.primary_segment_type}\n`;
         }
-        if (props?.segment_size) {
-          metricsSection += `   Segment Size: ${props.segment_size}\n`;
+        if (allProps?.segment_size) {
+          metricsSection += `   Segment Size: ${allProps.segment_size}\n`;
         }
-        if (props?.nike_segment_affinity) {
-          metricsSection += `   Nike Affinity: ${props.nike_segment_affinity}\n`;
+        if (allProps?.nike_segment_affinity) {
+          metricsSection += `   Nike Affinity: ${allProps.nike_segment_affinity}\n`;
         }
         
         // Add demographic analysis fields for customer segmentation
-        metricsSection = addDemographicFields(props, metricsSection);
+        metricsSection = addDemographicFields(allProps, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -715,22 +731,24 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Trend Analysis - Temporal patterns and growth:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Trend Strength Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Trend Strength Score: ${allProps?.target_value || 'N/A'}\n`;
         
-        if (props?.growth_potential) {
-          metricsSection += `   Growth Potential: ${props.growth_potential}\n`;
+        if (allProps?.growth_potential) {
+          metricsSection += `   Growth Potential: ${allProps.growth_potential}\n`;
         }
-        if (props?.trend_consistency) {
-          metricsSection += `   Trend Consistency: ${props.trend_consistency}\n`;
+        if (allProps?.trend_consistency) {
+          metricsSection += `   Trend Consistency: ${allProps.trend_consistency}\n`;
         }
-        if (props?.volatility_index) {
-          metricsSection += `   Volatility Index: ${props.volatility_index}\n`;
+        if (allProps?.volatility_index) {
+          metricsSection += `   Volatility Index: ${allProps.volatility_index}\n`;
         }
         
         // Add correlation analysis fields for temporal patterns
-        metricsSection = addCorrelationFields(props, metricsSection);
+        metricsSection = addCorrelationFields(allProps, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -740,19 +758,21 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Anomaly Detection Analysis - Unusual market patterns:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Anomaly Detection Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Anomaly Detection Score: ${allProps?.target_value || 'N/A'}\n`;
         
-        if (props?.anomaly_type) {
-          metricsSection += `   Anomaly Type: ${props.anomaly_type}\n`;
+        if (allProps?.anomaly_type) {
+          metricsSection += `   Anomaly Type: ${allProps.anomaly_type}\n`;
         }
-        if (props?.statistical_deviation) {
-          metricsSection += `   Statistical Deviation: ${props.statistical_deviation}\n`;
+        if (allProps?.statistical_deviation) {
+          metricsSection += `   Statistical Deviation: ${allProps.statistical_deviation}\n`;
         }
         
         // Add comparative analysis fields for anomaly detection
-        metricsSection = addComparativeFields(props, metricsSection);
+        metricsSection = addComparativeFields(allProps, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -762,19 +782,21 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Feature Interactions Analysis - Multi-variable relationships:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Feature Interaction Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Feature Interaction Score: ${allProps?.target_value || 'N/A'}\n`;
         
-        if (props?.correlation_strength) {
-          metricsSection += `   Correlation Strength: ${props.correlation_strength}\n`;
+        if (allProps?.correlation_strength) {
+          metricsSection += `   Correlation Strength: ${allProps.correlation_strength}\n`;
         }
-        if (props?.synergy_effect) {
-          metricsSection += `   Synergy Effect: ${props.synergy_effect}\n`;
+        if (allProps?.synergy_effect) {
+          metricsSection += `   Synergy Effect: ${allProps.synergy_effect}\n`;
         }
         
         // Add correlation analysis fields for multi-variable relationships
-        metricsSection = addCorrelationFields(props, metricsSection);
+        metricsSection = addCorrelationFields(allProps, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -784,19 +806,21 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Outlier Detection Analysis - Exceptional market characteristics:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
   const props = feature.properties || feature;
+  const nestedProps = props.properties || props; // Handle double nesting
+  const allProps = { ...feature, ...props, ...nestedProps };
   const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Outlier Detection Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Outlier Detection Score: ${allProps?.target_value || 'N/A'}\n`;
         
-        if (props?.outlier_type) {
-          metricsSection += `   Outlier Type: ${props.outlier_type}\n`;
+        if (allProps?.outlier_type) {
+          metricsSection += `   Outlier Type: ${allProps.outlier_type}\n`;
         }
-        if (props?.statistical_outlier_level) {
-          metricsSection += `   Statistical Outlier Level: ${props.statistical_outlier_level}\n`;
+        if (allProps?.statistical_outlier_level) {
+          metricsSection += `   Statistical Outlier Level: ${allProps.statistical_outlier_level}\n`;
         }
         
         // Add comparative analysis fields for outlier detection
-        metricsSection = addComparativeFields(props, metricsSection);
+        metricsSection = addComparativeFields(allProps, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -806,18 +830,20 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Scenario Analysis - Market adaptability and flexibility:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties || feature;
+        const nestedProps = props.properties || props; // Handle double nesting
+        const allProps = { ...feature, ...props, ...nestedProps };
         const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Scenario Analysis Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Scenario Analysis Score: ${allProps?.target_value || 'N/A'}\n`;
         
-        if (props?.scenario_adaptability_level) {
-          metricsSection += `   Adaptability Level: ${props.scenario_adaptability_level}\n`;
+        if (allProps?.scenario_adaptability_level) {
+          metricsSection += `   Adaptability Level: ${allProps.scenario_adaptability_level}\n`;
         }
-        if (props?.market_resilience_strength) {
-          metricsSection += `   Market Resilience: ${props.market_resilience_strength}\n`;
+        if (allProps?.market_resilience_strength) {
+          metricsSection += `   Market Resilience: ${allProps.market_resilience_strength}\n`;
         }
-        if (props?.strategic_flexibility_rating) {
-          metricsSection += `   Strategic Flexibility: ${props.strategic_flexibility_rating}\n`;
+        if (allProps?.strategic_flexibility_rating) {
+          metricsSection += `   Strategic Flexibility: ${allProps.strategic_flexibility_rating}\n`;
         }
         metricsSection += '\n';
       });
@@ -828,18 +854,20 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += 'Predictive Modeling Analysis - Forecasting reliability:\n\n';
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties || feature;
+        const nestedProps = props.properties || props; // Handle double nesting
+        const allProps = { ...feature, ...props, ...nestedProps };
         const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Predictive Modeling Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Predictive Modeling Score: ${allProps?.target_value || 'N/A'}\n`;
         
-        if (props?.model_confidence_level) {
-          metricsSection += `   Model Confidence: ${props.model_confidence_level}\n`;
+        if (allProps?.model_confidence_level) {
+          metricsSection += `   Model Confidence: ${allProps.model_confidence_level}\n`;
         }
-        if (props?.forecast_reliability) {
-          metricsSection += `   Forecast Reliability: ${props.forecast_reliability}\n`;
+        if (allProps?.forecast_reliability) {
+          metricsSection += `   Forecast Reliability: ${allProps.forecast_reliability}\n`;
         }
-        if (props?.prediction_confidence) {
-          metricsSection += `   Prediction Confidence: ${props.prediction_confidence}\n`;
+        if (allProps?.prediction_confidence) {
+          metricsSection += `   Prediction Confidence: ${allProps.prediction_confidence}\n`;
         }
         metricsSection += '\n';
       });
@@ -853,18 +881,20 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties || feature;
+        const nestedProps = props.properties || props; // Handle double nesting
+        const allProps = { ...feature, ...props, ...nestedProps };
         const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
         
         // Use brand_difference_score as primary metric with proper notation
-        const brandDifferenceScore = props?.brand_difference_score || props?.target_value;
+        const brandDifferenceScore = allProps?.brand_difference_score || allProps?.target_value;
         const diffText = brandDifferenceScore !== undefined ? 
           `${brandDifferenceScore >= 0 ? '+' : ''}${brandDifferenceScore.toFixed(1)}%` : 'N/A';
         metricsSection += `   Market Share Difference: ${diffText}\n`;
         
         // Add individual brand market shares with clear labeling
-        const hrblockShare = props?.['h&r block_market_share'] || props?.MP10128A_B_P;
-        const turbotaxShare = props?.turbotax_market_share || props?.MP10104A_B_P;
+        const hrblockShare = allProps?.['h&r block_market_share'] || allProps?.MP10128A_B_P;
+        const turbotaxShare = allProps?.turbotax_market_share || allProps?.MP10104A_B_P;
         
         if (hrblockShare !== undefined) {
           metricsSection += `   H&R Block Market Share: ${hrblockShare.toFixed(1)}%\n`;
@@ -874,7 +904,7 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         }
         
         // Add brand-specific demographic context (consumer behavior focus)
-        metricsSection = addBrandFields(props, metricsSection);
+        metricsSection = addBrandFields(allProps, metricsSection);
         metricsSection += '\n';
       });
       break;
@@ -884,16 +914,18 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
       metricsSection += `${analysisType} Analysis - Enhanced metrics:\n\n`;
       topFeatures.forEach((feature: any, index: number) => {
         const props = feature.properties || feature;
+        const nestedProps = props.properties || props; // Handle double nesting
+        const allProps = { ...feature, ...props, ...nestedProps };
         const areaName = resolveAreaName(feature, index);
         metricsSection += `${index + 1}. ${areaName}:\n`;
-        metricsSection += `   Analysis Score: ${props?.target_value || 'N/A'}\n`;
+        metricsSection += `   Analysis Score: ${allProps?.target_value || 'N/A'}\n`;
         
         // Add any available context metrics
-        if (props?.total_population) {
-          metricsSection += `   Population: ${(props.total_population / 1000).toFixed(1)}K\n`;
+        if (allProps?.total_population) {
+          metricsSection += `   Population: ${(allProps.total_population / 1000).toFixed(1)}K\n`;
         }
-        if (props?.median_income) {
-          metricsSection += `   Income: $${(props.median_income / 1000).toFixed(1)}K\n`;
+        if (allProps?.median_income) {
+          metricsSection += `   Income: $${(allProps.median_income / 1000).toFixed(1)}K\n`;
         }
         metricsSection += '\n';
       });
@@ -1808,8 +1840,78 @@ export async function POST(req: NextRequest) {
           try {
             processedLayersData = clientSummary.layers.map((ls: any, idx: number) => {
               const examples: Array<{ id: string; name: string; value: number }> = [];
-              if (Array.isArray(ls.top)) examples.push(...ls.top.slice(0, 5));
-              if (Array.isArray(ls.bottom)) examples.push(...ls.bottom.slice(0, 3));
+              
+              // Hybrid Smart Sampling Strategy for comprehensive analysis
+              const allAreas = [...(ls.top || []), ...(ls.bottom || [])];
+              if (allAreas.length > 0) {
+                const sortedByScore = allAreas.sort((a, b) => (b.value || 0) - (a.value || 0));
+                const scores = sortedByScore.map(a => a.value || 0);
+                
+                // Calculate statistical measures
+                const mean = scores.reduce((sum, val) => sum + val, 0) / scores.length;
+                const median = scores.length % 2 === 0 
+                  ? (scores[Math.floor(scores.length / 2 - 1)] + scores[Math.floor(scores.length / 2)]) / 2
+                  : scores[Math.floor(scores.length / 2)];
+                const stdDev = Math.sqrt(scores.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / scores.length);
+                
+                // 1. Top 15 absolute performers
+                examples.push(...sortedByScore.slice(0, 15));
+                
+                // 2. Bottom 5 absolute performers
+                examples.push(...sortedByScore.slice(-5));
+                
+                // 3. Areas closest to median (find 3 closest)
+                const medianCandidates = sortedByScore
+                  .map(area => ({ area, diff: Math.abs((area.value || 0) - median) }))
+                  .sort((a, b) => a.diff - b.diff)
+                  .slice(0, 3)
+                  .map(item => item.area);
+                examples.push(...medianCandidates);
+                
+                // 4. Areas closest to mean (find 3 closest)
+                const meanCandidates = sortedByScore
+                  .map(area => ({ area, diff: Math.abs((area.value || 0) - mean) }))
+                  .sort((a, b) => a.diff - b.diff)
+                  .slice(0, 3)
+                  .map(item => item.area);
+                examples.push(...meanCandidates);
+                
+                // 5. Statistical outliers (>2σ from mean)
+                const outliers = sortedByScore.filter(area => 
+                  Math.abs((area.value || 0) - mean) > (2 * stdDev)
+                );
+                examples.push(...outliers);
+                
+                // 6. Representative from each score decile (10 areas)
+                for (let i = 0; i < 10; i++) {
+                  const decileStart = Math.floor(sortedByScore.length * i / 10);
+                  const decileEnd = Math.floor(sortedByScore.length * (i + 1) / 10);
+                  if (decileStart < sortedByScore.length) {
+                    const decileRepresentative = sortedByScore[Math.floor((decileStart + decileEnd) / 2)];
+                    if (decileRepresentative) examples.push(decileRepresentative);
+                  }
+                }
+                
+                // Remove duplicates while preserving order
+                const seen = new Set();
+                const uniqueExamples = examples.filter(ex => {
+                  const key = `${ex.id}_${ex.value}`;
+                  if (seen.has(key)) return false;
+                  seen.add(key);
+                  return true;
+                });
+                
+                examples.length = 0;
+                examples.push(...uniqueExamples);
+                
+                console.log(`🔍 [HYBRID SAMPLING] Layer ${idx}: Processed ${allAreas.length} total areas`);
+                console.log(`🔍 [HYBRID SAMPLING] Statistics: mean=${mean.toFixed(2)}, median=${median.toFixed(2)}, stdDev=${stdDev.toFixed(2)}`);
+                console.log(`🔍 [HYBRID SAMPLING] Sample composition: ${examples.length} unique areas (top 15 + bottom 5 + median 3 + mean 3 + outliers ${outliers.length} + decile reps 10)`);
+              } else {
+                // Fallback to original method if no data
+                if (Array.isArray(ls.top)) examples.push(...ls.top.slice(0, 5));
+                if (Array.isArray(ls.bottom)) examples.push(...ls.bottom.slice(0, 3));
+              }
 
               const features = examples.map((e, i) => {
                 // Find corresponding sample data to get additional fields
@@ -2502,9 +2604,94 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
             });
           }
           
-          // Add brand difference statistics for brand difference analysis
+          // Add analysis-specific statistics for comprehensive data access
           const analysisType = metadata?.analysisType || '';
           console.log(`🔍 [DEBUG] analysisType check: "${analysisType}" (type: ${typeof analysisType})`);
+          
+          // Strategic analysis comprehensive statistics
+          if (analysisType === 'strategic_analysis' || analysisType === 'strategic-analysis' || analysisType === 'strategic') {
+            console.log(`🔍 [DEBUG] Strategic analysis condition matched!`);
+            // Use the SAME data source as Quick Stats to ensure consistency
+            if (processedLayersData.length > 0 && processedLayersData[0].features.length > 0) {
+              const features = processedLayersData[0].features;
+              console.log(`🔍 [Strategic Analysis Debug] Features received: ${features.length}`);
+              
+              // Extract strategic scores from ALL features using same method as statsCalculator
+              const extractStrategicScore = (record: any): number => {
+                const props = record.properties || record;
+                // Use same priority order as StrategicAnalysisProcessor
+                if (props.strategic_analysis_score !== undefined) return props.strategic_analysis_score;
+                if (props.strategic_score !== undefined) return props.strategic_score;
+                if (props.strategic_value_score !== undefined) return props.strategic_value_score;
+                if (props.target_value !== undefined) return props.target_value;
+                return NaN;
+              };
+              
+              const strategicValues = features
+                .map(extractStrategicScore)
+                .filter(v => typeof v === 'number' && !isNaN(v));
+              
+              console.log(`🔍 [Strategic Analysis Debug] Extracted ${strategicValues.length} strategic values`);
+              console.log(`🔍 [Strategic Analysis Debug] Sample values:`, strategicValues.slice(0, 5));
+              
+              if (strategicValues.length > 0) {
+                const sortedValues = strategicValues.sort((a, b) => a - b);
+                const count = sortedValues.length;
+                const min = sortedValues[0];
+                const max = sortedValues[count - 1];
+                const median = count % 2 === 0 ? 
+                  (sortedValues[count / 2 - 1] + sortedValues[count / 2]) / 2 : 
+                  sortedValues[Math.floor(count / 2)];
+                const mean = strategicValues.reduce((a, b) => a + b, 0) / count;
+                const variance = sortedValues.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / count;
+                const stdDev = Math.sqrt(variance);
+                
+                dataSummary += `\n=== STRATEGIC ANALYSIS STATISTICS (CRITICAL FOR ANALYSIS) ===\n`;
+                dataSummary += `🚨 MANDATORY: Use these statistics for your analysis, NOT just the sample examples\n`;
+                dataSummary += `• Markets analyzed: ${count}\n`;
+                dataSummary += `• Average strategic score: ${mean.toFixed(2)}\n`;
+                dataSummary += `• Median strategic score: ${median.toFixed(2)}\n`;
+                dataSummary += `• Standard deviation: ${stdDev.toFixed(2)}\n`;
+                dataSummary += `• COMPLETE RANGE: ${sortedValues[0].toFixed(1)} to ${sortedValues[count - 1].toFixed(1)}\n`;
+                dataSummary += `🎯 CRITICAL: Your analysis MUST reference this complete dataset scope\n\n`;
+                
+                // Provide top strategic markets from the full dataset
+                const featuresWithScores = features
+                  .map(f => ({
+                    feature: f,
+                    score: extractStrategicScore(f),
+                    areaName: f.properties?.area_name || f.properties?.DESCRIPTION || f.properties?.id || 'Unknown'
+                  }))
+                  .filter(item => !isNaN(item.score))
+                  .sort((a, b) => b.score - a.score);
+                
+                const topStrategicMarkets = featuresWithScores.slice(0, 15); // Top 15 for comprehensive analysis
+                
+                if (topStrategicMarkets.length > 0) {
+                  dataSummary += `=== TOP STRATEGIC MARKETS (from full dataset) ===\n`;
+                  topStrategicMarkets.forEach((market, index) => {
+                    const props = market.feature.properties || market.feature;
+                    dataSummary += `${index + 1}. ${market.areaName}:\n`;
+                    dataSummary += `   🎯 Strategic Score: ${market.score.toFixed(2)}\n`;
+                    
+                    // Add key strategic context fields
+                    if (props.market_gap !== undefined) {
+                      dataSummary += `   📊 Market Gap: ${props.market_gap}\n`;
+                    }
+                    if (props.demographic_opportunity_score !== undefined) {
+                      dataSummary += `   👥 Demographic Score: ${props.demographic_opportunity_score}\n`;
+                    }
+                    if (props.total_population !== undefined) {
+                      dataSummary += `   🏘️ Population: ${props.total_population.toLocaleString()}\n`;
+                    }
+                    dataSummary += `\n`;
+                  });
+                }
+              }
+            }
+          }
+          
+          // Add brand difference statistics for brand difference analysis
           if (analysisType === 'brand_difference' || analysisType === 'brand-difference') {
             console.log(`🔍 [DEBUG] Brand difference condition matched!`);
             // FIXED: Use the SAME data source as Quick Stats to ensure consistency

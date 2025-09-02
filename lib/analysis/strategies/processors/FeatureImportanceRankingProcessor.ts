@@ -466,7 +466,7 @@ export class FeatureImportanceRankingProcessor implements DataProcessorStrategy 
     summary += `**Feature Importance Ranking Complete:** ${statistics.total} geographic areas analyzed for ${targetBrandName} variable importance. `;
     summary += `Importance scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
     
-    const topAreas = records.slice(0, 5);
+    const topAreas = records.slice(0, 10);
     if (topAreas.length > 0) {
       summary += `**Highest Feature Importance:** `;
       const topNames = topAreas.map(r => `${r.area_name} (${r.value.toFixed(1)})`);
