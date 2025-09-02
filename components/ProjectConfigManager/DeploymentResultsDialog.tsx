@@ -39,8 +39,8 @@ export const DeploymentResultsDialog: React.FC<DeploymentResultsDialogProps> = (
     <div className="flex flex-col items-center justify-center py-8 space-y-4">
       <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
       <div className="text-center">
-        <h3 className="text-lg font-semibold">Deploying Configuration...</h3>
-        <p className="text-sm text-gray-600">
+        <h3 className="text-xs font-semibold">Deploying Configuration...</h3>
+        <p className="text-xs text-gray-600">
           Updating layer configurations, field mappings, and microservice files
         </p>
       </div>
@@ -73,7 +73,7 @@ export const DeploymentResultsDialog: React.FC<DeploymentResultsDialogProps> = (
         {filesUpdated.length > 0 && (
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-base">
+              <CardTitle className="flex items-center gap-2 text-xs">
                 <FileText className="h-4 w-4" />
                 Files Updated ({filesUpdated.length})
               </CardTitle>
@@ -82,7 +82,7 @@ export const DeploymentResultsDialog: React.FC<DeploymentResultsDialogProps> = (
               <ScrollArea className="h-32">
                 <div className="space-y-2">
                   {filesUpdated.map((file, index) => (
-                    <div key={index} className="flex items-center gap-2 text-sm">
+                    <div key={index} className="flex items-center gap-2 text-xs">
                       <div className="w-2 h-2 bg-green-500 rounded-full" />
                       <code className="text-xs bg-gray-100 px-2 py-1 rounded">
                         {file}
@@ -110,7 +110,7 @@ export const DeploymentResultsDialog: React.FC<DeploymentResultsDialogProps> = (
         {warnings && warnings.length > 0 && (
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-base text-yellow-700">
+              <CardTitle className="flex items-center gap-2 text-xs text-yellow-700">
                 <AlertTriangle className="h-4 w-4" />
                 Warnings ({warnings.length})
               </CardTitle>
@@ -119,7 +119,7 @@ export const DeploymentResultsDialog: React.FC<DeploymentResultsDialogProps> = (
               <ScrollArea className="h-24">
                 <div className="space-y-2">
                   {warnings.map((warning, index) => (
-                    <div key={index} className="text-sm text-yellow-700">
+                    <div key={index} className="text-xs text-yellow-700">
                       • {warning}
                     </div>
                   ))}
@@ -133,7 +133,7 @@ export const DeploymentResultsDialog: React.FC<DeploymentResultsDialogProps> = (
         {errors.length > 0 && (
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-base text-red-700">
+              <CardTitle className="flex items-center gap-2 text-xs text-red-700">
                 <XCircle className="h-4 w-4" />
                 Errors ({errors.length})
               </CardTitle>
@@ -142,7 +142,7 @@ export const DeploymentResultsDialog: React.FC<DeploymentResultsDialogProps> = (
               <ScrollArea className="h-32">
                 <div className="space-y-2">
                   {errors.map((error, index) => (
-                    <div key={index} className="text-sm text-red-700">
+                    <div key={index} className="text-xs text-red-700">
                       <strong>{error.file}:</strong> {error.error}
                     </div>
                   ))}
@@ -156,12 +156,12 @@ export const DeploymentResultsDialog: React.FC<DeploymentResultsDialogProps> = (
         {success && (
           <Card className="border-green-200">
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-base text-green-700">
+              <CardTitle className="flex items-center gap-2 text-xs text-green-700">
                 <CheckCircle className="h-4 w-4" />
                 Deployment Summary
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-sm space-y-2">
+            <CardContent className="text-xs space-y-2">
               <div className="flex justify-between">
                 <span>Configuration files:</span>
                 <Badge variant="secondary">

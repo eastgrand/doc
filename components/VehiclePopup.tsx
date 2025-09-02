@@ -15,7 +15,7 @@ interface Feature {
 
 const EmptyDataMessage = ({ message }: { message: string }) => (
   <div className="bg-white rounded-lg p-4 text-center">
-    <p className="text-gray-500 text-sm">{message}</p>
+    <p className="text-gray-500 text-xs">{message}</p>
   </div>
 );
 
@@ -135,7 +135,7 @@ export const PopupContent: React.FC<{ feature: Feature }> = ({ feature }) => {
           <div className="space-y-6">
             {fuelData.length > 0 ? (
               <div className="bg-white rounded-lg p-2">
-                <h3 className="text-sm font-semibold mb-2">Fuel Type Distribution</h3>
+                <h3 className="text-xs font-semibold mb-2">Fuel Type Distribution</h3>
                 <div className="h-48">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -163,7 +163,7 @@ export const PopupContent: React.FC<{ feature: Feature }> = ({ feature }) => {
             )}
 
             <div className="bg-white rounded-lg p-2">
-              <h3 className="text-sm font-semibold mb-2">Top 5 Luxury Vehicle Makes</h3>
+              <h3 className="text-xs font-semibold mb-2">Top 5 Luxury Vehicle Makes</h3>
               {makeData.length > 0 ? (
                 <div className="h-48">
                   <ResponsiveContainer width="100%" height="100%">
@@ -183,7 +183,7 @@ export const PopupContent: React.FC<{ feature: Feature }> = ({ feature }) => {
 
             {yearData.length > 0 ? (
               <div className="bg-white rounded-lg p-2">
-                <h3 className="text-sm font-semibold mb-2">Vehicle Age Distribution</h3>
+                <h3 className="text-xs font-semibold mb-2">Vehicle Age Distribution</h3>
                 <div className="h-48">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={yearData}>
@@ -201,10 +201,10 @@ export const PopupContent: React.FC<{ feature: Feature }> = ({ feature }) => {
             )}
 
             <div className="bg-white rounded-lg p-2">
-              <h3 className="text-sm font-semibold mb-2">Summary Data</h3>
+              <h3 className="text-xs font-semibold mb-2">Summary Data</h3>
               <div className="overflow-x-auto">
                 {Object.entries(tableData).some(([_, items]) => items.length > 0) ? (
-                  <table className="w-full text-sm">
+                  <table className="w-full text-xs">
                     <tbody>
                       {Object.entries(tableData).map(([category, items]) => {
                         if (items.length === 0) return null;

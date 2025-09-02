@@ -24,7 +24,7 @@ class ComprehensiveEndpointGenerator:
     with support for 17-model architecture and enhanced analytics
     """
     
-    def __init__(self, models_dir: str, output_dir: str = "generated_endpoints"):
+    def __init__(self, models_dir: str, output_dir: str = "../../public/data/endpoints"):
         """
         Initialize comprehensive endpoint generator
         
@@ -34,6 +34,11 @@ class ComprehensiveEndpointGenerator:
         """
         self.models_dir = Path(models_dir)
         self.output_dir = Path(output_dir)
+        
+        # Clear and recreate output directory to ensure clean state
+        import shutil
+        if self.output_dir.exists():
+            shutil.rmtree(self.output_dir)
         self.output_dir.mkdir(exist_ok=True, parents=True)
         
         # Setup logging
@@ -904,7 +909,7 @@ def main():
     parser = argparse.ArgumentParser(description='Comprehensive Endpoint Generator (26 Endpoints)')
     parser.add_argument('data_file', help='Path to the combined CSV data file')
     parser.add_argument('--models', default='../comprehensive_models', help='Path to models directory')
-    parser.add_argument('--output', default='generated_endpoints', help='Output directory')
+    parser.add_argument('--output', default='../../public/data/endpoints', help='Output directory')
     
     args = parser.parse_args()
     

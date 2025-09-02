@@ -175,10 +175,10 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
   }, [view, visible]);
 
   // Load pre-joined data on mount
-  useEffect(() => {
-    if (!visible) return;
-    loadPreJoinedData();
-  }, [visible]); // eslint-disable-line react-hooks/exhaustive-deps
+  // useEffect(() => {
+  //   if (!visible) return;
+  //   loadPreJoinedData();
+  // }, [visible]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Select random metrics once when component mounts or data changes
   // Housing project specific metrics from the actual data

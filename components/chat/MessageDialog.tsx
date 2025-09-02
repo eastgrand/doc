@@ -36,7 +36,7 @@ const MessageDialog: React.FC<MessageDialogProps> = ({ message, onClose }) => {
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white">
         <DialogHeader>
           <DialogTitle>Details</DialogTitle>
-          <p className="text-sm text-gray-600"></p>
+          <p className="text-xs text-gray-600"></p>
         </DialogHeader>
         <div className="space-y-4">
           <div>
@@ -48,7 +48,7 @@ const MessageDialog: React.FC<MessageDialogProps> = ({ message, onClose }) => {
               {/* Dynamic Model Performance Information */}
               {renderPerformanceMetrics(
                 message.metadata.analysisResult,
-                "flex flex-wrap gap-4 mt-2 text-sm text-gray-700"
+                "flex flex-wrap gap-4 mt-2 text-xs text-gray-700"
               )}
             </div>
           )}

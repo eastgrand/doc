@@ -24,10 +24,10 @@ const MessageDialog: React.FC<MessageDialogProps> = ({ message, onClose }) => {
     <Dialog open={!!message} onOpenChange={() => onClose()}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white rounded-xl shadow-lg">
         <DialogHeader className="border-b pb-4">
-          <DialogTitle className="text-lg font-bold">Analysis Details</DialogTitle>
+          <DialogTitle className="text-xs font-bold">Analysis Details</DialogTitle>
         </DialogHeader>
         <div className="py-4">
-          <pre className="whitespace-pre-wrap text-sm text-gray-700 font-sans">
+          <pre className="whitespace-pre-wrap text-xs text-gray-700 font-sans">
             {message.content}
           </pre>
         </div>

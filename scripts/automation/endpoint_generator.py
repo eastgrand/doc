@@ -23,7 +23,7 @@ class EndpointGenerator:
     with proper formatting, feature importance, and metadata
     """
     
-    def __init__(self, models_dir: str, output_dir: str = "generated_endpoints"):
+    def __init__(self, models_dir: str, output_dir: str = "../../public/data/endpoints"):
         """
         Initialize endpoint generator
         
@@ -33,6 +33,11 @@ class EndpointGenerator:
         """
         self.models_dir = Path(models_dir)
         self.output_dir = Path(output_dir)
+        
+        # Clear and recreate output directory to ensure clean state
+        import shutil
+        if self.output_dir.exists():
+            shutil.rmtree(self.output_dir)
         self.output_dir.mkdir(exist_ok=True, parents=True)
         
         # Setup logging
@@ -969,12 +974,12 @@ def main():
     if len(sys.argv) < 3:
         print("Usage: python endpoint_generator.py <models_dir> <combined_data.csv> [output_dir]")
         print("\nExample:")
-        print("python endpoint_generator.py trained_models extracted_data/combined_data.csv generated_endpoints")
+        print("python endpoint_generator.py trained_models extracted_data/combined_data.csv ../../public/data/endpoints")
         sys.exit(1)
     
     models_dir = sys.argv[1]
     data_file = sys.argv[2]
-    output_dir = sys.argv[3] if len(sys.argv) > 3 else "generated_endpoints"
+    output_dir = sys.argv[3] if len(sys.argv) > 3 else "../../public/data/endpoints"
     
     print(f"🚀 Starting endpoint generation...")
     print(f"🤖 Models directory: {models_dir}")

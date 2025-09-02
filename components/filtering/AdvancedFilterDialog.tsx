@@ -292,7 +292,7 @@ export default function AdvancedFilterDialog({
 
         {/* Footer Actions */}
         <div className="flex items-center justify-between flex-shrink-0">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
             {validation.errors.length > 0 ? (
               <>
                 <AlertTriangle className="h-4 w-4 text-red-500" />

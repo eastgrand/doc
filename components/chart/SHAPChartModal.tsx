@@ -34,14 +34,14 @@ export const SHAPChartModal: React.FC<SHAPChartModalProps> = ({
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-lg font-semibold">
+            <DialogTitle className="text-xs font-semibold">
               📊 Feature Importance - {formattedAnalysisType}
             </DialogTitle>
           </div>
         </DialogHeader>
         
         <div className="mt-4">
-          <p className="text-sm text-gray-600 mb-6">
+          <p className="text-xs text-gray-600 mb-6">
             These factors have the strongest influence on the analysis results. 
             Higher bars indicate greater importance in determining the scores.
           </p>
@@ -59,7 +59,7 @@ export const SHAPChartModal: React.FC<SHAPChartModalProps> = ({
                 return (
                   <div key={index} className="flex items-center gap-3">
                     {/* Feature name */}
-                    <div className="w-32 text-sm font-medium text-gray-700 text-right flex-shrink-0">
+                    <div className="w-32 text-xs font-medium text-gray-700 text-right flex-shrink-0">
                       {item.name}
                     </div>
                     

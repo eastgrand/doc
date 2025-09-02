@@ -198,10 +198,10 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
           {/* Loading message and progress */}
           <div className="space-y-4 text-center">
             <div>
-              <h3 className="text-lg font-semibold text-foreground">
+              <h3 className="text-xs font-semibold text-foreground">
                 {getLoadingMessage()}
               </h3>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 {Math.round(internalProgress)}% complete
               </p>
             </div>
@@ -209,7 +209,7 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
             {/* Fact display */}
             {currentFact && (
               <div className="animate-entrance">
-                <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+                <div className="flex items-center justify-center space-x-2 text-xs text-muted-foreground">
                   <span className={`transition-all duration-500 ${
                     currentFact.type === 'project' ? 'text-primary' : 'text-muted-foreground'
                   }`}>

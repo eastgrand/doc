@@ -39,7 +39,7 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({
           </button>
         </TooltipTrigger>
         <TooltipContent className="max-w-sm p-3 space-y-2 theme-tooltip">
-          <div className="font-semibold text-sm" style={{ color: 'var(--theme-text-primary)' }}>{title}</div>
+          <div className="font-semibold text-xs" style={{ color: 'var(--theme-text-primary)' }}>{title}</div>
           <div className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>{description}</div>
           {formula && (
             <div className="text-xs">

@@ -29,12 +29,12 @@ const QueryDialog: React.FC<QueryDialogProps> = ({
             height={32}
             className="object-contain"
           />
-          <DialogTitle className="text-lg font-bold theme-text-primary">
+          <DialogTitle className="text-xs font-bold theme-text-primary">
             {title.split('IQ')[0]}
-            <span className="text-lg font-bold text-[#33a852]">IQ</span>
+            <span className="text-xs font-bold text-[#33a852]">IQ</span>
           </DialogTitle>
         </div>
-        <p className="text-sm theme-text-secondary mt-2">{description}</p>
+        <p className="text-xs theme-text-secondary mt-2">{description}</p>
       </DialogHeader>
       <div className="grid gap-6 py-6 px-4 theme-bg-secondary">
         {/* Enabled Categories */}
@@ -43,7 +43,7 @@ const QueryDialog: React.FC<QueryDialogProps> = ({
             key={category}
             className="space-y-3 theme-bg-tertiary p-4 rounded-xl shadow-sm border theme-border"
           >
-            <h3 className="font-semibold text-sm theme-text-primary">
+            <h3 className="font-semibold text-xs theme-text-primary">
               {category}
             </h3>
             <div className="grid gap-1">
@@ -69,7 +69,7 @@ const QueryDialog: React.FC<QueryDialogProps> = ({
             key={`disabled-${category}`}
             className="space-y-3 theme-bg-secondary p-4 rounded-xl shadow-sm border theme-border opacity-60"
           >
-            <h3 className="font-semibold text-sm theme-text-muted flex items-center gap-2">
+            <h3 className="font-semibold text-xs theme-text-muted flex items-center gap-2">
               {category}
             {/*  <span className="text-xs bg-gray-300 text-gray-600 px-2 py-1 rounded-full">
                 Coming Soon

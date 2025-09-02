@@ -2187,7 +2187,10 @@ const EnhancedGeospatialChat = memo(({
         
         // Use ID field as primary, with fallbacks
         const rawZip = String(recordZIP || recordZIPCODE || recordZipCode || primaryId || recordAreaId || `area_${index}`);
-        const recordZip = rawZip.padStart(5, '0'); // Pad to 5 digits with leading zeros
+        
+        // Check if this is a Canadian FSA (3 chars: letter-digit-letter) - DO NOT PAD
+        const isFSA = /^[A-Z]\d[A-Z]$/i.test(rawZip);
+        const recordZip = isFSA ? rawZip.toUpperCase() : rawZip.padStart(5, '0'); // Only pad numeric ZIPs to 5 digits
         
         // Debug logging for problematic records
         if (index === 2610 || index < 3 || rawZip.startsWith('area_')) {
@@ -2206,17 +2209,31 @@ const EnhancedGeospatialChat = memo(({
           });
         }
         
-        // Find matching ZIP Code boundary by ZIP code (with padding support)
-        const zipFeature = geographicFeatures.find(f => 
-          f?.properties && (
+        // Find matching boundary by ID (supports both ZIP codes and FSAs)
+        const zipFeature = geographicFeatures.find(f => {
+          if (!f?.properties) return false;
+          
+          // For FSAs (3 chars: letter-digit-letter), match without padding
+          if (isFSA) {
+            return (
+              String(f.properties.ID || '').toUpperCase() === recordZip ||
+              String(f.properties.FSA_ID || '').toUpperCase() === recordZip ||
+              String(f.properties.POSTAL_CODE || '').toUpperCase() === recordZip ||
+              // Extract FSA from DESCRIPTION: "G0A (La Sarre)" -> "G0A"
+              f.properties.DESCRIPTION?.match(/^([A-Z]\d[A-Z])/i)?.[1]?.toUpperCase() === recordZip
+            );
+          }
+          
+          // For US ZIP codes (numeric), use padding for comparison
+          return (
             String(f.properties.ID).padStart(5, '0') === recordZip ||
             String(f.properties.ZIP).padStart(5, '0') === recordZip ||
             String(f.properties.ZIPCODE).padStart(5, '0') === recordZip ||
-            // Extract ZIP from DESCRIPTION field: "08837 (Edison)" -> "08837"
+            // Extract ZIP from DESCRIPTION: "08837 (Edison)" -> "08837"
             f.properties.DESCRIPTION?.match(/^(\d{5})/)?.[1] === recordZip ||
             String(f.properties.OBJECTID).padStart(5, '0') === recordZip
-          )
-        );
+          );
+        });
 
         // Debug logging for problematic records
         if (index === 3137 || index < 3 || rawZip.startsWith('area_')) {
@@ -3274,7 +3291,10 @@ const EnhancedGeospatialChat = memo(({
           }
           
           const rawZip = String(primaryId || recordAreaId || `area_${index}`);
-          const recordZip = rawZip.padStart(5, '0'); // Pad to 5 digits with leading zeros
+          
+          // Check if this is a Canadian FSA (3 chars: letter-digit-letter) - DO NOT PAD
+          const isFSA = /^[A-Z]\d[A-Z]$/i.test(rawZip);
+          const recordZip = isFSA ? rawZip.toUpperCase() : rawZip.padStart(5, '0'); // Only pad numeric ZIPs to 5 digits
           
           // Debug logging for first few records
           if (index < 3) {
@@ -3289,16 +3309,31 @@ const EnhancedGeospatialChat = memo(({
             });
           }
           
-          // Find matching ZIP Code boundary by ZIP code (same logic as original UI)
-          const zipFeature = geographicFeatures.find(f => 
-            f?.properties && (
+          // Find matching boundary by ID (supports both ZIP codes and FSAs)
+          const zipFeature = geographicFeatures.find(f => {
+            if (!f?.properties) return false;
+            
+            // For FSAs (3 chars: letter-digit-letter), match without padding
+            if (isFSA) {
+              return (
+                String(f.properties.ID || '').toUpperCase() === recordZip ||
+                String(f.properties.FSA_ID || '').toUpperCase() === recordZip ||
+                String(f.properties.POSTAL_CODE || '').toUpperCase() === recordZip ||
+                // Extract FSA from DESCRIPTION: "G0A (La Sarre)" -> "G0A"
+                f.properties.DESCRIPTION?.match(/^([A-Z]\d[A-Z])/i)?.[1]?.toUpperCase() === recordZip
+              );
+            }
+            
+            // For US ZIP codes (numeric), use padding for comparison
+            return (
               String(f.properties.ID).padStart(5, '0') === recordZip ||
               String(f.properties.ZIP).padStart(5, '0') === recordZip ||
               String(f.properties.ZIPCODE).padStart(5, '0') === recordZip ||
+              // Extract ZIP from DESCRIPTION: "08837 (Edison)" -> "08837"
               f.properties.DESCRIPTION?.match(/^(\d{5})/)?.[1] === recordZip ||
               String(f.properties.OBJECTID).padStart(5, '0') === recordZip
-            )
-          );
+            );
+          });
           
           // Debug logging for geometry matches
           if (index < 3) {

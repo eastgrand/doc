@@ -337,7 +337,7 @@ class PopupTemplateBuilder {
 
   private createTable(container: HTMLElement, data: PopupData[]): void {
     const table = document.createElement('table');
-    table.className = 'w-full text-sm';
+    table.className = 'w-full text-xs';
     
     const rows = data.map(item => {
       const valueRows = Object.entries(item.values)

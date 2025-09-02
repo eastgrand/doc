@@ -37,10 +37,10 @@ const PopupChart: React.FC<PopupChartProps> = ({
   // In a real implementation, you would use a library like Recharts, Chart.js, etc.
   return (
     <div className="popup-chart" style={{ height: typeof height === 'number' ? `${height}px` : height }}>
-      <h3 className="chart-title text-sm font-medium mb-2">{title || 'Chart'}</h3>
+      <h3 className="chart-title text-xs font-medium mb-2">{title || 'Chart'}</h3>
       
       {data.length === 0 ? (
-        <div className="chart-no-data text-gray-400 text-sm">No data available</div>
+        <div className="chart-no-data text-gray-400 text-xs">No data available</div>
       ) : (
         <div className="chart-placeholder bg-gray-100 p-4 rounded-md">
           <div className="text-xs text-gray-500 mb-2">Chart Type: {chartType}</div>

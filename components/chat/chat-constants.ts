@@ -5,7 +5,7 @@
 
 export const ANALYSIS_CATEGORIES = {
   'Strategic Analysis': [
-    'Show me the top strategic markets for housing investment expansion'
+    'Show me the top strategic markets for housing investment'
   ],
   'Comparative Analysis': [
     'Compare homeownership rates between Montreal and Quebec City'

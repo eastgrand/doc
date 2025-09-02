@@ -88,7 +88,7 @@ export const TabsTrigger: React.FC<TabsTriggerProps> = ({
       onClick={() => context?.onValueChange(value)}
       disabled={disabled}
       className={`
-        px-4 py-2 text-sm font-medium
+        px-4 py-2 text-xs font-medium
         ${isSelected ? 'theme-tab-active' : 'theme-tab-inactive'}
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
         transition-colors duration-200

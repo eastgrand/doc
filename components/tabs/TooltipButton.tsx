@@ -40,7 +40,7 @@ const TooltipButton = ({
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p className="text-sm">{tooltip}</p>
+          <p className="text-xs">{tooltip}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

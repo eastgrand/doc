@@ -24,7 +24,7 @@ export function Modal({ isOpen, onClose, children, title }: ModalProps) {
       <div className="relative z-50 w-[90vw] h-[90vh] theme-dialog rounded-lg theme-shadow-primary">
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-2 border-b">
-          <h2 className="text-lg font-semibold">{title}</h2>
+          <h2 className="text-xs font-semibold">{title}</h2>
           <Button
             variant="ghost"
             size="icon"

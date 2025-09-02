@@ -376,21 +376,21 @@ const MapClient = memo(({
         
         console.log('[MapClient] Creating MapView...');
         
-        // Use Los Angeles coordinates - center of first sample area (ZIP 90650)
-        // Based on bounds from sample_areas_data_real.json first area
-        const losAngelesCenter = [-118.077, 33.908]; // Center of Los Angeles ZIP 90650
-        const losAngelesZoom = 10; // Zoom level to focus on Los Angeles area
+        // Use Montreal coordinates - center of Quebec housing market
+        // Montreal metropolitan area coordinates
+        const montrealCenter = [-73.567, 45.501]; // Center of Montreal
+        const montrealZoom = 10; // Zoom level to focus on Montreal area
         
-        console.log('[MapClient] Using Los Angeles center and zoom for first sample area:', {
-          center: losAngelesCenter,
-          zoom: losAngelesZoom
+        console.log('[MapClient] Using Montreal center and zoom for Quebec housing market:', {
+          center: montrealCenter,
+          zoom: montrealZoom
         });
         
         const view = new MapView({
           container: mapRef.current,
           map: map,
-          center: losAngelesCenter,
-          zoom: losAngelesZoom,
+          center: montrealCenter,
+          zoom: montrealZoom,
           ui: {
             components: []
           }

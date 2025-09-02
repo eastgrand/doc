@@ -129,11 +129,11 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <Progress value={33} className="flex-1" />
-              <span className="text-sm text-gray-600">Validating configuration...</span>
+              <span className="text-xs text-gray-600">Validating configuration...</span>
             </div>
             <div className="text-center text-gray-600">
               <p>Running comprehensive validation tests</p>
-              <p className="text-sm">This may take a few seconds...</p>
+              <p className="text-xs">This may take a few seconds...</p>
             </div>
           </div>
         </DialogContent>
@@ -162,7 +162,7 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                 </div>
                 <Badge 
                   variant={validationReport?.recommendDeployment ? "default" : "destructive"}
-                  className="text-sm"
+                  className="text-xs"
                 >
                   {validationReport?.recommendDeployment ? "READY TO DEPLOY" : "DO NOT DEPLOY"}
                 </Badge>
@@ -172,26 +172,26 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Confidence Level</span>
-                    <span className={`text-lg font-bold ${getConfidenceColor(confidence)}`}>
+                    <span className="text-xs font-medium">Confidence Level</span>
+                    <span className={`text-xs font-bold ${getConfidenceColor(confidence)}`}>
                       {confidence.toFixed(0)}%
                     </span>
                   </div>
                   <Progress value={confidence} className="mt-1" />
-                  <p className={`text-sm mt-1 ${getConfidenceColor(confidence)}`}>
+                  <p className={`text-xs mt-1 ${getConfidenceColor(confidence)}`}>
                     {getConfidenceLabel(confidence)} Confidence
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-xs">
                     <span>Tests Passed:</span>
                     <span className="font-medium text-green-600">{validationReport?.passed || 0}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-xs">
                     <span>Warnings:</span>
                     <span className="font-medium text-yellow-600">{validationReport?.warnings || 0}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-xs">
                     <span>Failures:</span>
                     <span className="font-medium text-red-600">{validationReport?.failed || 0}</span>
                   </div>
@@ -252,7 +252,7 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                             )}
                             <div>
                               <h4 className="font-medium">{result.test.name}</h4>
-                              <p className="text-sm text-gray-600 mt-1">{result.message}</p>
+                              <p className="text-xs text-gray-600 mt-1">{result.message}</p>
                               {result.details && (
                                 <p className="text-xs text-gray-500 mt-2 bg-gray-100 p-2 rounded">
                                   {result.details}
@@ -281,7 +281,7 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                   <div className="text-center text-gray-500 py-8">
                     <CheckCircle className="h-12 w-12 mx-auto mb-4 text-green-300" />
                     <p>No validation issues found</p>
-                    <p className="text-sm">Configuration validation passed successfully</p>
+                    <p className="text-xs">Configuration validation passed successfully</p>
                   </div>
                 )}
               </div>
@@ -303,19 +303,19 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <div className="flex justify-between">
-                            <span className="text-sm">Total Tests:</span>
+                            <span className="text-xs">Total Tests:</span>
                             <span className="font-medium">{simulationResult.queryTestResults?.totalTests || 0}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-sm">Tests Passed:</span>
+                            <span className="text-xs">Tests Passed:</span>
                             <span className="font-medium text-green-600">{simulationResult.queryTestResults?.passed || 0}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-sm">Tests Failed:</span>
+                            <span className="text-xs">Tests Failed:</span>
                             <span className="font-medium text-red-600">{simulationResult.queryTestResults?.failed || 0}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-sm">Critical Tests:</span>
+                            <span className="text-xs">Critical Tests:</span>
                             <Badge variant={simulationResult.queryTestResults?.criticalTestsPassed ? "default" : "destructive"}>
                               {simulationResult.queryTestResults?.criticalTestsPassed ? "PASSED" : "FAILED"}
                             </Badge>
@@ -323,7 +323,7 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                         </div>
                         <div className="space-y-2">
                           <div className="flex justify-between">
-                            <span className="text-sm">Success Rate:</span>
+                            <span className="text-xs">Success Rate:</span>
                             <span className={`font-medium ${
                               (simulationResult.queryTestResults?.overallSuccessRate || 0) >= 70 ? 'text-green-600' : 
                               (simulationResult.queryTestResults?.overallSuccessRate || 0) >= 50 ? 'text-yellow-600' : 'text-red-600'
@@ -332,19 +332,19 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-sm">Field Parsing:</span>
+                            <span className="text-xs">Field Parsing:</span>
                             <span className="font-medium">
                               {(simulationResult.queryTestResults?.pipelineHealthReport?.parsingSuccessRate || 0).toFixed(1)}%
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-sm">Classification:</span>
+                            <span className="text-xs">Classification:</span>
                             <span className="font-medium">
                               {(simulationResult.queryTestResults?.pipelineHealthReport?.classificationSuccessRate || 0).toFixed(1)}%
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-sm">Visualization:</span>
+                            <span className="text-xs">Visualization:</span>
                             <span className="font-medium">
                               {(simulationResult.queryTestResults?.pipelineHealthReport?.visualizationSuccessRate || 0).toFixed(1)}%
                             </span>
@@ -355,21 +355,21 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                       {/* Progress bars for pipeline stages */}
                       <div className="space-y-3">
                         <div>
-                          <div className="flex justify-between text-sm mb-1">
+                          <div className="flex justify-between text-xs mb-1">
                             <span>Field Parsing Stage</span>
                             <span>{(simulationResult.queryTestResults?.pipelineHealthReport?.parsingSuccessRate || 0).toFixed(1)}%</span>
                           </div>
                           <Progress value={simulationResult.queryTestResults?.pipelineHealthReport?.parsingSuccessRate || 0} />
                         </div>
                         <div>
-                          <div className="flex justify-between text-sm mb-1">
+                          <div className="flex justify-between text-xs mb-1">
                             <span>Query Classification Stage</span>
                             <span>{(simulationResult.queryTestResults?.pipelineHealthReport?.classificationSuccessRate || 0).toFixed(1)}%</span>
                           </div>
                           <Progress value={simulationResult.queryTestResults?.pipelineHealthReport?.classificationSuccessRate || 0} />
                         </div>
                         <div>
-                          <div className="flex justify-between text-sm mb-1">
+                          <div className="flex justify-between text-xs mb-1">
                             <span>Visualization Pipeline Stage</span>
                             <span>{(simulationResult.queryTestResults?.pipelineHealthReport?.visualizationSuccessRate || 0).toFixed(1)}%</span>
                           </div>
@@ -383,7 +383,7 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                           <AlertTriangle className="h-4 w-4" />
                           <AlertDescription>
                             <strong>Query Test Issues:</strong>
-                            <div className="mt-2 space-y-1 text-sm max-h-32 overflow-y-auto">
+                            <div className="mt-2 space-y-1 text-xs max-h-32 overflow-y-auto">
                               {simulationResult.queryTestResults.failedTests.slice(0, 5).map((test, index) => (
                                 <div key={index} className="flex justify-between">
                                   <span>&quot;{test.testQuery.query}&quot; failed at {test.pipelineStage} stage</span>
@@ -408,7 +408,7 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                           <Info className="h-4 w-4" />
                           <AlertDescription>
                             <strong>Recommendations:</strong>
-                            <ul className="mt-2 list-disc list-inside text-sm">
+                            <ul className="mt-2 list-disc list-inside text-xs">
                               {simulationResult.queryTestResults.recommendations.slice(0, 3).map((rec, index) => (
                                 <li key={index}>{rec}</li>
                               ))}
@@ -421,7 +421,7 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                     <div className="text-center text-gray-500 py-8">
                       <Zap className="h-12 w-12 mx-auto mb-4 text-gray-300" />
                       <p>Query testing not enabled for this deployment</p>
-                      <p className="text-sm">Enable query testing in the unified deployment system</p>
+                      <p className="text-xs">Enable query testing in the unified deployment system</p>
                     </div>
                   )}
                 </CardContent>
@@ -441,17 +441,17 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-sm">Simulation Status:</span>
+                        <span className="text-xs">Simulation Status:</span>
                         <Badge variant={simulationResult?.success ? "default" : "destructive"}>
                           {simulationResult?.success ? "Success" : "Failed"}
                         </Badge>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Files to Update:</span>
+                        <span className="text-xs">Files to Update:</span>
                         <span className="font-medium">{simulationResult?.filesUpdated.length || 0}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Simulation Mode:</span>
+                        <span className="text-xs">Simulation Mode:</span>
                         <Badge variant="outline">
                           {simulationResult?.simulationMode ? "Safe Mode" : "Live Mode"}
                         </Badge>
@@ -459,17 +459,17 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                     </div>
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-sm">Duration:</span>
+                        <span className="text-xs">Duration:</span>
                         <span className="font-medium">N/A</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Errors:</span>
+                        <span className="text-xs">Errors:</span>
                         <span className="font-medium text-red-600">
                           {simulationResult?.errors?.length || 0}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Rollback Available:</span>
+                        <span className="text-xs">Rollback Available:</span>
                         <Badge variant={simulationResult?.rollbackAvailable ? "default" : "secondary"}>
                           {simulationResult?.rollbackAvailable ? "Yes" : "No"}
                         </Badge>
@@ -484,7 +484,7 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                         <strong>Simulation Errors:</strong>
                         <ul className="mt-2 list-disc list-inside">
                           {simulationResult.errors.map((error, index) => (
-                            <li key={index} className="text-sm">{error.toString()}</li>
+                            <li key={index} className="text-xs">{error.toString()}</li>
                           ))}
                         </ul>
                       </AlertDescription>
@@ -510,7 +510,7 @@ export const DeploymentTestDialog: React.FC<DeploymentTestDialogProps> = ({
                         <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                           <FileText className="h-4 w-4 text-gray-600" />
                           <div className="flex-1">
-                            <p className="font-medium text-sm">{file}</p>
+                            <p className="font-medium text-xs">{file}</p>
                             <p className="text-xs text-gray-500">
                               {file.includes('shap-microservice') ? 'Microservice File' : 
                                file.includes('config') ? 'Configuration File' :
