@@ -41,56 +41,27 @@ export interface SampleAreaData {
     ymax: number;
   };
   
-  // Statistics
+  // Statistics (flexible object to match our real data)
   stats: {
-    // Core demographics
-    population: number;
-    populationDensity: number;
-    medianIncome: number;
-    medianAge: number;
-    
-    // Generational data
-    genZ_percent: number;
-    millennial_percent: number;
-    genX_percent: number;
-    boomer_percent: number;
-    genAlpha_percent?: number;
-    
-    // Financial behavior
-    creditCardDebt_percent: number;
-    savingsAccount_percent: number;
-    investmentAssets_avg: number;
-    bankUsage_percent: number;
-    
-    // Digital adoption
-    applePay_percent: number;
-    googlePay_percent: number;
-    onlineTax_percent: number;
-    cryptoOwnership_percent: number;
-    
-    // Business/Economic
-    businessCount: number;
-    businessDensity: number;
-    marketOpportunity_score: number;
-    
-    // Project-specific brand data
-    primaryBrand_percent?: number;
-    competitor1_percent?: number;
-    competitor2_percent?: number;
+    [key: string]: number;
+    // Common fields that should be present:
+    // 'Total Population'?: number;
+    // 'Population 25-34'?: number;
+    // 'Homeownership Rate (%)'?: number;
+    // 'Median Housing Value'?: number;
   };
   
-  // Pre-calculated analysis scores
+  // Analysis scores for sample area selection
   analysisScores: {
-    youngProfessional: number;    // 0-100
-    financialOpportunity: number; // 0-100
-    digitalAdoption: number;      // 0-100
-    growthMarket: number;         // 0-100
-    investmentActivity: number;   // 0-100
+    [key: string]: number;
+    // Common scores:
+    // housingAffordability?: number;
+    // youngProfessional?: number;
+    // overallHousing?: number;
   };
   
-  // Metadata
-  dataQuality: number; // 0-1 score
-  lastUpdated: string;
+  // Data quality indicator
+  dataQuality: number;
 }
 
 // Individual FSA code interface - Housing market project data fields  
@@ -232,24 +203,96 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
     setLoading(true);
     
     try {
-      // Try to load Quebec housing sample areas data
-      const response = await fetch('/data/quebec_housing_sample_areas.json');
+      // Try to load pre-joined sample areas data with real geometry
+      const response = await fetch('/data/sample_areas_data_real.json');
       
       if (response.ok) {
-        console.log('[SampleAreasPanel] Successfully fetched Quebec housing sample areas data');
-        const sampleData = await response.json();
-        console.log('[SampleAreasPanel] Sample data loaded, areas count:', sampleData.length);
-        // Convert Quebec housing data to display areas
-        processQuebecHousingData(sampleData);
+        console.log('[SampleAreasPanel] Successfully fetched sample areas data with real geometry');
+        const preJoinedData: PreJoinedSampleAreasData = await response.json();
+        console.log('[SampleAreasPanel] Pre-joined data loaded, areas count:', preJoinedData.areas.length);
+        // Use the pre-joined data directly
+        processPreJoinedData(preJoinedData);
       } else {
-        console.log('[SampleAreasPanel] Quebec housing data not found - response not ok');
-        setDisplayAreas([]);
+        console.log('[SampleAreasPanel] Pre-joined sample areas data not found - trying fallback');
+        // Fallback to old Quebec housing data if available
+        const fallbackResponse = await fetch('/data/quebec_housing_sample_areas.json');
+        if (fallbackResponse.ok) {
+          const sampleData = await fallbackResponse.json();
+          processQuebecHousingData(sampleData);
+        } else {
+          setDisplayAreas([]);
+        }
       }
     } catch (error) {
       console.error('[SampleAreasPanel] Error loading sample areas data:', error);
       setDisplayAreas([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const processPreJoinedData = (preJoinedData: PreJoinedSampleAreasData) => {
+    console.log('[SampleAreasPanel] Processing pre-joined sample areas data with real geometry');
+    console.log('[SampleAreasPanel] Areas count:', preJoinedData.areas.length);
+    console.log('[SampleAreasPanel] First area:', preJoinedData.areas[0]);
+    
+    // Convert areas to ZipCodeArea format first
+    const zipCodeAreas: ZipCodeArea[] = preJoinedData.areas.map((area) => ({
+      zipCode: area.zipCode,
+      city: area.city,
+      geometry: area.geometry,
+      bounds: area.bounds,
+      
+      // Map our real stats to the expected housing fields
+      homeowner_percent: area.stats['Homeownership Rate (%)'] || 0,
+      renter_percent: 100 - (area.stats['Homeownership Rate (%)'] || 0), // Calculate rental rate
+      housing_affordable_percent: 25, // Could be calculated from housing value vs income
+      first_time_buyer_percent: Math.min(100, (area.stats['Population 25-34'] || 0) / 100), // Approximate from young population
+      high_income_percent: 20, // Could be calculated if income distribution data available
+      young_families_percent: Math.min(100, (area.stats['Population 25-34'] || 0) / 150), // Approximate
+      new_construction_percent: 5, // Would need construction data
+      housing_cost_burden_percent: Math.max(0, 100 - (area.stats['Homeownership Rate (%)'] || 0) * 0.5) // Approximate
+    }));
+    
+    console.log('[SampleAreasPanel] Converted to ZipCodeArea format:', zipCodeAreas.length);
+    
+    // Group areas by city for display
+    const cityGroups = zipCodeAreas.reduce((groups, area) => {
+      const city = area.city;
+      if (!groups[city]) {
+        groups[city] = [];
+      }
+      groups[city].push(area);
+      return groups;
+    }, {} as { [city: string]: ZipCodeArea[] });
+    
+    // Create display areas from city groups
+    const areas: DisplaySampleArea[] = Object.entries(cityGroups).map(([city, zipCodes], index) => {
+      // Calculate combined bounds for all ZIP codes in the city
+      const allBounds = zipCodes.map(z => z.bounds);
+      const combinedBounds = {
+        xmin: Math.min(...allBounds.map(b => b.xmin)),
+        ymin: Math.min(...allBounds.map(b => b.ymin)),
+        xmax: Math.max(...allBounds.map(b => b.xmax)),
+        ymax: Math.max(...allBounds.map(b => b.ymax))
+      };
+      
+      return {
+        id: `${city.replace(/\s+/g, '_').toLowerCase()}-${index}`,
+        name: `${city} (${zipCodes.length} FSAs)`,
+        zipCodes: zipCodes,
+        combinedBounds: combinedBounds
+      };
+    });
+    
+    console.log('[SampleAreasPanel] Created display areas:', areas.length);
+    console.log('[SampleAreasPanel] First display area bounds:', areas[0]?.combinedBounds);
+    setDisplayAreas(areas);
+    
+    // Create choropleth layers for the areas
+    if (areas.length > 0) {
+      console.log('[SampleAreasPanel] Creating choropleth layers for', areas.length, 'city groups');
+      createChoroplethLayers(areas);
     }
   };
 
