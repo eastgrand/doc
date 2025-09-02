@@ -68,24 +68,44 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     // Calculate demographic statistics
     const statistics = this.calculateDemographicStatistics(records);
     
-    // Analyze demographic patterns
-    const demographicAnalysis = this.analyzeDemographicPatterns(records);
+    // Filter out national parks for business analysis
+    const nonParkRecords = records.filter(record => {
+      const props = (record.properties || {}) as Record<string, unknown>;
+      const areaId = record.area_id || props.ID || props.id || '';
+      const description = props.DESCRIPTION || props.description || '';
+      
+      // Filter out national parks using same logic as analysisLens
+      if (String(areaId).startsWith('000')) return false;
+      
+      const nameStr = String(description).toLowerCase();
+      const parkPatterns = [
+        /national\s+park/i, /ntl\s+park/i, /national\s+monument/i, /national\s+forest/i, 
+        /state\s+park/i, /\bpark\b.*national/i, /\bnational\b.*\bpark\b/i,
+        /\bnp\b/i, /\bnm\b/i, /\bnf\b/i
+      ];
+      return !parkPatterns.some(pattern => pattern.test(nameStr));
+    });
+    
+    console.log(`🎯 [DEMOGRAPHIC DATA] Filtered ${records.length - nonParkRecords.length} parks from demographic analysis`);
+    
+    // Analyze demographic patterns using filtered records
+    const demographicAnalysis = this.analyzeDemographicPatterns(nonParkRecords);
     
     // Process feature importance for demographic factors
     const featureImportance = this.processDemographicFeatureImportance(rawData.feature_importance || []);
     
-    // Generate demographic summary
-    const summary = this.generateDemographicSummary(records, demographicAnalysis, rawData.summary);
+    // Generate demographic summary using filtered records
+    const summary = this.generateDemographicSummary(nonParkRecords, demographicAnalysis, rawData.summary);
 
     return {
       type: 'demographic_analysis',
-      records,
+      records: nonParkRecords, // Return filtered records to prevent park data in visualizations
       summary,
       featureImportance,
       statistics,
       targetVariable: this.scoreField || 'demographic_insights_score', // Use canonical primary field
-      renderer: this.createDemographicRenderer(records), // Add direct renderer
-      legend: this.createDemographicLegend(records), // Add direct legend
+      renderer: this.createDemographicRenderer(nonParkRecords), // Add direct renderer
+      legend: this.createDemographicLegend(nonParkRecords), // Add direct legend
       demographicAnalysis // Additional metadata for demographic visualization
     };
   }

@@ -131,21 +131,41 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     // Rank records by trend strength
     const rankedRecords = this.rankRecords(processedRecords);
     
+    // Filter out national parks for business analysis
+    const nonParkRecords = rankedRecords.filter(record => {
+      const props = (record.properties || {}) as Record<string, unknown>;
+      const areaId = record.area_id || props.ID || props.id || '';
+      const description = props.DESCRIPTION || props.description || '';
+      
+      // Filter out national parks using same logic as analysisLens
+      if (String(areaId).startsWith('000')) return false;
+      
+      const nameStr = String(description).toLowerCase();
+      const parkPatterns = [
+        /national\s+park/i, /ntl\s+park/i, /national\s+monument/i, /national\s+forest/i, 
+        /state\s+park/i, /\bpark\b.*national/i, /\bnational\b.*\bpark\b/i,
+        /\bnp\b/i, /\bnm\b/i, /\bnf\b/i
+      ];
+      return !parkPatterns.some(pattern => pattern.test(nameStr));
+    });
+    
+    console.log(`🎯 [TREND ANALYSIS] Filtered ${rankedRecords.length - nonParkRecords.length} parks from trend analysis`);
+    
     // Extract feature importance with trend focus
     const featureImportance = this.processTrendFeatureImportance(rawData.feature_importance || []);
     
-    // Generate trend-focused summary
-    const summary = this.generateTrendSummary(rankedRecords, statistics, rawData.summary);
+    // Generate trend-focused summary using filtered records
+    const summary = this.generateTrendSummary(nonParkRecords, statistics, rawData.summary);
 
     return {
       type: 'trend_analysis', // Trend analysis type for temporal insights
-      records: rankedRecords,
+      records: nonParkRecords, // Return filtered records to prevent park data in visualizations
       summary,
       featureImportance,
       statistics,
       targetVariable: this.scoreField, // Use dynamic or canonical
-      renderer: this.createTrendRenderer(rankedRecords), // Add direct renderer
-      legend: this.createTrendLegend(rankedRecords) // Add direct legend
+      renderer: this.createTrendRenderer(nonParkRecords), // Add direct renderer
+      legend: this.createTrendLegend(nonParkRecords) // Add direct legend
     };
   }
 

@@ -1843,9 +1843,32 @@ export async function POST(req: NextRequest) {
               
               // Hybrid Smart Sampling Strategy for comprehensive analysis
               const allAreas = [...(ls.top || []), ...(ls.bottom || [])];
-              if (allAreas.length > 0) {
-                const sortedByScore = allAreas.sort((a, b) => (b.value || 0) - (a.value || 0));
+              
+              // Filter out national parks from sampling to ensure Claude gets legitimate business areas
+              const nonParkAreas = allAreas.filter(area => {
+                const areaId = area.id || '';
+                const areaName = area.name || '';
+                
+                // Filter out national parks using same logic as analysisLens
+                if (String(areaId).startsWith('000')) return false;
+                
+                const nameStr = String(areaName).toLowerCase();
+                const parkPatterns = [
+                  /national\s+park/i, /ntl\s+park/i, /national\s+monument/i, /national\s+forest/i, 
+                  /state\s+park/i, /\bpark\b.*national/i, /\bnational\b.*\bpark\b/i,
+                  /\bnp\b/i, /\bnm\b/i, /\bnf\b/i
+                ];
+                return !parkPatterns.some(pattern => pattern.test(nameStr));
+              });
+              
+              console.log(`🔍 [HYBRID SAMPLING] Filtered ${allAreas.length - nonParkAreas.length} parks from ${allAreas.length} total areas`);
+              
+              if (nonParkAreas.length > 0) {
+                const sortedByScore = nonParkAreas.sort((a, b) => (b.value || 0) - (a.value || 0));
                 const scores = sortedByScore.map(a => a.value || 0);
+                
+                console.log(`🔍 [HYBRID SAMPLING] Non-park sampling from ${nonParkAreas.length} legitimate areas`);
+                console.log(`🔍 [HYBRID SAMPLING] Top 5 non-park areas: ${sortedByScore.slice(0, 5).map(a => `${a.id}(${a.value?.toFixed(1)})`).join(', ')}`);
                 
                 // Calculate statistical measures
                 const mean = scores.reduce((sum, val) => sum + val, 0) / scores.length;
@@ -1908,10 +1931,14 @@ export async function POST(req: NextRequest) {
                 console.log(`🔍 [HYBRID SAMPLING] Statistics: mean=${mean.toFixed(2)}, median=${median.toFixed(2)}, stdDev=${stdDev.toFixed(2)}`);
                 console.log(`🔍 [HYBRID SAMPLING] Sample composition: ${examples.length} unique areas (top 15 + bottom 5 + median 3 + mean 3 + outliers ${outliers.length} + decile reps 10)`);
                 console.log(`🔍 [HYBRID SAMPLING] Sample IDs: ${examples.slice(0, 10).map(e => `${e.id}(${e.value?.toFixed(1)})`).join(', ')}${examples.length > 10 ? '...' : ''}`);
-              } else {
-                // Fallback to original method if no data
+              } else if (allAreas.length > 0) {
+                // Fallback: use all areas but still filter parks
+                console.log(`🔍 [HYBRID SAMPLING] Fallback: No non-park areas found, using unfiltered sample`);
                 if (Array.isArray(ls.top)) examples.push(...ls.top.slice(0, 5));
                 if (Array.isArray(ls.bottom)) examples.push(...ls.bottom.slice(0, 3));
+              } else {
+                // Final fallback if no data at all
+                console.log(`🔍 [HYBRID SAMPLING] No areas available for sampling`);
               }
 
               const features = examples.map((e, i) => {
@@ -2612,12 +2639,13 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
           // Strategic analysis comprehensive statistics
           if (analysisType === 'strategic_analysis' || analysisType === 'strategic-analysis' || analysisType === 'strategic') {
             console.log(`🔍 [DEBUG] Strategic analysis condition matched!`);
-            // Use the SAME data source as Quick Stats to ensure consistency
+            
+            // Use client summary features (manageable payload) but with better sampling statistics
             if (processedLayersData.length > 0 && processedLayersData[0].features.length > 0) {
               const features = processedLayersData[0].features;
               console.log(`🔍 [Strategic Analysis Debug] Features received: ${features.length}`);
               
-              // Extract strategic scores from ALL features using same method as statsCalculator
+              // Extract strategic scores from sampled features using same method as statsCalculator
               const extractStrategicScore = (record: any): number => {
                 const props = record.properties || record;
                 // Use same priority order as StrategicAnalysisProcessor
@@ -2631,6 +2659,12 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
               const strategicValues = features
                 .map(extractStrategicScore)
                 .filter(v => typeof v === 'number' && !isNaN(v));
+              
+              // Get comprehensive statistics from originalSummary for context
+              const fullDatasetStats = originalSummary?.statistics;
+              if (fullDatasetStats) {
+                console.log(`📊 [Strategic Analysis Debug] Full dataset stats: ${fullDatasetStats.total} records, range ${fullDatasetStats.min}-${fullDatasetStats.max}`);
+              }
               
               console.log(`🔍 [Strategic Analysis Debug] Extracted ${strategicValues.length} strategic values`);
               console.log(`🔍 [Strategic Analysis Debug] Sample values:`, strategicValues.slice(0, 5));
@@ -2649,14 +2683,25 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 
                 dataSummary += `\n=== STRATEGIC ANALYSIS STATISTICS (CRITICAL FOR ANALYSIS) ===\n`;
                 dataSummary += `🚨 MANDATORY: Use these statistics for your analysis, NOT just the sample examples\n`;
-                dataSummary += `• Markets analyzed: ${count}\n`;
-                dataSummary += `• Average strategic score: ${mean.toFixed(2)}\n`;
-                dataSummary += `• Median strategic score: ${median.toFixed(2)}\n`;
-                dataSummary += `• Standard deviation: ${stdDev.toFixed(2)}\n`;
-                dataSummary += `• COMPLETE RANGE: ${sortedValues[0].toFixed(1)} to ${sortedValues[count - 1].toFixed(1)}\n`;
-                dataSummary += `🎯 CRITICAL: Your analysis MUST reference this complete dataset scope\n\n`;
                 
-                // Provide top strategic markets from the full dataset
+                // Use full dataset statistics if available, otherwise calculate from sample
+                if (fullDatasetStats) {
+                  dataSummary += `• COMPLETE DATASET: ${fullDatasetStats.total} California ZIP codes analyzed (after filtering parks)\n`;
+                  dataSummary += `• Average strategic score: ${fullDatasetStats.mean.toFixed(2)}\n`;
+                  dataSummary += `• Median strategic score: ${fullDatasetStats.median.toFixed(2)}\n`;
+                  dataSummary += `• Standard deviation: ${fullDatasetStats.stdDev.toFixed(2)}\n`;
+                  dataSummary += `• COMPLETE RANGE: ${fullDatasetStats.min.toFixed(1)} to ${fullDatasetStats.max.toFixed(1)}\n`;
+                  dataSummary += `📊 Sample shown: ${count} representative areas from full ${fullDatasetStats.total} dataset\n`;
+                } else {
+                  dataSummary += `• Sample markets analyzed: ${count}\n`;
+                  dataSummary += `• Average strategic score: ${mean.toFixed(2)}\n`;
+                  dataSummary += `• Median strategic score: ${median.toFixed(2)}\n`;
+                  dataSummary += `• Standard deviation: ${stdDev.toFixed(2)}\n`;
+                  dataSummary += `• SAMPLE RANGE: ${sortedValues[0].toFixed(1)} to ${sortedValues[count - 1].toFixed(1)}\n`;
+                }
+                dataSummary += `🎯 CRITICAL: Your analysis MUST reference the complete dataset scope, not just these examples\n\n`;
+                
+                // Provide sample strategic markets from client summary with context about full dataset
                 const featuresWithScores = features
                   .map(f => ({
                     feature: f,
@@ -2666,10 +2711,10 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                   .filter(item => !isNaN(item.score))
                   .sort((a, b) => b.score - a.score);
                 
-                const topStrategicMarkets = featuresWithScores.slice(0, 15); // Top 15 for comprehensive analysis
+                const topStrategicMarkets = featuresWithScores.slice(0, 10); // Representative sample for analysis
                 
                 if (topStrategicMarkets.length > 0) {
-                  dataSummary += `=== TOP STRATEGIC MARKETS (from full dataset) ===\n`;
+                  dataSummary += `=== REPRESENTATIVE STRATEGIC MARKETS (sampled from ${fullDatasetStats?.total || 'full'} dataset) ===\n`;
                   topStrategicMarkets.forEach((market, index) => {
                     const props = market.feature.properties || market.feature;
                     dataSummary += `${index + 1}. ${market.areaName}:\n`;
@@ -2687,6 +2732,12 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                     }
                     dataSummary += `\n`;
                   });
+                }
+              } else {
+                console.log(`⚠️ [Strategic Analysis Debug] No full records available in originalSummary`);
+                // Fallback to limited features if full dataset unavailable
+                if (processedLayersData.length > 0 && processedLayersData[0].features.length > 0) {
+                  console.log(`🔍 [Strategic Analysis Debug] Falling back to sampled features: ${processedLayersData[0].features.length}`);
                 }
               }
             }

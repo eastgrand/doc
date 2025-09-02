@@ -177,31 +177,48 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     // Rank records by strategic value
     const rankedRecords = this.rankRecords(processedRecords);
     
-    // Debug: Check if values are being corrupted
-    console.log('🚨 [STRATEGIC PROCESSOR] First 5 processed records with area names:');
-    rankedRecords.slice(0, 5).forEach((record, i) => {
-      console.log(`🚨   ${i+1}. area_name="${(record as any).area_name}", area_id="${(record as any).area_id}", value=${(record as any).value}`);
-      console.log(`🚨      Full record keys:`, Object.keys(record as any));
+    // Filter out national parks for AI analysis
+    const nonParkRecords = rankedRecords.filter(record => {
+      const props = (record.properties || {}) as Record<string, unknown>;
+      const areaId = record.area_id || props.ID || props.id || '';
+      const description = props.DESCRIPTION || props.description || '';
+      
+      // Filter out national parks using same logic as analysisLens
+      if (String(areaId).startsWith('000')) return false;
+      
+      const nameStr = String(description).toLowerCase();
+      const parkPatterns = [
+        /national\s+park/i, /ntl\s+park/i, /national\s+monument/i, /national\s+forest/i, 
+        /state\s+park/i, /\bpark\b.*national/i, /\bnational\b.*\bpark\b/i,
+        /\bnp\b/i, /\bnm\b/i, /\bnf\b/i
+      ];
+      return !parkPatterns.some(pattern => pattern.test(nameStr));
+    });
+    
+    console.log(`🎯 [STRATEGIC PROCESSOR] Filtered ${rankedRecords.length - nonParkRecords.length} parks from analysis`);
+    console.log(`🎯 [STRATEGIC PROCESSOR] Top 5 non-park strategic markets:`);
+    nonParkRecords.slice(0, 5).forEach((record, i) => {
+      console.log(`🎯   ${i+1}. ${(record as any).area_name} (${record.area_id}): ${(record as any).value}`);
     });
     
     // Extract feature importance
-  const featureImportance = this.processFeatureImportance((rawData.feature_importance as any[]) || []);
+    const featureImportance = this.processFeatureImportance((rawData.feature_importance as any[]) || []);
     
-    // Generate strategic summary
-    const summary = this.generateStrategicSummary(rankedRecords, statistics);
+    // Generate strategic summary using filtered non-park records for AI analysis
+    const summary = this.generateStrategicSummary(nonParkRecords, statistics);
 
   const renderer = this.createStrategicRenderer(rankedRecords);
   const legend = this.createStrategicLegend(rankedRecords);
     
     return {
       type: 'strategic_analysis',
-      records: rankedRecords,
+      records: nonParkRecords, // Return filtered records to prevent park data in visualizations
       summary,
       featureImportance,
       statistics,
   targetVariable: this.scoreField || 'strategic_analysis_score',
-      renderer: renderer, // Add direct renderer
-      legend: legend // Add direct legend with correct formatting
+      renderer: this.createStrategicRenderer(nonParkRecords), // Use filtered records for rendering
+      legend: this.createStrategicLegend(nonParkRecords) // Use filtered records for legend
     };
   }
 
@@ -508,8 +525,9 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       summary += `**Strategic Market Analysis Complete:** ${statistics.total} geographic areas evaluated for expansion potential. `;
       summary += `Strategic value scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
     
-      // Top strategic markets
+      // Top strategic markets (passed records are already filtered)
       const topMarkets = records.slice(0, 10);
+      console.log(`🎯 [STRATEGIC SUMMARY] Top 10 strategic markets:`, topMarkets.slice(0, 5).map(r => `${r.area_name} (${r.value})`));
       if (topMarkets.length > 0) {
         summary += `**Top Strategic Markets:** `;
         const topNames = topMarkets.map(r => `${r.area_name} (${r.value.toFixed(1)})`);
@@ -536,13 +554,13 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         summary += ' ';
       }
     
-      // Expansion opportunities
+      // Expansion opportunities (passed records are already filtered)
       const highPotential = records.filter(r => r.value >= (statistics.percentile75 || statistics.mean)).length;
       if (records.length > 0) {
         summary += `**Expansion Opportunities:** ${highPotential} markets (${(highPotential/records.length*100).toFixed(1)}%) show high strategic value for expansion. `;
       }
     
-      // Market insights
+      // Market insights (passed records are already filtered)
   const untappedMarkets = records.filter(r => Number((r.properties as any)?.market_gap) > 80).length;
       if (untappedMarkets > 0) {
         summary += `${untappedMarkets} markets have over 80% untapped potential. `;

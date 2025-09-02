@@ -129,17 +129,37 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     console.log(`[BrandDifferenceProcessor] Processed ${records.length} records for ${brand1} vs ${brand2}`);
     console.log(`[BrandDifferenceProcessor] Sample difference: ${records[0]?.value}%`);
     
-    // Calculate difference statistics
-    const statistics = this.calculateDifferenceStatistics(records);
+    // Filter out national parks for business analysis
+    const nonParkRecords = records.filter(record => {
+      const props = (record.properties || {}) as Record<string, unknown>;
+      const areaId = record.area_id || props.ID || props.id || '';
+      const description = props.DESCRIPTION || props.description || '';
+      
+      // Filter out national parks using same logic as analysisLens
+      if (String(areaId).startsWith('000')) return false;
+      
+      const nameStr = String(description).toLowerCase();
+      const parkPatterns = [
+        /national\s+park/i, /ntl\s+park/i, /national\s+monument/i, /national\s+forest/i, 
+        /state\s+park/i, /\bpark\b.*national/i, /\bnational\b.*\bpark\b/i,
+        /\bnp\b/i, /\bnm\b/i, /\bnf\b/i
+      ];
+      return !parkPatterns.some(pattern => pattern.test(nameStr));
+    });
     
-    // Analyze brand competitive landscape
-    const brandAnalysis = this.analyzeBrandDifferences(records, brand1, brand2);
+    console.log(`🎯 [BRAND DIFFERENCE] Filtered ${records.length - nonParkRecords.length} parks from brand analysis`);
+    
+    // Calculate difference statistics using filtered records
+    const statistics = this.calculateDifferenceStatistics(nonParkRecords);
+    
+    // Analyze brand competitive landscape using filtered records
+    const brandAnalysis = this.analyzeBrandDifferences(nonParkRecords, brand1, brand2);
     
     // Process feature importance for brand factors
     const featureImportance = this.processBrandFeatureImportance(rawData.feature_importance || []);
     
-    // Generate brand difference summary
-    const summary = this.generateBrandDifferenceSummary(records, brandAnalysis, brand1, brand2, rawData.summary);
+    // Generate brand difference summary using filtered records
+    const summary = this.generateBrandDifferenceSummary(nonParkRecords, brandAnalysis, brand1, brand2, rawData.summary);
 
     console.log(`[BrandDifferenceProcessor] Final result summary:`, {
       type: 'brand_difference',
@@ -152,9 +172,9 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
     const brand1Field = this.extractBrandFieldCode(rawData, brand1.charAt(0).toUpperCase() + brand1.slice(1));
     const brand2Field = this.extractBrandFieldCode(rawData, brand2.charAt(0).toUpperCase() + brand2.slice(1));
     
-    // Create renderer and legend with dynamic quartiles
-    const renderer = this.createBrandDifferenceRenderer(records);
-    const legend = this.createBrandDifferenceLegend(records);
+    // Create renderer and legend with filtered records
+    const renderer = this.createBrandDifferenceRenderer(nonParkRecords);
+    const legend = this.createBrandDifferenceLegend(nonParkRecords);
     
     console.log(`🔥 [BrandDifferenceProcessor] Created renderer and legend:`, {
       rendererType: renderer?.type,
@@ -168,7 +188,7 @@ export class BrandDifferenceProcessor implements DataProcessorStrategy {
 
     const processedData = {
       type: 'brand_difference',
-      records,
+      records: nonParkRecords, // Return filtered records to prevent park data in visualizations
       summary,
       featureImportance,
       statistics,

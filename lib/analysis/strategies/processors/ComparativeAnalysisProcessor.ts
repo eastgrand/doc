@@ -246,11 +246,31 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     // Rank records by comparative analysis score (highest advantage first)
     const rankedRecords = this.rankRecords(processedRecords);
     
+    // Filter out national parks for business analysis
+    const nonParkRecords = rankedRecords.filter(record => {
+      const props = (record.properties || {}) as Record<string, unknown>;
+      const areaId = record.area_id || props.ID || props.id || '';
+      const description = props.DESCRIPTION || props.description || '';
+      
+      // Filter out national parks using same logic as analysisLens
+      if (String(areaId).startsWith('000')) return false;
+      
+      const nameStr = String(description).toLowerCase();
+      const parkPatterns = [
+        /national\s+park/i, /ntl\s+park/i, /national\s+monument/i, /national\s+forest/i, 
+        /state\s+park/i, /\bpark\b.*national/i, /\bnational\b.*\bpark\b/i,
+        /\bnp\b/i, /\bnm\b/i, /\bnf\b/i
+      ];
+      return !parkPatterns.some(pattern => pattern.test(nameStr));
+    });
+    
+    console.log(`🎯 [COMPARATIVE ANALYSIS] Filtered ${rankedRecords.length - nonParkRecords.length} parks from comparative analysis`);
+    
     // Extract feature importance with comparative focus
     const featureImportance = this.processComparativeFeatureImportance(rawData.feature_importance || []);
     
     // Get brand names from first record (all records should have same brand names)
-    const firstRecord = rankedRecords[0];
+    const firstRecord = nonParkRecords[0] || rankedRecords[0];
     const brandAName = typeof (firstRecord?.properties as any)?.brand_a_name === 'string'
       ? (firstRecord!.properties as any).brand_a_name as string
       : 'Brand A';
@@ -258,9 +278,9 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       ? (firstRecord!.properties as any).brand_b_name as string
       : 'Brand B';
 
-    // Generate comparative-focused summary
+    // Generate comparative-focused summary using filtered records
     const summary = this.generateComparativeSummary(
-      rankedRecords,
+      nonParkRecords,
       statistics,
       typeof rawData.summary === 'string' ? rawData.summary : undefined,
       brandAName,
@@ -269,7 +289,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
 
     return {
       type: 'competitive_analysis', // Use correct competitive analysis type
-      records: rankedRecords,
+      records: nonParkRecords, // Return filtered records to prevent park data in visualizations
       summary,
       featureImportance,
       statistics,
