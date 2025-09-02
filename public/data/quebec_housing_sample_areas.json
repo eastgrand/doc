@@ -1,0 +1,82 @@
+[
+  {
+    "id": "G0A",
+    "name": "G0A (Sainte-Anne-De-Beaupre, QC)",
+    "description": "Urban FSA in Quebec with moderate housing costs",
+    "metrics": {
+      "population_25_34": 4927,
+      "homeownership_rate": 78.84,
+      "median_housing_value": 255000
+    }
+  },
+  {
+    "id": "G0C",
+    "name": "G0C (New Richmond, QC)",
+    "description": "Rural Quebec FSA with lower housing costs",
+    "metrics": {
+      "population_25_34": 2002,
+      "homeownership_rate": 68.08,
+      "median_housing_value": 185000
+    }
+  },
+  {
+    "id": "G0E",
+    "name": "G0E (Grande-Vallee, QC)",
+    "description": "Small rural community in Quebec",
+    "metrics": {
+      "population_25_34": 115,
+      "homeownership_rate": 78.38,
+      "median_housing_value": 145000
+    }
+  },
+  {
+    "id": "G0G",
+    "name": "G0G (Fermont, QC)",
+    "description": "Mining town in northern Quebec",
+    "metrics": {
+      "population_25_34": 929,
+      "homeownership_rate": 66.46,
+      "median_housing_value": 285000
+    }
+  },
+  {
+    "id": "G0J",
+    "name": "G0J (Causapscal, QC)",
+    "description": "Small town in Bas-Saint-Laurent region",
+    "metrics": {
+      "population_25_34": 1170,
+      "homeownership_rate": 78.59,
+      "median_housing_value": 165000
+    }
+  },
+  {
+    "id": "G0L",
+    "name": "G0L (Trois-Pistoles, QC)",
+    "description": "Historic town on St. Lawrence River",
+    "metrics": {
+      "population_25_34": 2880,
+      "homeownership_rate": 76.70,
+      "median_housing_value": 195000
+    }
+  },
+  {
+    "id": "G0R",
+    "name": "G0R (La Pocatiere, QC)",
+    "description": "Agricultural region in Quebec",
+    "metrics": {
+      "population_25_34": 4077,
+      "homeownership_rate": 76.52,
+      "median_housing_value": 215000
+    }
+  },
+  {
+    "id": "G0S",
+    "name": "G0S (Saint-Apollinaire, QC)",
+    "description": "Growing suburban area near Quebec City",
+    "metrics": {
+      "population_25_34": 4734,
+      "homeownership_rate": 77.79,
+      "median_housing_value": 295000
+    }
+  }
+]

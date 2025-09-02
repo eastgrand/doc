@@ -3681,10 +3681,217 @@ export const baseLayerConfigs: LayerConfig[] = [
   }
 ];
 
-// Apply helper functions to all configurations
-export const layerConfigs: LayerConfig[] = baseLayerConfigs
-  .map(ensureLayerHasDescriptionField)
-  .map(updateRendererFieldForPercentage);
+// === COMPOSITE INDEX LAYERS ===
+// These layers are created client-side using calculated composite index data
+export const compositeIndexLayerConfigs: LayerConfig[] = [
+  {
+    id: 'hot_growth_index_layer',
+    name: 'Hot Growth Index',
+    type: 'client-side-composite',
+    url: 'composite-index://HOT_GROWTH_INDEX',
+    group: 'composite-indexes',
+    description: 'Composite index identifying areas with high growth potential based on population growth, new construction, and economic indicators',
+    isVisible: false,
+    isPrimary: true,
+    skipLayerList: false,
+    rendererField: 'HOT_GROWTH_INDEX',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'regional',
+    metadata: {
+      provider: 'MPIQ AI Chat - Composite Index Calculator',
+      updateFrequency: 'daily',
+      tags: ['composite-index', 'housing', 'growth', 'calculated'],
+      geometryType: 'polygon',
+      valueType: 'index',
+      coverage: {
+        spatial: 'Quebec Province',
+        temporal: 'Current'
+      },
+      geographicType: 'postal',
+      geographicLevel: 'regional'
+    },
+    fields: [
+      {
+        name: "OBJECTID",
+        type: "oid",
+        alias: "Object ID"
+      },
+      {
+        name: "GEOID",
+        type: "string", 
+        alias: "Geographic ID"
+      },
+      {
+        name: "HOT_GROWTH_INDEX",
+        type: "double",
+        alias: "Hot Growth Score"
+      }
+    ],
+    clientSideConfig: {
+      indexField: 'HOT_GROWTH_INDEX',
+      displayName: 'Hot Growth Score',
+      baseGeometryLayer: 'Unknown_Service_layer_1', // Reference to housing layer with geometry
+      colorScheme: 'firefly',
+      legendTitle: 'Growth Potential'
+    },
+    processing: {
+      strategy: 'ai'
+    },
+    caching: {
+      strategy: 'memory',
+      ttl: 3600
+    },
+    performance: {
+      maxFeatures: 10000,
+      clustering: false
+    },
+    security: {
+      accessLevel: 'read'
+    }
+  },
+  {
+    id: 'new_homeowner_index_layer', 
+    name: 'New Homeowner Opportunities',
+    type: 'client-side-composite',
+    url: 'composite-index://NEW_HOMEOWNER_INDEX',
+    group: 'composite-indexes',
+    description: 'Composite index identifying areas with high potential for new homeowner market based on demographics, income trends, and housing patterns',
+    isVisible: false,
+    isPrimary: true,
+    skipLayerList: false,
+    rendererField: 'NEW_HOMEOWNER_INDEX',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'regional',
+    metadata: {
+      provider: 'MPIQ AI Chat - Composite Index Calculator',
+      updateFrequency: 'daily',
+      tags: ['composite-index', 'housing', 'homeowner', 'calculated'],
+      geometryType: 'polygon',
+      valueType: 'index',
+      coverage: {
+        spatial: 'Quebec Province',
+        temporal: 'Current'
+      },
+      geographicType: 'postal',
+      geographicLevel: 'regional'
+    },
+    fields: [
+      {
+        name: "OBJECTID",
+        type: "oid",
+        alias: "Object ID"
+      },
+      {
+        name: "GEOID", 
+        type: "string",
+        alias: "Geographic ID"
+      },
+      {
+        name: "NEW_HOMEOWNER_INDEX",
+        type: "double", 
+        alias: "New Homeowner Score"
+      }
+    ],
+    clientSideConfig: {
+      indexField: 'NEW_HOMEOWNER_INDEX',
+      displayName: 'New Homeowner Score',
+      baseGeometryLayer: 'Unknown_Service_layer_1',
+      colorScheme: 'firefly', 
+      legendTitle: 'Homeowner Opportunity'
+    },
+    processing: {
+      strategy: 'ai'
+    },
+    caching: {
+      strategy: 'memory',
+      ttl: 3600
+    },
+    performance: {
+      maxFeatures: 10000,
+      clustering: false
+    },
+    security: {
+      accessLevel: 'read'
+    }
+  },
+  {
+    id: 'housing_affordability_index_layer',
+    name: 'Housing Affordability Zones',
+    type: 'client-side-composite',
+    url: 'composite-index://HOUSING_AFFORDABILITY_INDEX', 
+    group: 'composite-indexes',
+    description: 'Composite index showing housing affordability relative to income levels, cost burden, and market conditions',
+    isVisible: false,
+    isPrimary: true,
+    skipLayerList: false,
+    rendererField: 'HOUSING_AFFORDABILITY_INDEX',
+    status: 'active',
+    geographicType: 'postal',
+    geographicLevel: 'regional',
+    metadata: {
+      provider: 'MPIQ AI Chat - Composite Index Calculator',
+      updateFrequency: 'daily',
+      tags: ['composite-index', 'housing', 'affordability', 'calculated'],
+      geometryType: 'polygon',
+      valueType: 'index',
+      coverage: {
+        spatial: 'Quebec Province',
+        temporal: 'Current'
+      },
+      geographicType: 'postal',
+      geographicLevel: 'regional'
+    },
+    fields: [
+      {
+        name: "OBJECTID",
+        type: "oid",
+        alias: "Object ID" 
+      },
+      {
+        name: "GEOID",
+        type: "string",
+        alias: "Geographic ID"
+      },
+      {
+        name: "HOUSING_AFFORDABILITY_INDEX",
+        type: "double",
+        alias: "Affordability Score"
+      }
+    ],
+    clientSideConfig: {
+      indexField: 'HOUSING_AFFORDABILITY_INDEX',
+      displayName: 'Affordability Score',
+      baseGeometryLayer: 'Unknown_Service_layer_1',
+      colorScheme: 'firefly',
+      legendTitle: 'Housing Affordability'
+    },
+    processing: {
+      strategy: 'ai'
+    },
+    caching: {
+      strategy: 'memory',
+      ttl: 3600
+    },
+    performance: {
+      maxFeatures: 10000,
+      clustering: false
+    },
+    security: {
+      accessLevel: 'read'
+    }
+  }
+];
+
+// Combine all layer configurations  
+export const allLayerConfigs: LayerConfig[] = [...baseLayerConfigs, ...compositeIndexLayerConfigs];
+
+// Apply helper functions to all configurations (excluding composite index layers which have special handling)
+export const layerConfigs: LayerConfig[] = [
+  ...baseLayerConfigs.map(ensureLayerHasDescriptionField).map(updateRendererFieldForPercentage),
+  ...compositeIndexLayerConfigs // These are already properly configured
+];
 
 // Group layers by category for easier management
 export const layerGroups = {
@@ -3760,6 +3967,18 @@ export const layerGroups = {
     'Unknown_Service_layer_34'
     ]
   },
+  
+  'composite-indexes': {
+    displayName: 'Composite Indexes',
+    description: 'Calculated composite indexes for housing market analysis',
+    layerCount: 3,
+    confidence: 1.00,
+    layers: [
+      'hot_growth_index_layer',
+      'new_homeowner_index_layer', 
+      'housing_affordability_index_layer'
+    ]
+  }
 
 };
 

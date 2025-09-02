@@ -524,12 +524,60 @@ With these optimizations, post-automation time could be reduced from **4-6 hours
    - Replace "Nike", "Red Bull" → "Housing", "Real Estate", "Homeownership"
    - Update brand keywords → housing market terms (rental, ownership, tenure, etc.)
 
-2. **Sample Areas:**
-   - Replace energy drink/athletic brand sample areas
-   - Add housing-relevant sample areas (high ownership, rental markets, affordability zones)
-   - Update area descriptions with housing metrics
+2. **✅ Sample Areas - COMPLETED:**
+   - **Files Created**: `/public/data/quebec_housing_sample_areas.json`
+   - **Files Modified**: `components/map/SampleAreasPanel.tsx`
+   - **What Changed**: Created Quebec housing sample areas data with 8 FSA codes (G0A, G0C, G0E, G0G, G0J, G0L, G0R, G0S) including housing metrics (homeownership rates, population 25-34, median housing values). Updated SampleAreasPanel to use `processQuebecHousingData` function that converts Quebec housing data format to expected ZipCodeArea format.
+   - **Key Implementation**: Extracted sample data from `projects/housing_2025/merged_dataset.csv` using AWK commands to get FSA codes, housing metrics, and demographic data. Created proper JSON structure with housing-focused metrics instead of energy drink metrics.
+   - **Efficiency Tips**:
+     - Create automated sample area generator script that can extract top N areas by any metric
+     - Use actual FSA boundary geometries from Statistics Canada for accurate visualization
+     - Implement configurable sample area templates based on project domain (housing, retail, etc.)
+   - **Sample Code Pattern**:
+   
+   ```typescript
+   interface SampleAreaTemplate {
+     domain: 'housing' | 'retail' | 'energy';
+     metrics: Array<{fieldName: string; displayName: string; format: string}>;
+     geographicScope: 'province' | 'country' | 'region';
+     sampleSize: number;
+   }
+   ```
 
-3. **Infographics:**
+3. **✅ Composite Index Layers - COMPLETED:**
+   - **Files Created**: 
+     - `/lib/services/CompositeIndexLayerService.ts` - Service for creating client-side FeatureLayers
+     - `/components/map/CompositeIndexLayerManager.tsx` - React component for layer lifecycle management
+   - **Files Modified**: 
+     - `/config/layers_housing_2025.ts` - Added 3 composite index layer configurations
+     - `/types/layers.ts` - Extended LayerType with 'client-side-composite' and added ClientSideCompositeLayerConfig interface
+   - **What Changed**: Implemented client-side composite index layers that appear in LayerList widget, showing HOT_GROWTH_INDEX, NEW_HOMEOWNER_INDEX, and HOUSING_AFFORDABILITY_INDEX calculated by the microservice
+   - **Key Implementation**: Created a service that fetches composite index data from microservice, combines it with geometry from base housing layers, and creates ArcGIS FeatureLayers with appropriate ClassBreaksRenderer styling
+   - **How It Works**:
+     1. Layer configs define composite index layers with `type: 'client-side-composite'`
+     2. CompositeIndexLayerService fetches data from microservice training_data.csv
+     3. Service uses geometry from base housing layer (Unknown_Service_layer_1)
+     4. Creates ClassBreaksRenderer with firefly color scheme for quartile-based scoring
+     5. Layers appear in LayerList widget under "Composite Indexes" group
+   - **Efficiency Tips**:
+     - Cache composite index data locally to reduce microservice calls
+     - Use web workers for large dataset processing
+     - Implement lazy loading for layer creation (only create when first toggled visible)
+     - Consider using vector tiles for better performance with large datasets
+   - **Sample Code Pattern**:
+   
+   ```typescript
+   interface CompositeIndexLayerConfig {
+     type: 'client-side-composite';
+     clientSideConfig: {
+       indexField: string;
+       baseGeometryLayer: string;
+       dataSource: '/api/composite-index-data' | 'local-cache';
+     };
+   }
+   ```
+
+4. **Infographics:**
    - Change from consumer brands → housing demographics
    - Update report templates from retail → real estate focus
    - Modify variables: brand preference → homeownership rates, income, housing costs

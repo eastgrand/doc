@@ -8,7 +8,7 @@ import type FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 export type { LayerField };
 
 // Fundamental Type Definitions
-export type LayerType = 'point' | 'index' | 'percentage' | 'feature-service' | 'wms' | 'wfs' | 'xyz' | 'geojson' | 'amount';
+export type LayerType = 'point' | 'index' | 'percentage' | 'feature-service' | 'wms' | 'wfs' | 'xyz' | 'geojson' | 'amount' | 'client-side-composite';
 export type LayerStatus = 'active' | 'inactive' | 'deprecated' | 'pending';
 export type UpdateFrequency = 'realtime' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annual';
 export type ProcessingStrategy = 'traditional' | 'hybrid' | 'ai' | 'batch';
@@ -282,8 +282,22 @@ export interface AmountLayerConfig extends BaseLayerConfig {
   fields: LayerField[];
 }
 
+// Client-Side Composite Index Layer Configuration
+export interface ClientSideCompositeLayerConfig extends BaseLayerConfig {
+  type: 'client-side-composite';
+  rendererField: string;
+  fields: LayerField[];
+  clientSideConfig: {
+    indexField: string;
+    displayName: string;
+    baseGeometryLayer: string; // Reference to layer ID that provides geometry
+    colorScheme: string;
+    legendTitle: string;
+  };
+}
+
 // Consolidated Layer Configuration Type
-export type LayerConfig = (PercentageLayerConfig | IndexLayerConfig | PointLayerConfig | FeatureServiceLayerConfig | WebServiceLayerConfig | AmountLayerConfig) & ExtendedLayerConfig;
+export type LayerConfig = (PercentageLayerConfig | IndexLayerConfig | PointLayerConfig | FeatureServiceLayerConfig | WebServiceLayerConfig | AmountLayerConfig | ClientSideCompositeLayerConfig) & ExtendedLayerConfig;
 
 // Virtual Layer Configuration
 export interface VirtualLayerConfig {

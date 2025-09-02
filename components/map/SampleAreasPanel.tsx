@@ -232,17 +232,17 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
     setLoading(true);
     
     try {
-      // Try to load pre-generated sample areas data (real demographic data)
-      const response = await fetch('/data/sample_areas_data_real.json');
+      // Try to load Quebec housing sample areas data
+      const response = await fetch('/data/quebec_housing_sample_areas.json');
       
       if (response.ok) {
-        console.log('[SampleAreasPanel] Successfully fetched sample areas data');
+        console.log('[SampleAreasPanel] Successfully fetched Quebec housing sample areas data');
         const sampleData = await response.json();
-        console.log('[SampleAreasPanel] Sample data loaded, areas count:', sampleData.areas?.length);
-        // Convert pre-joined data to display areas
-        processRealSampleData(sampleData);
+        console.log('[SampleAreasPanel] Sample data loaded, areas count:', sampleData.length);
+        // Convert Quebec housing data to display areas
+        processQuebecHousingData(sampleData);
       } else {
-        console.log('[SampleAreasPanel] Pre-joined data not found - response not ok');
+        console.log('[SampleAreasPanel] Quebec housing data not found - response not ok');
         setDisplayAreas([]);
       }
     } catch (error) {
@@ -251,6 +251,61 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
     } finally {
       setLoading(false);
     }
+  };
+
+  const processQuebecHousingData = (sampleData: any[]) => {
+    console.log('[SampleAreasPanel] Processing Quebec housing sample areas data:', sampleData.length, 'areas');
+    
+    // Select random metrics for this session
+    const randomMetrics = selectRandomMetrics();
+    setSelectedMetrics(randomMetrics);
+    console.log('[SampleAreasPanel] Selected random metrics:', randomMetrics);
+    
+    // Convert Quebec housing data to ZipCodeArea format
+    const zipCodes: ZipCodeArea[] = sampleData.map((area) => ({
+      zipCode: area.id, // FSA code like "G0A"
+      city: area.name,
+      geometry: {
+        type: "Polygon",
+        coordinates: [[
+          [-73.98, 45.41], [-73.48, 45.41], [-73.48, 45.71], [-73.98, 45.71], [-73.98, 45.41]
+        ]] // Mock geometry - in real implementation would come from actual FSA boundaries
+      },
+      bounds: {
+        xmin: -73.98,
+        ymin: 45.41,
+        xmax: -73.48,
+        ymax: 45.71
+      },
+      // Housing project specific fields from Quebec data
+      homeowner_percent: area.metrics.homeownership_rate || 0,
+      renter_percent: 100 - (area.metrics.homeownership_rate || 0), // Inverse of homeownership
+      housing_affordable_percent: Math.random() * 30 + 10, // Mock data for now
+      first_time_buyer_percent: Math.random() * 25 + 15, // Mock data for now
+      high_income_percent: Math.random() * 20 + 10, // Mock data for now  
+      young_families_percent: (area.metrics.population_25_34 / 50) || 0, // Based on young adult population
+      new_construction_percent: Math.random() * 15 + 5, // Mock data for now
+      housing_cost_burden_percent: Math.random() * 40 + 20 // Mock data for now
+    }));
+
+    // Group all Quebec areas into a single display area
+    const quebecArea: DisplaySampleArea = {
+      id: 'quebec',
+      name: 'Quebec Sample Areas',
+      zipCodes,
+      combinedBounds: {
+        xmin: -79.0,
+        ymin: 45.0,
+        xmax: -57.0,  
+        ymax: 62.0
+      }
+    };
+
+    setDisplayAreas([quebecArea]);
+    console.log('[SampleAreasPanel] Created Quebec display area with', zipCodes.length, 'FSA codes');
+    
+    // Create the choropleth layers on the map
+    createChoroplethLayers([quebecArea]);
   };
 
   const processRealSampleData = (sampleData: any) => {
@@ -634,9 +689,9 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         spatialReference: { wkid: 4326 }
       });
       
-      // DEBUG: Log the exact extent being used for Los Angeles
-      if (area.id === 'los angeles') {
-        console.log('[handleAreaClick] Los Angeles extent:', {
+      // DEBUG: Log the exact extent being used for Montreal
+      if (area.id === 'montreal') {
+        console.log('[handleAreaClick] Montreal extent:', {
           original: bounds,
           used: {
             xmin: extent.xmin,
