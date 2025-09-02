@@ -23,7 +23,7 @@
   "metadata": {
     "endpoint_name": "feature-importance-ranking",
     "analysis_type": "importance",
-    "generation_timestamp": "2025-08-24T13:10:45.515992",
+    "generation_timestamp": "2025-09-02T08:05:29.605693",
     "score_field": "importance_score",
     "score_range": [
       0,
@@ -32,7 +32,7 @@
     "data_source": "automated_pipeline"
   },
   "scoring_metadata": {
-    "scored_timestamp": "2025-08-24T13:10:51.565915",
+    "scored_timestamp": "2025-09-02T08:05:30.922018",
     "scoring_version": "1.0",
     "original_record_count": 1
   }

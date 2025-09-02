@@ -96,7 +96,7 @@ export default function InfographicsTab({
   const [isDrawing, setIsDrawing] = useState(false);
   const [bufferType, setBufferType] = useState<'radius' | 'drivetime' | 'walktime'>('radius');
   const [bufferValue, setBufferValue] = useState('1');
-  const [bufferUnit, setBufferUnit] = useState<'miles' | 'kilometers' | 'minutes'>('miles');
+  const [bufferUnit, setBufferUnit] = useState<'miles' | 'kilometers' | 'minutes'>('kilometers'); // Changed default to kilometers for Canadian users
   // Update default report template to null initially, fetch will set it
   const [reportTemplate, setReportTemplate] = useState<string | null>(null);
   const [geometry, setGeometry] = useState<__esri.Geometry | null>(null);
@@ -232,7 +232,7 @@ export default function InfographicsTab({
         // Restore default buffer values
         setBufferType('radius');
         setBufferValue('1');
-        setBufferUnit('miles');
+        setBufferUnit('kilometers'); // Changed default to kilometers for Canadian context
         
         // Update localStorage
         try {
@@ -602,7 +602,7 @@ export default function InfographicsTab({
         studyAreas: JSON.stringify([studyArea]),
         report: reportId, // Pass the report ID instead of the name
         format: 'PDF',
-        langCode: 'en-us'
+        langCode: 'en-ca' // Changed to Canadian English for Canadian demographic data
       };
 
       // Send the request using fetch
@@ -910,7 +910,7 @@ export default function InfographicsTab({
 
   const handleBufferTypeChange = useCallback((type: string) => {
     setBufferType(type as 'radius' | 'drivetime' | 'walktime');
-    setBufferUnit(type === 'radius' ? 'miles' : type === 'drivetime' ? 'minutes' : 'miles');
+    setBufferUnit(type === 'radius' ? 'kilometers' : type === 'drivetime' ? 'minutes' : 'kilometers'); // Changed default distance unit to kilometers
     setBufferValue('1');
   }, []);
 
@@ -1364,8 +1364,8 @@ export default function InfographicsTab({
     setActiveStepWithPersistence('draw');
     setBufferType('radius');
     setBufferValue('1');
-    setBufferUnit('miles');
-    setReportTemplate('fbe3b857470941318385f340d506652e'); // Reset to default US template
+    setBufferUnit('kilometers'); // Changed from miles to kilometers for Canadian users
+    setReportTemplate('whats-in-my-neighbourhood-km'); // Reset to Canadian template (kilometers version)
     setError(null);
     setIsModalOpen(false);
     setDrawMode(null);
@@ -1718,7 +1718,7 @@ export default function InfographicsTab({
           console.log(`${index + 1}. "${item.title}" (ID: ${item.id})`);
         });
 
-        // Filter for United States reports only - explicitly exclude Canada and other countries
+        // Filter for Canadian reports only - explicitly exclude US and other countries
         const filteredItems = uniqueItems.filter((item: any) => {
           // The country data is clearly in properties.countries field
           const countries = item.properties?.countries;
@@ -1727,20 +1727,20 @@ export default function InfographicsTab({
           // Log what we're checking for debugging
           console.log(`[FetchReports] Checking item: "${item.title}" - countries: "${countries}"`);
           
-          // Only include items that explicitly have "US" as the country
-          const isUS = countries === 'US';
+          // Only include items that explicitly have "CA" (Canada) as the country
+          const isCanada = countries === 'CA';
           
-          if (isUS) {
-            console.log(`[FetchReports] ✅ Including US item: "${item.title}"`);
+          if (isCanada) {
+            console.log(`[FetchReports] ✅ Including Canadian item: "${item.title}"`);
           } else {
-            console.log(`[FetchReports] ❌ Excluding non-US item: "${item.title}" (countries: ${countries})`);
+            console.log(`[FetchReports] ❌ Excluding non-Canadian item: "${item.title}" (countries: ${countries})`);
           }
           
-          return isUS;
+          return isCanada;
         });
-        console.log(`[FetchReports] Filtered US items count: ${filteredItems.length}`);
+        console.log(`[FetchReports] Filtered Canadian items count: ${filteredItems.length}`);
         if (filteredItems.length > 0) {
-          console.log(`[FetchReports] First filtered US item properties:`, filteredItems[0].properties);
+          console.log(`[FetchReports] First filtered Canadian item properties:`, filteredItems[0].properties);
         }
         
         // DEBUG: Log what items survived the country filtering
@@ -1889,10 +1889,10 @@ export default function InfographicsTab({
         // Add the AI-powered market intelligence reports to the available reports
         const marketIntelligenceReport: Report = {
           id: 'market-intelligence-report',
-          title: 'AI-Powered Market Intelligence Report',
-          description: 'Professional market analysis combining AI scoring, competitive positioning, demographics, and strategic recommendations',
+          title: 'Quebec Housing Market Analysis Report',
+          description: 'Comprehensive housing market analysis combining homeownership data, rental rates, household income metrics, and demographic insights for Quebec regions',
           thumbnail: '', // Will use fallback icon
-          categories: ['Market Intelligence', 'AI Analysis'],
+          categories: ['Housing Market', 'Demographic Analysis'],
           type: 'endpoint-scoring'
         };
         

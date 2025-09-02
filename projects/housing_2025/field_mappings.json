@@ -1,0 +1,264 @@
+{
+  "mappings": {
+    "mappings": {
+      "DESCRIPTION": "description",
+      "ID": "geo_id",
+      "thematic_value": "strategic_value",
+      "ECYPTAPOP": "total_population",
+      "NAME": "area_name",
+      "REGION": "region_id"
+    },
+    "confidence_scores": {
+      "DESCRIPTION": 1,
+      "ID": 0.47797135362012755,
+      "thematic_value": 0.8063549378401464,
+      "ECYPTAPOP": 0.4123869922838464,
+      "NAME": 0.638618727070657,
+      "REGION": 0.9805981069457085
+    },
+    "mapping_reasons": {
+      "DESCRIPTION": [
+        "Semantic similarity: 1.00",
+        "+0.15 (substring match)",
+        "+0.10 (category: descriptive)",
+        "+0.20 (synonym/abbreviation)",
+        "Final score: 1.00"
+      ],
+      "ID": [
+        "Semantic similarity: 0.23",
+        "+0.15 (substring match)",
+        "+0.10 (category: geographic)",
+        "Final score: 0.48"
+      ],
+      "thematic_value": [
+        "Semantic similarity: 0.51",
+        "+0.10 (category: score)",
+        "+0.20 (synonym/abbreviation)",
+        "Final score: 0.81"
+      ],
+      "ECYPTAPOP": [
+        "Semantic similarity: 0.11",
+        "+0.10 (category: demographic)",
+        "+0.20 (synonym/abbreviation)",
+        "Final score: 0.41"
+      ],
+      "NAME": [
+        "Semantic similarity: 0.49",
+        "+0.15 (substring match)",
+        "Final score: 0.64"
+      ],
+      "REGION": [
+        "Semantic similarity: 0.73",
+        "+0.15 (substring match)",
+        "+0.10 (category: geographic)",
+        "Final score: 0.98"
+      ]
+    },
+    "statistics": {
+      "total_fields": 63,
+      "mapped_fields": 6,
+      "unmapped_fields": 57,
+      "high_confidence": 3,
+      "medium_confidence": 1,
+      "low_confidence": 2
+    },
+    "unmapped_fields": [
+      "OBJECTID",
+      "ECYHRIAVG",
+      "Shape__Area",
+      "Shape__Length",
+      "CreationDate",
+      "Creator",
+      "EditDate",
+      "Editor",
+      "P5YHRIAGG",
+      "ECYCDOOWCO",
+      "ECYCDOOWCO_P",
+      "HSTE001",
+      "HSTE001_A",
+      "P5YHRIMED",
+      "ECYHNIMED",
+      "P5YHRIAVG",
+      "ECYCDOCO",
+      "ECYCDOCO_P",
+      "ECYHRIAGG",
+      "ECYMTN2534",
+      "ECYMTN2534_P",
+      "P5YTENRENT",
+      "P5YTENRENT_P",
+      "ECYMTN1524",
+      "ECYMTN1524_P",
+      "ECYHNIAVG",
+      "CREATED",
+      "MODIFIED",
+      "CREATOR",
+      "EDITOR",
+      "FLAGS",
+      "GEOID",
+      "GEONAME",
+      "GEOLEVEL",
+      "HIERARCHY",
+      "SYMBOL",
+      "SITE_METADATA",
+      "P0YTENRENT",
+      "P0YTENRENT_P",
+      "ECYHRIMED",
+      "P5YHNIMED",
+      "P0YTENHHD",
+      "P5YTENOWN",
+      "P5YTENOWN_P",
+      "P0YTENOWN",
+      "P0YTENOWN_P",
+      "ECYTENOWN",
+      "ECYTENOWN_P",
+      "P5YHNIAVG",
+      "ECYCDORECO",
+      "ECYCDORECO_P",
+      "ECYHNIAGG",
+      "P5YHNIAGG",
+      "ECYTENHHD",
+      "P5YTENHHD",
+      "ECYTENRENT",
+      "ECYTENRENT_P"
+    ],
+    "unmapped_analysis": {
+      "clusters": [
+        {
+          "cluster_id": "1",
+          "fields": [
+            "OBJECTID",
+            "ECYCDOOWCO",
+            "ECYCDOOWCO_P",
+            "ECYCDOCO",
+            "ECYCDOCO_P",
+            "ECYMTN2534",
+            "ECYMTN2534_P",
+            "ECYMTN1524",
+            "ECYMTN1524_P",
+            "GEONAME",
+            "ECYCDORECO",
+            "ECYCDORECO_P"
+          ],
+          "suggested_pattern": "similar_pattern: 12 fields"
+        },
+        {
+          "cluster_id": "3",
+          "fields": [
+            "ECYHRIAVG",
+            "P5YHRIAGG",
+            "P5YHRIMED",
+            "ECYHNIMED",
+            "P5YHRIAVG",
+            "ECYHRIAGG",
+            "ECYHNIAVG",
+            "ECYHRIMED",
+            "P5YHNIMED",
+            "P5YHNIAVG",
+            "ECYHNIAGG",
+            "P5YHNIAGG"
+          ],
+          "suggested_pattern": "similar_pattern: 12 fields"
+        },
+        {
+          "cluster_id": "0",
+          "fields": [
+            "Shape__Area",
+            "Shape__Length",
+            "HSTE001",
+            "HSTE001_A",
+            "P5YTENRENT",
+            "P5YTENRENT_P",
+            "FLAGS",
+            "GEOID",
+            "GEOLEVEL",
+            "HIERARCHY",
+            "SYMBOL",
+            "P0YTENRENT",
+            "P0YTENRENT_P",
+            "P0YTENHHD",
+            "ECYTENHHD",
+            "P5YTENHHD",
+            "ECYTENRENT",
+            "ECYTENRENT_P"
+          ],
+          "suggested_pattern": "similar_pattern: 18 fields"
+        },
+        {
+          "cluster_id": "2",
+          "fields": [
+            "CreationDate",
+            "Creator",
+            "EditDate",
+            "Editor",
+            "CREATED",
+            "MODIFIED",
+            "CREATOR",
+            "EDITOR",
+            "SITE_METADATA"
+          ],
+          "suggested_pattern": "similar_pattern: 9 fields"
+        },
+        {
+          "cluster_id": "4",
+          "fields": [
+            "P5YTENOWN",
+            "P5YTENOWN_P",
+            "P0YTENOWN",
+            "P0YTENOWN_P",
+            "ECYTENOWN",
+            "ECYTENOWN_P"
+          ],
+          "suggested_pattern": "similar_pattern: 6 fields"
+        }
+      ],
+      "suggestions": [
+        {
+          "source_field": "OBJECTID",
+          "suggested_target": "geo_objectidentifier",
+          "category": "geographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "Shape__Area",
+          "suggested_target": "geo_shape_area",
+          "category": "geographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "CreationDate",
+          "suggested_target": "temporal_creationdate",
+          "category": "temporal",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "EditDate",
+          "suggested_target": "temporal_editdate",
+          "category": "temporal",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "GEOID",
+          "suggested_target": "geo_geoidentifier",
+          "category": "geographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "GEONAME",
+          "suggested_target": "descriptive_geoname",
+          "category": "descriptive",
+          "confidence": "manual_review"
+        }
+      ]
+    },
+    "quality_recommendations": [
+      "Review 2 low-confidence mappings manually: ['ID', 'ECYPTAPOP']"
+    ]
+  },
+  "validation": {
+    "total_fields": 63,
+    "mapped_fields": 6,
+    "unmapped_fields": 0,
+    "validation_passed": true
+  },
+  "mapping_timestamp": "2025-09-02T08:54:59.610632"
+}

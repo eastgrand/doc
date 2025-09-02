@@ -1,52 +1,53 @@
 /**
- * BrandNameResolver - Utility for extracting actual brand names from field aliases
+ * BrandNameResolver - Utility for extracting housing metric names from field aliases
  * 
- * This utility helps processors convert generic "Brand A/B" terminology into
- * actual brand names (e.g., "Nike", "Adidas") based on field-aliases configuration.
+ * This utility helps processors convert field codes into meaningful housing market
+ * terminology (e.g., "ECYTENOWN_P" → "Homeownership Rate") based on field-aliases configuration.
  */
 
 export interface BrandMetric {
   value: number;
   fieldName: string;
-  brandName: string;
+  metricName: string; // Changed from brandName to metricName for housing context
 }
 
 export interface BrandField {
   fieldName: string;
   value: number;
-  brandName: string;
+  metricName: string; // Changed from brandName to metricName for housing context
   isTarget: boolean;
 }
 
 // ============================================================================
-// PROJECT BRAND CONFIGURATION - EDIT HERE WHEN CHANGING PROJECTS
+// PROJECT HOUSING METRIC CONFIGURATION - EDIT HERE WHEN CHANGING PROJECTS
 // ============================================================================
 
 /**
- * Current Project: Red Bull Energy Drinks Market Analysis
+ * Current Project: Quebec Housing Market Analysis
  * 
  * To change to a different project:
- * 1. Update TARGET_BRAND with the primary brand field and name
- * 2. Update COMPETITOR_BRANDS with relevant competitors
+ * 1. Update TARGET_METRIC with the primary housing metric field and name
+ * 2. Update HOUSING_CATEGORIES with relevant housing market segments
  * 3. Update PROJECT_INDUSTRY name
  */
-const TARGET_BRAND = {
-  fieldName: 'MP12207A_B_P',  // Red Bull market share percentage
-  brandName: 'Red Bull'
+const TARGET_METRIC = {
+  fieldName: 'ECYTENOWN_P',  // Homeownership rate percentage
+  metricName: 'Homeownership Rate'
 };
 
-const COMPETITOR_BRANDS = [
-  { fieldName: 'MP12206A_B_P', brandName: 'Monster Energy' },  // Monster market share percentage
-  { fieldName: 'MP12205A_B_P', brandName: '5-Hour Energy' },   // 5-Hour Energy market share percentage
-  { fieldName: 'MP12097A_B_P', brandName: 'All Energy Drinks' } // Total energy drinks market
+const HOUSING_CATEGORIES = [
+  { fieldName: 'ECYTENOWN_P', metricName: 'Homeownership Rate' },     // Owner-occupied housing percentage
+  { fieldName: 'ECYTENTRENT_P', metricName: 'Rental Rate' },         // Renter-occupied housing percentage  
+  { fieldName: 'AVGHINC_CY', metricName: 'Average Household Income' }, // Average household income
+  { fieldName: 'MEDHINC_CY', metricName: 'Median Household Income' }   // Median household income
 ];
 
 const MARKET_CATEGORY = {
-  fieldName: 'MP12097A_B_P',  // Total energy drinks market share percentage
-  brandName: 'Total Energy Drinks Market'
+  fieldName: 'ECYTENOWN_P',  // Primary housing market metric
+  metricName: 'Total Housing Market'
 };
 
-const PROJECT_INDUSTRY = 'Energy Drinks';
+const PROJECT_INDUSTRY = 'Housing Market';
 
 // ============================================================================
 
@@ -65,11 +66,11 @@ export class BrandNameResolver {
    * @returns Brand name or null if not found
    * 
    * @example
-   * // Field alias: "Nike Market Share (%)"
-   * extractBrandName("mp30034a_b_p") // → "Nike"
+   * // Field alias: "Homeownership Rate (%)"
+   * extractBrandName("ECYTENOWN_P") // → "Homeownership Rate"
    * 
-   * // Field alias: "Adidas Purchase Frequency" 
-   * extractBrandName("mp30029a_b_p") // → "Adidas"
+   * // Field alias: "Average Household Income" 
+   * extractBrandName("AVGHINC_CY") // → "Average Household Income"
    */
   extractBrandName(fieldName: string): string | null {
     // Check cache first for performance
@@ -94,10 +95,10 @@ export class BrandNameResolver {
    * Parse brand name from human-readable alias
    * 
    * Handles various alias formats:
-   * - "Nike Market Share (%)" → "Nike"
-   * - "Brand Affinity - Adidas" → "Adidas"
-   * - "Market Share: Jordan" → "Jordan"
-   * - "Puma Purchase Intent Score" → "Puma"
+   * - "Homeownership Rate (%)" → "Homeownership Rate"
+   * - "Housing Tenure - Ownership" → "Ownership"
+   * - "Income Level: Median Household" → "Median Household"
+   * - "Rental Housing Percentage" → "Rental Housing"
    */
   private parseBrandFromAlias(alias: string): string | null {
     // Remove common suffixes and prefixes to isolate brand name
@@ -119,9 +120,9 @@ export class BrandNameResolver {
   }
 
   /**
-   * Extract brand name from the beginning of alias
-   * "Nike Market Share (%)" → "Nike"
-   * "H&R Block Market Share (%)" → "H&R Block"
+   * Extract metric name from the beginning of alias
+   * "Homeownership Rate (%)" → "Homeownership Rate"
+   * "Average Household Income" → "Average Household Income"
    */
   private extractBrandFromStart(alias: string): string | null {
     const knownBrands = this.getKnownBrandNames();
@@ -140,8 +141,8 @@ export class BrandNameResolver {
     }
     
     // Fallback: try to extract first 1-3 words before common terms
-    const commonTerms = ['market', 'share', 'brand', 'purchase', 'loyalty', 'affinity'];
-    const corporateTerms = ['corporation', 'corp', 'company', 'inc', 'ltd', 'llc', 'customer', 'index']; // Terms to exclude from brand names
+    const commonTerms = ['rate', 'percentage', 'housing', 'market', 'income', 'ownership', 'rental', 'tenure'];
+    const excludeTerms = ['household', 'occupied', 'average', 'median', 'total', 'demographic', 'analysis', 'index']; // Terms to exclude from metric names
     const words = alias.split(/\s+/);
     
     for (let wordCount = 3; wordCount >= 1; wordCount--) {
@@ -150,10 +151,10 @@ export class BrandNameResolver {
       
       // Check if any remaining words are common terms (indicating this is likely a brand name)
       if (remainingWords.some(word => commonTerms.includes(word.toLowerCase()))) {
-        // Make sure candidate doesn't contain common terms or corporate terms itself
+        // Make sure candidate doesn't contain common terms or exclude terms itself
         const candidateLower = candidateBrand.toLowerCase();
         if (!commonTerms.some(term => candidateLower.includes(term)) && 
-            !corporateTerms.some(term => candidateLower.includes(term))) {
+            !excludeTerms.some(term => candidateLower.includes(term))) {
           return candidateBrand;
         }
       }
@@ -163,9 +164,9 @@ export class BrandNameResolver {
   }
 
   /**
-   * Extract brand name after common separators
-   * "Brand Affinity - Nike" → "Nike"
-   * "Market Share: Adidas" → "Adidas"
+   * Extract metric name after common separators
+   * "Housing Tenure - Ownership" → "Ownership"
+   * "Income Type: Median Household" → "Median Household"
    */
   private extractBrandAfterSeparator(alias: string): string | null {
     const separators = [' - ', ': ', ' | ', ' / ', ' (', ' – '];
@@ -192,15 +193,15 @@ export class BrandNameResolver {
   }
 
   /**
-   * Extract brand name before common market research terms
-   * "Nike Purchase Intent" → "Nike"  
-   * "Adidas Brand Loyalty" → "Adidas"
+   * Extract metric name before common housing market terms
+   * "Homeownership Rate" → "Homeownership"  
+   * "Rental Housing Percentage" → "Rental Housing"
    */
   private extractBrandBeforeCommonTerm(alias: string): string | null {
     const commonTerms = [
-      'market share', 'purchase', 'brand', 'loyalty', 'affinity', 
-      'preference', 'intent', 'awareness', 'consideration', 'share',
-      'frequency', 'penetration', 'reach', 'adoption'
+      'rate', 'percentage', 'housing', 'market', 'income', 'ownership', 
+      'rental', 'tenure', 'household', 'occupied', 'value', 'cost',
+      'affordability', 'demographics', 'population', 'analysis'
     ];
     
     const knownBrands = this.getKnownBrandNames();
@@ -275,8 +276,8 @@ export class BrandNameResolver {
   private extractPotentialBrands(alias: string): string[] {
     const brands: string[] = [];
     
-    // Strategy 1: Look for multi-word brands before common terms
-    const commonTerms = ['market', 'share', 'brand', 'purchase', 'loyalty', 'affinity', 'preference'];
+    // Strategy 1: Look for multi-word metric names before common housing terms
+    const commonTerms = ['rate', 'percentage', 'housing', 'market', 'income', 'ownership', 'rental', 'tenure'];
     const words = alias.split(/\s+/);
     
     // Try 1-3 word combinations at the start
@@ -316,14 +317,14 @@ export class BrandNameResolver {
   private looksLikeBrandName(word: string): boolean {
     if (!word || word.length < 2) return false;
     
-    // Skip common market research terms
+    // Skip common housing market research terms
     const commonTerms = new Set([
-      'market', 'share', 'brand', 'purchase', 'loyalty', 'affinity', 
-      'preference', 'intent', 'awareness', 'consideration', 'frequency',
-      'penetration', 'reach', 'adoption', 'score', 'index', 'value',
-      'customer', 'consumer', 'demographic', 'segment', 'analysis',
-      'overall', 'satisfaction', 'total', 'average', 'mean', 'median',
-      'performance', 'growth', 'trend', 'competitive', 'strategic'
+      'rate', 'percentage', 'housing', 'market', 'income', 'ownership', 
+      'rental', 'tenure', 'household', 'occupied', 'value', 'cost',
+      'affordability', 'demographics', 'population', 'analysis', 'score',
+      'index', 'segment', 'overall', 'total', 'average', 'mean', 'median',
+      'performance', 'growth', 'trend', 'competitive', 'strategic',
+      'mortgage', 'property', 'real', 'estate', 'residential'
     ]);
     
     if (commonTerms.has(word.toLowerCase())) return false;
@@ -411,8 +412,8 @@ export class BrandNameResolver {
   detectBrandFields(record: any): BrandField[] {
     const brandFields: BrandField[] = [];
     
-    // Add target brand if present (check both original and lowercase versions)
-    const targetField = TARGET_BRAND.fieldName;
+    // Add target housing metric if present (check both original and lowercase versions)
+    const targetField = TARGET_METRIC.fieldName;
     const targetValue = record[targetField] ?? record[targetField.toLowerCase()];
     
     if (targetValue !== undefined && targetValue !== null) {
@@ -421,15 +422,15 @@ export class BrandNameResolver {
         brandFields.push({
           fieldName: targetField,
           value: numValue,
-          brandName: TARGET_BRAND.brandName,
+          metricName: TARGET_METRIC.metricName,
           isTarget: true
         });
       }
     }
     
-    // Add competitor brands if present (check both original and lowercase versions)
-    for (const competitor of COMPETITOR_BRANDS) {
-      const fieldName = competitor.fieldName;
+    // Add housing category metrics if present (check both original and lowercase versions)
+    for (const category of HOUSING_CATEGORIES) {
+      const fieldName = category.fieldName;
       const fieldValue = record[fieldName] ?? record[fieldName.toLowerCase()];
       
       if (fieldValue !== undefined && fieldValue !== null) {
@@ -438,8 +439,8 @@ export class BrandNameResolver {
           brandFields.push({
             fieldName,
             value: numValue,
-            brandName: competitor.brandName,
-            isTarget: false
+            metricName: category.metricName,
+            isTarget: fieldName === TARGET_METRIC.fieldName
           });
         }
       }
@@ -450,62 +451,58 @@ export class BrandNameResolver {
   }
 
   /**
-   * Get the target brand field name from project configuration
+   * Get the target housing metric field name from project configuration
    * 
-   * @returns Target brand field name (e.g., MP10128A_B_P for H&R Block)
+   * @returns Target metric field name (e.g., ECYTENOWN_P for Homeownership Rate)
    */
   getTargetBrandField(): string {
-    return TARGET_BRAND.fieldName;
+    return TARGET_METRIC.fieldName;
   }
 
   /**
-   * Get the target brand name from project configuration
+   * Get the target housing metric name from project configuration
    * 
-   * @returns Target brand name (e.g., "H&R Block")
+   * @returns Target metric name (e.g., "Homeownership Rate")
    */
   getTargetBrandName(): string {
-    return TARGET_BRAND.brandName;
+    return TARGET_METRIC.metricName;
   }
 
   /**
-   * Calculate market gap dynamically from actual competitor data
+   * Calculate housing metric completeness from available data
    * 
-   * @param record - Data record with brand market share data
-   * @returns Market gap percentage (5-95% realistic bounds)
+   * @param record - Data record with housing metric data
+   * @returns Data completeness percentage (0-100%)
    */
   calculateMarketGap(record: any): number {
     const target = this.getTargetBrandField();
-    const targetShare = Number(record[target] ?? record[target.toLowerCase()]) || 0;
+    const targetValue = Number(record[target] ?? record[target.toLowerCase()]) || 0;
     
-    // Get all competitor brand shares
-    const allBrandFields = this.detectBrandFields(record);
-    const competitorShares = allBrandFields
-      .filter(field => field.fieldName !== target)
-      .map(field => field.value);
+    // Get all housing metric values
+    const allMetricFields = this.detectBrandFields(record);
+    const allValues = allMetricFields.map(field => field.value);
     
-    const totalCompetitorShare = competitorShares.reduce((sum, share) => sum + share, 0);
-    const totalKnownShare = targetShare + totalCompetitorShare;
+    // For housing metrics, calculate data completeness rather than market gap
+    const nonZeroValues = allValues.filter(value => value > 0);
+    const completeness = nonZeroValues.length > 0 ? (nonZeroValues.length / allMetricFields.length) * 100 : 0;
     
-    // Market gap = 100% - total known market shares
-    const rawGap = Math.max(0, 100 - totalKnownShare);
+    // Ensure bounds (0-100%)
+    const dataCompleteness = Math.max(0, Math.min(100, completeness));
     
-    // Ensure realistic bounds (5-95%)
-    const marketGap = Math.max(5, Math.min(95, rawGap));
-    
-    return Math.round(marketGap * 100) / 100;
+    return Math.round(dataCompleteness * 100) / 100;
   }
 
   /**
-   * Get competitor brand information excluding the target brand
+   * Get additional housing metrics excluding the primary target metric
    * 
-   * @param record - Data record with brand data
-   * @returns Array of competitor brand information
+   * @param record - Data record with housing metric data
+   * @returns Array of supplementary housing metric information
    */
   getCompetitorBrands(record: any): BrandField[] {
     const target = this.getTargetBrandField();
-    const allBrands = this.detectBrandFields(record);
+    const allMetrics = this.detectBrandFields(record);
     
-    return allBrands.filter(brand => brand.fieldName !== target);
+    return allMetrics.filter(metric => metric.fieldName !== target);
   }
 
 }

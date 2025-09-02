@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Get microservice configuration
     const microserviceUrl = process.env.NEXT_PUBLIC_SHAP_MICROSERVICE_URL ||
-                            'https://shap-demographic-analytics-v3.onrender.com';
+                            'https://housing-microservice.onrender.com';
     const apiKey = process.env.NEXT_PUBLIC_SHAP_MICROSERVICE_API_KEY;
 
     if (!apiKey) {

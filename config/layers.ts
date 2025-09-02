@@ -2,7 +2,9 @@
 // Auto-generated on 2025-08-24T13:11:08.482988
 // This file maintains compatibility with existing system components
 
+// Housing Market Analysis Layers (2025)
 import { LayerConfig } from '../types/layers';
+import { layers as housingLayers } from './layers_housing_2025';
 
 export type LayerType = 'index' | 'point' | 'percentage' | 'amount';
 export type AccessLevel = 'read' | 'write' | 'admin';
@@ -4849,11 +4851,8 @@ export const layerGroups = {
 
 };
 
-// Export individual layers for direct access
-export const layers: { [key: string]: LayerConfig } = layerConfigs.reduce((acc, layer) => {
-  acc[layer.id] = layer;
-  return acc;
-}, {} as { [key: string]: LayerConfig });
+// Export housing layers for housing market analysis
+export const layers: { [key: string]: LayerConfig } = housingLayers;
 
 // Export layer count for monitoring
 export const layerCount = layerConfigs.length;

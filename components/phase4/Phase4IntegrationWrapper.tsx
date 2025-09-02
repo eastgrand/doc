@@ -123,8 +123,8 @@ export function Phase4IntegrationWrapper({
       },
       {
         id: 'ai-insights',
-        name: 'AI-Powered Insights',
-        description: 'Automated pattern detection and business recommendations',
+        name: 'Housing Market Insights',
+        description: 'Automated housing pattern detection and market recommendations',
         icon: Brain,
         enabled: isPhase4FeatureEnabled('aiInsights'),
         component: AIInsightGenerator,
@@ -281,7 +281,7 @@ export function Phase4IntegrationWrapper({
               </div>
               <div className="flex items-center gap-1">
                 <Brain className="w-3 h-3" />
-                AI-Powered Insights
+                Housing Market Insights
               </div>
             </div>
           </div>

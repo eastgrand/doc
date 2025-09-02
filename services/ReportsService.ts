@@ -12,10 +12,10 @@ export interface Report {
 const CUSTOM_REPORTS: Report[] = [
   {
     id: 'market-intelligence-report',
-    title: 'AI-Powered Market Intelligence Report',
-    description: 'Professional market analysis combining AI scoring, competitive positioning, demographics, and strategic recommendations',
+    title: 'Quebec Housing Market Analysis Report',
+    description: 'Comprehensive housing market analysis combining homeownership data, rental rates, household income metrics, and demographic insights for Quebec regions',
     thumbnail: '',
-    categories: ['Market Intelligence', 'AI Analysis'],
+    categories: ['Housing Market', 'Demographic Analysis'],
     type: 'endpoint-scoring'
   }
   /*{
@@ -69,20 +69,17 @@ const DO_NOT_DISPLAY_LIST: Set<string> = new Set([
   'Market Analysis for Nike',
   'AI Endpoint Scoring Analysis',
   'AI-Powered Market Intelligence Report',
+  'Quebec Housing Market Analysis Report',
 
-  // Canadian/Non-US reports
-  'Canada Demographics',
-  'Canadian Demographics',
-  'Canada Population',
-  'Canadian Market Analysis',
-  'Toronto Market',
-  'Vancouver Demographics', 
-  'Montreal Profile',
-  'Canadian Crime',
-  'Statistics Canada',
-  'Census Canada',
-  'Canadian Business',
-  'Eating Places in Canada',
+  // US-specific reports (now excluded since we're using Canadian data)
+  'US Demographics',
+  'American Demographics', 
+  'US Population',
+  'American Market Analysis',
+  'US Census Data',
+  'American Community Survey',
+  'US Business Directory',
+  'USA Consumer Spending',
   
   // Old/Legacy reports
   '2023 Community Portrait',

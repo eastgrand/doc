@@ -492,7 +492,7 @@ export default function EndpointScoringReport({
             fontFamily: 'var(--arcgis-font-family)'
           }}>
             {reportType === 'market-intelligence' 
-              ? 'AI-Powered Market Intelligence Report' 
+              ? 'Quebec Housing Market Analysis Report' 
               : 'AI Endpoint Scoring Analysis'
             }
           </h1>
@@ -645,13 +645,13 @@ export default function EndpointScoringReport({
           </CardContent>
         </Card>
 
-        {/* Market Intelligence & Demographics */}
+        {/* Housing Market & Demographics */}
         <Card className="mb-8 arcgis-score-card">
           <CardHeader className="bg-gray-50 pb-3">
             <h3 className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'var(--arcgis-font-family)' }}>
-              Market Intelligence & Demographics
+              Housing Market & Demographics
             </h3>
-            <p className="text-sm text-gray-600 mt-1">Customer profiles, demographic insights, and market positioning</p>
+            <p className="text-sm text-gray-600 mt-1">Housing profiles, demographic insights, and market analysis</p>
           </CardHeader>
           <CardContent className="pt-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -858,9 +858,9 @@ export default function EndpointScoringReport({
                   })()}
                 </div>
 
-                {/* Market Intelligence Summary */}
+                {/* Housing Market Summary */}
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-gray-900 mb-3 text-sm">Market Intelligence Summary</h4>
+                  <h4 className="font-semibold text-gray-900 mb-3 text-sm">Housing Market Summary</h4>
                   
                   {/* Data Quality & Methodology */}
                   <div className="space-y-3">

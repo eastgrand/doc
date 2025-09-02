@@ -44,8 +44,9 @@ This document outlines a comprehensive automation strategy for extracting data f
 ### 📊 **IMPLEMENTATION SUMMARY**
 
 #### ✅ **Completed (7/8 components)**
+
 - **Total Lines of Code**: ~5,500+ lines across 7 components
-- **Features Implemented**: 
+- **Features Implemented**:
   - Async parallel data extraction
   - ML-based field mapping with confidence scoring
   - Automated XGBoost model training
@@ -58,19 +59,22 @@ This document outlines a comprehensive automation strategy for extracting data f
   - Production-ready deployment packages
 
 #### ✅ **ALL COMPONENTS COMPLETED (8/8)**
+
 - **Master Automation Script**: ✅ **COMPLETED** - Complete end-to-end orchestration
 
-### 🎉 **IMPLEMENTATION STATUS**: 100% COMPLETE 
+### 🎉 **IMPLEMENTATION STATUS**: 100% COMPLETE
 
 **The automation pipeline is now production-ready!** All components have been implemented and integrated into a complete end-to-end solution.
 
 ## 📋 **COMPLETED AUTOMATION COMPONENTS**
 
 ### ✅ **Automated Score Calculator** - COMPLETED
+
 **Status**: ✅ **IMPLEMENTED** with 892 lines of Python code
 **File**: `scripts/automation/automated_score_calculator.py`
 
 **Implemented Features**:
+
 - ✅ **15 scoring algorithms** ported from Node.js to Python
 - ✅ Strategic value scoring with 4-component weighted formula
 - ✅ Competitive advantage scoring with SHAP normalization
@@ -79,10 +83,12 @@ This document outlines a comprehensive automation strategy for extracting data f
 - ✅ Full score validation and range checking
 
 ### ✅ **Layer Config Generator** - COMPLETED
+
 **Status**: ✅ **IMPLEMENTED** with 659 lines of Python code
 **File**: `scripts/automation/layer_config_generator.py`
 
 **Implemented Features**:
+
 - ✅ **Automatic layer discovery** from ArcGIS Feature Services
 - ✅ **TypeScript configuration generation** with proper typing
 - ✅ **Intelligent layer categorization** (demographics, brands, sports, etc.)
@@ -92,6 +98,7 @@ This document outlines a comprehensive automation strategy for extracting data f
 - ✅ **Comprehensive reporting** with statistics and integration guides
 
 **Test Results**:
+
 - ✅ Successfully analyzed 56 layers from Nike service
 - ✅ Generated 130KB+ of TypeScript configuration
 - ✅ Categorized into 13 logical groups (brands, demographics, sports, etc.)
@@ -99,12 +106,15 @@ This document outlines a comprehensive automation strategy for extracting data f
 - ✅ Created complete integration documentation
 
 ### ✅ **Master Automation Script** - COMPLETED
+
 **Status**: ✅ **IMPLEMENTED** with 600+ lines of Python + Shell script
-**Files**: 
+**Files**:
+
 - `scripts/automation/run_complete_automation.py` (Python orchestrator)
 - `scripts/automation/run_complete_automation.sh` (Shell wrapper)
 
 **Implemented Features**:
+
 - ✅ **8-phase pipeline orchestration** (Discovery → Extraction → Mapping → Training → Generation → Scoring → Configuration → Integration)
 - ✅ **Comprehensive logging and monitoring** with detailed progress tracking
 - ✅ **Error handling and recovery** with phase-by-phase validation
@@ -116,6 +126,7 @@ This document outlines a comprehensive automation strategy for extracting data f
 ## 🗓️ **UPDATED IMPLEMENTATION TIMELINE**
 
 ### Phase 1: COMPLETED ✅ (5/8 components)
+
 - ✅ Service Inspector - Automated service discovery  
 - ✅ Data Extractor - Bulk data extraction with parallel processing
 - ✅ Field Mapper - ML-based intelligent field mapping
@@ -123,11 +134,12 @@ This document outlines a comprehensive automation strategy for extracting data f
 - ✅ Endpoint Generator - Basic JSON endpoint generation
 
 ### Phase 2: COMPLETED ✅ (2/8 components)
+
 - ✅ **Score Calculator** - COMPLETED: Ported 15 scoring algorithms from Node.js to Python
 - ❌ **Endpoint Optimizer** - REMOVED: User decided to keep all fields in endpoints  
 - ✅ **Layer Config Generator** - COMPLETED: Full TypeScript automation with intelligent categorization
 
-### ⏰ **FINAL COMPLETION STATUS**: 
+### ⏰ **FINAL COMPLETION STATUS**
 
 **Remaining Work**: Master automation script integration
 
@@ -138,7 +150,7 @@ This document outlines a comprehensive automation strategy for extracting data f
 | Layer Config Generator | ✅ COMPLETED | 0 days | DONE |
 | Master Automation Script | ✅ COMPLETED | 0 days | DONE |
 
-### 🚀 **FINAL RESULT** - ACHIEVED:
+### 🚀 **FINAL RESULT** - ACHIEVED
 
 Migration time: **2-3 days → 30 minutes** (95%+ improvement)
 
@@ -146,21 +158,24 @@ Migration time: **2-3 days → 30 minutes** (95%+ improvement)
 
 **The automation pipeline will modify your existing `config/layers.ts` file!**
 
-### What Gets Modified:
+### What Gets Modified
+
 - `config/layers.ts` - **REPLACED** with auto-generated configuration (original backed up to `.backup`)
 
-### Safety Features:
+### Safety Features
+
 - ✅ **Automatic backup** created before any changes
 - ✅ **Reversible** - restore from backup if needed
 - ✅ **Validation** - new files tested before replacement
 
-### To Restore Original (if needed):
+### To Restore Original (if needed)
+
 ```bash
 # Restore your original layer configuration
 mv config/layers.ts.backup config/layers.ts
 ```
 
-## 🎯 **QUICK START GUIDE** - Production Ready!
+## 🎯 **QUICK START GUIDE** - Production Ready
 
 ### Single Command Usage
 
@@ -196,6 +211,7 @@ cd scripts/automation
 The automation pipeline creates new files and modifies existing ones. Here's exactly what happens:
 
 #### 📁 **New Files Created**
+
 ```
 projects/your_project_name/
 ├── AUTOMATION_REPORT.md           # Comprehensive execution report
@@ -237,6 +253,7 @@ public/data/endpoints/
 ```
 
 #### ✏️ **Files Modified (IMPORTANT)**
+
 ```bash
 # Main layer configuration is REPLACED
 config/layers.ts                    # ⚠️ BACKED UP then REPLACED
@@ -246,25 +263,314 @@ config/layers.ts.backup             # Your original file is safely backed up
 ```
 
 #### 🔒 **Safety Measures**
+
 - **Automatic backup**: Your original `config/layers.ts` is backed up before replacement
 - **No data loss**: All existing configurations are preserved in `.backup` files  
 - **Reversible**: You can restore original files if needed
 - **Safe deployment**: New files are validated before replacing originals
 
+#### ✅ Post-Automation Configuration Updates
+
+After the automation completes and technical testing passes, update these project-dependent components:
+
+**📋 Required Manual Updates:**
+
+1. **✅ Bookmarks Widget** (`components/LayerBookmarks.tsx`)
+   - **Files Modified**: `components/LayerBookmarks.tsx`
+   - **What Changed**: Updated Canadian city bookmarks (Montreal, Quebec City, Laval, Gatineau) with proper coordinates and housing-focused descriptions
+   - **Key Implementation**: Used `Object.keys(config.layers).filter()` to dynamically identify housing-related layers by group
+   - **Efficiency Tips**:
+     - Pre-define coordinate extents for target cities in a configuration object
+     - Create reusable template for bookmark objects to reduce duplication
+     - Use geographic data service (Google Maps API) to auto-populate coordinates
+   - **Sample Code Pattern**:
+
+   ```typescript
+   const CITY_BOOKMARKS_TEMPLATE = {
+     montreal: { coordinates: [-73.73, 45.56], groups: ['housing-group', 'demographics-group'] },
+     // ... other cities
+   };
+   ```
+
+2. **✅ Sample Areas Panel** (`components/map/SampleAreasPanel.tsx`)
+   - **Files Modified**: `components/map/SampleAreasPanel.tsx`
+   - **What Changed**: Updated coordinate extents for Quebec cities and replaced Red Bull metrics with housing metrics (homeownership rate, rental rate, etc.)
+   - **Key Implementation**: Replaced `BOOKMARK_EXTENTS` object with Quebec city boundaries, updated metric calculations from brand-focused to housing-focused
+   - **Efficiency Tips**:
+     - Store coordinate extents in shared configuration file (`config/geography.ts`)
+     - Use TypeScript interfaces to enforce consistent geographic data structure
+     - Create utility functions for coordinate transformations between projections
+   - **Sample Code Pattern**:
+
+   ```typescript
+   interface CityExtent {
+     xmin: number; ymin: number; xmax: number; ymax: number;
+     center?: [number, number];
+     zoom?: number;
+   }
+   ```
+
+3. **✅ Infographics** (`components/infographics/Infographics.tsx`, `services/ReportsService.ts`)
+   - **Files Modified**: Multiple infographic components, report service configuration
+   - **What Changed**: Updated language code from 'en-us' to 'en-ca' for Canadian demographic reporting, removed US-specific reports from exclusion list
+   - **Key Implementation**: Used systematic search-and-replace for locale codes, updated report filtering logic
+   - **Efficiency Tips**:
+     - Create locale configuration file with regional settings
+     - Use environment variables for target geography (`NEXT_PUBLIC_LOCALE=en-ca`)
+     - Implement automated locale detection based on data source geographic scope
+   - **Sample Code Pattern**:
+
+   ```typescript
+   const LOCALE_CONFIG = {
+     'en-ca': { currency: 'CAD', dateFormat: 'DD/MM/YYYY', postalCodePattern: /^[A-Z]\d[A-Z] \d[A-Z]\d$/ },
+     'en-us': { currency: 'USD', dateFormat: 'MM/DD/YYYY', postalCodePattern: /^\d{5}(-\d{4})?$/ }
+   };
+   ```
+
+4. **✅ Brand Name Resolver** (`lib/analysis/utils/BrandNameResolver.ts`)
+   - **Files Modified**: `lib/analysis/utils/BrandNameResolver.ts`
+   - **What Changed**: Completely transformed from Red Bull/energy drink terminology to Quebec housing market terminology with proper field mappings (ECYTENOWN_P for Homeownership Rate, etc.)
+   - **Key Implementation**: Updated `TARGET_METRIC`, `HOUSING_CATEGORIES`, and all brand detection logic
+   - **Efficiency Tips**:
+     - Create domain-specific configuration files (`config/housing-metrics.ts`, `config/brand-metrics.ts`)
+     - Use JSON configuration files that can be swapped based on project type
+     - Implement automated field mapping detection based on data schema analysis
+   - **Sample Code Pattern**:
+
+   ```typescript
+   interface DomainConfig {
+     TARGET_METRIC: { fieldName: string; metricName: string };
+     CATEGORIES: Array<{ fieldName: string; metricName: string }>;
+     PROJECT_INDUSTRY: string;
+   }
+   ```
+
+5. **✅ Project Configuration UI Text**
+   - **Files Modified**: `components/tabs/InfographicsTab.tsx`, `services/ReportsService.ts`, `components/EndpointScoringReport.tsx`, `components/phase4/AIInsightGenerator.tsx`, `components/phase4/Phase4IntegrationWrapper.tsx`, `components/ai-elements/DataProvenance.tsx`
+   - **What Changed**: Updated all UI text from "AI-Powered Market Intelligence" to "Quebec Housing Market Analysis" and "Housing Market Insights"
+   - **Key Implementation**: Used systematic grep-based search to find all references, then applied targeted string replacements
+   - **Efficiency Tips**:
+     - Create centralized configuration file for all UI strings (`config/ui-strings.ts`)
+     - Use internationalization (i18n) framework even for single language to centralize text
+     - Implement automated text replacement script with project-specific terminology mappings
+   - **Sample Code Pattern**:
+
+   ```typescript
+   export const UI_STRINGS = {
+     REPORT_TITLE: 'Quebec Housing Market Analysis Report',
+     INSIGHTS_SECTION: 'Housing Market Insights',
+     DATA_SOURCE: 'Housing Market Intelligence Database'
+   };
+   ```
+
+6. **✅ Query Examples and Test Data**
+   - **Files Modified**: `components/chat/chat-constants.ts`, `lib/routing/QueryValidator.ts`
+   - **What Changed**: Transformed all Red Bull/energy drink query examples to housing market terminology with Quebec cities, updated predefined query validation list
+   - **Key Implementation**: Systematic replacement of 25+ query examples across multiple analysis categories
+   - **Efficiency Tips**:
+     - Create domain-specific query template generator
+     - Use parameterized query templates (`"Compare {metric} between {city1} and {city2}"`)
+     - Implement automated test data generation based on actual field names from data
+   - **Sample Code Pattern**:
+
+   ```typescript
+   interface QueryTemplate {
+     pattern: string;
+     variables: Record<string, string[]>;
+     category: string;
+   }
+   // Example: "Compare {metric} between {city1} and {city2}"
+   // Variables: { metric: ['homeownership rates', 'rental rates'], city1: ['Montreal', 'Quebec City'], city2: ['Laval', 'Gatineau'] }
+   ```
+
+7. **✅ Layer List Widget Groupings**
+   - **Files Modified**: `config/layers_housing_2025.ts`
+   - **What Changed**: Updated 21 housing layers from generic 'general' group to proper housing-focused groups (9 to 'housing-group', 12 to 'income-group', 1 to 'demographics-group')
+   - **Key Implementation**: Created Node.js script with regex patterns to automatically categorize layers based on their names and field content
+   - **Efficiency Tips**:
+     - Create automated layer categorization script that analyzes field names and content
+     - Define group classification rules in configuration files
+     - Implement machine learning-based layer classification for complex datasets
+   - **Sample Code Pattern**:
+
+   ```typescript
+   const LAYER_CLASSIFICATION_RULES = {
+     'housing-group': /tenure|owned|rented|homeowner|housing/i,
+     'income-group': /income|hh inc|salary|wage|earnings/i,
+     'demographics-group': /population|age|demographic|household/i
+   };
+   ```
+
+8. **✅ Geographic Data Manager** (`lib/geo/GeoDataManager.ts`)
+   - **Files Modified**: `lib/geo/GeoDataManager.ts`
+   - **What Changed**: Completely rewritten for Quebec Province geography, changed from California counties to Quebec regions, updated FSA codes for Montreal, Quebec City, Laval, Gatineau
+   - **Key Implementation**: Replaced entire geographic database with Quebec-specific data including FSA codes, city aliases, and regional hierarchies
+   - **Efficiency Tips**:
+     - Use official government data sources for geographic boundaries and postal codes
+     - Implement automated geographic data ingestion from Statistics Canada or similar sources
+     - Create geographic data validation tools to ensure accuracy of coordinates and boundaries
+     - Use GeoJSON format for complex boundary definitions
+   - **Sample Code Pattern**:
+
+   ```typescript
+   interface GeographicConfig {
+     country: string;
+     regions: Region[];
+     postalCodePattern: RegExp;
+     coordinateSystem: 'WGS84' | 'NAD83';
+   }
+   ```
+
+**📋 Optional Updates:**
+
+- Color schemes and styling for new industry theme
+- Custom popup templates and field display names  
+- Analysis processor descriptions and explanations
+- Marketing copy and user-facing text
+
+**🔧 Update Process:**
+Each component requires domain expertise to properly configure for the new industry. The automation handles the technical data mapping, but semantic and business logic updates need manual review.
+
+## 🚀 **Efficiency Optimizations for Future Migrations**
+
+Based on the completed Quebec housing market migration, here are key optimizations to make future post-automation updates more efficient:
+
+### **🤖 Automation Opportunities**
+
+1. **Domain Configuration Templates**
+   - Create project templates for common domains (housing, retail, energy, healthcare)
+   - Template structure: `config/templates/{domain}/` with pre-configured files
+   - Example: `config/templates/housing/BrandNameResolver.template.ts`
+
+2. **Geographic Data Automation**
+   - Build automated geographic data ingestion from official sources
+   - API integrations: Statistics Canada, US Census Bureau, Eurostat
+   - Auto-generate FSA/ZIP code mappings and city coordinates
+
+3. **UI String Centralization**
+   - Implement centralized UI configuration: `config/ui-strings.json`
+   - Use build-time string replacement for project-specific terminology
+   - Enable hot-swapping of terminology without code changes
+
+4. **Automated Layer Grouping**
+   - ML-based layer classification based on field names and data analysis
+   - Rule-based grouping engine with configurable classification patterns
+   - Confidence scoring for automated vs manual review decisions
+
+### **⚡ Efficiency Scripts to Create**
+
+1. **Domain Migration Script** (`scripts/migrate-domain.js`)
+
+   ```bash
+   # Usage: node scripts/migrate-domain.js housing quebec
+   # - Applies housing template configurations
+   # - Updates geographic data for Quebec
+   # - Replaces all terminology in one pass
+   ```
+
+2. **Geographic Update Tool** (`scripts/update-geography.js`)
+
+   ```bash
+   # Usage: node scripts/update-geography.js --country=CA --region=QC
+   # - Auto-downloads official postal code data
+   # - Updates coordinate systems and projections
+   # - Validates geographic boundaries
+   ```
+
+3. **UI String Replacement** (`scripts/update-ui-strings.js`)
+
+   ```bash
+   # Usage: node scripts/update-ui-strings.js config/housing-strings.json
+   # - Batch replaces all UI text across components
+   # - Validates string consistency
+   # - Updates documentation
+   ```
+
+### **📊 Time Reduction Estimates**
+
+With these optimizations, post-automation time could be reduced from **4-6 hours** to **30-60 minutes**:
+
+| Task | Current Time | Optimized Time | Optimization |
+|------|-------------|---------------|-------------|
+| Geographic Data | 60 min | 10 min | Automated data ingestion |
+| UI Text Updates | 45 min | 5 min | Centralized string management |
+| Layer Grouping | 30 min | 5 min | Automated classification |
+| Brand/Domain Config | 90 min | 15 min | Template-based configuration |
+| Query Examples | 45 min | 10 min | Parameterized templates |
+| Testing/Validation | 60 min | 10 min | Automated testing scripts |
+| **TOTAL** | **5.5 hours** | **55 minutes** | **83% reduction** |
+
+### **🔧 Implementation Priority**
+
+**High Priority (Immediate ROI)**:
+
+1. Geographic data automation (saves 50+ minutes per migration)
+2. Centralized UI strings (saves 40+ minutes per migration)
+3. Domain configuration templates (saves 75+ minutes per migration)
+
+**Medium Priority (Future Migrations)**:
+4. Automated layer classification
+5. Parameterized query generation
+6. Automated testing frameworks
+
+**Low Priority (Polish)**:
+7. ML-based field detection improvements
+8. Advanced validation tools
+9. Migration audit trails
+
+**🏠 Housing Project Specific Updates Needed:**
+
+1. **Brand Detection → Housing Terms:**
+   - Replace "Nike", "Red Bull" → "Housing", "Real Estate", "Homeownership"
+   - Update brand keywords → housing market terms (rental, ownership, tenure, etc.)
+
+2. **Sample Areas:**
+   - Replace energy drink/athletic brand sample areas
+   - Add housing-relevant sample areas (high ownership, rental markets, affordability zones)
+   - Update area descriptions with housing metrics
+
+3. **Infographics:**
+   - Change from consumer brands → housing demographics
+   - Update report templates from retail → real estate focus
+   - Modify variables: brand preference → homeownership rates, income, housing costs
+
+4. **Bookmarks:**
+   - Replace brand-focused bookmarks → housing market bookmarks
+   - Add: "High Homeownership", "Rental Markets", "Housing Affordability", "First-time Buyers"
+
+5. **Query Examples:**
+   - Replace: "Nike performance" → "Homeownership rates"
+   - Replace: "Red Bull market share" → "Housing affordability trends"
+   - Update test queries in debug scripts and tests
+
+6. **Layer List Groupings:**
+   - Replace brand categories → housing market categories
+   - Update group names: "Athletic Brands" → "Housing Tenure", "Demographics" → "Housing Demographics"  
+   - Reorganize: "Ownership", "Rental", "Income", "Age Demographics", "Geography"
+
+7. **Geographic Data Manager:**
+   - Replace California geography → Quebec Province geography
+   - Update ZIP codes → FSA codes (Canadian postal codes)
+   - Replace US cities/counties → Quebec cities/regions (Montreal, Quebec City, Laval, Gatineau)
+   - Update geographic hierarchies: "County" → "Region", "State" → "Province"
+
 #### ✅ Post-Update Test Checklist
 
-After the automation completes and any manual deployment steps are done, execute the tests in `docs/POST_DATA_UPDATE_TESTING.md`.
+After completing both technical automation AND manual configuration updates, execute the tests in `docs/POST_DATA_UPDATE_TESTING.md`.
 
 Reference: See `docs/POST_DATA_UPDATE_TESTING.md` for exact commands and pass criteria.
 
 #### 📊 **Generated Content Summary**
+
 After completion, you'll have:
+
 - ✅ **18 analysis endpoints** with comprehensive scoring (15 algorithms each)
 - ✅ **Complete layer configuration** with intelligent categorization
 - ✅ **Production-ready microservice** with all dependencies resolved
 - ✅ **Comprehensive documentation** with integration guides and reports
 
 ### Execution Time
+
 - **Automated portions**: 15-30 minutes (depending on service size)
 - **Manual microservice deployment**: 10-15 minutes (one-time setup)
 - **Client URL update**: 2-5 minutes
@@ -276,14 +582,132 @@ After completion, you'll have:
 This pipeline includes a **manual deployment step**:
 
 1. **Automated**: Data extraction, training, endpoint generation ✅
-2. **Manual**: Deploy microservice to Render (pause in pipeline) ⚠️ 
+2. **Manual**: Deploy microservice to Render (pause in pipeline) ⚠️
 3. **Automated**: File deployment and integration ✅
 4. **Manual**: Add microservice URL to client code ⚠️
 
 **Why Manual Steps?**
+
 - New Render projects require manual creation
 - Microservice URL is only available after Render deployment
 - Client code needs the specific microservice URL to function
+
+## 🔧 **Microservice Deployment Steps**
+
+### Prerequisites
+
+- Existing microservice codebase located at `/Users/voldeck/code/shap-microservice/`
+- Housing project data generated by automation pipeline
+
+### Step 1: Update Microservice Configuration
+
+```bash
+# Update project_config.py target variable
+sed -i 's/TARGET_VARIABLE: str = ".*"/TARGET_VARIABLE: str = "ECYTENOWN_P"/' /Users/voldeck/code/shap-microservice/project_config.py
+
+# Update project description
+sed -i 's/Red Bull Energy Drinks Market Analysis/Housing Market Analysis/' /Users/voldeck/code/shap-microservice/project_config.py
+sed -i 's/Energy Drinks \/ Functional Beverages/Real Estate \/ Housing Market/' /Users/voldeck/code/shap-microservice/project_config.py
+```
+
+### Step 2: Calculate Composite Indexes (OPTIONAL)
+
+```bash
+# OPTIONAL: Run composite index calculation to add delta fields and 3 housing indexes
+# Skip this step if you want to deploy with basic housing data only
+cd /Users/voldeck/code/shap-microservice
+source venv313/bin/activate
+python /Users/voldeck/code/mpiq-ai-chat/scripts/housing/calculate_composite_indexes.py
+
+# This adds 28 new calculated fields:
+# - 3 composite indexes (Hot Growth, New Homeowner, Housing Affordability)
+# - 9 tenure delta fields (ownership/rental changes 2023→2028→2033)  
+# - 6 income delta fields (constant & current dollars)
+# - 3 household growth delta fields
+# - 7 supporting percentage and analysis fields
+```
+
+### Step 3: Copy Housing Data to Microservice
+
+```bash
+# Copy generated housing data to microservice
+# Note: Will include composite indexes if Step 2 was completed
+cp projects/housing_2025/microservice_package/data/training_data.csv /Users/voldeck/code/shap-microservice/data/training_data.csv
+
+# Verify the data was copied correctly
+cd /Users/voldeck/code/shap-microservice
+wc -l data/training_data.csv
+head -1 data/training_data.csv | tr ',' '\n' | wc -l
+```
+
+### Step 4: Update Render Configuration
+
+```bash
+# Update render.yaml with housing-specific configuration
+cd /Users/voldeck/code/shap-microservice
+
+# Update service names and environment variables
+sed -i 's/red-bull-microservice/housing-microservice/' render.yaml
+sed -i 's/red-bull-worker/housing-worker/' render.yaml
+sed -i 's/Red Bull Energy Drinks/Housing Market Analysis/' render.yaml
+sed -i 's/Energy Drinks/Real Estate/' render.yaml
+```
+
+### Step 5: Commit and Deploy to Render
+
+```bash
+cd /Users/voldeck/code/shap-microservice
+
+# Stage all changes
+git add .
+
+# Commit with appropriate message
+git commit -m "$(cat <<'EOF'
+Update microservice for housing market analysis
+
+- Update target variable from Red Bull (MP12207A_B_P) to housing homeownership (ECYTENOWN_P)
+- Replace training data with housing dataset (421 records)
+- Update Render configuration for housing domain
+- Include composite indexes if calculated
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+EOF
+)"
+
+# Push to trigger Render deployment
+git push
+
+# Deploy using updated Render configuration
+# Render will automatically redeploy on git push
+# Monitor deployment at Render dashboard (typically 5-10 minutes)
+```
+
+### Step 6: Get Microservice URL
+
+After deployment completes on Render, copy the service URL which will be in format:
+`https://housing-microservice-xxxx.onrender.com`
+
+### Step 7: Verify Deployment
+
+```bash
+# Test microservice health endpoint
+curl https://housing-microservice-xxxx.onrender.com/health
+
+# Expected response should show:
+# - "status": "healthy"
+# - "model_status": "loaded" 
+# - Housing-related configuration
+```
+
+### Step 8: Update Client Configuration
+
+```bash
+# Add microservice URL to client configuration
+# Update the housing layers configuration with the new microservice URL
+# This step will be automated in future pipeline iterations
+```
 
 **📋 Complete Deployment Guide**: [`scripts/automation/DEPLOYMENT_INSTRUCTIONS.md`](../scripts/automation/DEPLOYMENT_INSTRUCTIONS.md)
 
@@ -1253,21 +1677,25 @@ if __name__ == "__main__":
 ## Implementation Timeline
 
 ### Phase 1: Core Automation (Week 1)
+
 - [ ] Implement ArcGIS service inspector
 - [ ] Build data extraction pipeline
 - [ ] Test with sample services
 
 ### Phase 2: Intelligence Layer (Week 2)
+
 - [ ] Develop intelligent field mapper
 - [ ] Create validation framework
 - [ ] Build confidence scoring
 
 ### Phase 3: Integration (Week 3)
+
 - [ ] Connect to microservice training
 - [ ] Automate endpoint generation
 - [ ] Implement deployment pipeline
 
 ### Phase 4: Testing & Refinement (Week 4)
+
 - [ ] End-to-end testing with multiple services
 - [ ] Performance optimization
 - [ ] Error handling improvements
@@ -1290,26 +1718,31 @@ SERVICE_URL="https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/
 ### Step 2: Individual Component Usage
 
 #### 🔍 **Service Discovery**
+
 ```bash
 python arcgis_service_inspector.py "$SERVICE_URL" > service_analysis.json
 ```
 
-#### 📊 **Data Extraction** 
+#### 📊 **Data Extraction**
+
 ```bash
 python arcgis_data_extractor.py "$SERVICE_URL" extracted_data
 ```
 
 #### 🤖 **Field Mapping**
+
 ```bash
 python intelligent_field_mapper.py extracted_data/extraction_summary.json mapping_results
 ```
 
 #### 🎯 **Model Training**
+
 ```bash
 python automated_model_trainer.py extracted_data/combined_data.csv trained_models  
 ```
 
 #### 📝 **Endpoint Generation**
+
 ```bash
 python endpoint_generator.py trained_models extracted_data/combined_data.csv generated_endpoints
 ```
@@ -1327,7 +1760,7 @@ cp generated_endpoints/blob-urls.json ../public/data/
 bash generated_endpoints/upload_endpoints.sh
 ```
 
-### 🎉 **Result**: Complete microservice migration in under 30 minutes!
+### 🎉 **Result**: Complete microservice migration in under 30 minutes
 
 ## Expected Output
 
@@ -1367,6 +1800,7 @@ After running the complete pipeline, you'll have:
 ## Usage Examples
 
 ### Basic Usage
+
 ```bash
 # Extract from ArcGIS and update microservice
 python automate-arcgis-to-microservice.py \
@@ -1375,6 +1809,7 @@ python automate-arcgis-to-microservice.py \
 ```
 
 ### Advanced Usage
+
 ```bash
 # With custom configuration
 python automate-arcgis-to-microservice.py \

@@ -47,7 +47,7 @@ const Infographics: React.FC<Props> = ({ geometry, apiKey, reportTemplate = "Key
         token: apiKey,
         studyArea,
         reportTemplate,
-        langCode: 'en-us',
+        langCode: 'en-ca', // Changed from 'en-us' to 'en-ca' for Canadian demographics
         format: 'html' // Change from 'pdf' to 'html'
       };
 

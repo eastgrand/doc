@@ -843,7 +843,7 @@ export class AnalysisEngine {
 
   private initializeConfig(userConfig?: DeepPartial<AnalysisEngineConfig>): AnalysisEngineConfig {
     const defaultConfig: AnalysisEngineConfig = {
-      apiUrl: process.env.NEXT_PUBLIC_SHAP_MICROSERVICE_URL || 'https://shap-demographic-analytics-v3.onrender.com',
+      apiUrl: process.env.NEXT_PUBLIC_SHAP_MICROSERVICE_URL || 'https://housing-microservice.onrender.com',
       apiKey: process.env.NEXT_PUBLIC_SHAP_MICROSERVICE_API_KEY || '',
       cacheEnabled: true,
       debugMode: process.env.NODE_ENV === 'development',

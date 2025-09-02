@@ -93,19 +93,19 @@ export interface SampleAreaData {
   lastUpdated: string;
 }
 
-// Individual ZIP code interface - Red Bull energy drink project data fields
+// Individual FSA code interface - Housing market project data fields  
 export interface ZipCodeArea {
-  zipCode: string;
+  zipCode: string; // FSA code (Forward Sortation Area) in Canadian context
   city: string;
-  // Red Bull project specific demographic data fields
-  redBull_percent: number;              // 'Red Bull Drinkers (%)'
-  energyDrink_percent: number;          // 'Energy Drink Consumers (%)'
-  monsterEnergy_percent: number;        // 'Monster Energy Drinkers (%)'
-  fiveHourEnergy_percent: number;       // '5-Hour Energy Drinkers (%)'
-  exerciseRegularly_percent: number;    // 'Exercise Regularly Users (%)'
-  seekNutritionInfo_percent: number;    // 'Seek Nutrition Info Users (%)'
-  sugarFreeFoods_percent: number;       // 'Sugar-Free Foods Buyers (%)'
-  genZ_percent: number;                 // 'Generation Z Population (%)'
+  // Housing project specific demographic data fields
+  homeowner_percent: number;           // 'Homeownership Rate (%)'
+  renter_percent: number;             // 'Rental Rate (%)'
+  housing_affordable_percent: number; // 'Affordable Housing (%)'
+  first_time_buyer_percent: number;   // 'First-time Home Buyers (%)'
+  high_income_percent: number;        // 'High Income Households (%)'
+  young_families_percent: number;     // 'Young Families (%)'
+  new_construction_percent: number;   // 'New Construction (%)'
+  housing_cost_burden_percent: number; // 'Housing Cost Burden (%)'
   geometry: {
     type: "Polygon";
     coordinates: number[][][];
@@ -147,12 +147,12 @@ const safeNumber = (value: any): number => {
 };
 
 // Bookmark extents to ensure sample areas zoom to same view as bookmarks
+// Quebec cities coordinates
 const BOOKMARK_EXTENTS: { [key: string]: { xmin: number; ymin: number; xmax: number; ymax: number } } = {
-  'fresno': { xmin: -119.9, ymin: 36.6, xmax: -119.6, ymax: 36.9 },
-  'los angeles': { xmin: -118.7, ymin: 33.9, xmax: -118.0, ymax: 34.3 },
-  'san diego': { xmin: -117.3, ymin: 32.6, xmax: -116.9, ymax: 33.0 },
-  'san francisco': { xmin: -122.6, ymin: 37.6, xmax: -122.3, ymax: 37.9 },
-  'san jose': { xmin: -122.0, ymin: 37.2, xmax: -121.7, ymax: 37.5 }
+  'montreal': { xmin: -73.98, ymin: 45.41, xmax: -73.48, ymax: 45.71 },
+  'quebec city': { xmin: -71.35, ymin: 46.75, xmax: -71.15, ymax: 46.85 },
+  'laval': { xmin: -73.82, ymin: 45.52, xmax: -73.68, ymax: 45.62 },
+  'gatineau': { xmin: -75.78, ymin: 45.40, xmax: -75.62, ymax: 45.52 }
 };
 
 export default function SampleAreasPanel({ view, onClose, visible }: SampleAreasPanelProps) {
@@ -210,20 +210,20 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
   }, [visible]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Select random metrics once when component mounts or data changes
-  // Red Bull project specific metrics from the actual data
+  // Housing project specific metrics from the actual data
   const selectRandomMetrics = () => {
-    const redBullMetricKeys = [
-      'redBull_percent',             // 'Red Bull Drinkers (%)'
-      'energyDrink_percent',         // 'Energy Drink Consumers (%)'
-      'monsterEnergy_percent',       // 'Monster Energy Drinkers (%)'
-      'fiveHourEnergy_percent',      // '5-Hour Energy Drinkers (%)'
-      'exerciseRegularly_percent',   // 'Exercise Regularly Users (%)'
-      'seekNutritionInfo_percent',   // 'Seek Nutrition Info Users (%)'
-      'sugarFreeFoods_percent',      // 'Sugar-Free Foods Buyers (%)'
-      'genZ_percent'                 // 'Generation Z Population (%)'
+    const housingMetricKeys = [
+      'homeowner_percent',           // 'Homeownership Rate (%)'
+      'renter_percent',             // 'Rental Rate (%)'
+      'housing_affordable_percent', // 'Affordable Housing (%)'
+      'first_time_buyer_percent',   // 'First-time Home Buyers (%)'
+      'high_income_percent',        // 'High Income Households (%)'
+      'young_families_percent',     // 'Young Families (%)'
+      'new_construction_percent',   // 'New Construction (%)'
+      'housing_cost_burden_percent' // 'Housing Cost Burden (%)'
     ];
     
-    const shuffled = [...redBullMetricKeys].sort(() => 0.5 - Math.random());
+    const shuffled = [...housingMetricKeys].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 4);
   };
 
@@ -296,30 +296,30 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         const demo = area.demographics;
         
         if (index < 3) {
-          console.log(`[DEBUG] ${cityName} ZIP ${area.zipCode}:`);
+          console.log(`[DEBUG] ${cityName} FSA ${area.zipCode}:`);
           console.log('  Demographics keys:', demo ? Object.keys(demo) : 'NO DEMO');
-          console.log('  Red Bull value:', demo ? demo['Red Bull Drinkers (%)'] : 'NO DEMO');
-          console.log('  Red Bull type:', demo ? typeof demo['Red Bull Drinkers (%)'] : 'NO DEMO');
-          console.log('  Energy Drink value:', demo ? demo['Energy Drink Consumers (%)'] : 'NO DEMO');
-          console.log('  Energy Drink type:', demo ? typeof demo['Energy Drink Consumers (%)'] : 'NO DEMO');
-          console.log('  After safeNumber - Red Bull:', safeNumber(demo['Red Bull Drinkers (%)']));
-          console.log('  After safeNumber - Energy Drink:', safeNumber(demo['Energy Drink Consumers (%)']));
+          console.log('  Homeowner value:', demo ? demo['Homeownership Rate (%)'] : 'NO DEMO');
+          console.log('  Homeowner type:', demo ? typeof demo['Homeownership Rate (%)'] : 'NO DEMO');
+          console.log('  Rental value:', demo ? demo['Rental Rate (%)'] : 'NO DEMO');
+          console.log('  Rental type:', demo ? typeof demo['Rental Rate (%)'] : 'NO DEMO');
+          console.log('  After safeNumber - Homeowner:', safeNumber(demo['Homeownership Rate (%)']));
+          console.log('  After safeNumber - Rental:', safeNumber(demo['Rental Rate (%)']));
         }
         
         return {
-          zipCode: area.zipCode,
+          zipCode: area.zipCode, // FSA code
           city: area.city,
           geometry: area.geometry, // Use real polygon geometry
           bounds: area.bounds,
-          // Red Bull project specific fields from the actual data
-          redBull_percent: safeNumber(demo['Red Bull Drinkers (%)']),
-          energyDrink_percent: safeNumber(demo['Energy Drink Consumers (%)']),
-          monsterEnergy_percent: safeNumber(demo['Monster Energy Drinkers (%)']),
-          fiveHourEnergy_percent: safeNumber(demo['5-Hour Energy Drinkers (%)']),
-          exerciseRegularly_percent: safeNumber(demo['Exercise Regularly Users (%)']),
-          seekNutritionInfo_percent: safeNumber(demo['Seek Nutrition Info Users (%)']),
-          sugarFreeFoods_percent: safeNumber(demo['Sugar-Free Foods Buyers (%)']),
-          genZ_percent: safeNumber(demo['Generation Z Population (%)'])
+          // Housing project specific fields from the actual data
+          homeowner_percent: safeNumber(demo['Homeownership Rate (%)']),
+          renter_percent: safeNumber(demo['Rental Rate (%)']),
+          housing_affordable_percent: safeNumber(demo['Affordable Housing (%)']),
+          first_time_buyer_percent: safeNumber(demo['First-time Home Buyers (%)']),
+          high_income_percent: safeNumber(demo['High Income Households (%)']),
+          young_families_percent: safeNumber(demo['Young Families (%)']),
+          new_construction_percent: safeNumber(demo['New Construction (%)']),
+          housing_cost_burden_percent: safeNumber(demo['Housing Cost Burden (%)'])
         };
       });
       
@@ -364,7 +364,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
     createChoroplethLayers(areas);
     
     // Don't auto-zoom - let MapClient handle initial view
-    // setTimeout(() => zoomToLosAngeles(), 1000);
+    // setTimeout(() => zoomToMontreal(), 1000);
   };
 
   // This function is no longer needed with the new simplified approach
@@ -404,15 +404,15 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
             OBJECTID: globalObjectId++,
             zipCode: zipCode.zipCode,
             city: zipCode.city,
-            // Red Bull project specific attributes
-            redBull_percent: zipCode.redBull_percent,
-            energyDrink_percent: zipCode.energyDrink_percent,
-            monsterEnergy_percent: zipCode.monsterEnergy_percent,
-            fiveHourEnergy_percent: zipCode.fiveHourEnergy_percent,
-            exerciseRegularly_percent: zipCode.exerciseRegularly_percent,
-            seekNutritionInfo_percent: zipCode.seekNutritionInfo_percent,
-            sugarFreeFoods_percent: zipCode.sugarFreeFoods_percent,
-            genZ_percent: zipCode.genZ_percent
+            // Housing project specific attributes
+            homeowner_percent: zipCode.homeowner_percent,
+            renter_percent: zipCode.renter_percent,
+            housing_affordable_percent: zipCode.housing_affordable_percent,
+            first_time_buyer_percent: zipCode.first_time_buyer_percent,
+            high_income_percent: zipCode.high_income_percent,
+            young_families_percent: zipCode.young_families_percent,
+            new_construction_percent: zipCode.new_construction_percent,
+            housing_cost_burden_percent: zipCode.housing_cost_burden_percent
           };
           
           // Log first few attributes to see what we're passing to ArcGIS
@@ -440,7 +440,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         console.log(`[SampleAreasPanel] STEP 6d - Adding ${cityGraphics.length} graphics directly to map for ${area.name}`);
         
         // Calculate city-specific quartiles for coloring
-        const firstMetric = selectedMetrics[0] || 'redBull_percent';
+        const firstMetric = selectedMetrics[0] || 'homeowner_percent';
         const metricValues = area.zipCodes.map(z => z[firstMetric as keyof ZipCodeArea] as number).sort((a, b) => a - b);
         const cityBreaks = calculateMetricQuartiles(metricValues, firstMetric);
         
@@ -475,21 +475,21 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
     setChoroplethLayers(newLayers);
   };
   
-  const zoomToLosAngeles = () => {
+  const zoomToMontreal = () => {
     if (!view) return;
 
-    console.log('[zoomToLosAngeles] Looking for Los Angeles in areas:', displayAreas.map(a => a.id));
+    console.log('[zoomToMontreal] Looking for Montreal in areas:', displayAreas.map(a => a.id));
     
-    // Find Los Angeles area in displayAreas
-    const losAngelesArea = displayAreas.find(area => area.id === 'los angeles');
-    if (losAngelesArea) {
-      console.log('[zoomToLosAngeles] Found Los Angeles area, zooming...');
-      handleAreaClick(losAngelesArea);
+    // Find Montreal area in displayAreas
+    const montrealArea = displayAreas.find(area => area.id === 'montreal');
+    if (montrealArea) {
+      console.log('[zoomToMontreal] Found Montreal area, zooming...');
+      handleAreaClick(montrealArea);
     } else {
-      console.log('[zoomToLosAngeles] Los Angeles area not found, using bookmark extent');
-      // Fallback: use bookmark extent for Los Angeles
-      const bookmarkExtent = BOOKMARK_EXTENTS['los angeles'];
-      const losAngelesExtent = new Extent({
+      console.log('[zoomToMontreal] Montreal area not found, using bookmark extent');
+      // Fallback: use bookmark extent for Montreal
+      const bookmarkExtent = BOOKMARK_EXTENTS['montreal'];
+      const montrealExtent = new Extent({
         xmin: bookmarkExtent.xmin,
         ymin: bookmarkExtent.ymin,
         xmax: bookmarkExtent.xmax,
@@ -497,14 +497,14 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
         spatialReference: { wkid: 4326 }
       });
       
-      view.goTo(losAngelesExtent, {
+      view.goTo(montrealExtent, {
         duration: 2000,
         easing: 'ease-in-out'
       }).catch(error => {
-        console.error('Error zooming to Los Angeles:', error);
+        console.error('Error zooming to Montreal:', error);
       });
       
-      console.log('[SampleAreasPanel] Zoomed to Los Angeles fallback coordinates');
+      console.log('[SampleAreasPanel] Zoomed to Montreal fallback coordinates');
     }
   };
   
@@ -726,69 +726,71 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
   const getMetricDisplayName = (metricKey: string) => {
     // Red Bull project specific display names
     const metricDisplayNames: Record<string, string> = {
-      redBull_percent: 'Red Bull Drinkers',
-      energyDrink_percent: 'Energy Drink Consumers', 
-      monsterEnergy_percent: 'Monster Energy Drinkers',
-      fiveHourEnergy_percent: '5-Hour Energy Drinkers',
-      exerciseRegularly_percent: 'Exercise Regularly',
-      seekNutritionInfo_percent: 'Seek Nutrition Info',
-      sugarFreeFoods_percent: 'Sugar-Free Foods',
+      homeowner_percent: 'Homeownership Rate',
+      renter_percent: 'Rental Rate', 
+      housing_affordable_percent: 'Affordable Housing',
+      first_time_buyer_percent: 'First-time Home Buyers',
+      high_income_percent: 'High Income Households',
+      young_families_percent: 'Young Families',
+      new_construction_percent: 'New Construction',
+      housing_cost_burden_percent: 'Housing Cost Burden',
       genZ_percent: 'Generation Z'
     };
     return metricDisplayNames[metricKey] || metricKey;
   };
 
   const getQuickStats = (area: DisplaySampleArea) => {
-    // Red Bull project specific metric calculators
+    // Housing project specific metric calculators
     const metricCalculators: Record<string, { calculate: () => any, label: string, icon: any, format: (val: any) => string }> = {
-      redBull_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.redBull_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Red Bull %',
+      homeowner_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.homeowner_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'Homeowner %',
+        icon: Building,
+        format: (val) => `${val}%`
+      },
+      renter_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.renter_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'Rental %',
+        icon: Building,
+        format: (val) => `${val}%`
+      },
+      housing_affordable_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.housing_affordable_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'Affordable %',
         icon: DollarSign,
         format: (val) => `${val}%`
       },
-      energyDrink_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.energyDrink_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Energy Drinks %',
+      first_time_buyer_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.first_time_buyer_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'First-time %',
+        icon: Building,
+        format: (val) => `${val}%`
+      },
+      high_income_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.high_income_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'High Income %',
         icon: DollarSign,
         format: (val) => `${val}%`
       },
-      monsterEnergy_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.monsterEnergy_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Monster %',
+      young_families_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.young_families_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'Young Families %',
+        icon: Users,
+        format: (val) => `${val}%`
+      },
+      new_construction_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.new_construction_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'New Construction %',
+        icon: Building,
+        format: (val) => `${val}%`
+      },
+      housing_cost_burden_percent: {
+        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.housing_cost_burden_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
+        label: 'Cost Burden %',
         icon: DollarSign,
         format: (val) => `${val}%`
       },
-      fiveHourEnergy_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.fiveHourEnergy_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: '5-Hour Energy %',
-        icon: DollarSign,
-        format: (val) => `${val}%`
-      },
-      exerciseRegularly_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.exerciseRegularly_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Exercise %',
-        icon: Users,
-        format: (val) => `${val}%`
-      },
-      seekNutritionInfo_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.seekNutritionInfo_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Nutrition Info %',
-        icon: Users,
-        format: (val) => `${val}%`
-      },
-      sugarFreeFoods_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.sugarFreeFoods_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Sugar-Free %',
-        icon: Users,
-        format: (val) => `${val}%`
-      },
-      genZ_percent: {
-        calculate: () => Math.round((area.zipCodes.reduce((sum, zip) => sum + (zip.genZ_percent || 0), 0) / area.zipCodes.length) * 10) / 10,
-        label: 'Gen Z %',
-        icon: Users,
-        format: (val) => `${val}%`
-      }
+      // Removed genZ_percent - not applicable to housing project
     };
 
     // Use the selectedMetrics to build the stats
@@ -983,7 +985,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
                     {/* Choropleth Info */}
                     <div className="flex items-center justify-between">
                       <p className="text-xs" style={{ color: 'var(--theme-text-secondary)' }}>
-                        Showing: {getMetricDisplayName(selectedMetrics[0] || 'redBull_percent')}
+                        Showing: {getMetricDisplayName(selectedMetrics[0] || 'homeowner_percent')}
                       </p>
                     </div>
                   </div>
@@ -999,7 +1001,7 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
               backgroundColor: 'var(--theme-bg-secondary)'
             }}>
               <h4 className="text-xs font-medium mb-2" style={{ color: 'var(--theme-text-primary)' }}>
-                {getMetricDisplayName(selectedMetrics[0] || 'redBull_percent')} Legend
+                {getMetricDisplayName(selectedMetrics[0] || 'homeowner_percent')} Legend
               </h4>
               <div className="flex flex-col space-y-1">
                 <div className="flex items-center space-x-2">

@@ -435,9 +435,9 @@ export const AIInsightGenerator: React.FC<AIInsightGeneratorProps> = ({
             <Brain className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-xs font-semibold">AI-Powered Insights</h3>
+            <h3 className="text-xs font-semibold">Housing Market Insights</h3>
             <p className="text-xs text-muted-foreground">
-              Strategic business intelligence beyond demographic analysis
+              Strategic housing market intelligence beyond demographic analysis
             </p>
           </div>
         </div>

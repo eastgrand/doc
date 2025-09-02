@@ -110,10 +110,10 @@ const getDataSources = (endpoint?: string, zipCodes?: string[], fieldCount?: num
   if (endpoint?.includes('strategic') || endpoint?.includes('competitive')) {
     sources.push({
       id: 'market-intelligence',
-      name: 'Market Intelligence Database',
+      name: 'Housing Market Intelligence Database',
       type: 'secondary',
-      description: 'Proprietary market analysis and competitive intelligence data',
-      coverage: `Market data for ${zipCount > 0 ? 'selected areas' : 'national coverage'}`,
+      description: 'Housing market analysis and demographic intelligence data for Quebec regions',
+      coverage: `Housing data for ${zipCount > 0 ? 'selected FSA areas' : 'Quebec provincial coverage'}`,
       lastUpdated: 'Updated monthly',
       confidence: 0.82,
       recordCount: zipCount * 50,

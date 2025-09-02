@@ -59,8 +59,55 @@ export const LayerBookmarks: React.FC<LayerBookmarksProps> = ({
     const savedBookmarks = localStorage.getItem(STORAGE_KEY);
     if (savedBookmarks) {
       setBookmarks(JSON.parse(savedBookmarks));
+    } else {
+      // Initialize default bookmarks for Canadian housing markets
+      const defaultBookmarks: LayerBookmark[] = [
+        {
+          id: 'montreal',
+          name: 'Montreal Housing Market',
+          description: 'Housing data and demographics for Montreal, Quebec',
+          layers: Object.keys(config.layers).filter(id => 
+            config.layers[id].group === 'housing-group' || 
+            config.layers[id].group === 'demographics-group'
+          ),
+          lastUsed: new Date()
+        },
+        {
+          id: 'quebec-city',
+          name: 'Quebec City Housing Market',
+          description: 'Housing analysis for Quebec City metropolitan area',
+          layers: Object.keys(config.layers).filter(id => 
+            config.layers[id].group === 'housing-group' || 
+            config.layers[id].group === 'income-group'
+          ),
+          lastUsed: new Date()
+        },
+        {
+          id: 'laval',
+          name: 'Laval Housing Market',
+          description: 'Residential housing trends and demographics for Laval',
+          layers: Object.keys(config.layers).filter(id => 
+            config.layers[id].group === 'housing-group' || 
+            config.layers[id].group === 'demographics-group'
+          ),
+          lastUsed: new Date()
+        },
+        {
+          id: 'gatineau',
+          name: 'Gatineau Housing Market', 
+          description: 'Housing affordability and market analysis for Gatineau',
+          layers: Object.keys(config.layers).filter(id => 
+            config.layers[id].group === 'housing-group' || 
+            config.layers[id].group === 'income-group'
+          ),
+          lastUsed: new Date()
+        }
+      ];
+      
+      setBookmarks(defaultBookmarks);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultBookmarks));
     }
-  }, []);
+  }, [config.layers]);
 
   const handleAddBookmark = () => {
     setEditingBookmark(null);

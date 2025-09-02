@@ -1,0 +1,36 @@
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - 🚀 Starting Complete ArcGIS to Microservice Automation Pipeline
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - 📅 Project: housing_2025
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - 🌐 Service: https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_BH_QC_layers/FeatureServer
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - 🎯 Target Variable: MP10128A_B_P (Used H&R Block Online to Prepare Taxes)
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - ================================================================================
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - 
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - ⚠️  WARNING: This pipeline will modify your existing files:
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO -    • config/layers.ts will be REPLACED (original backed up)
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO -    • 18 new endpoint files will be created in public/data/endpoints/
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO -    • Project files will be created in projects/housing_2025
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - 
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - 🔒 Safety: All original files are automatically backed up
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - ================================================================================
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - 🔍 PHASE 1: Service Discovery & Analysis
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - --------------------------------------------------
+2025-09-02 08:53:25,870 - AutomationPipeline - INFO - 📊 Discovering service layers...
+2025-09-02 08:54:08,492 - AutomationPipeline - INFO - ⚙️  Generating extraction configuration...
+2025-09-02 08:54:08,506 - AutomationPipeline - INFO - ✅ Phase 1 Complete: Discovered 32 layers
+2025-09-02 08:54:08,506 - AutomationPipeline - INFO - 
+📊 PHASE 2: Data Extraction
+2025-09-02 08:54:08,506 - AutomationPipeline - INFO - --------------------------------------------------
+2025-09-02 08:54:08,506 - AutomationPipeline - INFO - ⬇️  Extracting data from all layers...
+2025-09-02 08:54:59,509 - AutomationPipeline - INFO - 🔄 Merging datasets...
+2025-09-02 08:54:59,568 - AutomationPipeline - INFO - ✅ Phase 2 Complete: Extracted 421 records with 63 fields
+2025-09-02 08:54:59,568 - AutomationPipeline - INFO - 
+🤖 PHASE 3: Intelligent Field Mapping
+2025-09-02 08:54:59,568 - AutomationPipeline - INFO - --------------------------------------------------
+2025-09-02 08:54:59,568 - AutomationPipeline - INFO - 🎯 Generating intelligent field mappings...
+2025-09-02 08:54:59,610 - AutomationPipeline - INFO - ✔️  Creating validation summary...
+2025-09-02 08:54:59,610 - AutomationPipeline - INFO - ✅ Phase 3 Complete: Mapped 7 fields
+2025-09-02 08:54:59,611 - AutomationPipeline - INFO - 
+🎓 PHASE 4: Model Training & Microservice Package Creation
+2025-09-02 08:54:59,611 - AutomationPipeline - INFO - --------------------------------------------------
+2025-09-02 08:54:59,611 - AutomationPipeline - INFO - 🧠 Training comprehensive XGBoost models...
+2025-09-02 08:54:59,611 - AutomationPipeline - INFO - 🎯 Using target variable: MP10128A_B_P
+2025-09-02 08:54:59,614 - AutomationPipeline - ERROR - ❌ Phase 4 Failed: Target variable 'MP10128A_B_P' not found in dataset

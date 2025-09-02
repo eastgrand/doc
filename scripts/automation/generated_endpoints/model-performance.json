@@ -23,7 +23,7 @@
   "metadata": {
     "endpoint_name": "model-performance",
     "analysis_type": "performance",
-    "generation_timestamp": "2025-08-24T13:10:45.521780",
+    "generation_timestamp": "2025-09-02T08:05:29.608009",
     "score_field": "performance_score",
     "score_range": [
       0,
