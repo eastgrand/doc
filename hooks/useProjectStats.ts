@@ -20,19 +20,19 @@ export function useProjectStats() {
   useEffect(() => {
     // Use default stats immediately - in production these could come from a real endpoint
     const defaultStats = {
-      totalLocations: 15632,
-      totalZipCodes: 41000,
-      dataLayers: 24,
+      totalLocations: 421,
+      totalZipCodes: 421,
+      dataLayers: 12,
       lastUpdated: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toLocaleDateString(),
-      coverageArea: 'United States',
-      primaryIndustry: 'Energy Drink Market',
-      totalRecords: 742000,
+      coverageArea: 'Quebec, Canada',
+      primaryIndustry: 'Housing Market Analysis',
+      totalRecords: 421,
       averageAnalysisTime: 2.3,
       popularQueries: [
-        'energy drink sales by demographic',
-        'competitor brand density',
-        'target consumer analysis',
-        'market share analysis'
+        'housing affordability by region',
+        'homeownership vs rental patterns',
+        'median income analysis',
+        'strategic housing opportunities'
       ]
     };
 

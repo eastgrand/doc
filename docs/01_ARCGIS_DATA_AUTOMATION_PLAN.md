@@ -891,6 +891,15 @@ The generated file enables the Quebec housing project to have the same choroplet
    - Replace US cities/counties → Quebec cities/regions (Montreal, Quebec City, Laval, Gatineau)
    - Update geographic hierarchies: "County" → "Region", "State" → "Province"
 
+8. **✅ Loading Page Content** (`components/LoadingModal.tsx`, `hooks/useProjectStats.ts`)
+   - **Files Modified**: `components/LoadingModal.tsx`, `hooks/useProjectStats.ts`
+   - **What Changed**: Updated loading facts from energy drink market to housing market terminology
+   - **Key Implementation**: Changed general facts to reference housing affordability, FSAs, tenure patterns, composite indexes
+   - **Efficiency Tips**:
+     - Create project-specific fact templates in configuration files
+     - Update total locations, coverage area, and popular queries to match project data
+     - Include project-specific metrics like FSA count (421 for Quebec housing)
+
 #### ✅ Post-Update Test Checklist
 
 After completing both technical automation AND manual configuration updates, execute the tests in `docs/POST_DATA_UPDATE_TESTING.md`.

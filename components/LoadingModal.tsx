@@ -24,14 +24,15 @@ interface LoadingFact {
   icon?: React.ReactNode;
 }
 
-// General facts about the application capabilities
+// General facts about housing market analysis capabilities
 const GENERAL_FACTS: LoadingFact[] = [
-  { type: 'general', text: 'Our AI analyzes over 47,000 data points per query', icon: <BarChart3 className="w-5 h-5" /> },
-  { type: 'general', text: 'Drive-time analysis uses real-world traffic patterns', icon: <Car className="w-5 h-5" /> },
-  { type: 'general', text: 'Machine learning identifies up to 15 demographic patterns', icon: <Brain className="w-5 h-5" /> },
-  { type: 'general', text: 'Spatial clustering reveals hidden market opportunities', icon: <Target className="w-5 h-5" /> },
-  { type: 'general', text: 'Each analysis combines 10+ data sources for accuracy', icon: <Layers className="w-5 h-5" /> },
-  { type: 'general', text: 'Real-time processing delivers insights in seconds', icon: <Zap className="w-5 h-5" /> },
+  { type: 'general', text: 'Analyzing housing affordability across 421 Quebec postal areas', icon: <BarChart3 className="w-5 h-5" /> },
+  { type: 'general', text: 'Forward Sortation Areas (FSAs) provide neighborhood-level insights', icon: <Target className="w-5 h-5" /> },
+  { type: 'general', text: 'Housing tenure data reveals homeownership vs rental patterns', icon: <Layers className="w-5 h-5" /> },
+  { type: 'general', text: 'Composite indexes combine multiple housing market indicators', icon: <TrendingUp className="w-5 h-5" /> },
+  { type: 'general', text: 'Income analysis helps identify affordable housing opportunities', icon: <Brain className="w-5 h-5" /> },
+  { type: 'general', text: 'Demographics include household income and population density', icon: <Car className="w-5 h-5" /> },
+  { type: 'general', text: 'Real-time processing delivers housing insights in seconds', icon: <Zap className="w-5 h-5" /> },
 ];
 
 
