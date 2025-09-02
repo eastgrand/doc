@@ -470,7 +470,7 @@ export const baseLayerConfigs: LayerConfig[] = [
     isPrimary: false,
     skipLayerList: true,
     rendererField: 'Shape__Area',
-    status: 'active',
+    status: 'inactive',
     geographicType: 'postal',
     geographicLevel: 'local',
     fields: [
@@ -584,7 +584,7 @@ export const baseLayerConfigs: LayerConfig[] = [
     isPrimary: false,
     skipLayerList: true,
     rendererField: 'Shape__Area',
-    status: 'active',
+    status: 'inactive',
     geographicType: 'postal',
     geographicLevel: 'local',
     fields: [

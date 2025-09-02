@@ -17,6 +17,7 @@ import { LegendType } from '@/types/legend';
 import { SampleHotspot } from '@/components/map/SampleHotspots';
 import { LoadingModal } from '@/components/LoadingModal';
 import SampleAreasPanel from '@/components/map/SampleAreasPanel';
+import CompositeIndexLayerManager from '@/components/map/CompositeIndexLayerManager';
 
 console.log('[MAP_APP] MapApp component function body executing');
 
@@ -359,11 +360,20 @@ export const MapApp: React.FC = memo(() => {
           
 
           {/* Sample Areas Panel */}
-          {mapView && (
+          {/* {mapView && (
             <SampleAreasPanel
               view={mapView}
               onClose={() => setShowSampleAreasPanel(false)}
               visible={showSampleAreasPanel}
+            />
+          )} */}
+          
+          {/* Composite Index Layer Manager */}
+          {mapView && featureLayers.length > 0 && (
+            <CompositeIndexLayerManager
+              view={mapView}
+              visible={true}
+              baseHousingLayer={featureLayers.find(layer => layer.title?.includes('Tenure')) || featureLayers[0]}
             />
           )}
           

@@ -2168,6 +2168,50 @@ python automate-arcgis-to-microservice.py \
 
 ---
 
+## Specialized Prompt APIs
+
+### 🏠 Housing-Specific Generate Response API
+
+**Implementation**: `/api/claude/housing-generate-response`
+
+For housing market analysis projects, we maintain a specialized version of the generate-response API with housing-specific terminology and prompts. This ensures proper real estate language instead of business/retail terminology.
+
+**Files to Update When Switching Prompts:**
+
+1. **Frontend Routing**: `/services/chat-service.ts`
+   - Update housing detection logic in `sendChatMessage()` function
+   - Modify API endpoint selection between `/generate-response` and `/housing-generate-response`
+
+2. **Housing Prompts**: `/app/api/claude/shared/housing-analysis-prompts.ts` 
+   - Copy from `/app/api/claude/shared/analysis-prompts.ts`
+   - Update terminology for housing/real estate context
+   - Ensure demographic fields match project data (ECYPTAPOP, ECYTENHHD, ECYHRIMED, ECYTENOWN_P, ECYTENRENT_P)
+
+3. **Housing API**: `/app/api/claude/housing-generate-response/route.ts`
+   - Copy entire `/app/api/claude/generate-response/` directory 
+   - Update import to use `housing-analysis-prompts`
+   - Keep all other functionality identical
+
+**Key Terminology Changes**:
+- "housing market opportunities" instead of "market expansion" 
+- "housing market potential" instead of "strategic potential"
+- Demographics use actual available fields: households, income, tenure rates
+- Avoid "investment" terminology per project requirements
+
+**Usage**: Frontend automatically routes housing queries (housing|real estate|property|home|residential|mortgage|rent|owner|tenant|dwelling) to housing API
+
+### 📋 Future Specialized APIs
+
+As we expand to other industries, additional specialized prompt APIs should be created following the same pattern:
+
+- `/api/claude/healthcare-generate-response` - Medical/healthcare terminology
+- `/api/claude/retail-generate-response` - Retail/consumer terminology  
+- `/api/claude/finance-generate-response` - Financial services terminology
+
+**Migration Note**: When creating new project types, copy `/api/claude/generate-response` to create industry-specific versions with appropriate terminology and prompts.
+
+---
+
 **Status**: Ready for Implementation  
 **Estimated Development Time**: 4 weeks  
 **ROI**: 95% time reduction per project migration
