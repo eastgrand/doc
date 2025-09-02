@@ -1907,6 +1907,7 @@ export async function POST(req: NextRequest) {
                 console.log(`🔍 [HYBRID SAMPLING] Layer ${idx}: Processed ${allAreas.length} total areas`);
                 console.log(`🔍 [HYBRID SAMPLING] Statistics: mean=${mean.toFixed(2)}, median=${median.toFixed(2)}, stdDev=${stdDev.toFixed(2)}`);
                 console.log(`🔍 [HYBRID SAMPLING] Sample composition: ${examples.length} unique areas (top 15 + bottom 5 + median 3 + mean 3 + outliers ${outliers.length} + decile reps 10)`);
+                console.log(`🔍 [HYBRID SAMPLING] Sample IDs: ${examples.slice(0, 10).map(e => `${e.id}(${e.value?.toFixed(1)})`).join(', ')}${examples.length > 10 ? '...' : ''}`);
               } else {
                 // Fallback to original method if no data
                 if (Array.isArray(ls.top)) examples.push(...ls.top.slice(0, 5));
