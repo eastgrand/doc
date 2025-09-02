@@ -40,7 +40,10 @@ export function getPrimaryScoreField(analysisType: string, metadata?: Record<str
   trend: 'trend_score',
   // Additional endpoints discovered in public/data/blob-urls.json
   feature_importance_ranking: 'importance_score',
-  market_intelligence_report: 'strategic_score'
+  market_intelligence_report: 'strategic_score',
+  // Housing market correlation analysis
+  housing_market_correlation: 'housing_correlation_score',
+  housing_correlation: 'housing_correlation_score'
   };
   return mapping[n] || 'value';
 }
@@ -81,6 +84,16 @@ export function getTopFieldDefinitions(analysisType: string): Array<{ field: str
         { field: 'brand_difference_score', source: ['brand_difference_score', 'comparison_score', 'comparison'], importance: 28 },
         { field: 'target_brand_share', source: ['target_brand_share', 'brand_share'], importance: 18 },
         { field: 'market_gap', source: ['market_gap'], importance: 12 }
+      ];
+    case 'housingmarketcorrelation':
+    case 'housingcorrelation':
+      return [
+        { field: 'hot_growth_market_index', source: ['hot_growth_market_index', 'growth_index', 'market_growth'], importance: 25 },
+        { field: 'home_affordability_index', source: ['home_affordability_index', 'affordability_index', 'housing_affordability'], importance: 25 },
+        { field: 'new_home_owner_index', source: ['new_home_owner_index', 'new_owner_index', 'homeowner_index'], importance: 20 },
+        { field: 'median_home_price', source: ['median_home_price', 'home_price', 'housing_price'], importance: 15 },
+        { field: 'population_growth_rate', source: ['population_growth_rate', 'pop_growth', 'growth_rate'], importance: 10 },
+        { field: 'housing_inventory_months', source: ['housing_inventory_months', 'inventory_months', 'supply_months'], importance: 5 }
       ];
     default:
       // Generic fallback: common useful fields
