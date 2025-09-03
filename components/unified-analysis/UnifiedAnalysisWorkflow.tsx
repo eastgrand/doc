@@ -450,13 +450,13 @@ export default function UnifiedAnalysisWorkflow({
               // console.log('[UnifiedWorkflow] Starting geometry join for', recordsWithoutGeometry.length, 'records without geometry');
               
               try {
-                // Load ZIP code boundaries for Florida
+                // Load FSA boundaries for Quebec
                 const { loadBoundaryData } = await import('@/utils/blob-data-loader');
-                const boundaryData = await loadBoundaryData('zip_boundaries');
+                const boundaryData = await loadBoundaryData('fsa_boundaries');
                 const geographicFeatures = boundaryData?.features || [];
                 
                 if (geographicFeatures.length > 0) {
-                  // console.log('[UnifiedWorkflow] ✅ Loaded', geographicFeatures.length, 'ZIP code boundaries');
+                  // console.log('[UnifiedWorkflow] ✅ Loaded', geographicFeatures.length, 'FSA boundaries');
                   
                   // Join records with geometry
                   const joinedResults = analysisData.records.map((record: any, index: number) => {

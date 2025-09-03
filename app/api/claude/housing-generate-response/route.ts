@@ -12,15 +12,12 @@ import { LocalGeospatialFeature } from '@/types/index';
 import { getRelevantFields } from '@/app/utils/field-analysis';
 import { EnhancedQueryAnalyzer } from '@/lib/analysis/EnhancedQueryAnalyzer';
 import { detectThresholdQuery, detectSegmentQuery, detectComparativeQuery } from '@/lib/analytics/query-analysis';
-import { getPersona, defaultPersona } from '../prompts';
+import { getHousingPersona } from '../shared/housing-personas';
 import { unionByGeoId } from '../../../../types/union-layer';
 import { multiEndpointFormatting, strategicSynthesis } from '../shared/base-prompt';
 import { GeoAwarenessEngine } from '../../../../lib/geo/GeoAwarenessEngine';
 import { getAnalysisPrompt } from '../shared/housing-analysis-prompts';
 import { resolveAreaName as resolveSharedAreaName, getZip as getSharedZip, resolveRegionName as resolveSharedRegionName } from '@/lib/shared/AreaName';
-// Commented out - not needed, didn't solve the 3-areas issue
-// import injectTopStrategicMarkets from '@/lib/analysis/postprocess/topStrategicMarkets';
-// import sanitizeNarrativeScope from '@/lib/analysis/postprocess/scopeSanitizer';
 import { getAnalysisLayers, sanitizeSummaryForAnalysis, sanitizeRankingArrayForAnalysis } from '@/lib/analysis/analysisLens';
 import { filterFeaturesBySpatialFilterIds, extractFeatureId } from '@/lib/analysis/utils/spatialFilter';
 import { getPrimaryScoreField, getTopFieldDefinitions } from '@/lib/analysis/strategies/processors/HardcodedFieldDefs';
@@ -3596,12 +3593,12 @@ Geographic Summary: ${geo.context_description || 'No geographic context availabl
         console.log('[Claude] Loading AI persona...');
         let selectedPersona;
         try {
-          const personaId = persona || defaultPersona;
-          selectedPersona = await getPersona(personaId);
-          console.log(`[Claude] Loaded persona: ${selectedPersona.name} (${personaId})`);
+          const personaId = persona || 'broker-agent'; // Default to broker-agent for housing
+          selectedPersona = await getHousingPersona(personaId);
+          console.log(`[Claude] Loaded housing persona: ${selectedPersona.name} (${personaId})`);
           } catch (error) {
-          console.warn('[Claude] Failed to load persona, falling back to default:', error);
-          selectedPersona = await getPersona(defaultPersona);
+          console.warn('[Claude] Failed to load housing persona, falling back to broker-agent:', error);
+          selectedPersona = await getHousingPersona('broker-agent');
         }
 
         // --- Call Anthropic API ---
@@ -4164,15 +4161,6 @@ Present this analysis in your professional ${selectedPersona.name} style while p
           return analysisType;
         })();
 
-        // Commented out - not needed, didn't solve the 3-areas issue
-        // // If Top Strategic Markets list is present, inject ranked list based on provided data (adaptive count)
-        // try {
-        //   // Marker for smoke checks: Top Strategic Markets: ... Study Area Summary
-        //   // The max-10 cap is enforced in the shared utility via slice(0, Math.min(10, ...))
-        //   finalContent = injectTopStrategicMarkets(finalContent, processedLayersData, metadata, postProcessAnalysisType);
-        // } catch (e) {
-        //   console.warn('[Claude] Top Strategic Markets post-process failed:', e);
-        // }
 
         // // Enforce study-area scope across the rest of the narrative to remove conflicting global stats
         // try {

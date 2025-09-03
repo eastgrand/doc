@@ -21,33 +21,35 @@ export const analysisPrompts = {
   competitive_analysis: `
 ${UNIVERSAL_REQUIREMENTS}
 
-COMPETITIVE ANALYSIS TECHNICAL CONTEXT:
-You are analyzing competitive positioning data to identify strategic advantages between competing brands across different geographic markets.
+COMPETITIVE HOUSING MARKET ANALYSIS TECHNICAL CONTEXT:
+You are analyzing competitive housing market dynamics to help residential real estate brokers understand market positioning across different Quebec areas.
 
 SCORING METHODOLOGY:
-The competitive_advantage_score (1-10 scale) represents overall competitive strength in each market, calculated by combining:
-• Market Share Dominance: Primary brand's market share relative to competitors (25% weight)
-• Demographic Alignment: How well local demographics match target customer profiles (25% weight) 
-• Competitive Pressure: Inverse of competitor strength and market saturation (25% weight)
-• Brand Category Strength: Performance in key product categories and market segments (25% weight)
+The competitive_advantage_score (1-10 scale) represents overall housing market competitiveness, calculated by combining:
+• Market Activity Level: Transaction volume and listing activity relative to other markets (25% weight)
+• Buyer Demographics: How well local demographics match active homebuyer profiles (25% weight) 
+• Market Competition: Inventory levels and seller competition dynamics (25% weight)
+• Housing Market Strength: HOT_GROWTH_INDEX and market momentum indicators (25% weight)
 
-Higher scores indicate markets where there are stronger competitive positioning opportunities for expansion or investment.
+Higher scores indicate markets with stronger competitive dynamics for real estate transactions.
 
 DATA STRUCTURE:
 - competitive_advantage_score: Primary ranking metric (1-10 scale, precise decimals)
-- brand_a_share: Primary brand's current market share percentage
-- brand_b_share: Competitor brand market share percentage  
-- brand_c_share: Additional competitor brand market share percentage (if available)
-- demographic_fit_score: How well demographics align with target customers
-- competitive_pressure_index: Level of competition from other brands
-- brand_category_strength: Relative strength across product categories
+- HOT_GROWTH_INDEX: Housing market growth momentum indicator
+- NEW_HOMEOWNER_INDEX: First-time buyer activity levels
+- HOUSING_AFFORDABILITY_INDEX: Market affordability for typical buyers
+- ECYPTAPOP: Total population
+- ECYTENHHD: Total households
+- ECYHRIMED: Median household income
+- ECYTENOWN_P: Homeownership rate percentage
+- ECYTENRENT_P: Rental rate percentage
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS rank and prioritize by competitive_advantage_score (1-10 scale)
-2. Discuss specific brand comparisons and market share dynamics in analysis
-3. Explain HOW the scoring methodology creates competitive advantages in each market
-4. Compare brand performance using available market share data
-5. Focus on strategic competitive positioning, not just current market dominance
+2. Discuss housing market dynamics and competitive positioning for buyers/sellers
+3. Explain HOW the housing indexes (HOT_GROWTH, NEW_HOMEOWNER, AFFORDABILITY) impact market competitiveness
+4. Compare market performance using demographic and housing tenure data
+5. Focus on residential real estate opportunities, not investment strategies
 6. Use competitor data to explain competitive dynamics and opportunities
 
 NEXT STEPS REQUIREMENTS:
@@ -74,32 +76,35 @@ ANALYSIS FOCUS:
 `,
 
   demographic_insights: `
-DEMOGRAPHIC ANALYSIS TECHNICAL CONTEXT:
-You are analyzing demographic data to identify market opportunities based on population characteristics and demographic alignment with target customer profiles.
+DEMOGRAPHIC HOUSING ANALYSIS TECHNICAL CONTEXT:
+You are analyzing demographic data to help residential real estate brokers identify areas with strong homebuyer and seller demographics in Quebec markets.
 
 SCORING METHODOLOGY:
-The demographic_insights_score (0-100 scale) measures how well each market's demographics align with ideal customer profiles, calculated by analyzing:
-• Target Demographics Match: Alignment with core age groups and lifestyle indicators (40% weight)
-• Income Compatibility: Income levels that support product purchasing power (25% weight)
-• Lifestyle Indicators: Active lifestyle, engagement levels, and relevant consumer behaviors (20% weight)
-• Demographic Growth Trends: Population growth in target segments and demographic momentum (15% weight)
+The demographic_insights_score (0-100 scale) measures demographic favorability for housing market activity, calculated by analyzing:
+• Homebuyer Demographics: NEW_HOMEOWNER_INDEX and young maintainer populations (40% weight)
+• Income Levels: ECYHRIMED median income supporting housing affordability (25% weight)
+• Housing Tenure Mix: Balance of ECYTENOWN_P ownership vs ECYTENRENT_P rental rates (20% weight)
+• Population Growth: ECYPTAPOP and ECYTENHHD household formation trends (15% weight)
 
-Higher scores indicate markets where demographics strongly align with target customers and provide optimal expansion opportunities.
+Higher scores indicate markets with demographics favorable for active real estate markets.
 
 DATA STRUCTURE:
 - demographic_insights_score: Primary ranking metric (0-100 scale)
-- total_population: Market size and reach potential
-- median_income: Purchasing power indicators
-- age_distribution: Age group breakdowns and target segment concentration
-- lifestyle_indicators: Active lifestyle and engagement data
-- demographic_trends: Population growth and demographic shift patterns
+- ECYPTAPOP: Total population
+- ECYTENHHD: Total households
+- ECYHRIMED: Median household income
+- ECYTENOWN_P: Homeownership rate percentage
+- ECYTENRENT_P: Rental rate percentage
+- NEW_HOMEOWNER_INDEX: First-time buyer activity indicator
+- HOUSING_AFFORDABILITY_INDEX: Market affordability for typical buyers
+- HOT_GROWTH_INDEX: Housing market growth momentum
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS start analysis by explaining how demographic scores are calculated
-2. Focus on population segments that align with target customer profiles
-3. Analyze income levels and their impact on product purchasing power
-4. Identify demographic trends that create market opportunities
-5. Connect demographic characteristics to market potential and brand affinity
+2. Focus on homebuyer and seller demographics using housing indexes
+3. Analyze income levels (ECYHRIMED) and their impact on housing affordability (HOUSING_AFFORDABILITY_INDEX)
+4. Identify demographic trends using NEW_HOMEOWNER_INDEX and HOT_GROWTH_INDEX
+5. Connect demographic characteristics to real estate market potential
 
 NEXT STEPS REQUIREMENTS:
 Do NOT recommend generic activities like:
@@ -127,23 +132,24 @@ ANALYSIS FOCUS:
 `,
 
   trend_analysis: `
-TREND ANALYSIS TECHNICAL CONTEXT:
-You are analyzing trend strength data to identify markets with strong temporal patterns and growth momentum.
+HOUSING TREND ANALYSIS TECHNICAL CONTEXT:
+You are analyzing housing market trend data to help residential real estate brokers identify Quebec markets with strong momentum.
 
 ⚠️ IMPORTANT DATA LIMITATION NOTICE:
 This analysis uses PROXY INDICATORS and STATISTICAL MODELING rather than actual historical time-series data. The trend scores are derived from:
-• Current market characteristics that typically correlate with growth (demographics, income patterns)
-• Statistical indicators suggesting momentum potential
-• Market maturity signals and saturation levels
-• Comparative performance metrics across similar markets
+• HOT_GROWTH_INDEX: Housing market growth momentum indicator
+• NEW_HOMEOWNER_INDEX: First-time buyer activity trends
+• HOUSING_AFFORDABILITY_INDEX: Affordability trend indicators
+• Demographic shifts in ECYPTAPOP and ECYTENHHD
+• Income growth patterns in ECYHRIMED
 
 For TRUE TEMPORAL ANALYSIS with actual historical trends, year-over-year changes, and time-series forecasting, we would require:
-• Multiple years of historical performance data
-• Time-stamped transaction records
-• Seasonal pattern data
-• Economic cycle performance history
+• Multiple years of MLS transaction data
+• Historical price appreciation records
+• Seasonal housing market patterns
+• Real estate cycle performance history
 
-The current analysis provides DIRECTIONAL INSIGHTS about likely growth patterns based on market fundamentals rather than measured historical trends.
+The current analysis provides DIRECTIONAL INSIGHTS about likely housing market patterns based on demographic and affordability fundamentals.
 
 SCORING METHODOLOGY:
 The trend_strength_score (0-100 scale) measures how strong and reliable market trends are in each area, combining:
@@ -152,13 +158,16 @@ The trend_strength_score (0-100 scale) measures how strong and reliable market t
 • Pattern Stability: How predictable and sustainable the trends appear (25% weight)
 • Volatility Control: Lower volatility indicates more reliable trends (20% weight)
 
-Higher scores indicate markets with strong, consistent growth patterns that are ideal for strategic investment.
+Higher scores indicate markets with strong, consistent housing market momentum ideal for real estate activity.
 
 DATA STRUCTURE:
 - trend_strength_score: Primary ranking metric (0-100 scale)
-- growth_potential: Market growth trajectory indicators
-- trend_consistency: Performance stability over time
-- volatility_index: Market predictability measures
+- HOT_GROWTH_INDEX: Housing market growth momentum
+- NEW_HOMEOWNER_INDEX: First-time buyer activity levels
+- HOUSING_AFFORDABILITY_INDEX: Market affordability trends
+- ECYPTAPOP: Total population trends
+- ECYTENHHD: Household formation trends
+- ECYHRIMED: Income growth patterns
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS start by acknowledging this uses proxy indicators, not historical data
@@ -791,8 +800,8 @@ ANALYSIS FOCUS:
   housing_market_analysis: `
 ${UNIVERSAL_REQUIREMENTS}
 
-HOUSING MARKET INVESTMENT ANALYSIS TECHNICAL CONTEXT:
-You are analyzing housing market data to identify optimal areas for real estate investment, homebuying opportunities, and housing market trends.
+HOUSING MARKET ANALYSIS TECHNICAL CONTEXT:
+You are analyzing housing market data to help residential real estate brokers serve their clients - homebuyers, home sellers, and families looking for housing in Quebec markets.
 
 SCORING METHODOLOGY:
 The housing_market_score (0-100 scale) measures housing investment potential and market attractiveness, combining:
@@ -809,7 +818,7 @@ HOUSING MARKET TERMINOLOGY (CRITICAL):
 - Use "neighborhood characteristics" NOT "brand positioning"
 - Use "housing inventory levels" NOT "competitive pressure"
 - Use "homebuyer demand" NOT "customer acquisition"
-- Use "property investment potential" NOT "strategic value"
+- Use "housing market potential" NOT "strategic value"
 - Use "housing price trends" NOT "performance metrics"
 - Use "real estate fundamentals" NOT "market dynamics"
 
@@ -820,35 +829,35 @@ DATA STRUCTURE:
 - inventory_levels: Available housing supply (Tight/Balanced/Abundant)
 - appreciation_potential: Property value growth prospects
 - neighborhood_quality: Area amenities and livability scores
-- investment_rating: Real estate investment attractiveness
+- market_rating: Real estate market attractiveness
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS rank and prioritize by housing_market_score (0-100)
-2. Focus on housing affordability, property values, and investment potential
+2. Focus on housing affordability, property values, and market activity
 3. Use proper real estate terminology - avoid business/retail language
-4. Identify optimal areas for homebuying and real estate investment
+4. Identify optimal areas for homebuying and selling opportunities
 5. Explain housing market factors: prices, affordability, inventory, appreciation potential
 
 ANALYSIS FOCUS:
-- Identify housing markets with strongest investment and affordability potential
-- Explain property values, price trends, and affordability factors
-- Recommend real estate investment strategies based on market fundamentals
+- Identify housing markets with strongest opportunities for residential clients
+- Explain property values, price trends, and affordability factors  
+- Recommend market strategies for buyers and sellers based on market fundamentals
 - Highlight affordable markets with growth potential vs overvalued areas
-- Focus on homebuyer and investor perspectives, not business expansion
+- Focus on homebuyer and seller perspectives, not business expansion
 
 NEXT STEPS REQUIREMENTS:
 PROVIDE REAL ESTATE-FOCUSED RECOMMENDATIONS:
-- Target specific neighborhoods for property investment or homebuying
+- Target specific neighborhoods for homebuying or selling
 - Timing recommendations for market entry based on price trends
 - Property type recommendations (single-family, condos, multi-family)
-- Investment strategies based on local market conditions
+- Market entry strategies based on local market conditions
 - Affordability analysis for different buyer segments
 
 AVOID BUSINESS TERMINOLOGY:
 - Never use "market gap" (use "affordability opportunity" or "undervalued market")
 - Never use "brand positioning" (use "neighborhood positioning" or "area characteristics")
 - Never use "customer segments" (use "buyer demographics" or "homebuyer profiles")
-- Never use "strategic expansion" (use "investment expansion" or "market entry")
+- Never use "strategic expansion" (use "market entry" or "market opportunities")
 `,
 
 

@@ -2194,6 +2194,14 @@ For housing market analysis projects, we maintain a specialized version of the g
    - **For Business Projects**: Change API call to `/api/claude/generate-response`
    - **Implementation**: Simply update the fetch URL in `sendChatMessage()` function
 
+2. **Geographic Boundary Selection**: Update boundary data loading based on geography:
+   - **For US Projects**: Use `loadBoundaryData('zip_boundaries')` for ZIP code polygons
+   - **For Canadian Projects**: Use `loadBoundaryData('fsa_boundaries')` for FSA code polygons
+   - **Files to Update**: 
+     - `/components/unified-analysis/UnifiedAnalysisWorkflow.tsx:455`
+     - `/components/geospatial-chat-interface.tsx:1184`
+   - **Key Change**: Replace `'zip_boundaries'` with `'fsa_boundaries'` for Canadian projects
+
 2. **Housing Prompts**: `/app/api/claude/shared/housing-analysis-prompts.ts` 
    - Copy from `/app/api/claude/shared/analysis-prompts.ts`
    - Update terminology for housing/real estate context

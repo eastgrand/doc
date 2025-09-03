@@ -1181,7 +1181,7 @@ const EnhancedGeospatialChat = memo(({
   const loadBoundariesFromFile = async (): Promise<FeatureType[]> => {
     // Load ZIP Code polygon boundaries from blob storage with fallback to local
     const { loadBoundaryData } = await import('@/utils/blob-data-loader');
-    const boundaryData = await loadBoundaryData('zip_boundaries');
+    const boundaryData = await loadBoundaryData('fsa_boundaries');
     
     if (!boundaryData) {
       throw new Error('Failed to load ZIP code boundaries from both blob storage and local files');
