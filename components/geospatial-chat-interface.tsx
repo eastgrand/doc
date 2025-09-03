@@ -1199,22 +1199,22 @@ const EnhancedGeospatialChat = memo(({
       source: 'blob-data-loader'
     });
     
-    if (!boundaryData.features || !Array.isArray(boundaryData.features)) {
+    if (!(boundaryData as any).features || !Array.isArray((boundaryData as any).features)) {
       throw new Error('Invalid boundaries data structure - no features array');
     }
     
-    if (boundaryData.features.length === 0) {
+    if ((boundaryData as any).features.length === 0) {
       throw new Error('No features in boundaries data');
     }
     
     console.log('[loadBoundariesFromFile] 📁 ZIP Code boundaries loaded from file:', {
-      total: boundaryData.features.length,
-      fileSize: `${(boundaryData.features.length * 0.0007).toFixed(1)} MB (estimated)`,
+      total: (boundaryData as any).features.length,
+      fileSize: `${((boundaryData as any).features.length * 0.0007).toFixed(1)} MB (estimated)`,
       source: 'blob-data-loader'
     });
     
     // Convert GeoJSON features to internal FeatureType format
-    const features: FeatureType[] = boundaryData.features.map((feature: any, index: number) => {
+    const features: FeatureType[] = (boundaryData as any).features.map((feature: any, index: number) => {
       if (!feature.geometry || !feature.properties) {
         console.warn(`[loadBoundariesFromFile] Invalid feature at index ${index}:`, feature);
         return null;

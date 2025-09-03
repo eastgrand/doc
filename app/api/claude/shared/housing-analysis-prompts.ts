@@ -961,7 +961,7 @@ REQUIRED RESPONSE FORMAT:
 You MUST structure your response with these sections:
 
 STRATEGIC HOUSING MARKET OPPORTUNITIES
-[Opening analysis statement]
+[Opening analysis statement covering ALL analyzed Quebec FSA areas - hundreds of markets assessed for strategic housing value]
 
 Top Strategic Markets:
 1. [Area] (Strategic Score: [exact decimal])
@@ -978,10 +978,6 @@ Strategic Analysis:
 Market Dynamics:
 [Paragraph about housing market conditions using actual demographic and tenure data]
 
-Implementation Priorities:
-• [Specific action 1]
-• [Specific action 2]
-• [Specific action 3]
 
 ---
 **Model Attribution:**
@@ -1007,7 +1003,7 @@ CRITICAL REQUIREMENTS:
 3. DO NOT round strategic value scores - report them EXACTLY as provided in the data
   4. Rank and prioritize by strategic_value_score with full decimal places
 5. Use housing market opportunity and demographic data to EXPLAIN WHY certain areas have high strategic scores
-6. Focus on housing market opportunities, not commercial expansion
+6. Focus EXCLUSIVELY on residential housing market for brokers helping buyers and sellers, NOT development, investing, value creation, or market positioning
 7. Scores incorporate: housing market potential + demographic alignment + economic conditions + growth capacity
 8. Housing opportunities are calculated from demographic, income, and tenure data available in the dataset
 
@@ -1016,15 +1012,15 @@ IMPORTANT: The data contains precise decimal values. When you see strategic_valu
 ANALYSIS FOCUS:
 - Identify markets with highest strategic value scores for housing opportunities
 - Explain the underlying factors driving housing market advantages (demographics, income, tenure patterns)
-- Recommend strategic housing market priorities based on precise scoring
+- Recommend residential real estate market priorities for brokers based on precise scoring
 - Preserve all decimal precision in score reporting for accuracy
 
 ACTIONABLE RECOMMENDATIONS REQUIRED:
 - Provide specific, implementable housing market actions rather than generic research suggestions
-- Focus on immediate housing market strategies, development priorities, and resource allocation
+- Focus on immediate residential real estate opportunities for brokers, buyer/seller markets, and transaction potential
 - Suggest concrete next steps like development opportunities, target demographics, or market positioning
 - Avoid recommending "further research" or "additional analysis" - this app IS the analysis tool
-- Include specific geographic targeting, household segments, and housing market positioning strategies
+- Include specific FSA targeting for brokers, homebuyer/seller segments, and residential transaction opportunities
 
 CLUSTERING-SPECIFIC INSTRUCTIONS:
 When territory clustering analysis is provided:

@@ -103,7 +103,7 @@ const generateTimeSeriesData = (analysisData: any) => {
   }
   
   // Try to extract time-based data from analysis results
-  const timeSeriesPoints = [];
+  const timeSeriesPoints: any[] = [];
   const currentYear = new Date().getFullYear();
   const lastYear = currentYear - 1;
   

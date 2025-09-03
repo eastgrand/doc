@@ -55,7 +55,7 @@ export default function CompositeIndexLayerManager({
         
         // Configure layer properties from config
         layer.title = config.name;
-        layer.visible = config.isVisible;
+        layer.visible = config.visible ?? true;
         layer.listMode = config.skipLayerList ? 'hide' : 'show';
         
         // Add to map

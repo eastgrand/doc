@@ -1,9 +1,34 @@
 {
-  "export_date": "2025-08-24 17:21:36",
-  "source_service": "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__09db2071715949f6/FeatureServer/0",
-  "output_file": "public/data/boundaries/zip_boundaries.json",
-  "file_size_mb": 10.9,
-  "total_features": 1804,
-  "geometry_type": "Polygon",
-  "spatial_reference": "EPSG:4326"
+  "generated_at": "2025-09-02T15:20:18.247Z",
+  "total_fsas": 415,
+  "source": "ArcGIS Quebec Housing FSA Service",
+  "format": "GeoJSON FeatureCollection",
+  "coordinate_system": "WGS84 (EPSG:4326)",
+  "sample_fsas": [
+    {
+      "id": "G0A",
+      "description": "G0A (Sainte-Anne-De-Beaupre, QC)",
+      "population": 89684
+    },
+    {
+      "id": "G0C",
+      "description": "G0C (New Richmond, QC)",
+      "population": 48426
+    },
+    {
+      "id": "G0E",
+      "description": "G0E (Grande-Vallee, QC)",
+      "population": 4749
+    },
+    {
+      "id": "G0G",
+      "description": "G0G (Fermont, QC)",
+      "population": 17630
+    },
+    {
+      "id": "G0H",
+      "description": "G0H (Pessamit, QC)",
+      "population": 10572
+    }
+  ]
 }

@@ -453,7 +453,7 @@ export default function UnifiedAnalysisWorkflow({
                 // Load FSA boundaries for Quebec
                 const { loadBoundaryData } = await import('@/utils/blob-data-loader');
                 const boundaryData = await loadBoundaryData('fsa_boundaries');
-                const geographicFeatures = boundaryData?.features || [];
+                const geographicFeatures = (boundaryData as any)?.features || [];
                 
                 if (geographicFeatures.length > 0) {
                   // console.log('[UnifiedWorkflow] ✅ Loaded', geographicFeatures.length, 'FSA boundaries');
@@ -1347,10 +1347,10 @@ export default function UnifiedAnalysisWorkflow({
     setBufferType('radius');
     
     // Reset clustering config
-    setClusterConfig({
-      ...DEFAULT_CLUSTER_CONFIG,
-      minScorePercentile: DEFAULT_CLUSTER_CONFIG.minScorePercentile ?? 70
-    });
+    // setClusterConfig({
+    //   ...DEFAULT_CLUSTER_CONFIG,
+    //   minScorePercentile: DEFAULT_CLUSTER_CONFIG.minScorePercentile ?? 70
+    // });
     
     // Reset chat state
     setChatMessages([]);
@@ -1969,9 +1969,9 @@ export default function UnifiedAnalysisWorkflow({
                   analysisResult={workflowState.analysisResult?.analysisResult}
                   analysisContext={{
                     selectedAreaName: workflowState.areaSelection?.displayName || '',
-                    zipCodes: workflowState.analysisResult?.metadata?.spatialFilterIds || [],
-                    endpoint: workflowState.analysisResult?.metadata?.endpoint || '',
-                    query: workflowState.analysisResult?.metadata?.query || selectedQuery || '',
+                    zipCodes: (workflowState.analysisResult?.metadata as any)?.spatialFilterIds || [],
+                    endpoint: (workflowState.analysisResult?.metadata as any)?.endpoint || '',
+                    query: (workflowState.analysisResult?.metadata as any)?.query || selectedQuery || '',
                     persona: selectedPersona,
                     fieldCount: workflowState.analysisResult?.analysisResult?.data?.records?.length || 0,
                     shapFeatures: workflowState.analysisResult?.analysisResult?.data?.featureImportance

@@ -1008,7 +1008,7 @@ const generateBarChart = (
       attributeValues: attrs,
   nonZeroValues: Object.entries(attrs).filter(([, value]) => typeof value === 'number' && value !== 0),
   allNumericValues: Object.entries(attrs).filter(([, value]) => typeof value === 'number'),
-      brandFields: brandFields.map(bf => ({ field: bf.fieldName, brand: bf.brandName, value: bf.value })),
+      brandFields: brandFields.map(bf => ({ field: bf.fieldName, brand: (bf as any).brandName, value: bf.value })),
       isBrandAnalysis: isBrandAnalysis
     });
     
@@ -1122,7 +1122,7 @@ const generateBarChart = (
       brandFields.forEach(brandField => {
         if (brandField.fieldName !== mainScoreField && brandField.value !== 0) {
           metrics.push({
-            label: FieldMappingHelper.getFriendlyFieldName(brandField.fieldName) || `${brandField.brandName} Market Share`,
+            label: FieldMappingHelper.getFriendlyFieldName(brandField.fieldName) || `${(brandField as any).brandName} Market Share`,
             value: brandField.value,
             color: 'var(--firefly-8)', // Blue for brand metrics
             isPercent: true

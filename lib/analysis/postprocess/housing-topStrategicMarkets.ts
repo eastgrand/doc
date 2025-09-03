@@ -1,29 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { resolveAreaName as resolveSharedAreaName, getZip as getSharedZip } from '@/lib/shared/AreaName';
+import { resolveAreaName as resolveSharedAreaName, getFSA as getSharedFSA } from '@/lib/shared/housing-AreaName';
 import { getPrimaryScoreField } from '@/lib/analysis/strategies/processors/HardcodedFieldDefs';
 
-// Local helper: robust ZIP extractor compatible with existing feature shapes
-function getZIPCode(feature: any): string {
+// Local helper: robust FSA extractor compatible with existing feature shapes
+function getFSACode(feature: any): string {
   try {
     if (!feature) return 'Unknown';
     const f = feature?.properties ? feature : { properties: feature };
     const props = f.properties || {};
-    const direct = props.ZIP || props.Zip || props.zip || props.ZIPCODE || props.zip_code || props.ZipCode;
+    const direct = props.ID || props.FSA_ID || props.fsa_code || props.postal_code;
     if (direct && typeof direct === 'string') {
-      const m = direct.match(/\b(\d{5})\b/);
-      if (m) return m[1];
-    } else if (typeof direct === 'number') {
-      const s = String(direct).padStart(5, '0');
-      return s;
+      const m = direct.match(/\b([A-Z]\d[A-Z])\b/i);
+      if (m) return m[1].toUpperCase();
     }
     const desc = typeof props.DESCRIPTION === 'string' ? props.DESCRIPTION : (typeof props.area_name === 'string' ? props.area_name : '');
-    const zipMatch = desc.match(/\b(\d{5})\b/);
-    if (zipMatch && zipMatch[1]) return zipMatch[1];
+    const fsaMatch = desc.match(/\b([A-Z]\d[A-Z])\b/i);
+    if (fsaMatch && fsaMatch[1]) return fsaMatch[1].toUpperCase();
   } catch {}
   try {
     // Fallback to shared util
-    const z = getSharedZip(feature);
-    if (z && z !== 'Unknown') return z;
+    const f = getSharedFSA(feature);
+    if (f && f !== 'Unknown') return f;
   } catch {}
   return 'Unknown';
 }
@@ -94,10 +91,10 @@ export function injectTopStrategicMarkets(
           const direct = props.ID ?? props.id ?? props.area_id ?? props.areaID ?? props.geoid ?? props.GEOID;
           if (direct !== undefined && direct !== null) return String(direct);
           const desc = typeof props.DESCRIPTION === 'string' ? props.DESCRIPTION : (typeof props.area_name === 'string' ? props.area_name : '');
-          const zipMatch = desc.match(/\b(\d{5})\b/);
-          if (zipMatch && zipMatch[1]) return zipMatch[1];
-          const zip = getZIPCode({ properties: props });
-          if (zip && zip !== 'Unknown') return String(zip);
+          const fsaMatch = desc.match(/\b([A-Z]\d[A-Z])\b/i);
+          if (fsaMatch && fsaMatch[1]) return fsaMatch[1].toUpperCase();
+          const fsa = getFSACode({ properties: props });
+          if (fsa && fsa !== 'Unknown') return String(fsa);
         } catch {}
         return null;
       };
@@ -191,7 +188,7 @@ export function injectTopStrategicMarkets(
     })
     .filter((x: any) => x.name && !Number.isNaN(x.score))
     .sort((a: any, b: any) => b.score - a.score)
-    .slice(0, Math.min(10, candidateFeatures.length || 10));
+    .slice(0, Math.max(5, Math.min(15, candidateFeatures.length || 15)));
 
   // Deduplicate by normalized name to avoid repeated entries (e.g., duplicate Oceanside ZIP)
   const seen = new Set<string>();
