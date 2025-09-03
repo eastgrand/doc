@@ -1440,7 +1440,13 @@ function getZIPCode(feature: any): string {
     }
     
     if (description) {
-      // Try comprehensive regex patterns for different formats
+      // FIRST: Check for FSA patterns (Canadian postal codes) - prioritize these to avoid padding
+      const fsaMatch = description.match(/\b([A-Z]\d[A-Z])\b/i);
+      if (fsaMatch) {
+        return fsaMatch[1].toUpperCase(); // Return FSA directly without any padding
+      }
+      
+      // Then try comprehensive regex patterns for US ZIP codes
       
       // Pattern 1: Extract ZIP at beginning followed by space and parentheses - "10001 (New York)"
       let zipMatch = description.match(/^(\d+)\s*\(/);
