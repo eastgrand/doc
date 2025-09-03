@@ -30,15 +30,8 @@ export async function sendChatMessage(request: ChatRequest, options?: { signal?:
   const { buildClaudePayload } = await import('@/utils/chat/build-claude-payload');
   const payload = buildClaudePayload(request);
 
-  // Detect housing queries and route to housing-specific API
-  const lastMessage = request.messages[request.messages.length - 1];
-  const query = lastMessage?.content || '';
-  const isHousingQuery = /\b(housing|real estate|property|home|residential|mortgage|rent|owner|tenant|dwelling)\b/i.test(query);
-  
-  const apiEndpoint = isHousingQuery ? '/api/claude/housing-generate-response' : '/api/claude/generate-response';
-  console.log(`[ChatService] Routing to ${apiEndpoint} for query: "${query.substring(0, 50)}..."`);
-
-  const response = await fetch(apiEndpoint, {
+  // This is a housing project - always use housing-specific API
+  const response = await fetch('/api/claude/housing-generate-response', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),

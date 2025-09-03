@@ -788,6 +788,70 @@ ANALYSIS FOCUS:
 - Highlight prime flagship locations vs standard store opportunities vs limited potential areas
 `,
 
+  housing_market_analysis: `
+${UNIVERSAL_REQUIREMENTS}
+
+HOUSING MARKET INVESTMENT ANALYSIS TECHNICAL CONTEXT:
+You are analyzing housing market data to identify optimal areas for real estate investment, homebuying opportunities, and housing market trends.
+
+SCORING METHODOLOGY:
+The housing_market_score (0-100 scale) measures housing investment potential and market attractiveness, combining:
+• Property Value Growth: Historical and projected appreciation potential (35% weight)
+• Market Affordability: Housing costs relative to local income levels and buying power (25% weight)
+• Neighborhood Quality: Safety, amenities, schools, and livability factors (25% weight)
+• Investment Fundamentals: Supply/demand balance, inventory levels, and market stability (15% weight)
+
+Higher scores indicate housing markets with the strongest combination of growth potential, affordability, and investment fundamentals.
+
+HOUSING MARKET TERMINOLOGY (CRITICAL):
+- Use "housing affordability" NOT "market gap"
+- Use "property value appreciation" NOT "brand share"
+- Use "neighborhood characteristics" NOT "brand positioning"
+- Use "housing inventory levels" NOT "competitive pressure"
+- Use "homebuyer demand" NOT "customer acquisition"
+- Use "property investment potential" NOT "strategic value"
+- Use "housing price trends" NOT "performance metrics"
+- Use "real estate fundamentals" NOT "market dynamics"
+
+DATA STRUCTURE:
+- housing_market_score: Primary ranking metric (0-100 scale)
+- median_home_price: Local housing costs and price levels
+- price_to_income_ratio: Affordability relative to local wages
+- inventory_levels: Available housing supply (Tight/Balanced/Abundant)
+- appreciation_potential: Property value growth prospects
+- neighborhood_quality: Area amenities and livability scores
+- investment_rating: Real estate investment attractiveness
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS rank and prioritize by housing_market_score (0-100)
+2. Focus on housing affordability, property values, and investment potential
+3. Use proper real estate terminology - avoid business/retail language
+4. Identify optimal areas for homebuying and real estate investment
+5. Explain housing market factors: prices, affordability, inventory, appreciation potential
+
+ANALYSIS FOCUS:
+- Identify housing markets with strongest investment and affordability potential
+- Explain property values, price trends, and affordability factors
+- Recommend real estate investment strategies based on market fundamentals
+- Highlight affordable markets with growth potential vs overvalued areas
+- Focus on homebuyer and investor perspectives, not business expansion
+
+NEXT STEPS REQUIREMENTS:
+PROVIDE REAL ESTATE-FOCUSED RECOMMENDATIONS:
+- Target specific neighborhoods for property investment or homebuying
+- Timing recommendations for market entry based on price trends
+- Property type recommendations (single-family, condos, multi-family)
+- Investment strategies based on local market conditions
+- Affordability analysis for different buyer segments
+
+AVOID BUSINESS TERMINOLOGY:
+- Never use "market gap" (use "affordability opportunity" or "undervalued market")
+- Never use "brand positioning" (use "neighborhood positioning" or "area characteristics")
+- Never use "customer segments" (use "buyer demographics" or "homebuyer profiles")
+- Never use "strategic expansion" (use "investment expansion" or "market entry")
+`,
+
+
   market_penetration: `
 MARKET PENETRATION TECHNICAL CONTEXT:
 You are analyzing market penetration opportunities to identify underserved markets with strong expansion potential and optimal market entry strategies.
@@ -1396,6 +1460,11 @@ export function getAnalysisPrompt(analysisType: string): string {
     'profile': 'customer_profile',
     'brand': 'brand_difference',
     'difference': 'brand_difference',
+    'housing': 'housing_market_analysis',
+    'housing_market': 'housing_market_analysis',
+    'real_estate': 'real_estate_analysis',
+    'realestate': 'real_estate_analysis',
+    'property': 'housing_market_analysis',
     'analyze': 'general',
     'analysis': 'general'
   };
@@ -1458,6 +1527,8 @@ ENDPOINT MODEL MAPPING (use this hardcoded data instead of extracting from endpo
 - anomaly-insights: Enhanced Anomaly Detection
 - dimensionality-insights: PCA (91.7% Variance Explained)
 - consensus-analysis: Multi-Model Consensus
+- housing-market-analysis: Housing Market Analysis Model
+- real-estate-analysis: Real Estate Investment Model
 
 TOOLTIP TEXT MAPPING (for Score Calculation Method - store this for potential tooltip use):
 - strategic-analysis: "Investment potential weighted by market factors, growth indicators, and competitive positioning"
@@ -1486,6 +1557,8 @@ TOOLTIP TEXT MAPPING (for Score Calculation Method - store this for potential to
 - anomaly-insights: "Anomaly significance × opportunity potential × investigation priority × market value"
 - dimensionality-insights: "Feature compression efficiency × component significance × variance explanation × complexity reduction"
 - consensus-analysis: "Model agreement score × consensus confidence × uncertainty quantification × prediction reliability"
+- housing-market-analysis: "Property value growth × affordability factors × neighborhood quality × investment fundamentals"
+- real-estate-analysis: "Location quality × demographic fit × accessibility & traffic × retail opportunity"
 
 CRITICAL: Use the exact model name from the ENDPOINT_MODEL_MAPPING above based on the analysis type being performed. Do NOT extract from endpoint data anymore.`;
 

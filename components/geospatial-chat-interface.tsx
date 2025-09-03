@@ -1188,13 +1188,13 @@ const EnhancedGeospatialChat = memo(({
     }
     
     console.log('[loadBoundariesFromFile] Boundaries data loaded:', {
-      hasFeatures: !!boundaryData.features,
-      isArray: Array.isArray(boundaryData.features),
-      count: boundaryData.features?.length || 0,
-      sampleFeature: boundaryData.features?.[0] ? {
-        hasProperties: !!boundaryData.features[0].properties,
-        hasGeometry: !!boundaryData.features[0].geometry,
-        sampleId: boundaryData.features[0].properties?.ID
+      hasFeatures: !!(boundaryData as any).features,
+      isArray: Array.isArray((boundaryData as any).features),
+      count: (boundaryData as any).features?.length || 0,
+      sampleFeature: (boundaryData as any).features?.[0] ? {
+        hasProperties: !!(boundaryData as any).features[0].properties,
+        hasGeometry: !!(boundaryData as any).features[0].geometry,
+        sampleId: (boundaryData as any).features[0].properties?.ID
       } : null,
       source: 'blob-data-loader'
     });

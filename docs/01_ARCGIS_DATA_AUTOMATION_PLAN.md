@@ -6,7 +6,7 @@ This document outlines a comprehensive automation strategy for extracting data f
 
 **All core automation components have been implemented and are ready for deployment!**
 
-## Table of Contents
+## Table of Contentss
 
 1. [Overview](#overview)
 2. [Implementation Progress](#implementation-progress)
@@ -2185,11 +2185,14 @@ python automate-arcgis-to-microservice.py \
 
 For housing market analysis projects, we maintain a specialized version of the generate-response API with housing-specific terminology and prompts. This ensures proper real estate language instead of business/retail terminology.
 
-**Files to Update When Switching Prompts:**
+**How to Switch Between Project Prompts:**
 
-1. **Frontend Routing**: `/services/chat-service.ts`
-   - Update housing detection logic in `sendChatMessage()` function
-   - Modify API endpoint selection between `/generate-response` and `/housing-generate-response`
+**No Dynamic Routing Required** - Simply change which API is used based on project type.
+
+1. **Frontend API Selection**: `/services/chat-service.ts`
+   - **For Housing Projects**: Change API call to `/api/claude/housing-generate-response`
+   - **For Business Projects**: Change API call to `/api/claude/generate-response`
+   - **Implementation**: Simply update the fetch URL in `sendChatMessage()` function
 
 2. **Housing Prompts**: `/app/api/claude/shared/housing-analysis-prompts.ts` 
    - Copy from `/app/api/claude/shared/analysis-prompts.ts`
@@ -2201,13 +2204,22 @@ For housing market analysis projects, we maintain a specialized version of the g
    - Update import to use `housing-analysis-prompts`
    - Keep all other functionality identical
 
+**Simple Project Switching**:
+```typescript
+// For housing projects:
+const response = await fetch('/api/claude/housing-generate-response', {
+
+// For business projects:  
+const response = await fetch('/api/claude/generate-response', {
+```
+
 **Key Terminology Changes**:
 - "housing market opportunities" instead of "market expansion" 
 - "housing market potential" instead of "strategic potential"
 - Demographics use actual available fields: households, income, tenure rates
 - Avoid "investment" terminology per project requirements
 
-**Usage**: Frontend automatically routes housing queries (housing|real estate|property|home|residential|mortgage|rent|owner|tenant|dwelling) to housing API
+**Usage**: For housing projects, simply change the API endpoint in chat-service.ts to always use housing-generate-response (no dynamic routing needed)
 
 ### 📋 Future Specialized APIs
 
