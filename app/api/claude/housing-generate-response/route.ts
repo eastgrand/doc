@@ -2699,12 +2699,23 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 dataSummary += `🎯 CRITICAL: Your analysis MUST reference the complete dataset scope, not just these examples\n\n`;
                 
                 // Provide sample strategic markets from client summary with context about full dataset
+                console.log('🏠 [HOUSING API] Processing strategic markets with housing-AreaName resolver');
                 const featuresWithScores = features
-                  .map(f => ({
-                    feature: f,
-                    score: extractStrategicScore(f),
-                    areaName: resolveSharedAreaName(f, { mode: 'zipCity', neutralFallback: 'Unknown' })
-                  }))
+                  .map((f, index) => {
+                    const areaName = resolveSharedAreaName(f, { mode: 'zipCity', neutralFallback: 'Unknown' });
+                    if (index < 3) {
+                      console.log(`🔍 [HOUSING API] Feature ${index}: areaName="${areaName}", raw fields:`, {
+                        id: (f as any)?.properties?.ID || (f as any)?.ID,
+                        description: (f as any)?.properties?.DESCRIPTION || (f as any)?.DESCRIPTION,
+                        area_name: (f as any)?.properties?.area_name || (f as any)?.area_name
+                      });
+                    }
+                    return {
+                      feature: f,
+                      score: extractStrategicScore(f),
+                      areaName: areaName
+                    };
+                  })
                   .filter(item => !isNaN(item.score))
                   .sort((a, b) => b.score - a.score);
                 
