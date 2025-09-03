@@ -92,7 +92,17 @@ export function resolveAreaName(
     const city = areaName ? extractCityFromDescription(areaName) : '';
 
     if (mode === 'full') {
-      if (areaName) return areaName;
+      if (areaName) {
+        // Clean FSA codes from areaName if it contains padded versions
+        const fsaMatch = areaName.match(/\b([A-Z]\d[A-Z])\b/i);
+        if (fsaMatch) {
+          const cleanFsa = fsaMatch[1].toUpperCase();
+          // If there's city info in parentheses, preserve it
+          const cityMatch = areaName.match(/\(([^)]+)\)/);
+          return cityMatch ? `${cleanFsa} (${cityMatch[1]})` : cleanFsa;
+        }
+        return areaName;
+      }
       if (fsa && city) return `${fsa} (${city})`;
       if (fsa) return `FSA ${fsa}`;
       return props.area_id || neutral;
@@ -108,7 +118,17 @@ export function resolveAreaName(
       if (fsa && city) return `${fsa} (${city})`;
       if (fsa) return `FSA ${fsa}`;
       if (city) return city;
-      if (areaName) return areaName;
+      if (areaName) {
+        // Clean FSA codes from areaName if it contains padded versions
+        const fsaMatch = areaName.match(/\b([A-Z]\d[A-Z])\b/i);
+        if (fsaMatch) {
+          const cleanFsa = fsaMatch[1].toUpperCase();
+          // If there's city info in parentheses, preserve it
+          const cityMatch = areaName.match(/\(([^)]+)\)/);
+          return cityMatch ? `${cleanFsa} (${cityMatch[1]})` : cleanFsa;
+        }
+        return areaName;
+      }
       return neutral;
     }
 
