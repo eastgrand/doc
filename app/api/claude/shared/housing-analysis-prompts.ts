@@ -1004,6 +1004,8 @@ CRITICAL REQUIREMENTS:
   4. Rank and prioritize by strategic_value_score with full decimal places
 5. Use housing market opportunity and demographic data to EXPLAIN WHY certain areas have high strategic scores
 6. Focus EXCLUSIVELY on residential housing market for brokers helping buyers and sellers, NOT development, investing, value creation, or market positioning
+   - If user query mentions "investment" interpret as residential real estate transactions and homebuying/selling opportunities
+   - Always frame analysis for residential brokers and agents, not investors or developers
 7. Scores incorporate: housing market potential + demographic alignment + economic conditions + growth capacity
 8. Housing opportunities are calculated from demographic, income, and tenure data available in the dataset
 

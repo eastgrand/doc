@@ -2703,29 +2703,42 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                   .map(f => ({
                     feature: f,
                     score: extractStrategicScore(f),
-                    areaName: f.properties?.area_name || f.properties?.DESCRIPTION || f.properties?.id || 'Unknown'
+                    areaName: resolveSharedAreaName(f, { mode: 'zipCity', neutralFallback: 'Unknown' })
                   }))
                   .filter(item => !isNaN(item.score))
                   .sort((a, b) => b.score - a.score);
                 
-                const topStrategicMarkets = featuresWithScores.slice(0, 10); // Representative sample for analysis
+                const topStrategicMarkets = featuresWithScores.slice(0, Math.max(5, Math.min(15, featuresWithScores.length))); // Show 5-15 markets
                 
                 if (topStrategicMarkets.length > 0) {
-                  dataSummary += `=== REPRESENTATIVE STRATEGIC MARKETS (sampled from ${fullDatasetStats?.total || 'full'} dataset) ===\n`;
+                  dataSummary += `=== TOP STRATEGIC MARKETS (from comprehensive analysis of ${fullDatasetStats?.total || 421} Quebec FSA areas) ===\n`;
                   topStrategicMarkets.forEach((market, index) => {
                     const props = market.feature.properties || market.feature;
                     dataSummary += `${index + 1}. ${market.areaName}:\n`;
                     dataSummary += `   🎯 Strategic Score: ${market.score.toFixed(2)}\n`;
                     
-                    // Add key strategic context fields
-                    if (props.market_gap !== undefined) {
-                      dataSummary += `   📊 Market Gap: ${props.market_gap}\n`;
+                    // Add key strategic context fields with Quebec housing data
+                    if (props.market_opportunity !== undefined || props.housing_opportunity !== undefined) {
+                      const opportunity = props.market_opportunity || props.housing_opportunity;
+                      dataSummary += `   📊 Housing Market Opportunity: ${opportunity}%\n`;
                     }
-                    if (props.demographic_opportunity_score !== undefined) {
-                      dataSummary += `   👥 Demographic Score: ${props.demographic_opportunity_score}\n`;
+                    if (props.ECYPTAPOP !== undefined) {
+                      dataSummary += `   👥 Population: ${props.ECYPTAPOP.toLocaleString()}\n`;
                     }
-                    if (props.total_population !== undefined) {
-                      dataSummary += `   🏘️ Population: ${props.total_population.toLocaleString()}\n`;
+                    if (props.ECYTENHHD !== undefined) {
+                      dataSummary += `   🏠 Households: ${props.ECYTENHHD.toLocaleString()}\n`;
+                    }
+                    if (props.ECYHRIMED !== undefined) {
+                      dataSummary += `   💰 Median Income: $${props.ECYHRIMED.toLocaleString()}\n`;
+                    }
+                    if (props.ECYTENOWN_P !== undefined || props.ECYTENRENT_P !== undefined) {
+                      const ownership = props.ECYTENOWN_P ? `${props.ECYTENOWN_P.toFixed(1)}% owners` : '';
+                      const rental = props.ECYTENRENT_P ? `${props.ECYTENRENT_P.toFixed(1)}% renters` : '';
+                      if (ownership && rental) {
+                        dataSummary += `   🏘️ Housing Tenure: ${ownership}, ${rental}\n`;
+                      } else if (ownership || rental) {
+                        dataSummary += `   🏘️ Housing Tenure: ${ownership || rental}\n`;
+                      }
                     }
                     dataSummary += `\n`;
                   });
