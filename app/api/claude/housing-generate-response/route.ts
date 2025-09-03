@@ -17,7 +17,7 @@ import { unionByGeoId } from '../../../../types/union-layer';
 import { multiEndpointFormatting, strategicSynthesis } from '../shared/base-prompt';
 import { GeoAwarenessEngine } from '../../../../lib/geo/GeoAwarenessEngine';
 import { getAnalysisPrompt } from '../shared/housing-analysis-prompts';
-import { resolveAreaName as resolveSharedAreaName, getZip as getSharedZip, resolveRegionName as resolveSharedRegionName } from '@/lib/shared/AreaName';
+import { resolveAreaName as resolveSharedAreaName, getFSA as getSharedFSA, resolveRegionName as resolveSharedRegionName } from '@/lib/shared/housing-AreaName';
 import { getAnalysisLayers, sanitizeSummaryForAnalysis, sanitizeRankingArrayForAnalysis } from '@/lib/analysis/analysisLens';
 import { filterFeaturesBySpatialFilterIds, extractFeatureId } from '@/lib/analysis/utils/spatialFilter';
 import { getPrimaryScoreField, getTopFieldDefinitions } from '@/lib/analysis/strategies/processors/HardcodedFieldDefs';
@@ -1581,10 +1581,10 @@ function getZIPCode(feature: any): string {
     }
     
     // If we still don't have a ZIP code, return Unknown
-    // If we still don't have a ZIP code, try shared helper then return Unknown
+    // If we still don't have a FSA code, try shared helper then return Unknown
     try {
-      const z = getSharedZip(feature);
-      if (z) return z;
+      const f = getSharedFSA(feature);
+      if (f) return f;
     } catch {}
     return 'Unknown';
   } catch (error) {

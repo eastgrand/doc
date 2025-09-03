@@ -799,13 +799,6 @@ export function formatDistributionForChat(dist: Distribution, analysisType?: str
   
   lines.push(`**Distribution Analysis**`);
   lines.push('');
-  lines.push('**Score Distribution:**');
-  
-  dist.buckets.forEach(bucket => {
-    lines.push(`• ${bucket.range}: **${bucket.count}** areas (**${bucket.percentage.toFixed(1)}%**)`);
-  });
-  
-  lines.push('');
   lines.push(`**Quartiles:** Q1=**${dist.quartiles.q1.toFixed(2)}**, Q2=**${dist.quartiles.q2.toFixed(2)}**, Q3=**${dist.quartiles.q3.toFixed(2)}**`);
   lines.push(`**IQR:** **${dist.iqr.toFixed(2)}**`);
   

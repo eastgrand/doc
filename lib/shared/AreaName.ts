@@ -9,10 +9,16 @@ export type ResolveMode = 'full' | 'cityOnly' | 'zipCity';
 
 function normalizeZip(zip: string): string {
   if (!zip) return '';
-  // Canadian FSA (e.g., A1B)
-  const fsa = zip.match(/^[A-Z]\d[A-Z]$/i)?.[0];
-  if (fsa) return fsa.toUpperCase();
-  // Extract 4-5 digits and pad to 5
+  
+  // Canadian FSA (e.g., A1B) - first try exact match as before
+  const exactFsa = zip.match(/^[A-Z]\d[A-Z]$/i)?.[0];
+  if (exactFsa) return exactFsa.toUpperCase();
+  
+  // Then try to extract FSA from within string (for cases like "G0A (Quebec)")
+  const embeddedFsa = zip.match(/\b[A-Z]\d[A-Z]\b/i)?.[0];
+  if (embeddedFsa) return embeddedFsa.toUpperCase();
+  
+  // Extract 4-5 digits and pad to 5 (existing ZIP code logic preserved)
   const m = zip.match(/\d{4,5}/);
   if (!m) return '';
   const digits = m[0];
@@ -36,6 +42,11 @@ export function getZip(input: any): string {
             ? props.area_name.trim()
             : '';
     if (desc) {
+      // Try FSA pattern first (Canadian postal codes like G0A)
+      const fsaMatch = desc.match(/\b([A-Z]\d[A-Z])\b/i)?.[1];
+      if (fsaMatch) return normalizeZip(fsaMatch);
+      
+      // Then try US ZIP codes
       const z = desc.match(/\b(\d{5})\b/)?.[1] || desc.match(/^(\d{4,5})/)?.[1];
       if (z) return normalizeZip(z);
     }

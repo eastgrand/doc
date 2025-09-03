@@ -512,7 +512,7 @@ function addEndpointSpecificMetrics(analysisType: string, features: any[]): stri
         
         // Use normalized strategic_analysis_score with legacy fallbacks (preserve exact decimals)
   const strategicScore = resolveScore(feature, 'strategic_analysis_score', ['strategic_value_score', 'strategic_score']);
-  metricsSection += `   Strategic Value Score: ${strategicScore !== undefined ? strategicScore : 'N/A'}\n`;
+  metricsSection += `   Strategic Value Score: ${strategicScore !== undefined ? strategicScore.toFixed(2) : 'N/A'}\n`;
         
         if (allProps?.demographic_opportunity_score) {
           metricsSection += `   Demographic Opportunity: ${allProps.demographic_opportunity_score}\n`;

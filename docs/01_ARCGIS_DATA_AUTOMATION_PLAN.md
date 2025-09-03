@@ -2212,6 +2212,11 @@ For housing market analysis projects, we maintain a specialized version of the g
    - Update import to use `housing-analysis-prompts`
    - Keep all other functionality identical
 
+4. **Housing Area Name Utility**: `/lib/shared/housing-AreaName.ts`
+   - Create housing-specific version for Quebec FSA codes
+   - Prioritizes ID field to avoid ZIP code padding (prevents "00J9Z" from "J9Z")
+   - Update housing API import: `from '@/lib/shared/housing-AreaName'`
+
 **Simple Project Switching**:
 ```typescript
 // For housing projects:
@@ -2220,6 +2225,12 @@ const response = await fetch('/api/claude/housing-generate-response', {
 // For business projects:  
 const response = await fetch('/api/claude/generate-response', {
 ```
+
+**Housing-Specific Files Summary**:
+- `/app/api/claude/shared/housing-analysis-prompts.ts` (real estate prompts)
+- `/app/api/claude/shared/housing-personas.ts` (real estate personas) 
+- `/lib/shared/housing-AreaName.ts` (FSA code handling)
+- `/app/api/claude/housing-generate-response/` (housing API)
 
 **Key Terminology Changes**:
 - "housing market opportunities" instead of "market expansion" 

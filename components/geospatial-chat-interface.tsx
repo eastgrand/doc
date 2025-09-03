@@ -1347,6 +1347,10 @@ const EnhancedGeospatialChat = memo(({
       // Normalize the feature ID for comparison
       const normalizeId = (id: string): string => {
         if (!id) return '';
+        // For Canadian FSA codes (letter-digit-letter pattern like J9Z)
+        if (/^[A-Z]\d[A-Z]$/i.test(id)) {
+          return id.toUpperCase().trim();
+        }
         // For ZIP codes, take first 5 characters and uppercase
         if (/^\d{5}/.test(id)) {
           return id.substring(0, 5).toUpperCase();
@@ -1384,11 +1388,18 @@ const EnhancedGeospatialChat = memo(({
                          feature.properties?.ZIPCODE ||
                          feature.properties?.ZIP;
         
-        // For clustered data, extract ZIP from area_name like "08701 (Lakewood)"
+        // For clustered data, extract ZIP/FSA from area_name like "08701 (Lakewood)" or "J9Z (La Sarre)"
         if (!featureIdValue && feature.area_name) {
-          const zipMatch = feature.area_name.match(/^\d{5}/);
-          if (zipMatch) {
-            featureIdValue = zipMatch[0];
+          // Try FSA pattern first (letter-digit-letter)
+          const fsaMatch = feature.area_name.match(/^[A-Z]\d[A-Z]/i);
+          if (fsaMatch) {
+            featureIdValue = fsaMatch[0];
+          } else {
+            // Try ZIP pattern (5 digits)
+            const zipMatch = feature.area_name.match(/^\d{5}/);
+            if (zipMatch) {
+              featureIdValue = zipMatch[0];
+            }
           }
         }
         
