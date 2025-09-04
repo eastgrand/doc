@@ -4,6 +4,7 @@
 // Combines area selection, analysis type selection, and results viewing
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { fetchReports } from '@/services/ReportsService';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -304,7 +305,6 @@ export default function UnifiedAnalysisWorkflow({
     const loadReports = async () => {
       try {
         console.log('[UnifiedWorkflow] Loading reports from ReportsService...');
-        const { fetchReports } = await import('@/services/ReportsService');
         const reports = await fetchReports();
         console.log('[UnifiedWorkflow] Loaded', reports.length, 'reports from ReportsService');
         setInfographicsReports(reports);
@@ -473,17 +473,46 @@ export default function UnifiedAnalysisWorkflow({
                       primaryId = recordAreaId;
                     }
                     
-                    const recordZip = String(primaryId || recordAreaId || `area_${index}`).padStart(5, '0');
+                    const rawZip = String(primaryId || recordAreaId || `area_${index}`);
+                    const isFSA = /^[A-Z]\d[A-Z]$/i.test(rawZip);
+                    const recordZip = isFSA ? rawZip.toUpperCase() : rawZip.padStart(5, '0');
                     
                     // Find matching boundary
-                    const zipFeature = geographicFeatures.find((f: any) => 
-                      f?.properties && (
-                        String(f.properties.ID).padStart(5, '0') === recordZip ||
-                        String(f.properties.ZIP).padStart(5, '0') === recordZip ||
-                        String(f.properties.ZIPCODE).padStart(5, '0') === recordZip ||
+                    const zipFeature = geographicFeatures.find((f: any) => {
+                      if (!f?.properties) return false;
+                      
+                      // For FSAs (Canadian postal codes), match without padding
+                      if (isFSA) {
+                        return (
+                          String(f.properties.ID || '').toUpperCase() === recordZip ||
+                          String(f.properties.FSA_ID || '').toUpperCase() === recordZip ||
+                          String(f.properties.POSTAL_CODE || '').toUpperCase() === recordZip ||
+                          f.properties.DESCRIPTION?.match(/^([A-Z]\d[A-Z])/i)?.[1]?.toUpperCase() === recordZip
+                        );
+                      }
+                      
+                      // For US ZIP codes, only pad when both are numeric
+                      const propID = String(f.properties.ID || '');
+                      const propZIP = String(f.properties.ZIP || '');
+                      const propZIPCODE = String(f.properties.ZIPCODE || '');
+                      
+                      const compareWithConditionalPadding = (boundaryValue: string, recordValue: string) => {
+                        const isRecordNumeric = /^\d+$/.test(recordValue);
+                        const isBoundaryNumeric = /^\d+$/.test(boundaryValue);
+                        
+                        if (isRecordNumeric && isBoundaryNumeric) {
+                          return boundaryValue.padStart(5, '0') === recordValue.padStart(5, '0');
+                        }
+                        return boundaryValue === recordValue;
+                      };
+                      
+                      return (
+                        compareWithConditionalPadding(propID, recordZip) ||
+                        compareWithConditionalPadding(propZIP, recordZip) ||
+                        compareWithConditionalPadding(propZIPCODE, recordZip) ||
                         f.properties.DESCRIPTION?.match(/^(\d{5})/)?.[1] === recordZip
-                      )
-                    );
+                      );
+                    });
                     
                     if (zipFeature) {
                       const zipDescription = zipFeature.properties?.DESCRIPTION || '';
@@ -544,7 +573,8 @@ export default function UnifiedAnalysisWorkflow({
             result.analysisResult.data,
             view,
             setFormattedLegendData,
-            onVisualizationLayerCreated
+            onVisualizationLayerCreated,
+            { callerId: 'unified-analysis-workflow' }
           );
           
           if (visualizationLayer) {

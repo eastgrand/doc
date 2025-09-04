@@ -67,6 +67,7 @@ const DO_NOT_DISPLAY_LIST: Set<string> = new Set([
   'Draft',
   'DRAFT',
   'Market Analysis for Nike',
+  'Market Analysis for Red Bull',
   'AI Endpoint Scoring Analysis',
   'AI-Powered Market Intelligence Report',
   'Quebec Housing Market Analysis Report',
@@ -99,7 +100,9 @@ const DO_NOT_DISPLAY_LIST: Set<string> = new Set([
 const CANADIAN_TERMS = [
   'canada', 'canadian', 'bc ', 'ontario', 'quebec', 'alberta', 'manitoba', 
   'saskatchewan', 'nova scotia', 'new brunswick', 'newfoundland', 'prince edward', 
-  'yukon', 'northwest territories', 'nunavut', 'postal code', 'fsa'
+  'yukon', 'northwest territories', 'nunavut', 'postal code', 'fsa',
+  'toronto', 'vancouver', 'calgary', 'ottawa', 'montreal', 'winnipeg',
+  'halifax', 'victoria', 'edmonton', 'prizm'
 ];
 
 interface ArcGISItem {
@@ -149,8 +152,7 @@ export const fetchReports = async (): Promise<Report[]> => {
   try {
     console.log('[ReportsService] Fetching reports from ArcGIS servers...');
     
-    const reportApiKey = process.env.NEXT_PUBLIC_ARCGIS_API_KEY_2;
-    const token = reportApiKey || 'AAPTxy8BH1VEsoebNVZXo8HurEs9TD-3BH9IvorrjVWQR4uGhbHZOyV9S-QJcwJfNyPyN6IDTc6dX1pscXuVgb4-GEQ70Mrk6FUuIcuO2Si45rlSIepAJkP92iyuw5nBPxpTjI0ga_Aau9Cr6xaQ2DJnJfzaCkTor0cB9UU6pcNyFqxJlYt_26boxHYqnnu7vWlqt7SVFcWKmYq6kh8anIAmEi0hXY1ThVhKIupAS_Mure0.AT1_VqzOv0Y5';
+    const token = process.env.NEXT_PUBLIC_ARCGIS_API_KEY_2 || 'AAPTxy8BH1VEsoebNVZXo8HurEs9TD-3BH9IvorrjVWQR4uGhbHZOyV9S-QJcwJfNyPyN6IDTc6dX1pscXuVgb4-GEQ70Mrk6FUuIcuO2Si45rlSIepAJkP92iyuw5nBPxpTjI0ga_Aau9Cr6xaQ2DJnJfzaCkTor0cB9UU6pcNyFqxJlYt_26boxHYqnnu7vWlqt7SVFcWKmYq6kh8anIAmEi0hXY1ThVhKIupAS_Mure0.AT1_VqzOv0Y5';
     
     // ArcGIS endpoints to try
     const endpointsToTry = [
@@ -165,6 +167,10 @@ export const fetchReports = async (): Promise<Report[]> => {
       {
         name: 'Specific Red Bull Report',
         url: `https://www.arcgis.com/sharing/rest/content/items/3accb353abb34e258fe6d69493ed1a16?f=pjson&token=${token}`
+      },
+      {
+        name: 'H&R Block Report',
+        url: `https://www.arcgis.com/sharing/rest/content/items/hrblock_report_id?f=pjson&token=${token}`
       }
     ];
 
@@ -219,10 +225,10 @@ export const fetchReports = async (): Promise<Report[]> => {
     
     console.log(`[ReportsService] Unique items after deduplication: ${uniqueItems.length}`);
     
-    // Filter for United States reports only
+    // Filter for United States reports (include reports with no country property - assume US by default)
     const usOnlyItems = uniqueItems.filter((item: ArcGISItem) => {
       const countries = item.properties?.countries;
-      const isUS = countries === 'US';
+      const isUS = countries === 'US' || !countries; // Include reports without country property
       
       if (!isUS) {
         console.log(`[ReportsService] Excluding non-US item: "${item.title}" (countries: ${countries})`);

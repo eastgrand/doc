@@ -431,6 +431,176 @@ After the automation completes and technical testing passes, update these projec
 **🔧 Update Process:**
 Each component requires domain expertise to properly configure for the new industry. The automation handles the technical data mapping, but semantic and business logic updates need manual review.
 
+## 📋 **Post-Automation Customization Guide**
+
+After the automation pipeline completes, you may need to customize the infographics report selection system. This guide shows how to update ReportsService.ts when switching between countries, adding/removing reports, or changing exclusion criteria.
+
+### ⏺ **Quick Guide: Customizing Reports in ReportsService.ts**
+
+**File to edit:** `/services/ReportsService.ts`
+
+#### **1. Change Country Filter (currently US-only)**
+
+Look for lines ~222-232. Change the filter logic:
+
+```typescript
+// Currently accepts US reports + reports without country property
+const isUS = countries === 'US' || !countries;
+
+// To accept Canada only, change to:
+const isCanada = countries === 'CA';
+
+// To accept both US and Canada, change to:  
+const isUSOrCanada = countries === 'US' || countries === 'CA' || !countries;
+```
+
+#### **2. Add/Remove Specific Reports (like H&R Block)**
+
+Look for lines ~168-172. Add new reports to the endpoint list:
+
+```typescript
+{
+  name: 'H&R Block Report',
+  url: `https://www.arcgis.com/sharing/rest/content/items/5e331d2b74d64b1790282e7ee4c1087f?f=pjson&token=${token}`
+},
+// Add more specific reports here:
+{
+  name: 'Another Report Name', 
+  url: `https://www.arcgis.com/sharing/rest/content/items/REPORT_ID_HERE?f=pjson&token=${token}`
+},
+```
+
+#### **3. Add/Remove from "Do Not Display" List**
+
+Look for lines ~40-96. Add/remove report titles from the exclusion set:
+
+```typescript
+const DO_NOT_DISPLAY_LIST: Set<string> = new Set([
+  'Market Analysis for Nike',
+  'Market Analysis for Red Bull',  // Added by automation
+  // Add new exclusions:
+  'Report Title to Exclude',
+  'Another Unwanted Report',
+  // Remove by deleting or commenting out lines
+]);
+```
+
+#### **4. Add Custom Reports (that don't exist in ArcGIS)**
+
+Look for lines ~12-21. Add custom reports that appear first in the list:
+
+```typescript
+const CUSTOM_REPORTS: Report[] = [
+  {
+    id: 'custom-report-1',
+    title: 'My Custom Market Analysis',
+    description: 'Custom analysis for specific business needs',
+    thumbnail: '', // Leave empty for default icon
+    categories: ['Market Analysis'],
+    type: 'custom',
+  },
+  {
+    id: 'housing-analysis',
+    title: 'Housing Market Insights',
+    description: 'Specialized housing market analysis',
+    thumbnail: '',
+    categories: ['Housing Market', 'Demographics'],
+    type: 'endpoint-scoring'
+  }
+];
+```
+
+#### **5. Update Geographic Terms Filter**
+
+Look for lines ~99-103. Change which geographic terms trigger exclusions:
+
+**For US-focused projects (exclude Canadian content):**
+```typescript
+const CANADIAN_TERMS = [
+  'canada', 'canadian', 'bc ', 'ontario', 'quebec', 'alberta', 'manitoba',
+  'saskatchewan', 'nova scotia', 'new brunswick', 'newfoundland', 'prince edward',
+  'yukon', 'northwest territories', 'nunavut', 'postal code', 'fsa',
+  'toronto', 'vancouver', 'calgary', 'ottawa', 'montreal', 'winnipeg',
+  'halifax', 'victoria', 'edmonton', 'prizm'  // Canadian market segmentation
+];
+```
+
+**For Canadian-focused projects (exclude US content):**
+```typescript
+// Rename the constant and update terms
+const US_TERMS = [
+  'united states', 'usa', 'u.s.', 'california', 'texas', 'new york', 'florida',
+  'illinois', 'pennsylvania', 'ohio', 'georgia', 'north carolina', 'michigan',
+  'new jersey', 'virginia', 'washington', 'arizona', 'massachusetts', 'tennessee',
+  'zip code', 'tapestry',  // US market segmentation
+  'los angeles', 'chicago', 'houston', 'phoenix', 'philadelphia', 'san antonio'
+];
+
+// Update the filter check (around lines ~254-258):
+if (US_TERMS.some(term => titleLower.includes(term))) {
+  console.log(`[ReportsService] Excluding US template: "${trimmedTitle}"`);
+  return false;
+}
+```
+
+**For global projects (no geographic exclusions):**
+```typescript
+// Comment out or remove the geographic filter entirely
+// if (CANADIAN_TERMS.some(term => titleLower.includes(term))) {
+//   console.log(`[ReportsService] Excluding Canadian template: "${trimmedTitle}"`);
+//   return false;
+// }
+```
+
+#### **6. Update Environment Variable Access**
+
+The automation already simplified this (lines ~152), but if needed:
+
+```typescript
+// Simplified access (current)
+const token = process.env.NEXT_PUBLIC_ARCGIS_API_KEY_2 || 'fallback_token';
+
+// If you need conditional logic:
+const reportApiKey = process.env.NEXT_PUBLIC_ARCGIS_API_KEY_2;
+const fallbackToken = 'AAPTxy8BH1VEsoebNVZXo8HurEs9TD...';
+const token = reportApiKey || fallbackToken;
+```
+
+### **🔄 After Making Changes:**
+
+1. **Save the file** and ensure no syntax errors
+2. **Rebuild the project**: `npm run build`
+3. **Test locally**: `npm run dev`
+4. **Verify report filtering** works as expected in the infographics dialog
+5. **Commit and push** when ready for deployment
+
+### **⚠️ Important Notes:**
+
+- **Country filtering** and **geographic terms filtering** work together - ensure they're aligned
+- **Test thoroughly** with your specific ArcGIS service before deploying  
+- **Custom reports** always appear first in the list regardless of other filters
+- **H&R Block and specific reports** bypass normal search filters but still go through country/exclusion filtering
+
+### **🧪 Testing Your Changes:**
+
+```bash
+# Test the reports service in isolation
+node -e "
+const { fetchReports } = require('./services/ReportsService.ts');
+fetchReports().then(reports => {
+  console.log(\`Found \${reports.length} reports:\`);
+  reports.forEach(r => console.log(\`- \${r.title}\`));
+});
+"
+
+# Or test in the browser console
+fetchReports().then(console.log);
+```
+
+This allows you to quickly verify your filtering logic is working correctly before full application testing.
+
+---
+
 ## 🚀 **Efficiency Optimizations for Future Migrations**
 
 Based on the completed Quebec housing market migration, here are key optimizations to make future post-automation updates more efficient:

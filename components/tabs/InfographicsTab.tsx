@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
+import { fetchReports } from '@/services/ReportsService';
 import {
   Card,
   CardContent,
@@ -1583,352 +1584,36 @@ export default function InfographicsTab({
   }, [isModalOpen, geometry, reportTemplate, memoizedLayerStates, view, setIsModalOpen, exportToPDF, generateStandardReport]);
 
   useEffect(() => {
-    const fetchReports = async () => {
+    const loadReports = async () => {
       // Prevent multiple fetches
       if (isFetchingReports.current) {
-        console.log('[FetchReports] Already fetching, skipping.');
+        console.log('[InfographicsTab] Already fetching, skipping.');
         return;
       }
       isFetchingReports.current = true;
-      console.log('[FetchReports] Starting fetch...');
-
+      console.log('[InfographicsTab] Loading reports from ReportsService...');
+      
       try {
-        // const apiKey = process.env.NEXT_PUBLIC_ARCGIS_API_KEY; // Original key
-        const reportApiKey = process.env.NEXT_PUBLIC_ARCGIS_API_KEY_2; // New specific key for reports
-        // Remove the diagnostic logs
-        // console.log(`[FetchReports] Checking NEXT_PUBLIC_ARCGIS_API_KEY from env: ${apiKey ? `Found (length: ${apiKey.length})` : 'NOT Found'}`); 
-        console.log(`[FetchReports] Checking NEXT_PUBLIC_ARCGIS_API_KEY_2 from env: ${reportApiKey ? `Found (length: ${reportApiKey.length})` : 'NOT Found'}`); 
+        const reports = await fetchReports();
+        console.log('[InfographicsTab] Loaded', reports.length, 'reports from ReportsService');
+        setReports(reports);
         
-        // const token = apiKey || 'AAPTxy8BH1VEsoebNVZXo8HurEs9TD-3BH9IvorrjVWQR4uGhbHZOyV9S-QJcwJfNyPyN6IDTc6dX1pscXuVgb4-GEQ70Mrk6FUuIcuO2Si45rlSIepAJkP92iyuw5nBPxpTjI0ga_Aau9Cr6xaQ2DJnJfzaCkTor0cB9UU6pcNyFqxJlYt_26boxHYqnnu7vWlqt7SVFcWKmYq6kh8anIAmEi0hXY1ThVhKIupAS_Mure0.AT1_VqzOv0Y5'; // Standard logic using old key
-        const token = reportApiKey || 'AAPTxy8BH1VEsoebNVZXo8HurEs9TD-3BH9IvorrjVWQR4uGhbHZOyV9S-QJcwJfNyPyN6IDTc6dX1pscXuVgb4-GEQ70Mrk6FUuIcuO2Si45rlSIepAJkP92iyuw5nBPxpTjI0ga_Aau9Cr6xaQ2DJnJfzaCkTor0cB9UU6pcNyFqxJlYt_26boxHYqnnu7vWlqt7SVFcWKmYq6kh8anIAmEi0hXY1ThVhKIupAS_Mure0.AT1_VqzOv0Y5'; // Use new key, fallback to known working token
-        // console.log(`[FetchReports] Using token: ${token.substring(0, 10)}... ${apiKey ? '(from env)' : '(fallback)'}`); 
-        console.log(`[FetchReports] Using token: ${token.substring(0, 10)}... ${reportApiKey ? '(from env _2)' : '(fallback)'}`); 
-        
-        // Define multiple endpoints to try for finding reports
-        const endpointsToTry = [
-          // Original endpoint
-          {
-            name: 'Original Folder',
-            url: `https://www.arcgis.com/sharing/rest/content/users/Synapse54/609c284e383d4975b23e839ffddfce26?f=pjson&token=${token}`
-          },
-          // User's root content (all items)
-          {
-            name: 'User Root Content',
-            url: `https://www.arcgis.com/sharing/rest/content/users/Synapse54?f=pjson&token=${token}`
-          },
-          // Search for Report Template items by user
-          {
-            name: 'Report Template Search',
-            url: `https://www.arcgis.com/sharing/rest/search?q=owner:Synapse54 AND type:"Report Template"&f=pjson&token=${token}&num=100`
-          },
-          // Search for newer items (last 6 months)
-          {
-            name: 'Recent Items Search',
-            url: `https://www.arcgis.com/sharing/rest/search?q=owner:Synapse54&f=pjson&token=${token}&num=100&sortField=modified&sortOrder=desc`
-          },
-          // Search for demographic/infographic related items
-          {
-            name: 'Demographic Reports Search',
-            url: `https://www.arcgis.com/sharing/rest/search?q=owner:Synapse54 AND (demographic OR infographic OR report)&f=pjson&token=${token}&num=100`
-          }
-        ];
-
-        let allItems: any[] = [];
-        let successfulEndpoints: string[] = [];
-
-        // Try each endpoint
-        for (const endpoint of endpointsToTry) {
-          try {
-            console.log(`[FetchReports] Trying endpoint: ${endpoint.name}`);
-            console.log(`[FetchReports] URL: ${endpoint.url}`);
-            
-            const response = await fetch(endpoint.url);
-            console.log(`[FetchReports] ${endpoint.name} - Response Status: ${response.status}`);
-
-            if (!response.ok) {
-              console.warn(`[FetchReports] ${endpoint.name} failed with status: ${response.status}`);
-              continue;
-            }
-
-            const data = await response.json();
-            console.log(`[FetchReports] ${endpoint.name} - Response structure:`, {
-              hasResults: !!data.results,
-              hasItems: !!data.items,
-              resultCount: data.results?.length || 0,
-              itemCount: data.items?.length || 0,
-              totalCount: data.total || 0
-            });
-
-            // Handle different response formats
-            let items: any[] = [];
-            if (data.results && Array.isArray(data.results)) {
-              // Search API format
-              items = data.results;
-            } else if (data.items && Array.isArray(data.items)) {
-              // Content API format
-              items = data.items;
-            }
-
-            if (items.length > 0) {
-              console.log(`[FetchReports] ${endpoint.name} found ${items.length} items`);
-              console.log(`[FetchReports] ${endpoint.name} sample titles:`, items.slice(0, 5).map(item => item.title));
-              allItems.push(...items);
-              successfulEndpoints.push(endpoint.name);
-            }
-
-          } catch (error) {
-            console.error(`[FetchReports] Error with ${endpoint.name}:`, error);
-          }
+        // Set default template if needed
+        if (!reportTemplate && reports.length > 0) {
+          const firstReport = reports[0];
+          console.log(`[InfographicsTab] Setting default report template to: '${firstReport.title}' (ID: ${firstReport.id})`);
+          setReportTemplate(firstReport.id);
         }
-
-        console.log(`[FetchReports] Total items found across all endpoints: ${allItems.length}`);
-        console.log(`[FetchReports] Successful endpoints: ${successfulEndpoints.join(', ')}`);
-
-        // Remove duplicates based on item ID
-        const uniqueItems = allItems.reduce((acc: any[], current: any) => {
-          const existing = acc.find(item => item.id === current.id);
-          if (!existing) {
-            acc.push(current);
-          }
-          return acc;
-        }, []);
-
-        console.log(`[FetchReports] Unique items after deduplication: ${uniqueItems.length}`);
-        
-        // DEBUG: Log the first few items with their full structure
-        console.log('[FetchReports] DEBUG - First 3 raw items structure:');
-        uniqueItems.slice(0, 3).forEach((item, index) => {
-          console.log(`[FetchReports] DEBUG Item ${index + 1}:`, {
-            id: item.id,
-            title: item.title,
-            description: item.description,
-            snippet: item.snippet,
-            tags: item.tags,
-            properties: item.properties,
-            culture: item.culture,
-            extent: item.extent,
-            spatialReference: item.spatialReference,
-            fullItem: item // Log the complete item for inspection
-          });
-        });
-        
-        // DEBUG: Log all unique item titles to see what we're working with
-        console.log('[FetchReports] DEBUG - All fetched item titles:');
-        uniqueItems.forEach((item, index) => {
-          console.log(`${index + 1}. "${item.title}" (ID: ${item.id})`);
-        });
-
-        // Filter for Canadian reports only - explicitly exclude US and other countries
-        const filteredItems = uniqueItems.filter((item: any) => {
-          // The country data is clearly in properties.countries field
-          const countries = item.properties?.countries;
-          const titleLower = (item.title || '').toLowerCase();
-          
-          // Log what we're checking for debugging
-          console.log(`[FetchReports] Checking item: "${item.title}" - countries: "${countries}"`);
-          
-          // Only include items that explicitly have "CA" (Canada) as the country
-          const isCanada = countries === 'CA';
-          
-          if (isCanada) {
-            console.log(`[FetchReports] ✅ Including Canadian item: "${item.title}"`);
-          } else {
-            console.log(`[FetchReports] ❌ Excluding non-Canadian item: "${item.title}" (countries: ${countries})`);
-          }
-          
-          return isCanada;
-        });
-        console.log(`[FetchReports] Filtered Canadian items count: ${filteredItems.length}`);
-        if (filteredItems.length > 0) {
-          console.log(`[FetchReports] First filtered Canadian item properties:`, filteredItems[0].properties);
-        }
-        
-        // DEBUG: Log what items survived the country filtering
-        console.log('[FetchReports] DEBUG - Items that survived country filtering:');
-        filteredItems.forEach((item, index) => {
-          console.log(`${index + 1}. "${item.title}" (ID: ${item.id})`);
-        });
-
-        // --- NEW CATEGORIZATION LOGIC ---
-        const assignCategories = (item: any): string[] => {
-          const assigned: Set<string> = new Set();
-          const titleLower = item.title?.toLowerCase() || '';
-          const descLower = item.description?.toLowerCase() || '';
-          const tagsLower = (item.tags || []).map((t: string) => t.toLowerCase());
-          const textCorpus = `${titleLower} ${descLower} ${tagsLower.join(' ')}`;
-
-          if (textCorpus.includes('demographic') || textCorpus.includes('population') || textCorpus.includes('income')) assigned.add('Demographics');
-          if (textCorpus.includes('market') || textCorpus.includes('business') || textCorpus.includes('prizm') || textCorpus.includes('eating') || textCorpus.includes('consumer')) assigned.add('Market Analysis');
-          if (textCorpus.includes('community') || textCorpus.includes('neighborhood') || textCorpus.includes('profile') || textCorpus.includes('summary')) assigned.add('Community Profiles');
-          if (textCorpus.includes('health') || textCorpus.includes('risk') || textCorpus.includes('emergency') || textCorpus.includes('poverty')) assigned.add('Health & Risk');
-          if (textCorpus.includes('transportation') || textCorpus.includes('transit')) assigned.add('Transportation');
-          if (textCorpus.includes('tabular')) assigned.add('Tabular Reports'); 
-
-          // Add specific check for known IDs if needed
-          // if (item.id === 'some-specific-id') assigned.add('Special Category');
-
-          // Add default category if none assigned
-          if (assigned.size === 0) assigned.add('Other');
-
-          return Array.from(assigned);
-        };
-        // --- END NEW CATEGORIZATION LOGIC ---
-
-        const parsedReports: Report[] = filteredItems.map((item: any) => ({
-          id: item.id,
-          title: item.title,
-          description: item.description || 'No description available',
-          thumbnail: item.thumbnail || `https://synapse54.maps.arcgis.com/sharing/rest/content/items/${item.id}/info/thumbnail/thumbnail.png?token=${token}`,
-          categories: assignCategories(item) // Use new categorization function
-        }));
-
-        // Log all received titles BEFORE filtering for debugging
-        console.log('[FetchReports Debug] Received report titles:', parsedReports.map(r => `"${r.title}"`));
-
-        // Filter out specific reports by title before setting state
-        const titlesToExclude: Set<string> = new Set([
-          'Accenture',
-          'Apparel',
-          'Apparel (Esri 2024)', // Corrected casing
-          'Blank test',
-          'Custom',
-          'Custom (Esri 2024)', // Corrected casing
-          'custom invesco',
-          'custom invesco (Esri 2025)',
-          'Energy',
-          'Energy (Esri 2024)', // Corrected casing
-          'Market Analysis for Nike', // Exclude Nike-related content for US-focused project
-          'Invesco',
-          'Invesco Index',
-          'Invesco2',
-          // 'Market Analysis for Nike', // Removed - this is the report we want to include
-          'Music',
-          'Music (Esri 2024)', // Corrected casing
-          'Music and Demographic Profile',
-          'Paragon',
-          'Paragon (Esri 2024)', // Corrected casing
-          'Sports',
-          'Sports (Esri 2024)', // Corrected casing
-          // Canada/Non-US exclusions  
-          'BC Crime Stats by Policing Jurisdiction',
-          'Custom template',
-          'decode54',
-          'minority',
-          'Mitsubishi',
-          'OLG',
-          'Crime by Metro Area',
-          'Crime by Policing Jurisdiction',
-          'Visible Minority, Religion, Mother Tongue',
-          // Additional Canadian templates to exclude
-          'Canadian Demographics',
-          'Canada Population',
-          'Canadian Market Analysis',
-          'Postal Code',
-          'FSA',
-          'Province',
-          'Provincial',
-          'Canadian Crime',
-          'Statistics Canada',
-          'Census Canada',
-          'Canadian Business'
-        ]);
-
-        const finalReports = parsedReports.filter(report => {
-          const trimmedTitle = report.title.trim();
-          
-          // Check exact matches in exclusion set
-          if (titlesToExclude.has(trimmedTitle)) {
-            return false;
-          }
-          
-          // Check for "(Esri 2025)" substring
-          if (trimmedTitle.includes('(Esri 2025)')) {
-            return false;
-          }
-          
-          // Additional check for Canadian-related terms in title
-          const titleLower = trimmedTitle.toLowerCase();
-          const canadianTerms = ['canada', 'canadian', 'bc ', 'ontario', 'quebec', 'alberta', 'manitoba', 'saskatchewan', 'nova scotia', 'new brunswick', 'newfoundland', 'prince edward', 'yukon', 'northwest territories', 'nunavut', 'postal code', 'fsa'];
-          if (canadianTerms.some(term => titleLower.includes(term))) {
-            console.log(`[FetchReports] ❌ Excluding Canadian template: "${trimmedTitle}"`);
-            return false;
-          }
-          
-          // Nike reports are now excluded via the titlesToExclude list above
-          
-          return true;
-        });
-
-        if (finalReports.length === 0) {
-          console.warn('No US reports found after filtering or all reports were excluded. Check fetch URL/data/exclusion list.');
-        } else if (!reportTemplate || !finalReports.some(r => r.id === reportTemplate)) {
-          // If no template is set yet, or the current one isn't in the final list, find a suitable default.
-          // Try common US-focused report templates
-          const preferredDefaults = ['State of the Community (Esri 2024)', 'Demographic Summary', 'Emergency Information'];
-          
-          console.log(`[FetchReports] Looking for default report from preferred list: ${preferredDefaults.join(', ')}`);
-          console.log(`[FetchReports] Available reports:`, finalReports.map(r => `"${r.title}" (ID: ${r.id})`));
-          
-          // First try to find by preferred titles
-          let defaultReport = preferredDefaults.map(title => finalReports.find(r => r.title === title)).find(r => r);
-          
-          if (defaultReport) {
-            console.log(`[FetchReports] ✅ Found desired default by ID: "${defaultReport.title}" (ID: ${defaultReport.id})`);
-            console.log(`[FetchReports] Setting reportTemplate state to: ${defaultReport.id}`);
-            setReportTemplate(defaultReport.id);
-          } else {
-            console.log(`[FetchReports] ❌ No preferred defaults found`);
-            if (finalReports.length > 0) {
-              console.log(`[FetchReports] Setting default report template to the first available: '${finalReports[0].title}' (ID: ${finalReports[0].id})`);
-              setReportTemplate(finalReports[0].id); // Fallback to the first report
-            }
-          }
-        } else {
-          console.log(`[FetchReports] Report template already set: ${reportTemplate}`);
-        }
-        // Add the AI-powered market intelligence reports to the available reports
-        const marketIntelligenceReport: Report = {
-          id: 'market-intelligence-report',
-          title: 'Quebec Housing Market Analysis Report',
-          description: 'Comprehensive housing market analysis combining homeownership data, rental rates, household income metrics, and demographic insights for Quebec regions',
-          thumbnail: '', // Will use fallback icon
-          categories: ['Housing Market', 'Demographic Analysis'],
-          type: 'endpoint-scoring'
-        };
-        
-        const endpointScoringReport: Report = {
-          id: 'endpoint-scoring-combined',
-          title: 'AI Endpoint Scoring Analysis',
-          description: 'Technical scoring analysis with detailed metrics and endpoint performance data',
-          thumbnail: '', // Will use fallback icon
-          categories: ['AI Analysis', 'Technical'],
-          type: 'endpoint-scoring'
-        };
-        
-        // Add both reports, with market intelligence first
-        finalReports.unshift(marketIntelligenceReport);
-        finalReports.unshift(endpointScoringReport);
-        
-        console.log('[FetchReports] Final Reports after exclusion (including endpoint scoring):', finalReports); // Log the final reports being set
-        
-        // DEBUG: Log final report titles that will show in dialog
-        console.log('[FetchReports] DEBUG - Final reports that will appear in dialog:');
-        finalReports.forEach((report, index) => {
-          console.log(`${index + 1}. "${report.title}" (ID: ${report.id})`);
-        });
-        
-        setReports(finalReports); // Use the filtered list
       } catch (error) {
-        console.error('[FetchReports] Error:', error);
-        setReports([]); // Ensure state is cleared on error
+        console.error('[InfographicsTab] Error loading reports:', error);
+        setReports([]);
       } finally {
-        // Always reset the fetching flag
         isFetchingReports.current = false;
-        console.log('[FetchReports] Fetch attempt finished.');
+        console.log('[InfographicsTab] Load attempt finished.');
       }
     };
     
-    fetchReports();
+    loadReports();
   }, []); // Keep empty dependency array
 
   // Log reports state for debugging
