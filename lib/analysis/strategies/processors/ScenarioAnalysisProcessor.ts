@@ -9,13 +9,13 @@ import { getPrimaryScoreField } from './HardcodedFieldDefs';
  * scenario adaptability, market resilience, strategic flexibility, and planning readiness.
  */
 export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
-  private scoreField: string = 'scenario_analysis_score';
+  private scoreField: string = 'scenario_score';
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
 
-    const primary = getPrimaryScoreField('scenario_analysis', (rawData as any)?.metadata ?? undefined) || 'scenario_analysis_score';
+    const primary = getPrimaryScoreField('scenario_analysis', (rawData as any)?.metadata ?? undefined) || 'scenario_score';
     return rawData.results.length === 0 || (rawData.results as any[]).some(record =>
       record && ((record as any).area_id || (record as any).id || (record as any).ID) && ((record as any)[primary] !== undefined)
     );
@@ -26,11 +26,11 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
       throw new Error(rawData.error || 'Scenario analysis failed');
     }
     // Determine canonical primary field (allow metadata override)
-    this.scoreField = getPrimaryScoreField('scenario_analysis', (rawData as any)?.metadata ?? undefined) || 'scenario_analysis_score';
+    this.scoreField = getPrimaryScoreField('scenario_analysis', (rawData as any)?.metadata ?? undefined) || 'scenario_score';
 
     const records = rawData.results.map((record: any, index: number) => {
       // Extract the pre-calculated scenario analysis score from canonical field first
-      let scenarioScore = Number((record as any)[this.scoreField] ?? (record as any).scenario_analysis_score ?? (record as any).scenario_score);
+      let scenarioScore = Number((record as any)[this.scoreField] ?? (record as any).scenario_score);
       
       // Only use composite scoring if no scenario score is found
       if (isNaN(scenarioScore)) {
@@ -65,12 +65,13 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
         area_id: String((record as any).area_id ?? (record as any).ID ?? `area_${index}`),
         area_name: String((record as any).value_DESCRIPTION ?? (record as any).DESCRIPTION ?? (record as any).area_name ?? `Area ${index + 1}`),
         value: scenarioScore,
+        scenario_score: scenarioScore, // Add consistent score field at top level
         rank: index + 1, // Will be sorted later
         category: this.categorizeScenarioReadiness(scenarioScore),
         coordinates: this.extractCoordinates(record),
         properties: {
           // Core scenario metrics
-          scenario_analysis_score: scenarioScore,
+          scenario_score: scenarioScore,
           scenario_adaptability_level: indicators.scenarioAdaptability,
           market_resilience_strength: indicators.marketResilience,
           strategic_flexibility_rating: indicators.strategicFlexibility,
@@ -492,7 +493,7 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: 'scenario_analysis_score',
+      field: 'scenario_score',
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,

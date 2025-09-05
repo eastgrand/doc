@@ -28,7 +28,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
     }
 
   // Determine canonical primary score field (allow metadata override)
-  const primaryField = getPrimaryScoreField('segment_profiling', (rawData as any)?.metadata) || 'segment_profiling_score';
+  const primaryField = getPrimaryScoreField('segment_profiling', (rawData as any)?.metadata) || 'segment_score';
 
   const records = rawData.results.map((record: any, index: number) => {
       // Extract or calculate segment profiling score with fallback logic
@@ -113,14 +113,9 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
         },
         shapValues: (record as any).shap_values || {}
       };
-      // Mirror canonical field into top-level for backward compatibility
-      if (primaryField && primaryField !== 'segment_profiling_score') {
-        out[primaryField] = out.value;
-      } else {
-        // ensure legacy key exists
-        out.segment_profiling_score = out.value;
-        (out.properties as any).segment_profiling_score = out.value;
-      }
+      // Add segment_score field at top level for consistency
+      out.segment_score = out.value;
+      (out.properties as any).segment_score = out.value;
       return out;
     });
 
@@ -163,9 +158,9 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
     }
     
     // PRIORITY 2: Pre-calculated segment profiling score (for other datasets)
-    if (((record as any).segment_profiling_score !== undefined && (record as any).segment_profiling_score !== null) ||
-        ((record as any).segment_score !== undefined && (record as any).segment_score !== null)) {
-      const preCalculatedScore = Number((record as any).segment_profiling_score ?? (record as any).segment_score);
+    if (((record as any).segment_score !== undefined && (record as any).segment_score !== null) ||
+        ((record as any).segment_profiling_score !== undefined && (record as any).segment_profiling_score !== null)) {
+      const preCalculatedScore = Number((record as any).segment_score ?? (record as any).segment_profiling_score);
       console.log(`🎯 [SegmentProfilingProcessor] Using pre-calculated segment score: ${preCalculatedScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
       return preCalculatedScore;
     }
@@ -193,7 +188,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
     
     segmentScore = populationScore + incomeScore + ageScore + diversityScore;
     
-    console.log('⚠️ [SegmentProfilingProcessor] No pre-calculated segment_profiling_score found, using fallback calculation');
+    console.log('⚠️ [SegmentProfilingProcessor] No pre-calculated segment_score found, using fallback calculation');
     return Math.max(0, Math.min(100, segmentScore));
   }
 
@@ -463,7 +458,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
     
     return {
       type: 'class-breaks',
-      field: primaryField || 'segment_profiling_score',
+      field: primaryField || 'segment_score',
       classBreakInfos: quartileBreaks.map((breakRange, i) => ({
         minValue: breakRange.min,
         maxValue: breakRange.max,
