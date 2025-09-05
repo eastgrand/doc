@@ -11,14 +11,14 @@ import { getPrimaryScoreField } from './HardcodedFieldDefs';
 
 export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
   // Prefer canonical; fallback to last numeric field for energy dataset
-  private scoreField: string = 'correlation_analysis_score';
+  private scoreField: string = 'correlation_score';
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     // Use canonical primary field (allow metadata override)
-    const primary = getPrimaryScoreField('correlation_analysis', (rawData as any)?.metadata ?? undefined) || 'correlation_analysis_score';
+    const primary = getPrimaryScoreField('correlation_analysis', (rawData as any)?.metadata ?? undefined) || 'correlation_score';
 
     const hasCorrelationFields = rawData.results.length === 0 ||
       rawData.results.some(record => {

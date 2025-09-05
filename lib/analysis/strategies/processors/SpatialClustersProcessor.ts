@@ -22,12 +22,12 @@ export class SpatialClustersProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Spatial clusters requires spatial_clusters_score
+    // Spatial clusters requires cluster_score
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
         ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        (record as any).spatial_clusters_score !== undefined
+        (record as any).cluster_score !== undefined
       );
     
     return hasRequiredFields;

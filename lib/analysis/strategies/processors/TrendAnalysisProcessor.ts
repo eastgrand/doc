@@ -11,7 +11,7 @@ import { getPrimaryScoreField } from './HardcodedFieldDefs';
  */
 export class TrendAnalysisProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
-  private scoreField: string = 'trend_analysis_score';
+  private scoreField: string = 'trend_score';
 
   constructor() {
     this.brandResolver = new BrandNameResolver();
@@ -55,7 +55,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     }
 
   // Use canonical primary score field (allows metadata override)
-  this.scoreField = getPrimaryScoreField('trend_analysis', (rawData as any)?.metadata ?? undefined) || 'trend_analysis_score';
+  this.scoreField = getPrimaryScoreField('trend_analysis', (rawData as any)?.metadata ?? undefined) || 'trend_score';
 
     // Process records with trend strength scoring priority
     const processedRecords = rawData.results.map((record: any, index: number) => {
@@ -98,11 +98,11 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         value: Math.round(trendScore * 100) / 100, // Use trend score as primary value
-        trend_analysis_score: Math.round(trendScore * 100) / 100, // Add target variable at top level
+        trend_score: Math.round(trendScore * 100) / 100, // Add target variable at top level
         rank: 0, // Will be calculated after sorting
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
-          trend_analysis_score: trendScore,
+          trend_score: trendScore,
           score_source: this.scoreField,
           target_brand_share: targetBrandShare,
           target_brand_name: targetBrand?.brandName || 'Unknown',
@@ -118,7 +118,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
           trend_category: this.getTrendCategory(trendScore)
         }
       };
-      if (this.scoreField && this.scoreField !== 'trend_analysis_score') {
+      if (this.scoreField && this.scoreField !== 'trend_score') {
         out[this.scoreField] = out.value;
         (out.properties as any)[this.scoreField] = out.value;
       }

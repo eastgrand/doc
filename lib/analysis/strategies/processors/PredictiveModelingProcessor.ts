@@ -8,7 +8,7 @@ import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDe
  * by analyzing model confidence, pattern stability, forecast reliability, and data quality.
  */
 export class PredictiveModelingProcessor implements DataProcessorStrategy {
-  private scoreField: string = 'predictive_modeling_score';
+  private scoreField: string = 'prediction_score';
   
   /**
    * Extract predictive modeling score from record with fallback calculation

@@ -9,7 +9,7 @@ import { getPrimaryScoreField } from './HardcodedFieldDefs';
  * exceptional performance or characteristics that stand out significantly from typical patterns.
  */
 export class OutlierDetectionProcessor implements DataProcessorStrategy {
-  private scoreField: string = 'outlier_detection_score';
+  private scoreField: string = 'outlier_score';
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
@@ -93,11 +93,11 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         value: Math.round(outlierScore * 100) / 100, // Use outlier score as primary value
-        outlier_detection_score: Math.round(outlierScore * 100) / 100, // Add target variable at top level
+        outlier_score: Math.round(outlierScore * 100) / 100, // Add target variable at top level
         rank: 0, // Will be calculated after sorting
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
-          outlier_detection_score: outlierScore,
+          outlier_score: outlierScore,
           score_source: this.scoreField,
           nike_market_share: nikeShare,
           strategic_score: strategicScore,
@@ -117,7 +117,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
           extreme_characteristics: this.identifyExtremeCharacteristics(record)
         }
       };
-  if (this.scoreField && this.scoreField !== 'outlier_detection_score') {
+  if (this.scoreField && this.scoreField !== 'outlier_score') {
         out[this.scoreField] = out.value;
         (out.properties as any)[this.scoreField] = out.value;
       }
@@ -163,7 +163,7 @@ export class OutlierDetectionProcessor implements DataProcessorStrategy {
     }
     
     // FALLBACK: Calculate outlier score from available data
-    console.log('⚠️ [OutlierDetectionProcessor] No outlier_detection_score found, calculating from raw data');
+    console.log('⚠️ [OutlierDetectionProcessor] No outlier_score found, calculating from raw data');
     
     const strategicScore = Number((record as any).strategic_value_score) || 0;
     const nikeShare = Number((record as any).mp30034a_b_p || (record as any).value_MP30034A_B_P) || 0;
