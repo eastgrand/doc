@@ -190,8 +190,13 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
   }
 
   private extractCustomerProfileScore(record: any): number {
-    // Calculate composite score from multiple available fields
-    // Since the raw customer_profile_score values are all low (19-20), we'll create a better composite score
+    // First try to use the pre-calculated customer_profile_score if available
+    const rawScore = Number((record as any)[this.scoreField || 'customer_profile_score'] ?? (record as any).customer_profile_score);
+    if (!isNaN(rawScore) && rawScore > 0) {
+      return rawScore;
+    }
+    
+    // Fallback: Calculate composite score from multiple available fields
     
     const purchasePropensity = Number((record as any).purchase_propensity) || 0;
     const lifestyleScore = Number((record as any).lifestyle_score) || 0;

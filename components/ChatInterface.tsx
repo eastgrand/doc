@@ -14,10 +14,8 @@ import { Send, Bot, User, Loader2, Copy, Check, X, Download } from 'lucide-react
 import { 
   calculateBasicStats, 
   calculateDistribution, 
-  detectPatterns,
   formatStatsForChat,
-  formatDistributionForChat,
-  formatPatternsForChat
+  formatDistributionForChat
 } from '@/lib/analysis/statsCalculator';
 import { ErrorBoundary } from './ErrorBoundary';
 import { sendEnhancedChatMessage, type EnhancedChatResponse } from '@/services/enhanced-chat-service';
@@ -391,12 +389,12 @@ ${conversationText}
       const isBulletPoint = line.trim().startsWith('•') || line.trim().startsWith('-');
       const isNumberedItem = /^\d+\.\s/.test(line.trim());
       
-      // Process ZIP codes and markdown formatting in the line
+      // Process ZIP codes, FSA codes, and markdown formatting in the line
       const processLine = (text: string) => {
-        // First, split by ZIP codes
-        const zipParts = text.split(/\b(\d{5})\b/);
+        // First, split by ZIP codes and FSA codes (Canadian postal code format: A1A)
+        const areaParts = text.split(/\b((?:\d{5})|(?:[A-Z]\d[A-Z]))\b/);
         
-        return zipParts.map((part, partIndex) => {
+        return areaParts.map((part, partIndex) => {
           if (/^\d{5}$/.test(part)) {
             // This is a ZIP code - make it clickable
             return (
@@ -408,6 +406,21 @@ ${conversationText}
                   handleZipCodeClick(part);
                 }}
                 title={`Click to zoom to ZIP code ${part}`}
+              >
+                {part}
+              </button>
+            );
+          } else if (/^[A-Z]\d[A-Z]$/.test(part)) {
+            // This is an FSA code (Canadian postal code format) - make it clickable
+            return (
+              <button
+                key={`${lineIndex}-${partIndex}`}
+                className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors cursor-pointer mr-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleZipCodeClick(part); // Reuse the same handler - it handles both ZIP and FSA codes
+                }}
+                title={`Click to zoom to FSA ${part}`}
               >
                 {part}
               </button>
@@ -521,11 +534,7 @@ ${conversationText}
         content: messageContent
       }]);
       
-      // Calculate and append patterns (Phase 3)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const patterns = detectPatterns(analysisData);
-      messageContent += '\n\n' + formatPatternsForChat(patterns, analysisType);
+      // Phase 3: Key Patterns section removed per user feedback
       
       setMessages([{
         ...initialMessage,

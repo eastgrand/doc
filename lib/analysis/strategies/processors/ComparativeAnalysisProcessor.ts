@@ -109,6 +109,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
         const hasScoringField = record && (
           (record as any)[primary] !== undefined ||
           (record as any).comparative_score !== undefined || 
+          (record as any).comparison_score !== undefined ||
+          (record as any).target_value !== undefined ||
           (record as any).value !== undefined || 
           (record as any).score !== undefined ||
           (record as any).thematic_value !== undefined
@@ -246,7 +248,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     // Rank records by comparative analysis score (highest advantage first)
     const rankedRecords = this.rankRecords(processedRecords);
     
-    // Filter out national parks for business analysis
+    // Filter out national parks for business analysis - COMMENTED OUT FOR DEBUGGING
+    /*
     const nonParkRecords = rankedRecords.filter(record => {
       const props = (record.properties || {}) as Record<string, unknown>;
       const areaId = record.area_id || props.ID || props.id || '';
@@ -263,6 +266,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       ];
       return !parkPatterns.some(pattern => pattern.test(nameStr));
     });
+    */
+    const nonParkRecords = rankedRecords; // Use all records for debugging
     
     console.log(`🎯 [COMPARATIVE ANALYSIS] Filtered ${rankedRecords.length - nonParkRecords.length} parks from comparative analysis`);
     
@@ -413,24 +418,70 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
    * Extract brand metric from record using Red Bull energy drink brand fields
    */
   private extractBrandMetric(record: any, brandType: 'brand_a' | 'brand_b'): BrandMetric {
-    // Use Red Bull energy drink brand field mappings
-    const redBullField = (record as any).MP12207A_B_P !== undefined ? 'MP12207A_B_P' : 'value_MP12207A_B_P';
-    const monsterField = (record as any).MP12206A_B_P !== undefined ? 'MP12206A_B_P' : 'value_MP12206A_B_P';
-    
+    // Prefer explicit brand share fields like value_TURBOTAX_P, value_HRBLOCK_P, etc.
+    const numericKeys = Object.keys(record || {}).filter(k => typeof (record as any)[k] === 'number');
+
+    // Known mapping from common field suffixes to brand display names
+    const knownBrands: Record<string, string> = {
+      'TURBOTAX': 'TurboTax',
+      'HRBLOCK': 'H&R Block',
+      'MP12207A_B_P': 'Red Bull',
+      'MP12206A_B_P': 'Monster Energy'
+    };
+
+    // Detect pattern value_{BRAND}_P or {BRAND}_P
     let fieldName = '';
     let value = 0;
     let brandName = '';
-    
-    if (brandType === 'brand_a') {
-      // Brand A = Red Bull
-      fieldName = redBullField;
-      value = Number(record[redBullField]) || 0;
-      brandName = 'Red Bull';
-    } else {
-      // Brand B = Monster Energy
-      fieldName = monsterField;
-      value = Number(record[monsterField]) || 0;
-      brandName = 'Monster Energy';
+
+    // Try explicit known keys first
+    for (const k of Object.keys(knownBrands)) {
+      if ((record as any)[k] !== undefined) {
+        fieldName = k;
+        value = Number((record as any)[k]) || 0;
+        brandName = knownBrands[k];
+        break;
+      }
+      const pref = `value_${k}`;
+      if ((record as any)[pref] !== undefined) {
+        fieldName = pref;
+        value = Number((record as any)[pref]) || 0;
+        brandName = knownBrands[k];
+        break;
+      }
+    }
+
+    // Next, detect any value_{CODE}_P style fields dynamically
+    if (!fieldName) {
+      const valuePattern = /^value_([A-Z0-9_]+)_P$/i;
+      const matches = numericKeys.map(k => ({ k, m: k.match(valuePattern) })).filter(x => x.m);
+      if (matches.length > 0) {
+        // Choose first match for brand_a, second for brand_b if available
+        const pickIndex = brandType === 'brand_a' ? 0 : 1;
+        const picked = matches[pickIndex] || matches[0];
+        if (picked) {
+          fieldName = picked.k;
+          value = Number((record as any)[fieldName]) || 0;
+          const code = (picked.m as RegExpMatchArray)[1];
+          // Map some common codes to friendly names if known, else use code
+          brandName = knownBrands[code] || code.replace(/_/g, ' ');
+        }
+      }
+    }
+
+    // Fallback to legacy Red Bull / Monster fields if still not found
+    if (!fieldName) {
+      const redBullField = (record as any).MP12207A_B_P !== undefined ? 'MP12207A_B_P' : 'value_MP12207A_B_P';
+      const monsterField = (record as any).MP12206A_B_P !== undefined ? 'MP12206A_B_P' : 'value_MP12206A_B_P';
+      if (brandType === 'brand_a') {
+        fieldName = redBullField;
+        value = Number(record[redBullField]) || 0;
+        brandName = 'Red Bull';
+      } else {
+        fieldName = monsterField;
+        value = Number(record[monsterField]) || 0;
+        brandName = 'Monster Energy';
+      }
     }
     
     console.log(`🔍 [extractBrandMetric] ${brandType} result:`, {

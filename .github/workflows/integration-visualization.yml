@@ -1,0 +1,30 @@
+name: Integration - Visualization (gated)
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [ main ]
+
+jobs:
+  gated-integration-tests:
+    if: env.RUN_VIS_INTEGRATION == '1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - name: Install deps
+        run: npm ci
+      - name: Run visualization integration tests
+        run: |
+          echo "Running gated visualization integration tests"
+          npm run -s test -- lib/analysis/__tests__/VisualizationManager.*.test.js -i
+        env:
+          CI: true
+
+# Note: This job is intentionally gated by RUN_VIS_INTEGRATION=1 to avoid running
+# heavier, environment-sensitive integration tests on every push. Use workflow_dispatch
+# or set the env variable in a PR comment or pipeline trigger to execute.

@@ -59,8 +59,13 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for DemographicDataProcessor');
     }
 
-  // Resolve canonical primary score field for this endpoint
-  this.scoreField = getPrimaryScoreField('demographic_analysis', (rawData as any)?.metadata) || 'demographic_insights_score';
+  // Resolve primary score field for reading values (may be legacy). Prefer canonical
+  // demographic_insights_score if present in incoming records; otherwise fall back to the
+  // hardcoded primary mapping so legacy names are respected.
+  this.scoreField = getPrimaryScoreField('demographic_analysis', (rawData as any)?.metadata) || 'demographic_score';
+  const hasPrimaryFieldInData = Array.isArray(rawData.results) && rawData.results.some(r => (r as any)[this.scoreField!] !== undefined);
+  const hasCanonicalInData = Array.isArray(rawData.results) && rawData.results.some(r => (r as any)['demographic_insights_score'] !== undefined);
+  const canonicalScoreField = hasPrimaryFieldInData ? this.scoreField! : (hasCanonicalInData ? 'demographic_insights_score' : this.scoreField!);
 
   // Process records with demographic information
   const records = this.processDemographicRecords(rawData.results);
@@ -68,7 +73,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     // Calculate demographic statistics
     const statistics = this.calculateDemographicStatistics(records);
     
-    // Filter out national parks for business analysis
+    // Filter out national parks for business analysis - COMMENTED OUT FOR DEBUGGING
+    /*
     const nonParkRecords = records.filter(record => {
       const props = (record.properties || {}) as Record<string, unknown>;
       const areaId = record.area_id || props.ID || props.id || '';
@@ -85,6 +91,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       ];
       return !parkPatterns.some(pattern => pattern.test(nameStr));
     });
+    */
+    const nonParkRecords = records; // Use all records for debugging
     
     console.log(`🎯 [DEMOGRAPHIC DATA] Filtered ${records.length - nonParkRecords.length} parks from demographic analysis`);
     
@@ -103,7 +111,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: this.scoreField || 'demographic_insights_score', // Use canonical primary field
+      targetVariable: canonicalScoreField,
       renderer: this.createDemographicRenderer(nonParkRecords), // Add direct renderer
       legend: this.createDemographicLegend(nonParkRecords), // Add direct legend
       demographicAnalysis // Additional metadata for demographic visualization
@@ -187,14 +195,9 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       
       const recordId = (record as any).ID || (record as any).id || 'unknown';
       
-      // Check if demographic score looks like market share data (values under 20 are likely market shares)
-      if (preCalculatedScore < 20 && preCalculatedScore > 0) {
-        console.warn(`[DemographicDataProcessor] Record ${recordId}: Demographic score ${preCalculatedScore} appears to be market share data (valid demographic scores should be 20+), using fallback calculation`);
-        // Fall through to calculate composite demographic score below
-      } else {
-        console.log(`🎯 [DemographicDataProcessor] Using pre-calculated score: ${preCalculatedScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
-        return preCalculatedScore;
-      }
+      // Use the pre-calculated demographic score - low values are valid demographic scores
+      console.log(`🎯 [DemographicDataProcessor] Using pre-calculated score: ${preCalculatedScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
+      return preCalculatedScore;
     }
     
     // Fallback: Calculate demographic fit score from available data
@@ -651,6 +654,7 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       [26, 152, 80, 0.6]    // #1a9850 - Dark Green (highest demographic opportunity)
     ];
     
+    // Use the resolved scoreField when available so renderer.field matches the returned targetVariable
     const fieldName = this.scoreField || 'value';
     return {
       type: 'class-breaks',

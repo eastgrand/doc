@@ -137,14 +137,37 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
         // Regular behavior for polygon/other layers
         console.log('[CustomPopupManager] Configuring standard popup with value bars');
         
-        // Get all numeric fields for bar chart display
-        const barChartFields = featureLayer.fields
+        // Get numeric fields for bar chart display - prioritize analysis score fields
+        const allNumericFields = featureLayer.fields
           ?.filter(field => 
             ['double', 'single', 'integer', 'small-integer'].includes(field.type) &&
             !['OBJECTID', 'FID', 'Shape__Area', 'Shape__Length'].includes(field.name)
-          )
-          .map(field => field.name)
-          .slice(0, 5) || []; // Limit to 5 fields for readability
+          ) || [];
+
+        // For analysis layers, prioritize primary score fields and avoid showing multiple scores
+        const isAnalysisLayer = featureLayer.title?.includes('AnalysisEngine') || 
+                               (featureLayer as any).__isAnalysisLayer === true;
+        
+        let barChartFields: string[] = [];
+        
+        if (isAnalysisLayer) {
+          // For analysis layers, only show the primary score field to avoid confusion
+          const scoreFields = ['strategic_analysis_score', 'strategic_score', 'strategic_value_score', 'target_value', 'value', 'score'];
+          const primaryScoreField = scoreFields.find(field => 
+            allNumericFields.some(f => f.name === field)
+          );
+          
+          if (primaryScoreField) {
+            barChartFields = [primaryScoreField];
+            console.log('[CustomPopupManager] 🎯 Analysis layer: showing only primary score field:', primaryScoreField);
+          } else {
+            // Fallback: show first numeric field only
+            barChartFields = allNumericFields.slice(0, 1).map(f => f.name);
+          }
+        } else {
+          // For non-analysis layers, show multiple fields as before
+          barChartFields = allNumericFields.map(field => field.name).slice(0, 5);
+        }
 
         // Get all other fields for list display
         const listFields = featureLayer.fields

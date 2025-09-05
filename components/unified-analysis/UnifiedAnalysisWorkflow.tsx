@@ -78,9 +78,9 @@ import {
 // Import chat interface for contextual analysis
 import { useChatContext } from '@/components/chat-context-provider';
 
-// Import Phase 4 Integration
-import Phase4IntegrationWrapper from '@/components/phase4/Phase4IntegrationWrapper';
-import { isPhase4FeatureEnabled } from '@/config/phase4-features';
+// Import Phase 4 Integration - COMMENTED OUT FOR DEVELOPMENT PAUSE
+// import Phase4IntegrationWrapper from '@/components/phase4/Phase4IntegrationWrapper';
+// import { isPhase4FeatureEnabled } from '@/config/phase4-features';
 
 // Import ArcGIS geometry engine for buffering
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
@@ -251,12 +251,13 @@ export default function UnifiedAnalysisWorkflow({
   // Legacy clustering config for backward compatibility
   const clusterConfig = advancedFilterConfig.clustering;
   
-  // Phase 4 features state
-  const [showPhase4Features, setShowPhase4Features] = useState(false);
-  const hasPhase4Features = isPhase4FeatureEnabled('scholarlyResearch') || 
-                           isPhase4FeatureEnabled('realTimeDataStreams') || 
-                           isPhase4FeatureEnabled('advancedVisualization') || 
-                           isPhase4FeatureEnabled('aiInsights');
+  // Phase 4 features state - COMMENTED OUT FOR DEVELOPMENT PAUSE
+  // const [showPhase4Features, setShowPhase4Features] = useState(false);
+  // const hasPhase4Features = isPhase4FeatureEnabled('scholarlyResearch') || 
+  //                          isPhase4FeatureEnabled('realTimeDataStreams') || 
+  //                          isPhase4FeatureEnabled('advancedVisualization') || 
+  //                          isPhase4FeatureEnabled('aiInsights');
+  const hasPhase4Features = false; // Temporarily disabled
 
   // Initialize analysis wrapper
   const [analysisWrapper] = useState(() => new UnifiedAnalysisWrapper());
@@ -1942,7 +1943,9 @@ export default function UnifiedAnalysisWorkflow({
         {/* Results content with Analysis/Chat, Data Table, Insights, and Phase 4 Advanced Features */}
         <div className="flex-1 flex flex-col min-h-0">
           <Tabs value={activeResultsTab} onValueChange={setActiveResultsTab} className="flex-1 flex flex-col min-h-0">
-            <TabsList className={`grid w-full ${hasPhase4Features ? 'grid-cols-4' : 'grid-cols-3'} flex-shrink-0 theme-bg-primary border-b dark:border-gray-700 mb-2`}>
+            <TabsList className={`grid w-full grid-cols-3 flex-shrink-0 theme-bg-primary border-b dark:border-gray-700 mb-2`}>
+            {/* COMMENTED OUT: Advanced tab temporarily disabled for development pause */}
+            {/* <TabsList className={`grid w-full ${hasPhase4Features ? 'grid-cols-4' : 'grid-cols-3'} flex-shrink-0 theme-bg-primary border-b dark:border-gray-700 mb-2`}> */}
               <TabsTrigger value="analysis" className="flex items-center gap-2 text-xs">
                 <MessageCircle className="h-3 w-3" />
                 Analysis
@@ -1955,12 +1958,14 @@ export default function UnifiedAnalysisWorkflow({
                 <BarChart className="h-3 w-3" />
                 Chart
               </TabsTrigger>
+              {/* COMMENTED OUT: Advanced tab temporarily disabled for development pause
               {hasPhase4Features && (
                 <TabsTrigger value="advanced" className="flex items-center gap-2 text-xs">
                   <Zap className="h-3 w-3" />
                   Advanced
                 </TabsTrigger>
               )}
+              */}
             </TabsList>
 
             <TabsContent value="analysis" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-hidden animate-entrance">
@@ -1992,9 +1997,9 @@ export default function UnifiedAnalysisWorkflow({
               />
             </TabsContent>
 
+            {/* COMMENTED OUT: Advanced tab content temporarily disabled for development pause
             {hasPhase4Features && (
               <TabsContent value="advanced" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-y-auto animate-entrance">
-                {/* Phase 4 Advanced Features */}
                 <Phase4IntegrationWrapper
                   analysisResult={workflowState.analysisResult?.analysisResult}
                   analysisContext={{
@@ -2011,6 +2016,7 @@ export default function UnifiedAnalysisWorkflow({
                 />
               </TabsContent>
             )}
+            */}
           </Tabs>
         </div>
       </div>

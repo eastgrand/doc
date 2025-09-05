@@ -44,8 +44,16 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       throw new Error('Invalid data format for CompetitiveDataProcessor');
     }
 
-  // Resolve canonical primary score field for this endpoint
-  const primaryField = getPrimaryScoreField('competitive_analysis', (rawData as any)?.metadata) || 'competitive_analysis_score';
+  // Resolve primary score field for reading values (may be legacy name). Prefer a canonical
+  // competitive_analysis_score if present in the incoming data; otherwise fall back to the
+  // hardcoded primary field mapping so legacy names are respected.
+  const primaryField = getPrimaryScoreField('competitive_analysis', (rawData as any)?.metadata) || 'competitive_score';
+  // Prefer the hardcoded primary field when present in incoming records. Only use the canonical
+  // 'competitive_analysis_score' if the primary field is absent but the canonical field exists.
+  const hasPrimaryFieldInData = Array.isArray(rawData.results) && rawData.results.some(r => (r as any)[primaryField] !== undefined);
+  const hasCanonicalInData = Array.isArray(rawData.results) && rawData.results.some(r => (r as any)['competitive_analysis_score'] !== undefined);
+  console.log('[CompetitiveDataProcessor] hasPrimaryFieldInData=', hasPrimaryFieldInData, 'hasCanonicalInData=', hasCanonicalInData, 'primaryField=', primaryField);
+  const resolvedField = hasPrimaryFieldInData ? primaryField : (hasCanonicalInData ? 'competitive_analysis_score' : primaryField);
 
   // Process records with competitive information
   const records = this.processCompetitiveRecords(rawData.results, primaryField);
@@ -58,7 +66,8 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       competitive_advantage_score: records[0]?.properties?.competitive_advantage_score
     });
     
-    // Filter out national parks for business analysis
+    // Filter out national parks for business analysis - COMMENTED OUT FOR DEBUGGING
+    /*
     const nonParkRecords = records.filter(record => {
       const props = (record.properties || {}) as Record<string, unknown>;
       const areaId = record.area_id || props.ID || props.id || '';
@@ -75,6 +84,8 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       ];
       return !parkPatterns.some(pattern => pattern.test(nameStr));
     });
+    */
+    const nonParkRecords = records; // Use all records for debugging
     
     console.log(`🎯 [COMPETITIVE DATA] Filtered ${records.length - nonParkRecords.length} parks from competitive analysis`);
     
@@ -93,7 +104,7 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
     console.log(`[CompetitiveDataProcessor] Final result summary:`, {
       type: 'competitive_analysis',
       recordCount: records.length,
-      targetVariable: 'competitive_analysis_score',
+      targetVariable: resolvedField,
       topRecord: records[0] ? {
         area_name: records[0].area_name,
         value: records[0].value,
@@ -107,9 +118,9 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-      targetVariable: primaryField,
-  renderer: this.createCompetitiveRenderer(records, primaryField), // Add direct renderer  
-  legend: this.createCompetitiveLegend(records), // Add direct legend
+  targetVariable: resolvedField,
+  renderer: this.createCompetitiveRenderer(records, resolvedField), // Add direct renderer
+      legend: this.createCompetitiveLegend(records), // Add direct legend
       competitiveAnalysis // Additional metadata for competitive visualization
     };
   }
@@ -145,10 +156,10 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
         score_source: primaryField,
         market_share: marketShare,
         target_brand_share: targetBrand?.value || 0,
-        target_brand_name: targetBrand?.brandName || 'Unknown',
-        competitor_shares: competitors.map(c => ({ name: c.brandName, share: c.value })),
+  target_brand_name: targetBrand?.metricName || 'Unknown',
+  competitor_shares: competitors.map(c => ({ name: c.metricName, share: c.value })),
         primary_competitor_share: competitors[0]?.value || 0,
-        primary_competitor_name: competitors[0]?.brandName || 'Unknown',
+  primary_competitor_name: competitors[0]?.metricName || 'Unknown',
         brand_strength: (record as any).brand_strength || 0,
         competitive_position: this.determineCompetitivePosition(competitiveScore),
         market_penetration: (record as any).market_penetration || 0,
@@ -195,11 +206,8 @@ export class CompetitiveDataProcessor implements DataProcessorStrategy {
       return this.calculateCompositeCompetitiveScore(record);
     }
     
-    // Check if competitive score looks like market share data (values under 20 are likely market shares)
-    if (score < 20) {
-      console.warn(`[CompetitiveDataProcessor] Record ${recordId}: Competitive score ${score} appears to be market share data (valid competitive scores should be 20+), calculating composite score instead`);
-      return this.calculateCompositeCompetitiveScore(record);
-    }
+    // Only use composite scoring if no valid competitive score is found
+    // DO NOT assume low scores are invalid - datasets can have legitimate low competitive scores
     
     console.log(`🔥 [CompetitiveDataProcessor] Using competitive score: ${score} from ${(record as any).competitive_score ? 'competitive_score' : (record as any).competitive_analysis_score ? 'competitive_analysis_score' : 'competitive_advantage_score'}`);
     return score;

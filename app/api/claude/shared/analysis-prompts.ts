@@ -952,9 +952,10 @@ REQUIRED RESPONSE FORMAT:
 You MUST structure your response with these sections:
 
 STRATEGIC EXPANSION OPPORTUNITIES
-[Opening analysis statement]
 
-Top Strategic Markets:
+This comprehensive analysis evaluates strategic expansion potential using intelligent sampling that captures the full performance spectrum: top performers, statistical outliers, quartile representatives, median areas, and bottom performers.
+
+Top Strategic Markets (Show minimum 5, up to 8 highest-potential areas):
 1. [Area] (Strategic Score: [exact decimal])
    • Market Gap: [%] (dynamically calculated from actual competitor market shares)
    • Brand Share: [%] (our current market share)
@@ -963,11 +964,14 @@ Top Strategic Markets:
 
 2. [Next area with details...]
 
+Statistical Insights:
+[Analysis of performance patterns from intelligent sampling that captures top performers, statistical outliers, quartile representatives, median areas, and bottom performers. Focus on what drives performance differences rather than distribution analysis.]
+
 Strategic Analysis:
-[Detailed analysis paragraph explaining why these markets are strategic, leveraging real market gap data]
+[Detailed analysis paragraph explaining why these markets are strategic, leveraging comprehensive dataset insights beyond just top performers]
 
 Market Dynamics:
-[Paragraph about competitive landscape using actual market share data and calculated gaps]
+[Comprehensive paragraph analyzing market patterns across the full dataset. Include median market characteristics, typical constraints in bottom quartile, and factors that differentiate high performers.]
 
 Implementation Priorities:
 • [Specific action 1]

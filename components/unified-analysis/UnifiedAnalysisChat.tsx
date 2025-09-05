@@ -15,10 +15,8 @@ import { sendEnhancedChatMessage, type EnhancedChatResponse } from '@/services/e
 import { 
   calculateBasicStats, 
   calculateDistribution, 
-  detectPatterns,
   formatStatsForChat,
-  formatDistributionForChat,
-  formatPatternsForChat
+  formatDistributionForChat
 } from '@/lib/analysis/statsCalculator';
 
 // Wrapper component for performance metrics - commented out as badges are no longer displayed
@@ -296,10 +294,17 @@ ${conversationText}
       
       // Process ZIP codes and markdown formatting in the line
       const processLine = (text: string) => {
-        // First, split by ZIP codes
-        const zipParts = text.split(/\b(\d{5})\b/);
+        // First, split by ZIP codes and FSA codes (Canadian postal code format: A1A)
+        // Also handle FSA codes that might appear with context like "J9Z (La Sarre, QC)"
+        const areaParts = text.split(/(\d{5}|[A-Z]\d[A-Z](?:\s*\([^)]+\))?)/g);
         
-        return zipParts.map((part, partIndex) => {
+        // Debug logging for FSA detection
+        if (text.includes('J9Z') || text.includes('J9Y') || text.includes('Strategic Score')) {
+          console.log('[UnifiedAnalysisChat] Processing line with potential FSA:', text);
+          console.log('[UnifiedAnalysisChat] Split parts:', areaParts);
+        }
+        
+        return areaParts.map((part, partIndex) => {
           if (/^\d{5}$/.test(part)) {
             // This is a ZIP code - make it clickable
             return (
@@ -311,6 +316,24 @@ ${conversationText}
                   handleZipCodeClick(part);
                 }}
                 title={`Click to zoom to ZIP code ${part}`}
+              >
+                {part}
+              </button>
+            );
+          } else if (/^[A-Z]\d[A-Z](?:\s*\([^)]+\))?$/.test(part)) {
+            // This is an FSA code (Canadian postal code format) - make it clickable
+            // Extract just the FSA code part for the handler, but display the full text
+            const fsaCode = part.match(/^([A-Z]\d[A-Z])/)?.[1] || part;
+            console.log('[UnifiedAnalysisChat] Found FSA code:', part, 'extracted:', fsaCode);
+            return (
+              <button
+                key={`${lineIndex}-${partIndex}`}
+                className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors cursor-pointer mr-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleZipCodeClick(fsaCode); // Use just the FSA code for zooming
+                }}
+                title={`Click to zoom to FSA ${fsaCode}`}
               >
                 {part}
               </button>
@@ -433,11 +456,7 @@ ${conversationText}
         content: messageContent
       }]);
       
-      // Calculate and append patterns (Phase 3)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const patterns = detectPatterns(analysisData);
-      messageContent += '\n\n' + formatPatternsForChat(patterns, analysisType, brandNames);
+      // Phase 3: Key Patterns section removed per user feedback
       
       setMessages([{
         ...initialMessage,

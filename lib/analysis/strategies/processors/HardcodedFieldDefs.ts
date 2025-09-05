@@ -8,12 +8,13 @@ export function getPrimaryScoreField(analysisType: string, metadata?: Record<str
   }
   const n = String(analysisType || '').toLowerCase().replace(/-/g, '_');
   const mapping: Record<string, string> = {
+    // Use legacy primary score field names expected by existing processors/tests
     strategic_analysis: 'strategic_score',
     strategic: 'strategic_score',
     algorithm_comparison: 'algorithm_comparison_score',
     analyze: 'analysis_score',
     anomaly_detection: 'anomaly_score',
-    anomaly_insights: 'anomaly_insights_score',
+    anomaly_insights: 'anomaly_score',
     brand_difference: 'brand_difference_score',
     comparative_analysis: 'comparison_score',
     comparative: 'comparison_score',
@@ -21,13 +22,16 @@ export function getPrimaryScoreField(analysisType: string, metadata?: Record<str
     competitive: 'competitive_score',
     consensus_analysis: 'consensus_analysis_score',
     correlation_analysis: 'correlation_score',
+    // demographic variants: map to legacy demographic_score for compatibility
     demographic_insights: 'demographic_score',
+    demographic_analysis: 'demographic_score',
+    demographic: 'demographic_score',
     dimensionality_insights: 'dimensionality_insights_score',
     ensemble_analysis: 'ensemble_analysis_score',
-  feature_interactions: 'interaction_score',
-  interaction: 'interaction_score',
+    feature_interactions: 'interaction_score',
+    interaction: 'interaction_score',
     model_performance: 'model_performance_prediction_score',
-  model_selection: 'algorithm_category',
+    model_selection: 'algorithm_category',
     outlier_detection: 'outlier_score',
     predictive_modeling: 'prediction_score',
     prediction: 'prediction_score',
@@ -37,13 +41,13 @@ export function getPrimaryScoreField(analysisType: string, metadata?: Record<str
     spatial_clusters: 'cluster_score',
     cluster: 'cluster_score',
     trend_analysis: 'trend_score',
-  trend: 'trend_score',
-  // Additional endpoints discovered in public/data/blob-urls.json
-  feature_importance_ranking: 'importance_score',
-  market_intelligence_report: 'strategic_score',
-  // Housing market correlation analysis
-  housing_market_correlation: 'housing_correlation_score',
-  housing_correlation: 'housing_correlation_score'
+    trend: 'trend_score',
+    // Additional endpoints discovered in public/data/blob-urls.json
+    feature_importance_ranking: 'importance_score',
+    market_intelligence_report: 'strategic_score',
+    // Housing market correlation analysis
+    housing_market_correlation: 'housing_correlation_score',
+    housing_correlation: 'housing_correlation_score'
   };
   return mapping[n] || 'value';
 }
@@ -56,13 +60,11 @@ export function getTopFieldDefinitions(analysisType: string): Array<{ field: str
     case 'strategic':
     case 'strategicanalysis':
       return [
-        { field: 'market_gap', source: ['market_gap', 'opportunity_gap', 'market_gap_pct', 'gap_percent', 'gap'], importance: 20 },
-        { field: 'target_brand_share', source: ['target_brand_share', 'brand_share', 'market_share', 'brand_share_pct'], importance: 18 },
-        { field: 'total_population', source: ['total_population', 'population', 'TOTPOP_CY', 'value_TOTPOP_CY'], importance: 16 },
-        { field: 'median_income', source: ['median_income', 'AVGHINC_CY', 'value_AVGHINC_CY', 'household_income'], importance: 15 },
-        { field: 'competitive_advantage_score', source: ['competitive_advantage_score', 'competitive_score'], importance: 14 },
-        { field: 'demographic_opportunity_score', source: ['demographic_opportunity_score', 'demo_opportunity', 'opportunity_score'], importance: 12 },
-        { field: 'diversity_index', source: ['diversity_index', 'value_DIVINDX_CY', 'DIVINDX_CY'], importance: 10 }
+        { field: 'ECYPTAPOP', source: ['ECYPTAPOP', 'total_population', 'population', 'TOTPOP_CY', 'value_TOTPOP_CY'], importance: 20 },
+        { field: 'ECYHRIAVG', source: ['ECYHRIAVG', 'median_income', 'AVGHINC_CY', 'value_AVGHINC_CY', 'household_income'], importance: 18 },
+        { field: 'ECYTENOWN', source: ['ECYTENOWN', 'home_ownership_count', 'homeowners'], importance: 16 },
+        { field: 'ECYTENRENT', source: ['ECYTENRENT', 'rental_count', 'renters'], importance: 15 },
+        { field: 'ECYMTN2534', source: ['ECYMTN2534', 'population_25_34', 'age_25_34'], importance: 14 }
       ];
     case 'competitive':
     case 'competitiveanalysis':

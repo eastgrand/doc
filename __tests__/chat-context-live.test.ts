@@ -262,7 +262,11 @@ describe.skip('Live Chat Context Integration', () => {
 });
 
 // Test for ensuring server is accessible
-describe('Server Health Check', () => {
+// Server health check is optional; enable by setting RUN_DEV_INTEGRATION=1 in environment.
+const runDevIntegration = process.env.RUN_DEV_INTEGRATION === '1';
+const describeServer = runDevIntegration ? describe : describe.skip;
+
+describeServer('Server Health Check', () => {
   it('should have dev server running', async () => {
     try {
       const response = await fetch(`${BASE_URL}`);

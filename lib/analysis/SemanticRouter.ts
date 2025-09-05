@@ -117,7 +117,7 @@ export class SemanticRouter {
       '/competitive-analysis': ['market share', 'competitive', 'competitors', 'competitive positioning', 'positioning', 'competitive advantage'],
       '/demographic-insights': ['demographic', 'demographics', 'population', 'age', 'income'],
       '/customer-profile': ['customer persona', 'ideal customer', 'target customer'],
-      '/spatial-clusters': ['geographic cluster', 'spatial', 'similar markets'],
+  '/spatial-clusters': ['geographic cluster', 'spatial', 'similar markets', 'cluster', 'clusters', 'similar performing', 'similar performing locations'],
       '/correlation-analysis': ['correlation', 'correlated', 'associated'],
       '/outlier-detection': ['outliers', 'unique characteristics', 'unusual'],
       '/brand-difference': ['brand positioning', 'brand strength', 'strongest brand'],

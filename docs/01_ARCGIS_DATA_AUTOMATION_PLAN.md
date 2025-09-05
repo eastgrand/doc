@@ -6,7 +6,8 @@ This document outlines a comprehensive automation strategy for extracting data f
 
 **All core automation components have been implemented and are ready for deployment!**
 
-## Table of Contentss
+## Table of Contents
+s
 
 1. [Overview](#overview)
 2. [Implementation Progress](#implementation-progress)
@@ -430,6 +431,69 @@ After the automation completes and technical testing passes, update these projec
 
 **🔧 Update Process:**
 Each component requires domain expertise to properly configure for the new industry. The automation handles the technical data mapping, but semantic and business logic updates need manual review.
+
+### 🔍 **CRITICAL: Analysis Prompt Field Validation**
+
+**⚠️ REQUIRED AFTER EVERY DATA UPDATE**
+
+After automation completes, analysis prompts may reference field names that don't exist in the actual datasets. This causes "Top Strategic Markets" to show incorrect data or missing supporting information.
+
+**📋 Validation Process:**
+
+1. **Check Available Datasets**
+   ```bash
+   # View all available analysis dataset URLs
+   cat public/data/blob-urls.json
+   ```
+
+2. **Validate Housing Analysis Prompts** (`app/api/claude/shared/housing-analysis-prompts.ts`)
+
+   For each housing analysis type, verify field references against actual data:
+   
+   **Analysis Types to Check:**
+   - `strategic-analysis` → Top Strategic Markets section
+   - `competitive-analysis` → Competitive advantage scoring
+   - `demographic-insights` → Demographic favorability metrics
+   - `trend-analysis` → Housing trend indicators
+   - `correlation-analysis` → Statistical relationships
+
+3. **Field Validation Steps:**
+   ```bash
+   # Example: Check strategic analysis fields
+   curl -s "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/real/strategic-analysis-[ID].json" | \
+   jq '.[0] | keys' | head -20
+   ```
+
+4. **Common Field Issues:**
+   
+   **❌ Fields that DON'T exist (remove from prompts):**
+   - `HOT_GROWTH_INDEX`
+   - `NEW_HOMEOWNER_INDEX` 
+   - `HOUSING_AFFORDABILITY_INDEX`
+   
+   **✅ Actual field patterns by analysis type:**
+   - **Strategic Analysis**: `ECYPTAPOP`, `ECYHRIAVG`, `ECYMTN2534`, `ECYTENOWN`, `ECYTENRENT`
+   - **Demographic Insights**: `ECYHRIMED`, `ECYTENOWN_P`, `ECYTENRENT_P` (percentages)
+   - **Competitive Analysis**: `competitive_advantage_score`, `P5YTENRENT` (not `ECYTENRENT`)
+   - **Trend Analysis**: `ECYTENHHD`, `ECYHNIMED`, `P0YTENRENT`, `P0YTENOWN`
+
+5. **Update DATA STRUCTURE sections** in housing analysis prompts:
+   ```typescript
+   // ❌ Before (incorrect fields)
+   - HOT_GROWTH_INDEX: Housing market growth
+   - NEW_HOMEOWNER_INDEX: First-time buyers
+   
+   // ✅ After (actual fields) 
+   - demographic_advantage: Demographic competitive advantage
+   - P0YTENRENT: Current year rental data
+   ```
+
+**🎯 Success Criteria:**
+- All field references in prompts match actual dataset fields
+- Top Strategic Markets displays supporting demographic data
+- No references to non-existent index fields
+
+**⏱️ Time Investment:** 15-30 minutes per analysis type
 
 ## 📋 **Post-Automation Customization Guide**
 

@@ -244,13 +244,36 @@ export class PredictiveModelingProcessor implements DataProcessorStrategy {
     // Generate predictive modeling summary
     const summary = this.generatePredictiveSummary(records, statistics);
 
+    const renderer = this.createPredictiveRenderer(records);
     return {
       type: 'predictive_modeling',
       records,
       summary,
       featureImportance: rawData.feature_importance || [],
       statistics,
-  targetVariable: this.scoreField
+      targetVariable: this.scoreField,
+      renderer
+    };
+  }
+
+  // Minimal renderer for predictive modeling to satisfy visualization tests
+  private createPredictiveRenderer(records: any[]): any {
+    const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
+    if (values.length === 0) {
+      return { type: 'simple', field: this.scoreField };
+    }
+    const q1 = values[Math.floor(values.length * 0.25)];
+    const q2 = values[Math.floor(values.length * 0.5)];
+    const q3 = values[Math.floor(values.length * 0.75)];
+    return {
+      type: 'class-breaks',
+      field: this.scoreField,
+      classBreakInfos: [
+        { minValue: values[0], maxValue: q1 },
+        { minValue: q1, maxValue: q2 },
+        { minValue: q2, maxValue: q3 },
+        { minValue: q3, maxValue: values[values.length - 1] }
+      ]
     };
   }
 

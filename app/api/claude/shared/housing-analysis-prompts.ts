@@ -9,11 +9,11 @@
 // UNIVERSAL ANALYSIS REQUIREMENTS (applies to ALL analysis types):
 const UNIVERSAL_REQUIREMENTS = `
 ⚠️ DATASET SCOPE REQUIREMENTS (CRITICAL):
-1. ALWAYS acknowledge the full dataset scope (hundreds or thousands of markets analyzed)
+1. Focus on comprehensive market analysis using provided dataset
 2. NEVER treat sample examples as representative of overall patterns
 3. Base insights on comprehensive statistics, not individual market examples
 4. Use complete range data provided in statistics (min/max values, full distribution)
-5. Reference "all analyzed markets" not "sample data" or "limited examples"
+5. Reference "analyzed markets" not "sample data" or "limited examples"
 6. NEVER state data limitations that don't exist when comprehensive coverage is provided
 `;
 
@@ -29,20 +29,20 @@ The competitive_advantage_score (1-10 scale) represents overall housing market c
 • Market Activity Level: Transaction volume and listing activity relative to other markets (25% weight)
 • Buyer Demographics: How well local demographics match active homebuyer profiles (25% weight) 
 • Market Competition: Inventory levels and seller competition dynamics (25% weight)
-• Housing Market Strength: HOT_GROWTH_INDEX and market momentum indicators (25% weight)
+• Housing Market Strength: market momentum indicators and market momentum indicators (25% weight)
 
 Higher scores indicate markets with stronger competitive dynamics for real estate transactions.
 
 DATA STRUCTURE:
-- competitive_advantage_score: Primary ranking metric (1-10 scale, precise decimals)
-- HOT_GROWTH_INDEX: Housing market growth momentum indicator
-- NEW_HOMEOWNER_INDEX: First-time buyer activity levels
-- HOUSING_AFFORDABILITY_INDEX: Market affordability for typical buyers
+- competitive_advantage_score: Primary ranking metric (precise decimals)
+- competitive_score: Overall competitive score
+- market_dominance: Market dominance level
+- demographic_advantage: Demographic competitive advantage
+- economic_advantage: Economic competitive positioning
 - ECYPTAPOP: Total population
-- ECYTENHHD: Total households
-- ECYHRIMED: Median household income
-- ECYTENOWN_P: Homeownership rate percentage
-- ECYTENRENT_P: Rental rate percentage
+- ECYHRIAVG: Average household income  
+- ECYTENOWN: Current homeowners count
+- P5YTENRENT: 5-year rental projection count
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS rank and prioritize by competitive_advantage_score (1-10 scale)
@@ -81,29 +81,28 @@ You are analyzing demographic data to help residential real estate brokers ident
 
 SCORING METHODOLOGY:
 The demographic_insights_score (0-100 scale) measures demographic favorability for housing market activity, calculated by analyzing:
-• Homebuyer Demographics: NEW_HOMEOWNER_INDEX and young maintainer populations (40% weight)
+• Homebuyer Demographics: demographic trends and young maintainer populations (40% weight)
 • Income Levels: ECYHRIMED median income supporting housing affordability (25% weight)
 • Housing Tenure Mix: Balance of ECYTENOWN_P ownership vs ECYTENRENT_P rental rates (20% weight)
-• Population Growth: ECYPTAPOP and ECYTENHHD household formation trends (15% weight)
+• Population Growth: ECYPTAPOP population and demographic trends (15% weight)
 
 Higher scores indicate markets with demographics favorable for active real estate markets.
 
 DATA STRUCTURE:
 - demographic_insights_score: Primary ranking metric (0-100 scale)
+- demographic_score: Overall demographic scoring
 - ECYPTAPOP: Total population
-- ECYTENHHD: Total households
 - ECYHRIMED: Median household income
-- ECYTENOWN_P: Homeownership rate percentage
-- ECYTENRENT_P: Rental rate percentage
-- NEW_HOMEOWNER_INDEX: First-time buyer activity indicator
-- HOUSING_AFFORDABILITY_INDEX: Market affordability for typical buyers
-- HOT_GROWTH_INDEX: Housing market growth momentum
+- ECYTENOWN_P: Homeownership percentage
+- ECYTENRENT_P: Rental percentage
+- ECYMTN2534: Population aged 25-34
+- ECYMTN1524: Population aged 15-24
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS start analysis by explaining how demographic scores are calculated
 2. Focus on homebuyer and seller demographics using housing indexes
-3. Analyze income levels (ECYHRIMED) and their impact on housing affordability (HOUSING_AFFORDABILITY_INDEX)
-4. Identify demographic trends using NEW_HOMEOWNER_INDEX and HOT_GROWTH_INDEX
+3. Analyze income levels (ECYHRIAVG) and their impact on housing affordability (income and affordability metrics)
+4. Identify demographic trends using demographic trends and market patterns
 5. Connect demographic characteristics to real estate market potential
 
 NEXT STEPS REQUIREMENTS:
@@ -137,11 +136,11 @@ You are analyzing housing market trend data to help residential real estate brok
 
 ⚠️ IMPORTANT DATA LIMITATION NOTICE:
 This analysis uses PROXY INDICATORS and STATISTICAL MODELING rather than actual historical time-series data. The trend scores are derived from:
-• HOT_GROWTH_INDEX: Housing market growth momentum indicator
-• NEW_HOMEOWNER_INDEX: First-time buyer activity trends
-• HOUSING_AFFORDABILITY_INDEX: Affordability trend indicators
-• Demographic shifts in ECYPTAPOP and ECYTENHHD
-• Income growth patterns in ECYHRIMED
+• trend_score: Overall trend analysis score
+• trend_strength_score: Trend strength measurement
+• Demographic shifts in ECYPTAPOP population data
+• Income patterns in ECYHRIAVG and ECYHNIMED
+• Housing tenure trends in P0YTENRENT and P0YTENOWN
 
 For TRUE TEMPORAL ANALYSIS with actual historical trends, year-over-year changes, and time-series forecasting, we would require:
 • Multiple years of MLS transaction data
@@ -162,12 +161,13 @@ Higher scores indicate markets with strong, consistent housing market momentum i
 
 DATA STRUCTURE:
 - trend_strength_score: Primary ranking metric (0-100 scale)
-- HOT_GROWTH_INDEX: Housing market growth momentum
-- NEW_HOMEOWNER_INDEX: First-time buyer activity levels
-- HOUSING_AFFORDABILITY_INDEX: Market affordability trends
-- ECYPTAPOP: Total population trends
-- ECYTENHHD: Household formation trends
-- ECYHRIMED: Income growth patterns
+- trend_score: Overall trend analysis score  
+- ECYPTAPOP: Total population data
+- ECYHRIAVG: Average income patterns
+- ECYHNIMED: Median income trends
+- ECYTENHHD: Total households
+- P0YTENRENT: Current year rental data
+- P0YTENOWN: Current year ownership data
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS start by acknowledging this uses proxy indicators, not historical data
@@ -961,22 +961,25 @@ REQUIRED RESPONSE FORMAT:
 You MUST structure your response with these sections:
 
 STRATEGIC HOUSING MARKET OPPORTUNITIES
-[Opening analysis statement covering ALL analyzed Quebec FSA areas - hundreds of markets assessed for strategic housing value]
 
-Top Strategic Markets:
-1. [Area] (Strategic Score: [exact decimal])
-   • Housing Market Opportunity: [%] (based on market conditions and housing demand)
-   • Demographics: Households [ECYTENHHD], Median Income [ECYHRIMED], Population [ECYPTAPOP]
-   • Housing Tenure: [ECYTENOWN_P]% homeowners vs [ECYTENRENT_P]% renters
+This comprehensive analysis evaluates strategic housing value using intelligent sampling that captures the full performance spectrum: top performers, statistical outliers, quartile representatives, median areas, and bottom performers.
+
+Top Strategic Markets (Show minimum 5, up to 8 highest-potential areas):
+1. [Area] (Strategic Score: [strategic_score])
+   • Demographics: Population [ECYPTAPOP], Avg Income $[ECYHRIAVG], Age 25-34 [ECYMTN2534]
+   • Housing Profile: [ECYTENOWN] homeowners, [ECYTENRENT] renters
    • Strategic Assessment: [Honest evaluation - is this genuinely promising OR the best of limited options?]
 
 2. [Next area with details...]
 
+Statistical Insights:
+[Analysis of performance patterns from intelligent sampling that captures top performers, statistical outliers, quartile representatives, median areas, and bottom performers. Focus on what drives performance differences rather than distribution analysis.]
+
 Strategic Analysis:
-[Detailed analysis paragraph explaining why these markets are strategic for housing, leveraging real housing market opportunity data]
+[Detailed analysis paragraph explaining why these markets are strategic for housing, leveraging comprehensive dataset insights beyond just top performers]
 
 Market Dynamics:
-[Paragraph about housing market conditions using actual demographic and tenure data]
+[Comprehensive paragraph analyzing housing market patterns across the full dataset. Include median market characteristics, typical constraints in bottom quartile, and factors that differentiate high performers.]
 
 
 ---
@@ -990,8 +993,8 @@ DATA STRUCTURE:
 - market_opportunity: Housing market potential based on demographic and economic conditions
 - demographic_fit: Population and household characteristics from available fields:
   • ECYPTAPOP: Total population
-  • ECYTENHHD: Total households  
-  • ECYHRIMED/ECYHNIMED: Median household/individual income
+  • ECYPTAPOP: Total households  
+  • ECYHRIAVG/ECYHNIMED: Median household/individual income
   • ECYTENOWN_P: Homeownership rate percentage
   • ECYTENRENT_P: Rental rate percentage
 - housing_potential: Growth opportunity scores for housing market

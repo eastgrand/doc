@@ -5,14 +5,260 @@
 import { VisualizationResult, ProcessedAnalysisData } from '@/lib/analysis/types';
 import { resolveAreaName as resolveSharedAreaName } from '@/lib/shared/AreaName';
 
+// Default TTL for an in-flight visualization creation (ms). Can be tuned.
+const DEFAULT_INFLIGHT_TTL = 15000;
+
+// Exported helper to attach or retrieve a per-map VisualizationManager.
+export const attachVisualizationManager = (m: any) => {
+  if (!m) return null;
+  if (!m.__visualizationManager) {
+    const createManager = () => {
+      const vm: any = { inFlight: null, lastSignature: null, lastLayerId: null, resolve: null, reject: null, cleanup: null };
+
+      // Cleanup helper: clear timers, reject in-flight, and remove manager reference
+      vm.cleanup = () => {
+        try {
+          if (vm.__inFlightTimer) {
+            try { clearTimeout(vm.__inFlightTimer); } catch { /* ignore */ }
+            vm.__inFlightTimer = null;
+          }
+        } catch { /* ignore */ }
+        try {
+          if (vm.inFlight && typeof vm.reject === 'function') {
+            try { vm.reject(new Error('VisualizationManager: map destroyed - aborting in-flight creation')); } catch { /* ignore */ }
+          }
+        } catch { /* ignore */ }
+        try { delete m.__visualizationManager; } catch { /* ignore */ }
+      };
+
+      // Return currently applied analysis layer (if any) using stored lastLayerId, or fallback to first analysis layer
+      vm.getCurrentLayer = () => {
+        try {
+          const lid = vm.lastLayerId || m.__lastAnalysisLayerId;
+          if (lid) {
+            const found = m.layers.find((l: any) => l.id === lid);
+            if (found) return found;
+          }
+          const fallback = m.layers.find((layer: any) => (layer as any)?.__isAnalysisLayer);
+          return fallback || null;
+        } catch { return null; }
+      };
+
+      // Wait for a layer with the provided signature to appear (polling + optional in-flight join)
+      vm.waitForLayer = async (signature: string | null, timeoutMs = 5000) => {
+        const start = Date.now();
+        // Fast-path: if signature matches and layer exists, return it
+        try {
+          if (signature && (m.__lastAnalysisSignature === signature || vm.lastSignature === signature)) {
+            const cur = vm.getCurrentLayer();
+            if (cur) return cur;
+          }
+        } catch { /* ignore */ }
+
+        // If an in-flight creation is present and will resolve to our signature, await it
+        if (vm.inFlight) {
+          try {
+            const res = await Promise.race([vm.inFlight, new Promise(res => setTimeout(() => res(null), timeoutMs))]);
+            if (res) return res;
+          } catch { /* ignore */ }
+        }
+
+        // Poll the map for the expected layer up to timeout
+        while (Date.now() - start < timeoutMs) {
+          try {
+            const cur = vm.getCurrentLayer();
+            if (cur) return cur;
+          } catch { /* ignore */ }
+          // eslint-disable-next-line no-await-in-loop
+          await new Promise(res => setTimeout(res, 100));
+        }
+        return null;
+      };
+
+      // Force-replace current analysis layer(s) with a provided layer instance
+      vm.forceReplaceLayer = async (newLayer: any, signature?: string) => {
+        try {
+          const existing = m.layers.filter((layer: any) => (layer as any)?.__isAnalysisLayer);
+          if (existing && existing.length > 0) {
+            try { m.removeMany(existing.toArray()); } catch { /* ignore */ }
+          }
+          try { m.add(newLayer); } catch (addErr) { throw addErr; }
+          try { newLayer.__isAnalysisLayer = true; newLayer.__createdAt = Date.now(); } catch { /* ignore */ }
+          if (signature) {
+            vm.lastSignature = signature;
+            vm.lastLayerId = newLayer.id;
+            try { m.__lastAnalysisSignature = signature; m.__lastAnalysisSignatureAt = Date.now(); m.__lastAnalysisLayerId = newLayer.id; } catch { /* ignore */ }
+          }
+          return newLayer;
+        } catch (err) {
+          throw err;
+        }
+      };
+
+      return vm;
+    };
+
+    m.__visualizationManager = createManager();
+  }
+  return m.__visualizationManager as any;
+};
+
 export const applyAnalysisEngineVisualization = async (
   visualization: VisualizationResult,
   data: ProcessedAnalysisData,
   mapView: __esri.MapView | null,
   setFormattedLegendData?: React.Dispatch<React.SetStateAction<any>>,
-  onVisualizationLayerCreated?: (layer: __esri.FeatureLayer | null, shouldReplace?: boolean) => void
+  onVisualizationLayerCreated?: (layer: __esri.FeatureLayer | null, shouldReplace?: boolean) => void,
+  options?: { callerId?: string; forceCreate?: boolean; inflightTTLMs?: number }
 ): Promise<__esri.FeatureLayer | null> => {
   try {
+    // Quick guard: compute a lightweight signature for this visualization+data to avoid duplicates
+    const computeSignature = (vis: any, d: any) => {
+      try {
+        const keys = {
+          rendererField: vis?.renderer?.field,
+          rendererType: vis?.renderer?.type,
+          targetVariable: d?.targetVariable,
+          recordCount: Array.isArray(d?.records) ? d.records.length : 0,
+          sampleIds: Array.isArray(d?.records) ? d.records.slice(0, 5).map((r: any) => r.area_id ?? r.ID ?? r.properties?.ID ?? r.area_name ?? '').join('|') : ''
+        };
+        return JSON.stringify(keys);
+      } catch {
+        return String(Date.now());
+      }
+    };
+
+  const signature = computeSignature(visualization, data);
+  const callerId = options?.callerId ?? 'unknown-caller';
+  const inflightTTL = typeof options?.inflightTTLMs === 'number' ? options!.inflightTTLMs : DEFAULT_INFLIGHT_TTL;
+
+  console.log('[applyAnalysisEngineVisualization] caller:', callerId, 'signature:', signature, 'inflightTTL:', inflightTTL);
+
+    // VisualizationManager: central in-flight promise and metadata stored on the map object
+    const getVisualizationManager = (m: any) => {
+      if (!m) return null;
+      if (!m.__visualizationManager) {
+        // Basic structure plus a cleanup helper that callers or lifecycle hooks can call
+        m.__visualizationManager = { inFlight: null, lastSignature: null, lastLayerId: null, resolve: null, reject: null, cleanup: null };
+
+        // Attach a cleanup implementation bound to this map instance
+        (m.__visualizationManager as any).cleanup = () => {
+          try {
+            const vm = m.__visualizationManager as any;
+            if (vm) {
+              try {
+                if (vm.__inFlightTimer) {
+                  try { clearTimeout(vm.__inFlightTimer); } catch { /* ignore */ }
+                  vm.__inFlightTimer = null;
+                }
+              } catch { /* ignore */ }
+              if (vm.inFlight && typeof vm.reject === 'function') {
+                try { vm.reject(new Error('VisualizationManager: map destroyed - aborting in-flight creation')); } catch { /* ignore */ }
+              }
+            }
+          } finally {
+            try { delete m.__visualizationManager; } catch { /* ignore */ }
+          }
+        };
+      }
+      return m.__visualizationManager as any;
+    };
+
+    const awaitPromiseWithTimeout = async (p: Promise<any> | null, timeoutMs = 2000) => {
+      if (!p) return null;
+      // Create a timeout that can be cleared if the main promise resolves first
+      let timeoutId: any = null;
+      const timeoutPromise = new Promise((res) => { timeoutId = setTimeout(() => res(null), timeoutMs); });
+      try {
+        const result = await Promise.race([p, timeoutPromise]);
+        return result;
+      } finally {
+        if (typeof timeoutId === 'number' || typeof timeoutId === 'object') {
+          try { clearTimeout(timeoutId); } catch { /* ignore */ }
+        }
+      }
+    };
+
+    // If the map already recently applied this same signature, skip creating a duplicate
+    // Also, establish ownership of a visualization manager in-flight promise so concurrent callers
+    // await the same creation. We set `isManagerOwner` true for the caller that creates the promise.
+    let mapObjForManager: any = null;
+    let vmanOwner: any = null;
+    let isManagerOwner = false;
+    try {
+      mapObjForManager = (mapView as any)?.map;
+      const vman = getVisualizationManager(mapObjForManager);
+
+      // If map supports eventing, attach cleanup on destroy to avoid leaks (idempotent)
+      try {
+        if (mapObjForManager && vman && !vman.__cleanupAttached && typeof mapObjForManager.on === 'function') {
+          // Some mapping libs emit 'destroy' or 'before-destroy' — try common names
+          const handler = () => {
+            try { if (typeof vman.cleanup === 'function') vman.cleanup(); } catch { /* ignore */ }
+          };
+          try { mapObjForManager.on('destroy', handler); } catch { /* ignore */ }
+          try { mapObjForManager.on('before-destroy', handler); } catch { /* ignore */ }
+          vman.__cleanupAttached = true;
+        }
+      } catch {
+        // non-fatal
+      }
+      vmanOwner = vman;
+
+      if (vman && vman.inFlight) {
+        // If an identical signature is already in-flight, await and return its result
+        if (vman.lastSignature === signature) {
+          console.log('[applyAnalysisEngineVisualization] Awaiting existing in-flight visualization for same signature');
+          const existing = await awaitPromiseWithTimeout(vman.inFlight, 5000);
+          if (existing) return existing as __esri.FeatureLayer;
+          // If in-flight resolved to null (timeout), continue and attempt creation
+        } else {
+          // A different visualization is in-flight — wait briefly for it to finish to avoid overlapping removals/adds
+          console.log('[applyAnalysisEngineVisualization] Waiting for different in-flight visualization to complete');
+          await awaitPromiseWithTimeout(vman.inFlight, 2000);
+        }
+      }
+
+      // Quick-time duplicate guard: if the same signature was applied very recently, return stored layer
+      if (mapObjForManager) {
+        const lastSig = (mapObjForManager as any).__lastAnalysisSignature;
+        const lastAppliedAt = (mapObjForManager as any).__lastAnalysisSignatureAt || 0;
+        const now = Date.now();
+        if (lastSig === signature && now - lastAppliedAt < 5000) {
+          console.log('[applyAnalysisEngineVisualization] Duplicate visualization detected (recent signature match). Returning existing analysis layer');
+          const existingLayerId = (mapObjForManager as any).__lastAnalysisLayerId as string | undefined;
+          if (existingLayerId) {
+            const existing = mapObjForManager.layers.find((l: any) => l.id === existingLayerId);
+            if (existing) return existing as __esri.FeatureLayer;
+          }
+          const found = mapObjForManager.layers.find((layer: any) => (layer as any)?.__isAnalysisLayer);
+          if (found) return found as __esri.FeatureLayer;
+        }
+      }
+
+      // If no in-flight exists, the first caller becomes the owner and creates the inFlight promise
+      if (vman && !vman.inFlight) {
+        isManagerOwner = true;
+        vman.inFlight = new Promise((resolve, reject) => {
+          vman.resolve = resolve;
+          vman.reject = reject;
+        });
+        try {
+          // Start a per-call TTL that will reject the in-flight creation if it takes too long
+          try { if (vman.__inFlightTimer) { clearTimeout(vman.__inFlightTimer); } } catch { }
+          vman.__inFlightTimer = setTimeout(() => {
+            try {
+              if (vman && typeof vman.reject === 'function') {
+                vman.reject(new Error('VisualizationManager: in-flight creation timed out'));
+              }
+            } catch { /* ignore */ }
+            try { vman.inFlight = null; } catch { /* ignore */ }
+          }, inflightTTL);
+        } catch { /* ignore */ }
+      }
+    } catch (guardErr) {
+      console.warn('[applyAnalysisEngineVisualization] Signature/vman guard failed:', guardErr);
+    }
     // Validate inputs first
     if (!visualization) {
       console.error('[applyAnalysisEngineVisualization] ❌ No visualization object provided');
@@ -243,11 +489,91 @@ export const applyAnalysisEngineVisualization = async (
       return graphic;
     }).filter(feature => feature !== null); // Remove null features
 
+    // Check for duplicate area IDs using the ID field (ZIP code or FSA)
+    const areaIds = arcgisFeatures.map(f => f.getAttribute('ID')).filter(id => id);
+    const uniqueAreaIds = [...new Set(areaIds)];
+    const duplicateCount = areaIds.length - uniqueAreaIds.length;
+    
+    // Check for duplicate or overlapping geometries with more robust geometry access
+    const geometryFingerprints = arcgisFeatures.map((f, index) => {
+      try {
+        const geom = f.geometry;
+        console.log(`[DEBUG] Feature ${index} geometry type:`, geom?.type, 'rings available:', !!(geom as any)?.rings);
+        
+        if (geom && geom.type === 'polygon' && (geom as any).rings && (geom as any).rings.length > 0) {
+          // Create a simple fingerprint from first few coordinates of the first ring
+          const firstRing = (geom as any).rings[0];
+          if (firstRing && Array.isArray(firstRing) && firstRing.length > 2) {
+            const coords = firstRing.slice(0, Math.min(3, firstRing.length)); // First 3 coordinate pairs
+            const fingerprint = JSON.stringify(coords);
+            console.log(`[DEBUG] Feature ${index} fingerprint created:`, fingerprint.substring(0, 50) + '...');
+            return fingerprint;
+          } else {
+            console.log(`[DEBUG] Feature ${index} invalid first ring:`, firstRing?.length);
+          }
+        } else {
+          console.log(`[DEBUG] Feature ${index} invalid geometry:`, { type: geom?.type, hasRings: !!(geom as any)?.rings });
+        }
+      } catch (err) {
+        console.warn(`[DEBUG] Error processing geometry for feature ${index}:`, err);
+      }
+      return null;
+    }).filter(fp => fp);
+    
+    console.log(`[DEBUG] Geometry fingerprinting: ${geometryFingerprints.length} fingerprints created from ${arcgisFeatures.length} features`);
+    
+    const uniqueGeometries = [...new Set(geometryFingerprints)];
+    const duplicateGeometryCount = geometryFingerprints.length - uniqueGeometries.length;
+    
+    console.log(`[DEBUG] Geometry analysis: ${uniqueGeometries.length} unique geometries, ${duplicateGeometryCount} duplicates`);
+    
     console.log('[applyAnalysisEngineVisualization] Created features:', {
       totalFeatures: arcgisFeatures.length,
       skippedFeatures: data.records.length - arcgisFeatures.length,
-      geometryType: arcgisFeatures[0]?.geometry?.type
+      geometryType: arcgisFeatures[0]?.geometry?.type,
+      areaIdsFound: areaIds.length,
+      uniqueAreaIds: uniqueAreaIds.length,
+      duplicateFeatures: duplicateCount,
+      geometriesFound: geometryFingerprints.length,
+      uniqueGeometries: uniqueGeometries.length,
+      duplicateGeometries: duplicateGeometryCount
     });
+    
+    if (duplicateCount > 0) {
+      console.warn(`[applyAnalysisEngineVisualization] ⚠️  FOUND ${duplicateCount} DUPLICATE IDs`);
+      const idCounts: Record<string, number> = {};
+      areaIds.forEach(id => { idCounts[id] = (idCounts[id] || 0) + 1; });
+      const duplicates = Object.entries(idCounts).filter(([_, count]) => (count as number) > 1);
+      console.warn('[applyAnalysisEngineVisualization] Duplicate IDs:', duplicates.slice(0, 5));
+    }
+    
+    if (duplicateGeometryCount > 0) {
+      console.warn(`[applyAnalysisEngineVisualization] ⚠️  FOUND ${duplicateGeometryCount} DUPLICATE GEOMETRIES - this causes overlapping colors!`);
+      
+      // Find which features have duplicate geometries and their different scores
+      const geometryMap: Record<string, any[]> = {};
+      arcgisFeatures.forEach(f => {
+        const geom = f.geometry;
+        if (geom && geom.type === 'polygon' && (geom as any).rings) {
+          const firstRing = (geom as any).rings[0];
+          if (firstRing && firstRing.length > 2) {
+            const coords = firstRing.slice(0, 3);
+            const fingerprint = JSON.stringify(coords);
+            if (!geometryMap[fingerprint]) geometryMap[fingerprint] = [];
+            geometryMap[fingerprint].push({
+              ID: f.getAttribute('ID'),
+              score: f.getAttribute(data.targetVariable),
+              areaName: f.getAttribute('area_name')
+            });
+          }
+        }
+      });
+      
+      // Log examples of overlapping geometries with different scores
+      Object.entries(geometryMap).filter(([_, features]) => features.length > 1).slice(0, 3).forEach(([fingerprint, features]) => {
+        console.warn(`[applyAnalysisEngineVisualization] Same geometry (${fingerprint.substring(0, 50)}...) has ${features.length} features:`, features);
+      });
+    }
 
     if (arcgisFeatures.length === 0) {
       console.error('[applyAnalysisEngineVisualization] 🔥 NO VALID ARCGIS FEATURES CREATED - LAYER WILL BE EMPTY');
@@ -319,10 +645,12 @@ export const applyAnalysisEngineVisualization = async (
       throw new Error(`FeatureLayer creation failed: ${featureLayerError}`);
     }
 
-    // Remove any existing analysis layers
+    // Remove any existing analysis layers (check both title and __isAnalysisLayer property)
     const existingLayers = mapView.map.layers.filter((layer) => {
       const title = (layer as __esri.Layer).title as string | undefined;
-      return Boolean(title && (title.includes('Analysis') || title.includes('AnalysisEngine')));
+      const isAnalysisLayer = (layer as any).__isAnalysisLayer === true;
+      const hasAnalysisTitle = Boolean(title && (title.includes('Analysis') || title.includes('AnalysisEngine')));
+      return isAnalysisLayer || hasAnalysisTitle;
     });
     
     if (existingLayers.length > 0) {
@@ -334,15 +662,93 @@ export const applyAnalysisEngineVisualization = async (
     
     mapView.map.removeMany(existingLayers.toArray());
 
-    // Add the new layer to map
-    console.log('[applyAnalysisEngineVisualization] 🎯 Adding analysis layer to map');
-    mapView.map.add(featureLayer);
-    
-    // Store metadata for theme switch protection
-  // Tag metadata in a type-safe way
-  (featureLayer as unknown as { __isAnalysisLayer?: boolean }).__isAnalysisLayer = true;
-  (featureLayer as unknown as { __createdAt?: number }).__createdAt = Date.now();
-    console.log('[applyAnalysisEngineVisualization] ✅ Analysis layer added with protection metadata');
+  // Add the new layer to map with a lightweight map-level async lock to avoid
+  // near-simultaneous duplicate creations from concurrent callers.
+  console.log('[applyAnalysisEngineVisualization] 🎯 Adding analysis layer to map (acquiring lock)');
+
+  // visualization manager (if present) is accessed via getVisualizationManager earlier
+
+    // Helper: wait for the analysis lock to clear with a short timeout
+    const waitForUnlock = async (m: any, timeoutMs = 2000) => {
+      const start = Date.now();
+      while (m.__analysisLock && Date.now() - start < timeoutMs) {
+        // small sleep
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise((res) => setTimeout(res, 100));
+      }
+      return !m.__analysisLock;
+    };
+
+    try {
+      if (mapObjForManager) {
+        // If a lock is already set, wait briefly for it to clear (up to 2s)
+        if (mapObjForManager.__analysisLock) {
+          console.log('[applyAnalysisEngineVisualization] Waiting for existing analysis lock');
+          await waitForUnlock(mapObjForManager, 2000);
+        }
+
+        // Acquire lock
+        mapObjForManager.__analysisLock = true;
+      }
+
+      // Perform the add while lock is held
+      mapView.map.add(featureLayer);
+
+      // Store metadata for theme switch protection
+      // Tag metadata in a type-safe way
+      (featureLayer as unknown as { __isAnalysisLayer?: boolean }).__isAnalysisLayer = true;
+      (featureLayer as unknown as { __createdAt?: number }).__createdAt = Date.now();
+
+      // Also store last-applied signature and layer id for the duplicate-guard
+      try {
+        if (mapObjForManager) {
+          mapObjForManager.__lastAnalysisSignature = signature;
+          mapObjForManager.__lastAnalysisSignatureAt = Date.now();
+          mapObjForManager.__lastAnalysisLayerId = featureLayer.id;
+          // If a visualization manager exists, resolve its in-flight promise
+          if (vmanOwner) {
+            vmanOwner.lastSignature = signature;
+            vmanOwner.lastLayerId = featureLayer.id;
+            if (typeof vmanOwner.resolve === 'function') {
+              try { vmanOwner.resolve(featureLayer); } catch { /* ignore */ }
+            }
+          }
+        }
+      } catch (metaErr) {
+        console.warn('[applyAnalysisEngineVisualization] Failed to write map metadata:', metaErr);
+      }
+
+      console.log('[applyAnalysisEngineVisualization] ✅ Analysis layer added with protection metadata');
+    } catch (addErr) {
+      // If we are the manager owner, reject the in-flight promise so awaiters fail fast
+      try {
+        if (isManagerOwner && vmanOwner && typeof vmanOwner.reject === 'function') {
+          vmanOwner.reject(addErr);
+        }
+      } catch {
+        // ignore
+      }
+      throw addErr;
+    } finally {
+      // Always release lock
+      try {
+        if (mapObjForManager) mapObjForManager.__analysisLock = false;
+      } catch (releaseErr) {
+        console.warn('[applyAnalysisEngineVisualization] Failed to clear analysis lock:', releaseErr);
+      }
+
+      // Cleanup visualization manager in-flight state if we own it
+      try {
+        if (isManagerOwner && vmanOwner) {
+          try { if (vmanOwner.__inFlightTimer) { clearTimeout(vmanOwner.__inFlightTimer); vmanOwner.__inFlightTimer = null; } } catch { /* ignore */ }
+          vmanOwner.inFlight = null;
+          vmanOwner.resolve = null;
+          vmanOwner.reject = null;
+        }
+      } catch {
+        // ignore
+      }
+    }
 
     // Create legend data from the renderer if setFormattedLegendData is provided
     if (setFormattedLegendData) {

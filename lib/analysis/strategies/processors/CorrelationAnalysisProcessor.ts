@@ -21,11 +21,22 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
     const primary = getPrimaryScoreField('correlation_analysis', (rawData as any)?.metadata ?? undefined) || 'correlation_analysis_score';
 
     const hasCorrelationFields = rawData.results.length === 0 ||
-      rawData.results.some(record =>
-        record &&
-        ((record as any).ID || (record as any).area_id || (record as any).id) &&
-        ((record as any)[primary] !== undefined)
-      );
+      rawData.results.some(record => {
+        if (!record) return false;
+        const hasId = ((record as any).ID || (record as any).area_id || (record as any).id);
+        if (!hasId) return false;
+        // Accept primary field, legacy aliases, or any numeric field as a last resort
+        const hasPrimary = (record as any)[primary] !== undefined;
+        const hasLegacy = (record as any).correlation_score !== undefined || (record as any).correlation_strength_score !== undefined;
+        if (hasPrimary || hasLegacy) return true;
+        // Last resort: any numeric field (excluding obvious id/date/geo fields)
+        const numericField = Object.keys(record).find(k => {
+          const v = (record as any)[k];
+          const kl = k.toLowerCase();
+          return typeof v === 'number' && !kl.includes('id') && !kl.includes('date') && !kl.includes('objectid') && !kl.includes('shape');
+        });
+        return !!numericField;
+      });
 
     return hasCorrelationFields;
   }

@@ -15,7 +15,7 @@ import { getPrimaryScoreField, getTopFieldDefinitions } from './HardcodedFieldDe
 export class StrategicAnalysisProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
   // Use canonical primary score (hardcoded) with metadata override
-  private scoreField: string = 'strategic_analysis_score';
+  private scoreField: string = 'strategic_score';
 
   constructor() {
     this.brandResolver = new BrandNameResolver();
@@ -26,12 +26,12 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-  // Strategic analysis requires strategic_analysis_score (primary) with fallbacks
+  // Strategic analysis requires strategic_score
     const hasRequiredFields = rawData.results.length === 0 ||
       (rawData.results as any[]).some((record: any) =>
         record &&
         ((record as any).area_id || (record as any).id || (record as any).ID) &&
-  ((record as any).strategic_analysis_score !== undefined || (record as any).strategic_score !== undefined || (record as any).strategic_value_score !== undefined)
+  ((record as any).strategic_score !== undefined)
       );
     
     return hasRequiredFields;
@@ -56,13 +56,13 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     if (!rawData.results || rawData.results.length === 0) {
       const emptyStats = this.calculateStatistics([] as any);
       // Keep default score field for empty case to ensure stable renderer field
-      this.scoreField = 'strategic_analysis_score';
+      this.scoreField = 'strategic_score';
       const emptyRenderer = this.createStrategicRenderer([] as any);
       const emptyLegend = this.createStrategicLegend([] as any);
       return {
         type: 'strategic_analysis',
         records: [],
-        summary: getScoreExplanationForAnalysis('strategic-analysis', 'strategic_analysis_score') +
+        summary: getScoreExplanationForAnalysis('strategic-analysis', 'strategic_score') +
           '**Strategic Market Analysis Complete:** 0 geographic areas evaluated for expansion potential. ',
         featureImportance: this.processFeatureImportance((rawData.feature_importance as any[]) || []),
         statistics: emptyStats,
@@ -73,7 +73,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     }
 
   // Use the central hardcoded primary field mapping (metadata.targetVariable still wins)
-  this.scoreField = getPrimaryScoreField('strategic_analysis', (rawData as any)?.metadata ?? undefined) || 'strategic_analysis_score';
+  this.scoreField = getPrimaryScoreField('strategic_analysis', (rawData as any)?.metadata ?? undefined) || 'strategic_score';
 
     const rawRecords = rawData.results as any[];
     const processedRecords = rawRecords.map((record: any, index: number) => {
@@ -84,15 +84,12 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         return Number.isFinite(n) ? n : NaN;
       })();
       const canonicalChain = Number(
-        (record as any).strategic_analysis_score ??
-        (record as any).strategic_score ??
-        (record as any).strategic_value_score ??
-        null
+        (record as any).strategic_score ?? null
       );
       let primaryScore = Number.isFinite(dynamicFirst) ? dynamicFirst : canonicalChain;
       
       const recordId = (record as any).ID || (record as any).id || index;
-  console.log(`[StrategicAnalysisProcessor] Record ${recordId}: Found primaryScore = ${primaryScore} from fields: strategic_analysis_score=${(record as any).strategic_analysis_score}, strategic_score=${(record as any).strategic_score}, strategic_value_score=${(record as any).strategic_value_score}`);
+  console.log(`[StrategicAnalysisProcessor] Record ${recordId}: Found primaryScore = ${primaryScore} from field: strategic_score=${(record as any).strategic_score}`);
       
       // Debug brand fields and market gap calculation
       if (recordId === (rawRecords as any[])[0]?.ID) {
@@ -105,11 +102,13 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       }
       
       // Only switch to composite when the chosen field is explicitly share/rate/pct-like or missing
+      // NEVER use composite scoring for strategic_score field - it contains actual strategic scores
       const looksLikeShare = /share|rate|pct|percent/i.test(this.scoreField || '') ||
-        ['strategic_score','strategic_value_score','strategic_analysis_score']
-          .every(f => (record as any)[f] === undefined);
+        (record as any).strategic_score === undefined;
+      const isStrategicScoreField = this.scoreField === 'strategic_score';
+      
       if (primaryScore !== null && !isNaN(primaryScore)) {
-        if (looksLikeShare && primaryScore < 20) {
+        if (looksLikeShare && primaryScore < 20 && !isStrategicScoreField) {
           console.warn(`[StrategicAnalysisProcessor] Record ${recordId}: Score ${primaryScore} from "${this.scoreField}" appears to be share/rate data, using composite score`);
           primaryScore = this.calculateCompositeStrategicScore(record);
         }
@@ -130,15 +129,15 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       
       // Get top contributing fields for popup display
   const topContributingFields = this.getTopContributingFields(record);
-  // Remove strategic_analysis_score and strategic_score from topContributingFields to avoid overwrite
-  const { strategic_analysis_score: __, strategic_score: _, ...filteredTopFields } = topContributingFields as any;
+  // Remove strategic_score from topContributingFields to avoid overwrite
+  const { strategic_score: _, ...filteredTopFields } = topContributingFields as any;
       
-    // Build processed record ensuring both canonical and dynamic score fields exist at top level
+    // Build processed record with strategic_score field at top level
     const processed: any = {
         area_id: finalRecordId,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100,
-        strategic_analysis_score: Math.round(primaryScore * 100) / 100, // Canonical for compatibility
+        strategic_score: Math.round(primaryScore * 100) / 100, // Use consistent field name
         rank: 0, // Will be calculated after sorting
         // Flatten top contributing fields to top level for popup access (excluding strategic_score)
         ...filteredTopFields,
@@ -152,7 +151,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       // Include full raw record first to avoid missing context, then overlay normalized fields
       ...(record as any),
       DESCRIPTION: (record as any).DESCRIPTION, // Normalize key casing
-          strategic_analysis_score: primaryScore,
+          strategic_score: primaryScore,
   score_source: this.scoreField,
           target_brand_share: this.extractTargetBrandShare(record),
           market_gap: this.calculateRealMarketGap(record),
@@ -163,11 +162,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       diversity_index: this.extractFieldValue(record, ['diversity_index', 'value_DIVINDX_CY', 'DIVINDX_CY'])
         }
       };
-      // Add dynamic score field at top level for renderer parity if different from canonical
-      if (this.scoreField && this.scoreField !== 'strategic_analysis_score') {
-        processed[this.scoreField] = processed.value;
-        processed.properties[this.scoreField] = processed.value;
-      }
+      // No need to add dynamic field since we're using strategic_score consistently
       return processed;
     });
     
@@ -177,7 +172,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     // Rank records by strategic value
     const rankedRecords = this.rankRecords(processedRecords);
     
-    // Filter out national parks for AI analysis
+    // Filter out national parks for AI analysis - COMMENTED OUT FOR DEBUGGING
+    /*
     const nonParkRecords = rankedRecords.filter(record => {
       const props = (record.properties || {}) as Record<string, unknown>;
       const areaId = record.area_id || props.ID || props.id || '';
@@ -194,6 +190,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       ];
       return !parkPatterns.some(pattern => pattern.test(nameStr));
     });
+    */
+    const nonParkRecords = rankedRecords; // Use all records for debugging
     
     console.log(`🎯 [STRATEGIC PROCESSOR] Filtered ${rankedRecords.length - nonParkRecords.length} parks from analysis`);
     console.log(`🎯 [STRATEGIC PROCESSOR] Top 5 non-park strategic markets:`);
@@ -206,9 +204,6 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     
     // Generate strategic summary using filtered non-park records for AI analysis
     const summary = this.generateStrategicSummary(nonParkRecords, statistics);
-
-  const renderer = this.createStrategicRenderer(rankedRecords);
-  const legend = this.createStrategicLegend(rankedRecords);
     
     return {
       type: 'strategic_analysis',
@@ -216,7 +211,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       summary,
       featureImportance,
       statistics,
-  targetVariable: this.scoreField || 'strategic_analysis_score',
+  targetVariable: this.scoreField || 'strategic_score',
       renderer: this.createStrategicRenderer(nonParkRecords), // Use filtered records for rendering
       legend: this.createStrategicLegend(nonParkRecords) // Use filtered records for legend
     };
@@ -262,7 +257,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     
     const renderer = {
       type: 'class-breaks',
-      field: this.scoreField || 'strategic_analysis_score', // Use dynamic field for visualization
+      field: this.scoreField || 'strategic_score', // Use strategic_score for visualization
       classBreakInfos,
       defaultSymbol: {
         type: 'simple-fill',
@@ -286,14 +281,6 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     return renderer;
   }
 
-  /** Ensure renderer field is a valid attribute name for clients (starts with letter or underscore) */
-  private sanitizeFieldName(name: string): string {
-    const n = String(name || '');
-    if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(n)) return n;
-    const sanitized = `dynamic_${n.replace(/[^A-Za-z0-9_]/g, '_')}`;
-    console.warn(`[StrategicAnalysisProcessor] Sanitized score field name from "${n}" to "${sanitized}" for renderer compatibility`);
-    return sanitized;
-  }
   
   /**
    * Calculate quartile breaks for strategic value scores
@@ -519,7 +506,7 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
       statistics: AnalysisStatistics
     ): string {
       // Start with score explanation
-  let summary = getScoreExplanationForAnalysis('strategic-analysis', 'strategic_analysis_score');
+  let summary = getScoreExplanationForAnalysis('strategic-analysis', 'strategic_score');
     
       // We don't reference BrandNameResolver target brand here to avoid tight coupling in tests
       summary += `**Strategic Market Analysis Complete:** ${statistics.total} geographic areas evaluated for expansion potential. `;
@@ -588,8 +575,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
     if (record.ID === (record as any).ID && brandFields.length > 0) {
       console.log(`[StrategicAnalysisProcessor] Brand detection for ${record.ID}:`, {
         brandFieldsCount: brandFields.length,
-        targetBrand: targetBrand ? { name: targetBrand.brandName, value: targetBrand.value } : 'none',
-        allBrands: brandFields.map(bf => ({ name: bf.brandName, value: bf.value, isTarget: bf.isTarget }))
+        targetBrand: targetBrand ? { name: targetBrand.metricName, value: targetBrand.value } : 'none',
+        allBrands: brandFields.map(bf => ({ name: bf.metricName, value: bf.value, isTarget: bf.isTarget }))
       });
     }
     

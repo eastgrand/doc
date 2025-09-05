@@ -1649,7 +1649,7 @@ const EnhancedGeospatialChat = memo(({
       
       console.log('[Contextual Chat] Full request payload:', requestPayload);
       
-      const claudeResp = await fetch('/api/claude/generate-response', {
+      const claudeResp = await fetch('/api/claude/housing-generate-response', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestPayload),
@@ -2235,14 +2235,32 @@ const EnhancedGeospatialChat = memo(({
             );
           }
           
-          // For US ZIP codes (numeric), use padding for comparison
+          // For US ZIP codes (numeric), use padding for comparison only when both are numeric
+          const propID = String(f.properties.ID || '');
+          const propZIP = String(f.properties.ZIP || '');
+          const propZIPCODE = String(f.properties.ZIPCODE || '');
+          const propOBJECTID = String(f.properties.OBJECTID || '');
+          
+          // Helper function: only pad if both values are numeric (ZIP codes), not FSA codes
+          const compareWithConditionalPadding = (boundaryValue: string, recordValue: string) => {
+            const isRecordNumeric = /^\d+$/.test(recordValue);
+            const isBoundaryNumeric = /^\d+$/.test(boundaryValue);
+            
+            // If both are numeric (ZIP codes), pad for comparison
+            if (isRecordNumeric && isBoundaryNumeric) {
+              return boundaryValue.padStart(5, '0') === recordValue.padStart(5, '0');
+            }
+            // Otherwise, compare as-is (handles FSAs)
+            return boundaryValue === recordValue;
+          };
+          
           return (
-            String(f.properties.ID).padStart(5, '0') === recordZip ||
-            String(f.properties.ZIP).padStart(5, '0') === recordZip ||
-            String(f.properties.ZIPCODE).padStart(5, '0') === recordZip ||
+            compareWithConditionalPadding(propID, recordZip) ||
+            compareWithConditionalPadding(propZIP, recordZip) ||
+            compareWithConditionalPadding(propZIPCODE, recordZip) ||
             // Extract ZIP from DESCRIPTION: "08837 (Edison)" -> "08837"
             f.properties.DESCRIPTION?.match(/^(\d{5})/)?.[1] === recordZip ||
-            String(f.properties.OBJECTID).padStart(5, '0') === recordZip
+            compareWithConditionalPadding(propOBJECTID, recordZip)
           );
         });
 
@@ -2512,7 +2530,7 @@ const EnhancedGeospatialChat = memo(({
       }
       
       const visualization = finalAnalysisResult.visualization;
-      const createdLayer = await applyAnalysisEngineVisualization(visualization, visualizationData, currentMapView, setFormattedLegendData);
+  const createdLayer = await applyAnalysisEngineVisualization(visualization, visualizationData, currentMapView, setFormattedLegendData, undefined, { callerId: 'geospatial-chat-interface' });
       
       // Pass the created layer to the callback
       console.log('[AnalysisEngine] Layer creation result:', {
@@ -3032,7 +3050,7 @@ const EnhancedGeospatialChat = memo(({
           console.log(JSON.stringify(strategicFeatures.slice(0, 2), null, 2));
         }
 
-        const claudeResp = await fetch('/api/claude/generate-response', {
+        const claudeResp = await fetch('/api/claude/housing-generate-response', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(claudePayload),
@@ -3335,14 +3353,32 @@ const EnhancedGeospatialChat = memo(({
               );
             }
             
-            // For US ZIP codes (numeric), use padding for comparison
+            // For US ZIP codes (numeric), use padding for comparison only when both are numeric
+            const propID = String(f.properties.ID || '');
+            const propZIP = String(f.properties.ZIP || '');
+            const propZIPCODE = String(f.properties.ZIPCODE || '');
+            const propOBJECTID = String(f.properties.OBJECTID || '');
+            
+            // Helper function: only pad if both values are numeric (ZIP codes), not FSA codes
+            const compareWithConditionalPadding = (boundaryValue: string, recordValue: string) => {
+              const isRecordNumeric = /^\d+$/.test(recordValue);
+              const isBoundaryNumeric = /^\d+$/.test(boundaryValue);
+              
+              // If both are numeric (ZIP codes), pad for comparison
+              if (isRecordNumeric && isBoundaryNumeric) {
+                return boundaryValue.padStart(5, '0') === recordValue.padStart(5, '0');
+              }
+              // Otherwise, compare as-is (handles FSAs)
+              return boundaryValue === recordValue;
+            };
+            
             return (
-              String(f.properties.ID).padStart(5, '0') === recordZip ||
-              String(f.properties.ZIP).padStart(5, '0') === recordZip ||
-              String(f.properties.ZIPCODE).padStart(5, '0') === recordZip ||
+              compareWithConditionalPadding(propID, recordZip) ||
+              compareWithConditionalPadding(propZIP, recordZip) ||
+              compareWithConditionalPadding(propZIPCODE, recordZip) ||
               // Extract ZIP from DESCRIPTION: "08837 (Edison)" -> "08837"
               f.properties.DESCRIPTION?.match(/^(\d{5})/)?.[1] === recordZip ||
-              String(f.properties.OBJECTID).padStart(5, '0') === recordZip
+              compareWithConditionalPadding(propOBJECTID, recordZip)
             );
           });
           
@@ -3481,7 +3517,9 @@ const EnhancedGeospatialChat = memo(({
           analysisResult.visualization,
           analysisResult.data,
           initialMapView,
-          setFormattedLegendData
+          setFormattedLegendData,
+          undefined,
+          { callerId: 'geospatial-chat-interface' }
         );
         
         if (visualizationLayer) {
@@ -3697,7 +3735,7 @@ const EnhancedGeospatialChat = memo(({
           distribution: 'single_layer',
         };
 
-        const claudeResp = await fetch('/api/claude/generate-response', {
+        const claudeResp = await fetch('/api/claude/housing-generate-response', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

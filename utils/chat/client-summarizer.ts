@@ -163,17 +163,151 @@ function selectNumericFieldFromFeature(props: Record<string, any>): string | und
   return undefined;
 }
 
-function safeSampleProperties(props: Record<string, any>, maxKeys = 20): Record<string, any> {
+function safeSampleProperties(props: Record<string, any>, maxKeys = -1): Record<string, any> {
+  // System/metadata fields to exclude for cleaner analysis
+  const systemFieldsToExclude = new Set([
+    'CREATED', 'MODIFIED', 'CREATOR', 'EDITOR', 'CreationDate', 'Creator', 'EditDate', 'Editor',
+    'FLAGS', 'HIERARCHY', 'SYMBOL', 'SITE_METADATA', 'Shape__Area', 'Shape__Length',
+    // Also exclude fields with placeholder/unknown values
+    'REGION', 'GEONAME', 'GEOLEVEL' // Will be re-added if they have meaningful values
+  ]);
+
   const out: Record<string, any> = {};
   let added = 0;
+  
   for (const [k, v] of Object.entries(props)) {
-    if (added >= maxKeys) break;
+    if (maxKeys > 0 && added >= maxKeys) break; // Only limit if maxKeys is positive
     if (v === null || v === undefined) continue;
     if (typeof v === 'object') continue; // skip nested objects/arrays
+    
+    // Skip system fields
+    if (systemFieldsToExclude.has(k)) continue;
+    
+    // Skip fields with "Unknown" placeholder values unless they're important identifiers
+    if (typeof v === 'string' && v === 'Unknown' && !['NAME', 'DESCRIPTION'].includes(k)) continue;
+    
+    // Skip zero-value system fields
+    if (typeof v === 'number' && v === 0 && ['FLAGS', 'GEOID', 'SITE_METADATA'].includes(k)) continue;
+    
     out[k] = v;
     added++;
   }
   return out;
+}
+
+/**
+ * Intelligent stratified sampling for comprehensive dataset analysis
+ * Provides statistical coverage while keeping payload manageable
+ */
+function createStratifiedSample(
+  ranked: Array<{ id: string; name: string; value: number }>,
+  totalRecords: number
+): {
+  top: Array<{ id: string; name: string; value: number }>;
+  bottom: Array<{ id: string; name: string; value: number }>;
+  samples: Array<{ id: string; name: string; value: number; sampleType: string }>;
+} {
+  if (ranked.length === 0) {
+    return { top: [], bottom: [], samples: [] };
+  }
+
+  // Smart sample size calculation: 2% of dataset, min 30, max 100
+  const targetSampleSize = Math.min(
+    Math.max(30, Math.ceil(totalRecords * 0.02)), 
+    100
+  );
+
+  const samples: Array<{ id: string; name: string; value: number; sampleType: string }> = [];
+  const used = new Set<string>();
+
+  // Helper to add unique samples
+  const addSample = (item: typeof ranked[0], type: string) => {
+    const key = `${item.id}_${item.value}`;
+    if (!used.has(key) && samples.length < targetSampleSize) {
+      samples.push({ ...item, sampleType: type });
+      used.add(key);
+      return true;
+    }
+    return false;
+  };
+
+  // Tier 1: Essential Records (Always Include)
+  // Top performers (15-20 based on dataset size)
+  const topCount = Math.min(Math.max(15, Math.ceil(totalRecords * 0.005)), 20);
+  for (let i = 0; i < Math.min(topCount, ranked.length); i++) {
+    addSample(ranked[i], 'top_performer');
+  }
+
+  // Bottom performers (8-12 based on dataset size)
+  const bottomCount = Math.min(Math.max(8, Math.ceil(totalRecords * 0.003)), 12);
+  for (let i = Math.max(0, ranked.length - bottomCount); i < ranked.length; i++) {
+    addSample(ranked[i], 'bottom_performer');
+  }
+
+  // Tier 2: Statistical Coverage
+  if (ranked.length >= 4) {
+    // Quartile representatives (2-3 from each quartile)
+    const quartileSize = Math.floor(ranked.length / 4);
+    for (let q = 0; q < 4; q++) {
+      const quartileStart = q * quartileSize;
+      const quartileEnd = q === 3 ? ranked.length : (q + 1) * quartileSize;
+      
+      // Add 2-3 representatives from each quartile
+      const repsPerQuartile = Math.min(3, Math.ceil((quartileEnd - quartileStart) / 10));
+      for (let r = 0; r < repsPerQuartile; r++) {
+        const idx = quartileStart + Math.floor((quartileEnd - quartileStart) * (r + 1) / (repsPerQuartile + 1));
+        if (idx < ranked.length) {
+          addSample(ranked[idx], `quartile_${q + 1}_rep`);
+        }
+      }
+    }
+
+    // Median representatives (3-5 around median)
+    const medianIdx = Math.floor(ranked.length / 2);
+    for (let offset = -2; offset <= 2; offset++) {
+      const idx = medianIdx + offset;
+      if (idx >= 0 && idx < ranked.length) {
+        addSample(ranked[idx], 'median_area');
+      }
+    }
+
+    // Statistical outliers (>2σ from mean)
+    if (ranked.length >= 10) {
+      const values = ranked.map(r => r.value);
+      const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
+      const stdDev = Math.sqrt(values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / values.length);
+      
+      ranked.forEach(item => {
+        if (Math.abs(item.value - mean) > 2 * stdDev) {
+          addSample(item, 'statistical_outlier');
+        }
+      });
+    }
+  }
+
+  // Tier 3: Decile sampling for remaining slots
+  if (samples.length < targetSampleSize && ranked.length >= 10) {
+    for (let d = 0; d < 10; d++) {
+      const decileIdx = Math.floor(ranked.length * d / 10);
+      if (decileIdx < ranked.length) {
+        addSample(ranked[decileIdx], `decile_${d + 1}`);
+      }
+    }
+  }
+
+  // Ensure we have meaningful top/bottom for backward compatibility
+  const top = samples
+    .filter(s => s.sampleType === 'top_performer')
+    .slice(0, 15); // Keep reasonable limit for legacy compatibility
+    
+  const bottom = samples
+    .filter(s => s.sampleType === 'bottom_performer')
+    .slice(0, 10);
+
+  console.log(`🔍 [Stratified Sampling] Dataset: ${totalRecords} records → ${samples.length} samples`);
+  console.log(`🔍 [Sample Composition] Top: ${top.length}, Bottom: ${bottom.length}, Statistical: ${samples.length - top.length - bottom.length}`);
+  
+  return { top, bottom, samples };
 }
 
 export function summarizeFeatureData(featureData: MinimalClientLayer[] | undefined | null): ClientSummary | undefined {
@@ -206,15 +340,30 @@ export function summarizeFeatureData(featureData: MinimalClientLayer[] | undefin
 
     const stats = values.length ? computeStats(values) : undefined;
     const histogram = values.length ? buildHistogram(values, 10) : undefined;
-    const top = ranked.slice(0, 5);
-    const bottom = ranked.slice(-5).reverse();
+    
+    // Use intelligent stratified sampling
+    const { top, bottom, samples: stratifiedSamples } = createStratifiedSample(ranked, featureCount);
 
+    // Convert stratified samples to the expected format with full properties
     const samples: Array<Record<string, any>> = [];
-    const sampleSize = Math.min(5, featureCount);
-    for (let i = 0; i < sampleSize; i++) {
-      const props = (layer.features[i] as any)?.properties ?? layer.features[i] ?? {};
-      const { id, name } = pickIdAndName(props);
-      samples.push({ id, name, ...safeSampleProperties(props) });
+    for (const stratifiedSample of stratifiedSamples) {
+      // Find the corresponding feature with full properties
+      const matchingFeature = layer.features.find((f: any) => {
+        const props = (f as any)?.properties ?? f;
+        const { id } = pickIdAndName(props || {});
+        return id === stratifiedSample.id;
+      });
+      
+      if (matchingFeature) {
+        const props = (matchingFeature as any)?.properties ?? matchingFeature ?? {};
+        const { id, name } = pickIdAndName(props);
+        samples.push({ 
+          id, 
+          name, 
+          sampleType: stratifiedSample.sampleType,
+          ...safeSampleProperties(props) 
+        });
+      }
     }
 
     layerSummaries.push({

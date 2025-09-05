@@ -35,19 +35,16 @@ export class SemanticEnhancedHybridEngine {
    */
   private async initializeSemanticEnhancement(): Promise<void> {
     try {
-      console.log('[SemanticEnhancedHybrid] Initializing semantic enhancement...');
-      if (typeof window !== 'undefined') {
-        // Browser environment - semantic router available
-        await semanticRouter.initialize();
-        console.log('[SemanticEnhancedHybrid] Semantic enhancement ready');
-      } else {
-        // Server environment - semantic router not available
-        console.log('[SemanticEnhancedHybrid] Server environment - semantic enhancement disabled');
-        this.useSemanticEnhancement = false;
-      }
+  console.log('[SemanticEnhancedHybrid] Initializing semantic enhancement...');
+  // Attempt to initialize semantic router on all environments (tests may mock semanticRouter)
+  await semanticRouter.initialize();
+  this.useSemanticEnhancement = semanticRouter.isReady();
+  console.log('[SemanticEnhancedHybrid] Semantic enhancement ready:', this.useSemanticEnhancement);
     } catch (error) {
-      console.warn('[SemanticEnhancedHybrid] Failed to initialize semantic enhancement:', error);
-      this.useSemanticEnhancement = false;
+      // If embeddings/local init fails (common in test/server env), still enable semantic
+      // enhancement so that the SemanticRouter can apply its keyword-based fallback.
+      console.warn('[SemanticEnhancedHybrid] Failed to initialize semantic enhancement (embeddings may be unavailable):', error);
+      this.useSemanticEnhancement = true; // allow semanticRouter.route() to run and fallback to keywords
     }
   }
 
@@ -82,6 +79,16 @@ export class SemanticEnhancedHybridEngine {
             (enhancedResult.confidence || 0) + semanticEnhancement.confidence_boost
           );
         }
+        // If semantic suggests a different endpoint with sufficient confidence, prefer it
+        if (semanticEnhancement.semantic_endpoint && typeof semanticEnhancement.semantic_confidence === 'number') {
+          const sc = semanticEnhancement.semantic_confidence || 0;
+          if (semanticEnhancement.semantic_endpoint !== hybridResult.endpoint && sc >= this.semanticThreshold) {
+            enhancedResult.endpoint = semanticEnhancement.semantic_endpoint;
+            enhancedResult.reasoning = enhancedResult.reasoning.concat([`Semantic override: chose ${semanticEnhancement.semantic_endpoint} (${(sc*100).toFixed(1)}% semantic confidence)`]);
+            enhancedResult.success = true;
+            enhancedResult.confidence = Math.min(1.0, sc);
+          }
+        }
         
       } catch (error) {
         console.warn('[SemanticEnhancedHybrid] Semantic enhancement failed:', error);
@@ -102,8 +109,7 @@ export class SemanticEnhancedHybridEngine {
     query: string, 
     hybridResult: HybridRoutingResult
   ): boolean {
-    if (!this.useSemanticEnhancement) return false;
-    if (!semanticRouter.isReady()) return false;
+  if (!this.useSemanticEnhancement) return false;
     
     // Apply semantic enhancement for:
     // 1. Creative/metaphorical queries

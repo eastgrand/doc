@@ -131,9 +131,11 @@ export class SpatialClustersProcessor implements DataProcessorStrategy {
       });
     }
     
+    // Use the canonical primary field name so downstream consumers see the expected field
+    const primaryField = getPrimaryScoreField('spatial_clusters');
     return {
       type: 'class-breaks',
-      field: 'spatial_clusters_score',
+      field: primaryField || 'cluster_score',
       classBreakInfos,
       defaultSymbol: {
         type: 'simple-fill',

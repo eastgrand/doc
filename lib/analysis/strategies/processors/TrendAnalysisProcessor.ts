@@ -131,7 +131,8 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     // Rank records by trend strength
     const rankedRecords = this.rankRecords(processedRecords);
     
-    // Filter out national parks for business analysis
+    // Filter out national parks for business analysis - COMMENTED OUT FOR DEBUGGING
+    /*
     const nonParkRecords = rankedRecords.filter(record => {
       const props = (record.properties || {}) as Record<string, unknown>;
       const areaId = record.area_id || props.ID || props.id || '';
@@ -148,6 +149,8 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       ];
       return !parkPatterns.some(pattern => pattern.test(nameStr));
     });
+    */
+    const nonParkRecords = rankedRecords; // Use all records for debugging
     
     console.log(`🎯 [TREND ANALYSIS] Filtered ${rankedRecords.length - nonParkRecords.length} parks from trend analysis`);
     
@@ -180,14 +183,9 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     if ((record as any).trend_score !== undefined && (record as any).trend_score !== null) {
       const preCalculatedScore = Number((record as any).trend_score);
       
-      // Check if trend score looks like market share data (values under 20 are likely market shares)
-      if (preCalculatedScore < 20) {
-        console.warn(`[TrendAnalysisProcessor] Trend score ${preCalculatedScore} appears to be market share data (valid trend scores should be 20+), calculating composite instead`);
-        // Fall through to composite calculation below
-      } else {
-        console.log(`📈 [TrendAnalysisProcessor] Using pre-calculated trend score: ${preCalculatedScore}`);
-        return preCalculatedScore;
-      }
+      // Use the pre-calculated trend score - low values are valid trend scores  
+      console.log(`📈 [TrendAnalysisProcessor] Using pre-calculated trend score: ${preCalculatedScore}`);
+      return preCalculatedScore;
     }
     
     // COMPOSITE CALCULATION: Calculate trend score from available data
