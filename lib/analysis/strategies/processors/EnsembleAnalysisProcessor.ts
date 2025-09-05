@@ -13,7 +13,7 @@ import { BrandNameResolver } from '../../utils/BrandNameResolver';
 export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
   private brandResolver: BrandNameResolver;
   // Prefer canonical; fallback to last numeric field for energy dataset
-  private scoreField: string = 'ensemble_analysis_score';
+  private scoreField: string = 'ensemble_performance_score';
 
   constructor() {
     this.brandResolver = new BrandNameResolver();
@@ -34,7 +34,7 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
     }
 
     // Determine primary score field deterministically from hardcoded defs; allow metadata override
-  const primary = getPrimaryScoreField('ensemble_analysis', (rawData as any)?.metadata ?? undefined) || 'ensemble_analysis_score';
+  const primary = getPrimaryScoreField('ensemble_analysis', (rawData as any)?.metadata ?? undefined) || 'ensemble_performance_score';
   this.scoreField = primary;
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
@@ -68,8 +68,8 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
         }
       };
 
-  // Mirror dynamic field value for renderer/consumers when field name differs from ensemble_analysis_score
-  if (this.scoreField && this.scoreField !== 'ensemble_analysis_score') {
+  // Mirror dynamic field value for renderer/consumers when field name differs from ensemble_performance_score
+  if (this.scoreField && this.scoreField !== 'ensemble_performance_score') {
         out[this.scoreField] = out.value;
         (out.properties as any)[this.scoreField] = out.value;
       }
