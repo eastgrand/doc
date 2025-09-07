@@ -187,63 +187,39 @@ cd scripts/automation
 # Run with Nike service (example)
 ./run_complete_automation.sh "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54_Vetements_layers/FeatureServer" nike_2025
 
-# Run with any ArcGIS service
-./run_complete_automation.sh "YOUR_ARCGIS_SERVICE_URL" your_project_name
-```
-
 ### What the Pipeline Does
 
 1. **🔍 Service Discovery** - Automatically discovers all layers and fields
 2. **📊 Data Extraction** - Extracts all data with parallel processing  
 3. **🤖 Field Mapping** - AI-powered field mapping with confidence scoring
 4. **🎓 Model Training + Package Creation** - Trains XGBoost models and creates deployment package
-5. **⏸️  PAUSE FOR MANUAL DEPLOYMENT** - Deploy microservice to Render manually
-6. **📝 Endpoint Generation** - Creates 18 analysis endpoints
 7. **📈 Score Calculation** - Applies 15 scoring algorithms  
 8. **🏗️ Layer Configuration** - Generates TypeScript layer configs
-9. **🚀 Integration + URL Update** - Deploys files and provides microservice URL instructions
-
 10. ✅ Post-Automation Testing — REQUIRED
 
 - Run the comprehensive verification steps in docs/POST_DATA_UPDATE_TESTING.md to confirm routing, processors, and visualization remain aligned after data changes.
 
 ### File Modifications & Outputs
-
 The automation pipeline creates new files and modifies existing ones. Here's exactly what happens:
 
 #### 📁 **New Files Created**
 
-```
 projects/your_project_name/
 ├── AUTOMATION_REPORT.md           # Comprehensive execution report
 ├── service_analysis.json          # Service discovery results  
-├── merged_dataset.csv              # Extracted and merged data
 ├── field_mappings.json             # AI-generated field mappings
 ├── deployment_summary.json         # Deployment configuration
-├── FINAL_INTEGRATION_INSTRUCTIONS.md # Microservice URL setup instructions
-├── automation_pipeline_*.log       # Detailed execution logs
 └── microservice_package/          # Complete microservice deployment package
     ├── models/                     # Trained XGBoost models
-    ├── data/                       # Training data and field mappings
     ├── deployment_config.json      # Render deployment configuration  
     └── README.md                   # Step-by-step deployment guide
-
-config/
 ├── layers_your_project.ts          # Generated layer configuration
 └── layer_generation_report.md      # Layer analysis report
-
-public/data/endpoints/
-├── strategic-analysis.json         # Strategic analysis endpoint
 ├── competitive-analysis.json       # Competitive analysis endpoint
 ├── demographic-insights.json       # Demographic analysis endpoint
-├── correlation-analysis.json       # Correlation analysis endpoint
-├── cluster-analysis.json          # Cluster analysis endpoint
 ├── predictive-modeling.json       # Predictive modeling endpoint
 ├── anomaly-detection.json         # Anomaly detection endpoint
-├── comparative-analysis.json      # Comparative analysis endpoint
-├── trend-analysis.json            # Trend analysis endpoint
 ├── feature-interaction.json       # Feature interaction endpoint
-├── feature-importance.json        # Feature importance endpoint
 ├── scenario-analysis.json         # Scenario analysis endpoint
 ├── segment-profiling.json         # Segment profiling endpoint
 ├── outlier-analysis.json          # Outlier analysis endpoint
@@ -665,6 +641,105 @@ This allows you to quickly verify your filtering logic is working correctly befo
 
 ---
 
+## 📊 **Managing Composite Index Layers**
+
+### **Overview**
+Composite index layers are calculated client-side layers that combine multiple data fields into meaningful indexes (e.g., "Hot Growth Index", "Housing Affordability Zones"). These layers can interfere with analysis visualizations if not properly managed.
+
+### **Adding New Composite Index Layers**
+
+1. **Define the Layer Configuration** (`/config/layers.ts`)
+   ```typescript
+   {
+     id: 'your_index_layer_id',
+     name: 'Your Index Name',
+     type: 'client-side-composite',
+     url: 'composite-index://YOUR_INDEX',
+     group: 'composite-indexes',
+     isVisible: false,  // IMPORTANT: Start hidden to prevent conflicts
+     skipLayerList: false,  // Include in LayerList widget
+     rendererField: 'YOUR_INDEX_FIELD',
+     fields: [/* field definitions */],
+     // ... other configuration
+   }
+   ```
+
+2. **Add to Group Configuration**
+   ```typescript
+   'composite-indexes': {
+     displayName: 'Composite Indexes',
+     layers: [
+       'existing_layer_id',
+       'your_index_layer_id'  // Add your new layer
+     ]
+   }
+   ```
+
+### **Important Considerations for Composite Layers**
+
+#### **Layer Visibility Management**
+- **Always set `isVisible: false`** - Composite layers should start hidden
+- **Set `skipLayerList: false`** - Users need control via LayerList widget
+- **Automatic hiding during analysis** - The system automatically hides these layers when displaying analysis results to prevent color mixing
+
+#### **Preventing Visual Conflicts**
+The application automatically manages layer visibility to prevent the "10+ colors" issue:
+
+1. **When analysis runs**: All composite index layers are hidden
+2. **After analysis**: Users can manually re-enable layers via LayerList
+3. **Layer stacking prevention**: System ensures only one visualization layer is active
+
+### **Modifying Existing Composite Layers**
+
+1. **Update Scoring Formula**
+   - Modify the calculation in `CompositeIndexLayerService.ts`
+   - Update field weights and normalization
+
+2. **Change Renderer Colors/Breaks**
+   ```typescript
+   renderer: {
+     type: 'class-breaks',
+     field: 'YOUR_INDEX_FIELD',
+     classBreakInfos: [
+       { minValue: 0, maxValue: 25, symbol: { color: [r,g,b,0.6] }},
+       // Use 0.6 opacity to match analysis visualizations
+     ]
+   }
+   ```
+
+3. **Update Layer Metadata**
+   - Description, tags, update frequency
+   - Ensure `geographicType` matches your data (e.g., 'postal' for FSA/ZIP)
+
+### **Troubleshooting Common Issues**
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Layers showing during analysis | Incorrect visibility settings | Set `isVisible: false` in config |
+| Colors mixing (10+ colors) | Multiple layers visible | Check `apply-analysis-visualization.ts` hiding logic |
+| Layer not in LayerList | `skipLayerList: true` | Change to `skipLayerList: false` |
+| Layer always visible | Forced visibility in code | Check LayerController initialization |
+| Layers not creating | CompositeIndexLayerManager not mounted | Ensure component is included in map view |
+| Service connection errors | Microservice URL incorrect | Check `CompositeIndexLayerService` endpoint configuration |
+
+### **Testing Composite Layers**
+
+After adding/modifying composite layers:
+
+1. **Check initial state**: Layer should be hidden on load
+2. **Test LayerList toggle**: Should appear and be toggleable
+3. **Run analysis**: Layer should auto-hide during analysis
+4. **Verify renderer**: Should use correct colors and opacity
+5. **Check for conflicts**: No visual artifacts with analysis layers
+
+### **Code References**
+
+- **Layer Configuration**: `/config/layers.ts`
+- **Composite Layer Service**: `/lib/services/CompositeIndexLayerService.ts`
+- **Layer Manager Component**: `/components/map/CompositeIndexLayerManager.tsx`
+- **Layer Controller**: `/components/LayerController/LayerController.tsx`
+- **Visibility Management**: `/utils/apply-analysis-visualization.ts` (lines 706-753)
+
 ## 🚀 **Efficiency Optimizations for Future Migrations**
 
 Based on the completed Quebec housing market migration, here are key optimizations to make future post-automation updates more efficient:
@@ -1081,7 +1156,8 @@ The generated file enables the Quebec housing project to have the same choroplet
      2. CompositeIndexLayerService fetches data from microservice training_data.csv
      3. Service uses geometry from base housing layer (Unknown_Service_layer_1)
      4. Creates ClassBreaksRenderer with firefly color scheme for quartile-based scoring
-     5. Layers appear in LayerList widget under "Composite Indexes" group
+     5. CompositeIndexLayerManager component handles React lifecycle and layer management
+     6. Layers appear in LayerList widget under "Composite Indexes" group
    - **Efficiency Tips**:
      - Cache composite index data locally to reduce microservice calls
      - Use web workers for large dataset processing
@@ -2435,6 +2511,23 @@ For housing market analysis projects, we maintain a specialized version of the g
      - `/components/unified-analysis/UnifiedAnalysisWorkflow.tsx:455`
      - `/components/geospatial-chat-interface.tsx:1184`
    - **Key Change**: Replace `'zip_boundaries'` with `'fsa_boundaries'` for Canadian projects
+
+3. **Create Complete Boundary File**: **CRITICAL POST-AUTOMATION STEP**
+   - **Why Required**: The original boundary files may have missing geographic areas, causing visualization issues where some data records don't get mapped to boundaries
+   - **Script Location**: `/scripts/create_fsa_boundaries.js` (or create similar for ZIP codes)
+   - **Run Command**: `node scripts/create_fsa_boundaries.js`
+   - **What It Does**:
+     - Fetches ALL boundary geometries from the primary spatial reference layer (e.g., Unknown_Service_layer_7)
+     - Creates complete GeoJSON file with full FSA/ZIP coverage
+     - Validates no missing areas that exist in your analysis data
+     - Optimizes file structure (minimal properties: ID, FSA fields only)
+   - **Upload Steps**:
+     1. Run the boundary creation script
+     2. Upload generated JSON file to blob storage 
+     3. Update URL in `/public/data/blob-urls.json` under `boundaries/fsa_boundaries` key
+   - **Validation**: Script will report if previously missing areas are now found
+   - **File Size**: ~8-9MB for complete FSA boundaries with full geometry precision
+   - **Reusability**: Remove record count limits so script works for any project size
 
 2. **Housing Prompts**: `/app/api/claude/shared/housing-analysis-prompts.ts` 
    - Copy from `/app/api/claude/shared/analysis-prompts.ts`
