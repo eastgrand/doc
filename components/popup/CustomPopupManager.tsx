@@ -580,12 +580,22 @@ const CustomPopupManager: React.FC<CustomPopupManagerProps> = ({
           mapView.goTo({
             target: feature.geometry,
             zoom: 12
-          }, { duration: 500 });
+          }, { duration: 1000, easing: 'ease-in-out' }).then(() => {
+            // Add flash effect for point features
+            if (feature.geometry) {
+              addFlashEffect(mapView, feature.geometry, 'point');
+            }
+          });
         } 
         // For polygons and polylines, go to the extent
         else {
           if (feature.geometry.extent) {
-            mapView.goTo(feature.geometry.extent.expand(1.5), { duration: 500 });
+            mapView.goTo(feature.geometry.extent.expand(1.5), { duration: 1000, easing: 'ease-in-out' }).then(() => {
+              // Add flash effect for polygon features
+              if (feature.geometry) {
+                addFlashEffect(mapView, feature.geometry, 'polygon');
+              }
+            });
           }
         }
       }
@@ -1526,6 +1536,92 @@ const generateBarChart = (
       container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--theme-text-muted);">Error loading data</div>';
     }
   })();
+};
+
+// Helper function to add flash effect to features
+const addFlashEffect = (mapView: __esri.MapView, geometry: __esri.Geometry, geometryType: string) => {
+  try {
+    import('@arcgis/core/Graphic').then(({ default: Graphic }) => {
+      import('@arcgis/core/symbols/SimpleFillSymbol').then(({ default: SimpleFillSymbol }) => {
+        import('@arcgis/core/symbols/SimpleMarkerSymbol').then(({ default: SimpleMarkerSymbol }) => {
+          let flashGraphic: __esri.Graphic;
+          
+          if (geometryType === 'point') {
+            // Flash effect for points
+            flashGraphic = new Graphic({
+              geometry: geometry,
+              symbol: new SimpleMarkerSymbol({
+                color: [255, 255, 255, 0.9],
+                size: 20,
+                outline: {
+                  color: [255, 255, 255, 1],
+                  width: 4
+                }
+              })
+            });
+          } else {
+            // Flash effect for polygons
+            flashGraphic = new Graphic({
+              geometry: geometry,
+              symbol: new SimpleFillSymbol({
+                color: [255, 255, 255, 0.8],
+                outline: {
+                  color: [255, 255, 255, 1],
+                  width: 4
+                }
+              })
+            });
+          }
+          
+          mapView.graphics.add(flashGraphic);
+          
+          // Create pulsing effect
+          let opacity = 0.8;
+          let size = geometryType === 'point' ? 20 : undefined;
+          let fadeOut = false;
+          
+          const pulseInterval = setInterval(() => {
+            if (!fadeOut) {
+              opacity -= 0.15;
+              if (geometryType === 'point' && size) size += 2;
+              if (opacity <= 0.2) fadeOut = true;
+            } else {
+              opacity += 0.15;
+              if (geometryType === 'point' && size) size -= 2;
+              if (opacity >= 0.8) fadeOut = false;
+            }
+            
+            if (geometryType === 'point') {
+              flashGraphic.symbol = new SimpleMarkerSymbol({
+                color: [255, 255, 255, opacity],
+                size: size || 20,
+                outline: {
+                  color: [255, 255, 255, 1],
+                  width: 4
+                }
+              });
+            } else {
+              flashGraphic.symbol = new SimpleFillSymbol({
+                color: [255, 255, 255, opacity],
+                outline: {
+                  color: [255, 255, 255, 1],
+                  width: 4
+                }
+              });
+            }
+          }, 200);
+          
+          // Remove flash after animation
+          setTimeout(() => {
+            clearInterval(pulseInterval);
+            mapView.graphics.remove(flashGraphic);
+          }, 3000);
+        });
+      });
+    });
+  } catch (error) {
+    console.error('[CustomPopupManager] Flash effect failed:', error);
+  }
 };
 
 export default CustomPopupManager;

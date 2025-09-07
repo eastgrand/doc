@@ -240,18 +240,31 @@ export const StatsWithInfo: React.FC<StatsWithInfoProps> = ({ content, className
             const label = bulletLabel || boldLabel;
             const rawValue = bulletValue || boldValue;
             
-            // Process the value for ZIP codes and formatting
+            // Process the value for ZIP codes and FSA codes formatting
             const processValue = (text: string) => {
-              // Check for ZIP codes
-              const zipParts = text.split(/(\b\d{5}\b)/);
-              return zipParts.map((part, i) => {
+              // Combined pattern to match both US ZIP codes and Canadian FSA codes
+              const areaParts = text.split(/(\b\d{5}\b|\b[A-Z]\d[A-Z]\b)/);
+              return areaParts.map((part, i) => {
                 if (/^\d{5}$/.test(part) && onZipCodeClick) {
+                  // US ZIP code
                   return (
                     <button
                       key={i}
                       className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors cursor-pointer mx-0.5"
                       onClick={() => onZipCodeClick(part)}
                       title={`Click to zoom to ZIP code ${part}`}
+                    >
+                      {part}
+                    </button>
+                  );
+                } else if (/^[A-Z]\d[A-Z]$/.test(part) && onZipCodeClick) {
+                  // Canadian FSA code
+                  return (
+                    <button
+                      key={i}
+                      className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors cursor-pointer mx-0.5"
+                      onClick={() => onZipCodeClick(part)}
+                      title={`Click to zoom to FSA ${part}`}
                     >
                       {part}
                     </button>
@@ -313,18 +326,31 @@ export const StatsWithInfo: React.FC<StatsWithInfoProps> = ({ content, className
   );
 };
 
-// Helper function to render lines with ZIP code support
+// Helper function to render lines with ZIP code and FSA code support
 function renderLineWithZipCodes(text: string, onZipCodeClick?: (zipCode: string) => void) {
-  const zipParts = text.split(/(\b\d{5}\b)/);
+  const areaParts = text.split(/(\b\d{5}\b|\b[A-Z]\d[A-Z]\b)/);
   
-  return zipParts.map((part, i) => {
+  return areaParts.map((part, i) => {
     if (/^\d{5}$/.test(part) && onZipCodeClick) {
+      // US ZIP code
       return (
         <button
           key={i}
           className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors cursor-pointer mx-0.5"
           onClick={() => onZipCodeClick(part)}
           title={`Click to zoom to ZIP code ${part}`}
+        >
+          {part}
+        </button>
+      );
+    } else if (/^[A-Z]\d[A-Z]$/.test(part) && onZipCodeClick) {
+      // Canadian FSA code
+      return (
+        <button
+          key={i}
+          className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors cursor-pointer mx-0.5"
+          onClick={() => onZipCodeClick(part)}
+          title={`Click to zoom to FSA ${part}`}
         >
           {part}
         </button>

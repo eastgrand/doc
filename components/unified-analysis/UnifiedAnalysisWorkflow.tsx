@@ -448,7 +448,11 @@ export default function UnifiedAnalysisWorkflow({
             const recordsWithoutGeometry = analysisData.records.filter((record: any) => !record.geometry);
             
             if (recordsWithoutGeometry.length > 0) {
-              // console.log('[UnifiedWorkflow] Starting geometry join for', recordsWithoutGeometry.length, 'records without geometry');
+              console.log(`🔍 [GEOMETRY JOIN DEBUG] Starting join:`, {
+                totalRecords: analysisData.records.length,
+                recordsWithoutGeometry: recordsWithoutGeometry.length,
+                recordsWithGeometry: analysisData.records.length - recordsWithoutGeometry.length
+              });
               
               try {
                 // Load FSA boundaries for Quebec
@@ -546,8 +550,21 @@ export default function UnifiedAnalysisWorkflow({
                   };
                   
                   const recordsWithGeometry = joinedResults.filter((r: any) => r.geometry).length;
-                  // console.log('[UnifiedWorkflow] ✅ Geometry join complete:', {
-                  //   totalRecords: joinedResults.length,
+                  const areaIds = joinedResults.map((r: any) => r.area_id || r.ID).filter(id => id);
+                  const uniqueAreaIds = [...new Set(areaIds)];
+                  
+                  console.log(`✅ [GEOMETRY JOIN DEBUG] Join complete:`, {
+                    totalRecords: joinedResults.length,
+                    recordsWithGeometry,
+                    areaIdsFound: areaIds.length,
+                    uniqueAreaIds: uniqueAreaIds.length,
+                    potentialDuplicates: areaIds.length - uniqueAreaIds.length
+                  });
+                  
+                  if (areaIds.length !== uniqueAreaIds.length) {
+                    const duplicates = areaIds.filter((id, index) => areaIds.indexOf(id) !== index);
+                    console.warn(`🚨 [GEOMETRY JOIN] FOUND DUPLICATE AREA IDS:`, [...new Set(duplicates)]);
+                  }
                   //   recordsWithGeometry,
                   //   recordsWithoutGeometry: joinedResults.length - recordsWithGeometry,
                   //   successRate: `${((recordsWithGeometry / joinedResults.length) * 100).toFixed(1)}%`
@@ -665,19 +682,19 @@ export default function UnifiedAnalysisWorkflow({
     }
   }, [workflowState.analysisResult, handleExport]);
 
-  // Handle ZIP code click to zoom to feature - using the exact same approach as CustomPopupManager
+  // Handle ZIP code and FSA code click to zoom to feature - using the exact same approach as CustomPopupManager
   const handleZipCodeClick = useCallback(async (zipCode: string) => {
-    // console.log(`[UnifiedAnalysisWorkflow] Zooming to ZIP code: ${zipCode}`);
+    // console.log(`[UnifiedAnalysisWorkflow] Zooming to area code: ${zipCode}`);
     
     try {
       // Find the feature with this ZIP code in the current analysis results
       const analysisData = workflowState.analysisResult?.analysisResult?.data?.records;
       if (!analysisData) {
-        console.warn('[UnifiedAnalysisWorkflow] No analysis data available for ZIP code zoom');
+        console.warn('[UnifiedAnalysisWorkflow] No analysis data available for area code zoom');
         return;
       }
 
-      // Find the feature matching this ZIP code
+      // Find the feature matching this area code (ZIP or FSA)
       const targetFeature = analysisData.find((record: any) => 
         record.area_id === zipCode || 
         record.area_name?.includes(zipCode) ||
@@ -687,7 +704,7 @@ export default function UnifiedAnalysisWorkflow({
       );
 
       if (!targetFeature) {
-        console.warn(`[UnifiedAnalysisWorkflow] Feature not found for ZIP code: ${zipCode}`);
+        console.warn(`[UnifiedAnalysisWorkflow] Feature not found for area code: ${zipCode}`);
         return;
       }
 
@@ -702,7 +719,7 @@ export default function UnifiedAnalysisWorkflow({
       // Get the geometry from the feature (GeoJSON-style or ArcGIS-like object)
       const geometryUnknown = targetFeature.geometry as unknown;
       if (!geometryUnknown || typeof geometryUnknown !== 'object') {
-        console.warn(`[UnifiedAnalysisWorkflow] No valid geometry found for ZIP code: ${zipCode}`);
+        console.warn(`[UnifiedAnalysisWorkflow] No valid geometry found for area code: ${zipCode}`);
         return;
       }
 
@@ -882,9 +899,9 @@ export default function UnifiedAnalysisWorkflow({
         console.warn(`[UnifiedAnalysisWorkflow] Unsupported geometry type: ${gType}`);
       }
       
-      // console.log(`[UnifiedAnalysisWorkflow] Successfully zoomed to ZIP code: ${zipCode}`);
+      // console.log(`[UnifiedAnalysisWorkflow] Successfully zoomed to area code: ${zipCode}`);
     } catch (error) {
-      console.error(`[UnifiedAnalysisWorkflow] Error zooming to ZIP code ${zipCode}:`, error);
+      console.error(`[UnifiedAnalysisWorkflow] Error zooming to area code ${zipCode}:`, error);
     }
   }, [view, workflowState.analysisResult]);
 
