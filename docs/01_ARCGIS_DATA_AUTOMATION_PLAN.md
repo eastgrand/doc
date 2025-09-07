@@ -2529,6 +2529,21 @@ For housing market analysis projects, we maintain a specialized version of the g
    - **File Size**: ~8-9MB for complete FSA boundaries with full geometry precision
    - **Reusability**: Remove record count limits so script works for any project size
 
+4. **Configure Target Market Bookmarks**: **Quebec Housing Market Focus**
+   - **Primary Markets**: The system is configured for Quebec Province housing analysis
+   - **Bookmark Widget Configuration**: `/components/LayerBookmarks.tsx` lines 64-105
+   - **Default Bookmarks** (automatically configured):
+     1. **Montreal Housing Market** - H-series FSAs (H1A-H4Z)
+     2. **Quebec City Housing Market** - G1/G2-series FSAs (G1A-G2M)
+     3. **Laval Housing Market** - H7-series FSAs (H7A-H7Y)
+     4. **Gatineau Housing Market** - J8/J9-series FSAs (J8A-J9Z)
+   - **Geographic Recognition**: Geo-awareness system automatically recognizes all Quebec cities
+   - **Query Examples**:
+     - "Compare homeownership rates between Montreal and Quebec City" → Filters to H + G series FSAs
+     - "Show demographics in Laval" → Filters to H7 series FSAs only
+     - "Analyze housing trends in Gatineau" → Filters to J8/J9 series FSAs only
+   - **No Configuration Required**: Cities and FSA mappings are pre-configured in geo-awareness database
+
 2. **Housing Prompts**: `/app/api/claude/shared/housing-analysis-prompts.ts` 
    - Copy from `/app/api/claude/shared/analysis-prompts.ts`
    - Update terminology for housing/real estate context
