@@ -623,53 +623,109 @@ export class GeoAwarenessEngine {
    * Check if query has explicit geographic intent indicators
    */
   private hasExplicitGeographicIntent(query: string): boolean {
-    const explicitGeoIndicators = [
-      // Enhanced location prepositions with proper word boundaries
+    const queryLower = query.toLowerCase();
+    
+    // Method 1: Check for explicit geographic prepositions
+    const geoPrepositions = [
       /\bin\s+([A-Z][a-z]+(\s+[A-Z][a-z]+)*)/,  // "in Brooklyn", "in New York"
       /\bfrom\s+([A-Z][a-z]+(\s+[A-Z][a-z]+)*)/,  // "from Manhattan"
       /\bnear\s+([A-Z][a-z]+(\s+[A-Z][a-z]+)*)/,  // "near Philadelphia"
       /\baround\s+([A-Z][a-z]+(\s+[A-Z][a-z]+)*)/,  // "around Boston"
       /\bacross\s+([A-Z][a-z]+(\s+[A-Z][a-z]+)*)/,  // "across New Jersey"
-      
-      // Geographic comparison words - improved patterns
+    ];
+    
+    // Method 2: Check for geographic comparison patterns
+    const geoComparisons = [
       /\bcompare.*\b(cities|states|regions|areas|markets|locations)\b/i,
       /\b(cities|states|regions|areas|markets|locations).*\bcompare\b/i,
       /\bbetween\s+[A-Z][a-z]+(\s+[A-Z][a-z]+)*\s+and\s+[A-Z][a-z]+(\s+[A-Z][a-z]+)*/,  // "between NYC and LA"
-      
-      // State/area-specific patterns
-      /\b(New York|Pennsylvania|New Jersey)\s+(athletic|shoe|brand|analysis|trends)/i,
-      /\b[A-Z][a-z]+\s+area\s+(demographics|analysis|trends)/i,  // "Philadelphia area demographics"
-      
-      // Known geographic entities (major tri-state cities and boroughs)
-      /\b(Brooklyn|Manhattan|Queens|Bronx|Staten Island)\b/i,
-      /\b(Philadelphia|Pittsburgh|Newark|Jersey City|Hoboken|Trenton|Atlantic City)\b/i,
-      /\b(Albany|Buffalo|Rochester|Syracuse|Yonkers|Schenectady|Troy|Utica)\b/i,
-      /\b(Paterson|Elizabeth|Edison|Camden|Bayonne|Union City|Plainfield)\b/i,
-      /\b(Allentown|Erie|Reading|Scranton|Bethlehem|Lancaster|Harrisburg)\b/i,
-      /\b(Park Slope|SoHo|Midtown|Center City|Old City|Strip District)\b/i,
-      
-      // Explicit location mentions
+    ];
+    
+    // Method 3: Check for explicit location codes
+    const locationCodes = [
       /\bzip\s*code/i,
       /\bpostal\s*code/i,
+      /\bfsa\b/i,  // Forward Sortation Area
       /\b\d{5}(-\d{4})?\b/,      // ZIP code pattern
-      
-      // Geographic analysis terms
+      /\b[A-Z]\d[A-Z]\b/,        // FSA pattern (H1A, G2B, etc.)
+    ];
+    
+    // Method 4: Dynamic check against geographic database entities
+    const hasKnownGeographicEntity = this.queryContainsGeographicEntity(queryLower);
+    
+    // Method 5: Check for geographic analysis terms
+    const geoAnalysisTerms = [
       /\bgeographic/i,
       /\bregional/i,
+      /\bspatial/i,
+      /\bdemographic/i
+    ];
+    
+    // Method 6: Check for location-specific terms
+    const locationTerms = [
       /\blocal/i,
       /\bneighborhood/i,
       /\bborough/i,
       /\bcounty/i,
       /\bstate\s+(by|comparison|analysis|trends)/i,
       /\bcity\s+(by|comparison|analysis|trends)/i,
-      
-      // Map/location specific terms
       /\bmap\s+of/i,
       /\bshow\s+me\s+(where|locations|places)/i,
       /\bfind\s+(locations|places|areas)/i
     ];
     
-    return explicitGeoIndicators.some(pattern => pattern.test(query));
+    const allPatterns = [
+      ...geoPrepositions,
+      ...geoComparisons, 
+      ...locationCodes,
+      ...geoAnalysisTerms,
+      ...locationTerms
+    ];
+    
+    // Return true if query matches any pattern OR contains known geographic entities
+    return allPatterns.some(pattern => pattern.test(query)) || hasKnownGeographicEntity;
+  }
+
+  /**
+   * Dynamically check if query contains any geographic entities from the database
+   */
+  private queryContainsGeographicEntity(query: string): boolean {
+    const queryWords = query.toLowerCase().split(/\s+/);
+    
+    // Check each word and phrase against our geographic entities
+    for (const [entityName, entity] of this.geographicHierarchy) {
+      // Check exact entity name
+      if (query.includes(entityName)) {
+        return true;
+      }
+      
+      // Check aliases
+      if (entity.aliases) {
+        for (const alias of entity.aliases) {
+          if (query.includes(alias.toLowerCase())) {
+            return true;
+          }
+        }
+      }
+    }
+    
+    // Check multi-word phrases
+    for (let i = 0; i < queryWords.length - 1; i++) {
+      const twoWordPhrase = `${queryWords[i]} ${queryWords[i + 1]}`;
+      if (this.geographicHierarchy.has(twoWordPhrase)) {
+        return true;
+      }
+      
+      // Check three-word phrases
+      if (i < queryWords.length - 2) {
+        const threeWordPhrase = `${queryWords[i]} ${queryWords[i + 1]} ${queryWords[i + 2]}`;
+        if (this.geographicHierarchy.has(threeWordPhrase)) {
+          return true;
+        }
+      }
+    }
+    
+    return false;
   }
 
   /**
@@ -697,29 +753,65 @@ export class GeoAwarenessEngine {
    * Find direct matches in geographic hierarchy
    */
   private findDirectMatches(query: string): GeographicEntity[] {
-    const matches: GeographicEntity[] = [];
+    const allMatches: GeographicEntity[] = [];
+    const queryLower = query.toLowerCase();
     
-    // Split query into individual words
-    const words = query.toLowerCase().split(/\s+/);
-    
-    // Look for direct entity matches
-    for (const word of words) {
-      const entity = this.geographicHierarchy.get(word);
-      if (entity) {
-        matches.push(entity);
-      }
-    }
-    
-    // Look for multi-word matches
+    // Look for multi-word matches first (more specific)
     const phrases = this.extractPhrases(query);
     for (const phrase of phrases) {
       const entity = this.geographicHierarchy.get(phrase.toLowerCase());
       if (entity) {
-        matches.push(entity);
+        allMatches.push(entity);
       }
     }
     
-    return matches;
+    // Look for alias matches
+    for (const [alias, entityName] of this.aliasMap) {
+      if (queryLower.includes(alias)) {
+        const entity = this.geographicHierarchy.get(entityName);
+        if (entity) {
+          allMatches.push(entity);
+        }
+      }
+    }
+    
+    // Look for single word matches (less specific)
+    const words = query.toLowerCase().split(/\s+/);
+    for (const word of words) {
+      const entity = this.geographicHierarchy.get(word);
+      if (entity) {
+        allMatches.push(entity);
+      }
+    }
+    
+    // Remove duplicates and prioritize more specific matches
+    const uniqueMatches = this.deduplicateAndPrioritizeMatches(allMatches, queryLower);
+    
+    return uniqueMatches;
+  }
+
+  /**
+   * Remove duplicate matches and prioritize more specific ones
+   */
+  private deduplicateAndPrioritizeMatches(matches: GeographicEntity[], query: string): GeographicEntity[] {
+    if (matches.length <= 1) return matches;
+    
+    // Remove exact duplicates
+    const uniqueMatches = matches.filter((match, index, self) => 
+      index === self.findIndex(m => m.name === match.name && m.type === match.type)
+    );
+    
+    // For Quebec/Quebec City case, prioritize the more specific match
+    const cityMatches = uniqueMatches.filter(m => m.type === 'city');
+    const stateMatches = uniqueMatches.filter(m => m.type === 'state');
+    
+    // If we have both "Quebec City" (city) and "Quebec" (state), prefer the city
+    if (cityMatches.some(m => m.name.toLowerCase().includes('quebec')) && 
+        stateMatches.some(m => m.name.toLowerCase() === 'quebec')) {
+      return uniqueMatches.filter(m => !(m.type === 'state' && m.name.toLowerCase() === 'quebec'));
+    }
+    
+    return uniqueMatches;
   }
 
   /**

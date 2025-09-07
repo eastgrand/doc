@@ -72,7 +72,7 @@ export class DataProcessor {
       if (spatialFilterIds.length === 0) {
         console.log('[DataProcessor] Spatial filtering found no features - returning empty result');
         const emptyRawResult = { success: true, results: [] };
-        const emptyProcessedData = this.processResults(emptyRawResult, endpoint);
+        const emptyProcessedData = await this.processResults(emptyRawResult, endpoint);
         return {
           ...emptyProcessedData,
           metadata: {
@@ -142,46 +142,49 @@ export class DataProcessor {
       }
     }
     
-    // Continue with existing geographic analysis on filtered data
-    // For comparative analysis with geographic queries, filter BEFORE processing
-    if (endpoint === '/comparative-analysis' && this.isGeographicComparativeQuery(query, endpoint)) {
+    // Apply geographic filtering for ANY query with geographic content
+    // This ensures queries like "show me high income areas in Montreal" work properly
+    if (query && query.trim().length > 2) {
       try {
         const geoEngine = GeoAwarenessEngine.getInstance();
-        geoResult = await geoEngine.processGeoQuery(query, rawResults.results || [], endpoint);
+        const geoPreFilter = await geoEngine.processGeoQuery(query, rawResults.results || [], endpoint);
         
-        if (geoResult.matchedEntities.length > 0 && geoResult.filteredRecords.length > 0) {
-          console.log(`🌍 [DataProcessor] PRE-FILTERING for comparative analysis: ${rawResults.results?.length || 0} -> ${geoResult.filteredRecords.length} records`);
+        if (geoPreFilter.matchedEntities.length > 0 && geoPreFilter.filteredRecords.length > 0) {
+          console.log(`🌍 [DataProcessor] Geographic pre-filtering detected for query: "${query}"`);
+          console.log(`🌍 [DataProcessor] Geographic entities:`, geoPreFilter.matchedEntities.map(e => ({ name: e.name, type: e.type })));
+          console.log(`🌍 [DataProcessor] Records filtered: ${rawResults.results?.length || 0} -> ${geoPreFilter.filteredRecords.length}`);
           
-          // DEBUG: Log actual ZIP codes in filtered data
-          const zipCodes = geoResult.filteredRecords.map((r: any) => r.ID || r.area_name || r.zipcode || r.id).filter(Boolean).slice(0, 20);
-          console.log(`🔍 [DataProcessor] DEBUGGING: First 20 ZIP codes in filtered data:`, zipCodes);
+          // DEBUG: Log actual area codes in filtered data
+          const areaCodes = geoPreFilter.filteredRecords.map((r: any) => r.ID || r.area_name || r.zipcode || r.id).filter(Boolean).slice(0, 20);
+          console.log(`🔍 [DataProcessor] First 20 area codes in filtered data:`, areaCodes);
           
-          // DEBUG: Check which cities these ZIP codes belong to
-          const cityGroups = geoResult.filteredRecords.reduce((acc: any, r: any) => {
-            const zip = r.area_name || r.zipcode;
+          // DEBUG: Check which cities these area codes belong to
+          const cityGroups = geoPreFilter.filteredRecords.reduce((acc: any, r: any) => {
+            const areaCode = r.area_name || r.zipcode || r.ID;
             const city = r.city || 'Unknown';
             if (!acc[city]) acc[city] = [];
-            acc[city].push(zip);
+            acc[city].push(areaCode);
             return acc;
           }, {} as Record<string, string[]>);
           
-          console.log(`🔍 [DataProcessor] DEBUGGING: ZIP codes grouped by city:`, Object.keys(cityGroups).map(city => ({
+          console.log(`🔍 [DataProcessor] Area codes grouped by city:`, Object.keys(cityGroups).map(city => ({
             city,
             count: cityGroups[city].length,
-            sampleZips: cityGroups[city].slice(0, 5)
+            sampleAreaCodes: cityGroups[city].slice(0, 5)
           })));
           
           filteredRawResults = {
             ...rawResults,
-            results: geoResult.filteredRecords
+            results: geoPreFilter.filteredRecords
           };
+          geoResult = geoPreFilter; // Store for metadata
         }
       } catch (error) {
-        console.error('[DataProcessor] Pre-filtering failed, using original data:', error);
+        console.error('[DataProcessor] Geographic pre-filtering failed, using original data:', error);
       }
     }
     
-    const processedData = this.processResults(filteredRawResults, endpoint, query);
+    const processedData = await this.processResults(filteredRawResults, endpoint, query);
     
     // If we already did geo-filtering, return with that metadata
     if (geoResult) {
@@ -196,38 +199,10 @@ export class DataProcessor {
       };
     }
     
-    // Otherwise, perform geographic analysis if query contains geographic references
-    if (query && query.trim().length > 2) {
+    // No additional post-processing needed since geo-filtering was done pre-processing
+    if (false) {
       try {
-        const geoEngine = GeoAwarenessEngine.getInstance();
-        const geoResult = await geoEngine.processGeoQuery(query, processedData.records, endpoint);
-        
-        if (geoResult.matchedEntities.length > 0) {
-          console.log(`[DataProcessor] 🔍 DEBUGGING Geographic analysis detected:`, {
-            query: query,
-            entities: geoResult.matchedEntities.map(e => ({ name: e.name, type: e.type, aliases: e.aliases })),
-            originalRecords: geoResult.filterStats.totalRecords,
-            filteredRecords: geoResult.filteredRecords.length,
-            method: geoResult.filterStats.filterMethod,
-            processingTime: `${geoResult.filterStats.processingTimeMs}ms`
-          });
-          
-          // Update processed data with geo-filtered results if applicable
-          if (geoResult.filteredRecords.length > 0 && geoResult.filteredRecords.length < processedData.records.length) {
-            processedData.records = geoResult.filteredRecords;
-            console.log(`[DataProcessor] ✅ Filtered data to ${geoResult.filteredRecords.length} geographically relevant records`);
-          }
-          
-          return { 
-            ...processedData, 
-            geoAnalysis: {
-              entities: geoResult.matchedEntities,
-              filterStats: geoResult.filterStats,
-              warnings: geoResult.warnings,
-              fallbackUsed: geoResult.fallbackUsed
-            }
-          };
-        }
+        // This block is disabled - geo-filtering now happens before data processing
       } catch (error) {
         console.warn('[DataProcessor] Geographic analysis failed, falling back to legacy city analysis:', error);
         
@@ -272,10 +247,9 @@ export class DataProcessor {
   /**
    * Process raw results with city analysis support (legacy method for backward compatibility)
    */
-  processResultsWithCityAnalysis(rawResults: RawAnalysisResult, endpoint: string, query: string = ''): ProcessedAnalysisData & { cityAnalysis?: CityAnalysisResult } {
+  async processResultsWithCityAnalysis(rawResults: RawAnalysisResult, endpoint: string, query: string = ''): Promise<ProcessedAnalysisData & { cityAnalysis?: CityAnalysisResult }> {
     // This method is kept for backward compatibility, but now calls the new geographic analysis
-    // We can't make it async without breaking existing code, so we handle it synchronously
-    const processedData = this.processResults(rawResults, endpoint);
+    const processedData = await this.processResults(rawResults, endpoint);
     
     if (query) {
       const cityAnalysis = CityAnalysisUtils.analyzeQuery(query, processedData.records, processedData.targetVariable);
@@ -303,7 +277,7 @@ export class DataProcessor {
   /**
    * Process raw results into standardized format using endpoint-specific processors
    */
-  processResults(rawResults: RawAnalysisResult, endpoint: string, query?: string): ProcessedAnalysisData {
+  async processResults(rawResults: RawAnalysisResult, endpoint: string, query?: string): Promise<ProcessedAnalysisData> {
     
     console.log(`🔥 [DataProcessor] processResults called for endpoint: ${endpoint}, query: "${query || 'NO QUERY'}"`);
     console.log(`🔥 [DataProcessor] Raw data structure:`, {
@@ -341,9 +315,11 @@ export class DataProcessor {
       if (endpoint === '/brand-difference' && query) {
         const extractedBrands = this.extractBrandsFromQuery(query);
         console.log(`🔥 [DataProcessor] Brand-difference context created:`, { query, extractedBrands });
-        processedData = processor.process(rawResults, { query, endpoint, extractedBrands });
+        const result = processor.process(rawResults, { query, endpoint, extractedBrands });
+        processedData = result instanceof Promise ? await result : result;
       } else {
-        processedData = processor.process(rawResults);
+        const result = processor.process(rawResults);
+        processedData = result instanceof Promise ? await result : result;
       }
       
       // Override targetVariable with ConfigurationManager setting
@@ -352,6 +328,11 @@ export class DataProcessor {
         processedData.targetVariable = scoreConfig.targetVariable;
         console.log(`🚨🚨🚨 [DataProcessor] Set targetVariable from ConfigurationManager: ${scoreConfig.targetVariable} 🚨🚨🚨`);
       }
+      
+      console.log(`🔥 [DataProcessor] processedData type:`, typeof processedData);
+      console.log(`🔥 [DataProcessor] processedData keys:`, processedData ? Object.keys(processedData) : 'null/undefined');
+      console.log(`🔥 [DataProcessor] processedData.records type:`, typeof processedData?.records);
+      console.log(`🔥 [DataProcessor] processedData.records is array:`, Array.isArray(processedData?.records));
       
       console.log(`[DataProcessor] Successfully processed ${processedData.records.length} records using ${endpoint} processor`);
       console.log(`🔥 [DataProcessor] First processed record value:`, processedData.records[0]?.value);
