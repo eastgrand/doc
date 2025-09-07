@@ -110,6 +110,41 @@ export class GeoDataManager {
         name: 'Lanaudière',
         aliases: ['Lanaudière Region'],
         cities: ['Terrebonne', 'Repentigny', 'Mascouche', 'Joliette', 'L\'Assomption', 'Berthierville']
+      },
+      {
+        name: 'Saguenay–Lac-Saint-Jean',
+        aliases: ['Saguenay', 'Lac-Saint-Jean', 'SLSJ'],
+        cities: ['Saguenay', 'Chicoutimi', 'Jonquière', 'Alma', 'Dolbeau-Mistassini']
+      },
+      {
+        name: 'Nord-du-Québec',
+        aliases: ['Northern Quebec', 'Nord-du-Québec Region'],
+        cities: ['Chibougamau', 'Lebel-sur-Quévillon', 'Matagami']
+      },
+      {
+        name: 'Estrie',
+        aliases: ['Eastern Townships', 'Cantons-de-l\'Est'],
+        cities: ['Sherbrooke', 'Magog', 'Granby', 'Drummondville', 'Victoriaville']
+      },
+      {
+        name: 'Centre-du-Québec',
+        aliases: ['Central Quebec', 'Centre-du-Québec Region'],
+        cities: ['Drummondville', 'Victoriaville', 'Bécancour']
+      },
+      {
+        name: 'Abitibi-Témiscamingue',
+        aliases: ['Abitibi', 'Témiscamingue'],
+        cities: ['Rouyn-Noranda', 'Val-d\'Or', 'Amos']
+      },
+      {
+        name: 'Bas-Saint-Laurent',
+        aliases: ['Lower St. Lawrence', 'BSL'],
+        cities: ['Rimouski', 'Rivière-du-Loup', 'Matane']
+      },
+      {
+        name: 'Mauricie',
+        aliases: ['Mauricie Region'],
+        cities: ['Trois-Rivières', 'Shawinigan', 'Grand-Mère']
       }
     ];
 
@@ -134,14 +169,16 @@ export class GeoDataManager {
         name: 'Montreal',
         aliases: ['Montréal', 'MTL', 'Ville de Montréal'],
         parentRegion: 'montréal',
-        fsaCodes: ['H1A', 'H1B', 'H1C', 'H1E', 'H1G', 'H1H', 'H1J', 'H1K', 'H1L', 'H1M',
+        fsaCodes: ['H0M', 'H1A', 'H1B', 'H1C', 'H1E', 'H1G', 'H1H', 'H1J', 'H1K', 'H1L', 'H1M',
                    'H1N', 'H1P', 'H1R', 'H1S', 'H1T', 'H1V', 'H1W', 'H1X', 'H1Y', 'H1Z',
                    'H2A', 'H2B', 'H2C', 'H2E', 'H2G', 'H2H', 'H2J', 'H2K', 'H2L', 'H2M',
                    'H2N', 'H2P', 'H2R', 'H2S', 'H2T', 'H2V', 'H2W', 'H2X', 'H2Y', 'H2Z',
                    'H3A', 'H3B', 'H3C', 'H3E', 'H3G', 'H3H', 'H3J', 'H3K', 'H3L', 'H3M',
                    'H3N', 'H3P', 'H3R', 'H3S', 'H3T', 'H3V', 'H3W', 'H3X', 'H3Y', 'H3Z',
                    'H4A', 'H4B', 'H4C', 'H4E', 'H4G', 'H4H', 'H4J', 'H4K', 'H4L', 'H4M',
-                   'H4N', 'H4P', 'H4R', 'H4S', 'H4T', 'H4V', 'H4W', 'H4X', 'H4Y', 'H4Z']
+                   'H4N', 'H4P', 'H4R', 'H4S', 'H4T', 'H4V', 'H4W', 'H4X', 'H4Y', 'H4Z',
+                   'H5A', 'H5B', 'H8N', 'H8P', 'H8R', 'H8S', 'H8T', 'H8Y', 'H8Z',
+                   'H9A', 'H9B', 'H9C', 'H9E', 'H9G', 'H9H', 'H9J', 'H9K', 'H9P', 'H9R', 'H9S', 'H9W', 'H9X']
       },
       {
         name: 'Quebec City',
@@ -149,7 +186,9 @@ export class GeoDataManager {
         parentRegion: 'capitale-nationale',
         fsaCodes: ['G1A', 'G1B', 'G1C', 'G1E', 'G1G', 'G1H', 'G1J', 'G1K', 'G1L', 'G1M',
                    'G1N', 'G1P', 'G1R', 'G1S', 'G1T', 'G1V', 'G1W', 'G1X', 'G1Y', 'G1Z',
-                   'G2A', 'G2B', 'G2C', 'G2E', 'G2G', 'G2H', 'G2J', 'G2K', 'G2L', 'G2M']
+                   'G2A', 'G2B', 'G2C', 'G2E', 'G2G', 'G2H', 'G2J', 'G2K', 'G2L', 'G2M', 'G2N',
+                   'G6A', 'G6B', 'G6C', 'G6E', 'G6G', 'G6H', 'G6J', 'G6K', 'G6L', 'G6P',
+                   'G6R', 'G6S', 'G6T', 'G6V', 'G6W', 'G6X', 'G6Y', 'G6Z']
       },
       {
         name: 'Laval',
@@ -162,22 +201,22 @@ export class GeoDataManager {
         name: 'Gatineau',
         aliases: ['Hull', 'Aylmer', 'Buckingham', 'Masson-Angers'],
         parentRegion: 'outaouais',
-        fsaCodes: ['J8A', 'J8B', 'J8C', 'J8E', 'J8G', 'J8H', 'J8J', 'J8K', 'J8L', 'J8M',
-                   'J8N', 'J8P', 'J8R', 'J8S', 'J8T', 'J8V', 'J8W', 'J8X', 'J8Y', 'J8Z',
-                   'J9A', 'J9B', 'J9H', 'J9J']
+        fsaCodes: ['J8A', 'J8B', 'J8C', 'J8E', 'J8G', 'J8H', 'J8L', 'J8M',
+                   'J8N', 'J8P', 'J8R', 'J8T', 'J8V', 'J8X', 'J8Y', 'J8Z',
+                   'J9A', 'J9B', 'J9E', 'J9H', 'J9J', 'J9L', 'J9P', 'J9T', 'J9V', 'J9X', 'J9Y', 'J9Z']
       },
       {
         name: 'Longueuil',
         aliases: ['Ville de Longueuil', 'South Shore'],
         parentRegion: 'montérégie',
-        fsaCodes: ['J4G', 'J4H', 'J4J', 'J4K', 'J4L', 'J4M', 'J4N', 'J4P', 'J4R', 'J4S',
+        fsaCodes: ['J4B', 'J4G', 'J4H', 'J4J', 'J4K', 'J4L', 'J4M', 'J4N', 'J4P', 'J4R', 'J4S',
                    'J4T', 'J4V', 'J4W', 'J4X', 'J4Y', 'J4Z']
       },
       {
         name: 'Sherbrooke',
         aliases: ['Ville de Sherbrooke'],
         parentRegion: 'estrie',
-        fsaCodes: ['J1C', 'J1E', 'J1G', 'J1H', 'J1J', 'J1K', 'J1L', 'J1M', 'J1N', 'J1R', 'J1S']
+        fsaCodes: ['J1A', 'J1C', 'J1E', 'J1G', 'J1H', 'J1J', 'J1K', 'J1L', 'J1M', 'J1N', 'J1R', 'J1S', 'J1T', 'J1X', 'J1Z']
       },
       {
         name: 'Lévis',
@@ -191,13 +230,14 @@ export class GeoDataManager {
         aliases: ['Ville de Trois-Rivières', 'TR'],
         parentRegion: 'mauricie',
         fsaCodes: ['G8A', 'G8B', 'G8C', 'G8E', 'G8G', 'G8H', 'G8J', 'G8K', 'G8L', 'G8M',
-                   'G8N', 'G8P', 'G8T', 'G8V', 'G8W', 'G8X', 'G8Y', 'G8Z', 'G9A', 'G9B']
+                   'G8N', 'G8P', 'G8T', 'G8V', 'G8W', 'G8Y', 'G8Z',
+                   'G9A', 'G9B', 'G9C', 'G9H', 'G9N', 'G9P', 'G9R', 'G9T', 'G9X']
       },
       {
         name: 'Terrebonne',
         aliases: ['Ville de Terrebonne'],
         parentRegion: 'lanaudière',
-        fsaCodes: ['J6W', 'J6X', 'J6Y', 'J6Z', 'J7M']
+        fsaCodes: ['J6E', 'J6J', 'J6K', 'J6N', 'J6R', 'J6S', 'J6T', 'J6V', 'J6W', 'J6X', 'J6Y', 'J6Z', 'J7M']
       },
       {
         name: 'Saint-Jean-sur-Richelieu',
@@ -216,6 +256,92 @@ export class GeoDataManager {
         aliases: ['Ville de Brossard'],
         parentRegion: 'montérégie',
         fsaCodes: ['J4B', 'J4W', 'J4X', 'J4Y', 'J4Z']
+      },
+      {
+        name: 'Saguenay',
+        aliases: ['Ville de Saguenay', 'Chicoutimi', 'Jonquière'],
+        parentRegion: 'saguenay–lac-saint-jean',
+        fsaCodes: ['G7A', 'G7B', 'G7G', 'G7H', 'G7J', 'G7K', 'G7N', 'G7P', 'G7S', 'G7T', 'G7X', 'G7Y', 'G7Z']
+      },
+      {
+        name: 'Quebec Rural North',
+        aliases: ['Northern Quebec', 'Nord-du-Québec'],
+        parentRegion: 'nord-du-québec',
+        fsaCodes: ['G0A', 'G0C', 'G0E', 'G0G', 'G0H', 'G0J', 'G0K', 'G0L', 'G0M', 'G0N', 'G0P', 'G0R', 'G0S', 'G0T', 'G0V', 'G0W', 'G0X', 'G0Y', 'G0Z']
+      },
+      {
+        name: 'Quebec Eastern Townships',
+        aliases: ['Estrie', 'Cantons-de-l\'Est'],
+        parentRegion: 'estrie',
+        fsaCodes: ['J0A', 'J0B', 'J0C', 'J0E', 'J0G', 'J0H', 'J0J', 'J0K', 'J0L', 'J0M', 'J0N', 'J0P', 'J0R', 'J0S', 'J0T', 'J0V', 'J0W', 'J0X', 'J0Y', 'J0Z']
+      },
+      {
+        name: 'Drummondville',
+        aliases: ['Ville de Drummondville'],
+        parentRegion: 'centre-du-québec',
+        fsaCodes: ['J2A', 'J2B', 'J2C', 'J2E', 'J2G', 'J2H', 'J2J', 'J2K', 'J2L', 'J2M', 'J2N', 'J2R', 'J2S', 'J2T']
+      },
+      {
+        name: 'Granby',
+        aliases: ['Ville de Granby'],
+        parentRegion: 'montérégie',
+        fsaCodes: ['J2G', 'J2H', 'J2J']
+      },
+      {
+        name: 'Sorel-Tracy',
+        aliases: ['Ville de Sorel-Tracy'],
+        parentRegion: 'montérégie',
+        fsaCodes: ['J3P', 'J3R']
+      },
+      {
+        name: 'Victoriaville',
+        aliases: ['Ville de Victoriaville'],
+        parentRegion: 'centre-du-québec',
+        fsaCodes: ['G6P', 'G6S']
+      },
+      {
+        name: 'Rimouski',
+        aliases: ['Ville de Rimouski'],
+        parentRegion: 'bas-saint-laurent',
+        fsaCodes: ['G5L', 'G5M', 'G5N']
+      },
+      {
+        name: 'Rouyn-Noranda',
+        aliases: ['Ville de Rouyn-Noranda'],
+        parentRegion: 'abitibi-témiscamingue',
+        fsaCodes: ['J9X', 'J9Y', 'J9Z']
+      },
+      {
+        name: 'Val-d\'Or',
+        aliases: ['Ville de Val-d\'Or'],
+        parentRegion: 'abitibi-témiscamingue',
+        fsaCodes: ['J9P']
+      },
+      {
+        name: 'Quebec Central',
+        aliases: ['Central Quebec', 'Centre-du-Québec'],
+        parentRegion: 'centre-du-québec',
+        fsaCodes: ['G3A', 'G3B', 'G3C', 'G3E', 'G3G', 'G3H', 'G3J', 'G3K', 'G3L', 'G3M', 'G3N', 'G3S', 'G3Z',
+                   'G4A', 'G4R', 'G4S', 'G4T', 'G4V', 'G4W', 'G4X', 'G4Z',
+                   'G5A', 'G5B', 'G5C', 'G5H', 'G5J', 'G5R', 'G5T', 'G5V', 'G5X', 'G5Y', 'G5Z']
+      },
+      {
+        name: 'Lanaudière Region',
+        aliases: ['Lanaudière', 'Joliette Region'],
+        parentRegion: 'lanaudière',
+        fsaCodes: ['J5A', 'J5B', 'J5C', 'J5J', 'J5K', 'J5L', 'J5M', 'J5N', 'J5R', 'J5T', 'J5V', 'J5W', 'J5X', 'J6A']
+      },
+      {
+        name: 'Laurentides Region',
+        aliases: ['Laurentides', 'Laurentians'],
+        parentRegion: 'laurentides',
+        fsaCodes: ['J7A', 'J7B', 'J7C', 'J7E', 'J7G', 'J7H', 'J7J', 'J7K', 'J7L', 'J7N', 'J7P', 'J7R', 'J7T', 'J7V', 'J7W', 'J7X', 'J7Y', 'J7Z']
+      },
+      {
+        name: 'Montérégie Region',
+        aliases: ['Montérégie', 'South Shore'],
+        parentRegion: 'montérégie',
+        fsaCodes: ['J3E', 'J3G', 'J3H', 'J3L', 'J3M', 'J3N', 'J3T', 'J3V', 'J3X', 'J3Y', 'J3Z']
       }
     ];
 

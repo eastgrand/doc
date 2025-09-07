@@ -382,11 +382,13 @@ After the automation completes and technical testing passes, update these projec
    - **Files Modified**: `lib/geo/GeoDataManager.ts`
    - **What Changed**: Completely rewritten for Quebec Province geography, changed from California counties to Quebec regions, updated FSA codes for Montreal, Quebec City, Laval, Gatineau
    - **Key Implementation**: Replaced entire geographic database with Quebec-specific data including FSA codes, city aliases, and regional hierarchies
+   - **⚠️ CRITICAL**: **FSA Coverage Alignment** - Ensure all FSA codes in the GeoDataManager match exactly with those in your dataset. Incomplete FSA mappings will cause geographic filtering to exclude valid data records, resulting in incomplete comparative analysis results (e.g., "Montreal vs Quebec City" showing only Montreal FSAs). Use the verification script to validate 100% coverage before deployment.
    - **Efficiency Tips**:
      - Use official government data sources for geographic boundaries and postal codes
      - Implement automated geographic data ingestion from Statistics Canada or similar sources
      - Create geographic data validation tools to ensure accuracy of coordinates and boundaries
      - Use GeoJSON format for complex boundary definitions
+     - **Verify FSA alignment**: Run `npx tsx verify-fsa-coverage.ts` after updates to ensure complete dataset coverage
    - **Sample Code Pattern**:
 
    ```typescript
