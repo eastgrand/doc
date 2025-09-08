@@ -67,6 +67,57 @@ s
 
 **The automation pipeline is now production-ready!** All components have been implemented and integrated into a complete end-to-end solution.
 
+## 🏘️ **COMPOSITE INDEX LAYERS**
+
+**Status**: ✅ **IMPLEMENTED** - Three composite index layers providing market analysis insights
+
+### **Overview**
+
+Composite index layers combine multiple demographic and housing data points into meaningful market indicators. These layers are generated from comprehensive FSA data and provide actionable insights for housing market analysis.
+
+### **Available Indices**
+
+| Index Name | Purpose | Score Range | Implementation |
+|------------|---------|-------------|----------------|
+| **Hot Growth Index** | Market momentum and development speed | 0-100 | ✅ Implemented |
+| **New Homeowner Index** | First-time buyer attractiveness | 0-100 | ✅ Implemented |
+| **Housing Affordability Index** | Overall housing accessibility | 0-100 | ✅ Implemented |
+
+### **Implementation Components**
+
+| Component | Status | File Location | Description |
+|-----------|--------|---------------|-------------|
+| **Formula Documentation** | ✅ **COMPLETED** | `docs/composite-index-formulas.md` | Detailed calculation methods and components |
+| **Data Generation Script** | ✅ **COMPLETED** | `generate-composite-data.js` | Generates comprehensive FSA data with calculated indices |
+| **Layer Service** | ✅ **COMPLETED** | `lib/services/CompositeIndexLayerService.ts` | Client-side layer creation and rendering |
+| **Layer Configuration** | ✅ **COMPLETED** | `config/layers.ts` | Layer definitions for Hot Growth, New Homeowner, and Affordability indices |
+| **Blob Storage Integration** | ✅ **COMPLETED** | `public/data/blob-urls.json` | Blob URL configuration for comprehensive index data |
+
+### **Data Pipeline**
+
+1. **Source Data**: Quebec housing dataset (421 FSAs)
+2. **Processing**: `generate-composite-data.js` calculates indices using formulas from `docs/composite-index-formulas.md`
+3. **Storage**: Comprehensive data uploaded to blob storage (985KB, 39,996 lines)
+4. **Layer Creation**: `CompositeIndexLayerService` creates client-side FeatureLayers
+5. **Visualization**: Indices rendered as choropleth maps with class breaks
+
+### **Index Formulas Summary**
+
+**Hot Growth Index**: Market momentum
+- 40% Household Growth + 25% Income Growth + 20% Ownership Growth + 15% Population Density
+
+**New Homeowner Index**: First-time buyer attractiveness  
+- 35% Affordability + 30% Young Demographics + 25% Rental-to-Own Transition + 10% Growth Stability
+
+**Housing Affordability Index**: Canadian lending standards compliance
+- 50% Debt Service Ratios (GDS 39%, TDS 44%) + 25% Rental Market + 15% Income Growth + 10% Housing Supply
+
+### **Usage**
+
+The composite index layers appear in the layer list widget under the "composite-indexes" group and can be selected to visualize market conditions across Quebec FSAs. Each index provides actionable insights for different market analysis scenarios.
+
+**Reference**: See `docs/composite-index-formulas.md` for complete formula documentation and implementation details.
+
 ## 📋 **COMPLETED AUTOMATION COMPONENTS**
 
 ### ✅ **Automated Score Calculator** - COMPLETED
@@ -360,12 +411,35 @@ After the automation completes and technical testing passes, update these projec
    // Variables: { metric: ['homeownership rates', 'rental rates'], city1: ['Montreal', 'Quebec City'], city2: ['Laval', 'Gatineau'] }
    ```
 
-7. **✅ Layer List Widget Groupings**
-   - **Files Modified**: `config/layers_housing_2025.ts`
-   - **What Changed**: Updated 21 housing layers from generic 'general' group to proper housing-focused groups (9 to 'housing-group', 12 to 'income-group', 1 to 'demographics-group')
-   - **Key Implementation**: Created Node.js script with regex patterns to automatically categorize layers based on their names and field content
+7. **✅ Layer List Widget Groupings** (`adapters/layerConfigAdapter.ts`)
+   - **Files Modified**: 
+     - `config/layers.ts` - Define layer configurations with appropriate group assignments
+     - `adapters/layerConfigAdapter.ts` - Controls how layers are grouped and displayed in LayerList widget
+   - **What Changed**: Updated layer grouping logic from generic categories to project-specific groups
+   - **Key Implementation Steps**:
+     1. **Update Group Classification** - Modify `classifyGroup()` function to match your project's layer categories
+     2. **Define Group Titles** - Update the switch statement in group initialization to set proper display names
+     3. **Set Group Priority** - Adjust the `priority` object to control group ordering in the LayerList
+     4. **Filter Unwanted Layers** - Use `skipLayerList: true` in layer configs to hide metadata/system layers
+   - **Example for Housing Project**:
+     ```typescript
+     // Groups: Demographics, Housing, Indexes
+     const classifyGroup = (layerName: string): string => {
+       const n = layerName.toLowerCase();
+       if (/hot growth|homeowner|affordability/.test(n)) return 'indexes';
+       if (/tenure|owned|rented|condo/.test(n)) return 'housing';
+       if (/population|income|expense/.test(n)) return 'demographics';
+       return 'general';
+     };
+     ```
+   - **Common Issues**:
+     - Layers with `skipLayerList: true` still appearing - Check layerConfigAdapter is filtering them
+     - Wrong group assignments - Debug with console.log in classifyGroup function
+     - Composite index layers not working - Ensure special handling for `type: 'client-side-composite'`
    - **Efficiency Tips**:
      - Create automated layer categorization script that analyzes field names and content
+     - Use configuration files instead of hardcoding group definitions
+     - Test group assignments by temporarily logging all layer-to-group mappings
      - Define group classification rules in configuration files
      - Implement machine learning-based layer classification for complex datasets
    - **Sample Code Pattern**:

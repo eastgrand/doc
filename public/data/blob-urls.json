@@ -30,7 +30,8 @@
   "speed-optimized-analysis": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/real/speed-optimized-analysis-BMFh1A1ZGxgtQh3ELoXh3uTeOkwGJL.json",
   "strategic-analysis": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/real/strategic-analysis-KrF0kTCHcILqimN8EKXEZ5yUvTlHUY.json",
   "trend-analysis": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/real/trend-analysis-aqeaNZzrSbDOpAl8nVHVALFbmahtA3.json",
-  "boundaries/fsa_boundaries": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/real/boundaries/fsa_boundaries-jjG7b5ztopUPvZt1rnk0J9IFshLUth.json",
+  "boundaries/fsa_boundaries": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/real/boundaries/fsa_boundaries_wgs84.json",
   "boundaries/fsa_boundaries_backup": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/real/boundaries/fsa_boundaries_backup-Eoz7nAXbQF16g9Eoz7ZHX9n0fXOj1R.json",
-  "boundaries/export_summary": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/real/boundaries/export_summary-prmryTq7nWAjiP6N1K4eFB8CmtQ1rO.json"
+  "boundaries/export_summary": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/real/boundaries/export_summary-prmryTq7nWAjiP6N1K4eFB8CmtQ1rO.json",
+  "composite-index": "https://tao6dvjnrqq6hwa0.public.blob.vercel-storage.com/composite-index-comprehensive.json"
 }
