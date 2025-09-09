@@ -349,7 +349,7 @@ export const applyAnalysisEngineVisualization = async (
     }
 
     // Convert AnalysisEngine data to ArcGIS features
-    const arcgisFeatures = data.records.map((record: any, index: number) => {
+    const initialFeatures = data.records.map((record: any, index: number) => {
       // Only create features with valid geometry
   if (!record.geometry || !(record.geometry as any).coordinates) {
         console.warn(`[applyAnalysisEngineVisualization] ❌ Skipping record ${index} - no valid geometry`);
@@ -489,6 +489,47 @@ export const applyAnalysisEngineVisualization = async (
       return graphic;
     }).filter(feature => feature !== null); // Remove null features
 
+    // DEDUPLICATION: Remove duplicate features with the same geometry
+    // Keep only the first occurrence of each unique geometry
+    const seenGeometries = new Set<string>();
+    const dedupedFeatures = initialFeatures.filter((feature, index) => {
+      const geom = feature.geometry;
+      if (!geom) return false;
+      
+      // Create a geometry fingerprint
+      let fingerprint = '';
+      if (geom.type === 'point') {
+        fingerprint = `${(geom as any).x},${(geom as any).y}`;
+      } else if (geom.type === 'polygon' && (geom as any).rings) {
+        const firstRing = (geom as any).rings[0];
+        if (firstRing && firstRing.length > 2) {
+          // Use first 3 coordinate pairs as fingerprint
+          fingerprint = JSON.stringify(firstRing.slice(0, 3));
+        }
+      }
+      
+      if (!fingerprint || seenGeometries.has(fingerprint)) {
+        console.warn(`[applyAnalysisEngineVisualization] Removing duplicate geometry at index ${index}:`, {
+          ID: feature.getAttribute('ID'),
+          area_name: feature.getAttribute('area_name'),
+          value: feature.getAttribute(data.targetVariable)
+        });
+        return false; // Skip duplicate
+      }
+      
+      seenGeometries.add(fingerprint);
+      return true; // Keep first occurrence
+    });
+    
+    console.log(`[applyAnalysisEngineVisualization] Deduplication complete:`, {
+      originalCount: initialFeatures.length,
+      dedupedCount: dedupedFeatures.length,
+      removedCount: initialFeatures.length - dedupedFeatures.length
+    });
+    
+  // Use deduplicated features from here on
+  let arcgisFeatures = dedupedFeatures;
+
     // Check for duplicate area IDs using the ID field (ZIP code or FSA)
     const areaIds = arcgisFeatures.map(f => f.getAttribute('ID')).filter(id => id);
     const uniqueAreaIds = [...new Set(areaIds)];
@@ -539,15 +580,15 @@ export const applyAnalysisEngineVisualization = async (
       duplicateGeometries: duplicateGeometryCount
     });
     
-    if (duplicateCount > 0) {
+      if (duplicateCount > 0) {
       console.warn(`[applyAnalysisEngineVisualization] ⚠️  FOUND ${duplicateCount} DUPLICATE IDs`);
       const idCounts: Record<string, number> = {};
       areaIds.forEach(id => { idCounts[id] = (idCounts[id] || 0) + 1; });
-      const duplicates = Object.entries(idCounts).filter(([_, count]) => (count as number) > 1);
+      const duplicates = Object.entries(idCounts).filter(([, count]) => (count as number) > 1);
       console.warn('[applyAnalysisEngineVisualization] Duplicate IDs:', duplicates.slice(0, 5));
     }
     
-    if (duplicateGeometryCount > 0) {
+  if (duplicateGeometryCount > 0) {
       console.warn(`[applyAnalysisEngineVisualization] ⚠️  FOUND ${duplicateGeometryCount} DUPLICATE GEOMETRIES - this causes overlapping colors!`);
       
       // Find which features have duplicate geometries and their different scores
@@ -570,9 +611,51 @@ export const applyAnalysisEngineVisualization = async (
       });
       
       // Log examples of overlapping geometries with different scores
-      Object.entries(geometryMap).filter(([_, features]) => features.length > 1).slice(0, 3).forEach(([fingerprint, features]) => {
+      Object.entries(geometryMap).filter(([, features]) => features.length > 1).slice(0, 3).forEach(([fingerprint, features]) => {
         console.warn(`[applyAnalysisEngineVisualization] Same geometry (${fingerprint.substring(0, 50)}...) has ${features.length} features:`, features);
       });
+
+      // Coalesce overlapping geometries to a single feature to prevent overlapping colors.
+      // Strategy: for each fingerprint keep the feature with the highest numeric score (fall back to first).
+      try {
+        const fingerprintToChosenID: Record<string, string> = {};
+        Object.entries(geometryMap).forEach(([fingerprint, features]) => {
+          if (!features || features.length === 0) return;
+          // Pick feature with max score (score may be undefined/null)
+          let chosen = features[0];
+          for (const f of features) {
+            const cur = typeof f.score === 'number' ? f.score : Number.NaN;
+            const best = typeof chosen.score === 'number' ? chosen.score : Number.NaN;
+            if (!Number.isNaN(cur) && (Number.isNaN(best) || cur > best)) chosen = f;
+          }
+          fingerprintToChosenID[fingerprint] = String(chosen.ID);
+        });
+
+        // Filter arcgisFeatures to only keep chosen IDs for polygon fingerprints
+        arcgisFeatures = arcgisFeatures.filter((f) => {
+          try {
+            const geom = f.geometry;
+            if (geom && geom.type === 'polygon' && (geom as any).rings) {
+              const firstRing = (geom as any).rings[0];
+              if (firstRing && Array.isArray(firstRing)) {
+                const fp = JSON.stringify(firstRing.slice(0, Math.min(3, firstRing.length)));
+                const keepId = fingerprintToChosenID[fp];
+                if (keepId !== undefined) {
+                  return String(f.getAttribute('ID')) === String(keepId);
+                }
+              }
+            }
+          } catch {
+              // If anything fails, keep the feature so we don't accidentally drop valid data
+              return true;
+            }
+          return true;
+        });
+
+        console.log('[applyAnalysisEngineVisualization] Coalesced overlapping geometries to prevent color mixing:', { newCount: arcgisFeatures.length });
+      } catch (coalesceErr) {
+        console.warn('[applyAnalysisEngineVisualization] Failed to coalesce overlapping geometries, continuing with original features:', coalesceErr);
+      }
     }
 
     if (arcgisFeatures.length === 0) {
@@ -645,23 +728,6 @@ export const applyAnalysisEngineVisualization = async (
       throw new Error(`FeatureLayer creation failed: ${featureLayerError}`);
     }
 
-    // Remove any existing analysis layers (check both title and __isAnalysisLayer property)
-    const existingLayers = mapView.map.layers.filter((layer) => {
-      const title = (layer as __esri.Layer).title as string | undefined;
-      const isAnalysisLayer = (layer as any).__isAnalysisLayer === true;
-      const hasAnalysisTitle = Boolean(title && (title.includes('Analysis') || title.includes('AnalysisEngine')));
-      return isAnalysisLayer || hasAnalysisTitle;
-    });
-    
-    if (existingLayers.length > 0) {
-      console.log('[applyAnalysisEngineVisualization] 🗑️ REMOVING EXISTING ANALYSIS LAYERS:', {
-        layerCount: existingLayers.length,
-        reason: 'Adding new visualization layer'
-      });
-    }
-    
-    mapView.map.removeMany(existingLayers.toArray());
-
   // Add the new layer to map with a lightweight map-level async lock to avoid
   // near-simultaneous duplicate creations from concurrent callers.
   console.log('[applyAnalysisEngineVisualization] 🎯 Adding analysis layer to map (acquiring lock)');
@@ -689,6 +755,37 @@ export const applyAnalysisEngineVisualization = async (
 
         // Acquire lock
         mapObjForManager.__analysisLock = true;
+      }
+
+      // Remove any existing analysis layers INSIDE THE LOCK (check both title and __isAnalysisLayer property)
+      const existingLayers = mapView.map.layers.filter((layer) => {
+        const title = (layer as __esri.Layer).title as string | undefined;
+        const isAnalysisLayer = (layer as any).__isAnalysisLayer === true;
+        const hasAnalysisTitle = Boolean(title && (title.includes('Analysis') || title.includes('AnalysisEngine')));
+        return isAnalysisLayer || hasAnalysisTitle;
+      });
+      
+      if (existingLayers.length > 0) {
+        console.log('[applyAnalysisEngineVisualization] 🗑️ REMOVING EXISTING ANALYSIS LAYERS:', {
+          layerCount: existingLayers.length,
+          reason: 'Adding new visualization layer (inside lock)'
+        });
+      }
+      
+      mapView.map.removeMany(existingLayers.toArray());
+      
+      // ALSO remove SampleAreasPanel graphics that might overlap with analysis
+      // These are graphics with zipCode attribute added by SampleAreasPanel
+      const sampleAreaGraphics = mapView.graphics.toArray().filter((graphic: any) => 
+        graphic.attributes && graphic.attributes.zipCode
+      );
+      
+      if (sampleAreaGraphics.length > 0) {
+        console.log('[applyAnalysisEngineVisualization] 🗑️ REMOVING SAMPLE AREA GRAPHICS:', {
+          graphicCount: sampleAreaGraphics.length,
+          reason: 'Preventing overlap with analysis visualization'
+        });
+        mapView.graphics.removeMany(sampleAreaGraphics);
       }
 
       // Perform the add while lock is held

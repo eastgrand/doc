@@ -1,0 +1,14 @@
+[
+  {
+    "GEOID": "H1A",
+    "HOT_GROWTH_INDEX": 0,
+    "NEW_HOMEOWNER_INDEX": 0,
+    "HOUSING_AFFORDABILITY_INDEX": 0
+  },
+  {
+    "GEOID": "G1A", 
+    "HOT_GROWTH_INDEX": 0,
+    "NEW_HOMEOWNER_INDEX": 0,
+    "HOUSING_AFFORDABILITY_INDEX": 0
+  }
+]
