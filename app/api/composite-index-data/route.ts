@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
 /**
  * API endpoint for composite index data
@@ -12,29 +14,55 @@ export interface CompositeIndexData {
   HOUSING_AFFORDABILITY_INDEX: number;
 }
 
-// Quebec FSA codes from the sample areas data
-const QUEBEC_FSA_CODES = [
-  'G0A', 'G0C', 'G0E', 'G0G', 'G0H', 'G0J', 'G0K', 'G0L', 'G0M', 'G0N',
-  'G0P', 'G0R', 'G0S', 'G0T', 'G0V', 'G0W'
-];
+/**
+ * Load comprehensive composite index data from the generated file
+ */
+function loadCompositeIndexData(): CompositeIndexData[] {
+  try {
+    const dataPath = path.join(process.cwd(), 'composite-index-comprehensive.json');
+    
+    if (!fs.existsSync(dataPath)) {
+      console.warn('[CompositeIndexAPI] Comprehensive data file not found, generating fallback data');
+      return generateFallbackData();
+    }
+    
+    const fileContent = fs.readFileSync(dataPath, 'utf-8');
+    const comprehensiveData = JSON.parse(fileContent);
+    
+    // Extract only the fields needed for the composite index layers
+    const compositeIndexData: CompositeIndexData[] = comprehensiveData.map((record: any) => ({
+      GEOID: record.GEOID,
+      HOT_GROWTH_INDEX: Math.round(record.HOT_GROWTH_INDEX * 100) / 100, // Round to 2 decimals
+      NEW_HOMEOWNER_INDEX: Math.round(record.NEW_HOMEOWNER_INDEX * 100) / 100,
+      HOUSING_AFFORDABILITY_INDEX: Math.round(record.HOUSING_AFFORDABILITY_INDEX * 100) / 100
+    }));
+    
+    console.log(`[CompositeIndexAPI] Loaded ${compositeIndexData.length} FSA records from comprehensive data`);
+    return compositeIndexData;
+    
+  } catch (error) {
+    console.error('[CompositeIndexAPI] Error loading comprehensive data:', error);
+    return generateFallbackData();
+  }
+}
 
 /**
- * Generate composite index data for Quebec FSAs
- * Based on housing market indicators and demographic data
+ * Generate fallback data if comprehensive data is not available
  */
-function generateCompositeIndexData(): CompositeIndexData[] {
+function generateFallbackData(): CompositeIndexData[] {
+  console.warn('[CompositeIndexAPI] Using fallback data generation');
+  
+  // Quebec FSA codes from the sample areas data
+  const QUEBEC_FSA_CODES = [
+    'G0A', 'G0C', 'G0E', 'G0G', 'G0H', 'G0J', 'G0K', 'G0L', 'G0M', 'G0N',
+    'G0P', 'G0R', 'G0S', 'G0T', 'G0V', 'G0W'
+  ];
+  
   return QUEBEC_FSA_CODES.map(geoid => {
     // Generate realistic composite index scores (0-100)
-    // These would normally come from actual calculations based on housing data
-    
-    // Hot Growth Index: Based on population growth, new construction, price appreciation
-    const hotGrowthIndex = Math.floor(Math.random() * 60) + 20; // 20-80 range
-    
-    // New Homeowner Index: Based on first-time buyer activity, mortgage applications
-    const newHomeownerIndex = Math.floor(Math.random() * 70) + 15; // 15-85 range
-    
-    // Housing Affordability Index: Based on median income vs housing costs
-    const housingAffordabilityIndex = Math.floor(Math.random() * 80) + 10; // 10-90 range
+    const hotGrowthIndex = Math.floor(Math.random() * 60) + 20;
+    const newHomeownerIndex = Math.floor(Math.random() * 70) + 15;
+    const housingAffordabilityIndex = Math.floor(Math.random() * 80) + 10;
     
     return {
       GEOID: geoid,
@@ -47,7 +75,7 @@ function generateCompositeIndexData(): CompositeIndexData[] {
 
 export async function GET() {
   try {
-    const compositeIndexData = generateCompositeIndexData();
+    const compositeIndexData = loadCompositeIndexData();
     
     return NextResponse.json(compositeIndexData, {
       status: 200,
@@ -57,10 +85,10 @@ export async function GET() {
       }
     });
   } catch (error) {
-    console.error('Error generating composite index data:', error);
+    console.error('Error loading composite index data:', error);
     
     return NextResponse.json(
-      { error: 'Failed to generate composite index data' },
+      { error: 'Failed to load composite index data' },
       { status: 500 }
     );
   }

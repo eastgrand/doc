@@ -328,9 +328,9 @@ export class CompositeIndexLayerService {
    */
   async createAllCompositeIndexLayers(): Promise<__esri.FeatureLayer[]> {
     const layers = await Promise.all([
-      this.createCompositeIndexLayer('HOT_GROWTH_INDEX', 'Hot Growth Areas'),
-      this.createCompositeIndexLayer('NEW_HOMEOWNER_INDEX', 'New Homeowner Opportunities'),
-      this.createCompositeIndexLayer('HOUSING_AFFORDABILITY_INDEX', 'Housing Affordability Zones')
+      this.createCompositeIndexLayer('HOT_GROWTH_INDEX', 'Hot Growth Index'),
+      this.createCompositeIndexLayer('NEW_HOMEOWNER_INDEX', 'New Homeowner Index'),
+      this.createCompositeIndexLayer('HOUSING_AFFORDABILITY_INDEX', 'Affordability Index')
     ]);
     
     return layers;

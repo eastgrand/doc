@@ -3752,7 +3752,7 @@ export const compositeIndexLayerConfigs: LayerConfig[] = [
   },
   {
     id: 'new_homeowner_index_layer', 
-    name: 'New Homeowner Opportunities',
+    name: 'New Homeowner Index',
     type: 'client-side-composite',
     url: 'composite-index://NEW_HOMEOWNER_INDEX',
     group: 'composite-indexes',
@@ -3818,7 +3818,7 @@ export const compositeIndexLayerConfigs: LayerConfig[] = [
   },
   {
     id: 'housing_affordability_index_layer',
-    name: 'Housing Affordability Zones',
+    name: 'Affordability Index',
     type: 'client-side-composite',
     url: 'composite-index://HOUSING_AFFORDABILITY_INDEX', 
     group: 'composite-indexes',

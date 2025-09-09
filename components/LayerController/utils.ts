@@ -63,11 +63,11 @@ const createLayer = async (
         
         // Create specific composite index based on URL
         if (layerConfig.url.includes('HOT_GROWTH_INDEX')) {
-          compositeLayer = await service.createCompositeIndexLayer('HOT_GROWTH_INDEX', 'Hot Growth Areas');
+          compositeLayer = await service.createCompositeIndexLayer('HOT_GROWTH_INDEX', 'Hot Growth Index');
         } else if (layerConfig.url.includes('NEW_HOMEOWNER_INDEX')) {
-          compositeLayer = await service.createCompositeIndexLayer('NEW_HOMEOWNER_INDEX', 'New Homeowner Opportunities');
+          compositeLayer = await service.createCompositeIndexLayer('NEW_HOMEOWNER_INDEX', 'New Homeowner Index');
         } else if (layerConfig.url.includes('HOUSING_AFFORDABILITY_INDEX')) {
-          compositeLayer = await service.createCompositeIndexLayer('HOUSING_AFFORDABILITY_INDEX', 'Housing Affordability Zones');
+          compositeLayer = await service.createCompositeIndexLayer('HOUSING_AFFORDABILITY_INDEX', 'Affordability Index');
         }
         
         if (compositeLayer) {
