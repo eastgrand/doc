@@ -1025,11 +1025,13 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       }
     };
 
-    // Group layers by their group property
-    const groupedLayers = (config.groups || []).map(group => ({
-      ...group,
-      layerStates: Object.values(layerStates).filter(state => state.group === group.id)
-    }));
+    // Group layers by their group property - only include groups with visible layers
+    const groupedLayers = (config.groups || [])
+      .map(group => ({
+        ...group,
+        layerStates: Object.values(layerStates).filter(state => state.group === group.id)
+      }))
+      .filter(group => group.layerStates.length > 0); // Only show groups that have layers
 
     return (
       <div className="layer-controller h-full overflow-y-auto">
