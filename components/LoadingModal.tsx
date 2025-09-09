@@ -26,13 +26,15 @@ interface LoadingFact {
 
 // General facts about housing market analysis capabilities
 const GENERAL_FACTS: LoadingFact[] = [
-  { type: 'general', text: 'Analyzing housing affordability across 421 Quebec postal areas', icon: <BarChart3 className="w-5 h-5" /> },
-  { type: 'general', text: 'Forward Sortation Areas (FSAs) provide neighborhood-level insights', icon: <Target className="w-5 h-5" /> },
-  { type: 'general', text: 'Housing tenure data reveals homeownership vs rental patterns', icon: <Layers className="w-5 h-5" /> },
-  { type: 'general', text: 'Composite indexes combine multiple housing market indicators', icon: <TrendingUp className="w-5 h-5" /> },
-  { type: 'general', text: 'Income analysis helps identify affordable housing opportunities', icon: <Brain className="w-5 h-5" /> },
-  { type: 'general', text: 'Demographics include household income and population density', icon: <Car className="w-5 h-5" /> },
-  { type: 'general', text: 'Real-time processing delivers housing insights in seconds', icon: <Zap className="w-5 h-5" /> },
+  { type: 'general', text: 'Quebec\'s housing market spans from Montreal\'s urban core to rural regions', icon: <Target className="w-5 h-5" /> },
+  { type: 'general', text: 'Forward Sortation Areas (FSAs) provide neighborhood-level market insights', icon: <BarChart3 className="w-5 h-5" /> },
+  { type: 'general', text: 'Hot Growth Index identifies emerging high-potential neighborhoods', icon: <TrendingUp className="w-5 h-5" /> },
+  { type: 'general', text: 'New Homeowner Index reveals first-time buyer opportunities', icon: <Layers className="w-5 h-5" /> },
+  { type: 'general', text: 'Housing Affordability Index spots value investments across Quebec', icon: <Brain className="w-5 h-5" /> },
+  { type: 'general', text: 'AI-powered analysis processes millions of data points instantly', icon: <Zap className="w-5 h-5" /> },
+  { type: 'general', text: 'Tenure analysis compares ownership vs rental market dynamics', icon: <Car className="w-5 h-5" /> },
+  { type: 'general', text: 'Strategic housing analysis combines demographics, income, and growth patterns', icon: <Brain className="w-5 h-5" /> },
+  { type: 'general', text: 'Real estate market intelligence covering rural to metropolitan areas', icon: <Target className="w-5 h-5" /> },
 ];
 
 

@@ -1906,7 +1906,11 @@ export default function UnifiedAnalysisWorkflow({
                             <option value="kilometers">Kilometers</option>
                           </>
                         ) : (
-                          <option value="minutes">Minutes</option>
+                          <>
+                            <option value="minutes">Minutes</option>
+                            <option value="kilometers">Kilometers</option>
+                            <option value="miles">Miles</option>
+                          </>
                         )}
                       </select>
                     </div>

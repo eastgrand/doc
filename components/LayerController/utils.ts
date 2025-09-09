@@ -39,6 +39,62 @@ const createLayer = async (
   try {
     console.log('[LC createLayer] Starting layer creation for:', layerConfig.id);
     
+    // Handle composite index layers specially
+    if (layerConfig.type === 'client-side-composite') {
+      console.log('[LC createLayer] Creating composite index layer:', layerConfig.id);
+      
+      try {
+        // Import the CompositeIndexLayerService
+        const { CompositeIndexLayerService } = await import('@/lib/services/CompositeIndexLayerService');
+        
+        // Get a reference housing layer for geometry (first available housing layer)
+        const housingLayer = view.map.layers.find((l: any) => 
+          l.title?.includes('Tenure') || l.title?.includes('Housing')
+        ) as __esri.FeatureLayer;
+        
+        if (!housingLayer) {
+          console.error('[LC createLayer] No base housing layer found for composite index');
+          return [null, ['No base housing layer available for composite index']];
+        }
+        
+        // Create the service and generate the layer
+        const service = new CompositeIndexLayerService(housingLayer);
+        let compositeLayer: __esri.FeatureLayer | null = null;
+        
+        // Create specific composite index based on URL
+        if (layerConfig.url.includes('HOT_GROWTH_INDEX')) {
+          compositeLayer = await service.createCompositeIndexLayer('HOT_GROWTH_INDEX', 'Hot Growth Areas');
+        } else if (layerConfig.url.includes('NEW_HOMEOWNER_INDEX')) {
+          compositeLayer = await service.createCompositeIndexLayer('NEW_HOMEOWNER_INDEX', 'New Homeowner Opportunities');
+        } else if (layerConfig.url.includes('HOUSING_AFFORDABILITY_INDEX')) {
+          compositeLayer = await service.createCompositeIndexLayer('HOUSING_AFFORDABILITY_INDEX', 'Housing Affordability Zones');
+        }
+        
+        if (compositeLayer) {
+          // Configure layer properties
+          compositeLayer.title = layerConfig.name;
+          compositeLayer.id = layerConfig.id;
+          compositeLayer.visible = false;
+          compositeLayer.popupEnabled = false;
+          
+          // Apply skipLayerList property for composite layers
+          if (layerConfig.skipLayerList) {
+            (compositeLayer as any).listMode = "hide";
+            console.log(`Composite layer ${layerConfig.name} will be hidden from layer list`);
+          }
+          
+          console.log(`✅ Composite index layer created: ${layerConfig.id}`);
+          return [compositeLayer, []];
+        } else {
+          return [null, ['Failed to create composite index layer']];
+        }
+      } catch (error) {
+        console.error('[LC createLayer] Error creating composite index layer:', error);
+        return [null, [error instanceof Error ? error.message : 'Composite index creation failed']];
+      }
+    }
+    
+    // Regular feature service layer creation
     // Add timeout promise
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(() => reject(new Error('Layer load timeout')), 30000); // 30 second timeout
@@ -62,6 +118,12 @@ const createLayer = async (
       return [null, [loadError instanceof Error ? loadError.message : 'Unknown load error']];
     }
 
+    // Apply skipLayerList property to hide layers from the layer list widget if specified
+    if (layerConfig.skipLayerList) {
+      (layer as any).listMode = "hide";
+      console.log(`Layer ${layerConfig.name} will be hidden from layer list`);
+    }
+    
     // Note: Popups will be handled by CustomPopupManager component (green popup style)
     console.log(`✅ Layer created for CustomPopupManager handling: ${layerConfig.id}`);
     

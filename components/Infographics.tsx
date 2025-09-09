@@ -24,17 +24,19 @@ interface InfographicsProps {
 
 // Legacy hardcoded templates - now using ReportsService for all report dialogs
 
-// Mock demographic data generator
+// Mock Canadian demographic data generator
 const generateMockDemographicData = (reportTemplate: string) => {
   const baseData = {
     totalPopulation: Math.floor(Math.random() * 50000) + 10000,
     totalHouseholds: Math.floor(Math.random() * 25000) + 5000,
-    medianAge: Math.floor(Math.random() * 20) + 35,
-    medianIncome: Math.floor(Math.random() * 60000) + 40000,
-    averageHouseholdSize: (Math.random() * 1.5 + 2.1).toFixed(1),
-    diversityIndex: Math.floor(Math.random() * 40) + 60,
-    homeOwnership: Math.floor(Math.random() * 30) + 60,
-    universityEducation: Math.floor(Math.random() * 25) + 25,
+    medianAge: Math.floor(Math.random() * 15) + 38, // Canadian median age ~41
+    medianIncome: Math.floor(Math.random() * 40000) + 65000, // CAD median income higher
+    averageHouseholdSize: (Math.random() * 0.8 + 2.3).toFixed(1), // Canadian average ~2.5
+    diversityIndex: Math.floor(Math.random() * 35) + 65, // Canada is quite diverse
+    homeOwnership: Math.floor(Math.random() * 25) + 67, // Canadian homeownership ~69%
+    universityEducation: Math.floor(Math.random() * 20) + 35, // Canada has high education rates
+    frenchSpeaking: Math.floor(Math.random() * 30) + 15, // Varies by region
+    immigrantPopulation: Math.floor(Math.random() * 25) + 20, // Canada has high immigration
   };
 
   // Customize data based on report template
@@ -264,7 +266,7 @@ const Infographics: React.FC<InfographicsProps> = ({
           </div>
           <div className="bg-yellow-50 p-4 rounded-lg text-center">
             <DollarSign className="h-8 w-8 text-yellow-600 mx-auto mb-2" />
-            <h3 className="text-2xl font-bold text-yellow-900">${mockData.medianIncome.toLocaleString()}</h3>
+            <h3 className="text-2xl font-bold text-yellow-900">${mockData.medianIncome.toLocaleString()} CAD</h3>
             <p className="text-sm text-yellow-700">Median Income</p>
           </div>
         </div>
@@ -286,6 +288,10 @@ const Infographics: React.FC<InfographicsProps> = ({
                 <span className="text-gray-600">University Education:</span>
                 <span className="font-medium">{mockData.universityEducation}%</span>
               </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">French Speaking:</span>
+                <span className="font-medium">{mockData.frenchSpeaking}%</span>
+              </div>
             </div>
           </div>
 
@@ -297,12 +303,16 @@ const Infographics: React.FC<InfographicsProps> = ({
                 <span className="font-medium">{mockData.diversityIndex}</span>
               </div>
               <div className="flex justify-between">
+                <span className="text-gray-600">Immigrant Population:</span>
+                <span className="font-medium">{mockData.immigrantPopulation}%</span>
+              </div>
+              <div className="flex justify-between">
                 <span className="text-gray-600">Population Growth:</span>
-                <span className="font-medium text-green-600">+2.3% annually</span>
+                <span className="font-medium text-green-600">+1.8% annually</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Employment Rate:</span>
-                <span className="font-medium">94.2%</span>
+                <span className="font-medium">92.1%</span>
               </div>
             </div>
           </div>
@@ -312,10 +322,11 @@ const Infographics: React.FC<InfographicsProps> = ({
         <div className="bg-blue-50 p-6 rounded-lg mb-8">
           <h3 className="text-lg font-semibold text-blue-900 mb-4">Key Insights</h3>
           <div className="text-sm text-blue-800 space-y-2">
-            <p>• This area shows strong economic indicators with above-average median income</p>
-            <p>• The population is relatively young and educated, indicating growth potential</p>
-            <p>• High diversity index suggests a multicultural community</p>
-            <p>• Strong employment rates indicate economic stability</p>
+            <p>• This Quebec area shows strong economic indicators with median income of ${mockData.medianIncome.toLocaleString()} CAD</p>
+            <p>• High education levels ({mockData.universityEducation}%) indicate skilled workforce potential</p>
+            <p>• Multicultural community with {mockData.immigrantPopulation}% immigrant population contributing to diversity</p>
+            <p>• {mockData.frenchSpeaking}% French-speaking population reflects Quebec's linguistic character</p>
+            <p>• Homeownership rate of {mockData.homeOwnership}% indicates housing market stability</p>
           </div>
         </div>
 
@@ -339,8 +350,8 @@ const Infographics: React.FC<InfographicsProps> = ({
 
         {/* Footer */}
         <div className="text-center text-xs text-gray-500 border-t pt-4">
-          <p>Data provided by ArcGIS Demographic Services | Report generated by newdemo IQbuilder</p>
-          <p>This is a sample report for demonstration purposes</p>
+          <p>Data provided by Statistics Canada & ArcGIS Canadian Demographics | Report generated by MPIQ Housing Intelligence</p>
+          <p>This is a sample Quebec demographic report for demonstration purposes</p>
         </div>
       </div>
     );

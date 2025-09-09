@@ -8,101 +8,94 @@ export interface Report {
   type?: string;
 }
 
-// Custom reports that are always added to the list
+// Custom reports that are always added to the list - minimal to avoid duplicates
 const CUSTOM_REPORTS: Report[] = [
   {
     id: 'market-intelligence-report',
     title: 'Quebec Housing Market Analysis Report',
     description: 'Comprehensive housing market analysis combining homeownership data, rental rates, household income metrics, and demographic insights for Quebec regions',
     thumbnail: '',
-    categories: ['Housing Market', 'Demographic Analysis'],
+    categories: ['Synapse54 Branded', 'Housing & Real Estate'],
     type: 'endpoint-scoring'
   }
-  /*{
-    id: 'endpoint-scoring-combined',
-    title: 'AI Endpoint Scoring Analysis',
-    description: 'Technical scoring analysis with detailed metrics and endpoint performance data',
-    thumbnail: '',
-    categories: ['AI Analysis', 'Technical'],
-    type: 'endpoint-scoring'
-  },*/
-  // {
-  //   id: 'market-profile-custom',
-  //   title: 'Market Profile Custom Report',
-  //   description: 'Comprehensive market analysis with demographic profiles, consumer behavior, and business intelligence',
-  //   thumbnail: '',
-  //   categories: ['Market Analysis', 'Demographics'],
-  //   type: 'custom'
-  // }
 ];
 
-// Reports and templates to exclude from display
+// Reports and templates to exclude from display - focus on removing test/brand-specific content
 const DO_NOT_DISPLAY_LIST: Set<string> = new Set([
   // Test/Demo reports
-  'Accenture',
-  'Apparel',
-  'Apparel (Esri 2024)',
-  'Blank test',
-  'Custom',
-  'Custom (Esri 2024)',
-  'custom invesco',
-  'custom invesco (Esri 2025)',
-  'Energy',
-  'Energy (Esri 2024)',
-  'Nike',
-  'Nike (Esri 2024)',
-  'Nike Report',
-  'Nike Competitive Market Report',
   'test',
   'Test',
   'TEST',
   'test123',
-  'NIKE',
+  'Blank test',
   'Test Report',
   'Test Template',
   'Demo Report',
   'Sample Report',
-  'Duplicate',
-  'DUPLICATE',
   'Draft',
   'DRAFT',
+  'Duplicate',
+  'DUPLICATE',
+  
+  // Brand-specific reports (not for general use)
   'Market Analysis for Nike',
   'Market Analysis for Red Bull',
-  'AI Endpoint Scoring Analysis',
-  'AI-Powered Market Intelligence Report',
-  'Quebec Housing Market Analysis Report',
-
-  // US-specific reports (now excluded since we're using Canadian data)
-  'US Demographics',
-  'American Demographics', 
-  'US Population',
-  'American Market Analysis',
-  'US Census Data',
-  'American Community Survey',
-  'US Business Directory',
-  'USA Consumer Spending',
+  'Nike',
+  'Nike Report',
+  'Nike Competitive Market Report',
+  'Accenture',
+  'custom invesco',
+  'H&R Block',
+  'Custom template',
+  'Invesco',
+  'Invesco Index',
+  'minority',
+  'Mitsubishi',
+  'OLG',
+  'Visible Minority, Religion, Mother Tongue',
   
-  // Old/Legacy reports
-  '2023 Community Portrait',
-  'Community Profile 2023', 
-  'Executive Summary 2023',
-  'Community Health',
-  'Health Profile',
-  'Market Potential for Restaurant',
-  'Business Summary',
-  'Site Analysis',
-  'Shopping Centers Summary',
-  'Demographic and Income Comparison',
-  'Locator'
+  // Crime/jurisdiction reports (not relevant for housing market)
+  'BC Crime Stats by Policing Jurisdiction',
+  'Community Profile (Standard)',
+  'Crime by Metro Area',
+  'Crime by Policing Jurisdiction',
+  
+  // Redundant custom reports (we have these built-in)
+  'AI Endpoint Scoring Analysis',
+  'AI-Powered Market Intelligence Report'
 ]);
 
-// Canadian terms to check in titles
+// Canadian terms to prioritize in titles (now we WANT these reports)
 const CANADIAN_TERMS = [
   'canada', 'canadian', 'bc ', 'ontario', 'quebec', 'alberta', 'manitoba', 
   'saskatchewan', 'nova scotia', 'new brunswick', 'newfoundland', 'prince edward', 
   'yukon', 'northwest territories', 'nunavut', 'postal code', 'fsa',
   'toronto', 'vancouver', 'calgary', 'ottawa', 'montreal', 'winnipeg',
   'halifax', 'victoria', 'edmonton', 'prizm'
+];
+
+// US-specific terms and data sources to exclude (won't work with Canadian data)
+const US_SPECIFIC_INDICATORS = [
+  // Geographic terms
+  'united states', 'usa', 'us ', 'american', 'zip code', 'zip ', 'county',
+  'state of', 'florida', 'california', 'texas', 'new york', 'illinois',
+  'pennsylvania', 'ohio', 'georgia', 'north carolina', 'michigan', 'new jersey',
+  
+  // US Census/Government data sources
+  'acs', 'american community survey', 'census 2020', '2020 census', 'census redistricting',
+  'title vi', 'elections and voting', 'electoral', 'voting overview', 
+  
+  // US-specific demographic/social programs  
+  'civilian labor force', 'labor force profile', 'health care for at-risk',
+  'disaster impact', 'emergency information', 'childhood and female equity',
+  
+  // US business/economic indicators
+  'consumer expenditure', 'retail goods and services expenditure',
+  'eating places', 'restaurant', 'spending patterns', 'market potential',
+  
+  // US lifestyle/segmentation (designed for US data)
+  'tapestry segmentation', 'tapestry profile', 'tapestry', 'dominant tapestry',
+  'customer purchasing behaviors', 'environmental preferences'
 ];
 
 interface ArcGISItem {
@@ -123,16 +116,36 @@ const assignCategories = (item: ArcGISItem): string[] => {
   const titleLower = item.title?.toLowerCase() || '';
   const descLower = item.description?.toLowerCase() || '';
   const tagsLower = (item.tags || []).map((t: string) => t.toLowerCase());
+  const owner = (item as any)?.owner || '';
   const textCorpus = `${titleLower} ${descLower} ${tagsLower.join(' ')}`;
 
+  // Priority categorization for Synapse54 branded reports
+  if (owner === 'Synapse54') {
+    assigned.add('Synapse54 Branded');
+  }
+  
+  // PRIZM and lifestyle segmentation
+  if (textCorpus.includes('prizm') || textCorpus.includes('tapestry') || textCorpus.includes('lifestyle') || textCorpus.includes('segmentation')) {
+    assigned.add('PRIZM & Lifestyle');
+  }
+  
+  // Canadian-specific
+  if (textCorpus.includes('canada') || textCorpus.includes('canadian') || textCorpus.includes('quebec') || textCorpus.includes('ontario')) {
+    assigned.add('Canadian Reports');
+  }
+
+  // Standard categories
   if (textCorpus.includes('demographic') || textCorpus.includes('population') || textCorpus.includes('income')) {
     assigned.add('Demographics');
   }
-  if (textCorpus.includes('market') || textCorpus.includes('business') || textCorpus.includes('prizm') || textCorpus.includes('eating') || textCorpus.includes('consumer')) {
+  if (textCorpus.includes('market') || textCorpus.includes('business') || textCorpus.includes('consumer') || textCorpus.includes('spending')) {
     assigned.add('Market Analysis');
   }
-  if (textCorpus.includes('community') || textCorpus.includes('neighborhood') || textCorpus.includes('profile') || textCorpus.includes('summary')) {
+  if (textCorpus.includes('community') || textCorpus.includes('neighborhood') || textCorpus.includes('neighbourhood') || textCorpus.includes('profile')) {
     assigned.add('Community Profiles');
+  }
+  if (textCorpus.includes('housing') || textCorpus.includes('real estate') || textCorpus.includes('homeowner')) {
+    assigned.add('Housing & Real Estate');
   }
   if (textCorpus.includes('health') || textCorpus.includes('risk') || textCorpus.includes('emergency') || textCorpus.includes('poverty')) {
     assigned.add('Health & Risk');
@@ -140,8 +153,8 @@ const assignCategories = (item: ArcGISItem): string[] => {
   if (textCorpus.includes('transportation') || textCorpus.includes('transit')) {
     assigned.add('Transportation');
   }
-  if (textCorpus.includes('tabular')) {
-    assigned.add('Tabular Reports');
+  if (textCorpus.includes('retail') || textCorpus.includes('shopping') || textCorpus.includes('commercial')) {
+    assigned.add('Retail & Commercial');
   }
 
   return assigned.size > 0 ? Array.from(assigned) : ['Other'];
@@ -154,94 +167,179 @@ export const fetchReports = async (): Promise<Report[]> => {
     
     const token = process.env.NEXT_PUBLIC_ARCGIS_API_KEY_2 || 'AAPTxy8BH1VEsoebNVZXo8HurEs9TD-3BH9IvorrjVWQR4uGhbHZOyV9S-QJcwJfNyPyN6IDTc6dX1pscXuVgb4-GEQ70Mrk6FUuIcuO2Si45rlSIepAJkP92iyuw5nBPxpTjI0ga_Aau9Cr6xaQ2DJnJfzaCkTor0cB9UU6pcNyFqxJlYt_26boxHYqnnu7vWlqt7SVFcWKmYq6kh8anIAmEi0hXY1ThVhKIupAS_Mure0.AT1_VqzOv0Y5';
     
-    // ArcGIS endpoints to try
-    const endpointsToTry = [
-      {
-        name: 'Report Template Search',
-        url: `https://www.arcgis.com/sharing/rest/search?q=owner:Synapse54 AND type:"Report Template"&f=pjson&token=${token}&num=100`
-      },
-      {
-        name: 'Content API',
-        url: `https://synapse54.maps.arcgis.com/sharing/rest/content/users/Synapse54/search?f=pjson&token=${token}&num=100`
-      },
-      {
-        name: 'Specific Red Bull Report',
-        url: `https://www.arcgis.com/sharing/rest/content/items/3accb353abb34e258fe6d69493ed1a16?f=pjson&token=${token}`
-      },
-      {
-        name: 'H&R Block Report',
-        url: `https://www.arcgis.com/sharing/rest/content/items/hrblock_report_id?f=pjson&token=${token}`
-      }
-    ];
-
+    // Paginate through all Synapse54 Report Templates since API has 100-item limit
     const allItems: ArcGISItem[] = [];
     const successfulEndpoints: string[] = [];
     
-    // Try each endpoint
-    for (const endpoint of endpointsToTry) {
-      try {
-        console.log(`[ReportsService] Trying ${endpoint.name}...`);
-        const response = await fetch(endpoint.url);
+    try {
+      console.log('[ReportsService] Fetching all Synapse54 Report Templates with pagination...');
+      
+      let start = 1;
+      let totalFetched = 0;
+      let hasMore = true;
+      
+      while (hasMore && totalFetched < 300) { // Safety limit
+        const url = `https://www.arcgis.com/sharing/rest/search?q=owner:Synapse54 AND type:"Report Template"&f=pjson&token=${token}&num=100&start=${start}&sortField=title&sortOrder=asc`;
+        
+        console.log(`[ReportsService] Fetching page starting at ${start}...`);
+        const response = await fetch(url);
         
         if (!response.ok) {
-          console.warn(`[ReportsService] ${endpoint.name} returned ${response.status}`);
-          continue;
+          console.warn(`[ReportsService] Request failed with status ${response.status}`);
+          break;
         }
         
         const data = await response.json();
         
-        // Handle different response formats
-        let items: ArcGISItem[] = [];
-        if (data.results && Array.isArray(data.results)) {
-          items = data.results;
-        } else if (data.items && Array.isArray(data.items)) {
-          items = data.items;
-        } else if (data.id && data.title) {
-          // Single item response (for specific item ID requests)
-          items = [data];
+        if (!data.results || !Array.isArray(data.results)) {
+          console.warn('[ReportsService] No results in response');
+          break;
         }
         
-        if (items.length > 0) {
-          console.log(`[ReportsService] ${endpoint.name} found ${items.length} items`);
-          allItems.push(...items);
-          successfulEndpoints.push(endpoint.name);
+        const items = data.results;
+        console.log(`[ReportsService] Page ${Math.floor(start/100) + 1}: Got ${items.length} items (total so far: ${totalFetched + items.length})`);
+        
+        allItems.push(...items);
+        totalFetched += items.length;
+        
+        // Check if we have more pages
+        hasMore = items.length === 100 && data.nextStart;
+        start = data.nextStart || start + 100;
+        
+        if (items.length < 100) {
+          console.log('[ReportsService] Reached end of results');
+          hasMore = false;
         }
-      } catch (error) {
-        console.error(`[ReportsService] Error with ${endpoint.name}:`, error);
       }
+      
+      console.log(`[ReportsService] Pagination complete: fetched ${totalFetched} total items`);
+      successfulEndpoints.push(`Synapse54 Report Templates (${totalFetched} items)`);
+      
+    } catch (error) {
+      console.error('[ReportsService] Error with pagination:', error);
     }
     
     console.log(`[ReportsService] Total items from all endpoints: ${allItems.length}`);
     console.log(`[ReportsService] Successful endpoints: ${successfulEndpoints.join(', ')}`);
     
-    // Remove duplicates based on item ID
+    // Advanced duplicate removal - remove by ID and similar titles
     const uniqueItems = allItems.reduce((acc: ArcGISItem[], current: ArcGISItem) => {
-      const existing = acc.find(item => item.id === current.id);
-      if (!existing) {
-        acc.push(current);
+      // Check for exact ID duplicates
+      const existingById = acc.find(item => item.id === current.id);
+      if (existingById) {
+        return acc;
       }
+      
+      // Check for very similar titles (fuzzy duplicate detection)
+      const currentTitleNormalized = (current.title || '').toLowerCase().trim()
+        .replace(/[^\w\s]/g, '') // Remove special characters
+        .replace(/\s+/g, ' '); // Normalize whitespace
+      
+      const existingByTitle = acc.find(item => {
+        const existingTitleNormalized = (item.title || '').toLowerCase().trim()
+          .replace(/[^\w\s]/g, '')
+          .replace(/\s+/g, ' ');
+        
+        // Consider items duplicates if titles are very similar
+        const similarity = calculateSimilarity(currentTitleNormalized, existingTitleNormalized);
+        return similarity > 0.85; // 85% similarity threshold
+      });
+      
+      if (existingByTitle) {
+        // For similar titles, prefer 2025 over 2024, then newer versions
+        const currentTitle = current.title || '';
+        const existingTitle = existingByTitle.title || '';
+        
+        const currentHas2025 = currentTitle.includes('Esri 2025');
+        const existingHas2025 = existingTitle.includes('Esri 2025');
+        const currentHas2024 = currentTitle.includes('Esri 2024');
+        const existingHas2024 = existingTitle.includes('Esri 2024');
+        
+        // Prefer 2025 over 2024
+        if (currentHas2025 && existingHas2024) {
+          const index = acc.indexOf(existingByTitle);
+          acc[index] = current;
+          console.log(`[ReportsService] Replacing 2024 version "${existingTitle}" with 2025 version: "${currentTitle}"`);
+          return acc;
+        } else if (existingHas2025 && currentHas2024) {
+          console.log(`[ReportsService] Keeping 2025 version "${existingTitle}", skipping 2024 version: "${currentTitle}"`);
+          return acc;
+        }
+        
+        // If both are same version type, prefer the more recent
+        const currentModified = (current as any).modified || 0;
+        const existingModified = (existingByTitle as any).modified || 0;
+        
+        if (currentModified > existingModified) {
+          const index = acc.indexOf(existingByTitle);
+          acc[index] = current;
+          console.log(`[ReportsService] Replacing older version "${existingTitle}" with newer: "${currentTitle}"`);
+        } else {
+          console.log(`[ReportsService] Keeping existing version "${existingTitle}", skipping: "${currentTitle}"`);
+        }
+        return acc;
+      }
+      
+      acc.push(current);
       return acc;
     }, []);
     
-    console.log(`[ReportsService] Unique items after deduplication: ${uniqueItems.length}`);
+    console.log(`[ReportsService] Unique items after advanced deduplication: ${uniqueItems.length}`);
     
-    // Filter for United States reports (include reports with no country property - assume US by default)
-    const usOnlyItems = uniqueItems.filter((item: ArcGISItem) => {
-      const countries = item.properties?.countries;
-      const isUS = countries === 'US' || !countries; // Include reports without country property
+    // Helper function for title similarity
+    function calculateSimilarity(str1: string, str2: string): number {
+      const longer = str1.length > str2.length ? str1 : str2;
+      const shorter = str1.length > str2.length ? str2 : str1;
       
-      if (!isUS) {
-        console.log(`[ReportsService] Excluding non-US item: "${item.title}" (countries: ${countries})`);
+      if (longer.length === 0) return 1.0;
+      
+      const distance = levenshteinDistance(longer, shorter);
+      return (longer.length - distance) / longer.length;
+    }
+    
+    function levenshteinDistance(str1: string, str2: string): number {
+      const matrix = Array(str2.length + 1).fill(null).map(() => Array(str1.length + 1).fill(null));
+      
+      for (let i = 0; i <= str1.length; i++) matrix[0][i] = i;
+      for (let j = 0; j <= str2.length; j++) matrix[j][0] = j;
+      
+      for (let j = 1; j <= str2.length; j++) {
+        for (let i = 1; i <= str1.length; i++) {
+          const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+          matrix[j][i] = Math.min(
+            matrix[j][i - 1] + 1,
+            matrix[j - 1][i] + 1,
+            matrix[j - 1][i - 1] + cost
+          );
+        }
       }
       
-      return isUS;
+      return matrix[str2.length][str1.length];
+    }
+    
+    // Since we're only fetching Synapse54 content, just filter out test/demo reports
+    const filteredItems = uniqueItems.filter((item: ArcGISItem) => {
+      const titleLower = (item.title || '').toLowerCase();
+      const owner = (item as any)?.owner || '';
+      
+      // Only Synapse54 content should be coming through anyway, but double-check
+      if (owner !== 'Synapse54') {
+        console.log(`[ReportsService] EXCLUDING non-Synapse54: "${item.title}" (owner: ${owner})`);
+        return false;
+      }
+      
+      console.log(`[ReportsService] INCLUDING Synapse54 report: "${item.title}"`);
+      return true;
     });
     
-    console.log(`[ReportsService] US-only items: ${usOnlyItems.length}`);
+    console.log(`[ReportsService] Filtered items after prioritization: ${filteredItems.length}`);
     
     // Apply exclusion filtering
-    const filteredItems = usOnlyItems.filter(item => {
+    const finalFilteredItems = filteredItems.filter(item => {
       const trimmedTitle = item.title?.trim() || '';
+      const titleLower = trimmedTitle.toLowerCase();
+      const descLower = (item.description || '').toLowerCase();
+      const textContent = `${titleLower} ${descLower}`;
       
       // Check exact matches in exclusion set
       if (DO_NOT_DISPLAY_LIST.has(trimmedTitle)) {
@@ -249,26 +347,73 @@ export const fetchReports = async (): Promise<Report[]> => {
         return false;
       }
       
-      // Check for "(Esri 2025)" substring
+      // Exclude Esri 2025 versions as requested
       if (trimmedTitle.includes('(Esri 2025)')) {
         console.log(`[ReportsService] Excluding Esri 2025 template: "${trimmedTitle}"`);
         return false;
       }
       
-      // Check for Canadian-related terms in title
-      const titleLower = trimmedTitle.toLowerCase();
-      if (CANADIAN_TERMS.some(term => titleLower.includes(term))) {
-        console.log(`[ReportsService] Excluding Canadian template: "${trimmedTitle}"`);
+      // Check for US-specific indicators that won't work with Canadian data
+      if (US_SPECIFIC_INDICATORS.some(term => textContent.includes(term))) {
+        console.log(`[ReportsService] Excluding US-specific template: "${trimmedTitle}"`);
         return false;
       }
       
-      return true;
+      // Keep reports that are explicitly Canadian or generic/international
+      const isCanadian = CANADIAN_TERMS.some(term => textContent.includes(term));
+      const isGenericUseful = titleLower.includes('housing') || 
+                             titleLower.includes('market') ||
+                             titleLower.includes('demographic') ||
+                             titleLower.includes('community') ||
+                             titleLower.includes('population') ||
+                             titleLower.includes('business') ||
+                             titleLower.includes('economic');
+      
+      if (isCanadian) {
+        console.log(`[ReportsService] Including Canadian report: "${trimmedTitle}"`);
+        return true;
+      }
+      
+      if (isGenericUseful) {
+        console.log(`[ReportsService] Including generic useful report: "${trimmedTitle}"`);
+        return true;
+      }
+      
+      console.log(`[ReportsService] Excluding report (not Canadian/generic): "${trimmedTitle}"`);
+      return false;
     });
     
-    console.log(`[ReportsService] Items after exclusion filtering: ${filteredItems.length}`);
+    console.log(`[ReportsService] Items after exclusion filtering: ${finalFilteredItems.length}`);
+    
+    // Sort items by priority: Housing/Market reports first, then alphabetical
+    const sortedItems = finalFilteredItems.sort((a, b) => {
+      const aTitle = (a.title || '').toLowerCase();
+      const bTitle = (b.title || '').toLowerCase();
+      
+      // Housing and Market reports first
+      const aHousing = aTitle.includes('housing') || aTitle.includes('market');
+      const bHousing = bTitle.includes('housing') || bTitle.includes('market');
+      if (aHousing && !bHousing) return -1;
+      if (bHousing && !aHousing) return 1;
+      
+      // PRIZM/Tapestry reports second  
+      const aPrizm = aTitle.includes('prizm') || aTitle.includes('tapestry');
+      const bPrizm = bTitle.includes('prizm') || bTitle.includes('tapestry');
+      if (aPrizm && !bPrizm) return -1;
+      if (bPrizm && !aPrizm) return 1;
+      
+      // Demographic reports third
+      const aDemographic = aTitle.includes('demographic') || aTitle.includes('population') || aTitle.includes('community');
+      const bDemographic = bTitle.includes('demographic') || bTitle.includes('population') || bTitle.includes('community');
+      if (aDemographic && !bDemographic) return -1;
+      if (bDemographic && !aDemographic) return 1;
+      
+      // Alphabetical order for the rest
+      return aTitle.localeCompare(bTitle);
+    });
     
     // Convert to Report format
-    const formattedReports = filteredItems.map(item => {
+    const formattedReports = sortedItems.map(item => {
       // Construct proper thumbnail URL
       let thumbnailUrl = '';
       if (item.thumbnail) {
@@ -295,6 +440,16 @@ export const fetchReports = async (): Promise<Report[]> => {
     
     console.log(`[ReportsService] Final report count (including custom): ${finalReports.length}`);
     console.log(`[ReportsService] Final report titles:`, finalReports.map(r => r.title));
+    
+    // Log detailed breakdown for debugging
+    console.log(`[ReportsService] Report breakdown by category:`);
+    const categoryBreakdown = finalReports.reduce((acc: Record<string, number>, report) => {
+      report.categories.forEach(cat => {
+        acc[cat] = (acc[cat] || 0) + 1;
+      });
+      return acc;
+    }, {});
+    console.log(categoryBreakdown);
     
     return finalReports;
     

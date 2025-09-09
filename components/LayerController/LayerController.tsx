@@ -587,7 +587,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     initializationInProgress.current = true;
 
     try {
-      const totalLayers = (config.groups || []).reduce((sum, group) => sum + ((group.layers || []).length), 0);
+      const totalLayers = (config.groups || []).reduce((sum, group) => sum + ((group.layers || []).filter(layer => !layer.skipLayerList).length), 0);
       
       setLoadingState(prev => ({
         ...prev,
@@ -605,6 +605,12 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
             if (layer) {
               // Add ALL layers to the map (aligned with GitHub unified repo)
               view.map.add(layer);
+              
+              // Skip creating layer state for layers with skipLayerList: true
+              if (layerConfig.skipLayerList) {
+                console.log(`[LayerController] Skipping layer state creation for hidden layer: ${layerConfig.name}`);
+                continue;
+              }
               
               // Set visibility based on config
               const shouldBeVisible = config.defaultVisibility?.[layerConfig.id] || false;
@@ -628,6 +634,12 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
                 active: false
               };
             } else {
+              // Skip creating layer state for failed layers that have skipLayerList: true
+              if (layerConfig.skipLayerList) {
+                console.log(`[LayerController] Skipping failed hidden layer: ${layerConfig.name}`);
+                continue;
+              }
+              
               // Create placeholder state for layers that failed to create
               console.log(`[LayerController] Failed to create layer: ${layerConfig.name}`);
               newLayerStates[layerConfig.id] = {

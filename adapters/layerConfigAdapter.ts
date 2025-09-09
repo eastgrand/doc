@@ -1,5 +1,6 @@
 // adapters/layerConfigAdapter.ts
 import { layers as allLayersConfig } from '../config/layers';
+import { compositeIndexLayerConfigs } from '../config/layers_housing_2025';
 import { ProjectLayerConfig, LayerConfig, LayerGroup } from '../types/layers';
 
 /**
@@ -13,9 +14,14 @@ import { ProjectLayerConfig, LayerConfig, LayerGroup } from '../types/layers';
 export function createProjectConfig(): ProjectLayerConfig {
   const adaptedLayers: Record<string, LayerConfig> = {};
 
-  // Helper to classify a layer into one of the business groups for Red Bull Energy Drinks project
-  const classifyGroup = (layerName: string): string => {
+  // Helper to classify a layer into one of the business groups
+  const classifyGroup = (layerName: string, layerConfig: LayerConfig): string => {
     const n = layerName.toLowerCase();
+    
+    // Use predefined group if it exists (especially for composite index layers)
+    if (layerConfig.group && layerConfig.group !== 'general') {
+      return layerConfig.group;
+    }
     
     // Store locations - Only the actual location layers, not shopping behavior layers
     if (/^target$|^trader joes$|^whole foods$|^costco$/.test(n)) {
@@ -79,7 +85,10 @@ export function createProjectConfig(): ProjectLayerConfig {
     return false;
   };
 
-  for (const layerConfig of Object.values(allLayersConfig)) {
+  // Include composite index layers for Quebec Housing project
+  const allLayers = [...Object.values(allLayersConfig), ...compositeIndexLayerConfigs];
+  
+  for (const layerConfig of allLayers) {
     if (layerConfig && layerConfig.id) {
       const layerName = layerConfig.name || layerConfig.id;
       const layerNameLower = layerName.toLowerCase();
@@ -108,7 +117,7 @@ export function createProjectConfig(): ProjectLayerConfig {
         continue;
       }
       
-      const classifiedGroup = classifyGroup(layerName);
+      const classifiedGroup = classifyGroup(layerName, layerConfig);
       const cleanedName = cleanLayerName(layerName);
       
       // Special name handling for store locations
@@ -160,6 +169,9 @@ export function createProjectConfig(): ProjectLayerConfig {
       switch (groupId) {
         case 'stores':
           title = 'Stores';
+          break;
+        case 'composite-indexes':
+          title = 'Composite Indexes';
           break;
         case 'energy-drinks':
           title = 'Energy Drinks';
@@ -216,12 +228,13 @@ export function createProjectConfig(): ProjectLayerConfig {
     // If both or neither have point layers, use priority order for project
     const priority: Record<string, number> = {
       'stores': 1,             // First - store locations
-      'energy-drinks': 2,      // Second - target variable and competitors
-      'consumer-behavior': 3,  // Third - related consumption patterns
-      'demographics': 4,       // Fourth - target audience data
-      'financial': 5,          // Fifth - purchasing power data
-      'geographic': 6,         // Sixth - location data
-      'locations': 7           // Last - generic location layers
+      'composite-indexes': 2,  // Second - composite index layers
+      'energy-drinks': 3,      // Third - target variable and competitors
+      'consumer-behavior': 4,  // Fourth - related consumption patterns
+      'demographics': 5,       // Fifth - target audience data
+      'financial': 6,          // Sixth - purchasing power data
+      'geographic': 7,         // Seventh - location data
+      'locations': 8           // Last - generic location layers
     };
     
     const aPriority = priority[a.id] || 999;
