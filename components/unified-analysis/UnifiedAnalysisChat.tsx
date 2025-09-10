@@ -951,56 +951,29 @@ ${conversationText}
                   </div>
                 </div>
                 
-                {/* End-of-content copy button - positioned at bottom right */}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 theme-text-secondary hover:theme-text-primary hover:theme-bg-tertiary"
-                  onClick={() => handleCopyMessage(message)}
-                  title="Copy message"
-                >
-                  {copiedMessageId === message.id ? (
-                    <Check className="w-3 h-3" />
-                  ) : (
-                    <Copy className="w-3 h-3" />
-                  )}
-                </Button>
-                {/* Copy button */}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className={`absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 ${
-                    message.role === 'user' ? 'text-green-700 hover:bg-green-200' : 'theme-text-secondary hover:theme-bg-tertiary'
-                  }`}
-                  onClick={() => handleCopyMessage(message)}
-                >
-                  {copiedMessageId === message.id ? (
-                    <Check className="w-3 h-3" />
-                  ) : (
-                    <Copy className="w-3 h-3" />
-                  )}
-                </Button>
+                {/* Copy button - only for AI messages */}
+                {message.role === 'assistant' && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 theme-text-secondary hover:theme-text-primary hover:theme-bg-tertiary"
+                    onClick={() => handleCopyMessage(message)}
+                    title="Copy message"
+                  >
+                    {copiedMessageId === message.id ? (
+                      <Check className="w-3 h-3" />
+                    ) : (
+                      <Copy className="w-3 h-3" />
+                    )}
+                  </Button>
+                )}
               </div>
               
-              {/* Bottom area with timestamp and copy button */}
-              <div className="flex items-center justify-between mt-1">
+              {/* Bottom area with timestamp */}
+              <div className="flex items-center justify-start mt-1">
                 <div className="text-xs theme-text-secondary">
                   {message.timestamp.toLocaleTimeString()}
                 </div>
-                {/* Bottom copy button */}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6 theme-text-secondary hover:theme-text-primary hover:theme-bg-tertiary"
-                  onClick={() => handleCopyMessage(message)}
-                  title="Copy message"
-                >
-                  {copiedMessageId === message.id ? (
-                    <Check className="w-3 h-3" />
-                  ) : (
-                    <Copy className="w-3 h-3" />
-                  )}
-                </Button>
               </div>
             </div>
           </div>
