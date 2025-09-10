@@ -152,9 +152,9 @@ export class DataProcessor {
       }
     }
     
-    // Apply geographic filtering for ANY query with geographic content (but not for project-wide analysis)
+    // Apply geographic filtering for queries with explicit geographic content
     // This ensures queries like "show me high income areas in Montreal" work properly
-    if (query && query.trim().length > 2 && !isProjectScope) {
+    if (query && query.trim().length > 2) {
       try {
         const geoEngine = GeoAwarenessEngine.getInstance();
         const geoPreFilter = await geoEngine.processGeoQuery(query, rawResults.results || [], endpoint);

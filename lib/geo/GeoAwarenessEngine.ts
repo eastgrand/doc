@@ -634,11 +634,14 @@ export class GeoAwarenessEngine {
       /\bacross\s+([A-Z][a-z]+(\s+[A-Z][a-z]+)*)/,  // "across New Jersey"
     ];
     
-    // Method 2: Check for geographic comparison patterns
+    // Method 2: Check for geographic comparison patterns (but exclude business markets)
     const geoComparisons = [
-      /\bcompare.*\b(cities|states|regions|areas|markets|locations)\b/i,
-      /\b(cities|states|regions|areas|markets|locations).*\bcompare\b/i,
+      /\bcompare.*\b(cities|states|regions|areas|locations)\b/i,
+      /\b(cities|states|regions|areas|locations).*\bcompare\b/i,
       /\bbetween\s+[A-Z][a-z]+(\s+[A-Z][a-z]+)*\s+and\s+[A-Z][a-z]+(\s+[A-Z][a-z]+)*/,  // "between NYC and LA"
+      // Only include "markets" if it's explicitly geographic context
+      /\bcompare.*\b(geographic|regional|local)\s+markets\b/i,
+      /\bcompare.*\b(housing|real\s+estate)\s+markets\s+(in|across|between)\b/i,
     ];
     
     // Method 3: Check for explicit location codes
@@ -674,6 +677,18 @@ export class GeoAwarenessEngine {
       /\bfind\s+(locations|places|areas)/i
     ];
     
+    // Check for business/commercial context that should exclude geographic filtering
+    const businessContextPatterns = [
+      /\b(strategic|target|competitive|business|investment|financial)\s+markets?\b/i,
+      /\b(market\s+)?(analysis|research|segmentation|opportunity|potential)\b/i,
+      /\btop\s+\d*\s*(strategic|performing|profitable|investment)\s+\w*\s*markets?\b/i,
+      /\bmarket\s+(share|size|penetration|expansion|opportunities?)\b/i,
+      /\b(emerging|growth|niche|vertical|consumer)\s+markets?\b/i
+    ];
+    
+    // If query has business context, require much stronger geographic indicators
+    const hasBusinessContext = businessContextPatterns.some(pattern => pattern.test(query));
+    
     const allPatterns = [
       ...geoPrepositions,
       ...geoComparisons, 
@@ -682,8 +697,23 @@ export class GeoAwarenessEngine {
       ...locationTerms
     ];
     
-    // Return true if query matches any pattern OR contains known geographic entities
-    return allPatterns.some(pattern => pattern.test(query)) || hasKnownGeographicEntity;
+    const hasGeographicPatterns = allPatterns.some(pattern => pattern.test(query));
+    
+    // If business context detected, only allow geographic filtering with explicit geographic patterns
+    if (hasBusinessContext) {
+      console.log(`🚫 [GEO DEBUG] Business context detected - requiring explicit geographic indicators`);
+      // For business queries, require explicit geographic prepositions or location codes
+      const explicitGeoPatterns = [...geoPrepositions, ...locationCodes];
+      const hasExplicitGeo = explicitGeoPatterns.some(pattern => pattern.test(query));
+      console.log(`🚫 [GEO DEBUG] Explicit geographic patterns found: ${hasExplicitGeo}`);
+      return hasExplicitGeo;
+    }
+    
+    console.log(`✅ [GEO DEBUG] No business context - using standard geographic detection`);
+    console.log(`✅ [GEO DEBUG] Geographic patterns: ${hasGeographicPatterns}, Known entities: ${hasKnownGeographicEntity}`);
+    
+    // Return true if query matches any pattern OR contains known geographic entities  
+    return hasGeographicPatterns || hasKnownGeographicEntity;
   }
 
   /**
