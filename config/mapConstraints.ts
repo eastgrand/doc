@@ -1,5 +1,5 @@
 // Map Constraints Configuration
-// Updated on 2025-08-25 for Red Bull Energy Drinks California project
+// Updated for Quebec Housing Market project
 // This file defines geographic constraints to prevent panning outside project area
 
 export interface MapConstraintsConfig {
@@ -18,13 +18,13 @@ export interface MapConstraintsConfig {
   rotationEnabled?: boolean;
 }
 
-// California project extent with 10% buffer to prevent panning outside data area
+// Quebec project extent with buffer to prevent panning outside data area
 export const MAP_CONSTRAINTS: MapConstraintsConfig = {
   geometry: {
-    xmin: -14080000,  // California west bound with buffer
-    ymin: 3750000,    // California south bound with buffer  
-    xmax: -12500000,  // California east bound with buffer
-    ymax: 5280000,    // California north bound with buffer
+    xmin: -8700000,   // Quebec west bound with buffer (~-78°)
+    ymin: 5800000,    // Quebec south bound with buffer (~45.5°)  
+    xmax: -7400000,   // Quebec east bound with buffer (~-66.5°)
+    ymax: 6700000,    // Quebec north bound with buffer (~54.5°)
     spatialReference: {
       wkid: 102100
     }
@@ -36,12 +36,12 @@ export const MAP_CONSTRAINTS: MapConstraintsConfig = {
   rotationEnabled: false // Typically disabled for data analysis applications
 };
 
-// California data extent (without buffer) for reference
+// Quebec data extent (without buffer) for reference
 export const DATA_EXTENT = {
-  xmin: -13880000,  // California west bound (~-124.7°)
-  ymin: 3850000,    // California south bound (~32.5°)
-  xmax: -12700000,  // California east bound (~-114.1°) 
-  ymax: 5160000,    // California north bound (~42.0°)
+  xmin: -8600000,   // Quebec west bound (~-77.2°)
+  ymin: 5900000,    // Quebec south bound (~45.8°)
+  xmax: -7500000,   // Quebec east bound (~-67.4°) 
+  ymax: 6600000,    // Quebec north bound (~54.2°)
   spatialReference: {
     wkid: 102100
   }
