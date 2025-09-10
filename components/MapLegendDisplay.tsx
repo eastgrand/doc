@@ -43,7 +43,7 @@ const MapLegendDisplay: React.FC<MapLegendDisplayProps> = ({ legends }) => {
 
   return (
     <div 
-      className="absolute bottom-4 left-4 z-10 max-w-xs w-full" 
+      className="absolute bottom-4 left-56 z-10 max-w-xs w-full" 
       style={{ pointerEvents: 'all' }} // Ensure interaction
     >
       <ScrollArea className="max-h-60"> {/* Limit height and make scrollable */}

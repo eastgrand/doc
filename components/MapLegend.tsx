@@ -46,7 +46,7 @@ const MapLegend: React.FC<MapLegendProps> = ({
     return (
       <div 
         className={cn(
-          "absolute bottom-5 left-[84px] z-50",
+          "absolute bottom-5 left-56 z-50",
           className
         )}
       >
@@ -66,7 +66,7 @@ const MapLegend: React.FC<MapLegendProps> = ({
     return (
       <div 
         className={cn(
-          "absolute bottom-5 left-[84px] bg-white p-3 rounded-lg shadow-lg z-50",
+          "absolute bottom-5 left-56 bg-white p-3 rounded-lg shadow-lg z-50",
           "max-w-[280px] max-h-[350px] overflow-auto",
           className
         )}
@@ -129,7 +129,7 @@ const MapLegend: React.FC<MapLegendProps> = ({
   return (
     <div 
       className={cn(
-        "absolute bottom-5 left-[84px] bg-white p-3 rounded-lg shadow-lg z-50",
+        "absolute bottom-5 left-56 bg-white p-3 rounded-lg shadow-lg z-50",
         "max-w-[250px] max-h-[300px] overflow-auto",
         className
       )}

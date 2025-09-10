@@ -106,7 +106,7 @@ const MapLegend: React.FC<MapLegendProps> = ({
         style={{
           position: 'absolute',
           bottom: '20px',
-          left: '20px', // Position relative to the map container after left padding
+          left: '220px', // Position well clear of zoom controls
           zIndex: 15000,
         }}
       >
@@ -132,7 +132,7 @@ const MapLegend: React.FC<MapLegendProps> = ({
         style={{
           position: 'absolute',
           bottom: '20px',
-          left: '20px', // Position relative to the map container after left padding
+          left: '220px', // Position well clear of zoom controls
           backgroundColor: 'white',
           padding: '12px',
           borderRadius: '8px',
@@ -205,7 +205,7 @@ const MapLegend: React.FC<MapLegendProps> = ({
       style={{
         position: 'absolute',
         bottom: '20px',
-        left: '20px', // Position relative to the map container after left padding
+        left: '100px', // Position between zoom controls and sidebar
         backgroundColor: 'white',
         padding: '12px',
         borderRadius: '8px',
