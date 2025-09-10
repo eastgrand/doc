@@ -9,6 +9,7 @@ import {
   DialogHeader, 
   DialogTitle 
 } from '@/components/ui/dialog';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { Send, Bot, User, Loader2, Copy, Check, X, Download } from 'lucide-react';
 // import { renderPerformanceMetrics } from '@/lib/utils/performanceMetrics'; // Commented out - badges no longer displayed
 import { 
@@ -1082,21 +1083,23 @@ ${conversationText}
       </div>
 
       {/* MessageDialog for expanded message viewing - same as original UI */}
-      <Dialog open={!!selectedMessage} onOpenChange={() => setSelectedMessage(null)}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto theme-dialog" aria-describedby="analysis-details-description">
-          <DialogHeader>
-            <DialogTitle>Analysis Details</DialogTitle>
-          </DialogHeader>
-          <div id="analysis-details-description" className="space-y-4">
-            <div>
-              <div className="text-sm leading-relaxed">
-                {selectedMessage && renderFormattedMessage(selectedMessage)}
+      <TooltipProvider delayDuration={300}>
+        <Dialog open={!!selectedMessage} onOpenChange={() => setSelectedMessage(null)}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto theme-dialog" aria-describedby="analysis-details-description">
+            <DialogHeader>
+              <DialogTitle>Analysis Details</DialogTitle>
+            </DialogHeader>
+            <div id="analysis-details-description" className="space-y-4">
+              <div>
+                <div className="text-sm leading-relaxed">
+                  {selectedMessage && renderFormattedMessage(selectedMessage)}
+                </div>
               </div>
+              {/* Removed features count from dialog to avoid showing total features */}
             </div>
-            {/* Removed features count from dialog to avoid showing total features */}
-          </div>
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      </TooltipProvider>
     </div>
   );
 };

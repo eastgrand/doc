@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import {
   ChevronRight,
   MapPin,
@@ -1991,15 +1992,17 @@ export default function UnifiedAnalysisWorkflow({
 
             <TabsContent value="analysis" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-hidden animate-entrance">
               {/* Analysis and Chat Interface */}
-              <ChatInterface 
-                analysisResult={workflowState.analysisResult}
-                persona={selectedPersona}
-                messages={chatMessages}
-                setMessages={setChatMessages}
-                onZipCodeClick={handleZipCodeClick}
-                hasGeneratedNarrative={hasGeneratedNarrative}
-                setHasGeneratedNarrative={setHasGeneratedNarrative}
-              />
+              <TooltipProvider delayDuration={300}>
+                <ChatInterface 
+                  analysisResult={workflowState.analysisResult}
+                  persona={selectedPersona}
+                  messages={chatMessages}
+                  setMessages={setChatMessages}
+                  onZipCodeClick={handleZipCodeClick}
+                  hasGeneratedNarrative={hasGeneratedNarrative}
+                  setHasGeneratedNarrative={setHasGeneratedNarrative}
+                />
+              </TooltipProvider>
             </TabsContent>
 
             <TabsContent value="data" className="flex-1 min-h-0 max-h-[calc(100vh-200px)] overflow-y-auto animate-entrance">
