@@ -214,6 +214,45 @@
   @apply text-primary hover:text-primary/90 underline-offset-4 hover:underline;
 }
 
+/* Override any blue colors in chat interface - force green */
+[class*="MessageList"] button,
+[class*="UnifiedAnalysisChat"] button,
+.theme-message-container button,
+button[class*="bg-green-100"],
+button[class*="text-green-800"],
+button[title*="Zoom to"],
+button[title*="Click to zoom"],
+.inline-flex.items-center.bg-green-100 {
+  color: #33a852 !important;
+  background-color: #dcfce7 !important;
+}
+
+/* Force green for user messages */
+.bg-green-50 {
+  background-color: rgba(34, 197, 94, 0.1) !important;
+}
+
+.text-green-700 {
+  color: #15803d !important;
+}
+
+/* Nuclear option: Force all elements with green class combinations to have green backgrounds */
+*[class*="bg-green-100"],
+*[class*="text-green-800"],
+*.bg-green-100.text-green-800,
+*.inline-flex.items-center[class*="green"] {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+}
+
+/* Target specific button patterns for FSA/ZIP codes */
+button[class*="inline-flex"][class*="items-center"][class*="green"],
+button.inline-flex.items-center.px-1.py-0\.5 {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+  border: 1px solid #bbf7d0 !important;
+}
+
 /* Force solid white backgrounds for all UI components */
 [data-radix-popper-content-wrapper],
 [data-radix-portal] > div,

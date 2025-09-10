@@ -415,7 +415,7 @@ ${conversationText}
             return (
               <button
                 key={`${lineIndex}-${partIndex}`}
-                className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors cursor-pointer mr-1"
+                className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors cursor-pointer mr-1"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleZipCodeClick(part); // Reuse the same handler - it handles both ZIP and FSA codes
@@ -971,7 +971,7 @@ ${conversationText}
           >
             <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
               message.role === 'user' 
-                ? 'bg-blue-500 text-white' 
+                ? 'bg-green-600 text-white' 
                 : 'bg-green-500 text-white'
             }`}>
               {message.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
@@ -983,7 +983,7 @@ ${conversationText}
                 <div 
                   className={`inline-block p-3 rounded-lg text-xs cursor-pointer transition-all hover:shadow-md ${
                     message.role === 'user'
-                      ? 'bg-[var(--firefly-19)] text-white hover:bg-[var(--firefly-20)]'
+                      ? 'bg-green-50 text-green-700 border border-green-200 hover:bg-green-100'
                       : 'theme-message-container'
                   }`}
                   onClick={() => handleMessageClick(message)}
@@ -997,7 +997,7 @@ ${conversationText}
                   variant="ghost"
                   size="sm"
                   className={`absolute top-1 right-1 p-1 h-6 w-6 ${
-                    message.role === 'user' ? 'text-white hover:bg-[var(--firefly-20)]' : 'theme-text-secondary hover:theme-bg-tertiary'
+                    message.role === 'user' ? 'text-green-700 hover:bg-green-200' : 'theme-text-secondary hover:theme-bg-tertiary'
                   }`}
                   onClick={() => handleCopyMessage(message)}
                   title="Copy message"
@@ -1020,7 +1020,7 @@ ${conversationText}
                   variant="ghost"
                   size="sm"
                   className={`p-1 h-6 w-6 ${
-                    message.role === 'user' ? 'text-white hover:bg-[var(--firefly-20)]' : 'theme-text-secondary hover:theme-bg-tertiary'
+                    message.role === 'user' ? 'text-green-700 hover:bg-green-200' : 'theme-text-secondary hover:theme-bg-tertiary'
                   }`}
                   onClick={() => handleCopyMessage(message)}
                   title="Copy message"

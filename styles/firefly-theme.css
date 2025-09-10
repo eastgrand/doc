@@ -1444,6 +1444,31 @@ textarea::placeholder, input::placeholder {
   background-color: rgba(34, 197, 94, 0.15) !important;
 }
 
+/* Force green styling for FSA/ZIP links - override any blue colors */
+button[class*="text-[#33a852]"],
+.inline.text-\[#33a852\],
+button[title*="Zoom to"],
+button[title*="Click to zoom"],
+button.bg-green-100,
+.bg-green-100,
+.inline-flex.items-center.bg-green-100.text-green-800 {
+  color: #33a852 !important;
+  background-color: #dcfce7 !important;
+  border: 1px solid #bbf7d0 !important;
+}
+
+/* Additional override for any blue links in chat messages */
+.theme-message-container a,
+.theme-message-container button {
+  color: #33a852 !important;
+}
+
+/* Ensure user messages use green background */
+.theme-message-container.theme-message-user {
+  background-color: rgba(34, 197, 94, 0.1) !important;
+  border-color: #22c55e !important;
+}
+
 /* ===== MAP ZOOM CONTROLS ===== */
 
 /* Zoom control positioning and base styles */

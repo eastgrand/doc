@@ -262,7 +262,7 @@ export const StatsWithInfo: React.FC<StatsWithInfoProps> = ({ content, className
                   return (
                     <button
                       key={i}
-                      className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors cursor-pointer mx-0.5"
+                      className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors cursor-pointer mx-0.5"
                       onClick={() => onZipCodeClick(part)}
                       title={`Click to zoom to FSA ${part}`}
                     >
@@ -348,7 +348,7 @@ function renderLineWithZipCodes(text: string, onZipCodeClick?: (zipCode: string)
       return (
         <button
           key={i}
-          className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors cursor-pointer mx-0.5"
+          className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors cursor-pointer mx-0.5"
           onClick={() => onZipCodeClick(part)}
           title={`Click to zoom to FSA ${part}`}
         >
