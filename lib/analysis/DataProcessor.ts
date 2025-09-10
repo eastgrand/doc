@@ -60,14 +60,24 @@ export class DataProcessor {
     rawResults: RawAnalysisResult, 
     endpoint: string, 
     query: string = '',
-    spatialFilterIds?: string[]  // NEW parameter
+    spatialFilterIds?: string[],  // NEW parameter
+    options?: { analysisScope?: string; scope?: string; forceProjectScope?: boolean }  // NEW options parameter
   ): Promise<ProcessedAnalysisData & { geoAnalysis?: any }> {
     let filteredRawResults = rawResults;
     let spatialFilterApplied = false;
     let geoResult: any = null;
     
-    // Apply spatial filtering FIRST if feature IDs provided
-    if (spatialFilterIds) {
+    // Check if this is project-wide analysis - skip spatial filtering
+    const isProjectScope = options?.analysisScope === 'project' || 
+                          options?.scope === 'project' || 
+                          options?.forceProjectScope === true;
+    
+    if (isProjectScope) {
+      console.log('[DataProcessor] Project scope detected - skipping spatial filtering');
+    }
+    
+    // Apply spatial filtering FIRST if feature IDs provided AND not project scope
+    if (spatialFilterIds && !isProjectScope) {
       // If spatialFilterIds is an empty array, it means spatial filtering was attempted but found no features
       if (spatialFilterIds.length === 0) {
         console.log('[DataProcessor] Spatial filtering found no features - returning empty result');
@@ -142,9 +152,9 @@ export class DataProcessor {
       }
     }
     
-    // Apply geographic filtering for ANY query with geographic content
+    // Apply geographic filtering for ANY query with geographic content (but not for project-wide analysis)
     // This ensures queries like "show me high income areas in Montreal" work properly
-    if (query && query.trim().length > 2) {
+    if (query && query.trim().length > 2 && !isProjectScope) {
       try {
         const geoEngine = GeoAwarenessEngine.getInstance();
         const geoPreFilter = await geoEngine.processGeoQuery(query, rawResults.results || [], endpoint);

@@ -228,7 +228,12 @@ export class AnalysisEngine {
         analysisData, 
         selectedEndpoint, 
         query,
-        options.spatialFilterIds  // NEW: Pass spatial filter IDs
+        options.spatialFilterIds,  // NEW: Pass spatial filter IDs
+        {
+          analysisScope: options.analysisScope,
+          scope: options.scope,
+          forceProjectScope: options.forceProjectScope
+        }
       );
       
       // Log spatial filtering impact

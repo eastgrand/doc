@@ -251,8 +251,10 @@ export class UnifiedAnalysisWrapper {
       throw new Error('Query is required for query analysis');
     }
     
-    // Use pre-computed spatial filter IDs if available, otherwise compute them
-    const spatialFilterIds = request.spatialFilterIds || await this.getSpatialFilterIds(request);
+    // Don't use spatial filter for project-area selection
+    const spatialFilterIds = request.geometryMethod === 'project-area' 
+      ? undefined 
+      : (request.spatialFilterIds || await this.getSpatialFilterIds(request));
     
     const options: AnalysisOptions = {
       // Remove explicit endpoint to allow intelligent classification like original UI
@@ -260,10 +262,12 @@ export class UnifiedAnalysisWrapper {
       fieldFilters: request.fieldFilters,         // Phase 2: Pass field filters
       visualizationConfig: request.visualizationConfig, // Phase 3: Pass visualization config
       performanceConfig: request.performanceConfig, // Phase 4: Pass performance config
-      spatialFilterIds,                          // Pass feature IDs
+      spatialFilterIds,                          // Pass feature IDs (undefined for project-area)
       spatialFilterGeometry: request.geometry,   // Pass geometry for reference
       spatialFilterMethod: request.geometryMethod, // Track how it was selected
-      persona: request.persona                   // Pass the selected persona
+      persona: request.persona,                   // Pass the selected persona
+      // Add analysisScope when project-area is selected
+      ...(request.geometryMethod === 'project-area' ? { analysisScope: 'project' } : {})
     };
     
     const analysisEngine = await this.getAnalysisEngine();
@@ -275,8 +279,10 @@ export class UnifiedAnalysisWrapper {
    * Focuses on score-based visualizations
    */
   private async processInfographicAnalysis(request: UnifiedAnalysisRequest): Promise<AnalysisResult> {
-    // Use pre-computed spatial filter IDs if available, otherwise compute them
-    const spatialFilterIds = request.spatialFilterIds || await this.getSpatialFilterIds(request);
+    // Don't use spatial filter for project-area selection
+    const spatialFilterIds = request.geometryMethod === 'project-area' 
+      ? undefined 
+      : (request.spatialFilterIds || await this.getSpatialFilterIds(request));
     
     const query = `Generate ${request.infographicType || 'strategic'} analysis`;
     const options: AnalysisOptions = {
@@ -285,10 +291,12 @@ export class UnifiedAnalysisWrapper {
       fieldFilters: request.fieldFilters,         // Phase 2: Pass field filters
       visualizationConfig: request.visualizationConfig, // Phase 3: Pass visualization config
       performanceConfig: request.performanceConfig, // Phase 4: Pass performance config
-      spatialFilterIds,                          // Pass feature IDs
+      spatialFilterIds,                          // Pass feature IDs (undefined for project-area)
       spatialFilterGeometry: request.geometry,   // Pass geometry for reference
       spatialFilterMethod: request.geometryMethod, // Track how it was selected
-      persona: request.persona                   // Pass the selected persona
+      persona: request.persona,                   // Pass the selected persona
+      // Add analysisScope when project-area is selected
+      ...(request.geometryMethod === 'project-area' ? { analysisScope: 'project' } : {})
     };
     
     const analysisEngine = await this.getAnalysisEngine();
@@ -300,8 +308,10 @@ export class UnifiedAnalysisWrapper {
    * Runs multiple endpoints and combines results
    */
   private async processComprehensiveAnalysis(request: UnifiedAnalysisRequest): Promise<AnalysisResult> {
-    // Use pre-computed spatial filter IDs if available, otherwise compute them
-    const spatialFilterIds = request.spatialFilterIds || await this.getSpatialFilterIds(request);
+    // Don't use spatial filter for project-area selection
+    const spatialFilterIds = request.geometryMethod === 'project-area' 
+      ? undefined 
+      : (request.spatialFilterIds || await this.getSpatialFilterIds(request));
     
     // Use multi-endpoint capabilities of AnalysisEngine
     const query = 'Comprehensive area analysis';
@@ -310,10 +320,12 @@ export class UnifiedAnalysisWrapper {
       fieldFilters: request.fieldFilters,         // Phase 2: Pass field filters
       visualizationConfig: request.visualizationConfig, // Phase 3: Pass visualization config
       performanceConfig: request.performanceConfig, // Phase 4: Pass performance config
-      spatialFilterIds,                          // Pass feature IDs
+      spatialFilterIds,                          // Pass feature IDs (undefined for project-area)
       spatialFilterGeometry: request.geometry,   // Pass geometry for reference
       spatialFilterMethod: request.geometryMethod, // Track how it was selected
-      persona: request.persona                   // Pass the selected persona
+      persona: request.persona,                   // Pass the selected persona
+      // Add analysisScope when project-area is selected
+      ...(request.geometryMethod === 'project-area' ? { analysisScope: 'project' } : {})
     };
     
     const analysisEngine = await this.getAnalysisEngine();
