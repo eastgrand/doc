@@ -1,13 +1,20 @@
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
- * RiskDataProcessor - Handles data processing for risk analysis
+ * RiskDataProcessor - Handles data processing for real estate risk analysis
  * 
- * Processes risk analysis results with risk assessment, volatility measures,
- * uncertainty indicators, and risk mitigation insights across geographic areas.
+ * Processes real estate investment risk analysis with risk assessment, market volatility measures,
+ * housing market uncertainty indicators, and risk mitigation insights for investment decisions.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
-export class RiskDataProcessor implements DataProcessorStrategy {
+export class RiskDataProcessor extends BaseProcessor {
+  
+  constructor() {
+    super(); // Initialize BaseProcessor with configuration
+  }
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;

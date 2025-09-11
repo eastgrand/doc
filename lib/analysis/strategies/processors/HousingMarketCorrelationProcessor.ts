@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getPrimaryScoreField, getTopFieldDefinitions } from './HardcodedFieldDefs';
+import { BaseProcessor } from './BaseProcessor';
 
 interface CorrelationMatrix {
   growth_vs_affordability: number;
@@ -16,8 +17,12 @@ interface HousingPattern {
   market_dynamics: string;
 }
 
-export class HousingMarketCorrelationProcessor implements DataProcessorStrategy {
+export class HousingMarketCorrelationProcessor extends BaseProcessor {
   private scoreField: string = 'housing_correlation_score';
+
+  constructor() {
+    super(); // Initialize BaseProcessor with configuration
+  }
 
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
@@ -58,12 +63,12 @@ export class HousingMarketCorrelationProcessor implements DataProcessorStrategy 
     console.log(`[HousingMarketCorrelationProcessor] Global correlations:`, globalCorrelations);
 
     const processedRecords = rawRecords.map((record: any, index: number) => {
-      const recordId = (record as any).ID || (record as any).area_id || (record as any).id || `area_${index + 1}`;
+      const recordId = this.extractGeographicId(record);
       
-      // Extract housing indices
-      const hotGrowth = Number((record as any).hot_growth_market_index || 0);
-      const newOwners = Number((record as any).new_home_owner_index || 0);
-      const affordability = Number((record as any).home_affordability_index || 0);
+      // Extract housing indices using configuration-driven approach
+      const hotGrowth = this.extractNumericValue(record, ['hot_growth_market_index', 'growth_index', 'market_growth'], 0);
+      const newOwners = this.extractNumericValue(record, ['new_home_owner_index', 'new_owner_index', 'homeowner_index'], 0);
+      const affordability = this.extractNumericValue(record, ['home_affordability_index', 'affordability_index', 'housing_affordability'], 0);
       
       // Calculate housing correlation score for this area
       const housingCorrelationScore = this.calculateHousingCorrelationScore(record, globalCorrelations);
@@ -71,7 +76,7 @@ export class HousingMarketCorrelationProcessor implements DataProcessorStrategy 
       // Analyze housing pattern for this area
       const housingPattern = this.analyzeHousingPattern(record, globalCorrelations);
       
-      // Generate area name
+      // Generate area name using configuration
       const areaName = this.generateAreaName(record);
       
       // Get top contributing fields
@@ -114,30 +119,35 @@ export class HousingMarketCorrelationProcessor implements DataProcessorStrategy 
       return processed;
     });
 
-    // Sort by correlation score (highest correlation strength first)
-    processedRecords.sort((a, b) => b.value - a.value);
-    processedRecords.forEach((record, index) => { record.rank = index + 1; });
-
-    // Calculate statistics
-    const statistics = this.calculateStatistics(processedRecords);
+    // Use BaseProcessor ranking and statistics
+    const rankedRecords = this.rankRecords(processedRecords);
+    const statistics = super.calculateStatistics(rankedRecords.map(r => r.value));
     
-  // Generate correlation summary
-  const summary = this.generateHousingCorrelationSummary(processedRecords, globalCorrelations);
+    // Generate summary using configuration-driven templates with housing-specific data
+    const customSubstitutions = {
+      globalGrowthAffordabilityCorr: globalCorrelations.growth_vs_affordability.toFixed(2),
+      globalNewOwnerAffordabilityCorr: globalCorrelations.newowners_vs_affordability.toFixed(2),
+      strongCorrelationCount: rankedRecords.filter(r => r.value >= 0.7).length,
+      moderateCorrelationCount: rankedRecords.filter(r => r.value >= 0.4 && r.value < 0.7).length
+    };
+    
+    const summary = this.buildSummaryFromTemplates(rankedRecords, statistics, customSubstitutions);
     
     // Process feature importance
     const featureImportance = this.processFeatureImportance(rawData.feature_importance || []);
 
-    return {
-      type: 'housing_market_correlation',
-      records: processedRecords,
+    return this.createProcessedData(
+      'housing_market_correlation',
+      rankedRecords,
       summary,
-      featureImportance,
       statistics,
-      targetVariable: this.scoreField,
-      renderer: this.createHousingCorrelationRenderer(processedRecords),
-      legend: this.createHousingCorrelationLegend(),
-      correlationMatrix: globalCorrelations
-    };
+      {
+        featureImportance,
+        renderer: this.createHousingCorrelationRenderer(rankedRecords),
+        legend: this.createHousingCorrelationLegend(),
+        correlationMatrix: globalCorrelations
+      }
+    );
   }
 
   private calculateGlobalCorrelations(records: any[]): CorrelationMatrix {
@@ -374,28 +384,6 @@ export class HousingMarketCorrelationProcessor implements DataProcessorStrategy 
     return (affordabilityFit + newOwnersFit) / 2;
   }
 
-  private generateAreaName(record: any): string {
-    // Try various area name fields
-    const candidates = [
-      (record as any).value_DESCRIPTION,
-      (record as any).DESCRIPTION,
-      (record as any).area_name,
-      (record as any).name,
-      (record as any).NAME,
-      (record as any).city,
-      (record as any).CITY
-    ];
-
-    for (const candidate of candidates) {
-      if (candidate && typeof candidate === 'string' && candidate.trim()) {
-        return candidate.trim();
-      }
-    }
-
-    // Fallback to ID-based name
-    const id = (record as any).ID || (record as any).area_id || (record as any).id;
-    return id ? `Area ${id}` : 'Unknown Area';
-  }
 
   private extractCoordinates(record: any): [number, number] {
     const coords = (record as any).coordinates;
@@ -434,34 +422,6 @@ export class HousingMarketCorrelationProcessor implements DataProcessorStrategy 
     return result;
   }
 
-  private calculateStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
-    if (records.length === 0) {
-      return { total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0 };
-    }
-
-    const values = records.map(r => r.value).filter(v => typeof v === 'number' && !isNaN(v));
-    if (values.length === 0) {
-      return { total: values.length, mean: 0, median: 0, min: 0, max: 0, stdDev: 0 };
-    }
-
-    const sorted = [...values].sort((a, b) => a - b);
-    const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
-    const median = sorted.length % 2 === 0 
-      ? (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2
-      : sorted[Math.floor(sorted.length / 2)];
-    
-    const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
-    const standardDeviation = Math.sqrt(variance);
-
-    return {
-      total: values.length,
-      mean: Math.round(mean * 100) / 100,
-      median: Math.round(median * 100) / 100,
-      min: sorted[0],
-      max: sorted[sorted.length - 1],
-      stdDev: Math.round(standardDeviation * 100) / 100
-    };
-  }
 
   private generateHousingCorrelationSummary(records: any[], correlations: CorrelationMatrix): string {
     const totalAreas = records.length;

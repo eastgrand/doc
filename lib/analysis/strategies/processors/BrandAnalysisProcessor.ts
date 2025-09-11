@@ -1,18 +1,39 @@
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
-import { BrandNameResolver } from '../../utils/BrandNameResolver';
+import { BaseProcessor } from './BaseProcessor';
 
-export class BrandAnalysisProcessor implements DataProcessorStrategy {
-  // Prefer canonical; fallback to last numeric field for energy dataset
-  private scoreField: string = 'brand_analysis_score';
-  private brandResolver: BrandNameResolver;
+/**
+ * RealEstateMarketProcessor - Handles data processing for real estate market analysis
+ * 
+ * Processes housing market data with focus on market fundamentals, investment potential,
+ * and regional performance indicators for Quebec real estate markets.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
+ */
+export class RealEstateMarketProcessor extends BaseProcessor {
+  private scoreField: string = 'real_estate_market_score';
 
   constructor() {
-    this.brandResolver = new BrandNameResolver();
+    super(); // Initialize BaseProcessor with configuration
   }
 
   validate(rawData: RawAnalysisResult): boolean {
-    return rawData && rawData.success && Array.isArray(rawData.results) && rawData.results.length > 0;
+    if (!rawData || typeof rawData !== 'object') return false;
+    if (!rawData.success) return false;
+    if (!Array.isArray(rawData.results)) return false;
+    
+    // Validate real estate market fields
+    const hasRealEstateFields = rawData.results.length === 0 ||
+      rawData.results.some(record => 
+        record &&
+        ((record as any).ID !== undefined ||
+         (record as any).ECYHRIAVG !== undefined || // Household income
+         (record as any).ECYPTAPOP !== undefined || // Population
+         (record as any).real_estate_market_score !== undefined ||
+         (record as any).housing_correlation_score !== undefined)
+      );
+    
+    return hasRealEstateFields;
   }
 
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {

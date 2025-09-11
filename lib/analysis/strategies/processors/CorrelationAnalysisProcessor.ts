@@ -1,17 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { getPrimaryScoreField } from './HardcodedFieldDefs';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
- * CorrelationAnalysisProcessor - Handles data processing for the /correlation-analysis endpoint
+ * CorrelationAnalysisProcessor - Handles data processing for real estate correlation analysis
  * 
- * Processes correlation analysis results to identify statistical relationships between variables
- * across geographic areas, using pre-calculated correlation strength scores.
+ * Processes correlation analysis results to identify statistical relationships between housing market variables
+ * across geographic areas, focusing on real estate investment correlations.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
-import { getPrimaryScoreField } from './HardcodedFieldDefs';
-
-export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
-  // Prefer canonical; fallback to last numeric field for energy dataset
+export class CorrelationAnalysisProcessor extends BaseProcessor {
   private scoreField: string = 'correlation_score';
+  
+  constructor() {
+    super(); // Initialize BaseProcessor with configuration
+  }
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
@@ -101,11 +106,12 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
 
   private processCorrelationRecords(rawRecords: any[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
-  const area_id = String((record as any).ID ?? (record as any).area_id ?? (record as any).id ?? (record as any).GEOID ?? `area_${index}`);
-  const area_name = String((record as any).value_DESCRIPTION ?? (record as any).DESCRIPTION ?? (record as any).area_name ?? (record as any).name ?? (record as any).NAME ?? `Area ${index + 1}`);
+      // Use BaseProcessor methods for area identification
+      const area_id = this.extractGeographicId(record) || `area_${index}`;
+      const area_name = this.generateAreaName(record);
       
-      // Extract correlation strength score
-  const correlationScore = this.extractCorrelationScore(record);
+      // Extract correlation strength score using configuration-driven approach
+      const correlationScore = this.extractPrimaryMetric(record);
       
       // Use correlation strength score as the primary value
       const value = correlationScore;
@@ -113,13 +119,13 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       // Extract correlation-specific properties (updated for actual dataset fields)
   const properties = {
         ...this.extractProperties(record),
-        target_value: Number((record as any).value_MP30034A_B_P || (record as any).target_value) || 0,
-        median_income: Number((record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income) || 0,
-        total_population: Number((record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population) || 0,
-        demographic_opportunity_score: Number((record as any).demographic_opportunity_score) || 0,
-        nike_market_share: Number((record as any).value_MP30034A_B_P || (record as any).mp30034a_b_p) || 0,
-        asian_population: Number((record as any).value_ASIAN_CY || (record as any).asian_population) || 0,
-        black_population: Number((record as any).value_BLACK_CY || (record as any).black_population) || 0,
+        household_income: this.extractNumericValue(record, ['ECYHRIAVG', 'value_AVGHINC_CY', 'median_income', 'household_income']),
+        total_population: this.extractNumericValue(record, ['ECYPTAPOP', 'value_TOTPOP_CY', 'TOTPOP_CY', 'total_population']),
+        housing_correlation_score: this.extractNumericValue(record, ['housing_correlation_score', 'real_estate_analysis_score']),
+        home_ownership: this.extractNumericValue(record, ['ECYTENOWN', 'home_ownership_count', 'homeowners']),
+        rental_units: this.extractNumericValue(record, ['ECYTENRENT', 'rental_count', 'renters']),
+        housing_affordability: this.extractNumericValue(record, ['home_affordability_index', 'affordability_index']),
+        housing_growth: this.extractNumericValue(record, ['hot_growth_market_index', 'growth_index', 'housing_growth']),
         white_population: Number((record as any).value_WHITE_CY || (record as any).white_population) || 0,
         correlation_strength: this.getCorrelationStrengthLevel(correlationScore)
       };
@@ -149,74 +155,6 @@ export class CorrelationAnalysisProcessor implements DataProcessorStrategy {
       .map((record, index) => ({ ...record, rank: index + 1 })); // Assign ranks
   }
 
-  private extractCorrelationScore(record: any): number {
-    // PRIORITIZE PRE-CALCULATED CORRELATION STRENGTH SCORE
-    // Check for the canonical primary field first (may be overridden by metadata)
-    const primaryVal = (record as any)[this.scoreField];
-    if (primaryVal !== undefined && primaryVal !== null) {
-      const primaryScore = Number(primaryVal);
-      console.log(`[CorrelationAnalysisProcessor] Using ${this.scoreField}: ${primaryScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
-      return primaryScore;
-    }
-
-    // Fallback to legacy alias fields if present (for backward compatibility)
-    if ((record as any).correlation_score !== undefined && (record as any).correlation_score !== null) {
-      const fallbackScore = Number((record as any).correlation_score);
-      console.log(`[CorrelationAnalysisProcessor] Using fallback correlation_score: ${fallbackScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
-      return fallbackScore;
-    }
-
-    console.log('⚠️ [CorrelationAnalysisProcessor] No pre-calculated primary correlation score found, calculating composite score');
-    
-    // Calculate composite correlation score from available demographic/economic data
-    let correlationScore = 0;
-    let factorCount = 0;
-    
-    // Population factor (0-20 points)
-    const population = Number((record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).population || 0);
-    if (population > 0) {
-      correlationScore += Math.min(20, (population / 100000) * 20);
-      factorCount++;
-    }
-    
-    // Income factor (0-25 points)
-    const income = Number((record as any).value_AVGHINC_CY || (record as any).MEDDI_CY || (record as any).income || 0);
-    if (income > 0) {
-      correlationScore += Math.min(25, (income / 150000) * 25);
-      factorCount++;
-    }
-    
-    // Age diversity factor (0-15 points)
-    const medianAge = Number((record as any).value_MEDAGE_CY || (record as any).age || 0);
-    if (medianAge > 0) {
-      // Age diversity peak at 35-40, decreasing as it moves away
-      const ageFactor = Math.max(0, 15 - Math.abs(medianAge - 37.5) * 0.4);
-      correlationScore += ageFactor;
-      factorCount++;
-    }
-    
-    // Economic stability factor (0-15 points)
-    const wealthIndex = Number((record as any).value_WLTHINDXCY || (record as any).wealth_index || 100);
-    if (wealthIndex > 0) {
-      correlationScore += Math.min(15, (wealthIndex / 200) * 15);
-      factorCount++;
-    }
-    
-    // Add unique area identifier component for differentiation (0-5 points)
-    const areaId = String((record as any).ID || (record as any).area_id || (record as any).GEOID || '0');
-    const uniqueComponent = (parseInt(areaId.slice(-2)) || 0) / 20; // Last 2 digits / 20
-    correlationScore += uniqueComponent;
-    
-    // Normalize to 0-100 scale
-    if (factorCount > 0) {
-      correlationScore = (correlationScore / factorCount) * 2; // Scale up and normalize
-    } else {
-      // Use area ID-based variation if no data available
-      correlationScore = 45 + uniqueComponent; // Range 45-50
-    }
-    
-    return Math.max(10, Math.min(90, correlationScore)); // Ensure reasonable range
-  }
 
   private getCorrelationStrengthLevel(score: number): string {
     if (score >= 80) return 'very_strong';

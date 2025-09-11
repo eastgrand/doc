@@ -1,32 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import Extent from '@arcgis/core/geometry/Extent';
-import { BrandNameResolver, BrandField } from '../../utils/BrandNameResolver';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
- * CustomerProfileProcessor - Handles data processing for the /customer-profile endpoint
+ * ResidentialProfileProcessor - Handles data processing for residential market profiling
  * 
- * Processes customer profile analysis results with comprehensive persona analysis,
- * demographic alignment, lifestyle indicators, and behavioral patterns across geographic areas.
+ * Processes residential market profile analysis with comprehensive demographic analysis,
+ * housing characteristics, lifestyle indicators, and investment patterns across Quebec housing markets.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
-export class CustomerProfileProcessor implements DataProcessorStrategy {
-  private brandResolver: BrandNameResolver;
+export class ResidentialProfileProcessor extends BaseProcessor {
   private scoreField: string | undefined;
 
   constructor() {
-    this.brandResolver = new BrandNameResolver();
-  }
-
-  private hasBrandFields(record: any): boolean {
-    const brandFields = this.brandResolver.detectBrandFields(record);
-    return brandFields.length > 0;
-  }
-
-  private extractTargetBrandAffinity(record: any): number {
-    const brandFields = this.brandResolver.detectBrandFields(record);
-    const targetBrand = brandFields.find((bf: BrandField) => bf.isTarget);
-    return targetBrand?.value || 0;
+    super(); // Initialize BaseProcessor with configuration
   }
   
   validate(rawData: RawAnalysisResult): boolean {
@@ -56,8 +46,10 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
          (record as any).value_TOTPOP_CY !== undefined ||        // Legacy population
          (record as any).value_AVGHINC_CY !== undefined ||       // Legacy income
          (record as any).value_MEDAGE_CY !== undefined ||        // Age demographics
-         // Dynamic brand detection instead of hardcoded fields
-         this.hasBrandFields(record) ||
+         // Quebec housing market fields
+         (record as any).ECYTENOWN !== undefined ||              // Home ownership
+         (record as any).ECYTENRENT !== undefined ||             // Rental units
+         (record as any).ECYMTN2534 !== undefined ||             // Young adults
          (record as any).demographic_opportunity_score !== undefined) // Demographic base
       );
     
@@ -71,21 +63,21 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
     if (Array.isArray(dataAny)) {
       // Direct array format: [{...}, {...}]
       dataArray = dataAny as any[];
-      console.log(`👤 [CUSTOMER PROFILE PROCESSOR] CALLED WITH ${dataArray.length} RECORDS (direct array) 👤`);
+      console.log(`🏠 [RESIDENTIAL PROFILE PROCESSOR] CALLED WITH ${dataArray.length} RECORDS (direct array) 🏠`);
     } else if (dataAny.success && Array.isArray(dataAny.results)) {
       // Wrapped format: {success: true, results: [{...}, {...}]}
       dataArray = dataAny.results as any[];
-      console.log(`👤 [CUSTOMER PROFILE PROCESSOR] CALLED WITH ${dataArray.length} RECORDS (wrapped) 👤`);
+      console.log(`🏠 [RESIDENTIAL PROFILE PROCESSOR] CALLED WITH ${dataArray.length} RECORDS (wrapped) 🏠`);
     } else {
-      throw new Error('Invalid data format for CustomerProfileProcessor');
+      throw new Error('Invalid data format for ResidentialProfileProcessor');
     }
     
     if (!this.validate(rawData)) {
-      throw new Error('Invalid data format for CustomerProfileProcessor');
+      throw new Error('Invalid data format for ResidentialProfileProcessor');
     }
 
-  // Resolve canonical primary score field for this endpoint
-  this.scoreField = getPrimaryScoreField('customer_profile', (rawData as any)?.metadata) || 'customer_profile_score';
+  // Resolve canonical primary score field for residential profiles
+  this.scoreField = getPrimaryScoreField('residential_profile', (rawData as any)?.metadata) || 'residential_profile_score';
 
   // Process records with customer profile information
   const records = this.processCustomerProfileRecords(dataArray);
@@ -132,8 +124,9 @@ export class CustomerProfileProcessor implements DataProcessorStrategy {
 
   private processCustomerProfileRecords(rawRecords: any[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
-      const area_id = (record as any).ID || (record as any).area_id || (record as any).id || (record as any).GEOID || `area_${index}`;
-      const area_name = (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || (record as any).name || (record as any).NAME || `Area ${index + 1}`;
+      // Use BaseProcessor methods for area identification
+      const area_id = this.extractGeographicId(record) || `area_${index}`;
+      const area_name = this.generateAreaName(record);
       
       // Extract customer profile score
       const customerProfileScore = this.extractCustomerProfileScore(record);

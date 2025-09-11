@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
-import { BrandNameResolver } from '../../utils/BrandNameResolver';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
  * SpatialClustersProcessor - Handles data processing for spatial cluster analysis
  * 
  * Processes spatial clustering results to identify geographic patterns
- * and market concentration across areas.
+ * and housing market concentration across Quebec regions.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
-export class SpatialClustersProcessor implements DataProcessorStrategy {
-  private brandResolver: BrandNameResolver;
-
+export class SpatialClustersProcessor extends BaseProcessor {
   constructor() {
-    this.brandResolver = new BrandNameResolver();
+    super(); // Initialize BaseProcessor with configuration
   }
   
   validate(rawData: RawAnalysisResult): boolean {
@@ -44,15 +44,16 @@ export class SpatialClustersProcessor implements DataProcessorStrategy {
     if (!primary) throw new Error('[SpatialClustersProcessor] No primary score field defined for spatial_clusters');
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
-      const primaryScore = Number((record as any)[primary]);
+      // Use BaseProcessor method for primary metric extraction
+      const primaryScore = this.extractPrimaryMetric(record);
       
       if (isNaN(primaryScore)) {
-        throw new Error(`Spatial clusters record ${(record as any).ID || index} is missing ${primary}`);
+        throw new Error(`Spatial clusters record ${this.extractGeographicId(record) || index} is missing primary metric`);
       }
       
-      // Generate area name
+      // Use BaseProcessor methods for area identification
       const areaName = this.generateAreaName(record);
-      const recordId = (record as any).ID || (record as any).id || (record as any).area_id || `area_${index + 1}`;
+      const recordId = this.extractGeographicId(record) || `area_${index + 1}`;
       
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
@@ -69,17 +70,18 @@ export class SpatialClustersProcessor implements DataProcessorStrategy {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           [primary]: primaryScore,
           score_source: primary,
-          target_brand_share: this.extractTargetBrandShare(record),
-          total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
-          median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
+          housing_cluster_strength: this.extractHousingClusterStrength(record),
+          total_population: this.extractNumericValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population']),
+          median_income: this.extractNumericValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])
         }
       };
     });
     
-    // Calculate statistics
-    const statistics = this.calculateStatistics(processedRecords);
+    // Calculate statistics using BaseProcessor method
+    const values = processedRecords.map(r => r.value).filter(v => !isNaN(v));
+    const statistics = this.calculateStatistics(values);
     
-    // Rank records by spatial cluster score
+    // Rank records by spatial cluster score using BaseProcessor method
     const rankedRecords = this.rankRecords(processedRecords);
     
     // Extract feature importance
@@ -225,55 +227,7 @@ export class SpatialClustersProcessor implements DataProcessorStrategy {
       }, {} as Record<string, number>);
   }
 
-  private generateAreaName(record: any): string {
-    // Check for DESCRIPTION field first (common in strategic analysis data)
-    if ((record as any).DESCRIPTION && typeof (record as any).DESCRIPTION === 'string') {
-      const description = (record as any).DESCRIPTION.trim();
-      // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
-      const nameMatch = description.match(/\(([^)]+)\)/);
-      if (nameMatch && nameMatch[1]) {
-        return nameMatch[1].trim();
-      }
-      // If no parentheses, return the whole description
-      return description;
-    }
-    
-    // Try value_DESCRIPTION with same extraction logic
-    if ((record as any).value_DESCRIPTION && typeof (record as any).value_DESCRIPTION === 'string') {
-      const description = (record as any).value_DESCRIPTION.trim();
-      const nameMatch = description.match(/\(([^)]+)\)/);
-      if (nameMatch && nameMatch[1]) {
-        return nameMatch[1].trim();
-      }
-      return description;
-    }
-    
-    // Other name fields
-    if ((record as any).area_name) return (record as any).area_name;
-    if ((record as any).NAME) return (record as any).NAME;
-    if ((record as any).name) return (record as any).name;
-    
-    const id = (record as any).ID || (record as any).id || (record as any).GEOID;
-    if (id) {
-      if (typeof id === 'string' && id.match(/^\d{5}$/)) {
-        return `ZIP ${id}`;
-      }
-      if (typeof id === 'string' && id.match(/^[A-Z]\d[A-Z]$/)) {
-        return `FSA ${id}`;
-      }
-      return `Area ${id}`;
-    }
-    
-    return `Area ${(record as any).OBJECTID || 'Unknown'}`;
-  }
 
-  private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
-    const sorted = [...records].sort((a, b) => b.value - a.value);
-    return sorted.map((record, index) => ({
-      ...record,
-      rank: index + 1
-    }));
-  }
 
   private processFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
@@ -302,64 +256,18 @@ export class SpatialClustersProcessor implements DataProcessorStrategy {
     return `${featureName} impact`;
   }
 
-  private calculateStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
-    const values = records.map(r => r.value).filter(v => !isNaN(v));
-    
-    if (values.length === 0) {
-      return {
-        total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0,
-        percentile25: 0, percentile75: 0, iqr: 0, outlierCount: 0
-      };
-    }
-    
-    const sorted = [...values].sort((a, b) => a - b);
-    const total = values.length;
-    const sum = values.reduce((a, b) => a + b, 0);
-    const mean = sum / total;
-    
-    const p25Index = Math.floor(total * 0.25);
-    const p75Index = Math.floor(total * 0.75);
-    const medianIndex = Math.floor(total * 0.5);
-    
-    const percentile25 = sorted[p25Index];
-    const percentile75 = sorted[p75Index];
-    const median = total % 2 === 0 
-      ? (sorted[medianIndex - 1] + sorted[medianIndex]) / 2
-      : sorted[medianIndex];
-    
-    const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / total;
-    const stdDev = Math.sqrt(variance);
-    
-    const iqr = percentile75 - percentile25;
-    const lowerBound = percentile25 - 1.5 * iqr;
-    const upperBound = percentile75 + 1.5 * iqr;
-    const outlierCount = values.filter(v => v < lowerBound || v > upperBound).length;
-    
-    return {
-      total,
-      mean,
-      median,
-      min: sorted[0],
-      max: sorted[sorted.length - 1],
-      stdDev,
-      percentile25,
-      percentile75,
-      iqr,
-      outlierCount
-    };
-  }
 
-  private extractTargetBrandShare(record: any): number {
-    const brandFields = this.brandResolver.detectBrandFields(record);
-    const targetBrand = brandFields.find(bf => bf.isTarget);
-    return targetBrand?.value || 0;
+  private extractHousingClusterStrength(record: any): number {
+    // Use configuration-driven primary metric extraction
+    return this.extractPrimaryMetric(record);
   }
 
   private generateSummary(records: GeographicDataPoint[], statistics: AnalysisStatistics): string {
     let summary = getScoreExplanationForAnalysis('spatial-clusters', 'spatial_clusters');
     
-    const targetBrandName = this.brandResolver.getTargetBrandName();
-    summary += `**Spatial Clustering Analysis Complete:** ${statistics.total} geographic areas analyzed for ${targetBrandName} spatial patterns. `;
+    // Use configuration-driven terminology
+    const terminology = this.configManager.getTerminology();
+    summary += `**Spatial Clustering Analysis Complete:** ${statistics.total} ${terminology.entityType} analyzed for housing market spatial clustering patterns. `;
     summary += `Clustering scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
     
     const topAreas = records.slice(0, 10);
@@ -373,18 +281,6 @@ export class SpatialClustersProcessor implements DataProcessorStrategy {
     summary += `**Spatial Patterns:** ${highClustering} areas (${(highClustering/records.length*100).toFixed(1)}%) show significant spatial clustering effects. `;
     
     return summary;
-  }
-  /**
-   * Extract field value from multiple possible field names
-   */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
-    for (const fieldName of fieldNames) {
-      const value = Number(record[fieldName]);
-      if (!isNaN(value) && value > 0) {
-        return value;
-      }
-    }
-    return 0;
   }
 
 }

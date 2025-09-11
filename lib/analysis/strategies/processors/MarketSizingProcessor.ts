@@ -1,7 +1,20 @@
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
+import { BaseProcessor } from './BaseProcessor';
 
-export class MarketSizingProcessor implements DataProcessorStrategy {
+/**
+ * MarketSizingProcessor - Handles data processing for market sizing analysis
+ * 
+ * Processes housing market sizing analysis to evaluate market size, potential,
+ * and investment opportunities across geographic areas.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
+ */
+export class MarketSizingProcessor extends BaseProcessor {
+  
+  constructor() {
+    super(); // Initialize BaseProcessor with configuration
+  }
   validate(rawData: RawAnalysisResult): boolean {
     return rawData && rawData.success && Array.isArray(rawData.results) && rawData.results.length > 0;
   }
@@ -14,8 +27,8 @@ export class MarketSizingProcessor implements DataProcessorStrategy {
     const records = rawData.results.map((record: any, index: number) => {
   const primary = getPrimaryScoreField('market_sizing', (null as any)) || 'market_sizing_score';
   const marketSizingScore = Number((record as any)[primary] || (record as any).market_sizing_score) || 0;
-      const totalPop = Number((record as any).total_population) || 0;
-      const medianIncome = Number((record as any).median_income) || 0;
+      const totalPop = this.extractNumericValue(record, ['ECYPTAPOP', 'total_population', 'population']);
+      const medianIncome = this.extractNumericValue(record, ['ECYHRIAVG', 'median_income', 'household_income']);
       const strategicScore = Number((record as any).strategic_value_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
 
@@ -23,8 +36,8 @@ export class MarketSizingProcessor implements DataProcessorStrategy {
       const topContributingFields = this.getTopContributingFields(record);
       
       return {
-        area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
-        area_name: (record as any).area_name || (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || `Area ${index + 1}`,
+        area_id: this.extractGeographicId(record) || `area_${index}`,
+        area_name: this.generateAreaName(record),
         value: marketSizingScore,
         rank: index + 1,
         category: this.categorizeMarketSize(marketSizingScore, totalPop),

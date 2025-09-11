@@ -11,6 +11,13 @@ export interface FieldMappings {
   incomeField: string[];         // Income/value indicators
   geographicId: string[];        // Area identifier fields
   descriptiveFields: string[];   // Human-readable descriptions
+  
+  // Optional domain-specific field categories
+  housingFields?: string[];       // Housing tenure and type data
+  housingMarketFields?: string[]; // Housing market indicators
+  demographicFields?: string[];   // Age, family composition
+  brandFields?: string[];         // Brand presence/market share
+  competitiveFields?: string[];   // Competitive analysis metrics
 }
 
 export interface Terminology {

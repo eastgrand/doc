@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
-import { BrandNameResolver } from '../../utils/BrandNameResolver';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
  * AlgorithmComparisonProcessor - Handles data processing for algorithm comparison
  * 
  * Processes algorithm comparison results to evaluate relative performance
- * of different modeling approaches across geographic areas.
+ * of different modeling approaches across geographic areas. Generic for any project type.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior.
  */
-export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
-  private brandResolver: BrandNameResolver;
-  // Prefer canonical hardcoded field
+export class AlgorithmComparisonProcessor extends BaseProcessor {
   private scoreField: string = 'algorithm_comparison_score';
 
   constructor() {
-    this.brandResolver = new BrandNameResolver();
+    super(); // Initialize BaseProcessor with configuration
   }
   
   validate(rawData: RawAnalysisResult): boolean {
@@ -54,9 +54,9 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
         throw new Error(`Algorithm comparison record ${(record as any).ID || index} is missing ${this.scoreField}`);
       }
       
-      // Generate area name
+      // Use BaseProcessor methods for area identification
       const areaName = this.generateAreaName(record);
-      const recordId = (record as any).ID || (record as any).id || (record as any).area_id || `area_${index + 1}`;
+      const recordId = this.extractGeographicId(record) || `area_${index + 1}`;
       
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
@@ -73,7 +73,7 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           algorithm_comparison_score: primaryScore,
           score_source: this.scoreField,
-          target_brand_share: this.extractTargetBrandShare(record),
+          algorithm_performance: this.extractPrimaryMetric(record),
           total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
           median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
         }
@@ -87,10 +87,11 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
       return out;
     });
     
-    // Calculate statistics
-    const statistics = this.calculateStatistics(processedRecords);
+    // Calculate statistics using BaseProcessor method
+    const values = processedRecords.map(r => r.value).filter(v => !isNaN(v));
+    const statistics = this.calculateStatistics(values);
     
-    // Rank records by comparison score
+    // Rank records by comparison score using BaseProcessor method
     const rankedRecords = this.rankRecords(processedRecords);
     
     // Extract feature importance
@@ -234,11 +235,6 @@ export class AlgorithmComparisonProcessor implements DataProcessorStrategy {
       }, {} as Record<string, number>);
   }
 
-  private extractTargetBrandShare(record: any): number {
-    const brandFields = this.brandResolver.detectBrandFields(record);
-    const targetBrand = brandFields.find(bf => bf.isTarget);
-    return targetBrand?.value || 0;
-  }
 
   private generateAreaName(record: any): string {
     // Check for DESCRIPTION field first (common in strategic analysis data)

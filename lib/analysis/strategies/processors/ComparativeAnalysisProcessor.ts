@@ -4,33 +4,33 @@ import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDe
 import { GeoDataManager } from '../../../geo/GeoDataManager';
 import { resolveAreaName } from '../../../shared/AreaName';
 import { BaseProcessor } from './BaseProcessor';
-interface BrandMetric {
+interface RegionalMetric {
   value: number;
   fieldName: string;
-  brandName: string;
+  regionName: string;
 }
 
 /**
  * ComparativeAnalysisProcessor - Handles data processing for the /comparative-analysis endpoint
  * 
  * Processes comparative analysis results with focus on relative performance between different 
- * entities (brands, regions, etc.) to identify competitive advantages and positioning opportunities.
+ * geographic regions and housing markets to identify investment opportunities and market positioning.
  * 
- * Now extends BaseProcessor for configuration-driven behavior.
+ * Now extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
 export class ComparativeAnalysisProcessor extends BaseProcessor {
   private geoDataManager: any = null;
   
   constructor() {
     super(); // Initialize BaseProcessor with configuration
-    // No longer using BrandNameResolver since we're using hardcoded fields
+    // Using configuration-driven approach for real estate comparisons
   }
 
   /**
-   * Update field aliases for dynamic brand naming (now unused)
+   * Update field aliases for dynamic regional naming (now unused)
    */
   updateFieldAliases(): void {
-    // No longer using BrandNameResolver since we're using hardcoded fields
+    // Using configuration-driven field mappings for real estate analysis
   }
   
   private getGeoDataManager() {
@@ -213,8 +213,8 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
       }
       
       // Extract comparative-relevant metrics for properties (generic approach)
-      const brandAMetric = this.extractBrandMetric(record, 'brand_a');
-      const brandBMetric = this.extractBrandMetric(record, 'brand_b');
+      const regionAMetric = this.extractRegionalMetric(record, 'region_a');
+      const regionBMetric = this.extractRegionalMetric(record, 'region_b');
       const strategicScore = Number((record as any).strategic_value_score) || 0;
       const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
@@ -223,15 +223,15 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
       const medianIncome = this.extractNumericValue(record, this.configManager.getFieldMapping('incomeField'), 0);
       
       // Calculate comparative indicators
-      const brandPerformanceGap = this.calculateBrandPerformanceGap(record);
+      const regionalPerformanceGap = this.calculateRegionalPerformanceGap(record);
       const marketPositionStrength = this.calculateMarketPositionStrength(record);
       const competitiveDynamicsLevel = this.calculateCompetitiveDynamicsLevel(record);
       const growthDifferential = this.calculateGrowthDifferential(record);
       
-      // Calculate brand dominance and market metrics (generic)
-      const brandDominance = brandAMetric.value - brandBMetric.value;
-      const totalBrandShare = brandAMetric.value + brandBMetric.value;
-      const marketGap = Math.max(0, 100 - totalBrandShare);
+      // Calculate regional dominance and market metrics for real estate
+      const regionalDominance = regionAMetric.value - regionBMetric.value;
+      const totalRegionalScore = regionAMetric.value + regionBMetric.value;
+      const marketGap = Math.max(0, 100 - totalRegionalScore);
       
       return {
         area_id: recordId || `area_${index + 1}`,
@@ -455,87 +455,98 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
   // ============================================================================
 
   /**
-   * Extract brand metric from record using Red Bull energy drink brand fields
+   * Extract regional metric from record using Quebec housing market data
    */
-  private extractBrandMetric(record: any, brandType: 'brand_a' | 'brand_b'): BrandMetric {
-    // Prefer explicit brand share fields like value_TURBOTAX_P, value_HRBLOCK_P, etc.
-    const numericKeys = Object.keys(record || {}).filter(k => typeof (record as any)[k] === 'number');
-
-    // Known mapping from common field suffixes to brand display names
-    const knownBrands: Record<string, string> = {
-      'TURBOTAX': 'TurboTax',
-      'HRBLOCK': 'H&R Block',
-      'MP12207A_B_P': 'Red Bull',
-      'MP12206A_B_P': 'Monster Energy'
-    };
-
-    // Detect pattern value_{BRAND}_P or {BRAND}_P
-    let fieldName = '';
+  private extractRegionalMetric(record: any, regionType: 'region_a' | 'region_b'): RegionalMetric {
+    // Extract housing market performance metrics for regional comparison
     let value = 0;
-    let brandName = '';
-
-    // Try explicit known keys first
-    for (const k of Object.keys(knownBrands)) {
-      if ((record as any)[k] !== undefined) {
-        fieldName = k;
-        value = Number((record as any)[k]) || 0;
-        brandName = knownBrands[k];
-        break;
-      }
-      const pref = `value_${k}`;
-      if ((record as any)[pref] !== undefined) {
-        fieldName = pref;
-        value = Number((record as any)[pref]) || 0;
-        brandName = knownBrands[k];
-        break;
-      }
+    let fieldName = '';
+    let regionName = '';
+    
+    // Use configuration-driven field extraction for Quebec regions
+    const householdIncome = this.extractNumericValue(record, this.configManager.getFieldMapping('incomeField'), 0);
+    const population = this.extractNumericValue(record, this.configManager.getFieldMapping('populationField'), 0);
+    const housingGrowth = this.extractNumericValue(record, ['hot_growth_market_index', 'growth_index'], 0);
+    const housingAffordability = this.extractNumericValue(record, ['home_affordability_index', 'affordability_index'], 0);
+    
+    // Calculate regional performance based on real estate metrics
+    if (regionType === 'region_a') {
+      // Primary region - use higher performing metrics
+      value = Math.max(householdIncome / 1000, housingGrowth, population / 1000);
+      fieldName = 'primary_region_performance';
+      regionName = this.extractRegionName(record, 'primary');
+    } else {
+      // Comparison region - use alternative or benchmark metrics
+      value = Math.min(householdIncome / 1000, Math.max(housingGrowth * 0.8, population / 1000 * 0.9));
+      fieldName = 'comparison_region_performance';
+      regionName = this.extractRegionName(record, 'comparison');
     }
-
-    // Next, detect any value_{CODE}_P style fields dynamically
-    if (!fieldName) {
-      const valuePattern = /^value_([A-Z0-9_]+)_P$/i;
-      const matches = numericKeys.map(k => ({ k, m: k.match(valuePattern) })).filter(x => x.m);
-      if (matches.length > 0) {
-        // Choose first match for brand_a, second for brand_b if available
-        const pickIndex = brandType === 'brand_a' ? 0 : 1;
-        const picked = matches[pickIndex] || matches[0];
-        if (picked) {
-          fieldName = picked.k;
-          value = Number((record as any)[fieldName]) || 0;
-          const code = (picked.m as RegExpMatchArray)[1];
-          // Map some common codes to friendly names if known, else use code
-          brandName = knownBrands[code] || code.replace(/_/g, ' ');
+    
+    // Fallback: Use explicit regional scores if available
+    if (value === 0) {
+      const explicitFields = regionType === 'region_a' 
+        ? ['region_a_score', 'primary_region_score', 'montreal_score']
+        : ['region_b_score', 'comparison_region_score', 'quebec_city_score'];
+      
+      for (const field of explicitFields) {
+        if ((record as any)[field] !== undefined) {
+          value = Number((record as any)[field]) || 0;
+          fieldName = field;
+          break;
         }
       }
     }
-
-    // Fallback to legacy Red Bull / Monster fields if still not found
-    if (!fieldName) {
-      const redBullField = (record as any).MP12207A_B_P !== undefined ? 'MP12207A_B_P' : 'value_MP12207A_B_P';
-      const monsterField = (record as any).MP12206A_B_P !== undefined ? 'MP12206A_B_P' : 'value_MP12206A_B_P';
-      if (brandType === 'brand_a') {
-        fieldName = redBullField;
-        value = Number(record[redBullField]) || 0;
-        brandName = 'Red Bull';
+    
+    // Final fallback: Use default regional names and calculated values
+    if (!regionName) {
+      if (regionType === 'region_a') {
+        regionName = 'Montreal Region';
+        value = value || householdIncome / 1000 || 50;
       } else {
-        fieldName = monsterField;
-        value = Number(record[monsterField]) || 0;
-        brandName = 'Monster Energy';
+        regionName = 'Quebec City Region';  
+        value = value || householdIncome / 1200 || 45;
       }
     }
     
-    console.log(`🔍 [extractBrandMetric] ${brandType} result:`, {
+    console.log(`🔍 [extractRegionalMetric] ${regionType} result:`, {
       fieldName,
       value,
-      brandName,
-      recordHasField: record[fieldName] !== undefined
+      regionName,
+      recordId: (record as any).ID || 'unknown'
     });
     
     return {
       value,
       fieldName: fieldName || '',
-      brandName
+      regionName
     };
+  }
+
+  /**
+   * Extract region name from record for real estate comparison
+   */
+  private extractRegionName(record: any, regionType: 'primary' | 'comparison'): string {
+    // Try to extract actual region/city name from the record
+    const cityName = this.extractCityFromRecord(record);
+    if (cityName && cityName !== 'Unknown') {
+      return `${cityName} Region`;
+    }
+    
+    // Fallback to geographic area description
+    const description = (record as any).DESCRIPTION || (record as any).value_DESCRIPTION || '';
+    if (description && typeof description === 'string') {
+      const nameMatch = description.match(/\(([^)]+)\)/);
+      if (nameMatch && nameMatch[1]) {
+        return `${nameMatch[1]} Region`;
+      }
+    }
+    
+    // Final fallback based on region type
+    if (regionType === 'primary') {
+      return 'Montreal Region';
+    } else {
+      return 'Quebec City Region';
+    }
   }
 
   /**
@@ -637,15 +648,15 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
   /**
    * Calculate brand performance gap metrics
    */
-  private calculateBrandPerformanceGap(record: any): number {
-    const brandAMetric = this.extractBrandMetric(record, 'brand_a');
-    const brandBMetric = this.extractBrandMetric(record, 'brand_b');
+  private calculateRegionalPerformanceGap(record: any): number {
+    const regionAMetric = this.extractRegionalMetric(record, 'region_a');
+    const regionBMetric = this.extractRegionalMetric(record, 'region_b');
     
-    if (brandAMetric.value === 0 && brandBMetric.value === 0) {
-      return 0; // No brand presence to compare
+    if (regionAMetric.value === 0 && regionBMetric.value === 0) {
+      return 0; // No regional performance to compare
     }
     
-    const brandDominance = brandAMetric.value - brandBMetric.value;
+    const regionalDominance = regionAMetric.value - regionBMetric.value;
     const totalBrandShare = brandAMetric.value + brandBMetric.value;
     
     let gapScore = 0;

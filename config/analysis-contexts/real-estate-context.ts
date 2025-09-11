@@ -9,12 +9,15 @@ export const REAL_ESTATE_CONTEXT: AnalysisContext = {
   domain: 'Quebec Housing Market Analysis',
   
   fieldMappings: {
-    primaryMetric: ['thematic_value', 'ECYHRIAVG', 'household_income', 'value'],
-    secondaryMetrics: ['ECYCDOOWCO', 'ECYPTAPOP', 'population', 'total_population', 'median_income'],
-    populationField: ['ECYPTAPOP', 'population', 'total_population'],
-    incomeField: ['ECYHRIAVG', 'thematic_value', 'household_income', 'median_income'],
-    geographicId: ['ID', 'FSA_ID', 'area_id', 'zipcode'],
-    descriptiveFields: ['DESCRIPTION', 'area_name', 'name']
+    primaryMetric: ['thematic_value', 'ECYHRIAVG', 'household_income', 'value', 'housing_correlation_score', 'real_estate_analysis_score'],
+    secondaryMetrics: ['ECYCDOOWCO', 'ECYTENOWN', 'ECYTENRENT', 'hot_growth_market_index', 'home_affordability_index', 'new_home_owner_index'],
+    populationField: ['ECYPTAPOP', 'population', 'total_population', 'TOTPOP_CY', 'value_TOTPOP_CY'],
+    incomeField: ['ECYHRIAVG', 'thematic_value', 'household_income', 'median_income', 'AVGHINC_CY', 'value_AVGHINC_CY'],
+    housingFields: ['ECYTENOWN', 'ECYTENRENT', 'ECYCDOOWCO', 'ECYCDAPT', 'ECYCDHOUSE'],
+    housingMarketFields: ['hot_growth_market_index', 'home_affordability_index', 'new_home_owner_index', 'median_home_price', 'housing_inventory_months'],
+    demographicFields: ['ECYMTN2534', 'population_25_34', 'age_25_34', 'population_growth_rate'],
+    geographicId: ['ID', 'FSA_ID', 'area_id', 'zipcode', 'GEOID'],
+    descriptiveFields: ['DESCRIPTION', 'area_name', 'name', 'value_DESCRIPTION']
   },
   
   terminology: {

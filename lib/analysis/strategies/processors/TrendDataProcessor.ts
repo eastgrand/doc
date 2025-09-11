@@ -1,13 +1,20 @@
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
  * TrendDataProcessor - Handles data processing for trend analysis
  * 
  * Processes trend analysis results with time-series patterns, growth trajectories,
- * seasonal variations, and forecasting insights across geographic areas.
+ * seasonal variations, and forecasting insights for real estate markets.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
-export class TrendDataProcessor implements DataProcessorStrategy {
+export class TrendDataProcessor extends BaseProcessor {
+  
+  constructor() {
+    super(); // Initialize BaseProcessor with configuration
+  }
   
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
@@ -43,7 +50,7 @@ export class TrendDataProcessor implements DataProcessorStrategy {
   // Process records with trend information
   const records = this.processTrendRecords(rawData.results, primary);
     
-    // Calculate trend statistics
+    // Calculate trend statistics with trend-specific metrics
     const statistics = this.calculateTrendStatistics(records);
     
     // Analyze trend patterns
@@ -72,11 +79,12 @@ export class TrendDataProcessor implements DataProcessorStrategy {
 
   private processTrendRecords(rawRecords: any[], primaryField: string): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
-      const area_id = (record as any).area_id || (record as any).id || (record as any).GEOID || (record as any).ID || `area_${index}`;
-      const area_name = (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || (record as any).name || (record as any).NAME || `Area ${index + 1}`;
+      // Use BaseProcessor methods for area identification
+      const area_id = this.extractGeographicId(record) || `area_${index}`;
+      const area_name = this.generateAreaName(record);
       
-      // Extract trend score
-      const trendScore = this.extractTrendScore(record);
+      // Extract trend score using configuration-driven approach
+      const trendScore = this.extractPrimaryMetric(record);
       
   // Use trend score as the primary value
   const value = trendScore;
@@ -120,47 +128,6 @@ export class TrendDataProcessor implements DataProcessorStrategy {
       .map((record, index) => ({ ...record, rank: index + 1 })); // Assign ranks
   }
 
-  private extractTrendScore(record: any): number {
-    // Calculate trend score from available data
-    const growthRate = (record as any).growth_rate || 0;
-    const momentum = (record as any).momentum || 0;
-    const volatility = (record as any).volatility || 0;
-    const seasonality = (record as any).seasonality || 0;
-    
-    // Calculate composite trend score (0-100)
-    let trendScore = 0;
-    
-    // Growth component (0-40 points) - positive growth is good
-    const growthScore = Math.max(0, Math.min(40, (growthRate + 1) * 20));
-    
-    // Momentum component (0-30 points) - positive momentum is good
-    const momentumScore = Math.max(0, Math.min(30, (momentum + 1) * 15));
-    
-    // Stability component (0-20 points) - lower volatility is better
-    const stabilityScore = Math.max(0, 20 - volatility * 20);
-    
-    // Predictability component (0-10 points) - moderate seasonality is good
-    const predictabilityScore = Math.max(0, 10 - Math.abs(seasonality - 0.5) * 20);
-    
-    trendScore = growthScore + momentumScore + stabilityScore + predictabilityScore;
-    
-    // Try explicit trend score fields as fallback
-    const explicitScoreFields = [
-      'trend_score', 'trend_strength', 'performance_trend',
-      'growth_score', 'momentum_score', 'forecast_score'
-    ];
-    
-    for (const field of explicitScoreFields) {
-      if (record[field] !== undefined && record[field] !== null) {
-        const score = Number(record[field]);
-        if (!isNaN(score)) {
-          return Math.max(0, Math.min(100, score)); // Normalize to 0-100
-        }
-      }
-    }
-    
-    return Math.max(0, Math.min(100, trendScore));
-  }
 
   private calculateForecastConfidence(record: any): number {
     // Calculate confidence in trend forecasting
@@ -526,14 +493,5 @@ export class TrendDataProcessor implements DataProcessorStrategy {
   /**
    * Extract field value from multiple possible field names
    */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
-    for (const fieldName of fieldNames) {
-      const value = Number(record[fieldName]);
-      if (!isNaN(value) && value > 0) {
-        return value;
-      }
-    }
-    return 0;
-  }
 
 } 

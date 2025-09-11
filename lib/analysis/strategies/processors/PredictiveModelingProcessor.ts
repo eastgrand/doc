@@ -1,66 +1,20 @@
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
- * PredictiveModelingProcessor - Specialized processor for predictive modeling analysis
+ * PredictiveModelingProcessor - Specialized processor for real estate predictive modeling analysis
  * 
- * Focuses on identifying markets with high predictability and reliable forecasting potential
- * by analyzing model confidence, pattern stability, forecast reliability, and data quality.
+ * Focuses on identifying areas with high predictability and reliable housing market forecasting potential
+ * by analyzing model confidence, market pattern stability, forecast reliability, and real estate data quality.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
-export class PredictiveModelingProcessor implements DataProcessorStrategy {
+export class PredictiveModelingProcessor extends BaseProcessor {
   private scoreField: string = 'prediction_score';
   
-  /**
-   * Extract predictive modeling score from record with fallback calculation
-   */
-  private extractPredictiveScore(record: any): number {
-    // Prefer canonical primary field (may be provided via metadata override)
-    if ((record as any)[this.scoreField] !== undefined && (record as any)[this.scoreField] !== null) {
-      return Number((record as any)[this.scoreField]);
-    }
-    // PRIORITY 1: Use prediction_score (correct endpoint field)
-    if ((record as any).prediction_score !== undefined && (record as any).prediction_score !== null) {
-      return Number((record as any).prediction_score);
-    }
-    
-    // PRIORITY 2: Use predictive_modeling_score (legacy)
-    if ((record as any).predictive_modeling_score !== undefined && (record as any).predictive_modeling_score !== null) {
-      return Number((record as any).predictive_modeling_score);
-    }
-    
-    // PRIORITY 3: Use predictive_score (legacy)
-    if ((record as any).predictive_score !== undefined && (record as any).predictive_score !== null) {
-      return Number((record as any).predictive_score);
-    }
-    
-    // PRIORITY 3: Use thematic_value (common in endpoint data)
-    if ((record as any).thematic_value !== undefined && (record as any).thematic_value !== null) {
-      return Number((record as any).thematic_value);
-    }
-    
-    // PRIORITY 4: Use generic value field
-    if ((record as any).value !== undefined && (record as any).value !== null) {
-      return Number((record as any).value);
-    }
-    
-    // FALLBACK: Find first suitable numeric field
-  const numericFields = Object.keys(record as any).filter(key => {
-      const value = record[key];
-      return typeof value === 'number' && 
-             !key.toLowerCase().includes('id') &&
-             !key.toLowerCase().includes('date') &&
-             !key.toLowerCase().includes('time') &&
-             !key.toLowerCase().includes('objectid') &&
-             !key.toLowerCase().includes('area') &&
-             value > 0;
-    });
-    
-    if (numericFields.length > 0) {
-      const fieldValue = Number(record[numericFields[0]]);
-      return fieldValue > 100 ? fieldValue / 100 : fieldValue; // Normalize if needed
-    }
-    
-    return 50; // Default neutral score
+  constructor() {
+    super(); // Initialize BaseProcessor with configuration
   }
   validate(rawData: RawAnalysisResult): boolean {
     console.log(`🔍 [PredictiveModelingProcessor] Validating data:`, {

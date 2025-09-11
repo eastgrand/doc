@@ -1,15 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData } from '../../types';
 import { getPrimaryScoreField } from './HardcodedFieldDefs';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
- * ScenarioAnalysisProcessor - Specialized processor for scenario analysis
+ * ScenarioAnalysisProcessor - Specialized processor for real estate scenario analysis
  * 
- * Focuses on identifying markets with strong scenario planning capabilities by analyzing
- * scenario adaptability, market resilience, strategic flexibility, and planning readiness.
+ * Focuses on identifying areas with strong real estate market scenario planning capabilities by analyzing
+ * market adaptability, housing market resilience, investment flexibility, and planning readiness.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
-export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
+export class ScenarioAnalysisProcessor extends BaseProcessor {
   private scoreField: string = 'scenario_score';
+  
+  constructor() {
+    super(); // Initialize BaseProcessor with configuration
+  }
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
     if (!rawData.success) return false;
@@ -29,29 +36,25 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
     this.scoreField = getPrimaryScoreField('scenario_analysis', (rawData as any)?.metadata ?? undefined) || 'scenario_score';
 
     const records = rawData.results.map((record: any, index: number) => {
-      // Extract the pre-calculated scenario analysis score from canonical field first
-      let scenarioScore = Number((record as any)[this.scoreField] ?? (record as any).scenario_score);
+      // Extract scenario analysis score using configuration-driven approach
+      const scenarioScore = this.extractPrimaryMetric(record);
       
-      // Only use composite scoring if no scenario score is found
-      if (isNaN(scenarioScore)) {
-        console.warn(`[ScenarioAnalysisProcessor] No scenario score found for record ${(record as any).ID || index}, using composite calculation`);
-        scenarioScore = this.calculateCompositeScenarioScore(record);
-      }
-      
-      // Extract related metrics for additional analysis (updated for actual dataset fields)
-      const nikeShare = Number((record as any).value_MP30034A_B_P || (record as any).mp30034a_b_p) || 0;
+      // Extract real estate scenario metrics using configuration-driven field mappings
+      const householdIncome = this.extractNumericValue(record, ['ECYHRIAVG', 'household_income', 'median_income']);
+      const population = this.extractNumericValue(record, ['ECYPTAPOP', 'population', 'total_population']);
       const strategicScore = Number((record as any).strategic_value_score) || 0;
       const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
       const trendScore = Number((record as any).trend_strength_score) || 0;
       const correlationScore = Number((record as any).correlation_strength_score) || 0;
-      const totalPop = Number((record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population) || 0;
-      const medianIncome = Number((record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income) || 0;
+      const totalPop = this.extractNumericValue(record, ['value_TOTPOP_CY', 'TOTPOP_CY', 'total_population']);
+      const medianIncome = this.extractNumericValue(record, ['value_MEDDI_CY', 'value_AVGHINC_CY', 'median_income', 'ECYHRIAVG']);
 
       // Calculate additional scenario indicators
       const indicators = this.calculateScenarioIndicators({
         scenarioScore,
-        nikeShare,
+        householdIncome,
+        population,
         strategicScore,
         competitiveScore,
         demographicScore,
@@ -62,8 +65,8 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
       });
 
       return {
-        area_id: String((record as any).area_id ?? (record as any).ID ?? `area_${index}`),
-        area_name: String((record as any).value_DESCRIPTION ?? (record as any).DESCRIPTION ?? (record as any).area_name ?? `Area ${index + 1}`),
+        area_id: this.extractGeographicId(record) || `area_${index}`,
+        area_name: this.generateAreaName(record),
         value: scenarioScore,
         scenario_score: scenarioScore, // Add consistent score field at top level
         rank: index + 1, // Will be sorted later
@@ -93,7 +96,7 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
           demographic_adaptability: indicators.demographicAdaptability,
           market_size_flexibility: indicators.marketSizeFlexibility,
           income_scenario_range: indicators.incomeScenarioRange,
-          brand_positioning_flexibility: indicators.brandPositioningFlexibility,
+          housing_market_flexibility: indicators.housingMarketFlexibility,
           
           // Resilience indicators
           trend_resilience_factor: indicators.trendResilienceFactor,
@@ -149,7 +152,8 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
 
   private calculateScenarioIndicators(metrics: {
     scenarioScore: number;
-    nikeShare: number;
+    householdIncome: number;
+    population: number;
     strategicScore: number;
     competitiveScore: number;
     demographicScore: number;
@@ -160,7 +164,8 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
   }) {
     const {
       scenarioScore,
-      nikeShare,
+      householdIncome,
+      population,
       strategicScore,
       competitiveScore,
       demographicScore,
@@ -274,10 +279,10 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
                               medianIncome >= 60000 ? 'Middle Income Scenarios' :
                               medianIncome >= 40000 ? 'Lower-Middle Income Scenarios' : 'Lower Income Scenarios';
 
-    // Brand positioning flexibility
-    const brandPositioningFlexibility = (nikeShare >= 12 && nikeShare <= 25) ? 'High Brand Flexibility' :
-                                       (nikeShare >= 8 && nikeShare <= 35) ? 'Moderate Brand Flexibility' :
-                                       (nikeShare >= 5) ? 'Limited Brand Flexibility' : 'Minimal Brand Flexibility';
+    // Housing market flexibility based on income diversity
+    const housingMarketFlexibility = (householdIncome >= 60000 && householdIncome <= 100000) ? 'High Market Flexibility' :
+                                     (householdIncome >= 40000 && householdIncome <= 120000) ? 'Moderate Market Flexibility' :
+                                     (householdIncome >= 30000) ? 'Limited Market Flexibility' : 'Minimal Market Flexibility';
 
     // Trend resilience factor
     const trendResilienceFactor = trendScore >= 70 ? 'Very Resilient Trends' :
@@ -343,7 +348,7 @@ export class ScenarioAnalysisProcessor implements DataProcessorStrategy {
       demographicAdaptability,
       marketSizeFlexibility,
       incomeScenarioRange,
-      brandPositioningFlexibility,
+      housingMarketFlexibility,
       trendResilienceFactor,
       competitiveStability,
       correlationPredictability,

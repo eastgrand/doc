@@ -1,23 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics, ProcessingContext } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics, ProcessingContext } from '../../types';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BrandNameResolver } from '../../utils/BrandNameResolver';
 import { resolveAreaName } from '../../../shared/AreaName';
 import { getPrimaryScoreField, getTopFieldDefinitions } from './HardcodedFieldDefs';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
  * StrategicAnalysisProcessor - Handles data processing for the /strategic-analysis endpoint
  * 
- * Processes strategic market analysis with focus on expansion opportunities,
- * market potential, and strategic value scoring.
+ * Processes strategic analysis with focus on real estate investment opportunities,
+ * market potential, and strategic value scoring for housing markets.
+ * 
+ * Now extends BaseProcessor for configuration-driven behavior.
  */
-export class StrategicAnalysisProcessor implements DataProcessorStrategy {
+export class StrategicAnalysisProcessor extends BaseProcessor {
   private brandResolver: BrandNameResolver;
   // Use canonical primary score (hardcoded) with metadata override
   private scoreField: string = 'strategic_score';
 
   constructor() {
+    super(); // Initialize BaseProcessor with configuration
     this.brandResolver = new BrandNameResolver();
   }
   
@@ -77,16 +81,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
 
     const rawRecords = rawData.results as any[];
     const processedRecords = rawRecords.map((record: any, index: number) => {
-      // Prefer the dynamically detected score field; fall back to canonical chain
-      const dynamicFirst = (() => {
-        const candidate = (record as any)[this.scoreField];
-        const n = Number(candidate);
-        return Number.isFinite(n) ? n : NaN;
-      })();
-      const canonicalChain = Number(
-        (record as any).strategic_score ?? null
-      );
-      let primaryScore = Number.isFinite(dynamicFirst) ? dynamicFirst : canonicalChain;
+      // Use configuration-driven primary metric extraction
+      let primaryScore = this.extractPrimaryMetric(record);
       
       const recordId = (record as any).ID || (record as any).id || index;
   console.log(`[StrategicAnalysisProcessor] Record ${recordId}: Found primaryScore = ${primaryScore} from field: strategic_score=${(record as any).strategic_score}`);
@@ -123,9 +119,9 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         primaryScore = 25; // Use moderate strategic value as fallback
       }
       
-      // Generate area name
-      const areaName = this.generateAreaName(record);
-      const finalRecordId = (record as any).ID || (record as any).id || (record as any).area_id || `area_${index + 1}`;
+      // Generate area name using configuration
+      const areaName = super.generateAreaName(record);
+      const finalRecordId = this.extractGeographicId(record);
       
       // Get top contributing fields for popup display
   const topContributingFields = this.getTopContributingFields(record);
@@ -143,8 +139,8 @@ export class StrategicAnalysisProcessor implements DataProcessorStrategy {
         ...filteredTopFields,
         // Ensure key strategic fields are available at top level for route access
         market_gap: this.calculateRealMarketGap(record),
-        total_population: this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population']),
-        median_income: this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income']),
+        total_population: this.extractNumericValue(record, this.configManager.getFieldMapping('populationField'), 0),
+        median_income: this.extractNumericValue(record, this.configManager.getFieldMapping('incomeField'), 0),
         competitive_advantage_score: this.extractFieldValue(record, ['competitive_advantage_score', 'comp_advantage', 'advantage_score']),
         diversity_index: this.extractFieldValue(record, ['diversity_index', 'value_DIVINDX_CY', 'DIVINDX_CY']),
         properties: {

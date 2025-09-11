@@ -1,20 +1,21 @@
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
-import { BrandNameResolver } from '../../utils/BrandNameResolver';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
  * CoreAnalysisProcessor - Handles data processing for the /analyze endpoint
  * 
  * Processes general analysis results with comprehensive ranking, scoring,
- * and statistical analysis capabilities.
+ * and statistical analysis capabilities. Generic for any project type.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior.
  */
-export class CoreAnalysisProcessor implements DataProcessorStrategy {
-  private brandResolver: BrandNameResolver;
+export class CoreAnalysisProcessor extends BaseProcessor {
   private scoreField: string | undefined;
 
   constructor() {
-    this.brandResolver = new BrandNameResolver();
+    super(); // Initialize BaseProcessor with configuration
   }
   
   validate(rawData: RawAnalysisResult): boolean {

@@ -166,7 +166,7 @@ export class EnsembleAnalysisProcessor implements DataProcessorStrategy {
     }
     
     return {
-      title: 'Ensemble Performance Score',
+      title: 'Real Estate Ensemble Performance',
       items: legendItems,
       position: 'bottom-right'
     };

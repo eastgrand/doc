@@ -13,6 +13,8 @@ export const RETAIL_CONTEXT: AnalysisContext = {
     secondaryMetrics: ['brand_a_share', 'brand_b_share', 'market_penetration', 'total_brand_share', 'market_gap'],
     populationField: ['total_population', 'market_size', 'customer_base', 'ECYPTAPOP'],
     incomeField: ['median_income', 'spending_power', 'disposable_income', 'ECYHRIAVG'],
+    brandFields: ['mp30034a_b_p', 'nike_market_share', 'adidas_market_share', 'brand_a_share', 'brand_b_share'],
+    competitiveFields: ['competitive_advantage_score', 'market_gap', 'brand_performance_gap', 'market_penetration'],
     geographicId: ['ID', 'store_id', 'market_id', 'zipcode', 'area_id'],
     descriptiveFields: ['DESCRIPTION', 'market_name', 'store_name', 'area_name']
   },

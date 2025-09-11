@@ -377,7 +377,7 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
     summary += `Consensus scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
     
     // Add specific use cases
-    summary += `**🎯 Unique Use Cases for Consensus Analysis:** `;
+    summary += `**🎯 Unique Use Cases for Real Estate Consensus Analysis:** `;
     const useCaseExamples = this.generateUseCaseExamples(records);
     summary += `${useCaseExamples} `;
     

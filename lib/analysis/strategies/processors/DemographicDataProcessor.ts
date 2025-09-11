@@ -1,24 +1,21 @@
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
-import { BrandNameResolver, BrandField } from '../../utils/BrandNameResolver';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
- * DemographicDataProcessor - Handles data processing for demographic insights analysis
+ * DemographicDataProcessor - Handles data processing for real estate demographic insights analysis
  * 
- * Processes demographic analysis results with population characteristics, income patterns,
- * diversity metrics, and lifestyle indicators across geographic areas.
+ * Processes demographic analysis results focused on housing market demographics including
+ * household income, population characteristics, age distributions, and economic indicators
+ * relevant to real estate investment and development opportunities.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
-export class DemographicDataProcessor implements DataProcessorStrategy {
-  private brandResolver: BrandNameResolver;
+export class DemographicDataProcessor extends BaseProcessor {
   private scoreField: string | undefined;
 
   constructor() {
-    this.brandResolver = new BrandNameResolver();
-  }
-
-  private hasBrandFields(record: any): boolean {
-    const brandFields = this.brandResolver.detectBrandFields(record);
-    return brandFields.length > 0;
+    super(); // Initialize BaseProcessor with configuration
   }
   
   validate(rawData: RawAnalysisResult): boolean {
@@ -26,32 +23,34 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Validate demographic-specific fields - check for actual data structure
-    const hasDemographicFields = rawData.results.length === 0 || 
+    // Validate real estate demographic fields - check for housing market data structure
+    const hasRealEstateDemographicFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
-        // Check for actual demographic data fields present in the dataset
-        ((record as any).value_TOTPOP_CY !== undefined ||      // Total population (actual field)
+        // Check for Quebec housing market demographic fields
+        ((record as any).ECYPTAPOP !== undefined ||            // Population (Quebec data)
+         (record as any).ECYHRIAVG !== undefined ||            // Household income (Quebec data)
+         (record as any).value_TOTPOP_CY !== undefined ||      // Total population (other sources)
          (record as any).TOTPOP_CY !== undefined ||            // Total population (alternative)
-         // Dynamic brand detection instead of hardcoded fields
-         this.hasBrandFields(record) ||
          (record as any).value_DESCRIPTION !== undefined ||     // Area description
          (record as any).ID !== undefined ||                   // Area ID
-         // Fallback demographic fields for other datasets
+         // Real estate demographic fields
          (record as any).demographic_insights_score !== undefined || 
-         (record as any).demographic_opportunity_score !== undefined || 
-         (record as any).demographic_score !== undefined ||    // HRB data field
+         (record as any).real_estate_demographic_score !== undefined || 
+         (record as any).demographic_score !== undefined ||    
          (record as any).total_population !== undefined ||     
-         (record as any).median_income !== undefined ||        
+         (record as any).household_income !== undefined ||        
          (record as any).value_AVGHINC_CY !== undefined ||     
          (record as any).value_MEDAGE_CY !== undefined ||      
          (record as any).population !== undefined ||           
-         (record as any).income !== undefined ||              
-         (record as any).demographic_insights_score !== undefined ||   // Current scoring system
-         (record as any).demographic_score !== undefined)      
+         (record as any).income !== undefined ||
+         // Housing-specific demographic indicators
+         (record as any).ECYTENOWN !== undefined ||            // Home ownership
+         (record as any).ECYTENRENT !== undefined ||           // Rental units
+         (record as any).ECYMTN2534 !== undefined)             // Age 25-34 population
       );
     
-    return hasDemographicFields;
+    return hasRealEstateDemographicFields;
   }
 
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {
@@ -177,58 +176,47 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
   }
 
   private extractDemographicScore(record: any): number {
-    // PRIORITY 1: Target brand market share as primary demographic opportunity indicator
-    const brandFields = this.brandResolver.detectBrandFields(record);
-    const targetBrand = brandFields.find((bf: BrandField) => bf.isTarget);
-    
-    if (targetBrand && targetBrand.value !== undefined && targetBrand.value !== null) {
-      const targetBrandShare = Number(targetBrand.value);
-      console.log(`🎯 [DemographicDataProcessor] Using ${targetBrand.brandName} market share as demographic score: ${targetBrandShare} for ${(record as any).value_DESCRIPTION || (record as any).ID || 'Unknown'}`);
-      return targetBrandShare;
-    }
-    
-    // PRIORITY 2: PRE-CALCULATED DEMOGRAPHIC OPPORTUNITY SCORE (for other datasets)
+    // PRIORITY 1: PRE-CALCULATED REAL ESTATE DEMOGRAPHIC SCORES
     if (((record as any).demographic_insights_score !== undefined && (record as any).demographic_insights_score !== null) ||
-        ((record as any).demographic_opportunity_score !== undefined && (record as any).demographic_opportunity_score !== null) ||
+        ((record as any).real_estate_demographic_score !== undefined && (record as any).real_estate_demographic_score !== null) ||
         ((record as any).demographic_score !== undefined && (record as any).demographic_score !== null)) {
-      const preCalculatedScore = Number((record as any).demographic_insights_score || (record as any).demographic_opportunity_score || (record as any).demographic_score);
+      const preCalculatedScore = Number((record as any).demographic_insights_score || (record as any).real_estate_demographic_score || (record as any).demographic_score);
       
-      const recordId = (record as any).ID || (record as any).id || 'unknown';
-      
-      // Use the pre-calculated demographic score - low values are valid demographic scores
-      console.log(`🎯 [DemographicDataProcessor] Using pre-calculated score: ${preCalculatedScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
+      // Use the pre-calculated demographic score for real estate markets
+      console.log(`🎯 [DemographicDataProcessor] Using pre-calculated real estate demographic score: ${preCalculatedScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
       return preCalculatedScore;
     }
     
-    // Fallback: Calculate demographic fit score from available data
-    const population = (record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population || (record as any).population || 0;
-    const income = (record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income || (record as any).income || 0;
-    const age = (record as any).value_MEDAGE_CY || (record as any).age || 0;
-    const householdSize = (record as any).value_AVGHHSZ_CY || (record as any).household_size || 0;
+    // PRIORITY 2: Calculate real estate demographic fit score from housing market data
+    // Use configuration-driven field extraction for Quebec housing market data
+    const population = this.extractNumericValue(record, this.configManager.getFieldMapping('populationField'), 0);
+    const householdIncome = this.extractNumericValue(record, this.configManager.getFieldMapping('incomeField'), 0);
+    const homeOwnership = this.extractNumericValue(record, ['ECYTENOWN', 'home_ownership_count', 'homeowners'], 0);
+    const rentalUnits = this.extractNumericValue(record, ['ECYTENRENT', 'rental_count', 'renters'], 0);
+    const youngAdults = this.extractNumericValue(record, ['ECYMTN2534', 'population_25_34', 'age_25_34'], 0);
     
-    // Calculate composite demographic score (0-100)
-    let demographicScore = 0;
+    // Calculate real estate demographic score (0-100) focused on housing market potential
+    let realEstateDemographicScore = 0;
     
-    // Population component (0-25 points)
-    const populationScore = Math.min((population / 50000) * 25, 25);
+    // Household Income component (40% weight) - higher income indicates better real estate market
+    const incomeScore = householdIncome > 0 ? Math.min((householdIncome / 100000) * 40, 40) : 0;
     
-    // Income component (0-30 points) - optimal range $40k-$100k
-    const incomeScore = income > 0 ? Math.min((income / 100000) * 30, 30) : 0;
+    // Population Market Size component (25% weight) - larger markets have more opportunities
+    const populationScore = population > 0 ? Math.min((population / 50000) * 25, 25) : 0;
     
-    // Age component (0-25 points) - optimal range 25-45
-    const ageScore = age > 0 ? 
-      25 - Math.abs(age - 35) * 0.5 : 0; // Peak at age 35
+    // Housing Market Activity component (20% weight) - balance of ownership vs rental
+    const totalHousing = homeOwnership + rentalUnits;
+    const housingActivityScore = totalHousing > 0 ? Math.min((totalHousing / 10000) * 20, 20) : 0;
     
-    // Household component (0-20 points) - optimal size 2-4 people
-    const householdScore = householdSize > 0 ? 
-      Math.max(0, 20 - Math.abs(householdSize - 3) * 5) : 0;
+    // Young Adult Demographics component (15% weight) - key home buying demographic
+    const youngAdultScore = youngAdults > 0 ? Math.min((youngAdults / population) * 100 * 15, 15) : 0;
     
-    demographicScore = populationScore + incomeScore + ageScore + householdScore;
+    realEstateDemographicScore = incomeScore + populationScore + housingActivityScore + youngAdultScore;
     
-    // Try explicit demographic score fields as fallback
+    // Try explicit real estate demographic score fields as fallback
     const explicitScoreFields = [
-      'demographic_score', 'demo_score', 'target_demographic_fit',
-      'population_score', 'lifestyle_score', 'market_fit'
+      'real_estate_demographic_score', 'housing_demographic_score', 'demographic_score', 
+      'housing_market_score', 'residential_demographic_score'
     ];
     
     for (const field of explicitScoreFields) {
@@ -240,8 +228,8 @@ export class DemographicDataProcessor implements DataProcessorStrategy {
       }
     }
     
-    console.log('⚠️ [DemographicDataProcessor] No pre-calculated demographic_insights_score, demographic_opportunity_score or demographic_score found, using fallback calculation');
-    return Math.max(0, Math.min(100, demographicScore));
+    console.log('⚠️ [DemographicDataProcessor] No pre-calculated real estate demographic score found, using housing market calculation');
+    return Math.max(0, Math.min(100, realEstateDemographicScore));
   }
 
   private calculateDiversityIndex(record: any): number {

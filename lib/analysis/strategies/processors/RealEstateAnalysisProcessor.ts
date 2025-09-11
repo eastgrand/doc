@@ -1,7 +1,12 @@
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
+import { BaseProcessor } from './BaseProcessor';
 
-export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
+export class RealEstateAnalysisProcessor extends BaseProcessor {
+  constructor() {
+    super(); // Initialize BaseProcessor with configuration
+  }
+
   validate(rawData: RawAnalysisResult): boolean {
     return rawData && rawData.success && Array.isArray(rawData.results) && rawData.results.length > 0;
   }
@@ -16,19 +21,24 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
   const scoreField = getPrimaryScoreField('real_estate_analysis', (rawData as any)?.metadata ?? undefined) || 'real_estate_analysis_score';
     const records = rawResults.map((recordRaw: unknown, index: number) => {
       const record = (recordRaw && typeof recordRaw === 'object') ? recordRaw as Record<string, unknown> : {};
-      const realEstateScore = Number((record as any)[scoreField]) || 0;
-      const totalPop = Number((record as any).total_population) || 0;
-      const medianIncome = Number((record as any).median_income) || 0;
+      const realEstateScore = this.extractPrimaryMetric(record);
+      const totalPop = this.extractNumericValue(record, this.configManager.getFieldMapping('populationField'), 0);
+      const medianIncome = this.extractNumericValue(record, this.configManager.getFieldMapping('incomeField'), 0);
       const strategicScore = Number((record as any).strategic_value_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
-      const nikeShare = Number((record as any).mp30034a_b_p) || 0;
+      
+      // Real estate specific metrics
+      const homeOwnership = this.extractNumericValue(record, ['ECYTENOWN', 'home_ownership_count', 'homeowners'], 0);
+      const rentalUnits = this.extractNumericValue(record, ['ECYTENRENT', 'rental_count', 'renters'], 0);
+      const housingAffordability = this.extractNumericValue(record, ['home_affordability_index', 'affordability_index'], 0);
+      const marketGrowth = this.extractNumericValue(record, ['hot_growth_market_index', 'growth_index', 'market_growth'], 0);
 
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
 
       return {
-        area_id: String(record.area_id ?? (record as any).ID ?? `area_${index}`),
-        area_name: String((record as any).value_DESCRIPTION ?? (record as any).DESCRIPTION ?? record.area_name ?? `Area ${index + 1}`),
+        area_id: this.extractGeographicId(record),
+        area_name: this.generateAreaName(record),
         value: realEstateScore,
         rank: index + 1,
         category: this.categorizeRealEstateOpportunity(realEstateScore),
@@ -37,86 +47,107 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
         ...topContributingFields,
         properties: {
           [scoreField]: realEstateScore,
-          location_quality: this.getLocationQuality(totalPop, strategicScore),
-          demographic_fit: this.getDemographicFit(demographicScore),
-          market_accessibility: this.getMarketAccessibility(medianIncome, nikeShare),
-          foot_traffic_potential: this.getFootTrafficPotential(totalPop),
-          retail_suitability: this.getRetailSuitability(realEstateScore),
-          investment_priority: this.getInvestmentPriority(realEstateScore, strategicScore),
+          housing_market_strength: this.getHousingMarketStrength(housingAffordability, marketGrowth),
+          demographic_profile: this.getHousingDemographicProfile(homeOwnership, rentalUnits),
+          investment_accessibility: this.getInvestmentAccessibility(medianIncome, housingAffordability),
+          market_growth_potential: this.getMarketGrowthPotential(marketGrowth, totalPop),
+          housing_supply_characteristics: this.getHousingSupplyCharacteristics(homeOwnership, rentalUnits),
+          investment_priority: this.getRealEstateInvestmentPriority(realEstateScore, housingAffordability),
           population: totalPop,
           median_income: medianIncome,
-          nike_presence: nikeShare
+          home_ownership_rate: homeOwnership,
+          rental_market_size: rentalUnits,
+          affordability_index: housingAffordability,
+          growth_index: marketGrowth
         },
         shapValues: (record.shap_values || {}) as Record<string, number>
       };
     });
 
-    records.sort((a, b) => b.value - a.value);
-  records.forEach((record, index) => { (record as any).rank = index + 1; });
-
-    const values = records.map(r => r.value);
-    const statistics = this.calculateStatistics(values);
-    const summary = this.generateRealEstateSummary(records, statistics);
-
-    return {
-      type: 'real_estate_analysis',
-      records,
-      summary,
-      featureImportance: rawData.feature_importance || [],
-      statistics,
-      targetVariable: scoreField
+    // Use BaseProcessor ranking
+    const rankedRecords = this.rankRecords(records);
+    
+    // Calculate statistics using BaseProcessor method
+    const statistics = this.calculateStatistics(rankedRecords.map(r => r.value));
+    
+    // Generate summary using configuration-driven templates
+    const customSubstitutions = {
+      avgIncome: (rankedRecords.reduce((sum, r) => sum + (Number(r.properties?.median_income) || 0), 0) / rankedRecords.length).toFixed(0),
+      topAreaName: rankedRecords[0]?.area_name || 'N/A',
+      cityCount: [...new Set(rankedRecords.map(r => r.area_name.split(' ')[0]))].length,
+      totalAreas: rankedRecords.length
     };
+    
+    const summary = this.buildSummaryFromTemplates(rankedRecords, statistics, customSubstitutions);
+
+    return this.createProcessedData(
+      'real_estate_analysis',
+      rankedRecords,
+      summary,
+      statistics,
+      {
+        featureImportance: rawData.feature_importance || []
+      }
+    );
   }
 
   private categorizeRealEstateOpportunity(score: number): string {
-    if (score >= 80) return 'Prime Real Estate Opportunity';
-    if (score >= 70) return 'Excellent Location Potential';
-    if (score >= 60) return 'Good Real Estate Opportunity';
-    if (score >= 45) return 'Moderate Location Value';
-    return 'Limited Real Estate Potential';
+    const scoreRange = this.getScoreInterpretation(score);
+    return scoreRange.description;
   }
 
-  private getLocationQuality(population: number, strategic: number): string {
-    if (population >= 75000 && strategic >= 70) return 'Premium Location';
-    if (population >= 50000 && strategic >= 60) return 'High-Quality Location';
-    if (population >= 25000 || strategic >= 50) return 'Good Location';
-    return 'Standard Location';
+  // Real estate specific assessment methods
+  private getHousingMarketStrength(affordability: number, growth: number): string {
+    if (affordability >= 75 && growth >= 75) return 'Exceptional Market Strength';
+    if (affordability >= 60 && growth >= 60) return 'Strong Housing Market';
+    if (affordability >= 45 && growth >= 45) return 'Stable Housing Market';
+    if (affordability >= 30 || growth >= 30) return 'Developing Housing Market';
+    return 'Emerging Housing Market';
   }
 
-  private getDemographicFit(demographic: number): string {
-    if (demographic >= 80) return 'Excellent Demographic Match';
-    if (demographic >= 65) return 'Strong Demographic Fit';
-    if (demographic >= 50) return 'Good Demographic Alignment';
-    return 'Moderate Demographic Fit';
+  private getHousingDemographicProfile(homeOwnership: number, rentalUnits: number): string {
+    const totalHousing = homeOwnership + rentalUnits;
+    if (totalHousing === 0) return 'Limited Housing Data';
+    
+    const ownershipRate = (homeOwnership / totalHousing) * 100;
+    if (ownershipRate >= 75) return 'Owner-Dominated Market';
+    if (ownershipRate >= 60) return 'High Ownership Market';
+    if (ownershipRate >= 40) return 'Balanced Housing Market';
+    if (ownershipRate >= 25) return 'Rental-Leaning Market';
+    return 'Rental-Dominated Market';
   }
 
-  private getMarketAccessibility(income: number, nikeShare: number): string {
-    if (income >= 80000 && nikeShare >= 15) return 'Highly Accessible Market';
-    if (income >= 60000 || nikeShare >= 10) return 'Accessible Market';
-    if (income >= 40000) return 'Moderately Accessible';
-    return 'Limited Accessibility';
+  private getInvestmentAccessibility(income: number, affordability: number): string {
+    if (income >= 80000 && affordability >= 70) return 'Premium Investment Zone';
+    if (income >= 65000 && affordability >= 55) return 'High-Quality Investment Area';
+    if (income >= 50000 && affordability >= 40) return 'Solid Investment Opportunity';
+    if (income >= 35000 && affordability >= 25) return 'Affordable Investment Market';
+    return 'Value Investment Opportunity';
   }
 
-  private getFootTrafficPotential(population: number): string {
-    if (population >= 100000) return 'High Foot Traffic';
-    if (population >= 50000) return 'Moderate Foot Traffic';
-    if (population >= 25000) return 'Limited Foot Traffic';
-    return 'Low Foot Traffic';
+  private getMarketGrowthPotential(growth: number, population: number): string {
+    if (growth >= 75 && population >= 50000) return 'High Growth Potential';
+    if (growth >= 60 && population >= 25000) return 'Strong Growth Prospects';
+    if (growth >= 45 && population >= 10000) return 'Moderate Growth Potential';
+    if (growth >= 30) return 'Emerging Growth Market';
+    return 'Stable Market Conditions';
   }
 
-  private getRetailSuitability(score: number): string {
-    if (score >= 75) return 'Ideal for Flagship Store';
-    if (score >= 65) return 'Suitable for Full Store';
-    if (score >= 55) return 'Good for Standard Store';
-    if (score >= 45) return 'Suitable for Outlet';
-    return 'Limited Retail Potential';
+  private getHousingSupplyCharacteristics(homeOwnership: number, rentalUnits: number): string {
+    const totalHousing = homeOwnership + rentalUnits;
+    if (totalHousing >= 10000) return 'Large Housing Market';
+    if (totalHousing >= 5000) return 'Medium Housing Market';
+    if (totalHousing >= 2000) return 'Small Housing Market';
+    if (totalHousing >= 500) return 'Limited Housing Supply';
+    return 'Very Small Housing Market';
   }
 
-  private getInvestmentPriority(realEstateScore: number, strategic: number): string {
-    if (realEstateScore >= 70 && strategic >= 70) return 'High Priority Investment';
-    if (realEstateScore >= 60 || strategic >= 60) return 'Medium Priority';
-    if (realEstateScore >= 50) return 'Low Priority';
-    return 'Monitor Only';
+  private getRealEstateInvestmentPriority(realEstateScore: number, affordability: number): string {
+    if (realEstateScore >= 75 && affordability >= 65) return 'Top Investment Priority';
+    if (realEstateScore >= 65 && affordability >= 50) return 'High Investment Priority';
+    if (realEstateScore >= 55 && affordability >= 35) return 'Medium Investment Priority';
+    if (realEstateScore >= 45 && affordability >= 20) return 'Consider for Investment';
+    return 'Lower Priority Investment';
   }
 
   /**
@@ -176,39 +207,5 @@ export class RealEstateAnalysisProcessor implements DataProcessorStrategy {
     return [lng, lat];
   }
 
-  private generateRealEstateSummary(records: Array<Record<string, unknown>>, statistics: Record<string, unknown>): string {
-    const topLocations = records.slice(0, 5) as Array<Record<string, unknown>>;
-    const primeCount = topLocations.filter(r => (r['value'] as number) >= 80).length;
-    const excellentCount = topLocations.filter(r => (r['value'] as number) >= 70 && (r['value'] as number) < 80).length;
-    const avgScore = ((statistics['mean'] as number) || 0).toFixed(1);
-
-    const topNames = topLocations.map(r => `${r['area_name']} (${((r['value'] as number) || 0).toFixed(1)})`).join(', ');
-
-    return `Real estate analysis of ${records.length} locations identified ${primeCount} prime real estate opportunities (80+) and ${excellentCount} excellent location potential areas (70-79). Average real estate score: ${avgScore}. Top real estate opportunities: ${topNames}. Analysis considers location quality, demographic fit, market accessibility, and growth trajectory for optimal retail location decisions.`;
-  }
-
-  private calculateStatistics(values: number[]) {
-    if (values.length === 0) return { total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0 };
-    const sorted = [...values].sort((a, b) => a - b);
-    const total = values.length;
-    const sum = values.reduce((a, b) => a + b, 0);
-    const mean = sum / total;
-    const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / total;
-    const stdDev = Math.sqrt(variance);
-    const median = total % 2 === 0 ? (sorted[total / 2 - 1] + sorted[total / 2]) / 2 : sorted[Math.floor(total / 2)];
-    return { total, mean, median, min: sorted[0], max: sorted[sorted.length - 1], stdDev };
-  }
-  /**
-   * Extract field value from multiple possible field names
-   */
-  private extractFieldValue(record: Record<string, unknown>, fieldNames: string[]): number {
-    for (const fieldName of fieldNames) {
-      const value = Number((record as any)[fieldName]);
-      if (!isNaN(value) && value > 0) {
-        return value;
-      }
-    }
-    return 0;
-  }
 
 }

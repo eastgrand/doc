@@ -1,20 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { BrandNameResolver } from '../../utils/BrandNameResolver';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getPrimaryScoreField } from './HardcodedFieldDefs';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
  * TrendAnalysisProcessor - Handles data processing for the /trend-analysis endpoint
  * 
- * Processes trend analysis results with focus on temporal patterns, growth rates,
- * and trend consistency across geographic markets.
+ * Processes real estate market trend analysis with focus on temporal patterns, growth rates,
+ * housing market momentum, and trend consistency across geographic markets.
+ * 
+ * Now extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
-export class TrendAnalysisProcessor implements DataProcessorStrategy {
-  private brandResolver: BrandNameResolver;
+export class TrendAnalysisProcessor extends BaseProcessor {
   private scoreField: string = 'trend_score';
 
   constructor() {
-    this.brandResolver = new BrandNameResolver();
+    super(); // Initialize BaseProcessor with configuration
   }
   
   validate(rawData: RawAnalysisResult): boolean {
@@ -29,19 +30,25 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
           return false;
         }
         
-        // Check for standard score fields
+        // Check for trend score or real estate trend metrics
         if ((record as any).trend_score !== undefined || (record as any).value !== undefined || (record as any).score !== undefined) {
           return true;
         }
         
-        // Use dynamic brand detection to check for brand fields
-        const brandFields = this.brandResolver.detectBrandFields(record);
-        if (brandFields.length > 0) {
+        // Check for real estate trend indicators
+        const hasRealEstateFields = (
+          (record as any).ECYHRIAVG !== undefined || 
+          (record as any).household_income !== undefined ||
+          (record as any).housing_correlation_score !== undefined ||
+          (record as any).hot_growth_market_index !== undefined
+        );
+        
+        if (hasRealEstateFields) {
           return true;
         }
         
         // Check for other trend-relevant fields
-        return (record as any).strategic_value_score !== undefined || (record as any).competitive_advantage_score !== undefined;
+        return (record as any).strategic_value_score !== undefined || (record as any).real_estate_analysis_score !== undefined;
       });
     
     return hasRequiredFields;
@@ -62,32 +69,23 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       // PRIORITIZE PRE-CALCULATED TREND STRENGTH SCORE
       const trendScore = this.extractTrendScore(record);
       
-      // Generate area name from ID and location data
+      // Extract ID using configuration-driven approach
+      const recordId = this.extractGeographicId(record);
+      
+      // Generate area name using configuration
       const areaName = this.generateAreaName(record);
       
-      // Extract ID (updated for correlation_analysis format)
-      const recordId = (record as any).ID || (record as any).id || (record as any).area_id;
+      // Extract real estate trend metrics using configuration-driven field mappings
+      const householdIncome = this.extractNumericValue(record, this.configManager.getFieldMapping('incomeField'), 0);
+      const population = this.extractNumericValue(record, this.configManager.getFieldMapping('populationField'), 0);
+      const housingGrowth = this.extractNumericValue(record, ['hot_growth_market_index', 'growth_index', 'housing_growth'], 0);
+      const housingAffordability = this.extractNumericValue(record, ['home_affordability_index', 'affordability_index'], 0);
+      const newHomeOwners = this.extractNumericValue(record, ['new_home_owner_index', 'new_owner_index'], 0);
       
-      // Debug logging for records with missing ID
-      if (!recordId) {
-        console.warn(`[TrendAnalysisProcessor] Record ${index} missing ID:`, {
-          hasID: 'ID' in record,
-          hasId: 'id' in record,
-          hasAreaId: 'area_id' in record,
-          recordKeys: Object.keys(record as any).slice(0, 10)
-        });
-      }
-      
-      // Extract trend-relevant metrics for properties using dynamic brand detection
-      const brandFields = this.brandResolver.detectBrandFields(record);
-      const targetBrand = brandFields.find(bf => bf.isTarget);
-      const targetBrandShare = targetBrand?.value || 0;
-      
+      // Extract strategic scores for trend correlation
       const strategicScore = Number((record as any).strategic_value_score) || 0;
-      const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
-      const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
-      const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
-      const medianIncome = Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0;
+      const realEstateScore = Number((record as any).real_estate_analysis_score) || 0;
+      const housingCorrelationScore = Number((record as any).housing_correlation_score) || 0;
       
       // Calculate trend indicators
       const growthPotential = this.calculateGrowthPotential(record);
@@ -104,13 +102,15 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
           trend_score: trendScore,
           score_source: this.scoreField,
-          target_brand_share: targetBrandShare,
-          target_brand_name: targetBrand?.brandName || 'Unknown',
+          // Real estate trend metrics
+          household_income: householdIncome,
+          total_population: population,
+          housing_growth_index: housingGrowth,
+          housing_affordability_index: housingAffordability,
+          new_home_owner_index: newHomeOwners,
           strategic_score: strategicScore,
-          competitive_score: competitiveScore,
-          demographic_score: demographicScore,
-          total_population: totalPop,
-          median_income: medianIncome,
+          real_estate_score: realEstateScore,
+          housing_correlation_score: housingCorrelationScore,
           // Trend-specific calculated properties
           growth_potential: growthPotential,
           trend_consistency: trendConsistency,
@@ -125,10 +125,10 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
       return out;
     });
     
-    // Calculate comprehensive statistics
-    const statistics = this.calculateTrendStatistics(processedRecords);
+    // Use BaseProcessor for statistics and ranking
+    const statistics = super.calculateStatistics(processedRecords.map(r => r.value));
     
-    // Rank records by trend strength
+    // Rank records by trend strength using BaseProcessor
     const rankedRecords = this.rankRecords(processedRecords);
     
     // Filter out national parks for business analysis - COMMENTED OUT FOR DEBUGGING
@@ -195,37 +195,37 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
     const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
     
-    // Use dynamic brand detection for target brand share
-    const brandFields = this.brandResolver.detectBrandFields(record);
-    const targetBrand = brandFields.find(bf => bf.isTarget);
-    const targetBrandShare = targetBrand?.value || 0;
+    // Calculate real estate trend strength from available data
+    const householdIncome = this.extractNumericValue(record, this.configManager.getFieldMapping('incomeField'), 0);
+    const housingGrowth = this.extractNumericValue(record, ['hot_growth_market_index', 'growth_index'], 0);
+    const realEstateScore = Number((record as any).real_estate_analysis_score) || 0;
+    const housingCorrelationScore = Number((record as any).housing_correlation_score) || 0;
     
-    // Simple trend strength calculation
-    const consistencyFactor = strategicScore > 0 ? (strategicScore / 100) * 40 : 20;
-    const growthFactor = competitiveScore > 0 ? (competitiveScore / 10) * 30 : 15;
-    const positionFactor = targetBrandShare > 0 ? Math.min(targetBrandShare / 50, 1) * 20 : 10;
-    const stabilityFactor = 10; // Default stability
+    // Real estate trend strength calculation
+    const incomeFactor = householdIncome > 0 ? Math.min((householdIncome / 100000) * 100, 100) * 0.3 : 20;
+    const growthFactor = housingGrowth > 0 ? (housingGrowth / 100) * 30 : 15;
+    const marketFactor = realEstateScore > 0 ? (realEstateScore / 100) * 25 : strategicScore > 0 ? (strategicScore / 100) * 25 : 15;
+    const correlationFactor = housingCorrelationScore > 0 ? (housingCorrelationScore / 100) * 15 : 10;
     
-    return Math.min(100, consistencyFactor + growthFactor + positionFactor + stabilityFactor);
+    return Math.min(100, incomeFactor + growthFactor + marketFactor + correlationFactor);
   }
 
   /**
    * Calculate growth potential based on market fundamentals
    */
   private calculateGrowthPotential(record: any): number {
-    // Use dynamic brand detection for target brand share
-    const brandFields = this.brandResolver.detectBrandFields(record);
-    const targetBrand = brandFields.find(bf => bf.isTarget);
-    const targetBrandShare = targetBrand?.value || 0;
+    // Calculate growth potential based on housing market fundamentals
+    const housingGrowth = this.extractNumericValue(record, ['hot_growth_market_index', 'growth_index', 'housing_growth'], 0);
+    const affordability = this.extractNumericValue(record, ['home_affordability_index', 'affordability_index'], 0);
+    const newOwners = this.extractNumericValue(record, ['new_home_owner_index', 'new_owner_index'], 0);
+    const population = this.extractNumericValue(record, this.configManager.getFieldMapping('populationField'), 0);
     
-  const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
-  const marketGap = Math.max(0, 100 - targetBrandShare);
+    // Real estate growth potential formula: Housing Growth (40%) + Affordability Balance (30%) + New Owner Activity (30%)
+    const growthPotential = housingGrowth > 0 ? (housingGrowth / 100) * 40 : 10;
+    const affordabilityBalance = affordability > 50 ? ((100 - affordability) / 100) * 30 : (affordability / 100) * 30; // Balance between growth and affordability
+    const ownerActivity = newOwners > 0 ? (newOwners / 100) * 30 : 15;
     
-    // Growth potential formula: Market Gap (60%) + Demographic Opportunity (40%)
-    const gapPotential = (marketGap / 100) * 60;
-  const demoPotential = demographicScore > 0 ? (demographicScore / 100) * 40 : 20;
-    
-    return Math.round((gapPotential + demoPotential) * 100) / 100;
+    return Math.round((growthPotential + affordabilityBalance + ownerActivity) * 100) / 100;
   }
 
   /**
@@ -271,65 +271,7 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     return 'Inconsistent/Declining';
   }
 
-  /**
-   * Generate meaningful area name from available data
-   */
-  private generateAreaName(record: any): string {
-    // Try explicit name fields first (updated for correlation_analysis format)
-    if ((record as any).value_DESCRIPTION && typeof (record as any).value_DESCRIPTION === 'string') {
-      const description = (record as any).value_DESCRIPTION.trim();
-      const nameMatch = description.match(/\(([^)]+)\)/);
-      if (nameMatch && nameMatch[1]) {
-        return nameMatch[1].trim();
-      }
-      return description;
-    }
-    if ((record as any).DESCRIPTION && typeof (record as any).DESCRIPTION === 'string') {
-      const description = (record as any).DESCRIPTION.trim();
-      // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
-      const nameMatch = description.match(/\(([^)]+)\)/);
-      if (nameMatch && nameMatch[1]) {
-        return nameMatch[1].trim();
-      }
-      return description;
-    }
-    if ((record as any).area_name) return (record as any).area_name;
-    if ((record as any).NAME) return (record as any).NAME;
-    if ((record as any).name) return (record as any).name;
-    
-    // Create name from ID and location data
-    const id = (record as any).ID || (record as any).id || (record as any).GEOID;
-    if (id) {
-      // For ZIP codes, create format like "ZIP 12345"
-      if (typeof id === 'string' && id.match(/^\d{5}$/)) {
-        return `ZIP ${id}`;
-      }
-      // For FSA codes, create format like "FSA M5V"  
-      if (typeof id === 'string' && id.match(/^[A-Z]\d[A-Z]$/)) {
-        return `FSA ${id}`;
-      }
-      // For numeric IDs, create descriptive name
-      if (typeof id === 'number' || !isNaN(Number(id))) {
-        return `Area ${id}`;
-      }
-      return `Region ${id}`;
-    }
-    
-    return `Area ${(record as any).OBJECTID || 'Unknown'}`;
-  }
 
-  /**
-   * Rank records by trend strength
-   */
-  private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
-    // Sort by trend strength descending and assign ranks
-    const sorted = [...records].sort((a, b) => b.value - a.value);
-    
-    return sorted.map((record, index) => ({
-      ...record,
-      rank: index + 1
-    }));
-  }
 
   /**
    * Process feature importance with trend focus
@@ -381,58 +323,6 @@ export class TrendAnalysisProcessor implements DataProcessorStrategy {
     return `${featureName} trend characteristics`;
   }
 
-  /**
-   * Calculate trend-specific statistics
-   */
-  private calculateTrendStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
-    const values = records.map(r => r.value).filter(v => !isNaN(v));
-    
-    if (values.length === 0) {
-      return {
-        total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0,
-        percentile25: 0, percentile75: 0, iqr: 0, outlierCount: 0
-      };
-    }
-    
-    const sorted = [...values].sort((a, b) => a - b);
-    const total = values.length;
-    const sum = values.reduce((a, b) => a + b, 0);
-    const mean = sum / total;
-    
-    // Calculate percentiles
-    const p25Index = Math.floor(total * 0.25);
-    const p75Index = Math.floor(total * 0.75);
-    const medianIndex = Math.floor(total * 0.5);
-    
-    const percentile25 = sorted[p25Index];
-    const percentile75 = sorted[p75Index];
-    const median = total % 2 === 0 
-      ? (sorted[medianIndex - 1] + sorted[medianIndex]) / 2
-      : sorted[medianIndex];
-    
-    // Calculate standard deviation
-    const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / total;
-    const stdDev = Math.sqrt(variance);
-    
-    // Calculate IQR and outliers
-    const iqr = percentile75 - percentile25;
-    const lowerBound = percentile25 - 1.5 * iqr;
-    const upperBound = percentile75 + 1.5 * iqr;
-    const outlierCount = values.filter(v => v < lowerBound || v > upperBound).length;
-    
-    return {
-      total,
-      mean,
-      median,
-      min: sorted[0],
-      max: sorted[sorted.length - 1],
-      stdDev,
-      percentile25,
-      percentile75,
-      iqr,
-      outlierCount
-    };
-  }
 
   /**
    * Generate trend-focused summary
@@ -453,34 +343,34 @@ Higher scores indicate stronger, more consistent, and predictable market trends.
 
 `;
     
-    // Trend statistics and baseline metrics
-    summary += `**📊 Trend Analysis Baseline:** `;
+    // Real estate market trend baseline metrics
+    summary += `**📊 Housing Market Trend Analysis:** `;
     summary += `Average trend strength: ${statistics.mean.toFixed(1)} (range: ${statistics.min.toFixed(1)}-${statistics.max.toFixed(1)}). `;
     
-    // Calculate trend category distribution
-    const strongTrends = records.filter(r => r.value >= 65).length;
-    const moderateTrends = records.filter(r => r.value >= 50 && r.value < 65).length;
-    const weakTrends = records.filter(r => r.value >= 35 && r.value < 50).length;
-    const volatileMarkets = records.filter(r => r.value < 35).length;
+    // Calculate real estate trend category distribution
+    const strongMarkets = records.filter(r => r.value >= 65).length;
+    const growingMarkets = records.filter(r => r.value >= 50 && r.value < 65).length;
+    const stableMarkets = records.filter(r => r.value >= 35 && r.value < 50).length;
+    const challengingMarkets = records.filter(r => r.value < 35).length;
     
-    summary += `Trend distribution: ${strongTrends} strong trends (${(strongTrends/records.length*100).toFixed(1)}%), `;
-    summary += `${moderateTrends} moderate trends (${(moderateTrends/records.length*100).toFixed(1)}%), `;
-    summary += `${weakTrends} weak trends (${(weakTrends/records.length*100).toFixed(1)}%), `;
-    summary += `${volatileMarkets} volatile markets (${(volatileMarkets/records.length*100).toFixed(1)}%).
+    summary += `Market distribution: ${strongMarkets} strong growth markets (${(strongMarkets/records.length*100).toFixed(1)}%), `;
+    summary += `${growingMarkets} moderate growth markets (${(growingMarkets/records.length*100).toFixed(1)}%), `;
+    summary += `${stableMarkets} stable markets (${(stableMarkets/records.length*100).toFixed(1)}%), `;
+    summary += `${challengingMarkets} challenging markets (${(challengingMarkets/records.length*100).toFixed(1)}%).
 
 `;
     
-    // Top trending markets (5-8 areas)
+    // Top trending housing markets (5-8 areas)
     const topTrends = records.slice(0, 8);
     if (topTrends.length > 0) {
       const strongTrendAreas = topTrends.filter(r => r.value >= 50);
       if (strongTrendAreas.length > 0) {
-        summary += `**Strongest Trend Markets:** `;
+        summary += `**Strongest Housing Market Trends:** `;
         const trendNames = strongTrendAreas.slice(0, 6).map(r => `${r.area_name} (${r.value.toFixed(1)})`);
         summary += `${trendNames.join(', ')}. `;
         
         const avgTopTrend = strongTrendAreas.reduce((sum, r) => sum + r.value, 0) / strongTrendAreas.length;
-        summary += `These markets show exceptional trend strength with average score ${avgTopTrend.toFixed(1)}. `;
+        summary += `These housing markets show exceptional momentum with average trend strength ${avgTopTrend.toFixed(1)}. `;
       }
     }
     
@@ -643,18 +533,6 @@ Higher scores indicate stronger, more consistent, and predictable market trends.
       // Middle classes: minValue - maxValue
       return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
     }
-  }
-  /**
-   * Extract field value from multiple possible field names
-   */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
-    for (const fieldName of fieldNames) {
-      const value = Number(record[fieldName]);
-      if (!isNaN(value) && value > 0) {
-        return value;
-      }
-    }
-    return 0;
   }
 
 }

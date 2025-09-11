@@ -1,18 +1,19 @@
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
-import { BrandNameResolver } from '../../utils/BrandNameResolver';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
- * SegmentProfilingProcessor - Specialized processor for segment profiling analysis
+ * SegmentProfilingProcessor - Specialized processor for real estate segment profiling analysis
  * 
- * Focuses on identifying markets with strong segmentation potential by analyzing
- * demographic distinctiveness, behavioral clustering, market segment strength, and profiling clarity.
+ * Focuses on identifying areas with strong housing market segmentation potential by analyzing
+ * demographic distinctiveness, housing type clustering, market segment strength, and investment profiling clarity.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
-export class SegmentProfilingProcessor implements DataProcessorStrategy {
-  private brandResolver: BrandNameResolver;
+export class SegmentProfilingProcessor extends BaseProcessor {
 
   constructor() {
-    this.brandResolver = new BrandNameResolver();
+    super(); // Initialize BaseProcessor with configuration
   }
 
   validate(rawData: RawAnalysisResult): boolean {
@@ -31,26 +32,25 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
   const primaryField = getPrimaryScoreField('segment_profiling', (rawData as any)?.metadata) || 'segment_score';
 
   const records = rawData.results.map((record: any, index: number) => {
-      // Extract or calculate segment profiling score with fallback logic
-      const segmentScore = this.extractSegmentScore(record);
+      // Extract segment profiling score using configuration-driven approach
+      const segmentScore = this.extractPrimaryMetric(record);
       
-      // Extract related metrics for additional analysis using dynamic brand detection
-      const brandFields = this.brandResolver.detectBrandFields(record);
-      const targetBrand = brandFields.find(bf => bf.isTarget);
-      const targetBrandShare = targetBrand?.value || 0;
+      // Extract related metrics for real estate segment analysis
+      const householdIncome = this.extractNumericValue(record, ['ECYHRIAVG', 'household_income', 'median_income'], 0);
+      const population = this.extractNumericValue(record, ['ECYPTAPOP', 'population', 'total_population'], 0);
       const strategicScore = Number((record as any).strategic_value_score) || 0;
       const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
       const trendScore = Number((record as any).trend_strength_score) || 0;
       const correlationScore = Number((record as any).correlation_strength_score) || 0;
-      const totalPop = Number((record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population) || 0;
-      const medianIncome = Number((record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income) || 0;
+      const totalPop = this.extractNumericValue(record, ['value_TOTPOP_CY', 'TOTPOP_CY', 'total_population']);
+      const medianIncome = this.extractNumericValue(record, ['value_MEDDI_CY', 'value_AVGHINC_CY', 'median_income', 'ECYHRIAVG']);
 
       // Calculate additional segmentation indicators
       const indicators = this.calculateSegmentationIndicators({
         segmentScore,
-        targetBrandShare,
-        targetBrandName: targetBrand?.brandName || this.brandResolver.getTargetBrandName(),
+        householdIncome,
+        population,
         strategicScore,
         competitiveScore,
         demographicScore,
@@ -61,8 +61,8 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       });
 
       const out: any = {
-        area_id: (record as any).area_id || (record as any).ID || `area_${index}`,
-        area_name: (record as any).value_DESCRIPTION || (record as any).DESCRIPTION || (record as any).area_name || `Area ${index + 1}`,
+        area_id: this.extractGeographicId(record) || `area_${index}`,
+        area_name: this.generateAreaName(record),
         value: segmentScore,
         rank: index + 1, // Will be sorted later
         category: this.categorizeSegmentPotential(segmentScore),
@@ -79,7 +79,7 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
           primary_segment_type: indicators.primarySegmentType,
           segment_size: indicators.segmentSize,
           segment_income_level: indicators.segmentIncomeLevel,
-          target_brand_segment_affinity: indicators.targetBrandSegmentAffinity,
+          housing_segment_affinity: indicators.housingSegmentAffinity,
           
           // Demographic segmentation factors
           income_distinctiveness: indicators.incomeDistinctiveness,
@@ -89,12 +89,12 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
           // Behavioral segmentation factors
           strategic_behavioral_pattern: indicators.strategicBehavioralPattern,
           competitive_behavioral_pattern: indicators.competitiveBehavioralPattern,
-          brand_loyalty_segment: indicators.brandLoyaltySegment,
+          housing_preference_segment: indicators.housingPreferenceSegment,
           trend_behavioral_alignment: indicators.trendBehavioralAlignment,
           
           // Supporting segmentation data
-          target_brand_share: targetBrandShare,
-          target_brand_name: targetBrand?.brandName || 'Unknown',
+          housing_market_strength: householdIncome,
+          area_classification: this.classifyHousingArea(householdIncome, population),
           market_population: totalPop,
           median_household_income: medianIncome,
           strategic_alignment: strategicScore,
@@ -146,56 +146,19 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
     };
   }
 
-  private extractSegmentScore(record: any): number {
-    // PRIORITY 1: Target brand market share as primary segment profiling indicator  
-    const brandFields = this.brandResolver.detectBrandFields(record);
-    const targetBrand = brandFields.find(bf => bf.isTarget);
-    
-    if (targetBrand && targetBrand.value !== undefined && targetBrand.value !== null) {
-      const targetBrandShare = Number(targetBrand.value);
-      console.log(`🎯 [SegmentProfilingProcessor] Using ${targetBrand.brandName} market share as segment score: ${targetBrandShare} for ${(record as any).value_DESCRIPTION || (record as any).ID || 'Unknown'}`);
-      return targetBrandShare;
-    }
-    
-    // PRIORITY 2: Pre-calculated segment profiling score (for other datasets)
-    if (((record as any).segment_score !== undefined && (record as any).segment_score !== null) ||
-        ((record as any).segment_profiling_score !== undefined && (record as any).segment_profiling_score !== null)) {
-      const preCalculatedScore = Number((record as any).segment_score ?? (record as any).segment_profiling_score);
-      console.log(`🎯 [SegmentProfilingProcessor] Using pre-calculated segment score: ${preCalculatedScore} for ${(record as any).DESCRIPTION || (record as any).area_name || 'Unknown'}`);
-      return preCalculatedScore;
-    }
-    
-    // Fallback: Calculate segment fit score from available demographic and market data
-    const population = (record as any).value_TOTPOP_CY || (record as any).TOTPOP_CY || (record as any).total_population || 0;
-    const income = (record as any).value_MEDDI_CY || (record as any).value_AVGHINC_CY || (record as any).median_income || 0;
-    const age = (record as any).value_MEDAGE_CY || (record as any).age || 0;
-    const diversity = (record as any).value_DIVINDX_CY || (record as any).diversity_index || 50; // Default mid-range
-    
-    // Calculate composite segment profiling score (0-100)
-    let segmentScore = 0;
-    
-    // Population density component (0-20 points) - larger markets have clearer segments
-    const populationScore = Math.min((population / 75000) * 20, 20);
-    
-    // Income diversity component (0-25 points) - mixed income = better segmentation
-    const incomeScore = income > 0 ? Math.min((income / 120000) * 25, 25) : 0;
-    
-    // Age diversity component (0-25 points) - working age populations = better segments
-    const ageScore = age > 0 ? Math.max(0, 25 - Math.abs(age - 40) * 0.5) : 0;
-    
-    // Market diversity component (0-30 points) - higher diversity = clearer segments
-    const diversityScore = (diversity / 100) * 30;
-    
-    segmentScore = populationScore + incomeScore + ageScore + diversityScore;
-    
-    console.log('⚠️ [SegmentProfilingProcessor] No pre-calculated segment_score found, using fallback calculation');
-    return Math.max(0, Math.min(100, segmentScore));
+
+  private classifyHousingArea(income: number, population: number): string {
+    if (income > 80000 && population > 50000) return 'Premium Urban Market';
+    if (income > 60000 && population > 25000) return 'Established Suburban Market';
+    if (income > 40000) return 'Growing Market Area';
+    if (population > 10000) return 'Developing Urban Area';
+    return 'Emerging Market';
   }
 
   private calculateSegmentationIndicators(metrics: {
     segmentScore: number;
-    targetBrandShare: number;
-    targetBrandName: string;
+    householdIncome: number;
+    population: number;
     strategicScore: number;
     competitiveScore: number;
     demographicScore: number;
@@ -206,8 +169,8 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
   }) {
     const {
       segmentScore,
-      targetBrandShare,
-      targetBrandName,
+      householdIncome,
+      population,
       strategicScore,
       competitiveScore,
       demographicScore,
@@ -265,11 +228,11 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
                               medianIncome >= 60000 ? 'Middle Income' :
                               medianIncome >= 40000 ? 'Lower-Middle Income' : 'Lower Income';
 
-    // Target brand segment affinity
-    const targetBrandSegmentAffinity = targetBrandShare >= 30 ? 'Very High Affinity' :
-                                      targetBrandShare >= 20 ? 'High Affinity' :
-                                      targetBrandShare >= 15 ? 'Moderate Affinity' :
-                                      targetBrandShare >= 8 ? 'Low Affinity' : 'Very Low Affinity';
+    // Housing segment affinity based on income and market characteristics
+    const housingSegmentAffinity = householdIncome >= 80000 ? 'Premium Housing Affinity' :
+                                   householdIncome >= 60000 ? 'Upper-Mid Housing Affinity' :
+                                   householdIncome >= 40000 ? 'Mid-Market Housing Affinity' :
+                                   householdIncome >= 25000 ? 'Affordable Housing Affinity' : 'Entry-Level Housing Affinity';
 
     // Income distinctiveness
     const incomeDistinctiveness = medianIncome >= 120000 ? 'Highly Distinctive' :
@@ -299,10 +262,10 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
                                        competitiveScore >= 6 ? 'Competitive' :
                                        competitiveScore >= 4 ? 'Moderately Competitive' : 'Low Competition';
 
-    // Brand loyalty segment
-    const brandLoyaltySegment = targetBrandShare >= 30 ? 'High Loyalty' :
-                               targetBrandShare >= 20 ? 'Moderate Loyalty' :
-                               targetBrandShare >= 10 ? 'Low Loyalty' : 'Minimal Loyalty';
+    // Housing preference segment based on market stability
+    const housingPreferenceSegment = (strategicScore >= 70 && householdIncome >= 60000) ? 'Stable Market Preference' :
+                                     (strategicScore >= 50 || householdIncome >= 45000) ? 'Growing Market Preference' :
+                                     (strategicScore >= 35 || householdIncome >= 30000) ? 'Emerging Market Preference' : 'Developing Market Preference';
 
     // Trend behavioral alignment
     const trendBehavioralAlignment = trendScore >= 75 ? 'Strongly Aligned' :
@@ -353,13 +316,13 @@ export class SegmentProfilingProcessor implements DataProcessorStrategy {
       primarySegmentType,
       segmentSize,
       segmentIncomeLevel,
-      targetBrandSegmentAffinity,
+      housingSegmentAffinity,
       incomeDistinctiveness,
       populationSegmentCategory,
       demographicProfileStrength,
       strategicBehavioralPattern,
       competitiveBehavioralPattern,
-      brandLoyaltySegment,
+      housingPreferenceSegment,
       trendBehavioralAlignment,
       segmentCoherence,
       profileCompleteness,
