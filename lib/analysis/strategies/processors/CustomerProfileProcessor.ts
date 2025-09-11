@@ -5,14 +5,14 @@ import Extent from '@arcgis/core/geometry/Extent';
 import { BaseProcessor } from './BaseProcessor';
 
 /**
- * ResidentialProfileProcessor - Handles data processing for residential market profiling
+ * CustomerProfileProcessor - Handles data processing for customer profiling across markets
  * 
- * Processes residential market profile analysis with comprehensive demographic analysis,
- * housing characteristics, lifestyle indicators, and investment patterns across Quebec housing markets.
+ * Processes customer profile analysis with comprehensive demographic analysis,
+ * lifestyle characteristics, behavioral indicators, and market patterns across regions.
  * 
- * Extends BaseProcessor for configuration-driven behavior with real estate focus.
+ * Extends BaseProcessor for configuration-driven behavior with customer focus.
  */
-export class ResidentialProfileProcessor extends BaseProcessor {
+export class CustomerProfileProcessor extends BaseProcessor {
   private scoreField: string | undefined;
 
   constructor() {
@@ -63,17 +63,17 @@ export class ResidentialProfileProcessor extends BaseProcessor {
     if (Array.isArray(dataAny)) {
       // Direct array format: [{...}, {...}]
       dataArray = dataAny as any[];
-      console.log(`🏠 [RESIDENTIAL PROFILE PROCESSOR] CALLED WITH ${dataArray.length} RECORDS (direct array) 🏠`);
+      console.log(`👤 [CUSTOMER PROFILE PROCESSOR] CALLED WITH ${dataArray.length} RECORDS (direct array) 👤`);
     } else if (dataAny.success && Array.isArray(dataAny.results)) {
       // Wrapped format: {success: true, results: [{...}, {...}]}
       dataArray = dataAny.results as any[];
-      console.log(`🏠 [RESIDENTIAL PROFILE PROCESSOR] CALLED WITH ${dataArray.length} RECORDS (wrapped) 🏠`);
+      console.log(`👤 [CUSTOMER PROFILE PROCESSOR] CALLED WITH ${dataArray.length} RECORDS (wrapped) 👤`);
     } else {
-      throw new Error('Invalid data format for ResidentialProfileProcessor');
+      throw new Error('Invalid data format for CustomerProfileProcessor');
     }
     
     if (!this.validate(rawData)) {
-      throw new Error('Invalid data format for ResidentialProfileProcessor');
+      throw new Error('Invalid data format for CustomerProfileProcessor');
     }
 
   // Resolve canonical primary score field for residential profiles
