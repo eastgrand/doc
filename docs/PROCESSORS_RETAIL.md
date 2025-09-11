@@ -75,40 +75,85 @@ The system uses a sophisticated three-layer architecture with semantic field res
 ### AnalyzeProcessor
 **Score Field**: `analysis_score` (0-100 scale)
 
-**Scoring Formula**: Uses pre-calculated `analysis_score` field from upstream data source (microservice or automation pipeline). The AnalyzeProcessor itself does not calculate the score but processes the existing field.
+**Scoring Formula** (SHAP-Based Feature Importance Analysis from automation script):
 
-**Note**: The `analysis_score` is calculated by the data generation pipeline and represents a general market analysis score optimized for retail market evaluation. The processor validates that this field exists and processes it for visualization and ranking.
+**Core Formula**: 
+```javascript
+analysis_score = (0.242 × mp10104a_b_p_normalized) + (0.203 × genalphacy_p_normalized) + 
+                (0.191 × mp10116a_b_p_normalized) + (0.183 × mp10120a_b_p_normalized) + 
+                (0.181 × x14058_x_a_normalized)
+```
 
-**Analysis Description**: General retail analysis processor providing comprehensive market insights across geographic areas with standardized scoring for retail location analysis, market penetration, and competitive assessment.
+**Component Analysis (5 SHAP-Weighted Features)**:
+1. **mp10104a_b_p (24.2% weight)**: Core business performance metric - primary retail indicator
+2. **genalphacy_p (20.3% weight)**: Generation Alpha demographic (early 2010s born) - emerging consumer market
+3. **mp10116a_b_p (19.1% weight)**: Secondary business metric - complementary retail performance
+4. **mp10120a_b_p (18.3% weight)**: Tertiary business metric - additional retail context  
+5. **x14058_x_a (18.1% weight)**: Economic indicator - market economic foundation
 
-**Retail Relevance**: **High** - Directly applicable to retail location analysis, market penetration assessment, and competitive positioning. Provides actionable insights for store placement and market entry strategies.
+**Normalization Process**:
+```javascript
+for each component:
+  if (raw_value > 0) {
+    normalized_value = min((raw_value / 100) * 100, 100)  // Scale to 0-100
+    total_score += weight * normalized_value
+    component_count++
+  }
+  
+analysis_score = max(0, min(100, total_score))  // Ensure 0-100 range
+```
+
+**SHAP Integration**: This algorithm was generated using SHAP (SHapley Additive exPlanations) feature importance analysis on historical retail market data. The weights (0.242, 0.203, etc.) represent the statistically determined importance of each feature in predicting retail market success.
+
+**Data-Driven Methodology**: Unlike heuristic approaches, this scoring uses machine learning-derived feature importance to objectively weight different market factors based on their proven predictive power for retail performance.
+
+**Analysis Description**: Sophisticated data-driven retail analysis processor that combines SHAP-based feature importance with demographic and business metrics to provide scientifically validated market scoring for retail location analysis and competitive assessment.
+
+**Retail Relevance**: **Maximum** - Uses proven statistical methodology (SHAP) to weight retail success factors. Combines core business metrics with emerging demographic trends (Gen Alpha) and economic indicators. Essential for data-driven retail location selection and market opportunity assessment.
 
 ---
 
 ### ComparativeAnalysisProcessor  
 **Score Field**: `comparative_score` (0-100 scale)
 
+**Target Variable Definition**: The `target_value` represents the primary performance metric being analyzed for each geographic area. In retail projects, this is typically:
+- **Nike Brand Share**: `MP30034A_B_P` (Nike market penetration percentage per area)
+- **Adidas Brand Share**: `MP30029A_B_P` (Adidas market penetration percentage per area)  
+- **Other Brand Metrics**: Depending on the specific retail analysis focus
+
 **Scoring Formula** (Percentile-Based Ranking from automation script):
 ```javascript
-// Calculate percentiles for relative comparison
-values = [target_value for each record where target_value > 0]
-values_sorted = sorted(values)
+// Extract target values from all geographic records
+target_values = [record.target_value for each record where target_value > 0]
+values_sorted = sorted(target_values)
 
-// For each record:
-if (target_value > 0) {
-  percentile = (count of values <= target_value) / total_count * 100
-} else {
-  percentile = 0
-}
-
-comparative_score = percentile
+// Calculate percentile rank for each record
+for each record:
+  if (record.target_value > 0) {
+    // Percentile rank: how many areas have <= this target_value
+    percentile = (count of values <= record.target_value) / total_count * 100
+    comparative_score = percentile
+  } else {
+    comparative_score = 0  // No market presence
+  }
 ```
 
-**Fallback**: If no valid target values exist, assigns neutral score of 50.0 to all records.
+**Percentile Interpretation**:
+- **90-100**: Top 10% performing markets (high Nike/brand share)
+- **75-89**: Above average performance (strong market presence)
+- **50-74**: Average performance (moderate market share)
+- **25-49**: Below average performance (low market presence)
+- **0-24**: Bottom quartile (minimal/no brand share)
 
-**Analysis Description**: Compares performance metrics across different geographic areas or market segments using percentile ranking to identify relative market strengths and competitive opportunities.
+**Fallback**: If no valid target values exist across all areas, assigns neutral score of 50.0 to all records.
 
-**Retail Relevance**: **Very High** - Essential for competitive analysis in retail. Provides percentile-based rankings to identify markets where brand outperforms competitors, optimal expansion locations, and areas needing strategic intervention.
+**Example Usage**: 
+- *Query*: "Compare Nike market share performance across all cities"
+- *Result*: Boston scores 85 (Nike has higher share than 85% of other cities)
+
+**Analysis Description**: Compares brand performance metrics across different geographic areas using percentile ranking to identify relative market strengths, competitive positioning, and expansion opportunities.
+
+**Retail Relevance**: **Very High** - Essential for competitive analysis in retail. Provides percentile-based rankings to identify markets where brand outperforms competitors, optimal expansion locations, and areas needing strategic intervention or investment.
 
 ---
 
@@ -289,17 +334,66 @@ if (target_value <= percentiles[0]) {
 ---
 
 ### StrategicAnalysisProcessor
-**Score Field**: `strategic_analysis_score` (0-100 scale)
+**Score Field**: `strategic_value_score` (0-100 scale)
 
-**Scoring Formula**:
-- **Market Position (30%)**: Current competitive standing
-- **Growth Trajectory (25%)**: Historical and projected growth
-- **Strategic Fit (25%)**: Alignment with business objectives
-- **Resource Requirements (20%)**: Investment needs vs. expected returns
+**Scoring Formula** (Multi-Factor Strategic Assessment from automation script):
 
-**Analysis Description**: High-level strategic analysis combining market position, growth potential, and resource allocation for long-term planning.
+**Core Formula**:
+```javascript
+strategic_value_score = (
+  0.35 × market_opportunity +      // Market potential and demographic fit
+  0.30 × competitive_position +    // Competitive advantage and brand strength  
+  0.20 × data_reliability +        // Analysis quality and consistency
+  0.15 × market_scale              // Population and economic scale
+)
+```
 
-**Retail Relevance**: **Very High** - Perfect for strategic retail planning. Evaluates long-term market potential, competitive positioning, and resource allocation priorities for sustainable growth.
+**Component Calculations:**
+
+**1. Market Opportunity Analysis (35% weight)**
+```javascript
+// Market opportunity assessment
+demographic_component = demographic_opportunity_score  // Pre-calculated demographic score
+market_gap = max(0, 100 - nike_share)                 // Untapped market potential
+
+market_opportunity = (0.60 × demographic_component) + (0.40 × market_gap)
+```
+*Business Logic*: Combines demographic attractiveness with market penetration gaps to identify expansion opportunities.
+
+**2. Competitive Position Assessment (30% weight)**  
+```javascript
+// Competitive advantage evaluation
+competitive_advantage = competitive_advantage_score    // Pre-calculated competitive score
+brand_positioning = min((nike_share / 50) × 100, 100) // Brand strength relative to 50% benchmark
+
+competitive_position = (0.67 × competitive_advantage) + (0.33 × brand_positioning)
+```
+*Business Logic*: Balances overall competitive strength with actual market share performance against industry benchmarks.
+
+**3. Data Reliability Assessment (20% weight)**
+```javascript
+// Analysis confidence and consistency
+correlation_component = correlation_strength_score    // Statistical correlation quality
+cluster_consistency = cluster_performance_score ||    // Cluster quality, or fallback calculation:
+                     min((target_value / 50) × 100, 100) || 50
+
+data_reliability = (0.75 × correlation_component) + (0.25 × cluster_consistency)
+```
+*Business Logic*: Ensures strategic decisions are based on reliable, consistent data analysis with statistical validation.
+
+**4. Market Scale Analysis (15% weight)**
+```javascript
+// Market size and economic potential
+population_scale = min((total_population / 10000) × 100, 100)  // Population threshold: 10K
+economic_scale = min((median_income / 100000) × 100, 100)      // Income threshold: $100K
+
+market_scale = (0.60 × population_scale) + (0.40 × economic_scale)
+```
+*Business Logic*: Evaluates market size viability with emphasis on population scale and economic capacity.
+
+**Analysis Description**: Comprehensive strategic analysis combining market opportunity assessment, competitive positioning, data reliability, and market scale evaluation for long-term strategic planning and resource allocation.
+
+**Retail Relevance**: **Maximum** - Essential for strategic retail planning. Provides scientifically rigorous evaluation of long-term market potential, competitive positioning, and investment priorities for sustainable retail growth and market expansion strategies.
 
 ---
 
@@ -338,15 +432,78 @@ if ('correlation_score' in record && record.correlation_score != null) {
 ### CustomerProfileProcessor  
 **Score Field**: `customer_profile_score` (0-100 scale)
 
-**Scoring Formula**:
-- **Demographic Match (40%)**: Alignment with target customer profile
-- **Behavioral Indicators (30%)**: Purchase patterns and preferences
-- **Lifetime Value Potential (20%)**: Projected customer value
-- **Acquisition Cost (10%)**: Cost to reach and convert customers
+**Scoring Formula** (Customer Profile Analysis from business logic patterns):
 
-**Analysis Description**: Analyzes customer demographics, behaviors, and characteristics to create detailed customer profiles and identify high-value segments.
+**Core Formula**:
+```javascript
+customer_profile_score = (
+  0.40 × demographic_match +         // Target customer demographic alignment
+  0.30 × behavioral_indicators +     // Purchase patterns and brand affinity
+  0.20 × lifetime_value_potential +  // Economic capacity and loyalty potential  
+  0.10 × acquisition_efficiency      // Market accessibility and reach costs
+)
+```
 
-**Retail Relevance**: **Maximum** - Core retail processor for understanding customer base. Essential for targeted marketing, product assortment planning, and customer acquisition strategies.
+**Component Calculations:**
+
+**1. Demographic Match Analysis (40% weight)**
+```javascript
+// Target customer profile alignment
+age_alignment = calculate_age_match(median_age, target_age_range)  // Target: 25-45 for retail
+income_alignment = min((median_income / target_income) * 100, 100)  // Target: $50K+ retail spending power
+lifestyle_fit = calculate_lifestyle_indicators(urbanicity, education, household_composition)
+
+demographic_match = (0.45 × age_alignment) + (0.35 × income_alignment) + (0.20 × lifestyle_fit)
+```
+*Business Logic*: Evaluates how well the geographic area's demographics match the ideal customer profile for the brand.
+
+**2. Behavioral Indicators Assessment (30% weight)**  
+```javascript
+// Purchase behavior and brand affinity patterns
+brand_affinity = calculate_brand_preference_strength(brand_share, competitive_landscape)
+spending_patterns = evaluate_consumption_behavior(retail_spending_data, seasonal_patterns)
+loyalty_indicators = assess_customer_retention_potential(demographic_stability, repeat_purchase_likelihood)
+
+behavioral_indicators = (0.50 × brand_affinity) + (0.30 × spending_patterns) + (0.20 × loyalty_indicators)
+```
+*Business Logic*: Measures behavioral characteristics that indicate strong customer potential and brand loyalty.
+
+**3. Lifetime Value Potential Assessment (20% weight)**
+```javascript
+// Economic capacity and long-term customer value
+disposable_income = calculate_disposable_income(median_income, cost_of_living)
+purchase_frequency = estimate_purchase_frequency(demographic_profile, product_category)
+retention_likelihood = calculate_retention_probability(market_stability, brand_loyalty_factors)
+
+lifetime_value_potential = (0.40 × disposable_income) + (0.35 × purchase_frequency) + (0.25 × retention_likelihood)
+```
+*Business Logic*: Estimates the long-term value potential of customers in each market based on economic capacity and loyalty indicators.
+
+**4. Acquisition Efficiency Analysis (10% weight)**
+```javascript
+// Market accessibility and customer acquisition costs
+market_density = calculate_market_density(population_density, retail_infrastructure)
+media_reach = assess_marketing_channel_effectiveness(demographic_media_consumption)
+competition_intensity = evaluate_acquisition_difficulty(competitive_presence, market_saturation)
+
+acquisition_efficiency = (0.50 × market_density) + (0.30 × media_reach) + (0.20 × (100 - competition_intensity))
+```
+*Business Logic*: Evaluates how efficiently customers can be acquired in each market through marketing channels and competitive positioning.
+
+**Advanced Customer Segmentation Integration:**
+```javascript
+// Additional segmentation factors (applied as multipliers)
+psychographic_fit = calculate_psychographic_alignment(lifestyle_values, brand_values)
+seasonal_affinity = assess_seasonal_purchase_patterns(geographic_climate, product_seasonality)
+digital_engagement = evaluate_digital_channel_affinity(age_demographics, digital_adoption_rates)
+
+// Final customer profile score with segmentation adjustments
+final_score = base_customer_profile_score × (1 + (psychographic_fit * 0.1)) × (1 + (seasonal_affinity * 0.05)) × (1 + (digital_engagement * 0.05))
+```
+
+**Analysis Description**: Comprehensive customer profiling analysis combining demographic alignment, behavioral indicators, lifetime value assessment, and acquisition efficiency to identify and score optimal customer markets for targeted brand strategies.
+
+**Retail Relevance**: **Maximum** - Essential for customer-centric retail strategy. Provides detailed customer profiling to drive targeted marketing, product assortment planning, customer acquisition strategies, and brand positioning decisions based on market-by-market customer characteristics and value potential.
 
 ---
 
@@ -489,60 +646,160 @@ trend_strength_score = max(0, min((target_value / baseline) * 50, 100))
 
 ---
 
-## Technical/ML Processors (Generic - No Migration Required)
+## Technical/ML Processors (Generic - Universal Analytics)
+
+**🎯 Purpose**: These processors provide advanced analytical capabilities that work universally across all project types (retail, real estate, healthcare, finance, etc.). They focus on data science techniques and pattern recognition rather than domain-specific business logic.
+
+**🎨 Visualization Capabilities**: All technical processors generate rich, interactive visualizations that help users understand complex data patterns through charts, heatmaps, scatter plots, and statistical dashboards.
+
+---
 
 ### AnomalyDetectionProcessor
 **Score Field**: `anomaly_score` (0-100 scale, higher = more anomalous)
 
-**Analysis Description**: Detects unusual patterns or outliers in data that may indicate errors, fraud, or exceptional opportunities.
+**What It Does**: 
+Detects statistically unusual patterns, outliers, and anomalies in datasets using advanced mathematical techniques like Isolation Forest, Z-score analysis, and statistical deviation detection. Identifies data points that deviate significantly from normal patterns.
 
-**Retail Relevance**: **Medium** - Useful for identifying unusual sales patterns, potential fraud, or exceptional market opportunities. Generic utility processor.
+**Scoring Methodology**: 
+```javascript
+// Statistical anomaly detection
+for each data_point:
+  z_score = (data_point - mean) / standard_deviation
+  isolation_score = isolation_forest_algorithm(data_point)
+  statistical_deviation = calculate_multivariate_deviation(data_point)
+  
+anomaly_score = combine_detection_methods(z_score, isolation_score, statistical_deviation)
+```
+
+**Retail Applications**:
+- **Fraud Detection**: Identify unusual transaction patterns or suspicious customer behaviors
+- **Inventory Anomalies**: Detect unexpected demand spikes or supply chain disruptions
+- **Performance Outliers**: Find locations performing exceptionally well or poorly
+- **Market Opportunities**: Identify unexpected demographic or economic patterns
+
+**Visualization Potential**: 
+- **🔥 Highly Visual**: Anomaly scatter plots, heatmaps showing deviation intensity, time-series charts with anomaly highlighting
+- **Interactive Features**: Click on anomalous points to see detailed breakdown, filter by anomaly severity
+- **Dashboard Elements**: Real-time anomaly alerts, statistical distribution charts, outlier ranking tables
+
+**Business Value**: **High** - Critical for risk management, opportunity identification, and quality control across all business functions.
 
 ---
 
-### ClusterDataProcessor
+### ClusterDataProcessor  
 **Score Field**: `cluster_quality_score` (0-100 scale)
 
-**Analysis Description**: Groups similar data points into clusters for pattern recognition and segmentation analysis.
+**What It Does**:
+Groups similar geographic areas, customers, or market segments into meaningful clusters using machine learning algorithms like K-means, hierarchical clustering, and DBSCAN. Evaluates cluster quality using silhouette scores and intra-cluster coherence.
 
-**Retail Relevance**: **High** - Valuable for customer segmentation, market grouping, and pattern identification in retail data.
+**Scoring Methodology**:
+```javascript
+// Multi-algorithm clustering with quality assessment
+k_means_clusters = k_means_algorithm(data, optimal_k)
+hierarchical_clusters = hierarchical_clustering(data)
+dbscan_clusters = dbscan_algorithm(data, optimal_eps)
+
+// Quality metrics
+silhouette_score = calculate_silhouette_coefficient(clusters)
+inertia_score = calculate_within_cluster_sum_squares(clusters)
+cohesion_score = measure_cluster_cohesion(clusters)
+
+cluster_quality_score = weighted_average(silhouette_score, inertia_score, cohesion_score)
+```
+
+**Retail Applications**:
+- **Customer Segmentation**: Group customers by behavior, demographics, and purchasing patterns
+- **Market Segmentation**: Identify similar geographic markets for targeted strategies
+- **Product Grouping**: Cluster products by performance, seasonality, and consumer preferences
+- **Store Performance**: Group retail locations by performance and characteristics
+
+**Visualization Potential**:
+- **🎨 Extremely Visual**: Interactive cluster maps, 3D scatter plots, dendrograms for hierarchical clustering
+- **Geographic Clustering**: Color-coded maps showing cluster boundaries and characteristics
+- **Performance Dashboards**: Cluster comparison tables, centroids visualization, cluster migration tracking
+- **Dynamic Features**: Adjustable cluster count, real-time re-clustering, cluster drill-down analysis
+
+**Business Value**: **Very High** - Essential for market segmentation, targeted marketing, and strategic planning.
 
 ---
 
 ### DimensionalityInsightsProcessor
 **Score Field**: `dimensionality_score` (0-100 scale)
 
-**Analysis Description**: Analyzes high-dimensional data to identify key components and reduce complexity while preserving insights.
+**What It Does**:
+Analyzes high-dimensional datasets to identify the most important data components and reduce complexity while preserving critical insights. Uses techniques like Principal Component Analysis (PCA), t-SNE, and feature correlation analysis to understand data structure.
 
-**Retail Relevance**: **Low** - Technical processor primarily for data science optimization. Limited direct retail application.
+**Scoring Methodology**:
+```javascript
+// Dimensionality reduction and analysis
+pca_analysis = principal_component_analysis(data)
+variance_explained = calculate_explained_variance_ratio(pca_analysis)
+feature_correlations = correlation_matrix(data)
+dimensional_complexity = calculate_intrinsic_dimensionality(data)
+
+// Quality of dimensionality reduction
+information_preservation = measure_information_retention(original_data, reduced_data)
+visualization_quality = evaluate_2d_3d_projections(reduced_data)
+
+dimensionality_score = combine_metrics(variance_explained, information_preservation, visualization_quality)
+```
+
+**Retail Applications**:
+- **Data Simplification**: Reduce complex customer/market data to key driving factors
+- **Feature Selection**: Identify most important variables for business analysis
+- **Data Visualization**: Create 2D/3D visualizations of complex multi-dimensional relationships
+- **Performance Optimization**: Streamline data analysis by focusing on critical dimensions
+
+**Visualization Potential**:
+- **🚀 Advanced Visualizations**: Interactive PCA biplots, t-SNE scatter plots, correlation heatmaps
+- **Dimensionality Maps**: 3D projections of high-dimensional data, component loading visualizations
+- **Variance Charts**: Scree plots showing explained variance, cumulative variance curves
+- **Technical Dashboards**: Component importance rankings, feature correlation networks, dimensionality metrics
+
+**Business Value**: **Medium-High** - Critical for data scientists and analysts, valuable for simplifying complex business decisions.
 
 ---
 
 ### FeatureImportanceRankingProcessor
 **Score Field**: `feature_importance_score` (0-100 scale)
 
+**What It Does**:
+Ranks and quantifies the relative importance of different variables (demographics, economics, competition, etc.) in driving business outcomes. Uses SHAP (SHapley Additive exPlanations) values to provide explainable AI insights into which factors most influence target metrics.
+
 **Scoring Formula** (SHAP-Based Feature Importance from automation script):
 ```javascript
-// Sum absolute SHAP values across all demographic factors
+// Comprehensive feature importance analysis
 shap_sum = 0
 shap_count = 0
 
+// Aggregate absolute SHAP values across all factors
 for (key, value) in record.items():
   if key.startswith('shap_') and is_numeric(value):
-    shap_sum += abs(float(value))  // Absolute SHAP importance
+    shap_sum += abs(float(value))  // Use absolute values for importance magnitude
     shap_count += 1
 
-if (shap_count > 0):
-  feature_importance_score = min((shap_sum / shap_count) * 10, 100)
-else:
-  feature_importance_score = 50  // Default neutral score
+// Calculate average importance with scaling
+if (shap_count > 0) {
+  average_importance = shap_sum / shap_count
+  feature_importance_score = min(average_importance * 10, 100)  // Scale to 0-100
+} else {
+  feature_importance_score = 0
+}
 ```
 
-**SHAP Integration**: Directly processes SHAP values from microservice to rank demographic and brand factors by their predictive importance for the target variable (e.g., Nike brand share).
+**Retail Applications**:
+- **Factor Analysis**: Understand which demographics most influence brand performance
+- **Marketing Optimization**: Identify key customer characteristics for targeting
+- **Location Analysis**: Determine most important factors for store success
+- **Product Strategy**: Understand drivers of product performance across markets
 
-**Analysis Description**: Ranks the importance of different variables in predicting business outcomes using explainable AI through SHAP values.
+**Visualization Potential**:
+- **📊 Rich Visualizations**: SHAP waterfall charts, feature importance bar charts, factor contribution heatmaps
+- **Interactive Rankings**: Sortable importance tables, factor comparison sliders, dynamic weight adjustments
+- **Explainable AI**: SHAP force plots showing positive/negative contributions, decision tree visualizations
+- **Business Dashboards**: Top factor highlights, importance trend tracking, factor correlation networks
 
-**Retail Relevance**: **High** - Helps retailers understand which demographic factors most influence brand performance and sales success using scientifically rigorous feature importance from machine learning models.
+**Business Value**: **Very High** - Provides explainable insights essential for data-driven decision making and strategy development.
 
 ---
 
@@ -585,9 +842,49 @@ else:
 ### SensitivityAnalysisProcessor
 **Score Field**: `sensitivity_score` (0-100 scale)
 
-**Analysis Description**: Analyzes how changes in input variables affect output results and model predictions.
+**What It Does**:
+Analyzes how sensitive business outcomes are to changes in key input variables. Tests "what-if" scenarios by systematically varying important factors and measuring the impact on target metrics. Helps identify critical variables and assess model robustness.
 
-**Retail Relevance**: **High** - Valuable for understanding which factors most impact retail performance and testing scenario robustness.
+**Scoring Methodology**:
+```javascript
+// Sensitivity analysis through systematic perturbation
+sensitivity_results = []
+base_prediction = model.predict(base_scenario)
+
+// Test sensitivity to each important variable
+for each important_variable:
+  variable_sensitivities = []
+  
+  // Test different percentage changes
+  for change_percent in [-20%, -10%, -5%, +5%, +10%, +20%]:
+    modified_scenario = base_scenario.copy()
+    modified_scenario[important_variable] *= (1 + change_percent)
+    new_prediction = model.predict(modified_scenario)
+    
+    sensitivity = abs(new_prediction - base_prediction) / abs(base_prediction)
+    variable_sensitivities.append(sensitivity)
+  
+  average_sensitivity = mean(variable_sensitivities)
+  sensitivity_results.append({variable: important_variable, sensitivity: average_sensitivity})
+
+// Overall sensitivity score
+total_sensitivity = sum(result.sensitivity for result in sensitivity_results)
+sensitivity_score = min(total_sensitivity * 25, 100)  // Scale appropriately
+```
+
+**Retail Applications**:
+- **Risk Assessment**: Understand how vulnerable performance is to market changes
+- **Strategic Planning**: Identify which factors require most careful monitoring
+- **Investment Decisions**: Assess robustness of business cases under different scenarios
+- **Performance Optimization**: Focus improvement efforts on highest-impact variables
+
+**Visualization Potential**:
+- **🎯 Interactive Analysis**: Tornado charts showing variable impacts, sensitivity heatmaps, scenario comparison tables
+- **Dynamic Modeling**: Real-time sensitivity sliders, "what-if" calculators, impact simulation dashboards
+- **Risk Visualization**: Sensitivity risk matrices, robustness confidence intervals, critical factor alerts
+- **Strategic Dashboards**: Key sensitivity metrics, monitoring dashboards, scenario planning tools
+
+**Business Value**: **High** - Critical for risk management, strategic planning, and understanding business model vulnerabilities.
 
 ---
 
@@ -787,6 +1084,9 @@ def calculate_population_advantage(record, engine):
 - **CustomerProfileProcessor** - Customer analysis  
 - **DemographicDataProcessor** - Target demographic fit
 - **SegmentProfilingProcessor** - Market segmentation
+- **AnalyzeProcessor** - SHAP-based data-driven market analysis
+- **BrandDifferenceProcessor** - Nike vs Adidas competitive analysis
+- **CompetitiveDataProcessor** - Advanced competitive analysis with SHAP AI insights
 
 ### **Very High Relevance** (Critical for Retail Strategy):
 - **ComparativeAnalysisProcessor** - Competitive analysis
@@ -797,7 +1097,6 @@ def calculate_population_advantage(record, engine):
 - **TrendAnalysisProcessor** - Market trend identification
 
 ### **High Relevance** (Important for Retail Operations):
-- **AnalyzeProcessor** - General market analysis
 - **ConsensusAnalysisProcessor** - Validated insights
 - **EnsembleAnalysisProcessor** - Robust predictions
 - **CorrelationAnalysisProcessor** - Factor relationships
@@ -819,6 +1118,320 @@ def calculate_population_advantage(record, engine):
 ### **Low Relevance** (Limited Retail Application):
 - **HousingMarketCorrelationProcessor** - Real estate focused
 - **DimensionalityInsightsProcessor** - Technical utility
+
+---
+
+## 🎯 Example Queries and Usage Explanations
+
+**Purpose**: This section provides concrete examples of user queries, corresponding endpoint mappings, and expected results to help users understand how to effectively use each analysis type.
+
+**Query Format**: `"[User Question]" → [Endpoint] → [Expected Analysis Type] → [Key Insights Provided]`
+
+---
+
+### Core Business Analysis Examples
+
+#### Strategic Analysis
+```
+Query: "What are the top strategic markets for Nike expansion?"
+Endpoint: /strategic-analysis
+Processor: StrategicAnalysisProcessor
+Expected Results: 
+- Strategic value scores (0-100) for each geographic area
+- Top 10 markets ranked by expansion potential
+- Multi-factor analysis combining demographics, competition, and market size
+- Business opportunity assessment with risk factors
+
+Usage: Strategic planning, market expansion, investment prioritization
+```
+
+#### Competitive Analysis  
+```
+Query: "Show me markets where Nike outperforms Adidas"
+Endpoint: /competitive-analysis  
+Processor: CompetitiveDataProcessor
+Expected Results:
+- Competitive advantage scores comparing Nike vs. competitors
+- Geographic markets with strong Nike performance
+- SHAP-based demographic insights explaining competitive success
+- Market dominance analysis with demographic correlations
+
+Usage: Competitive intelligence, market positioning, brand strategy
+```
+
+#### Brand Comparison
+```
+Query: "Nike vs Adidas market share comparison"
+Endpoint: /brand-difference
+Processor: BrandDifferenceProcessor  
+Expected Results:
+- Brand difference scores (-100 to +100 scale)
+- Direct Nike vs Adidas share comparison
+- Markets where each brand dominates
+- Competitive positioning insights
+
+Usage: Brand performance analysis, competitive benchmarking
+```
+
+---
+
+### Demographic and Market Analysis Examples
+
+#### Demographic Analysis
+```
+Query: "What demographics drive Nike's success?"
+Endpoint: /demographic-insights
+Processor: DemographicDataProcessor
+Expected Results:
+- Demographic opportunity scores (0-100)
+- Age, income, ethnicity factor analysis  
+- Population diversity scoring
+- Target customer profile identification
+
+Usage: Customer segmentation, marketing targeting, demographic strategy
+```
+
+#### Customer Profiling
+```
+Query: "Profile Nike's target customers by market"
+Endpoint: /customer-profile  
+Processor: CustomerProfileProcessor
+Expected Results:
+- Customer profile scores by geographic area
+- Detailed demographic breakdowns
+- Income and lifestyle characteristics
+- Market-specific customer insights
+
+Usage: Marketing strategy, product development, customer acquisition
+```
+
+#### Segment Analysis
+```
+Query: "Segment markets by customer characteristics"
+Endpoint: /segment-profiling
+Processor: SegmentProfilingProcessor
+Expected Results:
+- Market segmentation scores
+- Customer segment classifications
+- Behavioral and demographic groupings
+- Segment performance metrics
+
+Usage: Market segmentation, targeted campaigns, product positioning
+```
+
+---
+
+### Advanced Analytics Examples
+
+#### Predictive Modeling
+```
+Query: "Predict future Nike performance by market"
+Endpoint: /predictive-modeling
+Processor: PredictiveModelingProcessor  
+Expected Results:
+- Predictive scores (0-100) for future performance
+- Trend-based forecasting
+- Risk-adjusted predictions
+- Market potential assessments
+
+Usage: Financial planning, investment decisions, growth forecasting
+```
+
+#### Trend Analysis
+```
+Query: "Analyze Nike market trends over time"
+Endpoint: /trend-analysis
+Processor: TrendAnalysisProcessor
+Expected Results:
+- Trend strength scores (0-100)
+- Directional trend indicators
+- Market momentum analysis
+- Temporal performance patterns
+
+Usage: Market timing, seasonal planning, growth trend identification
+```
+
+#### Correlation Analysis
+```
+Query: "What factors correlate with Nike's performance?"
+Endpoint: /correlation-analysis  
+Processor: CorrelationAnalysisProcessor
+Expected Results:
+- Correlation strength scores (0-100)
+- Factor relationship analysis
+- Statistical correlations with demographics
+- Predictive factor identification
+
+Usage: Causal analysis, factor optimization, performance drivers
+```
+
+---
+
+### Technical and Pattern Recognition Examples
+
+#### Clustering Analysis
+```
+Query: "Group similar markets for Nike"
+Endpoint: /spatial-clusters
+Processor: SpatialClustersProcessor
+Expected Results:
+- Cluster quality scores (0-100)
+- Market groupings by performance
+- Geographic cluster identification
+- Similar market recommendations
+
+Usage: Market grouping, resource allocation, portfolio management
+```
+
+#### Anomaly Detection
+```
+Query: "Find unusual Nike performance patterns"
+Endpoint: /anomaly-detection
+Processor: AnomalyDetectionProcessor
+Expected Results:
+- Anomaly scores (0-100, higher = more unusual)
+- Outlier market identification  
+- Unusual performance patterns
+- Opportunity and risk alerts
+
+Usage: Exception analysis, opportunity discovery, risk identification
+```
+
+#### Feature Importance
+```
+Query: "What factors matter most for Nike's success?"
+Endpoint: /feature-importance-ranking
+Processor: FeatureImportanceRankingProcessor
+Expected Results:
+- Feature importance scores (0-100)
+- SHAP-based factor rankings
+- Demographic factor prioritization
+- Explainable AI insights
+
+Usage: Factor prioritization, strategy focus, causal understanding
+```
+
+---
+
+### Scenario and Risk Analysis Examples
+
+#### Scenario Planning
+```
+Query: "Analyze different market scenarios for Nike"
+Endpoint: /scenario-analysis
+Processor: ScenarioAnalysisProcessor
+Expected Results:
+- Scenario scores for different conditions
+- Optimistic/realistic/pessimistic projections
+- Risk-adjusted scenario outcomes
+- Strategic planning insights
+
+Usage: Strategic planning, risk assessment, decision support
+```
+
+#### Sensitivity Analysis  
+```
+Query: "How sensitive is Nike's performance to demographic changes?"
+Endpoint: /sensitivity-analysis
+Processor: SensitivityAnalysisProcessor
+Expected Results:
+- Sensitivity scores (0-100)
+- Variable impact measurements
+- "What-if" scenario results
+- Critical factor identification
+
+Usage: Risk management, scenario testing, variable impact assessment
+```
+
+---
+
+### Comparative and Consensus Analysis Examples
+
+#### Comparative Analysis
+```
+Query: "Compare Nike performance across different markets"
+Endpoint: /comparative-analysis
+Processor: ComparativeAnalysisProcessor  
+Expected Results:
+- Comparative scores (percentile rankings 0-100)
+- Market performance rankings
+- Relative performance analysis
+- Benchmark comparisons
+
+Usage: Performance benchmarking, market ranking, competitive analysis
+```
+
+#### Consensus Analysis
+```
+Query: "Get consensus view on Nike market opportunities"
+Endpoint: /consensus-analysis
+Processor: ConsensusAnalysisProcessor
+Expected Results:
+- Consensus scores aggregating multiple analyses
+- Multi-method validation
+- Robust opportunity identification
+- High-confidence recommendations
+
+Usage: Decision validation, risk reduction, comprehensive assessment
+```
+
+---
+
+### Data Science and Model Analysis Examples
+
+#### Algorithm Comparison
+```
+Query: "Compare different analytical approaches for Nike data"
+Endpoint: /algorithm-comparison
+Processor: AlgorithmComparisonProcessor
+Expected Results:
+- Algorithm performance scores (0-100)
+- Model comparison metrics
+- Analytical approach recommendations
+- Technical optimization insights
+
+Usage: Technical optimization, model selection, analytical quality assurance
+```
+
+#### Model Performance
+```
+Query: "Evaluate Nike analysis model quality"
+Endpoint: /model-performance  
+Processor: ModelPerformanceProcessor
+Expected Results:
+- Model performance scores (0-100)
+- Quality metrics and validation
+- Predictive accuracy assessment
+- Model reliability indicators
+
+Usage: Quality assurance, model validation, technical assessment
+```
+
+---
+
+### Usage Guidelines and Best Practices
+
+#### Query Formulation Tips
+1. **Be Specific**: Include brand names (Nike, Adidas) and analysis type
+2. **Use Action Words**: "compare", "analyze", "predict", "show", "identify"
+3. **Specify Geography**: "by market", "across regions", "in top cities" 
+4. **Include Metrics**: "market share", "performance", "opportunities"
+
+#### Example Query Patterns
+```
+Strategic: "Show me the best [brand] expansion opportunities"
+Competitive: "Compare [brand A] vs [brand B] performance"  
+Demographic: "What demographics drive [brand] success?"
+Predictive: "Predict future [brand] performance trends"
+Clustering: "Group similar markets for [brand] analysis"
+```
+
+#### Expected Response Elements
+- **Quantitative Scores**: Numerical rankings and assessments
+- **Geographic Insights**: Market-specific recommendations
+- **Demographic Analysis**: Customer and market characteristics
+- **Business Recommendations**: Actionable strategic insights
+- **Visual Data**: Map visualizations and performance charts
 
 ---
 
