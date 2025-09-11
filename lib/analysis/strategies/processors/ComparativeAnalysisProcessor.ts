@@ -157,16 +157,46 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     // Determine canonical primary score for comparative analysis (metadata override allowed)
     const primary = getPrimaryScoreField('comparative_analysis', (rawData as any)?.metadata) || 'comparison_score';
 
-    // Process records with comparative analysis scoring priority
+    // Find global min and max for unified scaling across all cities
+    const allScores = (rawData.results as any[]).map(record => 
+      this.extractComparativeScore(record, primary)
+    ).filter(score => !isNaN(score));
+    
+    const globalMin = Math.min(...allScores);
+    const globalMax = Math.max(...allScores);
+    const globalRange = globalMax - globalMin || 1; // Avoid division by zero
+    
+    console.log(`📊 [ComparativeAnalysisProcessor] Global scale: min=${globalMin.toFixed(2)}, max=${globalMax.toFixed(2)}, range=${globalRange.toFixed(2)}`);
+    
+    // Group records by city for analysis (but use global scale)
+    const recordsByCity = new Map<string, any[]>();
+    (rawData.results as any[]).forEach((record: any) => {
+      const city = this.extractCityFromRecord(record);
+      if (!recordsByCity.has(city)) {
+        recordsByCity.set(city, []);
+      }
+      recordsByCity.get(city)!.push(record);
+    });
+    
+    console.log(`📊 [ComparativeAnalysisProcessor] Grouped records by city:`, 
+      Array.from(recordsByCity.entries()).map(([city, records]) => ({ city, count: records.length }))
+    );
+    
+    // Process records with globally-normalized scores (same scale for all cities)
   const processedRecords = (rawData.results as any[]).map((record: any, index: number) => {
-      // PRIORITIZE PRE-CALCULATED COMPARATIVE ANALYSIS SCORE
-      const comparativeScore = this.extractComparativeScore(record, primary);
+      // Get original score and normalize to 0-100 using GLOBAL scale
+      const originalScore = this.extractComparativeScore(record, primary);
+      const normalizedScore = ((originalScore - globalMin) / globalRange) * 100;
+      
+      // Use globally-normalized score
+      const comparativeScore = normalizedScore;
+      
+      // Get city for metadata
+      const city = this.extractCityFromRecord(record);
+      const recordId = (record as any).ID || (record as any).id || (record as any).area_id || `${city}_${index}`;
       
       // Generate area name from ID and location data
       const areaName = this.generateAreaName(record);
-      
-      // Extract ID (updated for correlation_analysis format)
-      const recordId = (record as any).ID || (record as any).id || (record as any).area_id;
       
       // Debug logging for records with missing ID
       if (!recordId) {
@@ -202,6 +232,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       return {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
+        city: city, // Add city for grouping
         value: Math.round(comparativeScore * 100) / 100, // Use comparative score as primary value
   comparison_score: Math.round(comparativeScore * 100) / 100, // Add comparison_score at top level for visualization
   // Expose canonical primary field for consumers
@@ -210,6 +241,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
         rank: 0, // Will be calculated after sorting
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
+          city: city, // Include city in properties too
           competitive_advantage_score: comparativeScore, // Primary field for competitive analysis
           comparative_analysis_score: comparativeScore, // Keep for compatibility
           strategic_value_score: comparativeScore, // Keep for compatibility
@@ -293,7 +325,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     );
 
     return {
-      type: 'competitive_analysis', // Use correct competitive analysis type
+      type: 'comparative_analysis', // Real estate comparative analysis
       records: nonParkRecords, // Return filtered records to prevent park data in visualizations
       summary,
       featureImportance,
@@ -944,6 +976,55 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   }
 
   /**
+   * Calculate statistics for a set of values
+   */
+  private calculateStatistics(values: number[]): AnalysisStatistics {
+    if (values.length === 0) {
+      return {
+        total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0,
+        percentile25: 0, percentile75: 0, iqr: 0, outlierCount: 0
+      };
+    }
+    
+    const sorted = [...values].sort((a, b) => a - b);
+    const total = values.length;
+    const sum = values.reduce((a, b) => a + b, 0);
+    const mean = sum / total;
+    
+    // Calculate percentiles
+    const p25Index = Math.floor(total * 0.25);
+    const p75Index = Math.floor(total * 0.75);
+    const medianIndex = Math.floor(total * 0.5);
+    
+    const percentile25 = sorted[p25Index];
+    const percentile75 = sorted[p75Index];
+    const median = sorted[medianIndex];
+    const iqr = percentile75 - percentile25;
+    
+    // Calculate standard deviation
+    const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / total;
+    const stdDev = Math.sqrt(variance);
+    
+    // Count outliers (values beyond 1.5 * IQR from quartiles)
+    const lowerBound = percentile25 - (1.5 * iqr);
+    const upperBound = percentile75 + (1.5 * iqr);
+    const outlierCount = values.filter(v => v < lowerBound || v > upperBound).length;
+    
+    return {
+      total,
+      mean,
+      median,
+      min: sorted[0],
+      max: sorted[sorted.length - 1],
+      stdDev,
+      percentile25,
+      percentile75,
+      iqr,
+      outlierCount
+    };
+  }
+  
+  /**
    * Calculate comparative-specific statistics
    */
   private calculateComparativeStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
@@ -1010,138 +1091,109 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       const n = Number(v as any);
       return isNaN(n) ? d : n;
     };
-    // Start with comparative scoring explanation using actual brand names
-    let summary = `**⚖️ Comparative Analysis Formula (0-100 scale):**
-• **Brand Performance Gap (35% weight):** ${brandAName} vs competitors performance differential\n• **Market Position Strength (30% weight):** Relative market positioning and dominance\n• **Competitive Dynamics (25% weight):** Competitive pressure and market share dynamics\n• **Growth Differential (10% weight):** Relative growth potential and trend momentum\n\nHigher scores indicate stronger competitive advantages and superior market positioning.\n
+    
+    // Group records by city for city-specific analysis
+    const recordsByCity = new Map<string, GeographicDataPoint[]>();
+    records.forEach(record => {
+      const city = (record as any).city || 'Unknown';
+      if (!recordsByCity.has(city)) {
+        recordsByCity.set(city, []);
+      }
+      recordsByCity.get(city)!.push(record);
+    });
+    
+    // Start with city comparison explanation  
+    let summary = `**🏙️ City-by-City Comparative Analysis (unified 0-100 scale):**\n`;
+    summary += `All areas are scored on the same 0-100 scale based on actual ${metricDescription} values across both cities.\n`;
+    summary += `This provides a true comparison where higher scores indicate genuinely higher ${metricDescription}.\n\n`;
+    
+    // Add city-specific summaries
+    Array.from(recordsByCity.entries()).forEach(([cityName, cityRecords]) => {
+      const cityStats = this.calculateStatistics(cityRecords.map(r => r.value));
+      const top3 = cityRecords.sort((a, b) => b.value - a.value).slice(0, 3);
+      
+      summary += `**${cityName}** (${cityRecords.length} areas):\n`;
+      summary += `• Top performers: ${top3.map(r => `${r.area_name} (${r.value.toFixed(1)})`).join(', ')}\n`;
+      summary += `• Average score: ${cityStats.mean.toFixed(1)} | Range: ${cityStats.min.toFixed(1)}-${cityStats.max.toFixed(1)}\n\n`;
+    });
+    
+    // Determine what metric we're actually comparing based on the data
+    const sampleRecord = records[0];
+    const isIncomeData = sampleRecord && (sampleRecord as any).properties?.ECYHRIAVG;
+    const isHomeOwnershipData = sampleRecord && (sampleRecord as any).properties?.ECYCDOOWCO;
+    
+    let metricDescription = "housing market performance";
+    if (isIncomeData) {
+      metricDescription = "household income levels";
+    } else if (isHomeOwnershipData) {
+      metricDescription = "homeownership characteristics";
+    }
+    
+    // Real estate comparative analysis content
+    summary += `**🏠 Real Estate Comparative Analysis:**
+This analysis compares ${metricDescription} across geographic areas using a unified 0-100 scale.
+• **0-25**: Below-average performance relative to the combined market
+• **25-50**: Moderate performance, around regional averages  
+• **50-75**: Above-average performance, strong market indicators
+• **75-100**: Exceptional performance, top-tier market characteristics
+
+Higher scores indicate better ${metricDescription} relative to all areas analyzed.
 `;
     
-    // Comparative statistics and baseline metrics
-    summary += `**📊 Comparative Analysis Baseline:** `;
-    summary += `Average comparative advantage: ${statistics.mean.toFixed(1)} (range: ${statistics.min.toFixed(1)}-${statistics.max.toFixed(1)}). `;
+    // Real estate market statistics
+    summary += `**📊 Market Analysis Results:** `;
+    summary += `Average score: ${statistics.mean.toFixed(1)} (range: ${statistics.min.toFixed(1)}-${statistics.max.toFixed(1)}). `;
     
-    // Calculate brand dominance patterns
-  const brandADominantMarkets = records.filter(r => num((r.properties as any).brand_dominance) > 5).length;
-  const balancedMarkets = records.filter(r => Math.abs(num((r.properties as any).brand_dominance)) <= 5).length;
-  const brandBDominantMarkets = records.filter(r => num((r.properties as any).brand_dominance) < -5).length;
+    // Calculate performance distribution for real estate context
+    const highPerformers = records.filter(r => r.value >= 75).length;
+    const aboveAverage = records.filter(r => r.value >= 50 && r.value < 75).length;
+    const belowAverage = records.filter(r => r.value >= 25 && r.value < 50).length;
+    const lowPerformers = records.filter(r => r.value < 25).length;
     
-    summary += `Brand dominance: ${brandADominantMarkets} ${brandAName}-dominant markets (${(brandADominantMarkets/records.length*100).toFixed(1)}%), `;
-    summary += `${balancedMarkets} balanced markets (${(balancedMarkets/records.length*100).toFixed(1)}%), `;
-    summary += `${brandBDominantMarkets} ${brandBName}-dominant markets (${(brandBDominantMarkets/records.length*100).toFixed(1)}%). `;
-    
-    // Market competitive intensity
-  const avgTotalBrandShare = records.reduce((sum, r) => sum + num((r.properties as any).total_brand_share), 0) / records.length;
-  const avgMarketGap = records.reduce((sum, r) => sum + num((r.properties as any).market_gap), 0) / records.length;
-    summary += `Market intensity: ${avgTotalBrandShare.toFixed(1)}% average brand presence, ${avgMarketGap.toFixed(1)}% untapped market potential.
+    summary += `Performance distribution: ${highPerformers} high-performing areas (${(highPerformers/records.length*100).toFixed(1)}%), `;
+    summary += `${aboveAverage} above-average areas (${(aboveAverage/records.length*100).toFixed(1)}%), `;
+    summary += `${belowAverage} below-average areas (${(belowAverage/records.length*100).toFixed(1)}%), `;
+    summary += `${lowPerformers} low-performing areas (${(lowPerformers/records.length*100).toFixed(1)}%).
 
 `;
     
-    // Calculate comparative category distribution
-    const strongAdvantage = records.filter(r => r.value >= 65).length;
-    const goodPosition = records.filter(r => r.value >= 50 && r.value < 65).length;
-    const moderateStanding = records.filter(r => r.value >= 35 && r.value < 50).length;
-    const weakPosition = records.filter(r => r.value < 35).length;
-    
-    summary += `Comparative distribution: ${strongAdvantage} strong advantages (${(strongAdvantage/records.length*100).toFixed(1)}%), `;
-    summary += `${goodPosition} good positions (${(goodPosition/records.length*100).toFixed(1)}%), `;
-    summary += `${moderateStanding} moderate standings (${(moderateStanding/records.length*100).toFixed(1)}%), `;
-    summary += `${weakPosition} weak positions (${(weakPosition/records.length*100).toFixed(1)}%).
-
-`;
-    
-    // Top competitive advantage markets (5-8 areas)
-    const topComparative = records.slice(0, 8);
-    if (topComparative.length > 0) {
-      const strongCompetitive = topComparative.filter(r => r.value >= 60);
-      if (strongCompetitive.length > 0) {
-        summary += `**Strongest Competitive Advantages:** `;
-        const competitiveNames = strongCompetitive.slice(0, 6).map(r => {
-          const brandDom = num((r.properties as any).brand_dominance);
-          return `${r.area_name} (${r.value.toFixed(1)}, +${brandDom.toFixed(1)}% brand lead)`;
+    // Top performing areas for real estate context
+    const topAreas = records.slice(0, 6);
+    if (topAreas.length > 0) {
+      const topPerformers = topAreas.filter(r => r.value >= 60);
+      if (topPerformers.length > 0) {
+        summary += `**Top Performing Areas:** `;
+        const topNames = topPerformers.map(r => {
+          const city = (r as any).city || 'Unknown';
+          return `${r.area_name} (${city}, ${r.value.toFixed(1)})`;
         });
-        summary += `${competitiveNames.join(', ')}. `;
+        summary += `${topNames.join(', ')}. `;
         
-        const avgTopCompetitive = strongCompetitive.reduce((sum, r) => sum + r.value, 0) / strongCompetitive.length;
-        summary += `These markets show exceptional competitive positioning with average advantage ${avgTopCompetitive.toFixed(1)}. `;
+        const avgTopPerformers = topPerformers.reduce((sum, r) => sum + r.value, 0) / topPerformers.length;
+        summary += `These areas show exceptional ${metricDescription} with average score ${avgTopPerformers.toFixed(1)}. `;
       }
     }
     
-    // Brand performance leaders
-    if (records.length > 0) {
-      const brandLeaders = records
-        .filter(r => num((r.properties as any).brand_performance_gap) >= 60)
-        .slice(0, 5);
-      
-      if (brandLeaders.length > 0) {
-        summary += `**Brand Performance Leaders:** `;
-        const leaderNames = brandLeaders.map(r => {
-          const brandAShare = num((r.properties as any).brand_a_share);
-          const brandBShare = num((r.properties as any).brand_b_share);
-          return `${r.area_name} (${brandAName} ${brandAShare.toFixed(1)}% vs ${brandBName} ${brandBShare.toFixed(1)}%)`;
-        });
-        summary += `${leaderNames.join(', ')}. `;
-        summary += `These markets demonstrate superior brand performance differentials. `;
-      }
+    // Real estate market insights
+    summary += `**Market Analysis Summary:** ${statistics.total} geographic areas analyzed for ${metricDescription} comparison. `;
+    
+    // Add actual income/demographic insights if available
+    if (isIncomeData && records.length > 0) {
+      const avgIncome = records.reduce((sum, r) => sum + (num((r.properties as any).ECYHRIAVG) || 0), 0) / records.length;
+      summary += `Average household income across analyzed areas: $${(avgIncome || 0).toLocaleString()}. `;
     }
     
-    // Market position strength leaders
-    if (records.length > 0) {
-      const positionLeaders = records
-        .filter(r => num((r.properties as any).market_position_strength) >= 70)
-        .slice(0, 5);
-      
-      if (positionLeaders.length > 0) {
-        summary += `**Market Position Strength Leaders:** `;
-        const positionNames = positionLeaders.map(r => r.area_name);
-        summary += `${positionNames.join(', ')}. `;
-        summary += `These markets hold dominant market positioning advantages. `;
-      }
+    // Real estate recommendations
+    summary += `**Investment Insights:** `;
+    if (highPerformers > 0) {
+      summary += `${highPerformers} areas show strong market characteristics suitable for premium investments. `;
     }
-    
-    // Competitive dynamics insights
-    if (records.length > 0) {
-      const highDynamics = records
-        .filter(r => num((r.properties as any).competitive_dynamics_level) >= 65)
-        .slice(0, 5);
-      
-      if (highDynamics.length > 0) {
-        summary += `**High Competitive Dynamics:** `;
-        const dynamicsNames = highDynamics.map(r => {
-          const totalShare = num((r.properties as any).total_brand_share);
-          return `${r.area_name} (${totalShare.toFixed(1)}% brand presence)`;
-        });
-        summary += `${dynamicsNames.join(', ')}. `;
-        summary += `These markets show intense competitive activity with growth opportunities. `;
-      }
+    if (aboveAverage > 0) {
+      summary += `${aboveAverage} areas present solid investment opportunities with above-average performance. `;
     }
-    
-    // Strategic insights
-    summary += `**Competitive Insights:** ${statistics.total} geographic areas analyzed for comparative brand performance and market positioning. `;
-    
-  const avgBrandDominance = records.reduce((sum, r) => sum + num((r.properties as any).brand_dominance), 0) / records.length;
-    if (avgBrandDominance > 0) {
-      summary += `${brandAName} holds average ${avgBrandDominance.toFixed(1)}% market share advantage across analyzed markets. `;
-    } else {
-      summary += `${brandAName} faces competitive challenges with ${Math.abs(avgBrandDominance).toFixed(1)}% disadvantage on average. `;
-    }
-    
-    // Opportunity assessment
-  const highGrowthMarkets = records.filter(r => num((r.properties as any).growth_differential) >= 50).length;
-    if (highGrowthMarkets > 0) {
-      summary += `${highGrowthMarkets} markets (${(highGrowthMarkets/records.length*100).toFixed(1)}%) show high growth differentials offering expansion opportunities. `;
-    }
-    
-    // Actionable recommendations
-    summary += `**Strategic Recommendations:** `;
-    if (strongAdvantage > 0) {
-      summary += `Leverage ${strongAdvantage} markets with strong competitive advantages for aggressive expansion. `;
-    }
-    if (goodPosition > 0) {
-      summary += `Strengthen position in ${goodPosition} markets with good competitive standings. `;
-    }
-    if (brandADominantMarkets > brandBDominantMarkets) {
-      summary += `Capitalize on ${brandAName}'s overall market dominance while defending against competitive threats. `;
-    } else {
-      summary += `Develop strategies to overcome competitive disadvantages and improve market positioning. `;
+    if (belowAverage + lowPerformers > 0) {
+      const underperforming = belowAverage + lowPerformers;
+      summary += `${underperforming} areas may offer value investment opportunities or require market development strategies. `;
     }
     
     if (rawSummary) {
