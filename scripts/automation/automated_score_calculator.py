@@ -75,6 +75,7 @@ class AutomatedScoreCalculator:
         # Scoring algorithms registry (19 standard + 7 comprehensive)
         self.scoring_algorithms = {
             # Standard endpoints
+            'analyze': self.calculate_analyze_scores,
             'strategic-analysis': self.calculate_strategic_value_scores,
             'competitive-analysis': self.calculate_competitive_scores,
             'demographic-insights': self.calculate_demographic_scores,
@@ -1490,6 +1491,73 @@ class AutomatedScoreCalculator:
             
             record_copy = record.copy()
             record_copy['consensus_score'] = round(consensus, 2)
+            results.append(record_copy)
+        
+        endpoint_data_copy = endpoint_data.copy()
+        endpoint_data_copy['results'] = results
+        return endpoint_data_copy
+
+    def calculate_analyze_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Calculate analysis scores using SHAP-based feature importance algorithm.
+        
+        Formula: analysis_score = (0.242 × mp10104a_b_p) + (0.203 × genalphacy_p) + 
+                 (0.191 × mp10116a_b_p) + (0.183 × mp10120a_b_p) + (0.181 × x14058_x_a)
+        
+        Components:
+        1. mp10104a_b_p (24.2%): Core business metric field
+        2. genalphacy_p (20.3%): Generation Alpha demographic
+        3. mp10116a_b_p (19.1%): Secondary business metric field
+        4. mp10120a_b_p (18.3%): Tertiary business metric field
+        5. x14058_x_a (18.1%): Economic indicator field
+        """
+        results = []
+        
+        for record in endpoint_data['results']:
+            total_score = 0.0
+            component_count = 0
+            
+            # Component 1: mp10104a_b_p (weight: 0.242)
+            mp10104a_b_p_raw = self._safe_float(record.get('MP10104A_B_P', record.get('mp10104a_b_p', 0)))
+            if mp10104a_b_p_raw > 0:
+                mp10104a_b_p_normalized = min((mp10104a_b_p_raw / 100) * 100, 100)
+                total_score += 0.242 * mp10104a_b_p_normalized
+                component_count += 1
+            
+            # Component 2: genalphacy_p (weight: 0.203)
+            genalphacy_p_raw = self._safe_float(record.get('GENALPHACY_P', record.get('genalphacy_p', 0)))
+            if genalphacy_p_raw > 0:
+                genalphacy_p_normalized = min((genalphacy_p_raw / 100) * 100, 100)
+                total_score += 0.203 * genalphacy_p_normalized
+                component_count += 1
+            
+            # Component 3: mp10116a_b_p (weight: 0.191)
+            mp10116a_b_p_raw = self._safe_float(record.get('MP10116A_B_P', record.get('mp10116a_b_p', 0)))
+            if mp10116a_b_p_raw > 0:
+                mp10116a_b_p_normalized = min((mp10116a_b_p_raw / 100) * 100, 100)
+                total_score += 0.191 * mp10116a_b_p_normalized
+                component_count += 1
+            
+            # Component 4: mp10120a_b_p (weight: 0.183)
+            mp10120a_b_p_raw = self._safe_float(record.get('MP10120A_B_P', record.get('mp10120a_b_p', 0)))
+            if mp10120a_b_p_raw > 0:
+                mp10120a_b_p_normalized = min((mp10120a_b_p_raw / 100) * 100, 100)
+                total_score += 0.183 * mp10120a_b_p_normalized
+                component_count += 1
+            
+            # Component 5: x14058_x_a (weight: 0.181)
+            x14058_x_a_raw = self._safe_float(record.get('X14058_X_A', record.get('x14058_x_a', 0)))
+            if x14058_x_a_raw > 0:
+                x14058_x_a_normalized = min((x14058_x_a_raw / 100) * 100, 100)
+                total_score += 0.181 * x14058_x_a_normalized
+                component_count += 1
+            
+            # Ensure score is in 0-100 range
+            analysis_score = max(0, min(100, total_score))
+            
+            record_copy = record.copy()
+            record_copy['analysis_score'] = round(analysis_score, 2)
+            record_copy['analysis_components_used'] = component_count
             results.append(record_copy)
         
         endpoint_data_copy = endpoint_data.copy()
