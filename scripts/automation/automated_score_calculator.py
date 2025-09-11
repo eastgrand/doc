@@ -14,24 +14,50 @@ from pathlib import Path
 import math
 from collections import defaultdict
 
+# Import configurable algorithm engine
+try:
+    from configurable_algorithm_engine import ConfigurableAlgorithmEngine, ConfigurableScoreCalculator
+    CONFIGURABLE_ENGINE_AVAILABLE = True
+except ImportError:
+    CONFIGURABLE_ENGINE_AVAILABLE = False
+
 class AutomatedScoreCalculator:
     """
     Automated score calculator that applies all existing scoring algorithms
     to generated endpoint JSON files
     """
     
-    def __init__(self, endpoints_dir: str = "generated_endpoints"):
+    def __init__(self, endpoints_dir: str = "generated_endpoints", project_path: str = None):
         """
         Initialize score calculator
         
         Args:
             endpoints_dir: Directory containing endpoint JSON files
+            project_path: Path to project directory for configurable algorithms
         """
         self.endpoints_dir = Path(endpoints_dir)
+        self.project_path = project_path
         
         # Setup logging
         logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger(__name__)
+        
+        # Initialize configurable engine if available and project path provided
+        if CONFIGURABLE_ENGINE_AVAILABLE and project_path:
+            try:
+                self.configurable_engine = ConfigurableAlgorithmEngine(project_path)
+                self.configurable_calculator = ConfigurableScoreCalculator(project_path)
+                self.use_configurable_algorithms = True
+                self.logger.info("✅ Configurable algorithm engine enabled")
+            except Exception as e:
+                self.logger.warning(f"Failed to initialize configurable engine: {e}")
+                self.use_configurable_algorithms = False
+        else:
+            self.use_configurable_algorithms = False
+            if not CONFIGURABLE_ENGINE_AVAILABLE:
+                self.logger.info("📝 Configurable engine not available - using standard algorithms")
+            elif not project_path:
+                self.logger.info("📝 No project path provided - using standard algorithms")
         
         # Brand mappings from existing scripts
         self.BRAND_MAPPINGS = {
@@ -225,6 +251,12 @@ class AutomatedScoreCalculator:
         """
         Calculate competitive advantage scores with SHAP normalization
         """
+        
+        # Use configurable algorithm if available
+        if self.use_configurable_algorithms:
+            return self.configurable_calculator.calculate_competitive_scores_configurable(endpoint_data)
+        
+        # Fallback to original algorithm
         results = []
         records = endpoint_data['results']
         
@@ -314,6 +346,12 @@ class AutomatedScoreCalculator:
     
     def calculate_demographic_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
         """Calculate demographic opportunity scores"""
+        
+        # Use configurable algorithm if available
+        if self.use_configurable_algorithms:
+            return self.configurable_calculator.calculate_demographic_scores_configurable(endpoint_data)
+        
+        # Fallback to original algorithm
         results = []
         
         for record in endpoint_data['results']:
@@ -897,6 +935,12 @@ class AutomatedScoreCalculator:
     
     def calculate_risk_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
         """Calculate risk-adjusted scores based on market volatility and uncertainty factors"""
+        
+        # Use configurable algorithm if available
+        if self.use_configurable_algorithms:
+            return self.configurable_calculator.calculate_risk_scores_configurable(endpoint_data)
+        
+        # Fallback to original algorithm
         results = []
         records = endpoint_data['results']
         

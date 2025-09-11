@@ -1,0 +1,43 @@
+{
+  "project_type": "real_estate",
+  "description": "Real estate and property analysis focused on homebuying demographics and property value trends",
+  "business_logic": {
+    "demographic_income_target": 85000,
+    "demographic_age_target": 40,
+    "demographic_household_size_target": 2.8,
+    "competitive_analysis_weight": 0.25,
+    "market_opportunity_weight": 0.40,
+    "data_reliability_weight": 0.20,
+    "market_scale_weight": 0.15
+  },
+  "algorithm_settings": {
+    "volatility_penalty_factor": 0.15,
+    "uncertainty_penalty_factor": 12,
+    "stability_bonus_factor": 15,
+    "market_size_threshold": 25000,
+    "income_stability_threshold": 85000
+  },
+  "semantic_field_priorities": {
+    "consumer_income": [
+      "household_income", 
+      "median_family_income", 
+      "median_income"
+    ],
+    "market_size": [
+      "household_count", 
+      "total_population", 
+      "family_households"
+    ],
+    "target_performance": [
+      "property_value_index", 
+      "housing_demand", 
+      "market_activity"
+    ]
+  },
+  "configuration_metadata": {
+    "version": "1.0",
+    "created": "2025-01-11",
+    "industry_focus": "Residential and commercial real estate, property development",
+    "target_demographics": "Homebuyers and property investors with higher income thresholds"
+  }
+}

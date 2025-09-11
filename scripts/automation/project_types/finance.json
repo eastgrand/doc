@@ -1,0 +1,43 @@
+{
+  "project_type": "finance",
+  "description": "Financial services and investment analysis focused on wealth management and investment demographics",
+  "business_logic": {
+    "demographic_income_target": 100000,
+    "demographic_age_target": 45,
+    "demographic_household_size_target": 2.2,
+    "competitive_analysis_weight": 0.30,
+    "market_opportunity_weight": 0.35,
+    "data_reliability_weight": 0.25,
+    "market_scale_weight": 0.10
+  },
+  "algorithm_settings": {
+    "volatility_penalty_factor": 0.05,
+    "uncertainty_penalty_factor": 8,
+    "stability_bonus_factor": 25,
+    "market_size_threshold": 10000,
+    "income_stability_threshold": 100000
+  },
+  "semantic_field_priorities": {
+    "consumer_income": [
+      "investment_income", 
+      "household_wealth", 
+      "median_income"
+    ],
+    "market_size": [
+      "investor_population", 
+      "high_net_worth_count", 
+      "total_population"
+    ],
+    "target_performance": [
+      "portfolio_performance", 
+      "investment_return", 
+      "financial_index"
+    ]
+  },
+  "configuration_metadata": {
+    "version": "1.0",
+    "created": "2025-01-11",
+    "industry_focus": "Financial services, wealth management, investment banking",
+    "target_demographics": "High-income investors and financial service consumers"
+  }
+}

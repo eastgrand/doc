@@ -3640,11 +3640,11 @@ graph TD
     Blob --> CDN
 ```
 
-### 10.2 Two-Layer Scoring Architecture
+### 10.2 Three-Layer Scoring Architecture + Semantic Field Resolution
 
-**🚀 CRITICAL UNDERSTANDING: Pre-Calculated SHAP + Automation Scoring**
+**🚀 CRITICAL UNDERSTANDING: Pre-Calculated SHAP + Automation Scoring + Unlimited Project Type Scalability**
 
-The system uses a sophisticated two-layer scoring architecture that separates data intelligence from visualization processing:
+The system uses a revolutionary three-layer scoring architecture that enables unlimited project type scalability:
 
 #### Layer 1: Automation Script Scoring
 **File**: `/scripts/automation/automated_score_calculator.py`
@@ -3706,20 +3706,131 @@ export class CoreAnalysisProcessor extends BaseProcessor {
 }
 ```
 
+#### Layer 3: Semantic Field Resolution + Modular Plugin System (NEW)
+**Files**: 
+- `/scripts/automation/semantic_field_resolver.py` - AI-powered field mapping
+- `/scripts/automation/configurable_algorithm_engine.py` - Core scoring engine
+- `/scripts/automation/project_types/` - Modular configuration system
+
+**🚀 REVOLUTIONARY FEATURE**: **Unlimited Project Type Scalability** - Same algorithms work for retail, real estate, healthcare, finance, and any future project types.
+
+- **Input**: Project-specific field mappings and semantic configurations
+- **Purpose**: Resolve semantic field names to actual project field names  
+- **Process**: AI-powered field mapping with comprehensive validation
+- **Output**: Unified algorithm interface that works with any data structure
+
+```python
+# Example: Semantic field resolution for unlimited project types
+class ConfigurableAlgorithmEngine:
+    def extract_field_value(self, record, semantic_name):
+        # Works with ANY project type through semantic resolution
+        field_mapping = self.get_field(semantic_name)  # 'consumer_income' → actual field
+        
+        # Handles multiple mapping types:
+        if isinstance(field_mapping, str):
+            return record.get(field_mapping, 0)          # Simple mapping
+        elif mapping_type == 'composite':
+            return self._combine_fields(record, mapping)  # Multiple fields
+        elif mapping_type == 'calculation':
+            return self._calculate_formula(record, mapping)  # Formula-based
+        elif mapping_type == 'priority':
+            return self._try_priority_fields(record, mapping)  # Fallback hierarchy
+
+# Usage across unlimited project types:
+engine = ConfigurableAlgorithmEngine("projects/any_industry")
+
+# Retail project:   'consumer_income' → 'median_household_income'
+# Real estate:      'consumer_income' → 'homebuyer_income' 
+# Healthcare:       'consumer_income' → 'patient_household_income'
+# Finance:          'consumer_income' → 'investment_capacity'
+
+income = engine.extract_field_value(record, 'consumer_income')  # Works for ANY project
+```
+
+**Semantic Field Types Supported**:
+- **Simple Mapping**: `'consumer_income' → 'median_income'`
+- **Composite Fields**: `'market_size' → ['population', 'households', 'businesses']`
+- **Calculated Fields**: `'purchasing_power' → 'income * confidence_index'`
+- **Priority Fallbacks**: `'income' → primary:'disposable' fallback:'median' last:'average'`
+
+**Modular Plugin Configuration System**:
+```json
+// /scripts/automation/project_types/retail.json
+{
+  "project_type": "retail",
+  "business_logic": {
+    "demographic_income_target": 75000,
+    "demographic_age_target": 35,
+    "competitive_analysis_weight": 0.35
+  },
+  "semantic_field_priorities": {
+    "consumer_income": ["household_disposable_income", "median_income", "average_income"],
+    "market_size": ["total_population", "consumer_population", "adult_population"]
+  }
+}
+```
+
+```python
+# Plugin Registry System - Dynamic Discovery & Management
+from project_types.plugin_registry import PluginRegistry
+
+registry = PluginRegistry()
+
+# Automatic discovery of all project types
+available_types = registry.get_available_plugins()  # ['retail', 'real_estate', 'healthcare', 'finance']
+
+# Create configuration from any registered plugin
+config = registry.create_project_configuration('/path/to/project', 'finance')
+```
+
+**Plugin System Features**:
+- **Automatic Discovery**: JSON files are auto-registered as plugins
+- **Validation System**: Built-in configuration integrity checking  
+- **CLI Management**: Rich command-line tools for plugin management
+- **Event Hooks**: Plugin registration and configuration creation hooks
+- **Extensibility**: Add new project types by simply adding JSON files
+
 #### Key Architecture Benefits
 
-1. **Separation of Concerns**: 
-   - Automation = Data intelligence using SHAP
-   - Processors = Visualization preparation
+1. **Unlimited Project Type Scalability** (NEW):
+   - Same algorithms work for retail, real estate, healthcare, finance, any industry
+   - No code changes needed for new project types - only configuration
+   - AI-powered field mapping handles any data structure or field naming
 
-2. **Performance Optimization**:
+2. **Separation of Concerns**: 
+   - Semantic Layer = Field resolution and business logic adaptation
+   - Automation Layer = Data intelligence using SHAP
+   - Processor Layer = Visualization preparation
+
+3. **Intelligent Field Resolution** (NEW):
+   - AI suggests semantic field mappings with confidence scores
+   - Interactive validation with 12 comprehensive edit scenarios  
+   - Multiple mapping types: simple, composite, calculated, priority-based
+   - Quality validation prevents configuration errors
+
+4. **Performance Optimization**:
    - SHAP values pre-calculated once by microservice
+   - Semantic resolution cached per project
    - Automation scores computed once per endpoint
    - Processors consume ready-made scores
 
-3. **Explainable AI Integration**:
+5. **Business Logic Flexibility** (NEW):
+   - Project-specific parameters (age targets, income thresholds, weights)
+   - Industry templates for common project types
+   - Configurable algorithm behavior without code changes
+
+6. **Modular Plugin Architecture** (NEW):
+   - External JSON configuration files for complete project type separation
+   - Plugin registry system with automatic discovery and validation
+   - Three-tier fallback system (plugin registry → config loader → embedded configs)
+   - Command-line tools for plugin management and validation
+   - Event hook system for extensibility and integration
+   - Zero-code project type additions - just add JSON files
+
+7. **Explainable AI Integration**:
    - SHAP values provide scientific feature importance
    - Automation layer makes scoring transparent and auditable
+   - Semantic layer enables cross-project AI insights
    - Processors focus on user experience, not AI computation
 
 4. **Scalability**:

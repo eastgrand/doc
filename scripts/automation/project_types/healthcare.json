@@ -1,0 +1,43 @@
+{
+  "project_type": "healthcare",
+  "description": "Healthcare and medical services analysis focused on patient demographics and health outcomes",
+  "business_logic": {
+    "demographic_income_target": 65000,
+    "demographic_age_target": 50,
+    "demographic_household_size_target": 2.5,
+    "competitive_analysis_weight": 0.20,
+    "market_opportunity_weight": 0.45,
+    "data_reliability_weight": 0.25,
+    "market_scale_weight": 0.10
+  },
+  "algorithm_settings": {
+    "volatility_penalty_factor": 0.1,
+    "uncertainty_penalty_factor": 10,
+    "stability_bonus_factor": 20,
+    "market_size_threshold": 15000,
+    "income_stability_threshold": 65000
+  },
+  "semantic_field_priorities": {
+    "consumer_income": [
+      "household_income", 
+      "insurance_coverage_value", 
+      "median_income"
+    ],
+    "market_size": [
+      "patient_population", 
+      "total_population", 
+      "adult_population"
+    ],
+    "target_performance": [
+      "patient_satisfaction", 
+      "health_outcomes", 
+      "service_utilization"
+    ]
+  },
+  "configuration_metadata": {
+    "version": "1.0",
+    "created": "2025-01-11",
+    "industry_focus": "Healthcare services, medical facilities, patient care",
+    "target_demographics": "Healthcare consumers with emphasis on affordability and access"
+  }
+}

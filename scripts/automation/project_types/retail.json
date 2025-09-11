@@ -1,0 +1,43 @@
+{
+  "project_type": "retail",
+  "description": "Retail and consumer goods analysis focused on shopping demographics and brand competition",
+  "business_logic": {
+    "demographic_income_target": 75000,
+    "demographic_age_target": 35,
+    "demographic_household_size_target": 3,
+    "competitive_analysis_weight": 0.35,
+    "market_opportunity_weight": 0.30,
+    "data_reliability_weight": 0.20,
+    "market_scale_weight": 0.15
+  },
+  "algorithm_settings": {
+    "volatility_penalty_factor": 0.2,
+    "uncertainty_penalty_factor": 15,
+    "stability_bonus_factor": 10,
+    "market_size_threshold": 50000,
+    "income_stability_threshold": 75000
+  },
+  "semantic_field_priorities": {
+    "consumer_income": [
+      "household_disposable_income", 
+      "median_income", 
+      "average_income"
+    ],
+    "market_size": [
+      "total_population", 
+      "consumer_population", 
+      "adult_population"
+    ],
+    "target_performance": [
+      "brand_share", 
+      "market_penetration", 
+      "sales_performance"
+    ]
+  },
+  "configuration_metadata": {
+    "version": "1.0",
+    "created": "2025-01-11",
+    "industry_focus": "Consumer retail, shopping centers, brand competition",
+    "target_demographics": "Prime shopping age consumers with disposable income"
+  }
+}
