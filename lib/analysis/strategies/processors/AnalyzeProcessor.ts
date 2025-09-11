@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
-import { BrandNameResolver } from '../../utils/BrandNameResolver';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
  * AnalyzeProcessor - Handles data processing for general analysis
  * 
  * Processes general analysis results with analysis_score to provide
  * comprehensive market insights across geographic areas.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
-export class AnalyzeProcessor implements DataProcessorStrategy {
-  private brandResolver: BrandNameResolver;
+export class AnalyzeProcessor extends BaseProcessor {
   private scoreField: string = 'analysis_score';
 
   constructor() {
-    this.brandResolver = new BrandNameResolver();
+    super(); // Initialize BaseProcessor with configuration
   }
   
   validate(rawData: RawAnalysisResult): boolean {
@@ -43,9 +44,9 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
         throw new Error(`Analyze record ${(record as any).ID || index} is missing analysis_score`);
       }
       
-      // Generate area name
+      // Generate area name and ID using BaseProcessor methods
       const areaName = this.generateAreaName(record);
-      const recordId = (record as any).ID || (record as any).id || (record as any).area_id || `area_${index + 1}`;
+      const recordId = this.extractGeographicId(record) || `area_${index + 1}`;
       
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
@@ -63,8 +64,8 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
           analysis_score: primaryScore,
           score_source: this.scoreField,
           target_brand_share: this.extractTargetBrandShare(record),
-          total_population: Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0,
-          median_income: Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0
+          total_population: this.extractNumericValue(record, ['ECYPTAPOP', 'total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population']),
+          median_income: this.extractNumericValue(record, ['ECYHRIAVG', 'median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])
         }
       };
   // Mirror canonical primary field into top-level and properties
@@ -223,52 +224,11 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
   }
 
   private extractTargetBrandShare(record: any): number {
-    const brandFields = this.brandResolver.detectBrandFields(record);
-    const targetBrand = brandFields.find(bf => bf.isTarget);
-    return targetBrand?.value || 0;
+    // Extract primary metric using BaseProcessor method
+    return this.extractPrimaryMetric(record);
   }
 
-  private generateAreaName(record: any): string {
-    // Check for DESCRIPTION field first (common in strategic analysis data)
-    if ((record as any).DESCRIPTION && typeof (record as any).DESCRIPTION === 'string') {
-      const description = (record as any).DESCRIPTION.trim();
-      // Extract city name from parentheses format like "32544 (Hurlburt Field)" -> "Hurlburt Field"
-      const nameMatch = description.match(/\(([^)]+)\)/);
-      if (nameMatch && nameMatch[1]) {
-        return nameMatch[1].trim();
-      }
-      // If no parentheses, return the whole description
-      return description;
-    }
-    
-    // Try value_DESCRIPTION with same extraction logic
-    if ((record as any).value_DESCRIPTION && typeof (record as any).value_DESCRIPTION === 'string') {
-      const description = (record as any).value_DESCRIPTION.trim();
-      const nameMatch = description.match(/\(([^)]+)\)/);
-      if (nameMatch && nameMatch[1]) {
-        return nameMatch[1].trim();
-      }
-      return description;
-    }
-    
-    // Other name fields
-    if ((record as any).area_name) return (record as any).area_name;
-    if ((record as any).NAME) return (record as any).NAME;
-    if ((record as any).name) return (record as any).name;
-    
-    const id = (record as any).ID || (record as any).id || (record as any).GEOID;
-    if (id) {
-      if (typeof id === 'string' && id.match(/^\d{5}$/)) {
-        return `ZIP ${id}`;
-      }
-      if (typeof id === 'string' && id.match(/^[A-Z]\d[A-Z]$/)) {
-        return `FSA ${id}`;
-      }
-      return `Area ${id}`;
-    }
-    
-    return `Area ${(record as any).OBJECTID || 'Unknown'}`;
-  }
+  // Remove generateAreaName - use BaseProcessor method instead
 
   private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
     const sorted = [...records].sort((a, b) => b.value - a.value);
@@ -355,8 +315,7 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
   private generateSummary(records: GeographicDataPoint[], statistics: AnalysisStatistics): string {
     let summary = getScoreExplanationForAnalysis('analyze', 'analyze');
     
-    const targetBrandName = this.brandResolver.getTargetBrandName();
-    summary += `**General Analysis Complete:** ${statistics.total} geographic areas evaluated for ${targetBrandName} comprehensive insights. `;
+    summary += `**General Analysis Complete:** ${statistics.total} geographic markets evaluated for real estate investment insights. `;
     summary += `Analysis scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
     
     const topAreas = records.slice(0, 10);
@@ -371,17 +330,6 @@ export class AnalyzeProcessor implements DataProcessorStrategy {
     
     return summary;
   }
-  /**
-   * Extract field value from multiple possible field names
-   */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
-    for (const fieldName of fieldNames) {
-      const value = Number(record[fieldName]);
-      if (!isNaN(value) && value > 0) {
-        return value;
-      }
-    }
-    return 0;
-  }
+  // Remove extractFieldValue - use BaseProcessor extractNumericValue instead
 
 }

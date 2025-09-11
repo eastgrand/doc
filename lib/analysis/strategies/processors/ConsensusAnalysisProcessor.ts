@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
-import { BrandNameResolver } from '../../utils/BrandNameResolver';
+import { BaseProcessor } from './BaseProcessor';
 
 /**
  * ConsensusAnalysisProcessor - Handles data processing for consensus analysis
  * 
  * Processes consensus scores to understand agreement across multiple
- * models or analysis approaches for market insights.
+ * models or analysis approaches for real estate investment insights.
+ * 
+ * Extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
-export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
-  private brandResolver: BrandNameResolver;
+export class ConsensusAnalysisProcessor extends BaseProcessor {
   private scoreField: string = 'consensus_analysis_score';
 
   constructor() {
-    this.brandResolver = new BrandNameResolver();
+    super(); // Initialize BaseProcessor with configuration
   }
   
   validate(rawData: RawAnalysisResult): boolean {
@@ -366,14 +367,14 @@ export class ConsensusAnalysisProcessor implements DataProcessorStrategy {
   private generateSummary(records: GeographicDataPoint[], statistics: AnalysisStatistics): string {
     let summary = getScoreExplanationForAnalysis('consensus-analysis', 'consensus_analysis');
     
-    const targetBrandName = this.brandResolver.getTargetBrandName();
+    // Removed brand resolver dependency - now using BaseProcessor
     
     // Clear differentiation from ensemble analysis
     summary += `**🤝 Consensus Analysis vs Ensemble Analysis:** Consensus analysis measures **agreement across different analytical approaches** (strategic, competitive, demographic methods), while ensemble analysis measures **combined model performance** (ML algorithms working together). Consensus identifies where different analytical frameworks reach similar conclusions about market opportunities.
 
 `;
 
-    summary += `**📊 Cross-Method Consensus Analysis Complete:** ${statistics.total} geographic areas evaluated for ${targetBrandName} analytical agreement across multiple business intelligence approaches. `;
+    summary += `**📊 Cross-Method Consensus Analysis Complete:** ${statistics.total} geographic markets evaluated for real estate investment analytical agreement across multiple business intelligence approaches. `;
     summary += `Consensus scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
     
     // Add specific use cases
