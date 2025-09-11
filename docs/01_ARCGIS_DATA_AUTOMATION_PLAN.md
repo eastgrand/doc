@@ -547,6 +547,111 @@ After automation completes, analysis prompts may reference field names that don'
 
 **⏱️ Time Investment:** 15-30 minutes per analysis type
 
+### 🔧 **Project Type Configuration for Configuration-Driven Processors**
+
+**⚠️ CRITICAL POST-AUTOMATION STEP**
+
+After automation completes, configure the project type to ensure all processors use the correct field mappings, terminology, and score interpretations for your specific industry.
+
+**📋 Configuration Steps:**
+
+1. **Set Project Type in Configuration Manager**
+
+   Update the default project type in `lib/analysis/AnalysisConfigurationManager.ts`:
+   
+   ```typescript
+   // For real estate projects:
+   private currentProjectType: ProjectType = 'real_estate';
+   
+   // For retail projects:
+   private currentProjectType: ProjectType = 'retail';
+   ```
+
+2. **Verify Context Configuration Files**
+
+   Ensure the appropriate context configuration exists:
+   
+   **For Real Estate Projects:**
+   - File: `config/analysis-contexts/real-estate-context.ts`
+   - Validates Quebec housing data field mappings (ECYPTAPOP, ECYHRIAVG, etc.)
+   - Uses real estate terminology ("property values", "housing market", "homebuyers")
+   - Score interpretation: 80+ = Premium investment opportunity
+   
+   **For Retail Projects:**  
+   - File: `config/analysis-contexts/retail-context.ts`
+   - Validates retail data field mappings (customer demographics, sales data, etc.)
+   - Uses retail terminology ("customers", "market penetration", "brand performance")
+   - Score interpretation: 80+ = Excellent market opportunity
+
+3. **Test Processor Configuration**
+
+   Verify processors are using correct field mappings:
+   
+   ```bash
+   # Test a few key processors to ensure correct configuration
+   node -e "
+   const { CoreAnalysisProcessor } = require('./lib/analysis/strategies/processors/CoreAnalysisProcessor.ts');
+   const processor = new CoreAnalysisProcessor();
+   console.log('Current project type:', processor.configManager.getCurrentProjectType());
+   console.log('Field mappings:', processor.configManager.getFieldMapping('primaryMetric'));
+   console.log('Terminology:', processor.configManager.getTerminology());
+   "
+   ```
+
+4. **Validate Score Interpretation**
+
+   Test score interpretation for your project type:
+   
+   ```typescript
+   // Test score interpretation
+   const testScores = [95, 75, 50, 25, 5];
+   testScores.forEach(score => {
+     const interpretation = processor.configManager.getScoreInterpretation(score);
+     console.log(`Score ${score}: ${interpretation.label} - ${interpretation.description}`);
+   });
+   ```
+
+5. **Update Analysis Templates**
+
+   Ensure all analysis summary templates use correct terminology:
+   
+   ```typescript
+   // Real Estate Templates (real-estate-context.ts):
+   analysisTitle: "Housing Market Analysis for {totalAreas} Properties"
+   methodologyExplanation: "Analysis evaluates property investment potential..."
+   
+   // Retail Templates (retail-context.ts):  
+   analysisTitle: "Market Analysis for {totalAreas} Geographic Areas"
+   methodologyExplanation: "Analysis evaluates retail market opportunity..."
+   ```
+
+**🎯 Success Criteria:**
+- All 22 migrated processors use correct field mappings for your data
+- Analysis summaries use appropriate industry terminology
+- Score interpretations align with industry standards (real estate vs. retail)
+- No "undefined" field references in processor outputs
+- Summary templates generate industry-appropriate language
+
+**🔍 Common Issues:**
+- **Wrong Terminology**: Processors using retail terms for real estate data (or vice versa)
+- **Field Mapping Errors**: Processors looking for incorrect field names from wrong industry
+- **Score Interpretation Mismatch**: Using retail score thresholds for real estate analysis
+- **Template Language**: Generic analysis descriptions instead of industry-specific insights
+
+**⏱️ Time Investment:** 10-15 minutes for configuration + 15 minutes for validation
+
+**🔄 Switching Project Types:**
+If you need to switch between project types during development:
+
+```typescript
+// Dynamically switch project type (for testing)
+const configManager = AnalysisConfigurationManager.getInstance();
+configManager.setProjectType('retail'); // or 'real_estate'
+
+// Refresh all processors to use new configuration
+// (Restart application or call refreshConfig() on processors)
+```
+
 ## 📋 **Post-Automation Customization Guide**
 
 After the automation pipeline completes, you may need to customize the infographics report selection system. This guide shows how to update ReportsService.ts when switching between countries, adding/removing reports, or changing exclusion criteria.
