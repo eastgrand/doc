@@ -113,6 +113,11 @@ analysis_score = max(0, min(100, total_score))  // Ensure 0-100 range
 
 **Real Estate Relevance**: **Maximum** - Uses proven statistical methodology (SHAP) to weight real estate success factors. Combines core market metrics with future demographic trends (Gen Alpha homebuyers) and economic indicators. Essential for data-driven property investment decisions and housing market opportunity assessment.
 
+**Example Queries that Trigger This Processor**:
+- "Analyze overall housing market performance factors for target metro areas"
+- "Provide comprehensive market analysis for real estate investment opportunities"
+- "Show me detailed property market evaluation with SHAP-based scoring"
+
 ---
 
 ### ComparativeAnalysisProcessor  
@@ -157,6 +162,11 @@ for each record:
 **Analysis Description**: Compares housing market performance metrics across different geographic areas using percentile ranking to identify relative investment strengths, optimal property locations, and development opportunities.
 
 **Real Estate Relevance**: **Maximum** - Essential for comparative market analysis (CMA) in real estate. Provides percentile-based rankings to identify markets with superior property performance, optimal investment locations, and areas with competitive advantages for development or acquisition.
+
+**Example Queries that Trigger This Processor**:
+- "Compare property value performance across metropolitan areas"
+- "Show me percentile rankings for housing markets in major cities"
+- "Rank metro areas by real estate market performance and investment potential"
 
 ---
 
@@ -514,6 +524,11 @@ market_sizing_score = Math.min(housing_potential * category_multiplier * 100, 10
 
 **Real Estate Relevance**: **Maximum** - Critical for real estate development and investment planning. Essential for sizing market opportunity, prioritizing development projects, and determining investment scale potential.
 
+**Example Queries that Trigger This Processor**:
+- "Calculate housing market sizing opportunities for major metropolitan areas"
+- "Show me total addressable market analysis for residential development"
+- "Evaluate market scale and opportunity size for real estate investment"
+
 ---
 
 ### RealEstateAnalysisProcessor
@@ -565,6 +580,11 @@ risk_adjusted_score = Math.max(0, Math.min(100,
 **Analysis Description**: Provides risk-adjusted real estate investment scores by evaluating market stability, economic factors, and investment risk to help identify prudent investment opportunities.
 
 **Real Estate Relevance**: **Maximum** - Critical for real estate investment risk management. Essential for identifying stable housing markets vs. high-risk opportunities and supporting portfolio management decisions.
+
+**Example Queries that Trigger This Processor**:
+- "Show me risk-adjusted real estate investment opportunities with market stability analysis"
+- "Analyze housing market volatility and provide risk-adjusted property investment scores"
+- "Evaluate investment risk for real estate markets with volatility and stability factors"
 
 ---
 

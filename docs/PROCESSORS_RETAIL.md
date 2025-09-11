@@ -111,6 +111,11 @@ analysis_score = max(0, min(100, total_score))  // Ensure 0-100 range
 
 **Retail Relevance**: **Maximum** - Uses proven statistical methodology (SHAP) to weight retail success factors. Combines core business metrics with emerging demographic trends (Gen Alpha) and economic indicators. Essential for data-driven retail location selection and market opportunity assessment.
 
+**Query Examples**:
+- "Analyze the overall performance factors for Nike across all markets"
+- "What are the key drivers of success in retail markets?"
+- "Show me comprehensive market analysis using data-driven insights"
+
 ---
 
 ### ComparativeAnalysisProcessor  
@@ -212,6 +217,11 @@ for each record:
 
 **Retail Relevance**: **Maximum** - The gold standard for retail location analysis. Provides actionable strategic value scores considering all critical retail factors: market size, competition, demographics, and growth potential.
 
+**Example Queries that Trigger This Processor**:
+- "What markets offer the best overall strategic value for Nike?"
+- "Show me comprehensive market analysis for top expansion opportunities"
+- "Analyze the strategic value of potential retail locations"
+
 ---
 
 ### EnsembleAnalysisProcessor
@@ -226,6 +236,11 @@ for each record:
 **Analysis Description**: Combines multiple machine learning models using ensemble methods to improve prediction accuracy and reduce overfitting.
 
 **Retail Relevance**: **High** - Provides more robust predictions for retail metrics by combining multiple analytical approaches. Particularly valuable for demand forecasting and customer behavior prediction.
+
+**Example Queries that Trigger This Processor**:
+- "Use ensemble analysis to predict Nike performance across markets"
+- "Show me multi-model predictions for retail expansion success"
+- "Combine multiple analytical approaches for market evaluation"
 
 ---
 
@@ -266,22 +281,10 @@ if (target_value <= percentiles[0]) {
 
 **Retail Relevance**: **Very High** - Essential for retail chain expansion planning. Groups markets by performance levels, identifies similar expansion opportunities, and optimizes supply chain and marketing efforts across different market tiers.
 
----
-
-## Real Estate Specific Processors
-
-### HousingMarketCorrelationProcessor
-**Score Field**: `housing_correlation_score` (0-100 scale)
-
-**Scoring Formula**:
-- **Income Correlation (35%)**: Relationship between income and housing metrics
-- **Population Density Impact (25%)**: Population effect on housing market
-- **Age Demographics (20%)**: Age group correlation with housing demand
-- **Economic Indicators (20%)**: Employment, stability factors
-
-**Analysis Description**: Analyzes correlations between demographic factors and housing market performance to identify key drivers of real estate value.
-
-**Retail Relevance**: **Low** - Primarily focused on real estate metrics. Limited direct application to retail unless analyzing store location factors related to residential density and housing costs.
+**Example Queries that Trigger This Processor**:
+- "Group markets into performance clusters for Nike expansion planning"
+- "Show me spatial clustering analysis for retail market tiers"
+- "Cluster markets by performance levels to identify similar opportunities"
 
 ---
 
@@ -300,22 +303,13 @@ if (target_value <= percentiles[0]) {
 
 **Retail Relevance**: **Maximum** - Critical for retail expansion planning. Directly measures market size, revenue potential, and investment opportunity size. Essential for prioritizing new store locations and market entry decisions.
 
----
-
-### RealEstateAnalysisProcessor
-**Score Field**: `real_estate_score` (0-100 scale)
-
-**Scoring Formula**: 
-- **Property Value Trends (30%)**: Historical and projected property values
-- **Market Liquidity (25%)**: Transaction volume and speed
-- **Development Potential (25%)**: Zoning, permits, growth capacity
-- **Location Quality (20%)**: Accessibility, amenities, infrastructure
-
-**Analysis Description**: Comprehensive real estate market analysis focusing on property values, development opportunities, and investment potential.
-
-**Retail Relevance**: **Medium** - Useful for retail real estate decisions (store location costs, property values). Less directly applicable than customer/market-focused processors but valuable for site selection cost analysis.
+**Example Queries that Trigger This Processor**:
+- "Calculate market sizing opportunities for Nike retail expansion"
+- "Show me total addressable market analysis for major metros"
+- "Evaluate revenue potential and market scale for new store locations"
 
 ---
+
 
 ### RiskDataProcessor
 **Score Field**: `risk_adjusted_score` (0-100 scale)
@@ -330,6 +324,11 @@ if (target_value <= percentiles[0]) {
 **Analysis Description**: Provides risk-adjusted performance scores by penalizing high volatility and uncertainty while rewarding market stability.
 
 **Retail Relevance**: **Very High** - Critical for retail investment decisions. Helps identify stable markets vs. high-risk opportunities, essential for portfolio management and risk mitigation in retail expansion.
+
+**Example Queries that Trigger This Processor**:
+- "Show me risk-adjusted performance scores for Nike expansion markets"
+- "Analyze market stability and volatility for retail investment decisions"
+- "Provide risk assessment with volatility penalties for new store locations"
 
 ---
 
@@ -394,6 +393,11 @@ market_scale = (0.60 × population_scale) + (0.40 × economic_scale)
 **Analysis Description**: Comprehensive strategic analysis combining market opportunity assessment, competitive positioning, data reliability, and market scale evaluation for long-term strategic planning and resource allocation.
 
 **Retail Relevance**: **Maximum** - Essential for strategic retail planning. Provides scientifically rigorous evaluation of long-term market potential, competitive positioning, and investment priorities for sustainable retail growth and market expansion strategies.
+
+**Example Queries that Trigger This Processor**:
+- "Provide comprehensive strategic analysis for Nike's long-term market expansion"
+- "Analyze strategic value and investment priorities for retail growth planning"
+- "Show me multi-factor strategic assessment of market opportunities and competitive positioning"
 
 ---
 
@@ -1074,6 +1078,11 @@ def calculate_population_advantage(record, engine):
 
 **Retail Relevance**: **Maximum** - Core competitive analysis for retail brands. Uniquely combines actual market dominance with AI-driven demographic insights via SHAP analysis. Essential for understanding not just what markets Nike dominates, but WHY certain demographics drive brand success.
 
+**Query Examples**:
+- "Show me where Nike outperforms competitors"
+- "Compare Nike vs Adidas market performance across cities"
+- "Analyze competitive advantage factors for retail brands"
+
 ---
 
 ## Summary by Retail Relevance
@@ -1108,7 +1117,6 @@ def calculate_population_advantage(record, engine):
 
 ### **Medium Relevance** (Supporting Analysis):
 - **AlgorithmComparisonProcessor** - Model optimization
-- **RealEstateAnalysisProcessor** - Location cost analysis
 - **AnomalyDetectionProcessor** - Pattern detection
 - **FeatureInteractionProcessor** - Complex relationships
 - **ModelPerformanceProcessor** - Quality assurance
@@ -1116,7 +1124,6 @@ def calculate_population_advantage(record, engine):
 - **OutlierDetectionProcessor** - Exception identification
 
 ### **Low Relevance** (Limited Retail Application):
-- **HousingMarketCorrelationProcessor** - Real estate focused
 - **DimensionalityInsightsProcessor** - Technical utility
 
 ---
