@@ -39,6 +39,8 @@ The MPIQ AI Chat Platform is a revolutionary geospatial analysis system that tra
 
 **Key Statistics:**
 - **16 Analysis Endpoints** providing specialized intelligence
+- **35 Analysis Processors** (22 migrated to BaseProcessor architecture)
+- **Configuration-Driven Processing**: ✅ **DEPLOYED** - Real estate & retail project types
 - **5 AI Personas** for tailored narrative generation  
 - **3,983 ZIP Codes** with 102+ data fields each
 - **Advanced Filtering System**: ✅ **DEPLOYED** - Enterprise-grade 4-tab filtering with 74+ field definitions
@@ -62,6 +64,7 @@ Study Area Selection → Endpoint Scoring → Multi-Area Aggregation → Market 
 
 ### 1.3 Technical Highlights
 
+- **Configuration-Driven Processing**: BaseProcessor architecture with project type switching (real estate/retail)
 - **Semantic Enhanced Hybrid Routing**: Revolutionary query understanding combining validation with AI
 - **Advanced Filtering System**: Enterprise-grade 4-tab filtering with field discovery, visualization, and performance optimization
 - **Vercel AI Elements Integration**: Modern AI-native UI components with intelligent interactions
@@ -69,7 +72,7 @@ Study Area Selection → Endpoint Scoring → Multi-Area Aggregation → Market 
 - **Real-time Visualization**: ArcGIS-powered interactive maps with dynamic styling  
 - **Explainable AI**: SHAP-based feature importance analysis with transparent reasoning
 - **Enterprise Performance**: Optimized caching, lazy loading, singleton architecture
-- **Extensible Design**: Configuration-driven endpoint and persona management
+- **Extensible Design**: Configuration-driven endpoint, processor, and persona management
 - **Feature Flag Management**: Granular control over advanced capabilities and API costs
 
 ---
@@ -94,6 +97,8 @@ graph TB
     
     subgraph "Processing Layer"
         Endpoints[16 Analysis Endpoints]
+        Processors[35 Analysis Processors]
+        BaseProc[BaseProcessor Architecture]
         SHAP[SHAP Microservice]
         Viz[Visualization Engine]
     end
@@ -107,7 +112,10 @@ graph TB
     UI --> Router
     Router --> Engine
     Engine --> Endpoints
-    Endpoints --> SHAP
+    Endpoints --> Processors
+    Processors --> BaseProc
+    BaseProc --> Config
+    Processors --> SHAP
     SHAP --> Viz
     Viz --> Map
     Config --> DB
@@ -122,6 +130,8 @@ graph TB
 | **Frontend** | Next.js 14, React 18 | User interface & interactions | `/pages`, `/components` |
 | **Routing System** | TypeScript, AI Integration | Query understanding & endpoint selection | `/lib/routing` |
 | **Analysis Engine** | TypeScript, Singleton Pattern | Unified analysis orchestration | `/lib/analysis` |
+| **Configuration Manager** | TypeScript, Singleton Pattern | Project type configuration & field mappings | `/lib/analysis/AnalysisConfigurationManager.ts` |
+| **BaseProcessor Architecture** | TypeScript, Abstract Classes | Configuration-driven processor system (22 processors) | `/lib/analysis/strategies/processors/` |
 | **Map Engine** | ArcGIS JS API 4.x | Interactive geospatial visualization | `/lib/map` |
 | **Chat System** | Anthropic Claude, TypeScript | AI-powered conversation interface | `/lib/chat` |
 | **Data Pipeline** | Python, TypeScript | Data processing & optimization | `/scripts`, `/lib/data` |
@@ -587,9 +597,139 @@ export class AnalysisEngine {
 | `/scenario-analysis` | What-if modeling | `ScenarioAnalysisProcessor` | Scenario comparison |
 | `/predictive-modeling` | Future predictions | `PredictiveModelProcessor` | Prediction maps |
 
-### 6.3 Analysis Processor Architecture
+### 6.3 Configuration-Driven Processor Architecture
 
-Each endpoint has a specialized processor implementing the `AnalysisProcessor` interface:
+**🚀 NEW: BaseProcessor Architecture**
+
+The system now uses a configuration-driven approach with **22 processors migrated** to the new `BaseProcessor` architecture, enabling seamless switching between project types (real estate vs. retail) with different field mappings, terminology, and scoring systems.
+
+#### Configuration-Based Processing Overview
+
+**File**: `/lib/analysis/strategies/processors/BaseProcessor.ts`
+
+```typescript
+export abstract class BaseProcessor implements DataProcessorStrategy {
+  protected configManager: AnalysisConfigurationManager;
+  protected config: AnalysisContext;
+
+  constructor() {
+    this.configManager = AnalysisConfigurationManager.getInstance();
+    this.config = this.configManager.getCurrentContext();
+  }
+
+  // Abstract methods that subclasses must implement
+  abstract validate(rawData: RawAnalysisResult): boolean;
+  abstract process(rawData: RawAnalysisResult): ProcessedAnalysisData;
+
+  // Configuration-driven helper methods
+  protected extractPrimaryMetric(record: any): number {
+    return this.configManager.extractPrimaryMetric(record);
+  }
+
+  protected generateAreaName(record: any): string {
+    return this.configManager.extractDescriptiveName(record);
+  }
+
+  protected getScoreInterpretation(score: number): ScoreRange {
+    return this.configManager.getScoreInterpretation(score);
+  }
+}
+```
+
+#### Project Type Configuration System
+
+**File**: `/lib/analysis/AnalysisConfigurationManager.ts`
+
+The configuration manager provides project-specific contexts:
+
+```typescript
+export type ProjectType = 'real_estate' | 'retail';
+
+export class AnalysisConfigurationManager {
+  private static instance: AnalysisConfigurationManager;
+  private currentProjectType: ProjectType = 'real_estate';
+  private contexts: Map<ProjectType, AnalysisContext> = new Map();
+
+  getCurrentContext(): AnalysisContext {
+    return this.contexts.get(this.currentProjectType)!;
+  }
+
+  extractPrimaryMetric(record: any): number {
+    const fieldMappings = this.getCurrentContext().fieldMappings.primaryMetric;
+    return this.extractNumericValue(record, fieldMappings);
+  }
+
+  getTerminology(): Terminology {
+    return this.getCurrentContext().terminology;
+  }
+}
+```
+
+#### Real Estate vs. Retail Configuration
+
+**Real Estate Context** (`config/analysis-contexts/real-estate-context.ts`):
+```typescript
+export const REAL_ESTATE_CONTEXT: AnalysisContext = {
+  projectType: 'real_estate',
+  fieldMappings: {
+    primaryMetric: ['ECYPTAPOP', 'total_population'], // Quebec housing data
+    incomeField: ['ECYHRIAVG', 'household_income'],
+    populationField: ['ECYPTAPOP', 'population']
+  },
+  terminology: {
+    metricUnit: 'properties',
+    targetEntity: 'housing market',
+    competitionTerm: 'property market',
+    customerTerm: 'homebuyers'
+  },
+  scoreRanges: {
+    excellent: { min: 80, max: 100, label: 'Premium Investment Opportunity' },
+    good: { min: 60, max: 79, label: 'Strong Housing Market' },
+    moderate: { min: 40, max: 59, label: 'Moderate Investment Potential' },
+    poor: { min: 0, max: 39, label: 'Limited Real Estate Appeal' }
+  }
+};
+```
+
+**Retail Context** (`config/analysis-contexts/retail-context.ts`):
+```typescript
+export const RETAIL_CONTEXT: AnalysisContext = {
+  projectType: 'retail',
+  fieldMappings: {
+    primaryMetric: ['target_brand_value', 'brand_performance'],
+    incomeField: ['median_income', 'household_income'], 
+    populationField: ['total_population', 'market_size']
+  },
+  terminology: {
+    metricUnit: 'markets',
+    targetEntity: 'retail market',
+    competitionTerm: 'competitive landscape',
+    customerTerm: 'customers'
+  },
+  scoreRanges: {
+    excellent: { min: 80, max: 100, label: 'Excellent Market Opportunity' },
+    good: { min: 60, max: 79, label: 'Strong Retail Potential' },
+    moderate: { min: 40, max: 59, label: 'Moderate Market Appeal' },
+    poor: { min: 0, max: 39, label: 'Limited Retail Viability' }
+  }
+};
+```
+
+#### Processor Migration Status
+
+**Migration Complete**: 22/35 processors successfully migrated to BaseProcessor
+- ✅ **Core Analysis**: CoreAnalysisProcessor, AnalyzeProcessor, ComparativeAnalysisProcessor
+- ✅ **Real Estate Specialized**: RealEstateAnalysisProcessor, HousingMarketCorrelationProcessor, MarketSizingProcessor
+- ✅ **Demographic Analysis**: DemographicDataProcessor, CustomerProfileProcessor, SegmentProfilingProcessor
+- ✅ **Risk & Strategic**: RiskDataProcessor, StrategicAnalysisProcessor, ConsensusAnalysisProcessor
+- ✅ **Spatial & Trends**: SpatialClustersProcessor, TrendAnalysisProcessor, PredictiveModelingProcessor
+
+**Generic Processors**: 9 processors remain as generic utilities (ML/technical processors)
+**Retired**: 2 retail-specific processors removed for real estate focus
+
+### 6.4 Legacy Processor Architecture
+
+For non-migrated processors, the original interface is still supported:
 
 ```typescript
 interface AnalysisProcessor {
@@ -603,33 +743,9 @@ interface AnalysisProcessor {
   getRequiredFields(): string[];
   validateData(data: any[]): ValidationResult;
 }
-
-// Example: Demographic Insights Processor
-export class DemographicInsightsProcessor implements AnalysisProcessor {
-  async process(rawData: RawAnalysisResult, query: string): Promise<ProcessedAnalysisData> {
-    // 1. Extract demographic fields
-    const demographicFields = this.identifyDemographicFields(rawData.results);
-    
-    // 2. Calculate demographic scores
-    const scoredData = this.calculateDemographicScores(rawData.results, demographicFields);
-    
-    // 3. Generate rankings and quintiles
-    const rankedData = this.generateRankings(scoredData);
-    
-    // 4. Create visualization configuration
-    const vizConfig = this.createVisualizationConfig(rankedData);
-    
-    return {
-      results: rankedData,
-      statistics: this.generateStatistics(rankedData),
-      visualization: vizConfig,
-      insights: await this.generateInsights(rankedData, query)
-    };
-  }
-}
 ```
 
-### 6.4 SHAP Integration & Explainable AI
+### 6.5 SHAP Integration & Explainable AI
 
 **File**: `/lib/analysis/SHAPAnalysis.ts`
 
