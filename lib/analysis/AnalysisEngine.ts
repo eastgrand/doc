@@ -18,6 +18,7 @@ import { VisualizationRenderer } from './VisualizationRenderer';
 import { DataProcessor } from './DataProcessor';
 import { StateManager } from './StateManager';
 import { ConfigurationManager } from './ConfigurationManager';
+import { AnalysisConfigurationManager } from './AnalysisConfigurationManager';
 
 // Import multi-endpoint system
 import { MultiEndpointAnalysisEngine, MultiEndpointAnalysisOptions } from './MultiEndpointAnalysisEngine';
@@ -44,6 +45,7 @@ export class AnalysisEngine {
   private dataProcessor: DataProcessor;
   private stateManager: StateManager;
   private configManager: ConfigurationManager;
+  private analysisConfigManager: AnalysisConfigurationManager;
   private config: AnalysisEngineConfig;
   private eventListeners: Map<AnalysisEventType, Array<(event: AnalysisEvent) => void>> = new Map();
 
@@ -61,6 +63,7 @@ export class AnalysisEngine {
     
     // Initialize all modules
     this.configManager = ConfigurationManager.getInstance();
+    this.analysisConfigManager = AnalysisConfigurationManager.getInstance();
     this.endpointRouter = new CachedEndpointRouter(this.configManager);
     this.dataProcessor = new DataProcessor(this.configManager);
     this.visualizationRenderer = new VisualizationRenderer(this.configManager);
@@ -829,6 +832,35 @@ export class AnalysisEngine {
   }
 
   /**
+   * Set the project type for analysis configuration
+   */
+  setProjectType(projectType: string): void {
+    this.analysisConfigManager.setProjectType(projectType);
+    this.emitEvent('project-type-changed', { projectType });
+  }
+
+  /**
+   * Get the current project type
+   */
+  getCurrentProjectType(): string {
+    return this.analysisConfigManager.getCurrentProjectType();
+  }
+
+  /**
+   * Get available project types
+   */
+  getAvailableProjectTypes(): string[] {
+    return this.analysisConfigManager.getDebugInfo().availableProcessors || ['retail', 'real-estate'];
+  }
+
+  /**
+   * Get analysis configuration debug info
+   */
+  getAnalysisConfigInfo(): any {
+    return this.analysisConfigManager.getDebugInfo();
+  }
+
+  /**
    * Access individual modules (for advanced usage)
    */
   get modules() {
@@ -838,6 +870,7 @@ export class AnalysisEngine {
       dataProcessor: this.dataProcessor,
       stateManager: this.stateManager,
       configManager: this.configManager,
+      analysisConfigManager: this.analysisConfigManager,
       clusteringService: this.clusteringService
     };
   }

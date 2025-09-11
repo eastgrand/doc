@@ -431,6 +431,7 @@ export type AnalysisEventType =
   | 'analysis-error'
   | 'endpoint-selected'
   | 'data-processed'
+  | 'project-type-changed'
   | 'visualization-created'
   | 'analysis-completed'
   | 'analysis-failed'

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { GeoDataManager } from '../../../geo/GeoDataManager';
 import { resolveAreaName } from '../../../shared/AreaName';
+import { BaseProcessor } from './BaseProcessor';
 interface BrandMetric {
   value: number;
   fieldName: string;
@@ -13,12 +14,15 @@ interface BrandMetric {
  * ComparativeAnalysisProcessor - Handles data processing for the /comparative-analysis endpoint
  * 
  * Processes comparative analysis results with focus on relative performance between different 
- * brands, regions, or market characteristics to identify competitive advantages and positioning opportunities.
+ * entities (brands, regions, etc.) to identify competitive advantages and positioning opportunities.
+ * 
+ * Now extends BaseProcessor for configuration-driven behavior.
  */
-export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
+export class ComparativeAnalysisProcessor extends BaseProcessor {
   private geoDataManager: any = null;
   
   constructor() {
+    super(); // Initialize BaseProcessor with configuration
     // No longer using BrandNameResolver since we're using hardcoded fields
   }
 
@@ -133,7 +137,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
   }
 
   process(rawData: RawAnalysisResult): ProcessedAnalysisData {
-    console.log(`⚖️ [COMPARATIVE ANALYSIS PROCESSOR] CALLED WITH ${rawData.results?.length || 0} RECORDS ⚖️`);
+    this.log(`Processing ${rawData.results?.length || 0} records`);
     
     // DEBUG: Log ALL ZIP codes received by processor
     if (rawData.results && rawData.results.length > 0) {
@@ -159,14 +163,14 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
 
     // Find global min and max for unified scaling across all cities
     const allScores = (rawData.results as any[]).map(record => 
-      this.extractComparativeScore(record, primary)
+      this.extractPrimaryMetric(record)
     ).filter(score => !isNaN(score));
     
     const globalMin = Math.min(...allScores);
     const globalMax = Math.max(...allScores);
     const globalRange = globalMax - globalMin || 1; // Avoid division by zero
     
-    console.log(`📊 [ComparativeAnalysisProcessor] Global scale: min=${globalMin.toFixed(2)}, max=${globalMax.toFixed(2)}, range=${globalRange.toFixed(2)}`);
+    this.log(`Global scale: min=${globalMin.toFixed(2)}, max=${globalMax.toFixed(2)}, range=${globalRange.toFixed(2)}`);
     
     // Group records by city for analysis (but use global scale)
     const recordsByCity = new Map<string, any[]>();
@@ -178,14 +182,14 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       recordsByCity.get(city)!.push(record);
     });
     
-    console.log(`📊 [ComparativeAnalysisProcessor] Grouped records by city:`, 
+    this.log(`Grouped records by city`, 
       Array.from(recordsByCity.entries()).map(([city, records]) => ({ city, count: records.length }))
     );
     
     // Process records with globally-normalized scores (same scale for all cities)
   const processedRecords = (rawData.results as any[]).map((record: any, index: number) => {
       // Get original score and normalize to 0-100 using GLOBAL scale
-      const originalScore = this.extractComparativeScore(record, primary);
+      const originalScore = this.extractPrimaryMetric(record);
       const normalizedScore = ((originalScore - globalMin) / globalRange) * 100;
       
       // Use globally-normalized score
@@ -195,8 +199,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       const city = this.extractCityFromRecord(record);
       const recordId = (record as any).ID || (record as any).id || (record as any).area_id || `${city}_${index}`;
       
-      // Generate area name from ID and location data
-      const areaName = this.generateAreaName(record);
+      // Generate area name using configuration-driven method
+      const areaName = super.generateAreaName(record);
       
       // Debug logging for records with missing ID
       if (!recordId) {
@@ -215,8 +219,8 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
       const trendScore = Number((record as any).trend_strength_score) || 0;
-      const totalPop = Number(this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population'])) || 0;
-      const medianIncome = Number(this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income'])) || 0;
+      const totalPop = this.extractNumericValue(record, this.configManager.getFieldMapping('populationField'), 0);
+      const medianIncome = this.extractNumericValue(record, this.configManager.getFieldMapping('incomeField'), 0);
       
       // Calculate comparative indicators
       const brandPerformanceGap = this.calculateBrandPerformanceGap(record);
@@ -275,7 +279,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     });
     
     // Calculate comprehensive statistics
-    const statistics = this.calculateComparativeStatistics(processedRecords);
+    const statistics = this.calculateStatistics(processedRecords.map(r => r.value));
     
     // Rank records by comparative analysis score (highest advantage first)
     const rankedRecords = this.rankRecords(processedRecords);
@@ -315,25 +319,29 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
       ? (firstRecord!.properties as any).brand_b_name as string
       : 'Brand B';
 
-    // Generate comparative-focused summary using filtered records
-    const summary = this.generateComparativeSummary(
-      nonParkRecords,
-      statistics,
-      typeof rawData.summary === 'string' ? rawData.summary : undefined,
-      brandAName,
-      brandBName
-    );
-
-    return {
-      type: 'comparative_analysis', // Real estate comparative analysis
-      records: nonParkRecords, // Return filtered records to prevent park data in visualizations
-      summary,
-      featureImportance,
-      statistics,
-  targetVariable: primary, // Use the actual canonical primary field
-      renderer: this.createComparativeRenderer(rankedRecords), // Add back custom renderer
-      legend: this.createComparativeLegend(rankedRecords) // Add back custom legend
+    // Generate summary using configuration-driven templates
+    const customSubstitutions = {
+      primaryBrand: brandAName,
+      secondaryBrand: brandBName,
+      totalMarkets: nonParkRecords.length,
+      avgAdvantage: statistics.mean.toFixed(1),
+      dominantMarkets: nonParkRecords.filter(r => r.value >= 75).length,
+      competitiveMarkets: nonParkRecords.filter(r => r.value >= 50 && r.value < 75).length
     };
+    
+    const summary = this.buildSummaryFromTemplates(nonParkRecords, statistics, customSubstitutions);
+
+    return this.createProcessedData(
+      'comparative_analysis',
+      nonParkRecords,
+      summary,
+      statistics,
+      {
+        featureImportance,
+        renderer: this.createComparativeRenderer(rankedRecords),
+        legend: this.createComparativeLegend(rankedRecords)
+      }
+    );
   }
 
   // ============================================================================
@@ -895,27 +903,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     return 'Mixed Competitive Advantage';
   }
 
-  /**
-   * Generate meaningful area name from available data
-   */
-  private generateAreaName(record: any): string {
-  // Centralized resolver: ensures consistent naming and avoids 'Unknown Area'
-  const fallbackId = (record as any).ID || (record as any).id || (record as any).area_id || (record as any).GEOID || (record as any).zipcode || '1';
-  return resolveAreaName(record, { mode: 'zipCity', neutralFallback: `Area ${fallbackId}` });
-  }
 
-  /**
-   * Rank records by comparative analysis score (highest advantage first)
-   */
-  private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
-    // Sort by comparative score descending and assign ranks
-    const sorted = [...records].sort((a, b) => b.value - a.value);
-    
-    return sorted.map((record, index) => ({
-      ...record,
-      rank: index + 1
-    }));
-  }
 
   /**
    * Process feature importance with comparative focus
@@ -975,244 +963,7 @@ export class ComparativeAnalysisProcessor implements DataProcessorStrategy {
     return `${featureName} comparative characteristics`;
   }
 
-  /**
-   * Calculate statistics for a set of values
-   */
-  private calculateStatistics(values: number[]): AnalysisStatistics {
-    if (values.length === 0) {
-      return {
-        total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0,
-        percentile25: 0, percentile75: 0, iqr: 0, outlierCount: 0
-      };
-    }
-    
-    const sorted = [...values].sort((a, b) => a - b);
-    const total = values.length;
-    const sum = values.reduce((a, b) => a + b, 0);
-    const mean = sum / total;
-    
-    // Calculate percentiles
-    const p25Index = Math.floor(total * 0.25);
-    const p75Index = Math.floor(total * 0.75);
-    const medianIndex = Math.floor(total * 0.5);
-    
-    const percentile25 = sorted[p25Index];
-    const percentile75 = sorted[p75Index];
-    const median = sorted[medianIndex];
-    const iqr = percentile75 - percentile25;
-    
-    // Calculate standard deviation
-    const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / total;
-    const stdDev = Math.sqrt(variance);
-    
-    // Count outliers (values beyond 1.5 * IQR from quartiles)
-    const lowerBound = percentile25 - (1.5 * iqr);
-    const upperBound = percentile75 + (1.5 * iqr);
-    const outlierCount = values.filter(v => v < lowerBound || v > upperBound).length;
-    
-    return {
-      total,
-      mean,
-      median,
-      min: sorted[0],
-      max: sorted[sorted.length - 1],
-      stdDev,
-      percentile25,
-      percentile75,
-      iqr,
-      outlierCount
-    };
-  }
   
-  /**
-   * Calculate comparative-specific statistics
-   */
-  private calculateComparativeStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
-    const values = records.map(r => r.value).filter(v => !isNaN(v));
-    
-    if (values.length === 0) {
-      return {
-        total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0,
-        percentile25: 0, percentile75: 0, iqr: 0, outlierCount: 0
-      };
-    }
-    
-    const sorted = [...values].sort((a, b) => a - b);
-    const total = values.length;
-    const sum = values.reduce((a, b) => a + b, 0);
-    const mean = sum / total;
-    
-    // Calculate percentiles
-    const p25Index = Math.floor(total * 0.25);
-    const p75Index = Math.floor(total * 0.75);
-    const medianIndex = Math.floor(total * 0.5);
-    
-    const percentile25 = sorted[p25Index];
-    const percentile75 = sorted[p75Index];
-    const median = total % 2 === 0 
-      ? (sorted[medianIndex - 1] + sorted[medianIndex]) / 2
-      : sorted[medianIndex];
-    
-    // Calculate standard deviation
-    const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / total;
-    const stdDev = Math.sqrt(variance);
-    
-    // Calculate IQR and outliers
-    const iqr = percentile75 - percentile25;
-    const lowerBound = percentile25 - 1.5 * iqr;
-    const upperBound = percentile75 + 1.5 * iqr;
-    const outlierCount = values.filter(v => v < lowerBound || v > upperBound).length;
-    
-    return {
-      total,
-      mean,
-      median,
-      min: sorted[0],
-      max: sorted[sorted.length - 1],
-      stdDev,
-      percentile25,
-      percentile75,
-      iqr,
-      outlierCount
-    };
-  }
 
-  /**
-   * Generate comparative-focused summary
-   */
-  private generateComparativeSummary(
-    records: GeographicDataPoint[], 
-    statistics: AnalysisStatistics, 
-    rawSummary?: string,
-    brandAName: string = 'Brand A',
-    brandBName: string = 'Brand B'
-  ): string {
-    const num = (v: unknown, d = 0) => {
-      const n = Number(v as any);
-      return isNaN(n) ? d : n;
-    };
-    
-    // Group records by city for city-specific analysis
-    const recordsByCity = new Map<string, GeographicDataPoint[]>();
-    records.forEach(record => {
-      const city = (record as any).city || 'Unknown';
-      if (!recordsByCity.has(city)) {
-        recordsByCity.set(city, []);
-      }
-      recordsByCity.get(city)!.push(record);
-    });
-    
-    // Start with city comparison explanation  
-    let summary = `**🏙️ City-by-City Comparative Analysis (unified 0-100 scale):**\n`;
-    summary += `All areas are scored on the same 0-100 scale based on actual ${metricDescription} values across both cities.\n`;
-    summary += `This provides a true comparison where higher scores indicate genuinely higher ${metricDescription}.\n\n`;
-    
-    // Add city-specific summaries
-    Array.from(recordsByCity.entries()).forEach(([cityName, cityRecords]) => {
-      const cityStats = this.calculateStatistics(cityRecords.map(r => r.value));
-      const top3 = cityRecords.sort((a, b) => b.value - a.value).slice(0, 3);
-      
-      summary += `**${cityName}** (${cityRecords.length} areas):\n`;
-      summary += `• Top performers: ${top3.map(r => `${r.area_name} (${r.value.toFixed(1)})`).join(', ')}\n`;
-      summary += `• Average score: ${cityStats.mean.toFixed(1)} | Range: ${cityStats.min.toFixed(1)}-${cityStats.max.toFixed(1)}\n\n`;
-    });
-    
-    // Determine what metric we're actually comparing based on the data
-    const sampleRecord = records[0];
-    const isIncomeData = sampleRecord && (sampleRecord as any).properties?.ECYHRIAVG;
-    const isHomeOwnershipData = sampleRecord && (sampleRecord as any).properties?.ECYCDOOWCO;
-    
-    let metricDescription = "housing market performance";
-    if (isIncomeData) {
-      metricDescription = "household income levels";
-    } else if (isHomeOwnershipData) {
-      metricDescription = "homeownership characteristics";
-    }
-    
-    // Real estate comparative analysis content
-    summary += `**🏠 Real Estate Comparative Analysis:**
-This analysis compares ${metricDescription} across geographic areas using a unified 0-100 scale.
-• **0-25**: Below-average performance relative to the combined market
-• **25-50**: Moderate performance, around regional averages  
-• **50-75**: Above-average performance, strong market indicators
-• **75-100**: Exceptional performance, top-tier market characteristics
-
-Higher scores indicate better ${metricDescription} relative to all areas analyzed.
-`;
-    
-    // Real estate market statistics
-    summary += `**📊 Market Analysis Results:** `;
-    summary += `Average score: ${statistics.mean.toFixed(1)} (range: ${statistics.min.toFixed(1)}-${statistics.max.toFixed(1)}). `;
-    
-    // Calculate performance distribution for real estate context
-    const highPerformers = records.filter(r => r.value >= 75).length;
-    const aboveAverage = records.filter(r => r.value >= 50 && r.value < 75).length;
-    const belowAverage = records.filter(r => r.value >= 25 && r.value < 50).length;
-    const lowPerformers = records.filter(r => r.value < 25).length;
-    
-    summary += `Performance distribution: ${highPerformers} high-performing areas (${(highPerformers/records.length*100).toFixed(1)}%), `;
-    summary += `${aboveAverage} above-average areas (${(aboveAverage/records.length*100).toFixed(1)}%), `;
-    summary += `${belowAverage} below-average areas (${(belowAverage/records.length*100).toFixed(1)}%), `;
-    summary += `${lowPerformers} low-performing areas (${(lowPerformers/records.length*100).toFixed(1)}%).
-
-`;
-    
-    // Top performing areas for real estate context
-    const topAreas = records.slice(0, 6);
-    if (topAreas.length > 0) {
-      const topPerformers = topAreas.filter(r => r.value >= 60);
-      if (topPerformers.length > 0) {
-        summary += `**Top Performing Areas:** `;
-        const topNames = topPerformers.map(r => {
-          const city = (r as any).city || 'Unknown';
-          return `${r.area_name} (${city}, ${r.value.toFixed(1)})`;
-        });
-        summary += `${topNames.join(', ')}. `;
-        
-        const avgTopPerformers = topPerformers.reduce((sum, r) => sum + r.value, 0) / topPerformers.length;
-        summary += `These areas show exceptional ${metricDescription} with average score ${avgTopPerformers.toFixed(1)}. `;
-      }
-    }
-    
-    // Real estate market insights
-    summary += `**Market Analysis Summary:** ${statistics.total} geographic areas analyzed for ${metricDescription} comparison. `;
-    
-    // Add actual income/demographic insights if available
-    if (isIncomeData && records.length > 0) {
-      const avgIncome = records.reduce((sum, r) => sum + (num((r.properties as any).ECYHRIAVG) || 0), 0) / records.length;
-      summary += `Average household income across analyzed areas: $${(avgIncome || 0).toLocaleString()}. `;
-    }
-    
-    // Real estate recommendations
-    summary += `**Investment Insights:** `;
-    if (highPerformers > 0) {
-      summary += `${highPerformers} areas show strong market characteristics suitable for premium investments. `;
-    }
-    if (aboveAverage > 0) {
-      summary += `${aboveAverage} areas present solid investment opportunities with above-average performance. `;
-    }
-    if (belowAverage + lowPerformers > 0) {
-      const underperforming = belowAverage + lowPerformers;
-      summary += `${underperforming} areas may offer value investment opportunities or require market development strategies. `;
-    }
-    
-    if (rawSummary) {
-      summary += rawSummary;
-    }
-    
-    return summary;
-  }
-  /**
-   * Extract field value from multiple possible field names
-   */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
-    for (const fieldName of fieldNames) {
-      const value = Number(record[fieldName]);
-      if (!isNaN(value) && value > 0) {
-        return value;
-      }
-    }
-    return 0;
-  }
 
 }
