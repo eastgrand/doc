@@ -3,15 +3,15 @@ import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDe
 import { BaseProcessor } from './BaseProcessor';
 
 /**
- * RealEstateMarketProcessor - Handles data processing for real estate market analysis
+ * BrandAnalysisProcessor - Handles data processing for brand analysis and market positioning
  * 
- * Processes housing market data with focus on market fundamentals, investment potential,
- * and regional performance indicators for Quebec real estate markets.
+ * Processes brand market data with focus on competitive positioning, market share analysis,
+ * and brand strength indicators across different markets and segments.
  * 
- * Extends BaseProcessor for configuration-driven behavior with real estate focus.
+ * Extends BaseProcessor for configuration-driven behavior with brand focus.
  */
-export class RealEstateMarketProcessor extends BaseProcessor {
-  private scoreField: string = 'real_estate_market_score';
+export class BrandAnalysisProcessor extends BaseProcessor {
+  private scoreField: string = 'brand_analysis_score';
 
   constructor() {
     super(); // Initialize BaseProcessor with configuration
