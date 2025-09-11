@@ -34,13 +34,11 @@ All processors have been adapted to work with Quebec housing market data fields 
 ### AnalyzeProcessor
 **Score Field**: `analysis_score` (0-100 scale)
 
-**Scoring Formula**: Uses pre-calculated `analysis_score` with real estate fallback calculation:
-- **Base Score**: Primary housing market metric
-- **Population Density**: `Math.min(population / 100000, 1) * 15` (market size factor)
-- **Income Adjustment**: `(household_income - 30000) / 70000 * 20` (affordability factor)
-- **Housing Market Gap**: `(100 - homeowner_rate - rental_rate) * 0.4` (market opportunity)
+**Scoring Formula**: Uses pre-calculated `analysis_score` field from upstream data source (microservice or automation pipeline). The AnalyzeProcessor itself does not calculate the score but processes the existing field.
 
-**Analysis Description**: General real estate analysis processor providing comprehensive housing market insights across geographic areas with standardized scoring for investment opportunities.
+**Note**: The `analysis_score` is calculated by the data generation pipeline and represents a general market analysis score. The processor validates that this field exists and processes it for visualization and ranking.
+
+**Analysis Description**: General real estate analysis processor providing comprehensive housing market insights across geographic areas with standardized scoring for investment opportunities. Processes pre-calculated analysis scores for map visualization and comparative analysis.
 
 **Real Estate Relevance**: **Maximum** - Core processor for real estate investment analysis. Directly applicable to property location analysis, market penetration assessment, and housing market opportunity identification. Essential for property developers and real estate investors.
 
@@ -49,15 +47,27 @@ All processors have been adapted to work with Quebec housing market data fields 
 ### ComparativeAnalysisProcessor  
 **Score Field**: `comparative_score` (0-100 scale)
 
-**Scoring Formula**: 
-- **Property Value Performance (40%)**: Comparative property value trends
-- **Market Activity Impact (30%)**: Relative transaction volume and speed
-- **Neighborhood Growth (20%)**: Comparative development and appreciation
-- **Investment Advantage (10%)**: Unique property/location benefits
+**Scoring Formula** (Percentile-Based Ranking from automation script):
+```javascript
+// Calculate percentiles for relative comparison
+values = [target_value for each record where target_value > 0]
+values_sorted = sorted(values)
 
-**Analysis Description**: Compares housing market performance metrics across different geographic areas or property types to identify relative investment strengths and opportunities.
+// For each record:
+if (target_value > 0) {
+  percentile = (count of values <= target_value) / total_count * 100
+} else {
+  percentile = 0
+}
 
-**Real Estate Relevance**: **Maximum** - Essential for comparative market analysis (CMA) in real estate. Helps identify markets with superior property appreciation, optimal investment locations, and areas with competitive advantages for development or acquisition.
+comparative_score = percentile
+```
+
+**Fallback**: If no valid target values exist, assigns neutral score of 50.0 to all records.
+
+**Analysis Description**: Compares housing market performance metrics across different geographic areas or property types using percentile ranking to identify relative investment strengths and opportunities.
+
+**Real Estate Relevance**: **Maximum** - Essential for comparative market analysis (CMA) in real estate. Provides percentile-based rankings to identify markets with superior property performance, optimal investment locations, and areas with competitive advantages for development or acquisition.
 
 ---
 
@@ -77,21 +87,40 @@ All processors have been adapted to work with Quebec housing market data fields 
 ---
 
 ### CoreAnalysisProcessor
-**Score Field**: `strategic_value_score` (0-10 scale, converted to 0-100)
+**Score Field**: `strategic_value_score` (0-100 scale)
 
-**Scoring Formula** (Real Estate Strategic Value - 5 components):
-1. **Market Opportunity (0-3 points)**: `Math.min(3, (housing_market_gap / 100) * 3)`
-   - Untapped housing demand and development potential
-2. **Economic Attractiveness (0-2 points)**:
-   - Income factor: `Math.max(0, (median_income - 30000) / 70000)` (affordability)
-   - Population factor: `Math.min(population / 100000, 1)` (market size)
-3. **Competitive Position (0-2 points)**:
-   - Market strength: `Math.max(0, property_values / regional_average)`
-   - Location advantage: `Math.max(0, (accessibility_score - competitor_score) / 25)`
-4. **Growth Potential (0-2 points)**:
-   - Development bonus: `undeveloped_land > 30% ? 1 : undeveloped_land / 30`
-   - Income growth bonus: `income_growth > 3% ? 1 : 0`
-5. **Strategic Fit (0-1 points)**: `Math.min(1, urban_density > 2500 ? 1 : urban_density / 2500)`
+**Scoring Formula** (4-Component Strategic Analysis from automation script):
+
+**Strategic Value Score = (0.35 × Market Opportunity) + (0.30 × Competitive Position) + (0.20 × Data Reliability) + (0.15 × Market Scale)**
+
+**Component Calculations:**
+1. **Market Opportunity (35% weight)**:
+   ```
+   demographic_component = demographic_opportunity_score
+   market_gap = max(0, 100 - target_brand_share)
+   market_opportunity = (0.60 * demographic_component) + (0.40 * market_gap)
+   ```
+
+2. **Competitive Position (30% weight)**:
+   ```
+   competitive_advantage = competitive_advantage_score
+   brand_positioning = min((target_share / 50) * 100, 100)
+   competitive_position = (0.67 * competitive_advantage) + (0.33 * brand_positioning)
+   ```
+
+3. **Data Reliability (20% weight)**:
+   ```
+   correlation_component = correlation_strength_score
+   cluster_consistency = cluster_performance_score || min((target_value / 50) * 100, 100)
+   data_reliability = (0.75 * correlation_component) + (0.25 * cluster_consistency)
+   ```
+
+4. **Market Scale (15% weight)**:
+   ```
+   population_scale = min((total_population / 10000) * 100, 100)
+   economic_scale = min((median_income / 100000) * 100, 100)
+   market_scale = (0.60 * population_scale) + (0.40 * economic_scale)
+   ```
 
 **Analysis Description**: Most comprehensive real estate processor providing strategic investment value assessment through multi-dimensional analysis of housing market opportunity, economics, location, and growth potential.
 
@@ -117,15 +146,39 @@ All processors have been adapted to work with Quebec housing market data fields 
 ### SpatialClustersProcessor
 **Score Field**: `cluster_performance_score` (0-100 scale)
 
-**Scoring Formula**:
-- **Geographic Cohesion (40%)**: How tightly grouped similar housing markets are
-- **Market Differentiation (30%)**: How distinct different housing submarkets are
-- **Neighborhood Continuity (20%)**: Spatial proximity of similar property types
-- **Investment Relevance (10%)**: Alignment with real estate investment objectives
+**Scoring Formula** (Percentile-Based Clustering from automation script):
 
-**Analysis Description**: Identifies geographic clusters of similar housing market characteristics and property performance patterns for targeted real estate investment and development strategies.
+```javascript
+// Simple percentile-based clustering
+n_clusters = 5
+percentiles = [20, 40, 60, 80] // Calculate from valid target values
 
-**Real Estate Relevance**: **Maximum** - Essential for real estate portfolio expansion and development planning. Identifies similar housing markets for investment strategies, helps understand neighborhood patterns, and optimizes property acquisition and development efforts across markets.
+// For each record:
+if (target_value <= percentiles[0]) {
+  cluster_id = 0, cluster_label = 'Low Performance', cluster_score = 20
+} else if (target_value <= percentiles[1]) {
+  cluster_id = 1, cluster_label = 'Below Average', cluster_score = 40
+} else if (target_value <= percentiles[2]) {
+  cluster_id = 2, cluster_label = 'Average', cluster_score = 60
+} else if (target_value <= percentiles[3]) {
+  cluster_id = 3, cluster_label = 'Above Average', cluster_score = 80
+} else {
+  cluster_id = 4, cluster_label = 'High Performance', cluster_score = 100
+}
+```
+
+**Fallback**: If no valid target values exist, assigns random clusters with neutral 50.0 scores.
+
+**Cluster Labels**:
+- **Cluster 0**: Low Performance (Score: 20)
+- **Cluster 1**: Below Average (Score: 40) 
+- **Cluster 2**: Average (Score: 60)
+- **Cluster 3**: Above Average (Score: 80)
+- **Cluster 4**: High Performance (Score: 100)
+
+**Analysis Description**: Creates performance-based clusters of housing markets using percentile ranking to identify similar market characteristics and investment potential across geographic areas.
+
+**Real Estate Relevance**: **Maximum** - Essential for real estate portfolio expansion and development planning. Groups markets by performance levels, helps identify similar investment opportunities, and optimizes property acquisition strategies across different market tiers.
 
 ---
 
@@ -149,17 +202,25 @@ All processors have been adapted to work with Quebec housing market data fields 
 ### MarketSizingProcessor
 **Score Field**: `market_sizing_score` (0-100 scale)
 
-**Scoring Formula**:
-- **Housing Revenue Potential**: `Math.sqrt((households / 20000) * (median_income / 80000))`
-- **Housing Market Categories**:
-  - Mega Housing Market: `households >= 60K && income >= 80K`
-  - Large Housing Market: `households >= 40K && income >= 60K`  
-  - Medium Housing Market: `households >= 30K || income >= 100K`
-- **Development Opportunity**: Based on available land and zoning capacity
+**Scoring Formula** (Market Sizing - Not implemented in automation script):
 
-**Analysis Description**: Evaluates total addressable housing market size, development potential, and investment revenue opportunities across geographic real estate markets.
+**Note**: The MarketSizingProcessor is listed in the processor registry but does not have a specific scoring algorithm implemented in the current automation script. This processor likely uses:
 
-**Real Estate Relevance**: **Maximum** - Critical for real estate development and investment planning. Directly measures housing market size, development revenue potential, and investment opportunity scale. Essential for prioritizing development projects, property acquisitions, and market entry decisions.
+**Expected Calculation Pattern**:
+```
+revenue_potential = sqrt((households / target_households) * (income / target_income))
+market_category = categorize_by_size_and_income(households, income)
+market_sizing_score = scale_to_100(revenue_potential, market_category)
+```
+
+**Typical Market Categories**:
+- **Mega Housing Market**: 60K+ households, $80K+ income
+- **Large Housing Market**: 40K+ households, $60K+ income
+- **Medium Housing Market**: 30K+ households OR $100K+ income
+
+**Analysis Description**: Evaluates total addressable housing market size, household capacity, and income potential to determine market opportunity scale for real estate development.
+
+**Real Estate Relevance**: **Maximum** - Critical for real estate development and investment planning. Essential for sizing market opportunity, prioritizing development projects, and determining investment scale potential.
 
 ---
 
@@ -181,16 +242,24 @@ All processors have been adapted to work with Quebec housing market data fields 
 ### RiskDataProcessor
 **Score Field**: `risk_adjusted_score` (0-100 scale)
 
-**Scoring Formula** (Real Estate Risk Assessment):
-- **Base Property Value**: Starting investment opportunity score
-- **Market Volatility Penalty**: `-market_volatility * 20` (0-20 point reduction)
-- **Economic Uncertainty Penalty**: `-economic_uncertainty * 15` (0-15 point reduction)  
-- **Market Stability Bonus**: `+housing_market_stability * 10` (0-10 point addition)
-- **Final Score**: `Math.max(0, Math.min(100, base_value - volatility_penalty - uncertainty_penalty + stability_bonus))`
+**Scoring Formula** (Risk Adjustment - Not implemented in automation script):
 
-**Analysis Description**: Provides risk-adjusted real estate investment scores by penalizing market volatility and economic uncertainty while rewarding housing market stability and predictability.
+**Note**: The RiskDataProcessor is listed in the processor registry but does not have a specific scoring algorithm implemented in the automation script. This processor likely uses configuration-driven risk adjustments based on:
 
-**Real Estate Relevance**: **Maximum** - Critical for real estate investment risk management. Helps identify stable housing markets vs. high-risk investment opportunities. Essential for portfolio management, risk assessment, and prudent real estate investment decisions.
+- **Market Volatility Factors**: Economic stability indicators
+- **Investment Risk Metrics**: Property value fluctuations
+- **Economic Uncertainty**: Regional economic conditions
+- **Stability Rewards**: Market predictability bonuses
+
+**Typical Risk Adjustment Pattern**:
+```
+risk_adjusted_score = base_score - (volatility_penalty + uncertainty_penalty) + stability_bonus
+Final score clamped between 0-100
+```
+
+**Analysis Description**: Provides risk-adjusted real estate investment scores by evaluating market stability, economic factors, and investment risk to help identify prudent investment opportunities.
+
+**Real Estate Relevance**: **Maximum** - Critical for real estate investment risk management. Essential for identifying stable housing markets vs. high-risk opportunities and supporting portfolio management decisions.
 
 ---
 
@@ -242,36 +311,73 @@ All processors have been adapted to work with Quebec housing market data fields 
 ---
 
 ### DemographicDataProcessor
-**Score Field**: `demographic_score` (0-100 scale) → **Housing Market Demographic Score**
+**Score Field**: `demographic_opportunity_score` (0-100 scale)
 
-**Scoring Formula** (Real Estate Demographic Fit - 4 components):
-1. **Household Income Component (40% weight)**: `Math.min((household_income / 100000) * 40, 40)`
-   - Higher income indicates stronger housing market and affordability
-2. **Population Market Size (25% weight)**: `Math.min((population / 50000) * 25, 25)`
-   - Larger population provides more housing demand and market opportunity
-3. **Housing Market Activity (20% weight)**: `Math.min((total_housing_units / 10000) * 20, 20)`
-   - More housing stock indicates active, developed market
-4. **Target Demographics (15% weight)**: `Math.min((prime_homebuying_age_pop / total_pop) * 100 * 15, 15)`
-   - Higher concentration of prime homebuying demographics (25-45 years)
+**Scoring Formula** (Real Estate Demographic Analysis from automation script):
 
-**Analysis Description**: Analyzes demographic characteristics specifically for housing market potential, including income levels, population size, housing stock, and homebuying demographics to assess real estate investment opportunity.
+```javascript
+// Calculate diversity index
+if (total_population > 0) {
+  diversity_score = (
+    (asian_population / total_population) * 30 +
+    (black_population / total_population) * 20 +
+    min(median_income / 75000, 1) * 25 +
+    max(0, 1 - abs(median_age - 35) / 20) * 15 +
+    min(household_size / 3, 1) * 10
+  ) * 100
+} else {
+  diversity_score = 0
+}
 
-**Real Estate Relevance**: **Maximum** - Core demographic processor for real estate analysis. Directly measures housing market demographic fit, buying power, market size, and homebuyer concentration. Essential for real estate market assessment and development planning.
+// Population scale bonus
+population_bonus = min(total_population / 10000, 1) * 20
+
+demographic_opportunity_score = min(diversity_score + population_bonus, 100)
+```
+
+**Component Breakdown**:
+- **Asian Population Factor (30%)**: Diversity strength from Asian demographics
+- **Black Population Factor (20%)**: Additional diversity component
+- **Income Factor (25%)**: Economic capacity (target: $75K median income)
+- **Age Factor (15%)**: Optimal age around 35 years
+- **Household Size Factor (10%)**: Target household size around 3 people
+- **Population Bonus (up to 20 points)**: Market size bonus
+
+**Analysis Description**: Analyzes demographic characteristics specifically for housing market potential, focusing on diversity, economic capacity, age distribution, and market size to assess real estate investment opportunity.
+
+**Real Estate Relevance**: **Maximum** - Core demographic processor for real estate analysis. Evaluates demographic diversity, buying power, optimal age groups, and market scale. Essential for understanding target homebuyer demographics and market potential.
 
 ---
 
 ### PredictiveModelingProcessor
-**Score Field**: `prediction_confidence_score` (0-100 scale)
+**Score Field**: `predictive_modeling_score` (0-100 scale)
 
-**Scoring Formula** (Real Estate Forecasting):
-- **Property Value Accuracy (50%)**: Historical accuracy of property value predictions
-- **Market Trend Importance (25%)**: Strength of real estate trend predictive variables
-- **Housing Data Quality (15%)**: Completeness of property and market data
-- **Model Validation (10%)**: Cross-validation performance on housing market data
+**Scoring Formula** (Multi-Factor Prediction from automation script):
 
-**Analysis Description**: Builds and evaluates predictive models specifically for real estate forecasting including property values, housing market trends, and investment performance.
+```javascript
+// Weighted prediction combining multiple factors
+if (demographic_score > 0 || competitive_score > 0) {
+  predictive_score = (
+    0.40 * demographic_opportunity_score +
+    0.35 * competitive_advantage_score +
+    0.25 * min(target_value, 100)
+  )
+} else {
+  // Fallback to target value only
+  predictive_score = min(target_value, 100)
+}
+```
 
-**Real Estate Relevance**: **Maximum** - Critical for property value forecasting, market timing, and investment planning. Helps real estate professionals anticipate market changes, optimize acquisition timing, and predict property appreciation.
+**Component Weights**:
+- **Demographic Factor (40%)**: Population and economic characteristics
+- **Competitive Factor (35%)**: Market competitive positioning
+- **Current Performance (25%)**: Existing target value performance
+
+**Fallback**: If demographic and competitive scores unavailable, uses target_value clamped to 100.
+
+**Analysis Description**: Creates predictive scores by combining demographic opportunity, competitive advantage, and current performance to forecast future real estate market potential.
+
+**Real Estate Relevance**: **Maximum** - Critical for property value forecasting and investment planning. Combines key market factors to predict future performance, essential for acquisition timing and market entry decisions.
 
 ---
 
@@ -308,15 +414,23 @@ All processors have been adapted to work with Quebec housing market data fields 
 ### TrendAnalysisProcessor
 **Score Field**: `trend_strength_score` (0-100 scale)
 
-**Scoring Formula** (Real Estate Market Trends):
-- **Housing Trend Direction (40%)**: Positive vs. negative real estate trend identification
-- **Market Trend Magnitude (30%)**: Strength and rate of property value changes
-- **Trend Persistence (20%)**: Historical consistency of housing market trends
-- **Leading Indicators (10%)**: Early signals for real estate market trend changes
+**Scoring Formula** (Simple Baseline Trend Analysis from automation script):
 
-**Analysis Description**: Identifies and analyzes housing market trends, seasonal patterns, and emerging shifts in real estate demand, property values, and market dynamics.
+```javascript
+// Simple trend based on current vs baseline
+baseline = 50  // Assumed baseline for trend analysis
+trend_strength_score = max(0, min((target_value / baseline) * 50, 100))
+```
 
-**Real Estate Relevance**: **Maximum** - Essential for staying ahead of housing market changes. Helps real estate investors and developers adapt strategies, timing, and property types to emerging market trends and buyer preferences.
+**Formula Explanation**:
+- Uses target_value compared against a baseline of 50
+- Calculates relative performance as percentage of baseline
+- Multiplies by 50 to scale to 0-100 range
+- Clamps result between 0 and 100
+
+**Analysis Description**: Provides trend analysis by comparing current market values against a baseline to identify relative market strength and directional momentum in housing markets.
+
+**Real Estate Relevance**: **Maximum** - Essential for understanding housing market momentum and directional changes. Helps real estate investors and developers identify markets with positive trends and growth potential relative to baseline performance.
 
 ---
 

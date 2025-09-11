@@ -7,7 +7,7 @@ This document provides comprehensive information about all analysis processors i
 The system contains **35 total processors** organized into different categories:
 - **22 Successfully Migrated Processors** (using BaseProcessor architecture)
 - **9 Generic/Technical Processors** (ML utilities, no migration required)
-- **2 Retired Processors** (retail-specific, removed for real estate focus)
+- **2 Retail-Specific Processors** (BrandDifferenceProcessor, CompetitiveDataProcessor - available for retail projects)
 - **2 Utility Files** (BaseProcessor, support files)
 
 ---
@@ -32,13 +32,11 @@ The system contains **35 total processors** organized into different categories:
 ### AnalyzeProcessor
 **Score Field**: `analysis_score` (0-100 scale)
 
-**Scoring Formula**: Uses pre-calculated `analysis_score` from microservice, with fallback calculation:
-- **Base Score**: Primary metric from data
-- **Population Weight**: `Math.min(population / 100000, 1) * 15`
-- **Income Adjustment**: `(median_income - 30000) / 70000 * 20`
-- **Market Gap**: `(100 - target_brand - competitor_brand) * 0.4`
+**Scoring Formula**: Uses pre-calculated `analysis_score` field from upstream data source (microservice or automation pipeline). The AnalyzeProcessor itself does not calculate the score but processes the existing field.
 
-**Analysis Description**: General analysis processor providing comprehensive market insights across geographic areas with standardized scoring methodology.
+**Note**: The `analysis_score` is calculated by the data generation pipeline and represents a general market analysis score optimized for retail market evaluation. The processor validates that this field exists and processes it for visualization and ranking.
+
+**Analysis Description**: General retail analysis processor providing comprehensive market insights across geographic areas with standardized scoring for retail location analysis, market penetration, and competitive assessment.
 
 **Retail Relevance**: **High** - Directly applicable to retail location analysis, market penetration assessment, and competitive positioning. Provides actionable insights for store placement and market entry strategies.
 
@@ -47,15 +45,27 @@ The system contains **35 total processors** organized into different categories:
 ### ComparativeAnalysisProcessor  
 **Score Field**: `comparative_score` (0-100 scale)
 
-**Scoring Formula**: 
-- **Performance Differential (40%)**: Target vs competitor performance gap
-- **Market Share Impact (30%)**: Relative market position strength
-- **Growth Potential (20%)**: Comparative growth trajectory analysis
-- **Competitive Advantage (10%)**: Unique positioning factors
+**Scoring Formula** (Percentile-Based Ranking from automation script):
+```javascript
+// Calculate percentiles for relative comparison
+values = [target_value for each record where target_value > 0]
+values_sorted = sorted(values)
 
-**Analysis Description**: Compares performance metrics across different geographic areas or market segments to identify relative strengths and opportunities.
+// For each record:
+if (target_value > 0) {
+  percentile = (count of values <= target_value) / total_count * 100
+} else {
+  percentile = 0
+}
 
-**Retail Relevance**: **Very High** - Essential for competitive analysis in retail. Helps identify markets where brand outperforms competitors, optimal expansion locations, and areas needing strategic intervention.
+comparative_score = percentile
+```
+
+**Fallback**: If no valid target values exist, assigns neutral score of 50.0 to all records.
+
+**Analysis Description**: Compares performance metrics across different geographic areas or market segments using percentile ranking to identify relative market strengths and competitive opportunities.
+
+**Retail Relevance**: **Very High** - Essential for competitive analysis in retail. Provides percentile-based rankings to identify markets where brand outperforms competitors, optimal expansion locations, and areas needing strategic intervention.
 
 ---
 
@@ -75,20 +85,40 @@ The system contains **35 total processors** organized into different categories:
 ---
 
 ### CoreAnalysisProcessor
-**Score Field**: `strategic_value_score` (0-10 scale, converted to 0-100)
+**Score Field**: `strategic_value_score` (0-100 scale)
 
-**Scoring Formula** (Sophisticated 5-component system):
-1. **Market Opportunity (0-3 points)**: `Math.min(3, (market_gap / 100) * 3)`
-2. **Economic Attractiveness (0-2 points)**: 
-   - Income factor: `Math.max(0, (median_income - 30000) / 70000)`  
-   - Population factor: `Math.min(population / 100000, 1)`
-3. **Competitive Position (0-2 points)**:
-   - Brand strength: `Math.max(0, target_value / 50)`
-   - Relative advantage: `Math.max(0, (target_value - competitor_value) / 25)`
-4. **Growth Potential (0-2 points)**:
-   - Market gap bonus: `market_gap > 80 ? 1 : market_gap / 80`
-   - Income bonus: `median_income > 60000 ? 1 : 0`
-5. **Strategic Fit (0-1 points)**: `Math.min(1, population > 25000 ? 1 : population / 25000)`
+**Scoring Formula** (4-Component Strategic Analysis from automation script):
+
+**Strategic Value Score = (0.35 × Market Opportunity) + (0.30 × Competitive Position) + (0.20 × Data Reliability) + (0.15 × Market Scale)**
+
+**Component Calculations:**
+1. **Market Opportunity (35% weight)**:
+   ```
+   demographic_component = demographic_opportunity_score
+   market_gap = max(0, 100 - target_brand_share)
+   market_opportunity = (0.60 * demographic_component) + (0.40 * market_gap)
+   ```
+
+2. **Competitive Position (30% weight)**:
+   ```
+   competitive_advantage = competitive_advantage_score
+   brand_positioning = min((target_share / 50) * 100, 100)
+   competitive_position = (0.67 * competitive_advantage) + (0.33 * brand_positioning)
+   ```
+
+3. **Data Reliability (20% weight)**:
+   ```
+   correlation_component = correlation_strength_score
+   cluster_consistency = cluster_performance_score || min((target_value / 50) * 100, 100)
+   data_reliability = (0.75 * correlation_component) + (0.25 * cluster_consistency)
+   ```
+
+4. **Market Scale (15% weight)**:
+   ```
+   population_scale = min((total_population / 10000) * 100, 100)
+   economic_scale = min((median_income / 100000) * 100, 100)
+   market_scale = (0.60 * population_scale) + (0.40 * economic_scale)
+   ```
 
 **Analysis Description**: Most comprehensive processor providing strategic value assessment through multi-dimensional analysis of market opportunity, economics, competition, and growth potential.
 
@@ -114,15 +144,39 @@ The system contains **35 total processors** organized into different categories:
 ### SpatialClustersProcessor
 **Score Field**: `cluster_performance_score` (0-100 scale)
 
-**Scoring Formula**:
-- **Cluster Cohesion (40%)**: How tightly grouped similar areas are
-- **Cluster Separation (30%)**: How distinct different clusters are
-- **Geographic Continuity (20%)**: Spatial proximity of cluster members
-- **Business Relevance (10%)**: Alignment with business objectives
+**Scoring Formula** (Percentile-Based Clustering from automation script):
 
-**Analysis Description**: Identifies geographic clusters of similar market characteristics and performance patterns for targeted analysis and strategy development.
+```javascript
+// Simple percentile-based clustering
+n_clusters = 5
+percentiles = [20, 40, 60, 80] // Calculate from valid target values
 
-**Retail Relevance**: **Very High** - Essential for retail chain expansion planning. Identifies similar markets for rollout strategies, helps understand regional patterns, and optimizes supply chain and marketing efforts.
+// For each record:
+if (target_value <= percentiles[0]) {
+  cluster_id = 0, cluster_label = 'Low Performance', cluster_score = 20
+} else if (target_value <= percentiles[1]) {
+  cluster_id = 1, cluster_label = 'Below Average', cluster_score = 40
+} else if (target_value <= percentiles[2]) {
+  cluster_id = 2, cluster_label = 'Average', cluster_score = 60
+} else if (target_value <= percentiles[3]) {
+  cluster_id = 3, cluster_label = 'Above Average', cluster_score = 80
+} else {
+  cluster_id = 4, cluster_label = 'High Performance', cluster_score = 100
+}
+```
+
+**Fallback**: If no valid target values exist, assigns random clusters with neutral 50.0 scores.
+
+**Cluster Labels**:
+- **Cluster 0**: Low Performance (Score: 20)
+- **Cluster 1**: Below Average (Score: 40) 
+- **Cluster 2**: Average (Score: 60)
+- **Cluster 3**: Above Average (Score: 80)
+- **Cluster 4**: High Performance (Score: 100)
+
+**Analysis Description**: Creates performance-based clusters of retail markets using percentile ranking to identify similar market characteristics and expansion potential across geographic areas.
+
+**Retail Relevance**: **Very High** - Essential for retail chain expansion planning. Groups markets by performance levels, identifies similar expansion opportunities, and optimizes supply chain and marketing efforts across different market tiers.
 
 ---
 
@@ -211,15 +265,30 @@ The system contains **35 total processors** organized into different categories:
 ### CorrelationAnalysisProcessor
 **Score Field**: `correlation_strength_score` (0-100 scale)
 
-**Scoring Formula**:
-- **Statistical Significance (40%)**: P-values and confidence intervals
-- **Correlation Strength (35%)**: Pearson correlation coefficients  
-- **Business Relevance (15%)**: Practical significance of relationships
-- **Data Quality (10%)**: Sample size and data completeness
+**Scoring Formula** (Correlation Analysis from automation script):
 
-**Analysis Description**: Identifies and quantifies relationships between different variables to understand key drivers of business performance.
+```javascript
+// Use existing correlation score if available
+if ('correlation_score' in record && record.correlation_score != null) {
+  correlation_strength_score = safe_float(record.correlation_score)
+} else {
+  // Calculate based on available metrics
+  if (target_value > 0 && median_income > 0) {
+    correlation_strength_score = min((target_value * median_income / 1000000), 100)
+  } else {
+    correlation_strength_score = 0
+  }
+}
+```
 
-**Retail Relevance**: **High** - Helps retailers understand what demographic and market factors drive sales performance. Critical for targeted marketing and location optimization.
+**Calculation Logic**:
+- **Primary**: Uses pre-calculated `correlation_score` if available
+- **Fallback**: Calculates proxy correlation using `(target_value * median_income) / 1,000,000`
+- **Default**: Returns 0 if insufficient data
+
+**Analysis Description**: Identifies and quantifies relationships between target performance and economic factors, providing correlation insights for retail market analysis.
+
+**Retail Relevance**: **High** - Helps retailers understand relationships between market performance, income levels, and sales potential. Critical for identifying demographic and economic drivers of retail success.
 
 ---
 
@@ -239,32 +308,73 @@ The system contains **35 total processors** organized into different categories:
 ---
 
 ### DemographicDataProcessor
-**Score Field**: `demographic_score` (0-100 scale)
+**Score Field**: `demographic_opportunity_score` (0-100 scale)
 
-**Scoring Formula** (Real Estate Demographic Fit - 4 components):
-1. **Household Income (40% weight)**: `Math.min((income / 100000) * 40, 40)`
-2. **Population Market Size (25% weight)**: `Math.min((population / 50000) * 25, 25)`
-3. **Housing Market Activity (20% weight)**: `Math.min((total_housing / 10000) * 20, 20)`
-4. **Young Adult Demographics (15% weight)**: `Math.min((young_adults / population) * 100 * 15, 15)`
+**Scoring Formula** (Retail Demographic Analysis from automation script):
 
-**Analysis Description**: Analyzes demographic characteristics including age, income, education, and lifestyle factors to assess market fit and customer potential.
+```javascript
+// Calculate diversity index
+if (total_population > 0) {
+  diversity_score = (
+    (asian_population / total_population) * 30 +
+    (black_population / total_population) * 20 +
+    min(median_income / 75000, 1) * 25 +
+    max(0, 1 - abs(median_age - 35) / 20) * 15 +
+    min(household_size / 3, 1) * 10
+  ) * 100
+} else {
+  diversity_score = 0
+}
 
-**Retail Relevance**: **Maximum** - Essential for retail market analysis. Directly measures target demographic alignment, spending power, and market opportunity based on population characteristics.
+// Population scale bonus
+population_bonus = min(total_population / 10000, 1) * 20
+
+demographic_opportunity_score = min(diversity_score + population_bonus, 100)
+```
+
+**Component Breakdown**:
+- **Asian Population Factor (30%)**: Key demographic for retail diversity
+- **Black Population Factor (20%)**: Additional diversity strength
+- **Income Factor (25%)**: Spending power (target: $75K median income)
+- **Age Factor (15%)**: Optimal retail age around 35 years
+- **Household Size Factor (10%)**: Family unit spending capacity
+- **Population Bonus (up to 20 points)**: Market scale advantage
+
+**Analysis Description**: Analyzes demographic characteristics to assess retail market potential, focusing on diversity, spending power, age distribution, and market size for retail customer opportunity.
+
+**Retail Relevance**: **Maximum** - Essential for retail market analysis. Directly measures target demographic alignment, spending power, and retail market opportunity based on population characteristics and diversity factors.
 
 ---
 
 ### PredictiveModelingProcessor
-**Score Field**: `prediction_confidence_score` (0-100 scale)
+**Score Field**: `predictive_modeling_score` (0-100 scale)
 
-**Scoring Formula**:
-- **Model Accuracy (50%)**: Historical prediction accuracy metrics
-- **Feature Importance (25%)**: Strength of predictive variables
-- **Data Quality (15%)**: Completeness and reliability of input data
-- **Validation Results (10%)**: Cross-validation and holdout performance
+**Scoring Formula** (Multi-Factor Prediction from automation script):
 
-**Analysis Description**: Builds and evaluates predictive models for forecasting business metrics, customer behavior, and market trends.
+```javascript
+// Weighted prediction combining multiple factors
+if (demographic_score > 0 || competitive_score > 0) {
+  predictive_score = (
+    0.40 * demographic_opportunity_score +
+    0.35 * competitive_advantage_score +
+    0.25 * min(target_value, 100)
+  )
+} else {
+  // Fallback to target value only
+  predictive_score = min(target_value, 100)
+}
+```
 
-**Retail Relevance**: **Very High** - Critical for demand forecasting, inventory planning, and sales projections. Helps retailers anticipate market changes and optimize operations.
+**Component Weights**:
+- **Demographic Factor (40%)**: Population and economic characteristics
+- **Competitive Factor (35%)**: Market competitive positioning
+- **Current Performance (25%)**: Existing target value performance
+
+**Fallback**: If demographic and competitive scores unavailable, uses target_value clamped to 100.
+
+**Analysis Description**: Creates predictive scores by combining demographic opportunity, competitive advantage, and current performance to forecast future retail market potential.
+
+**Retail Relevance**: **Very High** - Critical for demand forecasting, inventory planning, and sales projections. Combines key market factors to predict future performance, essential for retail expansion timing and market entry decisions.
 
 ---
 
@@ -299,17 +409,25 @@ The system contains **35 total processors** organized into different categories:
 ---
 
 ### TrendAnalysisProcessor
-**Score Field**: `trend_strength_score` (0-100 scale)  
+**Score Field**: `trend_strength_score` (0-100 scale)
 
-**Scoring Formula**:
-- **Trend Direction (40%)**: Positive vs. negative trend identification
-- **Trend Magnitude (30%)**: Strength and rate of change
-- **Trend Persistence (20%)**: Historical consistency and reliability
-- **Leading Indicators (10%)**: Early warning signals for trend changes
+**Scoring Formula** (Simple Baseline Trend Analysis from automation script):
 
-**Analysis Description**: Identifies and analyzes market trends, seasonal patterns, and emerging shifts in consumer behavior or market dynamics.
+```javascript
+// Simple trend based on current vs baseline
+baseline = 50  // Assumed baseline for trend analysis
+trend_strength_score = max(0, min((target_value / baseline) * 50, 100))
+```
 
-**Retail Relevance**: **Very High** - Essential for staying ahead of market changes. Helps retailers adapt product mix, marketing strategies, and operations to emerging trends.
+**Formula Explanation**:
+- Uses target_value compared against a baseline of 50
+- Calculates relative performance as percentage of baseline
+- Multiplies by 50 to scale to 0-100 range
+- Clamps result between 0 and 100
+
+**Analysis Description**: Provides trend analysis by comparing current market values against a baseline to identify relative market strength and directional momentum for retail expansion.
+
+**Retail Relevance**: **Very High** - Essential for understanding retail market momentum and directional changes. Helps retailers identify markets with positive trends and growth potential relative to baseline performance.
 
 ---
 
@@ -411,25 +529,74 @@ The system contains **35 total processors** organized into different categories:
 
 ---
 
-## Retired Processors
+## Retail-Specific Processors
 
-### BrandDifferenceProcessor ❌ **RETIRED**
-**Status**: Retired - Too retail-specific for real estate analysis
-**Previous Score Field**: `brand_difference_score`
+### BrandDifferenceProcessor ✅ **ACTIVE FOR RETAIL**
+**Score Field**: `brand_difference_score` (-100 to +100 scale)
 
-**Previous Formula**: Analyzed competitive brand positioning and market share differences.
+**Scoring Formula** (Brand Comparison Analysis from automation script):
+```javascript
+// Brand difference score (Nike vs Adidas comparison)
+nike_share = safe_float(record.get('value_MP30034A_B_P', 0))
+adidas_share = safe_float(record.get('value_MP30029A_B_P', 0))
 
-**Retirement Reason**: Focused specifically on brand competition analysis which doesn't translate well to real estate market analysis.
+if (nike_share + adidas_share > 0) {
+  brand_difference_score = ((nike_share - adidas_share) / (nike_share + adidas_share)) * 100
+} else {
+  brand_difference_score = 0
+}
+```
+
+**Formula Explanation**:
+- Calculates competitive advantage between target brand (Nike) and primary competitor (Adidas)
+- Positive scores indicate target brand dominance
+- Negative scores indicate competitor advantage
+- Score range: -100 (competitor dominance) to +100 (target brand dominance)
+
+**Retail Relevance**: **Maximum** - Essential for brand competitive analysis in retail. Directly measures market share advantage, competitive positioning, and identifies markets where brand outperforms or underperforms against primary competitors.
 
 ---
 
-### CompetitiveDataProcessor ❌ **RETIRED** 
-**Status**: Retired - Brand-focused competitive analysis not applicable to real estate
-**Previous Score Field**: `competitive_analysis_score`
+### CompetitiveDataProcessor ✅ **ACTIVE FOR RETAIL** 
+**Score Field**: `competitive_advantage_score` (0-100 scale)
 
-**Previous Formula**: Brand-focused competitive landscape analysis.
+**Scoring Formula** (Advanced Competitive Analysis from automation script):
 
-**Retirement Reason**: Too narrowly focused on brand competition rather than broader market competitive dynamics.
+**Competitive Advantage Score = (0.35 × Market Dominance) + (0.35 × Demographic Advantage) + (0.20 × Economic Advantage) + (0.10 × Population Advantage)**
+
+**Component Calculations:**
+1. **Market Dominance (35% weight)**:
+   ```javascript
+   if (total_competitor_share > 0) {
+     market_dominance = min((nike_share / total_competitor_share) * 50, 100)
+   } else {
+     market_dominance = nike_share * 2  // No competitors = high dominance
+   }
+   ```
+
+2. **SHAP-based Demographic Advantage (35% weight)**:
+   ```javascript
+   // Normalized SHAP values for demographic factors
+   demographic_advantage = (
+     0.30 * normalized_asian_shap +
+     0.25 * normalized_millennial_shap +
+     0.20 * normalized_gen_z_shap +
+     0.15 * normalized_household_shap +
+     0.10 * normalized_nike_shap
+   )
+   ```
+
+3. **Economic Advantage (20% weight)**:
+   ```javascript
+   economic_advantage = min((median_income / 100000) * 50 + (wealth_index / 200) * 50, 100)
+   ```
+
+4. **Population Advantage (10% weight)**:
+   ```javascript
+   population_advantage = min((total_population / 20000) * 100, 100)
+   ```
+
+**Retail Relevance**: **Maximum** - Core competitive analysis for retail brands. Combines market dominance, demographic alignment, economic factors, and population scale to provide comprehensive competitive positioning scores. Essential for understanding market competitiveness and expansion opportunities.
 
 ---
 
