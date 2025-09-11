@@ -3640,7 +3640,94 @@ graph TD
     Blob --> CDN
 ```
 
-### 10.2 Data Extraction Pipeline
+### 10.2 Two-Layer Scoring Architecture
+
+**🚀 CRITICAL UNDERSTANDING: Pre-Calculated SHAP + Automation Scoring**
+
+The system uses a sophisticated two-layer scoring architecture that separates data intelligence from visualization processing:
+
+#### Layer 1: Automation Script Scoring
+**File**: `/scripts/automation/automated_score_calculator.py`
+
+- **Input**: Raw microservice data + **pre-calculated SHAP values**
+- **Purpose**: Generate processor-specific scores using explainable AI
+- **Process**: Combines demographic data, SHAP feature importance, and domain logic
+- **Output**: Processor-ready scores (e.g., `competitive_advantage_score`, `demographic_opportunity_score`)
+
+```python
+# Example: CompetitiveDataProcessor automation scoring
+def calculate_competitive_scores(endpoint_data):
+    # SHAP values are PRE-CALCULATED by microservice
+    nike_shap = record['shap_MP30034A_B_P']        # Pre-existing
+    asian_shap = record['shap_ASIAN_CY_P']         # Pre-existing
+    
+    # Automation script USES these SHAP values in scoring formulas
+    normalized_shap = normalize_to_0_100_scale(shap_values)
+    demographic_advantage = (
+        0.30 * normalized_shap['asian'] +
+        0.25 * normalized_shap['millennial'] +
+        # ... weighted SHAP combination
+    )
+    
+    # Generate final automation score
+    competitive_advantage_score = (
+        0.35 * market_dominance +
+        0.35 * demographic_advantage +  # Uses SHAP
+        0.20 * economic_advantage +
+        0.10 * population_advantage
+    )
+```
+
+#### Layer 2: Processor Visualization Scoring
+**File**: `/lib/analysis/strategies/processors/`
+
+- **Input**: **Automation-generated scores** (NOT raw SHAP values)
+- **Purpose**: Transform automation scores into visualization-ready data
+- **Process**: Uses pre-calculated scores in processor-specific formulas
+- **Output**: Final visualization scores and map styling
+
+```typescript
+// Example: CoreAnalysisProcessor uses automation scores
+export class CoreAnalysisProcessor extends BaseProcessor {
+  process(rawData: RawAnalysisResult): ProcessedAnalysisData {
+    
+    // Uses PRE-CALCULATED scores from automation layer
+    const competitiveScore = record.competitive_advantage_score;  // From automation
+    const demographicScore = record.demographic_opportunity_score; // From automation
+    
+    // Processor combines automation scores for visualization
+    const strategicValue = (
+      0.35 * marketOpportunity +
+      0.30 * competitiveScore +      // Pre-calculated by automation
+      0.20 * dataReliability +
+      0.15 * marketScale
+    );
+  }
+}
+```
+
+#### Key Architecture Benefits
+
+1. **Separation of Concerns**: 
+   - Automation = Data intelligence using SHAP
+   - Processors = Visualization preparation
+
+2. **Performance Optimization**:
+   - SHAP values pre-calculated once by microservice
+   - Automation scores computed once per endpoint
+   - Processors consume ready-made scores
+
+3. **Explainable AI Integration**:
+   - SHAP values provide scientific feature importance
+   - Automation layer makes scoring transparent and auditable
+   - Processors focus on user experience, not AI computation
+
+4. **Scalability**:
+   - Heavy AI computation done upstream
+   - Frontend processors handle lightweight score transformation
+   - Clear data flow from intelligence → visualization
+
+### 10.3 Data Extraction Pipeline
 
 **File**: `/scripts/extract_arcgis_data.py`
 
