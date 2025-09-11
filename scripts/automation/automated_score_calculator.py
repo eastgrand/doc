@@ -387,28 +387,86 @@ class AutomatedScoreCalculator:
         return endpoint_data_copy
     
     def calculate_correlation_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Calculate correlation strength scores"""
+        """Calculate correlation strength scores using proper statistical correlation"""
         results = []
+        records = endpoint_data['results']
         
-        for record in endpoint_data['results']:
-            # Use existing correlation score if available
-            if 'correlation_score' in record and record['correlation_score'] is not None:
-                correlation_strength_score = self._safe_float(record['correlation_score'])
-            else:
-                # Calculate based on available metrics
-                target_value = self._safe_float(record.get('target_value', 0))
-                median_income = self._safe_float(record.get('median_income', 0))
-                total_population = self._safe_float(record.get('total_population', 0))
-                
-                # Simple correlation proxy
-                if target_value > 0 and median_income > 0:
-                    correlation_strength_score = min((target_value * median_income / 1000000), 100)
-                else:
-                    correlation_strength_score = 0
+        # Extract key variables for correlation analysis
+        target_values = []
+        income_values = []
+        population_values = []
+        
+        for record in records:
+            target_val = self._safe_float(record.get('target_value', 0))
+            income_val = self._safe_float(record.get('median_income', 0))
+            pop_val = self._safe_float(record.get('total_population', 0))
             
-            record_copy = record.copy()
-            record_copy['correlation_strength_score'] = round(correlation_strength_score, 2)
-            results.append(record_copy)
+            if target_val > 0:  # Only include records with valid target values
+                target_values.append(target_val)
+                income_values.append(income_val)
+                population_values.append(pop_val)
+        
+        # Calculate correlations if we have sufficient data
+        if len(target_values) >= 3:  # Need minimum 3 points for correlation
+            # Calculate Pearson correlation coefficients
+            income_correlation = self._calculate_pearson_correlation(target_values, income_values)
+            population_correlation = self._calculate_pearson_correlation(target_values, population_values)
+            
+            # Calculate demographic correlations using SHAP values if available
+            shap_correlations = []
+            for record in records:
+                for key, value in record.items():
+                    if key.startswith('shap_') and isinstance(value, (int, float)):
+                        target_val = self._safe_float(record.get('target_value', 0))
+                        if target_val > 0:
+                            # Correlation between SHAP importance and target value
+                            shap_target_corr = abs(self._safe_float(value))
+                            shap_correlations.append(shap_target_corr)
+                        break  # One SHAP correlation per record
+            
+            # Calculate composite correlation score for each record
+            for record in records:
+                target_value = self._safe_float(record.get('target_value', 0))
+                
+                if target_value <= 0:
+                    correlation_strength_score = 0.0
+                else:
+                    # Multi-factor correlation strength (0-100)
+                    
+                    # 1. Income correlation factor (40% weight)
+                    income_factor = min(abs(income_correlation) * 40, 40) if income_correlation is not None else 0
+                    
+                    # 2. Population correlation factor (30% weight)
+                    pop_factor = min(abs(population_correlation) * 30, 30) if population_correlation is not None else 0
+                    
+                    # 3. SHAP correlation factor (30% weight)
+                    record_shap_values = [abs(self._safe_float(v)) for k, v in record.items() 
+                                        if k.startswith('shap_') and isinstance(v, (int, float))]
+                    if record_shap_values:
+                        avg_shap_importance = sum(record_shap_values) / len(record_shap_values)
+                        shap_factor = min(avg_shap_importance * 30, 30)
+                    else:
+                        shap_factor = 0
+                    
+                    correlation_strength_score = income_factor + pop_factor + shap_factor
+                
+                record_copy = record.copy()
+                record_copy['correlation_strength_score'] = round(correlation_strength_score, 2)
+                results.append(record_copy)
+        else:
+            # Insufficient data for correlation - use fallback
+            for record in records:
+                target_value = self._safe_float(record.get('target_value', 0))
+                
+                # Simple fallback: higher target values get higher correlation scores
+                if target_value > 0:
+                    correlation_strength_score = min(target_value / 2, 100)  # Scale target value
+                else:
+                    correlation_strength_score = 0.0
+                
+                record_copy = record.copy()
+                record_copy['correlation_strength_score'] = round(correlation_strength_score, 2)
+                results.append(record_copy)
         
         endpoint_data_copy = endpoint_data.copy()
         endpoint_data_copy['results'] = results
@@ -573,20 +631,59 @@ class AutomatedScoreCalculator:
         return endpoint_data_copy
     
     def calculate_trend_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Calculate trend analysis scores"""
+        """Calculate trend analysis scores using statistical trend detection"""
         results = []
+        records = endpoint_data['results']
         
-        # Simple trend based on current vs baseline
-        for record in endpoint_data['results']:
-            target_value = self._safe_float(record.get('target_value', 0))
+        # Calculate dataset statistics for trend baseline
+        target_values = [self._safe_float(r.get('target_value', 0)) for r in records if r.get('target_value', 0) > 0]
+        
+        if not target_values:
+            # If no valid target values, assign neutral scores
+            for record in records:
+                record_copy = record.copy()
+                record_copy['trend_strength_score'] = 50.0
+                results.append(record_copy)
+        else:
+            # Calculate statistical measures for trend analysis
+            mean_value = sum(target_values) / len(target_values)
+            sorted_values = sorted(target_values)
+            median_value = sorted_values[len(sorted_values) // 2]
             
-            # Assume baseline of 50 for trend analysis
-            baseline = 50
-            trend_strength_score = max(0, min((target_value / baseline) * 50, 100))
+            # Calculate upper and lower quartiles for trend strength
+            q1_index = len(sorted_values) // 4
+            q3_index = 3 * len(sorted_values) // 4
+            q1_value = sorted_values[q1_index] if q1_index < len(sorted_values) else sorted_values[0]
+            q3_value = sorted_values[q3_index] if q3_index < len(sorted_values) else sorted_values[-1]
             
-            record_copy = record.copy()
-            record_copy['trend_strength_score'] = round(trend_strength_score, 2)
-            results.append(record_copy)
+            for record in records:
+                target_value = self._safe_float(record.get('target_value', 0))
+                
+                if target_value <= 0:
+                    trend_strength_score = 0.0
+                else:
+                    # Multi-factor trend analysis
+                    # 1. Relative to median (40% weight)
+                    median_factor = min((target_value / median_value) * 40, 40) if median_value > 0 else 20
+                    
+                    # 2. Quartile positioning (35% weight)
+                    if target_value >= q3_value:
+                        quartile_factor = 35  # Strong upward trend
+                    elif target_value >= median_value:
+                        quartile_factor = 25  # Moderate upward trend
+                    elif target_value >= q1_value:
+                        quartile_factor = 15  # Moderate trend
+                    else:
+                        quartile_factor = 5   # Weak trend
+                    
+                    # 3. Mean deviation factor (25% weight)
+                    mean_factor = min((target_value / mean_value) * 25, 25) if mean_value > 0 else 12.5
+                    
+                    trend_strength_score = min(median_factor + quartile_factor + mean_factor, 100)
+                
+                record_copy = record.copy()
+                record_copy['trend_strength_score'] = round(trend_strength_score, 2)
+                results.append(record_copy)
         
         endpoint_data_copy = endpoint_data.copy()
         endpoint_data_copy['results'] = results
@@ -646,24 +743,89 @@ class AutomatedScoreCalculator:
         return endpoint_data_copy
     
     def calculate_scenario_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Calculate scenario analysis scores"""
+        """Calculate scenario analysis scores using multi-factor scenario modeling"""
         results = []
+        records = endpoint_data['results']
         
-        for record in endpoint_data['results']:
-            target_value = self._safe_float(record.get('target_value', 0))
+        # Calculate market condition factors for scenarios
+        target_values = [self._safe_float(r.get('target_value', 0)) for r in records if r.get('target_value', 0) > 0]
+        
+        if not target_values:
+            # No valid data - assign neutral scores
+            for record in records:
+                record_copy = record.copy()
+                record_copy['scenario_analysis_score'] = 50.0
+                results.append(record_copy)
+        else:
+            # Calculate market volatility and stability indicators
+            mean_target = sum(target_values) / len(target_values)
+            volatility = self._calculate_volatility(target_values) if len(target_values) > 1 else 0
             
-            # Different scenarios: optimistic, realistic, pessimistic
-            base_score = min(target_value, 100)
-            
-            scenario_analysis_score = (
-                0.25 * (base_score * 1.2) +  # Optimistic
-                0.50 * base_score +           # Realistic  
-                0.25 * (base_score * 0.8)     # Pessimistic
-            )
-            
-            record_copy = record.copy()
-            record_copy['scenario_analysis_score'] = round(min(scenario_analysis_score, 100), 2)
-            results.append(record_copy)
+            for record in records:
+                target_value = self._safe_float(record.get('target_value', 0))
+                median_income = self._safe_float(record.get('median_income', 0))
+                total_population = self._safe_float(record.get('total_population', 0))
+                
+                if target_value <= 0:
+                    scenario_analysis_score = 0.0
+                else:
+                    # Multi-factor scenario analysis
+                    base_performance = min(target_value, 100)
+                    
+                    # Economic factors for scenario adjustment
+                    economic_stability = 1.0  # Default stable
+                    if median_income > 0:
+                        # Higher income = more economic resilience
+                        income_factor = min(median_income / 75000, 1.5)  # Cap at 1.5x boost
+                        economic_stability *= income_factor
+                    
+                    # Market size factor for scenario impact
+                    market_size_factor = 1.0
+                    if total_population > 0:
+                        # Larger markets = more stability but also more competition
+                        size_factor = min(total_population / 50000, 1.2)  # Cap at 1.2x
+                        market_size_factor = size_factor
+                    
+                    # Volatility adjustment
+                    stability_factor = max(0.5, 1 - (volatility / 100))  # Lower volatility = higher stability
+                    
+                    # Calculate scenario outcomes
+                    optimistic_multiplier = 1.0 + (0.3 * economic_stability * stability_factor)
+                    pessimistic_multiplier = max(0.3, 1.0 - (0.4 * volatility / 100) - (0.2 / market_size_factor))
+                    
+                    # Weighted scenario analysis
+                    optimistic_score = min(base_performance * optimistic_multiplier, 100)
+                    realistic_score = base_performance
+                    pessimistic_score = base_performance * pessimistic_multiplier
+                    
+                    # Scenario probability weighting based on market conditions
+                    if volatility < 20:  # Stable market
+                        scenario_weights = (0.20, 0.60, 0.20)  # More weight to realistic
+                    elif volatility < 50:  # Moderate volatility
+                        scenario_weights = (0.25, 0.50, 0.25)  # Balanced
+                    else:  # High volatility
+                        scenario_weights = (0.30, 0.40, 0.30)  # More uncertainty
+                    
+                    scenario_analysis_score = (
+                        scenario_weights[0] * optimistic_score +
+                        scenario_weights[1] * realistic_score +
+                        scenario_weights[2] * pessimistic_score
+                    )
+                
+                record_copy = record.copy()
+                record_copy['scenario_analysis_score'] = round(scenario_analysis_score, 2)
+                
+                # Add scenario details for transparency
+                if target_value > 0:
+                    record_copy.update({
+                        'scenario_optimistic': round(optimistic_score, 2),
+                        'scenario_realistic': round(realistic_score, 2),
+                        'scenario_pessimistic': round(pessimistic_score, 2),
+                        'market_volatility': round(volatility, 2),
+                        'economic_stability': round(economic_stability, 2)
+                    })
+                
+                results.append(record_copy)
         
         endpoint_data_copy = endpoint_data.copy()
         endpoint_data_copy['results'] = results
@@ -772,6 +934,64 @@ class AutomatedScoreCalculator:
                 return 0.0
             return float(value)
         except (ValueError, TypeError):
+            return 0.0
+    
+    def _calculate_pearson_correlation(self, x_values: List[float], y_values: List[float]) -> Optional[float]:
+        """Calculate Pearson correlation coefficient between two arrays"""
+        if len(x_values) != len(y_values) or len(x_values) < 2:
+            return None
+            
+        try:
+            # Remove pairs where either value is 0 (invalid data)
+            valid_pairs = [(x, y) for x, y in zip(x_values, y_values) if x > 0 and y > 0]
+            
+            if len(valid_pairs) < 2:
+                return None
+                
+            x_valid = [pair[0] for pair in valid_pairs]
+            y_valid = [pair[1] for pair in valid_pairs]
+            
+            # Calculate means
+            mean_x = sum(x_valid) / len(x_valid)
+            mean_y = sum(y_valid) / len(y_valid)
+            
+            # Calculate correlation components
+            numerator = sum((x - mean_x) * (y - mean_y) for x, y in zip(x_valid, y_valid))
+            sum_sq_x = sum((x - mean_x) ** 2 for x in x_valid)
+            sum_sq_y = sum((y - mean_y) ** 2 for y in y_valid)
+            
+            # Calculate correlation coefficient
+            denominator = (sum_sq_x * sum_sq_y) ** 0.5
+            
+            if denominator == 0:
+                return None
+                
+            correlation = numerator / denominator
+            return max(-1.0, min(1.0, correlation))  # Clamp to [-1, 1]
+            
+        except Exception as e:
+            print(f"Error calculating correlation: {e}")
+            return None
+    
+    def _calculate_volatility(self, values: List[float]) -> float:
+        """Calculate volatility (coefficient of variation) for a set of values"""
+        if len(values) < 2:
+            return 0.0
+            
+        try:
+            mean_val = sum(values) / len(values)
+            if mean_val == 0:
+                return 0.0
+                
+            variance = sum((x - mean_val) ** 2 for x in values) / len(values)
+            std_dev = variance ** 0.5
+            
+            # Coefficient of variation as percentage
+            volatility = (std_dev / mean_val) * 100
+            return min(volatility, 200)  # Cap at 200% volatility
+            
+        except Exception as e:
+            print(f"Error calculating volatility: {e}")
             return 0.0
     
     def _save_scored_endpoint(self, original_file: Path, scored_data: Dict[str, Any]) -> None:
