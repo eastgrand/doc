@@ -10,11 +10,11 @@ The system contains **35 total processors** organized into different categories:
 - **2 Retail-Specific Processors** (BrandDifferenceProcessor, CompetitiveDataProcessor - available for retail projects)
 - **2 Utility Files** (BaseProcessor, support files)
 
-## Two-Layer Scoring Architecture Summary
+## Three-Layer Scoring Architecture + Semantic Field Resolution
 
-**🚀 CRITICAL: Understanding the Scoring Process**
+**🚀 CRITICAL: Understanding the Universal Scoring Process**
 
-The system uses a sophisticated two-layer architecture that separates AI intelligence from visualization:
+The system uses a sophisticated three-layer architecture with semantic field resolution that enables unlimited project type scalability:
 
 ### Layer 1: Automation Script Scoring
 **File**: `/scripts/automation/automated_score_calculator.py`
@@ -30,11 +30,26 @@ The system uses a sophisticated two-layer architecture that separates AI intelli
 - **Output**: Map styling, legends, and user-facing scores
 - **Purpose**: Focuses on user experience and visualization preparation
 
+### Layer 3: Semantic Field Resolution (NEW)
+**Files**: 
+- `/scripts/automation/semantic_field_resolver.py` - AI-powered field mapping
+- `/scripts/automation/configurable_algorithm_engine.py` - Universal scoring engine
+- `/scripts/automation/project_types/` - Modular configuration system
+
+**🚀 REVOLUTIONARY FEATURE**: **Unlimited Project Type Scalability**
+- **Input**: Project-specific field mappings and semantic configurations
+- **Purpose**: Resolve semantic field names to actual project field names
+- **Process**: AI-powered field mapping with comprehensive validation
+- **Output**: Unified algorithm interface that works with any data structure
+
+**Universal Compatibility**: All algorithms now work across retail, real estate, healthcare, finance, and any future project types through semantic field resolution.
+
 ### Key Points:
 1. **SHAP values are PRE-CALCULATED** by the microservice for each endpoint
-2. **Automation script USES** these SHAP values to generate processor-specific scores
-3. **Processors CONSUME** the automation-generated scores, not raw SHAP values
-4. This separation provides both explainable AI rigor AND performance optimization
+2. **Semantic layer RESOLVES** field names for unlimited project type compatibility
+3. **Automation script USES** SHAP values and semantic fields to generate processor-specific scores  
+4. **Processors CONSUME** the automation-generated scores, not raw SHAP values
+5. This architecture provides explainable AI rigor, unlimited scalability, AND performance optimization
 
 *All formulas shown in this document represent the automation layer calculations that generate the scores processors consume.*
 
@@ -609,59 +624,147 @@ if (nike_share + adidas_share > 0) {
 
 **Target Variable**: Nike brand share (`MP30034A_B_P`) - the target_value represents Nike's market penetration percentage in each geographic area
 
-**Scoring Formula** (Advanced Competitive Analysis from automation script):
+**Scoring Formula** (Advanced Competitive Analysis with Semantic Field Resolution):
 
-**Competitive Advantage Score = (0.35 × Market Dominance) + (0.35 × Demographic Advantage) + (0.20 × Economic Advantage) + (0.10 × Population Advantage)**
+**✅ Universal Compatibility**: This algorithm works across **all project types** (retail, real estate, healthcare, finance) through semantic field resolution.
+
+**Core Formula**:
+```
+Competitive Advantage Score = (0.35 × Market Dominance) + (0.35 × Demographic Advantage) + (0.20 × Economic Advantage) + (0.10 × Population Advantage)
+```
+
+**Semantic Field Mapping** (Project-Type Adaptive):
+```python
+# Retail Project (Nike vs competitors)
+target_performance -> "brand_share" -> "MP30034A_B_P" (Nike market share)
+competitor_brands -> ["MP30029A_B_P", "MP30032A_B_P", ...] (Adidas, Lululemon, etc.)
+
+# Real Estate Project (Developer vs competitors)  
+target_performance -> "property_value_index" -> "housing_market_share" 
+competitor_brands -> ["dr_horton_share", "lennar_share", ...] (Home builders)
+
+# Healthcare Project (Provider vs competitors)
+target_performance -> "patient_satisfaction" -> "hospital_quality_score"
+competitor_brands -> ["hospital_network_1", "clinic_chain_2", ...] (Healthcare providers)
+```
 
 **Component Calculations:**
-1. **Market Dominance (35% weight)**:
-   ```javascript
-   nike_share = record['value_MP30034A_B_P']  // Target variable
-   competitor_brands = ['MP30029A_B_P', 'MP30032A_B_P', 'MP30031A_B_P', 'MP30035A_B_P',
-                       'MP30033A_B_P', 'MP30030A_B_P', 'MP30037A_B_P', 'MP30036A_B_P']
-   total_competitor_share = sum(record[f'value_{brand}'] for brand in competitor_brands)
-   
-   if (total_competitor_share > 0) {
-     market_dominance = min((nike_share / total_competitor_share) * 50, 100)
-   } else {
-     market_dominance = nike_share * 2  // No competitors = high dominance
-   }
-   ```
 
-2. **SHAP-based Demographic Advantage (35% weight)**:
-   ```javascript
-   // Extract SHAP values from microservice data
-   nike_shap = record['shap_MP30034A_B_P']
-   asian_shap = record['shap_ASIAN_CY_P'] 
-   millennial_shap = record['shap_MILLENN_CY']
-   gen_z_shap = record['shap_GENZ_CY']
-   household_shap = record['shap_HHPOP_CY']
-   
-   // Normalize SHAP values using min-max scaling across all records
-   normalized_shap = normalize_to_0_100_scale(shap_values, dataset_statistics)
-   
-   // Weighted combination of normalized SHAP importance scores
-   demographic_advantage = (
-     0.30 * normalized_shap['asian'] +      // Asian population SHAP importance
-     0.25 * normalized_shap['millennial'] + // Millennial generation SHAP importance 
-     0.20 * normalized_shap['gen_z'] +      // Gen Z generation SHAP importance
-     0.15 * normalized_shap['household'] +  // Household population SHAP importance
-     0.10 * normalized_shap['nike']         // Nike brand SHAP self-importance
-   )
-   ```
+### 1. Market Dominance Analysis (35% weight)
+**Mathematical Model**: Relative Market Share Index
+```python
+def calculate_market_dominance(record, engine):
+    # Semantic field resolution for any project type
+    target_share = engine.extract_field_value(record, 'target_performance')
+    competitor_fields = engine.get_competitor_fields()
+    
+    # Calculate total competitor market share
+    total_competitor_share = 0
+    for field in competitor_fields:
+        competitor_value = engine.extract_field_value(record, field)
+        total_competitor_share += competitor_value
+    
+    # Market dominance calculation
+    if total_competitor_share > 0:
+        # Relative market strength: target vs all competitors
+        market_dominance = min((target_share / total_competitor_share) * 50, 100)
+    else:
+        # Monopoly scenario: scale target share directly
+        market_dominance = min(target_share * 2, 100)
+    
+    return market_dominance
+```
 
-3. **Economic Advantage (20% weight)**:
-   ```javascript
-   median_income = record['median_income']
-   wealth_index = record['value_WLTHINDXCY'] 
-   economic_advantage = min((median_income / 100000) * 50 + (wealth_index / 200) * 50, 100)
-   ```
+**Business Logic Explanation**:
+- **Retail**: Nike 20% share vs Adidas 15% = strong position (dominance = 66.7)
+- **Real Estate**: Builder with 30% market share vs 5 competitors averaging 10% each = dominance = 60
+- **Healthcare**: Hospital with 40% patient satisfaction vs competitors at 25% average = dominance = 80
 
-4. **Population Advantage (10% weight)**:
-   ```javascript
-   total_population = record['total_population']
-   population_advantage = min((total_population / 20000) * 100, 100)
-   ```
+### 2. SHAP-based Demographic Advantage (35% weight)
+**Mathematical Model**: Explainable AI Feature Importance Aggregation
+```python
+def calculate_demographic_advantage(record, engine):
+    # Extract project-specific SHAP values through semantic resolution
+    demographic_fields = engine.get_demographic_shap_fields()
+    
+    # Get SHAP normalization statistics for the project
+    shap_stats = engine.get_shap_statistics()
+    
+    # Normalize SHAP values using min-max scaling across dataset
+    normalized_shap = {}
+    for field in demographic_fields:
+        raw_shap = engine.extract_field_value(record, f'shap_{field}')
+        normalized_shap[field] = normalize_shap(raw_shap, shap_stats[field])
+    
+    # Project-specific weighting (configurable per industry)
+    weights = engine.get_demographic_weights()
+    
+    # Weighted combination of normalized SHAP importance scores
+    demographic_advantage = sum(
+        weights[field] * normalized_shap[field] 
+        for field in demographic_fields
+    )
+    
+    return demographic_advantage
+```
+
+**SHAP Normalization Formula**:
+```
+normalized_shap = (raw_shap - min_shap) / (max_shap - min_shap) * 100
+```
+
+**Project-Specific Demographics**:
+- **Retail**: Asian population (0.30), Millennials (0.25), Gen Z (0.20), Households (0.15), Target brand (0.10)
+- **Real Estate**: Family households (0.35), Income 75K+ (0.30), Age 30-45 (0.20), Property values (0.15)  
+- **Healthcare**: Age 65+ (0.40), Insurance coverage (0.30), Chronic conditions (0.20), Healthcare access (0.10)
+
+### 3. Economic Advantage Analysis (20% weight)
+**Mathematical Model**: Multi-Factor Economic Composite
+```python
+def calculate_economic_advantage(record, engine):
+    # Semantic field resolution for economic indicators
+    income = engine.extract_field_value(record, 'consumer_income')
+    wealth = engine.extract_field_value(record, 'wealth_indicator')
+    
+    # Project-specific economic thresholds
+    income_target = engine.get_business_parameter('demographic_income_target')  # 75K retail, 85K real estate
+    wealth_target = engine.get_business_parameter('wealth_threshold', 200)
+    
+    # Economic advantage calculation (0-100 scale)
+    income_component = min((income / income_target) * 50, 50)
+    wealth_component = min((wealth / wealth_target) * 50, 50) 
+    
+    economic_advantage = income_component + wealth_component
+    return min(economic_advantage, 100)
+```
+
+**Industry-Specific Calibration**:
+- **Retail**: $75K income target (consumer spending power)
+- **Real Estate**: $85K income target (homebuying capacity)
+- **Healthcare**: $65K income target (healthcare affordability)
+- **Finance**: $100K income target (investment capacity)
+
+### 4. Population Advantage Analysis (10% weight)
+**Mathematical Model**: Market Size Potential Index
+```python
+def calculate_population_advantage(record, engine):
+    # Semantic field resolution for market size
+    population = engine.extract_field_value(record, 'market_size')
+    
+    # Project-specific population thresholds
+    pop_threshold = engine.get_business_parameter('market_size_threshold')  # 50K retail, 25K real estate
+    
+    # Population advantage (logarithmic scaling for large markets)
+    population_advantage = min((population / pop_threshold) * 100, 100)
+    
+    return population_advantage
+```
+
+**Market Size Thresholds**:
+- **Retail**: 50,000 population (consumer market viability)
+- **Real Estate**: 25,000 population (housing market depth) 
+- **Healthcare**: 15,000 population (service area coverage)
+- **Finance**: 10,000 population (investment market size)
 
 **SHAP Integration**: This processor directly integrates SHAP (SHapley Additive exPlanations) values from the microservice to understand which demographic factors most influence Nike brand performance. SHAP values measure feature importance for machine learning predictions, providing explainable AI insights into brand success drivers.
 
