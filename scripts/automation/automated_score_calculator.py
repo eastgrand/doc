@@ -64,6 +64,9 @@ class AutomatedScoreCalculator:
             'scenario-analysis': self.calculate_scenario_scores,
             'segment-profiling': self.calculate_segment_scores,
             'brand-difference': self.calculate_brand_difference_scores,
+            'risk-analysis': self.calculate_risk_scores,
+            'market-sizing': self.calculate_market_sizing_scores,
+            'housing-correlation': self.calculate_housing_correlation_scores,
             
             # New comprehensive endpoints (7 additional)
             'algorithm-comparison': self.calculate_algorithm_comparison_scores,
@@ -886,6 +889,259 @@ class AutomatedScoreCalculator:
             record_copy = record.copy()
             record_copy['brand_difference_score'] = round(brand_difference_score, 2)
             results.append(record_copy)
+        
+        endpoint_data_copy = endpoint_data.copy()
+        endpoint_data_copy['results'] = results
+        
+        return endpoint_data_copy
+    
+    def calculate_risk_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate risk-adjusted scores based on market volatility and uncertainty factors"""
+        results = []
+        records = endpoint_data['results']
+        
+        # Calculate dataset risk factors
+        target_values = [self._safe_float(r.get('target_value', 0)) for r in records if r.get('target_value', 0) > 0]
+        
+        if not target_values:
+            # No valid data - assign neutral risk scores
+            for record in records:
+                record_copy = record.copy()
+                record_copy['risk_adjusted_score'] = 50.0
+                results.append(record_copy)
+        else:
+            # Calculate market risk indicators
+            market_volatility = self._calculate_volatility(target_values)
+            mean_target = sum(target_values) / len(target_values)
+            
+            for record in records:
+                target_value = self._safe_float(record.get('target_value', 0))
+                median_income = self._safe_float(record.get('median_income', 0))
+                total_population = self._safe_float(record.get('total_population', 0))
+                
+                if target_value <= 0:
+                    risk_adjusted_score = 0.0
+                else:
+                    # Base opportunity score
+                    base_value = min(target_value, 100)
+                    
+                    # Risk factors (penalties)
+                    volatility_penalty = min(market_volatility * 0.2, 20)  # Up to 20 point penalty
+                    
+                    # Uncertainty penalty based on deviation from market mean
+                    if mean_target > 0:
+                        deviation_ratio = abs(target_value - mean_target) / mean_target
+                        uncertainty_penalty = min(deviation_ratio * 15, 15)  # Up to 15 point penalty
+                    else:
+                        uncertainty_penalty = 0
+                    
+                    # Stability bonuses (positive factors)
+                    stability_bonus = 0
+                    
+                    # Economic stability bonus
+                    if median_income > 75000:  # Above average income = stability
+                        economic_stability = min((median_income - 75000) / 25000 * 10, 10)
+                        stability_bonus += economic_stability
+                    
+                    # Market size stability bonus
+                    if total_population > 50000:  # Larger markets = more stability
+                        size_stability = min((total_population - 50000) / 50000 * 5, 5)
+                        stability_bonus += size_stability
+                    
+                    # SHAP-based predictability bonus
+                    record_shap_values = [abs(self._safe_float(v)) for k, v in record.items() 
+                                        if k.startswith('shap_') and isinstance(v, (int, float))]
+                    if record_shap_values:
+                        # Higher SHAP values = more predictable = less risky
+                        avg_shap = sum(record_shap_values) / len(record_shap_values)
+                        predictability_bonus = min(avg_shap * 5, 5)
+                        stability_bonus += predictability_bonus
+                    
+                    # Calculate final risk-adjusted score
+                    risk_adjusted_score = base_value - volatility_penalty - uncertainty_penalty + stability_bonus
+                    risk_adjusted_score = max(0, min(100, risk_adjusted_score))
+                
+                record_copy = record.copy()
+                record_copy['risk_adjusted_score'] = round(risk_adjusted_score, 2)
+                
+                # Add risk breakdown for transparency
+                if target_value > 0:
+                    record_copy.update({
+                        'market_volatility': round(market_volatility, 2),
+                        'volatility_penalty': round(volatility_penalty, 2),
+                        'uncertainty_penalty': round(uncertainty_penalty, 2),
+                        'stability_bonus': round(stability_bonus, 2)
+                    })
+                
+                results.append(record_copy)
+        
+        endpoint_data_copy = endpoint_data.copy()
+        endpoint_data_copy['results'] = results
+        
+        return endpoint_data_copy
+    
+    def calculate_market_sizing_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate market sizing scores based on population, income, and market potential"""
+        results = []
+        
+        for record in endpoint_data['results']:
+            total_population = self._safe_float(record.get('total_population', 0))
+            median_income = self._safe_float(record.get('median_income', 0))
+            target_value = self._safe_float(record.get('target_value', 0))
+            
+            if total_population <= 0 or median_income <= 0:
+                market_sizing_score = 0.0
+                market_category = 'Insufficient Data'
+                revenue_potential = 0.0
+            else:
+                # Revenue potential calculation (geometric mean for balanced scaling)
+                revenue_potential = (total_population / 50000) ** 0.5 * (median_income / 80000) ** 0.5 * 100
+                revenue_potential = min(revenue_potential, 100)
+                
+                # Market categorization
+                if total_population >= 150000 and median_income >= 80000:
+                    market_category = 'Mega Market'
+                    category_bonus = 25
+                elif total_population >= 100000 and median_income >= 60000:
+                    market_category = 'Large Market'
+                    category_bonus = 20
+                elif total_population >= 75000 or median_income >= 100000:
+                    market_category = 'Medium Market'
+                    category_bonus = 15
+                elif total_population >= 25000 and median_income >= 40000:
+                    market_category = 'Small Market'
+                    category_bonus = 10
+                else:
+                    market_category = 'Emerging Market'
+                    category_bonus = 5
+                
+                # Opportunity sizing based on current performance vs potential
+                opportunity_factor = 1.0
+                if target_value > 0:
+                    # Higher current performance = proven market but less upside
+                    performance_ratio = min(target_value / 50, 2.0)  # Cap at 2x
+                    if performance_ratio > 1.5:
+                        opportunity_factor = 0.8  # High performance = lower growth opportunity
+                    elif performance_ratio < 0.5:
+                        opportunity_factor = 1.3  # Low performance = higher growth opportunity
+                
+                # Calculate final market sizing score
+                base_score = revenue_potential * 0.6 + category_bonus * 0.4
+                market_sizing_score = min(base_score * opportunity_factor, 100)
+            
+            record_copy = record.copy()
+            record_copy.update({
+                'market_sizing_score': round(market_sizing_score, 2),
+                'market_category': market_category,
+                'revenue_potential': round(revenue_potential, 2),
+                'estimated_households': round(total_population / 2.5, 0) if total_population > 0 else 0
+            })
+            results.append(record_copy)
+        
+        endpoint_data_copy = endpoint_data.copy()
+        endpoint_data_copy['results'] = results
+        
+        return endpoint_data_copy
+    
+    def calculate_housing_correlation_scores(self, endpoint_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Calculate housing market correlation scores for real estate analysis"""
+        results = []
+        records = endpoint_data['results']
+        
+        # Extract housing-related variables for correlation analysis
+        target_values = []
+        income_values = []
+        population_density_values = []
+        age_values = []
+        
+        for record in records:
+            target_val = self._safe_float(record.get('target_value', 0))
+            income_val = self._safe_float(record.get('median_income', 0))
+            pop_val = self._safe_float(record.get('total_population', 0))
+            age_val = self._safe_float(record.get('median_age', 0))
+            
+            if target_val > 0:
+                target_values.append(target_val)
+                income_values.append(income_val)
+                population_density_values.append(pop_val)
+                age_values.append(age_val)
+        
+        # Calculate housing market correlations
+        if len(target_values) >= 3:
+            income_housing_correlation = self._calculate_pearson_correlation(target_values, income_values)
+            density_correlation = self._calculate_pearson_correlation(target_values, population_density_values)
+            age_correlation = self._calculate_pearson_correlation(target_values, age_values)
+            
+            for record in records:
+                target_value = self._safe_float(record.get('target_value', 0))
+                median_income = self._safe_float(record.get('median_income', 0))
+                median_age = self._safe_float(record.get('median_age', 0))
+                total_population = self._safe_float(record.get('total_population', 0))
+                
+                if target_value <= 0:
+                    housing_correlation_score = 0.0
+                else:
+                    # Housing market correlation scoring (0-100)
+                    
+                    # 1. Income-housing correlation (35% weight)
+                    income_factor = abs(income_housing_correlation) * 35 if income_housing_correlation is not None else 0
+                    
+                    # 2. Population density impact (25% weight)
+                    density_factor = abs(density_correlation) * 25 if density_correlation is not None else 0
+                    
+                    # 3. Age demographics correlation (20% weight)
+                    age_factor = abs(age_correlation) * 20 if age_correlation is not None else 0
+                    
+                    # 4. Economic housing indicators (20% weight)
+                    # Ideal housing market: income 60-120K, age 25-45, moderate population
+                    economic_housing_score = 0
+                    
+                    if median_income > 0:
+                        # Income sweet spot for housing
+                        if 60000 <= median_income <= 120000:
+                            income_housing_score = 20
+                        elif 40000 <= median_income <= 150000:
+                            income_housing_score = 15
+                        else:
+                            income_housing_score = 10
+                        economic_housing_score += income_housing_score * 0.6
+                    
+                    if median_age > 0:
+                        # Age sweet spot for homebuying
+                        if 25 <= median_age <= 45:
+                            age_housing_score = 20
+                        elif 20 <= median_age <= 55:
+                            age_housing_score = 15
+                        else:
+                            age_housing_score = 10
+                        economic_housing_score += age_housing_score * 0.4
+                    
+                    housing_correlation_score = income_factor + density_factor + age_factor + economic_housing_score
+                    housing_correlation_score = min(housing_correlation_score, 100)
+                
+                record_copy = record.copy()
+                record_copy.update({
+                    'housing_correlation_score': round(housing_correlation_score, 2),
+                    'income_housing_correlation': round(income_housing_correlation, 3) if income_housing_correlation is not None else None,
+                    'density_correlation': round(density_correlation, 3) if density_correlation is not None else None,
+                    'age_correlation': round(age_correlation, 3) if age_correlation is not None else None
+                })
+                results.append(record_copy)
+        else:
+            # Insufficient data - use simple heuristic
+            for record in records:
+                target_value = self._safe_float(record.get('target_value', 0))
+                median_income = self._safe_float(record.get('median_income', 0))
+                
+                if target_value > 0 and median_income > 0:
+                    # Simple correlation proxy for housing markets
+                    housing_correlation_score = min((target_value / 100) * (median_income / 75000) * 50, 100)
+                else:
+                    housing_correlation_score = 0.0
+                
+                record_copy = record.copy()
+                record_copy['housing_correlation_score'] = round(housing_correlation_score, 2)
+                results.append(record_copy)
         
         endpoint_data_copy = endpoint_data.copy()
         endpoint_data_copy['results'] = results
