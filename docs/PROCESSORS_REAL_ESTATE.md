@@ -10,7 +10,35 @@ The system contains **35 total processors** optimized for real estate analysis:
 - **2 Retired Processors** (retail-specific, not applicable to real estate)
 - **2 Utility Files** (BaseProcessor architecture, support infrastructure)
 
-All processors have been adapted to work with Quebec housing market data fields (ECYPTAPOP, ECYHRIAVG, etc.) and real estate-specific terminology.
+All processors have been adapted to work with housing market data fields and real estate-specific terminology.
+
+## Two-Layer Scoring Architecture Summary
+
+**🚀 CRITICAL: Understanding the Real Estate Scoring Process**
+
+The system uses a sophisticated two-layer architecture that separates AI intelligence from visualization:
+
+### Layer 1: Automation Script Scoring
+**File**: `/scripts/automation/automated_score_calculator.py`
+- **Input**: Raw microservice data + **pre-calculated SHAP values** from microservice
+- **Process**: Combines housing market data, SHAP feature importance, and real estate-specific formulas
+- **Output**: Processor-specific scores (e.g., `strategic_value_score`, `housing_correlation_score`)
+- **SHAP Usage**: Uses existing SHAP values in weighted calculations for explainable AI scoring
+
+### Layer 2: Processor Visualization Scoring
+**File**: `/lib/analysis/strategies/processors/`
+- **Input**: **Automation-generated scores** (NOT raw SHAP values)
+- **Process**: Transforms automation scores into final visualization-ready data
+- **Output**: Map styling, legends, and user-facing real estate scores
+- **Purpose**: Focuses on user experience and real estate visualization preparation
+
+### Key Points:
+1. **SHAP values are PRE-CALCULATED** by the microservice for each endpoint
+2. **Automation script USES** these SHAP values to generate processor-specific scores
+3. **Processors CONSUME** the automation-generated scores, not raw SHAP values
+4. This separation provides both explainable AI rigor AND performance optimization for real estate analysis
+
+*All formulas shown in this document represent the automation layer calculations that generate the scores processors consume for real estate investment analysis.*
 
 ---
 
