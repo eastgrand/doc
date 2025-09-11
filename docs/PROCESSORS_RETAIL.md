@@ -478,9 +478,28 @@ trend_strength_score = max(0, min((target_value / baseline) * 50, 100))
 ### FeatureImportanceRankingProcessor
 **Score Field**: `feature_importance_score` (0-100 scale)
 
-**Analysis Description**: Ranks the importance of different variables in predicting business outcomes.
+**Scoring Formula** (SHAP-Based Feature Importance from automation script):
+```javascript
+// Sum absolute SHAP values across all demographic factors
+shap_sum = 0
+shap_count = 0
 
-**Retail Relevance**: **High** - Helps retailers understand which factors most influence sales performance and customer behavior.
+for (key, value) in record.items():
+  if key.startswith('shap_') and is_numeric(value):
+    shap_sum += abs(float(value))  // Absolute SHAP importance
+    shap_count += 1
+
+if (shap_count > 0):
+  feature_importance_score = min((shap_sum / shap_count) * 10, 100)
+else:
+  feature_importance_score = 50  // Default neutral score
+```
+
+**SHAP Integration**: Directly processes SHAP values from microservice to rank demographic and brand factors by their predictive importance for the target variable (e.g., Nike brand share).
+
+**Analysis Description**: Ranks the importance of different variables in predicting business outcomes using explainable AI through SHAP values.
+
+**Retail Relevance**: **High** - Helps retailers understand which demographic factors most influence brand performance and sales success using scientifically rigorous feature importance from machine learning models.
 
 ---
 
@@ -560,6 +579,8 @@ if (nike_share + adidas_share > 0) {
 ### CompetitiveDataProcessor ✅ **ACTIVE FOR RETAIL** 
 **Score Field**: `competitive_advantage_score` (0-100 scale)
 
+**Target Variable**: Nike brand share (`MP30034A_B_P`) - the target_value represents Nike's market penetration percentage in each geographic area
+
 **Scoring Formula** (Advanced Competitive Analysis from automation script):
 
 **Competitive Advantage Score = (0.35 × Market Dominance) + (0.35 × Demographic Advantage) + (0.20 × Economic Advantage) + (0.10 × Population Advantage)**
@@ -567,6 +588,11 @@ if (nike_share + adidas_share > 0) {
 **Component Calculations:**
 1. **Market Dominance (35% weight)**:
    ```javascript
+   nike_share = record['value_MP30034A_B_P']  // Target variable
+   competitor_brands = ['MP30029A_B_P', 'MP30032A_B_P', 'MP30031A_B_P', 'MP30035A_B_P',
+                       'MP30033A_B_P', 'MP30030A_B_P', 'MP30037A_B_P', 'MP30036A_B_P']
+   total_competitor_share = sum(record[f'value_{brand}'] for brand in competitor_brands)
+   
    if (total_competitor_share > 0) {
      market_dominance = min((nike_share / total_competitor_share) * 50, 100)
    } else {
@@ -576,27 +602,49 @@ if (nike_share + adidas_share > 0) {
 
 2. **SHAP-based Demographic Advantage (35% weight)**:
    ```javascript
-   // Normalized SHAP values for demographic factors
+   // Extract SHAP values from microservice data
+   nike_shap = record['shap_MP30034A_B_P']
+   asian_shap = record['shap_ASIAN_CY_P'] 
+   millennial_shap = record['shap_MILLENN_CY']
+   gen_z_shap = record['shap_GENZ_CY']
+   household_shap = record['shap_HHPOP_CY']
+   
+   // Normalize SHAP values using min-max scaling across all records
+   normalized_shap = normalize_to_0_100_scale(shap_values, dataset_statistics)
+   
+   // Weighted combination of normalized SHAP importance scores
    demographic_advantage = (
-     0.30 * normalized_asian_shap +
-     0.25 * normalized_millennial_shap +
-     0.20 * normalized_gen_z_shap +
-     0.15 * normalized_household_shap +
-     0.10 * normalized_nike_shap
+     0.30 * normalized_shap['asian'] +      // Asian population SHAP importance
+     0.25 * normalized_shap['millennial'] + // Millennial generation SHAP importance 
+     0.20 * normalized_shap['gen_z'] +      // Gen Z generation SHAP importance
+     0.15 * normalized_shap['household'] +  // Household population SHAP importance
+     0.10 * normalized_shap['nike']         // Nike brand SHAP self-importance
    )
    ```
 
 3. **Economic Advantage (20% weight)**:
    ```javascript
+   median_income = record['median_income']
+   wealth_index = record['value_WLTHINDXCY'] 
    economic_advantage = min((median_income / 100000) * 50 + (wealth_index / 200) * 50, 100)
    ```
 
 4. **Population Advantage (10% weight)**:
    ```javascript
+   total_population = record['total_population']
    population_advantage = min((total_population / 20000) * 100, 100)
    ```
 
-**Retail Relevance**: **Maximum** - Core competitive analysis for retail brands. Combines market dominance, demographic alignment, economic factors, and population scale to provide comprehensive competitive positioning scores. Essential for understanding market competitiveness and expansion opportunities.
+**SHAP Integration**: This processor directly integrates SHAP (SHapley Additive exPlanations) values from the microservice to understand which demographic factors most influence Nike brand performance. SHAP values measure feature importance for machine learning predictions, providing explainable AI insights into brand success drivers.
+
+**Microservice Data Flow**:
+1. **Target Variable Assignment**: `nike_target = "MP30034A_B_P"` (Nike brand share)
+2. **Data Extraction**: `result['target_value'] = safe_float(row[target_variable])` 
+3. **SHAP Analysis**: `/factor-importance` endpoint with `method: "shap"` generates feature importance
+4. **Field Mapping**: SHAP values stored as `shap_{field_name}` (e.g., `shap_ASIAN_CY_P`)
+5. **Competitive Scoring**: Automation script combines market data with SHAP insights
+
+**Retail Relevance**: **Maximum** - Core competitive analysis for retail brands. Uniquely combines actual market dominance with AI-driven demographic insights via SHAP analysis. Essential for understanding not just what markets Nike dominates, but WHY certain demographics drive brand success.
 
 ---
 
@@ -643,4 +691,55 @@ if (nike_share + adidas_share > 0) {
 
 ---
 
-*This document provides comprehensive coverage of all processors in the MPIQ AI Chat system with specific focus on scoring methodologies and retail market analysis applications.*
+## Data Pipeline and Microservice Integration
+
+### Complete Data Flow Architecture
+
+1. **Target Variable Definition**:
+   - Nike Brand Analysis: `target_variable = "MP30034A_B_P"` 
+   - Adidas Brand Analysis: `target_variable = "MP30029A_B_P"`
+   - Target represents market share percentage in each geographic area
+
+2. **Microservice Data Extraction** (`enhanced_analysis_worker.py`):
+   ```python
+   # Extract target value from microservice data
+   target_val = safe_float(row[target_variable])
+   result['target_value'] = target_val  # Used by all processors
+   result[clean_field_name] = target_val  # Nike/Adidas specific field
+   ```
+
+3. **SHAP Value Generation**:
+   - **Endpoint**: `/factor-importance` with `method: "shap"`
+   - **Purpose**: Generates explainable AI feature importance for target variable
+   - **Format**: SHAP values stored as `shap_{field_name}` (e.g., `shap_ASIAN_CY_P`)
+   - **Usage**: Multiple processors use SHAP values for scoring (CompetitiveDataProcessor, FeatureImportanceRankingProcessor)
+
+4. **Field Extraction Pattern**:
+   ```python
+   # Demographic fields: Population, ethnicity, age distribution
+   # Target fields: Project-specific metrics (brand share, property values, etc.)
+   # SHAP fields: shap_{field_name} for explainable AI feature importance
+   # Economic fields: Income, wealth indices, economic indicators
+   ```
+
+5. **Automation Pipeline** (`automated_score_calculator.py`):
+   - Processes microservice data through multiple scoring algorithms
+   - Integrates SHAP values for explainable scoring
+   - Generates processor-specific scores using actual formulas
+   - Outputs comprehensive analysis data for visualization
+
+### Microservice Role and Purpose
+
+The **SHAP Demographic Analytics Microservice** serves as the core data intelligence engine:
+
+- **Data Source**: Comprehensive demographic, economic, and brand fields per geographic area
+- **AI Processing**: Machine learning models with SHAP explainability
+- **Target Analysis**: Configurable target variables based on project requirements
+- **Outputs**: Raw data + SHAP feature importance + correlation analysis
+- **Integration**: Feeds processed data to analysis processors
+
+The microservice is essential because it provides both the raw market data AND the explainable AI insights that make processor scoring scientifically rigorous rather than just heuristic calculations.
+
+---
+
+*This document provides comprehensive coverage of all processors in the MPIQ AI Chat system with specific focus on scoring methodologies, SHAP integration, and retail market analysis applications.*

@@ -622,4 +622,55 @@ All processors have been migrated to use the **BaseProcessor** architecture with
 
 ---
 
-*This document provides comprehensive coverage of all processors specifically tailored for real estate investment analysis, property valuation, and housing market assessment.*
+## Data Pipeline and Microservice Integration
+
+### Complete Data Flow Architecture
+
+1. **Target Variable Definition**:
+   - Property Value Analysis: Target variable represents housing market performance metrics
+   - Market-specific configurations based on analysis requirements
+   - Target represents performance values in each geographic area
+
+2. **Microservice Data Extraction** (`enhanced_analysis_worker.py`):
+   ```python
+   # Extract target value from microservice data
+   target_val = safe_float(row[target_variable])
+   result['target_value'] = target_val  # Used by all processors
+   result[clean_field_name] = target_val  # Market-specific field
+   ```
+
+3. **SHAP Value Generation**:
+   - **Endpoint**: `/factor-importance` with `method: "shap"`
+   - **Purpose**: Generates explainable AI feature importance for target variable
+   - **Format**: SHAP values stored as `shap_{field_name}` for demographic factors
+   - **Usage**: Multiple processors use SHAP values for housing market analysis
+
+4. **Field Extraction Pattern**:
+   ```python
+   # Demographic fields: Population, age distribution, household composition
+   # Housing fields: Property values, ownership rates, rental metrics
+   # SHAP fields: shap_{field_name} for explainable AI feature importance
+   # Economic fields: Income levels, economic stability indicators
+   ```
+
+5. **Automation Pipeline** (`automated_score_calculator.py`):
+   - Processes microservice data through multiple scoring algorithms
+   - Integrates SHAP values for explainable scoring
+   - Generates processor-specific scores using actual formulas
+   - Outputs comprehensive analysis data for real estate visualization
+
+### Microservice Role and Purpose
+
+The **SHAP Demographic Analytics Microservice** serves as the core data intelligence engine for real estate analysis:
+
+- **Data Source**: Comprehensive demographic, economic, and housing fields per geographic area
+- **AI Processing**: Machine learning models with SHAP explainability for housing markets
+- **Target Analysis**: Configurable target variables for real estate metrics
+- **Outputs**: Raw housing data + SHAP feature importance + correlation analysis
+- **Integration**: Feeds processed data to real estate analysis processors
+
+The microservice is essential because it provides both the raw housing market data AND the explainable AI insights that make real estate processor scoring scientifically rigorous rather than just heuristic property value calculations.
+
+---
+
+*This document provides comprehensive coverage of all processors specifically tailored for real estate investment analysis, property valuation, housing market assessment, and SHAP-driven explainable AI insights.*
