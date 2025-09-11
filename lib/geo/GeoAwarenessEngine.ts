@@ -185,6 +185,12 @@ export class GeoAwarenessEngine {
     // Method 1: Direct entity matching with hierarchy (most reliable)
     const directMatches = this.findDirectMatches(queryLower);
     console.log(`🔍 [GEO DEBUG] Direct matches:`, directMatches.map(e => ({ name: e.name, type: e.type })));
+    console.log(`🔍 [GEO DEBUG] Direct match details:`, directMatches.map(e => ({ 
+      name: e.name, 
+      type: e.type, 
+      parentEntity: e.parentEntity,
+      zipCodesCount: e.zipCodes?.length || 0
+    })));
     entities.push(...directMatches);
     
     // Method 2: ZIP code pattern matching (very reliable)
@@ -441,35 +447,40 @@ export class GeoAwarenessEngine {
     const targetZipCodes = new Set<string>();
     
     for (const entity of geoQuery.entities) {
-      // Direct ZIP codes from entity (cities)
-      entity.zipCodes?.forEach(zip => targetZipCodes.add(zip));
-      
-      // Phase 1: Multi-level ZIP code mapping
-      const entityName = entity.name.toLowerCase();
-      
-      // If this is a county, get all ZIP codes for that county
-      if (entity.type === 'county') {
-        for (const [zipCode, countyName] of this.zipCodeToCounty) {
-          if (countyName === entityName) {
-            targetZipCodes.add(zipCode);
+      // For cities, only use their direct ZIP codes (not expanded regions)
+      if (entity.type === 'city' || entity.type === 'borough' || entity.type === 'neighborhood') {
+        entity.zipCodes?.forEach(zip => targetZipCodes.add(zip));
+        console.log(`[GeoAwarenessEngine] Adding ${entity.zipCodes?.length || 0} ZIP codes for city: ${entity.name}`);
+      }
+      // Only expand ZIP codes for broader entities if no specific cities were mentioned
+      else if (geoQuery.entities.every(e => e.type !== 'city' && e.type !== 'borough')) {
+        // Phase 1: Multi-level ZIP code mapping for broader entities
+        const entityName = entity.name.toLowerCase();
+        
+        // If this is a county, get all ZIP codes for that county
+        if (entity.type === 'county') {
+          for (const [zipCode, countyName] of this.zipCodeToCounty) {
+            if (countyName === entityName) {
+              targetZipCodes.add(zipCode);
+            }
           }
         }
-      }
-      
-      // If this is a metro area, get all ZIP codes for that metro
-      if (entity.type === 'metro') {
-        for (const [zipCode, metroName] of this.zipCodeToMetro) {
-          if (metroName === entityName) {
-            targetZipCodes.add(zipCode);
+        
+        // If this is a metro area, get all ZIP codes for that metro
+        if (entity.type === 'metro') {
+          for (const [zipCode, metroName] of this.zipCodeToMetro) {
+            if (metroName === entityName) {
+              targetZipCodes.add(zipCode);
+            }
           }
         }
-      }
-      
-      // If this is a state, get all ZIP codes for that state
-      if (entity.type === 'state') {
-        for (const [zipCode, stateName] of this.zipCodeToState) {
-          if (stateName === entityName) {
-            targetZipCodes.add(zipCode);
+        
+        // If this is a state, get all ZIP codes for that state
+        if (entity.type === 'state') {
+          for (const [zipCode, stateName] of this.zipCodeToState) {
+            if (stateName === entityName) {
+              targetZipCodes.add(zipCode);
+            }
           }
         }
       }
@@ -795,9 +806,11 @@ export class GeoAwarenessEngine {
       }
     }
     
-    // Look for alias matches
+    // Look for alias matches - but require word boundaries to avoid partial matches
     for (const [alias, entityName] of this.aliasMap) {
-      if (queryLower.includes(alias)) {
+      // Use word boundaries to avoid partial matches like "TR" matching in "Montreal"
+      const aliasRegex = new RegExp(`\\b${alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+      if (aliasRegex.test(queryLower)) {
         const entity = this.geographicHierarchy.get(entityName);
         if (entity) {
           allMatches.push(entity);
@@ -805,11 +818,12 @@ export class GeoAwarenessEngine {
       }
     }
     
-    // Look for single word matches (less specific)
+    // Look for single word matches (less specific) - but only for cities/specific entities
     const words = query.toLowerCase().split(/\s+/);
     for (const word of words) {
       const entity = this.geographicHierarchy.get(word);
-      if (entity) {
+      // Only include specific entities (cities, boroughs), not broad geographic entities like states
+      if (entity && (entity.type === 'city' || entity.type === 'borough' || entity.type === 'neighborhood')) {
         allMatches.push(entity);
       }
     }
@@ -1006,12 +1020,32 @@ export class GeoAwarenessEngine {
    */
   private deduplicateEntities(entities: GeographicEntity[]): GeographicEntity[] {
     const seen = new Set<string>();
-    return entities.filter(entity => {
+    const filtered = entities.filter(entity => {
       const key = entity.name.toLowerCase();
       if (seen.has(key)) {
         return false;
       }
       seen.add(key);
+      return true;
+    });
+    
+    // Additional filtering: if we have both a city and its parent region, keep only the city
+    // This prevents matching both "Montreal" city and "Montréal" region
+    const cityNames = new Set(filtered.filter(e => e.type === 'city').map(e => e.name.toLowerCase()));
+    
+    return filtered.filter(entity => {
+      // If this is a region/county and we have a city with a similar name, exclude the region
+      if (entity.type === 'county' || entity.type === 'state') {
+        const entityNameBase = entity.name.toLowerCase().replace(/[éèêë]/g, 'e').replace(/[àâä]/g, 'a');
+        for (const cityName of cityNames) {
+          const cityNameBase = cityName.replace(/[éèêë]/g, 'e').replace(/[àâä]/g, 'a');
+          // If the city and region names are similar (e.g., "Montreal" and "Montréal"), keep only the city
+          if (entityNameBase === cityNameBase || entityNameBase.includes(cityNameBase) || cityNameBase.includes(entityNameBase)) {
+            console.log(`🔍 [GEO DEBUG] Excluding region "${entity.name}" because city "${cityName}" is already matched`);
+            return false;
+          }
+        }
+      }
       return true;
     });
   }
@@ -1345,7 +1379,14 @@ export class GeoAwarenessEngine {
     for (const field of this.fieldPriorities.zipCode) {
       if (record[field]) {
         const value = String(record[field]);
-        // Match 5-digit ZIP codes
+        
+        // Match Quebec FSA codes first (3-character alphanumeric: H1A, G2B, etc.)
+        const fsaMatch = value.match(/\b[A-Z]\d[A-Z]\b/);
+        if (fsaMatch) {
+          return fsaMatch[0];
+        }
+        
+        // Fallback to 5-digit ZIP codes for US data
         const zipMatch = value.match(/\b\d{5}\b/);
         if (zipMatch) {
           return zipMatch[0];

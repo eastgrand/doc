@@ -169,26 +169,41 @@ export class GeoDataManager {
         name: 'Montreal',
         aliases: ['Montréal', 'MTL', 'Ville de Montréal'],
         parentRegion: 'montréal',
-        fsaCodes: ['H0M', 'H1A', 'H1B', 'H1C', 'H1E', 'H1G', 'H1H', 'H1J', 'H1K', 'H1L', 'H1M',
-                   'H1N', 'H1P', 'H1R', 'H1S', 'H1T', 'H1V', 'H1W', 'H1X', 'H1Y', 'H1Z',
-                   'H2A', 'H2B', 'H2C', 'H2E', 'H2G', 'H2H', 'H2J', 'H2K', 'H2L', 'H2M',
-                   'H2N', 'H2P', 'H2R', 'H2S', 'H2T', 'H2V', 'H2W', 'H2X', 'H2Y', 'H2Z',
-                   'H3A', 'H3B', 'H3C', 'H3E', 'H3G', 'H3H', 'H3J', 'H3K', 'H3L', 'H3M',
-                   'H3N', 'H3P', 'H3R', 'H3S', 'H3T', 'H3V', 'H3W', 'H3X', 'H3Y', 'H3Z',
-                   'H4A', 'H4B', 'H4C', 'H4E', 'H4G', 'H4H', 'H4J', 'H4K', 'H4L', 'H4M',
-                   'H4N', 'H4P', 'H4R', 'H4S', 'H4T', 'H4V', 'H4W', 'H4X', 'H4Y', 'H4Z',
-                   'H5A', 'H5B', 'H8N', 'H8P', 'H8R', 'H8S', 'H8T', 'H8Y', 'H8Z',
-                   'H9A', 'H9B', 'H9C', 'H9E', 'H9G', 'H9H', 'H9J', 'H9K', 'H9P', 'H9R', 'H9S', 'H9W', 'H9X']
+        // Only FSAs within Montreal city limits (not including Laval, Longueuil, etc.)
+        fsaCodes: [
+          // H1x: Eastern Montreal (Anjou, Saint-Léonard, Montreal-Nord, Rivière-des-Prairies)
+          'H1A', 'H1B', 'H1C', 'H1E', 'H1G', 'H1H', 'H1J', 'H1K', 'H1L', 'H1M',
+          'H1N', 'H1P', 'H1R', 'H1S', 'H1T', 'H1V', 'H1W', 'H1X', 'H1Y', 'H1Z',
+          // H2x: Central Montreal (Plateau, Mile End, Downtown, Old Montreal, Rosemont)
+          'H2A', 'H2B', 'H2C', 'H2E', 'H2G', 'H2H', 'H2J', 'H2K', 'H2L', 'H2M',
+          'H2N', 'H2P', 'H2R', 'H2S', 'H2T', 'H2V', 'H2W', 'H2X', 'H2Y', 'H2Z',
+          // H3x: Central-West Montreal (CDN, Westmount, NDG, Mount Royal)
+          'H3A', 'H3B', 'H3C', 'H3E', 'H3G', 'H3H', 'H3J', 'H3K', 'H3L', 'H3M',
+          'H3N', 'H3P', 'H3R', 'H3S', 'H3T', 'H3V', 'H3W', 'H3X', 'H3Y', 'H3Z',
+          // H4x: West-Central Montreal (Côte-Saint-Luc, Hampstead, Montreal West, TMR)
+          'H4A', 'H4B', 'H4C', 'H4E', 'H4G', 'H4H', 'H4J', 'H4K', 'H4L', 'H4M',
+          'H4N', 'H4P', 'H4R', 'H4S', 'H4T', 'H4V', 'H4W', 'H4X', 'H4Y', 'H4Z',
+          // H8x: Southwest Montreal (LaSalle, Verdun, Sud-Ouest)
+          'H8N', 'H8P', 'H8R', 'H8S', 'H8T', 'H8Y', 'H8Z',
+          // H9x: West Island (Pierrefonds, Roxboro, Île-Bizard, DDO, Pointe-Claire, Beaconsfield)
+          'H9A', 'H9B', 'H9C', 'H9E', 'H9G', 'H9H', 'H9J', 'H9K', 'H9P', 'H9R', 'H9S', 'H9W', 'H9X'
+        ]
       },
       {
         name: 'Quebec City',
         aliases: ['Québec', 'Ville de Québec', 'QC City', 'La Capitale'],
         parentRegion: 'capitale-nationale',
-        fsaCodes: ['G1A', 'G1B', 'G1C', 'G1E', 'G1G', 'G1H', 'G1J', 'G1K', 'G1L', 'G1M',
-                   'G1N', 'G1P', 'G1R', 'G1S', 'G1T', 'G1V', 'G1W', 'G1X', 'G1Y', 'G1Z',
-                   'G2A', 'G2B', 'G2C', 'G2E', 'G2G', 'G2H', 'G2J', 'G2K', 'G2L', 'G2M', 'G2N',
-                   'G6A', 'G6B', 'G6C', 'G6E', 'G6G', 'G6H', 'G6J', 'G6K', 'G6L', 'G6P',
-                   'G6R', 'G6S', 'G6T', 'G6V', 'G6W', 'G6X', 'G6Y', 'G6Z']
+        // Only FSAs within Quebec City limits (not including Lévis or rural areas)
+        fsaCodes: [
+          // G1x: Central Quebec City (Old Quebec, Saint-Roch, Limoilou, Saint-Sauveur, etc.)
+          'G1A', 'G1B', 'G1C', 'G1E', 'G1G', 'G1H', 'G1J', 'G1K', 'G1L', 'G1M',
+          'G1N', 'G1P', 'G1R', 'G1S', 'G1T', 'G1V', 'G1W', 'G1X', 'G1Y',
+          // G2x: Quebec City neighborhoods (Beauport, Charlesbourg, etc.)
+          'G2A', 'G2B', 'G2C', 'G2E', 'G2G', 'G2J', 'G2K', 'G2L', 'G2M', 'G2N',
+          // G3x: Quebec City west (Sainte-Foy, Sillery, Cap-Rouge)
+          'G3A', 'G3B', 'G3C', 'G3E', 'G3G', 'G3H', 'G3J', 'G3K'
+          // Note: G6x removed as those are Lévis FSAs (separate city across the river)
+        ]
       },
       {
         name: 'Laval',
@@ -222,8 +237,8 @@ export class GeoDataManager {
         name: 'Lévis',
         aliases: ['Ville de Lévis'],
         parentRegion: 'capitale-nationale',
-        fsaCodes: ['G6A', 'G6B', 'G6C', 'G6E', 'G6G', 'G6H', 'G6J', 'G6K', 'G6L', 'G6P',
-                   'G6R', 'G6S', 'G6V', 'G6W', 'G6X', 'G6Y', 'G6Z']
+        // Lévis is across the river from Quebec City
+        fsaCodes: ['G6V', 'G6W', 'G6X', 'G6Y', 'G6Z', 'G7A']
       },
       {
         name: 'Trois-Rivières',
@@ -264,9 +279,10 @@ export class GeoDataManager {
         fsaCodes: ['G7A', 'G7B', 'G7G', 'G7H', 'G7J', 'G7K', 'G7N', 'G7P', 'G7S', 'G7T', 'G7X', 'G7Y', 'G7Z']
       },
       {
-        name: 'Quebec Rural North',
-        aliases: ['Northern Quebec', 'Nord-du-Québec'],
-        parentRegion: 'nord-du-québec',
+        name: 'Rural Quebec Areas',
+        aliases: ['Quebec Rural', 'Rural Areas'],
+        parentRegion: 'quebec',
+        // G0x codes are rural areas throughout Quebec, not specific to any city
         fsaCodes: ['G0A', 'G0C', 'G0E', 'G0G', 'G0H', 'G0J', 'G0K', 'G0L', 'G0M', 'G0N', 'G0P', 'G0R', 'G0S', 'G0T', 'G0V', 'G0W', 'G0X', 'G0Y', 'G0Z']
       },
       {

@@ -2055,6 +2055,38 @@ export async function POST(req: NextRequest) {
                 console.log('[CONTEXTUAL CHAT] Created lightweight context layer');
             }
         }
+
+        // 🌟 GEOGRAPHIC FILTERING: Apply city-specific filtering for comparison queries
+        if (isCityQuery && processedLayersData.length > 0) {
+          console.log('🏙️ [GEO FILTER] Applying geographic filtering for detected cities:', detectedCities);
+          
+          const originalFeatureCount = processedLayersData.reduce((total, layer) => total + layer.features.length, 0);
+          
+          processedLayersData = await Promise.all(processedLayersData.map(async (layer) => {
+            // Apply geo filtering to the layer's features
+            const geoFilterResult = await geoEngine.processGeoQuery(currentQuery, layer.features);
+            
+            const filteredFeatures = geoFilterResult.filteredRecords;
+            console.log(`🏙️ [GEO FILTER] Layer "${layer.layerId}": ${layer.features.length} -> ${filteredFeatures.length} features`);
+            
+            return {
+              ...layer,
+              features: filteredFeatures
+            };
+          }));
+          
+          const filteredFeatureCount = processedLayersData.reduce((total, layer) => total + layer.features.length, 0);
+          console.log(`🏙️ [GEO FILTER] Total features filtered: ${originalFeatureCount} -> ${filteredFeatureCount}`);
+          
+          // Log which FSAs were found for debugging
+          const foundFSAs = processedLayersData.flatMap(layer => 
+            layer.features.map(f => f.properties?.FSA_ID || f.properties?.ID || f.properties?.id).filter(Boolean)
+          );
+          console.log(`🏙️ [GEO FILTER] FSAs in filtered results:`, foundFSAs.slice(0, 20));
+          console.log(`🏙️ [GEO FILTER] Montreal FSAs (H-series):`, foundFSAs.filter(fsa => String(fsa).startsWith('H')).slice(0, 10));
+          console.log(`🏙️ [GEO FILTER] Quebec City FSAs (G-series):`, foundFSAs.filter(fsa => String(fsa).startsWith('G')).slice(0, 10));
+        }
+
         // 🎯 FULL PATH: For initial questions, use complete data processing
   else if (processedLayersData.length === 0 && featureData) {
           console.log('[Claude] Processing featureData from request body');
