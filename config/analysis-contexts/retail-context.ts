@@ -9,7 +9,7 @@ export const RETAIL_CONTEXT: AnalysisContext = {
   domain: 'Brand Competition and Market Analysis',
   
   fieldMappings: {
-    primaryMetric: ['competitive_advantage_score', 'brand_performance_gap', 'comparison_score', 'comparative_analysis_score'],
+    primaryMetric: ['strategic_score', 'competitive_advantage_score', 'brand_performance_gap', 'comparison_score', 'comparative_analysis_score'],
     secondaryMetrics: ['brand_a_share', 'brand_b_share', 'market_penetration', 'total_brand_share', 'market_gap'],
     populationField: ['total_population', 'market_size', 'customer_base', 'ECYPTAPOP'],
     incomeField: ['median_income', 'spending_power', 'disposable_income', 'ECYHRIAVG'],

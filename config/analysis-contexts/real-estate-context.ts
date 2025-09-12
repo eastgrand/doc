@@ -9,7 +9,7 @@ export const REAL_ESTATE_CONTEXT: AnalysisContext = {
   domain: 'Quebec Housing Market Analysis',
   
   fieldMappings: {
-    primaryMetric: ['thematic_value', 'ECYHRIAVG', 'household_income', 'value', 'housing_correlation_score', 'real_estate_analysis_score'],
+    primaryMetric: ['strategic_score', 'thematic_value', 'ECYHRIAVG', 'household_income', 'value', 'housing_correlation_score', 'real_estate_analysis_score'],
     secondaryMetrics: ['ECYCDOOWCO', 'ECYTENOWN', 'ECYTENRENT', 'hot_growth_market_index', 'home_affordability_index', 'new_home_owner_index'],
     populationField: ['ECYPTAPOP', 'population', 'total_population', 'TOTPOP_CY', 'value_TOTPOP_CY'],
     incomeField: ['ECYHRIAVG', 'thematic_value', 'household_income', 'median_income', 'AVGHINC_CY', 'value_AVGHINC_CY'],

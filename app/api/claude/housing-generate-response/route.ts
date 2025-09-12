@@ -2760,7 +2760,7 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 const topStrategicMarkets = featuresWithScores.slice(0, Math.max(5, Math.min(15, featuresWithScores.length))); // Show 5-15 markets
                 
                 if (topStrategicMarkets.length > 0) {
-                  dataSummary += `=== TOP STRATEGIC MARKETS (from comprehensive analysis of ${fullDatasetStats?.total || 421} Quebec FSA areas) ===\n`;
+                  dataSummary += `=== TOP STRATEGIC MARKETS (from comprehensive analysis of ${fullDatasetStats?.total || 421} geographic markets) ===\n`;
                   topStrategicMarkets.forEach((market, index) => {
                     const props = market.feature.properties || market.feature;
                     dataSummary += `${index + 1}. ${market.areaName}:\n`;

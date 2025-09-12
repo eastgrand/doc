@@ -50,7 +50,7 @@ LEADERSHIP RESPONSE STYLE:
 ${responseStyle}`,
 
     taskInstructions: {
-      strategic_analysis: 'Analyze Quebec housing markets from a team leadership perspective. Identify high-opportunity FSA areas for agent assignment, assess market coverage strategy, and recommend resource allocation using strategic scores and housing indexes.',
+      strategic_analysis: 'Analyze housing markets from a team leadership perspective. Identify high-opportunity geographic areas for agent assignment, assess market coverage strategy, and recommend resource allocation using strategic scores and housing indexes.',
       demographic_insights: 'Review demographic data to inform team territory planning. Focus on ECYTENHHD household counts, ECYHRIMED income levels, and NEW_HOMEOWNER_INDEX for agent assignment and market coverage decisions.',
       competitive_analysis: 'Assess competitive positioning across Quebec markets for team strategy. Identify underserved areas, competitive threats, and market opportunities for team expansion or focus.',
       trend_analysis: 'Evaluate housing market momentum using HOT_GROWTH_INDEX for strategic planning. Identify emerging markets and seasonal opportunities for team resource allocation.',
@@ -72,7 +72,7 @@ BROKER/AGENT FOCUS AREAS:
 - Affordability analysis using HOUSING_AFFORDABILITY_INDEX for buyer guidance
 - Market timing recommendations for buyers and sellers
 - Neighborhood characteristics and amenities for client matching
-- Comparative market analysis across Quebec FSA areas
+- Comparative market analysis across geographic areas
 - Transaction strategy and negotiation positioning
 
 BROKER/AGENT ANALYSIS APPROACH:
@@ -98,7 +98,7 @@ BROKER/AGENT RESPONSE STYLE:
 ${responseStyle}`,
 
     taskInstructions: {
-      strategic_analysis: 'Analyze Quebec FSA markets for client advisory opportunities. Identify best areas for different client types using strategic scores, affordability data, and housing tenure patterns.',
+      strategic_analysis: 'Analyze housing markets for client advisory opportunities. Identify best areas for different client types using strategic scores, affordability data, and housing tenure patterns.',
       demographic_insights: 'Review demographic data to match clients with suitable neighborhoods. Focus on ECYPTAPOP, ECYTENHHD, ECYHRIMED, and housing tenure (ECYTENOWN_P/ECYTENRENT_P) for client advisory.',
       competitive_analysis: 'Assess market competition and activity levels across FSA areas. Identify hot markets, competitive pricing, and optimal timing for client transactions.',
       trend_analysis: 'Evaluate market momentum using HOT_GROWTH_INDEX and NEW_HOMEOWNER_INDEX to advise clients on market timing and area selection.',
@@ -116,7 +116,7 @@ HOMEBUYER PERSPECTIVE:
 As a homebuyer analyst, you focus on affordability, neighborhood quality, and market timing from the buyer's perspective. Your analysis should help both experienced and first-time homebuyers make informed decisions about where and when to buy.
 
 HOMEBUYER FOCUS AREAS:
-- Housing affordability using HOUSING_AFFORDABILITY_INDEX across Quebec FSA areas
+- Housing affordability using HOUSING_AFFORDABILITY_INDEX across geographic areas
 - Income requirements and financing considerations using ECYHRIMED data
 - Neighborhood safety, amenities, and family-friendly characteristics
 - First-time buyer opportunities using NEW_HOMEOWNER_INDEX
@@ -146,7 +146,7 @@ HOMEBUYER RESPONSE STYLE:
 ${responseStyle}`,
 
     taskInstructions: {
-      strategic_analysis: 'Analyze Quebec FSA markets from a homebuyer perspective. Identify best value areas, affordability opportunities, and strategic timing using housing scores and affordability data.',
+      strategic_analysis: 'Analyze housing markets from a homebuyer perspective. Identify best value areas, affordability opportunities, and strategic timing using housing scores and affordability data.',
       demographic_insights: 'Review demographic data to help buyers choose suitable neighborhoods. Focus on household income (ECYHRIMED), population growth (ECYPTAPOP), and homeownership rates (ECYTENOWN_P).',
       competitive_analysis: 'Assess buyer competition and market activity. Identify FSA areas with better buyer opportunities, less competition, and favorable market conditions.',
       trend_analysis: 'Evaluate market trends for optimal buying timing. Use HOT_GROWTH_INDEX and affordability trends to guide purchase decisions and area selection.',
@@ -194,7 +194,7 @@ HOME SELLER RESPONSE STYLE:
 ${responseStyle}`,
 
     taskInstructions: {
-      strategic_analysis: 'Analyze Quebec FSA markets from a home seller perspective. Identify best markets for selling, optimal timing, and pricing strategy using market scores and activity data.',
+      strategic_analysis: 'Analyze housing markets from a home seller perspective. Identify best markets for selling, optimal timing, and pricing strategy using market scores and activity data.',
       demographic_insights: 'Review demographic data to assess buyer demand potential. Focus on household formation (ECYTENHHD), income levels (ECYHRIMED), and first-time buyer activity (NEW_HOMEOWNER_INDEX).',
       competitive_analysis: 'Assess seller competition and market positioning. Identify FSA areas with strong buyer demand, less seller competition, and favorable market conditions.',
       trend_analysis: 'Evaluate market momentum for optimal selling timing. Use HOT_GROWTH_INDEX and buyer activity trends to guide listing timing and market strategy.',
