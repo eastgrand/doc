@@ -8,14 +8,17 @@ interface SliderProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onValueChange?: (value: number) => void;
 }
 
-const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
-  ({ className, value, onValueChange, ...props }, ref) => (
+function SliderImpl(
+  { className, value, onValueChange, ...props }: SliderProps,
+  ref: React.Ref<HTMLInputElement>
+) {
+  return (
     <div className="relative flex w-full touch-none select-none items-center">
       <input
         type="range"
         ref={ref}
         value={value}
-        onChange={(e) => onValueChange?.(Number(e.target.value))}
+        onChange={(e) => onValueChange?.(Number((e.target as HTMLInputElement).value))}
         className={cn(
           "h-2 w-full appearance-none rounded-full bg-gray-200",
           // Webkit styles
@@ -36,7 +39,9 @@ const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
       />
     </div>
   )
-)
+}
+
+const Slider = React.forwardRef(SliderImpl)
 Slider.displayName = "Slider"
 
 export { Slider }

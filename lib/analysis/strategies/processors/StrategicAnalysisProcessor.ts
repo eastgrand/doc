@@ -30,14 +30,40 @@ export class StrategicAnalysisProcessor extends BaseProcessor {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-  // Strategic analysis requires strategic_score
-    const hasRequiredFields = rawData.results.length === 0 ||
-      (rawData.results as any[]).some((record: any) =>
-        record &&
-        ((record as any).area_id || (record as any).id || (record as any).ID) &&
-  ((record as any).strategic_score !== undefined)
-      );
-    
+    // Strategic analysis requires an ID and a scoring field. Accept several legacy/alternate field names
+    if (rawData.results.length === 0) return true;
+
+    const scoreCandidates = [
+      'strategic_score',
+      'strategic_analysis_score',
+      'strategic_value_score',
+      'value',
+      'score',
+      'thematic_value',
+      'comparative_score'
+    ];
+
+    const hasRequiredFields = (rawData.results as any[]).some((record: any) => {
+      if (!record) return false;
+      const hasId = !!((record as any).area_id || (record as any).id || (record as any).ID || (record as any).GEOID);
+      if (!hasId) return false;
+
+      // Check explicit candidate fields
+      for (const f of scoreCandidates) {
+        if ((record as any)[f] !== undefined && (record as any)[f] !== null) return true;
+      }
+
+      // Fallback: use config-driven primary metric extractor (may log warnings) if it returns a finite number
+      try {
+        const primary = this.extractPrimaryMetric(record as any);
+        if (typeof primary === 'number' && !isNaN(primary)) return true;
+      } catch (e) {
+        // ignore and treat as missing
+      }
+
+      return false;
+    });
+
     return hasRequiredFields;
   }
 

@@ -1,0 +1,1671 @@
+app/api/claude/generate-response/route.ts(39,49): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(45,51): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(51,68): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1221,53): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1235,51): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1619,25): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1624,25): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1796,63): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1802,54): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1848,56): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1861,50): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1868,51): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1871,106): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1888,28): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1891,28): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1896,28): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1899,28): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1903,59): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1920,58): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(1933,92): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2028,64): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2159,71): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2229,60): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2304,52): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2464,95): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2465,75): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2477,67): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2478,61): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2512,42): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2676,26): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2721,25): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2726,31): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(2806,26): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(3037,78): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(3042,57): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(3043,59): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(3050,54): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(3086,30): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(3096,36): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(3326,29): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(3331,56): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(3441,36): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(3480,42): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(3485,23): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4071,71): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4098,70): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4131,74): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4318,63): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4319,77): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4320,73): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4324,47): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4337,70): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4367,48): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4368,47): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4390,73): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4397,57): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4402,40): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4438,49): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4447,45): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4475,32): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4500,17): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4890,40): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4901,23): error TS1005: ',' expected.
+app/api/claude/generate-response/route.ts(4923,50): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(37,49): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(43,51): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(49,68): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1219,53): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1233,51): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1623,25): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1628,25): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1800,63): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1806,54): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1865,56): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1878,50): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1885,51): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1888,106): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1905,28): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1908,28): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1913,28): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1916,28): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1920,59): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1937,58): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1950,92): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1952,58): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(1954,64): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2100,64): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2151,62): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2152,33): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2155,89): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2156,92): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2263,71): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2333,60): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2408,52): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2568,95): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2569,75): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2581,67): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2582,61): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2616,42): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2780,26): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2900,74): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(2904,74): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(3024,26): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(3255,78): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(3260,57): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(3261,59): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(3268,54): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(3304,30): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(3314,36): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(3544,29): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(3549,56): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(3659,36): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(3698,42): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(3703,23): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4331,71): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4358,70): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4414,74): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4592,63): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4593,77): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4594,73): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4598,47): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4611,70): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4641,48): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4642,47): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4664,73): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4671,57): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4676,40): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4712,49): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4721,45): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4749,32): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(4774,17): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(5164,40): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(5175,23): error TS1005: ',' expected.
+app/api/claude/housing-generate-response/route.ts(5197,50): error TS1005: ',' expected.
+clustering/ClusterManager.ts(157,29): error TS1005: ',' expected.
+clustering/ClusterManager.ts(209,33): error TS1005: ',' expected.
+clustering/ClusterManager.ts(214,20): error TS1005: ',' expected.
+clustering/ClusterManager.ts(217,37): error TS1005: ',' expected.
+clustering/ClusterManager.ts(273,56): error TS1005: ',' expected.
+clustering/ClusterManager.ts(344,36): error TS1005: ',' expected.
+clustering/ClusterManager.ts(355,44): error TS1005: ',' expected.
+clustering/ClusterManager.ts(380,29): error TS1005: ',' expected.
+clustering/ClusterManager.ts(416,29): error TS1005: ',' expected.
+clustering/ClusterManager.ts(418,15): error TS1005: ',' expected.
+clustering/ClusterManager.ts(469,57): error TS1005: ',' expected.
+clustering/ClusterManager.ts(485,38): error TS1005: ',' expected.
+clustering/ClusterManager.ts(516,42): error TS1005: ',' expected.
+clustering/ClusterManager.ts(528,29): error TS1005: ',' expected.
+clustering/ClusterManager.ts(530,15): error TS1005: ',' expected.
+components/ChatInterface.tsx(199,48): error TS1005: ',' expected.
+components/ChatInterface.tsx(302,52): error TS1005: ',' expected.
+components/ChatInterface.tsx(353,53): error TS1005: ',' expected.
+components/ChatInterface.tsx(354,46): error TS1005: ',' expected.
+components/ChatInterface.tsx(373,59): error TS1005: ',' expected.
+components/ChatInterface.tsx(516,32): error TS1005: ',' expected.
+components/ChatInterface.tsx(528,32): error TS1005: ',' expected.
+components/ChatInterface.tsx(601,74): error TS1005: ',' expected.
+components/ChatInterface.tsx(665,37): error TS1005: ',' expected.
+components/ChatInterface.tsx(832,70): error TS1005: ',' expected.
+components/ChatInterface.tsx(842,30): error TS1005: ',' expected.
+components/ChatInterface.tsx(873,74): error TS1005: ',' expected.
+components/ChatInterface.tsx(889,56): error TS1005: ',' expected.
+components/ChatInterface.tsx(905,198): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(534,51): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(556,51): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(574,41): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(605,25): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(616,56): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(707,61): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(787,94): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(848,38): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(914,23): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(961,44): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(976,62): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(993,21): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(1004,38): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(1021,131): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(1154,48): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(1251,39): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(1313,77): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(1321,55): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(1381,37): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(1382,38): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(1383,46): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(1449,55): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(1637,51): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2094,67): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2237,53): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2313,43): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2314,25): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2318,44): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2371,52): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2372,55): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2373,55): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2384,33): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2386,109): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2387,100): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2392,49): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2393,53): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2442,68): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2530,80): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2534,37): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2672,20): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2673,17): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2686,56): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2710,112): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2719,69): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2727,53): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(2852,69): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3105,67): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3135,61): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3225,63): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3239,56): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3350,70): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3355,55): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3459,59): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3467,57): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3468,41): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3469,48): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3470,47): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3678,36): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(3771,65): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(4299,58): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(4299,65): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/geospatial-chat-interface.tsx(4299,114): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/geospatial-chat-interface.tsx(4305,74): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(4305,81): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/geospatial-chat-interface.tsx(4305,130): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/geospatial-chat-interface.tsx(4796,44): error TS1005: ',' expected.
+components/geospatial-chat-interface.tsx(4796,51): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/geospatial-chat-interface.tsx(4802,9): error TS1109: Expression expected.
+components/geospatial-chat-interface.tsx(4803,15): error TS1005: '}' expected.
+components/geospatial-chat-interface.tsx(4807,37): error TS1005: '}' expected.
+components/geospatial-chat-interface.tsx(4807,45): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/geospatial-chat-interface.tsx(4809,9): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/geospatial-chat-interface.tsx(4824,7): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/geospatial-chat-interface.tsx(4826,5): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/geospatial-chat-interface.tsx(4826,9): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/IndexWidget.tsx(48,29): error TS1005: ',' expected.
+components/IndexWidget.tsx(50,50): error TS1005: ',' expected.
+components/IndexWidget.tsx(56,30): error TS1005: ',' expected.
+components/IndexWidget.tsx(74,32): error TS1005: ',' expected.
+components/IndexWidget.tsx(74,70): error TS1005: ',' expected.
+components/IndexWidget.tsx(84,35): error TS1005: ',' expected.
+components/IndexWidget.tsx(147,35): error TS1005: ',' expected.
+components/IndexWidget.tsx(150,39): error TS1005: ',' expected.
+components/IndexWidget.tsx(172,33): error TS1005: ',' expected.
+components/IndexWidget.tsx(174,29): error TS1005: ',' expected.
+components/IndexWidget.tsx(182,17): error TS1005: ',' expected.
+components/IndexWidget.tsx(188,17): error TS1005: ',' expected.
+components/IndexWidget.tsx(209,54): error TS1005: ',' expected.
+components/IndexWidget.tsx(240,32): error TS1005: ',' expected.
+components/IndexWidget.tsx(250,40): error TS1005: ',' expected.
+components/IndexWidget.tsx(262,46): error TS1005: ',' expected.
+components/IndexWidget.tsx(269,59): error TS1005: ',' expected.
+components/IndexWidget.tsx(292,46): error TS1005: ',' expected.
+components/IndexWidget.tsx(295,47): error TS1005: ',' expected.
+components/IndexWidget.tsx(299,29): error TS1005: ',' expected.
+components/IndexWidget.tsx(359,40): error TS1005: ',' expected.
+components/IndexWidget.tsx(359,47): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/IndexWidget.tsx(378,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/IndexWidget.tsx(413,57): error TS1005: ',' expected.
+components/IndexWidget.tsx(413,64): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/IndexWidget.tsx(413,90): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/IndexWidget.tsx(415,26): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/IndexWidget.tsx(425,45): error TS1005: ',' expected.
+components/IndexWidget.tsx(425,52): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/IndexWidget.tsx(430,57): error TS1005: ',' expected.
+components/IndexWidget.tsx(430,64): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/IndexWidget.tsx(430,103): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/IndexWidget.tsx(436,28): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/IndexWidget.tsx(438,24): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/IndexWidget.tsx(451,40): error TS1005: ',' expected.
+components/IndexWidget.tsx(451,47): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/IndexWidget.tsx(452,17): error TS1109: Expression expected.
+components/IndexWidget.tsx(452,67): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/IndexWidget.tsx(482,73): error TS1005: ',' expected.
+components/IndexWidget.tsx(482,80): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/IndexWidget.tsx(483,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/IndexWidget.tsx(483,26): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/IndexWidget.tsx(485,23): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/IndexWidget.tsx(487,25): error TS17002: Expected corresponding JSX closing tag for 'div'.
+components/IndexWidget.tsx(491,15): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/IndexWidget.tsx(491,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/IndexWidget.tsx(493,11): error TS1005: ')' expected.
+components/IndexWidget.tsx(494,10): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/IndexWidget.tsx(522,5): error TS1005: ')' expected.
+components/IndexWidget.tsx(523,3): error TS1109: Expression expected.
+components/IndexWidget.tsx(524,1): error TS1128: Declaration or statement expected.
+components/map/enhancedPopupTemplate.tsx(258,54): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(264,45): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(265,50): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(303,53): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(328,55): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(330,47): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(331,52): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(334,40): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(345,76): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(349,86): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(357,61): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(408,71): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(409,52): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(463,23): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(464,26): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(552,23): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(553,26): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(668,66): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(671,80): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(720,35): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(726,33): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(759,33): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(806,32): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(808,32): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(856,37): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(889,33): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(891,33): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(950,35): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1008,78): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1042,42): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1058,40): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1087,16): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1088,13): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1126,38): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1130,40): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1258,49): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1262,34): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1323,47): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1348,53): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1350,26): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1351,36): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1352,43): error TS1005: ',' expected.
+components/map/enhancedPopupTemplate.tsx(1389,37): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(272,39): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(274,42): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(275,42): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(276,42): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(277,42): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(383,102): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(459,77): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(542,49): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(546,37): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(579,86): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(582,48): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(601,21): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(637,21): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(761,68): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(801,70): error TS1005: ',' expected.
+components/map/SampleAreasPanel.tsx(895,41): error TS1005: ',' expected.
+components/map/SampleAreasPanelFixed2.tsx(225,92): error TS1005: ',' expected.
+components/map/SampleAreasPanelFixed2.tsx(286,68): error TS1005: ',' expected.
+components/map/SampleAreasPanelFixed2.tsx(313,43): error TS1005: ',' expected.
+components/map/SampleAreasPanelFixed2.tsx(313,120): error TS1005: ',' expected.
+components/map/SampleAreasPanelFixed2.tsx(479,39): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(102,18): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(106,60): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(136,18): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(140,57): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(170,18): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(173,63): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(247,42): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(248,34): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(249,37): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(250,40): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(267,42): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(273,47): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(277,36): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(281,43): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(356,40): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(365,16): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(393,29): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(486,44): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(486,51): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/phase4/AIInsightGenerator.tsx(487,21): error TS1109: Expression expected.
+components/phase4/AIInsightGenerator.tsx(595,19): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/phase4/AIInsightGenerator.tsx(595,21): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/phase4/AIInsightGenerator.tsx(717,37): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(717,44): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/phase4/AIInsightGenerator.tsx(717,78): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/phase4/AIInsightGenerator.tsx(718,37): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(718,44): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/phase4/AIInsightGenerator.tsx(718,71): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/phase4/AIInsightGenerator.tsx(719,37): error TS1005: ',' expected.
+components/phase4/AIInsightGenerator.tsx(719,44): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/phase4/AIInsightGenerator.tsx(719,74): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/popup/CustomPopupManager.tsx(87,63): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(97,27): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(106,23): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(114,46): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(134,54): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(142,25): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(156,59): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(157,36): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(165,64): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(169,54): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(174,25): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(178,21): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(272,66): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(342,42): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(415,30): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(619,49): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(692,51): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(737,39): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(774,48): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(776,28): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(907,35): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(971,59): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(980,59): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1058,38): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1169,37): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1182,47): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1183,35): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1219,29): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1282,40): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1354,27): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1417,18): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1448,35): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1452,52): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1456,52): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1476,19): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1477,22): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1504,35): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1505,40): error TS1005: ',' expected.
+components/popup/CustomPopupManager.tsx(1507,30): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(82,31): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(97,25): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(98,54): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(102,56): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(103,25): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(175,46): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(176,32): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(190,43): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(206,35): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(215,29): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(249,42): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(250,47): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(251,51): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(273,8): error TS17008: JSX element 'Tabs' has no corresponding closing tag.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(501,44): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(501,51): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(505,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(518,40): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(518,47): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(522,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(558,44): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(558,51): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(563,29): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(601,46): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(601,53): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(620,47): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(620,54): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(653,27): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(664,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(664,19): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(679,34): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(679,41): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(687,41): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(687,48): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(687,78): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(691,19): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(763,56): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(763,63): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(769,75): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(769,82): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(770,73): error TS1005: '}' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(771,33): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(773,31): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(773,32): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(775,29): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(778,31): error TS17002: Expected corresponding JSX closing tag for 'div'.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(779,29): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(830,69): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(830,76): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(831,29): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(831,63): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(833,31): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(833,69): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(835,33): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(839,37): error TS1005: '}' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(840,33): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(842,31): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(843,29): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(844,27): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(846,83): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(847,29): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(848,33): error TS1005: '}' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(854,29): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(856,27): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(859,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(859,26): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(861,23): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(864,25): error TS17002: Expected corresponding JSX closing tag for 'div'.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(871,94): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(871,101): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(872,29): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(872,63): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(878,27): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(880,56): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(881,29): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(882,33): error TS1005: '}' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(888,29): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(890,98): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(891,27): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(892,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(892,26): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(894,23): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(897,25): error TS17002: Expected corresponding JSX closing tag for 'div'.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(904,91): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(904,98): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(905,29): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(905,63): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(913,27): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(915,53): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(916,29): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(917,33): error TS1005: '}' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(923,29): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(925,98): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(926,27): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(927,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(927,26): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(929,23): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(932,25): error TS17002: Expected corresponding JSX closing tag for 'CardContent'.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(933,23): error TS17002: Expected corresponding JSX closing tag for 'Card'.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(934,19): error TS1005: ')' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(934,21): error TS17002: Expected corresponding JSX closing tag for 'TabsContent'.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(941,64): error TS1005: ',' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(941,71): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(942,27): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(942,61): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(959,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(959,27): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/AdvancedServiceManager.tsx(964,15): error TS1005: ')' expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(965,13): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(966,11): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(966,13): error TS1128: Declaration or statement expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(982,12): error TS1128: Declaration or statement expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(983,9): error TS1128: Declaration or statement expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(984,7): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(985,5): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(986,3): error TS1109: Expression expected.
+components/ProjectConfigManager/AdvancedServiceManager.tsx(987,1): error TS1128: Declaration or statement expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(137,35): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(140,50): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(149,35): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(245,27): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(246,33): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(249,67): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(257,61): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(262,61): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(316,76): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(350,42): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(353,82): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(356,76): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(360,78): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(362,78): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(372,72): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(387,36): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(390,49): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(395,82): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(422,78): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(432,52): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(433,36): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(436,73): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(493,46): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(493,53): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(494,19): error TS1109: Expression expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(496,66): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(535,68): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(535,75): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(539,29): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(579,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(579,19): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(596,30): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(596,37): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(597,15): error TS1109: Expression expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(598,62): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(635,50): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(635,57): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(639,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(647,13): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(647,15): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(655,64): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(668,41): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(669,52): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(747,94): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(747,101): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(747,112): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(748,19): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(748,21): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(749,18): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(758,94): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(758,101): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(758,112): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(759,19): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(759,21): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(760,18): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(769,98): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(769,105): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(769,116): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(770,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(770,19): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(773,16): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(788,38): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(788,45): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(789,17): error TS1109: Expression expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(789,68): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(820,15): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(820,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(874,36): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(874,43): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(894,62): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(894,69): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(907,23): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(928,11): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(990,34): error TS1005: ',' expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(990,41): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(991,15): error TS1109: Expression expected.
+components/ProjectConfigManager/ConceptMappingEditor.tsx(991,75): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(992,81): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(1028,13): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/ConceptMappingEditor.tsx(1028,15): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(184,56): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(185,48): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(193,56): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(194,48): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(202,55): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(203,46): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(210,56): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(211,48): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(223,45): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(243,27): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(257,27): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(270,37): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(297,62): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(305,64): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(306,34): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(332,25): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(333,40): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(367,42): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(367,77): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(379,23): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(393,40): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(415,45): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(437,39): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(468,27): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(472,62): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(476,36): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(490,51): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(490,73): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(503,40): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(504,39): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(577,35): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(577,42): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(578,53): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(579,25): error TS1109: Expression expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(579,79): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(580,79): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(607,23): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(607,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(680,68): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(680,75): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(680,103): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(684,68): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(684,75): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(684,103): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(688,67): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(688,74): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(688,101): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(692,70): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(692,77): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(692,107): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(708,62): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(708,69): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(743,19): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(743,23): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(767,52): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(767,59): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(789,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(861,69): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(861,76): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(865,21): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(881,79): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(881,86): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(885,21): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1007,48): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1007,55): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1076,11): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1094,53): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1114,38): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1114,45): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1114,77): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1120,50): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1120,57): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1120,86): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1126,50): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1126,57): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1126,89): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1141,34): error TS1005: ',' expected.
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1141,41): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/DependencyAnalyzer.tsx(1167,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(108,61): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(109,31): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(116,38): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(128,49): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(132,41): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(133,43): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(145,58): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(154,38): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(155,37): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(192,57): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(199,38): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(210,58): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(212,37): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(216,47): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(241,48): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(252,42): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(260,46): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(266,40): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(275,27): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(288,58): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(316,40): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(365,51): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(451,40): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(451,47): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(452,17): error TS1109: Expression expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(455,64): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(524,50): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(524,57): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(525,27): error TS1109: Expression expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(546,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(546,27): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(551,15): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(551,17): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(591,43): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(591,50): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(608,19): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(825,41): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(825,48): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(851,63): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(851,70): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(852,23): error TS1109: Expression expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(858,21): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(858,23): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(880,11): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(942,38): error TS1005: ',' expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(942,45): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(943,15): error TS1109: Expression expected.
+components/ProjectConfigManager/GroupManagementPanel.tsx(979,13): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+components/ProjectConfigManager/GroupManagementPanel.tsx(979,15): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+lib/analysis/CompositeDataProcessor.ts(142,51): error TS1005: ',' expected.
+lib/analysis/CompositeDataProcessor.ts(143,51): error TS1005: ',' expected.
+lib/analysis/CompositeDataProcessor.ts(147,47): error TS1005: ',' expected.
+lib/analysis/CompositeDataProcessor.ts(441,67): error TS1005: ',' expected.
+lib/analysis/CompositeDataProcessor.ts(442,60): error TS1005: ',' expected.
+lib/analysis/CompositeDataProcessor.ts(443,58): error TS1005: ',' expected.
+lib/analysis/CompositeDataProcessor.ts(446,50): error TS1005: ',' expected.
+lib/analysis/CompositeDataProcessor.ts(581,57): error TS1005: ',' expected.
+lib/analysis/CompositeDataProcessor.ts(602,51): error TS1005: ',' expected.
+lib/analysis/CompositeDataProcessor.ts(603,48): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(158,30): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(199,52): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(203,63): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(253,30): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(270,14): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(274,11): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(308,40): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(309,32): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(320,37): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(322,14): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(391,23): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(405,29): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(406,31): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(407,28): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(446,28): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(446,62): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(459,33): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(465,35): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(468,18): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(496,33): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(502,38): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(505,18): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(576,14): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(577,11): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(591,28): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(600,36): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(641,44): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(642,48): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(643,47): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(674,87): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(677,103): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(736,47): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(737,50): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(738,45): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(765,13): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(768,50): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(769,53): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(770,48): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(773,76): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(776,79): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(779,74): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(807,46): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(880,38): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(891,51): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(903,34): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(930,51): error TS1005: ',' expected.
+lib/analysis/statsCalculator.ts(943,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(19,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(181,81): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(292,67): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(394,58): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(447,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(447,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(480,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(514,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(515,47): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(516,42): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(517,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(529,57): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(532,69): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(564,18): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(569,55): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(580,46): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(612,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(612,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(648,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(648,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts(670,64): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(46,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(49,50): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(86,65): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(439,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(439,64): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(482,27): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(506,17): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(524,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(525,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(526,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(539,49): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(540,49): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(549,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(623,46): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(624,46): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(667,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(667,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(701,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/BrandDifferenceProcessor.ts(701,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(20,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(72,30): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(93,110): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(96,61): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(258,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(259,39): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(281,49): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(301,27): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(327,17): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(343,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(352,32): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(354,15): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(355,18): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(370,27): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(386,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(576,52): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(614,62): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ClusterDataProcessor.ts(634,27): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(273,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(337,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(367,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(367,67): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(369,13): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(370,16): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(382,48): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(451,27): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(473,17): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(483,16): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(488,16): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(494,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(500,53): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(511,55): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(512,58): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(581,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(629,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(630,47): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(631,49): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(676,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(677,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(678,45): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(723,46): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(751,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(751,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(787,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CompetitiveDataProcessor.ts(787,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(123,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(123,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(161,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(161,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(219,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(297,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(325,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(325,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(355,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(397,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(404,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(405,47): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(406,42): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(410,45): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(430,48): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(431,47): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(446,45): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(453,42): error TS1005: ',' expected.
+lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts(459,47): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(421,36): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(421,75): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(444,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(475,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(475,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(508,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(558,37): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(559,37): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(560,37): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(571,45): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(574,52): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(584,51): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(587,56): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(593,47): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(596,50): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(608,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(613,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(614,45): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CoreAnalysisProcessor.ts(667,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(29,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(38,56): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(220,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(220,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(242,48): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(269,27): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(289,17): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(319,51): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(336,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(401,40): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(402,42): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(403,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(487,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(487,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(523,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts(523,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(432,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(433,42): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(434,40): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(435,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(481,27): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(503,17): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(513,16): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(518,16): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(524,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(530,57): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(541,56): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(542,58): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(543,53): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(553,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(631,42): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(632,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(633,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(634,45): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(687,45): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(688,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(689,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(720,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(720,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(757,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(757,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(833,21): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(840,18): error TS1005: ',' expected.
+lib/analysis/strategies/processors/CustomerProfileProcessor.ts(852,30): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(28,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(67,89): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(68,86): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(69,95): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(347,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(348,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(349,31): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(392,27): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(414,17): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(425,16): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(430,16): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(436,51): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(443,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(454,54): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(455,53): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(464,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(536,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(537,40): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(538,42): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(641,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(641,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(679,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DemographicDataProcessor.ts(679,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(23,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(105,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(105,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(143,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(143,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(201,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(279,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(306,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(306,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(336,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(382,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(383,46): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(384,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(406,29): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(410,29): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(483,40): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(484,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts(485,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(28,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(119,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(119,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(157,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(157,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(215,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(288,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(288,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(318,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(349,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(371,51): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(372,47): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(373,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(379,53): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(387,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(396,22): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(472,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts(476,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(190,78): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(275,15): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(355,30): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(455,91): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(464,17): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(513,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(513,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(546,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(580,46): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(581,50): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(582,45): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(583,49): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(595,58): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(598,70): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(631,12): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(636,50): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(647,12): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(652,50): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(675,40): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(684,54): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(703,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(723,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(723,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(761,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(761,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(875,40): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(890,37): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(896,39): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(903,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/FeatureInteractionProcessor.ts(910,46): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(21,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(516,58): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(571,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(571,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(604,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(638,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(639,46): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(640,42): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(641,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(653,55): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(656,68): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(688,18): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(693,52): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(704,18): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(709,55): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(720,18): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(725,48): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(734,45): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(740,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(772,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(772,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(808,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/OutlierDetectionProcessor.ts(808,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(26,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(246,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(247,39): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(248,40): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(295,27): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(317,17): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(328,16): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(333,16): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(339,35): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(346,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(358,54): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(359,57): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(368,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(432,37): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(433,42): error TS1005: ',' expected.
+lib/analysis/strategies/processors/RiskDataProcessor.ts(434,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(25,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(111,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(111,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(149,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(149,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(207,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(279,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(306,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(306,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(336,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(354,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(379,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(384,45): error TS1005: ',' expected.
+lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts(385,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(231,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(231,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(309,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(309,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(365,36): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(470,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(470,59): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(500,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(529,99): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(532,42): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(557,45): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(563,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(584,44): error TS1005: ',' expected.
+lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts(591,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(26,34): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(216,33): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(217,38): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(218,36): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(261,27): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(283,17): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(294,16): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(299,16): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(305,39): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(312,53): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(323,58): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(324,60): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(333,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(397,43): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(398,45): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(399,41): error TS1005: ',' expected.
+lib/analysis/strategies/processors/TrendDataProcessor.ts(400,44): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(257,42): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(260,20): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(262,47): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(265,20): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(279,87): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(280,92): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(636,44): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(636,70): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(651,47): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(673,31): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(832,50): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(871,13): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(872,16): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(881,13): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(882,16): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(892,27): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(905,26): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(913,26): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(923,26): error TS1005: ',' expected.
+lib/analysis/strategies/renderers/CompetitiveRenderer.ts(1088,26): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(215,41): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(235,51): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(238,39): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(242,63): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(247,56): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(249,31): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(251,52): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(255,40): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(259,53): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(296,67): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(297,49): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(416,30): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(464,36): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(533,35): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(534,39): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(605,50): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(611,88): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(611,134): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(650,58): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(665,64): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(667,36): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(672,56): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(678,69): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(722,45): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(730,58): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(731,42): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(732,83): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(734,65): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(761,37): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(766,37): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(815,54): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(815,112): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(895,35): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(1034,43): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(1128,51): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(1128,102): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(1129,56): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(1155,32): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(1331,39): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(1343,40): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(1355,38): error TS1005: ',' expected.
+lib/analytics/query-analysis.ts(1368,42): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(70,50): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(71,52): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(107,46): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(128,41): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(129,43): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(130,39): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(131,37): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(132,38): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(146,32): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(212,45): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(214,50): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(350,38): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(356,43): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(361,29): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(367,33): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(406,51): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(407,45): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(417,43): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(452,44): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(452,76): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(456,37): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(507,62): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(508,32): error TS1005: ',' expected.
+lib/clustering/algorithms/geographic-kmeans.ts(508,81): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(300,50): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(301,46): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(550,46): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(551,39): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(563,52): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(568,55): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(728,30): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(746,42): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(747,42): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(779,51): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(824,50): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(827,64): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(841,58): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(847,47): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(930,58): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(937,48): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(961,39): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(964,20): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(972,18): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(982,15): error TS1005: ',' expected.
+lib/clustering/ClusteringService.ts(1070,28): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(57,25): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(101,34): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(177,45): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(210,29): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(218,34): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(238,33): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(249,33): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(274,43): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(284,31): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(297,41): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(298,45): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(312,46): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(353,25): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(366,39): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(371,48): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(378,45): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(386,37): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(415,42): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(437,22): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(442,22): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(459,25): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(471,13): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(477,44): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(478,44): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(484,13): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(489,35): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(490,35): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(505,25): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(514,35): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(516,15): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(611,41): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(643,47): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(671,41): error TS1005: ',' expected.
+lib/data-exploration-handler.ts(672,41): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(187,70): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(188,76): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(198,64): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(203,74): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(209,92): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(337,33): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(343,57): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(350,59): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(378,38): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(414,34): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(416,38): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(452,37): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(456,41): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(496,40): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(543,68): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(548,34): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(550,38): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(584,38): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(707,68): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(717,59): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(724,62): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(796,38): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(851,33): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(855,47): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(856,48): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(859,27): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(860,28): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(861,36): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(977,41): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(986,42): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1029,44): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1040,46): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1040,79): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1043,32): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1092,32): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1128,83): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1132,53): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1139,20): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1140,17): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1150,36): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1151,42): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1152,38): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1157,53): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1161,40): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1172,37): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1196,39): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1209,33): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1267,37): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1361,41): error TS1005: ',' expected.
+lib/geo/GeoAwarenessEngine.ts(1428,66): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(242,50): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(257,45): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(269,43): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(321,13): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(322,20): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(430,13): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(431,21): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(468,32): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(470,18): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(471,20): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(480,28): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(482,18): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(483,20): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(496,33): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(500,30): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(518,28): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(556,38): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(557,31): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(648,43): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(746,40): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(754,16): error TS1005: ',' expected.
+lib/services/EndpointScoringService.ts(755,20): error TS1005: ',' expected.
+services/correlation.service.ts(273,33): error TS1005: ',' expected.
+services/correlation.service.ts(311,33): error TS1005: ',' expected.
+services/correlation.service.ts(321,24): error TS1005: ',' expected.
+services/correlation.service.ts(340,33): error TS1005: ',' expected.
+services/correlation.service.ts(402,34): error TS1005: ',' expected.
+services/correlation.service.ts(432,34): error TS1005: ',' expected.
+services/correlation.service.ts(466,34): error TS1005: ',' expected.
+services/correlation.service.ts(540,26): error TS1005: ',' expected.
+services/correlation.service.ts(764,34): error TS1005: ',' expected.
+services/correlation.service.ts(764,72): error TS1005: ',' expected.
+services/correlation.service.ts(811,29): error TS1005: ',' expected.
+services/correlation.service.ts(844,29): error TS1005: ',' expected.
+services/correlation.service.ts(853,35): error TS1005: ',' expected.
+services/correlation.service.ts(1040,56): error TS1005: ',' expected.
+services/correlation.service.ts(1053,58): error TS1005: ',' expected.
+services/project-config-manager.ts(159,56): error TS1005: ',' expected.
+services/project-config-manager.ts(182,58): error TS1005: ',' expected.
+services/project-config-manager.ts(183,50): error TS1005: ',' expected.
+services/project-config-manager.ts(206,47): error TS1005: ',' expected.
+services/project-config-manager.ts(220,49): error TS1005: ',' expected.
+services/project-config-manager.ts(383,48): error TS1005: ',' expected.
+services/project-config-manager.ts(388,52): error TS1005: ',' expected.
+services/project-config-manager.ts(407,69): error TS1005: ',' expected.
+services/project-config-manager.ts(414,45): error TS1005: ',' expected.
+services/project-config-manager.ts(431,96): error TS1005: ',' expected.
+services/project-config-manager.ts(445,29): error TS1005: ',' expected.
+services/project-config-manager.ts(446,26): error TS1005: ',' expected.
+services/project-config-manager.ts(496,50): error TS1005: ',' expected.
+services/project-config-manager.ts(563,48): error TS1005: ',' expected.
+services/project-config-manager.ts(568,52): error TS1005: ',' expected.
+services/project-config-manager.ts(581,96): error TS1005: ',' expected.
+services/project-config-manager.ts(595,29): error TS1005: ',' expected.
+services/project-config-manager.ts(596,26): error TS1005: ',' expected.
+services/project-config-manager.ts(645,50): error TS1005: ',' expected.
+services/project-config-manager.ts(810,30): error TS1005: ',' expected.
+services/project-config-manager.ts(862,63): error TS1005: ',' expected.
+services/project-config-manager.ts(1146,32): error TS1005: ',' expected.
+services/project-config-manager.ts(1295,45): error TS1005: ',' expected.
+services/project-config-manager.ts(1296,43): error TS1005: ',' expected.
+services/project-config-manager.ts(1300,70): error TS1005: ',' expected.
+services/project-config-manager.ts(1303,21): error TS1005: ',' expected.
+services/project-config-manager.ts(1309,38): error TS1005: ',' expected.
+services/project-config-manager.ts(1321,53): error TS1005: ',' expected.
+services/project-config-manager.ts(1329,45): error TS1005: ',' expected.
+services/project-config-manager.ts(1400,65): error TS1005: ',' expected.
+services/project-config-manager.ts(1402,43): error TS1005: ',' expected.
+services/project-config-manager.ts(1462,35): error TS1005: ',' expected.
+services/project-config-manager.ts(1463,40): error TS1005: ',' expected.
+services/project-config-manager.ts(1464,38): error TS1005: ',' expected.
+services/project-config-manager.ts(1514,34): error TS1005: ',' expected.
+services/project-config-manager.ts(1548,38): error TS1005: ',' expected.
+services/project-config-manager.ts(1692,41): error TS1005: ',' expected.
+services/project-config-manager.ts(1753,32): error TS1005: ',' expected.
+services/project-config-manager.ts(1796,63): error TS1005: ',' expected.
+services/project-config-manager.ts(1852,63): error TS1005: ',' expected.
+services/project-config-manager.ts(1949,47): error TS1005: ',' expected.
+services/project-config-manager.ts(1951,35): error TS1005: ',' expected.
+services/project-config-manager.ts(1971,47): error TS1005: ',' expected.
+services/project-config-manager.ts(1973,35): error TS1005: ',' expected.
+services/project-config-manager.ts(2294,30): error TS1005: ',' expected.
+services/project-config-manager.ts(2346,63): error TS1005: ',' expected.
+services/project-config-manager.ts(2547,63): error TS1005: ',' expected.
+services/project-config-manager.ts(3238,47): error TS1005: ',' expected.
+services/project-config-manager.ts(3240,35): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(128,20): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(136,54): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(155,51): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(184,31): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(195,30): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(226,44): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(263,49): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(264,33): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(296,44): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(296,82): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(409,42): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(416,41): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(423,43): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(436,53): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(446,43): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(458,35): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(459,34): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(501,37): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(507,41): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(534,88): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(542,41): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(554,57): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(581,36): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(587,40): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(603,42): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(630,41): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(654,38): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(661,38): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(668,37): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(698,49): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(699,49): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(737,34): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(744,37): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(751,41): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(758,44): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(771,14): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(811,42): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(812,41): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(815,48): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(822,14): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(869,40): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(869,82): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(870,40): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(870,82): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(908,37): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(909,37): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(910,37): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(911,37): error TS1005: ',' expected.
+utils/ai-visualization-selector.ts(985,13): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(355,79): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(356,82): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(375,81): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(386,82): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(465,73): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(485,70): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(495,70): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(521,59): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(537,34): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(566,13): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(583,39): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(626,18): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(633,29): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(729,25): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(826,13): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(830,13): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(982,52): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(991,89): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1057,34): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1074,39): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1086,33): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1089,17): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1100,18): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1101,18): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1116,40): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1116,79): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1117,40): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1117,79): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1148,41): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1194,20): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1196,17): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1197,20): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1213,28): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1214,92): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1284,65): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1295,53): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1473,28): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1585,65): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1617,67): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1732,54): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1753,41): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1798,85): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(1924,48): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(2051,53): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(2068,48): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(2173,42): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(2189,37): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(2200,54): error TS1005: ',' expected.
+utils/dynamic-visualization-factory.ts(2204,47): error TS1005: ',' expected.
+utils/visualization-factory.ts(133,55): error TS1005: ',' expected.
+utils/visualization-factory.ts(232,70): error TS1005: ',' expected.
+utils/visualization-factory.ts(348,36): error TS1005: ',' expected.
+utils/visualization-factory.ts(351,39): error TS1005: ',' expected.
+utils/visualization-factory.ts(426,63): error TS1005: ',' expected.
+utils/visualization-factory.ts(428,122): error TS1005: ',' expected.
+utils/visualization-factory.ts(644,56): error TS1005: ',' expected.
+utils/visualization-factory.ts(730,38): error TS1005: ',' expected.
+utils/visualization-factory.ts(864,57): error TS1005: ',' expected.
+utils/visualization-factory.ts(945,32): error TS1005: ',' expected.
+utils/visualization-factory.ts(948,35): error TS1005: ',' expected.
+utils/visualization-factory.ts(987,50): error TS1005: ',' expected.
+utils/visualization-factory.ts(994,50): error TS1005: ',' expected.
+utils/visualization-factory.ts(1016,51): error TS1005: ',' expected.
+utils/visualization-factory.ts(1018,75): error TS1005: ',' expected.
+utils/visualization-factory.ts(1061,50): error TS1005: ',' expected.
+utils/visualization-factory.ts(1205,63): error TS1005: ',' expected.
+utils/visualization-factory.ts(1243,57): error TS1005: ',' expected.
+utils/visualization-factory.ts(1257,67): error TS1005: ',' expected.
+utils/visualization-factory.ts(1285,65): error TS1005: ',' expected.
+utils/visualization-factory.ts(1291,55): error TS1005: ',' expected.
+utils/visualization-factory.ts(1300,53): error TS1005: ',' expected.
+utils/visualization-factory.ts(1364,57): error TS1005: ',' expected.
+utils/visualization-factory.ts(1497,73): error TS1005: ',' expected.
+utils/visualization-factory.ts(1505,52): error TS1005: ',' expected.
+utils/visualization-factory.ts(1513,55): error TS1005: ',' expected.
+utils/visualization-factory.ts(1522,42): error TS1005: ',' expected.
+utils/visualization-factory.ts(1640,92): error TS1005: ',' expected.
+utils/visualization-factory.ts(1645,98): error TS1005: ',' expected.
+utils/visualization-factory.ts(1710,59): error TS1005: ',' expected.
+utils/visualization-factory.ts(1720,18): error TS1005: ',' expected.
+utils/visualization-factory.ts(1729,67): error TS1005: ',' expected.
+utils/visualization-factory.ts(1766,59): error TS1005: ',' expected.
+utils/visualization-factory.ts(1784,18): error TS1005: ',' expected.
+utils/visualization-factory.ts(1893,52): error TS1005: ',' expected.
+utils/visualization-factory.ts(1988,21): error TS1005: ',' expected.
+utils/visualization-factory.ts(2183,76): error TS1005: ',' expected.
+utils/visualization-factory.ts(2190,51): error TS1005: ',' expected.
+utils/visualization-factory.ts(2191,36): error TS1005: ',' expected.
+utils/visualization-factory.ts(2244,42): error TS1005: ',' expected.
+utils/visualization-factory.ts(2260,37): error TS1005: ',' expected.
+utils/visualization-factory.ts(2274,38): error TS1005: ',' expected.
+utils/visualization-factory.ts(2304,43): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(315,46): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(316,49): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(317,55): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(317,81): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(377,46): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(382,105): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(386,62): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(392,48): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(464,42): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(467,48): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(531,65): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(577,28): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(798,22): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(802,19): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(809,22): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(813,19): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(896,26): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(901,27): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(921,59): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(987,48): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1105,46): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1199,38): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1227,45): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1340,32): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1356,31): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1479,61): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1487,62): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1571,34): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1574,34): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1577,34): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1580,34): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1583,34): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1586,34): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1589,34): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1592,34): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1595,34): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1598,34): error TS1005: ',' expected.
+utils/visualizations/base-visualization.ts(1601,34): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(204,55): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(247,47): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(256,50): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(327,29): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(329,27): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(339,73): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(343,27): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(394,50): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(460,35): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(460,100): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(461,35): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(461,100): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(476,32): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(618,40): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(753,13): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(775,35): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(776,35): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(868,45): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(868,74): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(906,60): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(950,31): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(958,28): error TS1005: ',' expected.
+utils/visualizations/correlation-visualization.ts(995,26): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(73,24): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(106,48): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(107,50): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(108,47): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(144,36): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(169,42): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(256,41): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(257,49): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(261,41): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(322,72): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(345,82): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(409,49): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(410,56): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(495,78): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(527,49): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(555,39): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(689,50): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(695,52): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(807,26): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(1029,64): error TS1005: ',' expected.
+utils/visualizations/multivariate-visualization.ts(1080,17): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(279,31): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(290,21): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(296,98): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(382,28): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(401,13): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(568,60): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(584,13): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(585,16): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(595,51): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(632,62): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(632,111): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(637,58): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(650,53): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(752,50): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(759,84): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(771,41): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(805,13): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(806,16): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(817,113): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(897,52): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(897,81): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(913,153): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(1015,169): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(1078,62): error TS1005: ',' expected.
+utils/visualizations/single-layer-visualization.ts(1143,40): error TS1005: ',' expected.
+

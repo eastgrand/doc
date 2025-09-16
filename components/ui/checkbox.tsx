@@ -9,15 +9,18 @@ interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onCheckedChange?: (checked: boolean) => void;
 }
 
-const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, checked, onCheckedChange, ...props }, ref) => (
+function CheckboxImpl(
+  { className, checked, onCheckedChange, ...props }: CheckboxProps,
+  ref: React.Ref<HTMLInputElement>
+) {
+  return (
     <label className="inline-flex items-center">
       <input
         type="checkbox"
         className="sr-only"
         ref={ref}
         checked={checked}
-        onChange={(e) => onCheckedChange?.(e.target.checked)}
+        onChange={(e) => onCheckedChange?.((e.target as HTMLInputElement).checked)}
         {...props}
       />
       <div
@@ -27,13 +30,13 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           className
         )}
       >
-        {checked && (
-          <Check className="h-4 w-4 text-current" />
-        )}
+        {checked && <Check className="h-4 w-4 text-current" />}
       </div>
     </label>
   )
-)
+}
+
+const Checkbox = React.forwardRef(CheckboxImpl)
 Checkbox.displayName = "Checkbox"
 
 export { Checkbox }

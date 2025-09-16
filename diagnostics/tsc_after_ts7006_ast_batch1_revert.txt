@@ -1,0 +1,444 @@
+__tests__/chat-context-integration.test.ts(62,37): error TS2345: Argument of type '{ ok: boolean; json: () => Promise<{ content: string; }>; }' is not assignable to parameter of type 'never'.
+__tests__/chat-context-integration.test.ts(105,36): error TS18046: 'options' is of type 'unknown'.
+__tests__/chat-context-integration.test.ts(115,37): error TS2345: Argument of type '{ ok: boolean; json: () => Promise<{ content: string; }>; }' is not assignable to parameter of type 'never'.
+__tests__/chat-context-integration.test.ts(161,36): error TS18046: 'options' is of type 'unknown'.
+__tests__/chat-context-integration.test.ts(170,37): error TS2345: Argument of type '{ ok: boolean; json: () => Promise<{ content: string; }>; }' is not assignable to parameter of type 'never'.
+__tests__/chat-context-integration.test.ts(209,7): error TS18046: 'url' is of type 'unknown'.
+__tests__/chat-context-integration.test.ts(210,7): error TS18046: 'url' is of type 'unknown'.
+__tests__/chat-context-integration.test.ts(211,7): error TS18046: 'url' is of type 'unknown'.
+__tests__/chat-context-integration.test.ts(225,39): error TS2345: Argument of type '{ ok: boolean; json: () => Promise<any>; }' is not assignable to parameter of type 'never'.
+__tests__/chat-context-integration.test.ts(266,38): error TS18046: 'options' is of type 'unknown'.
+__tests__/chat-context-integration.test.ts(274,37): error TS2345: Argument of type '{ ok: boolean; json: () => Promise<{ content: string; }>; }' is not assignable to parameter of type 'never'.
+__tests__/chat-context-integration.test.ts(295,36): error TS18046: 'options' is of type 'unknown'.
+__tests__/hybrid-routing-comprehensive.test.ts(473,61): error TS2345: Argument of type '{ available_fields: string[]; sample_record: { population_data_2024: number; brand_share_nike: number; income_avg_household: number; }; }' is not assignable to parameter of type 'DatasetContext'.
+  Type '{ available_fields: string[]; sample_record: { population_data_2024: number; brand_share_nike: number; income_avg_household: number; }; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+__tests__/hybrid-routing-comprehensive.test.ts(504,65): error TS2345: Argument of type '{ available_fields: string[]; }' is not assignable to parameter of type 'DatasetContext'.
+  Type '{ available_fields: string[]; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+__tests__/hybrid-routing-comprehensive.test.ts(505,65): error TS2345: Argument of type '{ available_fields: string[]; }' is not assignable to parameter of type 'DatasetContext'.
+  Type '{ available_fields: string[]; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+__tests__/hybrid-routing-comprehensive.test.ts(536,71): error TS2345: Argument of type '{ available_fields: string[]; }' is not assignable to parameter of type 'DatasetContext'.
+  Type '{ available_fields: string[]; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+__tests__/hybrid-routing-comprehensive.test.ts(537,67): error TS2345: Argument of type '{ available_fields: string[]; }' is not assignable to parameter of type 'DatasetContext'.
+  Type '{ available_fields: string[]; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+__tests__/hybrid-routing-comprehensive.test.ts(631,79): error TS2345: Argument of type '{ available_fields: string[]; }' is not assignable to parameter of type 'DatasetContext'.
+  Type '{ available_fields: string[]; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+__tests__/hybrid-routing-detailed.test.ts(175,7): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+__tests__/hybrid-routing-detailed.test.ts(175,46): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+__tests__/hybrid-routing-detailed.test.ts(179,9): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+__tests__/hybrid-routing-detailed.test.ts(179,35): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+__tests__/hybrid-routing-detailed.test.ts(184,9): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+__tests__/hybrid-routing-detailed.test.ts(184,36): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+__tests__/hybrid-routing-random-query-optimization.test.ts(484,29): error TS18046: 'b' is of type 'unknown'.
+__tests__/hybrid-routing-random-query-optimization.test.ts(484,33): error TS18046: 'a' is of type 'unknown'.
+__tests__/query-to-visualization-pipeline.test.ts(825,14): error TS18046: 'processedData.legend' is of type 'unknown'.
+__tests__/query-to-visualization-pipeline.test.ts(826,14): error TS18046: 'processedData.legend' is of type 'unknown'.
+__tests__/query-to-visualization-pipeline.test.ts(827,14): error TS18046: 'processedData.legend' is of type 'unknown'.
+__tests__/query-to-visualization-pipeline.test.ts(1141,13): error TS2322: Type '(string | undefined)[]' is not assignable to type 'string[]'.
+  Type 'string | undefined' is not assignable to type 'string'.
+    Type 'undefined' is not assignable to type 'string'.
+__tests__/query-to-visualization-pipeline.test.ts(1143,13): error TS2322: Type '(string | undefined)[]' is not assignable to type 'string[]'.
+  Type 'string | undefined' is not assignable to type 'string'.
+    Type 'undefined' is not assignable to type 'string'.
+__tests__/query-to-visualization-pipeline.test.ts(1450,16): error TS18046: 'processedData.legend' is of type 'unknown'.
+__tests__/query-to-visualization-pipeline.test.ts(1544,14): error TS18046: 'processedData.renderer' is of type 'unknown'.
+__tests__/query-to-visualization-pipeline.test.ts(1590,20): error TS18046: 'processedData.renderer' is of type 'unknown'.
+app/map/page.tsx(4,10): error TS2614: Module '"react"' has no exported member 'Suspense'. Did you mean to use 'import Suspense from "react"' instead?
+components/ai-chat-interface.tsx(83,43): error TS7006: Parameter 'msg' implicitly has an 'any' type.
+components/ai-chat-interface.tsx(190,26): error TS7006: Parameter 'message' implicitly has an 'any' type.
+components/ai-elements/actions.tsx(11,15): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/AIReasoning.tsx(316,30): error TS7006: Parameter 'open' implicitly has an 'any' type.
+components/ai-elements/branch.tsx(7,15): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/code-block.tsx(6,15): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/code-block.tsx(46,9): error TS2607: JSX element class does not support attributes because it does not have a 'props' property.
+components/ai-elements/code-block.tsx(46,10): error TS2786: 'SyntaxHighlighter' cannot be used as a JSX component.
+  Its type 'typeof SyntaxHighlighter' is not a valid JSX element type.
+    Type 'typeof SyntaxHighlighter' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+      Type 'SyntaxHighlighter' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, render, and 3 more.
+components/ai-elements/code-block.tsx(69,9): error TS2607: JSX element class does not support attributes because it does not have a 'props' property.
+components/ai-elements/code-block.tsx(69,10): error TS2786: 'SyntaxHighlighter' cannot be used as a JSX component.
+  Its type 'typeof SyntaxHighlighter' is not a valid JSX element type.
+    Type 'typeof SyntaxHighlighter' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+      Type 'SyntaxHighlighter' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, render, and 3 more.
+components/ai-elements/ConfigurationTemplates.tsx(509,32): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/ConfigurationTemplates.tsx(519,32): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/ConfigurationTemplates.tsx(551,32): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/ConfigurationTemplates.tsx(593,24): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/conversation.tsx(6,15): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/inline-citation.tsx(18,8): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/InteractiveAnalysisConfig.tsx(558,30): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/InteractiveAnalysisConfig.tsx(573,32): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/InteractiveAnalysisConfig.tsx(586,32): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/InteractiveAnalysisConfig.tsx(598,32): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/InteractiveAnalysisConfig.tsx(627,32): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/InteractiveAnalysisConfig.tsx(691,36): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/InteractiveAnalysisConfig.tsx(706,36): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/message.tsx(8,15): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/prompt-input.tsx(16,3): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/prompt-input.tsx(18,3): error TS2614: Module '"react"' has no exported member 'KeyboardEventHandler'. Did you mean to use 'import KeyboardEventHandler from "react"' instead?
+components/ai-elements/prompt-input.tsx(47,69): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/prompt-input.tsx(77,18): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ai-elements/prompt-input.tsx(124,23): error TS2339: Property 'count' does not exist on type '{ map(children: any, fn: (child: any) => any): any; }'.
+components/ai-elements/reasoning.tsx(11,15): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/reasoning.tsx(169,11): error TS2339: Property 'displayName' does not exist on type '({ className, isStreaming, open, defaultOpen, onOpenChange, duration: durationProp, children, ...props }: any) => Element'.
+components/ai-elements/reasoning.tsx(170,18): error TS2339: Property 'displayName' does not exist on type '({ className, children, ...props }: ComponentProps<any>) => Element'.
+components/ai-elements/reasoning.tsx(171,18): error TS2339: Property 'displayName' does not exist on type '({ className, children, ...props }: any) => Element'.
+components/ai-elements/response.tsx(4,15): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/response.tsx(19,3): error TS2554: Expected 1 arguments, but got 2.
+components/ai-elements/response.tsx(19,4): error TS7006: Parameter 'prevProps' implicitly has an 'any' type.
+components/ai-elements/response.tsx(19,15): error TS7006: Parameter 'nextProps' implicitly has an 'any' type.
+components/ai-elements/response.tsx(22,10): error TS2339: Property 'displayName' does not exist on type '({ className, ...props }: ComponentProps<react.MemoExoticComponent<({ children, allowedImagePrefixes, allowedLinkPrefixes, defaultOrigin, parseIncompleteMarkdown: shouldParseIncompleteMarkdown, components, rehypePlugins, remarkPlugins, className, shikiTheme, ...props }: StreamdownProps) => Element>>) => Element'.
+components/ai-elements/source.tsx(10,15): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/suggestion.tsx(6,15): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/task.tsx(10,15): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/tool.tsx(19,15): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/web-preview.tsx(18,15): error TS2614: Module '"react"' has no exported member 'ComponentProps'. Did you mean to use 'import ComponentProps from "react"' instead?
+components/ai-elements/web-preview.tsx(230,23): error TS7006: Parameter 'log' implicitly has an 'any' type.
+components/ai-elements/web-preview.tsx(230,28): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/AIVisualization.tsx(11,3): error TS2305: Module '"recharts"' has no exported member 'ComposedChart'.
+components/AnalysisDashboard.tsx(184,29): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/ApplianceLayerController.tsx(2,71): error TS2614: Module '"react"' has no exported member 'useImperativeHandle'. Did you mean to use 'import useImperativeHandle from "react"' instead?
+components/ApplianceLayerController.tsx(222,45): error TS2558: Expected 0 type arguments, but got 2.
+components/ApplianceLayerController.tsx(362,15): error TS7006: Parameter 'layer' implicitly has an 'any' type.
+components/ApplianceLayerController.tsx(363,12): error TS7006: Parameter 'layer' implicitly has an 'any' type.
+components/ApplianceLayerController.tsx(378,23): error TS7006: Parameter 'id' implicitly has an 'any' type.
+components/ApplianceMarketReport.tsx(5,3): error TS2305: Module '"recharts"' has no exported member 'ScatterChart'.
+components/ApplianceMarketReport.tsx(5,17): error TS2305: Module '"recharts"' has no exported member 'Scatter'.
+components/ApplianceMarketReport.tsx(345,37): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/ApplianceMarketReport.tsx(529,37): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/ApplianceMarketReport.tsx(615,29): error TS7006: Parameter 'entry' implicitly has an 'any' type.
+components/ChartCustomizer.tsx(113,30): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/charts/charts.tsx(111,21): error TS7006: Parameter 'entry' implicitly has an 'any' type.
+components/chat/ChatBar.tsx(3,27): error TS2614: Module '"react"' has no exported member 'KeyboardEvent'. Did you mean to use 'import KeyboardEvent from "react"' instead?
+components/chat/EnhancedChatInterface.tsx(676,22): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/chat/EnhancedChatInterface.tsx(684,24): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/chat/EnhancedChatInterface.tsx(811,14): error TS2774: This condition will always return true since this function is always defined. Did you mean to call it instead?
+components/chat/EnhancedChatInterface.tsx(986,63): error TS2774: This condition will always return true since this function is always defined. Did you mean to call it instead?
+components/chat/EnhancedChatInterface.tsx(1024,6): error TS2786: 'ErrorBoundary' cannot be used as a JSX component.
+  Its type 'typeof ErrorBoundary' is not a valid JSX element type.
+    Types of construct signatures are incompatible.
+      Type 'new (props: ErrorBoundaryProps) => ErrorBoundary' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+        Type 'ErrorBoundary' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, props, and 2 more.
+components/chat/MessageList.tsx(209,13): error TS2607: JSX element class does not support attributes because it does not have a 'props' property.
+components/chat/MessageList.tsx(209,14): error TS2786: 'SyntaxHighlighter' cannot be used as a JSX component.
+  Its type 'typeof SyntaxHighlighter' is not a valid JSX element type.
+    Type 'typeof SyntaxHighlighter' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+      Type 'SyntaxHighlighter' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, render, and 3 more.
+components/ChatInterface.tsx(1055,24): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ChatInterface.tsx(1110,6): error TS2786: 'ErrorBoundary' cannot be used as a JSX component.
+  Its type 'typeof ErrorBoundary' is not a valid JSX element type.
+    Types of construct signatures are incompatible.
+      Type 'new (props: ErrorBoundaryProps) => ErrorBoundary' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+        Type 'ErrorBoundary' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, props, and 2 more.
+components/clustering/BudgetChannelRecommendations.tsx(150,30): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/clustering/BudgetChannelRecommendations.tsx(276,29): error TS7031: Binding element 'name' implicitly has an 'any' type.
+components/clustering/BudgetChannelRecommendations.tsx(276,35): error TS7031: Binding element 'percentage' implicitly has an 'any' type.
+components/clustering/ClusterConfigPanel.tsx(220,33): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/clustering/ClusterConfigPanel.tsx(244,33): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/clustering/ClusterConfigPanel.tsx(268,33): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/clustering/ClusterConfigPanel.tsx(292,33): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/clustering/ClusterConfigPanel.tsx(316,33): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/clustering/ClusterResultsView.tsx(87,29): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/clustering/ClusterViewToggle.tsx(63,31): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/clustering/ClusterViewToggle.tsx(205,25): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/clustering/ClusterViewToggle.tsx(316,35): error TS2347: Untyped function calls may not accept type arguments.
+components/clustering/TerritoryComparison.tsx(38,3): error TS2724: '"recharts"' has no exported member named 'RadarChart'. Did you mean 'BarChart'?
+components/clustering/TerritoryComparison.tsx(39,3): error TS2305: Module '"recharts"' has no exported member 'PolarGrid'.
+components/clustering/TerritoryComparison.tsx(40,3): error TS2305: Module '"recharts"' has no exported member 'PolarAngleAxis'.
+components/clustering/TerritoryComparison.tsx(41,3): error TS2305: Module '"recharts"' has no exported member 'PolarRadiusAxis'.
+components/clustering/TerritoryComparison.tsx(42,3): error TS2305: Module '"recharts"' has no exported member 'Radar'.
+components/clustering/TerritoryComparison.tsx(43,3): error TS2305: Module '"recharts"' has no exported member 'ScatterChart'.
+components/clustering/TerritoryComparison.tsx(44,3): error TS2305: Module '"recharts"' has no exported member 'Scatter'.
+components/clustering/TerritoryComparison.tsx(217,40): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/clustering/TerritoryComparison.tsx(217,47): error TS7006: Parameter 'name' implicitly has an 'any' type.
+components/clustering/TerritoryComparison.tsx(217,53): error TS7006: Parameter 'props' implicitly has an 'any' type.
+components/clustering/TerritoryComparison.tsx(255,40): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/clustering/TerritoryComparison.tsx(255,47): error TS7006: Parameter 'name' implicitly has an 'any' type.
+components/clustering/TerritorySummaryCards.tsx(305,27): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/clustering/TerritorySummaryCards.tsx(317,27): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ColdMarketReport.tsx(4,24): error TS2305: Module '"recharts"' has no exported member 'ReferenceLine'.
+components/ComplexQueryPanel.tsx(227,30): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/CorrelationAnalysisPanel.tsx(4,10): error TS2305: Module '"recharts"' has no exported member 'ScatterChart'.
+components/CorrelationAnalysisPanel.tsx(4,24): error TS2305: Module '"recharts"' has no exported member 'Scatter'.
+components/EndpointScoreInfographic.tsx(238,12): error TS2604: JSX element type 'Icon' does not have any construct or call signatures.
+components/EndpointScoreInfographic.tsx(238,12): error TS2786: 'Icon' cannot be used as a JSX component.
+  Its type 'ElementType<any, keyof IntrinsicElements>' is not a valid JSX element type.
+    Type 'number' is not assignable to type 'ElementType'.
+components/EnhancedVisualization.tsx(21,3): error TS2305: Module '"recharts"' has no exported member 'ComposedChart'.
+components/EnhancedVisualization.tsx(35,3): error TS2305: Module '"recharts"' has no exported member 'ScatterChart'.
+components/EnhancedVisualization.tsx(36,3): error TS2305: Module '"recharts"' has no exported member 'Scatter'.
+components/EnhancedVisualization.tsx(37,3): error TS2724: '"recharts"' has no exported member named 'AreaChart'. Did you mean 'BarChart'?
+components/EnhancedVisualization.tsx(39,3): error TS2724: '"recharts"' has no exported member named 'RadarChart'. Did you mean 'BarChart'?
+components/EnhancedVisualization.tsx(40,3): error TS2305: Module '"recharts"' has no exported member 'PolarGrid'.
+components/EnhancedVisualization.tsx(41,3): error TS2305: Module '"recharts"' has no exported member 'PolarAngleAxis'.
+components/EnhancedVisualization.tsx(42,3): error TS2305: Module '"recharts"' has no exported member 'PolarRadiusAxis'.
+components/EnhancedVisualization.tsx(43,3): error TS2305: Module '"recharts"' has no exported member 'Radar'.
+components/EnhancedVisualization.tsx(44,3): error TS2305: Module '"recharts"' has no exported member 'FunnelChart'.
+components/EnhancedVisualization.tsx(45,3): error TS2305: Module '"recharts"' has no exported member 'Funnel'.
+components/EnhancedVisualization.tsx(46,3): error TS2305: Module '"recharts"' has no exported member 'LabelList'.
+components/EnhancedVisualization.tsx(47,3): error TS2305: Module '"recharts"' has no exported member 'Treemap'.
+components/EnhancedVisualization.tsx(743,26): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/EnhancedVisualization.tsx(752,26): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ErrorBoundary.tsx(47,7): error TS2607: JSX element class does not support attributes because it does not have a 'props' property.
+components/ErrorBoundary.tsx(47,8): error TS2786: 'ErrorBoundary' cannot be used as a JSX component.
+  Its type 'typeof ErrorBoundary' is not a valid JSX element type.
+    Types of construct signatures are incompatible.
+      Type 'new (props: ErrorBoundaryProps) => ErrorBoundary' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+        Type 'ErrorBoundary' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, props, and 2 more.
+components/FeatureSelection.tsx(130,26): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/FeatureSelection.tsx(141,26): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/filtering/tabs/FieldFilterTab.tsx(255,33): error TS7006: Parameter 'enabled' implicitly has an 'any' type.
+components/filtering/tabs/FieldFilterTab.tsx(280,30): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/filtering/tabs/FieldFilterTab.tsx(292,30): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/filtering/tabs/FieldFilterTab.tsx(308,35): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/filtering/tabs/FieldFilterTab.tsx(338,33): error TS7006: Parameter 'enabled' implicitly has an 'any' type.
+components/filtering/tabs/FieldFilterTab.tsx(381,41): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/filtering/tabs/FieldFilterTab.tsx(435,33): error TS7006: Parameter 'enabled' implicitly has an 'any' type.
+components/filtering/tabs/FieldFilterTab.tsx(457,28): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/filtering/tabs/FieldFilterTab.tsx(482,35): error TS7006: Parameter 'caseSensitive' implicitly has an 'any' type.
+components/filtering/tabs/FieldFilterTab.tsx(559,26): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/filtering/tabs/PerformanceTab.tsx(324,39): error TS7006: Parameter 'enabled' implicitly has an 'any' type.
+components/filtering/tabs/PerformanceTab.tsx(389,45): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/filtering/tabs/PerformanceTab.tsx(444,39): error TS7006: Parameter 'enabled' implicitly has an 'any' type.
+components/filtering/tabs/PerformanceTab.tsx(535,39): error TS7006: Parameter 'enabled' implicitly has an 'any' type.
+components/filtering/tabs/PerformanceTab.tsx(626,39): error TS7006: Parameter 'enabled' implicitly has an 'any' type.
+components/filtering/tabs/PerformanceTab.tsx(641,43): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/filtering/tabs/VisualizationTab.tsx(329,39): error TS7006: Parameter 'enabled' implicitly has an 'any' type.
+components/filtering/tabs/VisualizationTab.tsx(347,47): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/filtering/tabs/VisualizationTab.tsx(367,47): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/filtering/tabs/VisualizationTab.tsx(440,39): error TS7006: Parameter 'enabled' implicitly has an 'any' type.
+components/filtering/tabs/VisualizationTab.tsx(455,43): error TS7006: Parameter 'value' implicitly has an 'any' type.
+components/filtering/tabs/VisualizationTab.tsx(502,39): error TS7006: Parameter 'enabled' implicitly has an 'any' type.
+components/filtering/tabs/VisualizationTab.tsx(577,39): error TS7006: Parameter 'enabled' implicitly has an 'any' type.
+components/HybridQueryProcessorProvider.tsx(49,38): error TS2339: Property 'processQuery' does not exist on type '() => HybridQueryProcessor'.
+components/IndexWidget.tsx(172,32): error TS7006: Parameter 'f' implicitly has an 'any' type.
+components/IndexWidget.tsx(174,28): error TS7006: Parameter 'f' implicitly has an 'any' type.
+components/IndexWidget.tsx(182,16): error TS7006: Parameter 'f' implicitly has an 'any' type.
+components/IndexWidget.tsx(188,16): error TS7006: Parameter 'f' implicitly has an 'any' type.
+components/IndexWidget.tsx(431,40): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/IndexWidget.tsx(482,72): error TS7006: Parameter 'f' implicitly has an 'any' type.
+components/LayerBookmarks.tsx(214,27): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/LayerBookmarks.tsx(224,27): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/LayerBookmarks.tsx(248,24): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/LayerBookmarks.tsx(257,24): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/LayerControl.tsx(84,22): error TS2347: Untyped function calls may not accept type arguments.
+components/LayerControl.tsx(85,29): error TS2347: Untyped function calls may not accept type arguments.
+components/LayerController.tsx(181,7): error TS2607: JSX element class does not support attributes because it does not have a 'props' property.
+components/LayerController.tsx(181,8): error TS2786: 'Draggable' cannot be used as a JSX component.
+  Its type 'typeof Draggable' is not a valid JSX element type.
+    Type 'typeof Draggable' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+      Type 'Draggable' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, render, and 3 more.
+components/LayerController.tsx(274,11): error TS2607: JSX element class does not support attributes because it does not have a 'props' property.
+components/LayerController.tsx(274,12): error TS2786: 'Droppable' cannot be used as a JSX component.
+  Its type 'typeof Droppable' is not a valid JSX element type.
+    Type 'typeof Droppable' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+      Type 'Droppable' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, render, and 3 more.
+components/LayerController.tsx(304,9): error TS2607: JSX element class does not support attributes because it does not have a 'props' property.
+components/LayerController.tsx(304,10): error TS2786: 'DragDropContext' cannot be used as a JSX component.
+  Its type 'typeof DragDropContext' is not a valid JSX element type.
+    Type 'typeof DragDropContext' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+      Type 'DragDropContext' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, render, and 3 more.
+components/LayerController/LayerController.tsx(4,63): error TS2614: Module '"react"' has no exported member 'useImperativeHandle'. Did you mean to use 'import useImperativeHandle from "react"' instead?
+components/LayerController/LayerController.tsx(530,36): error TS2558: Expected 0 type arguments, but got 2.
+components/LayerController/LayerController.tsx(604,57): error TS7006: Parameter 'sum' implicitly has an 'any' type.
+components/LayerController/LayerController.tsx(604,62): error TS7006: Parameter 'group' implicitly has an 'any' type.
+components/LayerController/LayerController.tsx(604,107): error TS7006: Parameter 'layer' implicitly has an 'any' type.
+components/LayerController/LayerController.tsx(719,46): error TS7006: Parameter 'total' implicitly has an 'any' type.
+components/LayerController/LayerController.tsx(719,53): error TS7006: Parameter 'group' implicitly has an 'any' type.
+components/LayerController/LayerController.tsx(744,58): error TS7006: Parameter 'g' implicitly has an 'any' type.
+components/LayerController/LayerController.tsx(887,52): error TS7006: Parameter 'g' implicitly has an 'any' type.
+components/LayerController/LayerController.tsx(887,72): error TS7006: Parameter 'l' implicitly has an 'any' type.
+components/LayerController/LayerController.tsx(887,110): error TS7006: Parameter 'l' implicitly has an 'any' type.
+components/LayerController/LayerController.tsx(1045,12): error TS7006: Parameter 'group' implicitly has an 'any' type.
+components/LayerController/LayerController.tsx(1049,15): error TS7006: Parameter 'group' implicitly has an 'any' type.
+components/LayerController/LayerController.tsx(1069,34): error TS7006: Parameter 'group' implicitly has an 'any' type.
+components/LayerController/LayerController.tsx(1078,42): error TS7006: Parameter 'layerState' implicitly has an 'any' type.
+components/LayerControls.tsx(32,47): error TS2347: Untyped function calls may not accept type arguments.
+components/LayerOrderControls.tsx(66,7): error TS2607: JSX element class does not support attributes because it does not have a 'props' property.
+components/LayerOrderControls.tsx(66,8): error TS2786: 'Draggable' cannot be used as a JSX component.
+  Its type 'typeof Draggable' is not a valid JSX element type.
+    Type 'typeof Draggable' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+      Type 'Draggable' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, render, and 3 more.
+components/LayerOrderControls.tsx(105,7): error TS2607: JSX element class does not support attributes because it does not have a 'props' property.
+components/LayerOrderControls.tsx(105,8): error TS2786: 'DragDropContext' cannot be used as a JSX component.
+  Its type 'typeof DragDropContext' is not a valid JSX element type.
+    Type 'typeof DragDropContext' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+      Type 'DragDropContext' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, render, and 3 more.
+components/LayerOrderControls.tsx(106,9): error TS2607: JSX element class does not support attributes because it does not have a 'props' property.
+components/LayerOrderControls.tsx(106,10): error TS2786: 'Droppable' cannot be used as a JSX component.
+  Its type 'typeof Droppable' is not a valid JSX element type.
+    Type 'typeof Droppable' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+      Type 'Droppable' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, render, and 3 more.
+components/location-search.tsx(124,24): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/map/MapClient.tsx(60,41): error TS2347: Untyped function calls may not accept type arguments.
+components/map/MapClient.tsx(609,11): error TS2339: Property 'displayName' does not exist on type '({ onMapLoad, onError, sidebarWidth, showLabels, legend, onSampleHotspotClick, showSampleHotspots }: MapClientProps) => Element'.
+components/MapPageClient.tsx(3,17): error TS2614: Module '"react"' has no exported member 'Suspense'. Did you mean to use 'import Suspense from "react"' instead?
+components/MapPageClient.tsx(12,7): error TS2607: JSX element class does not support attributes because it does not have a 'props' property.
+components/MapPageClient.tsx(12,8): error TS2786: 'ErrorBoundary' cannot be used as a JSX component.
+  Its type 'typeof ErrorBoundary' is not a valid JSX element type.
+    Types of construct signatures are incompatible.
+      Type 'new (props: ErrorBoundaryProps) => ErrorBoundary' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+        Type 'ErrorBoundary' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, props, and 2 more.
+components/phase4/AIInsightGenerator.tsx(533,41): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/phase4/Phase4IntegrationWrapper.tsx(414,21): error TS2607: JSX element class does not support attributes because it does not have a 'props' property.
+components/phase4/Phase4IntegrationWrapper.tsx(414,22): error TS2786: 'ErrorBoundary' cannot be used as a JSX component.
+  Its type 'typeof ErrorBoundary' is not a valid JSX element type.
+    Types of construct signatures are incompatible.
+      Type 'new (props: { children: ReactNode; componentName: string; }) => ErrorBoundary' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+        Type 'ErrorBoundary' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, props, and 2 more.
+components/popup/CustomPopupManager.tsx(604,36): error TS18049: 'feature.geometry' is possibly 'null' or 'undefined'.
+components/popup/CustomPopupManager.tsx(604,36): error TS18049: 'feature.geometry.extent' is possibly 'null' or 'undefined'.
+components/popup/CustomPopupManager.tsx(1172,60): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+components/popup/CustomPopupManager.tsx(1173,13): error TS2322: Type 'number | undefined' is not assignable to type 'number'.
+  Type 'undefined' is not assignable to type 'number'.
+components/QueryHistory/QueryHistoryPanel.tsx(181,31): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/QueryHistory/QueryHistoryPanel.tsx(190,31): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/QueryInterface.tsx(336,6): error TS2786: 'ErrorBoundary' cannot be used as a JSX component.
+  Its type 'typeof ErrorBoundary' is not a valid JSX element type.
+    Types of construct signatures are incompatible.
+      Type 'new (props: ErrorBoundaryProps) => ErrorBoundary' is not assignable to type 'new (props: any, deprecatedLegacyContext?: any) => Component<any, any, any>'.
+        Type 'ErrorBoundary' is missing the following properties from type 'Component<any, any, any>': context, setState, forceUpdate, props, and 2 more.
+components/ReportSelectionDialog.tsx(88,28): error TS7006: Parameter 'e' implicitly has an 'any' type.
+components/ReportSelectionDialog.tsx(164,22): error TS2604: JSX element type 'IconComponent' does not have any construct or call signatures.
+components/ReportSelectionDialog.tsx(164,22): error TS2786: 'IconComponent' cannot be used as a JSX component.
+  Its type 'ElementType<any, keyof IntrinsicElements>' is not a valid JSX element type.
+    Type 'number' is not assignable to type 'ElementType'.
+components/ReportSelectionDialog.tsx(169,38): error TS2604: JSX element type 'IconComponent' does not have any construct or call signatures.
+components/ReportSelectionDialog.tsx(169,38): error TS2786: 'IconComponent' cannot be used as a JSX component.
+  Its type 'ElementType<any, keyof IntrinsicElements>' is not a valid JSX element type.
+    Type 'number' is not assignable to type 'ElementType'.
+components/ResizableSidebar.tsx(163,18): error TS2339: Property 'displayName' does not exist on type '({ layerStates, chatInterface, defaultWidth }: ResizableSidebarProps) => Element | null'.
+components/tabs/BufferTools.tsx(80,13): error TS2339: Property 'displayName' does not exist on type '({ bufferType, handleBufferTypeChange, }: { bufferType: string | null; handleBufferTypeChange: (mode: "radius" | "drivetime" | "walktime") => void; }) => Element'.
+components/TooltipButton.tsx(36,18): error TS2339: Property 'Portal' does not exist on type 'typeof import("@radix-ui/react-tooltip")'.
+components/TooltipButton.tsx(43,22): error TS2339: Property 'Arrow' does not exist on type 'typeof import("@radix-ui/react-tooltip")'.
+components/TooltipButton.tsx(45,19): error TS2339: Property 'Portal' does not exist on type 'typeof import("@radix-ui/react-tooltip")'.
+components/ui/accordion.tsx(12,27): error TS18049: 'child' is possibly 'null' or 'undefined'.
+components/ui/accordion.tsx(12,33): error TS2339: Property 'props' does not exist on type 'string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<...>'.
+  Property 'props' does not exist on type 'string'.
+components/ui/button.tsx(47,21): error TS2694: Namespace '"react"' has no exported member 'ElementType'.
+components/ui/carousel.tsx(85,21): error TS2694: Namespace '"react"' has no exported member 'KeyboardEvent'.
+components/ui/carousel.tsx(194,70): error TS2694: Namespace '"react"' has no exported member 'ComponentProps'.
+components/ui/carousel.tsx(223,70): error TS2694: Namespace '"react"' has no exported member 'ComponentProps'.
+components/ui/tabs.tsx(13,21): error TS2347: Untyped function calls may not accept type arguments.
+hooks/useMultiEndpointAnalysis.tsx(151,16): error TS2339: Property 'isMultiEndpoint' does not exist on type '{}'.
+hooks/useMultiEndpointAnalysis.tsx(180,26): error TS2339: Property 'endpoint' does not exist on type '{}'.
+hooks/useMultiEndpointAnalysis.tsx(181,25): error TS2339: Property 'data' does not exist on type '{}'.
+hooks/useMultiEndpointAnalysis.tsx(182,31): error TS2339: Property 'metadata' does not exist on type '{}'.
+hooks/useMultiEndpointAnalysis.tsx(328,7): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+lib/analysis/__tests__/VisualizationManager.cleanup.test.ts(23,5): error TS2322: Type '() => void' is not assignable to type 'null'.
+lib/analysis/__tests__/VisualizationManager.cleanup.test.ts(25,24): error TS2339: Property '__visualizationManager' does not exist on type '{}'.
+lib/analysis/__tests__/VisualizationManager.cleanup.test.ts(30,26): error TS2339: Property '__visualizationManager' does not exist on type '{}'.
+lib/analysis/__tests__/VisualizationManager.cleanup.test.ts(35,9): error TS2339: Property '__visualizationManager' does not exist on type '{}'.
+lib/analysis/__tests__/VisualizationManager.cleanup.test.ts(38,5): error TS2721: Cannot invoke an object which is possibly 'null'.
+lib/analysis/__tests__/VisualizationManager.cleanup.test.ts(42,16): error TS2339: Property '__visualizationManager' does not exist on type '{}'.
+lib/analysis/AnalysisEngine.ts(236,34): error TS2339: Property 'analysisScope' does not exist on type 'AnalysisOptions'.
+lib/analysis/AnalysisEngine.ts(237,26): error TS2339: Property 'scope' does not exist on type 'AnalysisOptions'.
+lib/analysis/AnalysisEngine.ts(238,38): error TS2339: Property 'forceProjectScope' does not exist on type 'AnalysisOptions'.
+lib/analysis/analysisLens.ts(60,45): error TS2339: Property 'properties' does not exist on type 'NonNullable<T>'.
+lib/analysis/analysisLens.ts(63,50): error TS2339: Property 'properties' does not exist on type 'T'.
+lib/analysis/strategies/processors/__tests__/HousingMarketCorrelation.e2e.test.ts(193,9): error TS2353: Object literal may only specify known properties, and 'metadata' does not exist in type 'RawAnalysisResult'.
+lib/analysis/strategies/processors/__tests__/HousingMarketCorrelation.e2e.test.ts(227,14): error TS18046: 'result.correlationMatrix' is of type 'unknown'.
+lib/integrations/scholarly-research-service.ts(263,5): error TS2322: Type '{ id: string; title: any; authors: any; abstract: any; published_date: string; doi: any; url: string; citation_count: any; relevance_score: number; source: string; keywords: string[]; journal: any; }[]' is not assignable to type 'ResearchPaper[]'.
+  Type '{ id: string; title: any; authors: any; abstract: any; published_date: string; doi: any; url: string; citation_count: any; relevance_score: number; source: string; keywords: string[]; journal: any; }' is not assignable to type 'ResearchPaper'.
+    Types of property 'source' are incompatible.
+      Type 'string' is not assignable to type '"core" | "arxiv" | "crossref"'.
+lib/integrations/scholarly-research-service.ts(285,5): error TS2322: Type '{ id: string; title: any; authors: any; abstract: any; published_date: any; doi: any; url: any; relevance_score: number; source: string; keywords: string[]; journal: any; }[]' is not assignable to type 'ResearchPaper[]'.
+  Type '{ id: string; title: any; authors: any; abstract: any; published_date: any; doi: any; url: any; relevance_score: number; source: string; keywords: string[]; journal: any; }' is not assignable to type 'ResearchPaper'.
+    Types of property 'source' are incompatible.
+      Type 'string' is not assignable to type '"core" | "arxiv" | "crossref"'.
+lib/migration/ArcGISDataExtractor.ts(127,31): error TS18048: 'serviceInfo.layers' is possibly 'undefined'.
+lib/migration/ConfigurationSyncValidator.ts(176,9): error TS18048: 'config.predefinedQueries' is possibly 'undefined'.
+lib/migration/ConfigurationSyncValidator.ts(210,7): error TS18048: 'config.endpoints' is possibly 'undefined'.
+lib/migration/MicroserviceDeployer.ts(191,34): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+lib/migration/MicroserviceDeployer.ts(284,40): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+lib/migration/MicroserviceGenerator.ts(73,53): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+lib/migration/MicroserviceGenerator.ts(253,7): error TS2353: Object literal may only specify known properties, and 'modelConfig' does not exist in type 'MicroserviceConfig'.
+lib/migration/MicroserviceGenerator.ts(280,7): error TS2322: Type 'Record<string, string> | undefined' is not assignable to type 'Record<string, string>'.
+  Type 'undefined' is not assignable to type 'Record<string, string>'.
+lib/migration/MicroserviceGenerator.ts(333,21): error TS18048: 'config.routingEndpoints' is possibly 'undefined'.
+lib/migration/MicroserviceGenerator.ts(542,44): error TS18048: 'config.routingEndpoints' is possibly 'undefined'.
+lib/migration/MicroserviceGenerator.ts(1390,20): error TS18048: 'config.dataFields' is possibly 'undefined'.
+lib/migration/MicroserviceGenerator.ts(1396,3): error TS18048: 'config.routingEndpoints' is possibly 'undefined'.
+lib/migration/MicroserviceValidator.ts(26,11): error TS2353: Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+lib/migration/MicroserviceValidator.ts(67,9): error TS2353: Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+lib/migration/MicroserviceValidator.ts(72,16): error TS18046: 'result' is of type 'unknown'.
+lib/migration/MicroserviceValidator.ts(90,9): error TS2353: Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+lib/migration/MicroserviceValidator.ts(97,25): error TS18046: 'result' is of type 'unknown'.
+lib/migration/MicroserviceValidator.ts(143,11): error TS2353: Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+lib/migration/MicroserviceValidator.ts(490,11): error TS2353: Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+lib/migration/MigrationOrchestrator.ts(6,45): error TS2307: Cannot find module './MigrationReadinessValidator' or its corresponding type declarations.
+lib/migration/MigrationOrchestrator.ts(33,26): error TS2554: Expected 1 arguments, but got 0.
+lib/migration/MigrationOrchestrator.ts(85,78): error TS18046: 'error' is of type 'unknown'.
+lib/migration/MigrationOrchestrator.ts(91,16): error TS18046: 'error' is of type 'unknown'.
+lib/migration/MigrationOrchestrator.ts(225,16): error TS18046: 'error' is of type 'unknown'.
+lib/migration/MigrationOrchestrator.ts(242,47): error TS2339: Property 'analyzeArcGISService' does not exist on type 'ArcGISDataExtractor'.
+lib/migration/MigrationOrchestrator.ts(257,7): error TS2345: Argument of type 'import("/Users/voldeck/code/mpiq-ai-chat/lib/migration/types").ArcGISLayer[]' is not assignable to parameter of type 'import("/Users/voldeck/code/mpiq-ai-chat/lib/migration/ArcGISDataExtractor").ArcGISLayer[]'.
+  Type 'ArcGISLayer' is missing the following properties from type 'ArcGISLayer': type, url, recordCount
+lib/migration/MigrationOrchestrator.ts(269,49): error TS2339: Property 'data' does not exist on type 'DataExtractionResult'.
+lib/migration/MigrationOrchestrator.ts(274,64): error TS2339: Property 'metadata' does not exist on type 'DataExtractionResult'.
+lib/migration/MigrationOrchestrator.ts(399,54): error TS2339: Property 'generateMicroservice' does not exist on type 'MicroserviceGenerator'.
+lib/migration/MigrationOrchestrator.ts(416,45): error TS2339: Property 'validateMicroservice' does not exist on type 'MicroserviceValidator'.
+lib/migration/MigrationOrchestrator.ts(433,44): error TS2554: Expected 3-4 arguments, but got 2.
+lib/migration/MigrationOrchestrator.ts(444,35): error TS2339: Property 'url' does not exist on type 'MicroserviceDeploymentResult'.
+lib/migration/MigrationOrchestrator.ts(453,44): error TS2339: Property 'validateDeployment' does not exist on type 'MicroserviceDeployer'.
+lib/migration/MigrationOrchestrator.ts(512,16): error TS18046: 'error' is of type 'unknown'.
+lib/migration/MigrationOrchestrator.ts(552,13): error TS7006: Parameter 'error' implicitly has an 'any' type.
+lib/migration/MigrationOrchestrator.ts(552,20): error TS7006: Parameter 'stdout' implicitly has an 'any' type.
+lib/migration/MigrationOrchestrator.ts(552,28): error TS7006: Parameter 'stderr' implicitly has an 'any' type.
+lib/migration/MigrationOrchestrator.ts(592,13): error TS7006: Parameter 'error' implicitly has an 'any' type.
+lib/migration/MigrationOrchestrator.ts(592,20): error TS7006: Parameter 'stdout' implicitly has an 'any' type.
+lib/migration/MigrationOrchestrator.ts(592,28): error TS7006: Parameter 'stderr' implicitly has an 'any' type.
+lib/migration/MigrationOrchestrator.ts(638,16): error TS18046: 'error' is of type 'unknown'.
+lib/migration/MigrationOrchestrator.ts(698,13): error TS7006: Parameter 'error' implicitly has an 'any' type.
+lib/migration/MigrationOrchestrator.ts(698,20): error TS7006: Parameter 'stdout' implicitly has an 'any' type.
+lib/migration/MigrationOrchestrator.ts(698,28): error TS7006: Parameter 'stderr' implicitly has an 'any' type.
+lib/services/CompositeIndexLayerService.ts(112,15): error TS18046: 'error' is of type 'unknown'.
+lib/services/CompositeIndexLayerService.ts(113,18): error TS18046: 'error' is of type 'unknown'.
+lib/services/CompositeIndexLayerService.ts(114,16): error TS18046: 'error' is of type 'unknown'.
+lib/styling/integration/integration-example.ts(200,41): error TS2347: Untyped function calls may not accept type arguments.
+scripts/fix-prev-typings.ts(1,41): error TS2307: Cannot find module 'ts-morph' or its corresponding type declarations.
+scripts/fix-prev-typings.ts(25,26): error TS7006: Parameter 'arrow' implicitly has an 'any' type.
+services/enhanced-chat-service.ts(175,46): error TS2345: Argument of type '{ metadata: { availableLayers: { layerId: string; layerName: string; endpoint: any; recordCount: number; }[]; multiEndpointContext: { additionalEndpoints: string[]; fetchedEndpoints: string[]; reasoning: string; } | undefined; ... 11 more ...; conversationHistory?: string[]; }; featureData: { ...; }[]; messages: Arr...' is not assignable to parameter of type 'ChatRequest'.
+  Types of property 'persona' are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+tests/chat-context-integration.test.ts(62,37): error TS2345: Argument of type '{ ok: boolean; json: () => Promise<{ content: string; }>; }' is not assignable to parameter of type 'never'.
+tests/chat-context-integration.test.ts(105,36): error TS18046: 'options' is of type 'unknown'.
+tests/chat-context-integration.test.ts(115,37): error TS2345: Argument of type '{ ok: boolean; json: () => Promise<{ content: string; }>; }' is not assignable to parameter of type 'never'.
+tests/chat-context-integration.test.ts(161,36): error TS18046: 'options' is of type 'unknown'.
+tests/chat-context-integration.test.ts(170,37): error TS2345: Argument of type '{ ok: boolean; json: () => Promise<{ content: string; }>; }' is not assignable to parameter of type 'never'.
+tests/chat-context-integration.test.ts(209,7): error TS18046: 'url' is of type 'unknown'.
+tests/chat-context-integration.test.ts(210,7): error TS18046: 'url' is of type 'unknown'.
+tests/chat-context-integration.test.ts(211,7): error TS18046: 'url' is of type 'unknown'.
+tests/chat-context-integration.test.ts(225,39): error TS2345: Argument of type '{ ok: boolean; json: () => Promise<{ content: string; }>; }' is not assignable to parameter of type 'never'.
+tests/chat-context-integration.test.ts(266,38): error TS18046: 'options' is of type 'unknown'.
+tests/chat-context-integration.test.ts(274,37): error TS2345: Argument of type '{ ok: boolean; json: () => Promise<{ content: string; }>; }' is not assignable to parameter of type 'never'.
+tests/chat-context-integration.test.ts(295,36): error TS18046: 'options' is of type 'unknown'.
+tests/hybrid-routing-comprehensive.test.ts(473,61): error TS2345: Argument of type '{ available_fields: string[]; sample_record: { population_data_2024: number; brand_share_nike: number; income_avg_household: number; }; }' is not assignable to parameter of type 'DatasetContext'.
+  Type '{ available_fields: string[]; sample_record: { population_data_2024: number; brand_share_nike: number; income_avg_household: number; }; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+tests/hybrid-routing-comprehensive.test.ts(504,65): error TS2345: Argument of type '{ available_fields: string[]; }' is not assignable to parameter of type 'DatasetContext'.
+  Type '{ available_fields: string[]; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+tests/hybrid-routing-comprehensive.test.ts(505,65): error TS2345: Argument of type '{ available_fields: string[]; }' is not assignable to parameter of type 'DatasetContext'.
+  Type '{ available_fields: string[]; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+tests/hybrid-routing-comprehensive.test.ts(536,71): error TS2345: Argument of type '{ available_fields: string[]; }' is not assignable to parameter of type 'DatasetContext'.
+  Type '{ available_fields: string[]; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+tests/hybrid-routing-comprehensive.test.ts(537,67): error TS2345: Argument of type '{ available_fields: string[]; }' is not assignable to parameter of type 'DatasetContext'.
+  Type '{ available_fields: string[]; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+tests/hybrid-routing-comprehensive.test.ts(631,79): error TS2345: Argument of type '{ available_fields: string[]; }' is not assignable to parameter of type 'DatasetContext'.
+  Type '{ available_fields: string[]; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+tests/hybrid-routing-detailed.test.ts(175,7): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+tests/hybrid-routing-detailed.test.ts(175,46): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+tests/hybrid-routing-detailed.test.ts(179,9): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+tests/hybrid-routing-detailed.test.ts(179,35): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+tests/hybrid-routing-detailed.test.ts(184,9): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+tests/hybrid-routing-detailed.test.ts(184,36): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+

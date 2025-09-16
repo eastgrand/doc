@@ -272,13 +272,22 @@ export class ArcGISDataExtractor {
   private async fetchServiceInfo(): Promise<{ success: boolean; layers?: any[]; error?: string }> {
     try {
       const url = `${this.baseUrl}?f=json`;
-      const response = await fetch(url, { timeout: this.timeout });
-      
-      if (!response.ok) {
-        return { success: false, error: `HTTP ${response.status}: ${response.statusText}` };
+      // Use AbortController to implement a per-request timeout instead of
+      // passing a non-standard `timeout` field to fetch's RequestInit.
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), this.timeout);
+      let response: any;
+      try {
+        response = await (fetch as any)(url, { signal: controller.signal });
+      } finally {
+        clearTimeout(timer);
       }
 
-      const data = await response.json();
+      if (!response || !response.ok) {
+        return { success: false, error: response ? `HTTP ${response.status}: ${response.statusText}` : 'No response (possibly aborted)' };
+      }
+
+      const data = await (response as any).json();
       
       if (data.error) {
         return { success: false, error: data.error.message || 'Unknown ArcGIS error' };
@@ -296,13 +305,20 @@ export class ArcGISDataExtractor {
   private async fetchLayerDetails(layerId: number): Promise<{ success: boolean; data?: any; error?: string }> {
     try {
       const url = `${this.baseUrl}/${layerId}?f=json`;
-      const response = await fetch(url, { timeout: this.timeout });
-      
-      if (!response.ok) {
-        return { success: false, error: `HTTP ${response.status}: ${response.statusText}` };
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), this.timeout);
+      let response: any;
+      try {
+        response = await (fetch as any)(url, { signal: controller.signal });
+      } finally {
+        clearTimeout(timer);
       }
 
-      const data = await response.json();
+      if (!response || !response.ok) {
+        return { success: false, error: response ? `HTTP ${response.status}: ${response.statusText}` : 'No response (possibly aborted)' };
+      }
+
+      const data = await (response as any).json();
       
       if (data.error) {
         return { success: false, error: data.error.message || 'Unknown ArcGIS error' };
@@ -336,8 +352,16 @@ export class ArcGISDataExtractor {
     const url = `${layer.url}/query?${params}`;
     
     try {
-      const response = await fetch(url, { timeout: this.timeout });
-      const data = await response.json();
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), this.timeout);
+      let response: any;
+      try {
+        response = await (fetch as any)(url, { signal: controller.signal });
+      } finally {
+        clearTimeout(timer);
+      }
+
+      const data = await (response as any).json();
       
       if (data.error) {
         throw new Error(data.error.message);

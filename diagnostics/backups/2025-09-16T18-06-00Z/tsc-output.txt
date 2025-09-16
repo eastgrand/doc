@@ -1,0 +1,11 @@
+npx tsc --noEmit output captured 2025-09-16T18:06:00Z
+
+Summary:
+Found 976 errors in 178 files.
+
+Top issues:
+- Duplicate keys in utils/field-aliases.ts (TS1117) causing many diagnostics
+- Test type mismatches in hybrid-routing tests (DatasetContext argument shape)
+- Indexing-with-string on empty object in tests (TS7053)
+
+(Full compiler output available in terminal run.)

@@ -400,6 +400,8 @@ export class MicroserviceGenerator {
 
   private generatePythonApp(pkg: MicroservicePackage): string {
     const { configuration: config } = pkg;
+  // Narrow local cast to avoid leaking 'config' structural assumptions into public signatures
+  const cfgAny = config as any;
     
     return `#!/usr/bin/env python3
 """
@@ -503,6 +505,8 @@ def models_status():
             'metadata': model_metadata,
             'target_variable': config.TARGET_VARIABLE,
             'data_fields': config.DATA_FIELDS
+      'target_variable': '${cfgAny.TARGET_VARIABLE}',
+      'data_fields': cfgAny.DATA_FIELDS
         }
         return jsonify(status), 200
     except Exception as e:
@@ -539,7 +543,7 @@ def test_data_processing():
     try:
         data = request.get_json()
         query = data.get('query', 'test query')
-        endpoint = data.get('endpoint', '${config.routingEndpoints[0]}')
+  endpoint = data.get('endpoint', '${(cfgAny.routingEndpoints && cfgAny.routingEndpoints[0]) || '/strategic-analysis'}')
         
         # Simulate data processing
         result = data_processor.process_query(query, endpoint)
@@ -572,7 +576,7 @@ def analyze_data():
             'success': True,
             'results': result,
             'timestamp': datetime.utcnow().isoformat(),
-            'service': '${config.serviceName}'
+            'service': '${cfgAny.serviceName}'
         }), 200
         
     except Exception as e:
@@ -614,7 +618,7 @@ def train_models():
 if __name__ == '__main__':
     logger.info(f"Starting ${config.serviceName}")
     logger.info(f"Target variable: ${config.targetVariable}")
-    logger.info(f"Data fields: {len(${JSON.stringify(config.dataFields)})} fields")
+  logger.info(f"Data fields: {len(${JSON.stringify(cfgAny.dataFields)})} fields")
     
     # Load models on startup
     models_loaded = load_models()

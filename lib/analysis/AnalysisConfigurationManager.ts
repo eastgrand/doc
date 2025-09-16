@@ -139,7 +139,8 @@ export class AnalysisConfigurationManager {
    */
   public extractPrimaryMetric(record: any): number {
     const primaryFields = this.getFieldMapping('primaryMetric');
-    
+
+    // Try configured primary fields first
     for (const field of primaryFields) {
       if (record[field] !== undefined && record[field] !== null) {
         const value = Number(record[field]);
@@ -148,12 +149,27 @@ export class AnalysisConfigurationManager {
         }
       }
     }
-    
+
+    // Conservative fallbacks for common legacy or analysis-specific fields
+    // - Accept 'strategic_analysis_score' which appears in some payloads
+    // - Accept any field that looks like a value_* numeric field (e.g., value_TOTPOP_CY)
+    if (record['strategic_analysis_score'] !== undefined && record['strategic_analysis_score'] !== null) {
+      const v = Number(record['strategic_analysis_score']);
+      if (!isNaN(v)) return v;
+    }
+
+    for (const key of Object.keys(record)) {
+      if (/^value_/i.test(key)) {
+        const v = Number(record[key]);
+        if (!isNaN(v)) return v;
+      }
+    }
+
     console.warn('[AnalysisConfigurationManager] No primary metric found in record', {
       availableFields: Object.keys(record),
       expectedFields: primaryFields
     });
-    
+
     return 0; // Fallback
   }
 

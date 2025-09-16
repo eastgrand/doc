@@ -1,4 +1,18 @@
 import fetch from 'node-fetch';
+
+// Small helper to provide a fetch with timeout using AbortController. This
+// avoids using non-standard `timeout` on RequestInit and keeps the public
+// API stable while being resilient at runtime.
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeout = 10000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  try {
+    const merged = { ...options, signal: controller.signal } as any;
+    return await fetch(url, merged);
+  } finally {
+    clearTimeout(id);
+  }
+}
 import { 
   HealthCheck, 
   HealthCheckResult, 
@@ -21,10 +35,7 @@ export class MicroserviceValidator {
     
     while (Date.now() - startTime < timeout) {
       try {
-        const response = await fetch(`${serviceUrl}/health`, {
-          method: 'GET',
-          timeout: 10000
-        });
+        const response = await fetchWithTimeout(`${serviceUrl}/health`, { method: 'GET' }, 10000);
         
         if (response.ok) {
           return true;
@@ -58,14 +69,13 @@ export class MicroserviceValidator {
     expectedVariable: string
   ): Promise<boolean> {
     try {
-      const response = await fetch(`${serviceUrl}/validate/target-variable`, {
+      const response = await fetchWithTimeout(`${serviceUrl}/validate/target-variable`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ variable: expectedVariable }),
-        timeout: 10000
-      });
+        body: JSON.stringify({ variable: expectedVariable })
+      }, 10000);
 
       if (response.ok) {
         const result = await response.json();
@@ -85,10 +95,7 @@ export class MicroserviceValidator {
     error?: string;
   }> {
     try {
-      const response = await fetch(`${serviceUrl}/models/status`, {
-        method: 'GET',
-        timeout: 15000
-      });
+      const response = await fetchWithTimeout(`${serviceUrl}/models/status`, { method: 'GET' }, 15000);
 
       if (response.ok) {
         const result = await response.json();
@@ -131,7 +138,7 @@ export class MicroserviceValidator {
       const startTime = Date.now();
       
       try {
-        const response = await fetch(`${serviceUrl}/process/test`, {
+        const response = await fetchWithTimeout(`${serviceUrl}/process/test`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -139,9 +146,8 @@ export class MicroserviceValidator {
           body: JSON.stringify({
             query,
             endpoint: '/strategic-analysis'
-          }),
-          timeout: 20000
-        });
+          })
+        }, 20000);
 
         const responseTime = Date.now() - startTime;
 
@@ -194,7 +200,7 @@ export class MicroserviceValidator {
       try {
         const requestOptions: any = {
           method: healthCheck.method,
-          timeout: healthCheck.timeout || this.defaultTimeout
+          // We'll pass the timeout separately to fetchWithTimeout below
         };
 
         // Add headers if specified
@@ -213,7 +219,7 @@ export class MicroserviceValidator {
           }
         }
 
-        const response = await fetch(fullUrl, requestOptions);
+  const response = await fetchWithTimeout(fullUrl, requestOptions, healthCheck.timeout || this.defaultTimeout);
         const responseTime = Date.now() - startTime;
 
         // Check if status code matches expected

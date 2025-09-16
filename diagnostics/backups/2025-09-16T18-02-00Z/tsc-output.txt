@@ -1,0 +1,11 @@
+npx tsc --noEmit output captured 2025-09-16T18:02:00Z
+
+Summary:
+Found 979 errors in 180 files.
+
+Top errors and files (aggregated):
+- tests/hybrid-routing-comprehensive.test.ts: Type mismatch for DatasetContext (missing field_characteristics, routing_history, metadata)
+- tests/hybrid-routing-detailed.test.ts: indexing with string on an object without index signature (TS7053)
+- utils/field-aliases.ts: many duplicate keys in object literal (TS1117) across many lines
+
+(Full output captured in the tsc run; only the header and top summary are saved here.)

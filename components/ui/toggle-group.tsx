@@ -13,46 +13,50 @@ interface ToggleGroupItemProps extends React.ButtonHTMLAttributes<HTMLButtonElem
   value: string
 }
 
-const ToggleGroup = React.forwardRef<HTMLDivElement, ToggleGroupProps>(
-  ({ className, type = "single", value, onValueChange, children, ...props }, ref) => {
-    const handleItemClick = (itemValue: string) => {
-      if (type === "single") {
-        onValueChange?.(itemValue)
-      } else {
-        const values = (value as string[]) || []
-        onValueChange?.(
-          values.includes(itemValue)
-            ? values.filter(v => v !== itemValue)
-            : [...values, itemValue]
-        )
-      }
+function ToggleGroupImpl(
+  { className, type = "single", value, onValueChange, children, ...props }: ToggleGroupProps,
+  ref: React.Ref<HTMLDivElement>
+) {
+  const handleItemClick = (itemValue: string) => {
+    if (type === "single") {
+      onValueChange?.(itemValue)
+    } else {
+      const values = (value as string[]) || []
+      onValueChange?.(
+        values.includes(itemValue)
+          ? values.filter((v) => v !== itemValue)
+          : [...values, itemValue]
+      )
     }
-
-    return (
-      <div
-        ref={ref}
-        className={cn("inline-flex bg-white rounded-lg border shadow-sm", className)}
-        {...props}
-      >
-        {React.Children.map(children, child => {
-          if (React.isValidElement(child)) {
-            return React.cloneElement(child, {
-              onClick: () => handleItemClick(child.props.value),
-              "data-state": type === "single"
-                ? value === child.props.value ? "on" : "off"
-                : (value as string[])?.includes(child.props.value) ? "on" : "off"
-            } as React.HTMLAttributes<HTMLButtonElement>)
-          }
-          return child
-        })}
-      </div>
-    )
   }
-)
+
+  return (
+    <div ref={ref} className={cn("inline-flex bg-white rounded-lg border shadow-sm", className)} {...props}>
+      {React.Children.map(children, (child) => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child, {
+            onClick: () => handleItemClick(child.props.value),
+            "data-state":
+              type === "single"
+                ? value === child.props.value
+                  ? "on"
+                  : "off"
+                : (value as string[])?.includes(child.props.value)
+                ? "on"
+                : "off",
+          } as React.HTMLAttributes<HTMLButtonElement>)
+        }
+        return child
+      })}
+    </div>
+  )
+}
+
+const ToggleGroup = React.forwardRef(ToggleGroupImpl)
 ToggleGroup.displayName = "ToggleGroup"
 
-const ToggleGroupItem = React.forwardRef<HTMLButtonElement, ToggleGroupItemProps>(
-  ({ className, children, ...props }, ref) => (
+function ToggleGroupItemImpl({ className, children, ...props }: ToggleGroupItemProps, ref: React.Ref<HTMLButtonElement>) {
+  return (
     <button
       ref={ref}
       className={cn(
@@ -64,7 +68,9 @@ const ToggleGroupItem = React.forwardRef<HTMLButtonElement, ToggleGroupItemProps
       {children}
     </button>
   )
-)
+}
+
+const ToggleGroupItem = React.forwardRef(ToggleGroupItemImpl)
 ToggleGroupItem.displayName = "ToggleGroupItem"
 
 export { ToggleGroup, ToggleGroupItem }

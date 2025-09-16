@@ -1,0 +1,83 @@
+Micro-batch 1: conservative fixes (no public API changes)
+
+Target files (5):
+1. lib/migration/MigrationOrchestrator.ts
+2. lib/migration/MicroserviceGenerator.ts
+3. lib/migration/MicroserviceDeployer.ts
+4. lib/migration/MicroserviceValidator.ts
+5. lib/migration/ArcGISDataExtractor.ts
+
+For each file: add narrowly-scoped guards, small default fallbacks, and narrow unknown catches. Avoid changing exported function signatures.
+
+Patches (apply manually or via script):
+
+--- lib/migration/MigrationOrchestrator.ts
+* Add helper at top:
+  function asError(e: unknown): Error {
+    return e instanceof Error ? e : new Error(String(e));
+  }
+
+* Replace catch blocks like `catch (error) { console.error(error.message) }` with:
+  catch (error) {
+    const err = asError(error);
+    console.error(err.message);
+  }
+
+* Guard usages of possibly-undefined modules or properties, e.g.:
+  const serviceLayers = serviceInfo?.layers ?? [];
+  for (const layerInfo of serviceLayers) { ... }
+
+* When calling functions that expect non-optional strings, add conservative fallbacks:
+  const repoName = config.repositoryName ?? '';
+  const filePath = path.join(repoName, file);
+
+* When calling other class methods that may be missing due to types mismatch, wrap in optional call or adapter:
+  if (typeof (this.generator as any).generateMicroservice === 'function') {
+    const microservicePackage = await (this.generator as any).generateMicroservice(config);
+    ...
+  } else {
+    throw new Error('generateMicroservice not available on generator');
+  }
+
+--- lib/migration/MicroserviceGenerator.ts
+* Add safe fallbacks before path functions:
+  const repositoryName = config.repositoryName ?? '';
+  const packagePath = path.join(this.outputDir, repositoryName);
+
+* Ensure environmentVariables is not undefined:
+  environmentVariables: config.environmentVars ?? {},
+
+* Guard routingEndpoints & dataFields uses with `?.` and fallback arrays.
+
+--- lib/migration/MicroserviceDeployer.ts
+* When calling path.join or path.resolve, ensure strings are not undefined:
+  const repo = microservicePackage.configuration.repositoryName ?? '';
+  const filePath = path.join(repo, file);
+
+* If deployToRender requires githubCredentials, check and throw a clear error if missing:
+  if (!githubCredentials) throw new Error('Missing github credentials for deploy');
+
+--- lib/migration/MicroserviceValidator.ts
+* Remove unsupported RequestInit fields or cast to any when calling fetch:
+  // Node fetch may not accept `timeout` in RequestInit; cast to any to satisfy TS at call site
+  const opts: any = { method: 'POST', body: JSON.stringify(payload), timeout: 10000 };
+  await fetch(url, opts);
+
+* Narrow unknown `result` before use:
+  const r = result as any;
+  return r && r.valid === true;
+
+--- lib/migration/ArcGISDataExtractor.ts
+* Guard serviceInfo.layers loop:
+  const layers = serviceInfo?.layers ?? [];
+  for (const layerInfo of layers) { ... }
+
+* Use optional chaining for nested access expecting possibly undefined values.
+
+Notes & verification
+- These edits are intentionally conservative: they add guards/fallbacks and local `any` casts in tiny scopes to reduce tsc errors without changing exported types or runtime behavior significantly (except to avoid crashes when values are absent).
+- After applying the five files, run:
+  npx tsc --noEmit
+- If errors increase, revert the changed files and capture diagnostics.
+
+End of microbatch 1 plan

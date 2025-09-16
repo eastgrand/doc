@@ -8,15 +8,18 @@ interface SwitchProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onCheckedChange?: (checked: boolean) => void;
 }
 
-const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ className, checked, onCheckedChange, ...props }, ref) => (
+function SwitchImpl(
+  { className, checked, onCheckedChange, ...props }: SwitchProps,
+  ref: React.Ref<HTMLInputElement>
+) {
+  return (
     <label className="inline-flex items-center">
       <input
         type="checkbox"
         className="sr-only"
         ref={ref}
         checked={checked}
-        onChange={(e) => onCheckedChange?.(e.target.checked)}
+        onChange={(e) => onCheckedChange?.((e.target as HTMLInputElement).checked)}
         {...props}
       />
       <div
@@ -35,7 +38,9 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
       </div>
     </label>
   )
-)
+}
+
+const Switch = React.forwardRef(SwitchImpl)
 Switch.displayName = "Switch"
 
 export { Switch }

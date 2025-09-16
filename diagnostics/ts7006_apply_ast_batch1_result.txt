@@ -1,0 +1,3 @@
+Applied edits to 50 files. Previous errors: 324. New errors: 1670.
+ERRORS INCREASED after applying patch — reverting backups.
+Reverted (tsc produced errors). See diagnostics/tsc_after_ts7006_ast_batch1_revert.txt

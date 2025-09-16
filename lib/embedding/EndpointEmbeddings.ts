@@ -42,11 +42,39 @@ export class EndpointEmbeddings {
       console.log('[EndpointEmbeddings] Initializing endpoint embeddings...');
       const startTime = performance.now();
 
-      // First initialize the embedding service
-      await localEmbeddingService.initialize();
+      // First initialize the embedding service. In Node/test environments
+      // the LocalEmbeddingService may intentionally fail (it's browser-only).
+      // We catch that specific condition and allow the system to continue
+      // without embeddings (the routing stack falls back to keyword-based logic).
+      try {
+        await localEmbeddingService.initialize();
+      } catch (err: unknown) {
+        // Narrow error message safely without using `any`
+        let msg = '';
+        if (typeof err === 'string') msg = err;
+        else if (err instanceof Error) msg = err.message;
+        else msg = String(err);
 
-      // Generate embeddings for all endpoints
-      await this.generateEndpointEmbeddings();
+        if (msg.includes('LocalEmbeddingService only works in browser environment')) {
+          console.warn('[EndpointEmbeddings] LocalEmbeddingService not available in this environment; continuing without precomputed embeddings.');
+          // keep embeddingIndex empty and allow rest of system to run
+        } else {
+          // Not the browser-only error: rethrow to preserve original behavior
+          throw err;
+        }
+      }
+
+      // Generate embeddings for all endpoints only if the public isReady() reports availability
+      try {
+        if (localEmbeddingService.isReady && typeof localEmbeddingService.isReady === 'function' && localEmbeddingService.isReady()) {
+          await this.generateEndpointEmbeddings();
+        } else {
+          console.log('[EndpointEmbeddings] Skipping embedding generation (embedding service unavailable)');
+        }
+      } catch (e) {
+        // If isReady() throws for any reason, skip generation but log the issue
+        console.warn('[EndpointEmbeddings] Skipping embedding generation due to runtime check failure:', e instanceof Error ? e.message : String(e));
+      }
 
       const endTime = performance.now();
       console.log(`[EndpointEmbeddings] Initialized ${Object.keys(this.embeddingIndex).length} endpoint embeddings in ${Math.round(endTime - startTime)}ms`);
@@ -212,7 +240,7 @@ export class EndpointEmbeddings {
     endpointCount: number;
     averageSimilarity: number;
     dimensionality: number;
-    qualityMetrics: any;
+    qualityMetrics: Record<string, unknown>;
   } {
     const vectors: { [endpoint: string]: number[] } = {};
     
@@ -220,12 +248,23 @@ export class EndpointEmbeddings {
       vectors[endpoint] = embedding.embedding;
     }
 
-    const qualityMetrics = VectorUtils.analyzeVectorQuality(vectors);
+  const qualityMetrics = VectorUtils.analyzeVectorQuality(vectors) as Record<string, unknown>;
+
+    // Safely extract numeric fields from the returned metrics with guards
+    const avgSim = (() => {
+      const v = qualityMetrics['averageSimilarity'];
+      return typeof v === 'number' && Number.isFinite(v) ? v : 0;
+    })();
+
+    const dim = (() => {
+      const v = qualityMetrics['dimensionality'];
+      return typeof v === 'number' && Number.isFinite(v) ? v : 0;
+    })();
 
     return {
       endpointCount: Object.keys(this.embeddingIndex).length,
-      averageSimilarity: qualityMetrics.averageSimilarity,
-      dimensionality: qualityMetrics.dimensionality,
+      averageSimilarity: avgSim,
+      dimensionality: dim,
       qualityMetrics
     };
   }

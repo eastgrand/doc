@@ -1,0 +1,20 @@
+npx tsc --noEmit output snapshot (2025-09-16T18:20:00Z)
+
+Found 965 errors in 173 files.
+
+[excerpt]
+utils/field-aliases.ts:28:3 - error TS1117: An object literal cannot have multiple properties with the same name.
+...
+(see full project tsc output in CI or local run for complete details)
+
+Full (truncated) tsc output captured during run:
+
+Parameter of type 'DatasetContext'. Type '{ available_fields: string[]; }' is missing the following properties from type 'DatasetContext': field_characteristics, routing_history, metadata
+...
+tests/hybrid-routing-detailed.test.ts:175:7 - error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+...
+utils/field-aliases.ts:28:3 - error TS1117: An object literal cannot have multiple properties with the same name.
+utils/field-aliases.ts:31:3 - error TS1117: An object literal cannot have multiple properties with the same name.
+utils/field-aliases.ts:34:3 - error TS1117: An object literal cannot have multiple properties with the same name.
+...
+(Truncated for brevity)

@@ -1,0 +1,5 @@
+Saved TypeScript tsc --noEmit output snapshot taken after converting dialog and toast forwardRef usages.
+Top-line: Found 933 errors in 165 files.
+
+Truncated output (first 200 lines):
+... (omitted) ...

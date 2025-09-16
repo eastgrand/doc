@@ -1,0 +1,22 @@
+npx tsc --noEmit output captured: 2025-09-16
+Branch: fix/types/pin-react-types
+Edits applied: 3 source-only narrow local param annotations
+Files edited:
+ - components/settings/IconStyleSelector.tsx (onValueChange param -> value: string)
+ - components/SpatialQuery/SpatialQueryTools.tsx (onChange handlers annotated with e: any)
+ - components/StatsVisualization.tsx (tickFormatter and tooltip formatter typed)
+
+Summary: tsc reported 347 errors in 93 files after these edits (no crash-level parse errors introduced by these edits). Below is the full tsc output captured from the terminal run:
+
+--- tsc output START ---
+components/QueryHistory/QueryHistoryPanel.tsx:190:31 - error TS7006: Parameter 'e' implicitly has an 'any' type.
+190                     onClick={(e) => {
+                              ~
+
+components/QueryInterface.tsx:336:6 - error TS2786: 'ErrorBoundary' cannot be used as a JSX component. Its type 'typeof ErrorBoundary' is not a valid JSX element type.
+...
+[output truncated in this diagnostics file for brevity; full output captured in terminal session]
+--- tsc output END ---
+
+Notes:
+- Tests were intentionally skipped per user instruction; many errors remain in tests and other files. This snapshot documents the post-microbatch compiler state.

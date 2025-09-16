@@ -1,0 +1,206 @@
+{
+  "applied": [
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/app/api/claude/housing-generate-response/route.ts",
+      "edits": 143
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/app/api/claude/generate-response/route.ts",
+      "edits": 134
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/utils/dynamic-visualization-factory.ts",
+      "edits": 113
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/data-exploration-handler.ts",
+      "edits": 92
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/CompetitiveDataProcessor.ts",
+      "edits": 89
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/components/geospatial-chat-interface.tsx",
+      "edits": 86
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/statsCalculator.ts",
+      "edits": 83
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/utils/ai-visualization-selector.ts",
+      "edits": 80
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/CustomerProfileProcessor.ts",
+      "edits": 76
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/DemographicDataProcessor.ts",
+      "edits": 75
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/components/map/enhancedPopupTemplate.tsx",
+      "edits": 74
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/components/map/SampleAreasPanel.tsx",
+      "edits": 68
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/FeatureInteractionProcessor.ts",
+      "edits": 66
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/components/ProjectConfigManager/DependencyAnalyzer.tsx",
+      "edits": 61
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/services/project-config-manager.ts",
+      "edits": 58
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/utils/visualization-factory.ts",
+      "edits": 58
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/components/popup/CustomPopupManager.tsx",
+      "edits": 55
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/CoreAnalysisProcessor.ts",
+      "edits": 55
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/TrendDataProcessor.ts",
+      "edits": 55
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/RiskDataProcessor.ts",
+      "edits": 54
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/geo/GeoAwarenessEngine.ts",
+      "edits": 53
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/utils/visualizations/correlation-visualization.ts",
+      "edits": 53
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/BrandDifferenceProcessor.ts",
+      "edits": 51
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/components/ProjectConfigManager/ConceptMappingEditor.tsx",
+      "edits": 48
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/services/EndpointScoringService.ts",
+      "edits": 48
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/ClusterDataProcessor.ts",
+      "edits": 46
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analytics/query-analysis.ts",
+      "edits": 46
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/components/phase4/AIInsightGenerator.tsx",
+      "edits": 45
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/OutlierDetectionProcessor.ts",
+      "edits": 45
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/clustering/ClusteringService.ts",
+      "edits": 45
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/utils/visualizations/base-visualization.ts",
+      "edits": 45
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/CorrelationAnalysisProcessor.ts",
+      "edits": 44
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/clustering/algorithms/geographic-kmeans.ts",
+      "edits": 44
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/services/correlation.service.ts",
+      "edits": 44
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/components/ProjectConfigManager/GroupManagementPanel.tsx",
+      "edits": 43
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/AnomalyDetectionProcessor.ts",
+      "edits": 43
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/DimensionalityInsightsProcessor.ts",
+      "edits": 42
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/utils/visualizations/single-layer-visualization.ts",
+      "edits": 42
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/components/IndexWidget.tsx",
+      "edits": 41
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/ConsensusAnalysisProcessor.ts",
+      "edits": 41
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/StrategicAnalysisProcessor.ts",
+      "edits": 41
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/components/ProjectConfigManager/AdvancedServiceManager.tsx",
+      "edits": 39
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/components/map/SampleAreasPanelFixed2.tsx",
+      "edits": 38
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/CompositeDataProcessor.ts",
+      "edits": 38
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/FeatureImportanceRankingProcessor.ts",
+      "edits": 38
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/processors/SensitivityAnalysisProcessor.ts",
+      "edits": 38
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/lib/analysis/strategies/renderers/CompetitiveRenderer.ts",
+      "edits": 38
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/utils/visualizations/multivariate-visualization.ts",
+      "edits": 38
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/clustering/ClusterManager.ts",
+      "edits": 37
+    },
+    {
+      "file": "/Users/voldeck/code/mpiq-ai-chat/components/ChatInterface.tsx",
+      "edits": 36
+    }
+  ],
+  "prevErrors": 324,
+  "generatedAt": "2025-09-16T13:06:13.596Z"
+}

@@ -1,0 +1,3 @@
+Ran: npx tsc --noEmit
+
+Result captured: See terminal output saved separately. Key summary: TypeScript run exited with code 2; 80 syntax errors reported in test files (series of TS1005 errors), unrelated to the edited file. No change computed to top-level error count baseline because test files contain syntax issues (likely due to previously-applied dry-run injecting `: any` in test files). Please see the terminal output for details.

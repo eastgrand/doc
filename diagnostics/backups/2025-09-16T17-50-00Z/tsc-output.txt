@@ -1,0 +1,11 @@
+npx tsc --noEmit snapshot
+Timestamp: 2025-09-16T17:50:00Z
+Summary: Found 981 errors in 182 files.
+Top files with diagnostics (first 20):
+ - __tests__/chat-context-integration.test.ts:62 (12 errors)
+ - __tests__/query-to-visualization-pipeline.test.ts:581 (9 errors)
+ - components/geospatial-chat-interface.tsx:588 (24 errors)
+ - components/ProjectConfigManager/ConceptMappingEditor.tsx:313 (30 errors)
+ - utils/field-aliases.ts:28 (120 errors)
+
+Note: This is an automated snapshot created after making conservative forwardRef edits to components/ui/carousel.tsx, components/ui/tooltip.tsx, and components/ui/table.tsx. The top-line error count decreased vs prior run.

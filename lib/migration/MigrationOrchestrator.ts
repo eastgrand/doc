@@ -82,13 +82,14 @@ export class MigrationOrchestrator {
 
     } catch (error) {
       const totalTime = Date.now() - this.startTime;
-      console.error(`\n❌ Migration failed at step ${this.currentStep + 1}: ${error.message}`);
-      
+      const errMsg = (error as any)?.message ?? String(error);
+      console.error(`\n❌ Migration failed at step ${this.currentStep + 1}: ${errMsg}`);
+
       return {
         success: false,
         steps: results,
         totalTime,
-        error: error.message,
+        error: errMsg,
         failedStep: this.currentStep,
         config: config!
       };
@@ -253,8 +254,9 @@ export class MigrationOrchestrator {
     config: MicroserviceConfig, 
     options: OrchestrationOptions
   ): Promise<StepResultData> {
+    const cfgAny = config as any;
     const extractionResult = await this.dataExtractor.extractTrainingData(
-      config.data_sources.arcgis_layers,
+      cfgAny.data_sources?.arcgis_layers,
       {
         outputFormat: 'csv',
         includeGeometry: false,
@@ -268,10 +270,11 @@ export class MigrationOrchestrator {
     const filename = `training-data-${timestamp}.csv`;
     fs.writeFileSync(filename, extractionResult.data);
 
-    // Update config with training data filename
-    config.data_sources.training_data_url = filename;
-    config.data_sources.last_extraction = new Date().toISOString();
-    config.data_sources.extraction_metadata = extractionResult.metadata;
+  // Update config with training data filename
+  cfgAny.data_sources = cfgAny.data_sources || {};
+  cfgAny.data_sources.training_data_url = filename;
+  cfgAny.data_sources.last_extraction = new Date().toISOString();
+  cfgAny.data_sources.extraction_metadata = extractionResult.metadata;
 
     return {
       step: 'Extract Training Data',
@@ -396,7 +399,8 @@ export class MigrationOrchestrator {
     config: MicroserviceConfig, 
     options: OrchestrationOptions
   ): Promise<StepResultData> {
-    const microservicePackage = await this.generator.generateMicroservice(config);
+    const cfgAny = config as any;
+    const microservicePackage = await this.generator.generateMicroservice(cfgAny);
     
     return {
       step: 'Generate Microservice',
@@ -413,9 +417,10 @@ export class MigrationOrchestrator {
     config: MicroserviceConfig, 
     options: OrchestrationOptions
   ): Promise<StepResultData> {
+    const cfgAny = config as any;
     const validation = await this.validator.validateMicroservice(
-      config.project.name,
-      config
+      cfgAny?.project?.name,
+      cfgAny
     );
     
     return {
@@ -430,9 +435,10 @@ export class MigrationOrchestrator {
     config: MicroserviceConfig, 
     options: OrchestrationOptions
   ): Promise<StepResultData> {
+    const cfgAny = config as any;
     const deployment = await this.deployer.deployToRender(
-      config.project.name,
-      config
+      cfgAny?.project?.name,
+      cfgAny
     );
     
     return {
@@ -450,7 +456,8 @@ export class MigrationOrchestrator {
     config: MicroserviceConfig, 
     options: OrchestrationOptions
   ): Promise<StepResultData> {
-    const validation = await this.deployer.validateDeployment(config.project.name);
+    const cfgAny = config as any;
+    const validation = await this.deployer.validateDeployment(cfgAny?.project?.name);
     
     return {
       step: 'Verify Deployment',
@@ -464,6 +471,7 @@ export class MigrationOrchestrator {
     config: MicroserviceConfig, 
     options: OrchestrationOptions
   ): Promise<StepResultData> {
+    const cfgAny = config as any;
     const results = {
       brandNameResolver: false,
       mapConstraints: false,
@@ -472,23 +480,23 @@ export class MigrationOrchestrator {
     };
 
     try {
-      // 1. Update BrandNameResolver configuration
-      console.log('🔧 Updating BrandNameResolver configuration...');
-      await this.updateBrandNameResolver(config);
+  // 1. Update BrandNameResolver configuration
+  console.log('🔧 Updating BrandNameResolver configuration...');
+  await this.updateBrandNameResolver(cfgAny);
       results.brandNameResolver = true;
 
-      // 2. Generate map constraints
+  // 2. Generate map constraints
       console.log('🗺️ Generating map constraints...');
       await this.generateMapConstraints();
       results.mapConstraints = true;
 
-      // 3. Verify boundary files
+  // 3. Verify boundary files
       console.log('📂 Verifying boundary files...');
       results.boundaryVerification = this.verifyBoundaryFiles();
 
-      // 4. Run hybrid routing tests
-      console.log('🧪 Running hybrid routing validation...');
-      await this.runHybridRoutingTests();
+  // 4. Run hybrid routing tests
+  console.log('🧪 Running hybrid routing validation...');
+  await this.runHybridRoutingTests();
       results.testValidation = true;
 
       const allSuccess = Object.values(results).every(r => r === true);
@@ -521,9 +529,10 @@ export class MigrationOrchestrator {
     if (fs.existsSync(brandResolverPath)) {
       const content = fs.readFileSync(brandResolverPath, 'utf8');
       
-      // Extract target brand from config
-      const targetBrand = config.target_configuration.target_brand;
-      const targetVariable = config.target_configuration.target_variable;
+  // Extract target brand from config
+  const cfgAny = config as any;
+  const targetBrand = cfgAny?.target_configuration?.target_brand;
+  const targetVariable = cfgAny?.target_configuration?.target_variable;
       
       // Update TARGET_BRAND configuration
       const updatedContent = content.replace(
@@ -642,24 +651,25 @@ export class MigrationOrchestrator {
 
   private createSampleAreasConfig(config: MicroserviceConfig): any {
     // Extract field mappings from config for human-readable names
-    const fieldMappings: Record<string, string> = {};
-    
-    // Add target brand field
-    const targetField = config.target_configuration.target_variable;
-    const targetBrand = config.target_configuration.target_brand;
-    fieldMappings[targetField] = `${targetBrand} Users (%)`;
+  const cfgAny = config as any;
+  const fieldMappings: Record<string, string> = {};
+
+  // Add target brand field
+  const targetField = cfgAny?.target_configuration?.target_variable;
+  const targetBrand = cfgAny?.target_configuration?.target_brand;
+  if (targetField) fieldMappings[targetField] = `${targetBrand} Users (%)`;
     
     // Add competitor brand fields if available
-    Object.entries(config.target_configuration.custom_field_mapping).forEach(([brand, fieldName]) => {
+    Object.entries(cfgAny?.target_configuration?.custom_field_mapping || {}).forEach(([brand, fieldName]) => {
       fieldMappings[fieldName] = `${brand} Users (%)`;
     });
 
     // Default geographic areas - can be enhanced to read from project-specific config
-    const defaultCities = this.getDefaultCitiesForProject(config);
+  const defaultCities = this.getDefaultCitiesForProject(cfgAny);
 
     return {
-      projectName: config.project.name,
-      targetBrand: config.target_configuration.target_brand,
+      projectName: cfgAny?.project?.name,
+      targetBrand: cfgAny?.target_configuration?.target_brand,
       fieldMappings,
       allowedCities: defaultCities,
       outputFile: '/Users/voldeck/code/mpiq-ai-chat/public/data/sample_areas_data_real.json'
@@ -668,8 +678,9 @@ export class MigrationOrchestrator {
 
   private getDefaultCitiesForProject(config: MicroserviceConfig): string[] {
     // Read from project configuration if available
-    if (config.geographic_configuration && (config.geographic_configuration as any).sample_cities) {
-      return (config.geographic_configuration as any).sample_cities;
+    const cfgAny = config as any;
+    if (cfgAny?.geographic_configuration && cfgAny.geographic_configuration?.sample_cities) {
+      return cfgAny.geographic_configuration.sample_cities;
     }
     
     // Fallback to sensible defaults based on common US markets

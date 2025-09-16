@@ -1,0 +1,129 @@
+{
+  "generatedAt": "2025-09-16T00:48:32.745438Z",
+  "totalErrors": 324,
+  "totalFiles": 92,
+  "topErrorCodes": [
+    {
+      "code": "TS7006",
+      "count": 117
+    },
+    {
+      "code": "TS2339",
+      "count": 33
+    },
+    {
+      "code": "TS18046",
+      "count": 24
+    },
+    {
+      "code": "TS2305",
+      "count": 23
+    },
+    {
+      "code": "TS2614",
+      "count": 20
+    },
+    {
+      "code": "TS2786",
+      "count": 18
+    },
+    {
+      "code": "TS2345",
+      "count": 17
+    },
+    {
+      "code": "TS2607",
+      "count": 12
+    },
+    {
+      "code": "TS2322",
+      "count": 8
+    },
+    {
+      "code": "TS2347",
+      "count": 7
+    }
+  ],
+  "topFiles": [
+    {
+      "file": "lib/migration/MigrationOrchestrator.ts",
+      "count": 25
+    },
+    {
+      "file": "components/EnhancedVisualization.tsx",
+      "count": 15
+    },
+    {
+      "file": "components/LayerController/LayerController.tsx",
+      "count": 15
+    },
+    {
+      "file": "__tests__/chat-context-integration.test.ts",
+      "count": 12
+    },
+    {
+      "file": "components/clustering/TerritoryComparison.tsx",
+      "count": 12
+    },
+    {
+      "file": "components/filtering/tabs/FieldFilterTab.tsx",
+      "count": 10
+    },
+    {
+      "file": "__tests__/query-to-visualization-pipeline.test.ts",
+      "count": 8
+    },
+    {
+      "file": "components/ai-elements/InteractiveAnalysisConfig.tsx",
+      "count": 7
+    },
+    {
+      "file": "components/filtering/tabs/VisualizationTab.tsx",
+      "count": 7
+    },
+    {
+      "file": "lib/migration/MicroserviceGenerator.ts",
+      "count": 7
+    },
+    {
+      "file": "lib/migration/MicroserviceValidator.ts",
+      "count": 7
+    },
+    {
+      "file": "__tests__/hybrid-routing-comprehensive.test.ts",
+      "count": 6
+    },
+    {
+      "file": "__tests__/hybrid-routing-detailed.test.ts",
+      "count": 6
+    },
+    {
+      "file": "components/filtering/tabs/PerformanceTab.tsx",
+      "count": 6
+    },
+    {
+      "file": "components/IndexWidget.tsx",
+      "count": 6
+    },
+    {
+      "file": "components/LayerController.tsx",
+      "count": 6
+    },
+    {
+      "file": "components/LayerOrderControls.tsx",
+      "count": 6
+    },
+    {
+      "file": "lib/analysis/__tests__/VisualizationManager.cleanup.test.ts",
+      "count": 6
+    },
+    {
+      "file": "components/ai-elements/code-block.tsx",
+      "count": 5
+    },
+    {
+      "file": "components/ai-elements/prompt-input.tsx",
+      "count": 5
+    }
+  ]
+}

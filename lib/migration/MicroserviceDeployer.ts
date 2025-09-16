@@ -41,9 +41,13 @@ export class MicroserviceDeployer {
     let healthCheckResults: HealthCheckResult[] = [];
 
     try {
+      // Narrow local cast to avoid touching public types/signatures while
+      // allowing safer property access for template interpolation.
+      const cfgAny = microservicePackage.configuration as any;
+
       logs.push(`🚀 Starting deployment for ${microservicePackage.projectName}`);
-      logs.push(`📦 Package: ${microservicePackage.configuration.serviceName}`);
-      logs.push(`🎯 Target: ${microservicePackage.configuration.targetVariable}`);
+      logs.push(`📦 Package: ${cfgAny.serviceName ?? microservicePackage.configuration.serviceName ?? microservicePackage.projectName}`);
+      logs.push(`🎯 Target: ${cfgAny.targetVariable ?? microservicePackage.configuration.targetVariable ?? 'unknown'}`);
 
       // 1. Validate deployment readiness
       const validationResult = await this.validateDeploymentReadiness(microservicePackage);
@@ -281,17 +285,19 @@ export class MicroserviceDeployer {
     credentials: GitHubCredentials
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const packagePath = path.resolve(microservicePackage.configuration.repositoryName);
+  // Local narrow cast for configuration to avoid changing exported types.
+  const pkgCfg: any = microservicePackage.configuration as any;
+  const packagePath = path.resolve(pkgCfg.repositoryName ?? microservicePackage.configuration.repositoryName);
       
       // Initialize git repository if not already initialized
       const commands = [
         `cd "${packagePath}" && git init`,
         `cd "${packagePath}" && git add .`,
-        `cd "${packagePath}" && git commit -m "Initial commit: Generated microservice for ${microservicePackage.projectName}
+  `cd "${packagePath}" && git commit -m "Initial commit: Generated microservice for ${microservicePackage.projectName}
 
 🤖 Generated with Claude Code Migration System
 
-Target: ${microservicePackage.configuration.targetVariable}
+Target: ${pkgCfg.targetVariable ?? microservicePackage.configuration.targetVariable}
 Domain: ${microservicePackage.template.domain}
 Industry: ${microservicePackage.template.industry}
 Generated: ${new Date().toISOString()}"`,
@@ -338,11 +344,12 @@ Generated: ${new Date().toISOString()}"`,
   }> {
     try {
       const config = microservicePackage.configuration;
-      const manifest = microservicePackage.deploymentManifest;
-      
+      const manifest = microservicePackage.deploymentManifest || ({} as any);
+      const configAny = config as any;
+
       const renderPayload = {
         type: 'web_service',
-        name: config.serviceName,
+        name: configAny.serviceName ?? config.serviceName,
         repo: repositoryUrl,
         branch: 'main',
         rootDir: '.',
@@ -350,9 +357,9 @@ Generated: ${new Date().toISOString()}"`,
         startCommand: manifest.startCommand,
         plan: manifest.deploymentConfig.render?.plan || 'free',
         region: manifest.deploymentConfig.render?.region || 'oregon',
-        envVars: Object.entries(manifest.environmentVariables).map(([key, value]) => ({
+        envVars: Object.entries(manifest.environmentVariables ?? {}).map(([key, value]) => ({
           key,
-          value: value.toString()
+          value: value == null ? '' : value.toString()
         })),
         healthCheckPath: manifest.healthCheckUrl,
         autoDeploy: manifest.deploymentConfig.render?.autoDeploy !== false
