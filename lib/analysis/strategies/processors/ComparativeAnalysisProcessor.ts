@@ -162,9 +162,8 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
     const primary = getPrimaryScoreField('comparative_analysis', (rawData as any)?.metadata) || 'comparison_score';
 
     // Find global min and max for unified scaling across all cities
-    // Prefer comparative-specific score extraction to honor comparative_score fields
     const allScores = (rawData.results as any[]).map(record => 
-      this.extractComparativeScore(record, primary)
+      this.extractPrimaryMetric(record)
     ).filter(score => !isNaN(score));
     
     const globalMin = Math.min(...allScores);
@@ -189,8 +188,8 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
     
     // Process records with globally-normalized scores (same scale for all cities)
   const processedRecords = (rawData.results as any[]).map((record: any, index: number) => {
-  // Get original score using comparative-specific extractor and normalize to 0-100 using GLOBAL scale
-  const originalScore = this.extractComparativeScore(record, primary);
+      // Get original score and normalize to 0-100 using GLOBAL scale
+      const originalScore = this.extractPrimaryMetric(record);
       const normalizedScore = ((originalScore - globalMin) / globalRange) * 100;
       
       // Use globally-normalized score
@@ -224,22 +223,17 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
       const medianIncome = this.extractNumericValue(record, this.configManager.getFieldMapping('incomeField'), 0);
       
       // Calculate comparative indicators
-  const regionalPerformanceGap = this.calculateRegionalPerformanceGap(record);
+      const regionalPerformanceGap = this.calculateRegionalPerformanceGap(record);
       const marketPositionStrength = this.calculateMarketPositionStrength(record);
       const competitiveDynamicsLevel = this.calculateCompetitiveDynamicsLevel(record);
       const growthDifferential = this.calculateGrowthDifferential(record);
       
-  // Calculate market metrics for real estate
-  const totalRegionalScore = regionAMetric.value + regionBMetric.value;
+      // Calculate regional dominance and market metrics for real estate
+      const regionalDominance = regionAMetric.value - regionBMetric.value;
+      const totalRegionalScore = regionAMetric.value + regionBMetric.value;
       const marketGap = Math.max(0, 100 - totalRegionalScore);
-  // Derive brand metrics (conservative local extraction to avoid depending on external helpers)
-  const brandAMetric = this.extractBrandMetric(record, 'brand_a');
-  const brandBMetric = this.extractBrandMetric(record, 'brand_b');
-  const brandDominance = brandAMetric.value - brandBMetric.value;
-  const totalBrandShare = brandAMetric.value + brandBMetric.value;
-  const brandPerformanceGap = this.calculateBrandPerformanceGap(record);
-
-  return {
+      
+      return {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         city: city, // Add city for grouping
@@ -269,7 +263,6 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
           median_income: medianIncome,
           // Comparative-specific calculated properties
           brand_performance_gap: brandPerformanceGap,
-          regional_performance_gap: regionalPerformanceGap,
           market_position_strength: marketPositionStrength,
           competitive_dynamics_level: competitiveDynamicsLevel,
           growth_differential: growthDifferential,
@@ -339,13 +332,11 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
     const summary = this.buildSummaryFromTemplates(nonParkRecords, statistics, customSubstitutions);
 
     return this.createProcessedData(
-      'competitive_analysis',
+      'comparative_analysis',
       nonParkRecords,
       summary,
       statistics,
       {
-        // Tests expect the canonical comparative field name
-        targetVariable: 'comparison_score',
         featureImportance,
         renderer: this.createComparativeRenderer(rankedRecords),
         legend: this.createComparativeLegend(rankedRecords)
@@ -475,7 +466,8 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
     // Use configuration-driven field extraction for Quebec regions
     const householdIncome = this.extractNumericValue(record, this.configManager.getFieldMapping('incomeField'), 0);
     const population = this.extractNumericValue(record, this.configManager.getFieldMapping('populationField'), 0);
-  const housingGrowth = this.extractNumericValue(record, ['hot_growth_market_index', 'growth_index'], 0);
+    const housingGrowth = this.extractNumericValue(record, ['hot_growth_market_index', 'growth_index'], 0);
+    const housingAffordability = this.extractNumericValue(record, ['home_affordability_index', 'affordability_index'], 0);
     
     // Calculate regional performance based on real estate metrics
     if (regionType === 'region_a') {
@@ -664,12 +656,9 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
       return 0; // No regional performance to compare
     }
     
-  // Derive brand metrics locally for the record to avoid cross-method dependencies
-  const brandAMetric = this.extractBrandMetric(record, 'brand_a');
-  const brandBMetric = this.extractBrandMetric(record, 'brand_b');
-  const brandDominance = brandAMetric.value - brandBMetric.value;
+    const regionalDominance = regionAMetric.value - regionBMetric.value;
     const totalBrandShare = brandAMetric.value + brandBMetric.value;
-
+    
     let gapScore = 0;
     
     // Brand dominance scoring
@@ -704,46 +693,6 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
     }
     
     return Math.min(100, gapScore);
-  }
-
-  /**
-   * Conservative helper: extract brand metric (share and name) from a record.
-   * Returns { value: number, brandName: string }.
-   */
-  private extractBrandMetric(record: any, brandKey: 'brand_a' | 'brand_b') {
-    // Candidate fields for brand share
-    const candidates = [
-      `${brandKey}_market_share`,
-      `${brandKey}_share`,
-      `${brandKey}_performance`,
-      `${brandKey}_value`,
-      `${brandKey}_marketshare`,
-      `${brandKey}_ms`
-    ];
-
-    let value = 0;
-    for (const f of candidates) {
-      const v = (record as any)[f];
-      if (v !== undefined && v !== null && !isNaN(Number(v))) {
-        value = Number(v);
-        break;
-      }
-    }
-
-    // Fallback: try fields that contain brand name then infer share fields
-    const brandNameField = `${brandKey}_name`;
-    const brandName = (record as any)[brandNameField] || (brandKey === 'brand_a' ? 'Brand A' : 'Brand B');
-
-    return { value, brandName };
-  }
-
-  /**
-   * Simple brand performance gap calculation: difference between Brand A and Brand B shares.
-   */
-  private calculateBrandPerformanceGap(record: any): number {
-    const a = this.extractBrandMetric(record, 'brand_a');
-    const b = this.extractBrandMetric(record, 'brand_b');
-    return Math.max(0, a.value - b.value);
   }
 
   /**
