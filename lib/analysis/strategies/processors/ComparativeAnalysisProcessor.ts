@@ -187,7 +187,13 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
     );
     
     // Process records with globally-normalized scores (same scale for all cities)
-  const processedRecords = (rawData.results as any[]).map((record: any, index: number) => {
+    const processedRecords = (rawData.results as any[]).map((record: any, index: number) => {
+      // Extract simple brand metrics used throughout comparative calculations
+      const brandAMetric = this.extractBrandMetric(record, 'brand_a');
+      const brandBMetric = this.extractBrandMetric(record, 'brand_b');
+      const brandDominance = (brandAMetric?.value || 0) - (brandBMetric?.value || 0);
+      const totalBrandShare = (brandAMetric?.value || 0) + (brandBMetric?.value || 0);
+      const brandPerformanceGap = this.calculateRegionalPerformanceGap(record);
       // Get original score and normalize to 0-100 using GLOBAL scale
       const originalScore = this.extractPrimaryMetric(record);
       const normalizedScore = ((originalScore - globalMin) / globalRange) * 100;
@@ -229,7 +235,7 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
       const growthDifferential = this.calculateGrowthDifferential(record);
       
       // Calculate regional dominance and market metrics for real estate
-      const regionalDominance = regionAMetric.value - regionBMetric.value;
+    // regionalDominance computed later when needed
       const totalRegionalScore = regionAMetric.value + regionBMetric.value;
       const marketGap = Math.max(0, 100 - totalRegionalScore);
       
@@ -241,7 +247,7 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
   comparison_score: Math.round(comparativeScore * 100) / 100, // Add comparison_score at top level for visualization
   // Expose canonical primary field for consumers
   [primary]: Math.round(comparativeScore * 100) / 100,
-        competitive_advantage_score: Math.round(comparativeScore * 100) / 100, // Keep for compatibility
+  competitive_advantage_score: Math.round(comparativeScore * 100) / 100, // Keep for compatibility
         rank: 0, // Will be calculated after sorting
         properties: {
           DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
@@ -656,13 +662,17 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
       return 0; // No regional performance to compare
     }
     
-    const regionalDominance = regionAMetric.value - regionBMetric.value;
-    const totalBrandShare = brandAMetric.value + brandBMetric.value;
+  const regionalDominance = regionAMetric.value - regionBMetric.value;
+  // Safely extract brand metrics for gap calculations
+  const brandAMetric = this.extractBrandMetric(record, 'brand_a');
+  const brandBMetric = this.extractBrandMetric(record, 'brand_b');
+  const totalBrandShare = (brandAMetric?.value || 0) + (brandBMetric?.value || 0);
     
     let gapScore = 0;
     
     // Brand dominance scoring
-    if (brandDominance >= 15) {
+  const brandDominance = (brandAMetric?.value || 0) - (brandBMetric?.value || 0);
+  if (brandDominance >= 15) {
       gapScore += 40; // Very strong brand A lead
     } else if (brandDominance >= 10) {
       gapScore += 35; // Strong brand A lead
@@ -684,15 +694,55 @@ export class ComparativeAnalysisProcessor extends BaseProcessor {
     }
     
     // Brand A absolute performance
-    if (brandAMetric.value >= 35) {
+    if ((brandAMetric?.value || 0) >= 35) {
       gapScore += 15; // Very high brand A performance
-    } else if (brandAMetric.value >= 25) {
+    } else if ((brandAMetric?.value || 0) >= 25) {
       gapScore += 10; // High brand A performance
-    } else if (brandAMetric.value >= 15) {
+    } else if ((brandAMetric?.value || 0) >= 15) {
       gapScore += 5; // Moderate brand A performance
     }
     
     return Math.min(100, gapScore);
+  }
+
+  /**
+   * Extract a simple brand metric object from a record.
+   * Conservative: look for several common field name patterns and return a consistent shape.
+   */
+  private extractBrandMetric(record: any, brandKey: string): { value: number; brandName: string } {
+    if (!record) return { value: 0, brandName: '' };
+    const candidates = [
+      `${brandKey}_market_share`,
+      `${brandKey}_share`,
+      `${brandKey}_share_pct`,
+      `brand_${brandKey}_share`,
+      `${brandKey}_value`,
+      `${brandKey}_score`
+    ];
+    let value = 0;
+    for (const c of candidates) {
+      if ((record as any)[c] !== undefined && (record as any)[c] !== null) {
+        value = Number((record as any)[c]) || 0;
+        break;
+      }
+    }
+    // Fallback to generic brand fields
+    if (value === 0) {
+      if ((record as any)[`${brandKey}_name`]) {
+        // leave value as 0
+      } else if ((record as any)[`brand_${brandKey}`] !== undefined) {
+        value = Number((record as any)[`brand_${brandKey}`]) || 0;
+      }
+    }
+    const brandName = String((record as any)[`${brandKey}_name`] || (record as any)[`${brandKey}_brand`] || '').trim();
+    return { value, brandName };
+  }
+
+  /**
+   * Backwards-compatible alias used in some call sites. Keep conservative behavior.
+   */
+  private calculateBrandPerformanceGap(record: any): number {
+    return this.calculateRegionalPerformanceGap(record);
   }
 
   /**

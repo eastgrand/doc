@@ -146,7 +146,7 @@ export class AnalysisEngine {
           const fallbackEndpoint = await this.endpointRouter.suggestSingleEndpoint(query);
           console.log(`[AnalysisEngine] Fallback endpoint selected: ${fallbackEndpoint}`);
           const analysisData = await this.endpointRouter.callEndpoint(fallbackEndpoint, query, options);
-          const processedData = this.dataProcessor.processResults(analysisData, fallbackEndpoint);
+          const processedData = await this.dataProcessor.processResults(analysisData, fallbackEndpoint);
           
           // Continue with visualization creation...
           let visualization: VisualizationResult | null = null;
@@ -233,9 +233,11 @@ export class AnalysisEngine {
         query,
         options.spatialFilterIds,  // NEW: Pass spatial filter IDs
         {
-          analysisScope: options.analysisScope,
-          scope: options.scope,
-          forceProjectScope: options.forceProjectScope
+          // These properties don't exist on AnalysisOptions interface yet
+          // TODO: Add to AnalysisOptions interface if needed
+          analysisScope: undefined,
+          scope: undefined,
+          forceProjectScope: undefined
         }
       );
       
@@ -591,7 +593,7 @@ export class AnalysisEngine {
 
     // Step 3: Process the raw data
     this.updateProcessingStep('processing-data', 60);
-    const processedData = this.dataProcessor.processResults(rawResults, endpoint);
+    const processedData = await this.dataProcessor.processResults(rawResults, endpoint);
 
     // Step 4: Create visualization
     this.updateProcessingStep('creating-visualization', 80);

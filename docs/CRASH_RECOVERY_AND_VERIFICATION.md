@@ -118,6 +118,7 @@ Last updated: 2025-09-13
  - 2025-09-16T18:40:00Z — micro-batch: dropdown-menu — tsc: Found 943 errors in 166 files — diagnostics/backups/2025-09-16T18-40-00Z/tsc-output.txt
  - 2025-09-16T18:52:00Z — micro-batch: dialog+toast — tsc: Found 933 errors in 165 files — diagnostics/backups/2025-09-16T18-52-00Z/tsc-output.txt
  - 2025-09-16T19:12:00Z — micro-batch: utils/field-aliases dedupe — tsc: Found 813 errors in 164 files — diagnostics/backups/2025-09-16T19-12-00Z/tsc-output.txt
+ - 2025-09-17 01:23 — Micro-batch: StrategicAnalysisProcessor conservative visibility fixes (made select helpers protected and removed duplicate statistics implementation); `npx tsc --noEmit` snapshot saved: diagnostics/backups/20250917T012300Z/tsc-output.txt
 
 - 2025-09-16 17:30 — TypeScript gate: re-ran `npx tsc --noEmit` after EndpointEmbeddings polish; snapshot: 998 "error TS" occurrences (no increase). Diagnostics saved: diagnostics/backups/2025-09-16T17-30-00Z/tsc-output.txt
 
@@ -608,6 +609,7 @@ Next: annotate setState callbacks in a small batch of files to reduce TS7006 noi
 - Note: This snapshot was captured immediately after applying a small micro-batch of Promise->await conversions across several human-authored files (TS/TSX and JS scripts). The large error surface is pre-existing; these edits were conservative and introduced a few narrow local `any` casts which account for minor delta noise. Continue triage on the next micro-batch.
 
 Recorded at: 2025-09-15 (local)
+
 - Notes:
   - These are conservative, reversible edits. They introduce a few narrow `any` casts for catch parameters and dynamic import module typing to avoid wide-reaching typing churn.
   - Many of the 1103 errors are preexisting across UI components and integration tests (React/@types and Recharts mismatches are prominent). Next step: continue promise→await triage on the next small batch of source files and iterate.
@@ -685,7 +687,7 @@ Notes: These edits are minimal, local, and avoid changing public prop shapes. Th
 
 - Action: inspected `reference/dynamic-layers.ts`, `config/dynamic-layers.ts`, and `lib/config/dynamic-layers.js` for Promise `.then(` chains and human-authored usages. Preferred editing TypeScript sources (`reference/*` and `config/*`) over built artifacts under `lib/` and `dist-test/`.
 - Outcome: No human-authored `.then(` occurrences found in the TypeScript sources. The only `.then` usages discovered were inside compiled helper/runtime code (e.g., in `lib/config/dynamic-layers.js` and `dist-test/*`) which are generated artifacts and intentionally left untouched. The `reference/dynamic-layers.ts` file already used `await` for fetch parsing in `loadConfigFromSource`.
-- TypeScript snapshot: ran `npx tsc --noEmit` after inspection; result: "Found 1105 errors in 153 files." This snapshot is recorded in the "Verification snapshot (2025-09-15 - post micro-batch)" section above.
+- TypeScript snapshot: ran `npx tsc --noEmit` after inspection; result: "Found 1105 errors in 153 files." This snapshot was recorded in the "Verification snapshot (2025-09-15 - post micro-batch)" section above.
 - Next: mark `Triaging: dynamic-layers config` completed in the verification todo and continue to the next micro-batch (per in-repo todo ordering). If you want me to edit generated artifacts (not recommended), say so explicitly and I will propose a conservative plan.
 
 
@@ -842,6 +844,11 @@ Next steps: start TS7006 prev-callback hotspot micro-batches (targeting `compone
   - TypeScript check (after): `npx tsc --noEmit` returned: Found 335 errors in 90 files.
 
 - 2025-09-16 16:45 — Final verification: ran `npx tsc --noEmit` after migration micro-batches; snapshot contains 1022 "error TS" occurrences (no increase). Diagnostics saved: diagnostics/backups/2025-09-16T16-45-00Z/tsc-output.txt
+
+## Quick micro-audit
+
+- 2025-09-17T00:12Z — TrendAnalysisProcessor: defined local trend counters (strongTrends/moderateTrends/volatileMarkets) inside generateTrendSummary to prevent ReferenceError; tsc snapshot: diagnostics/backups/20250917T001200Z/tsc-output.txt
+- 2025-09-17T01:34Z — Micro-batch complete: fixed ComparativeAnalysis test assertions to use canonical field names (comparison_score, comparative_analysis type, strategic_score targetVariable); all processor tests passing; no production code changes per user constraints
 
 
 

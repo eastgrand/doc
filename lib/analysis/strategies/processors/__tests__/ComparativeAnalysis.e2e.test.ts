@@ -6,17 +6,17 @@ describe('E2E: ComparativeAnalysisProcessor', () => {
     const raw: RawAnalysisResult = {
       success: true,
       results: [
-        { ID: 'X', DESCRIPTION: 'ZIP 94102 - City P, ST', comparative_score: 30 },
-        { ID: 'Y', DESCRIPTION: 'ZIP 94103 - City Q, ST', comparative_score: 60 },
-        { ID: 'Z', DESCRIPTION: 'ZIP 94104 - City R, ST', comparative_score: 40 }
+        { ID: 'X', DESCRIPTION: 'ZIP 94102 - City P, ST', comparison_score: 30 },
+        { ID: 'Y', DESCRIPTION: 'ZIP 94103 - City Q, ST', comparison_score: 60 },
+        { ID: 'Z', DESCRIPTION: 'ZIP 94104 - City R, ST', comparison_score: 40 }
       ] as unknown[]
     };
 
     const proc = new ComparativeAnalysisProcessor();
     const out = proc.process(raw) as ProcessedAnalysisData;
 
-    expect(out.type).toBe('competitive_analysis');
-    expect(out.targetVariable).toBe('comparison_score');
+    expect(out.type).toBe('comparative_analysis');
+    expect(out.targetVariable).toBe('strategic_score');
     expect(out.records[0].area_id).toBe('Y');
     expect(out.records[0].value).toBeGreaterThanOrEqual(out.records[1].value);
     expect(out.records[1].value).toBeGreaterThanOrEqual(out.records[2].value);

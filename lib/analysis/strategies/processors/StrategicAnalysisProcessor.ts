@@ -58,7 +58,7 @@ export class StrategicAnalysisProcessor extends BaseProcessor {
 
     // Gracefully handle empty result sets without attempting dynamic field detection
     if (!rawData.results || rawData.results.length === 0) {
-      const emptyStats = this.calculateStatistics([] as any);
+      const emptyStats = this.calculateStatisticsFromRecords([] as any);
       // Keep default score field for empty case to ensure stable renderer field
       this.scoreField = 'strategic_score';
       const emptyRenderer = this.createStrategicRenderer([] as any);
@@ -162,8 +162,8 @@ export class StrategicAnalysisProcessor extends BaseProcessor {
       return processed;
     });
     
-    // Calculate statistics
-    const statistics = this.calculateStatistics(processedRecords);
+  // Calculate statistics
+  const statistics = this.calculateStatisticsFromRecords(processedRecords);
     
     // Rank records by strategic value
     const rankedRecords = this.rankRecords(processedRecords);
@@ -397,8 +397,9 @@ export class StrategicAnalysisProcessor extends BaseProcessor {
 
   /**
    * Extract field value from multiple possible field names
+   * Made protected to match BaseProcessor visibility and avoid signature conflicts
    */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
+  protected extractFieldValue(record: any, fieldNames: string[]): number {
     for (const fieldName of fieldNames) {
       const value = Number(record[fieldName]);
       if (!isNaN(value) && value > 0) {
@@ -408,12 +409,9 @@ export class StrategicAnalysisProcessor extends BaseProcessor {
     return 0;
   }
 
-  private generateAreaName(record: any): string {
-    const fallbackId = record?.ID || record?.id || record?.area_id || record?.GEOID || record?.OBJECTID || 'Unknown';
-    return resolveAreaName(record, { mode: 'cityOnly', neutralFallback: `Area ${fallbackId}` });
-  }
+  // Use BaseProcessor.generateAreaName to preserve visibility and centralized behavior
 
-  private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
+  protected rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
     const sorted = [...records].sort((a, b) => b.value - a.value);
     return sorted.map((record, index) => ({
       ...record,
@@ -449,8 +447,9 @@ export class StrategicAnalysisProcessor extends BaseProcessor {
     
     return `${featureName} impact`;
   }
-
-  private calculateStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
+  
+  // calculateStatisticsFromRecords is implemented above; duplicate removed to avoid collisions
+  private calculateStatisticsFromRecords(records: GeographicDataPoint[]): AnalysisStatistics {
     const values = records.map(r => r.value).filter(v => !isNaN(v));
     
     if (values.length === 0) {
@@ -496,6 +495,9 @@ export class StrategicAnalysisProcessor extends BaseProcessor {
         outlierCount
       };
     }
+
+  // Note: do not override BaseProcessor.calculateStatistics(number[]).
+  // This class exposes `calculateStatisticsFromRecords(records)` for record-based stats.
 
     private generateStrategicSummary(
       records: GeographicDataPoint[],

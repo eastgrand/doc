@@ -32,7 +32,7 @@ const processorConfig = {
 // Provider component
 export const HybridQueryProvider: React.FC<React.PropsWithChildren<Record<string, never>>> = ({ children }) => {
   // Initialize the processor
-  const [processor] = useState(() => new HybridQueryProcessor(processorConfig));
+  const [processor] = useState<HybridQueryProcessor>(() => new HybridQueryProcessor(processorConfig));
   
   // State for tracking query processing
   const [lastResult, setLastResult] = useState<HybridQueryResult | null>(null);

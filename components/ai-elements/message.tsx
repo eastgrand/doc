@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Avatar,
   AvatarFallback,
@@ -5,12 +6,10 @@ import {
 } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import type { UIMessage } from 'ai';
-import type { ComponentProps, HTMLAttributes } from 'react';
 
-export type MessageProps = HTMLAttributes<HTMLDivElement> & {
+export type MessageProps = React.HTMLAttributes<HTMLDivElement> & {
   from: UIMessage['role'];
 };
-
 export const Message = ({ className, from, ...props }: MessageProps) => (
   <div
     className={cn(
@@ -22,9 +21,7 @@ export const Message = ({ className, from, ...props }: MessageProps) => (
     {...props}
   />
 );
-
-export type MessageContentProps = HTMLAttributes<HTMLDivElement>;
-
+export type MessageContentProps = React.HTMLAttributes<HTMLDivElement>;
 export const MessageContent = ({
   children,
   className,
@@ -43,12 +40,10 @@ export const MessageContent = ({
     {children}
   </div>
 );
-
-export type MessageAvatarProps = ComponentProps<typeof Avatar> & {
+export type MessageAvatarProps = React.ComponentProps<typeof Avatar> & {
   src: string;
   name?: string;
 };
-
 export const MessageAvatar = ({
   src,
   name,

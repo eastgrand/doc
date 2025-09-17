@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect, useCallback, forwardRef, useImperativeHandle, useRef, useMemo } from 'react';
+import React from 'react';
+import { useState, useEffect, useCallback, forwardRef, useRef, useMemo } from 'react';
 import { 
   DndContext, 
   DragEndEvent, 
@@ -32,7 +33,6 @@ import { VisualizationControls } from './VisualizationControls';
 import type { BlendMode } from '@/utils/visualizations/base-visualization';
 import { createLayer } from './utils';
 import type { LayerStatesMap } from './types';
-
 // Export the types
 export interface LayerControllerRef {
   layerStates: LayerStatesMap;
@@ -41,14 +41,12 @@ export interface LayerControllerRef {
   setLayerStates: (states: LayerStatesMap) => void;
   resetLayers: () => void;
 }
-
 interface LayerInitializationProgress {
   total: number;
   loaded: number;
   currentLayer?: string;
   status: 'pending' | 'loading' | 'complete' | 'error';
 }
-
 interface DraggableLayerProps {
   id: string;
   title: string;
@@ -60,16 +58,14 @@ interface DraggableLayerProps {
   isDragOverlay?: boolean;
   onShowLegend: (layer: __esri.FeatureLayer, anchorEl: HTMLElement) => void;
 }
-
 interface DraggableGroupProps {
   id: string;
   title: string;
   description?: string;
   isCollapsed: boolean;
   onToggleCollapse: () => void;
-  children: React.ReactNode;
+  children: React.React.ReactNode;
 }
-
 interface LayerControllerProps {
   view: __esri.MapView;
   config: ProjectLayerConfig;
@@ -79,7 +75,6 @@ interface LayerControllerProps {
   onLayersCreated?: (layers: __esri.FeatureLayer[]) => void; // NEW: Callback for CustomPopupManager
   visible?: boolean;
 }
-
 // Switch Component
 const Switch = ({ checked, onCheckedChange, disabled }: {
   checked: boolean;
@@ -88,7 +83,6 @@ const Switch = ({ checked, onCheckedChange, disabled }: {
 }): JSX.Element => {
   // Log to debug
   console.log('Switch state:', { checked, disabled });
-  
   return (
     <div 
       style={{
@@ -155,9 +149,8 @@ const Switch = ({ checked, onCheckedChange, disabled }: {
     </div>
   );
 };
-
 // DraggableLayer Component
-const DraggableLayer: React.FC<DraggableLayerProps> = ({ 
+const DraggableLayer: React.React.FC<DraggableLayerProps> = ({ 
   id,
   title,
   description,
@@ -176,13 +169,11 @@ const DraggableLayer: React.FC<DraggableLayerProps> = ({
     transition,
     isDragging,
   } = useSortable({ id, disabled: isDragOverlay });
-
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
   };
-
   const renderer = layer?.renderer;
   const canShowLegend = layer && renderer && (
     (renderer.type === 'unique-value' && 
@@ -195,32 +186,27 @@ const DraggableLayer: React.FC<DraggableLayerProps> = ({
       (renderer as any).classBreakInfos?.length > 0) ||
     (renderer.type === 'simple') // Allow simple renderers too
   );
-
   const [showControls, setShowControls] = useState(false);
   const [opacity, setOpacity] = useState(1);
   const [blendMode, setBlendMode] = useState<BlendMode>('normal');
-
   useEffect(() => {
     if (layer) {
       setOpacity(layer.opacity);
       setBlendMode(layer.blendMode as BlendMode || 'normal');
     }
   }, [layer]);
-
   const handleOpacityChange = useCallback((newOpacity: number) => {
     if (layer) {
       layer.opacity = newOpacity;
       setOpacity(newOpacity);
     }
   }, [layer]);
-
   const handleBlendModeChange = useCallback((newBlendMode: BlendMode) => {
     if (layer) {
       layer.blendMode = newBlendMode;
       setBlendMode(newBlendMode);
     }
   }, [layer]);
-
   return (
     <div
       ref={setNodeRef}
@@ -308,9 +294,8 @@ const DraggableLayer: React.FC<DraggableLayerProps> = ({
     </div>
   );
 };
-
 // DraggableGroup Component
-const DraggableGroup: React.FC<DraggableGroupProps> = ({ 
+const DraggableGroup: React.React.FC<DraggableGroupProps> = ({ 
   id,
   title, 
   description,
@@ -328,14 +313,12 @@ const DraggableGroup: React.FC<DraggableGroupProps> = ({
   } = useSortable({
     id: `group-${id}`,
   });
-
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
     touchAction: 'none',
   };
-
   return (
     <div 
       ref={setNodeRef} 
@@ -384,13 +367,11 @@ const DraggableGroup: React.FC<DraggableGroupProps> = ({
     </div>
   );
 };
-
 // Layer Management Functions
 const reorderLayers = (layers: __esri.Collection<__esri.Layer>): void => {
   try {
     const pointLayers: __esri.Layer[] = [];
     const otherLayers: __esri.Layer[] = [];
-
     layers.forEach(layer => {
       if (layer.type === 'feature') {
         const featureLayer = layer as __esri.FeatureLayer;
@@ -403,7 +384,6 @@ const reorderLayers = (layers: __esri.Collection<__esri.Layer>): void => {
         otherLayers.push(layer);
       }
     });
-
     layers.removeAll();
     otherLayers.forEach(layer => layers.add(layer));
     pointLayers.forEach(layer => layers.add(layer));
@@ -411,23 +391,18 @@ const reorderLayers = (layers: __esri.Collection<__esri.Layer>): void => {
     console.error('Error reordering layers:', error);
   }
 };
-
 // Utility function to convert layer renderer to StandardizedLegendData
 const convertLayerToLegendData = (layer: __esri.FeatureLayer): StandardizedLegendData | null => {
   if (!layer || !layer.renderer) {
     return null;
   }
-
   const renderer = layer.renderer;
-  
   const legendItems: LegendItem[] = [];
   let legendType: LegendType = 'simple';
-
   // Handle ClassBreaksRenderer
   if (renderer.type === 'class-breaks') {
     legendType = 'class-breaks';
     const classRenderer = renderer as __esri.ClassBreaksRenderer;
-    
     classRenderer.classBreakInfos
       ?.filter(breakInfo => 
         breakInfo.minValue !== 88888888 && 
@@ -439,11 +414,9 @@ const convertLayerToLegendData = (layer: __esri.FeatureLayer): StandardizedLegen
         if (!symbol?.color) {
           return;
         }
-
         const outlineColor = 'outline' in symbol && symbol.outline?.color 
           ? colorToRgba(symbol.outline.color) 
           : undefined;
-
         const legendItem = {
           label: breakInfo.label || `${breakInfo.minValue} - ${breakInfo.maxValue}`,
           color: colorToRgba(symbol.color),
@@ -458,17 +431,14 @@ const convertLayerToLegendData = (layer: __esri.FeatureLayer): StandardizedLegen
   else if (renderer.type === 'unique-value') {
     legendType = 'unique-value';
     const uniqueRenderer = renderer as __esri.UniqueValueRenderer;
-    
     (uniqueRenderer.uniqueValueInfos ?? []).forEach((info, index) => {
       const symbol = info.symbol as __esri.SimpleMarkerSymbol | __esri.SimpleFillSymbol;
       if (!symbol?.color) {
         return;
       }
-
       const outlineColor = 'outline' in symbol && symbol.outline?.color 
         ? colorToRgba(symbol.outline.color) 
         : undefined;
-
       const legendItem = {
         label: info.label || String(info.value),
         color: colorToRgba(symbol.color),
@@ -487,7 +457,6 @@ const convertLayerToLegendData = (layer: __esri.FeatureLayer): StandardizedLegen
       const outlineColor = 'outline' in symbol && symbol.outline?.color 
         ? colorToRgba(symbol.outline.color) 
         : undefined;
-
       const legendItem = {
         label: layer.title || 'Layer',
         color: colorToRgba(symbol.color),
@@ -498,20 +467,16 @@ const convertLayerToLegendData = (layer: __esri.FeatureLayer): StandardizedLegen
       legendItems.push(legendItem);
     }
   }
-
   if (legendItems.length === 0) {
     return null;
   }
-
   const result = {
     title: layer.title || 'Legend',
     type: legendType,
     items: legendItems
   };
-  
   return result;
 };
-
 // Main Component
 const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
   view,
@@ -542,18 +507,15 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
   const [currentLegendData, setCurrentLegendData] = useState<StandardizedLegendData | null>(null);
   const [popoverAnchorElement, setPopoverAnchorElement] = useState<HTMLElement | null>(null);
   const [isLegendPopoverOpen, setIsLegendPopoverOpen] = useState(false);
-
   // Refs
   const layerStatesRef = useRef<LayerStatesMap>({});
   const initializationInProgress = useRef(false);
   const isMountedRef = useRef(true);
   const hasInitialized = useRef<string | null>(null);
-
   // Update ref when state changes
   useEffect(() => {
     layerStatesRef.current = layerStates;
   }, [layerStates]);
-
   // Memoize handlers to prevent unnecessary re-renders
   const handleLayerStatesChange = useCallback((newStates: LayerStatesMap) => {
     console.log('handleLayerStatesChange called, isMounted:', isMountedRef.current);
@@ -563,7 +525,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     layerStatesRef.current = newStates;
     onLayerStatesChange?.(newStates);
   }, [onLayerStatesChange]);
-
   const handleInitializationProgress = useCallback((progress: LayerInitializationProgress) => {
     if (!isMountedRef.current) return;
     setLoadingState(progress);
@@ -572,31 +533,24 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       total: progress.total
     });
   }, [onLayerInitializationProgress]);
-
   const handleInitializationComplete = useCallback(() => {
     if (!isMountedRef.current) return;
     setIsInitialized(true);
   }, []);
-
   // Memoize the initialization function
   const initializeLayers = useCallback(async () => {
     if (initializationInProgress.current || !view || !config || isInitialized) {
       return;
     }
-
     initializationInProgress.current = true;
-
     try {
       const totalLayers = (config.groups || []).reduce((sum, group) => sum + ((group.layers || []).filter(layer => !layer.skipLayerList).length), 0);
-      
       setLoadingState(prev => ({
         ...prev,
         total: totalLayers,
         status: 'loading'
       }));
-
       const newLayerStates: LayerStatesMap = {};
-
       for (const group of (config.groups || [])) {
         if (group.layers) {
           for (const layerConfig of group.layers) {
@@ -605,21 +559,17 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
             if (layer) {
               // Add ALL layers to the map (aligned with GitHub unified repo)
               view.map.add(layer);
-              
               // Skip creating layer state for layers with skipLayerList: true
               if (layerConfig.skipLayerList) {
                 console.log(`[LayerController] Skipping layer state creation for hidden layer: ${layerConfig.name}`);
                 continue;
               }
-              
               // Set visibility based on config
               const shouldBeVisible = config.defaultVisibility?.[layerConfig.id] || false;
               layer.visible = shouldBeVisible;
-              
               // Preserve higher opacity for location layers, use 0.6 for others
               const layerOpacity = layerConfig.name?.toLowerCase().includes('locations') ? layer.opacity : 0.6;
               layer.opacity = layerOpacity;
-              
               newLayerStates[layerConfig.id] = {
                 id: layerConfig.id,
                 name: layerConfig.name,
@@ -639,7 +589,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
                 console.log(`[LayerController] Skipping failed hidden layer: ${layerConfig.name}`);
                 continue;
               }
-              
               // Create placeholder state for layers that failed to create
               console.log(`[LayerController] Failed to create layer: ${layerConfig.name}`);
               newLayerStates[layerConfig.id] = {
@@ -656,14 +605,11 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
                 active: false
               };
             }
-
             const loadedCount = Object.keys(newLayerStates).length;
-            
             setLoadingState(prev => ({
               ...prev,
               loaded: loadedCount
             }));
-            
             onLayerInitializationProgress?.({
               loaded: loadedCount,
               total: totalLayers
@@ -671,35 +617,27 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
           }
         }
       }
-
       // Set states atomically to prevent race conditions
       layerStatesRef.current = newLayerStates;
       setLayerStates(newLayerStates);
-      
       onLayerStatesChange?.(newLayerStates);
-      
       // NEW: Provide created layers for CustomPopupManager
       const createdLayers = Object.values(newLayerStates)
         .map(state => state.layer)
         .filter((layer): layer is __esri.FeatureLayer => layer !== null);
       onLayersCreated?.(createdLayers);
-      
       if (view?.map) {
         reorderLayers(view.map.layers);
       }
-      
       setLoadingState(prev => ({
         ...prev,
         status: 'complete', 
         loaded: Object.keys(newLayerStates).length 
       }));
-      
       // Call onInitializationComplete before setting isInitialized
       onInitializationComplete?.();
-      
       // Set initialized state last
       setIsInitialized(true);
-
     } catch (error) {
       setLoadingState({
         total: (config.groups || []).reduce((total, group) => total + ((group.layers || []).length), 0),
@@ -720,27 +658,22 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     onLayerInitializationProgress, 
     onInitializationComplete
   ]);
-
   // Initialize layers with proper race condition protection
   useEffect(() => {
     if (!view || !config) return;
-    
     // Create unique identifier for this view+config combination to prevent duplicates
     const viewId = view.container ? view.container.id : 'default';
     const configHash = JSON.stringify(config.groups?.map(g => g.id).sort());
     const initId = `${viewId}-${configHash}`;
-    
     // Check if we've already initialized this exact combination or initialization is in progress
     if (hasInitialized.current === initId || initializationInProgress.current || isInitialized) {
       console.log('[LayerController] Already initialized or in progress, skipping:', initId);
       return;
     }
-    
     // Reset state for new initialization
     console.log('[LayerController] Starting fresh initialization for:', initId);
     hasInitialized.current = initId;
     setIsInitialized(false);
-    
     // Update collapsed groups when config changes
     if (config?.defaultCollapsed) {
       const collapsedGroupIds = Object.entries(config.defaultCollapsed)
@@ -748,10 +681,8 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         .map(([groupId]) => groupId);
       setCollapsedGroups(new Set(collapsedGroupIds));
     }
-    
     initializeLayers();
   }, [view, config, initializeLayers]);
-
   // Set mounted state
   useEffect(() => {
     isMountedRef.current = true;
@@ -759,14 +690,12 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       isMountedRef.current = false;
     };
   }, []);
-
   // Cleanup effect - only on true unmount
   useEffect(() => {
     return () => {
       // Check if this is a theme switch using multiple methods
       const isThemeSwitch = document.documentElement.hasAttribute('data-theme-switching') || 
                            window.__themeTransitioning === true;
-      
       // Only cleanup layers when component truly unmounts, not during theme switches
       if (!isMountedRef.current && view && !isThemeSwitch) {
         console.log('[LayerController] Component unmounting - removing layers');
@@ -780,7 +709,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       }
     };
   }, [view]);
-
   // Handle theme changes for LayerController - minimal intervention
   useEffect(() => {
     const handleThemeChange = () => {
@@ -795,13 +723,11 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         });
       }
     };
-
     window.addEventListener('theme-changed', handleThemeChange);
     return () => window.removeEventListener('theme-changed', handleThemeChange);
   }, []);
-
   // Expose methods via ref
-  useImperativeHandle(ref, () => ({
+  React.useImperativeHandle(ref, () => ({
     layerStates: layerStatesRef.current,
     isInitialized,
     setVisibleLayers: (layers: string[]) => {
@@ -826,17 +752,13 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       handleLayerStatesChange(newStates);
     }
   }), [isInitialized, handleLayerStatesChange]);
-
   // Define sensors outside of useMemo to avoid hooks violation
   const sensors = useSensors(useSensor(PointerSensor));
-
   // Memoize the render function
   const renderContent = useMemo(() => {
     if (!visible) return null;
-
     const handleShowLegend = (layer: __esri.FeatureLayer, anchorEl: HTMLElement) => {
       const legendData = convertLayerToLegendData(layer);
-      
       if (legendData) {
         setCurrentLegendData(legendData);
         setPopoverAnchorElement(anchorEl);
@@ -845,7 +767,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         console.warn('No legend data available for layer:', layer.title);
       }
     };
-
     const handleToggleLayer = async (layerId: string) => {
       console.log('handleToggleLayer called for:', layerId);
       const newStates = { ...layerStatesRef.current };
@@ -853,13 +774,11 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         const oldVisible = newStates[layerId].visible;
         newStates[layerId].visible = !oldVisible;
         console.log('Toggling layer visibility from', oldVisible, 'to', newStates[layerId].visible);
-        
         // LAZY LOADING: Create layer if it doesn't exist and is being turned on
         if (newStates[layerId].visible && !newStates[layerId].layer) {
           console.log(`[LayerController] Creating layer on demand: ${layerId}`);
           newStates[layerId].loading = true;
           handleLayerStatesChange(newStates); // Update UI to show loading state
-          
           // Timeout safety mechanism - clear loading state after 45 seconds
           const timeoutId = setTimeout(() => {
             console.error(`[LayerController] ⏰ Layer creation timeout for ${layerId} - clearing loading state`);
@@ -868,31 +787,24 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
             timeoutStates[layerId].visible = false;
             handleLayerStatesChange(timeoutStates);
           }, 45000);
-          
           // Find the layer config
           const layerConfig = config?.groups?.find(g => g.layers?.find(l => l.id === layerId))?.layers?.find(l => l.id === layerId);
           if (layerConfig) {
             try {
               const [layer, errors] = await createLayer(layerConfig, config!, view, layerStatesRef);
-              
               // Clear timeout since we got a response
               clearTimeout(timeoutId);
-              
               // Get fresh state to avoid stale closures
               const currentStates = { ...layerStatesRef.current };
-              
               if (layer) {
                 view.map.add(layer);
                 layer.visible = true;
-                
                 const layerOpacity = layerConfig.name?.toLowerCase().includes('locations') ? layer.opacity : 0.6;
                 layer.opacity = layerOpacity;
-                
                 currentStates[layerId].layer = layer;
                 currentStates[layerId].opacity = layerOpacity;
                 currentStates[layerId].loading = false;
                 currentStates[layerId].visible = true;
-                
                 console.log(`[LayerController] ✅ Successfully created layer on demand: ${layerConfig.name}`);
                 handleLayerStatesChange(currentStates);
               } else {
@@ -921,11 +833,9 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
             currentStates[layerId].loading = false;
             handleLayerStatesChange(currentStates);
           }
-          
           // Early return to prevent further execution with potentially stale state
           return;
         }
-        
         // Special debugging for Google Pay layer
         if (layerStates[layerId]?.name?.includes('Google Pay')) {
           console.log('🔍 [GOOGLE PAY] Layer toggle debug:', {
@@ -939,7 +849,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
             layerLoaded: layerStates[layerId]?.layer?.loaded,
             currentlyVisible: layerStates[layerId]?.layer?.visible
           });
-          
           // Deep dive into renderer when toggling on
           if (newStates[layerId].visible && layerStates[layerId]?.layer?.renderer) {
             const renderer = layerStates[layerId]?.layer?.renderer as any;
@@ -962,7 +871,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
                 color: renderer.defaultSymbol?.color?.toArray ? renderer.defaultSymbol.color.toArray() : renderer.defaultSymbol?.color
               }
             });
-            
             // Also query some actual feature data to see what values we're working with
             if (layerStates[layerId]?.layer?.loaded) {
               const layer = layerStates[layerId]?.layer;
@@ -970,7 +878,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
               query.outFields = [renderer.field];
               query.returnGeometry = false;
               query.num = 10; // Get 10 sample features
-              
               layer.queryFeatures(query).then((featureSet: any) => {
                 const values = featureSet.features.map((f: any) => f.attributes[renderer.field]);
                 console.log('🔍 [GOOGLE PAY] Sample data values:', {
@@ -989,7 +896,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         }
         if (newStates[layerId].layer) {
           newStates[layerId].layer.visible = newStates[layerId].visible;
-          
           // Additional debugging for location layers
           if (newStates[layerId].name?.toLowerCase().includes('locations')) {
             console.log(`🔍 Location layer ${layerId} debug info:`, {
@@ -1005,7 +911,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         handleLayerStatesChange(newStates);
       }
     };
-
     const handleToggleGroup = (groupId: string) => {
       setCollapsedGroups(prev => {
         const newSet = new Set(prev);
@@ -1017,14 +922,12 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         return newSet;
       });
     };
-
     const handleDragEnd = (event: DragEndEvent) => {
       const { active, over } = event;
       if (over && active.id !== over.id) {
         console.log('Layer reordering:', { from: active.id, to: over.id });
       }
     };
-
     // Group layers by their group property - only include groups with visible layers
     const groupedLayers = (config.groups || [])
       .map(group => ({
@@ -1032,11 +935,9 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         layerStates: Object.values(layerStates).filter(state => state.group === group.id)
       }))
       .filter(group => group.layerStates.length > 0); // Only show groups that have layers
-
     return (
       <div className="layer-controller h-full overflow-y-auto">
         <div className="p-4">
-          
           {/* Loading State */}
           {loadingState.status === 'loading' && (
             <div className="mb-4">
@@ -1047,7 +948,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
               <Progress value={(loadingState.loaded / loadingState.total) * 100} className="h-2" />
             </div>
           )}
-
           {/* Layer Groups */}
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
             <SortableContext items={Object.keys(layerStates)} strategy={verticalListSortingStrategy}>
@@ -1077,7 +977,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
               ))}
             </SortableContext>
           </DndContext>
-
           {/* Empty State */}
           {Object.keys(layerStates).length === 0 && loadingState.status !== 'loading' && (
             <div className="text-center py-8 text-gray-500">
@@ -1088,7 +987,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
             </div>
           )}
         </div>
-
         {/* Legend Popover */}
         {isLegendPopoverOpen && currentLegendData && popoverAnchorElement && (
           <LegendPopover
@@ -1101,10 +999,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       </div>
     );
   }, [visible, layerStates, collapsedGroups, loadingState, config, view, handleLayerStatesChange, sensors, isLegendPopoverOpen, currentLegendData, popoverAnchorElement]);
-
   return renderContent;
 });
-
 LayerController.displayName = 'LayerController';
-
 export default React.memo(LayerController);

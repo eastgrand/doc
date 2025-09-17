@@ -412,6 +412,11 @@ Higher scores indicate stronger, more consistent, and predictable market trends.
     
     // Actionable recommendations
     summary += `**Trend-Based Recommendations:** `;
+    // Ensure counters exist (previous code referenced variables that could be undefined)
+    const strongTrends = records.filter(r => r.value >= 65).length;
+    const moderateTrends = records.filter(r => r.value >= 50 && r.value < 65).length;
+    const volatileMarkets = records.filter(r => ((r.properties as any).volatility_index || 0) >= 70).length;
+
     if (strongTrends > 0) {
       summary += `Focus investment on ${strongTrends} markets with strong trend patterns. `;
     }

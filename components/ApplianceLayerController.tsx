@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useCallback, useRef, forwardRef, useImperativeHandle } from 'react';
-import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
+import React from 'react';
+import { useState, useEffect, useCallback, forwardRef } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 import { 
   DndContext, 
   DragEndEvent, 
@@ -18,17 +19,15 @@ import {
   useSortable 
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { GripVertical, Loader2, ChevronDown, ChevronRight, AlertCircle } from 'lucide-react';
+import { GripVertical, Loader2, ChevronDown, ChevronRight } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from "@/components/ui/progress";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import { createQuartileRenderer } from '@/utils/createQuartileRenderer';
 import LayerLegend from './LayerController/LayerLegend';
 import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer";
 import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol";
-import { LayerFields, LayerConfig, LayerGroup, LAYER_GROUPS } from './layer-groups';
-
+import { LAYER_GROUPS } from './layer-groups';
 // Interfaces
 export interface LayerState {
   layer: __esri.FeatureLayer | null;
@@ -37,13 +36,19 @@ export interface LayerState {
   error?: string;
   group: string;
 }
-
 export interface LayerControllerProps {
   view: __esri.MapView;
   onLayerStatesChange?: (states: { [key: string]: LayerState }) => void;
   visible?: boolean;
 }
 
+export interface LayerControllerRef {
+  layerStates: { [key: string]: LayerState };
+  isInitialized: boolean;
+  setVisibleLayers: (layers: string[]) => void;
+  setLayerStates: (newStates: { [key: string]: LayerState }) => void;
+  resetLayers: () => void;
+}
 interface DraggableLayerProps {
   id: string;
   title: string;
@@ -54,13 +59,11 @@ interface DraggableLayerProps {
   onToggle: () => void;
   isDragOverlay?: boolean;
 }
-
 interface LoadingState {
   total: number;
   loaded: number;
   currentLayer: string;
 }
-
 // Switch Component
 const Switch = ({ checked, onCheckedChange, disabled }: {
   checked: boolean;
@@ -91,8 +94,7 @@ const Switch = ({ checked, onCheckedChange, disabled }: {
     />
   </button>
 );
-
-// DraggableLayer Component
+// DraggableLayer Component  
 const DraggableLayer: React.FC<DraggableLayerProps> = ({
   id,
   title,
@@ -114,13 +116,11 @@ const DraggableLayer: React.FC<DraggableLayerProps> = ({
     id,
     disabled: isDragOverlay
   });
-
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
   };
-
   return (
     <div
       ref={setNodeRef}
@@ -163,7 +163,6 @@ const DraggableLayer: React.FC<DraggableLayerProps> = ({
     </div>
   );
 };
-
 // DraggableGroup Component
 const DraggableGroup = ({ 
   id, 
@@ -188,13 +187,11 @@ const DraggableGroup = ({
   } = useSortable({
     id: `group-${id}`,
   });
-
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
   };
-
   return (
     <div ref={setNodeRef} style={style} className="layer-group mb-4">
       <div className="flex items-center gap-2 mb-2">
@@ -217,9 +214,8 @@ const DraggableGroup = ({
     </div>
   );
 };
-
 // Main ApplianceLayerController Component
-const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, onLayerStatesChange, visible = false }, ref) => {
+const ApplianceLayerController = forwardRef(({ view, onLayerStatesChange, visible = false }: LayerControllerProps, ref: React.Ref<LayerControllerRef>) => {
   const [layerStates, setLayerStates] = useState<{ [key: string]: LayerState }>({});
   const [isInitialized, setIsInitialized] = useState(false);
   const [visibleLayers, setVisibleLayers] = useState<string[]>([]);
@@ -239,35 +235,28 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
     currentLayer: ''
   });
   const [activeId, setActiveId] = useState<string | null>(null);
-
   const sensors = useSensors(useSensor(PointerSensor));
-
   useEffect(() => {
     const initializeLayers = async () => {
       if (!view || isInitialized) return;
-      
       try {
         const totalLayers = LAYER_GROUPS.reduce((total, group) => 
           total + group.layers.length, 0
         );
-
         setLoadingState({
           total: totalLayers,
           loaded: 0,
           currentLayer: 'Initializing...'
         });
-
         const newLayerStates: { [key: string]: LayerState } = {};
         const newLayerOrder: string[] = [];
-
         for (const group of LAYER_GROUPS) {
           for (const layerConfig of group.layers) {
-            setLoadingState(prev => ({
+            setLoadingState((prev: LoadingState) => ({
               ...prev,
               currentLayer: layerConfig.title,
               loaded: prev.loaded + 1
             }));
-
             const layer = new FeatureLayer({
               url: layerConfig.url,
               title: layerConfig.title || undefined,
@@ -276,7 +265,6 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
               visible: false,
               opacity: 0.7
             });
-
             if (layerConfig.id === 'lowes') {
               layer.renderer = new SimpleRenderer({
                 symbol: new SimpleMarkerSymbol({
@@ -315,21 +303,17 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
                 console.warn(`Renderer creation failed for ${layerConfig.title}:`, rendererError);
               }
             }
-
             view.map.add(layer);
             await layer.load();
-
             newLayerStates[layerConfig.id] = {
               layer,
               visible: false,
               loading: false,
               group: group.id
             };
-
             newLayerOrder.push(layerConfig.id);
           }
         }
-        
         if (view) {
           setLayerStates(newLayerStates);
           setLayerOrder(newLayerOrder);
@@ -341,9 +325,7 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
         if (view) setIsInitialized(false);
       }
     };
-
     initializeLayers();
-
     return () => {
       if (view) {
         Object.values(layerStates).forEach(state => {
@@ -354,39 +336,31 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
       }
     };
   }, [view, isInitialized]);
-
   useEffect(() => {
     if (!view) return;
-    
     const initialVisibleLayers = view.map.layers.toArray()
-      .filter(layer => layer.visible)
-      .map(layer => layer.id);
-    
+      .filter((layer: __esri.Layer) => layer.visible)
+      .map((layer: __esri.Layer) => layer.id);
     setVisibleLayers(initialVisibleLayers);
   }, [view]);
-
   const toggleGroup = (groupId: string) => {
-    setCollapsedGroups(prev => ({
+    setCollapsedGroups((prev: { [key: string]: boolean }) => ({
       ...prev,
       [groupId]: !prev[groupId]
     }));
   };
-
   const toggleLayer = useCallback((layerId: string) => {
-    setVisibleLayers(prev => {
+    setVisibleLayers((prev: string[]) => {
       const newVisibleLayers = prev.includes(layerId)
-        ? prev.filter(id => id !== layerId)
+        ? prev.filter((id: string) => id !== layerId)
         : [...prev, layerId];
-      
       const layer = layerStates[layerId]?.layer;
       if (layer) {
         layer.visible = newVisibleLayers.includes(layerId);
       }
-      
       return newVisibleLayers;
     });
-  
-    setLayerStates(prev => {
+    setLayerStates((prev: { [key: string]: LayerState }) => {
       const currentState = prev[layerId];
       if (currentState && currentState.layer) {
         return {
@@ -400,23 +374,18 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
       return prev;
     });
   }, [layerStates]);
-
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
   };
-
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    
     if (!over) return;
-
     if (active.id !== over.id) {
       const activeId = active.id as string;
       const overId = over.id as string;
-
       // Handle group reordering
       if (activeId.startsWith('group-') && overId.startsWith('group-')) {
-        setGroupOrder((items) => {
+        setGroupOrder((items: string[]) => {
           const oldIndex = items.indexOf(activeId.replace('group-', ''));
           const newIndex = items.indexOf(overId.replace('group-', ''));
           return arrayMove(items, oldIndex, newIndex);
@@ -424,36 +393,31 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
       } 
       // Handle layer reordering within groups
       else {
-        setLayerOrder((items) => {
+        setLayerOrder((items: string[]) => {
           const oldIndex = items.indexOf(activeId);
           const newIndex = items.indexOf(overId);
           return arrayMove(items, oldIndex, newIndex);
         });
-
         // Update layer ordering in the map
         if (view && view.map) {
           const layer = layerStates[activeId]?.layer;
           const targetLayer = layerStates[overId]?.layer;
           if (layer && targetLayer) {
             const allLayers = view.map.layers.toArray();
-            const oldIndex = allLayers.indexOf(layer);
             const newIndex = allLayers.indexOf(targetLayer);
             view.map.reorder(layer, newIndex);
           }
         }
       }
     }
-    
     setActiveId(null);
   };
-
   const resetLayers = useCallback(() => {
-    Object.entries(layerStates).forEach(([layerId, state]) => {
+    Object.entries(layerStates).forEach(([, state]) => {
       if (state.layer) {
         state.layer.visible = false;
       }
     });
-  
     setVisibleLayers([]);
     setCollapsedGroups({
       'stores': true,
@@ -462,8 +426,7 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
       'store-expenditure': true
     });
   }, [layerStates]);
-
-  useImperativeHandle(ref, () => ({
+  React.useImperativeHandle(ref, () => ({
     layerStates,
     isInitialized,
     setVisibleLayers,
@@ -473,11 +436,9 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
     },
     resetLayers
   }), [layerStates, isInitialized, setVisibleLayers, onLayerStatesChange, resetLayers]);
-
   if (!visible) {
     return null;
   }
-
   if (!isInitialized) {
     return (
       <Card className="w-full max-w-md">
@@ -497,7 +458,6 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
       </Card>
     );
   }
-
   return (
     <Card className="layer-control-card">
       <CardContent className="layer-control-content">
@@ -515,7 +475,6 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
               {groupOrder.map(groupId => {
                 const group = LAYER_GROUPS.find(g => g.id === groupId);
                 if (!group) return null;
-
                 return (
                   <DraggableGroup
                     key={`group-${group.id}`}
@@ -550,7 +509,6 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
               })}
             </SortableContext>
           </div>
-          
           <DragOverlay>
             {activeId && activeId.startsWith('group-') && (
               <div className="bg-white shadow-lg rounded-lg p-4 border border-gray-200 opacity-80">
@@ -576,7 +534,5 @@ const ApplianceLayerController = forwardRef<any, LayerControllerProps>(({ view, 
     </Card>
   );
 });
-
 ApplianceLayerController.displayName = 'ApplianceLayerController';
-
 export default ApplianceLayerController;

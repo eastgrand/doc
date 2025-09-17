@@ -1,5 +1,5 @@
 'use client';
-
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -8,21 +8,17 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import type { ComponentProps } from 'react';
 
-export type ActionsProps = ComponentProps<'div'>;
-
+export type ActionsProps = React.ComponentProps<'div'>;
 export const Actions = ({ className, children, ...props }: ActionsProps) => (
   <div className={cn('flex items-center gap-1', className)} {...props}>
     {children}
   </div>
 );
-
-export type ActionProps = ComponentProps<typeof Button> & {
+export type ActionProps = React.ComponentProps<typeof Button> & {
   tooltip?: string;
   label?: string;
 };
-
 export const Action = ({
   tooltip,
   children,
@@ -47,7 +43,6 @@ export const Action = ({
       <span className="sr-only">{label || tooltip}</span>
     </Button>
   );
-
   if (tooltip) {
     return (
       <TooltipProvider>
@@ -60,6 +55,5 @@ export const Action = ({
       </TooltipProvider>
     );
   }
-
   return button;
 };

@@ -261,7 +261,7 @@ export default function UnifiedAnalysisWorkflow({
   const hasPhase4Features = false; // Temporarily disabled
 
   // Initialize analysis wrapper
-  const [analysisWrapper] = useState(() => new UnifiedAnalysisWrapper());
+  const [analysisWrapper] = useState<UnifiedAnalysisWrapper>(() => new UnifiedAnalysisWrapper());
 
   // Chat context for contextual analysis
   const chatContext = useChatContext();
