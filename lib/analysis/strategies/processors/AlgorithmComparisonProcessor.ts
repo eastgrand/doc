@@ -313,57 +313,12 @@ export class AlgorithmComparisonProcessor extends BaseProcessor {
     return `${featureName} impact`;
   }
 
-  private calculateStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
-    const values = records.map(r => r.value).filter(v => !isNaN(v));
-    
-    if (values.length === 0) {
-      return {
-        total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0,
-        percentile25: 0, percentile75: 0, iqr: 0, outlierCount: 0
-      };
-    }
-    
-    const sorted = [...values].sort((a, b) => a - b);
-    const total = values.length;
-    const sum = values.reduce((a, b) => a + b, 0);
-    const mean = sum / total;
-    
-    const p25Index = Math.floor(total * 0.25);
-    const p75Index = Math.floor(total * 0.75);
-    const medianIndex = Math.floor(total * 0.5);
-    
-    const percentile25 = sorted[p25Index];
-    const percentile75 = sorted[p75Index];
-    const median = total % 2 === 0 
-      ? (sorted[medianIndex - 1] + sorted[medianIndex]) / 2
-      : sorted[medianIndex];
-    
-    const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / total;
-    const stdDev = Math.sqrt(variance);
-    
-    const iqr = percentile75 - percentile25;
-    const lowerBound = percentile25 - 1.5 * iqr;
-    const upperBound = percentile75 + 1.5 * iqr;
-    const outlierCount = values.filter(v => v < lowerBound || v > upperBound).length;
-    
-    return {
-      total,
-      mean,
-      median,
-      min: sorted[0],
-      max: sorted[sorted.length - 1],
-      stdDev,
-      percentile25,
-      percentile75,
-      iqr,
-      outlierCount
-    };
-  }
+
 
   private generateSummary(records: GeographicDataPoint[], statistics: AnalysisStatistics): string {
     let summary = getScoreExplanationForAnalysis('algorithm-comparison', 'algorithm_comparison');
     
-    const targetBrandName = this.brandResolver.getTargetBrandName();
+    const targetBrandName = (this as any).brandResolver?.getTargetBrandName?.() ?? 'Target Brand';
     summary += `**Algorithm Comparison Complete:** ${statistics.total} geographic areas evaluated for ${targetBrandName} algorithm performance. `;
     summary += `Comparison scores range from ${statistics.min.toFixed(1)} to ${statistics.max.toFixed(1)} (average: ${statistics.mean.toFixed(1)}). `;
     

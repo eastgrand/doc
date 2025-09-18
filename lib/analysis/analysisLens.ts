@@ -51,16 +51,18 @@ export function isNationalPark(properties: any): boolean {
  * Filters features for analysis purposes, excluding national parks
  * Auto-detects whether features are flat objects or nested under 'properties'
  */
-export function analysisFeatures<T extends any>(features: T[]): T[] {
+export function analysisFeatures<T>(features: T[]): T[] {
   if (!features || features.length === 0) return features;
   
   const originalCount = features.length;
   
   // Detect if features have properties nested or are flat
-  const hasPropertiesNesting = features[0]?.properties !== undefined;
+  const firstFeature = features[0] as T & { properties?: unknown };
+  const hasPropertiesNesting = firstFeature?.properties !== undefined;
   
   const filtered = features.filter(feature => {
-    const props = hasPropertiesNesting ? feature.properties : feature;
+    const featureWithProps = feature as T & { properties?: unknown };
+    const props = hasPropertiesNesting ? featureWithProps.properties : feature;
     return !isNationalPark(props);
   });
   
