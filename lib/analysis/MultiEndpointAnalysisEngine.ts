@@ -24,7 +24,7 @@ import { MultiEndpointVisualizationRenderer, MultiEndpointVisualizationConfig } 
 import { ConfigurationManager } from './ConfigurationManager';
 import { StateManager } from './StateManager';
 
-export interface MultiEndpointAnalysisOptions extends AnalysisOptions {
+export interface MultiEndpointAnalysisOptions extends Omit<AnalysisOptions, 'visualizationConfig'> {
   endpoints?: string[];
   combinationStrategy?: 'overlay' | 'comparison' | 'sequential' | 'correlation';
   mergeOptions?: Partial<MergeOptions>;
@@ -114,8 +114,11 @@ export class MultiEndpointAnalysisEngine {
       this.updateProcessingState('loading_data', 20);
       const dataLoadStartTime = Date.now();
       
+      // Convert back to AnalysisOptions for router compatibility
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { visualizationConfig: _, endpoints: __, combinationStrategy: ___, mergeOptions: ____, forceMultiEndpoint: _____, maxEndpoints: ______, ...routerOptions } = options || {};
       const multiEndpointResult = await this.router.executeMultiEndpointAnalysis(query, {
-        ...options,
+        ...routerOptions,
         endpoints: [queryAnalysis.primaryEndpoint, ...queryAnalysis.secondaryEndpoints],
         combinationStrategy: queryAnalysis.combinationStrategy
       });
@@ -321,7 +324,10 @@ export class MultiEndpointAnalysisEngine {
     console.log(`[MultiEndpointAnalysisEngine] Executing single-endpoint fallback`);
     
     // Use standard single endpoint processing
-    const singleResult = await this.router.callEndpoint(queryAnalysis.primaryEndpoint, query, options);
+    // Convert back to AnalysisOptions for router compatibility
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { visualizationConfig: _, endpoints: __, combinationStrategy: ___, mergeOptions: ____, forceMultiEndpoint: _____, maxEndpoints: ______, ...routerOptions } = options || {};
+    const singleResult = await this.router.callEndpoint(queryAnalysis.primaryEndpoint, query, routerOptions);
     
     // Wrap in multi-endpoint format
     return {

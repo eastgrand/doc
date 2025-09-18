@@ -506,11 +506,14 @@ export class AnalysisEngine {
 
     try {
       // Convert options to multi-endpoint format
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { visualizationConfig: _, ...restOptions } = options || {};
       const multiOptions: MultiEndpointAnalysisOptions = {
-        ...options,
+        ...restOptions,
         forceMultiEndpoint: options?.forceMultiEndpoint,
         maxEndpoints: options?.maxEndpoints || 4,
         combinationStrategy: options?.combinationStrategy || 'overlay'
+        // Note: visualizationConfig is excluded due to type incompatibility
       };
 
       // Execute multi-endpoint analysis
