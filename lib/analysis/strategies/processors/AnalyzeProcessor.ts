@@ -230,14 +230,6 @@ export class AnalyzeProcessor extends BaseProcessor {
 
   // Remove generateAreaName - use BaseProcessor method instead
 
-  private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
-    const sorted = [...records].sort((a, b) => b.value - a.value);
-    return sorted.map((record, index) => ({
-      ...record,
-      rank: index + 1
-    }));
-  }
-
   private processFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
       feature: (item as any).feature || (item as any).name || 'unknown',
@@ -265,52 +257,7 @@ export class AnalyzeProcessor extends BaseProcessor {
     return `${featureName} impact`;
   }
 
-  private calculateStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
-    const values = records.map(r => r.value).filter(v => !isNaN(v));
-    
-    if (values.length === 0) {
-      return {
-        total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0,
-        percentile25: 0, percentile75: 0, iqr: 0, outlierCount: 0
-      };
-    }
-    
-    const sorted = [...values].sort((a, b) => a - b);
-    const total = values.length;
-    const sum = values.reduce((a, b) => a + b, 0);
-    const mean = sum / total;
-    
-    const p25Index = Math.floor(total * 0.25);
-    const p75Index = Math.floor(total * 0.75);
-    const medianIndex = Math.floor(total * 0.5);
-    
-    const percentile25 = sorted[p25Index];
-    const percentile75 = sorted[p75Index];
-    const median = total % 2 === 0 
-      ? (sorted[medianIndex - 1] + sorted[medianIndex]) / 2
-      : sorted[medianIndex];
-    
-    const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / total;
-    const stdDev = Math.sqrt(variance);
-    
-    const iqr = percentile75 - percentile25;
-    const lowerBound = percentile25 - 1.5 * iqr;
-    const upperBound = percentile75 + 1.5 * iqr;
-    const outlierCount = values.filter(v => v < lowerBound || v > upperBound).length;
-    
-    return {
-      total,
-      mean,
-      median,
-      min: sorted[0],
-      max: sorted[sorted.length - 1],
-      stdDev,
-      percentile25,
-      percentile75,
-      iqr,
-      outlierCount
-    };
-  }
+
 
   private generateSummary(records: GeographicDataPoint[], statistics: AnalysisStatistics): string {
     let summary = getScoreExplanationForAnalysis('analyze', 'analyze');

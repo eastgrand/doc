@@ -49,9 +49,9 @@ export class BrandAnalysisProcessor extends BaseProcessor {
   let brandScore = Number((record as any)[this.scoreField]) || Number((record as any).brand_difference_score) || null;
       
       // Use dynamic brand detection instead of hardcoded fields
-      const brandFields = this.brandResolver.detectBrandFields(record);
-      const targetBrand = brandFields.find(bf => bf.isTarget);
-      const topCompetitor = brandFields.find(bf => !bf.isTarget);
+      const brandFields = (this as any).brandResolver?.detectBrandFields?.(record) || [];
+      const targetBrand = brandFields.find((bf: any) => bf.isTarget);
+      const topCompetitor = brandFields.find((bf: any) => !bf.isTarget);
       
       const targetBrandShare = targetBrand?.value || 0;
       const competitorShare = topCompetitor?.value || 0;
@@ -228,34 +228,11 @@ export class BrandAnalysisProcessor extends BaseProcessor {
     const topNames = topBrands.map(r => `${r.area_name} (${r.value.toFixed(1)})`).join(', ');
 
     // Get brand names from the first record if available
-    const targetBrand = records[0]?.properties?.target_brand_name || this.brandResolver.getTargetBrandName();
+    const targetBrand = records[0]?.properties?.target_brand_name || (this as any).brandResolver?.getTargetBrandName?.() || 'Target Brand';
     const competitorBrand = records[0]?.properties?.competitor_name || 'Competitor';
 
     return `Brand analysis of ${records.length} markets identified ${targetAdvantage} markets with ${targetBrand} advantage, ${competitorAdvantage} with ${competitorBrand} advantage, and ${competitive} competitive markets. Average brand difference score: ${avgScore}. Top markets: ${topNames}. Analysis considers ${targetBrand} vs ${competitorBrand} market share differences, competitive positioning, and strategic opportunities for market leadership.`;
   }
 
-  private calculateStatistics(values: number[]) {
-    if (values.length === 0) return { total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0 };
-    const sorted = [...values].sort((a, b) => a - b);
-    const total = values.length;
-    const sum = values.reduce((a, b) => a + b, 0);
-    const mean = sum / total;
-    const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / total;
-    const stdDev = Math.sqrt(variance);
-    const median = total % 2 === 0 ? (sorted[total / 2 - 1] + sorted[total / 2]) / 2 : sorted[Math.floor(total / 2)];
-    return { total, mean, median, min: sorted[0], max: sorted[sorted.length - 1], stdDev };
-  }
-  /**
-   * Extract field value from multiple possible field names
-   */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
-    for (const fieldName of fieldNames) {
-      const value = Number(record[fieldName]);
-      if (!isNaN(value) && value > 0) {
-        return value;
-      }
-    }
-    return 0;
-  }
 
 }

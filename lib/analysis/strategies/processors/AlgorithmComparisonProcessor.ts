@@ -236,7 +236,7 @@ export class AlgorithmComparisonProcessor extends BaseProcessor {
   }
 
 
-  private generateAreaName(record: any): string {
+  protected generateAreaName(record: any): string {
     // Check for DESCRIPTION field first (common in strategic analysis data)
     if ((record as any).DESCRIPTION && typeof (record as any).DESCRIPTION === 'string') {
       const description = (record as any).DESCRIPTION.trim();
@@ -278,13 +278,7 @@ export class AlgorithmComparisonProcessor extends BaseProcessor {
     return `Area ${(record as any).OBJECTID || 'Unknown'}`;
   }
 
-  private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
-    const sorted = [...records].sort((a, b) => b.value - a.value);
-    return sorted.map((record, index) => ({
-      ...record,
-      rank: index + 1
-    }));
-  }
+
 
   private processFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
@@ -334,17 +328,4 @@ export class AlgorithmComparisonProcessor extends BaseProcessor {
     
     return summary;
   }
-  /**
-   * Extract field value from multiple possible field names
-   */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
-    for (const fieldName of fieldNames) {
-      const value = Number(record[fieldName]);
-      if (!isNaN(value) && value > 0) {
-        return value;
-      }
-    }
-    return 0;
-  }
-
 }

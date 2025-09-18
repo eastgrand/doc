@@ -570,17 +570,4 @@ export class CorrelationAnalysisProcessor extends BaseProcessor {
       return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
     }
   }
-  /**
-   * Extract field value from multiple possible field names
-   */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
-    for (const fieldName of fieldNames) {
-      const value = Number(record[fieldName]);
-      if (!isNaN(value) && value > 0) {
-        return value;
-      }
-    }
-    return 0;
-  }
-
 }

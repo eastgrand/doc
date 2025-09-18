@@ -79,7 +79,7 @@ export class EnsembleAnalysisProcessor extends BaseProcessor {
     });
     
     // Calculate statistics
-    const statistics = this.calculateStatistics(processedRecords);
+    const statistics = this.calculateRecordStatistics(processedRecords);
     
     // Rank records by ensemble score
     const rankedRecords = this.rankRecords(processedRecords);
@@ -226,13 +226,7 @@ export class EnsembleAnalysisProcessor extends BaseProcessor {
 
   // Remove generateAreaName - use BaseProcessor method instead
 
-  private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
-    const sorted = [...records].sort((a, b) => b.value - a.value);
-    return sorted.map((record, index) => ({
-      ...record,
-      rank: index + 1
-    }));
-  }
+
 
   private processFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
@@ -261,7 +255,7 @@ export class EnsembleAnalysisProcessor extends BaseProcessor {
     return `${featureName} impact`;
   }
 
-  private calculateStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
+  private calculateRecordStatistics(records: GeographicDataPoint[]): AnalysisStatistics {
     const values = records.map(r => r.value).filter(v => !isNaN(v));
     
     if (values.length === 0) {

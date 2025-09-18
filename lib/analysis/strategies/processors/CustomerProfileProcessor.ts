@@ -860,17 +860,4 @@ Higher scores indicate stronger alignment with the target brand's ideal customer
     console.log(`[CustomerProfileProcessor] Calculated extent: ${JSON.stringify(extent.toJSON())}`);
     return extent;
   }
-  /**
-   * Extract field value from multiple possible field names
-   */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
-    for (const fieldName of fieldNames) {
-      const value = Number(record[fieldName]);
-      if (!isNaN(value) && value > 0) {
-        return value;
-      }
-    }
-    return 0;
-  }
-
 }

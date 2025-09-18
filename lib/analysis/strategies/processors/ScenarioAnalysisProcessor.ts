@@ -453,32 +453,7 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
     return Object.keys(frequency as any).reduce((a, b) => frequency[a] > frequency[b] ? a : b);
   }
 
-  private calculateStatistics(values: number[]) {
-    if (values.length === 0) {
-      return { total: 0, mean: 0, median: 0, min: 0, max: 0, stdDev: 0 };
-    }
 
-    const sorted = [...values].sort((a, b) => a - b);
-    const total = values.length;
-    const sum = values.reduce((a, b) => a + b, 0);
-    const mean = sum / total;
-    
-    const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / total;
-    const stdDev = Math.sqrt(variance);
-    
-    const median = total % 2 === 0 
-      ? (sorted[total / 2 - 1] + sorted[total / 2]) / 2
-      : sorted[Math.floor(total / 2)];
-
-    return {
-      total,
-      mean,
-      median,
-      min: sorted[0],
-      max: sorted[sorted.length - 1],
-      stdDev
-    };
-  }
 
   // ============================================================================
   // RENDERING METHODS
@@ -569,17 +544,4 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
       return `${breaks[classIndex].min.toFixed(1)} - ${breaks[classIndex].max.toFixed(1)}`;
     }
   }
-  /**
-   * Extract field value from multiple possible field names
-   */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
-    for (const fieldName of fieldNames) {
-      const value = Number(record[fieldName]);
-      if (!isNaN(value) && value > 0) {
-        return value;
-      }
-    }
-    return 0;
-  }
-
 }

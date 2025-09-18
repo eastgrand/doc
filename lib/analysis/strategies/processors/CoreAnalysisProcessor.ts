@@ -35,9 +35,9 @@ export class CoreAnalysisProcessor extends BaseProcessor {
           return true;
         }
         
-        // Use dynamic brand detection to check for brand fields
-        const brandFields = this.brandResolver.detectBrandFields(record);
-        if (brandFields.length > 0) {
+        // Check for common brand fields
+        const commonBrandFields = ['value_nike', 'value_adidas', 'value_underarmour', 'brand_share_nike', 'brand_share_adidas'];
+        if (commonBrandFields.some(field => record[field] !== undefined)) {
           return true;
         }
         
@@ -427,15 +427,7 @@ export class CoreAnalysisProcessor extends BaseProcessor {
     return 'medium';
   }
 
-  private rankRecords(records: GeographicDataPoint[]): GeographicDataPoint[] {
-    // Sort by value descending and assign ranks
-    const sorted = [...records].sort((a, b) => b.value - a.value);
-    
-    return sorted.map((record, index) => ({
-      ...record,
-      rank: index + 1
-    }));
-  }
+
 
   private processFeatureImportance(rawFeatureImportance: any[]): any[] {
     return rawFeatureImportance.map(item => ({
@@ -709,7 +701,7 @@ export class CoreAnalysisProcessor extends BaseProcessor {
   /**
    * Generate meaningful area name from available data
    */
-  private generateAreaName(record: any): string {
+  protected generateAreaName(record: any): string {
     // Try explicit name fields first (updated for correlation_analysis format)
     if ((record as any).value_DESCRIPTION && typeof (record as any).value_DESCRIPTION === 'string') {
       const description = (record as any).value_DESCRIPTION.trim();
@@ -758,9 +750,9 @@ export class CoreAnalysisProcessor extends BaseProcessor {
     return `Area ${(record as any).OBJECTID || 'Unknown'}`;
   }
   /**
-   * Extract field value from multiple possible field names
+   * Extract numeric field value from multiple possible field names
    */
-  private extractFieldValue(record: any, fieldNames: string[]): number {
+  private extractNumericFieldValue(record: any, fieldNames: string[]): number {
     for (const fieldName of fieldNames) {
       const value = Number(record[fieldName]);
       if (!isNaN(value) && value > 0) {
