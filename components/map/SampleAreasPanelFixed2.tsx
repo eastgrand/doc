@@ -337,8 +337,6 @@ export default function SampleAreasPanel({ view, onClose, visible }: SampleAreas
 
           const attributes = {
             OBJECTID: globalObjectId++,
-            zipCode: zipCode.zipCode,
-            city: zipCode.city,
             ...zipCode
           };
 

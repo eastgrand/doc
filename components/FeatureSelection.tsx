@@ -127,7 +127,7 @@ export const FeatureSelection: React.FC<FeatureSelectionProps> = ({
               select
               label="Format"
               value={exportFormat}
-              onChange={(e) => setExportFormat(e.target.value as any)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setExportFormat(e.target.value as any)}
               fullWidth
               sx={{ mb: 2, mt: 1 }}
             >
@@ -138,7 +138,7 @@ export const FeatureSelection: React.FC<FeatureSelectionProps> = ({
             <TextField
               label="File Name"
               value={exportFileName}
-              onChange={(e) => setExportFileName(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setExportFileName(e.target.value)}
               fullWidth
             />
           </DialogContent>

@@ -16,10 +16,10 @@ import {
   WrenchIcon,
   XCircleIcon,
 } from 'lucide-react';
-import type { ComponentProps, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { CodeBlock } from './code-block';
 
-export type ToolProps = ComponentProps<typeof Collapsible>;
+export type ToolProps = React.ComponentProps<typeof Collapsible>;
 
 export const Tool = ({ className, ...props }: ToolProps) => (
   <Collapsible
@@ -79,7 +79,7 @@ export const ToolHeader = ({
   </CollapsibleTrigger>
 );
 
-export type ToolContentProps = ComponentProps<typeof CollapsibleContent>;
+export type ToolContentProps = React.ComponentProps<typeof CollapsibleContent>;
 
 export const ToolContent = ({ className, ...props }: ToolContentProps) => (
   <CollapsibleContent
@@ -91,7 +91,7 @@ export const ToolContent = ({ className, ...props }: ToolContentProps) => (
   />
 );
 
-export type ToolInputProps = ComponentProps<'div'> & {
+export type ToolInputProps = React.ComponentProps<'div'> & {
   input: ToolUIPart['input'];
 };
 
@@ -106,7 +106,7 @@ export const ToolInput = ({ className, input, ...props }: ToolInputProps) => (
   </div>
 );
 
-export type ToolOutputProps = ComponentProps<'div'> & {
+export type ToolOutputProps = React.ComponentProps<'div'> & {
   output: ReactNode;
   errorText: ToolUIPart['errorText'];
 };

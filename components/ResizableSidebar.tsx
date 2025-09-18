@@ -160,6 +160,6 @@ const ChatLoadingState: React.FC = () => {
   );
 };
 
-ResizableSidebar.displayName = 'ResizableSidebar';
+
 
 export default ResizableSidebar;

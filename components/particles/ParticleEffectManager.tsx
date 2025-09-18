@@ -18,7 +18,7 @@ interface ParticleEffectManagerProps {
 export const ParticleEffectManager: React.FC<ParticleEffectManagerProps> = React.memo(({
   show,
   canvasRef
-}) => {
+}: ParticleEffectManagerProps) => {
   const [effectConfig, setEffectConfig] = useState<EffectConfig | null>(null);
   const initializationRef = useRef(false);
   const configLockRef = useRef(false); // Prevent multiple initializations

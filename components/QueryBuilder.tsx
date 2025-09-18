@@ -120,7 +120,7 @@ export default function QueryBuilder({ onQueryChange }: QueryBuilderProps) {
 
             <Input
               value={condition.value}
-              onChange={(e) => updateCondition(index, { value: e.target.value })}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateCondition(index, { value: e.target.value })}
               className="flex-1"
               placeholder={condition.operator === 'BETWEEN' ? "min,max" : "value"}
             />

@@ -63,6 +63,7 @@ export const LayerOrderControls: React.FC<LayerOrderControlsProps> = ({
     if (!layer) return null;
 
     return (
+      // @ts-expect-error: react-beautiful-dnd v13 has TypeScript compatibility issues with React 18+
       <Draggable key={layerId} draggableId={layerId} index={index}>
         {(provided: DraggableProvided) => (
           <ListItem
@@ -102,7 +103,9 @@ export const LayerOrderControls: React.FC<LayerOrderControlsProps> = ({
       <Typography variant="h6" sx={{ p: 2 }}>
         Layer Order
       </Typography>
+      {/* @ts-expect-error: react-beautiful-dnd v13 has TypeScript compatibility issues with React 18+ */}
       <DragDropContext onDragEnd={handleDragEnd}>
+        {/* @ts-expect-error: react-beautiful-dnd v13 has TypeScript compatibility issues with React 18+ */}
         <Droppable droppableId="layers">
           {(provided: DroppableProvided) => (
             <List

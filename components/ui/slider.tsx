@@ -18,7 +18,7 @@ function SliderImpl(
         type="range"
         ref={ref}
         value={value}
-        onChange={(e) => onValueChange?.(Number((e.target as HTMLInputElement).value))}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onValueChange?.(Number((e.target as HTMLInputElement).value))}
         className={cn(
           "h-2 w-full appearance-none rounded-full bg-gray-200",
           // Webkit styles

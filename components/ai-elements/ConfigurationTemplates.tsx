@@ -319,7 +319,14 @@ export const ConfigurationTemplates: React.FC<ConfigurationTemplatesProps> = ({
   const [editingTemplate, setEditingTemplate] = useState<ConfigTemplate | null>(null);
   
   // Form state for creating/editing templates
-  const [formData, setFormData] = useState({
+  interface FormData {
+    name: string;
+    description: string;
+    category: ConfigTemplate['category'];
+    tags: string;
+  }
+
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     description: '',
     category: 'custom' as ConfigTemplate['category'],
@@ -506,7 +513,7 @@ export const ConfigurationTemplates: React.FC<ConfigurationTemplatesProps> = ({
                   <label className="text-xs font-medium">Name</label>
                   <Input
                     value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData((prev: FormData) => ({ ...prev, name: e.target.value }))}
                     placeholder="Template name"
                     required
                   />
@@ -516,7 +523,7 @@ export const ConfigurationTemplates: React.FC<ConfigurationTemplatesProps> = ({
                   <label className="text-xs font-medium">Description</label>
                   <Textarea
                     value={formData.description}
-                    onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData((prev: FormData) => ({ ...prev, description: e.target.value }))}
                     placeholder="Describe what this template is optimized for..."
                     rows={3}
                     required
@@ -528,7 +535,7 @@ export const ConfigurationTemplates: React.FC<ConfigurationTemplatesProps> = ({
                   <Select
                     value={formData.category}
                     onValueChange={(value: ConfigTemplate['category']) => 
-                      setFormData(prev => ({ ...prev, category: value }))
+                      setFormData((prev: FormData) => ({ ...prev, category: value }))
                     }
                   >
                     <SelectTrigger>
@@ -548,7 +555,7 @@ export const ConfigurationTemplates: React.FC<ConfigurationTemplatesProps> = ({
                   <label className="text-xs font-medium">Tags (comma-separated)</label>
                   <Input
                     value={formData.tags}
-                    onChange={(e) => setFormData(prev => ({ ...prev, tags: e.target.value }))}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData((prev: FormData) => ({ ...prev, tags: e.target.value }))}
                     placeholder="retail, expansion, demographics"
                   />
                 </div>
@@ -590,7 +597,7 @@ export const ConfigurationTemplates: React.FC<ConfigurationTemplatesProps> = ({
           <Input
             placeholder="Search templates..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSearchTerm(e.target.value)}
             className="text-xs"
           />
         </div>

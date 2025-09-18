@@ -38,7 +38,7 @@ const ProcessingFlowDebugger: React.FC<ProcessingFlowDebuggerProps> = ({
     const debugFlow = async () => {
       try {
         setStatus('processing');
-        setLogs(prev => [...prev, {
+        setLogs((prev: any[]) => [...prev, {
           timestamp: new Date().toISOString(),
           message: `Starting ${processingType} processing`,
           type: 'info'
@@ -49,7 +49,7 @@ const ProcessingFlowDebugger: React.FC<ProcessingFlowDebuggerProps> = ({
         
         // Check layer states
         const layerCount = Object.keys(layerStates || {}).length;
-        setLogs(prev => [...prev, {
+        setLogs((prev: LogEntry[]) => [...prev, {
           timestamp: new Date().toISOString(),
           message: `Found ${layerCount} layers to process`,
           type: 'info'
@@ -64,7 +64,7 @@ const ProcessingFlowDebugger: React.FC<ProcessingFlowDebuggerProps> = ({
           state => state?.queryResults?.features?.length ?? 0 > 0
         ).length;
 
-        setLogs(prev => [...prev, {
+        setLogs((prev: LogEntry[]) => [...prev, {
           timestamp: new Date().toISOString(),
           message: `${layersWithFeatures} layers contain features`,
           type: layersWithFeatures > 0 ? 'success' : 'warning'
@@ -72,7 +72,7 @@ const ProcessingFlowDebugger: React.FC<ProcessingFlowDebuggerProps> = ({
 
         // Check processing duration
         const duration = Date.now() - processingStart;
-        setLogs(prev => [...prev, {
+        setLogs((prev: LogEntry[]) => [...prev, {
           timestamp: new Date().toISOString(),
           message: `Processing completed in ${duration}ms`,
           type: 'info'
@@ -84,7 +84,7 @@ const ProcessingFlowDebugger: React.FC<ProcessingFlowDebuggerProps> = ({
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
         setError(errorMessage);
         setStatus('error');
-        setLogs(prev => [...prev, {
+        setLogs((prev: LogEntry[]) => [...prev, {
           timestamp: new Date().toISOString(),
           message: `Error: ${errorMessage}`,
           type: 'error'

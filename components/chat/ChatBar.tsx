@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, KeyboardEvent } from 'react';
+import React, { useState } from 'react';
 import { Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -20,7 +20,7 @@ const ChatBar: React.FC<ChatBarProps> = ({ onSend, disabled = false, placeholder
     setText('');
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       send();
@@ -33,7 +33,7 @@ const ChatBar: React.FC<ChatBarProps> = ({ onSend, disabled = false, placeholder
         className="flex-1 resize-none theme-input placeholder:text-xs focus:outline-none focus:ring-1 focus:ring-primary"
         rows={1}
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value)}
         placeholder={placeholder}
         onKeyDown={handleKeyDown}
         disabled={disabled}

@@ -97,13 +97,13 @@ export const LayerController: React.FC<LayerControllerProps> = ({
 
   const handleGroupToggle = (groupId: string) => {
     const newExpanded = !expandedGroups[groupId];
-    setExpandedGroups(prev => ({ ...prev, [groupId]: newExpanded }));
+    setExpandedGroups((prev: Record<string, boolean>) => ({ ...prev, [groupId]: newExpanded }));
     layerStatePersistence.updateGroupState(groupId, { expanded: newExpanded });
   };
 
   const handleLayerVisibilityToggle = (layerId: string) => {
     const newVisible = !layerStates[layerId]?.visible;
-    setLayerStates(prev => ({
+    setLayerStates((prev: Record<string, any>) => ({
       ...prev,
       [layerId]: { ...prev[layerId], visible: newVisible }
     }));
@@ -112,7 +112,7 @@ export const LayerController: React.FC<LayerControllerProps> = ({
   };
 
   const handleOpacityChange = (layerId: string, newOpacity: number) => {
-    setLayerStates(prev => ({
+    setLayerStates((prev: Record<string, any>) => ({
       ...prev,
       [layerId]: { ...prev[layerId], opacity: newOpacity }
     }));
@@ -178,8 +178,9 @@ export const LayerController: React.FC<LayerControllerProps> = ({
     };
 
     return (
+      // @ts-expect-error react-beautiful-dnd v13 type compatibility
       <Draggable key={layer.id} draggableId={layer.id} index={index}>
-        {(provided, snapshot) => (
+        {(provided: any, snapshot: any) => (
           <ListItem
             ref={provided.innerRef}
             {...provided.draggableProps}
@@ -260,7 +261,7 @@ export const LayerController: React.FC<LayerControllerProps> = ({
           <ListItemSecondaryAction>
             <IconButton
               edge="end"
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                 e.stopPropagation();
                 handleEditGroup(group);
               }}
@@ -271,8 +272,9 @@ export const LayerController: React.FC<LayerControllerProps> = ({
           </ListItemSecondaryAction>
         </ListItem>
         <Collapse in={isExpanded}>
+          {/* @ts-expect-error react-beautiful-dnd v13 type compatibility */}
           <Droppable droppableId={group.id}>
-            {(provided) => (
+            {(provided: any) => (
               <List
                 ref={provided.innerRef}
                 {...provided.droppableProps}
@@ -301,6 +303,7 @@ export const LayerController: React.FC<LayerControllerProps> = ({
       </Tabs>
 
       {activeTab === 0 ? (
+        // @ts-expect-error react-beautiful-dnd v13 type compatibility  
         <DragDropContext onDragEnd={handleDragEnd}>
           <LayerFilter
             config={{
@@ -363,7 +366,7 @@ export const LayerController: React.FC<LayerControllerProps> = ({
             label="Title"
             fullWidth
             value={editForm.title}
-            onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setEditForm((prev: any) => ({ ...prev, title: e.target.value }))}
           />
           <TextField
             margin="dense"
@@ -372,7 +375,7 @@ export const LayerController: React.FC<LayerControllerProps> = ({
             multiline
             rows={4}
             value={editForm.description}
-            onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setEditForm((prev: any) => ({ ...prev, description: e.target.value }))}
           />
         </DialogContent>
         <DialogActions>

@@ -326,7 +326,7 @@ export default function VisualizationTab({
                   <Switch
                     id="symbol-size-enabled"
                     checked={config.visualization.symbolSize.enabled}
-                    onCheckedChange={(enabled) =>
+                    onCheckedChange={(enabled: boolean) =>
                       handleVisualizationChange({
                         symbolSize: { ...config.visualization.symbolSize, enabled }
                       })
@@ -344,9 +344,9 @@ export default function VisualizationTab({
                           <div className="mt-1">
                             <Slider
                               value={config.visualization.symbolSize.min}
-                              onValueChange={(value) =>
+                              onValueChange={(value: number[]) =>
                                 handleVisualizationChange({
-                                  symbolSize: { ...config.visualization.symbolSize, min: value }
+                                  symbolSize: { ...config.visualization.symbolSize, min: value[0] }
                                 })
                               }
                               min={2}
@@ -364,9 +364,9 @@ export default function VisualizationTab({
                           <div className="mt-1">
                             <Slider
                               value={config.visualization.symbolSize.max}
-                              onValueChange={(value) =>
+                              onValueChange={(value: number[]) =>
                                 handleVisualizationChange({
-                                  symbolSize: { ...config.visualization.symbolSize, max: value }
+                                  symbolSize: { ...config.visualization.symbolSize, max: value[0] }
                                 })
                               }
                               min={15}
@@ -437,7 +437,7 @@ export default function VisualizationTab({
                   <Switch
                     id="opacity-enabled"
                     checked={config.visualization.opacity.enabled}
-                    onCheckedChange={(enabled) =>
+                    onCheckedChange={(enabled: boolean) =>
                       handleVisualizationChange({
                         opacity: { ...config.visualization.opacity, enabled }
                       })
@@ -452,9 +452,9 @@ export default function VisualizationTab({
                       <div className="px-2">
                         <Slider
                           value={config.visualization.opacity.value}
-                          onValueChange={(value) =>
+                          onValueChange={(value: number[]) =>
                             handleVisualizationChange({
-                              opacity: { ...config.visualization.opacity, value: value }
+                              opacity: { ...config.visualization.opacity, value: value[0] }
                             })
                           }
                           min={0.1}
@@ -499,7 +499,7 @@ export default function VisualizationTab({
                   <Switch
                     id="labels-enabled"
                     checked={config.visualization.labels.enabled}
-                    onCheckedChange={(enabled) =>
+                    onCheckedChange={(enabled: boolean) =>
                       handleVisualizationChange({
                         labels: { ...config.visualization.labels, enabled }
                       })
@@ -574,7 +574,7 @@ export default function VisualizationTab({
                   <Switch
                     id="legend-enabled"
                     checked={config.visualization.legend.enabled}
-                    onCheckedChange={(enabled) =>
+                    onCheckedChange={(enabled: boolean) =>
                       handleVisualizationChange({
                         legend: { ...config.visualization.legend, enabled }
                       })

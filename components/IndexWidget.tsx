@@ -161,14 +161,14 @@ export const IndexWidget: React.FC<IndexWidgetProps> = ({ view, onClose }) => {
   }, [onClose, cleanupLegend]);
 
   const toggleGroup = useCallback((groupId: string) => {
-    setCollapsedGroups(prev => ({
+    setCollapsedGroups((prev: any) => ({
       ...prev,
       [groupId]: !prev[groupId]
     }));
   }, []);
 
   const handleFieldToggle = useCallback((field: string, label: string) => {
-    setSelectedFields(prev => {
+    setSelectedFields((prev: Variable[]) => {
       const exists = prev.find(f => f.field === field);
       if (exists) {
         return prev.filter(f => f.field !== field);
@@ -178,13 +178,13 @@ export const IndexWidget: React.FC<IndexWidgetProps> = ({ view, onClose }) => {
   }, []);
 
   const handleWeightChange = useCallback((field: string, weight: number) => {
-    setSelectedFields(prev =>
+    setSelectedFields((prev: Variable[]) =>
       prev.map(f => f.field === field ? { ...f, weight: Math.max(0.1, Math.min(10, weight)) } : f)
     );
   }, []);
 
   const handleReverseToggle = useCallback((field: string) => {
-    setSelectedFields(prev =>
+    setSelectedFields((prev: Variable[]) =>
       prev.map(f => f.field === field ? { ...f, reverseVariable: !f.reverseVariable } : f)
     );
   }, []);
@@ -428,7 +428,7 @@ export const IndexWidget: React.FC<IndexWidgetProps> = ({ view, onClose }) => {
                           <Input
                             type="number"
                             value={selectedFields.find(f => f.field === field.field)?.weight || 1}
-                            onChange={(e) => handleWeightChange(field.field, Number(e.target.value))}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleWeightChange(field.field, Number(e.target.value))}
                             className="w-20 text-sm"
                             min={0.1}
                             max={10}
@@ -479,7 +479,7 @@ export const IndexWidget: React.FC<IndexWidgetProps> = ({ view, onClose }) => {
                         variant="ghost"
                         size="sm"
                         onClick={() => {
-                          setSelectedFields(prev => prev.filter(f => f.field !== field.field));
+                          setSelectedFields((prev: Variable[]) => prev.filter(f => f.field !== field.field));
                         }}
                         className="text-red-600 hover:text-red-700 hover:bg-red-50"
                       >

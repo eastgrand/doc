@@ -70,7 +70,7 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ layer, onExport }) => 
       ? (event.target as HTMLInputElement).checked 
       : event.target.value;
     
-    setConfig(prev => ({
+    setConfig((prev: any) => ({
       ...prev,
       [field]: value
     }));

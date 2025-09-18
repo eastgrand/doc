@@ -121,7 +121,7 @@ export function LocationSearch({
           <Input
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             className="pr-10 text-xs placeholder:text-xs"

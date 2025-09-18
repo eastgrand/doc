@@ -211,7 +211,7 @@ export const LayerBookmarks: React.FC<LayerBookmarksProps> = ({
             <ListItemSecondaryAction>
               <IconButton
                 edge="end"
-                onClick={(e) => {
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                   e.stopPropagation();
                   handleEditBookmark(bookmark);
                 }}
@@ -221,7 +221,7 @@ export const LayerBookmarks: React.FC<LayerBookmarksProps> = ({
               </IconButton>
               <IconButton
                 edge="end"
-                onClick={(e) => {
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                   e.stopPropagation();
                   handleDeleteBookmark(bookmark.id);
                 }}
@@ -245,7 +245,7 @@ export const LayerBookmarks: React.FC<LayerBookmarksProps> = ({
             label="Name"
             fullWidth
             value={formData.name}
-            onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData((prev: any) => ({ ...prev, name: e.target.value }))}
           />
           <TextField
             margin="dense"
@@ -254,7 +254,7 @@ export const LayerBookmarks: React.FC<LayerBookmarksProps> = ({
             multiline
             rows={4}
             value={formData.description}
-            onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData((prev: any) => ({ ...prev, description: e.target.value }))}
           />
         </DialogContent>
         <DialogActions>

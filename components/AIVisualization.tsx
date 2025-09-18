@@ -8,11 +8,12 @@ import {
   Tooltip, 
   Legend,
   ResponsiveContainer,
-  ComposedChart,
   Bar,
   Cell,
   BarChart
 } from 'recharts';
+
+const ComposedChart = (require('recharts') as { ComposedChart: React.ComponentType<any> }).ComposedChart;
 import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Graphic from "@arcgis/core/Graphic";

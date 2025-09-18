@@ -181,7 +181,7 @@ const MapCustomizer: React.FC<{
           <Label>Unit Type</Label>
           <RadioGroup
             value={config.unitType}
-            onValueChange={(value) => 
+            onValueChange={(value: string) => 
               onConfigChange({ ...config, unitType: value as 'miles' | 'kilometers' })
             }
           >

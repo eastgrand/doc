@@ -529,7 +529,7 @@ export default function ReportsTab({ view, layerStates }: ReportsTabProps) {
                   <Input
                     type="number"
                     value={bufferValue}
-                    onChange={(e) => setBufferValue(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBufferValue(e.target.value)}
                     min="0"
                     step={bufferType === 'radius' ? "0.1" : "1"}
                   />

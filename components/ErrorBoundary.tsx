@@ -43,10 +43,10 @@ export function withErrorBoundary<P extends object>(
   errorBoundaryProps?: Omit<ErrorBoundaryProps, 'children'>
 ) {
   return function WithErrorBoundary(props: P) {
-    return (
-      <ErrorBoundary {...errorBoundaryProps}>
-        <WrappedComponent {...props} />
-      </ErrorBoundary>
+    return React.createElement(
+      ErrorBoundary as unknown as React.ComponentType<any>,
+      errorBoundaryProps,
+      React.createElement(WrappedComponent, props)
     );
   };
 }

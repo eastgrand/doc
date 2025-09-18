@@ -217,7 +217,7 @@ export function ClusterConfigPanel({
               </div>
               <Slider
                 value={config.numClusters}
-                onValueChange={(value) => handleConfigChange({ numClusters: value })}
+                onValueChange={(value: number[]) => handleConfigChange({ numClusters: value[0] })}
                 min={1}
                 max={20}
                 step={1}
@@ -241,7 +241,7 @@ export function ClusterConfigPanel({
               </div>
               <Slider
                 value={config.minZipCodes}
-                onValueChange={(value) => handleConfigChange({ minZipCodes: value })}
+                onValueChange={(value: number[]) => handleConfigChange({ minZipCodes: value[0] })}
                 min={5}
                 max={50}
                 step={1}
@@ -265,7 +265,7 @@ export function ClusterConfigPanel({
               </div>
               <Slider
                 value={config.minPopulation}
-                onValueChange={(value) => handleConfigChange({ minPopulation: value })}
+                onValueChange={(value: number[]) => handleConfigChange({ minPopulation: value[0] })}
                 min={10000}
                 max={1000000}
                 step={5000}
@@ -289,7 +289,7 @@ export function ClusterConfigPanel({
               </div>
               <Slider
                 value={config.maxRadiusMiles}
-                onValueChange={(value) => handleConfigChange({ maxRadiusMiles: value })}
+                onValueChange={(value: number[]) => handleConfigChange({ maxRadiusMiles: value[0] })}
                 min={20}
                 max={100}
                 step={5}
@@ -313,7 +313,7 @@ export function ClusterConfigPanel({
               </div>
               <Slider
                 value={config.minScorePercentile ?? 70}
-                onValueChange={(value) => handleConfigChange({ minScorePercentile: value })}
+                onValueChange={(value: number[]) => handleConfigChange({ minScorePercentile: value[0] })}
                 min={50}
                 max={90}
                 step={5}

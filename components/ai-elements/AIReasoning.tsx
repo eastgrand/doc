@@ -244,7 +244,7 @@ export const AIReasoning: React.FC<AIReasoningProps> = ({
   }, [reasoningSteps, processingTime]);
 
   const toggleStep = useCallback((stepId: string) => {
-    setExpandedSteps(prev => {
+    setExpandedSteps((prev: Set<string>) => {
       const newSet = new Set(prev);
       if (newSet.has(stepId)) {
         newSet.delete(stepId);
@@ -313,11 +313,11 @@ export const AIReasoning: React.FC<AIReasoningProps> = ({
             <Reasoning
               key={step.id}
               open={isExpanded}
-              onOpenChange={(open) => {
+              onOpenChange={(open: boolean) => {
                 if (open) {
-                  setExpandedSteps(prev => new Set([...prev, step.id]));
+                  setExpandedSteps((prev: Set<string>) => new Set([...prev, step.id]));
                 } else {
-                  setExpandedSteps(prev => {
+                  setExpandedSteps((prev: Set<string>) => {
                     const newSet = new Set(prev);
                     newSet.delete(step.id);
                     return newSet;

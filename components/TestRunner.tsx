@@ -65,7 +65,7 @@ export default function TestRunner() {
 
   const runAllTests = async () => {
     if (!mapView) {
-      setResults(prev => [...prev, {
+      setResults((prev: any) => [...prev, {
         query: 'All Tests',
         layers: [],
         visualization: '',
@@ -85,11 +85,11 @@ export default function TestRunner() {
           query,
           mapView,
           (result) => {
-            setResults(prev => [...prev, result]);
+            setResults((prev: any) => [...prev, result]);
             resolve();
           },
           (error) => {
-            setResults(prev => [...prev, {
+            setResults((prev: any) => [...prev, {
               query: query.query,
               layers: [],
               visualization: '',
@@ -108,7 +108,7 @@ export default function TestRunner() {
 
   const runSingleTest = async (query: TestQuery) => {
     if (!mapView) {
-      setResults(prev => [...prev, {
+      setResults((prev: any) => [...prev, {
         query: query.query,
         layers: [],
         visualization: '',
@@ -126,11 +126,11 @@ export default function TestRunner() {
         query,
         mapView,
         (result) => {
-          setResults(prev => [...prev, result]);
+          setResults((prev: any) => [...prev, result]);
           resolve();
         },
         (error) => {
-          setResults(prev => [...prev, {
+          setResults((prev: any) => [...prev, {
             query: query.query,
             layers: [],
             visualization: '',

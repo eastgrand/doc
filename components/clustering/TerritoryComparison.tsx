@@ -35,15 +35,25 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar,
-  ScatterChart,
-  Scatter,
   Cell
 } from 'recharts';
+
+const recharts = require('recharts') as { 
+  RadarChart: React.ComponentType<any>; 
+  PolarGrid: React.ComponentType<any>;
+  PolarAngleAxis: React.ComponentType<any>;
+  PolarRadiusAxis: React.ComponentType<any>;
+  Radar: React.ComponentType<any>;
+  ScatterChart: React.ComponentType<any>; 
+  Scatter: React.ComponentType<any>; 
+};
+const RadarChart = recharts.RadarChart;
+const PolarGrid = recharts.PolarGrid;
+const PolarAngleAxis = recharts.PolarAngleAxis;
+const PolarRadiusAxis = recharts.PolarRadiusAxis;
+const Radar = recharts.Radar;
+const ScatterChart = recharts.ScatterChart;
+const Scatter = recharts.Scatter;
 import { 
   Target, 
   Users, 
@@ -214,7 +224,7 @@ export function TerritoryComparison({
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis />
-                  <Tooltip formatter={(value, name, props) => [
+                  <Tooltip formatter={(value: any, name: any, props: any) => [
                     typeof value === 'number' ? value.toFixed(1) : value,
                     getMetricLabel(comparisonMetric),
                     props.payload?.fullName
@@ -252,7 +262,7 @@ export function TerritoryComparison({
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="population" name="Population (K)" />
                   <YAxis dataKey="score" name="Score" />
-                  <Tooltip formatter={(value, name) => [
+                  <Tooltip formatter={(value: any, name: any) => [
                     typeof value === 'number' ? value.toFixed(1) : value,
                     name === 'population' ? 'Population (K)' : 'Score'
                   ]} />

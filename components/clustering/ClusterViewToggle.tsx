@@ -5,7 +5,7 @@
  * clustered territory view, and combined view modes in the analysis interface.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -60,7 +60,7 @@ export function ClusterViewToggle({
             <ToggleGroup 
               type="single" 
               value={viewMode} 
-              onValueChange={(value) => value && onViewModeChange(value as ViewMode)}
+              onValueChange={(value: string) => value && onViewModeChange(value as ViewMode)}
               className="bg-muted rounded-lg p-1"
             >
               <ToggleGroupItem 
@@ -202,7 +202,7 @@ export function CompactClusterViewToggle({
       <ToggleGroup 
         type="single" 
         value={viewMode} 
-        onValueChange={(value) => value && onViewModeChange(value as ViewMode)}
+        onValueChange={(value: string) => value && onViewModeChange(value as ViewMode)}
         className="bg-muted rounded p-1"
       >
         <ToggleGroupItem value="individual" aria-label="Individual view">
@@ -313,9 +313,9 @@ export function AdvancedClusterViewToggle({
  * Hook for managing view mode state
  */
 export function useClusterViewMode(initialMode: ViewMode = 'individual') {
-  const [viewMode, setViewMode] = React.useState<ViewMode>(initialMode);
-  const [showIndividual, setShowIndividual] = React.useState(true);
-  const [showClusters, setShowClusters] = React.useState(true);
+  const [viewMode, setViewMode] = useState<ViewMode>(initialMode);
+  const [showIndividual, setShowIndividual] = useState(true);
+  const [showClusters, setShowClusters] = useState(true);
 
   const handleViewModeChange = React.useCallback((mode: ViewMode) => {
     setViewMode(mode);

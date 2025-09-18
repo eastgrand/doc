@@ -110,7 +110,7 @@ export default function EnhancedAppLoader({
     if (allFacts.length === 0) return;
 
     factIntervalRef.current = setInterval(() => {
-      setFactIndex(prev => {
+      setFactIndex((prev: number) => {
         const next = (prev + 1) % allFacts.length;
         setCurrentFact(allFacts[next]);
         return next;

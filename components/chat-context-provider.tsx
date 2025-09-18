@@ -77,7 +77,7 @@ export const ChatContextProvider = ({
       timestamp: Date.now(),
     };
 
-    setMessages(prevMessages => {
+    setMessages((prevMessages: ChatMessage[]) => {
       // Keep only the most recent messages up to maxMessages
       const updatedMessages = [...prevMessages, newMessage];
       if (updatedMessages.length > maxMessages) {

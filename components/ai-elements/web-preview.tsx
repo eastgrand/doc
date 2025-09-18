@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { ChevronDownIcon } from 'lucide-react';
-import type { ComponentProps, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
 
 export type WebPreviewContextValue = {
@@ -35,7 +35,7 @@ const useWebPreview = () => {
   return context;
 };
 
-export type WebPreviewProps = ComponentProps<'div'> & {
+export type WebPreviewProps = React.ComponentProps<'div'> & {
   defaultUrl?: string;
   onUrlChange?: (url: string) => void;
 };
@@ -77,7 +77,7 @@ export const WebPreview = ({
   );
 };
 
-export type WebPreviewNavigationProps = ComponentProps<'div'>;
+export type WebPreviewNavigationProps = React.ComponentProps<'div'>;
 
 export const WebPreviewNavigation = ({
   className,
@@ -92,7 +92,7 @@ export const WebPreviewNavigation = ({
   </div>
 );
 
-export type WebPreviewNavigationButtonProps = ComponentProps<typeof Button> & {
+export type WebPreviewNavigationButtonProps = React.ComponentProps<typeof Button> & {
   tooltip?: string;
 };
 
@@ -124,7 +124,7 @@ export const WebPreviewNavigationButton = ({
   </TooltipProvider>
 );
 
-export type WebPreviewUrlProps = ComponentProps<typeof Input>;
+export type WebPreviewUrlProps = React.ComponentProps<typeof Input>;
 
 export const WebPreviewUrl = ({
   value,
@@ -154,7 +154,7 @@ export const WebPreviewUrl = ({
   );
 };
 
-export type WebPreviewBodyProps = ComponentProps<'iframe'> & {
+export type WebPreviewBodyProps = React.ComponentProps<'iframe'> & {
   loading?: ReactNode;
 };
 
@@ -180,7 +180,7 @@ export const WebPreviewBody = ({
   );
 };
 
-export type WebPreviewConsoleProps = ComponentProps<'div'> & {
+export type WebPreviewConsoleProps = React.ComponentProps<'div'> & {
   logs?: Array<{
     level: 'log' | 'warn' | 'error';
     message: string;

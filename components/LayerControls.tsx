@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   List, 
   ListItem, 
@@ -29,10 +29,10 @@ export const LayerControls: React.FC<LayerControlsProps> = ({
   onLayerVisibilityChange,
   onLayerOpacityChange
 }) => {
-  const [expandedGroups, setExpandedGroups] = React.useState<Record<string, boolean>>({});
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
 
   const toggleGroup = (groupId: string) => {
-    setExpandedGroups(prev => ({
+    setExpandedGroups((prev: Record<string, boolean>) => ({
       ...prev,
       [groupId]: !prev[groupId]
     }));

@@ -18,10 +18,6 @@ import {
 } from '@/components/ui/dialog';
 import { AlertTriangle, Info, TrendingUp, TrendingDown, BarChart3, PieChart, Activity, LineChart as LineChartIcon, BarChart2, Filter as FilterIcon, Save } from 'lucide-react';
 import {
-  ComposedChart,
-  BarChart,
-  LineChart,
-  PieChart as RechartsPieChart,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -32,20 +28,28 @@ import {
   Line,
   Pie,
   Cell,
-  ScatterChart,
-  Scatter,
-  AreaChart,
-  Area as RechartsArea,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar,
-  FunnelChart,
-  Funnel,
-  LabelList,
-  Treemap
+  Area as RechartsArea
 } from 'recharts';
+
+// Dynamic imports for all potentially problematic chart components to avoid type conflicts
+const recharts = require('recharts') as any;
+const ComposedChart = recharts.ComposedChart as React.ComponentType<any>;
+const BarChart = recharts.BarChart as React.ComponentType<any>;
+const LineChart = recharts.LineChart as React.ComponentType<any>;
+const PieChartRecharts = recharts.PieChart as React.ComponentType<any>;
+const RechartsPieChart = PieChartRecharts;
+const ScatterChart = recharts.ScatterChart as React.ComponentType<any>;
+const AreaChart = recharts.AreaChart as React.ComponentType<any>;
+const RadarChart = recharts.RadarChart as React.ComponentType<any>;
+const FunnelChart = recharts.FunnelChart as React.ComponentType<any>;
+const Scatter = recharts.Scatter;
+const PolarGrid = recharts.PolarGrid;
+const PolarAngleAxis = recharts.PolarAngleAxis;
+const PolarRadiusAxis = recharts.PolarRadiusAxis;
+const Radar = recharts.Radar;
+const Funnel = recharts.Funnel;
+const LabelList = recharts.LabelList;
+const Treemap = recharts.Treemap;
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Use AnalysisEngine types instead of deleted AILayerManager
@@ -565,7 +569,7 @@ export const EnhancedVisualization: React.FC<EnhancedVisualizationProps> = ({
       }
     };
 
-    setPresets(prev => [...prev, newPreset]);
+    setPresets((prev: FilterPreset[]) => [...prev, newPreset]);
     filterOptions.presets?.onPresetChange?.(newPreset);
     setShowPresetDialog(false);
     setNewPresetName('');
@@ -740,7 +744,7 @@ export const EnhancedVisualization: React.FC<EnhancedVisualizationProps> = ({
             <Input
               id="preset-name"
               value={newPresetName}
-              onChange={(e) => setNewPresetName(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setNewPresetName(e.target.value)}
               placeholder="Enter preset name..."
             />
           </div>
@@ -749,7 +753,7 @@ export const EnhancedVisualization: React.FC<EnhancedVisualizationProps> = ({
             <Input
               id="preset-description"
               value={newPresetDescription}
-              onChange={(e) => setNewPresetDescription(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setNewPresetDescription(e.target.value)}
               placeholder="Enter description..."
             />
           </div>

@@ -239,6 +239,7 @@ const createAnalysisSummary = (
   return summary;
 };
 
+// eslint-disable-next-line react/display-name
 const EnhancedGeospatialChat = memo(({
   dataSource,
   onFeaturesFound,
@@ -585,7 +586,7 @@ const EnhancedGeospatialChat = memo(({
     // Only update message if processing is completely finished
     if (Array.isArray(features) && !isProcessing) {
       // Update the last message to include results
-      setMessages(prevMessages => {
+      setMessages((prevMessages: LocalChatMessage[]) => {
         // Find the last assistant message
         const lastAssistantMessageIndex = [...prevMessages]
           .reverse()
@@ -1578,7 +1579,7 @@ const EnhancedGeospatialChat = memo(({
         timestamp: new Date(),
         metadata: { context: 'contextual_chat' }
       };
-      setMessages(prev => [...prev, userMessage]);
+      setMessages((prev: LocalChatMessage[]) => [...prev, userMessage]);
       
       // Prepare comprehensive context for Claude - use existing features and analysis data
       const contextualData = {
@@ -1672,7 +1673,7 @@ const EnhancedGeospatialChat = memo(({
             timestamp: new Date(),
             metadata: { context: 'contextual_response', debugInfo: { persona: selectedPersona } }
           };
-          setMessages(prev => [...prev, assistantMessage]);
+          setMessages((prev: LocalChatMessage[]) => [...prev, assistantMessage]);
           console.log('[Contextual Chat] ✅ Successfully added contextual response, content length:', assistantContent.length);
         } else {
           console.error('[Contextual Chat] ❌ No content in response:', claudeJson);
@@ -1730,7 +1731,7 @@ const EnhancedGeospatialChat = memo(({
         timestamp: new Date(),
         metadata: { context: 'error_response', debugInfo: { error: errorMessage } }
       };
-      setMessages(prev => [...prev, chatErrorMessage]);
+      setMessages((prev: LocalChatMessage[]) => [...prev, chatErrorMessage]);
     } finally {
       console.log('[Contextual Chat] 🏁 Setting isProcessing to false');
       setIsProcessing(false);
@@ -1939,7 +1940,7 @@ const EnhancedGeospatialChat = memo(({
       }
     };
 
-    setMessages(prev => [...prev, userMessage, assistantMessage]);
+    setMessages((prev: LocalChatMessage[]) => [...prev, userMessage, assistantMessage]);
     addContextMessage({ role: 'user', content: query });
 
     try {
@@ -2078,7 +2079,7 @@ const EnhancedGeospatialChat = memo(({
       // --- INTEGRATION: Convert AnalysisEngine result to existing format ---
       
       // Update processing steps to complete
-      setProcessingSteps(prev => prev.map(s => 
+      setProcessingSteps((prev: GeoProcessingStep[]) => prev.map(s => 
         s.id === 'narrative_generation' ? { ...s, status: 'processing' as any } : { ...s, status: 'complete' as any }
       ));
       setCurrentProcessingStep('narrative_generation');
@@ -2703,7 +2704,7 @@ const EnhancedGeospatialChat = memo(({
           is_clustered: finalAnalysisResult?.data?.isClustered
         })));
         
-        setProcessingSteps(prev => prev.map(s => 
+        setProcessingSteps((prev: GeoProcessingStep[]) => prev.map(s => 
           s.id === 'narrative_generation' ? { ...s, message: 'Preparing data for narrative analysis...' } : s
         ));
 
@@ -3089,7 +3090,7 @@ const EnhancedGeospatialChat = memo(({
       }
 
       // Complete narrative generation step
-      setProcessingSteps(prev => prev.map(s => 
+      setProcessingSteps((prev: GeoProcessingStep[]) => prev.map(s => 
         s.id === 'narrative_generation' ? { 
           ...s, 
           status: 'complete', 
@@ -3119,7 +3120,7 @@ const EnhancedGeospatialChat = memo(({
       const finalContent = fallbackWarning + baseFinalContent;
       
       // Update message with streaming content
-      setMessages(prev => prev.map(msg =>
+      setMessages((prev: LocalChatMessage[]) => prev.map(msg =>
         msg.id === assistantMessageId
           ? { 
               ...msg, 
@@ -3209,7 +3210,7 @@ const EnhancedGeospatialChat = memo(({
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
       setError(errorMessage);
       
-      setProcessingSteps(prev => prev.map(s => {
+      setProcessingSteps((prev: GeoProcessingStep[]) => prev.map(s => {
         if (s.status === 'processing') {
           return { ...s, status: 'error', message: errorMessage };
         }
@@ -3223,7 +3224,7 @@ const EnhancedGeospatialChat = memo(({
       setIsProcessing(false);
       setCurrentProcessingStep(null);
       
-      setMessages(prev => prev.map(msg =>
+      setMessages((prev: LocalChatMessage[]) => prev.map(msg =>
         msg.id === assistantMessageId ? {
           ...msg,
           content: `Sorry, I encountered an error while processing your query: ${errorMessage}`,
@@ -3755,7 +3756,7 @@ const EnhancedGeospatialChat = memo(({
           const claudeJson = await claudeResp.json();
           const newContent = claudeJson?.content;
           if (newContent) {
-            setMessages(prev => prev.map(m => m.id === messageId ? { 
+            setMessages((prev: LocalChatMessage[]) => prev.map(m => m.id === messageId ? { 
             ...m, 
             content: newContent,
             metadata: { ...m.metadata, isStreaming: false }
@@ -3924,7 +3925,7 @@ const EnhancedGeospatialChat = memo(({
       });
 
       // Update UI to show multi-endpoint specific information
-      setMessages(prev => [...prev, {
+      setMessages((prev: LocalChatMessage[]) => [...prev, {
         id: Date.now().toString(),
         type: 'multi_endpoint_result',
         role: 'assistant',
@@ -4468,7 +4469,7 @@ const EnhancedGeospatialChat = memo(({
                       ref={textareaRef}
                       value={inputQuery}
                       onChange={handleInputChange}
-                      onKeyDown={(e) => {
+                      onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault();
                           if (!isProcessing && inputQuery.trim()) {
@@ -4698,10 +4699,10 @@ const EnhancedGeospatialChat = memo(({
         <div className="py-4 space-y-4">
           <Textarea 
             value={replyInput}
-            onChange={(e) => setReplyInput(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setReplyInput(e.target.value)}
             placeholder="Type your reply here..."
             className="w-full h-24 resize-none text-xs"
-            onKeyDown={(e) => {
+            onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 if (replyInput.trim()) {
@@ -4847,7 +4848,8 @@ const EnhancedGeospatialChat = memo(({
    );
  });
 
-EnhancedGeospatialChat.displayName = 'EnhancedGeospatialChat';
+// Add display name for debugging and React DevTools
+(EnhancedGeospatialChat as any).displayName = 'EnhancedGeospatialChat';
 
 // Export both default and named exports for compatibility
 export { EnhancedGeospatialChat };

@@ -189,7 +189,7 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
       // Try to get fresh data from API
       const realTimeResponse = await getRealTimeData();
       
-      setStreams(prevStreams => {
+      setStreams((prevStreams: DataStream[]) => {
         const updatedStreams = prevStreams.map(stream => {
           if (stream.id === streamId) {
             // Try to find matching data in API response
@@ -236,7 +236,7 @@ export const RealTimeDataDashboard: React.FC<RealTimeDataDashboardProps> = ({
     } catch (error) {
       console.error('Error updating stream:', error);
       // Update stream status to error on failure
-      setStreams(prevStreams => {
+      setStreams((prevStreams: DataStream[]) => {
         const updatedStreams = prevStreams.map(stream => 
           stream.id === streamId 
             ? { ...stream, status: 'error' as const, timestamp: new Date() }

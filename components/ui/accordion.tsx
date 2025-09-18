@@ -7,7 +7,7 @@ import { ChevronDown } from "lucide-react"
 const Accordion = ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
   const [openItem, setOpenItem] = useState<string | null>(null);
 
-  const items = React.Children.map(children, (child) => {
+  const items = React.Children.map(children, (child: any) => {
     if (React.isValidElement(child)) {
       return React.cloneElement(child as React.ReactElement<any>, {
         isOpen: child.props.value === openItem,
@@ -23,20 +23,18 @@ const Accordion = ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>)
   return <div {...props}>{items}</div>;
 };
 
-const AccordionItem = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { value: string; isOpen?: boolean; onToggle?: () => void }
->(({ className, children, isOpen, onToggle, value, ...props }, ref) => {
+const AccordionItem = forwardRef((props: React.HTMLAttributes<HTMLDivElement> & { value: string; isOpen?: boolean; onToggle?: () => void }, ref: React.Ref<HTMLDivElement>) => {
+  const { className, children, isOpen, onToggle, value, ...otherProps } = props;
   const childrenArray = React.Children.toArray(children);
   const trigger = childrenArray[0];
   const content = childrenArray[1];
 
   return (
-    <div 
-      ref={ref} 
-      className={cn("border rounded-md mb-2", className)} 
-      {...props}
-    >
+          <div
+        ref={ref}
+        className={`border-b border-gray-200 ${className}`}
+        {...otherProps}
+      >
       {React.isValidElement(trigger) && 
         React.cloneElement(trigger as React.ReactElement<any>, { 
           isOpen, 
@@ -54,10 +52,9 @@ const AccordionItem = forwardRef<
 });
 AccordionItem.displayName = "AccordionItem"
 
-const AccordionTrigger = forwardRef<
-  HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement> & { isOpen?: boolean }
->(({ className, children, isOpen, ...props }, ref) => (
+const AccordionTrigger = forwardRef((props: React.ButtonHTMLAttributes<HTMLButtonElement> & { isOpen?: boolean }, ref: React.Ref<HTMLButtonElement>) => {
+  const { className, children, isOpen, ...otherProps } = props;
+  return (
   <button
     ref={ref}
     data-state={isOpen ? "open" : "closed"}
@@ -65,7 +62,7 @@ const AccordionTrigger = forwardRef<
       "flex w-full items-center justify-between py-2 text-xs font-medium transition-all hover:underline",
       className
     )}
-    {...props}
+    {...otherProps}
   >
     {children}
     <ChevronDown className={cn(
@@ -73,21 +70,22 @@ const AccordionTrigger = forwardRef<
       isOpen && "rotate-180"
     )} />
   </button>
-));
+  );
+});
 AccordionTrigger.displayName = "AccordionTrigger"
 
-const AccordionContent = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, children, ...props }, ref) => (
+const AccordionContent = forwardRef((props: React.HTMLAttributes<HTMLDivElement>, ref: React.Ref<HTMLDivElement>) => {
+  const { className, children, ...otherProps } = props;
+  return (
   <div
     ref={ref}
     className={cn("overflow-hidden text-sm", className)}
-    {...props}
+    {...otherProps}
   >
     <div className="pb-4 pt-0">{children}</div>
   </div>
-))
+  );
+});
 AccordionContent.displayName = "AccordionContent"
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }

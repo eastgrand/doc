@@ -297,7 +297,7 @@ export const AdvancedServiceManager: React.FC<AdvancedServiceManagerProps> = ({
                   id="service-url"
                   placeholder="https://services8.arcgis.com/.../FeatureServer"
                   value={discoveryUrl}
-                  onChange={(e) => setDiscoveryUrl(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setDiscoveryUrl(e.target.value)}
                 />
                 <div className="text-xs text-gray-500">
                   <p>💡 Try this sample URL:</p>
@@ -484,7 +484,7 @@ export const AdvancedServiceManager: React.FC<AdvancedServiceManagerProps> = ({
                       id="search"
                       placeholder="Search by name..."
                       value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSearchTerm(e.target.value)}
                       className="pl-8"
                     />
                   </div>
@@ -630,7 +630,7 @@ export const AdvancedServiceManager: React.FC<AdvancedServiceManagerProps> = ({
                             
                             <Checkbox
                               checked={selectedLayers.has(layer.id)}
-                              onCheckedChange={(checked) => handleLayerSelection(layer.id, checked as boolean)}
+                              onCheckedChange={(checked: boolean) => handleLayerSelection(layer.id, checked)}
                             />
                             
                             <div className="flex-1 min-w-0">
@@ -786,7 +786,7 @@ export const AdvancedServiceManager: React.FC<AdvancedServiceManagerProps> = ({
                           <Input
                             placeholder="Group name"
                             value={newGroupName}
-                            onChange={(e) => setNewGroupName(e.target.value)}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setNewGroupName(e.target.value)}
                             className="text-sm"
                           />
                           <Button

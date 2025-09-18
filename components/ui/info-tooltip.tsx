@@ -3,7 +3,6 @@ import { Info } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
@@ -25,7 +24,7 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Tooltip open={isOpen} onOpenChange={(open) => {
+    <Tooltip open={isOpen} onOpenChange={(open: boolean) => {
       // Only allow closing, not opening via hover
       if (!open) {
         setIsOpen(false);
@@ -55,7 +54,7 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({
             e.preventDefault();
             e.stopPropagation();
           }}
-          onClick={(e) => {
+          onClick={(e: React.MouseEvent) => {
             e.preventDefault();
             e.stopPropagation();
             setIsOpen(!isOpen);

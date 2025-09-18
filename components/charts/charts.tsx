@@ -108,7 +108,7 @@ export const RenderComparisonChart: React.FC<ChartProps> = ({ data, config }) =>
             cy="50%"
             outerRadius={150}
             fill="#33a852"
-            label={(entry) => entry.name}
+            label={(entry: { name: string }) => entry.name}
           />
           <Tooltip />
           <Legend />

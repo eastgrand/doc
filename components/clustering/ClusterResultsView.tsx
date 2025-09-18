@@ -84,7 +84,7 @@ export function ClusterResultsView({
           <ToggleGroup 
             type="single" 
             value={viewMode} 
-            onValueChange={(value) => value && handleViewModeChange(value as ViewMode)}
+            onValueChange={(value: string) => value && handleViewModeChange(value as ViewMode)}
             className="bg-muted rounded-lg p-1"
           >
             <ToggleGroupItem value="individual" aria-label="Individual view">

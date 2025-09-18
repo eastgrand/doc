@@ -41,14 +41,14 @@ export const RendererOptimizationPanel: React.FC<RendererOptimizationPanelProps>
   const optimizer = RendererOptimizer.getInstance();
 
   const handleOptionChange = (option: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setOptimizationOptions(prev => ({
+    setOptimizationOptions((prev: any) => ({
       ...prev,
       [option]: event.target.checked
     }));
   };
 
   const handleSliderChange = (option: string) => (_: Event, value: number | number[]) => {
-    setOptimizationOptions(prev => ({
+    setOptimizationOptions((prev: any) => ({
       ...prev,
       [option]: value
     }));

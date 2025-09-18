@@ -74,7 +74,7 @@ export const ViewSynchronization: React.FC<ViewSynchronizationProps> = ({
   const handleConfigChange = (field: keyof SyncConfig) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setSyncConfig(prev => ({
+    setSyncConfig((prev: any) => ({
       ...prev,
       [field]: event.target.checked
     }));

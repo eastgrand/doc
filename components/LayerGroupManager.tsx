@@ -144,7 +144,7 @@ export const LayerGroupManager: React.FC<LayerGroupManagerProps> = ({
             label="Group Title"
             fullWidth
             value={groupTitle}
-            onChange={(e) => setGroupTitle(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setGroupTitle(e.target.value)}
           />
           <TextField
             margin="dense"
@@ -153,14 +153,14 @@ export const LayerGroupManager: React.FC<LayerGroupManagerProps> = ({
             multiline
             rows={2}
             value={groupDescription}
-            onChange={(e) => setGroupDescription(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setGroupDescription(e.target.value)}
           />
           <FormControl fullWidth margin="dense">
             <InputLabel>Layers</InputLabel>
             <Select
               multiple
               value={selectedLayers}
-              onChange={(e) => setSelectedLayers(e.target.value as string[])}
+              onChange={(e: any) => setSelectedLayers(e.target.value)}
               renderValue={(selected) => (
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                   {selected.map((value) => (

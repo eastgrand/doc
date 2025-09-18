@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Select,
   SelectContent,
@@ -81,8 +81,8 @@ const findLayerConfig = (layer: __esri.FeatureLayer): LayerConfig | undefined =>
 const LayerControl = ({ layers, view }: LayerControlProps) => {
   const [layerStates, setLayerStates] = useState<Record<string, LayerState>>({});
   const [isLoading, setIsLoading] = useState(true);
-  const legendRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
-  const cleanupTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const legendRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const cleanupTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const initializeLayers = async () => {
@@ -167,7 +167,7 @@ const LayerControl = ({ layers, view }: LayerControlProps) => {
     const layer = layers.find(l => l.id === layerId);
     if (!layer) return;
 
-    setLayerStates(prev => ({
+    setLayerStates((prev: Record<string, LayerState>) => ({
       ...prev,
       [layerId]: {
         ...prev[layerId],
@@ -182,7 +182,7 @@ const LayerControl = ({ layers, view }: LayerControlProps) => {
     if (!layer) return;
 
     layer.visible = checked;
-    setLayerStates(prev => ({
+    setLayerStates((prev: Record<string, LayerState>) => ({
       ...prev,
       [layerId]: {
         ...prev[layerId],
@@ -209,7 +209,7 @@ const LayerControl = ({ layers, view }: LayerControlProps) => {
           }
         });
 
-        setLayerStates(prev => ({
+        setLayerStates((prev: Record<string, LayerState>) => ({
           ...prev,
           [layerId]: {
             ...prev[layerId],

@@ -137,7 +137,7 @@ export default function UnifiedAreaSelector({
     };
 
     if (allowMultipleSelection) {
-      setSelectedAreas(prev => [...prev, area]);
+      setSelectedAreas((prev: any) => [...prev, area]);
     } else {
       setSelectedAreas([area]);
     }

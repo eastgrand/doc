@@ -85,7 +85,7 @@ const ReportSelectionDialog: React.FC<ReportSelectionDialogProps & GridProps> = 
                 fullWidth
                 size="small"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSearchQuery(e.target.value)}
                 InputProps={{
                   style: { borderColor: '#33a852' },
                 }}
@@ -113,7 +113,7 @@ const ReportSelectionDialog: React.FC<ReportSelectionDialogProps & GridProps> = 
               >
                 <Select
                   value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedCategory(e.target.value)}
                 >
                   {/* Use dynamically generated categories */}
                   {availableCategories.map(category => (
@@ -131,7 +131,7 @@ const ReportSelectionDialog: React.FC<ReportSelectionDialogProps & GridProps> = 
           justifyContent: 'center'
         }}>
           {filteredReports.map((report) => {
-            const IconComponent = report.icon; // Get the icon component
+            const IconComponent = report.icon as React.ComponentType<any>; // Get the icon component
             return (
             <div key={report.id} style={{ 
               flex: '1 1 300px',

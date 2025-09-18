@@ -1,8 +1,10 @@
 import React, { useRef } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-  ResponsiveContainer, ReferenceLine, Cell
+  ResponsiveContainer, Cell
 } from 'recharts';
+
+const ReferenceLine = (require('recharts') as { ReferenceLine: React.ComponentType<any> }).ReferenceLine;
 import { Loader2, AlertCircle } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';

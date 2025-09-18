@@ -54,7 +54,7 @@ export const VisualizationControls: React.FC<VisualizationControlsProps> = ({
             max={1}
             step={0.01}
             value={opacity}
-            onValueChange={(value) => onOpacityChange(value)}
+            onValueChange={(value: number[]) => onOpacityChange(value[0])}
             className="w-full"
           />
         </div>

@@ -153,7 +153,7 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
               <TextField
                 size="small"
                 value={condition.value}
-                onChange={(e) =>
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                   updateCondition(index, { value: e.target.value })
                 }
                 placeholder="Value"
@@ -188,7 +188,7 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
             <TextField
               size="small"
               value={presetName}
-              onChange={(e) => setPresetName(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPresetName(e.target.value)}
               placeholder="Preset name"
             />
             <Button

@@ -191,7 +191,7 @@ export const ServiceManager: React.FC<ServiceManagerProps> = ({
               id="service-url"
               placeholder="https://services8.arcgis.com/.../FeatureServer"
               value={discoveryUrl}
-              onChange={(e) => setDiscoveryUrl(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDiscoveryUrl(e.target.value)}
             />
           </div>
 

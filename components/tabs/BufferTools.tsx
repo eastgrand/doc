@@ -77,6 +77,6 @@ const BufferTools = memo(({
   );
 });
 
-BufferTools.displayName = 'BufferTools';
+
 
 export default BufferTools; 

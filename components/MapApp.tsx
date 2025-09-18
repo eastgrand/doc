@@ -166,10 +166,10 @@ export const MapApp: React.FC = memo(() => {
 
   const handleToggleWidget = useCallback((widgetName: string) => {
     if (widgetName === 'quickStats') {
-      setShowSampleAreasPanel(prev => !prev);
+      setShowSampleAreasPanel((prev: boolean) => !prev);
       setActiveWidget(null); // Close any other active widgets
     } else {
-      setActiveWidget(prev => prev === widgetName ? null : widgetName);
+      setActiveWidget((prev: string | null) => prev === widgetName ? null : widgetName);
       setShowSampleAreasPanel(false); // Close Sample Areas Panel when other widgets open
     }
   }, []);
@@ -190,7 +190,7 @@ export const MapApp: React.FC = memo(() => {
   // NEW: Handle LayerController layers for CustomPopupManager
   const handleLayersCreated = useCallback((layers: __esri.FeatureLayer[]) => {
     console.log('[MapApp] LayerController layers created for CustomPopupManager:', layers.length);
-    setFeatureLayers(prevLayers => {
+    setFeatureLayers((prevLayers: __esri.FeatureLayer[]) => {
       // Remove any existing LayerController layers and add new ones
       const nonLayerControllerLayers = prevLayers.filter(layer => 
         !layer.id.includes('layer-controller') && 
@@ -203,7 +203,7 @@ export const MapApp: React.FC = memo(() => {
   // NEW: Handle SampleAreasPanel layers for CustomPopupManager
   const handleSampleAreasLayersCreated = useCallback((layers: __esri.FeatureLayer[]) => {
     console.log('[MapApp] SampleAreasPanel layers created for CustomPopupManager:', layers.length);
-    setFeatureLayers(prevLayers => {
+    setFeatureLayers((prevLayers: __esri.FeatureLayer[]) => {
       // Remove any existing sample area layers and add new ones
       const nonSampleAreaLayers = prevLayers.filter(layer => 
         !layer.title?.includes('ZIP Codes') && 
@@ -215,7 +215,7 @@ export const MapApp: React.FC = memo(() => {
 
   // Memoize layer state update handler for AITab
   const handleLayerStateChange = useCallback((layerId: string, state: any) => {
-    setLayerStates(prev => ({ ...prev, [layerId]: state }));
+    setLayerStates((prev: Record<string, any>) => ({ ...prev, [layerId]: state }));
   }, []);
 
   // Memoize visualization handlers
@@ -251,7 +251,7 @@ export const MapApp: React.FC = memo(() => {
     });
     
     if (layer) {
-      setFeatureLayers(prevLayers => {
+      setFeatureLayers((prevLayers: __esri.FeatureLayer[]) => {
         // Remove any existing analysis layers if shouldReplace is true
         const filteredLayers = shouldReplace 
           ? prevLayers.filter(l => !l.title?.includes('AnalysisEngine') && !l.title?.includes('Analysis'))
@@ -268,7 +268,7 @@ export const MapApp: React.FC = memo(() => {
       });
     } else if (shouldReplace) {
       // Remove all analysis layers
-      setFeatureLayers(prevLayers => 
+      setFeatureLayers((prevLayers: __esri.FeatureLayer[]) => 
         prevLayers.filter(l => !l.title?.includes('AnalysisEngine') && !l.title?.includes('Analysis'))
       );
     }

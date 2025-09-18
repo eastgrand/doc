@@ -1179,7 +1179,7 @@ export const DependencyAnalyzer: React.FC<DependencyAnalyzerProps> = ({
               <Input
                 placeholder="Search dependencies..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSearchTerm(e.target.value)}
                 className="pl-8"
               />
             </div>

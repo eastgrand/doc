@@ -140,7 +140,7 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
       const response = await searchRelevantResearch(searchQuery);
       
       // Convert API response to component format
-      const convertedPapers: ScholarlyPaper[] = response.papers.map(paper => ({
+      const convertedPapers: ScholarlyPaper[] = response.papers.map((paper: any) => ({
         id: paper.id,
         title: paper.title,
         authors: paper.authors,
@@ -275,7 +275,7 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
           <Filter className="w-3 h-3 text-muted-foreground" />
           <select
             value={selectedSource}
-            onChange={(e) => setSelectedSource(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedSource(e.target.value)}
             className="text-xs px-2 py-1 rounded border"
           >
             <option value="all">All Sources</option>
@@ -290,7 +290,7 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
           <span className="text-xs text-muted-foreground">Sort by:</span>
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortBy(e.target.value as typeof sortBy)}
             className="text-xs px-2 py-1 rounded border"
           >
             <option value="relevance">Relevance</option>
@@ -389,7 +389,7 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
                       size="sm"
                       variant="outline"
                       className="text-xs"
-                      onClick={(e) => {
+                      onClick={(e: React.MouseEvent) => {
                         e.stopPropagation();
                         copyCitation(paper);
                       }}
@@ -403,7 +403,7 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
                         size="sm"
                         variant="outline"
                         className="text-xs"
-                        onClick={(e) => {
+                        onClick={(e: React.MouseEvent) => {
                           e.stopPropagation();
                           onCiteInReport(paper);
                         }}
@@ -418,7 +418,7 @@ export const ScholarlyResearchPanel: React.FC<ScholarlyResearchPanelProps> = ({
                         size="sm"
                         variant="outline"
                         className="text-xs"
-                        onClick={(e) => {
+                        onClick={(e: React.MouseEvent) => {
                           e.stopPropagation();
                           window.open(paper.url, '_blank');
                         }}

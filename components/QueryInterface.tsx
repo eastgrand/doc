@@ -300,7 +300,7 @@ const QueryInterfaceInner: React.FC<QueryInterfaceProps> = ({
         <Input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
           placeholder="Enter your query..."
           className="flex-1"
         />
@@ -333,6 +333,7 @@ const QueryInterfaceInner: React.FC<QueryInterfaceProps> = ({
 
 export const QueryInterface: React.FC<QueryInterfaceProps> = (props) => {
   return (
+    // @ts-ignore
     <ErrorBoundary>
       <QueryInterfaceInner {...props} />
     </ErrorBoundary>

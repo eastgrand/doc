@@ -83,7 +83,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   };
 
   const toggleTheme = () => {
-    setThemeState(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+    setThemeState((prevTheme: any) => prevTheme === 'light' ? 'dark' : 'light');
   };
 
   // Prevent hydration mismatch - always render children with theme context

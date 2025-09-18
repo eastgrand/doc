@@ -147,7 +147,7 @@ export function BudgetChannelRecommendations({
                   id="budget-input"
                   type="number"
                   value={currentBudget}
-                  onChange={(e) => handleBudgetChange(Number(e.target.value))}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBudgetChange(Number(e.target.value))}
                   className="text-lg font-medium"
                   min={10000}
                   max={10000000}
@@ -273,7 +273,7 @@ function BudgetOverview({ campaignPlan, totalBudget, colors }: BudgetOverviewPro
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percentage }) => `${name}: ${percentage.toFixed(1)}%`}
+                  label={({ name, percentage }: { name: string; percentage: number }) => `${name}: ${percentage.toFixed(1)}%`}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"

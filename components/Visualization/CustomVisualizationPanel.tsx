@@ -71,7 +71,7 @@ export const CustomVisualizationPanel: React.FC<CustomVisualizationPanelProps> =
   const visualizationIntegration = VisualizationIntegration.getInstance();
 
   const handleTypeChange = (event: SelectChangeEvent<VisualizationType>) => {
-    setOptions(prev => ({
+    setOptions((prev: any) => ({
       ...prev,
       type: event.target.value as VisualizationType
     }));
@@ -82,12 +82,12 @@ export const CustomVisualizationPanel: React.FC<CustomVisualizationPanelProps> =
   ) => {
     const target = event.target as HTMLInputElement;
     if (target.type === 'checkbox') {
-      setOptions(prev => ({
+      setOptions((prev: any) => ({
         ...prev,
         [field]: target.checked
       }));
     } else {
-      setOptions(prev => ({
+      setOptions((prev: any) => ({
         ...prev,
         [field]: target.value
       }));
@@ -98,7 +98,7 @@ export const CustomVisualizationPanel: React.FC<CustomVisualizationPanelProps> =
     _event: Event,
     value: number | number[]
   ) => {
-    setOptions(prev => ({
+    setOptions((prev: any) => ({
       ...prev,
       [field]: value
     }));
@@ -309,7 +309,7 @@ export const CustomVisualizationPanel: React.FC<CustomVisualizationPanelProps> =
             control={
               <Switch
                 checked={options.clustersOn}
-                onChange={(_e, checked) => setOptions(prev => ({ ...prev, clustersOn: checked }))}
+                onChange={(_e, checked) => setOptions((prev: any) => ({ ...prev, clustersOn: checked }))}
               />
             }
             label="Group results into clusters"
@@ -322,7 +322,7 @@ export const CustomVisualizationPanel: React.FC<CustomVisualizationPanelProps> =
                 type="number"
                 size="small"
                 value={options.maxClusters}
-                onChange={e => setOptions(prev => ({ ...prev, maxClusters: Number(e.target.value) }))}
+                onChange={e => setOptions((prev: any) => ({ ...prev, maxClusters: Number(e.target.value) }))}
                 inputProps={{ min: 1 }}
               />
               <TextField
@@ -330,7 +330,7 @@ export const CustomVisualizationPanel: React.FC<CustomVisualizationPanelProps> =
                 type="number"
                 size="small"
                 value={options.minMembers}
-                onChange={e => setOptions(prev => ({ ...prev, minMembers: Number(e.target.value) }))}
+                onChange={e => setOptions((prev: any) => ({ ...prev, minMembers: Number(e.target.value) }))}
                 inputProps={{ min: 1 }}
               />
             </Box>

@@ -10,7 +10,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ color, onChange }) => 
     <input
       type="color"
       value={color}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
       className="h-10 w-full cursor-pointer rounded-md border border-input bg-background"
     />
   );

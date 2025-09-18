@@ -65,16 +65,16 @@ export const SpatialQueryTools: React.FC<SpatialQueryToolsProps> = ({
   const errorHandler = LayerErrorHandler.getInstance();
 
   const handleDrawModeChange = (mode: DrawMode) => {
-    setSettings(prev => ({ ...prev, drawMode: mode }));
+    setSettings((prev: any) => ({ ...prev, drawMode: mode }));
     startDrawing(mode);
   };
 
   const handleOperationChange = (operation: SpatialOperation) => {
-    setSettings(prev => ({ ...prev, operation }));
+    setSettings((prev: any) => ({ ...prev, operation }));
   };
 
   const handleLayerSelection = (layerIds: string[]) => {
-    setSettings(prev => ({ ...prev, selectedLayers: layerIds }));
+    setSettings((prev: any) => ({ ...prev, selectedLayers: layerIds }));
   };
 
   const startDrawing = async (mode: DrawMode) => {
@@ -202,7 +202,7 @@ export const SpatialQueryTools: React.FC<SpatialQueryToolsProps> = ({
         <FormControl fullWidth size="small">
           <Select
             value={settings.operation}
-            onChange={(e) => handleOperationChange(e.target.value as SpatialOperation)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOperationChange(e.target.value as SpatialOperation)}
           >
             <MenuItem value="intersects">Intersects</MenuItem>
             <MenuItem value="contains">Contains</MenuItem>
@@ -224,7 +224,7 @@ export const SpatialQueryTools: React.FC<SpatialQueryToolsProps> = ({
             type="text"
             label="Relation"
             value={settings.relation || ''}
-            onChange={(e) => setSettings(prev => ({ ...prev, relation: e.target.value }))}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings((prev: any) => ({ ...prev, relation: e.target.value }))}
             sx={{ mt: 1 }}
           />
         )}
@@ -240,7 +240,7 @@ export const SpatialQueryTools: React.FC<SpatialQueryToolsProps> = ({
           <Select
             multiple
             value={settings.selectedLayers}
-            onChange={(e) => handleLayerSelection(e.target.value as string[])}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleLayerSelection(e.target.value as unknown as string[])}
             renderValue={(selected) => (
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                 {selected.map((value) => (

@@ -5,7 +5,7 @@ import React, { useEffect, useRef, memo, useCallback, useState } from 'react';
 import { loadArcGISModules } from '@/lib/arcgis-imports';
 import { LegendType } from '@/types/legend';
 import { LegendItem } from '@/components/MapLegend';
-import { MAP_CONSTRAINTS, DATA_EXTENT, zoomToDataExtent } from '@/config/mapConstraints';
+import { MAP_CONSTRAINTS, DATA_EXTENT } from '@/config/mapConstraints';
 import { useTheme } from '@/components/theme/ThemeProvider';
 import SampleHotspots, { SampleHotspot } from './SampleHotspots';
 
@@ -57,7 +57,7 @@ const MapLegend: React.FC<MapLegendProps> = ({
   const isVisible = visible !== false; // default to true when undefined
   
   // Always call hooks at the top level
-  const [TernaryPlot, setTernaryPlot] = React.useState<React.ComponentType<any> | null>(null);
+  const [TernaryPlot, setTernaryPlot] = useState<React.ComponentType<object> | null>(null);
   
   React.useEffect(() => {
     if (type === 'ternary-plot') {
@@ -298,6 +298,7 @@ const MapLegend: React.FC<MapLegendProps> = ({
   );
 };
 
+// eslint-disable-next-line react/display-name
 const MapClient = memo(({ 
   onMapLoad, 
   onError, 
@@ -312,18 +313,17 @@ const MapClient = memo(({
   try {
     const themeContext = useTheme();
     theme = themeContext.theme;
-  } catch (error) {
+  } catch {
     // Silently use default theme if context not available
   }
   
   const mapRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<__esri.MapView | null>(null);
   const isInitialized = useRef(false);
-  const highlightRef = useRef<__esri.Handle | null>(null);
   const [showHotspots, setShowHotspots] = useState(showSampleHotspots);
 
   // Feature interaction handlers
-  const handleFeatureClick = useCallback(async (featureId: string) => {
+  const handleFeatureClick = useCallback(async () => {
     // Temporarily disabled to focus on visual issues
     return;
   }, []);
@@ -347,11 +347,8 @@ const MapClient = memo(({
         const {
           Map,
           MapView,
-          VectorTileLayer,
-          Basemap,
           esriConfig,
-          Color,
-          Zoom
+          Color
         } = await loadArcGISModules();
 
         console.log('[MapClient] ArcGIS modules loaded successfully');
@@ -471,7 +468,7 @@ const MapClient = memo(({
         isInitialized.current = false;
       }
     };
-  }, [onMapLoad, onError]); // Removed theme dependency - map should only initialize once
+  }, [onMapLoad, onError, theme]);
 
   // Handle theme changes for existing map
   useEffect(() => {
@@ -601,6 +598,6 @@ const MapClient = memo(({
   );
 });
 
-MapClient.displayName = 'MapClient';
+(MapClient as React.FC & { displayName: string }).displayName = 'MapClient';
 
 export default MapClient;

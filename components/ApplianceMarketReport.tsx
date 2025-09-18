@@ -1,9 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, 
-  PieChart, Pie, Cell, BarChart, Bar, ResponsiveContainer,
-  ScatterChart, Scatter 
+  PieChart, Pie, Cell, BarChart, Bar, ResponsiveContainer
 } from 'recharts';
+
+const recharts = require('recharts') as { 
+  ScatterChart: React.ComponentType<any>; 
+  Scatter: React.ComponentType<any>; 
+};
+const ScatterChart = recharts.ScatterChart;
+const Scatter = recharts.Scatter;
 import { Loader2, AlertCircle, FileSpreadsheet, X } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -342,7 +348,7 @@ const ApplianceMarketReport: React.FC<ApplianceMarketReportProps> = ({
                   />
                   <YAxis 
                     domain={[0, 'auto']}
-                    tickFormatter={(value) => value.toFixed(0)}
+                    tickFormatter={(value: number) => value.toFixed(0)}
                     label={{ 
                       value: 'Spending Index', 
                       angle: -90, 
@@ -526,7 +532,7 @@ const ApplianceMarketReport: React.FC<ApplianceMarketReportProps> = ({
                     dataKey="x" 
                     name="Recent Movers (%)"
                     domain={[0, 'auto']}
-                    tickFormatter={(value) => `${value}%`}
+                    tickFormatter={(value: number) => `${value}%`}
                   />
                   <YAxis 
                     type="number" 
@@ -612,7 +618,7 @@ const ApplianceMarketReport: React.FC<ApplianceMarketReportProps> = ({
                     outerRadius={90}
                     fill="#8884d8"
                     dataKey="value"
-                    label={(entry) => `${entry.name}: ${entry.value.toFixed(1)}`}
+                    label={(entry: { name: string; value: number }) => `${entry.name}: ${entry.value.toFixed(1)}`}
                   >
                     {rangeData.map((_, index) => (
                       <Cell 

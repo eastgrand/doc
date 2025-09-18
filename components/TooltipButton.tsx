@@ -33,16 +33,13 @@ const TooltipButton = ({
             {icon}
           </Button>
         </Tooltip.Trigger>
-        <Tooltip.Portal>
           <Tooltip.Content
             className="bg-slate-900 text-white px-3 py-1.5 rounded-md text-xs animate-in fade-in-0 zoom-in-95"
             side="right"
             sideOffset={5}
           >
             {tooltip}
-            <Tooltip.Arrow className="fill-slate-900" />
           </Tooltip.Content>
-        </Tooltip.Portal>
       </Tooltip.Root>
     </Tooltip.Provider>
   );

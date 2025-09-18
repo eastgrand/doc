@@ -226,7 +226,7 @@ export const MicroserviceManager: React.FC<MicroserviceManagerProps> = ({
                 <Input
                   id="service-name"
                   value={newService.name || ''}
-                  onChange={(e) => setNewService(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewService((prev: any) => ({ ...prev, name: e.target.value }))}
                   placeholder="Enter service name"
                 />
               </div>
@@ -234,7 +234,7 @@ export const MicroserviceManager: React.FC<MicroserviceManagerProps> = ({
                 <Label htmlFor="service-type">Service Type</Label>
                 <Select 
                   value={newService.type} 
-                  onValueChange={(value) => setNewService(prev => ({ ...prev, type: value as any }))}
+                  onValueChange={(value) => setNewService((prev: any) => ({ ...prev, type: value as any }))}
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -253,7 +253,7 @@ export const MicroserviceManager: React.FC<MicroserviceManagerProps> = ({
               <Input
                 id="service-url"
                 value={newService.url || ''}
-                onChange={(e) => setNewService(prev => ({ ...prev, url: e.target.value }))}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewService((prev: any) => ({ ...prev, url: e.target.value }))}
                 placeholder="https://your-service.onrender.com"
               />
             </div>
@@ -263,7 +263,7 @@ export const MicroserviceManager: React.FC<MicroserviceManagerProps> = ({
               <Textarea
                 id="service-description"
                 value={newService.description || ''}
-                onChange={(e) => setNewService(prev => ({ ...prev, description: e.target.value }))}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewService((prev: any) => ({ ...prev, description: e.target.value }))}
                 placeholder="Describe what this service does"
               />
             </div>

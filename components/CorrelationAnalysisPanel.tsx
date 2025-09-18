@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import { CorrelationService, CorrelationResult, CorrelationOptions } from '../services/correlation.service';
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
+const recharts = require('recharts') as { 
+  ScatterChart: React.ComponentType<any>; 
+  Scatter: React.ComponentType<any>; 
+};
+const ScatterChart = recharts.ScatterChart;
+const Scatter = recharts.Scatter;
 
 interface CorrelationAnalysisPanelProps {
   primaryLayer: FeatureLayer;
@@ -186,7 +193,7 @@ export const CorrelationAnalysisPanel: React.FC<CorrelationAnalysisPanelProps> =
                 </label>
                 <select
                   value={correlationMethod}
-                  onChange={(e) => setCorrelationMethod(e.target.value as any)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setCorrelationMethod(e.target.value as any)}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 >
                   <option value="pearson">Pearson</option>
@@ -201,7 +208,7 @@ export const CorrelationAnalysisPanel: React.FC<CorrelationAnalysisPanelProps> =
                   <input
                     type="checkbox"
                     checked={includeSpatialStats}
-                    onChange={(e) => setIncludeSpatialStats(e.target.checked)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIncludeSpatialStats(e.target.checked)}
                     className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   />
                   <span className="ml-2 text-sm text-gray-700">

@@ -80,7 +80,7 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
     
     try {
       // Prepare the message history for the API
-      const messageHistory = messages.map(msg => ({
+      const messageHistory = messages.map((msg: ChatMessage) => ({
         role: msg.role,
         content: msg.content
       }));
@@ -187,7 +187,7 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
       
       <CardContent className="flex-grow p-4 overflow-y-auto">
         <div className="space-y-4">
-          {messages.map((message) => (
+          {messages.map((message: ChatMessage) => (
             <div 
               key={message.id} 
               className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}

@@ -86,7 +86,7 @@ export const CorrelationMapControls: React.FC<CorrelationMapControlsProps> = ({
         </label>
         <select
           value={primaryField}
-          onChange={(e) => onFieldChange(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onFieldChange(e.target.value)}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
         >
           {layer.fields.map((field) => (
@@ -104,7 +104,7 @@ export const CorrelationMapControls: React.FC<CorrelationMapControlsProps> = ({
           </label>
           <select
             value={comparisonField}
-            onChange={(e) => onComparisonFieldChange(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onComparisonFieldChange(e.target.value)}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
           >
             {layer.fields.map((field) => (
@@ -210,7 +210,7 @@ export const CorrelationMapControls: React.FC<CorrelationMapControlsProps> = ({
             </label>
             <select
               value={correlationMethod}
-              onChange={(e) => setCorrelationMethod(e.target.value as any)}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setCorrelationMethod(e.target.value as any)}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             >
               <option value="pearson">Pearson</option>
@@ -225,7 +225,7 @@ export const CorrelationMapControls: React.FC<CorrelationMapControlsProps> = ({
               <input
                 type="checkbox"
                 checked={includeSpatialStats}
-                onChange={(e) => setIncludeSpatialStats(e.target.checked)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIncludeSpatialStats(e.target.checked)}
                 className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               />
               <span className="ml-2 text-sm text-gray-700">

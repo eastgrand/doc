@@ -110,12 +110,12 @@ export default function FilterWidget({ view, onClose, layerStates }: FilterWidge
       }]
     };
     
-    setFilterGroups(prev => [...prev, newGroup]);
+    setFilterGroups((prev: FilterGroup[]) => [...prev, newGroup]);
     setExpandedGroupId(newGroup.id);
   }, [fields]);
 
   const addFilter = useCallback((groupId: string) => {
-    setFilterGroups(prev => prev.map(group => {
+    setFilterGroups((prev: FilterGroup[]) => prev.map(group => {
       if (group.id === groupId) {
         const defaultField = fields[0]?.value || '';
         
@@ -138,7 +138,7 @@ export default function FilterWidget({ view, onClose, layerStates }: FilterWidge
     field: keyof FilterState,
     value: string | number
   ) => {
-    setFilterGroups(prev => prev.map(group => {
+    setFilterGroups((prev: FilterGroup[]) => prev.map(group => {
       if (group.id === groupId) {
         const newFilters = [...group.filters];
         newFilters[filterIndex] = {
@@ -152,7 +152,7 @@ export default function FilterWidget({ view, onClose, layerStates }: FilterWidge
   }, []);
 
   const removeFilter = useCallback((groupId: string, filterIndex: number) => {
-    setFilterGroups(prev => prev.map(group => {
+    setFilterGroups((prev: FilterGroup[]) => prev.map(group => {
       if (group.id === groupId) {
         const newFilters = group.filters.filter((_, i) => i !== filterIndex);
         return { ...group, filters: newFilters };
@@ -162,7 +162,7 @@ export default function FilterWidget({ view, onClose, layerStates }: FilterWidge
   }, []);
 
   const removeFilterGroup = useCallback((groupId: string) => {
-    setFilterGroups(prev => prev.filter(group => group.id !== groupId));
+    setFilterGroups((prev: FilterGroup[]) => prev.filter(group => group.id !== groupId));
   }, []);
 
   const applyFilters = useCallback(async (group: FilterGroup) => {
@@ -207,7 +207,7 @@ export default function FilterWidget({ view, onClose, layerStates }: FilterWidge
           featureLayerView.filter = filter;
 
           // Update feature count
-          setFilterGroups(prev => prev.map(fg => 
+          setFilterGroups((prev: FilterGroup[]) => prev.map(fg => 
             fg.id === group.id ? { ...fg, featureCount: testResult } : fg
           ));
         } catch (e) {
@@ -216,7 +216,7 @@ export default function FilterWidget({ view, onClose, layerStates }: FilterWidge
         }
       } else {
         featureLayerView.filter = new FeatureFilter();
-        setFilterGroups(prev => prev.map(fg => 
+        setFilterGroups((prev: FilterGroup[]) => prev.map(fg => 
           fg.id === group.id ? { ...fg, featureCount: undefined } : fg
         ));
       }
@@ -253,7 +253,7 @@ export default function FilterWidget({ view, onClose, layerStates }: FilterWidge
         <div className="w-full">
           <select 
             className="w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#33a852] focus:border-transparent rounded-md"
-            onChange={(e) => {
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
               const layer = visibleLayers.find(l => l.id === e.target.value);
               if (layer) addFilterGroup(layer);
             }}
@@ -323,7 +323,7 @@ export default function FilterWidget({ view, onClose, layerStates }: FilterWidge
                         <label className="text-sm text-gray-600">Field</label>
                         <select
                           value={filter.field}
-                          onChange={(e) => updateFilter(group.id, index, 'field', e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateFilter(group.id, index, 'field', e.target.value)}
                           className="w-full pl-3 pr-10 py-2 text-sm border border-gray-300 rounded-md"
                         >
                           {fields.map(field => (
@@ -338,7 +338,7 @@ export default function FilterWidget({ view, onClose, layerStates }: FilterWidge
                         <label className="text-sm text-gray-600">Operator</label>
                         <select
                           value={filter.operator}
-                          onChange={(e) => updateFilter(group.id, index, 'operator', e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateFilter(group.id, index, 'operator', e.target.value)}
                           className="w-full pl-3 pr-10 py-2 text-sm border border-gray-300 rounded-md"
                         >
                           <option value="=">Equal to (=)</option>
@@ -356,7 +356,7 @@ export default function FilterWidget({ view, onClose, layerStates }: FilterWidge
                           <input
                             type="number"
                             value={filter.value}
-                            onChange={(e) => updateFilter(group.id, index, 'value', e.target.value)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateFilter(group.id, index, 'value', e.target.value)}
                             className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-md"
                             placeholder="Enter numeric value"
                             step="any"

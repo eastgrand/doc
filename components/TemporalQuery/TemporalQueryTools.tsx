@@ -63,19 +63,19 @@ export const TemporalQueryTools: React.FC<TemporalQueryToolsProps> = ({
   const errorHandler = LayerErrorHandler.getInstance();
 
   const handleOperationChange = (operation: TemporalOperation) => {
-    setSettings(prev => ({ ...prev, operation }));
+    setSettings((prev: any) => ({ ...prev, operation }));
   };
 
   const handleLayerSelection = (layerIds: string[]) => {
-    setSettings(prev => ({ ...prev, selectedLayers: layerIds }));
+    setSettings((prev: any) => ({ ...prev, selectedLayers: layerIds }));
   };
 
   const handleDateChange = (field: 'startDate' | 'endDate') => (date: Date | null) => {
-    setSettings(prev => ({ ...prev, [field]: date }));
+    setSettings((prev: any) => ({ ...prev, [field]: date }));
   };
 
   const handleTimeRangeToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSettings(prev => ({ ...prev, useTimeRange: event.target.checked }));
+    setSettings((prev: any) => ({ ...prev, useTimeRange: event.target.checked }));
   };
 
   const executeTemporalQuery = async () => {
@@ -159,7 +159,7 @@ export const TemporalQueryTools: React.FC<TemporalQueryToolsProps> = ({
   };
 
   const clearQuery = () => {
-    setSettings(prev => ({
+    setSettings((prev: any) => ({
       ...prev,
       startDate: null,
       endDate: null
@@ -179,7 +179,7 @@ export const TemporalQueryTools: React.FC<TemporalQueryToolsProps> = ({
         <FormControl fullWidth size="small">
           <Select
             value={settings.operation}
-            onChange={(e) => handleOperationChange(e.target.value as TemporalOperation)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleOperationChange(e.target.value as TemporalOperation)}
           >
             <MenuItem value="during">During</MenuItem>
             <MenuItem value="before">Before</MenuItem>
@@ -236,7 +236,7 @@ export const TemporalQueryTools: React.FC<TemporalQueryToolsProps> = ({
           <Select
             multiple
             value={settings.selectedLayers}
-            onChange={(e) => handleLayerSelection(e.target.value as string[])}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleLayerSelection(e.target.value as unknown as string[])}
             renderValue={(selected) => (
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                 {selected.map((value) => (

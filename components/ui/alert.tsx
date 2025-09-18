@@ -18,10 +18,7 @@ const alertVariants = cva(
   }
 )
 
-const Alert = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
->(({ className = "", variant, ...props }, ref) => (
+const Alert = React.forwardRef(({ className = "", variant, ...props }: React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>, ref: React.Ref<HTMLDivElement>) => (
   <div
     ref={ref}
     role="alert"
@@ -31,10 +28,7 @@ const Alert = React.forwardRef<
 ))
 Alert.displayName = "Alert"
 
-const AlertDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className = "", ...props }, ref) => (
+const AlertDescription = React.forwardRef(({ className = "", ...props }: React.HTMLAttributes<HTMLParagraphElement>, ref: React.Ref<HTMLParagraphElement>) => (
   <div
     ref={ref}
     className={`text-sm [&_p]:leading-relaxed ${className}`}

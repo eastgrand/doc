@@ -68,7 +68,7 @@ export const LayerFilter: React.FC<LayerFilterProps> = ({
   };
 
   const handleTagClick = (tag: string) => {
-    setSelectedTags(prev => 
+    setSelectedTags((prev: string[]) => 
       prev.includes(tag) 
         ? prev.filter(t => t !== tag)
         : [...prev, tag]

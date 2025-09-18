@@ -330,7 +330,7 @@ export const GroupManagementPanel: React.FC<GroupManagementPanelProps> = ({
 
   const handleDragOver = useCallback((e: React.DragEvent, targetId: string) => {
     e.preventDefault();
-    setDragState(prev => ({ ...prev, dropTarget: targetId }));
+    setDragState((prev: DragState) => ({ ...prev, dropTarget: targetId }));
   }, []);
 
   const handleDrop = useCallback((e: React.DragEvent, targetGroupId: string | null) => {
@@ -349,7 +349,7 @@ export const GroupManagementPanel: React.FC<GroupManagementPanelProps> = ({
 
   // Toggle group expansion
   const toggleGroupExpansion = useCallback((groupId: string) => {
-    setExpandedGroups(prev => {
+    setExpandedGroups((prev: Set<string>) => {
       const newSet = new Set(prev);
       if (newSet.has(groupId)) {
         newSet.delete(groupId);
@@ -389,7 +389,7 @@ export const GroupManagementPanel: React.FC<GroupManagementPanelProps> = ({
               <Input
                 placeholder="Search groups..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSearchTerm(e.target.value)}
                 className="pl-8"
               />
             </div>
@@ -470,7 +470,7 @@ export const GroupManagementPanel: React.FC<GroupManagementPanelProps> = ({
                             variant="ghost"
                             size="sm"
                             className="p-0 h-auto"
-                            onClick={(e) => {
+                            onClick={(e: React.MouseEvent) => {
                               e.stopPropagation();
                               toggleGroupExpansion(group.id);
                             }}
@@ -707,7 +707,7 @@ export const GroupManagementPanel: React.FC<GroupManagementPanelProps> = ({
                 <Input
                   id="group-name"
                   value={selectedGroup.name}
-                  onChange={(e) => handleGroupUpdate(selectedGroup.id, { name: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleGroupUpdate(selectedGroup.id, { name: e.target.value })}
                 />
               </div>
               <div>
@@ -716,7 +716,7 @@ export const GroupManagementPanel: React.FC<GroupManagementPanelProps> = ({
                   id="group-priority"
                   type="number"
                   value={selectedGroup.priority}
-                  onChange={(e) => handleGroupUpdate(selectedGroup.id, { priority: parseInt(e.target.value) || 0 })}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleGroupUpdate(selectedGroup.id, { priority: parseInt(e.target.value) || 0 })}
                 />
               </div>
             </div>
@@ -726,7 +726,7 @@ export const GroupManagementPanel: React.FC<GroupManagementPanelProps> = ({
               <Textarea
                 id="group-description"
                 value={selectedGroup.description || ''}
-                onChange={(e) => handleGroupUpdate(selectedGroup.id, { description: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleGroupUpdate(selectedGroup.id, { description: e.target.value })}
                 rows={3}
               />
             </div>
@@ -739,12 +739,12 @@ export const GroupManagementPanel: React.FC<GroupManagementPanelProps> = ({
                     id="group-color"
                     type="color"
                     value={selectedGroup.color || '#3b82f6'}
-                    onChange={(e) => handleGroupUpdate(selectedGroup.id, { color: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleGroupUpdate(selectedGroup.id, { color: e.target.value })}
                     className="w-16"
                   />
                   <Input
                     value={selectedGroup.color || '#3b82f6'}
-                    onChange={(e) => handleGroupUpdate(selectedGroup.id, { color: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleGroupUpdate(selectedGroup.id, { color: e.target.value })}
                     placeholder="#3b82f6"
                   />
                 </div>
@@ -773,7 +773,7 @@ export const GroupManagementPanel: React.FC<GroupManagementPanelProps> = ({
               <div className="flex items-center space-x-2">
                 <Switch
                   checked={!selectedGroup.isCollapsed}
-                  onCheckedChange={(checked) => handleGroupUpdate(selectedGroup.id, { isCollapsed: !checked })}
+                  onCheckedChange={(checked: boolean) => handleGroupUpdate(selectedGroup.id, { isCollapsed: !checked })}
                 />
                 <Label>Expanded by Default</Label>
               </div>

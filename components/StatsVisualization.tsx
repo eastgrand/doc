@@ -144,7 +144,7 @@ export default function StatsVisualization({
             <YAxis 
               tick={{ fontSize: enlarged ? 14 : 12, fill: '#666' }}
               domain={[0, Math.ceil(Math.max(...chartData.map(d => d.value)) * 1.1)]}
-              tickFormatter={(value) => `${value.toFixed(0)}%`}
+              tickFormatter={(value: any) => `${value.toFixed(0)}%`}
             />
             <Tooltip 
               formatter={(value: number) => [`${value.toFixed(1)}%`, 'Value']}

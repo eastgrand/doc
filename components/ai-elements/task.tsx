@@ -7,9 +7,9 @@ import {
 } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
 import { ChevronDownIcon, SearchIcon } from 'lucide-react';
-import type { ComponentProps } from 'react';
+import React from 'react';
 
-export type TaskItemFileProps = ComponentProps<'div'>;
+export type TaskItemFileProps = React.ComponentProps<'div'>;
 
 export const TaskItemFile = ({
   children,
@@ -27,7 +27,7 @@ export const TaskItemFile = ({
   </div>
 );
 
-export type TaskItemProps = ComponentProps<'div'>;
+export type TaskItemProps = React.ComponentProps<'div'>;
 
 export const TaskItem = ({ children, className, ...props }: TaskItemProps) => (
   <div className={cn('text-muted-foreground text-sm', className)} {...props}>
@@ -35,7 +35,7 @@ export const TaskItem = ({ children, className, ...props }: TaskItemProps) => (
   </div>
 );
 
-export type TaskProps = ComponentProps<typeof Collapsible>;
+export type TaskProps = React.ComponentProps<typeof Collapsible>;
 
 export const Task = ({
   defaultOpen = true,
@@ -52,7 +52,7 @@ export const Task = ({
   />
 );
 
-export type TaskTriggerProps = ComponentProps<typeof CollapsibleTrigger> & {
+export type TaskTriggerProps = React.ComponentProps<typeof CollapsibleTrigger> & {
   title: string;
 };
 
@@ -73,7 +73,7 @@ export const TaskTrigger = ({
   </CollapsibleTrigger>
 );
 
-export type TaskContentProps = ComponentProps<typeof CollapsibleContent>;
+export type TaskContentProps = React.ComponentProps<typeof CollapsibleContent>;
 
 export const TaskContent = ({
   children,

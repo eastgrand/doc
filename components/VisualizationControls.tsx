@@ -49,7 +49,7 @@ export const VisualizationControls: React.FC<VisualizationControlsProps> = ({
         <Select
           value={blendMode}
           label="Blend Mode"
-          onChange={(e) => onBlendModeChange(e.target.value as GlobalCompositeOperation)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onBlendModeChange(e.target.value as GlobalCompositeOperation)}
         >
           {blendModes.map((mode) => (
             <MenuItem key={mode} value={mode}>

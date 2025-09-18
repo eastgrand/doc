@@ -110,7 +110,7 @@ export const ChartCustomizer: React.FC<ChartCustomizerProps> = ({
                   key={i}
                   type="color"
                   value={color}
-                  onChange={(e) => handleColorChange(i, e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleColorChange(i, e.target.value)}
                   className="h-8 p-1"
                 />
               ))}
@@ -122,7 +122,7 @@ export const ChartCustomizer: React.FC<ChartCustomizerProps> = ({
               type="checkbox"
               id="showLegend"
               checked={config.showLegend}
-              onChange={(e) => 
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
                 onConfigChange({ ...config, showLegend: e.target.checked })
               }
             />

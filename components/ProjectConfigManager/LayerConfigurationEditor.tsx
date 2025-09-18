@@ -152,7 +152,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
       if (response.ok) {
         const data = await response.json();
         
-        setTestResults(prev => ({
+        setTestResults((prev: any) => ({
           ...prev,
           [layerId]: {
             success: true,
@@ -162,7 +162,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
           }
         }));
       } else {
-        setTestResults(prev => ({
+        setTestResults((prev: any) => ({
           ...prev,
           [layerId]: {
             success: false,
@@ -171,7 +171,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
         }));
       }
     } catch (error) {
-      setTestResults(prev => ({
+      setTestResults((prev: any) => ({
         ...prev,
         [layerId]: {
           success: false,
@@ -254,7 +254,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
             <Input
               placeholder="Search layers..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSearchTerm(e.target.value)}
               className="pl-8"
             />
           </div>
@@ -474,7 +474,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                     <Input
                       id="layer-name"
                       value={selectedLayer.name}
-                      onChange={(e) => handleLayerUpdate(selectedLayer.id, { name: e.target.value })}
+                      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleLayerUpdate(selectedLayer.id, { name: e.target.value })}
                     />
                   </div>
                   <div>
@@ -500,7 +500,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                   <Textarea
                     id="layer-description"
                     value={selectedLayer.description || ''}
-                    onChange={(e) => handleLayerUpdate(selectedLayer.id, { description: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleLayerUpdate(selectedLayer.id, { description: e.target.value })}
                     rows={3}
                   />
                 </div>
@@ -511,7 +511,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                     <Input
                       id="layer-url"
                       value={selectedLayer.url}
-                      onChange={(e) => handleLayerUpdate(selectedLayer.id, { url: e.target.value })}
+                      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleLayerUpdate(selectedLayer.id, { url: e.target.value })}
                     />
                     <Button
                       variant="outline"
@@ -592,7 +592,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                             <div className="flex items-center gap-2">
                               <Switch
                                 checked={fieldConfig.visible !== false}
-                                onCheckedChange={(checked) => 
+                                onCheckedChange={(checked: boolean) => 
                                   handleFieldUpdate(selectedLayer.id, field.name, { visible: checked })
                                 }
                               />
@@ -612,7 +612,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                                 <Label>Display Alias</Label>
                                 <Input
                                   value={fieldConfig.alias || field.alias || field.name}
-                                  onChange={(e) => 
+                                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => 
                                     handleFieldUpdate(selectedLayer.id, field.name, { alias: e.target.value })
                                   }
                                 />
@@ -621,7 +621,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                                 <Label>Description</Label>
                                 <Textarea
                                   value={fieldConfig.description || ''}
-                                  onChange={(e) => 
+                                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => 
                                     handleFieldUpdate(selectedLayer.id, field.name, { description: e.target.value })
                                   }
                                   rows={2}
@@ -631,7 +631,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                                 <div className="flex items-center space-x-2">
                                   <Checkbox
                                     checked={fieldConfig.searchable !== false}
-                                    onCheckedChange={(checked) => 
+                                    onCheckedChange={(checked: boolean) => 
                                       handleFieldUpdate(selectedLayer.id, field.name, { searchable: checked })
                                     }
                                   />
@@ -640,7 +640,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                                 <div className="flex items-center space-x-2">
                                   <Checkbox
                                     checked={fieldConfig.filterable !== false}
-                                    onCheckedChange={(checked) => 
+                                    onCheckedChange={(checked: boolean) => 
                                       handleFieldUpdate(selectedLayer.id, field.name, { filterable: checked })
                                     }
                                   />
@@ -676,7 +676,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                   <Label>Tags (comma-separated)</Label>
                   <Input
                     value={selectedLayer.metadata?.tags?.join(', ') || ''}
-                    onChange={(e) => {
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                       const tags = e.target.value.split(',').map(tag => tag.trim()).filter(Boolean);
                       handleLayerUpdate(selectedLayer.id, {
                         metadata: { ...selectedLayer.metadata, tags }
@@ -690,7 +690,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                   <Label>Category</Label>
                   <Input
                     value={selectedLayer.metadata?.category || ''}
-                    onChange={(e) => handleLayerUpdate(selectedLayer.id, {
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleLayerUpdate(selectedLayer.id, {
                       metadata: { ...selectedLayer.metadata, category: e.target.value }
                     })}
                     placeholder="Demographics"
@@ -701,7 +701,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                   <Label>Data Source</Label>
                   <Input
                     value={selectedLayer.metadata?.source || ''}
-                    onChange={(e) => handleLayerUpdate(selectedLayer.id, {
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleLayerUpdate(selectedLayer.id, {
                       metadata: { ...selectedLayer.metadata, source: e.target.value }
                     })}
                     placeholder="U.S. Census Bureau"
@@ -749,7 +749,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                     <Input
                       type="number"
                       value={selectedLayer.maxRecordCount || 5000}
-                      onChange={(e) => handleLayerUpdate(selectedLayer.id, { 
+                      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleLayerUpdate(selectedLayer.id, { 
                         maxRecordCount: parseInt(e.target.value) || 5000 
                       })}
                     />
@@ -777,21 +777,21 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       checked={selectedLayer.supportsQuery !== false}
-                      onCheckedChange={(checked) => handleLayerUpdate(selectedLayer.id, { supportsQuery: checked })}
+                      onCheckedChange={(checked: boolean) => handleLayerUpdate(selectedLayer.id, { supportsQuery: checked })}
                     />
                     <Label>Supports Query</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       checked={selectedLayer.supportsStatistics !== false}
-                      onCheckedChange={(checked) => handleLayerUpdate(selectedLayer.id, { supportsStatistics: checked })}
+                      onCheckedChange={(checked: boolean) => handleLayerUpdate(selectedLayer.id, { supportsStatistics: checked })}
                     />
                     <Label>Supports Statistics</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       checked={selectedLayer.supportsPagination !== false}
-                      onCheckedChange={(checked) => handleLayerUpdate(selectedLayer.id, { supportsPagination: checked })}
+                      onCheckedChange={(checked: boolean) => handleLayerUpdate(selectedLayer.id, { supportsPagination: checked })}
                     />
                     <Label>Supports Pagination</Label>
                   </div>
@@ -801,7 +801,7 @@ export const LayerConfigurationEditor: React.FC<LayerConfigurationEditorProps> =
                   <Label>Custom Where Clause</Label>
                   <Textarea
                     value={selectedLayer.whereClause || ''}
-                    onChange={(e) => handleLayerUpdate(selectedLayer.id, { whereClause: e.target.value })}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleLayerUpdate(selectedLayer.id, { whereClause: e.target.value })}
                     placeholder="1=1"
                     rows={2}
                   />

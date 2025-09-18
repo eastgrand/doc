@@ -26,7 +26,7 @@ import {
 import Image from 'next/image';
 import ProcessingIndicator from './ProcessingIndicator';
 import { ChatMessage, GeoProcessingStep } from '@/lib/analytics/types';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+const SyntaxHighlighter = (require('react-syntax-highlighter') as { Prism: React.ComponentType<any> }).Prism;
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Button } from '@/components/ui/button';
@@ -163,7 +163,7 @@ const MessageList: React.FC<MessageListProps> = ({
               <button
                 key={`fsa-link-${keyCounter++}`}
                 className="inline text-[#33a852] hover:text-[#2d9748] font-semibold underline cursor-pointer bg-transparent border-none p-0 m-0 transition-colors duration-200"
-                onClick={(e) => {
+                onClick={(e: React.MouseEvent) => {
                   e.preventDefault();
                   e.stopPropagation();
                   onZoomToFeature(matchText);
@@ -351,7 +351,7 @@ const MessageList: React.FC<MessageListProps> = ({
                           ? 'theme-bg-destructive-subtle theme-text-destructive'
                           : 'cursor-pointer'
                       }`}
-                      onClick={(e) => {
+                      onClick={(e: React.MouseEvent) => {
                         if (
                           message.role === 'assistant' &&
                           !(e.target as HTMLElement).closest('button') &&

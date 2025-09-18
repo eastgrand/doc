@@ -179,13 +179,13 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
     if (!currentConfig) return;
 
     const validation = projectConfigManager.validateConfiguration(currentConfig);
-    setUIState(prev => ({ ...prev, validationStatus: validation }));
+    setUIState((prev: any) => ({ ...prev, validationStatus: validation }));
   };
 
   const handleConfigChange = useCallback((newConfig: ProjectConfiguration, changeType: ConfigurationChange) => {
     setCurrentConfig(newConfig);
-    setChanges(prev => [...prev, changeType]);
-    setUIState(prev => ({ ...prev, unsavedChanges: true }));
+    setChanges((prev: any) => [...prev, changeType]);
+    setUIState((prev: any) => ({ ...prev, unsavedChanges: true }));
     
     // Analyze impact of changes
     if (changes.length > 0) {
@@ -198,16 +198,16 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
     if (!currentConfig) return;
 
     try {
-      setUIState(prev => ({ ...prev, deploymentStatus: 'validating' }));
+      setUIState((prev: any) => ({ ...prev, deploymentStatus: 'validating' }));
       
       const validation = projectConfigManager.validateConfiguration(currentConfig);
       if (!validation.isValid) {
-        setUIState(prev => ({ ...prev, deploymentStatus: 'error' }));
+        setUIState((prev: any) => ({ ...prev, deploymentStatus: 'error' }));
         return;
       }
 
       await projectConfigManager.saveConfiguration(currentConfig);
-      setUIState(prev => ({ 
+      setUIState((prev: any) => ({ 
         ...prev, 
         unsavedChanges: false, 
         deploymentStatus: 'success' 
@@ -215,7 +215,7 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
       setChanges([]);
     } catch (error) {
       console.error('Failed to save configuration:', error);
-      setUIState(prev => ({ ...prev, deploymentStatus: 'error' }));
+      setUIState((prev: any) => ({ ...prev, deploymentStatus: 'error' }));
     }
   };
 
@@ -230,7 +230,7 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
     });
 
     try {
-      setUIState(prev => ({ ...prev, deploymentStatus: 'deploying' }));
+      setUIState((prev: any) => ({ ...prev, deploymentStatus: 'deploying' }));
       
       const result = await projectConfigManager.deployConfiguration(currentConfig);
       
@@ -241,22 +241,22 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
       });
       
       if (result.success) {
-        setUIState(prev => ({ 
+        setUIState((prev: any) => ({ 
           ...prev, 
           deploymentStatus: 'success',
           unsavedChanges: false 
         }));
         setChanges([]);
       } else {
-        setUIState(prev => ({ ...prev, deploymentStatus: 'error' }));
+        setUIState((prev: any) => ({ ...prev, deploymentStatus: 'error' }));
       }
     } catch (error) {
       console.error('Deployment failed:', error);
-      setDeployResults(prev => ({
+      setDeployResults((prev: any) => ({
         ...prev,
         isLoading: false
       }));
-      setUIState(prev => ({ ...prev, deploymentStatus: 'error' }));
+      setUIState((prev: any) => ({ ...prev, deploymentStatus: 'error' }));
     }
   };
 
@@ -317,7 +317,7 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
                                 simulationResult.queryTestingEnabled &&
                                 (simulationResult.queryTestResults?.criticalTestsPassed ?? false);
       
-      setUIState(prev => ({ 
+      setUIState((prev: any) => ({ 
         ...prev, 
         deploymentStatus: allRequirementsMet ? 'success' : 'error' 
       }));
@@ -353,7 +353,7 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
         simulationResult: null,
         isLoading: false
       });
-      setUIState(prev => ({ ...prev, deploymentStatus: 'error' }));
+      setUIState((prev: any) => ({ ...prev, deploymentStatus: 'error' }));
     }
   };
 
@@ -383,7 +383,7 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
     try {
       const newConfig = await projectConfigManager.createConfigurationFromTemplate(templateId, projectName);
       setCurrentConfig(newConfig);
-      setUIState(prev => ({ ...prev, editMode: true, unsavedChanges: true }));
+      setUIState((prev: any) => ({ ...prev, editMode: true, unsavedChanges: true }));
     } catch (error) {
       console.error('Failed to create from template:', error);
     }
@@ -424,12 +424,12 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
         });
         
         setCurrentConfig(config);
-        setUIState(prev => ({ ...prev, editMode: true, unsavedChanges: true }));
+        setUIState((prev: any) => ({ ...prev, editMode: true, unsavedChanges: true }));
         
         // Explicitly trigger validation after import
         setTimeout(() => {
           const validation = projectConfigManager.validateConfiguration(config);
-          setUIState(prev => ({ ...prev, validationStatus: validation }));
+          setUIState((prev: any) => ({ ...prev, validationStatus: validation }));
           console.log('🔍 Validation after import:', { isValid: validation.isValid, errors: validation.errors.length });
         }, 100);
         
@@ -563,7 +563,7 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setUIState(prev => ({ ...prev, previewMode: !prev.previewMode }))}
+              onClick={() => setUIState((prev: any) => ({ ...prev, previewMode: !prev.previewMode }))}
               className="h-7 px-2 text-xs"
             >
               <Eye className="h-3 w-3 mr-1" />
@@ -638,7 +638,7 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
         ) : (
           <Tabs 
             value={uiState.activeTab} 
-            onValueChange={(value) => setUIState(prev => ({ ...prev, activeTab: value as any }))}
+            onValueChange={(value) => setUIState((prev: any) => ({ ...prev, activeTab: value as any }))}
             className="h-full flex flex-col"
           >
             <TabsList className="grid w-full grid-cols-8 h-8 p-0">
@@ -888,7 +888,7 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
                         <Input
                           id="project-name"
                           value={currentConfig.name}
-                          onChange={(e) => {
+                          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                             const newConfig = { ...currentConfig, name: e.target.value };
                             handleConfigChange(newConfig, {
                               type: 'modify',
@@ -906,7 +906,7 @@ export const ProjectConfigManager: React.FC<ProjectConfigManagerProps> = ({
                         <Textarea
                           id="project-description"
                           value={currentConfig.description}
-                          onChange={(e) => {
+                          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                             const newConfig = { ...currentConfig, description: e.target.value };
                             handleConfigChange(newConfig, {
                               type: 'modify',

@@ -442,7 +442,7 @@ export default function ProjectsWidget({
 
       if (error) throw error;
       
-      setProjects(prev => [data, ...prev]);
+      setProjects((prev: any) => [data, ...prev]);
       setShowNewProjectDialog(false);
       setNewProjectName('');
     } catch (error) {
@@ -458,14 +458,14 @@ export default function ProjectsWidget({
         .eq('id', projectId);
 
       if (error) throw error;
-      setProjects(prev => prev.filter(p => p.id !== projectId));
+      setProjects((prev: any) => prev.filter((p: any) => p.id !== projectId));
     } catch (error) {
       console.error('Error deleting project:', error);
     }
   };
 
   const toggleProjectExpand = (projectId: string) => {
-    setExpandedProjectId(current => current === projectId ? null : projectId);
+    setExpandedProjectId((current: any) => current === projectId ? null : projectId);
   };
 
   return (
@@ -488,7 +488,7 @@ export default function ProjectsWidget({
               <input
                 type="text"
                 value={newProjectName}
-                onChange={(e) => setNewProjectName(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewProjectName(e.target.value)}
                 placeholder="Project name"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a83269] focus:border-transparent mb-3"
               />

@@ -192,7 +192,7 @@ export const ComplexQueryPanel: React.FC<ComplexQueryPanelProps> = ({
                   <InputLabel>Field</InputLabel>
                   <Select
                     value={filter.field}
-                    onChange={(e) => handleAttributeFilterChange(index, 'field', e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleAttributeFilterChange(index, 'field', e.target.value)}
                   >
                     {selectedLayers.map(layerId => {
                       const layer = layers[layerId];
@@ -208,7 +208,7 @@ export const ComplexQueryPanel: React.FC<ComplexQueryPanelProps> = ({
                   <InputLabel>Operator</InputLabel>
                   <Select
                     value={filter.operator}
-                    onChange={(e) => handleAttributeFilterChange(index, 'operator', e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleAttributeFilterChange(index, 'operator', e.target.value)}
                   >
                     <MenuItem value="=">=</MenuItem>
                     <MenuItem value=">">&gt;</MenuItem>
@@ -224,7 +224,7 @@ export const ComplexQueryPanel: React.FC<ComplexQueryPanelProps> = ({
                   sx={{ flex: 4 }}
                   label="Value"
                   value={filter.value}
-                  onChange={(e) => handleAttributeFilterChange(index, 'value', e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleAttributeFilterChange(index, 'value', e.target.value)}
                 />
                 <IconButton onClick={() => handleRemoveAttributeFilter(index)}>
                   <DeleteIcon />

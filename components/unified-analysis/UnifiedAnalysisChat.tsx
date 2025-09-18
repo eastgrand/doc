@@ -311,7 +311,7 @@ ${conversationText}
               <button
                 key={`${lineIndex}-${partIndex}`}
                 className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors cursor-pointer mr-1"
-                onClick={(e) => {
+                onClick={(e: React.MouseEvent) => {
                   e.stopPropagation();
                   handleZipCodeClick(part);
                 }}
@@ -329,7 +329,7 @@ ${conversationText}
               <button
                 key={`${lineIndex}-${partIndex}`}
                 className="inline-flex items-center px-1 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded hover:bg-green-200 transition-colors cursor-pointer mr-1"
-                onClick={(e) => {
+                onClick={(e: React.MouseEvent) => {
                   e.stopPropagation();
                   handleZipCodeClick(fsaCode); // Use just the FSA code for zooming
                 }}
@@ -1010,7 +1010,7 @@ ${conversationText}
         <div className="flex gap-2">
           <Textarea
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setInputValue(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder={`Ask questions about your analysis results... (or try /help for commands, current mode: ${analysisMode === 'full' ? 'Full' : 'Stats-only'})`}
             className="flex-1 min-h-[60px] !text-xs"

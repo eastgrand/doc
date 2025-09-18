@@ -185,7 +185,7 @@ export default function UnifiedAnalysisWorkflow({
       };
       
       // Update workflow state with the hotspot area and move to buffer step
-      setWorkflowState(prev => ({
+      setWorkflowState((prev: any) => ({
         ...prev,
         areaSelection: hotspotAreaSelection,
         currentStep: 'buffer',
@@ -216,7 +216,7 @@ export default function UnifiedAnalysisWorkflow({
     }
     
     // Reset processing state
-    setWorkflowState(prev => ({
+    setWorkflowState((prev: any) => ({
       ...prev,
       isProcessing: false,
       error: 'Analysis cancelled by user'
@@ -279,7 +279,7 @@ export default function UnifiedAnalysisWorkflow({
 
   // Step navigation
   const goToStep = useCallback((step: WorkflowStep) => {
-    setWorkflowState(prev => ({ ...prev, currentStep: step }));
+    setWorkflowState((prev: any) => ({ ...prev, currentStep: step }));
   }, []);
 
   // Add event listener for popup infographics
@@ -333,7 +333,7 @@ export default function UnifiedAnalysisWorkflow({
     const isPoint = (area.geometry as any).type === 'point';
     const isProjectArea = area.method === 'project-area';
     
-    setWorkflowState(prev => ({
+    setWorkflowState((prev: any) => ({
       ...prev,
       areaSelection: area,
       // Reset analysis type to query if project area is selected and user had infographic/comprehensive
@@ -348,7 +348,7 @@ export default function UnifiedAnalysisWorkflow({
   // Handle analysis type selection and execution
   const handleAnalysisTypeSelected = useCallback(async (type: 'query' | 'infographic' | 'comprehensive') => {
     if (!workflowState.areaSelection) {
-      setWorkflowState(prev => ({
+      setWorkflowState((prev: any) => ({
         ...prev,
         error: 'Please select an area first'
       }));
@@ -358,7 +358,7 @@ export default function UnifiedAnalysisWorkflow({
     // Notify parent that analysis is starting
     onAnalysisStart?.();
 
-    setWorkflowState(prev => ({
+    setWorkflowState((prev: any) => ({
       ...prev,
       analysisType: type,
       isProcessing: true,
@@ -614,7 +614,7 @@ export default function UnifiedAnalysisWorkflow({
       }
 
       // Update state with results
-      setWorkflowState(prev => ({
+      setWorkflowState((prev: any) => ({
         ...prev,
         analysisResult: result,
         currentStep: 'results',
@@ -638,13 +638,13 @@ export default function UnifiedAnalysisWorkflow({
       // Check if the error is due to cancellation
       if (signal.aborted || (error as Error)?.name === 'AbortError') {
         // console.log('[UnifiedWorkflow] Analysis was cancelled');
-        setWorkflowState(prev => ({
+        setWorkflowState((prev: any) => ({
           ...prev,
           error: 'Analysis cancelled',
           isProcessing: false
         }));
       } else {
-        setWorkflowState(prev => ({
+        setWorkflowState((prev: any) => ({
           ...prev,
           error: error instanceof Error ? error.message : 'Analysis failed',
           isProcessing: false
@@ -1161,20 +1161,20 @@ export default function UnifiedAnalysisWorkflow({
           }
         };
         
-        setWorkflowState(prev => ({
+        setWorkflowState((prev: any) => ({
           ...prev,
           areaSelection: bufferedArea,
           currentStep: 'analysis'
         }));
       } catch (error) {
-        setWorkflowState(prev => ({
+        setWorkflowState((prev: any) => ({
           ...prev,
           error: error instanceof Error ? error.message : 'Failed to apply buffer'
         }));
       }
     } else {
       // Skip buffer, proceed with original area
-      setWorkflowState(prev => ({
+      setWorkflowState((prev: any) => ({
         ...prev,
         currentStep: 'analysis'
       }));
@@ -1196,14 +1196,14 @@ export default function UnifiedAnalysisWorkflow({
     
     if (isFromUIWorkflow) {
       // Update dialog state and keep it open for confirmation
-      setInfographicsDialog(prev => ({
+      setInfographicsDialog((prev: any) => ({
         ...prev,
         selectedReport: reportId,
         open: false
       }));
     } else {
       // This is from popup - show infographic immediately
-      setInfographicsDialog(prev => ({
+      setInfographicsDialog((prev: any) => ({
         ...prev,
         selectedReport: reportId,
         open: false,
@@ -1214,7 +1214,7 @@ export default function UnifiedAnalysisWorkflow({
 
   // Handle infographics dialog close
   const handleInfographicsDialogClose = useCallback(() => {
-    setInfographicsDialog(prev => ({
+    setInfographicsDialog((prev: any) => ({
       ...prev,
       open: false
     }));
@@ -1334,7 +1334,7 @@ export default function UnifiedAnalysisWorkflow({
         currentStep: 'area',
         isProcessing: false
       });
-      setResetCounter(prev => prev + 1);
+      setResetCounter((prev: any) => prev + 1);
       return;
     }
     
@@ -1406,7 +1406,7 @@ export default function UnifiedAnalysisWorkflow({
     setHasGeneratedNarrative(false);
     
     // Increment reset counter to force component remount
-    setResetCounter(prev => prev + 1);
+    setResetCounter((prev: any) => prev + 1);
   }, [view, setFormattedLegendData]);
 
   // Render workflow steps indicator
@@ -1473,7 +1473,7 @@ export default function UnifiedAnalysisWorkflow({
           className={`cursor-pointer transition-all h-32 animate-entrance theme-analysis-card ${
             workflowState.analysisType === 'query' ? 'theme-analysis-card-selected' : ''
           }`}
-          onClick={() => !workflowState.isProcessing && setWorkflowState(prev => ({ ...prev, analysisType: 'query' }))}
+          onClick={() => !workflowState.isProcessing && setWorkflowState((prev: any) => ({ ...prev, analysisType: 'query' }))}
         >
           <CardHeader className="py-2">
             <CardTitle className="flex items-center gap-2 text-xs">
@@ -1506,7 +1506,7 @@ export default function UnifiedAnalysisWorkflow({
                 ? 'theme-analysis-card-selected cursor-pointer' 
                 : 'cursor-pointer'
           }`}
-          onClick={() => !workflowState.isProcessing && !isProjectArea && setWorkflowState(prev => ({ ...prev, analysisType: 'infographic' }))}
+          onClick={() => !workflowState.isProcessing && !isProjectArea && setWorkflowState((prev: any) => ({ ...prev, analysisType: 'infographic' }))}
         >
           <CardHeader className="py-2">
             <CardTitle className="flex items-center gap-2 text-xs">
@@ -1541,7 +1541,7 @@ export default function UnifiedAnalysisWorkflow({
                 ? 'border-green-500 bg-green-50 dark:!bg-green-900/30 dark:!border-green-400 shadow-lg cursor-pointer' 
                 : 'hover:shadow-lg dark:hover:bg-gray-800 cursor-pointer'
           }`}
-          onClick={() => !workflowState.isProcessing && !isProjectArea && setWorkflowState(prev => ({ ...prev, analysisType: 'comprehensive' }))}
+          onClick={() => !workflowState.isProcessing && !isProjectArea && setWorkflowState((prev: any) => ({ ...prev, analysisType: 'comprehensive' }))}
         >
           <CardHeader className="py-2">
             <CardTitle className="flex items-center gap-2 text-xs">
@@ -1687,7 +1687,7 @@ export default function UnifiedAnalysisWorkflow({
                       placeholder="Enter your natural language query..."
                       className="flex-1 w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg text-xs min-h-[120px] resize-none bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-transparent"
                       value={selectedQuery}
-                      onChange={(e) => setSelectedQuery(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSelectedQuery(e.target.value)}
                     />
                   </div>
                 </div>
@@ -1700,7 +1700,7 @@ export default function UnifiedAnalysisWorkflow({
                     <Button
                       onClick={() => {
                         // Open report selection dialog when infographIQ is chosen
-                        setInfographicsDialog(prev => ({
+                        setInfographicsDialog((prev: any) => ({
                           ...prev,
                           open: true,
                           geometry: workflowState.areaSelection?.geometry || null,
@@ -1754,7 +1754,7 @@ export default function UnifiedAnalysisWorkflow({
                 onClick={() => {
                   if (workflowState.analysisType === 'infographic' && infographicsDialog.selectedReport) {
                     // Generate the infographic report
-                    setInfographicsDialog(prev => ({
+                    setInfographicsDialog((prev: any) => ({
                       ...prev,
                       showInfographics: true,
                       geometry: workflowState.areaSelection?.geometry || null
@@ -1888,7 +1888,7 @@ export default function UnifiedAnalysisWorkflow({
                         type="number"
                         className="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                         value={bufferDistance}
-                        onChange={(e) => setBufferDistance(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setBufferDistance(e.target.value)}
                         min="0.1"
                         step={bufferType === 'radius' ? '0.1' : '1'}
                         placeholder={bufferType === 'radius' ? '1.0' : '5'}
@@ -1899,7 +1899,7 @@ export default function UnifiedAnalysisWorkflow({
                       <select
                         className="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                         value={bufferUnit}
-                        onChange={(e) => setBufferUnit(e.target.value as 'miles' | 'kilometers' | 'minutes')}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setBufferUnit(e.target.value as 'miles' | 'kilometers' | 'minutes')}
                       >
                         {bufferType === 'radius' ? (
                           <>
@@ -2169,7 +2169,7 @@ export default function UnifiedAnalysisWorkflow({
                 geometry={infographicsDialog.geometry}
                 reportTemplate={infographicsDialog.selectedReport}
                 onReportTemplateChange={(template) => {
-                  setInfographicsDialog(prev => ({
+                  setInfographicsDialog((prev: any) => ({
                     ...prev,
                     selectedReport: template
                   }));

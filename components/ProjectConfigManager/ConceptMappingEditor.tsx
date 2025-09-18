@@ -310,10 +310,10 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
       createdAt: new Date().toISOString()
     };
     
-    setConnections(prev => [...prev, newConnection]);
+    setConnections((prev: MappingConnection[]) => [...prev, newConnection]);
     
     // Update concept mappings
-    setConcepts(prev => prev.map(concept => {
+    setConcepts((prev: ConceptNode[]) => prev.map(concept => {
       if (concept.id === conceptId) {
         const updatedConcept = { ...concept };
         if (targetType === 'group') {
@@ -350,10 +350,10 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
     const connection = connections.find(c => c.id === connectionId);
     if (!connection) return;
     
-    setConnections(prev => prev.filter(c => c.id !== connectionId));
+    setConnections((prev: MappingConnection[]) => prev.filter(c => c.id !== connectionId));
     
     // Update concept mappings
-    setConcepts(prev => prev.map(concept => {
+    setConcepts((prev: ConceptNode[]) => prev.map(concept => {
       if (concept.id === connection.conceptId) {
         const updatedConcept = { ...concept };
         if (connection.targetType === 'group') {
@@ -392,7 +392,7 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
     });
     
     // Remove applied suggestion
-    setSuggestions(prev => prev.filter(s => s.id !== suggestion.id));
+    setSuggestions((prev: ConceptSuggestion[]) => prev.filter(s => s.id !== suggestion.id));
   }, [concepts, createMapping]);
 
   // Create new concept
@@ -413,13 +413,13 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
       position: { x: Math.random() * 400 + 100, y: Math.random() * 300 + 100 }
     };
     
-    setConcepts(prev => [...prev, newConcept]);
+    setConcepts((prev: ConceptNode[]) => [...prev, newConcept]);
     setSelectedConceptId(newConcept.id);
   }, []);
 
   // Update concept
   const updateConcept = useCallback((conceptId: string, updates: Partial<ConceptNode>) => {
-    setConcepts(prev => prev.map(concept => 
+    setConcepts((prev: ConceptNode[]) => prev.map(concept => 
       concept.id === conceptId ? { ...concept, ...updates } : concept
     ));
   }, []);
@@ -433,7 +433,7 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
     conceptConnections.forEach(conn => removeMapping(conn.id));
     
     // Remove concept
-    setConcepts(prev => prev.filter(c => c.id !== conceptId));
+    setConcepts((prev: ConceptNode[]) => prev.filter(c => c.id !== conceptId));
     
     if (selectedConceptId === conceptId) {
       setSelectedConceptId(null);
@@ -553,7 +553,7 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
                               variant="ghost"
                               size="sm"
                               className="h-6 w-6 p-0"
-                              onClick={(e) => {
+                              onClick={(e: React.MouseEvent) => {
                                 e.stopPropagation();
                                 setSelectedConceptId(concept.id);
                               }}
@@ -564,7 +564,7 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
                               variant="ghost"
                               size="sm"
                               className="h-6 w-6 p-0"
-                              onClick={(e) => {
+                              onClick={(e: React.MouseEvent) => {
                                 e.stopPropagation();
                                 deleteConcept(concept.id);
                               }}
@@ -704,7 +704,7 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
                 <Input
                   id="concept-name"
                   value={selectedConcept.name}
-                  onChange={(e) => updateConcept(selectedConcept.id, { name: e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateConcept(selectedConcept.id, { name: e.target.value })}
                 />
               </div>
               <div>
@@ -733,7 +733,7 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
               <Textarea
                 id="concept-description"
                 value={selectedConcept.description}
-                onChange={(e) => updateConcept(selectedConcept.id, { description: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateConcept(selectedConcept.id, { description: e.target.value })}
                 rows={3}
               />
             </div>
@@ -743,7 +743,7 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
               <Input
                 id="concept-keywords"
                 value={selectedConcept.keywords.join(', ')}
-                onChange={(e) => updateConcept(selectedConcept.id, { 
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateConcept(selectedConcept.id, {
                   keywords: e.target.value.split(',').map(k => k.trim()).filter(k => k.length > 0)
                 })}
               />
@@ -754,7 +754,7 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
               <Input
                 id="concept-synonyms"
                 value={selectedConcept.synonyms.join(', ')}
-                onChange={(e) => updateConcept(selectedConcept.id, { 
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateConcept(selectedConcept.id, {
                   synonyms: e.target.value.split(',').map(s => s.trim()).filter(s => s.length > 0)
                 })}
               />
@@ -765,7 +765,7 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
               <Textarea
                 id="concept-patterns"
                 value={selectedConcept.queryPatterns.join('\n')}
-                onChange={(e) => updateConcept(selectedConcept.id, { 
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateConcept(selectedConcept.id, {
                   queryPatterns: e.target.value.split('\n').map(p => p.trim()).filter(p => p.length > 0)
                 })}
                 rows={4}
@@ -1043,7 +1043,7 @@ export const ConceptMappingEditor: React.FC<ConceptMappingEditorProps> = ({
               <Input
                 placeholder="Search concepts..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSearchTerm(e.target.value)}
                 className="pl-8"
               />
             </div>

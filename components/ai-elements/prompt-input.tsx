@@ -12,14 +12,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import type { ChatStatus } from 'ai';
 import { Loader2Icon, SendIcon, SquareIcon, XIcon } from 'lucide-react';
-import type {
-  ComponentProps,
-  HTMLAttributes,
-  KeyboardEventHandler,
-} from 'react';
-import { Children } from 'react';
+import React from 'react';
 
-export type PromptInputProps = HTMLAttributes<HTMLFormElement>;
+export type PromptInputProps = React.HTMLAttributes<HTMLFormElement>;
 
 export const PromptInput = ({ className, ...props }: PromptInputProps) => (
   <form
@@ -31,7 +26,7 @@ export const PromptInput = ({ className, ...props }: PromptInputProps) => (
   />
 );
 
-export type PromptInputTextareaProps = ComponentProps<typeof Textarea> & {
+export type PromptInputTextareaProps = React.ComponentProps<typeof Textarea> & {
   minHeight?: number;
   maxHeight?: number;
 };
@@ -44,7 +39,7 @@ export const PromptInputTextarea = ({
   maxHeight = 164,
   ...props
 }: PromptInputTextareaProps) => {
-  const handleKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
+  const handleKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
       // Don't submit if IME composition is in progress
       if (e.nativeEvent.isComposing) {
@@ -74,7 +69,7 @@ export const PromptInputTextarea = ({
         className
       )}
       name="message"
-      onChange={(e) => {
+      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
         onChange?.(e);
       }}
       onKeyDown={handleKeyDown}
@@ -84,7 +79,7 @@ export const PromptInputTextarea = ({
   );
 };
 
-export type PromptInputToolbarProps = HTMLAttributes<HTMLDivElement>;
+export type PromptInputToolbarProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const PromptInputToolbar = ({
   className,
@@ -96,7 +91,7 @@ export const PromptInputToolbar = ({
   />
 );
 
-export type PromptInputToolsProps = HTMLAttributes<HTMLDivElement>;
+export type PromptInputToolsProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const PromptInputTools = ({
   className,
@@ -112,7 +107,7 @@ export const PromptInputTools = ({
   />
 );
 
-export type PromptInputButtonProps = ComponentProps<typeof Button>;
+export type PromptInputButtonProps = React.ComponentProps<typeof Button>;
 
 export const PromptInputButton = ({
   variant = 'ghost',
@@ -121,7 +116,7 @@ export const PromptInputButton = ({
   ...props
 }: PromptInputButtonProps) => {
   const newSize =
-    (size ?? Children.count(props.children) > 1) ? 'default' : 'icon';
+    (size ?? React.Children.count(props.children) > 1) ? 'default' : 'icon';
 
   return (
     <Button
@@ -139,7 +134,7 @@ export const PromptInputButton = ({
   );
 };
 
-export type PromptInputSubmitProps = ComponentProps<typeof Button> & {
+export type PromptInputSubmitProps = React.ComponentProps<typeof Button> & {
   status?: ChatStatus;
 };
 
@@ -174,13 +169,13 @@ export const PromptInputSubmit = ({
   );
 };
 
-export type PromptInputModelSelectProps = ComponentProps<typeof Select>;
+export type PromptInputModelSelectProps = React.ComponentProps<typeof Select>;
 
 export const PromptInputModelSelect = (props: PromptInputModelSelectProps) => (
   <Select {...props} />
 );
 
-export type PromptInputModelSelectTriggerProps = ComponentProps<
+export type PromptInputModelSelectTriggerProps = React.ComponentProps<
   typeof SelectTrigger
 >;
 
@@ -198,7 +193,7 @@ export const PromptInputModelSelectTrigger = ({
   />
 );
 
-export type PromptInputModelSelectContentProps = ComponentProps<
+export type PromptInputModelSelectContentProps = React.ComponentProps<
   typeof SelectContent
 >;
 
@@ -209,7 +204,7 @@ export const PromptInputModelSelectContent = ({
   <SelectContent className={cn(className)} {...props} />
 );
 
-export type PromptInputModelSelectItemProps = ComponentProps<typeof SelectItem>;
+export type PromptInputModelSelectItemProps = React.ComponentProps<typeof SelectItem>;
 
 export const PromptInputModelSelectItem = ({
   className,
@@ -218,7 +213,7 @@ export const PromptInputModelSelectItem = ({
   <SelectItem className={cn(className)} {...props} />
 );
 
-export type PromptInputModelSelectValueProps = ComponentProps<
+export type PromptInputModelSelectValueProps = React.ComponentProps<
   typeof SelectValue
 >;
 

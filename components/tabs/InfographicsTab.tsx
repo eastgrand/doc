@@ -1710,7 +1710,7 @@ export default function InfographicsTab({
       console.log('Force update called');
       // Triggers a re-render by updating a ref and forcing a state change
       renderCount.current += 1;
-      setActiveStep(prev => prev); // Same value but forces re-render
+      setActiveStep((prev: any) => prev); // Same value but forces re-render
     };
     
     return () => {
@@ -2067,7 +2067,7 @@ export default function InfographicsTab({
                     <Input
                       type="number"
                       value={bufferValue}
-                      onChange={(e) => setBufferValue(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBufferValue(e.target.value)}
                       min="0"
                       step={bufferType === 'radius' ? "0.1" : "1"}
                       className="text-xs"

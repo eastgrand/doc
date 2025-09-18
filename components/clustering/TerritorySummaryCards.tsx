@@ -128,7 +128,7 @@ export function TerritorySummaryCards({
           <span className="text-sm text-muted-foreground">Sort by:</span>
           <select
             value={currentSort}
-            onChange={(e) => setCurrentSort(e.target.value as SortOption)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setCurrentSort(e.target.value as SortOption)}
             className="text-sm border rounded px-2 py-1"
           >
             <option value="score">Score</option>
@@ -302,7 +302,7 @@ function TerritoryCard({
               <Button 
                 variant="ghost" 
                 size="sm"
-                onClick={(e) => {
+                onClick={(e: React.MouseEvent) => {
                   e.stopPropagation();
                   onExport();
                 }}
@@ -314,7 +314,7 @@ function TerritoryCard({
               <Button 
                 variant="ghost" 
                 size="sm"
-                onClick={(e) => {
+                onClick={(e: React.MouseEvent) => {
                   e.stopPropagation();
                   onShare();
                 }}

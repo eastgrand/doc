@@ -315,7 +315,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
     key: K,
     value: AnalysisConfig[K]
   ) => {
-    setConfig(prev => ({
+    setConfig((prev: any) => ({
       ...prev,
       [key]: value
     }));
@@ -323,7 +323,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
   }, []);
   
   const updateScoreConfigWeights = useCallback((weights: Record<string, number>) => {
-    setConfig(prev => ({
+    setConfig((prev: any) => ({
       ...prev,
       scoreConfig: {
         ...prev.scoreConfig,
@@ -334,7 +334,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
   }, []);
   
   const updateClusteringConfig = useCallback((clustering: AnalysisConfig['scoreConfig']['clustering']) => {
-    setConfig(prev => ({
+    setConfig((prev: any) => ({
       ...prev,
       scoreConfig: {
         ...prev.scoreConfig,
@@ -348,7 +348,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
   const handleLoadTemplate = useCallback((templateId: string) => {
     const template = allTemplates.find(t => t.id === templateId);
     if (template) {
-      setConfig(prev => ({
+      setConfig((prev: any) => ({
         ...prev,
         ...template.config
       }));
@@ -555,7 +555,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
                 <label className="text-xs font-medium">Target Brand (Optional)</label>
                 <Input
                   value={config.targetBrand || ''}
-                  onChange={(e) => updateConfig('targetBrand', e.target.value || undefined)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateConfig('targetBrand', e.target.value || undefined)}
                   placeholder="Enter brand name for analysis"
                   className="text-xs"
                 />
@@ -570,7 +570,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
                     max="1"
                     step="0.01"
                     value={config.confidenceLevel}
-                    onChange={(e) => updateConfig('confidenceLevel', parseFloat(e.target.value))}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateConfig('confidenceLevel', parseFloat(e.target.value))}
                     className="text-xs"
                   />
                 </div>
@@ -583,7 +583,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
                     max="1"
                     step="0.01"
                     value={config.relevanceThreshold}
-                    onChange={(e) => updateConfig('relevanceThreshold', parseFloat(e.target.value))}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateConfig('relevanceThreshold', parseFloat(e.target.value))}
                     className="text-xs"
                   />
                 </div>
@@ -595,7 +595,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
                     min="1"
                     max="10000"
                     value={config.maxResults}
-                    onChange={(e) => updateConfig('maxResults', parseInt(e.target.value))}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateConfig('maxResults', parseInt(e.target.value))}
                     className="text-xs"
                   />
                 </div>
@@ -624,7 +624,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
                     max="1"
                     step="0.01"
                     value={value}
-                    onChange={(e) => {
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       const newWeights = {
                         ...config.scoreConfig.weights,
                         [key]: parseFloat(e.target.value)
@@ -648,7 +648,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
                   type="checkbox"
                   id="clustering-enabled"
                   checked={config.scoreConfig.clustering.enabled}
-                  onChange={(e) => updateClusteringConfig({
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateClusteringConfig({
                     ...config.scoreConfig.clustering,
                     enabled: e.target.checked
                   })}
@@ -688,7 +688,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
                         max="2.0"
                         step="0.1"
                         value={config.scoreConfig.clustering.eps}
-                        onChange={(e) => updateClusteringConfig({
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateClusteringConfig({
                           ...config.scoreConfig.clustering,
                           eps: parseFloat(e.target.value)
                         })}
@@ -703,7 +703,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
                         min="2"
                         max="20"
                         value={config.scoreConfig.clustering.minSamples}
-                        onChange={(e) => updateClusteringConfig({
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateClusteringConfig({
                           ...config.scoreConfig.clustering,
                           minSamples: parseInt(e.target.value)
                         })}
@@ -727,7 +727,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
                   type="checkbox"
                   id="include-shap"
                   checked={config.includeShap}
-                  onChange={(e) => updateConfig('includeShap', e.target.checked)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateConfig('includeShap', e.target.checked)}
                 />
                 <label htmlFor="include-shap" className="text-xs font-medium">
                   Include SHAP Analysis (Feature Importance)
@@ -739,7 +739,7 @@ export const InteractiveAnalysisConfig: React.FC<InteractiveAnalysisConfigProps>
                   type="checkbox"
                   id="generate-insights"
                   checked={config.generateInsights}
-                  onChange={(e) => updateConfig('generateInsights', e.target.checked)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateConfig('generateInsights', e.target.checked)}
                 />
                 <label htmlFor="generate-insights" className="text-xs font-medium">
                   Generate AI Insights

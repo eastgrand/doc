@@ -170,7 +170,7 @@ const TextToSQLQuery: React.FC<TextToSQLProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           <Textarea
             value={question}
-            onChange={(e) => setQuestion(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setQuestion(e.target.value)}
             placeholder="Ask a question about the data..."
             className="w-full h-24"
             disabled={loading}

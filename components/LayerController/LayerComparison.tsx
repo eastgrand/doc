@@ -181,7 +181,7 @@ export const LayerComparison: React.FC<LayerComparisonProps> = ({ layers, onClos
           <InputLabel>Layer 1</InputLabel>
           <Select
             value={layer1}
-            onChange={(e) => setLayer1(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setLayer1(e.target.value)}
             label="Layer 1"
           >
             {Object.entries(layers).map(([id, layer]) => (
@@ -196,7 +196,7 @@ export const LayerComparison: React.FC<LayerComparisonProps> = ({ layers, onClos
           <InputLabel>Layer 2</InputLabel>
           <Select
             value={layer2}
-            onChange={(e) => setLayer2(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setLayer2(e.target.value)}
             label="Layer 2"
           >
             {Object.entries(layers).map(([id, layer]) => (

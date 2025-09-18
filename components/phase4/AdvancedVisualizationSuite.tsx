@@ -285,7 +285,7 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
   const animate = useCallback(() => {
     if (!isAnimating) return;
     
-    setTimeSliderValue(prev => {
+    setTimeSliderValue((prev: number) => {
       const next = prev + 1;
       return next > 100 ? 0 : next;
     });
@@ -316,7 +316,7 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
   
   // Toggle layer visibility
   const toggleLayer = useCallback((layerId: string) => {
-    setLayers(prev => prev.map(layer => 
+    setLayers((prev: VisualizationLayer[]) => prev.map(layer => 
       layer.id === layerId 
         ? { ...layer, visible: !layer.visible }
         : layer
@@ -325,7 +325,7 @@ export const AdvancedVisualizationSuite: React.FC<AdvancedVisualizationSuiteProp
   
   // Update layer opacity
   const updateLayerOpacity = useCallback((layerId: string, opacity: number) => {
-    setLayers(prev => prev.map(layer => 
+    setLayers((prev: VisualizationLayer[]) => prev.map(layer => 
       layer.id === layerId 
         ? { ...layer, opacity }
         : layer

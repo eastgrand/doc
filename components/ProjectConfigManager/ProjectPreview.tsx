@@ -134,7 +134,7 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
   }, [autoRefreshEnabled, refreshInterval, previewState.isLoading]);
 
   useEffect(() => {
-    setPreviewState(prev => ({
+    setPreviewState((prev: any) => ({
       ...prev,
       currentConfiguration: config,
       lastUpdateTime: new Date().toISOString()
@@ -147,7 +147,7 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
 
   // Event Handlers
   const handleRefreshPreview = useCallback(async () => {
-    setPreviewState(prev => ({ ...prev, isLoading: true, isError: false }));
+    setPreviewState((prev: any) => ({ ...prev, isLoading: true, isError: false }));
 
     try {
       // Simulate preview data generation
@@ -155,7 +155,7 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
       const mockPerformanceMetrics = await generateMockPerformanceMetrics();
       const mockValidationResults = await generateMockValidationResults(config);
 
-      setPreviewState(prev => ({
+      setPreviewState((prev: any) => ({
         ...prev,
         isLoading: false,
         previewData: mockPreviewData,
@@ -164,7 +164,7 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
         lastUpdateTime: new Date().toISOString()
       }));
     } catch (error) {
-      setPreviewState(prev => ({
+      setPreviewState((prev: any) => ({
         ...prev,
         isLoading: false,
         isError: true,
@@ -174,7 +174,7 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
   }, [config]);
 
   const handlePreviewModeChange = (newMode: PreviewMode) => {
-    setLivePreviewConfig(prev => ({
+    setLivePreviewConfig((prev: any) => ({
       ...prev,
       previewMode: newMode,
       updatedAt: new Date().toISOString()
@@ -416,7 +416,7 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
                     <Button 
                       className="mt-4" 
                       onClick={() => {
-                        setPreviewState(prev => ({
+                        setPreviewState((prev: any) => ({
                           ...prev,
                           mapPreview: {
                             ...prev.mapPreview,
@@ -426,7 +426,7 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
                         
                         // Simulate map loading
                         setTimeout(() => {
-                          setPreviewState(prev => ({
+                          setPreviewState((prev: any) => ({
                             ...prev,
                             mapPreview: {
                               ...prev.mapPreview,

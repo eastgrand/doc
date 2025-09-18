@@ -20,7 +20,7 @@ function CheckboxImpl(
         className="sr-only"
         ref={ref}
         checked={checked}
-        onChange={(e) => onCheckedChange?.((e.target as HTMLInputElement).checked)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckedChange?.((e.target as HTMLInputElement).checked)}
         {...props}
       />
       <div

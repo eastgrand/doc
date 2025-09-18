@@ -26,7 +26,7 @@ export const IconStyleSelector: React.FC<IconStyleSelectorProps> = ({
       <CardContent>
         <RadioGroup
           value={currentIconType}
-          onValueChange={(value) => onIconTypeChange(value as IconType)}
+          onValueChange={(value: any) => onIconTypeChange(value as IconType)}
           className="space-y-3"
         >
           {iconTypeOptions.map((option) => (

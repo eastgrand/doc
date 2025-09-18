@@ -32,7 +32,7 @@ export const IsolatedParticleCanvas = React.memo(({ show }: IsolatedParticleCanv
       />
     </>
   );
-}, (prevProps, nextProps) => {
+}, (prevProps: IsolatedParticleCanvasProps, nextProps: IsolatedParticleCanvasProps) => {
   // Custom comparison - only re-render if show changes from false to true or vice versa
   // This prevents any other prop changes from causing re-renders
   return prevProps.show === nextProps.show;

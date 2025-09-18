@@ -4,10 +4,7 @@ import { cn } from "@/lib/utils"
 
 const Collapsible = CollapsiblePrimitive.Root
 
-const CollapsibleTrigger = React.forwardRef<
-  React.ElementRef<typeof CollapsiblePrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Trigger>
->(({ className, ...props }, ref) => (
+const CollapsibleTrigger = React.forwardRef(({ className, ...props }: React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Trigger>, ref: React.Ref<React.ElementRef<typeof CollapsiblePrimitive.Trigger>>) => (
   <CollapsiblePrimitive.Trigger
     ref={ref}
     className={cn(
@@ -19,10 +16,7 @@ const CollapsibleTrigger = React.forwardRef<
 ))
 CollapsibleTrigger.displayName = CollapsiblePrimitive.Trigger.displayName
 
-const CollapsibleContent = React.forwardRef<
-  React.ElementRef<typeof CollapsiblePrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Content>
->(({ className, ...props }, ref) => (
+const CollapsibleContent = React.forwardRef(({ className, ...props }: React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Content>, ref: React.Ref<React.ElementRef<typeof CollapsiblePrimitive.Content>>) => (
   <CollapsiblePrimitive.Content
     ref={ref}
     className={cn(

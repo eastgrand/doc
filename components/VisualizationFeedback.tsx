@@ -59,7 +59,7 @@ export const VisualizationFeedback: React.FC<FeedbackProps> = ({
       <textarea
         placeholder="Additional comments (optional)"
         value={comments}
-        onChange={(e) => setComments(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setComments(e.target.value)}
       />
       <div className="button-container">
         <button onClick={handleSubmit}>Submit</button>

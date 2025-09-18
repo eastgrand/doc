@@ -63,7 +63,7 @@ export const LayerSharing: React.FC<LayerSharingProps> = ({ layer, onClose }) =>
   };
 
   const handleSettingsChange = (setting: keyof ShareSettings) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setShareSettings(prev => ({
+    setShareSettings((prev: ShareSettings) => ({
       ...prev,
       [setting]: event.target.checked
     }));
@@ -122,7 +122,7 @@ export const LayerSharing: React.FC<LayerSharingProps> = ({ layer, onClose }) =>
           label="Password Protection"
           type="password"
           value={shareSettings.password || ''}
-          onChange={(e) => setShareSettings(prev => ({ ...prev, password: e.target.value }))}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setShareSettings((prev: ShareSettings) => ({ ...prev, password: e.target.value }))}
           margin="normal"
         />
       </Box>

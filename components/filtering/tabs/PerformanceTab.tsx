@@ -321,7 +321,7 @@ export default function PerformanceTab({
                   <Switch
                     id="sampling-enabled"
                     checked={config.performance.sampling.enabled}
-                    onCheckedChange={(enabled) =>
+                    onCheckedChange={(enabled: boolean) =>
                       handlePerformanceChange({
                         sampling: { ...config.performance.sampling, enabled }
                       })
@@ -386,9 +386,9 @@ export default function PerformanceTab({
                         <div className="px-2">
                           <Slider
                             value={config.performance.sampling.maxSampleSize}
-                            onValueChange={(value) =>
+                            onValueChange={(value: number[]) =>
                               handlePerformanceChange({
-                                sampling: { ...config.performance.sampling, maxSampleSize: value }
+                                sampling: { ...config.performance.sampling, maxSampleSize: value[0] }
                               })
                             }
                             min={currentSamplingStrategy.minSampleSize}
@@ -441,7 +441,7 @@ export default function PerformanceTab({
                   <Switch
                     id="caching-enabled"
                     checked={config.performance.caching.enabled}
-                    onCheckedChange={(enabled) =>
+                    onCheckedChange={(enabled: boolean) =>
                       handlePerformanceChange({
                         caching: { ...config.performance.caching, enabled }
                       })
@@ -532,7 +532,7 @@ export default function PerformanceTab({
                   <Switch
                     id="timeout-enabled"
                     checked={config.performance.timeout.enabled}
-                    onCheckedChange={(enabled) =>
+                    onCheckedChange={(enabled: boolean) =>
                       handlePerformanceChange({
                         timeout: { ...config.performance.timeout, enabled }
                       })
@@ -623,7 +623,7 @@ export default function PerformanceTab({
                   <Switch
                     id="quality-enabled"
                     checked={config.performance.quality.enabled}
-                    onCheckedChange={(enabled) =>
+                    onCheckedChange={(enabled: boolean) =>
                       handlePerformanceChange({
                         quality: { ...config.performance.quality, enabled }
                       })
@@ -638,9 +638,9 @@ export default function PerformanceTab({
                       <div className="px-2">
                         <Slider
                           value={config.performance.quality.threshold}
-                          onValueChange={(value) =>
+                          onValueChange={(value: number[]) =>
                             handlePerformanceChange({
-                              quality: { ...config.performance.quality, threshold: value }
+                              quality: { ...config.performance.quality, threshold: value[0] }
                             })
                           }
                           min={0.5}

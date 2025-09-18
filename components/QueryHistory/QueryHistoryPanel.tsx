@@ -178,7 +178,7 @@ export const QueryHistoryPanel: React.FC<QueryHistoryPanelProps> = ({
                 <Box>
                   <IconButton
                     size="small"
-                    onClick={(e) => {
+                    onClick={(e: React.MouseEvent) => {
                       e.stopPropagation();
                       handleFavoriteToggle(query);
                     }}
@@ -187,7 +187,7 @@ export const QueryHistoryPanel: React.FC<QueryHistoryPanelProps> = ({
                   </IconButton>
                   <IconButton
                     size="small"
-                    onClick={(e) => {
+                    onClick={(e: React.MouseEvent<HTMLElement>) => {
                       e.stopPropagation();
                       handleMenuOpen(e, query);
                     }}

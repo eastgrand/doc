@@ -252,7 +252,7 @@ export default function FieldFilterTab({
           <div className="flex items-center gap-2">
             <Switch
               checked={filter.enabled}
-              onCheckedChange={(enabled) => handleNumericFilterChange(field.name, { enabled })}
+              onCheckedChange={(enabled: boolean) => handleNumericFilterChange(field.name, { enabled })}
             />
             <Label className="text-sm font-medium">{field.displayName}</Label>
           </div>
@@ -277,7 +277,7 @@ export default function FieldFilterTab({
                   type="number"
                   placeholder={range.min.toString()}
                   value={filter.min || ''}
-                  onChange={(e) => handleNumericFilterChange(field.name, { 
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleNumericFilterChange(field.name, { 
                     min: e.target.value ? Number(e.target.value) : undefined 
                   })}
                   className="h-7 text-xs"
@@ -289,7 +289,7 @@ export default function FieldFilterTab({
                   type="number"
                   placeholder={range.max.toString()}
                   value={filter.max || ''}
-                  onChange={(e) => handleNumericFilterChange(field.name, { 
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleNumericFilterChange(field.name, { 
                     max: e.target.value ? Number(e.target.value) : undefined 
                   })}
                   className="h-7 text-xs"
@@ -305,7 +305,7 @@ export default function FieldFilterTab({
                   max={range.max}
                   step={range.step}
                   value={filter.range[0]}
-                  onValueChange={(value) => handleNumericFilterChange(field.name, { range: [value, filter.range?.[1] || range.max] })}
+                  onValueChange={(value: number[]) => handleNumericFilterChange(field.name, { range: [value[0], filter.range?.[1] || range.max] })}
                   className="w-full"
                 />
               </div>
@@ -335,7 +335,7 @@ export default function FieldFilterTab({
           <div className="flex items-center gap-2">
             <Switch
               checked={filter.enabled}
-              onCheckedChange={(enabled) => handleCategoricalFilterChange(field.name, { enabled })}
+              onCheckedChange={(enabled: boolean) => handleCategoricalFilterChange(field.name, { enabled })}
             />
             <Label className="text-sm font-medium">{field.displayName}</Label>
           </div>
@@ -378,7 +378,7 @@ export default function FieldFilterTab({
                         filter.included.includes(category) : 
                         filter.excluded.includes(category)
                       }
-                      onCheckedChange={(checked) => {
+                      onCheckedChange={(checked: boolean) => {
                         if (filter.mode === 'include') {
                           const included = checked 
                             ? [...filter.included, category]
@@ -432,7 +432,7 @@ export default function FieldFilterTab({
           <div className="flex items-center gap-2">
             <Switch
               checked={filter.enabled}
-              onCheckedChange={(enabled) => handleTextFilterChange(field.name, { enabled })}
+              onCheckedChange={(enabled: boolean) => handleTextFilterChange(field.name, { enabled })}
             />
             <Label className="text-sm font-medium">{field.displayName}</Label>
           </div>
@@ -454,7 +454,7 @@ export default function FieldFilterTab({
               <Input
                 placeholder="Enter search text..."
                 value={filter.query}
-                onChange={(e) => handleTextFilterChange(field.name, { query: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleTextFilterChange(field.name, { query: e.target.value })}
                 className="h-7 text-xs flex-1"
               />
               <Select
@@ -479,7 +479,7 @@ export default function FieldFilterTab({
               <Checkbox
                 id={`${field.name}-case-sensitive`}
                 checked={filter.caseSensitive}
-                onCheckedChange={(caseSensitive) => 
+                onCheckedChange={(caseSensitive: boolean) => 
                   handleTextFilterChange(field.name, { caseSensitive: Boolean(caseSensitive) })
                 }
               />
@@ -556,7 +556,7 @@ export default function FieldFilterTab({
             <Input
               placeholder="Search fields..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
               className="h-8 pl-7 text-xs"
             />
           </div>

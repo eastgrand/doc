@@ -235,7 +235,7 @@ const EndpointScoreInfographic: React.FC<EndpointScoreInfographicProps> = ({
         className={`p-4 rounded-lg border-2 ${getScoreColor(metric.value)} transition-all hover:shadow-md`}
       >
         <div className="flex items-start justify-between mb-2">
-          <Icon className={`h-6 w-6 ${metric.color}`} />
+          {React.createElement(Icon, { className: `h-6 w-6 ${metric.color}` })}
           <span className="text-2xl font-bold">{metric.value}</span>
         </div>
         <h4 className="font-semibold text-gray-900 mb-1">{metric.label}</h4>

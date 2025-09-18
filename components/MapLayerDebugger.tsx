@@ -159,7 +159,7 @@ const MapLayerDebugger = () => {
                   max="1" 
                   step="0.1" 
                   value={layer.opacity}
-                  onChange={(e) => {
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     layer.opacity = parseFloat(e.target.value);
                     refreshLayers();
                   }}
