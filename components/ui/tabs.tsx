@@ -9,7 +9,7 @@ interface TabsContextType {
   onValueChange: (value: string) => void;
 }
 
-const TabsContext = React.createContext<TabsContextType | null>(null);
+const TabsContext = React.createContext(null as TabsContextType | null);
 
 interface TabsProps {
   value: string;
