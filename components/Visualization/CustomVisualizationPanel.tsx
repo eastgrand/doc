@@ -18,16 +18,29 @@ import {
   SelectChangeEvent,
   IconButton,
 } from '@mui/material';
-import type { GridProps } from '@mui/material/Grid';
 import { VisualizationType, VisualizationStrategy } from '@/types/visualization';
 import { LayerConfig } from '@/types/layers';
 import { VisualizationIntegration } from '@/utils/visualization-integration';
 import { LayerErrorHandler } from '@/utils/layer-error-handler';
 import CloseIcon from '@mui/icons-material/Close';
 
+interface VisualizationConfig {
+  type: VisualizationType;
+  strategy: VisualizationStrategy;
+  options: {
+    colorScheme: string;
+    opacity: number;
+    showLegend: boolean;
+    showLabels: boolean;
+    clusteringEnabled: boolean;
+    maxFeatures: number;
+    clusters?: { maxClusters: number; minMembers: number };
+  };
+}
+
 interface CustomVisualizationPanelProps {
   layer: LayerConfig;
-  onVisualizationUpdate: (config: any) => void;
+  onVisualizationUpdate: (config: VisualizationConfig) => void;
   onClose: () => void;
 }
 
@@ -71,7 +84,7 @@ export const CustomVisualizationPanel: React.FC<CustomVisualizationPanelProps> =
   const visualizationIntegration = VisualizationIntegration.getInstance();
 
   const handleTypeChange = (event: SelectChangeEvent<VisualizationType>) => {
-    setOptions((prev: any) => ({
+    setOptions((prev: VisualizationOptions) => ({
       ...prev,
       type: event.target.value as VisualizationType
     }));
@@ -82,12 +95,12 @@ export const CustomVisualizationPanel: React.FC<CustomVisualizationPanelProps> =
   ) => {
     const target = event.target as HTMLInputElement;
     if (target.type === 'checkbox') {
-      setOptions((prev: any) => ({
+      setOptions((prev: VisualizationOptions) => ({
         ...prev,
         [field]: target.checked
       }));
     } else {
-      setOptions((prev: any) => ({
+      setOptions((prev: VisualizationOptions) => ({
         ...prev,
         [field]: target.value
       }));
@@ -98,7 +111,7 @@ export const CustomVisualizationPanel: React.FC<CustomVisualizationPanelProps> =
     _event: Event,
     value: number | number[]
   ) => {
-    setOptions((prev: any) => ({
+    setOptions((prev: VisualizationOptions) => ({
       ...prev,
       [field]: value
     }));
@@ -309,7 +322,7 @@ export const CustomVisualizationPanel: React.FC<CustomVisualizationPanelProps> =
             control={
               <Switch
                 checked={options.clustersOn}
-                onChange={(_e, checked) => setOptions((prev: any) => ({ ...prev, clustersOn: checked }))}
+                onChange={(_e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => setOptions((prev: VisualizationOptions) => ({ ...prev, clustersOn: checked }))}
               />
             }
             label="Group results into clusters"
@@ -322,7 +335,7 @@ export const CustomVisualizationPanel: React.FC<CustomVisualizationPanelProps> =
                 type="number"
                 size="small"
                 value={options.maxClusters}
-                onChange={e => setOptions((prev: any) => ({ ...prev, maxClusters: Number(e.target.value) }))}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setOptions((prev: VisualizationOptions) => ({ ...prev, maxClusters: Number(e.target.value) }))}
                 inputProps={{ min: 1 }}
               />
               <TextField
@@ -330,7 +343,7 @@ export const CustomVisualizationPanel: React.FC<CustomVisualizationPanelProps> =
                 type="number"
                 size="small"
                 value={options.minMembers}
-                onChange={e => setOptions((prev: any) => ({ ...prev, minMembers: Number(e.target.value) }))}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setOptions((prev: VisualizationOptions) => ({ ...prev, minMembers: Number(e.target.value) }))}
                 inputProps={{ min: 1 }}
               />
             </Box>
