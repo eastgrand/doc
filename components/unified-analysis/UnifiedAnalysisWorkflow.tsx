@@ -1888,7 +1888,7 @@ export default function UnifiedAnalysisWorkflow({
                         type="number"
                         className="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                         value={bufferDistance}
-                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setBufferDistance(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBufferDistance(e.target.value)}
                         min="0.1"
                         step={bufferType === 'radius' ? '0.1' : '1'}
                         placeholder={bufferType === 'radius' ? '1.0' : '5'}
@@ -1899,7 +1899,7 @@ export default function UnifiedAnalysisWorkflow({
                       <select
                         className="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                         value={bufferUnit}
-                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setBufferUnit(e.target.value as 'miles' | 'kilometers' | 'minutes')}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setBufferUnit(e.target.value as 'miles' | 'kilometers' | 'minutes')}
                       >
                         {bufferType === 'radius' ? (
                           <>
