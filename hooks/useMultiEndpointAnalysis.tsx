@@ -82,7 +82,7 @@ export function useMultiEndpointAnalysis() {
       throw new Error('Failed to initialize analysis engine');
     }
 
-    setState(prev => ({
+    setState((prev: MultiEndpointAnalysisState) => ({
       ...prev,
       isAnalyzing: true,
       currentStep: 'Detecting query type',
@@ -94,7 +94,7 @@ export function useMultiEndpointAnalysis() {
       // Step 1: Detect if multi-endpoint is needed
       const detection = detectMultiEndpoint(query);
       
-      setState(prev => ({
+      setState((prev: MultiEndpointAnalysisState) => ({
         ...prev,
         currentStep: detection.isMultiEndpoint ? 'Multi-endpoint analysis' : 'Single-endpoint analysis',
         progress: 10,
@@ -106,7 +106,7 @@ export function useMultiEndpointAnalysis() {
       }
 
       // Step 2: Execute analysis
-      setState(prev => ({ ...prev, currentStep: 'Loading data', progress: 20 }));
+      setState((prev: MultiEndpointAnalysisState) => ({ ...prev, currentStep: 'Loading data', progress: 20 }));
 
       const result = await engine.executeAnalysis(query, {
         forceMultiEndpoint: options.forceMultiEndpoint,
@@ -115,9 +115,9 @@ export function useMultiEndpointAnalysis() {
       });
 
       // Step 3: Process results
-      setState(prev => ({ ...prev, currentStep: 'Processing results', progress: 90 }));
+      setState((prev: MultiEndpointAnalysisState) => ({ ...prev, currentStep: 'Processing results', progress: 90 }));
 
-      setState(prev => ({
+      setState((prev: MultiEndpointAnalysisState) => ({
         ...prev,
         isAnalyzing: false,
         currentStep: 'Complete',
@@ -132,7 +132,7 @@ export function useMultiEndpointAnalysis() {
       return result;
 
     } catch (error) {
-      setState(prev => ({
+      setState((prev: MultiEndpointAnalysisState) => ({
         ...prev,
         isAnalyzing: false,
         currentStep: 'Error',

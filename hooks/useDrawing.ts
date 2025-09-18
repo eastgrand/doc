@@ -519,7 +519,7 @@ const handleFeatureSelection = useCallback(async (mapPoint: __esri.Point, event?
     }
     
     // Update drawing state
-    setDrawingState(prev => ({
+    setDrawingState((prev: DrawingState) => ({
         ...prev,
         mode,
         isModifying: false,

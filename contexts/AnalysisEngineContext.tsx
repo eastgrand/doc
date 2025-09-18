@@ -36,19 +36,19 @@ export const AnalysisEngineProvider: React.FC<AnalysisEngineProviderProps> = ({
   children,
   config
 }) => {
-  const [engine] = useState(() => {
+  const [engine] = useState<AnalysisEngine>(() => {
     console.log('[AnalysisEngineProvider] Initializing singleton engine...');
     return AnalysisEngine.getInstance(config);
   });
   
-  const [state, setState] = useState<AnalysisState>(engine.getState());
+  const [state, setState] = useState<AnalysisState>(() => engine.getState());
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     console.log('[AnalysisEngineProvider] Setting up engine state subscription...');
     
     // Subscribe to engine state changes
-    const unsubscribe = engine.subscribe((newState) => {
+    const unsubscribe = engine.subscribe((newState: AnalysisState) => {
       setState(newState);
     });
 
