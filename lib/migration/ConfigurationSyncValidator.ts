@@ -173,6 +173,9 @@ export class ConfigurationSyncValidator extends BaseValidator {
       
       let match;
       while ((match = queryPattern.exec(categoriesStr)) !== null) {
+        if (!config.predefinedQueries) {
+          config.predefinedQueries = [];
+        }
         config.predefinedQueries.push(match[1]);
       }
     }
@@ -206,6 +209,10 @@ export class ConfigurationSyncValidator extends BaseValidator {
     while ((match = endpointPattern.exec(content)) !== null) {
       const endpoint = match[1];
       const description = match[2];
+      
+      if (!config.endpoints) {
+        config.endpoints = {};
+      }
       
       config.endpoints[endpoint] = {
         description,

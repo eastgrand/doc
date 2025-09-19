@@ -108,6 +108,15 @@ export class ArcGISDataExtractor {
 
       const layers: ArcGISLayer[] = [];
       
+      if (!serviceInfo.layers) {
+        return {
+          success: true,
+          layers: [],
+          errors,
+          warnings
+        };
+      }
+      
       for (const layerInfo of serviceInfo.layers) {
         try {
           const layerDetails = await this.fetchLayerDetails(layerInfo.id);

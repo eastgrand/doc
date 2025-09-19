@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { HousingMarketCorrelationProcessor } from '../HousingMarketCorrelationProcessor';
-import { RawAnalysisResult } from '../../types';
+import { RawAnalysisResult } from '../../../types';
 
 describe('HousingMarketCorrelationProcessor E2E', () => {
   let processor: HousingMarketCorrelationProcessor;
@@ -68,13 +68,13 @@ describe('HousingMarketCorrelationProcessor E2E', () => {
 
       // Verify correlation matrix is calculated
       expect(result.correlationMatrix).toBeDefined();
-      expect(result.correlationMatrix.growth_vs_affordability).toBeLessThan(0); // Should be negative
-      expect(result.correlationMatrix.growth_vs_newowners).toBeGreaterThan(0); // Should be positive
+      expect((result as any).correlationMatrix.growth_vs_affordability).toBeLessThan(0); // Should be negative
+      expect((result as any).correlationMatrix.growth_vs_newowners).toBeGreaterThan(0); // Should be positive
 
       // Verify records have correlation scores
       result.records.forEach(record => {
         expect(record.value).toBeGreaterThan(0);
-        expect(record.housing_correlation_score).toEqual(record.value);
+        expect((record as any).housing_correlation_score).toEqual(record.value);
         expect(record.properties.hot_growth_market_index).toBeGreaterThan(0);
       });
 
@@ -95,8 +95,8 @@ describe('HousingMarketCorrelationProcessor E2E', () => {
       expect(result.summary).toContain('affordability');
 
       // Verify renderer uses correct field
-      expect(result.renderer.field).toBe('housing_correlation_score');
-      expect(result.renderer.type).toBe('class-breaks');
+      expect((result as any).renderer.field).toBe('housing_correlation_score');
+      expect((result as any).renderer.type).toBe('class-breaks');
 
       console.log('Housing Correlation Results:', {
         correlations: result.correlationMatrix,
@@ -171,11 +171,11 @@ describe('HousingMarketCorrelationProcessor E2E', () => {
       expect(negativeOutlier?.category).toBe('stagnant_expensive');
 
       // Verify correlation strength
-      expect(result.correlationMatrix.growth_vs_affordability).toBeLessThan(-0.5); // Strong negative
+      expect((result as any).correlationMatrix.growth_vs_affordability).toBeLessThan(-0.5); // Strong negative
     });
 
     it('should use metadata targetVariable override', () => {
-      const metadataOverrideData: RawAnalysisResult = {
+      const metadataOverrideData = {
         success: true,
         results: [
           {
@@ -189,13 +189,13 @@ describe('HousingMarketCorrelationProcessor E2E', () => {
         summary: 'Metadata override test',
         feature_importance: [],
         metadata: { targetVariable: 'custom_housing_score' }
-      };
+      } as any;
 
-      const result = processor.process(metadataOverrideData);
+      const result = processor.process(metadataOverrideData as any);
 
       expect(result.targetVariable).toBe('custom_housing_score');
       expect(result.records[0].value).toBe(88.5);
-      expect(result.records[0].custom_housing_score).toBe(88.5);
+      expect((result.records[0] as any).custom_housing_score).toBe(88.5);
     });
 
     it('should calculate meaningful correlation statistics', () => {
@@ -216,13 +216,13 @@ describe('HousingMarketCorrelationProcessor E2E', () => {
       const result = processor.process(correlationTestData);
 
       // Should detect strong negative correlation between growth and affordability
-      expect(result.correlationMatrix.growth_vs_affordability).toBeLessThan(-0.9);
+      expect((result as any).correlationMatrix.growth_vs_affordability).toBeLessThan(-0.9);
       
       // Should detect positive correlation between growth and new owners
-      expect(result.correlationMatrix.growth_vs_newowners).toBeGreaterThan(0);
+      expect((result as any).correlationMatrix.growth_vs_newowners).toBeGreaterThan(0);
 
       // Overall strength should be high
-      expect(result.correlationMatrix.overall_strength).toBeGreaterThan(0.5);
+      expect((result as any).correlationMatrix.overall_strength).toBeGreaterThan(0.5);
 
       // Summary should mention the strong correlation
       expect(result.summary).toContain('strong negative relationship');

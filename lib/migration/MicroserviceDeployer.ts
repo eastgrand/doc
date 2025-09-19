@@ -46,8 +46,8 @@ export class MicroserviceDeployer {
       const cfgAny = microservicePackage.configuration as any;
 
       logs.push(`🚀 Starting deployment for ${microservicePackage.projectName}`);
-      logs.push(`📦 Package: ${cfgAny.serviceName ?? microservicePackage.configuration.serviceName ?? microservicePackage.projectName}`);
-      logs.push(`🎯 Target: ${cfgAny.targetVariable ?? microservicePackage.configuration.targetVariable ?? 'unknown'}`);
+      logs.push(`📦 Package: ${cfgAny.serviceName ?? cfgAny.serviceName ?? microservicePackage.projectName}`);
+      logs.push(`🎯 Target: ${cfgAny.targetVariable ?? cfgAny.targetVariable ?? 'unknown'}`);
 
       // 1. Validate deployment readiness
       const validationResult = await this.validateDeploymentReadiness(microservicePackage);

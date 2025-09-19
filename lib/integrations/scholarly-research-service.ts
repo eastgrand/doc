@@ -1,5 +1,3 @@
-import { cache } from 'react';
-
 interface ResearchPaper {
   id: string;
   title: string;
@@ -245,7 +243,7 @@ class ScholarlyResearchService {
             arxiv_id: arxivId,
             url: `https://arxiv.org/abs/${arxivId}`,
             relevance_score: 0.5, // Will be calculated later
-            source: 'arxiv',
+            source: 'arxiv' as const,
             keywords: this.extractKeywordsFromText(title + ' ' + summary)
           });
         }
@@ -274,7 +272,7 @@ class ScholarlyResearchService {
         url: `https://doi.org/${item.DOI}`,
         citation_count: item['is-referenced-by-count'] || 0,
         relevance_score: 0.5, // Will be calculated later
-        source: 'crossref',
+        source: 'crossref' as const,
         keywords: this.extractKeywordsFromText((item.title || '').toString()),
         journal: Array.isArray(item['container-title']) ? item['container-title'][0] : item['container-title']
       };
@@ -291,7 +289,7 @@ class ScholarlyResearchService {
       doi: item.doi || undefined,
       url: item.downloadUrl || item.fulltextUrls?.[0] || `https://core.ac.uk/display/${item.id}`,
       relevance_score: 0.5, // Will be calculated later
-      source: 'core',
+      source: 'core' as const,
       keywords: this.extractKeywordsFromText(item.title || ''),
       journal: item.journals?.[0]?.title
     })).filter(paper => paper.title);
@@ -371,7 +369,7 @@ class ScholarlyResearchService {
     
     // Remove common academic words
     const stopWords = new Set(['paper', 'study', 'research', 'analysis', 'data', 'results', 'method', 'approach']);
-    return [...new Set(words.filter(word => !stopWords.has(word)))].slice(0, 10);
+    return Array.from(new Set(words.filter(word => !stopWords.has(word)))).slice(0, 10);
   }
 
   private enhanceQueryForAcademicSearch(query: string): string {
@@ -441,14 +439,14 @@ class ScholarlyResearchService {
 // Singleton instance with caching
 const scholarlyResearchService = new ScholarlyResearchService();
 
-// Cached function for Next.js optimization
-export const searchRelevantResearch = cache(async (query: ResearchQuery): Promise<ResearchResponse> => {
+// Export functions for Next.js usage
+export const searchRelevantResearch = async (query: ResearchQuery): Promise<ResearchResponse> => {
   return scholarlyResearchService.searchRelevantResearch(query);
-});
+};
 
-export const testResearchConnectivity = cache(async () => {
+export const testResearchConnectivity = async () => {
   return scholarlyResearchService.testConnectivity();
-});
+};
 
 export { scholarlyResearchService };
 export type { ResearchPaper, ResearchQuery, ResearchResponse };
