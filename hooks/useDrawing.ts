@@ -1,18 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useRef, useState, useMemo, useEffect } from 'react';
 import Graphic from "@arcgis/core/Graphic";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 import Polygon from "@arcgis/core/geometry/Polygon";
-import Point from "@arcgis/core/geometry/Point";
 import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol";
 import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
 import SimpleLineSymbol from "@arcgis/core/symbols/SimpleLineSymbol";
-import Color from "@arcgis/core/Color";
 import Polyline from "@arcgis/core/geometry/Polyline";
 
 // Constants
-const POINT_CURSOR_SIZE = 12;
-const POLYGON_CURSOR_SIZE = 8;
-const SNAP_TOLERANCE = 10;
 const PREVIEW_LINE_STYLE = "dash";
 const PREVIEW_LINE_WIDTH = 2;
 
@@ -43,11 +41,6 @@ const POLYGON_LINE_SYMBOL = new SimpleLineSymbol({
   style: "solid"
 });
 
-const PREVIEW_LINE_SYMBOL = new SimpleLineSymbol({
-  color: [128, 128, 128],
-  width: 2,
-  style: "dash"
-});
 
 const DEFAULT_STYLE = {
   pointColor: [37, 99, 235] as [number, number, number],
@@ -58,13 +51,6 @@ const DEFAULT_STYLE = {
   fillOpacity: 0.3
 };
 
-const SELECTION_SYMBOL = new SimpleFillSymbol({
-  color: [...[147, 51, 234] as [number, number, number], 0.3],
-  outline: {
-    color: [147, 51, 234],
-    width: 2
-  }
-});
 
 // Types
 export type DrawMode = 'point' | 'polygon' | 'click' | null;
@@ -112,7 +98,6 @@ export function useDrawing({
   const clickHandlerRef = useRef<IHandle | null>(null);
   const moveHandlerRef = useRef<IHandle | null>(null);
   const pointsRef = useRef<__esri.Point[]>([]);
-  const previewGraphicRef = useRef<__esri.Graphic | null>(null);
   const previewLineRef = useRef<__esri.Graphic | null>(null);
   const snapPointRef = useRef<__esri.Point | null>(null);
   const selectedFeaturesRef = useRef<__esri.Graphic[]>([]);
@@ -384,7 +369,7 @@ export function useDrawing({
 
     setTargetGeometry(mapPoint);
     callbacksRef.current.onGeometryCreated?.(mapPoint);
-}, [getGraphicsLayer, view]);
+}, [getGraphicsLayer]);
 
 const handleFeatureSelection = useCallback(async (mapPoint: __esri.Point, event?: __esri.ViewClickEvent) => {
   if (!view) return;
@@ -510,10 +495,6 @@ const handleFeatureSelection = useCallback(async (mapPoint: __esri.Point, event?
     
     // Only cleanup if we're changing modes, and preserve graphics when appropriate
     if (isChangingModes) {
-        const shouldPreserveGraphics = 
-            (drawingState.mode === 'point' && mode === 'polygon') ||
-            (drawingState.mode === 'polygon' && mode === 'point') ||
-            mode === 'click';
             
         cleanup();
     }

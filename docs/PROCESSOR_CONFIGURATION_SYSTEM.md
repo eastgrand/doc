@@ -7,6 +7,7 @@ Currently, our analysis processors are hardcoded for retail/brand competition sc
 ## Current State
 
 ### Existing Processors
+
 - `ComparativeAnalysisProcessor` - Brand vs brand comparison
 - `CompetitiveAnalysisProcessor` - Market competition analysis  
 - `DemographicDataProcessor` - Population characteristics
@@ -19,6 +20,7 @@ Currently, our analysis processors are hardcoded for retail/brand competition sc
 - `CustomerProfileProcessor` - Customer segmentation
 
 ### Current Project Types
+
 - **Retail/Brand Competition** (current default)
   - Focus on brand market share, competitive advantages
   - Metrics: brand_a_share, brand_b_share, competitive_advantage_score
@@ -93,6 +95,7 @@ interface ComparativeConfig {
 ### 2. Project Type Configurations
 
 #### Real Estate Configuration
+
 ```typescript
 export const REAL_ESTATE_CONTEXT: AnalysisContext = {
   projectType: 'real-estate',
@@ -169,6 +172,7 @@ export const REAL_ESTATE_CONTEXT: AnalysisContext = {
 ```
 
 #### Retail Configuration  
+
 ```typescript
 export const RETAIL_CONTEXT: AnalysisContext = {
   projectType: 'retail',
@@ -199,6 +203,7 @@ export const RETAIL_CONTEXT: AnalysisContext = {
 ### Phase 1: Configuration Infrastructure (Week 1)
 
 1. **Create Configuration Files**
+
    ```
    /config/analysis-contexts/
    ├── index.ts                    # Export all contexts
@@ -209,6 +214,7 @@ export const RETAIL_CONTEXT: AnalysisContext = {
    ```
 
 2. **Add Configuration Manager**
+
    ```typescript
    // lib/analysis/ConfigurationManager.ts
    export class AnalysisConfigurationManager {
@@ -229,6 +235,7 @@ export const RETAIL_CONTEXT: AnalysisContext = {
 Modify each processor to use configuration instead of hardcoded values:
 
 #### 2.1 Base Processor Class
+
 ```typescript
 // lib/analysis/strategies/processors/BaseProcessor.ts
 export abstract class BaseProcessor implements DataProcessorStrategy {
@@ -252,7 +259,8 @@ export abstract class BaseProcessor implements DataProcessorStrategy {
 #### 2.2 Update Each Processor
 
 **Files to modify:**
-- `ComparativeAnalysisProcessor.ts` 
+
+- `ComparativeAnalysisProcessor.ts`
 - `CompetitiveAnalysisProcessor.ts`
 - `DemographicDataProcessor.ts`
 - `StrategicAnalysisProcessor.ts`
@@ -264,6 +272,7 @@ export abstract class BaseProcessor implements DataProcessorStrategy {
 - `CustomerProfileProcessor.ts`
 
 **Key changes for each processor:**
+
 1. Extend `BaseProcessor` instead of standalone implementation
 2. Replace hardcoded field names with `config.fieldMappings.*`
 3. Replace hardcoded terminology with `config.terminology.*`
@@ -273,6 +282,7 @@ export abstract class BaseProcessor implements DataProcessorStrategy {
 ### Phase 3: Project Type Switching (Week 4)
 
 1. **Environment Detection**
+
    ```typescript
    // utils/project-detection.ts
    export function detectProjectType(): string {
@@ -288,6 +298,7 @@ export abstract class BaseProcessor implements DataProcessorStrategy {
    ```
 
 2. **Initialization System**
+
    ```typescript
    // lib/analysis/AnalysisEngine.ts - modify constructor
    constructor(config?: AnalysisEngineConfig) {
@@ -300,6 +311,7 @@ export abstract class BaseProcessor implements DataProcessorStrategy {
    ```
 
 3. **Runtime Configuration**
+
    ```typescript
    // Add to API routes for manual override
    app.post('/api/claude/housing-generate-response', (req, res) => {
@@ -314,6 +326,7 @@ export abstract class BaseProcessor implements DataProcessorStrategy {
 ### Step-by-Step Guide
 
 #### 1. Create Project Configuration
+
 ```typescript
 // config/analysis-contexts/new-project-context.ts
 export const NEW_PROJECT_CONTEXT: AnalysisContext = {
@@ -362,6 +375,7 @@ export const NEW_PROJECT_CONTEXT: AnalysisContext = {
 ```
 
 #### 2. Register the New Project Type
+
 ```typescript
 // config/analysis-contexts/index.ts
 import { NEW_PROJECT_CONTEXT } from './new-project-context';
@@ -376,12 +390,14 @@ export type ProjectType = 'retail' | 'real-estate' | 'new-project';
 ```
 
 #### 3. Update TypeScript Types
+
 ```typescript
 // lib/analysis/types.ts
 export type SupportedProjectTypes = 'retail' | 'real-estate' | 'new-project';
 ```
 
 #### 4. Test Your Configuration
+
 ```typescript
 // Create test file: __tests__/new-project-analysis.test.ts
 describe('New Project Analysis', () => {
@@ -400,13 +416,16 @@ describe('New Project Analysis', () => {
 ```
 
 #### 5. Environment Configuration
+
 Add to your deployment configuration:
+
 ```bash
 # .env or deployment config
 PROJECT_TYPE=new-project
 ```
 
 Or via API calls:
+
 ```typescript
 // In your API route
 const projectType = req.body.metadata?.projectType || 'new-project';
@@ -416,6 +435,7 @@ AnalysisConfigurationManager.getInstance().setProjectType(projectType);
 ### Files That Need Modification for New Project Types
 
 #### Required Changes
+
 1. **Configuration Files**
    - `/config/analysis-contexts/new-project-context.ts` (create)
    - `/config/analysis-contexts/index.ts` (register new type)
@@ -423,10 +443,11 @@ AnalysisConfigurationManager.getInstance().setProjectType(projectType);
 2. **Type Definitions**
    - `/lib/analysis/types.ts` (add to ProjectType union)
 
-3. **Tests** 
+3. **Tests**
    - `/__tests__/new-project-*.test.ts` (create test suite)
 
 #### Optional Changes
+
 1. **Processor-Specific Logic**
    - Only if your domain needs special processing logic
    - Add to `processorConfig` section of your context

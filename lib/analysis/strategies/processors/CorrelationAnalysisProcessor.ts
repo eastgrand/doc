@@ -110,8 +110,9 @@ export class CorrelationAnalysisProcessor extends BaseProcessor {
       const area_id = this.extractGeographicId(record) || `area_${index}`;
       const area_name = this.generateAreaName(record);
       
-      // Extract correlation strength score using configuration-driven approach
-      const correlationScore = this.extractPrimaryMetric(record);
+            // Extract correlation strength score directly from the field
+      const primaryField = getPrimaryScoreField('correlation_analysis') || 'correlation_score';
+      const correlationScore = Number(record[primaryField]) || 0;
       
       // Use correlation strength score as the primary value
       const value = correlationScore;

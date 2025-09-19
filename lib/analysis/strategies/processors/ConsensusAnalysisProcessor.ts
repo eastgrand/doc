@@ -88,7 +88,7 @@ export class ConsensusAnalysisProcessor extends BaseProcessor {
     });
     
     // Calculate statistics
-    const statistics = this.calculateStatistics(processedRecords);
+    const statistics = this.calculateStatistics(processedRecords.map(r => r.value));
     
     // Rank records by consensus score
     const rankedRecords = this.rankRecords(processedRecords);

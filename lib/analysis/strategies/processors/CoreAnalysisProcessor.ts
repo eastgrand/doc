@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { getScoreExplanationForAnalysis } from '../../utils/ScoreExplanations';
 import { BaseProcessor } from './BaseProcessor';
+import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 /**
  * CoreAnalysisProcessor - Handles data processing for the /analyze endpoint
@@ -13,9 +15,11 @@ import { BaseProcessor } from './BaseProcessor';
  */
 export class CoreAnalysisProcessor extends BaseProcessor {
   private scoreField: string | undefined;
+  private brandResolver: BrandNameResolver;
 
   constructor() {
     super(); // Initialize BaseProcessor with configuration
+    this.brandResolver = new BrandNameResolver();
   }
   
   validate(rawData: RawAnalysisResult): boolean {
@@ -26,23 +30,24 @@ export class CoreAnalysisProcessor extends BaseProcessor {
     // Validate that we have the expected fields for core analysis - Dynamic brand detection
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => {
-        if (!record || !((record as any).area_id || (record as any).id || (record as any).ID)) {
+        const recordData = record as Record<string, unknown>;
+        if (!record || !(recordData.area_id || recordData.id || recordData.ID)) {
           return false;
         }
         
         // Check for standard score fields
-        if ((record as any).value !== undefined || (record as any).score !== undefined) {
+        if (recordData.value !== undefined || recordData.score !== undefined) {
           return true;
         }
         
         // Check for common brand fields
         const commonBrandFields = ['value_nike', 'value_adidas', 'value_underarmour', 'brand_share_nike', 'brand_share_adidas'];
-        if (commonBrandFields.some(field => record[field] !== undefined)) {
+        if (commonBrandFields.some(field => recordData[field] !== undefined)) {
           return true;
         }
         
         // Check for demographic data that can be used for analysis
-        return (record as any).value_TOTPOP_CY !== undefined || (record as any).value_AVGHINC_CY !== undefined;
+        return recordData.value_TOTPOP_CY !== undefined || recordData.value_AVGHINC_CY !== undefined;
       });
     
     return hasRequiredFields;
@@ -56,23 +61,24 @@ export class CoreAnalysisProcessor extends BaseProcessor {
     }
 
   // Resolve canonical primary score field for this endpoint
-  this.scoreField = getPrimaryScoreField('core_analysis', (rawData as any)?.metadata) || 'strategic_value_score';
+  this.scoreField = getPrimaryScoreField('core_analysis', (rawData as unknown as Record<string, unknown> & { metadata?: Record<string, unknown> })?.metadata) || 'strategic_value_score';
 
   // --- ENHANCED: Use pre-calculated strategic value scores with fallback ---
-    const processedRecords = rawData.results.map((record: any, index: number) => {
+    const processedRecords = rawData.results.map((record: unknown, index: number) => {
+      const recordData = record as Record<string, unknown>;
       // PRIORITIZE PRE-CALCULATED STRATEGIC VALUE SCORE
       let primaryScore;
-      if ((record as any).strategic_value_score !== undefined && (record as any).strategic_value_score !== null) {
-        primaryScore = Number((record as any).strategic_value_score);
-        console.log(`🎯 [CoreAnalysisProcessor] Using strategic value score: ${primaryScore} for ${(record as any).DESCRIPTION || (record as any).ID || 'Unknown'}`);
+      if (recordData.strategic_value_score !== undefined && recordData.strategic_value_score !== null) {
+        primaryScore = Number(recordData.strategic_value_score);
+        console.log(`🎯 [CoreAnalysisProcessor] Using strategic value score: ${primaryScore} for ${recordData.DESCRIPTION || recordData.ID || 'Unknown'}`);
       } else {
         // FALLBACK: Calculate opportunity score from available data
         console.log('⚠️ [CoreAnalysisProcessor] No strategic_value_score found, calculating from raw data');
         
         // Get brand values using dynamic detection
-        const brandFields = this.brandResolver.detectBrandFields(record);
-        const targetBrand = brandFields.find(bf => bf.isTarget);
-        const primaryCompetitor = brandFields.find(bf => !bf.isTarget);
+        const brandFields = this.brandResolver.detectBrandFields(recordData);
+        const targetBrand = brandFields.find((bf: { isTarget: boolean }) => bf.isTarget);
+        const primaryCompetitor = brandFields.find((bf: { isTarget: boolean }) => !bf.isTarget);
         
         const targetValue = targetBrand?.value || 0;
         const competitorValue = primaryCompetitor?.value || 0;
@@ -82,15 +88,15 @@ export class CoreAnalysisProcessor extends BaseProcessor {
         // DEBUG: Log raw data values to identify the calculation issue
         if (index < 5) {
           console.log(`🔍 [CoreAnalysisProcessor] Raw data analysis for record ${index + 1}:`, {
-            area_id: (record as any).ID || (record as any).id,
-            target_brand: targetBrand?.brandName,
+            area_id: recordData.ID || recordData.id,
+            target_brand: targetBrand?.metricName,
             target_value: targetValue,
-            competitor_brand: primaryCompetitor?.brandName,
+            competitor_brand: primaryCompetitor?.metricName,
             competitor_value: competitorValue,
             total_pop: totalPop,
             median_income: medianIncome,
             brand_fields_found: brandFields.length,
-            all_field_sample: Object.keys(record as any).slice(0, 10)
+            all_field_sample: Object.keys(recordData).slice(0, 10)
           });
         }
         
@@ -161,21 +167,21 @@ export class CoreAnalysisProcessor extends BaseProcessor {
       }
       
       // Generate area name from ID and location data (updated for correlation_analysis format)
-      const areaName = this.generateAreaName(record);
+      const areaName = this.generateAreaName(recordData);
       
       // Extract ID (updated for correlation_analysis format)
-      const recordId = (record as any).ID || (record as any).id || (record as any).area_id;
+      const recordId = recordData.ID || recordData.id || recordData.area_id;
       
       // Debug logging for records with missing ID
       if (!recordId) {
         console.warn(`[CoreAnalysisProcessor] Record ${index} missing ID:`, {
-          hasID: 'ID' in record,
-          hasId: 'id' in record,
-          hasAreaId: 'area_id' in record,
-          ID_value: (record as any).ID,
-          id_value: (record as any).id,
-          area_id_value: (record as any).area_id,
-          recordKeys: Object.keys(record as any).slice(0, 10)
+          hasID: 'ID' in recordData,
+          hasId: 'id' in recordData,
+          hasAreaId: 'area_id' in recordData,
+          ID_value: recordData.ID,
+          id_value: recordData.id,
+          area_id_value: recordData.area_id,
+          recordKeys: Object.keys(recordData).slice(0, 10)
         });
       }
       
@@ -194,7 +200,7 @@ export class CoreAnalysisProcessor extends BaseProcessor {
       // Get top contributing fields for popup display
       const topContributingFields = this.getTopContributingFields(record);
       
-      const outRecord: any = {
+      const outRecord: Record<string, unknown> = {
         area_id: recordId || `area_${index + 1}`,
         area_name: areaName,
         value: Math.round(primaryScore * 100) / 100, // Use strategic score as primary value
@@ -202,29 +208,29 @@ export class CoreAnalysisProcessor extends BaseProcessor {
         // Flatten top contributing fields to top level for popup access
         ...topContributingFields,
         properties: {
-          DESCRIPTION: (record as any).DESCRIPTION, // Pass through original DESCRIPTION
+          DESCRIPTION: recordData.DESCRIPTION, // Pass through original DESCRIPTION
           // Mirror the canonical scoring field into properties for downstream consumers
           [this.scoreField!]: primaryScore,
           score_source: this.scoreField!,
           target_brand_share: targetBrandValue,
-          target_brand_name: targetBrandInfo?.brandName || 'Unknown',
+          target_brand_name: targetBrandInfo?.metricName || 'Unknown',
           competitor_brand_share: competitorBrandValue,
-          competitor_brand_name: competitorBrandInfo?.brandName || 'Unknown',
+          competitor_brand_name: competitorBrandInfo?.metricName || 'Unknown',
           market_gap: marketGap,
           total_population: totalPop,
           median_income: medianIncome,
           competitive_advantage: competitiveAdvantage,
           // Include other pre-calculated scores if available
-          demographic_opportunity_score: Number((record as any).demographic_opportunity_score) || 0,
-          correlation_strength_score: Number((record as any).correlation_strength_score) || 0,
-          cluster_performance_score: Number((record as any).cluster_performance_score) || 0
+          demographic_opportunity_score: Number(recordData.demographic_opportunity_score) || 0,
+          correlation_strength_score: Number(recordData.correlation_strength_score) || 0,
+          cluster_performance_score: Number(recordData.cluster_performance_score) || 0
         }
       };
 
       // Also expose canonical scoring field at top-level for compatibility
       outRecord[this.scoreField!] = primaryScore;
 
-      return outRecord;
+      return outRecord as unknown as GeographicDataPoint;
     });
     
     // Calculate comprehensive statistics
@@ -253,12 +259,13 @@ export class CoreAnalysisProcessor extends BaseProcessor {
   // PRIVATE PROCESSING METHODS
   // ============================================================================
 
-  private processRecords(rawRecords: any[]): GeographicDataPoint[] {
+  private processRecords(rawRecords: Record<string, unknown>[]): GeographicDataPoint[] {
     return rawRecords.map((record, index) => {
       // Extract core identifiers
-      const area_id = (record as any).area_id || (record as any).id || (record as any).GEOID || `area_${index}`;
-      const area_name = (record as any).area_name || (record as any).name || (record as any).NAME || 
-                       (record as any).area_id || `Area ${index + 1}`;
+      const recordData = record as Record<string, unknown>;
+      const area_id = String(recordData.area_id || recordData.id || recordData.GEOID || `area_${index}`);
+      const area_name = String(recordData.area_name || recordData.name || recordData.NAME || 
+                       recordData.area_id || `Area ${index + 1}`);
       
       // Extract value - try multiple field names
       const value = this.extractValue(record);
@@ -278,7 +285,7 @@ export class CoreAnalysisProcessor extends BaseProcessor {
         value,
         rank: 0, // Will be calculated in rankRecords
         category,
-        coordinates: (record as any).coordinates || [0, 0],
+        coordinates: (recordData.coordinates as [number, number]) || [0, 0],
         properties,
         shapValues
       };

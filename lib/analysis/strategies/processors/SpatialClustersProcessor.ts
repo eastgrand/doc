@@ -44,8 +44,8 @@ export class SpatialClustersProcessor extends BaseProcessor {
     if (!primary) throw new Error('[SpatialClustersProcessor] No primary score field defined for spatial_clusters');
 
     const processedRecords = rawData.results.map((record: any, index: number) => {
-      // Use BaseProcessor method for primary metric extraction
-      const primaryScore = this.extractPrimaryMetric(record);
+      // Extract cluster score directly using the hardcoded field
+      const primaryScore = Number(record[primary]) || 0;
       
       if (isNaN(primaryScore)) {
         throw new Error(`Spatial clusters record ${this.extractGeographicId(record) || index} is missing primary metric`);
@@ -258,8 +258,9 @@ export class SpatialClustersProcessor extends BaseProcessor {
 
 
   private extractHousingClusterStrength(record: any): number {
-    // Use configuration-driven primary metric extraction
-    return this.extractPrimaryMetric(record);
+    // Extract cluster score directly
+    const primaryField = getPrimaryScoreField('spatial_clusters') || 'cluster_score';
+    return Number(record[primaryField]) || 0;
   }
 
   private generateSummary(records: GeographicDataPoint[], statistics: AnalysisStatistics): string {

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
+import { RawAnalysisResult, ProcessedAnalysisData } from '../../types';
 import { getPrimaryScoreField, getTopFieldDefinitions } from './HardcodedFieldDefs';
 import { BaseProcessor } from './BaseProcessor';
 
@@ -123,15 +124,8 @@ export class HousingMarketCorrelationProcessor extends BaseProcessor {
     const rankedRecords = this.rankRecords(processedRecords);
     const statistics = super.calculateStatistics(rankedRecords.map(r => r.value));
     
-    // Generate summary using configuration-driven templates with housing-specific data
-    const customSubstitutions = {
-      globalGrowthAffordabilityCorr: globalCorrelations.growth_vs_affordability.toFixed(2),
-      globalNewOwnerAffordabilityCorr: globalCorrelations.newowners_vs_affordability.toFixed(2),
-      strongCorrelationCount: rankedRecords.filter(r => r.value >= 0.7).length,
-      moderateCorrelationCount: rankedRecords.filter(r => r.value >= 0.4 && r.value < 0.7).length
-    };
-    
-    const summary = this.buildSummaryFromTemplates(rankedRecords, statistics, customSubstitutions);
+    // Generate housing-specific summary
+    const summary = this.generateHousingCorrelationSummary(rankedRecords, globalCorrelations);
     
     // Process feature importance
     const featureImportance = this.processFeatureImportance(rawData.feature_importance || []);
@@ -145,7 +139,8 @@ export class HousingMarketCorrelationProcessor extends BaseProcessor {
         featureImportance,
         renderer: this.createHousingCorrelationRenderer(rankedRecords),
         legend: this.createHousingCorrelationLegend(),
-        correlationMatrix: globalCorrelations
+        correlationMatrix: globalCorrelations,
+        targetVariable: this.scoreField // Override with metadata-aware field
       }
     );
   }

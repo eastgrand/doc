@@ -22,12 +22,15 @@ export class SensitivityAnalysisProcessor implements DataProcessorStrategy {
     if (!rawData.success) return false;
     if (!Array.isArray(rawData.results)) return false;
     
-    // Sensitivity analysis requires sensitivity_analysis_score
+    // Get configured primary field (supporting metadata override)
+    const primaryField = getPrimaryScoreField('sensitivity-analysis', (rawData as any)?.metadata);
+    
+    // Sensitivity analysis requires either configured primary field or legacy sensitivity_analysis_score
     const hasRequiredFields = rawData.results.length === 0 || 
       rawData.results.some(record => 
         record && 
         ((record as any).area_id || (record as any).id || (record as any).ID) &&
-        (record as any).sensitivity_analysis_score !== undefined
+        ((record as any)[primaryField] !== undefined || (record as any).sensitivity_analysis_score !== undefined)
       );
     
     return hasRequiredFields;

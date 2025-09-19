@@ -3,11 +3,8 @@ import { DataProcessorStrategy, RawAnalysisResult, ProcessedAnalysisData, Geogra
 import { AnalysisConfigurationManager } from '../../AnalysisConfigurationManager';
 import { 
   AnalysisContext, 
-  FieldMappings, 
-  Terminology, 
-  ScoreRange,
-  SummaryTemplates 
-} from '../../../../config/analysis-contexts/base-context';
+  ScoreRange} from '../../../../config/analysis-contexts/base-context';
+import { getPrimaryScoreField } from './HardcodedFieldDefs';
 
 /**
  * Base class for all analysis processors
@@ -240,12 +237,15 @@ export abstract class BaseProcessor implements DataProcessorStrategy {
     statistics: AnalysisStatistics,
     additionalData: Partial<ProcessedAnalysisData> = {}
   ): ProcessedAnalysisData {
+    // Use hardcoded field mapping for the specific analysis type
+    const targetVariable = getPrimaryScoreField(type) || this.configManager.getFieldMapping('primaryMetric')[0] || 'value';
+    
     return {
       type,
       records,
       summary,
       statistics,
-      targetVariable: this.configManager.getFieldMapping('primaryMetric')[0] || 'value',
+      targetVariable,
       featureImportance: [],
       renderer: null,
       legend: null,

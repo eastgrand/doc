@@ -26,7 +26,7 @@ Provide minimal, repeatable checks to:
 
 - Verify semantic routing/embedding init fallback (onnxruntime may be unavailable locally). Look for the message:
 
-	`Failed to initialize semantic enhancement (embeddings may be unavailable)`
+ `Failed to initialize semantic enhancement (embeddings may be unavailable)`
 
 - Static prompt presence check (ensure Top Strategic Markets template exists):
 
@@ -108,17 +108,17 @@ Last updated: 2025-09-13
 - 2025-09-16 17:05 — Micro-update: `lib/analysis/AnalysisConfigurationManager.ts` fallback extensions to accept `strategic_analysis_score` and `value_*` fields; `npx tsc --noEmit` snapshot: 998 "error TS" occurrences (improved). Diagnostics saved: diagnostics/backups/2025-09-16T17-05-00Z/tsc-output.txt
 
 - 2025-09-16 17:28 — Micro-fix: `lib/embedding/EndpointEmbeddings.ts` replaced `qualityMetrics:any` with `Record<string, unknown>` and added safe runtime guards when reading numeric fields; `npx tsc --noEmit` snapshot: 998 "error TS" occurrences (no increase). Diagnostics saved: diagnostics/backups/2025-09-16T17-28-00Z/tsc-output.txt
- - 2025-09-16 17:42 — UI forwardRef micro-edit: `components/ui/carousel.tsx` local event typing added to avoid `any`; `npx tsc --noEmit` snapshot: Found 990 errors in 184 files (no increase vs prior baseline). Diagnostics saved: diagnostics/backups/2025-09-16T17-42-00Z/tsc-output.txt
- - 2025-09-16 17:50 — UI forwardRef micro-batch: carousel/tooltip/table edits; `npx tsc --noEmit` snapshot: Found 981 errors in 182 files (no increase). Diagnostics saved: diagnostics/backups/2025-09-16T17-50-00Z/tsc-output.txt
- - 2025-09-16 17:55 — Targeted UI tests (jest --findRelatedTests for tooltip/table/carousel): No related tests found (Jest exited 1). TypeScript snapshot (unchanged): diagnostics/backups/2025-09-16T17-50-00Z/tsc-output.txt
- - 2025-09-16T18:02:00Z — micro-batch: tabs/popover/progress — tsc: Found 979 errors in 180 files — diagnostics/backups/2025-09-16T18-02-00Z/tsc-output.txt
- - 2025-09-16T18:06:00Z — micro-batch: radio-group/slider — tsc: Found 976 errors in 178 files — diagnostics/backups/2025-09-16T18-06-00Z/tsc-output.txt
- - 2025-09-16T18:10:00Z — micro-batch: select/switch — tsc: Found 968 errors in 176 files — diagnostics/backups/2025-09-16T18-10-00Z/tsc-output.txt
- - 2025-09-16T18:20:00Z — micro-batch: input/checkbox/label — tsc: Found 965 errors in 173 files — diagnostics/backups/2025-09-16T18-20-00Z/tsc-output.txt
- - 2025-09-16T18:40:00Z — micro-batch: dropdown-menu — tsc: Found 943 errors in 166 files — diagnostics/backups/2025-09-16T18-40-00Z/tsc-output.txt
- - 2025-09-16T18:52:00Z — micro-batch: dialog+toast — tsc: Found 933 errors in 165 files — diagnostics/backups/2025-09-16T18-52-00Z/tsc-output.txt
- - 2025-09-16T19:12:00Z — micro-batch: utils/field-aliases dedupe — tsc: Found 813 errors in 164 files — diagnostics/backups/2025-09-16T19-12-00Z/tsc-output.txt
- - 2025-09-17 01:23 — Micro-batch: StrategicAnalysisProcessor conservative visibility fixes (made select helpers protected and removed duplicate statistics implementation); `npx tsc --noEmit` snapshot saved: diagnostics/backups/20250917T012300Z/tsc-output.txt
+- 2025-09-16 17:42 — UI forwardRef micro-edit: `components/ui/carousel.tsx` local event typing added to avoid `any`; `npx tsc --noEmit` snapshot: Found 990 errors in 184 files (no increase vs prior baseline). Diagnostics saved: diagnostics/backups/2025-09-16T17-42-00Z/tsc-output.txt
+- 2025-09-16 17:50 — UI forwardRef micro-batch: carousel/tooltip/table edits; `npx tsc --noEmit` snapshot: Found 981 errors in 182 files (no increase). Diagnostics saved: diagnostics/backups/2025-09-16T17-50-00Z/tsc-output.txt
+- 2025-09-16 17:55 — Targeted UI tests (jest --findRelatedTests for tooltip/table/carousel): No related tests found (Jest exited 1). TypeScript snapshot (unchanged): diagnostics/backups/2025-09-16T17-50-00Z/tsc-output.txt
+- 2025-09-16T18:02:00Z — micro-batch: tabs/popover/progress — tsc: Found 979 errors in 180 files — diagnostics/backups/2025-09-16T18-02-00Z/tsc-output.txt
+- 2025-09-16T18:06:00Z — micro-batch: radio-group/slider — tsc: Found 976 errors in 178 files — diagnostics/backups/2025-09-16T18-06-00Z/tsc-output.txt
+- 2025-09-16T18:10:00Z — micro-batch: select/switch — tsc: Found 968 errors in 176 files — diagnostics/backups/2025-09-16T18-10-00Z/tsc-output.txt
+- 2025-09-16T18:20:00Z — micro-batch: input/checkbox/label — tsc: Found 965 errors in 173 files — diagnostics/backups/2025-09-16T18-20-00Z/tsc-output.txt
+- 2025-09-16T18:40:00Z — micro-batch: dropdown-menu — tsc: Found 943 errors in 166 files — diagnostics/backups/2025-09-16T18-40-00Z/tsc-output.txt
+- 2025-09-16T18:52:00Z — micro-batch: dialog+toast — tsc: Found 933 errors in 165 files — diagnostics/backups/2025-09-16T18-52-00Z/tsc-output.txt
+- 2025-09-16T19:12:00Z — micro-batch: utils/field-aliases dedupe — tsc: Found 813 errors in 164 files — diagnostics/backups/2025-09-16T19-12-00Z/tsc-output.txt
+- 2025-09-17 01:23 — Micro-batch: StrategicAnalysisProcessor conservative visibility fixes (made select helpers protected and removed duplicate statistics implementation); `npx tsc --noEmit` snapshot saved: diagnostics/backups/20250917T012300Z/tsc-output.txt
 
 - 2025-09-16 17:30 — TypeScript gate: re-ran `npx tsc --noEmit` after EndpointEmbeddings polish; snapshot: 998 "error TS" occurrences (no increase). Diagnostics saved: diagnostics/backups/2025-09-16T17-30-00Z/tsc-output.txt
 
@@ -133,9 +133,9 @@ Last updated: 2025-09-13
 - 2025-09-15  — Ran Batch 8 UI forwardRef micro-batch (Button, Card, Accordion primitives); `npx tsc --noEmit` returned 527 errors in 134 files. Changes: converted several `React.forwardRef<...>` usages to named-function `forwardRef(function Name(...) { ... })` wrappers with explicit (conservative) ref parameters to avoid TS2558 errors caused by a @types/react mismatch. Delta: -8 errors, -1 file with errors. Next: continue remaining UI primitives in `components/ui/*` and then address styled-jsx TS2322 mismatches.
 
 - 2025-09-15  — Micro-batch: edited `components/ProjectConfigManager/GroupManagementPanel.tsx` to add explicit event handler types; `npx tsc --noEmit` returned 406 errors in 112 files. Next: continue prev-callback micro-batch targeting `LayerConfigurationEditor.tsx` and `MicroserviceManager.tsx`.
- 
+
 - 2025-09-15  — Micro-batch: edited `components/ProjectConfigManager/LayerConfigurationEditor.tsx` and `components/ProjectConfigManager/MicroserviceManager.tsx` to add explicit event/updater parameter types; `npx tsc --noEmit` returned 386 errors in 111 files. Next: continue prev-callback sweep (ConceptMappingEditor, DependencyAnalyzer).
- 
+
 - 2025-09-15  — Micro-batch: edited `components/ProjectConfigManager/LayerConfigurationEditor.tsx` and `components/ProjectConfigManager/ServiceManager.tsx` to add explicit Record typing for `setTestResults` prev callbacks and Promise<void annotations for async handlers; `npx tsc --noEmit` returned 354 errors in 104 files.
 
 - 2025-09-15  — Micro-batch (LayerConfigurationEditor leftovers + ServiceManager follow-ups): applied targeted handler param typings and narrow casts; `npx tsc --noEmit` returned 354 errors in 104 files.
@@ -155,7 +155,6 @@ Last updated: 2025-09-13
 - 2025-09-16  — Pinned `@types/react` on branch `fix/types/pin-react-types` and re-ran `npx tsc --noEmit`; returned 324 errors in 92 files. No reduction observed; proceeding to TS7006 codemod dry-run (in-progress).
 
 - 2025-09-16  — After single-file TS7006 micro-batch (edited `app/api/blob/upload/route.ts` to add narrow local `any` annotations); `npx tsc --noEmit` returned 80 errors in 9 files (syntax/TS1005 errors located in test files). No revert performed. Note: many test-file syntax issues likely stem from earlier codemod dry-run edits — next: plan targeted cleanup or restrict codemod scope to src files only.
-
 
 ## Verification results (2025-09-14)
 
@@ -197,6 +196,7 @@ Last updated: 2025-09-13
   - Result: Full Jest run passed: 44 suites (1 skipped), 313 tests passed, 0 failed. No runtime behavior changes observed in tests.
 
 Notes:
+
 - Approach: unknown+local-cast pattern keeps changes minimal and avoids upstream type churn when array element types are `unknown`.
 - Next: start Batch 4 (pick the next three high-priority processors and repeat the same pattern). Add Batch 3 verification entry to the lightweight release notes when Batch 4 begins.
 
@@ -289,15 +289,13 @@ Last updated: 2025-09-14
 
   Next steps: start Prev-callback sweep - Batch 5 (in-progress): target `FilterBuilder`, `InfographicsTab` (additional hotspots), and `LayerController` follow-ups.
 
-
-
 ## Verification results (2025-09-13)
 
 - Focused Jest test run executed for routing, spatial filter, and topStrategicMarkets suites.
 - Result: ALL TARGETED TESTS PASSED.
-	- Test suites run: 5
-	- Tests: 41 passed, 0 failed
-	- Time: ~1.35s
+- Test suites run: 5
+- Tests: 41 passed, 0 failed
+- Time: ~1.35s
 
 Notable observations from test run (useful for debugging / reproducibility):
 
@@ -393,10 +391,11 @@ const target = runtimeCfg.targetVariable ?? cfg.getFieldMapping('primaryMetric')
 ```
 
 - Keep a small, well-documented fallback ordering inside processors:
-	1. metadata.variables (client-requested variables in the incoming payload)
-	2. processorConfig[target] from `getProcessorSpecificConfig`
-	3. AnalysisConfigurationManager.getFieldMapping('primaryMetric')
-	4. numeric-field heuristic on the record
+
+ 1. metadata.variables (client-requested variables in the incoming payload)
+ 2. processorConfig[target] from `getProcessorSpecificConfig`
+ 3. AnalysisConfigurationManager.getFieldMapping('primaryMetric')
+ 4. numeric-field heuristic on the record
 
 Verification / smoke checks (safe, static checks you can run without compiling the backend):
 
@@ -450,9 +449,9 @@ Summary of recent changes (what was done during verification):
 - Added `docs/PROCESSOR_CONTRACT.md` and related pointers to key architecture docs to standardize processor behavior and fallbacks.
 - Made `ComparativeAnalysisProcessor` metadata-driven (accepts runtime variables/target overrides) and added compatibility fields to avoid breaking consumers.
 - Hardened `HousingMarketCorrelationProcessor`:
-	- Prefer processor-specific `scoreField` when resolving `targetVariable`.
-	- Added a housing-specific summary generator so correlation language (e.g., "strong negative relationship", r-values) appears in outputs.
-	- Fixed correlation calculation edge cases for small datasets.
+- Prefer processor-specific `scoreField` when resolving `targetVariable`.
+- Added a housing-specific summary generator so correlation language (e.g., "strong negative relationship", r-values) appears in outputs.
+- Fixed correlation calculation edge cases for small datasets.
 - Updated `DemographicDataProcessor` to prefer explicit incoming `demographic_score` when present (resolves legacy vs. canonical naming conflicts).
 - Added focused smoke tests (retail + real-estate) and several focused E2E tests. Ran targeted test files and iterated until local focused failures were resolved.
 
@@ -501,7 +500,6 @@ If you see many "Module 'react' has no exported member" or similar errors in `co
 3. Re-run `npx tsc --noEmit` and targeted tests to verify things are clean.
 
 Record any changes you apply here along with PASS/FAIL timestamps.
-
 
 ## Verification results (2025-09-14) — typing pass
 
@@ -578,7 +576,6 @@ Note: This snapshot records the current working state during the TypeScript nois
 
 Next: annotate setState callbacks in a small batch of files to reduce TS7006 noise.
 
-
 ## Quick snapshot (2025-09-15) — micro-batch edits and tsc
 
 - Files edited in this micro-batch:
@@ -590,7 +587,6 @@ Next: annotate setState callbacks in a small batch of files to reduce TS7006 noi
 
 - Note: edits were conservative, did not change public APIs, and used local try/catch patterns. Next recommended triage: add type shims for Recharts and address top UI implicit-any errors to reduce tsc noise before more micro-batch conversions.
 
-
 ## Verification results (2025-09-15) — Promise/await small-batch (conservative)
 
 - Files changed:
@@ -601,7 +597,6 @@ Next: annotate setState callbacks in a small batch of files to reduce TS7006 noi
 - TypeScript check (after): Found 1103 errors in 153 files.
 
 - Note (2025-09-15  - follow-up run): After the latest small-batch edits including ClusterBoundaryLayer, CustomPopupManager, and MapLayerDebugger, a fresh TypeScript run returned: Found 1105 errors in 153 files. The small delta (+2) is due to new 'unexpected any' lint notes triggered by local any casts in a couple of UI helpers. This is expected and will be tracked in subsequent batches.
-
 
 ## Verification snapshot (2025-09-15  - post micro-batch)
 
@@ -690,7 +685,6 @@ Notes: These edits are minimal, local, and avoid changing public prop shapes. Th
 - TypeScript snapshot: ran `npx tsc --noEmit` after inspection; result: "Found 1105 errors in 153 files." This snapshot was recorded in the "Verification snapshot (2025-09-15 - post micro-batch)" section above.
 - Next: mark `Triaging: dynamic-layers config` completed in the verification todo and continue to the next micro-batch (per in-repo todo ordering). If you want me to edit generated artifacts (not recommended), say so explicitly and I will propose a conservative plan.
 
-
 ## Verification results (2025-09-15) — ModelPerformanceProcessor
 
 - Files changed:
@@ -766,6 +760,7 @@ Output summary:
 - Findings: Found 507 errors in 121 files.
 
 Selected diagnostics (top categories):
+
 - TS7006: implicit any in prev callbacks and event handlers (notable files: components/ProjectConfigManager/*, ProjectPreview.tsx, QueryInterface.tsx)
 - TS2558: forwardRef generic mismatches remain (next targets: radio-group, scroll-area, separator, slider, switch, toggle-group, tabs)
 - TS2322: styled-jsx typing mismatches and several unknown->typed assignment warnings in integration tests
@@ -784,6 +779,7 @@ Output summary:
 - Findings: Found 503 errors in 118 files.
 
 Selected diagnostics (top categories):
+
 - TS7006: implicit any in prev callbacks and event handlers (notable files: components/ProjectConfigManager/*, ProjectPreview.tsx, QueryInterface.tsx)
 - TS2558: remaining forwardRef generic mismatches (next targets: scroll-area, separator, toggle-group, tabs, toggle-group items)
 - TS2322: styled-jsx typing mismatches and several unknown->typed assignment warnings in integration tests
@@ -802,12 +798,12 @@ Output summary:
 - Findings: Found 499 errors in 115 files.
 
 Selected diagnostics (top categories):
+
 - TS7006: implicit any in prev callbacks and event handlers (notable files: components/ProjectConfigManager/*, ProjectPreview.tsx, QueryInterface.tsx)
 - TS2558: forwardRef generic mismatches reduced; remaining primitives: tabs, carousel variants, toggle-group items (sanity checks needed)
 - TS2322: styled-jsx typing mismatches and several unknown->typed assignment warnings in integration tests
 
 Next steps: start TS7006 prev-callback hotspot micro-batches (targeting `components/ProjectConfigManager/*` and `ProjectPreview.tsx` first). For each micro-batch: apply explicit prev callback typings → run `npx tsc --noEmit` → append snapshot to docs → update todo list.
-
 
 ## Verification snapshot (2025-09-15) — post ProjectConfigManager prev-callback edits
 
@@ -828,13 +824,12 @@ Next steps: start TS7006 prev-callback hotspot micro-batches (targeting `compone
 - 2025-09-15  — Micro-batch: ConceptMappingEditor follow-up; `npx tsc --noEmit` returned 354 errors in 104 files. Changes: added typed drag/drop handlers and prev-state updater typings in `components/ProjectConfigManager/ConceptMappingEditor.tsx`. Next: continue with DependencyAnalyzer follow-ups and MicroserviceManager follow-ups (Batch in-progress).
 
 - 2025-09-15  — Micro-batch: DependencyAnalyzer & MicroserviceManager follow-ups; `npx tsc --noEmit` returned 354 errors in 104 files. Changes: added explicit `EnhancedLayerConfig[]`/`Group[]` typing for analyzer collections, typed mockFiles iteration, and annotated `handleTestService` and add-service callbacks in `components/ProjectConfigManager/MicroserviceManager.tsx`. Next: continue with LayerConfigurationEditor leftovers and ServiceManager follow-ups.
- 
+
 - 2025-09-16  — Micro-batch: started Map+SampleAreas+Phase4 (edited `components/MapApp.tsx` to add conservative updater/event typings); `npx tsc --noEmit` returned 343 errors in 100 files. Delta: -5 errors, -1 file with errors.
- 
+
 - 2025-09-15  — Micro-batch: completed Map+SampleAreas+Phase4 (edited `components/MapApp.tsx`, `components/map/SampleAreasPanelFixed2.tsx`, `components/phase4/Phase4IntegrationWrapper.tsx` with conservative typings); `npx tsc --noEmit` returned 338 errors in 99 files. Delta: -5 errors, -1 file with errors.
 
 - 2025-09-16  — Source micro-batch: applied 3 narrow handler/formatter typings (IconStyleSelector, SpatialQueryTools, StatsVisualization). `npx tsc --noEmit` returned 347 errors in 93 files. Recorded diagnostics: `diagnostics/tsc_after_source_microbatch_2025-09-16_15-xx.txt`.
-
 
 ## Quick verification log (2025-09-16)
 
@@ -849,6 +844,3 @@ Next steps: start TS7006 prev-callback hotspot micro-batches (targeting `compone
 
 - 2025-09-17T00:12Z — TrendAnalysisProcessor: defined local trend counters (strongTrends/moderateTrends/volatileMarkets) inside generateTrendSummary to prevent ReferenceError; tsc snapshot: diagnostics/backups/20250917T001200Z/tsc-output.txt
 - 2025-09-17T01:34Z — Micro-batch complete: fixed ComparativeAnalysis test assertions to use canonical field names (comparison_score, comparative_analysis type, strategic_score targetVariable); all processor tests passing; no production code changes per user constraints
-
-
-

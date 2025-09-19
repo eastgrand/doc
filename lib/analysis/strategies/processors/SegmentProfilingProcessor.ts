@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RawAnalysisResult, ProcessedAnalysisData } from '../../types';
-import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
+import { getPrimaryScoreField } from './HardcodedFieldDefs';
 import { BaseProcessor } from './BaseProcessor';
+import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 /**
  * SegmentProfilingProcessor - Specialized processor for real estate segment profiling analysis
@@ -11,9 +13,11 @@ import { BaseProcessor } from './BaseProcessor';
  * Extends BaseProcessor for configuration-driven behavior with real estate focus.
  */
 export class SegmentProfilingProcessor extends BaseProcessor {
+  private brandResolver: BrandNameResolver;
 
   constructor() {
     super(); // Initialize BaseProcessor with configuration
+    this.brandResolver = new BrandNameResolver();
   }
 
   validate(rawData: RawAnalysisResult): boolean {
@@ -37,7 +41,6 @@ export class SegmentProfilingProcessor extends BaseProcessor {
       
       // Extract related metrics for real estate segment analysis
       const householdIncome = this.extractNumericValue(record, ['ECYHRIAVG', 'household_income', 'median_income'], 0);
-      const population = this.extractNumericValue(record, ['ECYPTAPOP', 'population', 'total_population'], 0);
       const strategicScore = Number((record as any).strategic_value_score) || 0;
       const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
@@ -46,18 +49,21 @@ export class SegmentProfilingProcessor extends BaseProcessor {
       const totalPop = this.extractNumericValue(record, ['value_TOTPOP_CY', 'TOTPOP_CY', 'total_population']);
       const medianIncome = this.extractNumericValue(record, ['value_MEDDI_CY', 'value_AVGHINC_CY', 'median_income', 'ECYHRIAVG']);
 
+      // Extract brand information dynamically
+      const brandInfo = this.extractBrandInfo(record);
+
       // Calculate additional segmentation indicators
       const indicators = this.calculateSegmentationIndicators({
         segmentScore,
         householdIncome,
-        population,
         strategicScore,
         competitiveScore,
         demographicScore,
         trendScore,
         correlationScore,
         totalPop,
-        medianIncome
+        medianIncome,
+        brandInfo
       });
 
       const out: any = {
@@ -94,7 +100,7 @@ export class SegmentProfilingProcessor extends BaseProcessor {
           
           // Supporting segmentation data
           housing_market_strength: householdIncome,
-          area_classification: this.classifyHousingArea(householdIncome, population),
+          area_classification: this.classifyHousingArea(householdIncome, totalPop),
           market_population: totalPop,
           median_household_income: medianIncome,
           strategic_alignment: strategicScore,
@@ -142,7 +148,7 @@ export class SegmentProfilingProcessor extends BaseProcessor {
       statistics,
       targetVariable: primaryField, // use canonical primary field
       renderer: this.createSegmentRenderer(records, primaryField),
-      legend: this.createSegmentLegend(records, primaryField)
+      legend: this.createSegmentLegend(records)
     };
   }
 
@@ -158,7 +164,6 @@ export class SegmentProfilingProcessor extends BaseProcessor {
   private calculateSegmentationIndicators(metrics: {
     segmentScore: number;
     householdIncome: number;
-    population: number;
     strategicScore: number;
     competitiveScore: number;
     demographicScore: number;
@@ -166,19 +171,24 @@ export class SegmentProfilingProcessor extends BaseProcessor {
     correlationScore: number;
     totalPop: number;
     medianIncome: number;
+    brandInfo: { share: number; name: string };
   }) {
     const {
       segmentScore,
       householdIncome,
-      population,
       strategicScore,
       competitiveScore,
       demographicScore,
       trendScore,
       correlationScore,
       totalPop,
-      medianIncome
+      medianIncome,
+      brandInfo
     } = metrics;
+
+    // Extract brand values from brandInfo
+    const targetBrandShare = brandInfo.share;
+    const targetBrandName = brandInfo.name;
 
     // Demographic distinctiveness assessment
     const demographicDistinctiveness = demographicScore >= 80 ? 'Very High' :
@@ -376,10 +386,52 @@ export class SegmentProfilingProcessor extends BaseProcessor {
     return Object.keys(frequency as any).reduce((a, b) => frequency[a] > frequency[b] ? a : b);
   }
 
+  /**
+   * Extract brand information dynamically using brand resolver
+   * Returns object with share value and brand name
+   */
+  private extractBrandInfo(record: any): { share: number; name: string } {
+    // First try using dynamic brand detection
+    const brandFields = this.brandResolver?.detectBrandFields?.(record) || [];
+    
+    if (brandFields.length > 0) {
+      const primaryBrand = brandFields[0]; // Highest value brand field
+      return {
+        share: primaryBrand.value,
+        name: primaryBrand.metricName || 'Primary Brand'
+      };
+    }
+    
+    // Fallback to common brand share field patterns
+    const brandPatterns = [
+      { field: 'value_MP30034A_B_P', name: 'Nike' },
+      { field: 'mp30034a_b_p', name: 'Nike' },
+      { field: 'brand_share', name: 'Brand' },
+      { field: 'market_share', name: 'Market' },
+      { field: 'share', name: 'Share' }
+    ];
+    
+    for (const pattern of brandPatterns) {
+      const value = Number(record[pattern.field]);
+      if (!isNaN(value) && value > 0) {
+        return {
+          share: value,
+          name: pattern.name
+        };
+      }
+    }
+    
+    // Final fallback: return default values
+    return {
+      share: 0,
+      name: 'Market'
+    };
+  }
+
 
 
   // ============================================================================
-  // RENDERING METHODS
+  // RENDERING METHODS  
   // ============================================================================
 
   private createSegmentRenderer(records: any[], primaryField?: string): any {
@@ -415,7 +467,7 @@ export class SegmentProfilingProcessor extends BaseProcessor {
     };
   }
 
-  private createSegmentLegend(records: any[], primaryField?: string): any {
+  private createSegmentLegend(records: any[]): any {
     const values = records.map(r => r.value).filter(v => !isNaN(v)).sort((a, b) => a - b);
     const quartileBreaks = this.calculateQuartileBreaks(values);
     

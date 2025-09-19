@@ -1,27 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getPrimaryScoreField } from '../HardcodedFieldDefs';
 
 // Import all active processors
-import { AlgorithmComparisonProcessor } from '../AlgorithmComparisonProcessor';
 import { AnalyzeProcessor } from '../AnalyzeProcessor';
-import { AnomalyDetectionProcessor } from '../AnomalyDetectionProcessor';
 import { BrandDifferenceProcessor } from '../BrandDifferenceProcessor';
-import { ComparativeAnalysisProcessor } from '../ComparativeAnalysisProcessor';
 import { CompetitiveDataProcessor } from '../CompetitiveDataProcessor';
 import { ConsensusAnalysisProcessor } from '../ConsensusAnalysisProcessor';
 import { CorrelationAnalysisProcessor } from '../CorrelationAnalysisProcessor';
 import { DemographicDataProcessor } from '../DemographicDataProcessor';
-import { DimensionalityInsightsProcessor } from '../DimensionalityInsightsProcessor';
 import { EnsembleAnalysisProcessor } from '../EnsembleAnalysisProcessor';
-import { FeatureImportanceRankingProcessor } from '../FeatureImportanceRankingProcessor';
-import { FeatureInteractionProcessor } from '../FeatureInteractionProcessor';
-import { ModelPerformanceProcessor } from '../ModelPerformanceProcessor';
-import { ModelSelectionProcessor } from '../ModelSelectionProcessor';
 import { OutlierDetectionProcessor } from '../OutlierDetectionProcessor';
 import { PredictiveModelingProcessor } from '../PredictiveModelingProcessor';
-import { ScenarioAnalysisProcessor } from '../ScenarioAnalysisProcessor';
-import { SegmentProfilingProcessor } from '../SegmentProfilingProcessor';
-import { SensitivityAnalysisProcessor } from '../SensitivityAnalysisProcessor';
 import { SpatialClustersProcessor } from '../SpatialClustersProcessor';
 import { StrategicAnalysisProcessor } from '../StrategicAnalysisProcessor';
 import { TrendAnalysisProcessor } from '../TrendAnalysisProcessor';
@@ -45,7 +35,7 @@ describe('Hardcoded field detection and alignment (deterministic)', () => {
       expect(res.targetVariable).toBe('strategic_score');
       expect((res.renderer as any).field).toBe('strategic_score');
       expect(res.records[0].value).toBeCloseTo(85, 0);
-      expect(res.records[0].strategic_analysis_score).toBeCloseTo(85, 0);
+      expect((res.records[0] as any).strategic_analysis_score).toBeCloseTo(85, 0);
     });
 
     it('CompetitiveDataProcessor: uses hardcoded competitive_score field', () => {

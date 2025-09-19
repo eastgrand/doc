@@ -2,6 +2,7 @@
 import { RawAnalysisResult, ProcessedAnalysisData } from '../../types';
 import { getPrimaryScoreField } from './HardcodedFieldDefs';
 import { BaseProcessor } from './BaseProcessor';
+import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 /**
  * ScenarioAnalysisProcessor - Specialized processor for real estate scenario analysis
@@ -13,9 +14,11 @@ import { BaseProcessor } from './BaseProcessor';
  */
 export class ScenarioAnalysisProcessor extends BaseProcessor {
   private scoreField: string = 'scenario_score';
+  private brandResolver: BrandNameResolver;
   
   constructor() {
     super(); // Initialize BaseProcessor with configuration
+    this.brandResolver = new BrandNameResolver();
   }
   validate(rawData: RawAnalysisResult): boolean {
     if (!rawData || typeof rawData !== 'object') return false;
@@ -41,7 +44,6 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
       
       // Extract real estate scenario metrics using configuration-driven field mappings
       const householdIncome = this.extractNumericValue(record, ['ECYHRIAVG', 'household_income', 'median_income']);
-      const population = this.extractNumericValue(record, ['ECYPTAPOP', 'population', 'total_population']);
       const strategicScore = Number((record as any).strategic_value_score) || 0;
       const competitiveScore = Number((record as any).competitive_advantage_score) || 0;
       const demographicScore = Number((record as any).demographic_opportunity_score) || 0;
@@ -50,18 +52,21 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
       const totalPop = this.extractNumericValue(record, ['value_TOTPOP_CY', 'TOTPOP_CY', 'total_population']);
       const medianIncome = this.extractNumericValue(record, ['value_MEDDI_CY', 'value_AVGHINC_CY', 'median_income', 'ECYHRIAVG']);
 
+      // Extract primary brand/market share dynamically using brand resolver
+      const brandShare = this.extractPrimaryBrandShare(record);
+
       // Calculate additional scenario indicators
       const indicators = this.calculateScenarioIndicators({
         scenarioScore,
         householdIncome,
-        population,
         strategicScore,
         competitiveScore,
         demographicScore,
         trendScore,
         correlationScore,
         totalPop,
-        medianIncome
+        medianIncome,
+        brandShare
       });
 
       return {
@@ -105,7 +110,7 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
           market_share_stability: indicators.marketShareStability,
           
           // Supporting scenario data
-          nike_market_share: nikeShare,
+          primary_brand_share: brandShare,
           market_population: totalPop,
           median_household_income: medianIncome,
           strategic_position: strategicScore,
@@ -153,7 +158,6 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
   private calculateScenarioIndicators(metrics: {
     scenarioScore: number;
     householdIncome: number;
-    population: number;
     strategicScore: number;
     competitiveScore: number;
     demographicScore: number;
@@ -161,18 +165,19 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
     correlationScore: number;
     totalPop: number;
     medianIncome: number;
+    brandShare: number;
   }) {
     const {
       scenarioScore,
       householdIncome,
-      population,
       strategicScore,
       competitiveScore,
       demographicScore,
       trendScore,
       correlationScore,
       totalPop,
-      medianIncome
+      medianIncome,
+      brandShare
     } = metrics;
 
     // Scenario adaptability assessment
@@ -197,7 +202,7 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
                                activeScores.length >= 2 ? 'Limited Flexibility' : 'Low Flexibility';
 
     // Planning readiness index
-    const dataFields = [nikeShare, strategicScore, competitiveScore, demographicScore, 
+    const dataFields = [brandShare, strategicScore, competitiveScore, demographicScore, 
                        trendScore, correlationScore, totalPop, medianIncome].filter(v => v > 0).length;
     const planningReadiness = dataFields >= 7 ? 'Excellent Readiness' :
                             dataFields >= 5 ? 'Good Readiness' :
@@ -208,7 +213,7 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
     if (strategicScore >= 70 && demographicScore >= 70) primaryScenarioType = 'High-Potential Scenario Market';
     else if (trendScore >= 70 && correlationScore >= 60) primaryScenarioType = 'Trend-Resilient Scenario Market';
     else if (totalPop >= 50000 && medianIncome >= 70000) primaryScenarioType = 'Market-Stable Scenario Market';
-    else if (nikeShare >= 15 && strategicScore >= 60) primaryScenarioType = 'Brand-Strategic Scenario Market';
+    else if (brandShare >= 15 && strategicScore >= 60) primaryScenarioType = 'Brand-Strategic Scenario Market';
     else if (demographicScore >= 80) primaryScenarioType = 'Demographic-Strong Scenario Market';
     else if (scenarioScore >= 65) primaryScenarioType = 'High-Adaptability Scenario Market';
 
@@ -227,7 +232,7 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
     if (trendScore >= 60) resilienceFactors.push('Trend Stability');
     if (correlationScore >= 50) resilienceFactors.push('Predictable Patterns');
     if (competitiveScore >= 4 && competitiveScore <= 8) resilienceFactors.push('Balanced Competition');
-    if (nikeShare >= 10 && nikeShare <= 30) resilienceFactors.push('Stable Market Share');
+    if (brandShare >= 10 && brandShare <= 30) resilienceFactors.push('Stable Market Share');
     const resilienceFactorsStr = resilienceFactors.length > 0 ? resilienceFactors.join(', ') : 'Limited Resilience Factors';
 
     // Flexibility dimensions
@@ -235,7 +240,7 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
     if (hasBalance) flexibilityFactors.push('Multi-Score Balance');
     if (medianIncome >= 50000 && totalPop >= 20000) flexibilityFactors.push('Market Segment Flexibility');
     if (strategicScore >= 50 && competitiveScore >= 3) flexibilityFactors.push('Strategic Positioning');
-    if (nikeShare >= 12 && nikeShare <= 25) flexibilityFactors.push('Brand Strategy Options');
+    if (brandShare >= 12 && brandShare <= 25) flexibilityFactors.push('Brand Strategy Options');
     const flexibilityDimensions = flexibilityFactors.length > 0 ? flexibilityFactors.join(', ') : 'Limited Flexibility';
 
     // Scenario planning maturity
@@ -250,7 +255,7 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
 
     // Market stability index
     const stabilityFactors = [trendScore >= 50, correlationScore >= 40, 
-                            (nikeShare >= 10 && nikeShare <= 30), 
+                            (brandShare >= 10 && brandShare <= 30), 
                             (competitiveScore >= 3 && competitiveScore <= 8)].filter(Boolean).length;
     const marketStabilityIndex = stabilityFactors >= 3 ? 'High Stability' :
                                stabilityFactors >= 2 ? 'Moderate Stability' :
@@ -299,8 +304,8 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
                                     correlationScore >= 30 ? 'Moderately Predictable' : 'Unpredictable';
 
     // Market share stability
-    const marketShareStability = (nikeShare >= 10 && nikeShare <= 30) ? 'Stable Market Share' :
-                               (nikeShare >= 5 && nikeShare <= 40) ? 'Moderately Stable' : 'Volatile Market Share';
+    const marketShareStability = (brandShare >= 10 && brandShare <= 30) ? 'Stable Market Share' :
+                               (brandShare >= 5 && brandShare <= 40) ? 'Moderately Stable' : 'Volatile Market Share';
 
     // Recommended scenario approach
     let recommendedApproach = 'Standard Scenario Planning';
@@ -451,6 +456,38 @@ export class ScenarioAnalysisProcessor extends BaseProcessor {
     const frequency: Record<string, number> = {};
     arr.forEach(item => frequency[item] = (frequency[item] || 0) + 1);
     return Object.keys(frequency as any).reduce((a, b) => frequency[a] > frequency[b] ? a : b);
+  }
+
+  /**
+   * Extract primary brand/market share dynamically using brand resolver
+   * Falls back to common brand share field patterns if brand resolver doesn't find anything
+   */
+  private extractPrimaryBrandShare(record: any): number {
+    // First try using dynamic brand detection
+    const brandFields = this.brandResolver?.detectBrandFields?.(record) || [];
+    
+    if (brandFields.length > 0) {
+      // Return the highest value brand field (first in sorted array)
+      return brandFields[0].value;
+    }
+    
+    // Fallback to common brand share field patterns
+    const brandPatterns = [
+      'value_MP30034A_B_P', 'mp30034a_b_p',  // Nike share patterns
+      'brand_share', 'market_share', 'share',
+      'brand_penetration', 'penetration',
+      'brand_preference', 'preference'
+    ];
+    
+    for (const pattern of brandPatterns) {
+      const value = Number(record[pattern]);
+      if (!isNaN(value) && value > 0) {
+        return value;
+      }
+    }
+    
+    // Final fallback: return 0 if no brand share found
+    return 0;
   }
 
 

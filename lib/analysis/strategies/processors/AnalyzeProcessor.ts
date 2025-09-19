@@ -76,7 +76,7 @@ export class AnalyzeProcessor extends BaseProcessor {
     });
     
     // Calculate statistics
-    const statistics = this.calculateStatistics(processedRecords);
+    const statistics = this.calculateStatistics(processedRecords.map(r => r.value));
     
     // Rank records by analyze score
     const rankedRecords = this.rankRecords(processedRecords);
@@ -224,8 +224,17 @@ export class AnalyzeProcessor extends BaseProcessor {
   }
 
   private extractTargetBrandShare(record: any): number {
-    // Extract primary metric using BaseProcessor method
-    return this.extractPrimaryMetric(record);
+    // For general analysis, try to find brand share fields
+    const brandShareFields = Object.keys(record).filter(key => 
+      key.toLowerCase().includes('share') || key.includes('MP101')
+    );
+    
+    if (brandShareFields.length > 0) {
+      const value = Number(record[brandShareFields[0]]);
+      return isNaN(value) ? 0 : value;
+    }
+    
+    return 0; // No brand share data found
   }
 
   // Remove generateAreaName - use BaseProcessor method instead

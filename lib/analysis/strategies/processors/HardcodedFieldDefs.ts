@@ -11,7 +11,7 @@ export function getPrimaryScoreField(analysisType: string, metadata?: Record<str
     // Use legacy primary score field names expected by existing processors/tests
     strategic_analysis: 'strategic_score',
     strategic: 'strategic_score',
-    algorithm_comparison: 'algorithm_performance_score',
+    algorithm_comparison: 'algorithm_comparison_score',
     analyze: 'analysis_score',
     anomaly_detection: 'anomaly_score',
     anomaly_insights: 'anomaly_score',
@@ -20,18 +20,18 @@ export function getPrimaryScoreField(analysisType: string, metadata?: Record<str
     comparative: 'comparison_score',
     competitive_analysis: 'competitive_score',
     competitive: 'competitive_score',
-    consensus_analysis: 'consensus_performance_score',
+    consensus_analysis: 'consensus_analysis_score',
     correlation_analysis: 'correlation_score',
     // demographic variants: map to legacy demographic_score for compatibility
     demographic_insights: 'demographic_score',
     demographic_analysis: 'demographic_score',
     demographic: 'demographic_score',
-    dimensionality_insights: 'dimensionality_performance_score',
-    ensemble_analysis: 'ensemble_performance_score',
+    dimensionality_insights: 'dimensionality_insights_score',
+    ensemble_analysis: 'ensemble_analysis_score',
     feature_interactions: 'interaction_score',
     interaction: 'interaction_score',
-    model_performance: 'performance_score',
-    model_selection: 'model_selection_performance_score',
+    model_performance: 'model_performance_prediction_score',
+    model_selection: 'algorithm_category',
     outlier_detection: 'outlier_score',
     predictive_modeling: 'prediction_score',
     prediction: 'prediction_score',
@@ -50,7 +50,13 @@ export function getPrimaryScoreField(analysisType: string, metadata?: Record<str
     market_intelligence_report: 'strategic_score',
     // Housing market correlation analysis
     housing_market_correlation: 'housing_correlation_score',
-    housing_correlation: 'housing_correlation_score'
+    housing_correlation: 'housing_correlation_score',
+    // Additional analysis endpoints from blob-urls.json
+    feature_selection_analysis: 'feature_selection_score',
+    interpretability_analysis: 'interpretability_score',
+    neural_network_analysis: 'neural_network_score',
+    nonlinear_analysis: 'nonlinear_score',
+    composite_index: 'composite_index_score'
   };
   return mapping[n] || 'value';
 }

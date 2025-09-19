@@ -16,7 +16,7 @@ describe('E2E: ComparativeAnalysisProcessor', () => {
     const out = proc.process(raw) as ProcessedAnalysisData;
 
     expect(out.type).toBe('comparative_analysis');
-    expect(out.targetVariable).toBe('strategic_score');
+    expect(out.targetVariable).toBe('comparison_score');
     expect(out.records[0].area_id).toBe('Y');
     expect(out.records[0].value).toBeGreaterThanOrEqual(out.records[1].value);
     expect(out.records[1].value).toBeGreaterThanOrEqual(out.records[2].value);

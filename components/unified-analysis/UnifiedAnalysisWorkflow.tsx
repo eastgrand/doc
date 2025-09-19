@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // UnifiedAnalysisWorkflow.tsx
 // Main orchestrator component that unifies the entire analysis workflow
@@ -654,7 +655,7 @@ export default function UnifiedAnalysisWorkflow({
       // Clean up abort controller
       abortControllerRef.current = null;
     }
-  }, [workflowState.areaSelection, selectedQuery, selectedEndpoint, selectedInfographicType, enableChat, analysisWrapper, onAnalysisComplete, clusterConfig]);
+  }, [workflowState.areaSelection, onAnalysisStart, selectedQuery, selectedEndpoint, selectedInfographicType, enableChat, clusterConfig, advancedFilterConfig.fieldFilters, advancedFilterConfig.visualization, advancedFilterConfig.performance, view, selectedPersona, analysisWrapper, onAnalysisComplete, setFormattedLegendData, onVisualizationLayerCreated]);
 
   // Handle export
   const handleExport = useCallback(async (format: string) => {

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { RawAnalysisResult, ProcessedAnalysisData, GeographicDataPoint, AnalysisStatistics } from '../../types';
-import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
+import { getPrimaryScoreField } from './HardcodedFieldDefs';
 import Extent from '@arcgis/core/geometry/Extent';
 import { BaseProcessor } from './BaseProcessor';
+import { BrandNameResolver } from '../../utils/BrandNameResolver';
 
 /**
  * CustomerProfileProcessor - Handles data processing for customer profiling across markets
@@ -14,9 +15,11 @@ import { BaseProcessor } from './BaseProcessor';
  */
 export class CustomerProfileProcessor extends BaseProcessor {
   private scoreField: string | undefined;
+  private brandResolver: BrandNameResolver;
 
   constructor() {
     super(); // Initialize BaseProcessor with configuration
+    this.brandResolver = new BrandNameResolver();
   }
   
   validate(rawData: RawAnalysisResult): boolean {
@@ -371,6 +374,76 @@ export class CustomerProfileProcessor extends BaseProcessor {
     propensityScore += Math.min(20, (wealthIndex / 150) * 20);
     
     return Math.min(100, propensityScore);
+  }
+
+  private extractTargetBrandAffinity(record: any): number {
+    // Try to use brand resolver to find target brand fields
+    const brandFields = this.brandResolver?.detectBrandFields?.(record) || [];
+    const targetBrand = brandFields.find((bf: any) => bf.isTarget);
+    
+    if (targetBrand?.value !== undefined) {
+      return Number(targetBrand.value) || 0;
+    }
+    
+    // Fallback to common brand affinity field names
+    const affinityFields = [
+      'brand_affinity', 'target_brand_affinity', 'brand_loyalty',
+      'target_brand_preference', 'brand_strength', 'target_brand_share',
+      'brand_preference_score', 'customer_brand_alignment'
+    ];
+    
+    for (const fieldName of affinityFields) {
+      const value = record[fieldName];
+      if (value !== undefined && value !== null) {
+        const numValue = Number(value);
+        if (!isNaN(numValue)) {
+          return numValue;
+        }
+      }
+    }
+    
+    // If no specific brand affinity fields found, calculate from demographic characteristics
+    // This creates a synthetic brand affinity score based on customer profile factors
+    const income = this.extractFieldValue(record, ['median_income', 'value_AVGHINC_CY', 'AVGHINC_CY', 'household_income']) || record.income || 0;
+    const age = record.value_MEDAGE_CY || record.age || 0;
+    const wealthIndex = record.value_WLTHINDXCY || 100;
+    const population = this.extractFieldValue(record, ['total_population', 'value_TOTPOP_CY', 'TOTPOP_CY', 'population']) || record.population || 0;
+    
+    let syntheticAffinity = 0;
+    
+    // Age-based affinity (target demographic 16-45 years)
+    if (age >= 16 && age <= 45) {
+      syntheticAffinity += 15;
+    } else if (age >= 12 && age <= 55) {
+      syntheticAffinity += 10;
+    } else {
+      syntheticAffinity += 5;
+    }
+    
+    // Income-based affinity (purchasing power)
+    if (income >= 40000 && income <= 100000) {
+      syntheticAffinity += 15;
+    } else if (income >= 25000) {
+      syntheticAffinity += 10;
+    } else {
+      syntheticAffinity += 3;
+    }
+    
+    // Wealth index contribution
+    if (wealthIndex > 120) {
+      syntheticAffinity += 10;
+    } else if (wealthIndex > 100) {
+      syntheticAffinity += 5;
+    }
+    
+    // Population density factor (urban markets often have higher brand presence)
+    if (population > 10000) {
+      syntheticAffinity += 5;
+    } else if (population > 1000) {
+      syntheticAffinity += 2;
+    }
+    
+    return Math.min(50, syntheticAffinity); // Cap at 50 to match usage patterns
   }
 
   private extractProperties(record: any): Record<string, any> {

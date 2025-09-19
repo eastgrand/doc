@@ -16,7 +16,7 @@ const ANALYSIS_FILTER_LOG = process.env.ANALYSIS_PARK_FILTER_LOG === '1' ||
  * Detects if a feature represents a national park area
  * Uses multiple detection strategies for robustness
  */
-export function isNationalPark(properties: any): boolean {
+export function isNationalPark(properties: Record<string, unknown>): boolean {
   if (!properties) return false;
 
   // Normalize common field names
@@ -61,9 +61,9 @@ export function analysisFeatures<T>(features: T[]): T[] {
   const hasPropertiesNesting = firstFeature?.properties !== undefined;
   
   const filtered = features.filter(feature => {
-    const featureWithProps = feature as T & { properties?: unknown };
-    const props = hasPropertiesNesting ? featureWithProps.properties : feature;
-    return !isNationalPark(props);
+    const featureWithProps = feature as T & { properties?: Record<string, unknown> };
+    const props = hasPropertiesNesting ? featureWithProps.properties : (feature as unknown as Record<string, unknown>);
+    return !isNationalPark(props as Record<string, unknown>);
   });
   
   // Optional logging for debugging
@@ -79,7 +79,7 @@ export function analysisFeatures<T>(features: T[]): T[] {
  * Creates analysis-ready copies of layers with filtered features
  * Returns new layer objects with features excluding national parks
  */
-export function getAnalysisLayers(layers: any[]): any[] {
+export function getAnalysisLayers(layers: Array<{ features?: unknown[] }>): Array<{ features?: unknown[] }> {
   if (!layers || layers.length === 0) return layers;
   
   return layers.map(layer => {
@@ -98,7 +98,7 @@ export function getAnalysisLayers(layers: any[]): any[] {
  * Removes national parks from ranking arrays (top/bottom performers)
  * Maintains array structure while filtering content
  */
-export function sanitizeRankingArrayForAnalysis<T extends any>(arr: T[]): T[] {
+export function sanitizeRankingArrayForAnalysis<T>(arr: T[]): T[] {
   if (!arr || arr.length === 0) return arr;
   
   return analysisFeatures(arr);
@@ -108,7 +108,7 @@ export function sanitizeRankingArrayForAnalysis<T extends any>(arr: T[]): T[] {
  * Cleans comprehensive summary rankings to exclude parks
  * Handles nested ranking structures in AI analysis summaries
  */
-export function sanitizeSummaryForAnalysis(summary: any): any {
+export function sanitizeSummaryForAnalysis(summary: Record<string, unknown>): Record<string, unknown> {
   if (!summary || typeof summary !== 'object') {
     return summary;
   }
@@ -131,7 +131,7 @@ export function sanitizeSummaryForAnalysis(summary: any): any {
   // Handle nested objects recursively
   Object.keys(sanitized).forEach(key => {
     if (sanitized[key] && typeof sanitized[key] === 'object' && !Array.isArray(sanitized[key])) {
-      sanitized[key] = sanitizeSummaryForAnalysis(sanitized[key]);
+      sanitized[key] = sanitizeSummaryForAnalysis(sanitized[key] as Record<string, unknown>);
     }
   });
   
@@ -150,7 +150,7 @@ export function isAnalysisFilteringEnabled(): boolean {
  * Gets statistics about what would be filtered
  * Useful for debugging and validation
  */
-export function getFilteringStats(features: any[]): {
+export function getFilteringStats(features: Array<Record<string, unknown> | { properties?: Record<string, unknown> }>): {
   total: number;
   parks: number;
   remaining: number;
@@ -164,11 +164,15 @@ export function getFilteringStats(features: any[]): {
   let parkCount = 0;
   
   features.forEach(feature => {
-    const props = feature.properties || feature;
+    const props = (feature as { properties?: Record<string, unknown> }).properties || (feature as Record<string, unknown>);
     if (isNationalPark(props)) {
       parkCount++;
-      const name = props.name || props.DESCRIPTION || props.description || 
-                  props.area_id || props.ID || props.id || 'Unknown Park';
+      const name = (props as Record<string, unknown>).name || 
+                  (props as Record<string, unknown>).DESCRIPTION || 
+                  (props as Record<string, unknown>).description || 
+                  (props as Record<string, unknown>).area_id || 
+                  (props as Record<string, unknown>).ID || 
+                  (props as Record<string, unknown>).id || 'Unknown Park';
       parkNames.push(String(name));
     }
   });

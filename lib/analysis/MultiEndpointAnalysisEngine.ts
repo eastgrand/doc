@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * MultiEndpointAnalysisEngine - Main orchestrator for multi-endpoint analysis
  * 

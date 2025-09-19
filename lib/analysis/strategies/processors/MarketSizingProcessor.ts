@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RawAnalysisResult, ProcessedAnalysisData } from '../../types';
 import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
 import { BaseProcessor } from './BaseProcessor';
