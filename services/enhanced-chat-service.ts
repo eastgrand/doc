@@ -169,7 +169,8 @@ export async function sendEnhancedChatMessage(
   const enhancedRequest = {
     ...request,
     metadata: enhancedMetadata,
-    featureData: enhancedFeatureData
+    featureData: enhancedFeatureData,
+    persona: request.persona || 'default' // Ensure persona is defined for ChatRequest
   };
 
   const response = await baseSendChatMessage(enhancedRequest, options);
