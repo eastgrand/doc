@@ -109,9 +109,9 @@ export class CompositeIndexLayerService {
     } catch (error) {
       console.error('[CompositeIndexLayerService] Error fetching from microservice:', error);
       console.error('[CompositeIndexLayerService] Error details:', {
-        name: error.name,
-        message: error.message,
-        stack: error.stack
+        name: (error as any).name,
+        message: (error as any).message,
+        stack: (error as any).stack
       });
     }
 
