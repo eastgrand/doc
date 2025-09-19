@@ -58,7 +58,7 @@ export default function TestSplitScreen() {
   const triggerVisualization = () => {
     console.log('🎯 Triggering visualization...');
     setHasVisualization(true);
-    setRefreshCount(prev => prev + 1);
+    setRefreshCount((prev: number) => prev + 1);
   };
 
   const clearVisualization = () => {
