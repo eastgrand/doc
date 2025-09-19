@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import fetch from 'node-fetch';
 import fs from 'fs/promises';
 import { 
-  ValidationResult, 
   ValidationError, 
   ValidationWarning 
 } from './types';
@@ -182,9 +182,9 @@ export class ArcGISDataExtractor {
 
       console.log(`📊 Layer analysis: ${polygonLayers.length} polygon, ${pointLayers.length} point, ${lineLayers.length} line`);
 
-      let combinedData: any[] = [];
+      let combinedData: Record<string, unknown>[] = [];
       let totalRecords = 0;
-      let totalFields = new Set<string>();
+      const totalFields = new Set<string>();
 
       // Handle different aggregation strategies
       switch (options.aggregationStrategy) {
@@ -425,7 +425,7 @@ export class ArcGISDataExtractor {
     console.log(`🔗 Performing spatial join between ${polygonLayers.length} polygon and ${pointLayers.length} point layers`);
     
     // This is a simplified implementation - in production, this would use actual spatial operations
-    const combinedData: any[] = [];
+    const combinedData: Record<string, unknown>[] = [];
     const joins: SpatialJoinResult[] = [];
     const layerResults: LayerExtractionResult[] = [];
 
