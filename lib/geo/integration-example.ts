@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Geo-Awareness Integration Example
  * 
@@ -95,7 +96,7 @@ export async function basicGeoAnalysisExample() {
       
       if (result.geoAnalysis) {
         console.log(`🌍 Geographic Analysis:`);
-        console.log(`   - Entities: ${result.geoAnalysis.entities?.map((e: any) => e.name).join(', ')}`);
+        console.log(`   - Entities: ${result.geoAnalysis.entities?.map((e: { name: string }) => e.name).join(', ')}`);
         console.log(`   - Method: ${result.geoAnalysis.filterStats?.filterMethod}`);
         console.log(`   - Processing Time: ${result.geoAnalysis.filterStats?.processingTimeMs}ms`);
         
@@ -107,8 +108,9 @@ export async function basicGeoAnalysisExample() {
       // Show filtered results
       if (result.records.length < mockAnalysisResult.results.length) {
         console.log(`🎯 Filtered Results:`);
-        result.records.forEach((record: any) => {
-          console.log(`   - ${record.DESCRIPTION}: ${record.value}`);
+        result.records.forEach((record) => {
+          const description = (record.properties.DESCRIPTION as string) || record.area_name;
+          console.log(`   - ${description}: ${record.value}`);
         });
       }
       
@@ -154,7 +156,7 @@ export async function performanceComparisonExample() {
       if (i === 0) {
         console.log(`   First run: ${result.records.length} records, ${processingTime}ms`);
         if (result.geoAnalysis?.entities) {
-          console.log(`   Entities: ${result.geoAnalysis.entities.map((e: any) => e.name).join(', ')}`);
+          console.log(`   Entities: ${result.geoAnalysis.entities.map((e: { name: string }) => e.name).join(', ')}`);
         }
       }
     } catch (error) {
@@ -180,9 +182,9 @@ export async function performanceComparisonExample() {
       legacySystemTimes.push(processingTime);
       
       if (i === 0) {
-        console.log(`   First run: ${result.records.length} records, ${processingTime}ms`);
-        if (result.cityAnalysis) {
-          console.log(`   Cities: ${result.cityAnalysis.detectedCities.join(', ')}`);
+        console.log(`   First run: ${(result as any).records?.length || 0} records, ${processingTime}ms`);
+        if ((result as any).cityAnalysis) {
+          console.log(`   Cities: ${(result as any).cityAnalysis.detectedCities.join(', ')}`);
         }
       }
     } catch (error) {
