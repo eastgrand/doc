@@ -2343,7 +2343,7 @@ export async function POST(req: NextRequest) {
         console.log(`[Claude] Applied analysis lens: ${processedLayersData.length} layers -> ${processedLayersDataForAI.length} layers for AI`);
         
         // Use filtered data for AI processing from this point forward
-        processedLayersData = processedLayersDataForAI;
+        processedLayersData = processedLayersDataForAI as ProcessedLayerResult[];
     
           // --- Simplified Data Processing (Focus on prompt relevant info) ---
               if (!processedLayersData || processedLayersData.length === 0) {
@@ -2600,9 +2600,10 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
           
           // Build rich data summary from comprehensive analysis
           dataSummary += `\n=== COMPREHENSIVE DATASET ANALYSIS ===\n`;
-          dataSummary += `Total Features Analyzed: ${originalSummary.datasetOverview.totalFeatures}\n`;
-          dataSummary += `Geographic Coverage: ${originalSummary.datasetOverview.geographicCoverage.uniqueDescriptions} unique areas\n`;
-          dataSummary += `Analysis Timestamp: ${originalSummary.datasetOverview.analysisTimestamp}\n\n`;
+          const datasetOverview = (originalSummary.datasetOverview as any);
+          dataSummary += `Total Features Analyzed: ${datasetOverview?.totalFeatures || 'N/A'}\n`;
+          dataSummary += `Geographic Coverage: ${datasetOverview?.geographicCoverage?.uniqueDescriptions || 'N/A'} unique areas\n`;
+          dataSummary += `Analysis Timestamp: ${datasetOverview?.analysisTimestamp || 'N/A'}\n\n`;
           
           // 🏙️ Add city analysis metadata if detected
           if (isCityQuery) {
@@ -2661,7 +2662,7 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 .filter(v => typeof v === 'number' && !isNaN(v));
               
               // Get comprehensive statistics from originalSummary for context
-              const fullDatasetStats = originalSummary?.statistics;
+              const fullDatasetStats = (originalSummary as any)?.statistics;
               if (fullDatasetStats) {
                 console.log(`📊 [Strategic Analysis Debug] Full dataset stats: ${fullDatasetStats.total} records, range ${fullDatasetStats.min}-${fullDatasetStats.max}`);
               }
@@ -2686,12 +2687,13 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 
                 // Use full dataset statistics if available, otherwise calculate from sample
                 if (fullDatasetStats) {
-                  dataSummary += `• COMPLETE DATASET: ${fullDatasetStats.total} California ZIP codes analyzed (after filtering parks)\n`;
-                  dataSummary += `• Average strategic score: ${fullDatasetStats.mean.toFixed(2)}\n`;
-                  dataSummary += `• Median strategic score: ${fullDatasetStats.median.toFixed(2)}\n`;
-                  dataSummary += `• Standard deviation: ${fullDatasetStats.stdDev.toFixed(2)}\n`;
-                  dataSummary += `• COMPLETE RANGE: ${fullDatasetStats.min.toFixed(1)} to ${fullDatasetStats.max.toFixed(1)}\n`;
-                  dataSummary += `📊 Sample shown: ${count} representative areas from full ${fullDatasetStats.total} dataset\n`;
+                  const stats = fullDatasetStats as any;
+                  dataSummary += `• COMPLETE DATASET: ${stats.total || 'N/A'} California ZIP codes analyzed (after filtering parks)\n`;
+                  dataSummary += `• Average strategic score: ${stats.mean?.toFixed(2) || 'N/A'}\n`;
+                  dataSummary += `• Median strategic score: ${stats.median?.toFixed(2) || 'N/A'}\n`;
+                  dataSummary += `• Standard deviation: ${stats.stdDev?.toFixed(2) || 'N/A'}\n`;
+                  dataSummary += `• COMPLETE RANGE: ${stats.min?.toFixed(1) || 'N/A'} to ${stats.max?.toFixed(1) || 'N/A'}\n`;
+                  dataSummary += `📊 Sample shown: ${count} representative areas from full ${stats.total || 'N/A'} dataset\n`;
                 } else {
                   dataSummary += `• Sample markets analyzed: ${count}\n`;
                   dataSummary += `• Average strategic score: ${mean.toFixed(2)}\n`;
@@ -2714,7 +2716,7 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
                 const topStrategicMarkets = featuresWithScores.slice(0, 10); // Representative sample for analysis
                 
                 if (topStrategicMarkets.length > 0) {
-                  dataSummary += `=== REPRESENTATIVE STRATEGIC MARKETS (sampled from ${fullDatasetStats?.total || 'full'} dataset) ===\n`;
+                  dataSummary += `=== REPRESENTATIVE STRATEGIC MARKETS (sampled from ${(fullDatasetStats as any)?.total || 'full'} dataset) ===\n`;
                   topStrategicMarkets.forEach((market, index) => {
                     const props = market.feature.properties || market.feature;
                     dataSummary += `${index + 1}. ${market.areaName}:\n`;
@@ -2840,20 +2842,20 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
           }
           
           // Add model attribution information if available (only for initial analysis, not chat responses)
-          if (!isContextualChat && (originalSummary.model_attribution || (originalSummary.performanceAnalysis?.topPerformers?.[0]?._model_attribution))) {
+          if (!isContextualChat && ((originalSummary as any).model_attribution || ((originalSummary as any).performanceAnalysis?.topPerformers?.[0]?._model_attribution))) {
             dataSummary += `=== MODEL ATTRIBUTION ===\n`;
             
             // Check for endpoint-level attribution
-      if (originalSummary.model_attribution) {
-              const modelAttr = originalSummary.model_attribution;
-              const modelName = modelAttr.primary_model?.name;
-              const modelType = modelAttr.primary_model?.type;
+      if ((originalSummary as any).model_attribution) {
+              const modelAttr = (originalSummary as any).model_attribution;
+              const modelName = (modelAttr as any).primary_model?.name;
+              const modelType = (modelAttr as any).primary_model?.type;
               if (modelName) dataSummary += `🤖 Model Used: ${modelName}\n`;
               if (modelType) dataSummary += `📊 Model Type: ${modelType}\n`;
               
-              const r2Value = modelAttr.primary_model?.performance?.r2_score;
+              const r2Value = (modelAttr as any).primary_model?.performance?.r2_score;
               if (typeof r2Value === 'number' && !Number.isNaN(r2Value)) {
-                const perfLevel = modelAttr.primary_model?.performance?.performance_level || 'Unknown';
+                const perfLevel = (modelAttr as any).primary_model?.performance?.performance_level || 'Unknown';
                 dataSummary += `🎯 R² Score: ${r2Value.toFixed(3)} (${perfLevel} Performance)\n`;
                 
                 // Map performance level to confidence
@@ -2869,14 +2871,14 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
         computedAttribution = { modelName, r2: r2Value, perfLevel, confidence };
               }
               
-              if (modelAttr.traceability_note) {
-                dataSummary += `📝 Note: ${modelAttr.traceability_note}\n`;
+              if ((modelAttr as any).traceability_note) {
+                dataSummary += `📝 Note: ${(modelAttr as any).traceability_note}\n`;
               }
               dataSummary += `\n`;
             }
             // Check for record-level attribution from first performer
-            else if (originalSummary.performanceAnalysis?.topPerformers?.[0]?._model_attribution) {
-              const recordAttr = originalSummary.performanceAnalysis.topPerformers[0]._model_attribution;
+            else if (((originalSummary as any).performanceAnalysis?.topPerformers?.[0]?._model_attribution)) {
+              const recordAttr = ((originalSummary as any).performanceAnalysis?.topPerformers?.[0]?._model_attribution);
               if (recordAttr.primary_model_used) dataSummary += `🤖 Model Used: ${recordAttr.primary_model_used}\n`;
               if (recordAttr.model_type) dataSummary += `📊 Model Type: ${recordAttr.model_type}\n`;
               const r2Value = (recordAttr.performance?.r2_score ?? recordAttr.r2_score);
@@ -2895,8 +2897,8 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
           }
 
           // Add top performers (sanitized to remove parks and properly sorted)
-          if (originalSummary.performanceAnalysis?.topPerformers?.length > 0) {
-            const sanitizedTopPerformers = sanitizeRankingArrayForAnalysis(originalSummary.performanceAnalysis.topPerformers)
+          if (((originalSummary as any).performanceAnalysis?.topPerformers?.length > 0)) {
+            const sanitizedTopPerformers = sanitizeRankingArrayForAnalysis(((originalSummary as any).performanceAnalysis as any).topPerformers)
               // Ensure proper descending sort by competitive_advantage_score or strategic_value_score
               .sort((a: any, b: any) => {
                 const scoreA = a.competitive_advantage_score ?? a.strategic_value_score ?? a.thematic_value ?? 0;
@@ -2936,22 +2938,22 @@ A spatial filter has been applied. You are analyzing ONLY ${metadata.spatialFilt
           }
           
           dataSummary += `=== CONVERSATION CONTEXT ===\n`;
-          dataSummary += `Original Query: ${originalSummary.queryContext?.originalQuery || 'N/A'}\n`;
-          dataSummary += `Current Question: ${originalSummary.queryContext?.currentQuestion || 'N/A'}\n`;
-          dataSummary += `Analysis Type: ${originalSummary.queryContext?.analysisType || 'follow-up-chat'}\n`;
-          dataSummary += `Session: ${originalSummary.datasetOverview?.sessionType || 'analysis'}\n`;
+          dataSummary += `Original Query: ${((originalSummary as any).queryContext as any)?.originalQuery || 'N/A'}\n`;
+          dataSummary += `Current Question: ${((originalSummary as any).queryContext as any)?.currentQuestion || 'N/A'}\n`;
+          dataSummary += `Analysis Type: ${((originalSummary as any).queryContext as any)?.analysisType || 'follow-up-chat'}\n`;
+          dataSummary += `Session: ${(datasetOverview as any)?.sessionType || 'analysis'}\n`;
           
-          if (originalSummary.queryContext?.conversationHistory?.length > 0) {
+          if (((originalSummary as any).queryContext as any)?.conversationHistory?.length > 0) {
             dataSummary += `\nRecent Conversation:\n`;
-            originalSummary.queryContext.conversationHistory.forEach((msg: any, index: number) => {
+            ((originalSummary as any).queryContext as any).conversationHistory.forEach((msg: any, index: number) => {
               dataSummary += `${index + 1}. ${msg.role}: ${msg.content}\n`;
             });
           }
           
-          if (originalSummary.lastAnalysisContext) {
+          if ((originalSummary as any).lastAnalysisContext) {
             dataSummary += `\nLast Analysis Context:\n`;
-            dataSummary += `- Original Query: ${originalSummary.lastAnalysisContext.query}\n`;
-            dataSummary += `- Analysis Type: ${originalSummary.lastAnalysisContext.analysisType}\n`;
+            dataSummary += `- Original Query: ${((originalSummary as any).lastAnalysisContext as any)?.query || 'N/A'}\n`;
+            dataSummary += `- Analysis Type: ${((originalSummary as any).lastAnalysisContext as any)?.analysisType || 'N/A'}\n`;
           }
           
           console.log('[Claude Prompt Gen] Comprehensive summary prepared. Length:', dataSummary.length);
