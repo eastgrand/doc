@@ -1,6 +1,31 @@
 // Migration Types & Interfaces
 // Core types for the migration automation system
 
+export interface ArcGISLayer {
+  id: number;
+  name: string;
+  type: string;
+  geometryType: 'esriGeometryPoint' | 'esriGeometryPolygon' | 'esriGeometryPolyline';
+  fields: ArcGISField[];
+  url: string;
+  recordCount: number;
+  extent: {
+    xmin: number;
+    ymin: number;
+    xmax: number;
+    ymax: number;
+  };
+}
+
+export interface ArcGISField {
+  name: string;
+  type: 'esriFieldTypeOID' | 'esriFieldTypeString' | 'esriFieldTypeInteger' | 'esriFieldTypeDouble' | 'esriFieldTypeDate';
+  alias: string;
+  length?: number;
+  nullable: boolean;
+  editable: boolean;
+}
+
 export interface ValidationResult {
   isValid: boolean;
   errors: ValidationError[];
