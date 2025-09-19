@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import fetch from 'node-fetch';
 
 // Small helper to provide a fetch with timeout using AbortController. This
@@ -40,7 +41,7 @@ export class MicroserviceValidator {
         if (response.ok) {
           return true;
         }
-      } catch (error) {
+      } catch {
         // Service not ready yet, continue polling
       }
       
@@ -79,7 +80,7 @@ export class MicroserviceValidator {
 
       if (response.ok) {
         const result = await response.json();
-        return result.valid === true;
+        return (result as any).valid === true;
       }
       
       return false;
@@ -101,7 +102,7 @@ export class MicroserviceValidator {
         const result = await response.json();
         return {
           success: true,
-          modelsLoaded: result.models_loaded || 0
+          modelsLoaded: (result as any).models_loaded || 0
         };
       } else {
         return {
@@ -491,10 +492,9 @@ export class MicroserviceValidator {
       const checkStart = Date.now();
       
       try {
-        const response = await fetch(`${serviceUrl}/health`, {
-          method: 'GET',
-          timeout: 5000
-        });
+        const response = await fetchWithTimeout(`${serviceUrl}/health`, {
+          method: 'GET'
+        }, 5000);
 
         const responseTime = Date.now() - checkStart;
         const success = response.ok;
