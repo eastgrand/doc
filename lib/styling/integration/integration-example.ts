@@ -197,7 +197,7 @@ export function useEnhancedStylingIntegration(
   mapView: __esri.MapView | null,
   globalConfig?: Partial<GlobalStylingConfig>
 ): EnhancedStylingIntegrationExample | null {
-  const [integration, setIntegration] = React.useState<EnhancedStylingIntegrationExample | null>(null);
+  const [integration, setIntegration] = React.useState(null as EnhancedStylingIntegrationExample | null);
 
   React.useEffect(() => {
     if (mapView && !integration) {
