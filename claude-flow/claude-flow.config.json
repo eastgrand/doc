@@ -1,0 +1,140 @@
+{
+  "project": {
+    "name": "The Doors Documentary Geospatial Analysis",
+    "version": "1.0.0",
+    "description": "AI-assisted development environment for The Doors Documentary geospatial analysis platform"
+  },
+  "agents": {
+    "geospatial-analyst": {
+      "description": "Specializes in H3 hexagon grid generation and spatial analysis",
+      "skills": ["h3-generation", "spatial-queries", "geometry-operations"],
+      "libraries": ["@arcgis/core", "h3-js", "@turf/turf"],
+      "context": "docs/THE_DOORS_DOCUMENTARY_GEOSPATIAL_ANALYSIS_IMPLEMENTATION_PLAN.md"
+    },
+    "data-processor": {
+      "description": "Handles ESRI Tapestry segments and demographic data processing",
+      "skills": ["data-aggregation", "scoring-algorithms", "tapestry-analysis"],
+      "libraries": ["@arcgis/core", "simple-statistics"],
+      "context": "lib/processors/BaseProcessor.ts"
+    },
+    "feature-service-manager": {
+      "description": "Manages federated layer architecture across 5 states",
+      "skills": ["feature-service-federation", "layer-combining", "cache-management"],
+      "libraries": ["@arcgis/core"],
+      "context": "lib/services/CompositeIndexLayerService.ts"
+    },
+    "theater-analyzer": {
+      "description": "Analyzes theater infrastructure and documentary distribution opportunities",
+      "skills": ["theater-metrics", "capacity-analysis", "accessibility-scoring"],
+      "libraries": ["@arcgis/core", "@turf/turf"]
+    },
+    "ui-developer": {
+      "description": "Creates React components for data visualization and user interaction",
+      "skills": ["react-components", "arcgis-widgets", "data-visualization"],
+      "libraries": ["react", "@arcgis/core", "recharts"],
+      "context": "app/app-wrapper.tsx"
+    }
+  },
+  "workflows": {
+    "hexagon-generation": {
+      "description": "Generate H3 hexagonal grid for analysis area",
+      "agents": ["geospatial-analyst"],
+      "steps": [
+        "Define bounding box for 5-state region",
+        "Generate H3 hexagons at resolution 6",
+        "Export as feature service compatible format"
+      ]
+    },
+    "tapestry-integration": {
+      "description": "Integrate ESRI Tapestry segments with scoring",
+      "agents": ["data-processor", "feature-service-manager"],
+      "steps": [
+        "Load 10 Tapestry segments",
+        "Apply weighted scoring (Primary: 1.0, Secondary: 0.75, Tertiary: 0.5)",
+        "Join with H3 hexagon features"
+      ]
+    },
+    "composite-scoring": {
+      "description": "Calculate composite scores for documentary screening locations",
+      "agents": ["data-processor", "theater-analyzer"],
+      "steps": [
+        "Calculate Music Affinity Score (40%)",
+        "Calculate Cultural Engagement Score (25%)",
+        "Calculate Spending Capacity Score (20%)",
+        "Calculate Market Accessibility Score (15%)",
+        "Generate composite index"
+      ]
+    },
+    "federated-layer-setup": {
+      "description": "Set up federated layer architecture for multi-state analysis",
+      "agents": ["feature-service-manager"],
+      "steps": [
+        "Configure state feature service endpoints",
+        "Implement parallel data fetching",
+        "Create unified layer interface",
+        "Set up caching strategy"
+      ]
+    },
+    "visualization-development": {
+      "description": "Develop interactive visualization components",
+      "agents": ["ui-developer", "geospatial-analyst"],
+      "steps": [
+        "Create hexagon grid visualization",
+        "Implement theater location markers",
+        "Add radio station coverage visualization",
+        "Build interactive legend and controls"
+      ]
+    }
+  },
+  "development": {
+    "environment": "Next.js with TypeScript",
+    "testing": {
+      "framework": "Jest",
+      "coverage": true,
+      "watch": false
+    },
+    "linting": {
+      "enabled": true,
+      "rules": "eslint-config-next"
+    },
+    "paths": {
+      "components": "app/components",
+      "services": "lib/services",
+      "processors": "lib/processors",
+      "utils": "utils",
+      "docs": "docs"
+    }
+  },
+  "data_sources": {
+    "primary": {
+      "esri_tapestry": {
+        "segments": ["1A", "1D", "9A", "9B", "1E", "5A", "5B", "2B", "3B", "9D"],
+        "endpoint": "https://services.arcgis.com/tapestry"
+      },
+      "theater_infrastructure": {
+        "metrics": ["capacity_sqft", "sales_volume", "employees"],
+        "endpoint": "https://services.arcgis.com/theater-data"
+      },
+      "radio_stations": {
+        "formats": ["classic_rock", "oldies", "adult_contemporary"],
+        "coverage": "broadcast_radius"
+      }
+    },
+    "geographic": {
+      "states": ["CA", "NV", "AZ", "OR", "WA"],
+      "resolution": "H3_resolution_6",
+      "radius": "2_miles"
+    }
+  },
+  "automation": {
+    "pre_commit": {
+      "tasks": ["lint", "test", "build"],
+      "required": true
+    },
+    "ci_cd": {
+      "provider": "github_actions",
+      "branches": ["main", "develop"],
+      "deploy": "vercel"
+    }
+  }
+}

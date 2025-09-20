@@ -1,0 +1,30 @@
+{
+  "name": "claude-flow-dev-scripts",
+  "version": "1.0.0",
+  "description": "Development scripts for claude-flow integration with Doors Documentary project",
+  "main": "claude-flow-dev.js",
+  "bin": {
+    "claude-flow-dev": "./claude-flow-dev.js"
+  },
+  "scripts": {
+    "init": "node claude-flow-dev.js init",
+    "generate-grid": "node claude-flow-dev.js generate-grid",
+    "calculate-scores": "node claude-flow-dev.js calculate-scores",
+    "generate-components": "node claude-flow-dev.js generate-components",
+    "workflow": "node claude-flow-dev.js workflow",
+    "dev-server": "node claude-flow-dev.js dev-server",
+    "full-setup": "node claude-flow-dev.js workflow full"
+  },
+  "dependencies": {
+    "commander": "^11.1.0"
+  },
+  "keywords": [
+    "claude-flow",
+    "doors-documentary",
+    "geospatial",
+    "h3-hexagon",
+    "development-automation"
+  ],
+  "author": "MPIQ AI Chat Platform",
+  "license": "MIT"
+}
