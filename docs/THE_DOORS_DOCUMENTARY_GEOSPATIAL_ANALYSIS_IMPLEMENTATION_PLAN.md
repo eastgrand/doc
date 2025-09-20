@@ -1,3 +1,4 @@
+
 # The Doors Documentary Geospatial Analysis - Implementation Plan
 
 > **Project Type**: Entertainment & Cultural Analysis  
