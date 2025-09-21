@@ -1,12 +1,13 @@
 /**
- * Federated Layer Service
- * Combines multiple state-specific ArcGIS Feature Services into unified layers
- * Optimized for The Doors Documentary 3-state analysis (IL, IN, WI)
+ * Enhanced Federated Layer Service
+ * Handles both federated (multiple services) and single service architectures
+ * Optimized for The Doors Documentary analysis with single service adapter
  */
 
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import Graphic from "@arcgis/core/Graphic";
 import { Feature } from "@arcgis/core/geometry";
+import { doorsServiceAdapter, DoorsDocumentarySingleServiceAdapter } from './DoorsDocumentarySingleServiceAdapter';
 
 export interface StateServiceConfig {
   url: string;
@@ -24,6 +25,69 @@ export interface FederatedLayerConfig {
 export class FederatedLayerService {
   private cache: Map<string, { layer: __esri.FeatureLayer; timestamp: number }> = new Map();
   private readonly DEFAULT_CACHE_TIMEOUT = 300000; // 5 minutes
+  private singleServiceAdapter?: DoorsDocumentarySingleServiceAdapter;
+
+  /**
+   * Initialize with single service adapter for Doors Documentary
+   */
+  async initializeWithSingleService(): Promise<void> {
+    console.log('[FederatedLayer] Initializing with single service adapter...');
+    this.singleServiceAdapter = doorsServiceAdapter;
+    await this.singleServiceAdapter.initialize();
+    console.log('[FederatedLayer] Single service adapter ready');
+  }
+
+  /**
+   * Query classic rock audience data using single service
+   */
+  async queryClassicRockAudience(
+    geometry?: __esri.Geometry,
+    states: ('IL' | 'IN' | 'WI')[] = ['IL', 'IN', 'WI']
+  ) {
+    if (!this.singleServiceAdapter) {
+      await this.initializeWithSingleService();
+    }
+    
+    return this.singleServiceAdapter!.queryClassicRockAudience(geometry, states);
+  }
+
+  /**
+   * Query comprehensive entertainment metrics using single service
+   */
+  async queryEntertainmentMetrics(
+    geometry?: __esri.Geometry,
+    states: ('IL' | 'IN' | 'WI')[] = ['IL', 'IN', 'WI']
+  ) {
+    if (!this.singleServiceAdapter) {
+      await this.initializeWithSingleService();
+    }
+    
+    return this.singleServiceAdapter!.queryEntertainmentMetrics(geometry, states);
+  }
+
+  /**
+   * Query theater infrastructure using single service
+   */
+  async queryTheaterInfrastructure(
+    geometry?: __esri.Geometry,
+    states: ('IL' | 'IN' | 'WI')[] = ['IL', 'IN', 'WI']
+  ) {
+    if (!this.singleServiceAdapter) {
+      await this.initializeWithSingleService();
+    }
+    
+    return this.singleServiceAdapter!.queryTheaterInfrastructure(geometry, states);
+  }
+
+  /**
+   * Get service configuration info
+   */
+  getServiceInfo() {
+    if (this.singleServiceAdapter) {
+      return this.singleServiceAdapter.getServiceConfiguration();
+    }
+    return null;
+  }
 
   /**
    * Create a unified feature layer from multiple state services
