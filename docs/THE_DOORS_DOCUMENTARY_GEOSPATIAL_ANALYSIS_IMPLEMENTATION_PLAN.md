@@ -894,14 +894,17 @@ export const doorsDocumentaryEndpoints: AnalysisEndpoint[] = [
 
 ```typescript
 export class DoorsDocumentaryMicroservice {
-  private tapestryWeights = {
-    // Primary Target Segments (High Relevance Weight: 1.0)
-    '1A': 1.0, '1D': 1.0, '9A': 1.0, '9B': 1.0,
-    // Secondary Target Segments (Medium Relevance Weight: 0.75) 
-    '1E': 0.75, '5A': 0.75, '5B': 0.75,
-    // Tertiary Target Segments (Lower Relevance Weight: 0.5)
-    '2B': 0.5, '3B': 0.5, '9D': 0.5
+  // Initial equal weights - SHAP analysis will determine actual weights
+  private tapestrySegments = {
+    '5A': 1.0, // Senior Security - Midwest suburban/rural, age 62
+    '5B': 1.0, // Golden Years - Midwest metro, age 52
+    '6B': 1.0, // Salt of the Earth - blue-collar classic rock, age 44
+    '6F': 1.0, // Heartland Communities - rural Midwest, age 42
+    '9B': 1.0  // The Elders - retirement communities, age 72
   };
+  
+  // Weights will be updated after SHAP analysis
+  private shapDerivedWeights = {};
 
   async analyzeDoorsPotential(selectedAreas: SelectedArea[]): Promise<DoorsAnalysisResult> {
     const microservicePayload = {
@@ -1494,16 +1497,17 @@ export const DoorsAnalyticsDashboard: React.FC = () => {
 
 **Week 3-4: Data Integration**
 - [ ] Process pre-aggregated consumer behavior data for H3 hexagons
-- [ ] **Add 11 Tapestry fields to feature services** (see section 3.3.4A):
-  - `TAPESTRY_1A_PCT`, `TAPESTRY_1D_PCT`, `TAPESTRY_9A_PCT`, `TAPESTRY_9B_PCT` (Primary)
-  - `TAPESTRY_1E_PCT`, `TAPESTRY_5A_PCT`, `TAPESTRY_5B_PCT` (Secondary)  
-  - `TAPESTRY_2B_PCT`, `TAPESTRY_3B_PCT`, `TAPESTRY_9D_PCT` (Tertiary)
-  - `TAPESTRY_COMPOSITE_WEIGHT` (calculated field)
+- [ ] **Add 5 Tapestry fields to feature services** (2025 segments):
+  - `TAPESTRY_5A_PCT` - Senior Security
+  - `TAPESTRY_5B_PCT` - Golden Years  
+  - `TAPESTRY_6B_PCT` - Salt of the Earth
+  - `TAPESTRY_6F_PCT` - Heartland Communities
+  - `TAPESTRY_9B_PCT` - The Elders
 - [ ] Create radio station location points with broadcast radius coverage
 - [ ] Implement theater location data aggregation within H3 hexagons (size, sales volume, employees)
 - [ ] Set up radio coverage mapping with visible radius visualization
-- [ ] Generate H3 Resolution 6 hexagonal grid for analysis area
-- [ ] Configure Tapestry segment weighting system (1.0, 0.75, 0.5 weights)
+- [ ] Use existing H3 hexagons from feature services (not generated)
+- [ ] Initial equal weighting (1.0) for all segments pending SHAP analysis
 
 ### 8.2 Phase 2: Scoring Algorithm Implementation (Weeks 5-7)
 

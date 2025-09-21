@@ -3,6 +3,7 @@
 > **Project Type**: Entertainment & Cultural Analysis  
 > **Analysis Framework**: Hexagonal Grid (2-Mile Radius)  
 > **Target Audience**: Classic Rock Demographics (Age 45-70)  
+> **Geographic Coverage**: 3 States (Illinois, Indiana, Wisconsin)  
 > **Implementation Status**: Ready to Begin - Claude-Flow Accelerated  
 > **Estimated Timeline**: 6-7 weeks (down from 13 weeks)  
 > **Automation Level**: 75% of setup and configuration automated  
@@ -53,33 +54,34 @@ claude-flow-dev workflow full
 
 **Automated Deliverables:**
 - ✅ Entertainment project type configuration
-- ✅ Geographic boundaries for 5-state analysis (CA, NV, AZ, OR, WA)
+- ✅ Geographic boundaries for 3-state analysis (IL, IN, WI)
 - ✅ UI terminology updated for music/documentary industry
 - ✅ Basic React component scaffolding
 - ✅ Project configuration files
-- ✅ Layer configuration templates
+- ✅ Federated layer configuration for 3 state services
 
-### **Days 2-3: H3 Hexagon Grid Generation**
+### **Days 2-3: Federated Layer Architecture Setup**
 
-**🤖 Automated Grid Generation (30 minutes)**
+**🤖 Automated Federation Configuration (30 minutes)**
 ```bash
-# Generate H3 Resolution 6 hexagon grid for 5-state region
-claude-flow-dev generate-grid --resolution 6 --output hexagon-grid-doors.json
+# Configure federated layer architecture for 3 state services
+claude-flow-dev configure-federation --states IL,IN,WI
 
-# Calculate grid statistics and coverage
-claude-flow-dev workflow hexagon-analysis
+# Generate federation service wrapper
+claude-flow-dev generate-federation-service
 ```
 
 **🛠️ Manual Integration (1 day)**
-- Integrate H3 grid with existing MPIQ architecture
-- Configure hexagon rendering and styling
-- Set up hexagon-based spatial queries
+- Connect to 3 ArcGIS Feature Services (IL, IN, WI)
+- Verify H3 hexagon layers exist in each service
+- Configure unified layer combining all 3 states
+- Set up caching and performance optimization
 
 **Deliverables:**
-- ✅ H3 Resolution 6 hexagonal grid (~15,000 hexagons)
-- ✅ Grid statistics and coverage analysis
-- ✅ Hexagon visualization components
-- ✅ Spatial indexing for efficient queries
+- ✅ Federated Layer Service implementation
+- ✅ Unified 3-state hexagon layer (client-side)
+- ✅ Parallel data fetching from 3 services
+- ✅ Caching strategy for performance
 
 ### **Days 4-5: Component Generation & Configuration**
 
@@ -123,16 +125,20 @@ claude-flow-dev calculate-scores --input tapestry-segments.json
 ```
 
 **Manual Implementation (3 days)**
-- Integrate 10 ESRI Tapestry segments with weighted scoring:
-  - **Primary Tier (1.0 weight)**: 1A, 1D, 9A, 9B
-  - **Secondary Tier (0.75 weight)**: 1E, 5A, 5B  
-  - **Tertiary Tier (0.5 weight)**: 2B, 3B, 9D
+- Integrate 5 ESRI Tapestry segments (2025) for Midwest analysis:
+  - **5A - Senior Security** (Age 62, suburban/rural Midwest)
+  - **5B - Golden Years** (Age 52, Midwest metro areas)
+  - **6B - Salt of the Earth** (Age 44, blue-collar classic rock audience)
+  - **6F - Heartland Communities** (Age 42, rural Midwest)
+  - **9B - The Elders** (Age 72, retirement communities)
+- Initial equal weighting (1.0) for all segments
+- SHAP analysis will determine actual weights after data collection
 - Implement TapestryScorerAgent integration
 - Configure composite scoring algorithms
 
 **Deliverables:**
-- ✅ 10 Tapestry segments integrated with feature services
-- ✅ Weighted scoring system (3-tier relevance)
+- ✅ 5 Tapestry segments (2025) integrated with feature services  
+- ✅ SHAP-driven dynamic weighting system
 - ✅ Composite score calculation engine
 - ✅ Tapestry segment visualization layer
 
@@ -153,10 +159,10 @@ claude-flow-dev calculate-scores --input tapestry-segments.json
   - Implement federated layer architecture
 
 **Deliverables:**
-- ✅ Theater location data integrated with H3 grid
+- ✅ Theater location data integrated with hexagons from services
 - ✅ Radio station coverage visualization
 - ✅ Entertainment microservice endpoints
-- ✅ Federated layer architecture for 5 states
+- ✅ Federated layer architecture for 3 states (IL, IN, WI)
 
 ---
 

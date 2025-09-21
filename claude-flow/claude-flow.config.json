@@ -2,88 +2,115 @@
   "project": {
     "name": "The Doors Documentary Geospatial Analysis",
     "version": "1.0.0",
-    "description": "AI-assisted development environment for The Doors Documentary geospatial analysis platform"
+    "description": "AI-assisted development environment for The Doors Documentary geospatial analysis platform using MPIQ AI Chat architecture",
+    "base_architecture": "MPIQ AI Chat Platform v2.0",
+    "project_type": "entertainment_analysis",
+    "target_audience": "Classic rock demographics (Age 45-70)"
+  },
+  "system_architecture": {
+    "base_platform": "Next.js 14 with TypeScript",
+    "existing_processors": 35,
+    "analysis_endpoints": 16,
+    "routing_system": "Semantic Enhanced Hybrid Router",
+    "analysis_engine": "Multi-endpoint with BaseProcessor architecture",
+    "data_pipeline": "SHAP-based scoring with automated generation",
+    "visualization": "ArcGIS-powered interactive maps",
+    "configuration_system": "Project-type driven processor configuration"
   },
   "agents": {
-    "geospatial-analyst": {
-      "description": "Specializes in H3 hexagon grid generation and spatial analysis",
-      "skills": ["h3-generation", "spatial-queries", "geometry-operations"],
-      "libraries": ["@arcgis/core", "h3-js", "@turf/turf"],
-      "context": "docs/THE_DOORS_DOCUMENTARY_GEOSPATIAL_ANALYSIS_IMPLEMENTATION_PLAN.md"
-    },
-    "data-processor": {
-      "description": "Handles ESRI Tapestry segments and demographic data processing",
-      "skills": ["data-aggregation", "scoring-algorithms", "tapestry-analysis"],
+    "entertainment-processor-specialist": {
+      "description": "Creates entertainment-specific analysis processors for classic rock audience analysis",
+      "skills": ["entertainment-analysis", "tapestry-segment-analysis", "demographic-scoring", "music-affinity-modeling"],
       "libraries": ["@arcgis/core", "simple-statistics"],
-      "context": "lib/processors/BaseProcessor.ts"
+      "context": "lib/analysis/strategies/processors/BaseProcessor.ts",
+      "specialization": "Entertainment industry processors following BaseProcessor architecture"
     },
-    "feature-service-manager": {
-      "description": "Manages federated layer architecture across 5 states",
-      "skills": ["feature-service-federation", "layer-combining", "cache-management"],
+    "federated-layer-architect": {
+      "description": "Manages federated layer architecture for 3-state analysis (IL, IN, WI)",
+      "skills": ["feature-service-federation", "layer-combining", "cache-management", "parallel-data-fetching"],
       "libraries": ["@arcgis/core"],
-      "context": "lib/services/CompositeIndexLayerService.ts"
+      "context": "lib/services/FederatedLayerService.ts",
+      "specialization": "Multi-state ArcGIS service integration"
     },
-    "theater-analyzer": {
-      "description": "Analyzes theater infrastructure and documentary distribution opportunities",
-      "skills": ["theater-metrics", "capacity-analysis", "accessibility-scoring"],
-      "libraries": ["@arcgis/core", "@turf/turf"]
+    "shap-scoring-engineer": {
+      "description": "Implements SHAP-based scoring algorithms for entertainment analysis",
+      "skills": ["shap-analysis", "feature-importance", "scoring-generation", "data-driven-algorithms"],
+      "libraries": ["python", "xgboost", "shap"],
+      "context": "scripts/scoring/generators/",
+      "specialization": "Data-driven scoring using existing SHAP pipeline"
     },
-    "ui-developer": {
-      "description": "Creates React components for data visualization and user interaction",
-      "skills": ["react-components", "arcgis-widgets", "data-visualization"],
+    "tapestry-analyst": {
+      "description": "Specializes in ESRI Tapestry 2025 segments for Midwest classic rock demographics",
+      "skills": ["tapestry-2025-analysis", "demographic-modeling", "segment-profiling", "midwest-analysis"],
+      "libraries": ["@arcgis/core", "simple-statistics"],
+      "context": "docs/THE_DOORS_DOCUMENTARY_GEOSPATIAL_ANALYSIS_IMPLEMENTATION_PLAN.md",
+      "specialization": "5 Tapestry segments: 5A, 5B, 6B, 6F, 9B"
+    },
+    "geospatial-visualization-developer": {
+      "description": "Creates React components for entertainment-themed geospatial visualization",
+      "skills": ["react-components", "arcgis-widgets", "entertainment-visualization", "hexagon-rendering"],
       "libraries": ["react", "@arcgis/core", "recharts"],
-      "context": "app/app-wrapper.tsx"
+      "context": "components/",
+      "specialization": "Entertainment industry UI components and map interactions"
     }
   },
   "workflows": {
-    "hexagon-generation": {
-      "description": "Generate H3 hexagonal grid for analysis area",
-      "agents": ["geospatial-analyst"],
+    "federated-layer-implementation": {
+      "description": "Implement federated layer architecture for 3-state ArcGIS services",
+      "agents": ["federated-layer-architect"],
       "steps": [
-        "Define bounding box for 5-state region",
-        "Generate H3 hexagons at resolution 6",
-        "Export as feature service compatible format"
+        "Configure 3 state ArcGIS Feature Service URLs (IL, IN, WI)",
+        "Implement FederatedLayerService.ts for parallel data fetching",
+        "Create unified client-side layer combining all 3 states",
+        "Set up caching and performance optimization"
+      ],
+      "existing_implementation": "lib/services/FederatedLayerService.ts"
+    },
+    "entertainment-processor-development": {
+      "description": "Create entertainment-specific analysis processors",
+      "agents": ["entertainment-processor-specialist"],
+      "steps": [
+        "Create EntertainmentAnalysisProcessor.ts (music affinity, cultural engagement, spending capacity, market accessibility)",
+        "Create TheaterAccessibilityProcessor.ts (venue density, capacity assessment, accessibility scoring)",
+        "Create TapestryEntertainmentProcessor.ts (segment-specific classic rock analysis)",
+        "Follow BaseProcessor architecture patterns from existing 35 processors"
+      ],
+      "base_architecture": "lib/analysis/strategies/processors/BaseProcessor.ts"
+    },
+    "shap-based-scoring-generation": {
+      "description": "Generate entertainment-specific scoring algorithms using existing SHAP pipeline",
+      "agents": ["shap-scoring-engineer"],
+      "steps": [
+        "Run SHAP analysis on 5 Tapestry segments (5A, 5B, 6B, 6F, 9B) using shap_extractor.py",
+        "Generate entertainment-analysis-scores.js using js_generator.py",
+        "Generate theater-accessibility-scores.js and tapestry-entertainment-scores.js",
+        "Update analysis processors to use SHAP-derived weights"
+      ],
+      "existing_pipeline": "scripts/scoring/generators/"
+    },
+    "tapestry-segment-configuration": {
+      "description": "Configure 5 ESRI Tapestry 2025 segments for Midwest classic rock analysis",
+      "agents": ["tapestry-analyst"],
+      "steps": [
+        "Configure 5A - Senior Security (Age 62, suburban/rural Midwest)",
+        "Configure 5B - Golden Years (Age 52, Midwest metro areas)",
+        "Configure 6B - Salt of the Earth (Age 44, blue-collar classic rock audience)",
+        "Configure 6F - Heartland Communities (Age 42, rural Midwest)",
+        "Configure 9B - The Elders (Age 72, retirement communities)",
+        "Initial equal weighting (1.0) - SHAP analysis will determine actual weights"
       ]
     },
-    "tapestry-integration": {
-      "description": "Integrate ESRI Tapestry segments with scoring",
-      "agents": ["data-processor", "feature-service-manager"],
+    "entertainment-visualization-development": {
+      "description": "Create entertainment-themed visualization components",
+      "agents": ["geospatial-visualization-developer"],
       "steps": [
-        "Load 10 Tapestry segments",
-        "Apply weighted scoring (Primary: 1.0, Secondary: 0.75, Tertiary: 0.5)",
-        "Join with H3 hexagon features"
-      ]
-    },
-    "composite-scoring": {
-      "description": "Calculate composite scores for documentary screening locations",
-      "agents": ["data-processor", "theater-analyzer"],
-      "steps": [
-        "Calculate Music Affinity Score (40%)",
-        "Calculate Cultural Engagement Score (25%)",
-        "Calculate Spending Capacity Score (20%)",
-        "Calculate Market Accessibility Score (15%)",
-        "Generate composite index"
-      ]
-    },
-    "federated-layer-setup": {
-      "description": "Set up federated layer architecture for multi-state analysis",
-      "agents": ["feature-service-manager"],
-      "steps": [
-        "Configure state feature service endpoints",
-        "Implement parallel data fetching",
-        "Create unified layer interface",
-        "Set up caching strategy"
-      ]
-    },
-    "visualization-development": {
-      "description": "Develop interactive visualization components",
-      "agents": ["ui-developer", "geospatial-analyst"],
-      "steps": [
-        "Create hexagon grid visualization",
-        "Implement theater location markers",
-        "Add radio station coverage visualization",
-        "Build interactive legend and controls"
-      ]
+        "Create DoorsHexagonLayer component for hexagon visualization",
+        "Create TheaterLocationLayer component for venue markers",
+        "Create RadioCoverageLayer component for station coverage",
+        "Create TapestryAnalysisPanel for segment analysis",
+        "Build CompositeScorePanel for entertainment scoring display"
+      ],
+      "existing_components": "components/"
     }
   },
   "development": {
@@ -107,34 +134,111 @@
   },
   "data_sources": {
     "primary": {
-      "esri_tapestry": {
-        "segments": ["1A", "1D", "9A", "9B", "1E", "5A", "5B", "2B", "3B", "9D"],
-        "endpoint": "https://services.arcgis.com/tapestry"
+      "arcgis_feature_services": {
+        "illinois": {
+          "url": "TBD - Provided by user",
+          "hexagon_layer": "Existing H3 hexagons at resolution 6",
+          "tapestry_data": "2025 ESRI Tapestry segments"
+        },
+        "indiana": {
+          "url": "TBD - Provided by user", 
+          "hexagon_layer": "Existing H3 hexagons at resolution 6",
+          "tapestry_data": "2025 ESRI Tapestry segments"
+        },
+        "wisconsin": {
+          "url": "TBD - Provided by user",
+          "hexagon_layer": "Existing H3 hexagons at resolution 6", 
+          "tapestry_data": "2025 ESRI Tapestry segments"
+        }
       },
-      "theater_infrastructure": {
-        "metrics": ["capacity_sqft", "sales_volume", "employees"],
-        "endpoint": "https://services.arcgis.com/theater-data"
+      "tapestry_segments_2025": {
+        "segments": [
+          "5A - Senior Security (Age 62, suburban/rural Midwest)",
+          "5B - Golden Years (Age 52, Midwest metro areas)",
+          "6B - Salt of the Earth (Age 44, blue-collar classic rock audience)",
+          "6F - Heartland Communities (Age 42, rural Midwest)",
+          "9B - The Elders (Age 72, retirement communities)"
+        ],
+        "total_segments": 5,
+        "targeting": "Classic rock demographics (Age 45-70)",
+        "weighting": "SHAP-derived (not arbitrary)"
       },
-      "radio_stations": {
-        "formats": ["classic_rock", "oldies", "adult_contemporary"],
-        "coverage": "broadcast_radius"
+      "entertainment_data": {
+        "theater_infrastructure": {
+          "metrics": ["capacity", "sales_volume", "employee_count", "accessibility"],
+          "radius_analysis": "2_miles",
+          "purpose": "Documentary screening venue analysis"
+        },
+        "radio_coverage": {
+          "formats": ["classic_rock", "oldies", "adult_contemporary"],
+          "coverage_type": "broadcast_radius_overlap_with_hexagons",
+          "purpose": "Media reach analysis for documentary promotion"
+        }
       }
     },
     "geographic": {
-      "states": ["CA", "NV", "AZ", "OR", "WA"],
+      "states": ["IL", "IN", "WI"],
+      "region": "Midwest United States",
+      "hexagon_source": "Existing ArcGIS Feature Services (not generated)",
       "resolution": "H3_resolution_6",
-      "radius": "2_miles"
+      "analysis_radius": "2_miles",
+      "total_coverage": "Approximately 15,000+ hexagons across 3 states"
     }
   },
   "automation": {
+    "existing_systems": {
+      "arcgis_data_automation": {
+        "status": "COMPLETED",
+        "location": "scripts/automation/",
+        "components": [
+          "arcgis_service_inspector.py",
+          "arcgis_data_extractor.py", 
+          "intelligent_field_mapper.py",
+          "automated_model_trainer.py",
+          "endpoint_generator.py"
+        ],
+        "description": "Complete automation pipeline for ArcGIS Feature Service data extraction"
+      },
+      "shap_scoring_pipeline": {
+        "status": "IMPLEMENTED",
+        "location": "scripts/scoring/generators/", 
+        "components": [
+          "shap_extractor.py - Extract SHAP feature importance",
+          "js_generator.py - Generate JavaScript scoring scripts",
+          "formula_generator.py - Create data-driven formulas"
+        ],
+        "description": "SHAP-based scoring algorithm generation"
+      },
+      "processor_architecture": {
+        "status": "PRODUCTION",
+        "location": "lib/analysis/strategies/processors/",
+        "total_processors": 35,
+        "base_architecture": "BaseProcessor.ts",
+        "project_configuration": "Configuration-driven processor system",
+        "description": "Extensible analysis processor architecture"
+      }
+    },
+    "doors_documentary_automation": {
+      "development_acceleration": "75% time reduction using claude-flow",
+      "timeline": "6-7 weeks (down from 13 weeks)",
+      "automation_level": "75% of setup and configuration automated"
+    },
     "pre_commit": {
       "tasks": ["lint", "test", "build"],
       "required": true
     },
     "ci_cd": {
-      "provider": "github_actions",
+      "provider": "github_actions", 
       "branches": ["main", "develop"],
       "deploy": "vercel"
     }
+  },
+  "documentation_references": {
+    "implementation_plan": "docs/THE_DOORS_DOCUMENTARY_GEOSPATIAL_ANALYSIS_IMPLEMENTATION_PLAN.md",
+    "claude_flow_plan": "docs/THE_DOORS_DOCUMENTARY_CLAUDE_FLOW_IMPLEMENTATION_PLAN.md",
+    "automation_guide": "docs/01_ARCGIS_DATA_AUTOMATION_PLAN.md",
+    "processor_system": "docs/PROCESSOR_CONFIGURATION_SYSTEM.md",
+    "architecture_overview": "docs/current/architecture/COMPREHENSIVE_APPLICATION_DOCUMENTATION.md",
+    "claude_flow_integration": "docs/CLAUDE_FLOW_INTEGRATION_PLAN.md"
   }
 }
