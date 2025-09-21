@@ -19,6 +19,8 @@ export { BrandAnalysisProcessor } from './BrandAnalysisProcessor';
 export { BrandDifferenceProcessor } from './BrandDifferenceProcessor';
 export { RealEstateAnalysisProcessor } from './RealEstateAnalysisProcessor';
 export { EntertainmentAnalysisProcessor } from './EntertainmentAnalysisProcessor';
+export { TapestryEntertainmentProcessor } from './TapestryEntertainmentProcessor';
+export { TheaterAccessibilityProcessor } from './TheaterAccessibilityProcessor';
 export { StrategicAnalysisProcessor } from './StrategicAnalysisProcessor';
 export { CustomerProfileProcessor } from './CustomerProfileProcessor';
 export { SensitivityAnalysisProcessor } from './SensitivityAnalysisProcessor';
@@ -54,6 +56,8 @@ export const PROCESSOR_TYPES = {
   SEGMENT_PROFILING: 'segment_profiling',
   BRAND_DIFFERENCE: 'brand_difference',
   ENTERTAINMENT_ANALYSIS: 'entertainment_analysis',
+  TAPESTRY_ENTERTAINMENT_ANALYSIS: 'tapestry_entertainment_analysis',
+  THEATER_ACCESSIBILITY_ANALYSIS: 'theater_accessibility_analysis',
   SENSITIVITY_ANALYSIS: 'sensitivity_analysis',
   MODEL_PERFORMANCE: 'model_performance',
   MODEL_SELECTION: 'model_selection',
