@@ -333,6 +333,7 @@
     "custom_reports_plan": "docs/DOORS_DOCUMENTARY_CUSTOM_REPORTS_IMPLEMENTATION_PLAN.md",
     "adaptive_mapping_plan": "docs/DOORS_DOCUMENTARY_ADAPTIVE_FIELD_MAPPING_PLAN.md",
     "single_service_architecture": "docs/DOORS_DOCUMENTARY_SINGLE_SERVICE_ARCHITECTURE.md",
+    "report_design_guide": "docs/DOORS_DOCUMENTARY_REPORT_DESIGN_GUIDE.md",
     "automation_guide": "docs/01_ARCGIS_DATA_AUTOMATION_PLAN.md",
     "processor_system": "docs/PROCESSOR_CONFIGURATION_SYSTEM.md",
     "architecture_overview": "docs/current/architecture/COMPREHENSIVE_APPLICATION_DOCUMENTATION.md",

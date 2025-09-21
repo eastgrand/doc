@@ -44,8 +44,9 @@ The Doors Documentary project requires a custom market analysis report generatio
 #### **Page 1: Executive Summary & Map**
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                   THE DOORS DOCUMENTARY                     │
-│                  Market Analysis Report                     │
+│  THE DOORS DOCUMENTARY                     [Doors Logo]     │ ← doors-burgundy header
+│  Market Analysis Report                                     │
+│  ─────────────────────────────────────────────────────────  │ ← doors-gold accent line
 │                                                             │
 │  Generated for: [Selected Area Description with ZIP codes] │
 │  Analysis Date: [Current Date]                             │
@@ -55,13 +56,15 @@ The Doors Documentary project requires a custom market analysis report generatio
 ┌─────────────────────────────────────────────────────────────┐
 │                    SELECTED ANALYSIS AREA                  │
 │                                                             │
-│    [Interactive Map showing selected hexagons with         │
-│     colored scoring overlays, ZIP code boundaries,         │
-│     theater locations, and radio coverage areas]           │
+│    [Interactive Map with Doors L.A. Woman color scheme:   │
+│     • High scoring hexagons: doors-gold (#D4A017)         │
+│     • Medium scoring: doors-rust (#B87333)                │
+│     • Low scoring: doors-forest (#2F4F2F)                 │
+│     • Theater locations: doors-burgundy (#8B1538) markers │
+│     • Radio coverage: subtle overlays]                    │
 │                                                             │
-│  Legend: Hexagon Colors = Composite Entertainment Score    │
-│         Theater Icons = Documentary screening venues        │
-│         Radio Coverage = Classic rock station reach        │
+│  Legend: Doors-themed color coding for professional       │
+│         market analysis with classic rock visual identity  │
 └─────────────────────────────────────────────────────────────┘
 
 Key Insights Summary:
@@ -82,20 +85,22 @@ Entertainment Scoring Dimensions (SHAP-weighted):
 │ Music Affinity  │ Cultural Engage │ Spending Capacity│ Market Access   │
 │     [40%]       │     [25%]       │     [20%]       │     [15%]       │
 │                 │                 │                 │                 │
-│ [Score/Chart]   │ [Score/Chart]   │ [Score/Chart]   │ [Score/Chart]   │
+│ [Chart in       │ [Chart in       │ [Chart in       │ [Chart in       │
+│ doors-gold]     │ doors-rust]     │ doors-forest]   │ doors-burgundy] │
 └─────────────────┴─────────────────┴─────────────────┴─────────────────┘
 
 Feature Importance Analysis (SHAP Values):
 ┌─────────────────────────────────────────────────────────────┐
-│    [Horizontal bar chart showing top 10 features that      │
-│     contribute most to entertainment scoring, with         │
-│     SHAP values from microservice analysis]                │
+│    [Horizontal bar chart with doors-gold bars showing      │
+│     top 10 features contributing to entertainment          │
+│     scoring, with SHAP values and professional styling]    │
 └─────────────────────────────────────────────────────────────┘
 
 Tapestry Segment Distribution:
 ┌─────────────────────────────────────────────────────────────┐
-│    [Pie chart showing percentage breakdown of K1, K2,      │
-│     I1, J1, L1 segments in selected area]                  │
+│    [Pie chart with Doors color palette:                   │
+│     K1: doors-burgundy, K2: doors-gold, I1: doors-rust,   │
+│     J1: doors-forest, L1: doors-charcoal]                 │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -607,7 +612,7 @@ const TapestrySegmentChart: React.FC<{ tapestryData: TapestryAnalysis }> = ({ ta
           { segment: 'J1 - Active Seniors', percentage: tapestryData.J1_PCT },
           { segment: 'L1 - Savvy Suburbanites', percentage: tapestryData.L1_PCT }
         ]}
-        colors={['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd']}
+        colors={['#8B1538', '#D4A017', '#B87333', '#2F4F2F', '#333333']} // Doors palette
       />
     </div>
   );
