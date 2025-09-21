@@ -251,7 +251,40 @@ This segment selection provides **comprehensive market coverage** from middle-in
 
 #### 3.3.4 Required Fields for Feature Services
 
-**A. Tapestry Segment Population Fields (Required for Scoring)**
+**A. Geographic Context Fields (Required for Analysis Communication)**
+These fields are essential for meaningful analysis reporting and contextual understanding:
+
+```typescript
+// Geographic Context Fields - Critical for Analysis Communication
+interface GeographicContextFields {
+  // H3 Hexagon Identification
+  H3_INDEX: string;           // Unique H3 hexagon identifier (e.g., "8a2a1073e9fffff")
+  H3_RESOLUTION: number;      // H3 resolution level (6 for 2-mile radius)
+  
+  // ZIP Code Context (CRITICAL for user-friendly analysis)
+  ZIP_CODE: string;           // Primary ZIP code containing this hexagon
+  ZIP_CODE_OVERLAP_PCT: number; // Percentage of hexagon within primary ZIP
+  SECONDARY_ZIP_CODES: string; // Comma-separated additional ZIPs if hexagon crosses boundaries
+  
+  // Geographic Identifiers
+  GEOID: string;              // Geographic identifier for joining with other datasets
+  STATE_ABBR: string;         // State abbreviation (IL, IN, WI)
+  COUNTY_NAME: string;        // County name for regional analysis
+  PLACE_NAME: string;         // City/town name when available
+  
+  // Analysis Communication Fields
+  HEXAGON_DISPLAY_ID: number; // Sequential ID for user-friendly referencing (1, 2, 3...)
+  AREA_DESCRIPTION: string;   // Human-readable area description
+}
+```
+
+**Why ZIP Code Context is Critical:**
+- **User Communication**: "Hexagon 18, 112, and 54 within ZIP Code 60611" is more meaningful than H3 indices
+- **Marketing Relevance**: ZIP codes align with marketing databases and advertising targeting
+- **Venue Planning**: Theater locations and accessibility are often ZIP-code based
+- **Stakeholder Understanding**: Non-technical stakeholders relate to ZIP codes, not hexagon IDs
+
+**B. Tapestry Segment Population Fields (Required for Scoring)**
 These fields are needed in the feature services to calculate the weighted Tapestry alignment score:
 
 ```typescript
@@ -283,6 +316,82 @@ interface TapestrySegmentConfig {
   geographic_focus: string; // "suburban Midwest", "rural/small towns", "high income suburban", etc.
   system_version: string; // "2025 ESRI Tapestry (June 2025 release)"
 }
+
+// Analysis Communication Interface
+interface AnalysisResult {
+  hexagon_display_id: number;
+  h3_index: string;
+  zip_code: string;
+  area_description: string;
+  composite_score: number;
+  primary_segment: string;
+  recommendation: string;
+}
+```
+
+### 3.3.5 Analysis Communication Examples
+
+**Sample Analysis Output Format:**
+
+```typescript
+// Example 1: High-Potential Areas
+{
+  "analysis_type": "high_potential_screening_locations",
+  "results": [
+    {
+      "hexagon_display_id": 18,
+      "h3_index": "8a2a1073e9fffff",
+      "zip_code": "60611",
+      "area_description": "Downtown Chicago - Near North Side",
+      "composite_score": 94.7,
+      "primary_segment": "L1 - Savvy Suburbanites",
+      "recommendation": "Premium screening venue with high cultural engagement"
+    },
+    {
+      "hexagon_display_id": 112,
+      "h3_index": "8a2a1073eafffff", 
+      "zip_code": "60611",
+      "area_description": "River North Entertainment District",
+      "composite_score": 89.3,
+      "primary_segment": "J1 - Active Seniors",
+      "recommendation": "Ideal for weekend matinee screenings"
+    }
+  ],
+  "summary": "Hexagons 18, 112, and 54 within ZIP Code 60611 show exceptional potential for Doors Documentary attendance, with composite scores averaging 91.2"
+}
+
+// Example 2: Cross-ZIP Analysis
+{
+  "analysis_type": "cross_zip_opportunities", 
+  "results": [
+    {
+      "zip_code": "46220",
+      "area_description": "Indianapolis - Broad Ripple",
+      "hexagon_count": 7,
+      "hexagon_display_ids": [23, 24, 25, 26, 27, 28, 29],
+      "avg_composite_score": 87.4,
+      "dominant_segment": "K2 - Mature Suburban Families",
+      "recommendation": "Multi-hexagon theater district opportunity"
+    },
+    {
+      "zip_code": "53202", 
+      "area_description": "Milwaukee - Downtown",
+      "hexagon_count": 3,
+      "hexagon_display_ids": [156, 157, 158],
+      "avg_composite_score": 92.1,
+      "dominant_segment": "L1 - Savvy Suburbanites", 
+      "recommendation": "Premium venue location with parking accessibility"
+    }
+  ],
+  "summary": "Cross-ZIP analysis identifies 10 high-potential hexagons across 2 metropolitan areas"
+}
+```
+
+**Analysis Communication Requirements:**
+- Always include hexagon display IDs (user-friendly numbers) AND ZIP code context
+- Provide area descriptions that stakeholders can understand and locate
+- Include actionable recommendations tied to geographic context
+- Support both single-hexagon analysis and ZIP-code-level aggregation
 
 // Entertainment Behavior Data (separate from Tapestry, already in feature services)
 interface EntertainmentBehaviorFields {

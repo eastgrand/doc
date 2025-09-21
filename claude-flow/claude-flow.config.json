@@ -67,15 +67,17 @@
       "existing_implementation": "lib/services/FederatedLayerService.ts"
     },
     "entertainment-processor-development": {
-      "description": "Create entertainment-specific analysis processors",
+      "description": "Create entertainment-specific analysis processors with ZIP code context",
       "agents": ["entertainment-processor-specialist"],
       "steps": [
         "Create EntertainmentAnalysisProcessor.ts (music affinity, cultural engagement, spending capacity, market accessibility)",
         "Create TheaterAccessibilityProcessor.ts (venue density, capacity assessment, accessibility scoring)",
         "Create TapestryEntertainmentProcessor.ts (segment-specific classic rock analysis)",
+        "Implement ZIP code context for analysis communication (hexagon + ZIP code reporting)",
         "Follow BaseProcessor architecture patterns from existing 35 processors"
       ],
-      "base_architecture": "lib/analysis/strategies/processors/BaseProcessor.ts"
+      "base_architecture": "lib/analysis/strategies/processors/BaseProcessor.ts",
+      "communication_requirements": "Always include hexagon display IDs and ZIP code context for stakeholder communication"
     },
     "shap-based-scoring-generation": {
       "description": "Generate entertainment-specific scoring algorithms using existing SHAP pipeline",
@@ -138,17 +140,20 @@
         "illinois": {
           "url": "TBD - Provided by user",
           "hexagon_layer": "Existing H3 hexagons at resolution 6",
-          "tapestry_data": "2025 ESRI Tapestry segments"
+          "tapestry_data": "2025 ESRI Tapestry segments",
+          "required_fields": ["H3_INDEX", "ZIP_CODE", "HEXAGON_DISPLAY_ID", "AREA_DESCRIPTION", "TAPESTRY_K1_PCT", "TAPESTRY_K2_PCT", "TAPESTRY_I1_PCT", "TAPESTRY_J1_PCT", "TAPESTRY_L1_PCT"]
         },
         "indiana": {
           "url": "TBD - Provided by user", 
           "hexagon_layer": "Existing H3 hexagons at resolution 6",
-          "tapestry_data": "2025 ESRI Tapestry segments"
+          "tapestry_data": "2025 ESRI Tapestry segments",
+          "required_fields": ["H3_INDEX", "ZIP_CODE", "HEXAGON_DISPLAY_ID", "AREA_DESCRIPTION", "TAPESTRY_K1_PCT", "TAPESTRY_K2_PCT", "TAPESTRY_I1_PCT", "TAPESTRY_J1_PCT", "TAPESTRY_L1_PCT"]
         },
         "wisconsin": {
           "url": "TBD - Provided by user",
           "hexagon_layer": "Existing H3 hexagons at resolution 6", 
-          "tapestry_data": "2025 ESRI Tapestry segments"
+          "tapestry_data": "2025 ESRI Tapestry segments",
+          "required_fields": ["H3_INDEX", "ZIP_CODE", "HEXAGON_DISPLAY_ID", "AREA_DESCRIPTION", "TAPESTRY_K1_PCT", "TAPESTRY_K2_PCT", "TAPESTRY_I1_PCT", "TAPESTRY_J1_PCT", "TAPESTRY_L1_PCT"]
         }
       },
       "tapestry_segments_2025": {
