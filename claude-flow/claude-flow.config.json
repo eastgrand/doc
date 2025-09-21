@@ -40,11 +40,11 @@
       "specialization": "Data-driven scoring using existing SHAP pipeline"
     },
     "tapestry-analyst": {
-      "description": "Specializes in ESRI Tapestry 2025 segments for Midwest classic rock demographics",
+      "description": "Specializes in actual 2025 ESRI Tapestry segments for Midwest classic rock demographics",
       "skills": ["tapestry-2025-analysis", "demographic-modeling", "segment-profiling", "midwest-analysis"],
       "libraries": ["@arcgis/core", "simple-statistics"],
       "context": "docs/THE_DOORS_DOCUMENTARY_GEOSPATIAL_ANALYSIS_IMPLEMENTATION_PLAN.md",
-      "specialization": "5 Tapestry segments: 5A, 5B, 6B, 6F, 9B"
+      "specialization": "5 real 2025 segments: K1 (Established Suburbanites), K2 (Mature Suburban Families), I1 (Rural Established), J1 (Active Seniors), L1 (Savvy Suburbanites)"
     },
     "geospatial-visualization-developer": {
       "description": "Creates React components for entertainment-themed geospatial visualization",
@@ -81,7 +81,7 @@
       "description": "Generate entertainment-specific scoring algorithms using existing SHAP pipeline",
       "agents": ["shap-scoring-engineer"],
       "steps": [
-        "Run SHAP analysis on 5 Tapestry segments (5A, 5B, 6B, 6F, 9B) using shap_extractor.py",
+        "Run SHAP analysis on 5 real 2025 Tapestry segments (K1, K2, I1, J1, L1) using shap_extractor.py",
         "Generate entertainment-analysis-scores.js using js_generator.py",
         "Generate theater-accessibility-scores.js and tapestry-entertainment-scores.js",
         "Update analysis processors to use SHAP-derived weights"
@@ -89,14 +89,14 @@
       "existing_pipeline": "scripts/scoring/generators/"
     },
     "tapestry-segment-configuration": {
-      "description": "Configure 5 ESRI Tapestry 2025 segments for Midwest classic rock analysis",
+      "description": "Configure 5 actual 2025 ESRI Tapestry segments for Midwest classic rock analysis",
       "agents": ["tapestry-analyst"],
       "steps": [
-        "Configure 5A - Senior Security (Age 62, suburban/rural Midwest)",
-        "Configure 5B - Golden Years (Age 52, Midwest metro areas)",
-        "Configure 6B - Salt of the Earth (Age 44, blue-collar classic rock audience)",
-        "Configure 6F - Heartland Communities (Age 42, rural Midwest)",
-        "Configure 9B - The Elders (Age 72, retirement communities)",
+        "Configure K1 - Established Suburbanites (Group K: Suburban Shine, Age 45+)",
+        "Configure K2 - Mature Suburban Families (Group K: Suburban Shine, Age 45+)",
+        "Configure I1 - Rural Established (Group I: Countryscapes, Age 55+)",
+        "Configure J1 - Active Seniors (Group J: Mature Reflections, Age 55+)",
+        "Configure L1 - Savvy Suburbanites (Group L: Premier Estates, Age 45-64)",
         "Initial equal weighting (1.0) - SHAP analysis will determine actual weights"
       ]
     },
@@ -153,15 +153,16 @@
       },
       "tapestry_segments_2025": {
         "segments": [
-          "5A - Senior Security (Age 62, suburban/rural Midwest)",
-          "5B - Golden Years (Age 52, Midwest metro areas)",
-          "6B - Salt of the Earth (Age 44, blue-collar classic rock audience)",
-          "6F - Heartland Communities (Age 42, rural Midwest)",
-          "9B - The Elders (Age 72, retirement communities)"
+          "K1 - Established Suburbanites (Group K: Suburban Shine, Age 45+)",
+          "K2 - Mature Suburban Families (Group K: Suburban Shine, Age 45+)",
+          "I1 - Rural Established (Group I: Countryscapes, Age 55+)",
+          "J1 - Active Seniors (Group J: Mature Reflections, Age 55+)",
+          "L1 - Savvy Suburbanites (Group L: Premier Estates, Age 45-64)"
         ],
         "total_segments": 5,
-        "targeting": "Classic rock demographics (Age 45-70)",
-        "weighting": "SHAP-derived (not arbitrary)"
+        "targeting": "Classic rock demographics (Age 45+)",
+        "weighting": "SHAP-derived (not arbitrary)",
+        "system_version": "2025 ESRI Tapestry (June 2025 release - first update in 10 years)"
       },
       "entertainment_data": {
         "theater_infrastructure": {

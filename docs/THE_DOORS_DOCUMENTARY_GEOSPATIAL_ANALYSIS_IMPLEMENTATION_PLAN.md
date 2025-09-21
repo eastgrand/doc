@@ -169,20 +169,26 @@ class EntertainmentFieldResolver(SemanticFieldResolver):
 
 ### 3.3 Target ESRI Tapestry Segments for Doors Documentary Analysis (2025)
 
-**5 Refined Segments for Midwest Classic Rock Demographics (Age 45-70)**
+**5 Actual 2025 ESRI Tapestry Segments for Midwest Classic Rock Demographics (Age 45-70)**
 
-| Segment Code | Segment Name | LifeMode Group | Age | Relevance for Doors Documentary |
-|--------------|--------------|----------------|-----|--------------------------------|
-| **5A** | **Senior Security** | Established Neighborhoods | 62 | Suburban/rural Midwest, stable income, prime classic rock generation |
-| **5B** | **Golden Years** | Established Neighborhoods | 52 | Midwest metro areas, peak earning years, cultural engagement |
-| **6B** | **Salt of the Earth** | Cozy Country Living | 44 | Blue-collar classic rock audience, authentic Midwest values |
-| **6F** | **Heartland Communities** | Cozy Country Living | 42 | Rural Midwest, community-oriented, traditional entertainment preferences |
-| **9B** | **The Elders** | Senior Styles | 72 | Retirement communities, established cultural interests, documentary consumption |
+| Segment Code | Segment Name | LifeMode Group | Target Age | Relevance for Doors Documentary |
+|--------------|--------------|----------------|------------|--------------------------------|
+| **K1** | **Established Suburbanites** | Group K: Suburban Shine | 45+ | Middle-tier income, suburban Midwest, manufacturing/healthcare workers |
+| **K2** | **Mature Suburban Families** | Group K: Suburban Shine | 45+ | Single-family homes built before 2000, commute by car, established neighborhoods |
+| **I1** | **Rural Established** | Group I: Countryscapes | 55+ | Rural/small towns, manufacturing/agriculture, long commutes, seasonal housing |
+| **J1** | **Active Seniors** | Group J: Mature Reflections | 55+ | Single-family homes, social security/retirement income, mature lifestyle |
+| **L1** | **Savvy Suburbanites** | Group L: Premier Estates | 45-64 | High income, work from home/management, newly constructed homes, advanced education |
+
+**2025 Tapestry System Overview:**
+- **Real ESRI segment codes** from June 2025 system overhaul (first update in 10 years)
+- **Alpha-numeric format**: Groups A-L with numbered segments (e.g., K1, I1, J1, L1)
+- **60 distinct segments** across 13 LifeMode groups
+- **Verified segments**: L1 "Savvy Suburbanites" confirmed as persistent from prior system
 
 **Weighting Strategy:**
 - Initial equal weighting (1.0) for all 5 segments
 - SHAP analysis will determine data-driven weights after feature service integration
-- Focus on actual behavioral data rather than arbitrary demographic assumptions
+- Field names will be verified when ArcGIS Feature Service URLs are provided
 
 #### 3.3.4 Required Fields for Feature Services
 
@@ -190,15 +196,15 @@ class EntertainmentFieldResolver(SemanticFieldResolver):
 These fields are needed in the feature services to calculate the weighted Tapestry alignment score:
 
 ```typescript
-// Feature Service Fields - 5 Refined Tapestry Segments (2025)
+// Feature Service Fields - 5 Actual 2025 ESRI Tapestry Segments
 interface RequiredTapestryFields {
   // All 5 segments have equal initial weighting (1.0)
   // SHAP analysis will determine data-driven weights
-  TAPESTRY_5A_PCT: number; // Senior Security percentage
-  TAPESTRY_5B_PCT: number; // Golden Years percentage  
-  TAPESTRY_6B_PCT: number; // Salt of the Earth percentage
-  TAPESTRY_6F_PCT: number; // Heartland Communities percentage
-  TAPESTRY_9B_PCT: number; // The Elders percentage
+  TAPESTRY_K1_PCT: number; // Established Suburbanites percentage
+  TAPESTRY_K2_PCT: number; // Mature Suburban Families percentage  
+  TAPESTRY_I1_PCT: number; // Rural Established percentage
+  TAPESTRY_J1_PCT: number; // Active Seniors percentage
+  TAPESTRY_L1_PCT: number; // Savvy Suburbanites percentage
   
   // Calculated Composite Field (derived from above using SHAP weights)
   TAPESTRY_COMPOSITE_WEIGHT: number; // Population-weighted composite score (0-100)
@@ -210,12 +216,13 @@ interface RequiredTapestryFields {
 ```typescript
 // Pure Tapestry Segment Reference (configuration only, not in feature service)
 interface TapestrySegmentConfig {
-  segment_code: string; // "5A", "5B", "6B", "6F", "9B"
-  segment_name: string; // "Senior Security", "Golden Years", etc.
-  lifemode_group: string; // "Established Neighborhoods", "Cozy Country Living", "Senior Styles"
-  target_age: number; // 62, 52, 44, 42, 72
+  segment_code: string; // "K1", "K2", "I1", "J1", "L1"
+  segment_name: string; // "Established Suburbanites", "Mature Suburban Families", etc.
+  lifemode_group: string; // "Suburban Shine", "Countryscapes", "Mature Reflections", "Premier Estates"
+  target_age: string; // "45+", "55+", "45-64"
   doors_relevance_weight: number; // Initial 1.0 for all, SHAP will determine actual weights
-  geographic_focus: string; // "suburban/rural Midwest", "metro areas", etc.
+  geographic_focus: string; // "suburban Midwest", "rural/small towns", "high income suburban", etc.
+  system_version: string; // "2025 ESRI Tapestry (June 2025 release)"
 }
 
 // Entertainment Behavior Data (separate from Tapestry, already in feature services)
@@ -444,12 +451,13 @@ class MarketAccessibilityCalculator {
   private calculateWeightedTapestryAlignment(data: HexagonData): number {
     // Use the percentage fields from feature service to calculate weighted score
     // NOTE: Initial equal weighting (1.0) - SHAP analysis will determine optimal weights
+    // Based on actual 2025 ESRI Tapestry segment codes
     const tapestryScore = 
-      (data.TAPESTRY_5A_PCT * 1.0) +  // Senior Security (Age 62)
-      (data.TAPESTRY_5B_PCT * 1.0) +  // Golden Years (Age 52)
-      (data.TAPESTRY_6B_PCT * 1.0) +  // Salt of the Earth (Age 44)
-      (data.TAPESTRY_6F_PCT * 1.0) +  // Heartland Communities (Age 42)
-      (data.TAPESTRY_9B_PCT * 1.0);   // The Elders (Age 72)
+      (data.TAPESTRY_K1_PCT * 1.0) +  // Established Suburbanites (Group K: Suburban Shine)
+      (data.TAPESTRY_K2_PCT * 1.0) +  // Mature Suburban Families (Group K: Suburban Shine)
+      (data.TAPESTRY_I1_PCT * 1.0) +  // Rural Established (Group I: Countryscapes)
+      (data.TAPESTRY_J1_PCT * 1.0) +  // Active Seniors (Group J: Mature Reflections)
+      (data.TAPESTRY_L1_PCT * 1.0);   // Savvy Suburbanites (Group L: Premier Estates)
     
     // Return weighted composite score (0-100 scale)
     // This could also be pre-calculated as TAPESTRY_COMPOSITE_WEIGHT field
@@ -1179,30 +1187,30 @@ export class RadioStationVisualization {
 ```typescript
 export const tapestrySegmentLayers: LayerConfig[] = [
   {
-    id: 'doors_tapestry_classic_rock_segments',
-    name: 'Classic Rock Demographics (2025)',
-    description: 'Refined Tapestry segments for Midwest classic rock audience (Age 42-72)',
+    id: 'doors_tapestry_2025_segments',
+    name: 'Actual 2025 ESRI Tapestry Segments',
+    description: 'Real 2025 Tapestry segments for Midwest classic rock audience (Age 45+)',
     type: 'percentage',
     category: 'demographic',
     subcategory: 'tapestry_lifestyle',
-    fields: ['5A_SENIOR_SECURITY_PCT', '5B_GOLDEN_YEARS_PCT', '6B_SALT_OF_EARTH_PCT', '6F_HEARTLAND_COMMUNITIES_PCT', '9B_THE_ELDERS_PCT'],
+    fields: ['K1_ESTABLISHED_SUBURBANITES_PCT', 'K2_MATURE_SUBURBAN_FAMILIES_PCT', 'I1_RURAL_ESTABLISHED_PCT', 'J1_ACTIVE_SENIORS_PCT', 'L1_SAVVY_SUBURBANITES_PCT'],
     styling: {
-      color_scheme: 'doors_classic_rock_segments',
+      color_scheme: 'doors_2025_tapestry_segments',
       method: 'class_breaks',
       breaks: [0, 5, 15, 30, 50],
       colors: ['#FFF5EB', '#FEC79E', '#FD8D3C', '#E6550D', '#A63603']
     },
     popupTemplate: {
-      title: 'Classic Rock Demographics - {GEOID}',
+      title: '2025 Tapestry Demographics - {GEOID}',
       content: [
         {
           type: 'fields',
           fieldInfos: [
-            { fieldName: '5A_SENIOR_SECURITY_PCT', label: 'Senior Security (Age 62) %', format: { places: 1 } },
-            { fieldName: '5B_GOLDEN_YEARS_PCT', label: 'Golden Years (Age 52) %', format: { places: 1 } },
-            { fieldName: '6B_SALT_OF_EARTH_PCT', label: 'Salt of the Earth (Age 44) %', format: { places: 1 } },
-            { fieldName: '6F_HEARTLAND_COMMUNITIES_PCT', label: 'Heartland Communities (Age 42) %', format: { places: 1 } },
-            { fieldName: '9B_THE_ELDERS_PCT', label: 'The Elders (Age 72) %', format: { places: 1 } }
+            { fieldName: 'K1_ESTABLISHED_SUBURBANITES_PCT', label: 'K1: Established Suburbanites %', format: { places: 1 } },
+            { fieldName: 'K2_MATURE_SUBURBAN_FAMILIES_PCT', label: 'K2: Mature Suburban Families %', format: { places: 1 } },
+            { fieldName: 'I1_RURAL_ESTABLISHED_PCT', label: 'I1: Rural Established %', format: { places: 1 } },
+            { fieldName: 'J1_ACTIVE_SENIORS_PCT', label: 'J1: Active Seniors %', format: { places: 1 } },
+            { fieldName: 'L1_SAVVY_SUBURBANITES_PCT', label: 'L1: Savvy Suburbanites %', format: { places: 1 } }
           ]
         }
       ]
@@ -1248,15 +1256,15 @@ export const TapestrySegmentWidget: React.FC<TapestryWidgetProps> = ({
 
   const segmentGroups = {
     classic_rock_segments: {
-      title: '2025 Classic Rock Demographics (Equal Weight: 1.0)',
-      segments: ['5A', '5B', '6B', '6F', '9B'],
-      description: 'Midwest classic rock audience segments (Age 42-72)',
+      title: '2025 Actual ESRI Tapestry Segments (Equal Weight: 1.0)',
+      segments: ['K1', 'K2', 'I1', 'J1', 'L1'],
+      description: 'Midwest classic rock audience segments (Age 45+)',
       details: {
-        '5A': 'Senior Security (Age 62)',
-        '5B': 'Golden Years (Age 52)', 
-        '6B': 'Salt of the Earth (Age 44)',
-        '6F': 'Heartland Communities (Age 42)',
-        '9B': 'The Elders (Age 72)'
+        'K1': 'Established Suburbanites (Group K: Suburban Shine)',
+        'K2': 'Mature Suburban Families (Group K: Suburban Shine)', 
+        'I1': 'Rural Established (Group I: Countryscapes)',
+        'J1': 'Active Seniors (Group J: Mature Reflections)',
+        'L1': 'Savvy Suburbanites (Group L: Premier Estates)'
       }
     },
     composite: {

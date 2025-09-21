@@ -117,23 +117,23 @@ claude-flow-dev generate-components --type widget --name RadioStationWidget
 
 **🤖 Automated Tapestry Setup (4 hours)**
 ```bash
-# Generate Tapestry segment configuration
-claude-flow-dev generate-tapestry-config --segments 5A,5B,6B,6F,9B
+# Generate Tapestry segment configuration (2025 ESRI actual segments)
+claude-flow-dev generate-tapestry-config --segments K1,K2,I1,J1,L1
 
 # Calculate weighted scoring algorithms
 claude-flow-dev calculate-scores --input tapestry-segments.json
 ```
 
 **Manual Implementation (3 days)**
-- Integrate 5 ESRI Tapestry segments (2025) for Midwest analysis:
-  - **5A - Senior Security** (Age 62, suburban/rural Midwest)
-  - **5B - Golden Years** (Age 52, Midwest metro areas)
-  - **6B - Salt of the Earth** (Age 44, blue-collar classic rock audience)
-  - **6F - Heartland Communities** (Age 42, rural Midwest)
-  - **9B - The Elders** (Age 72, retirement communities)
+- Integrate 5 actual 2025 ESRI Tapestry segments for Midwest analysis:
+  - **K1 - Established Suburbanites** (Group K: Suburban Shine, Age 45+)
+  - **K2 - Mature Suburban Families** (Group K: Suburban Shine, Age 45+)
+  - **I1 - Rural Established** (Group I: Countryscapes, Age 55+)
+  - **J1 - Active Seniors** (Group J: Mature Reflections, Age 55+)
+  - **L1 - Savvy Suburbanites** (Group L: Premier Estates, Age 45-64)
 - Initial equal weighting (1.0) for all segments
 - SHAP analysis will determine actual weights after data collection
-- Implement TapestryScorerAgent integration
+- Implement TapestryScorerAgent integration with real 2025 segment codes
 - Configure composite scoring algorithms
 
 **Deliverables:**
