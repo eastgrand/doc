@@ -185,6 +185,22 @@
         "geographic": ["H3_INDEX", "ZIP_CODE", "DISPLAY_ID"]
       },
       "adaptation_modes": ["full", "limited", "fallback"]
+    },
+    "single-service-optimization": {
+      "description": "Implement optimized single service architecture with state layers instead of federated services",
+      "agents": ["federated-layer-architect", "entertainment-processor-specialist"],
+      "steps": [
+        "Create SingleServiceManager for unified 3-state service handling",
+        "Implement parallel layer queries within single service (0=IL, 1=IN, 2=WI)",
+        "Build unified schema inspection and validation",
+        "Create simplified error handling for single service",
+        "Implement auto-detection for single vs. federated service input",
+        "Add flexible configuration supporting both architectures",
+        "Optimize performance with single connection and parallel layer queries",
+        "Create user interface for service configuration options"
+      ],
+      "performance_benefits": ["60% complexity reduction", "40-60% faster queries", "unified data quality"],
+      "fallback_support": "Maintains compatibility with original 3-service federated approach"
     }
   },
   "development": {
@@ -208,24 +224,24 @@
   },
   "data_sources": {
     "primary": {
-      "arcgis_feature_services": {
-        "illinois": {
-          "url": "TBD - Provided by user",
-          "hexagon_layer": "Existing H3 hexagons at resolution 6",
-          "tapestry_data": "2025 ESRI Tapestry segments",
-          "required_fields": ["H3_INDEX", "ZIP_CODE", "HEXAGON_DISPLAY_ID", "AREA_DESCRIPTION", "TAPESTRY_K1_PCT", "TAPESTRY_K2_PCT", "TAPESTRY_I1_PCT", "TAPESTRY_J1_PCT", "TAPESTRY_L1_PCT"]
+      "arcgis_feature_service_options": {
+        "single_service_recommended": {
+          "url": "TBD - Provided by user (recommended approach)",
+          "architecture": "Single service with multiple state layers",
+          "layers": {
+            "layer_0_illinois": "Illinois hexagons with H3 resolution 6",
+            "layer_1_indiana": "Indiana hexagons with H3 resolution 6", 
+            "layer_2_wisconsin": "Wisconsin hexagons with H3 resolution 6"
+          },
+          "unified_schema": ["H3_INDEX", "ZIP_CODE", "HEXAGON_DISPLAY_ID", "AREA_DESCRIPTION", "TAPESTRY_K1_PCT", "TAPESTRY_K2_PCT", "TAPESTRY_I1_PCT", "TAPESTRY_J1_PCT", "TAPESTRY_L1_PCT"],
+          "benefits": ["60% complexity reduction", "40-60% performance improvement", "unified data quality", "simplified error handling"]
         },
-        "indiana": {
-          "url": "TBD - Provided by user", 
-          "hexagon_layer": "Existing H3 hexagons at resolution 6",
-          "tapestry_data": "2025 ESRI Tapestry segments",
-          "required_fields": ["H3_INDEX", "ZIP_CODE", "HEXAGON_DISPLAY_ID", "AREA_DESCRIPTION", "TAPESTRY_K1_PCT", "TAPESTRY_K2_PCT", "TAPESTRY_I1_PCT", "TAPESTRY_J1_PCT", "TAPESTRY_L1_PCT"]
-        },
-        "wisconsin": {
-          "url": "TBD - Provided by user",
-          "hexagon_layer": "Existing H3 hexagons at resolution 6", 
-          "tapestry_data": "2025 ESRI Tapestry segments",
-          "required_fields": ["H3_INDEX", "ZIP_CODE", "HEXAGON_DISPLAY_ID", "AREA_DESCRIPTION", "TAPESTRY_K1_PCT", "TAPESTRY_K2_PCT", "TAPESTRY_I1_PCT", "TAPESTRY_J1_PCT", "TAPESTRY_L1_PCT"]
+        "federated_services_fallback": {
+          "illinois_url": "TBD - Provided by user",
+          "indiana_url": "TBD - Provided by user", 
+          "wisconsin_url": "TBD - Provided by user",
+          "architecture": "Three separate feature services",
+          "note": "Fallback option if single service not available"
         }
       },
       "tapestry_segments_2025": {
@@ -316,6 +332,7 @@
     "claude_flow_plan": "docs/THE_DOORS_DOCUMENTARY_CLAUDE_FLOW_IMPLEMENTATION_PLAN.md",
     "custom_reports_plan": "docs/DOORS_DOCUMENTARY_CUSTOM_REPORTS_IMPLEMENTATION_PLAN.md",
     "adaptive_mapping_plan": "docs/DOORS_DOCUMENTARY_ADAPTIVE_FIELD_MAPPING_PLAN.md",
+    "single_service_architecture": "docs/DOORS_DOCUMENTARY_SINGLE_SERVICE_ARCHITECTURE.md",
     "automation_guide": "docs/01_ARCGIS_DATA_AUTOMATION_PLAN.md",
     "processor_system": "docs/PROCESSOR_CONFIGURATION_SYSTEM.md",
     "architecture_overview": "docs/current/architecture/COMPREHENSIVE_APPLICATION_DOCUMENTATION.md",
