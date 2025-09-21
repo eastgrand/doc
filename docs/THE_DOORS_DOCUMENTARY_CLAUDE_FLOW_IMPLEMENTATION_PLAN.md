@@ -118,7 +118,7 @@ claude-flow-dev generate-components --type widget --name RadioStationWidget
 **🤖 Automated Tapestry Setup (4 hours)**
 ```bash
 # Generate Tapestry segment configuration
-claude-flow-dev generate-tapestry-config --segments 1A,1D,9A,9B,1E,5A,5B,2B,3B,9D
+claude-flow-dev generate-tapestry-config --segments 5A,5B,6B,6F,9B
 
 # Calculate weighted scoring algorithms
 claude-flow-dev calculate-scores --input tapestry-segments.json

@@ -167,32 +167,22 @@ class EntertainmentFieldResolver(SemanticFieldResolver):
 | **Tapestry Demographic Modes** | Target segments (see section 3.3) | `tapestry_demographic_modes` | High |
 | **Entertainment Spending Patterns** | Budget allocation data | `entertainment_spending_patterns` | High |
 
-### 3.3 Target ESRI Tapestry Segments for Doors Documentary Analysis
+### 3.3 Target ESRI Tapestry Segments for Doors Documentary Analysis (2025)
 
-#### 3.3.1 Primary Target Segments (High Relevance Weight: 1.0)
+**5 Refined Segments for Midwest Classic Rock Demographics (Age 45-70)**
 
-| Segment Code | Segment Name | LifeMode Group | Relevance for Doors Documentary |
-|--------------|--------------|----------------|--------------------------------|
-| **1A** | **Top Tier** | Affluent Estates | Highest income, premium entertainment spending, cultural engagement |
-| **1D** | **Savvy Suburbanites** | Affluent Estates | Educated professionals, discretionary income, target age demographics |
-| **9A** | **Silver & Gold** | Senior Styles | Most affluent seniors, active lifestyle, peak Doors fanbase age |
-| **9B** | **Golden Years** | Senior Styles | Established seniors with cultural interests, documentary consumption |
+| Segment Code | Segment Name | LifeMode Group | Age | Relevance for Doors Documentary |
+|--------------|--------------|----------------|-----|--------------------------------|
+| **5A** | **Senior Security** | Established Neighborhoods | 62 | Suburban/rural Midwest, stable income, prime classic rock generation |
+| **5B** | **Golden Years** | Established Neighborhoods | 52 | Midwest metro areas, peak earning years, cultural engagement |
+| **6B** | **Salt of the Earth** | Cozy Country Living | 44 | Blue-collar classic rock audience, authentic Midwest values |
+| **6F** | **Heartland Communities** | Cozy Country Living | 42 | Rural Midwest, community-oriented, traditional entertainment preferences |
+| **9B** | **The Elders** | Senior Styles | 72 | Retirement communities, established cultural interests, documentary consumption |
 
-#### 3.3.2 Secondary Target Segments (Medium Relevance Weight: 0.75)
-
-| Segment Code | Segment Name | LifeMode Group | Relevance for Doors Documentary |
-|--------------|--------------|----------------|--------------------------------|
-| **1E** | **Exurbanites** | Affluent Estates | Wealthy outer suburban, entertainment spending power |
-| **5A** | **Comfortable Empty Nesters** | GenX Urban | Prime demographic (age 45-65), cultural engagement |
-| **5B** | **In Style** | GenX Urban | Urban professionals with entertainment interests |
-
-#### 3.3.3 Tertiary Target Segments (Lower Relevance Weight: 0.5)
-
-| Segment Code | Segment Name | LifeMode Group | Relevance for Doors Documentary |
-|--------------|--------------|----------------|--------------------------------|
-| **2B** | **Urban Chic** | Upscale Avenues | Affluent urban dwellers, cultural sophistication |
-| **3B** | **Metro Renters** | Uptown Individuals | Urban professionals, entertainment spending |
-| **9D** | **Senior Escapes** | Senior Styles | Retirement communities, leisure-focused lifestyle |
+**Weighting Strategy:**
+- Initial equal weighting (1.0) for all 5 segments
+- SHAP analysis will determine data-driven weights after feature service integration
+- Focus on actual behavioral data rather than arbitrary demographic assumptions
 
 #### 3.3.4 Required Fields for Feature Services
 
@@ -200,25 +190,17 @@ class EntertainmentFieldResolver(SemanticFieldResolver):
 These fields are needed in the feature services to calculate the weighted Tapestry alignment score:
 
 ```typescript
-// Feature Service Fields - Tapestry Segment Percentages
+// Feature Service Fields - 5 Refined Tapestry Segments (2025)
 interface RequiredTapestryFields {
-  // Primary Target Segments (Weight: 1.0)
-  TAPESTRY_1A_PCT: number; // Top Tier percentage
-  TAPESTRY_1D_PCT: number; // Savvy Suburbanites percentage
-  TAPESTRY_9A_PCT: number; // Silver & Gold percentage
-  TAPESTRY_9B_PCT: number; // Golden Years percentage
+  // All 5 segments have equal initial weighting (1.0)
+  // SHAP analysis will determine data-driven weights
+  TAPESTRY_5A_PCT: number; // Senior Security percentage
+  TAPESTRY_5B_PCT: number; // Golden Years percentage  
+  TAPESTRY_6B_PCT: number; // Salt of the Earth percentage
+  TAPESTRY_6F_PCT: number; // Heartland Communities percentage
+  TAPESTRY_9B_PCT: number; // The Elders percentage
   
-  // Secondary Target Segments (Weight: 0.75)
-  TAPESTRY_1E_PCT: number; // Exurbanites percentage
-  TAPESTRY_5A_PCT: number; // Comfortable Empty Nesters percentage
-  TAPESTRY_5B_PCT: number; // In Style percentage
-  
-  // Tertiary Target Segments (Weight: 0.5)
-  TAPESTRY_2B_PCT: number; // Urban Chic percentage
-  TAPESTRY_3B_PCT: number; // Metro Renters percentage
-  TAPESTRY_9D_PCT: number; // Senior Escapes percentage
-  
-  // Calculated Composite Field (derived from above)
+  // Calculated Composite Field (derived from above using SHAP weights)
   TAPESTRY_COMPOSITE_WEIGHT: number; // Population-weighted composite score (0-100)
 }
 ```
@@ -228,11 +210,12 @@ interface RequiredTapestryFields {
 ```typescript
 // Pure Tapestry Segment Reference (configuration only, not in feature service)
 interface TapestrySegmentConfig {
-  segment_code: string; // "1A", "1D", "9A", etc.
-  segment_name: string; // "Top Tier", "Savvy Suburbanites", etc.
-  lifemode_group: string; // "Affluent Estates", "Senior Styles", etc.
-  doors_relevance_weight: number; // 1.0, 0.75, or 0.5
-  priority_tier: 'primary' | 'secondary' | 'tertiary';
+  segment_code: string; // "5A", "5B", "6B", "6F", "9B"
+  segment_name: string; // "Senior Security", "Golden Years", etc.
+  lifemode_group: string; // "Established Neighborhoods", "Cozy Country Living", "Senior Styles"
+  target_age: number; // 62, 52, 44, 42, 72
+  doors_relevance_weight: number; // Initial 1.0 for all, SHAP will determine actual weights
+  geographic_focus: string; // "suburban/rural Midwest", "metro areas", etc.
 }
 
 // Entertainment Behavior Data (separate from Tapestry, already in feature services)
@@ -460,22 +443,13 @@ class MarketAccessibilityCalculator {
   
   private calculateWeightedTapestryAlignment(data: HexagonData): number {
     // Use the percentage fields from feature service to calculate weighted score
+    // NOTE: Initial equal weighting (1.0) - SHAP analysis will determine optimal weights
     const tapestryScore = 
-      // Primary segments (weight: 1.0)
-      (data.TAPESTRY_1A_PCT * 1.0) +  // Top Tier
-      (data.TAPESTRY_1D_PCT * 1.0) +  // Savvy Suburbanites
-      (data.TAPESTRY_9A_PCT * 1.0) +  // Silver & Gold
-      (data.TAPESTRY_9B_PCT * 1.0) +  // Golden Years
-      
-      // Secondary segments (weight: 0.75)
-      (data.TAPESTRY_1E_PCT * 0.75) + // Exurbanites
-      (data.TAPESTRY_5A_PCT * 0.75) + // Comfortable Empty Nesters
-      (data.TAPESTRY_5B_PCT * 0.75) + // In Style
-      
-      // Tertiary segments (weight: 0.5)
-      (data.TAPESTRY_2B_PCT * 0.5) +  // Urban Chic
-      (data.TAPESTRY_3B_PCT * 0.5) +  // Metro Renters
-      (data.TAPESTRY_9D_PCT * 0.5);   // Senior Escapes
+      (data.TAPESTRY_5A_PCT * 1.0) +  // Senior Security (Age 62)
+      (data.TAPESTRY_5B_PCT * 1.0) +  // Golden Years (Age 52)
+      (data.TAPESTRY_6B_PCT * 1.0) +  // Salt of the Earth (Age 44)
+      (data.TAPESTRY_6F_PCT * 1.0) +  // Heartland Communities (Age 42)
+      (data.TAPESTRY_9B_PCT * 1.0);   // The Elders (Age 72)
     
     // Return weighted composite score (0-100 scale)
     // This could also be pre-calculated as TAPESTRY_COMPOSITE_WEIGHT field
@@ -1205,29 +1179,30 @@ export class RadioStationVisualization {
 ```typescript
 export const tapestrySegmentLayers: LayerConfig[] = [
   {
-    id: 'doors_tapestry_primary_segments',
-    name: 'Primary Target Segments',
-    description: 'High-priority Tapestry segments for Doors documentary audience',
+    id: 'doors_tapestry_classic_rock_segments',
+    name: 'Classic Rock Demographics (2025)',
+    description: 'Refined Tapestry segments for Midwest classic rock audience (Age 42-72)',
     type: 'percentage',
     category: 'demographic',
     subcategory: 'tapestry_lifestyle',
-    fields: ['1A_TOP_TIER_PCT', '1D_SAVVY_SUBURBANITES_PCT', '9A_SILVER_GOLD_PCT', '9B_GOLDEN_YEARS_PCT'],
+    fields: ['5A_SENIOR_SECURITY_PCT', '5B_GOLDEN_YEARS_PCT', '6B_SALT_OF_EARTH_PCT', '6F_HEARTLAND_COMMUNITIES_PCT', '9B_THE_ELDERS_PCT'],
     styling: {
-      color_scheme: 'doors_primary_segments',
+      color_scheme: 'doors_classic_rock_segments',
       method: 'class_breaks',
       breaks: [0, 5, 15, 30, 50],
       colors: ['#FFF5EB', '#FEC79E', '#FD8D3C', '#E6550D', '#A63603']
     },
     popupTemplate: {
-      title: 'Primary Tapestry Segments - {GEOID}',
+      title: 'Classic Rock Demographics - {GEOID}',
       content: [
         {
           type: 'fields',
           fieldInfos: [
-            { fieldName: '1A_TOP_TIER_PCT', label: 'Top Tier %', format: { places: 1 } },
-            { fieldName: '1D_SAVVY_SUBURBANITES_PCT', label: 'Savvy Suburbanites %', format: { places: 1 } },
-            { fieldName: '9A_SILVER_GOLD_PCT', label: 'Silver & Gold %', format: { places: 1 } },
-            { fieldName: '9B_GOLDEN_YEARS_PCT', label: 'Golden Years %', format: { places: 1 } }
+            { fieldName: '5A_SENIOR_SECURITY_PCT', label: 'Senior Security (Age 62) %', format: { places: 1 } },
+            { fieldName: '5B_GOLDEN_YEARS_PCT', label: 'Golden Years (Age 52) %', format: { places: 1 } },
+            { fieldName: '6B_SALT_OF_EARTH_PCT', label: 'Salt of the Earth (Age 44) %', format: { places: 1 } },
+            { fieldName: '6F_HEARTLAND_COMMUNITIES_PCT', label: 'Heartland Communities (Age 42) %', format: { places: 1 } },
+            { fieldName: '9B_THE_ELDERS_PCT', label: 'The Elders (Age 72) %', format: { places: 1 } }
           ]
         }
       ]
@@ -1268,29 +1243,26 @@ export const TapestrySegmentWidget: React.FC<TapestryWidgetProps> = ({
   map, 
   segments = tapestrySegmentLayers 
 }) => {
-  const [selectedSegmentGroup, setSelectedSegmentGroup] = useState<'primary' | 'secondary' | 'tertiary' | 'composite'>('primary');
+  const [selectedSegmentGroup, setSelectedSegmentGroup] = useState<'classic_rock_segments' | 'composite'>('classic_rock_segments');
   const [activeLayer, setActiveLayer] = useState<FeatureLayer | null>(null);
 
   const segmentGroups = {
-    primary: {
-      title: 'Primary Segments (Weight: 1.0)',
-      segments: ['1A', '1D', '9A', '9B'],
-      description: 'Highest priority audience segments'
-    },
-    secondary: {
-      title: 'Secondary Segments (Weight: 0.75)',
-      segments: ['1E', '5A', '5B'],
-      description: 'Medium priority audience segments'
-    },
-    tertiary: {
-      title: 'Tertiary Segments (Weight: 0.5)',
-      segments: ['2B', '3B', '9D'],
-      description: 'Lower priority audience segments'
+    classic_rock_segments: {
+      title: '2025 Classic Rock Demographics (Equal Weight: 1.0)',
+      segments: ['5A', '5B', '6B', '6F', '9B'],
+      description: 'Midwest classic rock audience segments (Age 42-72)',
+      details: {
+        '5A': 'Senior Security (Age 62)',
+        '5B': 'Golden Years (Age 52)', 
+        '6B': 'Salt of the Earth (Age 44)',
+        '6F': 'Heartland Communities (Age 42)',
+        '9B': 'The Elders (Age 72)'
+      }
     },
     composite: {
-      title: 'Composite Weight Score',
+      title: 'SHAP-Weighted Composite Score',
       segments: ['COMPOSITE'],
-      description: 'Weighted combination of all segments'
+      description: 'Data-driven combination of 5 segments using SHAP feature importance'
     }
   };
 
