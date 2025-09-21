@@ -179,6 +179,65 @@ class EntertainmentFieldResolver(SemanticFieldResolver):
 | **J1** | **Active Seniors** | Group J: Mature Reflections | 55+ | Single-family homes, social security/retirement income, mature lifestyle |
 | **L1** | **Savvy Suburbanites** | Group L: Premier Estates | 45-64 | High income, work from home/management, newly constructed homes, advanced education |
 
+### 3.3.1 Why These Specific Segments Were Selected
+
+**Strategic Selection Criteria for The Doors Documentary Project:**
+
+#### **Classic Rock Audience Alignment (Age 45+)**
+- **The Doors peak era**: 1965-1971, meaning core fans would be born 1945-1960
+- **Target demographic today**: Ages 45-80, with prime audience 50-70
+- **Musical nostalgia factor**: Baby Boomers and early Gen X who experienced classic rock's golden age
+
+#### **Segment-Specific Rationale:**
+
+**Group K: Suburban Shine (K1, K2)**
+- **Why chosen**: Middle-tier income, suburban Midwest, manufacturing/healthcare workers
+- **Doors relevance**: Blue-collar/middle-class audiences who embraced rock music as cultural rebellion
+- **Geographic fit**: Strong presence in IL, IN, WI industrial communities
+- **Documentary appeal**: Disposable income for premium entertainment, nostalgic for 1960s counterculture
+
+**Group I: Countryscapes (I1)**
+- **Why chosen**: Rural/small towns, manufacturing/agriculture, long commutes
+- **Doors relevance**: Rural Midwest communities where rock music provided escape and identity
+- **Documentary appeal**: Traditional values audience interested in music history documentaries
+- **Accessibility**: Radio-heavy culture where Doors music had lasting impact
+
+**Group J: Mature Reflections (J1)**
+- **Why chosen**: Age 55+, retirement income, established cultural interests
+- **Doors relevance**: Peak demographic who lived through Doors era as teenagers/young adults
+- **Documentary appeal**: Prime documentary consumption age with time and interest
+- **Spending capacity**: Retirement income available for entertainment
+
+**Group L: Premier Estates (L1)**
+- **Why chosen**: High income, educated, work from home/management
+- **Doors relevance**: Affluent Baby Boomers who can afford premium documentary experiences
+- **Documentary appeal**: Educational content appreciation, cultural sophistication
+- **Market value**: Highest spending potential for special screenings and merchandise
+
+#### **Midwest Geographic Targeting**
+- **Illinois**: Chicago metro (industrial heritage, music venue density)
+- **Indiana**: Manufacturing communities, classic rock radio tradition
+- **Wisconsin**: Rural/suburban mix, strong music festival culture
+- **All three states**: High concentration of the selected Tapestry segments
+
+#### **Documentary Distribution Strategy**
+- **Theater accessibility**: Segments chosen based on proximity to potential screening venues
+- **Cultural engagement**: All segments show patterns of documentary/cultural content consumption
+- **Income levels**: Mix of middle-tier (K1, K2, I1) and high-income (L1) ensures broad market coverage
+- **Age distribution**: 45-70 range captures both early fans and cultural appreciation audience
+
+#### **Expected Market Penetration by Segment**
+
+| Segment | Primary Appeal | Market Size Estimate | Revenue Potential |
+|---------|---------------|---------------------|-------------------|
+| **K1, K2** | Nostalgic rock fans, suburban families | Medium-High | Moderate ticket sales, group bookings |
+| **I1** | Rural classic rock audience | Medium | Steady attendance, merchandise |
+| **J1** | Core demographic (lived through era) | High | Premium pricing tolerance |
+| **L1** | Affluent cultural consumers | Medium | Highest per-capita spending |
+
+**Strategic Advantage:**
+This segment selection provides **comprehensive market coverage** from middle-income nostalgic fans to affluent cultural consumers, ensuring the documentary appeals to both **authentic Doors fans** and **broader cultural documentary audiences** across the Midwest's diverse demographic landscape.
+
 **2025 Tapestry System Overview:**
 - **Real ESRI segment codes** from June 2025 system overhaul (first update in 10 years)
 - **Alpha-numeric format**: Groups A-L with numbered segments (e.g., K1, I1, J1, L1)
