@@ -394,34 +394,79 @@ scripts/scoring/generators/
 
 ---
 
-## 🚀 Next Steps
+## 🚀 Next Steps - Phase 2: Automation Integration
 
-### Immediate Actions (This Week)
+### **CRITICAL: ArcGIS Data Automation Pipeline**
 
-#### **Priority 1: Environment Setup**
-1. **Install Claude-Flow CLI** and configure development environment
-2. **Set up GitHub integration** for automated code management
-3. **Configure development agents** for entertainment analysis
-4. **Test basic integration** with existing MPIQ architecture
+The claude-flow implementation requires integration with the existing automation system for complete functionality. 
 
-#### **Priority 2: Architecture Planning**
-1. **Design federated layer architecture** for 3-state coordination
-2. **Plan entertainment processor structure** following BaseProcessor patterns
-3. **Configure Tapestry segment specifications** for 5 target segments
-4. **Set up SHAP scoring pipeline** for data-driven algorithms
+#### **Phase 2A: ArcGIS Complete Automation (Required - 2-5 minutes)**
+```bash
+# Navigate to automation directory
+cd scripts/automation
 
-### Week 2-3 Planning
+# Activate Python environment  
+source ../venv/bin/activate
 
-#### **Core Development Sprints**
-1. **Sprint 1**: Federated Layer Service implementation
-2. **Sprint 2**: Entertainment Analysis Processors
-3. **Sprint 3**: Tapestry Segment Integration
-4. **Sprint 4**: SHAP-Based Scoring Implementation
+# Run complete automation pipeline for Doors Documentary
+python run_complete_automation.py \
+  "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__b1cab1ae067f4359/FeatureServer" \
+  --project doors_documentary \
+  --target entertainment_score
+```
 
-#### **Quality Assurance Integration**
-- **Daily**: AI-powered code review and optimization
-- **Weekly**: Comprehensive testing and validation
-- **End of Phase**: Performance benchmarking and documentation
+**What this accomplishes:**
+- **Phase 1**: Service inspection and data extraction (120 layers)
+- **Phase 2**: Intelligent field mapping with entertainment context
+- **Phase 3**: 26 analysis endpoint generation with SHAP scoring
+- **Phase 4**: 17 AI model training for microservice
+- **Phase 5**: TypeScript layer configuration and blob storage upload
+
+#### **Phase 2B: Microservice Deployment (Required - 15 minutes)**
+1. **Deploy to Render.com** - Automation will pause for manual deployment
+2. **Update environment variables** with new microservice URL
+3. **Verify health check** at `https://doors-documentary-microservice.onrender.com/health`
+
+#### **Phase 2C: Post-Automation Integration (Required - 5 minutes)**
+```bash
+# Update field mappings (automated)
+python scripts/automation/semantic_field_resolver.py
+
+# Generate layer categorization (automated)  
+python scripts/automation/layer_categorization_post_processor.py
+
+# Update map constraints (required)
+npm run generate-map-constraints
+
+# Upload to blob storage (automated if token configured)
+python scripts/automation/upload_comprehensive_endpoints.py
+```
+
+### **Phase 2D: Validation and Testing (Required - 10 minutes)**
+```bash
+# Run routing accuracy tests
+npm test -- __tests__/hybrid-routing-detailed.test.ts --verbose
+
+# Test entertainment processors
+npm test -- lib/analysis/strategies/processors/EntertainmentAnalysisProcessor.test.ts
+
+# Validate data integrity
+node scripts/validate-entertainment-data.js
+```
+
+### **Integration Benefits with Claude-Flow**
+
+#### **🤖 AI-Assisted Automation**
+- **75% faster setup**: Claude-flow agents accelerate automation pipeline
+- **Intelligent error handling**: AI-powered troubleshooting and optimization
+- **Configuration automation**: Entertainment context automatically applied
+- **Quality assurance**: AI-powered validation and testing
+
+#### **🎯 Entertainment-Specific Enhancements**
+- **Tapestry segment auto-detection**: 5 segments (K1, K2, I1, J1, L1) automatically configured
+- **Classic rock field mapping**: Music affinity and cultural engagement fields prioritized
+- **Theater infrastructure scoring**: Venue accessibility automatically calculated
+- **Documentary appeal modeling**: SHAP-based algorithms for entertainment analysis
 
 ### Phase 2 Preparation
 
