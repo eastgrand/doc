@@ -17,9 +17,10 @@
 - [5. Geographic Framework Implementation](#5-geographic-framework-implementation)
 - [6. Analysis Engine Configuration](#6-analysis-engine-configuration)
 - [7. Visualization & UI Components](#7-visualization--ui-components)
-- [8. Implementation Timeline](#8-implementation-timeline)
-- [9. Technical Specifications](#9-technical-specifications)
-- [10. Success Metrics & Validation](#10-success-metrics--validation)
+- [8. Custom Market Analysis Reports](#8-custom-market-analysis-reports)
+- [9. Implementation Timeline](#9-implementation-timeline)
+- [10. Technical Specifications](#10-technical-specifications)
+- [11. Success Metrics & Validation](#11-success-metrics--validation)
 
 ---
 
@@ -1632,9 +1633,65 @@ export const DoorsAnalyticsDashboard: React.FC = () => {
 
 ---
 
-## 8. Implementation Timeline
+## 8. Custom Market Analysis Reports
 
-### 8.1 Phase 1: Foundation & Data Integration (Weeks 1-4)
+### 8.1 Overview
+
+The Doors Documentary project includes a comprehensive custom report generation system that builds on the existing infographic infrastructure to provide polished, professional market analysis reports.
+
+### 8.2 Report Features
+
+#### **Comprehensive Market Analysis Report**
+- **Selected area visualization** with hexagon-based scoring overlays
+- **Entertainment scoring breakdown** across 4 dimensions (Music Affinity 40%, Cultural Engagement 25%, Spending Capacity 20%, Market Accessibility 15%)
+- **SHAP feature importance charts** showing data-driven variables contributing to scoring
+- **2025 ESRI Tapestry segment analysis** for K1, K2, I1, J1, L1 segments
+- **ZIP code context integration** for stakeholder-friendly communication
+- **Theater accessibility analysis** with venue capacity and 2-mile radius assessment
+- **AI-generated market insights** based on actual scoring data
+
+#### **Multiple Export Formats**
+- **Full Report**: Complete analysis with maps, charts, methodology, and AI insights
+- **Map Only**: Focused on geographic visualization with scoring overlays
+- **Data Only**: Tabular analysis results and segment breakdowns
+- **Analysis Only**: AI insights and strategic recommendations
+
+### 8.3 Technical Implementation
+
+#### **Integration Points**
+- Builds on `components/Infographics.tsx` report framework
+- Extends `services/ReportsService.ts` with custom report template
+- Leverages `services/pdfService.ts` for PDF generation
+- Integrates with federated layer architecture for 3-state data
+
+#### **ZIP Code Context**
+All analysis communication includes hexagon display IDs with ZIP code context:
+*"Hexagons 18, 112, and 54, within ZIP Code 60611, show high potential for attending the doors documentary"*
+
+### 8.4 Report Generation Workflow
+
+1. **Area Selection**: User selects analysis area on map (polygon, buffer, or hexagon selection)
+2. **Data Processing**: System queries federated layers (IL, IN, WI) for hexagons within selected area
+3. **Scoring Analysis**: Runs entertainment processors and loads SHAP values from microservice JSON files
+4. **Visualization**: Generates map with scored hexagons, theater locations, and radio coverage
+5. **AI Analysis**: Creates comprehensive market insights based on actual scoring data
+6. **PDF Export**: Produces publication-ready report with selected format options
+
+### 8.5 Business Value
+
+- **Strategic Decision Making**: Data-driven location selection for documentary screenings
+- **Stakeholder Communication**: Professional reports with ZIP code context for easy geographic reference
+- **Market Intelligence**: SHAP-driven insights into demographic factors driving entertainment engagement
+- **Risk Mitigation**: Clear identification of low-opportunity areas to avoid
+- **Revenue Optimization**: Theater capacity analysis and audience density projections
+
+**Documentation**: See `docs/DOORS_DOCUMENTARY_CUSTOM_REPORTS_IMPLEMENTATION_PLAN.md` for detailed technical specifications.
+
+---
+
+## 9. Implementation Timeline
+
+### 9.1 Phase 1: Foundation & Data Integration (Weeks 1-4)
 
 **Week 1-2: Architecture Setup**
 - [ ] Create entertainment project type configuration
@@ -1657,7 +1714,7 @@ export const DoorsAnalyticsDashboard: React.FC = () => {
 - [ ] Use existing H3 hexagons from feature services (not generated)
 - [ ] Initial equal weighting (1.0) for all segments pending SHAP analysis
 
-### 8.2 Phase 2: Scoring Algorithm Implementation (Weeks 5-7)
+### 9.2 Phase 2: Scoring Algorithm Implementation (Weeks 5-7)
 
 **Week 5: Core Scoring Engines**
 - [ ] Implement Music Affinity Calculator
@@ -1671,7 +1728,7 @@ export const DoorsAnalyticsDashboard: React.FC = () => {
 - [ ] Build validation framework
 - [ ] Performance optimization
 
-### 8.3 Phase 3: Visualization & UI (Weeks 8-10)
+### 9.3 Phase 3: Visualization & UI (Weeks 8-10)
 
 **Week 8: Map Components**
 - [ ] Build hexagonal heatmap visualization
@@ -1687,7 +1744,7 @@ export const DoorsAnalyticsDashboard: React.FC = () => {
 - [ ] Configure microservice integration with segment weighting
 - [ ] Implement export capabilities
 
-### 8.4 Phase 4: Testing & Refinement (Weeks 11-13)
+### 9.4 Phase 4: Testing & Refinement (Weeks 11-13)
 
 **Week 11-12: Comprehensive Testing**
 - [ ] End-to-end analysis pipeline testing
@@ -1703,11 +1760,11 @@ export const DoorsAnalyticsDashboard: React.FC = () => {
 
 ---
 
-## 9. Technical Specifications
+## 10. Technical Specifications
 
-### 9.1 Data Storage & Performance
+### 10.1 Data Storage & Performance
 
-#### 9.1.1 H3 Hexagon Data Structure
+#### 10.1.1 H3 Hexagon Data Structure
 ```typescript
 interface H3HexagonData {
   // H3 Geographic Properties
@@ -1781,15 +1838,15 @@ interface RadioStationData {
 }
 ```
 
-#### 9.1.2 Performance Optimization
+#### 10.1.2 Performance Optimization
 - **Spatial Indexing**: R-tree indexing for hexagon lookups
 - **Data Caching**: Redis caching for frequently accessed hexagons
 - **Lazy Loading**: Progressive loading of detailed analytics
 - **Aggregation**: Pre-calculated summary statistics
 
-### 9.2 Available Data Sources & Integration Architecture
+### 10.2 Available Data Sources & Integration Architecture
 
-#### 9.2.1 Core Consumer Behavior Data Sources
+#### 10.2.1 Core Consumer Behavior Data Sources
 **Available Entertainment Metrics** (Pre-aggregated at Geographic Level):
 
 ```typescript
@@ -1852,7 +1909,7 @@ interface EntertainmentBehaviorData {
 }
 ```
 
-#### 9.2.2 Supporting Infrastructure & Demographic Data
+#### 10.2.2 Supporting Infrastructure & Demographic Data
 **Available Supporting Metrics**:
 
 ```typescript
@@ -1891,9 +1948,9 @@ interface SupportingDemographicsData {
 }
 ```
 
-### 9.3 Calculation Engine Architecture
+### 10.3 Calculation Engine Architecture
 
-#### 9.3.1 Scoring Algorithm Framework
+#### 10.3.1 Scoring Algorithm Framework
 ```typescript
 export abstract class EntertainmentScoreCalculator {
   protected weights: Record<string, number>;
@@ -1933,11 +1990,11 @@ export abstract class EntertainmentScoreCalculator {
 
 ---
 
-## 10. Success Metrics & Validation
+## 11. Success Metrics & Validation
 
-### 10.1 Model Performance Indicators
+### 11.1 Model Performance Indicators
 
-#### 10.1.1 Predictive Accuracy Metrics
+#### 11.1.1 Predictive Accuracy Metrics
 ```typescript
 export class ModelValidationService {
   async validateModelAccuracy(): Promise<ValidationResults> {
@@ -1960,15 +2017,15 @@ export class ModelValidationService {
 }
 ```
 
-#### 10.1.2 Business Impact Metrics
+#### 11.1.2 Business Impact Metrics
 - **Market Coverage**: Geographic diversity in top-scoring hexagons
 - **Audience Reach**: Total population within high-scoring areas
 - **Revenue Potential**: Estimated box office/streaming revenue by region
 - **ROI Optimization**: Marketing spend efficiency by market tier
 
-### 10.2 Implementation Tracking
+### 11.2 Implementation Tracking
 
-#### 10.2.1 Real-Time Performance Monitoring
+#### 11.2.1 Real-Time Performance Monitoring
 ```typescript
 export class PerformanceMonitor {
   private metrics = {
@@ -1986,7 +2043,7 @@ export class PerformanceMonitor {
 }
 ```
 
-#### 10.2.2 Business Validation Framework
+#### 11.2.2 Business Validation Framework
 ```typescript
 export class BusinessValidationService {
   async validateMarketPredictions(timeframe: string): Promise<ValidationReport> {

@@ -113,6 +113,55 @@
         "Build CompositeScorePanel for entertainment scoring display"
       ],
       "existing_components": "components/"
+    },
+    "custom-report-generation": {
+      "description": "Implement custom market analysis report generation system with PDF export",
+      "agents": ["geospatial-visualization-developer", "entertainment-processor-specialist"],
+      "steps": [
+        "Create DoorsDocumentaryMarketReport.tsx component for custom report generation",
+        "Implement data processing pipeline for market analysis (hexagons + ZIP codes)",
+        "Build map visualization component with hexagon scoring overlay",
+        "Create SHAP feature importance charts for entertainment analysis",
+        "Implement Tapestry segment distribution visualizations",
+        "Build AI analysis generator using actual scoring data",
+        "Add multiple PDF export options (full, map-only, data-only, analysis-only)",
+        "Integrate with existing ReportsService.ts infrastructure",
+        "Add ZIP code context for stakeholder-friendly communication"
+      ],
+      "existing_implementation": "components/Infographics.tsx, services/ReportsService.ts, services/pdfService.ts",
+      "report_types": ["market-analysis", "entertainment-scoring", "venue-analysis", "audience-insights"],
+      "export_formats": ["pdf-full", "pdf-map-only", "pdf-data-only", "pdf-analysis-only"]
+    },
+    "precalculated-report-system": {
+      "description": "Implement batch processing system for precalculated regional reports covering entire 3-state area",
+      "agents": ["shap-scoring-engineer", "entertainment-processor-specialist"],
+      "steps": [
+        "Create PrecalculatedReportGenerator service for batch processing 15,000+ hexagons",
+        "Implement automated report generation pipeline with cron scheduling",
+        "Build report download interface with CDN storage integration",
+        "Create ReportMaintenanceService for automated regeneration on data updates",
+        "Generate complete 3-state regional analysis (IL, IN, WI)",
+        "Create state-specific reports (Illinois, Indiana, Wisconsin)",
+        "Generate Top 100 markets priority report for screening locations",
+        "Implement multiple export formats (PDF, Excel, JSON)",
+        "Set up automated weekly regeneration and version control",
+        "Add download interface to existing report infrastructure"
+      ],
+      "performance_requirements": {
+        "hexagon_count": "15,000+ across 3 states",
+        "processing_approach": "batch_processing_offline",
+        "update_frequency": "weekly_automated_regeneration",
+        "storage": "CDN_static_assets"
+      },
+      "report_suite": [
+        "complete-3-state-analysis.pdf (47MB)",
+        "illinois-analysis.pdf (18MB)", 
+        "indiana-analysis.pdf (15MB)",
+        "wisconsin-analysis.pdf (14MB)",
+        "top-100-markets.pdf (6MB)",
+        "complete-data.xlsx (12MB)",
+        "api-data.json (25MB)"
+      ]
     }
   },
   "development": {
@@ -242,6 +291,7 @@
   "documentation_references": {
     "implementation_plan": "docs/THE_DOORS_DOCUMENTARY_GEOSPATIAL_ANALYSIS_IMPLEMENTATION_PLAN.md",
     "claude_flow_plan": "docs/THE_DOORS_DOCUMENTARY_CLAUDE_FLOW_IMPLEMENTATION_PLAN.md",
+    "custom_reports_plan": "docs/DOORS_DOCUMENTARY_CUSTOM_REPORTS_IMPLEMENTATION_PLAN.md",
     "automation_guide": "docs/01_ARCGIS_DATA_AUTOMATION_PLAN.md",
     "processor_system": "docs/PROCESSOR_CONFIGURATION_SYSTEM.md",
     "architecture_overview": "docs/current/architecture/COMPREHENSIVE_APPLICATION_DOCUMENTATION.md",
