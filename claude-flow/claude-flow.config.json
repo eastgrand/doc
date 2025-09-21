@@ -162,6 +162,29 @@
         "complete-data.xlsx (12MB)",
         "api-data.json (25MB)"
       ]
+    },
+    "adaptive-field-mapping": {
+      "description": "Automatically inspect and adapt to actual ArcGIS Feature Service schemas when URLs are provided",
+      "agents": ["federated-layer-architect", "shap-scoring-engineer"],
+      "steps": [
+        "Create FeatureServiceInspector for automated schema discovery",
+        "Implement intelligent field pattern matching for Tapestry segments K1, K2, I1, J1, L1",
+        "Build AdaptiveProcessorFactory for dynamic processor configuration",
+        "Create fallback calculation methods for missing demographic fields",
+        "Implement ServiceQualityReporter for data quality assessment",
+        "Build adaptive scoring algorithms that adjust to available data",
+        "Create user-friendly adaptation status interface with quality warnings",
+        "Integrate with existing FederatedLayerService architecture",
+        "Add field mapping confidence scoring and similarity matching"
+      ],
+      "triggers": ["service-urls-provided", "schema-changes-detected"],
+      "outputs": ["field-mappings.json", "quality-report.json", "adapted-processors"],
+      "field_patterns": {
+        "tapestry_segments": ["TAPESTRY_K1", "TAP_K1_PCT", "SEGMENT_K1", "K1_PCT"],
+        "demographics": ["TOTPOP", "MEDINC", "MEDAGE", "TOTHH"],
+        "geographic": ["H3_INDEX", "ZIP_CODE", "DISPLAY_ID"]
+      },
+      "adaptation_modes": ["full", "limited", "fallback"]
     }
   },
   "development": {
@@ -292,6 +315,7 @@
     "implementation_plan": "docs/THE_DOORS_DOCUMENTARY_GEOSPATIAL_ANALYSIS_IMPLEMENTATION_PLAN.md",
     "claude_flow_plan": "docs/THE_DOORS_DOCUMENTARY_CLAUDE_FLOW_IMPLEMENTATION_PLAN.md",
     "custom_reports_plan": "docs/DOORS_DOCUMENTARY_CUSTOM_REPORTS_IMPLEMENTATION_PLAN.md",
+    "adaptive_mapping_plan": "docs/DOORS_DOCUMENTARY_ADAPTIVE_FIELD_MAPPING_PLAN.md",
     "automation_guide": "docs/01_ARCGIS_DATA_AUTOMATION_PLAN.md",
     "processor_system": "docs/PROCESSOR_CONFIGURATION_SYSTEM.md",
     "architecture_overview": "docs/current/architecture/COMPREHENSIVE_APPLICATION_DOCUMENTATION.md",
