@@ -1,10 +1,12 @@
 import { AnalysisContext, ProjectType } from './base-context';
 import { REAL_ESTATE_CONTEXT } from './real-estate-context';
 import { RETAIL_CONTEXT } from './retail-context';
+import { ENTERTAINMENT_CONTEXT } from './entertainment-context';
 
 export * from './base-context';
 export { REAL_ESTATE_CONTEXT } from './real-estate-context';
 export { RETAIL_CONTEXT } from './retail-context';
+export { ENTERTAINMENT_CONTEXT } from './entertainment-context';
 
 /**
  * Registry of all available analysis contexts
@@ -12,6 +14,7 @@ export { RETAIL_CONTEXT } from './retail-context';
 export const ANALYSIS_CONTEXTS: Record<string, AnalysisContext> = {
   'retail': RETAIL_CONTEXT,
   'real-estate': REAL_ESTATE_CONTEXT,
+  'entertainment': ENTERTAINMENT_CONTEXT,
 };
 
 /**

@@ -2,7 +2,7 @@
  * Base interfaces and types for the analysis configuration system
  */
 
-export type ProjectType = 'retail' | 'real-estate' | 'demographics' | 'healthcare' | 'finance';
+export type ProjectType = 'retail' | 'real-estate' | 'entertainment' | 'demographics' | 'healthcare' | 'finance';
 
 export interface FieldMappings {
   primaryMetric: string[];        // Priority order for main score
@@ -18,6 +18,13 @@ export interface FieldMappings {
   demographicFields?: string[];   // Age, family composition
   brandFields?: string[];         // Brand presence/market share
   competitiveFields?: string[];   // Competitive analysis metrics
+  
+  // Entertainment industry specific fields
+  tapestryFields?: string[];      // ESRI Tapestry lifestyle segments
+  musicFields?: string[];         // Music consumption and preference data
+  culturalFields?: string[];      // Cultural engagement and entertainment consumption
+  theaterFields?: string[];       // Theater infrastructure and accessibility
+  radioFields?: string[];         // Radio coverage and classic rock stations
 }
 
 export interface Terminology {

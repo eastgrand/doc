@@ -18,6 +18,7 @@ export { MarketSizingProcessor } from './MarketSizingProcessor';
 export { BrandAnalysisProcessor } from './BrandAnalysisProcessor';
 export { BrandDifferenceProcessor } from './BrandDifferenceProcessor';
 export { RealEstateAnalysisProcessor } from './RealEstateAnalysisProcessor';
+export { EntertainmentAnalysisProcessor } from './EntertainmentAnalysisProcessor';
 export { StrategicAnalysisProcessor } from './StrategicAnalysisProcessor';
 export { CustomerProfileProcessor } from './CustomerProfileProcessor';
 export { SensitivityAnalysisProcessor } from './SensitivityAnalysisProcessor';
@@ -52,6 +53,7 @@ export const PROCESSOR_TYPES = {
   SCENARIO_ANALYSIS: 'scenario_analysis',
   SEGMENT_PROFILING: 'segment_profiling',
   BRAND_DIFFERENCE: 'brand_difference',
+  ENTERTAINMENT_ANALYSIS: 'entertainment_analysis',
   SENSITIVITY_ANALYSIS: 'sensitivity_analysis',
   MODEL_PERFORMANCE: 'model_performance',
   MODEL_SELECTION: 'model_selection',
