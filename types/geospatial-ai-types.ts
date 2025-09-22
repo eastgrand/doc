@@ -307,6 +307,7 @@ export interface LayerField {
   alias?: string;
   alternateNames?: string[];
   description?: string;
+  category?: string; // Optional category for field organization
   format?: {
     places?: number;
     digitSeparator?: boolean;
