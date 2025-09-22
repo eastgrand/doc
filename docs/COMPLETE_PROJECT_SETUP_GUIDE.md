@@ -30,10 +30,11 @@ Claude-flow is a **development acceleration system** that speeds up the creation
 6. [Phase 5: Automated Microservice Deployment](#phase-5-automated-microservice-deployment)
 7. [Phase 6: Complete Automation Pipeline (Part 2)](#phase-6-complete-automation-pipeline-part-2)
 8. [Phase 7: Post-Automation Integration](#phase-7-post-automation-integration)
-9. [Phase 8: Validation and Testing](#phase-8-validation-and-testing)
-10. [Phase 9: Production Deployment](#phase-9-production-deployment)
-11. [Troubleshooting](#troubleshooting)
-12. [Success Checklist](#success-checklist)
+9. [Phase 7B: Advanced Integration - Project-Specific Processors](#phase-7b-advanced-integration---project-specific-processors-and-analysis-flow)
+10. [Phase 8: Validation and Testing](#phase-8-validation-and-testing)
+11. [Phase 9: Production Deployment](#phase-9-production-deployment)
+12. [Troubleshooting](#troubleshooting)
+13. [Success Checklist](#success-checklist)
 
 ---
 
@@ -1202,10 +1203,330 @@ npm run generate-map-constraints
 
 # Step 8: Upload to blob storage (if configured)
 cd scripts/automation
-python upload_comprehensive_endpoints.py
+source venv/bin/activate
+python upload_project_endpoints.py --project doors_documentary
+
+# IMPORTANT: Kill any lingering processes after blob upload
+ps aux | grep semantic_field_resolver | grep -v grep | awk '{print $2}' | xargs -r kill
 
 # Step 9: Complete - no large export file cleanup needed
 # The export script now skips creating the large combined file
+```
+
+## Phase 7B: Advanced Integration - Project-Specific Processors and Analysis Flow
+
+**This phase is CRITICAL for projects that need specialized analysis (like entertainment, healthcare, finance).** 
+
+### Step 7B.1: Verify Current Integration Issues
+
+**Check if your project needs specialized processors:**
+
+```bash
+# Test current analysis behavior for your project
+# Navigate to your web interface and run strategic analysis
+# If analysis uses wrong terminology (e.g., "real estate" for entertainment project), continue with this phase
+
+# Check current processor mapping
+grep -r "strategic.*analysis" lib/analysis/DataProcessor.ts
+grep -r "your_project_score" lib/analysis/strategies/processors/HardcodedFieldDefs.ts
+```
+
+**Common Issues That Require This Phase:**
+- ❌ Strategic analysis uses housing/real estate terminology for entertainment projects
+- ❌ Wrong score field used (e.g., `strategic_score` instead of `doors_audience_score`)  
+- ❌ Generic prompts instead of industry-specific analysis context
+- ❌ Mismatched target demographic and analysis recommendations
+
+### Step 7B.2: Create Project-Specific Processors (Entertainment Example)
+
+**If you have an entertainment/documentary project, create specialized processors:**
+
+**Create: `lib/analysis/strategies/processors/EntertainmentAnalysisProcessor.ts`**
+```typescript
+import { RawAnalysisResult, ProcessedAnalysisData } from '../../types';
+import { getTopFieldDefinitions, getPrimaryScoreField } from './HardcodedFieldDefs';
+import { BaseProcessor } from './BaseProcessor';
+
+/**
+ * Entertainment Analysis Processor for [Your Project]
+ * Analyzes [specific audience] potential using composite scoring
+ */
+export class EntertainmentAnalysisProcessor extends BaseProcessor {
+  constructor() {
+    super();
+  }
+
+  validate(rawData: RawAnalysisResult): boolean {
+    return rawData && rawData.success && Array.isArray(rawData.results) && rawData.results.length > 0;
+  }
+
+  process(rawData: RawAnalysisResult): ProcessedAnalysisData {
+    if (!rawData.success) {
+      throw new Error(rawData.error || 'Entertainment analysis failed');
+    }
+
+    const rawResults = rawData.results as unknown[];
+    const scoreField = getPrimaryScoreField('entertainment_analysis', (rawData as any)?.metadata ?? undefined) || 'entertainment_score';
+    
+    const records = rawResults.map((recordRaw: unknown, index: number) => {
+      const record = (recordRaw && typeof recordRaw === 'object') ? recordRaw as Record<string, unknown> : {};
+      
+      // Extract your project-specific score
+      const primaryScore = this.extractPrimaryMetric(record);
+      // Add other project-specific field extractions...
+      
+      return {
+        id: index,
+        score: primaryScore,
+        // Add other processed fields...
+      };
+    });
+
+    return {
+      results: records,
+      statistics: this.calculateStatistics(records.map(r => r.score)),
+      metadata: {
+        scoreField,
+        analysisType: 'entertainment_analysis',
+        totalRecords: records.length
+      }
+    };
+  }
+}
+```
+
+### Step 7B.3: Update Field Mappings for Project-Specific Scores
+
+**Update: `lib/analysis/strategies/processors/HardcodedFieldDefs.ts`**
+
+```typescript
+// Find the mapping object and add your project's score field
+const mapping: Record<string, string> = {
+  // ... existing mappings ...
+  
+  // Your Project-Specific Score Mappings
+  entertainment_analysis: 'doors_audience_score',  // For doors_documentary
+  documentary_analysis: 'doors_audience_score',
+  healthcare_analysis: 'health_outcome_score',     // Example for healthcare
+  finance_analysis: 'financial_opportunity_score', // Example for finance
+  
+  // ... rest of existing mappings
+};
+```
+
+### Step 7B.4: Create Project-Specific Analysis Prompts
+
+**Create: `app/api/claude/shared/[project]-analysis-prompts.ts`**
+
+Example for documentary project:
+
+```typescript
+export const documentaryAnalysisPrompts = {
+  strategic_analysis: `
+🎬 THE [YOUR PROJECT] ANALYSIS
+
+TARGET MARKETS: [Your Geographic Focus]
+AUDIENCE FOCUS: [Your Target Demographics]
+SCORING SYSTEM: [Your Score] ([Range])
+
+Key [Industry] Metrics:
+- [Metric 1] ([Weight]% weight)
+- [Metric 2] ([Weight]% weight) 
+- [Metric 3] ([Weight]% weight)
+- [Metric 4] ([Weight]% weight)
+
+ANALYSIS REQUIREMENTS:
+- ALWAYS rank and prioritize by [your_score_field] ([range])
+- Discuss specific [industry] patterns and [behavior] patterns in analysis
+- Explain HOW the scoring methodology identifies [outcome] appeal in each market
+- Focus on [industry] strategic positioning, not generic market analysis
+- Use [industry] terminology: "[term1]", "[term2]", "[term3]"
+- Reference [key factors] as key drivers
+`,
+  // Add other analysis types...
+};
+```
+
+### Step 7B.5: Add Project-Specific Processor Routing
+
+**Update: `lib/analysis/DataProcessor.ts`**
+
+1. **Add Import:**
+```typescript
+import { EntertainmentAnalysisProcessor } from './strategies/processors/EntertainmentAnalysisProcessor';
+```
+
+2. **Add to Processor Registry:**
+```typescript
+private initializeProcessors(): void {
+  // ... existing processors ...
+  
+  this.processors.set('/entertainment-analysis', new EntertainmentAnalysisProcessor());
+  
+  // ... rest of processors
+}
+```
+
+3. **Add Project Detection Logic:**
+```typescript
+private getProcessorForEndpoint(endpoint: string): DataProcessorStrategy {
+  // ... existing logic ...
+  
+  // PROJECT-SPECIFIC PROCESSOR SELECTION
+  const projectType = this.detectProjectType();
+  
+  // For documentary/entertainment projects, use entertainment processors
+  if (projectType === 'documentary' && endpoint === '/strategic-analysis') {
+    if (this.processors.has('/entertainment-analysis')) {
+      return this.processors.get('/entertainment-analysis')!;
+    }
+  }
+  
+  // ... rest of logic
+}
+
+private detectProjectType(): string {
+  // Check URL, blob URLs, or data context to determine project type
+  if (typeof window !== 'undefined') {
+    const pathname = window.location?.pathname || '';
+    const search = window.location?.search || '';
+    
+    if (pathname.includes('documentary') || search.includes('doors_documentary')) {
+      return 'documentary';
+    }
+    // Add other project type detection logic...
+  }
+  
+  return 'general';
+}
+```
+
+### Step 7B.6: Create Project-Specific API Route (Optional)
+
+**Create: `app/api/claude/[project]-generate-response/route.ts`**
+
+```typescript
+import { getDocumentaryAnalysisPrompt } from '../shared/documentary-analysis-prompts';
+import { getDocumentaryPersona } from '../shared/documentary-personas';
+
+export async function POST(request: NextRequest) {
+  // ... standard setup ...
+  
+  // Get project-specific persona and prompts
+  const documentaryPersona = getDocumentaryPersona();
+  const documentaryAnalysisPrompt = getDocumentaryAnalysisPrompt(analysisType);
+  
+  // Create project-specific context
+  const projectContext = `
+🎯 [YOUR PROJECT] MARKET ANALYSIS
+
+TARGET MARKETS: [Your Markets]
+AUDIENCE FOCUS: [Your Demographics]
+SCORING SYSTEM: [Your Score] ([Range])
+
+[PROJECT INDUSTRY] CONTEXT:
+${documentaryPersona.description}
+
+ANALYSIS REQUIREMENTS:
+${documentaryAnalysisPrompt}
+`;
+
+  // ... rest of route logic
+}
+```
+
+### Step 7B.7: Create Project-Specific Personas
+
+**Create: `app/api/claude/shared/[project]-personas.ts`**
+
+```typescript
+export const documentaryPersonas: Record<string, DocumentaryPersona> = {
+  primary_strategist: {
+    name: "[Your Project] Strategy Expert",
+    description: `You are a specialized [industry] strategist focused exclusively on [Your Project]. You have deep expertise in [target demographics] and understand [key domain knowledge]. Your analysis focuses on [specific outcomes] and [strategic objectives].`,
+    expertise: [
+      "[Domain knowledge 1]",
+      "[Domain knowledge 2]", 
+      "[Domain knowledge 3]",
+      // ... specific expertise areas
+    ],
+    tone: "Strategic and [domain]-focused",
+    analysisApproach: "Focus on [your scoring], strategic [outcomes], and business recommendations specific to [Your Project]"
+  }
+  // Add 2-3 focused personas maximum
+};
+```
+
+### Step 7B.8: Update Main Analysis Prompts
+
+**Update: `app/api/claude/shared/analysis-prompts.ts`**
+
+1. **Add Project Mapping:**
+```typescript
+const typeMapping: Record<string, string> = {
+  // ... existing mappings ...
+  'documentary': 'documentary_analysis',
+  'entertainment': 'documentary_analysis',
+  'doors': 'documentary_analysis',
+  '[your_project_keywords]': '[your_analysis_type]',
+};
+```
+
+2. **Add Project Prompt:**
+```typescript
+export const analysisPrompts = {
+  // ... existing prompts ...
+  
+  [your_analysis_type]: `
+${UNIVERSAL_REQUIREMENTS}
+
+[YOUR PROJECT] ANALYSIS TECHNICAL CONTEXT:
+You are analyzing [your domain] data for [Your Project] [objectives] with pre-calculated [scoring].
+
+⚠️ CRITICAL SCORE INTERPRETATION REQUIREMENTS:
+- [Your Scores] range from [min-max], where higher scores indicate better [outcome] potential
+- Focus on [your target markets]
+- Use [industry] terminology and context
+
+[Add full project-specific prompt details...]
+`,
+};
+```
+
+### Step 7B.9: Verify Integration
+
+```bash
+# Test the new integration
+npm run dev
+
+# Navigate to strategic analysis for your project
+# Check that:
+# 1. Correct score field is used ([your_score] not strategic_score)
+# 2. Industry-specific terminology appears
+# 3. Project-specific recommendations are provided
+# 4. Target demographics are correctly referenced
+
+# Check processor routing
+curl "http://localhost:3000/api/analyze" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "strategic analysis for [your project]", "endpoint": "/strategic-analysis"}'
+```
+
+### Step 7B.10: Commit Project-Specific Integration
+
+```bash
+# Commit all project-specific integration changes
+git add .
+git commit -m "Add [project] specialized processors and analysis flow
+
+- Project-specific processor routing
+- [Industry] industry prompts and personas  
+- [Your score] field mapping and handling
+- Dedicated [project] API route and context
+
+🎯 [Your Project] analysis system now fully operational!"
+
+git push
 ```
 
 ### Step 7.4: Update Geographic Data (if needed)
@@ -1471,24 +1792,59 @@ console.log('Competitors:', resolver.getCompetitorBrands());
 - [ ] Map constraints generated
 - [ ] Geographic data updated (if needed)
 
-### Phase 5: Validation ✅
+### Phase 5: Advanced Integration (Optional) ✅
+- [ ] **Project-specific processors created** (if needed for specialized analysis)
+- [ ] **Score field mapping updated** (project score → HardcodedFieldDefs)
+- [ ] **Project-specific prompts created** (industry-specific analysis context)
+- [ ] **Project personas implemented** (2-3 focused industry experts)
+- [ ] **Processor routing logic added** (project detection → specialized processors)
+- [ ] **Dedicated API route created** (optional, for complex projects)
+- [ ] **Analysis flow verification** (correct score fields, terminology, recommendations)
+
+### Phase 6: Validation ✅
 - [ ] Routing accuracy tests pass (100%)
 - [ ] Project-specific processor tests pass
 - [ ] Manual testing completed successfully
 - [ ] Browser console shows no errors
 - [ ] Data integrity validated
 
-### Phase 6: Production ✅
+### Phase 7: Production ✅
 - [ ] Production build successful
 - [ ] Production deployment completed
-- [ ] Production health checks pass
-- [ ] End-to-end functionality verified
+- [ ] All blob storage URLs accessible
+- [ ] Performance validated in production environment
 
-### Phase 7: Documentation ✅
+---
+
+## 🎯 **Doors Documentary Example Success Story**
+
+The **doors_documentary** project demonstrates the complete advanced integration:
+
+### ✅ **Specialized Integration Completed:**
+- **Entertainment Industry Processors**: `EntertainmentAnalysisProcessor` with doors-specific logic
+- **Documentary Score Field**: `doors_audience_score` (27-69 range) correctly mapped
+- **Classic Rock Prompts**: Entertainment industry terminology and classic rock context
+- **Doors Documentary Personas**: 3 focused experts (Launch Strategist, Audience Analyst, Distribution Expert)  
+- **Project Detection**: Automatic routing for documentary projects
+- **Dedicated API Route**: `/documentary-generate-response` with entertainment context
+- **Blob Storage**: 17 analysis endpoints uploaded and accessible
+
+### 🎬 **Analysis Flow Verification:**
+- **Strategic Analysis**: Uses entertainment processors and doors_audience_score
+- **Terminology**: "audience appeal", "documentary launch", "classic rock affinity"
+- **Demographics**: Baby Boomers, Gen X (45-70), classic rock enthusiasts
+- **Recommendations**: Theater networks, music venues, cultural events
+- **Geographic Focus**: IL, IN, WI (primary launch markets)
+
+This serves as a complete template for other specialized projects (healthcare, finance, etc.).
+
+### Phase 8: Documentation ✅
+
 - [ ] Project configuration documented
-- [ ] Custom field mappings documented
+- [ ] Custom field mappings documented  
 - [ ] Deployment process documented
 - [ ] Troubleshooting guide updated
+- [ ] Advanced integration steps documented (if applicable)
 
 ---
 
@@ -1509,5 +1865,7 @@ console.log('Competitors:', resolver.getCompetitorBrands());
 ---
 
 **🎉 Congratulations! You now have a complete, production-ready analysis platform with AI-powered insights, automated data processing, and comprehensive visualization capabilities.**
+
+*This guide reflects the complete end-to-end workflow from the doors_documentary project implementation, including all advanced integration steps for specialized industry analysis.*
 
 **📚 Keep this document for future projects - simply update the project-specific parameters and follow the same workflow for consistent, rapid deployment.**
