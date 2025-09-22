@@ -63,9 +63,9 @@ export interface ComparativeConfig {
 }
 
 export interface CompetitiveConfig {
-  competitionType: 'market_share' | 'performance' | 'quality';
-  benchmarkStrategy: 'top_performer' | 'industry_average' | 'peer_group';
-  competitorIdentification: 'explicit' | 'inferred' | 'geographic';
+  competitionType: 'market_share' | 'performance' | 'quality' | 'entertainment_venues';
+  benchmarkStrategy: 'top_performer' | 'industry_average' | 'peer_group' | 'market_saturation';
+  competitorIdentification: 'explicit' | 'inferred' | 'geographic' | 'theater_density';
 }
 
 export interface DemographicConfig {
