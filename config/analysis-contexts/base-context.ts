@@ -74,6 +74,7 @@ export interface DemographicConfig {
   ageGroupings?: { [key: string]: number[] };
   incomeQuintiles?: number[];
   targetSegments?: string[];
+  ageRange?: string;
 }
 
 export interface StrategicConfig {
@@ -93,13 +94,14 @@ export interface SpatialConfig {
   clusteringMethod: 'geographic' | 'demographic' | 'performance' | 'hexagonal';
   proximityMetric: 'distance' | 'similarity' | 'connectivity' | 'h3_distance';
   clusterSizePreference: 'small' | 'medium' | 'large' | 'adaptive';
+  resolution?: number;
 }
 
 export interface EnsembleConfig {
   methodWeights: { [method: string]: number };
   consensusThreshold: number;
   diversityBonus: boolean;
-  entertainmentSpecific?: { [key: string]: any };
+  entertainmentSpecific?: { [key: string]: any } | boolean;
 }
 
 export interface ProcessorConfig {
