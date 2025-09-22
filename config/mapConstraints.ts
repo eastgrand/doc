@@ -80,7 +80,7 @@ export function applyMapConstraints(view: __esri.MapView): void {
 }
 
 // Helper function to zoom to data extent
-export function zoomToDataExtent(view: __esri.MapView, options?: __esri.MapViewGoToOptions): Promise<any> {
+export function zoomToDataExtent(view: __esri.MapView, options?: any): Promise<any> {
   if (!view) {
     console.warn('[MapConstraints] No MapView provided');
     return Promise.resolve();
