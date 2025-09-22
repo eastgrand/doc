@@ -1,0 +1,36 @@
+{
+  "deployment_version": "1.0",
+  "created_timestamp": "2025-09-22T09:02:56.682372",
+  "endpoints": [
+    "strategic-analysis",
+    "competitive-analysis",
+    "demographic-insights",
+    "comparative-analysis",
+    "spatial-clusters",
+    "correlation-analysis",
+    "trend-analysis",
+    "anomaly-detection",
+    "predictive-modeling",
+    "scenario-analysis",
+    "segment-profiling",
+    "sensitivity-analysis",
+    "feature-interactions",
+    "feature-importance-ranking",
+    "model-performance",
+    "outlier-detection",
+    "analyze",
+    "brand-difference"
+  ],
+  "total_endpoints": 18,
+  "deployment_instructions": {
+    "local_fallback": "Copy all files in endpoints/ to public/data/endpoints/",
+    "blob_storage": "Upload large files to Vercel Blob Storage and update blob-urls.json",
+    "client_config": "Update CachedEndpointRouter.ts with new endpoint mappings"
+  },
+  "file_structure": {
+    "endpoints/": "Individual endpoint JSON files",
+    "all_endpoints.json": "Combined file with all endpoints",
+    "blob-urls.json": "Blob storage URL configuration",
+    "upload_endpoints.sh": "Automated upload script"
+  }
+}

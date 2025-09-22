@@ -1,5 +1,5 @@
 // Map Constraints Configuration
-// Updated for Quebec Housing Market project
+// Auto-generated on 2025-09-22T15:01:01.938Z
 // This file defines geographic constraints to prevent panning outside project area
 
 export interface MapConstraintsConfig {
@@ -18,13 +18,13 @@ export interface MapConstraintsConfig {
   rotationEnabled?: boolean;
 }
 
-// Quebec project extent with buffer to prevent panning outside data area
+// Project extent with 10% buffer to prevent panning outside data area
 export const MAP_CONSTRAINTS: MapConstraintsConfig = {
   geometry: {
-    xmin: -8700000,   // Quebec west bound with buffer (~-78°)
-    ymin: 5800000,    // Quebec south bound with buffer (~45.5°)  
-    xmax: -7400000,   // Quebec east bound with buffer (~-66.5°)
-    ymax: 6700000,    // Quebec north bound with buffer (~54.5°)
+    xmin: -13969553,
+    ymin: 3635704,
+    xmax: -12532913,
+    ymax: 5450884,
     spatialReference: {
       wkid: 102100
     }
@@ -36,35 +36,51 @@ export const MAP_CONSTRAINTS: MapConstraintsConfig = {
   rotationEnabled: false // Typically disabled for data analysis applications
 };
 
-// Quebec data extent (without buffer) for reference
+// Original data extent (without buffer) for reference
 export const DATA_EXTENT = {
-  xmin: -8600000,   // Quebec west bound (~-77.2°)
-  ymin: 5900000,    // Quebec south bound (~45.8°)
-  xmax: -7500000,   // Quebec east bound (~-67.4°) 
-  ymax: 6600000,    // Quebec north bound (~54.2°)
+  xmin: -13849833,
+  ymin: 3786969,
+  xmax: -12652633,
+  ymax: 5299619,
   spatialReference: {
     wkid: 102100
   }
 };
 
 // Helper function to apply constraints to a MapView
-// Note: No constraints applied - allows unlimited panning and zooming
+// Note: This only constrains panning boundaries, does not change initial map center
 export function applyMapConstraints(view: __esri.MapView): void {
   if (!view) {
     console.warn('[MapConstraints] No MapView provided');
     return;
   }
   
-  // Remove all constraints to allow unlimited panning and zooming
-  view.constraints = {
-    // Empty constraints object allows unlimited panning and zooming
+  // Create proper Extent object for constraints
+  const constraintExtent = {
+    type: "extent" as const,
+    xmin: MAP_CONSTRAINTS.geometry.xmin,
+    ymin: MAP_CONSTRAINTS.geometry.ymin,
+    xmax: MAP_CONSTRAINTS.geometry.xmax,
+    ymax: MAP_CONSTRAINTS.geometry.ymax,
+    spatialReference: MAP_CONSTRAINTS.geometry.spatialReference
   };
   
-  console.log('[MapConstraints] Removed all map constraints - unlimited panning and zoom enabled');
+  view.constraints = {
+    geometry: constraintExtent,
+    minZoom: MAP_CONSTRAINTS.minZoom,
+    maxZoom: MAP_CONSTRAINTS.maxZoom,
+    snapToZoom: MAP_CONSTRAINTS.snapToZoom,
+    rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
+  };
+  
+  console.log('[MapConstraints] Applied geographic constraints to MapView (panning boundaries only)', {
+    extent: constraintExtent,
+    rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
+  });
 }
 
 // Helper function to zoom to data extent
-export function zoomToDataExtent(view: __esri.MapView, options?: any): Promise<any> {
+export function zoomToDataExtent(view: __esri.MapView, options?: __esri.MapViewGoToOptions): Promise<any> {
   if (!view) {
     console.warn('[MapConstraints] No MapView provided');
     return Promise.resolve();

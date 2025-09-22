@@ -1,0 +1,1356 @@
+{
+  "success": true,
+  "total_records": 147,
+  "results": [
+    {
+      "feature_name": "classic_rock_affinity_score",
+      "importance_value": 0.937846,
+      "model_name": "ensemble",
+      "rank": 1,
+      "importance_score": 0.937846,
+      "ID": "area_00001",
+      "DESCRIPTION": "Area area_00001"
+    },
+    {
+      "feature_name": "classic_rock_affinity_score",
+      "importance_value": 0.136967,
+      "model_name": "xgboost",
+      "rank": 1,
+      "importance_score": 0.136967,
+      "ID": "area_00002",
+      "DESCRIPTION": "Area area_00002"
+    },
+    {
+      "feature_name": "cultural_engagement_score",
+      "importance_value": 0.082957,
+      "model_name": "xgboost",
+      "rank": 39,
+      "importance_score": 0.082957,
+      "ID": "area_00003",
+      "DESCRIPTION": "Area area_00003"
+    },
+    {
+      "feature_name": "cultural_engagement_score",
+      "importance_value": 0.041257,
+      "model_name": "ensemble",
+      "rank": 40,
+      "importance_score": 0.041257,
+      "ID": "area_00004",
+      "DESCRIPTION": "Area area_00004"
+    },
+    {
+      "feature_name": "cultural_engagement_score",
+      "importance_value": 0.039642,
+      "model_name": "random_forest",
+      "rank": 39,
+      "importance_score": 0.039642,
+      "ID": "area_00005",
+      "DESCRIPTION": "Area area_00005"
+    },
+    {
+      "feature_name": "MP19180A_B_P",
+      "importance_value": 0.027179,
+      "model_name": "xgboost",
+      "rank": 2,
+      "importance_score": 0.027179,
+      "ID": "area_00006",
+      "DESCRIPTION": "Area area_00006"
+    },
+    {
+      "feature_name": "MP22091A_B_P",
+      "importance_value": 0.022806,
+      "model_name": "xgboost",
+      "rank": 6,
+      "importance_score": 0.022806,
+      "ID": "area_00007",
+      "DESCRIPTION": "Area area_00007"
+    },
+    {
+      "feature_name": "MP20158A_B_P",
+      "importance_value": 0.006519,
+      "model_name": "ensemble",
+      "rank": 45,
+      "importance_score": 0.006519,
+      "ID": "area_00008",
+      "DESCRIPTION": "Area area_00008"
+    },
+    {
+      "feature_name": "documentary_engagement_score",
+      "importance_value": 0.005279,
+      "model_name": "ensemble",
+      "rank": 26,
+      "importance_score": 0.005279,
+      "ID": "area_00009",
+      "DESCRIPTION": "Area area_00009"
+    },
+    {
+      "feature_name": "classic_rock_affinity_score",
+      "importance_value": 0.005267,
+      "model_name": "random_forest",
+      "rank": 1,
+      "importance_score": 0.005267,
+      "ID": "area_00010",
+      "DESCRIPTION": "Area area_00010"
+    },
+    {
+      "feature_name": "MP22055A_B_P",
+      "importance_value": 0.004437,
+      "model_name": "ensemble",
+      "rank": 5,
+      "importance_score": 0.004437,
+      "ID": "area_00011",
+      "DESCRIPTION": "Area area_00011"
+    },
+    {
+      "feature_name": "thematic_value",
+      "importance_value": 0.003806,
+      "model_name": "ensemble",
+      "rank": 11,
+      "importance_score": 0.003806,
+      "ID": "area_00012",
+      "DESCRIPTION": "Area area_00012"
+    },
+    {
+      "feature_name": "documentary_engagement_score",
+      "importance_value": 0.003571,
+      "model_name": "xgboost",
+      "rank": 3,
+      "importance_score": 0.003571,
+      "ID": "area_00013",
+      "DESCRIPTION": "Area area_00013"
+    },
+    {
+      "feature_name": "MP22024A_B_P",
+      "importance_value": 0.001934,
+      "model_name": "xgboost",
+      "rank": 40,
+      "importance_score": 0.001934,
+      "ID": "area_00014",
+      "DESCRIPTION": "Area area_00014"
+    },
+    {
+      "feature_name": "MP20109A_B",
+      "importance_value": 0.001674,
+      "model_name": "xgboost",
+      "rank": 25,
+      "importance_score": 0.001674,
+      "ID": "area_00015",
+      "DESCRIPTION": "Area area_00015"
+    },
+    {
+      "feature_name": "MP20158A_B_P",
+      "importance_value": 0.001161,
+      "model_name": "xgboost",
+      "rank": 15,
+      "importance_score": 0.001161,
+      "ID": "area_00016",
+      "DESCRIPTION": "Area area_00016"
+    },
+    {
+      "feature_name": "thematic_value",
+      "importance_value": 0.000935,
+      "model_name": "xgboost",
+      "rank": 4,
+      "importance_score": 0.000935,
+      "ID": "area_00017",
+      "DESCRIPTION": "Area area_00017"
+    },
+    {
+      "feature_name": "MILLENN_CY",
+      "importance_value": 0.000588,
+      "model_name": "xgboost",
+      "rank": 37,
+      "importance_score": 0.000588,
+      "ID": "area_00018",
+      "DESCRIPTION": "Area area_00018"
+    },
+    {
+      "feature_name": "MP22055A_B_P",
+      "importance_value": 0.000485,
+      "model_name": "random_forest",
+      "rank": 5,
+      "importance_score": 0.000485,
+      "ID": "area_00019",
+      "DESCRIPTION": "Area area_00019"
+    },
+    {
+      "feature_name": "X9073_X_A",
+      "importance_value": 0.00047,
+      "model_name": "xgboost",
+      "rank": 21,
+      "importance_score": 0.00047,
+      "ID": "area_00020",
+      "DESCRIPTION": "Area area_00020"
+    },
+    {
+      "feature_name": "MILLENN_CY_P",
+      "importance_value": 0.000463,
+      "model_name": "xgboost",
+      "rank": 38,
+      "importance_score": 0.000463,
+      "ID": "area_00021",
+      "DESCRIPTION": "Area area_00021"
+    },
+    {
+      "feature_name": "thematic_value",
+      "importance_value": 0.000394,
+      "model_name": "random_forest",
+      "rank": 4,
+      "importance_score": 0.000394,
+      "ID": "area_00022",
+      "DESCRIPTION": "Area area_00022"
+    },
+    {
+      "feature_name": "MP22086A_B_P",
+      "importance_value": 0.000292,
+      "model_name": "ensemble",
+      "rank": 48,
+      "importance_score": 0.000292,
+      "ID": "area_00023",
+      "DESCRIPTION": "Area area_00023"
+    },
+    {
+      "feature_name": "MP23018A_B_P",
+      "importance_value": 0.000256,
+      "model_name": "xgboost",
+      "rank": 7,
+      "importance_score": 0.000256,
+      "ID": "area_00024",
+      "DESCRIPTION": "Area area_00024"
+    },
+    {
+      "feature_name": "MP22089A_B_P",
+      "importance_value": 0.000195,
+      "model_name": "xgboost",
+      "rank": 10,
+      "importance_score": 0.000195,
+      "ID": "area_00025",
+      "DESCRIPTION": "Area area_00025"
+    },
+    {
+      "feature_name": "MP22084A_B_P",
+      "importance_value": 0.000174,
+      "model_name": "ensemble",
+      "rank": 41,
+      "importance_score": 0.000174,
+      "ID": "area_00026",
+      "DESCRIPTION": "Area area_00026"
+    },
+    {
+      "feature_name": "MP22089A_B_P",
+      "importance_value": 0.000172,
+      "model_name": "ensemble",
+      "rank": 27,
+      "importance_score": 0.000172,
+      "ID": "area_00027",
+      "DESCRIPTION": "Area area_00027"
+    },
+    {
+      "feature_name": "MP22106A_B_P",
+      "importance_value": 0.000109,
+      "model_name": "ensemble",
+      "rank": 49,
+      "importance_score": 0.000109,
+      "ID": "area_00028",
+      "DESCRIPTION": "Area area_00028"
+    },
+    {
+      "feature_name": "X9078_X_A",
+      "importance_value": 0.000106,
+      "model_name": "xgboost",
+      "rank": 17,
+      "importance_score": 0.000106,
+      "ID": "area_00029",
+      "DESCRIPTION": "Area area_00029"
+    },
+    {
+      "feature_name": "X9078_X_A",
+      "importance_value": 6.8e-05,
+      "model_name": "ensemble",
+      "rank": 8,
+      "importance_score": 6.8e-05,
+      "ID": "area_00030",
+      "DESCRIPTION": "Area area_00030"
+    },
+    {
+      "feature_name": "MP22055A_B_P",
+      "importance_value": 5.5e-05,
+      "model_name": "xgboost",
+      "rank": 5,
+      "importance_score": 5.5e-05,
+      "ID": "area_00031",
+      "DESCRIPTION": "Area area_00031"
+    },
+    {
+      "feature_name": "MP22087A_B",
+      "importance_value": 4.5e-05,
+      "model_name": "xgboost",
+      "rank": 36,
+      "importance_score": 4.5e-05,
+      "ID": "area_00032",
+      "DESCRIPTION": "Area area_00032"
+    },
+    {
+      "feature_name": "MP20109A_B_P",
+      "importance_value": 3.9e-05,
+      "model_name": "xgboost",
+      "rank": 9,
+      "importance_score": 3.9e-05,
+      "ID": "area_00033",
+      "DESCRIPTION": "Area area_00033"
+    },
+    {
+      "feature_name": "MP20044A_B_P",
+      "importance_value": 3.9e-05,
+      "model_name": "xgboost",
+      "rank": 11,
+      "importance_score": 3.9e-05,
+      "ID": "area_00034",
+      "DESCRIPTION": "Area area_00034"
+    },
+    {
+      "feature_name": "GENZ_CY_P",
+      "importance_value": 2.3e-05,
+      "model_name": "ensemble",
+      "rank": 14,
+      "importance_score": 2.3e-05,
+      "ID": "area_00035",
+      "DESCRIPTION": "Area area_00035"
+    },
+    {
+      "feature_name": "MP22103A_B",
+      "importance_value": 1.7e-05,
+      "model_name": "xgboost",
+      "rank": 32,
+      "importance_score": 1.7e-05,
+      "ID": "area_00036",
+      "DESCRIPTION": "Area area_00036"
+    },
+    {
+      "feature_name": "X9028_X_A",
+      "importance_value": 1.5e-05,
+      "model_name": "xgboost",
+      "rank": 34,
+      "importance_score": 1.5e-05,
+      "ID": "area_00037",
+      "DESCRIPTION": "Area area_00037"
+    },
+    {
+      "feature_name": "MP22103A_B_P",
+      "importance_value": 1.4e-05,
+      "model_name": "xgboost",
+      "rank": 14,
+      "importance_score": 1.4e-05,
+      "ID": "area_00038",
+      "DESCRIPTION": "Area area_00038"
+    },
+    {
+      "feature_name": "MP22083A_B_P",
+      "importance_value": 1.3e-05,
+      "model_name": "ensemble",
+      "rank": 31,
+      "importance_score": 1.3e-05,
+      "ID": "area_00039",
+      "DESCRIPTION": "Area area_00039"
+    },
+    {
+      "feature_name": "MP22106A_B_P",
+      "importance_value": 1.2e-05,
+      "model_name": "xgboost",
+      "rank": 13,
+      "importance_score": 1.2e-05,
+      "ID": "area_00040",
+      "DESCRIPTION": "Area area_00040"
+    },
+    {
+      "feature_name": "MP22084A_B_P",
+      "importance_value": 1e-05,
+      "model_name": "xgboost",
+      "rank": 8,
+      "importance_score": 1e-05,
+      "ID": "area_00041",
+      "DESCRIPTION": "Area area_00041"
+    },
+    {
+      "feature_name": "MP23018A_B",
+      "importance_value": 8e-06,
+      "model_name": "xgboost",
+      "rank": 23,
+      "importance_score": 8e-06,
+      "ID": "area_00042",
+      "DESCRIPTION": "Area area_00042"
+    },
+    {
+      "feature_name": "MP22087A_B_P",
+      "importance_value": 7e-06,
+      "model_name": "xgboost",
+      "rank": 41,
+      "importance_score": 7e-06,
+      "ID": "area_00043",
+      "DESCRIPTION": "Area area_00043"
+    },
+    {
+      "feature_name": "MP22086A_B_P",
+      "importance_value": 7e-06,
+      "model_name": "xgboost",
+      "rank": 18,
+      "importance_score": 7e-06,
+      "ID": "area_00044",
+      "DESCRIPTION": "Area area_00044"
+    },
+    {
+      "feature_name": "GENZ_CY_P",
+      "importance_value": 5e-06,
+      "model_name": "xgboost",
+      "rank": 19,
+      "importance_score": 5e-06,
+      "ID": "area_00045",
+      "DESCRIPTION": "Area area_00045"
+    },
+    {
+      "feature_name": "MP22086A_B_P",
+      "importance_value": 5e-06,
+      "model_name": "random_forest",
+      "rank": 18,
+      "importance_score": 5e-06,
+      "ID": "area_00046",
+      "DESCRIPTION": "Area area_00046"
+    },
+    {
+      "feature_name": "MP22083A_B_P",
+      "importance_value": 5e-06,
+      "model_name": "xgboost",
+      "rank": 22,
+      "importance_score": 5e-06,
+      "ID": "area_00047",
+      "DESCRIPTION": "Area area_00047"
+    },
+    {
+      "feature_name": "TPOPL1",
+      "importance_value": 5e-06,
+      "model_name": "xgboost",
+      "rank": 48,
+      "importance_score": 5e-06,
+      "ID": "area_00048",
+      "DESCRIPTION": "Area area_00048"
+    },
+    {
+      "feature_name": "MP19180A_B",
+      "importance_value": 5e-06,
+      "model_name": "xgboost",
+      "rank": 27,
+      "importance_score": 5e-06,
+      "ID": "area_00049",
+      "DESCRIPTION": "Area area_00049"
+    },
+    {
+      "feature_name": "MP20158A_B_P",
+      "importance_value": 4e-06,
+      "model_name": "random_forest",
+      "rank": 15,
+      "importance_score": 4e-06,
+      "ID": "area_00050",
+      "DESCRIPTION": "Area area_00050"
+    },
+    {
+      "feature_name": "documentary_engagement_score",
+      "importance_value": 4e-06,
+      "model_name": "random_forest",
+      "rank": 3,
+      "importance_score": 4e-06,
+      "ID": "area_00051",
+      "DESCRIPTION": "Area area_00051"
+    },
+    {
+      "feature_name": "TPOPL1_P",
+      "importance_value": 4e-06,
+      "model_name": "xgboost",
+      "rank": 44,
+      "importance_score": 4e-06,
+      "ID": "area_00052",
+      "DESCRIPTION": "Area area_00052"
+    },
+    {
+      "feature_name": "MP22091A_B",
+      "importance_value": 4e-06,
+      "model_name": "xgboost",
+      "rank": 35,
+      "importance_score": 4e-06,
+      "ID": "area_00053",
+      "DESCRIPTION": "Area area_00053"
+    },
+    {
+      "feature_name": "X9001_X_A",
+      "importance_value": 3e-06,
+      "model_name": "xgboost",
+      "rank": 16,
+      "importance_score": 3e-06,
+      "ID": "area_00054",
+      "DESCRIPTION": "Area area_00054"
+    },
+    {
+      "feature_name": "GENALPHACY",
+      "importance_value": 3e-06,
+      "model_name": "xgboost",
+      "rank": 33,
+      "importance_score": 3e-06,
+      "ID": "area_00055",
+      "DESCRIPTION": "Area area_00055"
+    },
+    {
+      "feature_name": "Shape__Length",
+      "importance_value": 3e-06,
+      "model_name": "xgboost",
+      "rank": 31,
+      "importance_score": 3e-06,
+      "ID": "area_00056",
+      "DESCRIPTION": "Area area_00056"
+    },
+    {
+      "feature_name": "Shape__Area",
+      "importance_value": 3e-06,
+      "model_name": "xgboost",
+      "rank": 29,
+      "importance_score": 3e-06,
+      "ID": "area_00057",
+      "DESCRIPTION": "Area area_00057"
+    },
+    {
+      "feature_name": "LONGITUDE",
+      "importance_value": 3e-06,
+      "model_name": "xgboost",
+      "rank": 49,
+      "importance_score": 3e-06,
+      "ID": "area_00058",
+      "DESCRIPTION": "Area area_00058"
+    },
+    {
+      "feature_name": "MP20044A_B",
+      "importance_value": 2e-06,
+      "model_name": "xgboost",
+      "rank": 26,
+      "importance_score": 2e-06,
+      "ID": "area_00059",
+      "DESCRIPTION": "Area area_00059"
+    },
+    {
+      "feature_name": "GENX_CY_P",
+      "importance_value": 2e-06,
+      "model_name": "xgboost",
+      "rank": 12,
+      "importance_score": 2e-06,
+      "ID": "area_00060",
+      "DESCRIPTION": "Area area_00060"
+    },
+    {
+      "feature_name": "MP22090A_B_P",
+      "importance_value": 2e-06,
+      "model_name": "xgboost",
+      "rank": 20,
+      "importance_score": 2e-06,
+      "ID": "area_00061",
+      "DESCRIPTION": "Area area_00061"
+    },
+    {
+      "feature_name": "EMPNUM",
+      "importance_value": 2e-06,
+      "model_name": "xgboost",
+      "rank": 46,
+      "importance_score": 2e-06,
+      "ID": "area_00062",
+      "DESCRIPTION": "Area area_00062"
+    },
+    {
+      "feature_name": "SALESVOL",
+      "importance_value": 2e-06,
+      "model_name": "xgboost",
+      "rank": 47,
+      "importance_score": 2e-06,
+      "ID": "area_00063",
+      "DESCRIPTION": "Area area_00063"
+    },
+    {
+      "feature_name": "MIN_SQFT",
+      "importance_value": 2e-06,
+      "model_name": "xgboost",
+      "rank": 42,
+      "importance_score": 2e-06,
+      "ID": "area_00064",
+      "DESCRIPTION": "Area area_00064"
+    },
+    {
+      "feature_name": "MP22106A_B_P",
+      "importance_value": 2e-06,
+      "model_name": "random_forest",
+      "rank": 13,
+      "importance_score": 2e-06,
+      "ID": "area_00065",
+      "DESCRIPTION": "Area area_00065"
+    },
+    {
+      "feature_name": "MP22083A_B_P",
+      "importance_value": 2e-06,
+      "model_name": "random_forest",
+      "rank": 22,
+      "importance_score": 2e-06,
+      "ID": "area_00066",
+      "DESCRIPTION": "Area area_00066"
+    },
+    {
+      "feature_name": "X9073_X",
+      "importance_value": 1e-06,
+      "model_name": "xgboost",
+      "rank": 24,
+      "importance_score": 1e-06,
+      "ID": "area_00067",
+      "DESCRIPTION": "Area area_00067"
+    },
+    {
+      "feature_name": "MP22089A_B_P",
+      "importance_value": 1e-06,
+      "model_name": "random_forest",
+      "rank": 10,
+      "importance_score": 1e-06,
+      "ID": "area_00068",
+      "DESCRIPTION": "Area area_00068"
+    },
+    {
+      "feature_name": "GENX_CY_P",
+      "importance_value": 1e-06,
+      "model_name": "random_forest",
+      "rank": 12,
+      "importance_score": 1e-06,
+      "ID": "area_00069",
+      "DESCRIPTION": "Area area_00069"
+    },
+    {
+      "feature_name": "MP22090A_B",
+      "importance_value": 1e-06,
+      "model_name": "xgboost",
+      "rank": 30,
+      "importance_score": 1e-06,
+      "ID": "area_00070",
+      "DESCRIPTION": "Area area_00070"
+    },
+    {
+      "feature_name": "X9001_X_A",
+      "importance_value": 1e-06,
+      "model_name": "random_forest",
+      "rank": 16,
+      "importance_score": 1e-06,
+      "ID": "area_00071",
+      "DESCRIPTION": "Area area_00071"
+    },
+    {
+      "feature_name": "MP22084A_B_P",
+      "importance_value": 1e-06,
+      "model_name": "random_forest",
+      "rank": 8,
+      "importance_score": 1e-06,
+      "ID": "area_00072",
+      "DESCRIPTION": "Area area_00072"
+    },
+    {
+      "feature_name": "Shape__Area",
+      "importance_value": 1e-06,
+      "model_name": "ensemble",
+      "rank": 28,
+      "importance_score": 1e-06,
+      "ID": "area_00073",
+      "DESCRIPTION": "Area area_00073"
+    },
+    {
+      "feature_name": "GENX_CY_P",
+      "importance_value": 1e-06,
+      "model_name": "ensemble",
+      "rank": 10,
+      "importance_score": 1e-06,
+      "ID": "area_00074",
+      "DESCRIPTION": "Area area_00074"
+    },
+    {
+      "feature_name": "GENZ_CY_P",
+      "importance_value": 1e-06,
+      "model_name": "random_forest",
+      "rank": 19,
+      "importance_score": 1e-06,
+      "ID": "area_00075",
+      "DESCRIPTION": "Area area_00075"
+    },
+    {
+      "feature_name": "X9078_X_A",
+      "importance_value": 1e-06,
+      "model_name": "random_forest",
+      "rank": 17,
+      "importance_score": 1e-06,
+      "ID": "area_00076",
+      "DESCRIPTION": "Area area_00076"
+    },
+    {
+      "feature_name": "X9028_X_A",
+      "importance_value": 1e-06,
+      "model_name": "random_forest",
+      "rank": 34,
+      "importance_score": 1e-06,
+      "ID": "area_00077",
+      "DESCRIPTION": "Area area_00077"
+    },
+    {
+      "feature_name": "X9028_X_A",
+      "importance_value": 1e-06,
+      "model_name": "ensemble",
+      "rank": 19,
+      "importance_score": 1e-06,
+      "ID": "area_00078",
+      "DESCRIPTION": "Area area_00078"
+    },
+    {
+      "feature_name": "MP22024A_B",
+      "importance_value": 1e-06,
+      "model_name": "xgboost",
+      "rank": 28,
+      "importance_score": 1e-06,
+      "ID": "area_00079",
+      "DESCRIPTION": "Area area_00079"
+    },
+    {
+      "feature_name": "TPOPL1_P",
+      "importance_value": 1e-06,
+      "model_name": "ensemble",
+      "rank": 38,
+      "importance_score": 1e-06,
+      "ID": "area_00080",
+      "DESCRIPTION": "Area area_00080"
+    },
+    {
+      "feature_name": "Shape__Length",
+      "importance_value": 1e-06,
+      "model_name": "ensemble",
+      "rank": 29,
+      "importance_score": 1e-06,
+      "ID": "area_00081",
+      "DESCRIPTION": "Area area_00081"
+    },
+    {
+      "feature_name": "Shape__Length",
+      "importance_value": 1e-06,
+      "model_name": "random_forest",
+      "rank": 31,
+      "importance_score": 1e-06,
+      "ID": "area_00082",
+      "DESCRIPTION": "Area area_00082"
+    },
+    {
+      "feature_name": "X9001_X_A",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 17,
+      "importance_score": 0.0,
+      "ID": "area_00083",
+      "DESCRIPTION": "Area area_00083"
+    },
+    {
+      "feature_name": "Shape__Area",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 29,
+      "importance_score": 0.0,
+      "ID": "area_00084",
+      "DESCRIPTION": "Area area_00084"
+    },
+    {
+      "feature_name": "GENALPHACY_P",
+      "importance_value": 0.0,
+      "model_name": "xgboost",
+      "rank": 45,
+      "importance_score": 0.0,
+      "ID": "area_00085",
+      "DESCRIPTION": "Area area_00085"
+    },
+    {
+      "feature_name": "TPOPL1",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 16,
+      "importance_score": 0.0,
+      "ID": "area_00086",
+      "DESCRIPTION": "Area area_00086"
+    },
+    {
+      "feature_name": "TPOPL1",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 48,
+      "importance_score": 0.0,
+      "ID": "area_00087",
+      "DESCRIPTION": "Area area_00087"
+    },
+    {
+      "feature_name": "MP19180A_B_P",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 2,
+      "importance_score": 0.0,
+      "ID": "area_00088",
+      "DESCRIPTION": "Area area_00088"
+    },
+    {
+      "feature_name": "TPOPL1_P",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 44,
+      "importance_score": 0.0,
+      "ID": "area_00089",
+      "DESCRIPTION": "Area area_00089"
+    },
+    {
+      "feature_name": "MP19180A_B_P",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 21,
+      "importance_score": 0.0,
+      "ID": "area_00090",
+      "DESCRIPTION": "Area area_00090"
+    },
+    {
+      "feature_name": "LONGITUDE",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 49,
+      "importance_score": 0.0,
+      "ID": "area_00091",
+      "DESCRIPTION": "Area area_00091"
+    },
+    {
+      "feature_name": "SALESVOL",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 47,
+      "importance_score": 0.0,
+      "ID": "area_00092",
+      "DESCRIPTION": "Area area_00092"
+    },
+    {
+      "feature_name": "MIN_SQFT",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 42,
+      "importance_score": 0.0,
+      "ID": "area_00093",
+      "DESCRIPTION": "Area area_00093"
+    },
+    {
+      "feature_name": "MP22087A_B_P",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 41,
+      "importance_score": 0.0,
+      "ID": "area_00094",
+      "DESCRIPTION": "Area area_00094"
+    },
+    {
+      "feature_name": "MP23018A_B_P",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 7,
+      "importance_score": 0.0,
+      "ID": "area_00095",
+      "DESCRIPTION": "Area area_00095"
+    },
+    {
+      "feature_name": "MILLENN_CY_P",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 38,
+      "importance_score": 0.0,
+      "ID": "area_00096",
+      "DESCRIPTION": "Area area_00096"
+    },
+    {
+      "feature_name": "GENALPHACY_P",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 45,
+      "importance_score": 0.0,
+      "ID": "area_00097",
+      "DESCRIPTION": "Area area_00097"
+    },
+    {
+      "feature_name": "MP22103A_B_P",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 14,
+      "importance_score": 0.0,
+      "ID": "area_00098",
+      "DESCRIPTION": "Area area_00098"
+    },
+    {
+      "feature_name": "MP22091A_B_P",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 6,
+      "importance_score": 0.0,
+      "ID": "area_00099",
+      "DESCRIPTION": "Area area_00099"
+    },
+    {
+      "feature_name": "EMPNUM",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 46,
+      "importance_score": 0.0,
+      "ID": "area_00100",
+      "DESCRIPTION": "Area area_00100"
+    },
+    {
+      "feature_name": "MP20109A_B_P",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 9,
+      "importance_score": 0.0,
+      "ID": "area_00101",
+      "DESCRIPTION": "Area area_00101"
+    },
+    {
+      "feature_name": "MP22090A_B_P",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 20,
+      "importance_score": 0.0,
+      "ID": "area_00102",
+      "DESCRIPTION": "Area area_00102"
+    },
+    {
+      "feature_name": "MP22024A_B_P",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 40,
+      "importance_score": 0.0,
+      "ID": "area_00103",
+      "DESCRIPTION": "Area area_00103"
+    },
+    {
+      "feature_name": "MP20044A_B_P",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 11,
+      "importance_score": 0.0,
+      "ID": "area_00104",
+      "DESCRIPTION": "Area area_00104"
+    },
+    {
+      "feature_name": "X9073_X_A",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 21,
+      "importance_score": 0.0,
+      "ID": "area_00105",
+      "DESCRIPTION": "Area area_00105"
+    },
+    {
+      "feature_name": "GENALPHACY",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 33,
+      "importance_score": 0.0,
+      "ID": "area_00106",
+      "DESCRIPTION": "Area area_00106"
+    },
+    {
+      "feature_name": "X9073_X",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 24,
+      "importance_score": 0.0,
+      "ID": "area_00107",
+      "DESCRIPTION": "Area area_00107"
+    },
+    {
+      "feature_name": "MP23018A_B",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 23,
+      "importance_score": 0.0,
+      "ID": "area_00108",
+      "DESCRIPTION": "Area area_00108"
+    },
+    {
+      "feature_name": "MP20109A_B",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 25,
+      "importance_score": 0.0,
+      "ID": "area_00109",
+      "DESCRIPTION": "Area area_00109"
+    },
+    {
+      "feature_name": "MP22024A_B",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 28,
+      "importance_score": 0.0,
+      "ID": "area_00110",
+      "DESCRIPTION": "Area area_00110"
+    },
+    {
+      "feature_name": "MP22087A_B",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 36,
+      "importance_score": 0.0,
+      "ID": "area_00111",
+      "DESCRIPTION": "Area area_00111"
+    },
+    {
+      "feature_name": "MILLENN_CY",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 37,
+      "importance_score": 0.0,
+      "ID": "area_00112",
+      "DESCRIPTION": "Area area_00112"
+    },
+    {
+      "feature_name": "MP20044A_B",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 26,
+      "importance_score": 0.0,
+      "ID": "area_00113",
+      "DESCRIPTION": "Area area_00113"
+    },
+    {
+      "feature_name": "MP22091A_B",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 35,
+      "importance_score": 0.0,
+      "ID": "area_00114",
+      "DESCRIPTION": "Area area_00114"
+    },
+    {
+      "feature_name": "MP19180A_B",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 27,
+      "importance_score": 0.0,
+      "ID": "area_00115",
+      "DESCRIPTION": "Area area_00115"
+    },
+    {
+      "feature_name": "MP22090A_B",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 30,
+      "importance_score": 0.0,
+      "ID": "area_00116",
+      "DESCRIPTION": "Area area_00116"
+    },
+    {
+      "feature_name": "MP22103A_B",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 32,
+      "importance_score": 0.0,
+      "ID": "area_00117",
+      "DESCRIPTION": "Area area_00117"
+    },
+    {
+      "feature_name": "MP22087A_B_P",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 39,
+      "importance_score": 0.0,
+      "ID": "area_00118",
+      "DESCRIPTION": "Area area_00118"
+    },
+    {
+      "feature_name": "MP22091A_B",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 33,
+      "importance_score": 0.0,
+      "ID": "area_00119",
+      "DESCRIPTION": "Area area_00119"
+    },
+    {
+      "feature_name": "MP22091A_B_P",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 44,
+      "importance_score": 0.0,
+      "ID": "area_00120",
+      "DESCRIPTION": "Area area_00120"
+    },
+    {
+      "feature_name": "coverage_radius__miles_",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 43,
+      "importance_score": 0.0,
+      "ID": "area_00121",
+      "DESCRIPTION": "Area area_00121"
+    },
+    {
+      "feature_name": "MILLENN_CY",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 36,
+      "importance_score": 0.0,
+      "ID": "area_00122",
+      "DESCRIPTION": "Area area_00122"
+    },
+    {
+      "feature_name": "MP22090A_B_P",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 35,
+      "importance_score": 0.0,
+      "ID": "area_00123",
+      "DESCRIPTION": "Area area_00123"
+    },
+    {
+      "feature_name": "MP22024A_B_P",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 46,
+      "importance_score": 0.0,
+      "ID": "area_00124",
+      "DESCRIPTION": "Area area_00124"
+    },
+    {
+      "feature_name": "MP22103A_B_P",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 47,
+      "importance_score": 0.0,
+      "ID": "area_00125",
+      "DESCRIPTION": "Area area_00125"
+    },
+    {
+      "feature_name": "MP22087A_B",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 42,
+      "importance_score": 0.0,
+      "ID": "area_00126",
+      "DESCRIPTION": "Area area_00126"
+    },
+    {
+      "feature_name": "coverage_radius__miles_",
+      "importance_value": 0.0,
+      "model_name": "random_forest",
+      "rank": 43,
+      "importance_score": 0.0,
+      "ID": "area_00127",
+      "DESCRIPTION": "Area area_00127"
+    },
+    {
+      "feature_name": "MP20109A_B_P",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 34,
+      "importance_score": 0.0,
+      "ID": "area_00128",
+      "DESCRIPTION": "Area area_00128"
+    },
+    {
+      "feature_name": "MP23018A_B_P",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 37,
+      "importance_score": 0.0,
+      "ID": "area_00129",
+      "DESCRIPTION": "Area area_00129"
+    },
+    {
+      "feature_name": "GENALPHACY",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 7,
+      "importance_score": 0.0,
+      "ID": "area_00130",
+      "DESCRIPTION": "Area area_00130"
+    },
+    {
+      "feature_name": "MP22103A_B",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 32,
+      "importance_score": 0.0,
+      "ID": "area_00131",
+      "DESCRIPTION": "Area area_00131"
+    },
+    {
+      "feature_name": "SALESVOL",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 2,
+      "importance_score": 0.0,
+      "ID": "area_00132",
+      "DESCRIPTION": "Area area_00132"
+    },
+    {
+      "feature_name": "MIN_SQFT",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 9,
+      "importance_score": 0.0,
+      "ID": "area_00133",
+      "DESCRIPTION": "Area area_00133"
+    },
+    {
+      "feature_name": "X9073_X",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 6,
+      "importance_score": 0.0,
+      "ID": "area_00134",
+      "DESCRIPTION": "Area area_00134"
+    },
+    {
+      "feature_name": "EMPNUM",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 3,
+      "importance_score": 0.0,
+      "ID": "area_00135",
+      "DESCRIPTION": "Area area_00135"
+    },
+    {
+      "feature_name": "MP20044A_B",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 12,
+      "importance_score": 0.0,
+      "ID": "area_00136",
+      "DESCRIPTION": "Area area_00136"
+    },
+    {
+      "feature_name": "MP20044A_B_P",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 13,
+      "importance_score": 0.0,
+      "ID": "area_00137",
+      "DESCRIPTION": "Area area_00137"
+    },
+    {
+      "feature_name": "MILLENN_CY_P",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 15,
+      "importance_score": 0.0,
+      "ID": "area_00138",
+      "DESCRIPTION": "Area area_00138"
+    },
+    {
+      "feature_name": "MP19180A_B",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 18,
+      "importance_score": 0.0,
+      "ID": "area_00139",
+      "DESCRIPTION": "Area area_00139"
+    },
+    {
+      "feature_name": "LONGITUDE",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 30,
+      "importance_score": 0.0,
+      "ID": "area_00140",
+      "DESCRIPTION": "Area area_00140"
+    },
+    {
+      "feature_name": "coverage_radius__miles_",
+      "importance_value": 0.0,
+      "model_name": "xgboost",
+      "rank": 43,
+      "importance_score": 0.0,
+      "ID": "area_00141",
+      "DESCRIPTION": "Area area_00141"
+    },
+    {
+      "feature_name": "MP22090A_B",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 20,
+      "importance_score": 0.0,
+      "ID": "area_00142",
+      "DESCRIPTION": "Area area_00142"
+    },
+    {
+      "feature_name": "X9073_X_A",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 22,
+      "importance_score": 0.0,
+      "ID": "area_00143",
+      "DESCRIPTION": "Area area_00143"
+    },
+    {
+      "feature_name": "MP22024A_B",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 23,
+      "importance_score": 0.0,
+      "ID": "area_00144",
+      "DESCRIPTION": "Area area_00144"
+    },
+    {
+      "feature_name": "GENALPHACY_P",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 24,
+      "importance_score": 0.0,
+      "ID": "area_00145",
+      "DESCRIPTION": "Area area_00145"
+    },
+    {
+      "feature_name": "MP20109A_B",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 25,
+      "importance_score": 0.0,
+      "ID": "area_00146",
+      "DESCRIPTION": "Area area_00146"
+    },
+    {
+      "feature_name": "MP23018A_B",
+      "importance_value": 0.0,
+      "model_name": "ensemble",
+      "rank": 4,
+      "importance_score": 0.0,
+      "ID": "area_00147",
+      "DESCRIPTION": "Area area_00147"
+    }
+  ],
+  "summary": "Feature importance rankings and model interpretation",
+  "feature_importance": [
+    {
+      "feature": "importance_value",
+      "importance": 0.9999999999999998
+    },
+    {
+      "feature": "rank",
+      "importance": 0.15225766818383876
+    }
+  ],
+  "model_info": {
+    "model_type": "Synthetic/Rule-based",
+    "description": "Generated using importance analysis rules",
+    "features_count": 0
+  },
+  "metadata": {
+    "endpoint_name": "feature-importance-ranking",
+    "analysis_type": "importance",
+    "generation_timestamp": "2025-09-22T09:02:27.157401",
+    "score_field": "importance_score",
+    "score_range": [
+      0,
+      1
+    ],
+    "data_source": "automated_pipeline"
+  }
+}

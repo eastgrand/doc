@@ -1,0 +1,124 @@
+{
+  "success": true,
+  "total_records": 10,
+  "results": [
+    {
+      "model_name": "linear_regression",
+      "r2_score": 1.0,
+      "rmse": 0.0,
+      "mae": 0.0,
+      "training_records": 6950,
+      "performance_score": 1.0,
+      "ID": "area_00001",
+      "DESCRIPTION": "Area area_00001"
+    },
+    {
+      "model_name": "ridge_regression",
+      "r2_score": 0.999993,
+      "rmse": 0.039069,
+      "mae": 0.01352,
+      "training_records": 6950,
+      "performance_score": 0.999993,
+      "ID": "area_00002",
+      "DESCRIPTION": "Area area_00002"
+    },
+    {
+      "model_name": "random_forest",
+      "r2_score": 0.999969,
+      "rmse": 0.080245,
+      "mae": 0.02838,
+      "training_records": 6950,
+      "performance_score": 0.999969,
+      "ID": "area_00003",
+      "DESCRIPTION": "Area area_00003"
+    },
+    {
+      "model_name": "xgboost",
+      "r2_score": 0.999926,
+      "rmse": 0.124645,
+      "mae": 0.032227,
+      "training_records": 6950,
+      "performance_score": 0.999926,
+      "ID": "area_00004",
+      "DESCRIPTION": "Area area_00004"
+    },
+    {
+      "model_name": "lasso_regression",
+      "r2_score": 0.99983,
+      "rmse": 0.188664,
+      "mae": 0.182527,
+      "training_records": 6950,
+      "performance_score": 0.99983,
+      "ID": "area_00005",
+      "DESCRIPTION": "Area area_00005"
+    },
+    {
+      "model_name": "ensemble",
+      "r2_score": 0.999496,
+      "rmse": 0.325482,
+      "mae": 0.118181,
+      "training_records": 0,
+      "performance_score": 0.999496,
+      "ID": "area_00006",
+      "DESCRIPTION": "Area area_00006"
+    },
+    {
+      "model_name": "knn",
+      "r2_score": 0.997673,
+      "rmse": 0.698787,
+      "mae": 0.303201,
+      "training_records": 6950,
+      "performance_score": 0.997673,
+      "ID": "area_00007",
+      "DESCRIPTION": "Area area_00007"
+    },
+    {
+      "model_name": "neural_network",
+      "r2_score": 0.985745,
+      "rmse": 1.729474,
+      "mae": 0.32616,
+      "training_records": 6950,
+      "performance_score": 0.985745,
+      "ID": "area_00008",
+      "DESCRIPTION": "Area area_00008"
+    },
+    {
+      "model_name": "svr",
+      "r2_score": 0.9849,
+      "rmse": 1.779955,
+      "mae": 0.52527,
+      "training_records": 6950,
+      "performance_score": 0.9849,
+      "ID": "area_00009",
+      "DESCRIPTION": "Area area_00009"
+    },
+    {
+      "model_name": "anomaly_detection",
+      "r2_score": 0.0,
+      "rmse": 0.0,
+      "mae": 0.0,
+      "training_records": 0,
+      "performance_score": 0.0,
+      "ID": "area_00010",
+      "DESCRIPTION": "Area area_00010"
+    }
+  ],
+  "summary": "Model performance metrics and validation results",
+  "feature_importance": [],
+  "model_info": {
+    "model_type": "Synthetic/Rule-based",
+    "description": "Generated using performance analysis rules",
+    "features_count": 0
+  },
+  "metadata": {
+    "endpoint_name": "model-performance",
+    "analysis_type": "performance",
+    "generation_timestamp": "2025-09-22T09:02:27.167111",
+    "score_field": "performance_score",
+    "score_range": [
+      0,
+      1
+    ],
+    "data_source": "automated_pipeline"
+  }
+}

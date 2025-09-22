@@ -1,0 +1,823 @@
+{
+  "categories": {
+    "Demographics": {
+      "keywords": [
+        "age",
+        "population",
+        "household",
+        "income",
+        "education",
+        "demographic"
+      ],
+      "description": "Population and demographic characteristics"
+    },
+    "Economic": {
+      "keywords": [
+        "income",
+        "economic",
+        "financial",
+        "employment",
+        "business",
+        "economy"
+      ],
+      "description": "Economic indicators and financial data"
+    },
+    "Housing": {
+      "keywords": [
+        "housing",
+        "home",
+        "residential",
+        "property",
+        "real_estate"
+      ],
+      "description": "Housing and real estate information"
+    },
+    "Entertainment": {
+      "keywords": [
+        "entertainment",
+        "music",
+        "movie",
+        "concert",
+        "leisure",
+        "cultural"
+      ],
+      "description": "Entertainment and cultural activities"
+    },
+    "Consumer": {
+      "keywords": [
+        "consumer",
+        "retail",
+        "shopping",
+        "brand",
+        "purchase",
+        "spending"
+      ],
+      "description": "Consumer behavior and retail patterns"
+    },
+    "Geographic": {
+      "keywords": [
+        "geographic",
+        "boundary",
+        "area",
+        "region",
+        "location",
+        "spatial"
+      ],
+      "description": "Geographic boundaries and spatial data"
+    },
+    "Transportation": {
+      "keywords": [
+        "transport",
+        "traffic",
+        "commute",
+        "vehicle",
+        "road",
+        "transit"
+      ],
+      "description": "Transportation and mobility data"
+    },
+    "Lifestyle": {
+      "keywords": [
+        "lifestyle",
+        "social",
+        "community",
+        "activity",
+        "behavior"
+      ],
+      "description": "Lifestyle and social characteristics"
+    }
+  },
+  "layer_assignments": {
+    "Unknown_Service_layer_0": {
+      "category": "Uncategorized",
+      "title": "Geographies",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_1": {
+      "category": "Geographic",
+      "title": "Area of interest",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_2": {
+      "category": "Geographic",
+      "title": "Areas",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_3": {
+      "category": "Uncategorized",
+      "title": "2025 Total Pop in Tapestry Seg L1 ( ) by Resolution 6",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_4": {
+      "category": "Uncategorized",
+      "title": "WI Total Pop in Tapestry Seg K1",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_5": {
+      "category": "Uncategorized",
+      "title": "WI Total Pop in Tapestry Seg L1",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_6": {
+      "category": "Uncategorized",
+      "title": "IN Total Pop in Tapestry Seg J1",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_7": {
+      "category": "Uncategorized",
+      "title": "WI Total Pop in Tapestry Seg J1",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_8": {
+      "category": "Uncategorized",
+      "title": "IL Total Pop in Tapestry Seg J1",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_9": {
+      "category": "Uncategorized",
+      "title": "IL Total Pop in Tapestry Seg I1",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_10": {
+      "category": "Uncategorized",
+      "title": "WI Total Pop in Tapestry Seg I1",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_11": {
+      "category": "Uncategorized",
+      "title": "WI Total Pop in Tapestry Seg K2",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_12": {
+      "category": "Uncategorized",
+      "title": "IN Total Pop in Tapestry Seg I1",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_13": {
+      "category": "Uncategorized",
+      "title": "IL Total Pop in Tapestry Seg K2",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_14": {
+      "category": "Uncategorized",
+      "title": "IN Total Pop in Tapestry Seg K2",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_15": {
+      "category": "Uncategorized",
+      "title": "IN Total Pop in Tapestry Seg K1",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_16": {
+      "category": "Uncategorized",
+      "title": "IL Total Pop in Tapestry Seg K1",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_17": {
+      "category": "Entertainment",
+      "title": "IL Attended Movie 6 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_18": {
+      "category": "Entertainment",
+      "title": "IN Attended Movie 6 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_19": {
+      "category": "Entertainment",
+      "title": "WI Attended Movie 6 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_20": {
+      "category": "Entertainment",
+      "title": "WI Viewed Movie (On-Demand) 30 Days",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_21": {
+      "category": "Entertainment",
+      "title": "IN Viewed Movie (On-Demand) 30 Days",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_22": {
+      "category": "Entertainment",
+      "title": "IL Viewed Movie (On-Demand) 30 Days",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_23": {
+      "category": "Entertainment",
+      "title": "IL Spending on Tickets to Movies (Avg)",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_24": {
+      "category": "Entertainment",
+      "title": "IN Spending on Tickets to Movies (Avg)",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_25": {
+      "category": "Entertainment",
+      "title": "WI Spending on Tickets to Movies (Avg)",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_26": {
+      "category": "Entertainment",
+      "title": "WI Purchased Music Through Oth Online Ser",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_27": {
+      "category": "Entertainment",
+      "title": "IN Purchased Music Through Oth Online Ser",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_28": {
+      "category": "Entertainment",
+      "title": "IL Purchased Music Through Oth Online Ser",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_29": {
+      "category": "Entertainment",
+      "title": "IL Purchased Music Through Audible",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_30": {
+      "category": "Entertainment",
+      "title": "IN Purchased Music Through Audible",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_31": {
+      "category": "Entertainment",
+      "title": "WI Purchased Music Through Audible",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_32": {
+      "category": "Entertainment",
+      "title": "WI Purchased Music Through iTunes",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_33": {
+      "category": "Entertainment",
+      "title": "IL Purchased Music Through iTunes",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_34": {
+      "category": "Entertainment",
+      "title": "IN Purchased Music Through iTunes",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_35": {
+      "category": "Entertainment",
+      "title": "IL Purchased Music at Dept Store",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_36": {
+      "category": "Entertainment",
+      "title": "IN Purchased Music at Dept Store",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_37": {
+      "category": "Entertainment",
+      "title": "WI Purchased Music at Dept Store",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_38": {
+      "category": "Entertainment",
+      "title": "WI Purchased Music Through Amazon Music",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_39": {
+      "category": "Entertainment",
+      "title": "IN Purchased Music Through Amazon Music",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_40": {
+      "category": "Entertainment",
+      "title": "IL Purchased Music Through Amazon Music",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_41": {
+      "category": "Consumer",
+      "title": "IL Purchased Biography 12 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_42": {
+      "category": "Consumer",
+      "title": "IN Purchased Biography 12 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_43": {
+      "category": "Consumer",
+      "title": "WI Purchased Biography 12 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_44": {
+      "category": "Entertainment",
+      "title": "WI Saw Biography Genre Movie at Theater",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_45": {
+      "category": "Entertainment",
+      "title": "IL Saw Biography Genre Movie at Theater",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_46": {
+      "category": "Entertainment",
+      "title": "IN Saw Biography Genre Movie at Theater",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_47": {
+      "category": "Uncategorized",
+      "title": "IL Generation Alpha Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_48": {
+      "category": "Uncategorized",
+      "title": "IN Generation Alpha Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_49": {
+      "category": "Uncategorized",
+      "title": "WI Generation Alpha Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_50": {
+      "category": "Uncategorized",
+      "title": "IL Generation Z Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_51": {
+      "category": "Uncategorized",
+      "title": "IN Generation Z Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_52": {
+      "category": "Uncategorized",
+      "title": "WI Generation Z Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_53": {
+      "category": "Uncategorized",
+      "title": "WI Millennial Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_54": {
+      "category": "Uncategorized",
+      "title": "IN Millennial Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_55": {
+      "category": "Uncategorized",
+      "title": "IL Millennial Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_56": {
+      "category": "Uncategorized",
+      "title": "IL Generation X Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_57": {
+      "category": "Uncategorized",
+      "title": "IN Generation X Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_58": {
+      "category": "Uncategorized",
+      "title": "WI Generation X Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_59": {
+      "category": "Uncategorized",
+      "title": "WI Baby Boomer Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_60": {
+      "category": "Uncategorized",
+      "title": "IN Baby Boomer Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_61": {
+      "category": "Uncategorized",
+      "title": "IL Baby Boomer Pop",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_62": {
+      "category": "Uncategorized",
+      "title": "IL Used Internet for Entmt Celebrity Info",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_63": {
+      "category": "Uncategorized",
+      "title": "IN Used Internet for Entmt Celebrity Info",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_64": {
+      "category": "Uncategorized",
+      "title": "WI Used Internet for Entmt Celebrity Info",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_65": {
+      "category": "Entertainment",
+      "title": "WI Spending on Tickets to Theatre Operas Concerts",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_66": {
+      "category": "Entertainment",
+      "title": "IN Spending on Tickets to Theatre Operas Concerts",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_67": {
+      "category": "Entertainment",
+      "title": "IL Spending on Tickets to Theatre Operas Concerts",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_68": {
+      "category": "Entertainment",
+      "title": "IL Spending on Entertainment Rec (Avg)",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_69": {
+      "category": "Entertainment",
+      "title": "IN Spending on Entertainment Rec (Avg)",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_70": {
+      "category": "Entertainment",
+      "title": "WI Spending on Entertainment Rec (Avg)",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_71": {
+      "category": "Entertainment",
+      "title": "WI Rented Purchased News Documentary Movie",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_72": {
+      "category": "Entertainment",
+      "title": "IN Rented Purchased News Documentary Movie",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_73": {
+      "category": "Entertainment",
+      "title": "IL Rented Purchased News Documentary Movie",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_74": {
+      "category": "Consumer",
+      "title": "IL Spending on Records CDs Audio Tapes (Avg)",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_75": {
+      "category": "Consumer",
+      "title": "IN Spending on Records CDs Audio Tapes (Avg)",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_76": {
+      "category": "Consumer",
+      "title": "WI Spending on Records CDs Audio Tapes (Avg)",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_77": {
+      "category": "Entertainment",
+      "title": "WI Social Media Follow Music Groups",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_78": {
+      "category": "Entertainment",
+      "title": "IN Social Media Follow Music Groups",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_79": {
+      "category": "Entertainment",
+      "title": "IL Social Media Follow Music Groups",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_80": {
+      "category": "Entertainment",
+      "title": "IL Listened to Apple Music Audio Svc 30",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_81": {
+      "category": "Entertainment",
+      "title": "IN Listened to Apple Music Audio Svc 30",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_82": {
+      "category": "Entertainment",
+      "title": "WI Listened to Apple Music Audio Svc 30",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_83": {
+      "category": "Uncategorized",
+      "title": "IL Listened to iHeartRadio Audio Svc 30",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_84": {
+      "category": "Uncategorized",
+      "title": "IN Listened to iHeartRadio Audio Svc 30",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_85": {
+      "category": "Uncategorized",
+      "title": "WI Listened to iHeartRadio Audio Svc 30",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_86": {
+      "category": "Entertainment",
+      "title": "WI Listened to Amazon Music Audio Svc 30",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_87": {
+      "category": "Entertainment",
+      "title": "IN Listened to Amazon Music Audio Svc 30",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_88": {
+      "category": "Entertainment",
+      "title": "IL Listened to Amazon Music Audio Svc 30",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_89": {
+      "category": "Uncategorized",
+      "title": "IL Listened to Pandora Audio Svc 30 Days",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_90": {
+      "category": "Uncategorized",
+      "title": "IN Listened to Pandora Audio Svc 30 Days",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_91": {
+      "category": "Uncategorized",
+      "title": "WI Listened to Pandora Audio Svc 30 Days",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_92": {
+      "category": "Uncategorized",
+      "title": "WI Listened to Spotify Audio Svc 30 Days",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_93": {
+      "category": "Uncategorized",
+      "title": "IN Listened to Spotify Audio Svc 30 Days",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_94": {
+      "category": "Uncategorized",
+      "title": "IL Listened to Spotify Audio Svc 30 Days",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_95": {
+      "category": "Uncategorized",
+      "title": "IL Listened to Entrtnmt Culture Podcast",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_96": {
+      "category": "Uncategorized",
+      "title": "IN Listened to Entrtnmt Culture Podcast",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_97": {
+      "category": "Uncategorized",
+      "title": "WI Listened to Entrtnmt Culture Podcast",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_98": {
+      "category": "Entertainment",
+      "title": "WI Listened to Music Podcast 30 Days",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_99": {
+      "category": "Entertainment",
+      "title": "IN Listened to Music Podcast 30 Days",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_100": {
+      "category": "Entertainment",
+      "title": "IL Listened to Music Podcast 30 Days",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_101": {
+      "category": "Entertainment",
+      "title": "IL Purchased Music at Music Store 6 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_102": {
+      "category": "Entertainment",
+      "title": "IN Purchased Music at Music Store 6 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_103": {
+      "category": "Entertainment",
+      "title": "WI Purchased Music at Music Store 6 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_104": {
+      "category": "Uncategorized",
+      "title": "WI Listen to Rock Radio Format",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_105": {
+      "category": "Uncategorized",
+      "title": "IN Listen to Rock Radio Format",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_106": {
+      "category": "Uncategorized",
+      "title": "IL Listen to Rock Radio Format",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_107": {
+      "category": "Entertainment",
+      "title": "IL Attended Rock Music Performance 12 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_108": {
+      "category": "Entertainment",
+      "title": "IN Attended Rock Music Performance 12 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_109": {
+      "category": "Entertainment",
+      "title": "WI Attended Rock Music Performance 12 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_110": {
+      "category": "Entertainment",
+      "title": "WI Listened to Classic Rock Music 6 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_111": {
+      "category": "Entertainment",
+      "title": "IN Listened to Classic Rock Music 6 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_112": {
+      "category": "Entertainment",
+      "title": "IL Listened to Classic Rock Music 6 Mo",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_113": {
+      "category": "Uncategorized",
+      "title": "IL Listen to Classic Rock Radio Format",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_114": {
+      "category": "Uncategorized",
+      "title": "IN Listen to Classic Rock Radio Format",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_115": {
+      "category": "Uncategorized",
+      "title": "WI Listen to Classic Rock Radio Format",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_116": {
+      "category": "Uncategorized",
+      "title": "radio stations - 3 states",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_117": {
+      "category": "Entertainment",
+      "title": "WI Theatres-Movie, Drive-In Motion Picture Theaters",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_118": {
+      "category": "Entertainment",
+      "title": "IL Theatres-Movie, Drive-In Motion Picture Theaters",
+      "auto_assigned": true,
+      "confidence": "auto"
+    },
+    "Unknown_Service_layer_119": {
+      "category": "Entertainment",
+      "title": "IN Theatres-Movie, Drive-In Motion Picture Theaters",
+      "auto_assigned": true,
+      "confidence": "auto"
+    }
+  },
+  "metadata": {
+    "created_at": "2025-09-22T11:00:53.202302",
+    "method": "automatic_categorization",
+    "total_layers": 120,
+    "category_distribution": {
+      "Uncategorized": 52,
+      "Geographic": 2,
+      "Entertainment": 60,
+      "Consumer": 6
+    }
+  }
+}

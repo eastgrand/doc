@@ -22,6 +22,7 @@ import { MarketSizingProcessor } from './strategies/processors/MarketSizingProce
 import { BrandAnalysisProcessor } from './strategies/processors/BrandAnalysisProcessor';
 import { BrandDifferenceProcessor } from './strategies/processors/BrandDifferenceProcessor';
 import { RealEstateAnalysisProcessor } from './strategies/processors/RealEstateAnalysisProcessor';
+import { EntertainmentAnalysisProcessor } from './strategies/processors/EntertainmentAnalysisProcessor';
 import { RiskDataProcessor } from './strategies/processors/RiskDataProcessor';
 import { StrategicAnalysisProcessor } from './strategies/processors/StrategicAnalysisProcessor';
 import { CustomerProfileProcessor } from './strategies/processors/CustomerProfileProcessor';
@@ -402,6 +403,7 @@ export class DataProcessor {
     this.processors.set('/brand-analysis', new BrandAnalysisProcessor());
     this.processors.set('/brand-difference', new BrandDifferenceProcessor()); // Brand market share difference analysis
     this.processors.set('/real-estate-analysis', new RealEstateAnalysisProcessor());
+    this.processors.set('/entertainment-analysis', new EntertainmentAnalysisProcessor()); // Documentary/entertainment analysis processor
     
     // Register the 10 new processors for previously missing endpoints
     this.processors.set('/sensitivity-analysis', new SensitivityAnalysisProcessor());
@@ -453,6 +455,17 @@ export class DataProcessor {
       return competitiveProcessor;
     }
     
+    // PROJECT-SPECIFIC PROCESSOR SELECTION
+    const projectType = this.detectProjectType();
+    
+    // For documentary/entertainment projects, use entertainment processors for strategic analysis
+    if (projectType === 'documentary' && endpoint === '/strategic-analysis') {
+      // Use EntertainmentAnalysisProcessor for documentary strategic analysis
+      if (this.processors.has('/entertainment-analysis')) {
+        return this.processors.get('/entertainment-analysis')!;
+      }
+    }
+    
     // Try to get specific processor for endpoint
     if (this.processors.has(endpoint)) {
       const processor = this.processors.get(endpoint)!;
@@ -461,6 +474,37 @@ export class DataProcessor {
     
     // Fallback to default processor
     return this.processors.get('default')!;
+  }
+
+  /**
+   * Detect project type based on current data or context
+   */
+  private detectProjectType(): string {
+    // Check if we're in a documentary/entertainment context
+    // This can be enhanced to check:
+    // 1. Current URL path
+    // 2. Data fields present  
+    // 3. Configuration settings
+    // 4. Endpoint patterns
+    
+    if (typeof window !== 'undefined') {
+      const pathname = window.location?.pathname || '';
+      if (pathname.includes('documentary') || pathname.includes('entertainment')) {
+        return 'documentary';
+      }
+    }
+    
+    // Check for documentary-specific fields or blob URLs
+    if (typeof window !== 'undefined' && window.location?.search) {
+      const searchParams = new URLSearchParams(window.location.search);
+      const blobUrl = searchParams.get('blobUrl') || '';
+      if (blobUrl.includes('doors_documentary') || blobUrl.includes('entertainment')) {
+        return 'documentary';
+      }
+    }
+    
+    // Default to general analysis
+    return 'general';
   }
 
   private processFallbackData(rawResults: RawAnalysisResult, endpoint: string): ProcessedAnalysisData {

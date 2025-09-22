@@ -1025,6 +1025,48 @@ When territory clustering analysis is provided:
 - DO NOT add generic business advice or monitoring suggestions
 `,
 
+  documentary_analysis: `
+${UNIVERSAL_REQUIREMENTS}
+
+DOCUMENTARY ANALYSIS TECHNICAL CONTEXT:
+You are analyzing entertainment market data for The Doors Documentary launch opportunities with pre-calculated audience appeal scores.
+
+⚠️ CRITICAL SCORE INTERPRETATION REQUIREMENTS:
+- Doors Audience Scores range from 27-69, where higher scores indicate better documentary audience potential
+- If audience scores are moderate (under 45), acknowledge this indicates MODERATE documentary appeal potential  
+- DO NOT present low-scoring markets as exceptional opportunities - analyze WHY scores are moderate
+- When scores are universally moderate, focus on identifying the BEST AVAILABLE options for documentary launch
+- ALWAYS contextualize whether documentary audience potential is strong, moderate, or limited across analyzed markets
+
+SCORING METHODOLOGY:
+The doors_audience_score (27-69 scale) represents overall documentary audience appeal, calculated by combining:
+• Classic Rock Affinity (40%): Historic rock music consumption, concert attendance, streaming patterns
+• Documentary Engagement (25%): Documentary viewing habits, cultural event attendance, arts consumption  
+• Music Consumption (20%): Premium music services, music purchasing behavior, audio content engagement
+• Cultural Engagement (15%): Theater attendance, cultural events, entertainment spending patterns
+
+Higher scores indicate markets where there is stronger audience alignment for The Doors Documentary launch.
+
+DATA STRUCTURE:
+- doors_audience_score: Primary ranking metric (27-69 scale, precise decimals)
+- classic_rock_affinity: Music preference alignment score
+- documentary_appeal: Documentary consumption patterns  
+- entertainment_spending: Spending capacity on cultural events
+- venue_accessibility: Theater and cultural venue density
+- target_demographic_density: Age 45-70 population concentration
+
+CRITICAL REQUIREMENTS:
+1. ALWAYS rank and prioritize by doors_audience_score (27-69 scale)
+2. Discuss specific music preferences and documentary consumption patterns in analysis
+3. Explain HOW the scoring methodology identifies documentary audience appeal in each market
+4. Focus on entertainment industry strategic positioning, not generic market analysis
+5. Use entertainment industry terminology: "audience appeal", "documentary launch", "cultural engagement"
+6. Reference classic rock, documentary viewing, music consumption as key drivers
+
+TARGET MARKETS: Illinois, Indiana, Wisconsin (Primary Launch Markets)
+AUDIENCE FOCUS: Classic Rock Enthusiasts (Ages 45-70)
+`,
+
   sensitivity_analysis: `
 SENSITIVITY ANALYSIS TECHNICAL CONTEXT:
 You are analyzing sensitivity analysis data powered by Random Forest Model to answer the key business question: "Which factors have the biggest impact on service or product adoption rates?"
@@ -1469,6 +1511,11 @@ export function getAnalysisPrompt(analysisType: string): string {
     'real_estate': 'real_estate_analysis',
     'realestate': 'real_estate_analysis',
     'property': 'housing_market_analysis',
+    'documentary': 'documentary_analysis',
+    'entertainment': 'documentary_analysis',
+    'doors': 'documentary_analysis',
+    'music': 'documentary_analysis',
+    'classic_rock': 'documentary_analysis',
     'analyze': 'general',
     'analysis': 'general'
   };

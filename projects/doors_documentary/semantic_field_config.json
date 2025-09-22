@@ -1,10 +1,12 @@
 {
   "semantic_mappings": {
-    "target_performance": "strategic_value",
+    "target_performance": "doors_audience_score",
     "geographic_identifier": "zip_code"
   },
-  "validation_status": "auto_resolved",
-  "validation_timestamp": "2025-09-22T10:16:19.776012",
-  "project_path": "/Users/voldeck/code/mpiq-ai-chat/projects/doors_documentary",
-  "total_fields": 2
+  "validation_status": "manually_corrected",
+  "validation_timestamp": "2025-09-22T11:00:31.853598",
+  "correction_timestamp": "2025-09-22T15:05:00.000000",
+  "project_path": "projects/doors_documentary",
+  "total_fields": 2,
+  "notes": "Corrected target_performance to use doors_audience_score instead of thematic_value for doors documentary project"
 }

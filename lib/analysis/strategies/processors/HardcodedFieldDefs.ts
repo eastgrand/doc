@@ -56,7 +56,10 @@ export function getPrimaryScoreField(analysisType: string, metadata?: Record<str
     interpretability_analysis: 'interpretability_score',
     neural_network_analysis: 'neural_network_score',
     nonlinear_analysis: 'nonlinear_score',
-    composite_index: 'composite_index_score'
+    composite_index: 'composite_index_score',
+    // Entertainment/Documentary analysis endpoints
+    entertainment_analysis: 'doors_audience_score',
+    documentary_analysis: 'doors_audience_score'
   };
   return mapping[n] || 'value';
 }
