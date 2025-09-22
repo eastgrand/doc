@@ -5,101 +5,100 @@
 
 export const ANALYSIS_CATEGORIES = {
   'Strategic Analysis': [
-    'Show me the top strategic markets for housing investment'
+    'Show me the top strategic markets for The Doors Documentary launch'
   ],
   'Comparative Analysis': [
-    'Compare homeownership rates between Montreal and Quebec City'
+    'Compare classic rock audience appeal between Chicago and Milwaukee'
   ],
   'Brand Difference': [
-    'Show me the difference between homeownership and rental rates'
+    'Show me the difference between documentary appeal and music streaming preferences'
   ],
   'Demographic Insights': [
-    'Which areas have the best demographics for housing development?'
+    'Which areas have the best demographics for classic rock documentaries?'
   ],
-  // Re-enabled categories for comprehensive testing coverage
   'Customer Profile': [
-    'Show me areas with ideal demographic profiles for housing markets'
+    'Show me areas with ideal demographic profiles for Doors fans'
   ],
   'Spatial Clusters': [
-    'Show me geographic clusters of similar housing markets'  
+    'Show me geographic clusters of similar classic rock audiences'  
   ], 
   'Outlier Detection': [
-    'Show me markets that have outliers with unique housing characteristics'
+    'Show me markets that have outliers with unique entertainment preferences'
   ],
   'Competitive Analysis': [
-    'Show me areas with the best opportunities for housing development'
+    'Show me areas with the best opportunities for documentary theatrical release'
   ],
   'Scenario Analysis': [
-    'What if interest rates change - which housing markets would be most resilient?'
+    'What if we focus on streaming vs theatrical - which markets would perform best?'
   ],
   'Feature Interactions': [
-    'Which markets have the strongest interactions between demographics and housing demand?'
+    'Which markets have the strongest interactions between age and classic rock affinity?'
   ],
   'Segment Profiling': [
-    'Which markets have the clearest housing market segmentation profiles?'
+    'Which markets have the clearest audience segmentation for music documentaries?'
   ],
   'Sensitivity Analysis': [
-    'How do housing rankings change if we adjust income weights by 20%?'
+    'How do audience appeal rankings change if we adjust classic rock affinity weights?'
   ],
   'Feature Importance Ranking': [
-    'What are the most important factors predicting housing market strength?'
+    'What are the most important factors predicting Doors documentary audience appeal?'
   ],
   'Model Performance': [
-    'How accurate are our predictions for housing market performance?'
+    'How accurate are our predictions for documentary audience engagement?'
   ],
   'Algorithm Comparison': [
-    'Which AI model performs best for predicting housing trends in each area?'
+    'Which AI model performs best for predicting classic rock audience preferences?'
   ],
   'Ensemble Analysis': [
-    'Show me the highest confidence predictions using our best ensemble model'
+    'Show me the highest confidence predictions for documentary launch success'
   ],
   'Model Selection': [
-    'What is the optimal AI algorithm for predictions in each geographic area?'
+    'What is the optimal AI algorithm for audience predictions in each market?'
   ],
   'Dimensionality Insights': [
-    'Which factors explain most of the variation in housing market performance?'
+    'Which factors explain most of the variation in documentary audience appeal?'
   ],
   'Consensus Analysis': [
-    'Where do all our AI models agree on housing market predictions?'
+    'Where do all our AI models agree on documentary launch potential?'
   ],
   'Anomaly Insights': [
-    'Which unusual market patterns represent the biggest business opportunities?'
+    'Which unusual audience patterns represent the biggest opportunities?'
   ],
   'Cluster Analysis': [
-    'How should we segment housing markets for targeted strategies?'
+    'How should we segment classic rock audiences for targeted marketing?'
   ],
   'Analyze': [
-    'Provide comprehensive market insights for housing'
+    'Provide comprehensive market insights for The Doors Documentary'
   ],
   'Correlation Analysis': [
-    'What market factors are most strongly correlated with homeownership rates?'
+    'What factors are most strongly correlated with classic rock documentary appeal?'
   ],
   'Trend Analysis': [
-    'Show me housing market trend patterns and temporal analysis'
+    'Show me classic rock audience trend patterns and cultural engagement analysis'
   ],
   'Predictive Modeling': [
-    'Which markets are most likely to grow for housing investment in the next year?'
+    'Which markets are most likely to have strong documentary box office performance?'
   ]
 };
 
 export const DISABLED_ANALYSIS_CATEGORIES = {
   'Nonlinear Analysis': [
-    'What complex patterns exist in housing data that linear models miss?'
+    'What complex patterns exist in entertainment data that linear models miss?'
   ],
   'Similarity Analysis': [
-    'Which markets are most similar to our top-performing housing locations?'
+    'Which markets are most similar to our top-performing documentary locations?'
   ],
   'Feature Selection Analysis': [
-    'Which features are truly essential for predicting housing market success?'
+    'Which features are truly essential for predicting documentary audience success?'
   ],
   'Interpretability Analysis': [
-    'What are the most transparent insights we can provide about housing markets?'
+    'What are the most transparent insights we can provide about classic rock audiences?'
   ],
   'Neural Network Analysis': [
-    'What complex patterns can deep learning uncover in housing data?'
+    'What complex patterns can deep learning uncover in entertainment preferences?'
   ],
   'Speed Optimized Analysis': [
-    'What insights can we get instantly for time-critical housing decisions?'
+    'What insights can we get instantly for time-critical documentary launch decisions?'
   ]
 };
 
