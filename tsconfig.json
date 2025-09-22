@@ -42,7 +42,8 @@
   ],
   "exclude": [
     "node_modules",
-    "scripts"
+    "scripts",
+    "claude-flow"
   ],
   "ts-node": {
     "compilerOptions": {
