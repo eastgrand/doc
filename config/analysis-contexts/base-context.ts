@@ -73,23 +73,25 @@ export interface DemographicConfig {
   segmentationCriteria: string;
   ageGroupings?: { [key: string]: number[] };
   incomeQuintiles?: number[];
+  targetSegments?: string[];
 }
 
 export interface StrategicConfig {
   priorityFactors: string[];
   weightingScheme: 'equal' | 'weighted' | 'adaptive';
   strategicLenses: string[];
+  weights?: { [key: string]: number };
 }
 
 export interface TrendConfig {
-  timeHorizon: 'short_term' | 'medium_term' | 'long_term';
+  timeHorizon: 'short_term' | 'medium_term' | 'long_term' | 'seasonal';
   trendMetrics: string[];
   seasonalityAdjustment: boolean;
 }
 
 export interface SpatialConfig {
-  clusteringMethod: 'geographic' | 'demographic' | 'performance';
-  proximityMetric: 'distance' | 'similarity' | 'connectivity';
+  clusteringMethod: 'geographic' | 'demographic' | 'performance' | 'hexagonal';
+  proximityMetric: 'distance' | 'similarity' | 'connectivity' | 'h3_distance';
   clusterSizePreference: 'small' | 'medium' | 'large' | 'adaptive';
 }
 
@@ -97,6 +99,7 @@ export interface EnsembleConfig {
   methodWeights: { [method: string]: number };
   consensusThreshold: number;
   diversityBonus: boolean;
+  entertainmentSpecific?: { [key: string]: any };
 }
 
 export interface ProcessorConfig {
