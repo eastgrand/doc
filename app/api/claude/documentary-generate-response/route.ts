@@ -14,7 +14,7 @@ import { EnhancedQueryAnalyzer } from '@/lib/analysis/EnhancedQueryAnalyzer';
 import { detectThresholdQuery, detectSegmentQuery, detectComparativeQuery } from '@/lib/analytics/query-analysis';
 import { getDocumentaryPersona } from '../shared/documentary-personas';
 import { unionByGeoId } from '../../../../types/union-layer';
-import { multiEndpointFormatting, strategicSynthesis } from '../shared/base-prompt';
+import { strategicSynthesis } from '../shared/base-prompt';
 import { GeoAwarenessEngine } from '../../../../lib/geo/GeoAwarenessEngine';
 import { getDocumentaryAnalysisPrompt } from '../shared/documentary-analysis-prompts';
 import { resolveAreaName as resolveSharedAreaName, getZip as getSharedFSA, resolveRegionName as resolveSharedRegionName } from '@/lib/shared/AreaName';
@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
     // Enhanced query analysis for documentary content
     const enhancedAnalyzer = new EnhancedQueryAnalyzer();
     const analyzedQuery = enhancedAnalyzer.analyzeQuery(query);
-    const analysisEndpoint = analyzedQuery.suggestedEndpoint || '/strategic-analysis';
+    const analysisEndpoint = enhancedAnalyzer.getBestEndpoint(query);
 
     // Get documentary-specific analysis prompt
     const analysisType = analysisEndpoint.replace('/', '').replace('-', '_');
@@ -145,12 +145,12 @@ export async function POST(request: NextRequest) {
       };
     }
 
-    // Format data for documentary analysis
-    const formattedData = multiEndpointFormatting(
-      spatiallyFilteredInsights,
-      query,
-      analyzedQuery
-    );
+    // Format data for documentary analysis  
+    const formattedData = `Analysis Data:
+${JSON.stringify(spatiallyFilteredInsights, null, 2)}
+
+Query: ${query}
+Analyzed Query: ${JSON.stringify(analyzedQuery, null, 2)}}`;
 
     // Create documentary industry context
     const documentaryContext = `
