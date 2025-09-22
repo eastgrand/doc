@@ -981,6 +981,12 @@ git push origin main
 4. **Start Application**: Executes `startCommand` from YAML (gunicorn with specified settings)
 5. **Configure Environment**: Sets environment variables defined in YAML
 
+**⚠️ IMPORTANT: Microservice Usage**
+- **The deployed microservice is used ONLY during automation setup**
+- **It exports data to JSON files that the main app reads**
+- **The main app does NOT make API calls to the microservice**
+- **Keep microservice deployed for future data updates/re-training**
+
 **Go to Render Dashboard:**
 
 1. **Visit**: https://dashboard.render.com
@@ -1065,30 +1071,65 @@ if microservice_package_created:
 
 ## Phase 6: Post-Automation Integration
 
-### Step 6.1: Update Environment Configuration
+### Understanding the Microservice Role
+
+**IMPORTANT: The microservice is deployed to Render but is NOT directly called by the main application.**
+
+**How it works:**
+1. **Microservice exports data** → JSON files (`microservice-export.json`)
+2. **JSON files stored** → `public/data/` directory in main app
+3. **Main app reads** → JSON files directly (no API calls to microservice)
+4. **Microservice remains deployed** → For future data updates/re-training
+
+**The microservice serves as a data processing pipeline, not a runtime dependency.**
+
+### Step 6.1: Export Microservice Data to Main App
+
+```bash
+# After microservice deployment, export data to main app
+cd /path/to/your/mpiq-ai-chat
+
+# The automation pipeline should have already created these files:
+# - public/data/microservice-export.json (main analysis data)
+# - public/data/endpoints/*.json (26 analysis endpoints)
+# - public/data/blob-urls.json (URLs for large datasets)
+
+# Verify the export exists
+ls -la public/data/microservice-export.json
+
+# Check that your target variable is in the exported data
+grep "doors_audience_score" public/data/microservice-export.json | head -1
+```
+
+### Step 6.2: Update Environment Configuration
 
 **Update: `.env.local`**
 ```bash
-# Add your microservice URL
-MICROSERVICE_URL=https://your-project-microservice.onrender.com
+# Note: MICROSERVICE_URL is NOT needed for runtime
+# The app uses exported JSON files, not live API calls
 
-# Add blob storage token (if available)
+# Add blob storage token (if available) for large datasets
 BLOB_READ_WRITE_TOKEN=your_vercel_blob_token
 ```
 
-### Step 6.2: Update Project Configuration
-
-**Update any config files that reference microservice URLs:**
+### Step 6.3: Verify Data Export Integration
 
 ```bash
-# Search for old microservice references
-grep -r "microservice.*onrender" config/
-grep -r "MICROSERVICE_URL" config/
+# Verify all required data files are present
+ls -la public/data/microservice-export.json
+ls -la public/data/endpoints/*.json
+ls -la public/data/blob-urls.json
 
-# Update found files with your new URL
+# Check data structure
+node -e "
+const fs = require('fs');
+const data = JSON.parse(fs.readFileSync('public/data/microservice-export.json', 'utf8'));
+console.log('Datasets available:', Object.keys(data.datasets));
+console.log('Total records:', data.datasets.correlation_analysis.results.length);
+"
 ```
 
-### Step 6.3: Run Post-Automation Tasks
+### Step 6.4: Run Post-Automation Tasks
 
 **The automation automatically runs these, but verify completion:**
 
@@ -1106,7 +1147,7 @@ npm run generate-map-constraints
 python scripts/automation/upload_comprehensive_endpoints.py
 ```
 
-### Step 6.4: Update Geographic Data (if needed)
+### Step 6.5: Update Geographic Data (if needed)
 
 **If your project covers different geographic areas than the default:**
 
