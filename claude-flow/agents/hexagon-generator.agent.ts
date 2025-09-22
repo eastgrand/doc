@@ -105,7 +105,7 @@ export class HexagonGeneratorAgent {
           ...feature.properties
         },
         geometry: {
-          rings: feature.geometry.coordinates,
+          rings: (feature.geometry as Polygon).coordinates,
           spatialReference: { wkid: 4326 }
         }
       }))
