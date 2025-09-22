@@ -253,20 +253,10 @@ def export_comprehensive_dataset():
         field_count = len(schema_data.get('fields', {}))
         logger.info(f"   ✅ Got schema with {field_count} available fields")
     
-    # Save complete export
-    output_dir = "../public/data"
-    os.makedirs(output_dir, exist_ok=True)
-    output_file = f"{output_dir}/microservice-export.json"
-    
-    with open(output_file, 'w') as f:
-        json.dump(export_data, f, indent=2)
-    
-    # Calculate and display summary
-    file_size = os.path.getsize(output_file) / (1024 * 1024)  # MB
-    
+    # Skip saving the large combined export file
+    # The app uses individual endpoints and blob storage instead
     logger.info("🎉 COMPREHENSIVE EXPORT COMPLETED!")
-    logger.info(f"📁 File: {output_file}")
-    logger.info(f"💾 Size: {file_size:.1f}MB")
+    logger.info("📁 Skipped large combined file - app uses individual endpoints instead")
     logger.info("📊 Summary:")
     
     total_records = 0

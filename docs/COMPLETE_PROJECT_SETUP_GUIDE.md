@@ -1189,6 +1189,9 @@ npm run generate-map-constraints
 # Step 8: Upload to blob storage (if configured)
 cd scripts/automation
 python upload_comprehensive_endpoints.py
+
+# Step 9: Complete - no large export file cleanup needed
+# The export script now skips creating the large combined file
 ```
 
 ### Step 7.4: Update Geographic Data (if needed)
@@ -1332,6 +1335,10 @@ curl https://your-project-microservice.onrender.com/health
 # Clean up old projects and backups (can save 100+ MB)
 rm -rf projects/old_project_* projects/*_v2 projects/*_v3 projects/test_*
 find . -name "*.backup*" -type f -delete
+
+# Note: microservice-export.json is no longer created (saves 600+ MB)
+# The export script was updated to skip the large combined file
+# The app uses individual endpoint URLs and blob storage instead
 
 # Check current project size
 du -sh projects/
