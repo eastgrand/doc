@@ -6,7 +6,6 @@
 
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import Graphic from "@arcgis/core/Graphic";
-import { Feature } from "@arcgis/core/geometry";
 import { doorsServiceAdapter, DoorsDocumentarySingleServiceAdapter } from './DoorsDocumentarySingleServiceAdapter';
 
 export interface StateServiceConfig {
@@ -124,7 +123,7 @@ export class FederatedLayerService {
 
     } catch (error) {
       console.error('[FederatedLayer] Error creating federated layer:', error);
-      throw new Error(`Failed to create federated layer: ${error.message}`);
+      throw new Error(`Failed to create federated layer: ${(error as Error).message}`);
     }
   }
 
@@ -218,7 +217,7 @@ export class FederatedLayerService {
       
     } catch (error) {
       console.error(`[FederatedLayer] Error fetching from ${service.identifier}:`, error);
-      throw new Error(`Failed to fetch data from ${service.identifier}: ${error.message}`);
+      throw new Error(`Failed to fetch data from ${service.identifier}: ${(error as Error).message}`);
     }
   }
 
