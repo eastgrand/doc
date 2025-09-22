@@ -24,17 +24,17 @@ interface LoadingFact {
   icon?: React.ReactNode;
 }
 
-// General facts about housing market analysis capabilities
+// General facts about The Doors Documentary analysis capabilities
 const GENERAL_FACTS: LoadingFact[] = [
-  { type: 'general', text: 'Quebec\'s housing market spans from Montreal\'s urban core to rural regions', icon: <Target className="w-5 h-5" /> },
-  { type: 'general', text: 'Forward Sortation Areas (FSAs) provide neighborhood-level market insights', icon: <BarChart3 className="w-5 h-5" /> },
-  { type: 'general', text: 'Hot Growth Index identifies emerging high-potential neighborhoods', icon: <TrendingUp className="w-5 h-5" /> },
-  { type: 'general', text: 'New Homeowner Index reveals first-time buyer opportunities', icon: <Layers className="w-5 h-5" /> },
-  { type: 'general', text: 'Housing Affordability Index spots value investments across Quebec', icon: <Brain className="w-5 h-5" /> },
-  { type: 'general', text: 'AI-powered analysis processes millions of data points instantly', icon: <Zap className="w-5 h-5" /> },
-  { type: 'general', text: 'Tenure analysis compares ownership vs rental market dynamics', icon: <Car className="w-5 h-5" /> },
-  { type: 'general', text: 'Strategic housing analysis combines demographics, income, and growth patterns', icon: <Brain className="w-5 h-5" /> },
-  { type: 'general', text: 'Real estate market intelligence covering rural to metropolitan areas', icon: <Target className="w-5 h-5" /> },
+  { type: 'general', text: 'The Doors formed in 1965 and revolutionized rock music with their psychedelic sound', icon: <Target className="w-5 h-5" /> },
+  { type: 'general', text: 'Jim Morrison\'s poetry and vocals made The Doors icons of the counterculture movement', icon: <BarChart3 className="w-5 h-5" /> },
+  { type: 'general', text: 'Classic rock radio format reaches 25-30% of audiences in IL, IN, and WI markets', icon: <TrendingUp className="w-5 h-5" /> },
+  { type: 'general', text: 'Documentary audiences aged 45-70 show highest engagement with music biopics', icon: <Layers className="w-5 h-5" /> },
+  { type: 'general', text: 'Baby Boomers and Generation X drive 78% of classic rock documentary viewership', icon: <Brain className="w-5 h-5" /> },
+  { type: 'general', text: 'AI analysis identifies over 300 entertainment venues across 3-state region', icon: <Zap className="w-5 h-5" /> },
+  { type: 'general', text: 'H3 hexagon grid provides precise demographic targeting for documentary marketing', icon: <Car className="w-5 h-5" /> },
+  { type: 'general', text: 'Radio station coverage analysis reveals optimal markets for promotional campaigns', icon: <Brain className="w-5 h-5" /> },
+  { type: 'general', text: 'Theater accessibility scoring prioritizes venues for documentary screening strategy', icon: <Target className="w-5 h-5" /> },
 ];
 
 
@@ -113,11 +113,11 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
   console.log('[LoadingModal] Showing modal');
   
   const getLoadingMessage = () => {
-    if (internalProgress < 30) return "Initializing map...";
-    if (internalProgress < 60) return "Loading map layers...";
-    if (internalProgress < 90) return "Preparing analysis tools...";
-    if (internalProgress < 100) return "Finalizing setup...";
-    return "Ready!";
+    if (internalProgress < 30) return "Loading entertainment data...";
+    if (internalProgress < 60) return "Analyzing radio stations and theaters...";
+    if (internalProgress < 90) return "Preparing documentary analysis tools...";
+    if (internalProgress < 100) return "Finalizing Doors Documentary insights...";
+    return "Ready to analyze!";
   };
 
   return (

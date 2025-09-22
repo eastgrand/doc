@@ -20,14 +20,14 @@ interface AppLoadingFact {
   icon?: string;
 }
 
-// General facts about the application capabilities
+// General facts about The Doors Documentary analysis capabilities
 const GENERAL_FACTS: AppLoadingFact[] = [
-  { type: 'general', text: 'Our AI analyzes over 47,000 data points per query', icon: '📊' },
-  { type: 'general', text: 'Drive-time analysis uses real-world traffic patterns', icon: '🚗' },
-  { type: 'general', text: 'Machine learning identifies up to 15 demographic patterns', icon: '🤖' },
-  { type: 'general', text: 'Spatial clustering reveals hidden market opportunities', icon: '🎯' },
-  { type: 'general', text: 'Each analysis combines 10+ data sources for accuracy', icon: '🔄' },
-  { type: 'general', text: 'Real-time processing delivers insights in seconds', icon: '⚡' },
+  { type: 'general', text: 'AI analyzes 47,000+ demographic points for documentary audience targeting', icon: '📊' },
+  { type: 'general', text: 'Radio station analysis covers classic rock format penetration across IL, IN, WI', icon: '📻' },
+  { type: 'general', text: 'Machine learning identifies 15+ entertainment consumption patterns', icon: '🤖' },
+  { type: 'general', text: 'Theater accessibility scoring reveals optimal documentary screening venues', icon: '🎭' },
+  { type: 'general', text: 'Classic rock audience analysis targets Baby Boomers and Generation X', icon: '🎸' },
+  { type: 'general', text: 'Real-time processing delivers Doors Documentary market insights in seconds', icon: '⚡' },
 ];
 
 
@@ -256,7 +256,7 @@ export default function EnhancedAppLoader({
 
         {/* Subtle loading text */}
         <p className="text-xs text-muted-foreground opacity-60">
-          Initializing spatial analysis engine...
+          Initializing analysis engine...
         </p>
       </div>
 
