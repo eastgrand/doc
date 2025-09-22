@@ -326,7 +326,7 @@ export class DoorsDocumentarySingleServiceAdapter {
         const queries = states.map(state => {
           const layerId = layerGroup[state];
           if (layerId !== undefined) {
-            return this.queryLayer(layerId, geometry, segmentType, state);
+            return this.queryLayer(layerId, segmentType, state, geometry);
           }
           return null;
         }).filter(Boolean) as Promise<QueryResult>[];
@@ -349,7 +349,7 @@ export class DoorsDocumentarySingleServiceAdapter {
     console.log('[DoorsAdapter] Querying classic rock audience data...');
     
     const queries = states.map(state => 
-      this.queryLayer(this.layerMapping.classicRock[state], geometry, 'classicRock', state)
+      this.queryLayer(this.layerMapping.classicRock[state], 'classicRock', state, geometry)
     );
     
     return Promise.all(queries);
@@ -386,7 +386,7 @@ export class DoorsDocumentarySingleServiceAdapter {
         const queries = states.map(state => {
           const layerId = layerGroup[state];
           if (layerId !== undefined) {
-            return this.queryLayer(layerId, geometry, metricType, state);
+            return this.queryLayer(layerId, metricType, state, geometry);
           }
           return null;
         }).filter(Boolean) as Promise<QueryResult>[];
@@ -409,7 +409,7 @@ export class DoorsDocumentarySingleServiceAdapter {
     console.log('[DoorsAdapter] Querying theater infrastructure...');
     
     const queries = states.map(state =>
-      this.queryLayer(this.layerMapping.theaters[state], geometry, 'theaters', state)
+      this.queryLayer(this.layerMapping.theaters[state], 'theaters', state, geometry)
     );
     
     return Promise.all(queries);
@@ -423,9 +423,9 @@ export class DoorsDocumentarySingleServiceAdapter {
     
     return this.queryLayer(
       this.layerMapping.radioStations,
-      geometry,
       'radioStations',
-      'ALL'
+      'ALL',
+      geometry
     );
   }
   
@@ -434,9 +434,9 @@ export class DoorsDocumentarySingleServiceAdapter {
    */
   private async queryLayer(
     layerId: number,
-    geometry?: any,
     layerType: string,
-    state: string
+    state: string,
+    geometry?: any
   ): Promise<QueryResult> {
     const layerUrl = `${this.baseUrl}/${layerId}`;
     
@@ -456,7 +456,7 @@ export class DoorsDocumentarySingleServiceAdapter {
     try {
       const result = await layer.queryFeatures(query);
       
-      const features: HexagonFeature[] = result.features.map(feature => ({
+      const features: HexagonFeature[] = result.features.map((feature: any) => ({
         hexagonId: feature.attributes[this.fieldMapping.hexagonId],
         zipCode: feature.attributes[this.fieldMapping.zipCode],
         county: feature.attributes[this.fieldMapping.county],
