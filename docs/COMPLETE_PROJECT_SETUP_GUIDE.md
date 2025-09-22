@@ -25,14 +25,15 @@ Claude-flow is a **development acceleration system** that speeds up the creation
 1. [Prerequisites](#prerequisites)
 2. [Phase 1: Claude-Flow Development Environment Setup](#phase-1-claude-flow-development-environment-setup)
 3. [Phase 2: Project-Specific Configuration](#phase-2-project-specific-configuration)
-4. [Phase 3: ArcGIS Data Automation Pipeline](#phase-3-arcgis-data-automation-pipeline)
+4. [Phase 3: ArcGIS Data Automation Pipeline (Part 1)](#phase-3-arcgis-data-automation-pipeline-part-1)
 5. [Phase 4: Composite Index Generation (Optional)](#phase-4-composite-index-generation-optional)
 6. [Phase 5: Automated Microservice Deployment](#phase-5-automated-microservice-deployment)
-7. [Phase 6: Post-Automation Integration](#phase-6-post-automation-integration)
-8. [Phase 7: Validation and Testing](#phase-7-validation-and-testing)
-9. [Phase 8: Production Deployment](#phase-8-production-deployment)
-10. [Troubleshooting](#troubleshooting)
-11. [Success Checklist](#success-checklist)
+7. [Phase 6: Complete Automation Pipeline (Part 2)](#phase-6-complete-automation-pipeline-part-2)
+8. [Phase 7: Post-Automation Integration](#phase-7-post-automation-integration)
+9. [Phase 8: Validation and Testing](#phase-8-validation-and-testing)
+10. [Phase 9: Production Deployment](#phase-9-production-deployment)
+11. [Troubleshooting](#troubleshooting)
+12. [Success Checklist](#success-checklist)
 
 ---
 
@@ -528,7 +529,9 @@ const PROJECT_INDUSTRY = 'Your Industry'; // e.g., 'Athletic Footwear'
 
 ---
 
-## Phase 3: ArcGIS Data Automation Pipeline
+## Phase 3: ArcGIS Data Automation Pipeline (Part 1)
+
+**This phase runs BEFORE microservice deployment and PAUSES for manual deployment.**
 
 ### Step 3.0: Clean Up Previous Projects (Required)
 
@@ -604,16 +607,23 @@ python run_complete_automation.py \
 # Then proceed to Phase 4 for composite index generation
 ```
 
-### Step 3.3: Monitor Automation Progress
+### Step 3.3: Monitor Automation Progress (Part 1)
 
-The automation will run through these phases:
+The automation will run through initial phases then **PAUSE for microservice deployment**:
 
 1. **Phase 1**: Service inspection and field analysis  
 2. **Phase 2**: Data extraction with parallel processing (11,584+ records)
 3. **Phase 3**: Intelligent field mapping (auto-discovers 120+ layers)
+4. **Phase 4**: Model training and microservice package creation
 
-**If target variable not found, proceed to Phase 4 for composite index generation.**  
-**If target exists, automation continues to model training automatically.**
+**⚠️ AUTOMATION PAUSES HERE**
+```
+🚨 PIPELINE PAUSE: Manual Microservice Deployment Required
+📦 Microservice package created at: projects/YOUR_PROJECT_NAME/microservice_package/
+```
+
+**If target variable not found**: Proceed to Phase 4 for composite index generation first  
+**If target exists**: Automation continues to model training, then pauses
 
 ---
 
@@ -1069,7 +1079,17 @@ if microservice_package_created:
 
 ---
 
-## Phase 6: Post-Automation Integration
+## Phase 6: Complete Automation Pipeline (Part 2)
+
+**This phase runs AFTER microservice deployment to complete the automation.**
+
+### Understanding the Automation Flow
+
+1. **Part 1** (Phase 3): Extract data → Train models → Create package → **PAUSE**
+2. **Manual** (Phase 5): Deploy microservice to Render
+3. **Part 2** (Phase 6): Generate endpoints → Export JSON → Complete setup
+
+## Phase 7: Post-Automation Integration
 
 ### Understanding the Microservice Role
 
@@ -1083,7 +1103,7 @@ if microservice_package_created:
 
 **The microservice serves as a data processing pipeline, not a runtime dependency.**
 
-### Step 6.1: Export Microservice Data to Main App
+### Step 7.1: Export Microservice Data to Main App
 
 ```bash
 # After microservice deployment, export data to main app
@@ -1101,7 +1121,7 @@ ls -la public/data/microservice-export.json
 grep "doors_audience_score" public/data/microservice-export.json | head -1
 ```
 
-### Step 6.2: Update Environment Configuration
+### Step 7.2: Update Environment Configuration
 
 **Update: `.env.local`**
 ```bash
@@ -1112,7 +1132,7 @@ grep "doors_audience_score" public/data/microservice-export.json | head -1
 BLOB_READ_WRITE_TOKEN=your_vercel_blob_token
 ```
 
-### Step 6.3: Verify Data Export Integration
+### Step 7.3: Verify Data Export Integration
 
 ```bash
 # Verify all required data files are present
@@ -1129,25 +1149,49 @@ console.log('Total records:', data.datasets.correlation_analysis.results.length)
 "
 ```
 
-### Step 6.4: Run Post-Automation Tasks
+### Step 6.1: Continue Automation After Microservice Deployment
 
-**The automation automatically runs these, but verify completion:**
+**After the microservice is deployed to Render, continue the automation pipeline:**
 
 ```bash
-# Field mapping update (should be automatic)
-python scripts/automation/semantic_field_resolver.py
+# Navigate to automation directory
+cd scripts/automation
 
-# Layer categorization (should be automatic)
-python scripts/automation/layer_categorization_post_processor.py
+# Step 1: Generate comprehensive endpoints from trained models
+python endpoint_generator.py \
+  ../../projects/doors_documentary/trained_models \
+  ../../projects/doors_documentary/merged_dataset.csv \
+  ../../projects/doors_documentary/generated_endpoints
 
-# Generate map constraints (REQUIRED - run manually)
+# Step 2: Export microservice data to JSON format
+cd ../..
+python scripts/export-complete-dataset.py
+
+# Step 3: Run scoring scripts to generate analysis scores
+bash scripts/run-complete-scoring.sh
+
+# Step 4: Generate layer configurations
+cd scripts/automation
+python layer_config_generator.py \
+  "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__b1cab1ae067f4359/FeatureServer" \
+  --project doors_documentary
+
+# Step 5: Run post-automation field mapping
+python semantic_field_resolver.py
+
+# Step 6: Run layer categorization
+python layer_categorization_post_processor.py
+
+# Step 7: Generate map constraints
+cd ../..
 npm run generate-map-constraints
 
-# Upload to blob storage (automatic if token configured)
-python scripts/automation/upload_comprehensive_endpoints.py
+# Step 8: Upload to blob storage (if configured)
+cd scripts/automation
+python upload_comprehensive_endpoints.py
 ```
 
-### Step 6.5: Update Geographic Data (if needed)
+### Step 7.4: Update Geographic Data (if needed)
 
 **If your project covers different geographic areas than the default:**
 
@@ -1173,9 +1217,9 @@ const cities = [
 
 ---
 
-## Phase 7: Validation and Testing
+## Phase 8: Validation and Testing
 
-### Step 7.1: Start Application
+### Step 8.1: Start Application
 
 ```bash
 # Start your application
@@ -1184,7 +1228,7 @@ npm start
 npm run dev
 ```
 
-### Step 7.2: Test Core Functionality
+### Step 8.2: Test Core Functionality
 
 **Manual Testing:**
 1. **Open** your application in browser
@@ -1196,7 +1240,7 @@ npm run dev
 3. **Verify** data loads correctly
 4. **Check** for error messages in browser console (F12)
 
-### Step 7.3: Run Automated Tests
+### Step 8.3: Run Automated Tests
 
 ```bash
 # Test routing accuracy
@@ -1209,7 +1253,7 @@ npm test -- lib/analysis/strategies/processors/YourProjectAnalysisProcessor.test
 npm test -- __tests__/hybrid-routing-random-query-optimization.test.ts --verbose
 ```
 
-### Step 7.4: Validate Data Integrity
+### Step 8.4: Validate Data Integrity
 
 ```bash
 # Create a validation script for your project
@@ -1223,7 +1267,7 @@ console.log('Your project score field present:',
 "
 ```
 
-### Step 7.5: Test Geographic Features
+### Step 8.5: Test Geographic Features
 
 ```bash
 # Test geographic queries
@@ -1235,20 +1279,20 @@ console.log('Your project score field present:',
 
 ---
 
-## Phase 8: Production Deployment
+## Phase 9: Production Deployment
 
-### Step 8.1: Environment Setup
+### Step 9.1: Environment Setup
 
 ```bash
 # Set production environment variables
 export NODE_ENV=production
-export MICROSERVICE_URL=https://your-project-microservice.onrender.com
+# Note: MICROSERVICE_URL not needed - app uses JSON exports
 
 # Build production version
 npm run build
 ```
 
-### Step 8.2: Deploy to Production
+### Step 9.2: Deploy to Production
 
 **For Vercel:**
 ```bash
@@ -1256,17 +1300,17 @@ npm run build
 vercel --prod
 
 # Set environment variables in Vercel dashboard:
-# MICROSERVICE_URL=https://your-project-microservice.onrender.com
 # BLOB_READ_WRITE_TOKEN=your_blob_token
+# (NO MICROSERVICE_URL needed)
 ```
 
 **For other platforms:**
 ```bash
 # Follow your platform's deployment instructions
-# Ensure environment variables are set correctly
+# Only set blob storage token if using large datasets
 ```
 
-### Step 8.3: Production Verification
+### Step 9.3: Production Verification
 
 ```bash
 # Test production deployment
