@@ -252,6 +252,23 @@ def main():
     except Exception as e:
         print(f"❌ Error: {e}")
         sys.exit(1)
+    finally:
+        # Clean up any lingering processes to prevent IDE crashes
+        try:
+            import subprocess
+            import os
+            current_pid = os.getpid()
+            
+            # Kill any other semantic_field_resolver processes except this one
+            result = subprocess.run([
+                'bash', '-c', 
+                f'ps aux | grep semantic_field_resolver | grep -v grep | grep -v {current_pid} | awk \'{{print $2}}\' | xargs -r kill'
+            ], capture_output=True, text=True)
+            
+            if result.returncode == 0:
+                print("🧹 Cleaned up lingering processes")
+        except Exception as cleanup_error:
+            print(f"⚠️ Process cleanup failed: {cleanup_error}")
 
 
 if __name__ == "__main__":

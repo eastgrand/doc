@@ -2668,6 +2668,10 @@ SERVICE_URL="https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/
 
 # Run the complete pipeline
 ./run_complete_automation.sh "$SERVICE_URL"
+
+# IMPORTANT: Check for and kill any lingering semantic field resolver processes after completion
+# These processes can consume high CPU and cause IDE crashes if left running
+ps aux | grep semantic_field_resolver | grep -v grep | awk '{print $2}' | xargs -r kill
 ```
 
 ### Step 2: Individual Component Usage

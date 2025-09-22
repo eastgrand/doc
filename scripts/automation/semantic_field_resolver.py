@@ -902,17 +902,58 @@ class AdvancedSemanticValidator:
         return algorithm_usage.get(semantic_field, [])
 
 
+def auto_detect_project_path():
+    """Auto-detect the most recent project directory"""
+    import os
+    from pathlib import Path
+    
+    # Get the root directory (assuming we're in scripts/automation/)
+    current_dir = Path(__file__).resolve()
+    root_dir = current_dir.parent.parent.parent  # Go up to project root
+    projects_dir = root_dir / "projects"
+    
+    if not projects_dir.exists():
+        return None
+    
+    # Find the most recently modified project directory with required files
+    project_candidates = []
+    for project_dir in projects_dir.iterdir():
+        if project_dir.is_dir():
+            # Check if it has the required files for post-processing
+            field_mappings = project_dir / "field_mappings.json"
+            if field_mappings.exists():
+                # Get modification time and add to candidates
+                mod_time = field_mappings.stat().st_mtime
+                project_candidates.append((project_dir, mod_time))
+    
+    if not project_candidates:
+        return None
+    
+    # Sort by modification time (most recent first) and return the path
+    project_candidates.sort(key=lambda x: x[1], reverse=True)
+    return str(project_candidates[0][0])
+
+
 def main():
     """Main function for command-line usage"""
     import sys
     
+    # Auto-detect project path if not provided
     if len(sys.argv) < 2:
-        print("Usage: python semantic_field_resolver.py <project_path>")
-        print("\nExample:")
-        print("python semantic_field_resolver.py projects/housing_2025")
-        sys.exit(1)
-    
-    project_path = sys.argv[1]
+        print("🔍 Auto-detecting project directory...")
+        project_path = auto_detect_project_path()
+        
+        if not project_path:
+            print("❌ No valid project directory found.")
+            print("\nUsage: python semantic_field_resolver.py <project_path>")
+            print("\nExample:")
+            print("python semantic_field_resolver.py projects/housing_2025")
+            print("\nOr ensure you have a projects/ directory with field_mappings.json")
+            sys.exit(1)
+        
+        print(f"✅ Found project: {project_path}")
+    else:
+        project_path = sys.argv[1]
     
     # Setup logging
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -951,6 +992,23 @@ def main():
         print(f"\n❌ Fatal error: {e}")
         logging.error(f"Fatal error in semantic field resolver: {e}")
         sys.exit(1)
+    finally:
+        # Clean up any lingering processes to prevent IDE crashes
+        try:
+            import subprocess
+            import os
+            current_pid = os.getpid()
+            
+            # Kill any other semantic_field_resolver processes except this one
+            result = subprocess.run([
+                'bash', '-c', 
+                f'ps aux | grep semantic_field_resolver | grep -v grep | grep -v {current_pid} | awk \'{{print $2}}\' | xargs -r kill'
+            ], capture_output=True, text=True)
+            
+            if result.returncode == 0:
+                print("🧹 Cleaned up lingering processes")
+        except Exception as cleanup_error:
+            logging.warning(f"Process cleanup failed: {cleanup_error}")
 
 
 if __name__ == "__main__":

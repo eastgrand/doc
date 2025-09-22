@@ -610,6 +610,9 @@ python run_complete_automation.py \
   --project doors_documentary \
   --target entertainment_score  # Will fail but extract data
 
+# IMPORTANT: Check for and kill any lingering processes after automation completes
+ps aux | grep semantic_field_resolver | grep -v grep | awk '{print $2}' | xargs -r kill
+
 # Then proceed to Phase 4 for composite index generation
 ```
 
@@ -1185,6 +1188,10 @@ python layer_config_generator.py \
 # Step 5: Run post-automation field mapping (requires venv)
 source ../venv/bin/activate  # REQUIRED: Must use venv for Python dependencies
 python semantic_field_resolver_simple.py  # Use simplified version to avoid CLI crashes
+
+# IMPORTANT: Kill any lingering semantic field resolver processes after completion
+# These processes can consume high CPU and cause IDE crashes if left running
+ps aux | grep semantic_field_resolver | grep -v grep | awk '{print $2}' | xargs -r kill
 
 # Step 6: Run layer categorization (requires venv)
 python layer_categorization_post_processor.py
