@@ -30,15 +30,15 @@ export class HexagonGeneratorAgent {
     
     // Convert H3 indices to GeoJSON features
     const features: Feature[] = hexagons.map((hexIndex, idx) => {
-      const boundary = h3.cellToBoundary(hexIndex, true);
+      const boundary = h3.h3ToGeoBoundary(hexIndex, true);
       
       return {
         type: 'Feature',
         properties: {
           h3_index: hexIndex,
           h3_resolution: this.config.resolution,
-          center_lat: h3.cellToLatLng(hexIndex)[0],
-          center_lng: h3.cellToLatLng(hexIndex)[1],
+          center_lat: h3.h3ToGeo(hexIndex)[0],
+          center_lng: h3.h3ToGeo(hexIndex)[1],
           feature_id: `HEX_${idx}`,
           radius_miles: 2 // Approximate radius for resolution 6
         },
@@ -134,7 +134,7 @@ export class HexagonGeneratorAgent {
     approximateCoverage: number; // in square miles
     boundingBox: number[][];
   } {
-    const hexagonArea = h3.cellArea(grid.features[0].properties.h3_index, 'mi2');
+    const hexagonArea = h3.hexArea(this.config.resolution, h3.UNITS.mi2);
     
     return {
       totalHexagons: grid.features.length,
