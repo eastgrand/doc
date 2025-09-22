@@ -1,0 +1,172 @@
+{
+  "training_timestamp": "2025-09-21T21:35:55.121457",
+  "target_variable": "doors_audience_score",
+  "total_models_attempted": 12,
+  "successful_models": 10,
+  "models_overview": {
+    "xgboost": {
+      "algorithm": "xgboost",
+      "model_type": "supervised",
+      "target_variable": "doors_audience_score",
+      "performance": {
+        "r2_score": 0.9999259534708743,
+        "rmse": 0.12464546899496382,
+        "mae": 0.03222707260957281,
+        "mape": 0.06393192922116521,
+        "train_r2": 0.9999974164524181,
+        "train_rmse": 0.023159073274422227,
+        "overfitting_ratio": 1.0000714682735214
+      },
+      "features_used": 49,
+      "training_records": 11584
+    },
+    "random_forest": {
+      "algorithm": "random_forest",
+      "model_type": "supervised",
+      "target_variable": "doors_audience_score",
+      "performance": {
+        "r2_score": 0.9999693110052333,
+        "rmse": 0.08024453680808402,
+        "mae": 0.02838046400855192,
+        "mape": 0.04842794514974862,
+        "train_r2": 0.9999907028886906,
+        "train_rmse": 0.04393260542379022,
+        "overfitting_ratio": 1.0000213925399728
+      },
+      "features_used": 49,
+      "training_records": 11584
+    },
+    "linear_regression": {
+      "algorithm": "linear_regression",
+      "model_type": "supervised",
+      "target_variable": "doors_audience_score",
+      "performance": {
+        "r2_score": 1.0,
+        "rmse": 2.0289773057248948e-13,
+        "mae": 1.7803128175147543e-13,
+        "mape": 4.365578386402185e-13,
+        "train_r2": 1.0,
+        "train_rmse": 2.071952360761429e-13,
+        "overfitting_ratio": 1.0
+      },
+      "features_used": 49,
+      "training_records": 11584
+    },
+    "ridge_regression": {
+      "algorithm": "ridge_regression",
+      "model_type": "supervised",
+      "target_variable": "doors_audience_score",
+      "performance": {
+        "r2_score": 0.9999927251451749,
+        "rmse": 0.03906936103123621,
+        "mae": 0.013520484100469366,
+        "mape": 0.025318329303372394,
+        "train_r2": 0.999994254739529,
+        "train_rmse": 0.03453566365585841,
+        "overfitting_ratio": 1.0000015296054818
+      },
+      "features_used": 49,
+      "training_records": 11584
+    },
+    "lasso_regression": {
+      "algorithm": "lasso_regression",
+      "model_type": "supervised",
+      "target_variable": "doors_audience_score",
+      "performance": {
+        "r2_score": 0.999830359628023,
+        "rmse": 0.1886638753334805,
+        "mae": 0.1825269255920216,
+        "mape": 0.5406664348956387,
+        "train_r2": 0.9998294916065231,
+        "train_rmse": 0.18814203009183414,
+        "overfitting_ratio": 0.9999991318312236
+      },
+      "features_used": 49,
+      "training_records": 11584
+    },
+    "svr": {
+      "algorithm": "svr",
+      "model_type": "supervised",
+      "target_variable": "doors_audience_score",
+      "performance": {
+        "r2_score": 0.984900254863938,
+        "rmse": 1.77995470765839,
+        "mae": 0.5252695344477321,
+        "mape": 1.177881777447734,
+        "train_r2": 0.9885749063450504,
+        "train_rmse": 1.54007839707397,
+        "overfitting_ratio": 1.0037309884559023
+      },
+      "features_used": 49,
+      "training_records": 11584
+    },
+    "knn": {
+      "algorithm": "knn",
+      "model_type": "supervised",
+      "target_variable": "doors_audience_score",
+      "performance": {
+        "r2_score": 0.997672758086317,
+        "rmse": 0.6987871464772318,
+        "mae": 0.3032007647554889,
+        "mape": 0.5663270681574368,
+        "train_r2": 1.0,
+        "train_rmse": 1.0143346765381768e-07,
+        "overfitting_ratio": 1.00233267060248
+      },
+      "features_used": 49,
+      "training_records": 11584
+    },
+    "neural_network": {
+      "algorithm": "neural_network",
+      "model_type": "supervised",
+      "target_variable": "doors_audience_score",
+      "performance": {
+        "r2_score": 0.9857445940852921,
+        "rmse": 1.7294736001082083,
+        "mae": 0.32616032023470054,
+        "mape": 0.7600697300544265,
+        "train_r2": 0.9993757661136,
+        "train_rmse": 0.3599868319265024,
+        "overfitting_ratio": 1.0138283000587558
+      },
+      "features_used": 49,
+      "training_records": 11584
+    },
+    "anomaly_detection": {
+      "algorithm": "anomaly_detection",
+      "model_type": "unsupervised",
+      "target_variable": null,
+      "performance": {
+        "n_outliers": "18",
+        "outlier_ratio": 0.10344827586206896,
+        "normal_points": "156"
+      },
+      "features_used": 101,
+      "training_records": 174
+    },
+    "clustering": {
+      "success": false,
+      "error": "Input X contains NaN.\nKMeans does not accept missing values encoded as NaN natively. For supervised learning, you might want to consider sklearn.ensemble.HistGradientBoostingClassifier and Regressor which accept missing values encoded as NaNs natively. Alternatively, it is possible to preprocess the data, for instance by using an imputer transformer in a pipeline or drop samples with missing values. See https://scikit-learn.org/stable/modules/impute.html You can find a list of all estimators that handle NaN values at the following page: https://scikit-learn.org/stable/modules/impute.html#estimators-that-handle-nan-values"
+    },
+    "dimensionality_reduction": {
+      "success": false,
+      "error": "Input X contains NaN.\nPCA does not accept missing values encoded as NaN natively. For supervised learning, you might want to consider sklearn.ensemble.HistGradientBoostingClassifier and Regressor which accept missing values encoded as NaNs natively. Alternatively, it is possible to preprocess the data, for instance by using an imputer transformer in a pipeline or drop samples with missing values. See https://scikit-learn.org/stable/modules/impute.html You can find a list of all estimators that handle NaN values at the following page: https://scikit-learn.org/stable/modules/impute.html#estimators-that-handle-nan-values"
+    },
+    "ensemble": {
+      "algorithm": "ensemble",
+      "model_type": "supervised",
+      "target_variable": "doors_audience_score",
+      "performance": {
+        "r2_score": 0.9994960512395871,
+        "rmse": 0.32548154134845025,
+        "mae": 0.11818140557312853,
+        "mape": 0.20056082202002984,
+        "train_r2": 0.9995919944892043,
+        "train_rmse": 0.28957479859235796,
+        "overfitting_ratio": 1.0000959916244774
+      },
+      "features_used": 49,
+      "training_records": 11584
+    }
+  }
+}

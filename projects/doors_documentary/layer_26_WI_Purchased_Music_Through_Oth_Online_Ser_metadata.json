@@ -1,0 +1,194 @@
+{
+  "layer_id": 26,
+  "layer_name": "WI Purchased Music Through Oth Online Ser",
+  "description": "Business Analyst Layer: WI Purchased Music Through Oth Online Ser",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:24.668090",
+  "record_count": 4064,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "53511 (Beloit)",
+        "54409 (Antigo)",
+        "54758 (Osseo)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Rock County",
+        "Langlade County",
+        "Trempealeau County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Wisconsin",
+        "Wisconsin",
+        "Wisconsin"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862759597ffffff",
+        "86274248fffffff",
+        "862753a87ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22087A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music Through Other Online Service Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        11,
+        0,
+        9
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22087A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music Through Other Online Service Last 6 Mo (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        2.28,
+        0,
+        2.75
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        2.28,
+        0,
+        2.75
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        67395000,
+        76812500,
+        74458750.00390625
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        30577.230557790383,
+        32635.98837859234,
+        32135.13517694386
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492014552,
+        1758492014552,
+        1758492014552
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492014552,
+        1758492014552,
+        1758492014552
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_26_WI_Purchased_Music_Through_Oth_Online_Ser.csv"
+}

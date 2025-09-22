@@ -1,0 +1,194 @@
+{
+  "layer_id": 105,
+  "layer_name": "IN Listen to Rock Radio Format",
+  "description": "Business Analyst Layer: IN Listen to Rock Radio Format",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:51.330059",
+  "record_count": 2809,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "47265 (North Vernon)",
+        "47231 (Dupont)",
+        "47023 (Holton)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Jennings County",
+        "Jefferson County",
+        "Ripley County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Indiana",
+        "Indiana",
+        "Indiana"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86266ca97ffffff",
+        "86266ca9fffffff",
+        "86266caa7ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22024A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listen to Rock Radio Format",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28,
+        26,
+        1
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22024A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listen to Rock Radio Format (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        4.79,
+        5.11,
+        3.03
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        4.79,
+        5.11,
+        3.03
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        57493750,
+        57101250.00390625,
+        57735000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28258.955636888186,
+        28159.583990587562,
+        28312.54979551783
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493311679,
+        1758493311679,
+        1758493311679
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493311679,
+        1758493311679,
+        1758493311679
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_105_IN_Listen_to_Rock_Radio_Format.csv"
+}

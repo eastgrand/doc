@@ -1,0 +1,194 @@
+{
+  "layer_id": 49,
+  "layer_name": "WI Generation Alpha Pop",
+  "description": "Business Analyst Layer: WI Generation Alpha Pop",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:31.426187",
+  "record_count": 4064,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "54736 (Durand)",
+        "54455 (Mosinee)",
+        "54971 (Ripon)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Buffalo County",
+        "Marathon County",
+        "Green Lake County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Wisconsin",
+        "Wisconsin",
+        "Wisconsin"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86275344fffffff",
+        "862751ad7ffffff",
+        "86275c2a7ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "GENALPHACY",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Generation Alpha Population (Born 2017 or Later) (Esri)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        10,
+        63,
+        18
+      ],
+      "has_data": true
+    },
+    {
+      "name": "GENALPHACY_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Generation Alpha Population (Born 2017 or Later) (Esri) (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        8.06,
+        10.59,
+        6.32
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        8.06,
+        10.59,
+        6.32
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        73828750,
+        75226250,
+        71923750.00390625
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        32001.98177138998,
+        32300.101946613766,
+        31584.501121378875
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492323813,
+        1758492323813,
+        1758492323813
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492323813,
+        1758492323813,
+        1758492323813
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_49_WI_Generation_Alpha_Pop.csv"
+}

@@ -1,0 +1,105 @@
+{
+  "project_type": "entertainment",
+  "description": "Entertainment industry analysis focused on classic rock demographics and documentary audience potential",
+  "business_logic": {
+    "demographic_age_target": 57.5,
+    "demographic_income_target": 75000,
+    "music_affinity_weight": 0.40,
+    "cultural_engagement_weight": 0.25,
+    "spending_capacity_weight": 0.20,
+    "market_accessibility_weight": 0.15
+  },
+  "algorithm_settings": {
+    "classic_rock_preference_threshold": 60,
+    "documentary_consumption_threshold": 45,
+    "theater_density_threshold": 2,
+    "tapestry_segment_bonus_factor": 15,
+    "age_range_min": 45,
+    "age_range_max": 70
+  },
+  "semantic_field_priorities": {
+    "tapestry_segments": [
+      "tapestry_k1_established_suburbanites",
+      "tapestry_k2_mature_suburban_families", 
+      "tapestry_i1_rural_established",
+      "tapestry_j1_active_seniors",
+      "tapestry_l1_savvy_suburbanites"
+    ],
+    "music_engagement": [
+      "classic_rock_listening_frequency",
+      "rock_radio_format_listening",
+      "music_streaming_usage",
+      "concert_attendance_frequency",
+      "music_spending_average"
+    ],
+    "cultural_engagement": [
+      "documentary_consumption_rate",
+      "biography_theater_attendance",
+      "cultural_event_participation",
+      "theater_opera_concert_spending",
+      "entertainment_spending_average"
+    ],
+    "infrastructure": [
+      "theater_density_2mile_radius",
+      "venue_accessibility_rating",
+      "total_theater_capacity",
+      "classic_rock_radio_coverage"
+    ]
+  },
+  "target_analysis_fields": [
+    "attended_movie_6_mo",
+    "viewed_movie_on_demand_30_days",
+    "spending_tickets_movies_avg",
+    "purchased_music_streaming",
+    "listened_classic_rock_6_mo",
+    "listen_classic_rock_radio_format",
+    "attended_rock_music_performance_12_mo",
+    "rented_purchased_documentary_movie",
+    "spending_entertainment_rec_avg",
+    "purchased_biography_12_mo",
+    "saw_biography_genre_movie_theater"
+  ],
+  "processors": {
+    "entertainment_analysis": {
+      "class": "EntertainmentAnalysisProcessor",
+      "enabled": true,
+      "priority": 1,
+      "description": "4-dimension composite scoring for entertainment analysis"
+    },
+    "tapestry_entertainment": {
+      "class": "TapestryEntertainmentProcessor", 
+      "enabled": true,
+      "priority": 2,
+      "description": "2025 ESRI Tapestry segment analysis for classic rock demographics"
+    },
+    "theater_accessibility": {
+      "class": "TheaterAccessibilityProcessor",
+      "enabled": true,
+      "priority": 3,
+      "description": "Theater infrastructure and venue accessibility analysis"
+    }
+  },
+  "scoring_methodology": {
+    "composite_weights": {
+      "music_affinity": 0.40,
+      "cultural_engagement": 0.25,
+      "spending_capacity": 0.20,
+      "market_accessibility": 0.15
+    },
+    "shap_features": [
+      "age_55_70_population",
+      "classic_rock_radio_coverage", 
+      "household_income_75k_plus",
+      "college_education_rate",
+      "theater_venue_density"
+    ]
+  },
+  "configuration_metadata": {
+    "version": "1.0",
+    "created": "2025-09-21",
+    "industry_focus": "Entertainment industry, documentary market analysis, classic rock audience",
+    "target_demographics": "Classic rock generation (Age 45-70) with focus on 2025 ESRI Tapestry segments K1, K2, I1, J1, L1",
+    "geographic_scope": "Midwest United States (IL, IN, WI)",
+    "claude_flow_enhanced": true
+  }
+}

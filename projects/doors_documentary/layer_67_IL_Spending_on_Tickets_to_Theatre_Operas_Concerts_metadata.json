@@ -1,0 +1,194 @@
+{
+  "layer_id": 67,
+  "layer_name": "IL Spending on Tickets to Theatre Operas Concerts",
+  "description": "Business Analyst Layer: IL Spending on Tickets to Theatre Operas Concerts",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:38.271005",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62242 (Evansville)",
+        "63834 (Charleston)",
+        "62977 (Raleigh)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Randolph County",
+        "Mississippi County",
+        "Saline County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Missouri",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86264070fffffff",
+        "86264ed0fffffff",
+        "86264181fffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "X9073_X",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Tickets to Theatre/Operas/Concerts",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        22625,
+        1024,
+        31877
+      ],
+      "has_data": true
+    },
+    {
+      "name": "X9073_X_A",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Tickets to Theatre/Operas/Concerts (Avg)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        65.01,
+        33.03,
+        97.78
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        65.01,
+        33.03,
+        97.78
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        57958749.99609375,
+        56190000,
+        56496250.00390625
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28362.518958235505,
+        27925.44225178586,
+        28004.54334642554
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492607685,
+        1758492607685,
+        1758492607685
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492607685,
+        1758492607685,
+        1758492607685
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_67_IL_Spending_on_Tickets_to_Theatre_Operas_Concerts.csv"
+}

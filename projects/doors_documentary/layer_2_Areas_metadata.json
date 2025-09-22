@@ -1,0 +1,194 @@
+{
+  "layer_id": 2,
+  "layer_name": "Areas",
+  "description": "Business Analyst Layer: Areas",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:16.177993",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62821 (Carmi)",
+        "47631 (New Harmony)",
+        "62827 (Crossville)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "White County",
+        "Posey County",
+        "White County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Indiana",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86264524fffffff",
+        "86264526fffffff",
+        "86264534fffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "TPOPL1",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Savvy Suburbanites (L1) Tapestry Total Population (Esri)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        0,
+        0,
+        0
+      ],
+      "has_data": true
+    },
+    {
+      "name": "TPOPL1_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Savvy Suburbanites (L1) Tapestry Total Population (Esri) (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        0,
+        0,
+        0
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "Internal",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        0,
+        0,
+        0
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        56333848.3203125,
+        56347800.375,
+        56436408.62109375
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        27967.958301562816,
+        27971.694915674896,
+        27993.98726446011
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758491782767,
+        1758491782767,
+        1758491782767
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758491782767,
+        1758491782767,
+        1758491782767
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_2_Areas.csv"
+}

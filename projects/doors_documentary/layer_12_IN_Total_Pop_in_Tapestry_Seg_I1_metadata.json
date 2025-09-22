@@ -1,0 +1,194 @@
+{
+  "layer_id": 12,
+  "layer_name": "IN Total Pop in Tapestry Seg I1",
+  "description": "Business Analyst Layer: IN Total Pop in Tapestry Seg I1",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:19.215153",
+  "record_count": 2809,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62821 (Carmi)",
+        "47631 (New Harmony)",
+        "62410 (Allendale)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "White County",
+        "Posey County",
+        "Wabash County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Indiana",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86264524fffffff",
+        "86264526fffffff",
+        "86266e697ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "TPOPI1",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Small Town Sincerity (I1) Tapestry Total Population (Esri)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        0,
+        0,
+        0
+      ],
+      "has_data": true
+    },
+    {
+      "name": "TPOPI1_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Small Town Sincerity (I1) Tapestry Total Population (Esri) (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        0,
+        0,
+        0
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        0,
+        0,
+        0
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        56532500,
+        56135000,
+        56726250
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28015.598433874227,
+        27915.620822769335,
+        28069.64525783052
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758491871529,
+        1758491871529,
+        1758491871529
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758491871529,
+        1758491871529,
+        1758491871529
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_12_IN_Total_Pop_in_Tapestry_Seg_I1.csv"
+}

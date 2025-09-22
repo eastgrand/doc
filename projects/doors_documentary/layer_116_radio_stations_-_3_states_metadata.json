@@ -1,0 +1,255 @@
+{
+  "layer_id": 116,
+  "layer_name": "radio stations - 3 states",
+  "description": "Business Analyst Layer: radio stations - 3 states",
+  "geometry_type": "esriGeometryPoint",
+  "extraction_timestamp": "2025-09-21T21:31:54.427325",
+  "record_count": 50,
+  "field_count": 19,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "_",
+      "type": "esriFieldTypeDouble",
+      "alias": "#",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        25,
+        3,
+        1
+      ],
+      "has_data": true
+    },
+    {
+      "name": "call_sign",
+      "type": "esriFieldTypeString",
+      "alias": "Call Sign",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "WJLI",
+        "WCJZ",
+        "WABX"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "frequency",
+      "type": "esriFieldTypeString",
+      "alias": "Frequency",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "98.3 FM",
+        "105.7 FM",
+        "107.5 FM"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "city_of_license",
+      "type": "esriFieldTypeString",
+      "alias": "City",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Metropolis",
+        "Cannelton",
+        "Evansville"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "state",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "IL",
+        "IN",
+        "IN"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "licensee_owner",
+      "type": "esriFieldTypeString",
+      "alias": "Licensee/Owner",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Sun Media, Inc.",
+        "Hancock Communications, Inc.",
+        "Midwest Communications, Inc."
+      ],
+      "has_data": true
+    },
+    {
+      "name": "notes",
+      "type": "esriFieldTypeString",
+      "alias": "Notes",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Classic rock",
+        "Classic rock",
+        "Classic rock"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "tower_address",
+      "type": "esriFieldTypeString",
+      "alias": "Address or Place",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Metropolis, IL (37.1533, -88.7056)",
+        "Cannelton, IN (37.9089, -86.7142)",
+        "Evansville, IN (37.9717, -87.5717)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "coverage_radius__miles_",
+      "type": "esriFieldTypeDouble",
+      "alias": "Coverage Radius (miles)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        45,
+        45,
+        45
+      ],
+      "has_data": true
+    },
+    {
+      "name": "SOURCE_ADDR",
+      "type": "esriFieldTypeString",
+      "alias": "Original address",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Metropolis, IL (37.1533, -88.7056), Metropolis, IL",
+        "Cannelton, IN (37.9089, -86.7142), Cannelton, IN",
+        "Evansville, IN (37.9717, -87.5717), Evansville, IN"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Postal",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [],
+      "has_data": false
+    },
+    {
+      "name": "DESC_",
+      "type": "esriFieldTypeString",
+      "alias": "Description",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "WJLI, Metropolis, IL (37.1533, -88.7056), Metropolis, IL",
+        "WCJZ, Cannelton, IN (37.9089, -86.7142), Cannelton, IN",
+        "WABX, Evansville, IN (37.9717, -87.5717), Evansville, IN"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "LATITUDE",
+      "type": "esriFieldTypeDouble",
+      "alias": "Latitude",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        37.153299999999376,
+        37.908899999999356,
+        37.97165999999936
+      ],
+      "has_data": true
+    },
+    {
+      "name": "LONGITUDE",
+      "type": "esriFieldTypeDouble",
+      "alias": "Longitude",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        -88.70559999999851,
+        -86.71419999999854,
+        -87.57165999999852
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493523052,
+        1758493523052,
+        1758493523052
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493523052,
+        1758493523052,
+        1758493523052
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_116_radio_stations_-_3_states.csv"
+}

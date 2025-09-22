@@ -1,0 +1,194 @@
+{
+  "layer_id": 38,
+  "layer_name": "WI Purchased Music Through Amazon Music",
+  "description": "Business Analyst Layer: WI Purchased Music Through Amazon Music",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:27.867121",
+  "record_count": 4064,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "54455 (Mosinee)",
+        "54455 (Mosinee)",
+        "54455 (Mosinee)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Marathon County",
+        "Marathon County",
+        "Marathon County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Wisconsin",
+        "Wisconsin",
+        "Wisconsin"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862751ac7ffffff",
+        "862751acfffffff",
+        "862751ad7ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22084A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music Through Amazon Music Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        8,
+        4,
+        15
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22084A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music Through Amazon Music Last 6 Mo (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3.16,
+        3.39,
+        3.17
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3.16,
+        3.39,
+        3.17
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        75358750.0078125,
+        75068750,
+        75226250
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        32329.673705056393,
+        32265.518824850868,
+        32300.101946613766
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492177436,
+        1758492177436,
+        1758492177436
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492177436,
+        1758492177436,
+        1758492177436
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_38_WI_Purchased_Music_Through_Amazon_Music.csv"
+}

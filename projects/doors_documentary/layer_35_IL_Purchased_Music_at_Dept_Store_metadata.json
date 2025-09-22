@@ -1,0 +1,194 @@
+{
+  "layer_id": 35,
+  "layer_name": "IL Purchased Music at Dept Store",
+  "description": "Business Analyst Layer: IL Purchased Music at Dept Store",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:27.949443",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62821 (Carmi)",
+        "62611 (Arenzville)",
+        "62870 (Odin)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "White County",
+        "Cass County",
+        "Marion County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Illinois",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86264524fffffff",
+        "862671317ffffff",
+        "862645417ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22082A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music at Discount Department Store Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1,
+        1,
+        7
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22082A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music at Discount Department Store Last 6 Mo (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        0.82,
+        1.3,
+        0.76
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        0.82,
+        1.3,
+        0.76
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        56363750.00390625,
+        59724999.99609375,
+        57708750
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        27977.19726350761,
+        28798.176595698358,
+        28309.163063863412
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492136702,
+        1758492136702,
+        1758492136702
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492136702,
+        1758492136702,
+        1758492136702
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_35_IL_Purchased_Music_at_Dept_Store.csv"
+}

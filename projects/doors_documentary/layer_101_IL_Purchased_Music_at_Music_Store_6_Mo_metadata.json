@@ -1,0 +1,194 @@
+{
+  "layer_id": 101,
+  "layer_name": "IL Purchased Music at Music Store 6 Mo",
+  "description": "Business Analyst Layer: IL Purchased Music at Music Store 6 Mo",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:49.913424",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62670 (New Berlin)",
+        "62661 (Loami)",
+        "62670 (New Berlin)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Sangamon County",
+        "Sangamon County",
+        "Sangamon County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Illinois",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862644ca7ffffff",
+        "862644cafffffff",
+        "862644cb7ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22083A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music at Music Store Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        8,
+        9,
+        8
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22083A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music at Music Store Last 6 Mo (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1.32,
+        1.1,
+        1.37
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1.32,
+        1.1,
+        1.37
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        59346249.99609375,
+        59243750,
+        59346250
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28703.842423435308,
+        28681.518563180733,
+        28703.84242343531
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493245333,
+        1758493245333,
+        1758493245333
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493245333,
+        1758493245333,
+        1758493245333
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_101_IL_Purchased_Music_at_Music_Store_6_Mo.csv"
+}

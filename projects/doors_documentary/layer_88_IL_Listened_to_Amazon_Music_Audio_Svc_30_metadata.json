@@ -1,0 +1,194 @@
+{
+  "layer_id": 88,
+  "layer_name": "IL Listened to Amazon Music Audio Svc 30",
+  "description": "Business Analyst Layer: IL Listened to Amazon Music Audio Svc 30",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:45.005827",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62367 (Plymouth)",
+        "62075 (Nokomis)",
+        "62440 (Lerna)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Hancock County",
+        "Montgomery County",
+        "Cumberland County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Illinois",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862671c9fffffff",
+        "86264414fffffff",
+        "862663777ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22094A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listened to Amazon Music Audio Service Last 30 Days",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        11,
+        20,
+        43
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22094A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listened to Amazon Music Audio Service Last 30 Days (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        15.07,
+        16.26,
+        16.41
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        15.07,
+        16.26,
+        16.41
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        60732500,
+        58220000.00390625,
+        57927499.9921875
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        29033.71718269738,
+        28436.37306462988,
+        28364.967404600062
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492990665,
+        1758492990665,
+        1758492990665
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492990665,
+        1758492990665,
+        1758492990665
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_88_IL_Listened_to_Amazon_Music_Audio_Svc_30.csv"
+}

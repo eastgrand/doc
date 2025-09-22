@@ -1,0 +1,194 @@
+{
+  "layer_id": 78,
+  "layer_name": "IN Social Media Follow Music Groups",
+  "description": "Business Analyst Layer: IN Social Media Follow Music Groups",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:41.453994",
+  "record_count": 2809,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "47231 (Dupont)",
+        "47562 (Odon)",
+        "62821 (Carmi)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Jefferson County",
+        "Daviess County",
+        "White County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Indiana",
+        "Indiana",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86266ca9fffffff",
+        "86266e14fffffff",
+        "86264524fffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP19165A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Social Media: Follow Music Groups",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        109,
+        129,
+        28
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP19165A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Social Media: Follow Music Groups (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        21.41,
+        20.87,
+        22.95
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        21.41,
+        20.87,
+        22.95
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        57101250.00390625,
+        56797500,
+        56532500
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28159.583990587562,
+        28085.415791910324,
+        28015.598433874227
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492805482,
+        1758492805482,
+        1758492805482
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492805482,
+        1758492805482,
+        1758492805482
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_78_IN_Social_Media_Follow_Music_Groups.csv"
+}

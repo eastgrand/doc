@@ -1,0 +1,194 @@
+{
+  "layer_id": 60,
+  "layer_name": "IN Baby Boomer Pop",
+  "description": "Business Analyst Layer: IN Baby Boomer Pop",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:36.548508",
+  "record_count": 2809,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "47561 (Oaktown)",
+        "47512 (Bicknell)",
+        "47561 (Oaktown)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Knox County",
+        "Knox County",
+        "Knox County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Indiana",
+        "Indiana",
+        "Indiana"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86266e0a7ffffff",
+        "86266e0afffffff",
+        "86266e0b7ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "BABYBOOMCY",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Baby Boomer Population (Born 1946 to 1964) (Esri)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        112,
+        703,
+        62
+      ],
+      "has_data": true
+    },
+    {
+      "name": "BABYBOOMCY_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Baby Boomer Population (Born 1946 to 1964) (Esri) (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        24.94,
+        21.14,
+        24.22
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        24.94,
+        21.14,
+        24.22
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        56855000,
+        56770000,
+        57010000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28100.149095464658,
+        28079.44580149543,
+        28141.761391796263
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492487369,
+        1758492487369,
+        1758492487369
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492487369,
+        1758492487369,
+        1758492487369
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_60_IN_Baby_Boomer_Pop.csv"
+}

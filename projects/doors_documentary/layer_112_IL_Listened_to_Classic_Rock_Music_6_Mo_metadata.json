@@ -1,0 +1,194 @@
+{
+  "layer_id": 112,
+  "layer_name": "IL Listened to Classic Rock Music 6 Mo",
+  "description": "Business Analyst Layer: IL Listened to Classic Rock Music 6 Mo",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:53.139457",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62899 (Xenia)",
+        "62218 (Bartelso)",
+        "62271 (Okawville)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Clay County",
+        "Clinton County",
+        "Washington County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Illinois",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862645197ffffff",
+        "8626408c7ffffff",
+        "8626408cfffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22055A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listened to Classic Rock Music Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        30,
+        56,
+        27
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22055A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listened to Classic Rock Music Last 6 Mo (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        23.62,
+        25.69,
+        22.69
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        23.62,
+        25.69,
+        22.69
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        57443749.99609375,
+        57945000,
+        57845000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28238.384126465917,
+        28358.942990582444,
+        28336.501937329456
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493446269,
+        1758493446269,
+        1758493446269
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493446269,
+        1758493446269,
+        1758493446269
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_112_IL_Listened_to_Classic_Rock_Music_6_Mo.csv"
+}

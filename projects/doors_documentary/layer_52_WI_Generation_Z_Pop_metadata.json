@@ -1,0 +1,194 @@
+{
+  "layer_id": 52,
+  "layer_name": "WI Generation Z Pop",
+  "description": "Business Analyst Layer: WI Generation Z Pop",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:33.397959",
+  "record_count": 4064,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "53964 (Westfield)",
+        "54636 (Holmen)",
+        "53538 (Fort Atkinson)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Marquette County",
+        "La Crosse County",
+        "Jefferson County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Wisconsin",
+        "Wisconsin",
+        "Wisconsin"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86275c6a7ffffff",
+        "86275e58fffffff",
+        "862758ad7ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "GENZ_CY",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Generation Z Population (Born 1999 to 2016) (Esri)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        40,
+        207,
+        79
+      ],
+      "has_data": true
+    },
+    {
+      "name": "GENZ_CY_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Generation Z Population (Born 1999 to 2016) (Esri) (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        17.7,
+        21.95,
+        15.52
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        17.7,
+        21.95,
+        15.52
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        72154999.99609375,
+        72087500,
+        68948750
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        31633.72700432269,
+        31621.05531154598,
+        30929.678856878054
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492366373,
+        1758492366373,
+        1758492366373
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492366373,
+        1758492366373,
+        1758492366373
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_52_WI_Generation_Z_Pop.csv"
+}

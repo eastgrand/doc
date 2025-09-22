@@ -1,0 +1,36 @@
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - 🚀 Starting Complete ArcGIS to Microservice Automation Pipeline
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - 📅 Project: doors_documentary
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - 🌐 Service: https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__b1cab1ae067f4359/FeatureServer
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - 🎯 Target Variable: entertainment_score (Used H&R Block Online to Prepare Taxes)
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - ================================================================================
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - 
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - ⚠️  WARNING: This pipeline will modify your existing files:
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO -    • config/layers.ts will be REPLACED (original backed up)
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO -    • 18 new endpoint files will be created in public/data/endpoints/
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO -    • Project files will be created in projects/doors_documentary
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - 
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - 🔒 Safety: All original files are automatically backed up
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - ================================================================================
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - 🔍 PHASE 1: Service Discovery & Analysis
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - --------------------------------------------------
+2025-09-21 20:34:15,029 - AutomationPipeline - INFO - 📊 Discovering service layers...
+2025-09-21 20:36:17,053 - AutomationPipeline - INFO - ⚙️  Generating extraction configuration...
+2025-09-21 20:36:17,110 - AutomationPipeline - INFO - ✅ Phase 1 Complete: Discovered 120 layers
+2025-09-21 20:36:17,111 - AutomationPipeline - INFO - 
+📊 PHASE 2: Data Extraction
+2025-09-21 20:36:17,111 - AutomationPipeline - INFO - --------------------------------------------------
+2025-09-21 20:36:17,111 - AutomationPipeline - INFO - ⬇️  Extracting data from all layers...
+2025-09-21 20:39:14,580 - AutomationPipeline - INFO - 🔄 Merging datasets...
+2025-09-21 20:39:16,994 - AutomationPipeline - INFO - ✅ Phase 2 Complete: Extracted 11,584 records with 127 fields
+2025-09-21 20:39:17,005 - AutomationPipeline - INFO - 
+🤖 PHASE 3: Intelligent Field Mapping
+2025-09-21 20:39:17,005 - AutomationPipeline - INFO - --------------------------------------------------
+2025-09-21 20:39:17,005 - AutomationPipeline - INFO - 🎯 Generating intelligent field mappings...
+2025-09-21 20:39:17,055 - AutomationPipeline - INFO - ✔️  Creating validation summary...
+2025-09-21 20:39:17,055 - AutomationPipeline - INFO - ✅ Phase 3 Complete: Mapped 7 fields
+2025-09-21 20:39:17,055 - AutomationPipeline - INFO - 
+🎓 PHASE 4: Model Training & Microservice Package Creation
+2025-09-21 20:39:17,055 - AutomationPipeline - INFO - --------------------------------------------------
+2025-09-21 20:39:17,056 - AutomationPipeline - INFO - 🧠 Training comprehensive XGBoost models...
+2025-09-21 20:39:17,056 - AutomationPipeline - INFO - 🎯 Using target variable: entertainment_score
+2025-09-21 20:39:17,111 - AutomationPipeline - ERROR - ❌ Phase 4 Failed: Target variable 'entertainment_score' not found in dataset

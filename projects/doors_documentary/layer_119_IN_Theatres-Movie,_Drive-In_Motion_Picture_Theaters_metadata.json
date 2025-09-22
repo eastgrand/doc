@@ -1,0 +1,441 @@
+{
+  "layer_id": 119,
+  "layer_name": "IN Theatres-Movie, Drive-In Motion Picture Theaters",
+  "description": "Business Analyst Layer: IN Theatres-Movie, Drive-In Motion Picture Theaters",
+  "geometry_type": "esriGeometryPoint",
+  "extraction_timestamp": "2025-09-21T21:31:54.508184",
+  "record_count": 127,
+  "field_count": 33,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CONAME",
+      "type": "esriFieldTypeString",
+      "alias": "Company/Business Name",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "13-24 Drive in",
+        "49er Drive-In Theatre",
+        "ABCinema"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ADDR",
+      "type": "esriFieldTypeString",
+      "alias": "Address",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "N State Road 13",
+        "N Calumet Ave",
+        "W Monroe St"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CITY",
+      "type": "esriFieldTypeString",
+      "alias": "City",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Wabash",
+        "Valparaiso",
+        "Decatur"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "STATE_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "State Name",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Indiana",
+        "Indiana",
+        "Indiana"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "STATE",
+      "type": "esriFieldTypeString",
+      "alias": "State Abbreviation",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "IN",
+        "IN",
+        "IN"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ZIP",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "46992",
+        "46383",
+        "46733"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ZIP4",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP+4 Extension",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "",
+        "",
+        "1605"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "NAICS",
+      "type": "esriFieldTypeString",
+      "alias": "Primary NAICS",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "51213202",
+        "51213202",
+        "51213101"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "NAICS_ALL",
+      "type": "esriFieldTypeString",
+      "alias": "All NAICS Codes",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "51213202",
+        "51213202",
+        "51213101, 99999005"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "SIC",
+      "type": "esriFieldTypeString",
+      "alias": "Primary SIC",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "783301",
+        "783301",
+        "783201"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "SIC_ALL",
+      "type": "esriFieldTypeString",
+      "alias": "All SIC Codes",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "783301",
+        "783301",
+        "783201, 999966"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "INDUSTRY_DESC",
+      "type": "esriFieldTypeString",
+      "alias": "Industry Description",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Drive-In Motion Picture Theaters",
+        "Drive-In Motion Picture Theaters",
+        "Theatres-Movie, Federal Government Contractors"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "AFFILIATE",
+      "type": "esriFieldTypeString",
+      "alias": "Affiliated Orgs",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "",
+        "",
+        ""
+      ],
+      "has_data": true
+    },
+    {
+      "name": "BRAND",
+      "type": "esriFieldTypeString",
+      "alias": "Brands",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "",
+        "",
+        ""
+      ],
+      "has_data": true
+    },
+    {
+      "name": "HQNAME",
+      "type": "esriFieldTypeString",
+      "alias": "Headquarters Name",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Honeywell Arts & Entertainment",
+        "",
+        ""
+      ],
+      "has_data": true
+    },
+    {
+      "name": "LOC_CONF",
+      "type": "esriFieldTypeString",
+      "alias": "Location Confidence",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "High",
+        "High",
+        "High"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "NAICS_SECT",
+      "type": "esriFieldTypeString",
+      "alias": "NAICS Industry Sector",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Information",
+        "Information",
+        "Information"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "PLACETYPE",
+      "type": "esriFieldTypeString",
+      "alias": "Business Category",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Branch",
+        "Independent",
+        "Independent"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "SQFOOTAGE",
+      "type": "esriFieldTypeString",
+      "alias": "Square Footage",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "5000 - 9999",
+        "5000 - 9999",
+        "10000 - 19999"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MIN_SQFT",
+      "type": "esriFieldTypeInteger",
+      "alias": "Square Foot Minimum",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        5000,
+        5000,
+        10000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MAX_SQFT",
+      "type": "esriFieldTypeInteger",
+      "alias": "Square Foot Maximum",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        9999,
+        9999,
+        19999
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EMPNUM",
+      "type": "esriFieldTypeInteger",
+      "alias": "Employee Count",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        5,
+        5,
+        7
+      ],
+      "has_data": true
+    },
+    {
+      "name": "SALESVOL",
+      "type": "esriFieldTypeDouble",
+      "alias": "Sales Volume",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        184000,
+        190000,
+        418000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "SOURCE",
+      "type": "esriFieldTypeString",
+      "alias": "Source",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Data Axle",
+        "Data Axle",
+        "Data Axle"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "ESRI_PID",
+      "type": "esriFieldTypeString",
+      "alias": "Esri PID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "ee9f3ee4c5e40623450063699336c410",
+        "6f948e46675cb3e696c67aff015fcf76",
+        "16121b94766fe82a8ff380f3432ed2ce"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "DESC_",
+      "type": "esriFieldTypeString",
+      "alias": "Description",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "13-24 Drive in, Wabash, Indiana",
+        "49er Drive-In Theatre, Valparaiso, Indiana",
+        "ABCinema, Decatur, Indiana"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "LATITUDE",
+      "type": "esriFieldTypeDouble",
+      "alias": "Latitude",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        40.838815000000004,
+        41.53252299999999,
+        40.831648
+      ],
+      "has_data": true
+    },
+    {
+      "name": "LONGITUDE",
+      "type": "esriFieldTypeDouble",
+      "alias": "Longitude",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        -85.79331199999997,
+        -87.03441000000001,
+        -84.923974
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493572227,
+        1758493572227,
+        1758493572227
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493572227,
+        1758493572227,
+        1758493572227
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_119_IN_Theatres-Movie,_Drive-In_Motion_Picture_Theaters.csv"
+}

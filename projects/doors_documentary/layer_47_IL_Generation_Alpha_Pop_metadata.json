@@ -1,0 +1,194 @@
+{
+  "layer_id": 47,
+  "layer_name": "IL Generation Alpha Pop",
+  "description": "Business Analyst Layer: IL Generation Alpha Pop",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:31.505017",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "60917 (Buckingham)",
+        "62082 (Roodhouse)",
+        "61754 (Mc Lean)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Kankakee County",
+        "Greene County",
+        "McLean County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Illinois",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862660db7ffffff",
+        "862646967ffffff",
+        "862662007ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "GENALPHACY",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Generation Alpha Population (Born 2017 or Later) (Esri)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        17,
+        13,
+        7
+      ],
+      "has_data": true
+    },
+    {
+      "name": "GENALPHACY_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Generation Alpha Population (Born 2017 or Later) (Esri) (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        9.83,
+        12.26,
+        10
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        9.83,
+        12.26,
+        10
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        63145000,
+        59502500,
+        60601250
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        29605.700940160295,
+        28740.45642095901,
+        29008.773881211488
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492298951,
+        1758492298951,
+        1758492298951
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492298951,
+        1758492298951,
+        1758492298951
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_47_IL_Generation_Alpha_Pop.csv"
+}

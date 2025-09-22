@@ -1,0 +1,194 @@
+{
+  "layer_id": 70,
+  "layer_name": "WI Spending on Entertainment Rec (Avg)",
+  "description": "Business Analyst Layer: WI Spending on Entertainment Rec (Avg)",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:39.869811",
+  "record_count": 4064,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "53010 (Campbellsport)",
+        "54451 (Medford)",
+        "53023 (Glenbeulah)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Fond du Lac County",
+        "Taylor County",
+        "Sheboygan County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Wisconsin",
+        "Wisconsin",
+        "Wisconsin"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86275dc1fffffff",
+        "862751ce7ffffff",
+        "86275dc27ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "X9001_X",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Entertainment/Recreation",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        703539,
+        1092269,
+        653461
+      ],
+      "has_data": true
+    },
+    {
+      "name": "X9001_X_A",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Entertainment/Recreation (Avg)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3886.96,
+        3986.38,
+        4188.85
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3886.96,
+        3986.38,
+        4188.85
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        71933749.99609375,
+        76672500.00390625,
+        72217500.00390625
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        31586.020430924254,
+        32607.985438790907,
+        31644.09403874706
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492656624,
+        1758492656624,
+        1758492656624
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492656624,
+        1758492656624,
+        1758492656624
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_70_WI_Spending_on_Entertainment_Rec_(Avg).csv"
+}

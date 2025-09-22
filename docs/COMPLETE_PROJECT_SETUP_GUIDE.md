@@ -4,6 +4,20 @@
 
 This document provides step-by-step instructions for setting up a new project using the claude-flow development acceleration system combined with the complete automation pipeline.
 
+**What is Claude-Flow?**
+Claude-flow is a **development acceleration system** that speeds up the creation of analysis processors, scoring scripts, and configurations by 75-90%. It does NOT create new architectural patterns - instead, it accelerates the development of components that work within the existing MPIQ query-to-visualization system.
+
+## 🆕 **Latest Update: Composite Index Methodology**
+
+**Current Project**: The Doors Documentary Market Analysis demonstrates the new **composite index approach** for complex target variable creation:
+
+- **Problem**: Single entertainment metrics too narrow for documentary marketing
+- **Solution**: Multi-dimensional "Doors Audience Score" combining 4 behavioral components
+- **Result**: 27-69 score range with R² = 0.999-1.000 model performance
+- **Innovation**: Automated microservice configuration and deployment
+
+**This guide now includes composite index generation and automated microservice setup.**
+
 ---
 
 ## 📋 Table of Contents
@@ -12,12 +26,13 @@ This document provides step-by-step instructions for setting up a new project us
 2. [Phase 1: Claude-Flow Development Environment Setup](#phase-1-claude-flow-development-environment-setup)
 3. [Phase 2: Project-Specific Configuration](#phase-2-project-specific-configuration)
 4. [Phase 3: ArcGIS Data Automation Pipeline](#phase-3-arcgis-data-automation-pipeline)
-5. [Phase 4: Microservice Deployment](#phase-4-microservice-deployment)
-6. [Phase 5: Post-Automation Integration](#phase-5-post-automation-integration)
-7. [Phase 6: Validation and Testing](#phase-6-validation-and-testing)
-8. [Phase 7: Production Deployment](#phase-7-production-deployment)
-9. [Troubleshooting](#troubleshooting)
-10. [Success Checklist](#success-checklist)
+5. [Phase 4: Composite Index Generation (Optional)](#phase-4-composite-index-generation-optional)
+6. [Phase 5: Automated Microservice Deployment](#phase-5-automated-microservice-deployment)
+7. [Phase 6: Post-Automation Integration](#phase-6-post-automation-integration)
+8. [Phase 7: Validation and Testing](#phase-7-validation-and-testing)
+9. [Phase 8: Production Deployment](#phase-8-production-deployment)
+10. [Troubleshooting](#troubleshooting)
+11. [Success Checklist](#success-checklist)
 
 ---
 
@@ -366,7 +381,30 @@ export const PROCESSOR_TYPES = {
 } as const;
 ```
 
-### Step 2.3: Create SHAP-Based Scoring Scripts
+### Step 2.3: Visualization Integration (Automated)
+
+**✅ IMPORTANT: No Manual Visualization Components Required**
+
+The MPIQ platform uses a sophisticated **query-to-visualization system** that automatically handles all visualization needs. The automation pipeline will:
+
+1. **Auto-generate layer configurations** based on your analysis context
+2. **Create appropriate renderers** for your data visualization 
+3. **Configure popup templates** with relevant field information
+4. **Set up interactive features** through the existing LayerController system
+
+**What the automation provides automatically:**
+- ✅ **Hexagonal grid visualization** with your project-specific color schemes
+- ✅ **Interactive popups** showing analysis results and metrics
+- ✅ **Dynamic legends** with score ranges and descriptions
+- ✅ **Click handlers** for detailed analysis panels
+- ✅ **Layer controls** for toggling visibility and opacity
+- ✅ **Filtering capabilities** based on score ranges or geographic areas
+
+**No React components need to be manually created** - the existing system handles all visualization through configuration-driven layers that integrate seamlessly with the query system.
+
+**Next Step:** The automation pipeline will generate all necessary layer configurations and visualization elements based on your analysis context defined in Step 1.3.
+
+### Step 2.4: Create SHAP-Based Scoring Scripts
 
 **Create: `scripts/scoring/your-project-analysis-scores.js`**
 
@@ -492,6 +530,37 @@ const PROJECT_INDUSTRY = 'Your Industry'; // e.g., 'Athletic Footwear'
 
 ## Phase 3: ArcGIS Data Automation Pipeline
 
+### Step 3.0: Clean Up Previous Projects (Required)
+
+**IMPORTANT: Clean up old project files before starting new automation to reduce app size**
+
+```bash
+# Navigate to project root
+cd /path/to/your/mpiq-ai-chat
+
+# Remove old project directories (keep only current project)
+# Example: Keep only the project you're currently working on
+rm -rf projects/old_project_1 projects/old_project_2 projects/test_* projects/*_v2 projects/*_v3
+
+# Remove backup files to free up space
+find . -name "*.backup*" -type f -delete
+
+# Check space saved
+du -sh projects/ 2>/dev/null || echo "Projects directory cleaned"
+```
+
+**Benefits:**
+- Reduces app size significantly (can save 100+ MB)
+- Prevents accumulation of old automation artifacts
+- Maintains clean project structure
+- Old app versions are already saved elsewhere
+
+**What gets removed:**
+- ✅ Old project directories with extracted data
+- ✅ Backup endpoint files (*.backup.json)
+- ✅ Previous automation logs and artifacts
+- ✅ Duplicate project versions (_v2, _v3, test_*)
+
 ### Step 3.1: Prepare Environment
 
 ```bash
@@ -516,7 +585,7 @@ python run_complete_automation.py \
   --target YOUR_TARGET_VARIABLE
 ```
 
-**Example:**
+**Example - Single Target Variable:**
 ```bash
 python run_complete_automation.py \
   "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__b1cab1ae067f4359/FeatureServer" \
@@ -524,86 +593,406 @@ python run_complete_automation.py \
   --target MP30034A_B_P
 ```
 
+**Example - Composite Index (Current Best Practice):**
+```bash
+# The Doors Documentary approach - first run automation to extract data
+python run_complete_automation.py \
+  "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__b1cab1ae067f4359/FeatureServer" \
+  --project doors_documentary \
+  --target entertainment_score  # Will fail but extract data
+
+# Then proceed to Phase 4 for composite index generation
+```
+
 ### Step 3.3: Monitor Automation Progress
 
-The automation will run through 8 phases:
+The automation will run through these phases:
 
-1. **Phase 1**: Service inspection and field analysis
-2. **Phase 2**: Data extraction with parallel processing  
-3. **Phase 3**: Intelligent field mapping
-4. **Phase 4**: Model training (17 AI models)
-5. **Phase 5**: Endpoint generation (26 analysis types)
-6. **Phase 6**: Score calculation (15 algorithms)
-7. **Phase 7**: Layer configuration generation
-8. **Phase 8**: Blob storage upload and integration
+1. **Phase 1**: Service inspection and field analysis  
+2. **Phase 2**: Data extraction with parallel processing (11,584+ records)
+3. **Phase 3**: Intelligent field mapping (auto-discovers 120+ layers)
 
-**The automation will PAUSE at Phase 4 for microservice deployment.**
+**If target variable not found, proceed to Phase 4 for composite index generation.**  
+**If target exists, automation continues to model training automatically.**
 
 ---
 
-## Phase 4: Microservice Deployment
+## Phase 4: Composite Index Generation (Optional)
 
-### Step 4.1: Prepare Microservice Package
+### When to Use Composite Index
 
-When automation pauses, you'll see:
+**Use composite index when:**
+- Single variables are too narrow for complex analysis
+- You need multi-dimensional audience scoring
+- Business objectives require sophisticated market segmentation
+- Target audience has multiple behavioral components
+
+**Example**: The Doors Documentary needed to combine:
+- Classic Rock Affinity (40%) - Genre alignment
+- Documentary Engagement (25%) - Format preference  
+- Music Consumption (20%) - Platform behavior
+- Cultural Engagement (15%) - Entertainment seeking
+
+### Step 4.1: Create Project-Specific Composite Index Generator
+
+**Create**: `scripts/automation/generate_PROJECT_composite_index.py`
+
+**Template** (adapt from Doors Documentary approach):
+
+```python
+#!/usr/bin/env python3
+"""
+PROJECT_NAME Composite Index Generator
+
+Creates a composite index scoring markets for PROJECT_OBJECTIVE
+by combining multiple PROJECT_RELEVANT behavioral indicators.
+
+Composite Index Formula:
+- Component 1 (X%): Description
+- Component 2 (Y%): Description  
+- Component 3 (Z%): Description
+- Component 4 (W%): Description
+
+Output: project_target_score (0-100 scale)
+"""
+
+import pandas as pd
+import numpy as np
+from pathlib import Path
+import json
+import logging
+from typing import Dict, List, Optional
+
+class ProjectCompositeIndexGenerator:
+    """Generate PROJECT_NAME Composite Score"""
+    
+    def __init__(self, project_path: str):
+        self.project_path = Path(project_path)
+        self.data_file = self.project_path / "merged_dataset.csv"
+        self.output_file = self.project_path / "project_composite_data.csv"
+        
+        # Component field mappings with weights
+        self.index_components = {
+            "component_1": {
+                "weight": 0.40,  # Adjust based on importance
+                "fields": [
+                    # Add your relevant field codes here
+                ]
+            },
+            "component_2": {
+                "weight": 0.25,
+                "fields": [
+                    # Add your relevant field codes here
+                ]
+            },
+            # Add more components as needed
+        }
+    
+    # ... (rest of implementation follows Doors Documentary pattern)
 ```
-🚨 PIPELINE PAUSE: Manual Microservice Deployment Required
-📦 Microservice package created at: projects/YOUR_PROJECT_NAME/microservice_package/
-```
 
-### Step 4.2: Deploy to Render.com
-
-**Option A: Deploy from Local Files**
-
-1. **Go to**: https://render.com
-2. **Sign in** to your account
-3. **Click** "New" → "Web Service"
-4. **Select** "Build and deploy from a Git repository"
-
-**Option B: Deploy via GitHub**
-
-1. **Go to**: https://github.com
-2. **Create new repository**: `your-project-microservice`
-3. **Upload files** from `projects/YOUR_PROJECT_NAME/microservice_package/`
-4. **Return to Render** and connect the repository
-
-### Step 4.3: Configure Render Service
-
-**Service Settings:**
-- **Name**: `your-project-microservice`
-- **Environment**: `Python 3`
-- **Build Command**: `pip install -r requirements.txt`
-- **Start Command**: `gunicorn -w 4 -b 0.0.0.0:$PORT app:app`
-- **Auto-Deploy**: `Yes`
-
-### Step 4.4: Wait for Deployment
-
-1. **Monitor** the deployment logs
-2. **Wait** for "Build successful" message (5-10 minutes)
-3. **Copy** your service URL: `https://your-project-microservice.onrender.com`
-
-### Step 4.5: Verify Microservice Health
+### Step 4.2: Run Composite Index Generation
 
 ```bash
-# Test health endpoint
-curl https://your-project-microservice.onrender.com/health
+# Generate your project's composite index
+cd scripts/automation
+source ../venv/bin/activate
+python generate_PROJECT_composite_index.py /path/to/projects/PROJECT_NAME
 
-# Expected response:
-# {"status": "healthy"}
+# Output:
+# 🎯 PROJECT Composite Score Generated!
+# 📁 Enhanced dataset: projects/PROJECT_NAME/project_composite_data.csv
+# 🎯 Target variable: project_target_score
 ```
 
-### Step 4.6: Resume Automation
+### Step 4.3: Replace Dataset and Continue Automation
 
 ```bash
-# Return to automation terminal and press Enter to continue
-# The automation will complete the remaining phases automatically
+# Replace merged dataset with composite-enhanced version
+cd projects/PROJECT_NAME
+cp project_composite_data.csv merged_dataset.csv
+
+# Continue with model training using composite target
+cd ../../scripts/automation
+python automated_model_trainer.py ../projects/PROJECT_NAME/merged_dataset.csv --target project_target_score
 ```
 
 ---
 
-## Phase 5: Post-Automation Integration
+## Phase 5: Automated Microservice Deployment
 
-### Step 5.1: Update Environment Configuration
+### Current State: Manual Process (Improving to Full Automation)
+
+**The user identified this process as "hacky and disjointed" and requested automation of these steps:**
+1. Copy data to shap-microservice
+2. Update configuration
+3. Project-specific file updates
+
+### Step 5.1: Automated Microservice Configuration (New)
+
+**Create: `scripts/automation/configure_microservice.py`**
+
+```python
+#!/usr/bin/env python3
+"""
+Automated Microservice Configuration Script
+
+Automates the previously manual steps:
+1. Copy data to shap-microservice
+2. Update project configuration 
+3. Handle YAML and other project-specific files
+4. Prepare for deployment
+
+Usage: python configure_microservice.py PROJECT_NAME TARGET_VARIABLE
+"""
+
+import os
+import shutil
+import json
+from pathlib import Path
+import argparse
+import logging
+
+class MicroserviceConfigurator:
+    def __init__(self, project_name: str, target_variable: str):
+        self.project_name = project_name
+        self.target_variable = target_variable
+        
+        # Paths
+        self.mpiq_root = Path(__file__).parent.parent.parent
+        self.project_path = self.mpiq_root / "projects" / project_name
+        self.microservice_path = self.mpiq_root.parent / "shap-microservice"
+        
+        # Verify paths exist
+        if not self.project_path.exists():
+            raise FileNotFoundError(f"Project not found: {self.project_path}")
+        if not self.microservice_path.exists():
+            raise FileNotFoundError(f"Microservice not found: {self.microservice_path}")
+    
+    def copy_training_data(self):
+        """Copy enhanced dataset to microservice"""
+        source_data = self.project_path / "microservice_package" / "data" / "training_data.csv"
+        target_data = self.microservice_path / "data" / "training_data.csv"
+        
+        if not source_data.exists():
+            # Fallback to merged dataset
+            source_data = self.project_path / "merged_dataset.csv"
+        
+        print(f"📋 Copying training data: {source_data} -> {target_data}")
+        shutil.copy2(source_data, target_data)
+        
+        # Verify target variable exists in data
+        with open(target_data, 'r') as f:
+            headers = f.readline().strip().split(',')
+            if self.target_variable not in headers:
+                print(f"⚠️  Warning: Target variable '{self.target_variable}' not found in data headers")
+                print(f"   Available columns: {', '.join(headers[:10])}...")
+    
+    def update_project_config(self):
+        """Update microservice project configuration"""
+        config_file = self.microservice_path / "project_config.py"
+        
+        if not config_file.exists():
+            print(f"⚠️  project_config.py not found, creating...")
+            self.create_project_config()
+            return
+        
+        # Read current config
+        with open(config_file, 'r') as f:
+            content = f.read()
+        
+        # Update target variable
+        import re
+        content = re.sub(
+            r'TARGET_VARIABLE:\s*str\s*=\s*["\'][^"\']*["\']',
+            f'TARGET_VARIABLE: str = "{self.target_variable}"',
+            content
+        )
+        
+        # Update project name and description
+        project_display = self.project_name.replace('_', ' ').title()
+        content = re.sub(
+            r'PROJECT_NAME\s*=\s*["\'][^"\']*["\']',
+            f'PROJECT_NAME = "{project_display} Analysis"',
+            content
+        )
+        
+        content = re.sub(
+            r'PROJECT_DESCRIPTION\s*=\s*["\'][^"\']*["\']',
+            f'PROJECT_DESCRIPTION = "AI-powered analysis for {project_display} market optimization"',
+            content
+        )
+        
+        with open(config_file, 'w') as f:
+            f.write(content)
+        
+        print(f"✅ Updated project configuration")
+    
+    def create_project_config(self):
+        """Create project configuration if it doesn't exist"""
+        config_file = self.microservice_path / "project_config.py"
+        project_display = self.project_name.replace('_', ' ').title()
+        
+        config_content = f'''# Project Configuration
+TARGET_VARIABLE: str = "{self.target_variable}"
+PROJECT_NAME = "{project_display} Analysis"
+PROJECT_DESCRIPTION = "AI-powered analysis for {project_display} market optimization"
+
+# Model Configuration
+MODELS_TO_TRAIN = [
+    "linear_regression", "lasso_regression", "ridge_regression",
+    "random_forest", "xgboost", "neural_network", "knn", "svr"
+]
+
+# Feature Selection
+MAX_FEATURES = 50
+FEATURE_SELECTION_METHOD = "shap"
+
+# Training Configuration
+TEST_SIZE = 0.2
+VALIDATION_SIZE = 0.2
+RANDOM_STATE = 42
+'''
+        
+        with open(config_file, 'w') as f:
+            f.write(config_content)
+        
+        print(f"✅ Created project configuration")
+    
+    def update_yaml_files(self):
+        """Update YAML configuration files"""
+        yaml_files = list(self.microservice_path.glob("*.yml")) + list(self.microservice_path.glob("*.yaml"))
+        
+        for yaml_file in yaml_files:
+            print(f"📝 Updating YAML file: {yaml_file.name}")
+            
+            with open(yaml_file, 'r') as f:
+                content = f.read()
+            
+            # Update common YAML fields
+            import re
+            content = re.sub(r'name:\s*.*', f'name: {self.project_name}-microservice', content)
+            content = re.sub(r'TARGET_VARIABLE:\s*.*', f'TARGET_VARIABLE: {self.target_variable}', content)
+            
+            with open(yaml_file, 'w') as f:
+                f.write(content)
+    
+    def copy_models(self):
+        """Copy trained models if they exist"""
+        source_models = self.project_path / "microservice_package" / "trained_models"
+        target_models = self.microservice_path / "models"
+        
+        if source_models.exists():
+            if target_models.exists():
+                shutil.rmtree(target_models)
+            shutil.copytree(source_models, target_models)
+            print(f"✅ Copied trained models")
+        else:
+            print(f"ℹ️  No trained models found to copy")
+    
+    def run_configuration(self):
+        """Run complete microservice configuration"""
+        print(f"🚀 Configuring microservice for {self.project_name}...")
+        print(f"   Target Variable: {self.target_variable}")
+        print(f"   Microservice Path: {self.microservice_path}")
+        
+        try:
+            self.copy_training_data()
+            self.update_project_config()
+            self.update_yaml_files()
+            self.copy_models()
+            
+            print(f"\n✅ Microservice configuration completed!")
+            print(f"📁 Ready for deployment from: {self.microservice_path}")
+            print(f"\nNext steps:")
+            print(f"  1. cd {self.microservice_path}")
+            print(f"  2. Test locally: python -m uvicorn main:app --reload")
+            print(f"  3. Deploy to production: git add . && git commit -m 'Deploy {self.project_name}' && git push")
+            
+        except Exception as e:
+            print(f"❌ Configuration failed: {e}")
+            raise
+
+def main():
+    parser = argparse.ArgumentParser(description="Configure microservice for deployment")
+    parser.add_argument("project_name", help="Project name (e.g., doors_documentary)")
+    parser.add_argument("target_variable", help="Target variable name (e.g., doors_audience_score)")
+    
+    args = parser.parse_args()
+    
+    configurator = MicroserviceConfigurator(args.project_name, args.target_variable)
+    configurator.run_configuration()
+
+if __name__ == "__main__":
+    main()
+```
+
+### Step 5.2: Usage - Automated Configuration
+
+```bash
+# Navigate to automation directory
+cd scripts/automation
+
+# Run automated microservice configuration
+python configure_microservice.py doors_documentary doors_audience_score
+
+# Expected output:
+# 🚀 Configuring microservice for doors_documentary...
+# 📋 Copying training data: projects/doors_documentary/microservice_package/data/training_data.csv -> ../shap-microservice/data/training_data.csv
+# ✅ Updated project configuration
+# 📝 Updating YAML file: deploy.yml
+# ✅ Copied trained models
+# ✅ Microservice configuration completed!
+```
+
+### Step 5.3: Test and Deploy
+
+```bash
+# Navigate to microservice
+cd ../../shap-microservice
+
+# Test locally
+python -m uvicorn main:app --reload --port 8000
+
+# Test API endpoint
+curl -X POST "http://localhost:8000/predict" \
+  -H "Content-Type: application/json" \
+  -d '{"LATITUDE": 41.8781, "LONGITUDE": -87.6298, "MP22055A_B_P": 25.0}'
+
+# Deploy to production
+git add .
+git commit -m "Deploy doors_documentary microservice - automated configuration"
+git push origin main
+```
+
+### Step 5.4: Integration with Main Automation
+
+**Update: `scripts/automation/run_complete_automation.py`**
+
+```python
+# Add to the end of the automation pipeline
+if microservice_package_created:
+    print("\n🤖 Running automated microservice configuration...")
+    
+    import subprocess
+    result = subprocess.run([
+        "python", "configure_microservice.py", 
+        project_name, target_variable
+    ], capture_output=True, text=True)
+    
+    if result.returncode == 0:
+        print("✅ Microservice automatically configured!")
+        print(result.stdout)
+    else:
+        print("⚠️  Automated configuration failed, falling back to manual process")
+        print(result.stderr)
+```
+
+---
+
+## Phase 6: Post-Automation Integration
+
+### Step 6.1: Update Environment Configuration
 
 **Update: `.env.local`**
 ```bash
@@ -614,7 +1003,7 @@ MICROSERVICE_URL=https://your-project-microservice.onrender.com
 BLOB_READ_WRITE_TOKEN=your_vercel_blob_token
 ```
 
-### Step 5.2: Update Project Configuration
+### Step 6.2: Update Project Configuration
 
 **Update any config files that reference microservice URLs:**
 
@@ -626,7 +1015,7 @@ grep -r "MICROSERVICE_URL" config/
 # Update found files with your new URL
 ```
 
-### Step 5.3: Run Post-Automation Tasks
+### Step 6.3: Run Post-Automation Tasks
 
 **The automation automatically runs these, but verify completion:**
 
@@ -644,7 +1033,7 @@ npm run generate-map-constraints
 python scripts/automation/upload_comprehensive_endpoints.py
 ```
 
-### Step 5.4: Update Geographic Data (if needed)
+### Step 6.4: Update Geographic Data (if needed)
 
 **If your project covers different geographic areas than the default:**
 
@@ -670,9 +1059,9 @@ const cities = [
 
 ---
 
-## Phase 6: Validation and Testing
+## Phase 7: Validation and Testing
 
-### Step 6.1: Start Application
+### Step 7.1: Start Application
 
 ```bash
 # Start your application
@@ -681,7 +1070,7 @@ npm start
 npm run dev
 ```
 
-### Step 6.2: Test Core Functionality
+### Step 7.2: Test Core Functionality
 
 **Manual Testing:**
 1. **Open** your application in browser
@@ -693,7 +1082,7 @@ npm run dev
 3. **Verify** data loads correctly
 4. **Check** for error messages in browser console (F12)
 
-### Step 6.3: Run Automated Tests
+### Step 7.3: Run Automated Tests
 
 ```bash
 # Test routing accuracy
@@ -706,7 +1095,7 @@ npm test -- lib/analysis/strategies/processors/YourProjectAnalysisProcessor.test
 npm test -- __tests__/hybrid-routing-random-query-optimization.test.ts --verbose
 ```
 
-### Step 6.4: Validate Data Integrity
+### Step 7.4: Validate Data Integrity
 
 ```bash
 # Create a validation script for your project
@@ -720,7 +1109,7 @@ console.log('Your project score field present:',
 "
 ```
 
-### Step 6.5: Test Geographic Features
+### Step 7.5: Test Geographic Features
 
 ```bash
 # Test geographic queries
@@ -732,9 +1121,9 @@ console.log('Your project score field present:',
 
 ---
 
-## Phase 7: Production Deployment
+## Phase 8: Production Deployment
 
-### Step 7.1: Environment Setup
+### Step 8.1: Environment Setup
 
 ```bash
 # Set production environment variables
@@ -745,7 +1134,7 @@ export MICROSERVICE_URL=https://your-project-microservice.onrender.com
 npm run build
 ```
 
-### Step 7.2: Deploy to Production
+### Step 8.2: Deploy to Production
 
 **For Vercel:**
 ```bash
@@ -763,7 +1152,7 @@ vercel --prod
 # Ensure environment variables are set correctly
 ```
 
-### Step 7.3: Production Verification
+### Step 8.3: Production Verification
 
 ```bash
 # Test production deployment
@@ -779,6 +1168,20 @@ curl https://your-project-microservice.onrender.com/health
 ## Troubleshooting
 
 ### Common Issues and Solutions
+
+#### **App Size Too Large / Performance Issues**
+```bash
+# Clean up old projects and backups (can save 100+ MB)
+rm -rf projects/old_project_* projects/*_v2 projects/*_v3 projects/test_*
+find . -name "*.backup*" -type f -delete
+
+# Check current project size
+du -sh projects/
+du -sh .
+
+# This cleanup should be done before every new project
+# See Step 3.0 in Phase 3 for details
+```
 
 #### **Automation Script Fails**
 ```bash
@@ -870,6 +1273,7 @@ console.log('Competitors:', resolver.getCompetitorBrands());
 - [ ] Brand configuration updated
 
 ### Phase 2: Automation Pipeline ✅
+- [ ] **OLD PROJECTS CLEANED UP** (Step 3.0 - saves 100+ MB)
 - [ ] Automation script ran successfully
 - [ ] 26 analysis endpoints generated
 - [ ] 17 AI models trained

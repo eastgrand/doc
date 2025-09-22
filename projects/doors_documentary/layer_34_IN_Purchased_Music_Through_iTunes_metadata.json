@@ -1,0 +1,194 @@
+{
+  "layer_id": 34,
+  "layer_name": "IN Purchased Music Through iTunes",
+  "description": "Business Analyst Layer: IN Purchased Music Through iTunes",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:26.015123",
+  "record_count": 2809,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "46165 (North Salem)",
+        "47265 (North Vernon)",
+        "47340 (Farmland)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Hendricks County",
+        "Jennings County",
+        "Randolph County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Indiana",
+        "Indiana",
+        "Indiana"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86266102fffffff",
+        "86266ca97ffffff",
+        "862a928c7ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22086A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music Through iTunes Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        13,
+        27,
+        10
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22086A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music Through iTunes Last 6 Mo (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        4.91,
+        4.62,
+        3.72
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        4.91,
+        4.62,
+        3.72
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        59386250.00390625,
+        57493750,
+        61045000.0078125
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28715.44175760241,
+        28258.955636888186,
+        29106.25386739214
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492124092,
+        1758492124092,
+        1758492124092
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492124092,
+        1758492124092,
+        1758492124092
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_34_IN_Purchased_Music_Through_iTunes.csv"
+}

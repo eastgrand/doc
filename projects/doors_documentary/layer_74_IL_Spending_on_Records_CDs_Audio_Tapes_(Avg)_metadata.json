@@ -1,0 +1,194 @@
+{
+  "layer_id": 74,
+  "layer_name": "IL Spending on Records CDs Audio Tapes (Avg)",
+  "description": "Business Analyst Layer: IL Spending on Records CDs Audio Tapes (Avg)",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:39.966242",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62957 (Mc Clure)",
+        "62618 (Beardstown)",
+        "62231 (Carlyle)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Alexander County",
+        "Cass County",
+        "Clinton County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Illinois",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862643a27ffffff",
+        "86267115fffffff",
+        "86264095fffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "X9028_X",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Records/CDs/Audio Tapes",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        87,
+        0,
+        903
+      ],
+      "has_data": true
+    },
+    {
+      "name": "X9028_X_A",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Records/CDs/Audio Tapes (Avg)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3.35,
+        0,
+        4.49
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3.35,
+        0,
+        4.49
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        56827500.00390625,
+        59621250,
+        57844999.99609375
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28081.909137839306,
+        28770.96494939604,
+        28336.50193732946
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492727903,
+        1758492727903,
+        1758492727903
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492727903,
+        1758492727903,
+        1758492727903
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_74_IL_Spending_on_Records_CDs_Audio_Tapes_(Avg).csv"
+}

@@ -1,0 +1,29 @@
+{
+  "composite_index": "doors_audience_score",
+  "description": "Doors Documentary Audience Appeal Score (0-100)",
+  "components": {
+    "classic_rock_affinity": {
+      "weight": 0.4,
+      "available_fields": 4
+    },
+    "documentary_engagement": {
+      "weight": 0.25,
+      "available_fields": 4
+    },
+    "music_consumption": {
+      "weight": 0.2,
+      "available_fields": 4
+    },
+    "cultural_engagement": {
+      "weight": 0.15,
+      "available_fields": 4
+    }
+  },
+  "statistics": {
+    "mean": 40.00345303867404,
+    "std": 14.36943948354949,
+    "min": 27.344397444751383,
+    "max": 69.37586325966852,
+    "records": 11584
+  }
+}

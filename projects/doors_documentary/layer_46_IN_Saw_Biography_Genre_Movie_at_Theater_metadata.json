@@ -1,0 +1,194 @@
+{
+  "layer_id": 46,
+  "layer_name": "IN Saw Biography Genre Movie at Theater",
+  "description": "Business Analyst Layer: IN Saw Biography Genre Movie at Theater",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:31.116996",
+  "record_count": 2809,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "46792 (Warren)",
+        "47348 (Hartford City)",
+        "47348 (Hartford City)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Huntington County",
+        "Blackford County",
+        "Blackford County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Indiana",
+        "Indiana",
+        "Indiana"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862a966b7ffffff",
+        "862a966c7ffffff",
+        "862a966cfffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP20109A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Saw Biography Genre Movie at Theater Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        14,
+        10,
+        12
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP20109A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Saw Biography Genre Movie at Theater Last 6 Mo (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        4.53,
+        4.98,
+        4.56
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        4.53,
+        4.98,
+        4.56
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        62602500,
+        62066250,
+        61882499.99609375
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        29478.56672871935,
+        29351.70269722621,
+        29306.806011581408
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492285067,
+        1758492285067,
+        1758492285067
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492285067,
+        1758492285067,
+        1758492285067
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_46_IN_Saw_Biography_Genre_Movie_at_Theater.csv"
+}

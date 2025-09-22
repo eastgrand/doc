@@ -1,0 +1,194 @@
+{
+  "layer_id": 24,
+  "layer_name": "IN Spending on Tickets to Movies (Avg)",
+  "description": "Business Analyst Layer: IN Spending on Tickets to Movies (Avg)",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:22.727313",
+  "record_count": 2809,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "45030 (Harrison)",
+        "47591 (Vincennes)",
+        "45053 (Okeana)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Hamilton County",
+        "Knox County",
+        "Butler County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Ohio",
+        "Indiana",
+        "Ohio"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862a9355fffffff",
+        "86266e6a7ffffff",
+        "862a93577ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "X9078_X",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Tickets to Movies",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        123000,
+        1177,
+        28721
+      ],
+      "has_data": true
+    },
+    {
+      "name": "X9078_X_A",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Tickets to Movies (Avg)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        30.05,
+        32.69,
+        40.62
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        30.05,
+        32.69,
+        40.62
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        58526250.00390625,
+        56462500,
+        58616249.99609375
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28506.775023897368,
+        28004.306684036736,
+        28521.225130279265
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758491996238,
+        1758491996238,
+        1758491996238
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758491996238,
+        1758491996238,
+        1758491996238
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_24_IN_Spending_on_Tickets_to_Movies_(Avg).csv"
+}

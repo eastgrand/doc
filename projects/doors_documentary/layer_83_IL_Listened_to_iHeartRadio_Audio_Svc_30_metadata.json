@@ -1,0 +1,194 @@
+{
+  "layer_id": 83,
+  "layer_name": "IL Listened to iHeartRadio Audio Svc 30",
+  "description": "Business Analyst Layer: IL Listened to iHeartRadio Audio Svc 30",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:43.250774",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "46356 (Lowell)",
+        "62314 (Baylis)",
+        "62471 (Vandalia)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Lake County",
+        "Pike County",
+        "Fayette County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Indiana",
+        "Illinois",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86266475fffffff",
+        "8626716afffffff",
+        "862644357ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22089A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listened to iHeartRadio Audio Service Last 30 Days",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        22,
+        19,
+        201
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22089A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listened to iHeartRadio Audio Service Last 30 Days (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        9.28,
+        9.84,
+        7.88
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        9.28,
+        9.84,
+        7.88
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        64184999.98828125,
+        60147500,
+        58067500
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        29844.258457732598,
+        28900.38529258016,
+        28395.352165252498
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492898816,
+        1758492898816,
+        1758492898816
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492898816,
+        1758492898816,
+        1758492898816
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_83_IL_Listened_to_iHeartRadio_Audio_Svc_30.csv"
+}

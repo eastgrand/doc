@@ -1,0 +1,194 @@
+{
+  "layer_id": 100,
+  "layer_name": "IL Listened to Music Podcast 30 Days",
+  "description": "Business Analyst Layer: IL Listened to Music Podcast 30 Days",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:49.885139",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62231 (Carlyle)",
+        "62253 (Keyesport)",
+        "62249 (Highland)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Clinton County",
+        "Bond County",
+        "Madison County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Illinois",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86264096fffffff",
+        "862640977ffffff",
+        "862640987ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22106A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listened to Music Podcast Last 30 Days",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        5,
+        3,
+        42
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22106A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listened to Music Podcast Last 30 Days (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        2.54,
+        2.34,
+        2.47
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        2.54,
+        2.34,
+        2.47
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        58047499.99609375,
+        58047499.99609375,
+        58317500
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28386.856971241083,
+        28392.399285997897,
+        28448.548989988485
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493227539,
+        1758493227539,
+        1758493227539
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493227539,
+        1758493227539,
+        1758493227539
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_100_IL_Listened_to_Music_Podcast_30_Days.csv"
+}

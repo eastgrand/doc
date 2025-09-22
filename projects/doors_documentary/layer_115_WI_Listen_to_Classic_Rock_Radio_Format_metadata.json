@@ -1,0 +1,194 @@
+{
+  "layer_id": 115,
+  "layer_name": "WI Listen to Classic Rock Radio Format",
+  "description": "Business Analyst Layer: WI Listen to Classic Rock Radio Format",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:54.564433",
+  "record_count": 4064,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "54106 (Black Creek)",
+        "54741 (Fairchild)",
+        "54722 (Augusta)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Outagamie County",
+        "Eau Claire County",
+        "Eau Claire County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Wisconsin",
+        "Wisconsin",
+        "Wisconsin"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86275c967ffffff",
+        "862753a2fffffff",
+        "862753a37ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22014A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listen to Classic Rock Radio Format",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        35,
+        16,
+        66
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22014A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listen to Classic Rock Radio Format (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        8.33,
+        4.26,
+        4.67
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        8.33,
+        4.26,
+        4.67
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        74781250.00390625,
+        74700000,
+        74474999.99609375
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        32205.097763134465,
+        32188.51055187374,
+        32141.05461982832
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493506770,
+        1758493506770,
+        1758493506770
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493506770,
+        1758493506770,
+        1758493506770
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_115_WI_Listen_to_Classic_Rock_Radio_Format.csv"
+}

@@ -1,0 +1,2739 @@
+{
+  "xgboost": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "xgboost",
+    "target_variable": "doors_audience_score",
+    "training_duration_seconds": 2.07632,
+    "data_info": {
+      "total_records": 11584,
+      "features_used": 49,
+      "train_records": 6950,
+      "test_records": 2317
+    },
+    "hyperparameters": {
+      "n_estimators": 300,
+      "max_depth": 5,
+      "learning_rate": 0.1,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42
+    },
+    "performance": {
+      "r2_score": 0.9999259534708743,
+      "rmse": 0.12464546899496382,
+      "mae": 0.03222707260957281,
+      "mape": 0.06393192922116521,
+      "train_r2": 0.9999974164524181,
+      "train_rmse": 0.023159073274422227,
+      "overfitting_ratio": 1.0000714682735214
+    },
+    "feature_importance": [
+      {
+        "feature": "classic_rock_affinity_score",
+        "importance": 0.13696667551994324,
+        "rank": 1
+      },
+      {
+        "feature": "cultural_engagement_score",
+        "importance": 0.08295664936304092,
+        "rank": 2
+      },
+      {
+        "feature": "MP19180A_B_P",
+        "importance": 0.02717897668480873,
+        "rank": 3
+      },
+      {
+        "feature": "MP22091A_B_P",
+        "importance": 0.022806016728281975,
+        "rank": 4
+      },
+      {
+        "feature": "documentary_engagement_score",
+        "importance": 0.0035712425597012043,
+        "rank": 5
+      },
+      {
+        "feature": "MP22024A_B_P",
+        "importance": 0.0019336446421220899,
+        "rank": 6
+      },
+      {
+        "feature": "MP20109A_B",
+        "importance": 0.0016736658290028572,
+        "rank": 7
+      },
+      {
+        "feature": "MP20158A_B_P",
+        "importance": 0.0011609221110120416,
+        "rank": 8
+      },
+      {
+        "feature": "thematic_value",
+        "importance": 0.0009348344174213707,
+        "rank": 9
+      },
+      {
+        "feature": "MILLENN_CY",
+        "importance": 0.0005884381243959069,
+        "rank": 10
+      },
+      {
+        "feature": "X9073_X_A",
+        "importance": 0.0004700736317317933,
+        "rank": 11
+      },
+      {
+        "feature": "MILLENN_CY_P",
+        "importance": 0.00046294633648358285,
+        "rank": 12
+      },
+      {
+        "feature": "MP23018A_B_P",
+        "importance": 0.0002556394028943032,
+        "rank": 13
+      },
+      {
+        "feature": "MP22089A_B_P",
+        "importance": 0.00019517990585882217,
+        "rank": 14
+      },
+      {
+        "feature": "X9078_X_A",
+        "importance": 0.00010552466847002506,
+        "rank": 15
+      },
+      {
+        "feature": "MP22055A_B_P",
+        "importance": 5.484969005919993e-05,
+        "rank": 16
+      },
+      {
+        "feature": "MP22087A_B",
+        "importance": 4.468793122214265e-05,
+        "rank": 17
+      },
+      {
+        "feature": "MP20109A_B_P",
+        "importance": 3.931062019546516e-05,
+        "rank": 18
+      },
+      {
+        "feature": "MP20044A_B_P",
+        "importance": 3.8844969822093844e-05,
+        "rank": 19
+      },
+      {
+        "feature": "MP22103A_B",
+        "importance": 1.6642885384499095e-05,
+        "rank": 20
+      },
+      {
+        "feature": "X9028_X_A",
+        "importance": 1.5211702702799812e-05,
+        "rank": 21
+      },
+      {
+        "feature": "MP22103A_B_P",
+        "importance": 1.3748472156294156e-05,
+        "rank": 22
+      },
+      {
+        "feature": "MP22106A_B_P",
+        "importance": 1.198769678012468e-05,
+        "rank": 23
+      },
+      {
+        "feature": "MP22084A_B_P",
+        "importance": 1.0095728612213861e-05,
+        "rank": 24
+      },
+      {
+        "feature": "MP23018A_B",
+        "importance": 7.560116046079202e-06,
+        "rank": 25
+      },
+      {
+        "feature": "MP22087A_B_P",
+        "importance": 6.6089532992918976e-06,
+        "rank": 26
+      },
+      {
+        "feature": "MP22086A_B_P",
+        "importance": 6.603856036235811e-06,
+        "rank": 27
+      },
+      {
+        "feature": "GENZ_CY_P",
+        "importance": 5.268082077236613e-06,
+        "rank": 28
+      },
+      {
+        "feature": "MP22083A_B_P",
+        "importance": 5.198612143431092e-06,
+        "rank": 29
+      },
+      {
+        "feature": "TPOPL1",
+        "importance": 5.100247562950244e-06,
+        "rank": 30
+      },
+      {
+        "feature": "MP19180A_B",
+        "importance": 4.647352398023941e-06,
+        "rank": 31
+      },
+      {
+        "feature": "TPOPL1_P",
+        "importance": 3.5794762425211957e-06,
+        "rank": 32
+      },
+      {
+        "feature": "MP22091A_B",
+        "importance": 3.5715313515538583e-06,
+        "rank": 33
+      },
+      {
+        "feature": "X9001_X_A",
+        "importance": 3.1722800031275256e-06,
+        "rank": 34
+      },
+      {
+        "feature": "GENALPHACY",
+        "importance": 3.1582260362483794e-06,
+        "rank": 35
+      },
+      {
+        "feature": "Shape__Length",
+        "importance": 3.045403900614474e-06,
+        "rank": 36
+      },
+      {
+        "feature": "Shape__Area",
+        "importance": 2.9550749331974657e-06,
+        "rank": 37
+      },
+      {
+        "feature": "LONGITUDE",
+        "importance": 2.7477185540192295e-06,
+        "rank": 38
+      },
+      {
+        "feature": "MP20044A_B",
+        "importance": 2.417657924524974e-06,
+        "rank": 39
+      },
+      {
+        "feature": "GENX_CY_P",
+        "importance": 2.3709585548203904e-06,
+        "rank": 40
+      },
+      {
+        "feature": "MP22090A_B_P",
+        "importance": 2.145816097254283e-06,
+        "rank": 41
+      },
+      {
+        "feature": "EMPNUM",
+        "importance": 2.1418443338916404e-06,
+        "rank": 42
+      },
+      {
+        "feature": "SALESVOL",
+        "importance": 2.0261531972209923e-06,
+        "rank": 43
+      },
+      {
+        "feature": "MIN_SQFT",
+        "importance": 1.949347051777295e-06,
+        "rank": 44
+      },
+      {
+        "feature": "X9073_X",
+        "importance": 1.4155233429846703e-06,
+        "rank": 45
+      },
+      {
+        "feature": "MP22090A_B",
+        "importance": 1.183691438200185e-06,
+        "rank": 46
+      },
+      {
+        "feature": "MP22024A_B",
+        "importance": 5.592432898993138e-07,
+        "rank": 47
+      },
+      {
+        "feature": "GENALPHACY_P",
+        "importance": 3.717401568792411e-07,
+        "rank": 48
+      },
+      {
+        "feature": "coverage_radius__miles_",
+        "importance": 0.0,
+        "rank": 49
+      }
+    ],
+    "shap_analysis": {
+      "shap_importance": [
+        {
+          "feature": "classic_rock_affinity_score",
+          "mean_shap_value": 2.9969308376312256,
+          "rank": 1
+        },
+        {
+          "feature": "cultural_engagement_score",
+          "mean_shap_value": 1.3407560586929321,
+          "rank": 2
+        },
+        {
+          "feature": "documentary_engagement_score",
+          "mean_shap_value": 0.3900071680545807,
+          "rank": 3
+        },
+        {
+          "feature": "MP19180A_B_P",
+          "mean_shap_value": 0.19192850589752197,
+          "rank": 4
+        },
+        {
+          "feature": "MP22091A_B_P",
+          "mean_shap_value": 0.16596978902816772,
+          "rank": 5
+        },
+        {
+          "feature": "MP22089A_B_P",
+          "mean_shap_value": 0.07536763697862625,
+          "rank": 6
+        },
+        {
+          "feature": "thematic_value",
+          "mean_shap_value": 0.04746312275528908,
+          "rank": 7
+        },
+        {
+          "feature": "MILLENN_CY_P",
+          "mean_shap_value": 0.03955236077308655,
+          "rank": 8
+        },
+        {
+          "feature": "MILLENN_CY",
+          "mean_shap_value": 0.03452618420124054,
+          "rank": 9
+        },
+        {
+          "feature": "MP20109A_B_P",
+          "mean_shap_value": 0.02470077946782112,
+          "rank": 10
+        },
+        {
+          "feature": "MP22024A_B_P",
+          "mean_shap_value": 0.02392045222222805,
+          "rank": 11
+        },
+        {
+          "feature": "X9073_X_A",
+          "mean_shap_value": 0.022586602717638016,
+          "rank": 12
+        },
+        {
+          "feature": "MP20109A_B",
+          "mean_shap_value": 0.010902686975896358,
+          "rank": 13
+        },
+        {
+          "feature": "MP20044A_B_P",
+          "mean_shap_value": 0.010387078858911991,
+          "rank": 14
+        },
+        {
+          "feature": "MP20158A_B_P",
+          "mean_shap_value": 0.008659719489514828,
+          "rank": 15
+        },
+        {
+          "feature": "MP23018A_B_P",
+          "mean_shap_value": 0.008100246079266071,
+          "rank": 16
+        },
+        {
+          "feature": "MP23018A_B",
+          "mean_shap_value": 0.005567906890064478,
+          "rank": 17
+        },
+        {
+          "feature": "X9028_X_A",
+          "mean_shap_value": 0.005132470745593309,
+          "rank": 18
+        },
+        {
+          "feature": "X9078_X_A",
+          "mean_shap_value": 0.004766201134771109,
+          "rank": 19
+        },
+        {
+          "feature": "MP22084A_B_P",
+          "mean_shap_value": 0.00391423562541604,
+          "rank": 20
+        },
+        {
+          "feature": "MP22103A_B_P",
+          "mean_shap_value": 0.003597286297008395,
+          "rank": 21
+        },
+        {
+          "feature": "MP22083A_B_P",
+          "mean_shap_value": 0.0027088818605989218,
+          "rank": 22
+        },
+        {
+          "feature": "MP22086A_B_P",
+          "mean_shap_value": 0.0026439267676323652,
+          "rank": 23
+        },
+        {
+          "feature": "MP22055A_B_P",
+          "mean_shap_value": 0.0022376852575689554,
+          "rank": 24
+        },
+        {
+          "feature": "MP22106A_B_P",
+          "mean_shap_value": 0.0021198978647589684,
+          "rank": 25
+        },
+        {
+          "feature": "GENZ_CY_P",
+          "mean_shap_value": 0.0019129132851958275,
+          "rank": 26
+        },
+        {
+          "feature": "GENX_CY_P",
+          "mean_shap_value": 0.0015375096118077636,
+          "rank": 27
+        },
+        {
+          "feature": "Shape__Area",
+          "mean_shap_value": 0.0013445174554362893,
+          "rank": 28
+        },
+        {
+          "feature": "X9001_X_A",
+          "mean_shap_value": 0.0012323922710493207,
+          "rank": 29
+        },
+        {
+          "feature": "MP22090A_B_P",
+          "mean_shap_value": 0.0011967963073402643,
+          "rank": 30
+        },
+        {
+          "feature": "TPOPL1",
+          "mean_shap_value": 0.0010944991372525692,
+          "rank": 31
+        },
+        {
+          "feature": "MP22087A_B_P",
+          "mean_shap_value": 0.0009572230046615005,
+          "rank": 32
+        },
+        {
+          "feature": "X9073_X",
+          "mean_shap_value": 0.0006704118568450212,
+          "rank": 33
+        },
+        {
+          "feature": "Shape__Length",
+          "mean_shap_value": 0.0006088727968744934,
+          "rank": 34
+        },
+        {
+          "feature": "MP22103A_B",
+          "mean_shap_value": 0.0004310759832151234,
+          "rank": 35
+        },
+        {
+          "feature": "TPOPL1_P",
+          "mean_shap_value": 0.00024655702873133123,
+          "rank": 36
+        },
+        {
+          "feature": "MP22087A_B",
+          "mean_shap_value": 0.00021196930902078748,
+          "rank": 37
+        },
+        {
+          "feature": "MP22091A_B",
+          "mean_shap_value": 0.0001988873991649598,
+          "rank": 38
+        },
+        {
+          "feature": "GENALPHACY_P",
+          "mean_shap_value": 0.00011617263953667134,
+          "rank": 39
+        },
+        {
+          "feature": "LONGITUDE",
+          "mean_shap_value": 8.319524204125628e-05,
+          "rank": 40
+        },
+        {
+          "feature": "SALESVOL",
+          "mean_shap_value": 8.128832996590063e-05,
+          "rank": 41
+        },
+        {
+          "feature": "MIN_SQFT",
+          "mean_shap_value": 3.541760452208109e-05,
+          "rank": 42
+        },
+        {
+          "feature": "EMPNUM",
+          "mean_shap_value": 2.972937909362372e-05,
+          "rank": 43
+        },
+        {
+          "feature": "GENALPHACY",
+          "mean_shap_value": 2.890772702812683e-05,
+          "rank": 44
+        },
+        {
+          "feature": "MP20044A_B",
+          "mean_shap_value": 2.872525692509953e-05,
+          "rank": 45
+        },
+        {
+          "feature": "MP22024A_B",
+          "mean_shap_value": 2.2086414901423268e-05,
+          "rank": 46
+        },
+        {
+          "feature": "MP19180A_B",
+          "mean_shap_value": 1.0804536032082979e-05,
+          "rank": 47
+        },
+        {
+          "feature": "MP22090A_B",
+          "mean_shap_value": 1.0400359315099195e-05,
+          "rank": 48
+        },
+        {
+          "feature": "coverage_radius__miles_",
+          "mean_shap_value": 0.0,
+          "rank": 49
+        }
+      ],
+      "sample_size": 100,
+      "base_value": 40.16324996948242
+    },
+    "cross_validation": {
+      "mean_cv_score": 0.9997741651090412,
+      "std_cv_score": 0.0002606679424422643,
+      "cv_scores": [
+        0.9999203850997385,
+        0.9992817976179234,
+        0.9999579393477569,
+        0.9997349828481013,
+        0.9999757206316853
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "trained_models/xgboost_model/model.joblib",
+      "features_file": "trained_models/xgboost_model/features.json",
+      "hyperparameters_file": "trained_models/xgboost_model/hyperparameters.json",
+      "model_directory": "trained_models/xgboost_model"
+    },
+    "feature_columns": [
+      "classic_rock_affinity_score",
+      "MP19180A_B_P",
+      "documentary_engagement_score",
+      "thematic_value",
+      "MP22055A_B_P",
+      "MP22091A_B_P",
+      "MP23018A_B_P",
+      "MP22084A_B_P",
+      "MP20109A_B_P",
+      "MP22089A_B_P",
+      "MP20044A_B_P",
+      "GENX_CY_P",
+      "MP22106A_B_P",
+      "MP22103A_B_P",
+      "MP20158A_B_P",
+      "X9001_X_A",
+      "X9078_X_A",
+      "MP22086A_B_P",
+      "GENZ_CY_P",
+      "MP22090A_B_P",
+      "X9073_X_A",
+      "MP22083A_B_P",
+      "MP23018A_B",
+      "X9073_X",
+      "MP20109A_B",
+      "MP20044A_B",
+      "MP19180A_B",
+      "MP22024A_B",
+      "Shape__Area",
+      "MP22090A_B",
+      "Shape__Length",
+      "MP22103A_B",
+      "GENALPHACY",
+      "X9028_X_A",
+      "MP22091A_B",
+      "MP22087A_B",
+      "MILLENN_CY",
+      "MILLENN_CY_P",
+      "cultural_engagement_score",
+      "MP22024A_B_P",
+      "MP22087A_B_P",
+      "MIN_SQFT",
+      "coverage_radius__miles_",
+      "TPOPL1_P",
+      "GENALPHACY_P",
+      "EMPNUM",
+      "SALESVOL",
+      "TPOPL1",
+      "LONGITUDE"
+    ]
+  },
+  "random_forest": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "random_forest",
+    "target_variable": "doors_audience_score",
+    "training_duration_seconds": 19.063322,
+    "data_info": {
+      "total_records": 11584,
+      "features_used": 49,
+      "train_records": 6950,
+      "test_records": 2317
+    },
+    "hyperparameters": {
+      "n_estimators": 200,
+      "max_depth": 10,
+      "min_samples_split": 5,
+      "min_samples_leaf": 2,
+      "random_state": 42
+    },
+    "performance": {
+      "r2_score": 0.9999693110052333,
+      "rmse": 0.08024453680808402,
+      "mae": 0.02838046400855192,
+      "mape": 0.04842794514974862,
+      "train_r2": 0.9999907028886906,
+      "train_rmse": 0.04393260542379022,
+      "overfitting_ratio": 1.0000213925399728
+    },
+    "feature_importance": [
+      {
+        "feature": "cultural_engagement_score",
+        "importance": 0.03964187871544792,
+        "rank": 1
+      },
+      {
+        "feature": "classic_rock_affinity_score",
+        "importance": 0.005267070996644775,
+        "rank": 2
+      },
+      {
+        "feature": "MP22055A_B_P",
+        "importance": 0.00048514254497820654,
+        "rank": 3
+      },
+      {
+        "feature": "thematic_value",
+        "importance": 0.0003938457288175264,
+        "rank": 4
+      },
+      {
+        "feature": "MP22086A_B_P",
+        "importance": 5.220722880287489e-06,
+        "rank": 5
+      },
+      {
+        "feature": "MP20158A_B_P",
+        "importance": 4.406638118681569e-06,
+        "rank": 6
+      },
+      {
+        "feature": "documentary_engagement_score",
+        "importance": 3.603379797935218e-06,
+        "rank": 7
+      },
+      {
+        "feature": "MP22106A_B_P",
+        "importance": 1.911793311508001e-06,
+        "rank": 8
+      },
+      {
+        "feature": "MP22083A_B_P",
+        "importance": 1.6937012633456142e-06,
+        "rank": 9
+      },
+      {
+        "feature": "MP22089A_B_P",
+        "importance": 1.2461085734014194e-06,
+        "rank": 10
+      },
+      {
+        "feature": "GENX_CY_P",
+        "importance": 1.210370371401211e-06,
+        "rank": 11
+      },
+      {
+        "feature": "X9001_X_A",
+        "importance": 1.0851091412773044e-06,
+        "rank": 12
+      },
+      {
+        "feature": "MP22084A_B_P",
+        "importance": 1.0103675408990004e-06,
+        "rank": 13
+      },
+      {
+        "feature": "GENZ_CY_P",
+        "importance": 8.183304479118204e-07,
+        "rank": 14
+      },
+      {
+        "feature": "X9078_X_A",
+        "importance": 7.934429954839513e-07,
+        "rank": 15
+      },
+      {
+        "feature": "X9028_X_A",
+        "importance": 6.884451882528307e-07,
+        "rank": 16
+      },
+      {
+        "feature": "Shape__Length",
+        "importance": 5.226564451216481e-07,
+        "rank": 17
+      },
+      {
+        "feature": "Shape__Area",
+        "importance": 4.354322835377735e-07,
+        "rank": 18
+      },
+      {
+        "feature": "TPOPL1",
+        "importance": 8.370021935282847e-08,
+        "rank": 19
+      },
+      {
+        "feature": "MP19180A_B_P",
+        "importance": 5.848720253556334e-08,
+        "rank": 20
+      },
+      {
+        "feature": "TPOPL1_P",
+        "importance": 5.5572868855543195e-08,
+        "rank": 21
+      },
+      {
+        "feature": "LONGITUDE",
+        "importance": 1.8512810451173017e-09,
+        "rank": 22
+      },
+      {
+        "feature": "SALESVOL",
+        "importance": 1.2264581498201783e-09,
+        "rank": 23
+      },
+      {
+        "feature": "MIN_SQFT",
+        "importance": 9.27406315593471e-10,
+        "rank": 24
+      },
+      {
+        "feature": "MP22087A_B_P",
+        "importance": 9.014370780472237e-10,
+        "rank": 25
+      },
+      {
+        "feature": "MP23018A_B_P",
+        "importance": 7.827104857726551e-10,
+        "rank": 26
+      },
+      {
+        "feature": "MILLENN_CY_P",
+        "importance": 7.449950860596834e-10,
+        "rank": 27
+      },
+      {
+        "feature": "GENALPHACY_P",
+        "importance": 7.367581429344524e-10,
+        "rank": 28
+      },
+      {
+        "feature": "MP22103A_B_P",
+        "importance": 7.337533028553705e-10,
+        "rank": 29
+      },
+      {
+        "feature": "MP22091A_B_P",
+        "importance": 7.06085744971689e-10,
+        "rank": 30
+      },
+      {
+        "feature": "EMPNUM",
+        "importance": 6.247754760604425e-10,
+        "rank": 31
+      },
+      {
+        "feature": "MP20109A_B_P",
+        "importance": 6.222572000083217e-10,
+        "rank": 32
+      },
+      {
+        "feature": "MP22090A_B_P",
+        "importance": 6.096591713162027e-10,
+        "rank": 33
+      },
+      {
+        "feature": "MP22024A_B_P",
+        "importance": 5.915704463925319e-10,
+        "rank": 34
+      },
+      {
+        "feature": "MP20044A_B_P",
+        "importance": 5.262971435856882e-10,
+        "rank": 35
+      },
+      {
+        "feature": "X9073_X_A",
+        "importance": 4.667308445686532e-10,
+        "rank": 36
+      },
+      {
+        "feature": "GENALPHACY",
+        "importance": 2.657981883343648e-10,
+        "rank": 37
+      },
+      {
+        "feature": "X9073_X",
+        "importance": 2.2298591099546022e-10,
+        "rank": 38
+      },
+      {
+        "feature": "MP23018A_B",
+        "importance": 1.8170804173284564e-10,
+        "rank": 39
+      },
+      {
+        "feature": "MP20109A_B",
+        "importance": 1.8064283278198043e-10,
+        "rank": 40
+      },
+      {
+        "feature": "MP22024A_B",
+        "importance": 1.7384945369941002e-10,
+        "rank": 41
+      },
+      {
+        "feature": "MP22087A_B",
+        "importance": 1.556085268203782e-10,
+        "rank": 42
+      },
+      {
+        "feature": "MILLENN_CY",
+        "importance": 1.5190243170988702e-10,
+        "rank": 43
+      },
+      {
+        "feature": "MP20044A_B",
+        "importance": 1.4371248593256892e-10,
+        "rank": 44
+      },
+      {
+        "feature": "MP22091A_B",
+        "importance": 1.3931669462751987e-10,
+        "rank": 45
+      },
+      {
+        "feature": "MP19180A_B",
+        "importance": 1.3027340265077883e-10,
+        "rank": 46
+      },
+      {
+        "feature": "MP22090A_B",
+        "importance": 1.2960757777768662e-10,
+        "rank": 47
+      },
+      {
+        "feature": "MP22103A_B",
+        "importance": 1.2266721538004578e-10,
+        "rank": 48
+      },
+      {
+        "feature": "coverage_radius__miles_",
+        "importance": 0.0,
+        "rank": 49
+      }
+    ],
+    "shap_analysis": {
+      "shap_importance": [
+        {
+          "feature": "cultural_engagement_score",
+          "mean_shap_value": 1.960921012767729,
+          "rank": 1
+        },
+        {
+          "feature": "classic_rock_affinity_score",
+          "mean_shap_value": 0.8116164280350797,
+          "rank": 2
+        },
+        {
+          "feature": "MP22055A_B_P",
+          "mean_shap_value": 0.05216145602565067,
+          "rank": 3
+        },
+        {
+          "feature": "thematic_value",
+          "mean_shap_value": 0.04847209767624948,
+          "rank": 4
+        },
+        {
+          "feature": "documentary_engagement_score",
+          "mean_shap_value": 0.00210474839121067,
+          "rank": 5
+        },
+        {
+          "feature": "MP22086A_B_P",
+          "mean_shap_value": 0.0016982993282871786,
+          "rank": 6
+        },
+        {
+          "feature": "MP20158A_B_P",
+          "mean_shap_value": 0.0012675231571944432,
+          "rank": 7
+        },
+        {
+          "feature": "MP22106A_B_P",
+          "mean_shap_value": 0.0009582621822091362,
+          "rank": 8
+        },
+        {
+          "feature": "MP22083A_B_P",
+          "mean_shap_value": 0.000631543226026041,
+          "rank": 9
+        },
+        {
+          "feature": "GENX_CY_P",
+          "mean_shap_value": 0.0005543925943892017,
+          "rank": 10
+        },
+        {
+          "feature": "MP22089A_B_P",
+          "mean_shap_value": 0.00044281548193892176,
+          "rank": 11
+        },
+        {
+          "feature": "GENZ_CY_P",
+          "mean_shap_value": 0.0003905029213708426,
+          "rank": 12
+        },
+        {
+          "feature": "X9001_X_A",
+          "mean_shap_value": 0.00035268838583234837,
+          "rank": 13
+        },
+        {
+          "feature": "MP22084A_B_P",
+          "mean_shap_value": 0.0003396295246082792,
+          "rank": 14
+        },
+        {
+          "feature": "X9028_X_A",
+          "mean_shap_value": 0.0003087525593066527,
+          "rank": 15
+        },
+        {
+          "feature": "X9078_X_A",
+          "mean_shap_value": 0.0002601593471915506,
+          "rank": 16
+        },
+        {
+          "feature": "MP19180A_B_P",
+          "mean_shap_value": 0.00020721742783363632,
+          "rank": 17
+        },
+        {
+          "feature": "Shape__Area",
+          "mean_shap_value": 0.00020060010705440817,
+          "rank": 18
+        },
+        {
+          "feature": "Shape__Length",
+          "mean_shap_value": 0.00019122312483161322,
+          "rank": 19
+        },
+        {
+          "feature": "TPOPL1",
+          "mean_shap_value": 3.47061481319886e-05,
+          "rank": 20
+        },
+        {
+          "feature": "TPOPL1_P",
+          "mean_shap_value": 2.810454114977121e-05,
+          "rank": 21
+        },
+        {
+          "feature": "MP22087A_B_P",
+          "mean_shap_value": 8.890396549008933e-06,
+          "rank": 22
+        },
+        {
+          "feature": "GENALPHACY_P",
+          "mean_shap_value": 7.950193974057559e-06,
+          "rank": 23
+        },
+        {
+          "feature": "MP23018A_B_P",
+          "mean_shap_value": 6.905742661374025e-06,
+          "rank": 24
+        },
+        {
+          "feature": "MP20044A_B_P",
+          "mean_shap_value": 6.736352481041871e-06,
+          "rank": 25
+        },
+        {
+          "feature": "MILLENN_CY_P",
+          "mean_shap_value": 6.424247253603374e-06,
+          "rank": 26
+        },
+        {
+          "feature": "MP22103A_B_P",
+          "mean_shap_value": 5.3818365777610175e-06,
+          "rank": 27
+        },
+        {
+          "feature": "MP22091A_B_P",
+          "mean_shap_value": 5.26066243943923e-06,
+          "rank": 28
+        },
+        {
+          "feature": "MP22024A_B_P",
+          "mean_shap_value": 5.096373115141977e-06,
+          "rank": 29
+        },
+        {
+          "feature": "MP20109A_B_P",
+          "mean_shap_value": 5.093775050722327e-06,
+          "rank": 30
+        },
+        {
+          "feature": "MP22090A_B_P",
+          "mean_shap_value": 4.816258798151135e-06,
+          "rank": 31
+        },
+        {
+          "feature": "X9073_X_A",
+          "mean_shap_value": 4.544435007688624e-06,
+          "rank": 32
+        },
+        {
+          "feature": "MP22087A_B",
+          "mean_shap_value": 4.0914575612996305e-06,
+          "rank": 33
+        },
+        {
+          "feature": "MP20044A_B",
+          "mean_shap_value": 3.14583842146231e-06,
+          "rank": 34
+        },
+        {
+          "feature": "MP23018A_B",
+          "mean_shap_value": 2.951876669060528e-06,
+          "rank": 35
+        },
+        {
+          "feature": "X9073_X",
+          "mean_shap_value": 2.6145824772764527e-06,
+          "rank": 36
+        },
+        {
+          "feature": "MP22091A_B",
+          "mean_shap_value": 2.5016578436595072e-06,
+          "rank": 37
+        },
+        {
+          "feature": "MP22090A_B",
+          "mean_shap_value": 2.394266281472335e-06,
+          "rank": 38
+        },
+        {
+          "feature": "MP20109A_B",
+          "mean_shap_value": 2.375071745026877e-06,
+          "rank": 39
+        },
+        {
+          "feature": "MP22024A_B",
+          "mean_shap_value": 2.2738990444629813e-06,
+          "rank": 40
+        },
+        {
+          "feature": "GENALPHACY",
+          "mean_shap_value": 2.191853523678553e-06,
+          "rank": 41
+        },
+        {
+          "feature": "SALESVOL",
+          "mean_shap_value": 2.0741028091189447e-06,
+          "rank": 42
+        },
+        {
+          "feature": "MP19180A_B",
+          "mean_shap_value": 2.056607783198499e-06,
+          "rank": 43
+        },
+        {
+          "feature": "MP22103A_B",
+          "mean_shap_value": 1.9952422340051695e-06,
+          "rank": 44
+        },
+        {
+          "feature": "LONGITUDE",
+          "mean_shap_value": 1.9228564859967183e-06,
+          "rank": 45
+        },
+        {
+          "feature": "MILLENN_CY",
+          "mean_shap_value": 1.480939578509558e-06,
+          "rank": 46
+        },
+        {
+          "feature": "MIN_SQFT",
+          "mean_shap_value": 4.467355244519986e-07,
+          "rank": 47
+        },
+        {
+          "feature": "EMPNUM",
+          "mean_shap_value": 1.121765201850731e-07,
+          "rank": 48
+        },
+        {
+          "feature": "coverage_radius__miles_",
+          "mean_shap_value": 0.0,
+          "rank": 49
+        }
+      ],
+      "sample_size": 100,
+      "base_value": 40.186358526490324
+    },
+    "cross_validation": {
+      "mean_cv_score": 0.9999471177765262,
+      "std_cv_score": 6.496631250183001e-05,
+      "cv_scores": [
+        0.9999825823883751,
+        0.999999817931136,
+        0.9999559989735302,
+        0.9998202359132353,
+        0.9999769536763542
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "trained_models/random_forest_model/model.joblib",
+      "features_file": "trained_models/random_forest_model/features.json",
+      "hyperparameters_file": "trained_models/random_forest_model/hyperparameters.json",
+      "model_directory": "trained_models/random_forest_model"
+    },
+    "feature_columns": [
+      "classic_rock_affinity_score",
+      "MP19180A_B_P",
+      "documentary_engagement_score",
+      "thematic_value",
+      "MP22055A_B_P",
+      "MP22091A_B_P",
+      "MP23018A_B_P",
+      "MP22084A_B_P",
+      "MP20109A_B_P",
+      "MP22089A_B_P",
+      "MP20044A_B_P",
+      "GENX_CY_P",
+      "MP22106A_B_P",
+      "MP22103A_B_P",
+      "MP20158A_B_P",
+      "X9001_X_A",
+      "X9078_X_A",
+      "MP22086A_B_P",
+      "GENZ_CY_P",
+      "MP22090A_B_P",
+      "X9073_X_A",
+      "MP22083A_B_P",
+      "MP23018A_B",
+      "X9073_X",
+      "MP20109A_B",
+      "MP20044A_B",
+      "MP19180A_B",
+      "MP22024A_B",
+      "Shape__Area",
+      "MP22090A_B",
+      "Shape__Length",
+      "MP22103A_B",
+      "GENALPHACY",
+      "X9028_X_A",
+      "MP22091A_B",
+      "MP22087A_B",
+      "MILLENN_CY",
+      "MILLENN_CY_P",
+      "cultural_engagement_score",
+      "MP22024A_B_P",
+      "MP22087A_B_P",
+      "MIN_SQFT",
+      "coverage_radius__miles_",
+      "TPOPL1_P",
+      "GENALPHACY_P",
+      "EMPNUM",
+      "SALESVOL",
+      "TPOPL1",
+      "LONGITUDE"
+    ]
+  },
+  "linear_regression": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "linear_regression",
+    "target_variable": "doors_audience_score",
+    "training_duration_seconds": 1.006977,
+    "data_info": {
+      "total_records": 11584,
+      "features_used": 49,
+      "train_records": 6950,
+      "test_records": 2317
+    },
+    "hyperparameters": {},
+    "performance": {
+      "r2_score": 1.0,
+      "rmse": 2.0289773057248948e-13,
+      "mae": 1.7803128175147543e-13,
+      "mape": 4.365578386402185e-13,
+      "train_r2": 1.0,
+      "train_rmse": 2.071952360761429e-13,
+      "overfitting_ratio": 1.0
+    },
+    "feature_importance": [
+      {
+        "feature": "classic_rock_affinity_score",
+        "importance": 9.7425089465457,
+        "rank": 1
+      },
+      {
+        "feature": "documentary_engagement_score",
+        "importance": 6.001946366850866,
+        "rank": 2
+      },
+      {
+        "feature": "cultural_engagement_score",
+        "importance": 3.2523086365016294,
+        "rank": 3
+      },
+      {
+        "feature": "MP20044A_B",
+        "importance": 2.938205234670477e-13,
+        "rank": 4
+      },
+      {
+        "feature": "MP19180A_B",
+        "importance": 1.929567616798522e-13,
+        "rank": 5
+      },
+      {
+        "feature": "Shape__Length",
+        "importance": 1.9156898289907076e-13,
+        "rank": 6
+      },
+      {
+        "feature": "Shape__Area",
+        "importance": 1.8951507030351422e-13,
+        "rank": 7
+      },
+      {
+        "feature": "MP22091A_B",
+        "importance": 1.5384915563743107e-13,
+        "rank": 8
+      },
+      {
+        "feature": "MP22103A_B",
+        "importance": 1.5210055437364645e-13,
+        "rank": 9
+      },
+      {
+        "feature": "thematic_value",
+        "importance": 1.0447198661722723e-13,
+        "rank": 10
+      },
+      {
+        "feature": "MP22055A_B_P",
+        "importance": 8.704148513061227e-14,
+        "rank": 11
+      },
+      {
+        "feature": "MP22090A_B",
+        "importance": 7.965850201685498e-14,
+        "rank": 12
+      },
+      {
+        "feature": "MP19180A_B_P",
+        "importance": 5.3734794391857577e-14,
+        "rank": 13
+      },
+      {
+        "feature": "MP22089A_B_P",
+        "importance": 4.141131881851834e-14,
+        "rank": 14
+      },
+      {
+        "feature": "MP22024A_B",
+        "importance": 3.852473895449293e-14,
+        "rank": 15
+      },
+      {
+        "feature": "MILLENN_CY",
+        "importance": 3.788636071533347e-14,
+        "rank": 16
+      },
+      {
+        "feature": "MP20109A_B",
+        "importance": 3.7192471324942744e-14,
+        "rank": 17
+      },
+      {
+        "feature": "MP22087A_B",
+        "importance": 3.3681391009565687e-14,
+        "rank": 18
+      },
+      {
+        "feature": "X9073_X",
+        "importance": 2.8310687127941492e-14,
+        "rank": 19
+      },
+      {
+        "feature": "MP22091A_B_P",
+        "importance": 2.7533531010703882e-14,
+        "rank": 20
+      },
+      {
+        "feature": "MP20044A_B_P",
+        "importance": 2.2426505097428162e-14,
+        "rank": 21
+      },
+      {
+        "feature": "MP22087A_B_P",
+        "importance": 1.983135877736686e-14,
+        "rank": 22
+      },
+      {
+        "feature": "X9078_X_A",
+        "importance": 1.9761969838327786e-14,
+        "rank": 23
+      },
+      {
+        "feature": "X9001_X_A",
+        "importance": 1.9539925233402755e-14,
+        "rank": 24
+      },
+      {
+        "feature": "GENALPHACY",
+        "importance": 1.6014967130217883e-14,
+        "rank": 25
+      },
+      {
+        "feature": "MP23018A_B",
+        "importance": 1.4210854715202004e-14,
+        "rank": 26
+      },
+      {
+        "feature": "MP22103A_B_P",
+        "importance": 1.2434497875801753e-14,
+        "rank": 27
+      },
+      {
+        "feature": "MP20158A_B_P",
+        "importance": 1.2434497875801753e-14,
+        "rank": 28
+      },
+      {
+        "feature": "TPOPL1_P",
+        "importance": 1.1574075031717257e-14,
+        "rank": 29
+      },
+      {
+        "feature": "MP22090A_B_P",
+        "importance": 1.0047518372857667e-14,
+        "rank": 30
+      },
+      {
+        "feature": "MP20109A_B_P",
+        "importance": 8.659739592076221e-15,
+        "rank": 31
+      },
+      {
+        "feature": "MP23018A_B_P",
+        "importance": 8.548717289613705e-15,
+        "rank": 32
+      },
+      {
+        "feature": "MP22084A_B_P",
+        "importance": 8.215650382226158e-15,
+        "rank": 33
+      },
+      {
+        "feature": "GENZ_CY_P",
+        "importance": 7.993605777301127e-15,
+        "rank": 34
+      },
+      {
+        "feature": "MIN_SQFT",
+        "importance": 7.716050021144838e-15,
+        "rank": 35
+      },
+      {
+        "feature": "GENX_CY_P",
+        "importance": 7.549516567451064e-15,
+        "rank": 36
+      },
+      {
+        "feature": "MP22083A_B_P",
+        "importance": 7.549516567451064e-15,
+        "rank": 37
+      },
+      {
+        "feature": "X9028_X_A",
+        "importance": 7.244205235679146e-15,
+        "rank": 38
+      },
+      {
+        "feature": "EMPNUM",
+        "importance": 4.676814491233472e-15,
+        "rank": 39
+      },
+      {
+        "feature": "TPOPL1",
+        "importance": 4.135580766728708e-15,
+        "rank": 40
+      },
+      {
+        "feature": "X9073_X_A",
+        "importance": 3.3306690738754696e-15,
+        "rank": 41
+      },
+      {
+        "feature": "MILLENN_CY_P",
+        "importance": 3.1953606427492787e-15,
+        "rank": 42
+      },
+      {
+        "feature": "GENALPHACY_P",
+        "importance": 2.220446049250313e-15,
+        "rank": 43
+      },
+      {
+        "feature": "SALESVOL",
+        "importance": 2.192690473634684e-15,
+        "rank": 44
+      },
+      {
+        "feature": "MP22024A_B_P",
+        "importance": 2.0816681711721685e-15,
+        "rank": 45
+      },
+      {
+        "feature": "MP22106A_B_P",
+        "importance": 1.8596235662471372e-15,
+        "rank": 46
+      },
+      {
+        "feature": "MP22086A_B_P",
+        "importance": 1.7763568394002505e-15,
+        "rank": 47
+      },
+      {
+        "feature": "LONGITUDE",
+        "importance": 4.440892098500626e-16,
+        "rank": 48
+      },
+      {
+        "feature": "coverage_radius__miles_",
+        "importance": 2.7755575615628914e-17,
+        "rank": 49
+      }
+    ],
+    "shap_analysis": {},
+    "cross_validation": {
+      "mean_cv_score": 1.0,
+      "std_cv_score": 0.0,
+      "cv_scores": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "trained_models/linear_regression_model/model.joblib",
+      "features_file": "trained_models/linear_regression_model/features.json",
+      "hyperparameters_file": "trained_models/linear_regression_model/hyperparameters.json",
+      "model_directory": "trained_models/linear_regression_model"
+    },
+    "feature_columns": [
+      "classic_rock_affinity_score",
+      "MP19180A_B_P",
+      "documentary_engagement_score",
+      "thematic_value",
+      "MP22055A_B_P",
+      "MP22091A_B_P",
+      "MP23018A_B_P",
+      "MP22084A_B_P",
+      "MP20109A_B_P",
+      "MP22089A_B_P",
+      "MP20044A_B_P",
+      "GENX_CY_P",
+      "MP22106A_B_P",
+      "MP22103A_B_P",
+      "MP20158A_B_P",
+      "X9001_X_A",
+      "X9078_X_A",
+      "MP22086A_B_P",
+      "GENZ_CY_P",
+      "MP22090A_B_P",
+      "X9073_X_A",
+      "MP22083A_B_P",
+      "MP23018A_B",
+      "X9073_X",
+      "MP20109A_B",
+      "MP20044A_B",
+      "MP19180A_B",
+      "MP22024A_B",
+      "Shape__Area",
+      "MP22090A_B",
+      "Shape__Length",
+      "MP22103A_B",
+      "GENALPHACY",
+      "X9028_X_A",
+      "MP22091A_B",
+      "MP22087A_B",
+      "MILLENN_CY",
+      "MILLENN_CY_P",
+      "cultural_engagement_score",
+      "MP22024A_B_P",
+      "MP22087A_B_P",
+      "MIN_SQFT",
+      "coverage_radius__miles_",
+      "TPOPL1_P",
+      "GENALPHACY_P",
+      "EMPNUM",
+      "SALESVOL",
+      "TPOPL1",
+      "LONGITUDE"
+    ]
+  },
+  "ridge_regression": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "ridge_regression",
+    "target_variable": "doors_audience_score",
+    "training_duration_seconds": 0.181553,
+    "data_info": {
+      "total_records": 11584,
+      "features_used": 49,
+      "train_records": 6950,
+      "test_records": 2317
+    },
+    "hyperparameters": {
+      "alpha": 1.0,
+      "random_state": 42
+    },
+    "performance": {
+      "r2_score": 0.9999927251451749,
+      "rmse": 0.03906936103123621,
+      "mae": 0.013520484100469366,
+      "mape": 0.025318329303372394,
+      "train_r2": 0.999994254739529,
+      "train_rmse": 0.03453566365585841,
+      "overfitting_ratio": 1.0000015296054818
+    },
+    "feature_importance": [
+      {
+        "feature": "classic_rock_affinity_score",
+        "importance": 9.08775808142673,
+        "rank": 1
+      },
+      {
+        "feature": "documentary_engagement_score",
+        "importance": 4.870279562070389,
+        "rank": 2
+      },
+      {
+        "feature": "cultural_engagement_score",
+        "importance": 3.2508264217113614,
+        "rank": 3
+      },
+      {
+        "feature": "MP22084A_B_P",
+        "importance": 0.26380739696486116,
+        "rank": 4
+      },
+      {
+        "feature": "MP22089A_B_P",
+        "importance": 0.07454577919671536,
+        "rank": 5
+      },
+      {
+        "feature": "MP20158A_B_P",
+        "importance": 0.021381504959225202,
+        "rank": 6
+      },
+      {
+        "feature": "X9028_X_A",
+        "importance": 0.020640472426581437,
+        "rank": 7
+      },
+      {
+        "feature": "MP22055A_B_P",
+        "importance": 0.014163878943318251,
+        "rank": 8
+      },
+      {
+        "feature": "thematic_value",
+        "importance": 0.014163878941871393,
+        "rank": 9
+      },
+      {
+        "feature": "X9078_X_A",
+        "importance": 0.012281125770270556,
+        "rank": 10
+      },
+      {
+        "feature": "X9001_X_A",
+        "importance": 0.011006981104868625,
+        "rank": 11
+      },
+      {
+        "feature": "MP22106A_B_P",
+        "importance": 0.004842145101787592,
+        "rank": 12
+      },
+      {
+        "feature": "Shape__Area",
+        "importance": 0.004274278032274288,
+        "rank": 13
+      },
+      {
+        "feature": "MP22083A_B_P",
+        "importance": 0.003929712793757634,
+        "rank": 14
+      },
+      {
+        "feature": "TPOPL1_P",
+        "importance": 0.0036119891208096985,
+        "rank": 15
+      },
+      {
+        "feature": "Shape__Length",
+        "importance": 0.0025522576813920093,
+        "rank": 16
+      },
+      {
+        "feature": "MP20044A_B",
+        "importance": 0.0023010219560152356,
+        "rank": 17
+      },
+      {
+        "feature": "MP22103A_B",
+        "importance": 0.0020178979077276255,
+        "rank": 18
+      },
+      {
+        "feature": "MP19180A_B",
+        "importance": 0.0019872466672727846,
+        "rank": 19
+      },
+      {
+        "feature": "MP22091A_B",
+        "importance": 0.001817897052092981,
+        "rank": 20
+      },
+      {
+        "feature": "GENZ_CY_P",
+        "importance": 0.0017575129643780294,
+        "rank": 21
+      },
+      {
+        "feature": "EMPNUM",
+        "importance": 0.0015087345249283376,
+        "rank": 22
+      },
+      {
+        "feature": "MP22090A_B",
+        "importance": 0.0013707460671309548,
+        "rank": 23
+      },
+      {
+        "feature": "SALESVOL",
+        "importance": 0.0010287763439991284,
+        "rank": 24
+      },
+      {
+        "feature": "MP22086A_B_P",
+        "importance": 0.0010140356791028438,
+        "rank": 25
+      },
+      {
+        "feature": "MP20109A_B",
+        "importance": 0.0008762429339490878,
+        "rank": 26
+      },
+      {
+        "feature": "MP23018A_B_P",
+        "importance": 0.0006126416120008197,
+        "rank": 27
+      },
+      {
+        "feature": "MP22091A_B_P",
+        "importance": 0.0005964540552202353,
+        "rank": 28
+      },
+      {
+        "feature": "MILLENN_CY",
+        "importance": 0.0005458915562596086,
+        "rank": 29
+      },
+      {
+        "feature": "MP22024A_B",
+        "importance": 0.0005326650571416596,
+        "rank": 30
+      },
+      {
+        "feature": "MP19180A_B_P",
+        "importance": 0.0005258688175540034,
+        "rank": 31
+      },
+      {
+        "feature": "MP22103A_B_P",
+        "importance": 0.00039898754637548577,
+        "rank": 32
+      },
+      {
+        "feature": "MIN_SQFT",
+        "importance": 0.0003502116064885799,
+        "rank": 33
+      },
+      {
+        "feature": "MP23018A_B",
+        "importance": 0.0003069114888155458,
+        "rank": 34
+      },
+      {
+        "feature": "LONGITUDE",
+        "importance": 0.0002302460118400746,
+        "rank": 35
+      },
+      {
+        "feature": "MP20109A_B_P",
+        "importance": 0.00021693547117614549,
+        "rank": 36
+      },
+      {
+        "feature": "MP22090A_B_P",
+        "importance": 0.00020671348573858415,
+        "rank": 37
+      },
+      {
+        "feature": "MP22087A_B_P",
+        "importance": 0.0001723965460982272,
+        "rank": 38
+      },
+      {
+        "feature": "MP22087A_B",
+        "importance": 0.00013328767381445548,
+        "rank": 39
+      },
+      {
+        "feature": "GENX_CY_P",
+        "importance": 0.00011280611640404424,
+        "rank": 40
+      },
+      {
+        "feature": "MP20044A_B_P",
+        "importance": 0.00010474052405392918,
+        "rank": 41
+      },
+      {
+        "feature": "GENALPHACY",
+        "importance": 8.225778694178717e-05,
+        "rank": 42
+      },
+      {
+        "feature": "MP22024A_B_P",
+        "importance": 7.979623843043863e-05,
+        "rank": 43
+      },
+      {
+        "feature": "GENALPHACY_P",
+        "importance": 7.520779771402817e-05,
+        "rank": 44
+      },
+      {
+        "feature": "X9073_X",
+        "importance": 5.83143166615122e-05,
+        "rank": 45
+      },
+      {
+        "feature": "MILLENN_CY_P",
+        "importance": 5.7600358239818416e-05,
+        "rank": 46
+      },
+      {
+        "feature": "TPOPL1",
+        "importance": 1.2370789617834277e-05,
+        "rank": 47
+      },
+      {
+        "feature": "X9073_X_A",
+        "importance": 2.738976269885631e-06,
+        "rank": 48
+      },
+      {
+        "feature": "coverage_radius__miles_",
+        "importance": 0.0,
+        "rank": 49
+      }
+    ],
+    "shap_analysis": {},
+    "cross_validation": {
+      "mean_cv_score": 0.9999920093008459,
+      "std_cv_score": 9.631632324101657e-06,
+      "cv_scores": [
+        0.9999996418456878,
+        0.9999998236008265,
+        0.999987758782935,
+        0.9999749268674848,
+        0.9999978954072954
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "trained_models/ridge_regression_model/model.joblib",
+      "features_file": "trained_models/ridge_regression_model/features.json",
+      "hyperparameters_file": "trained_models/ridge_regression_model/hyperparameters.json",
+      "model_directory": "trained_models/ridge_regression_model"
+    },
+    "feature_columns": [
+      "classic_rock_affinity_score",
+      "MP19180A_B_P",
+      "documentary_engagement_score",
+      "thematic_value",
+      "MP22055A_B_P",
+      "MP22091A_B_P",
+      "MP23018A_B_P",
+      "MP22084A_B_P",
+      "MP20109A_B_P",
+      "MP22089A_B_P",
+      "MP20044A_B_P",
+      "GENX_CY_P",
+      "MP22106A_B_P",
+      "MP22103A_B_P",
+      "MP20158A_B_P",
+      "X9001_X_A",
+      "X9078_X_A",
+      "MP22086A_B_P",
+      "GENZ_CY_P",
+      "MP22090A_B_P",
+      "X9073_X_A",
+      "MP22083A_B_P",
+      "MP23018A_B",
+      "X9073_X",
+      "MP20109A_B",
+      "MP20044A_B",
+      "MP19180A_B",
+      "MP22024A_B",
+      "Shape__Area",
+      "MP22090A_B",
+      "Shape__Length",
+      "MP22103A_B",
+      "GENALPHACY",
+      "X9028_X_A",
+      "MP22091A_B",
+      "MP22087A_B",
+      "MILLENN_CY",
+      "MILLENN_CY_P",
+      "cultural_engagement_score",
+      "MP22024A_B_P",
+      "MP22087A_B_P",
+      "MIN_SQFT",
+      "coverage_radius__miles_",
+      "TPOPL1_P",
+      "GENALPHACY_P",
+      "EMPNUM",
+      "SALESVOL",
+      "TPOPL1",
+      "LONGITUDE"
+    ]
+  },
+  "lasso_regression": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "lasso_regression",
+    "target_variable": "doors_audience_score",
+    "training_duration_seconds": 0.329994,
+    "data_info": {
+      "total_records": 11584,
+      "features_used": 49,
+      "train_records": 6950,
+      "test_records": 2317
+    },
+    "hyperparameters": {
+      "alpha": 0.1,
+      "random_state": 42
+    },
+    "performance": {
+      "r2_score": 0.999830359628023,
+      "rmse": 0.1886638753334805,
+      "mae": 0.1825269255920216,
+      "mape": 0.5406664348956387,
+      "train_r2": 0.9998294916065231,
+      "train_rmse": 0.18814203009183414,
+      "overfitting_ratio": 0.9999991318312236
+    },
+    "feature_importance": [
+      {
+        "feature": "classic_rock_affinity_score",
+        "importance": 9.372488197936695,
+        "rank": 1
+      },
+      {
+        "feature": "documentary_engagement_score",
+        "importance": 5.602911230595041,
+        "rank": 2
+      },
+      {
+        "feature": "cultural_engagement_score",
+        "importance": 3.082733516454117,
+        "rank": 3
+      },
+      {
+        "feature": "MP19180A_B_P",
+        "importance": 0.0,
+        "rank": 4
+      },
+      {
+        "feature": "thematic_value",
+        "importance": 0.0,
+        "rank": 5
+      },
+      {
+        "feature": "MP22055A_B_P",
+        "importance": 0.0,
+        "rank": 6
+      },
+      {
+        "feature": "MP22091A_B_P",
+        "importance": 0.0,
+        "rank": 7
+      },
+      {
+        "feature": "MP23018A_B_P",
+        "importance": 0.0,
+        "rank": 8
+      },
+      {
+        "feature": "MP22084A_B_P",
+        "importance": 0.0,
+        "rank": 9
+      },
+      {
+        "feature": "MP20109A_B_P",
+        "importance": 0.0,
+        "rank": 10
+      },
+      {
+        "feature": "MP22089A_B_P",
+        "importance": 0.0,
+        "rank": 11
+      },
+      {
+        "feature": "MP20044A_B_P",
+        "importance": 0.0,
+        "rank": 12
+      },
+      {
+        "feature": "GENX_CY_P",
+        "importance": 0.0,
+        "rank": 13
+      },
+      {
+        "feature": "MP22106A_B_P",
+        "importance": 0.0,
+        "rank": 14
+      },
+      {
+        "feature": "MP22103A_B_P",
+        "importance": 0.0,
+        "rank": 15
+      },
+      {
+        "feature": "MP20158A_B_P",
+        "importance": 0.0,
+        "rank": 16
+      },
+      {
+        "feature": "X9001_X_A",
+        "importance": 0.0,
+        "rank": 17
+      },
+      {
+        "feature": "X9078_X_A",
+        "importance": 0.0,
+        "rank": 18
+      },
+      {
+        "feature": "MP22086A_B_P",
+        "importance": 0.0,
+        "rank": 19
+      },
+      {
+        "feature": "GENZ_CY_P",
+        "importance": 0.0,
+        "rank": 20
+      },
+      {
+        "feature": "MP22090A_B_P",
+        "importance": 0.0,
+        "rank": 21
+      },
+      {
+        "feature": "X9073_X_A",
+        "importance": 0.0,
+        "rank": 22
+      },
+      {
+        "feature": "MP22083A_B_P",
+        "importance": 0.0,
+        "rank": 23
+      },
+      {
+        "feature": "MP23018A_B",
+        "importance": 0.0,
+        "rank": 24
+      },
+      {
+        "feature": "X9073_X",
+        "importance": 0.0,
+        "rank": 25
+      },
+      {
+        "feature": "MP20109A_B",
+        "importance": 0.0,
+        "rank": 26
+      },
+      {
+        "feature": "MP20044A_B",
+        "importance": 0.0,
+        "rank": 27
+      },
+      {
+        "feature": "MP19180A_B",
+        "importance": 0.0,
+        "rank": 28
+      },
+      {
+        "feature": "MP22024A_B",
+        "importance": 0.0,
+        "rank": 29
+      },
+      {
+        "feature": "Shape__Area",
+        "importance": 0.0,
+        "rank": 30
+      },
+      {
+        "feature": "MP22090A_B",
+        "importance": 0.0,
+        "rank": 31
+      },
+      {
+        "feature": "Shape__Length",
+        "importance": 0.0,
+        "rank": 32
+      },
+      {
+        "feature": "MP22103A_B",
+        "importance": 0.0,
+        "rank": 33
+      },
+      {
+        "feature": "GENALPHACY",
+        "importance": 0.0,
+        "rank": 34
+      },
+      {
+        "feature": "X9028_X_A",
+        "importance": 0.0,
+        "rank": 35
+      },
+      {
+        "feature": "MP22091A_B",
+        "importance": 0.0,
+        "rank": 36
+      },
+      {
+        "feature": "MP22087A_B",
+        "importance": 0.0,
+        "rank": 37
+      },
+      {
+        "feature": "MILLENN_CY",
+        "importance": 0.0,
+        "rank": 38
+      },
+      {
+        "feature": "MILLENN_CY_P",
+        "importance": 0.0,
+        "rank": 39
+      },
+      {
+        "feature": "MP22024A_B_P",
+        "importance": 0.0,
+        "rank": 40
+      },
+      {
+        "feature": "MP22087A_B_P",
+        "importance": 0.0,
+        "rank": 41
+      },
+      {
+        "feature": "MIN_SQFT",
+        "importance": 0.0,
+        "rank": 42
+      },
+      {
+        "feature": "coverage_radius__miles_",
+        "importance": 0.0,
+        "rank": 43
+      },
+      {
+        "feature": "TPOPL1_P",
+        "importance": 0.0,
+        "rank": 44
+      },
+      {
+        "feature": "GENALPHACY_P",
+        "importance": 0.0,
+        "rank": 45
+      },
+      {
+        "feature": "EMPNUM",
+        "importance": 0.0,
+        "rank": 46
+      },
+      {
+        "feature": "SALESVOL",
+        "importance": 0.0,
+        "rank": 47
+      },
+      {
+        "feature": "TPOPL1",
+        "importance": 0.0,
+        "rank": 48
+      },
+      {
+        "feature": "LONGITUDE",
+        "importance": 0.0,
+        "rank": 49
+      }
+    ],
+    "shap_analysis": {},
+    "cross_validation": {
+      "mean_cv_score": 0.9985785082153583,
+      "std_cv_score": 0.0015548253600172928,
+      "cv_scores": [
+        0.9976998682062755,
+        0.9959144345098933,
+        0.999819029876198,
+        0.9996088267402494,
+        0.999850381744176
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "trained_models/lasso_regression_model/model.joblib",
+      "features_file": "trained_models/lasso_regression_model/features.json",
+      "hyperparameters_file": "trained_models/lasso_regression_model/hyperparameters.json",
+      "model_directory": "trained_models/lasso_regression_model"
+    },
+    "feature_columns": [
+      "classic_rock_affinity_score",
+      "MP19180A_B_P",
+      "documentary_engagement_score",
+      "thematic_value",
+      "MP22055A_B_P",
+      "MP22091A_B_P",
+      "MP23018A_B_P",
+      "MP22084A_B_P",
+      "MP20109A_B_P",
+      "MP22089A_B_P",
+      "MP20044A_B_P",
+      "GENX_CY_P",
+      "MP22106A_B_P",
+      "MP22103A_B_P",
+      "MP20158A_B_P",
+      "X9001_X_A",
+      "X9078_X_A",
+      "MP22086A_B_P",
+      "GENZ_CY_P",
+      "MP22090A_B_P",
+      "X9073_X_A",
+      "MP22083A_B_P",
+      "MP23018A_B",
+      "X9073_X",
+      "MP20109A_B",
+      "MP20044A_B",
+      "MP19180A_B",
+      "MP22024A_B",
+      "Shape__Area",
+      "MP22090A_B",
+      "Shape__Length",
+      "MP22103A_B",
+      "GENALPHACY",
+      "X9028_X_A",
+      "MP22091A_B",
+      "MP22087A_B",
+      "MILLENN_CY",
+      "MILLENN_CY_P",
+      "cultural_engagement_score",
+      "MP22024A_B_P",
+      "MP22087A_B_P",
+      "MIN_SQFT",
+      "coverage_radius__miles_",
+      "TPOPL1_P",
+      "GENALPHACY_P",
+      "EMPNUM",
+      "SALESVOL",
+      "TPOPL1",
+      "LONGITUDE"
+    ]
+  },
+  "svr": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "svr",
+    "target_variable": "doors_audience_score",
+    "training_duration_seconds": 4.014776,
+    "data_info": {
+      "total_records": 11584,
+      "features_used": 49,
+      "train_records": 6950,
+      "test_records": 2317
+    },
+    "hyperparameters": {
+      "kernel": "rbf",
+      "C": 1.0,
+      "gamma": "scale"
+    },
+    "performance": {
+      "r2_score": 0.984900254863938,
+      "rmse": 1.77995470765839,
+      "mae": 0.5252695344477321,
+      "mape": 1.177881777447734,
+      "train_r2": 0.9885749063450504,
+      "train_rmse": 1.54007839707397,
+      "overfitting_ratio": 1.0037309884559023
+    },
+    "feature_importance": [],
+    "shap_analysis": {},
+    "cross_validation": {
+      "mean_cv_score": 0.9300353092288056,
+      "std_cv_score": 0.08041258707147196,
+      "cv_scores": [
+        0.9705708792974458,
+        0.7713626930593074,
+        0.9874080821791887,
+        0.9467608409367302,
+        0.9740740506713554
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "trained_models/svr_model/model.joblib",
+      "features_file": "trained_models/svr_model/features.json",
+      "hyperparameters_file": "trained_models/svr_model/hyperparameters.json",
+      "model_directory": "trained_models/svr_model"
+    },
+    "feature_columns": [
+      "classic_rock_affinity_score",
+      "MP19180A_B_P",
+      "documentary_engagement_score",
+      "thematic_value",
+      "MP22055A_B_P",
+      "MP22091A_B_P",
+      "MP23018A_B_P",
+      "MP22084A_B_P",
+      "MP20109A_B_P",
+      "MP22089A_B_P",
+      "MP20044A_B_P",
+      "GENX_CY_P",
+      "MP22106A_B_P",
+      "MP22103A_B_P",
+      "MP20158A_B_P",
+      "X9001_X_A",
+      "X9078_X_A",
+      "MP22086A_B_P",
+      "GENZ_CY_P",
+      "MP22090A_B_P",
+      "X9073_X_A",
+      "MP22083A_B_P",
+      "MP23018A_B",
+      "X9073_X",
+      "MP20109A_B",
+      "MP20044A_B",
+      "MP19180A_B",
+      "MP22024A_B",
+      "Shape__Area",
+      "MP22090A_B",
+      "Shape__Length",
+      "MP22103A_B",
+      "GENALPHACY",
+      "X9028_X_A",
+      "MP22091A_B",
+      "MP22087A_B",
+      "MILLENN_CY",
+      "MILLENN_CY_P",
+      "cultural_engagement_score",
+      "MP22024A_B_P",
+      "MP22087A_B_P",
+      "MIN_SQFT",
+      "coverage_radius__miles_",
+      "TPOPL1_P",
+      "GENALPHACY_P",
+      "EMPNUM",
+      "SALESVOL",
+      "TPOPL1",
+      "LONGITUDE"
+    ]
+  },
+  "knn": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "knn",
+    "target_variable": "doors_audience_score",
+    "training_duration_seconds": 0.384911,
+    "data_info": {
+      "total_records": 11584,
+      "features_used": 49,
+      "train_records": 6950,
+      "test_records": 2317
+    },
+    "hyperparameters": {
+      "n_neighbors": 5,
+      "weights": "distance"
+    },
+    "performance": {
+      "r2_score": 0.997672758086317,
+      "rmse": 0.6987871464772318,
+      "mae": 0.3032007647554889,
+      "mape": 0.5663270681574368,
+      "train_r2": 1.0,
+      "train_rmse": 1.0143346765381768e-07,
+      "overfitting_ratio": 1.00233267060248
+    },
+    "feature_importance": [],
+    "shap_analysis": {},
+    "cross_validation": {
+      "mean_cv_score": 0.9961093036534645,
+      "std_cv_score": 0.0029701393066728383,
+      "cv_scores": [
+        0.9993264131092314,
+        0.995824647515493,
+        0.9973040416641596,
+        0.9906008885387427,
+        0.9974905274396955
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "trained_models/knn_model/model.joblib",
+      "features_file": "trained_models/knn_model/features.json",
+      "hyperparameters_file": "trained_models/knn_model/hyperparameters.json",
+      "model_directory": "trained_models/knn_model"
+    },
+    "feature_columns": [
+      "classic_rock_affinity_score",
+      "MP19180A_B_P",
+      "documentary_engagement_score",
+      "thematic_value",
+      "MP22055A_B_P",
+      "MP22091A_B_P",
+      "MP23018A_B_P",
+      "MP22084A_B_P",
+      "MP20109A_B_P",
+      "MP22089A_B_P",
+      "MP20044A_B_P",
+      "GENX_CY_P",
+      "MP22106A_B_P",
+      "MP22103A_B_P",
+      "MP20158A_B_P",
+      "X9001_X_A",
+      "X9078_X_A",
+      "MP22086A_B_P",
+      "GENZ_CY_P",
+      "MP22090A_B_P",
+      "X9073_X_A",
+      "MP22083A_B_P",
+      "MP23018A_B",
+      "X9073_X",
+      "MP20109A_B",
+      "MP20044A_B",
+      "MP19180A_B",
+      "MP22024A_B",
+      "Shape__Area",
+      "MP22090A_B",
+      "Shape__Length",
+      "MP22103A_B",
+      "GENALPHACY",
+      "X9028_X_A",
+      "MP22091A_B",
+      "MP22087A_B",
+      "MILLENN_CY",
+      "MILLENN_CY_P",
+      "cultural_engagement_score",
+      "MP22024A_B_P",
+      "MP22087A_B_P",
+      "MIN_SQFT",
+      "coverage_radius__miles_",
+      "TPOPL1_P",
+      "GENALPHACY_P",
+      "EMPNUM",
+      "SALESVOL",
+      "TPOPL1",
+      "LONGITUDE"
+    ]
+  },
+  "neural_network": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "neural_network",
+    "target_variable": "doors_audience_score",
+    "training_duration_seconds": 3.968857,
+    "data_info": {
+      "total_records": 11584,
+      "features_used": 49,
+      "train_records": 6950,
+      "test_records": 2317
+    },
+    "hyperparameters": {
+      "hidden_layer_sizes": [
+        100,
+        50
+      ],
+      "max_iter": 500,
+      "random_state": 42,
+      "early_stopping": true
+    },
+    "performance": {
+      "r2_score": 0.9857445940852921,
+      "rmse": 1.7294736001082083,
+      "mae": 0.32616032023470054,
+      "mape": 0.7600697300544265,
+      "train_r2": 0.9993757661136,
+      "train_rmse": 0.3599868319265024,
+      "overfitting_ratio": 1.0138283000587558
+    },
+    "feature_importance": [],
+    "shap_analysis": {},
+    "cross_validation": {
+      "mean_cv_score": 0.7754524417962411,
+      "std_cv_score": 0.44170703973296993,
+      "cv_scores": [
+        0.9976388918393322,
+        -0.10795816369145905,
+        0.9965576538222097,
+        0.9940000744925537,
+        0.9970237525185689
+      ]
+    },
+    "model_artifacts": {
+      "model_file": "trained_models/neural_network_model/model.joblib",
+      "features_file": "trained_models/neural_network_model/features.json",
+      "hyperparameters_file": "trained_models/neural_network_model/hyperparameters.json",
+      "model_directory": "trained_models/neural_network_model"
+    },
+    "feature_columns": [
+      "classic_rock_affinity_score",
+      "MP19180A_B_P",
+      "documentary_engagement_score",
+      "thematic_value",
+      "MP22055A_B_P",
+      "MP22091A_B_P",
+      "MP23018A_B_P",
+      "MP22084A_B_P",
+      "MP20109A_B_P",
+      "MP22089A_B_P",
+      "MP20044A_B_P",
+      "GENX_CY_P",
+      "MP22106A_B_P",
+      "MP22103A_B_P",
+      "MP20158A_B_P",
+      "X9001_X_A",
+      "X9078_X_A",
+      "MP22086A_B_P",
+      "GENZ_CY_P",
+      "MP22090A_B_P",
+      "X9073_X_A",
+      "MP22083A_B_P",
+      "MP23018A_B",
+      "X9073_X",
+      "MP20109A_B",
+      "MP20044A_B",
+      "MP19180A_B",
+      "MP22024A_B",
+      "Shape__Area",
+      "MP22090A_B",
+      "Shape__Length",
+      "MP22103A_B",
+      "GENALPHACY",
+      "X9028_X_A",
+      "MP22091A_B",
+      "MP22087A_B",
+      "MILLENN_CY",
+      "MILLENN_CY_P",
+      "cultural_engagement_score",
+      "MP22024A_B_P",
+      "MP22087A_B_P",
+      "MIN_SQFT",
+      "coverage_radius__miles_",
+      "TPOPL1_P",
+      "GENALPHACY_P",
+      "EMPNUM",
+      "SALESVOL",
+      "TPOPL1",
+      "LONGITUDE"
+    ]
+  },
+  "anomaly_detection": {
+    "success": true,
+    "model_type": "unsupervised",
+    "algorithm": "anomaly_detection",
+    "training_duration_seconds": 0.090962,
+    "data_info": {
+      "total_records": 174,
+      "features_used": 101
+    },
+    "hyperparameters": {
+      "contamination": 0.1,
+      "random_state": 42
+    },
+    "performance": {
+      "n_outliers": "18",
+      "outlier_ratio": 0.10344827586206896,
+      "normal_points": "156"
+    },
+    "model_artifacts": {
+      "model_file": "trained_models/anomaly_detection_model/model.joblib",
+      "features_file": "trained_models/anomaly_detection_model/features.json",
+      "hyperparameters_file": "trained_models/anomaly_detection_model/hyperparameters.json",
+      "scaler_file": "trained_models/anomaly_detection_model/scaler.joblib",
+      "model_directory": "trained_models/anomaly_detection_model"
+    },
+    "feature_columns": [
+      "MP22055A_B",
+      "MP22055A_B_P",
+      "thematic_value",
+      "Shape__Area",
+      "Shape__Length",
+      "CreationDate",
+      "EditDate",
+      "ZIP",
+      "ZIP4",
+      "NAICS",
+      "SIC",
+      "AFFILIATE",
+      "BRAND",
+      "MIN_SQFT",
+      "MAX_SQFT",
+      "EMPNUM",
+      "SALESVOL",
+      "LATITUDE",
+      "LONGITUDE",
+      "MP20063A_B",
+      "MP20063A_B_P",
+      "GENALPHACY",
+      "GENALPHACY_P",
+      "MP20158A_B",
+      "MP20158A_B_P",
+      "MP22087A_B",
+      "MP22087A_B_P",
+      "MILLENN_CY",
+      "MILLENN_CY_P",
+      "MP22089A_B",
+      "MP22089A_B_P",
+      "X9073_X",
+      "X9073_X_A",
+      "MP22090A_B",
+      "MP22090A_B_P",
+      "MP22086A_B",
+      "MP22086A_B_P",
+      "MP22084A_B",
+      "MP22084A_B_P",
+      "MP22082A_B",
+      "MP22082A_B_P",
+      "MP22094A_B",
+      "MP22094A_B_P",
+      "MP22119A_B",
+      "MP22119A_B_P",
+      "MP22103A_B",
+      "MP22103A_B_P",
+      "X9028_X",
+      "X9028_X_A",
+      "GENX_CY",
+      "GENX_CY_P",
+      "MP22091A_B",
+      "MP22091A_B_P",
+      "TPOPK2",
+      "TPOPK2_P",
+      "TPOPK1",
+      "TPOPK1_P",
+      "TPOPJ1",
+      "TPOPJ1_P",
+      "MP22106A_B",
+      "MP22106A_B_P",
+      "MP19165A_B",
+      "MP19165A_B_P",
+      "TPOPI1",
+      "TPOPI1_P",
+      "MP22088A_B",
+      "MP22088A_B_P",
+      "MP20044A_B",
+      "MP20044A_B_P",
+      "X9001_X",
+      "X9001_X_A",
+      "MP20109A_B",
+      "MP20109A_B_P",
+      "MP19180A_B",
+      "MP19180A_B_P",
+      "X9078_X",
+      "X9078_X_A",
+      "_",
+      "coverage_radius__miles_",
+      "Postal",
+      "MP23018A_B",
+      "MP23018A_B_P",
+      "MP05009A_B",
+      "MP05009A_B_P",
+      "MP22014A_B",
+      "MP22014A_B_P",
+      "BABYBOOMCY",
+      "BABYBOOMCY_P",
+      "MP22083A_B",
+      "MP22083A_B_P",
+      "MP22024A_B",
+      "MP22024A_B_P",
+      "TPOPL1",
+      "TPOPL1_P",
+      "GENZ_CY",
+      "GENZ_CY_P",
+      "classic_rock_affinity_score",
+      "documentary_engagement_score",
+      "music_consumption_score",
+      "cultural_engagement_score",
+      "doors_audience_score"
+    ]
+  },
+  "clustering": {
+    "success": false,
+    "model_type": "unsupervised",
+    "algorithm": "clustering",
+    "error": "Input X contains NaN.\nKMeans does not accept missing values encoded as NaN natively. For supervised learning, you might want to consider sklearn.ensemble.HistGradientBoostingClassifier and Regressor which accept missing values encoded as NaNs natively. Alternatively, it is possible to preprocess the data, for instance by using an imputer transformer in a pipeline or drop samples with missing values. See https://scikit-learn.org/stable/modules/impute.html You can find a list of all estimators that handle NaN values at the following page: https://scikit-learn.org/stable/modules/impute.html#estimators-that-handle-nan-values",
+    "training_duration_seconds": 0.018197
+  },
+  "dimensionality_reduction": {
+    "success": false,
+    "model_type": "unsupervised",
+    "algorithm": "dimensionality_reduction",
+    "error": "Input X contains NaN.\nPCA does not accept missing values encoded as NaN natively. For supervised learning, you might want to consider sklearn.ensemble.HistGradientBoostingClassifier and Regressor which accept missing values encoded as NaNs natively. Alternatively, it is possible to preprocess the data, for instance by using an imputer transformer in a pipeline or drop samples with missing values. See https://scikit-learn.org/stable/modules/impute.html You can find a list of all estimators that handle NaN values at the following page: https://scikit-learn.org/stable/modules/impute.html#estimators-that-handle-nan-values",
+    "training_duration_seconds": 0.017074
+  },
+  "ensemble": {
+    "success": true,
+    "model_type": "supervised",
+    "algorithm": "ensemble",
+    "target_variable": "doors_audience_score",
+    "component_models": [
+      "xgboost",
+      "random_forest",
+      "linear_regression",
+      "ridge_regression",
+      "lasso_regression",
+      "svr",
+      "knn",
+      "neural_network"
+    ],
+    "performance": {
+      "r2_score": 0.9994960512395871,
+      "rmse": 0.32548154134845025,
+      "mae": 0.11818140557312853,
+      "mape": 0.20056082202002984,
+      "train_r2": 0.9995919944892043,
+      "train_rmse": 0.28957479859235796,
+      "overfitting_ratio": 1.0000959916244774
+    },
+    "model_artifacts": {
+      "model_file": "trained_models/ensemble_model/model.joblib",
+      "features_file": "trained_models/ensemble_model/features.json",
+      "hyperparameters_file": "trained_models/ensemble_model/hyperparameters.json",
+      "model_directory": "trained_models/ensemble_model"
+    },
+    "feature_columns": [
+      "classic_rock_affinity_score",
+      "SALESVOL",
+      "EMPNUM",
+      "MP23018A_B",
+      "MP22055A_B_P",
+      "X9073_X",
+      "GENALPHACY",
+      "X9078_X_A",
+      "MIN_SQFT",
+      "GENX_CY_P",
+      "thematic_value",
+      "MP20044A_B",
+      "MP20044A_B_P",
+      "GENZ_CY_P",
+      "MILLENN_CY_P",
+      "TPOPL1",
+      "X9001_X_A",
+      "MP19180A_B",
+      "X9028_X_A",
+      "MP22090A_B",
+      "MP19180A_B_P",
+      "X9073_X_A",
+      "MP22024A_B",
+      "GENALPHACY_P",
+      "MP20109A_B",
+      "documentary_engagement_score",
+      "MP22089A_B_P",
+      "Shape__Area",
+      "Shape__Length",
+      "LONGITUDE",
+      "MP22083A_B_P",
+      "MP22103A_B",
+      "MP22091A_B",
+      "MP20109A_B_P",
+      "MP22090A_B_P",
+      "MILLENN_CY",
+      "MP23018A_B_P",
+      "TPOPL1_P",
+      "MP22087A_B_P",
+      "cultural_engagement_score",
+      "MP22084A_B_P",
+      "MP22087A_B",
+      "coverage_radius__miles_",
+      "MP22091A_B_P",
+      "MP20158A_B_P",
+      "MP22024A_B_P",
+      "MP22103A_B_P",
+      "MP22086A_B_P",
+      "MP22106A_B_P"
+    ],
+    "data_info": {
+      "total_records": 11584,
+      "features_used": 49
+    }
+  }
+}

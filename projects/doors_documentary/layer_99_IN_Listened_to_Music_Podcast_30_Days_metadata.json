@@ -1,0 +1,194 @@
+{
+  "layer_id": 99,
+  "layer_name": "IN Listened to Music Podcast 30 Days",
+  "description": "Business Analyst Layer: IN Listened to Music Podcast 30 Days",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:48.091377",
+  "record_count": 2809,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "46106 (Bargersville)",
+        "46567 (Syracuse)",
+        "46562 (Pierceton)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Johnson County",
+        "Kosciusko County",
+        "Noble County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Indiana",
+        "Indiana",
+        "Indiana"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86266cdb7ffffff",
+        "86274b207ffffff",
+        "86274b20fffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22106A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listened to Music Podcast Last 30 Days",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        234,
+        50,
+        14
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22106A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listened to Music Podcast Last 30 Days (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3.06,
+        2.26,
+        2.03
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3.06,
+        2.26,
+        2.03
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        59118749.99609375,
+        64823749.9921875,
+        64660000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28647.22966032144,
+        29992.00289257546,
+        29951.869056491672
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493205083,
+        1758493205083,
+        1758493205083
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493205083,
+        1758493205083,
+        1758493205083
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_99_IN_Listened_to_Music_Podcast_30_Days.csv"
+}

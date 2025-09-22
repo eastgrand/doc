@@ -1,0 +1,194 @@
+{
+  "layer_id": 22,
+  "layer_name": "IL Viewed Movie (On-Demand) 30 Days",
+  "description": "Business Analyst Layer: IL Viewed Movie (On-Demand) 30 Days",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:22.951993",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62550 (Moweaqua)",
+        "62097 (Worden)",
+        "62476 (West Salem)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Christian County",
+        "Madison County",
+        "Edwards County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Illinois",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862644867ffffff",
+        "86264468fffffff",
+        "862645a87ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP23018A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Viewed Movie (Video-on-Demand) Last 30 Days",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        104,
+        53,
+        1
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP23018A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Viewed Movie (Video-on-Demand) Last 30 Days (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        6.46,
+        7.58,
+        5.88
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        6.46,
+        7.58,
+        5.88
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        58376249.98828125,
+        58287500.00390625,
+        56803750.00390625
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28476.008418929698,
+        28448.022688777586,
+        28088.96508693137
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758491974702,
+        1758491974702,
+        1758491974702
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758491974702,
+        1758491974702,
+        1758491974702
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_22_IL_Viewed_Movie_(On-Demand)_30_Days.csv"
+}

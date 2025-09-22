@@ -1,0 +1,529 @@
+{
+  "mappings": {
+    "mappings": {
+      "thematic_value": "strategic_value",
+      "CITY": "city_name",
+      "ZIP": "zip_code",
+      "ZIP4": "zip_code",
+      "BRAND": "brand_performance",
+      "DESC_": "description",
+      "LATITUDE": "latitude",
+      "LONGITUDE": "longitude",
+      "Postal": "postal_code"
+    },
+    "confidence_scores": {
+      "thematic_value": 0.7968460327103208,
+      "CITY": 0.6917094715313663,
+      "ZIP": 0.6892800546033836,
+      "ZIP4": 0.4034759252181129,
+      "BRAND": 0.6466584927695277,
+      "DESC_": 0.5240872700262135,
+      "LATITUDE": 1,
+      "LONGITUDE": 1,
+      "Postal": 0.9421515049763306
+    },
+    "mapping_reasons": {
+      "thematic_value": [
+        "Semantic similarity: 0.50",
+        "+0.10 (category: score)",
+        "+0.20 (synonym/abbreviation)",
+        "Final score: 0.80"
+      ],
+      "CITY": [
+        "Semantic similarity: 0.54",
+        "+0.15 (substring match)",
+        "Final score: 0.69"
+      ],
+      "ZIP": [
+        "Semantic similarity: 0.39",
+        "+0.15 (substring match)",
+        "+0.10 (category: geographic)",
+        "+0.05 (type compatible)",
+        "Final score: 0.69"
+      ],
+      "ZIP4": [
+        "Semantic similarity: 0.25",
+        "+0.10 (category: geographic)",
+        "+0.05 (type compatible)",
+        "Final score: 0.40"
+      ],
+      "BRAND": [
+        "Semantic similarity: 0.45",
+        "+0.15 (substring match)",
+        "+0.10 (category: brand)",
+        "+0.05 (type compatible)",
+        "-0.10 (length mismatch)",
+        "Final score: 0.65"
+      ],
+      "DESC_": [
+        "Semantic similarity: 0.32",
+        "+0.20 (synonym/abbreviation)",
+        "Final score: 0.52"
+      ],
+      "LATITUDE": [
+        "Semantic similarity: 1.00",
+        "+0.15 (substring match)",
+        "+0.10 (category: unknown)",
+        "+0.05 (type compatible)",
+        "Final score: 1.00"
+      ],
+      "LONGITUDE": [
+        "Semantic similarity: 1.00",
+        "+0.15 (substring match)",
+        "+0.10 (category: unknown)",
+        "+0.05 (type compatible)",
+        "Final score: 1.00"
+      ],
+      "Postal": [
+        "Semantic similarity: 0.64",
+        "+0.15 (substring match)",
+        "+0.10 (category: geographic)",
+        "+0.05 (type compatible)",
+        "Final score: 0.94"
+      ]
+    },
+    "statistics": {
+      "total_fields": 127,
+      "mapped_fields": 9,
+      "unmapped_fields": 118,
+      "high_confidence": 3,
+      "medium_confidence": 4,
+      "low_confidence": 2
+    },
+    "unmapped_fields": [
+      "OBJECTID",
+      "admin4_name",
+      "admin3_name",
+      "admin2_name",
+      "id",
+      "MP22055A_B",
+      "MP22055A_B_P",
+      "Shape__Area",
+      "Shape__Length",
+      "CreationDate",
+      "Creator",
+      "EditDate",
+      "Editor",
+      "CONAME",
+      "ADDR",
+      "STATE_NAME",
+      "STATE",
+      "NAICS",
+      "NAICS_ALL",
+      "SIC",
+      "SIC_ALL",
+      "INDUSTRY_DESC",
+      "AFFILIATE",
+      "HQNAME",
+      "LOC_CONF",
+      "NAICS_SECT",
+      "PLACETYPE",
+      "SQFOOTAGE",
+      "MIN_SQFT",
+      "MAX_SQFT",
+      "EMPNUM",
+      "SALESVOL",
+      "SOURCE",
+      "ESRI_PID",
+      "MP20063A_B",
+      "MP20063A_B_P",
+      "GENALPHACY",
+      "GENALPHACY_P",
+      "MP20158A_B",
+      "MP20158A_B_P",
+      "MP22087A_B",
+      "MP22087A_B_P",
+      "MILLENN_CY",
+      "MILLENN_CY_P",
+      "MP22089A_B",
+      "MP22089A_B_P",
+      "X9073_X",
+      "X9073_X_A",
+      "MP22090A_B",
+      "MP22090A_B_P",
+      "MP22086A_B",
+      "MP22086A_B_P",
+      "MP22084A_B",
+      "MP22084A_B_P",
+      "MP22082A_B",
+      "MP22082A_B_P",
+      "MP22094A_B",
+      "MP22094A_B_P",
+      "MP22119A_B",
+      "MP22119A_B_P",
+      "MP22103A_B",
+      "MP22103A_B_P",
+      "X9028_X",
+      "X9028_X_A",
+      "GENX_CY",
+      "GENX_CY_P",
+      "MP22091A_B",
+      "MP22091A_B_P",
+      "TPOPK2",
+      "TPOPK2_P",
+      "TPOPK1",
+      "TPOPK1_P",
+      "TPOPJ1",
+      "TPOPJ1_P",
+      "MP22106A_B",
+      "MP22106A_B_P",
+      "MP19165A_B",
+      "MP19165A_B_P",
+      "TPOPI1",
+      "TPOPI1_P",
+      "MP22088A_B",
+      "MP22088A_B_P",
+      "MP20044A_B",
+      "MP20044A_B_P",
+      "X9001_X",
+      "X9001_X_A",
+      "MP20109A_B",
+      "MP20109A_B_P",
+      "MP19180A_B",
+      "MP19180A_B_P",
+      "X9078_X",
+      "X9078_X_A",
+      "_",
+      "call_sign",
+      "frequency",
+      "city_of_license",
+      "state",
+      "licensee_owner",
+      "notes",
+      "tower_address",
+      "coverage_radius__miles_",
+      "SOURCE_ADDR",
+      "MP23018A_B",
+      "MP23018A_B_P",
+      "MP05009A_B",
+      "MP05009A_B_P",
+      "MP22014A_B",
+      "MP22014A_B_P",
+      "BABYBOOMCY",
+      "BABYBOOMCY_P",
+      "MP22083A_B",
+      "MP22083A_B_P",
+      "MP22024A_B",
+      "MP22024A_B_P",
+      "TPOPL1",
+      "TPOPL1_P",
+      "GENZ_CY",
+      "GENZ_CY_P"
+    ],
+    "unmapped_analysis": {
+      "clusters": [
+        {
+          "cluster_id": "2",
+          "fields": [
+            "OBJECTID",
+            "id",
+            "Shape__Area",
+            "Shape__Length",
+            "CreationDate",
+            "Creator",
+            "EditDate",
+            "Editor",
+            "STATE_NAME",
+            "STATE",
+            "SIC",
+            "SIC_ALL",
+            "INDUSTRY_DESC",
+            "AFFILIATE",
+            "LOC_CONF",
+            "PLACETYPE",
+            "SQFOOTAGE",
+            "MAX_SQFT",
+            "EMPNUM",
+            "SALESVOL",
+            "SOURCE",
+            "ESRI_PID",
+            "GENX_CY",
+            "GENX_CY_P",
+            "_",
+            "call_sign",
+            "frequency",
+            "city_of_license",
+            "state",
+            "licensee_owner",
+            "notes",
+            "BABYBOOMCY",
+            "BABYBOOMCY_P",
+            "GENZ_CY",
+            "GENZ_CY_P"
+          ],
+          "suggested_pattern": "similar_pattern: 35 fields"
+        },
+        {
+          "cluster_id": "4",
+          "fields": [
+            "admin4_name",
+            "admin3_name",
+            "admin2_name",
+            "CONAME",
+            "ADDR",
+            "NAICS",
+            "NAICS_ALL",
+            "HQNAME",
+            "NAICS_SECT",
+            "MIN_SQFT",
+            "GENALPHACY",
+            "GENALPHACY_P",
+            "MILLENN_CY",
+            "MILLENN_CY_P",
+            "tower_address",
+            "coverage_radius__miles_",
+            "SOURCE_ADDR"
+          ],
+          "suggested_pattern": "similar_pattern: 17 fields"
+        },
+        {
+          "cluster_id": "0",
+          "fields": [
+            "MP22055A_B",
+            "MP22055A_B_P",
+            "MP20063A_B",
+            "MP20063A_B_P",
+            "MP20158A_B",
+            "MP20158A_B_P",
+            "MP22087A_B",
+            "MP22087A_B_P",
+            "MP22089A_B",
+            "MP22089A_B_P",
+            "MP22090A_B",
+            "MP22090A_B_P",
+            "MP22086A_B",
+            "MP22086A_B_P",
+            "MP22084A_B",
+            "MP22084A_B_P",
+            "MP22082A_B",
+            "MP22082A_B_P",
+            "MP22094A_B",
+            "MP22094A_B_P",
+            "MP22119A_B",
+            "MP22119A_B_P",
+            "MP22103A_B",
+            "MP22103A_B_P",
+            "MP22091A_B",
+            "MP22091A_B_P",
+            "MP22106A_B",
+            "MP22106A_B_P",
+            "MP19165A_B",
+            "MP19165A_B_P",
+            "MP22088A_B",
+            "MP22088A_B_P",
+            "MP20044A_B",
+            "MP20044A_B_P",
+            "MP20109A_B",
+            "MP20109A_B_P",
+            "MP19180A_B",
+            "MP19180A_B_P",
+            "MP23018A_B",
+            "MP23018A_B_P",
+            "MP05009A_B",
+            "MP05009A_B_P",
+            "MP22014A_B",
+            "MP22014A_B_P",
+            "MP22083A_B",
+            "MP22083A_B_P",
+            "MP22024A_B",
+            "MP22024A_B_P"
+          ],
+          "suggested_pattern": "similar_pattern: 48 fields"
+        },
+        {
+          "cluster_id": "3",
+          "fields": [
+            "X9073_X",
+            "X9073_X_A",
+            "X9028_X",
+            "X9028_X_A",
+            "X9001_X",
+            "X9001_X_A",
+            "X9078_X",
+            "X9078_X_A"
+          ],
+          "suggested_pattern": "prefix: X90"
+        },
+        {
+          "cluster_id": "1",
+          "fields": [
+            "TPOPK2",
+            "TPOPK2_P",
+            "TPOPK1",
+            "TPOPK1_P",
+            "TPOPJ1",
+            "TPOPJ1_P",
+            "TPOPI1",
+            "TPOPI1_P",
+            "TPOPL1",
+            "TPOPL1_P"
+          ],
+          "suggested_pattern": "prefix: TPOP"
+        }
+      ],
+      "suggestions": [
+        {
+          "source_field": "OBJECTID",
+          "suggested_target": "geo_objectidentifier",
+          "category": "geographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "admin4_name",
+          "suggested_target": "descriptive_admin4_name",
+          "category": "descriptive",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "admin3_name",
+          "suggested_target": "descriptive_admin3_name",
+          "category": "descriptive",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "admin2_name",
+          "suggested_target": "descriptive_admin2_name",
+          "category": "descriptive",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "id",
+          "suggested_target": "geo_identifier",
+          "category": "geographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "Shape__Area",
+          "suggested_target": "geo_shape_area",
+          "category": "geographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "CreationDate",
+          "suggested_target": "temporal_creationdate",
+          "category": "temporal",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "EditDate",
+          "suggested_target": "temporal_editdate",
+          "category": "temporal",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "CONAME",
+          "suggested_target": "descriptive_coname",
+          "category": "descriptive",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "STATE_NAME",
+          "suggested_target": "descriptive_state_name",
+          "category": "descriptive",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "HQNAME",
+          "suggested_target": "descriptive_hqname",
+          "category": "descriptive",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "SQFOOTAGE",
+          "suggested_target": "sqfootage_value",
+          "category": "demographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "SALESVOL",
+          "suggested_target": "financial_salesvol",
+          "category": "financial",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "ESRI_PID",
+          "suggested_target": "geo_esri_pidentifier",
+          "category": "geographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "TPOPK2",
+          "suggested_target": "tpopulationk2_value",
+          "category": "demographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "TPOPK2_P",
+          "suggested_target": "tpopulationk2_p_value",
+          "category": "demographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "TPOPK1",
+          "suggested_target": "tpopulationk1_value",
+          "category": "demographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "TPOPK1_P",
+          "suggested_target": "tpopulationk1_p_value",
+          "category": "demographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "TPOPJ1",
+          "suggested_target": "tpopulationj1_value",
+          "category": "demographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "TPOPJ1_P",
+          "suggested_target": "tpopulationj1_p_value",
+          "category": "demographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "TPOPI1",
+          "suggested_target": "tpopulationi1_value",
+          "category": "demographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "TPOPI1_P",
+          "suggested_target": "tpopulationi1_p_value",
+          "category": "demographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "coverage_radius__miles_",
+          "suggested_target": "coverage_radius_miles_value",
+          "category": "demographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "TPOPL1",
+          "suggested_target": "tpopulationl1_value",
+          "category": "demographic",
+          "confidence": "manual_review"
+        },
+        {
+          "source_field": "TPOPL1_P",
+          "suggested_target": "tpopulationl1_p_value",
+          "category": "demographic",
+          "confidence": "manual_review"
+        }
+      ]
+    },
+    "quality_recommendations": [
+      "Review 2 low-confidence mappings manually: ['ZIP4', 'DESC_']",
+      "Check 1 targets with multiple mappings: ['zip_code']"
+    ]
+  },
+  "validation": {
+    "total_fields": 127,
+    "mapped_fields": 9,
+    "unmapped_fields": 0,
+    "validation_passed": true
+  },
+  "mapping_timestamp": "2025-09-21T21:31:56.981400"
+}

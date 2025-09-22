@@ -1,0 +1,194 @@
+{
+  "layer_id": 72,
+  "layer_name": "IN Rented Purchased News Documentary Movie",
+  "description": "Business Analyst Layer: IN Rented Purchased News Documentary Movie",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:39.827594",
+  "record_count": 2809,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62821 (Carmi)",
+        "46001 (Alexandria)",
+        "47631 (New Harmony)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "White County",
+        "Madison County",
+        "Posey County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Indiana",
+        "Indiana"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86264524fffffff",
+        "862a92cf7ffffff",
+        "86264526fffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP20158A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Rented or Purchased News or Documentary Movie Last 30 Days",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3,
+        170,
+        1
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP20158A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Rented or Purchased News or Documentary Movie Last 30 Days (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        2.46,
+        3.13,
+        3.57
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        2.46,
+        3.13,
+        3.57
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        56532500,
+        61362500,
+        56135000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28015.598433874227,
+        29185.95130895956,
+        27915.620822769335
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492693562,
+        1758492693562,
+        1758492693562
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492693562,
+        1758492693562,
+        1758492693562
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_72_IN_Rented_Purchased_News_Documentary_Movie.csv"
+}

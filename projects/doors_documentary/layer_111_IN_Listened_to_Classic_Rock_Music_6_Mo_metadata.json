@@ -1,0 +1,194 @@
+{
+  "layer_id": 111,
+  "layer_name": "IN Listened to Classic Rock Music 6 Mo",
+  "description": "Business Analyst Layer: IN Listened to Classic Rock Music 6 Mo",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:52.795065",
+  "record_count": 2809,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "47909 (Lafayette)",
+        "47909 (Lafayette)",
+        "47955 (Linden)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Tippecanoe County",
+        "Tippecanoe County",
+        "Montgomery County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Indiana",
+        "Indiana",
+        "Indiana"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862661d2fffffff",
+        "862661d37ffffff",
+        "862661d47ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22055A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listened to Classic Rock Music Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        132,
+        431,
+        30
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22055A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Listened to Classic Rock Music Last 6 Mo (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        23.87,
+        24.09,
+        25.42
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        23.87,
+        24.09,
+        25.42
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        60933750.00390625,
+        61282500.00390625,
+        60560000
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        29083.26206076716,
+        29170.529051122405,
+        28995.79170828917
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493425683,
+        1758493425683,
+        1758493425683
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758493425683,
+        1758493425683,
+        1758493425683
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_111_IN_Listened_to_Classic_Rock_Music_6_Mo.csv"
+}

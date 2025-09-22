@@ -1,0 +1,194 @@
+{
+  "layer_id": 40,
+  "layer_name": "IL Purchased Music Through Amazon Music",
+  "description": "Business Analyst Layer: IL Purchased Music Through Amazon Music",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:29.619292",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62899 (Xenia)",
+        "62899 (Xenia)",
+        "62858 (Louisville)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Clay County",
+        "Clay County",
+        "Clay County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Illinois",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862645197ffffff",
+        "86264519fffffff",
+        "8626451a7ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22084A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music Through Amazon Music Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        4,
+        15,
+        2
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22084A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music Through Amazon Music Last 6 Mo (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3.15,
+        3.29,
+        2.33
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        3.15,
+        3.29,
+        2.33
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        57443749.99609375,
+        57408750,
+        57426250.00390625
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        28238.384126465917,
+        28236.805397737397,
+        28240.352942762212
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492201805,
+        1758492201805,
+        1758492201805
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492201805,
+        1758492201805,
+        1758492201805
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_40_IL_Purchased_Music_Through_Amazon_Music.csv"
+}

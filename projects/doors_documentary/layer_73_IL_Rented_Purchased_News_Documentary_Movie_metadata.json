@@ -1,0 +1,194 @@
+{
+  "layer_id": 73,
+  "layer_name": "IL Rented Purchased News Documentary Movie",
+  "description": "Business Analyst Layer: IL Rented Purchased News Documentary Movie",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:39.919068",
+  "record_count": 4305,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "62330 (Dallas City)",
+        "62650 (Jacksonville)",
+        "62321 (Carthage)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Hancock County",
+        "Morgan County",
+        "Hancock County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Illinois",
+        "Illinois",
+        "Illinois"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "862670347ffffff",
+        "86267120fffffff",
+        "86267034fffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP20158A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Rented or Purchased News or Documentary Movie Last 30 Days",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1,
+        112,
+        1
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP20158A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Rented or Purchased News or Documentary Movie Last 30 Days (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1.59,
+        3.01,
+        1.64
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1.59,
+        3.01,
+        1.64
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        60907500.00390625,
+        59400000,
+        60907500.00390625
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        29078.4267869232,
+        28717.777348458985,
+        29078.426786923203
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492710282,
+        1758492710282,
+        1758492710282
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492710282,
+        1758492710282,
+        1758492710282
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_73_IL_Rented_Purchased_News_Documentary_Movie.csv"
+}

@@ -1,0 +1,194 @@
+{
+  "layer_id": 64,
+  "layer_name": "WI Used Internet for Entmt Celebrity Info",
+  "description": "Business Analyst Layer: WI Used Internet for Entmt Celebrity Info",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:36.646556",
+  "record_count": 4064,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "53507 (Barneveld)",
+        "53105 (Burlington)",
+        "54427 (Eland)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Iowa County",
+        "Walworth County",
+        "Marathon County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Wisconsin",
+        "Wisconsin",
+        "Wisconsin"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "8627587b7ffffff",
+        "862759897ffffff",
+        "862742697ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP19180A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Used Internet for Entertainment or Celebrity Info Last 30 Days",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        60,
+        543,
+        66
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP19180A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Used Internet for Entertainment or Celebrity Info Last 30 Days (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        24.49,
+        24.18,
+        17.65
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        24.49,
+        24.18,
+        17.65
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        68902500,
+        68227499.99609375,
+        75857499.99609375
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        30914.91025200175,
+        30765.371000856394,
+        32435.02015796872
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492559352,
+        1758492559352,
+        1758492559352
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492559352,
+        1758492559352,
+        1758492559352
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_64_WI_Used_Internet_for_Entmt_Celebrity_Info.csv"
+}

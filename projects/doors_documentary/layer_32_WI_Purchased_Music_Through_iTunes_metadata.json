@@ -1,0 +1,194 @@
+{
+  "layer_id": 32,
+  "layer_name": "WI Purchased Music Through iTunes",
+  "description": "Business Analyst Layer: WI Purchased Music Through iTunes",
+  "geometry_type": "esriGeometryPolygon",
+  "extraction_timestamp": "2025-09-21T21:31:26.276688",
+  "record_count": 4064,
+  "field_count": 14,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "Object ID",
+      "nullable": false,
+      "domain": null,
+      "sample_values": [
+        1,
+        2,
+        3
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin4_name",
+      "type": "esriFieldTypeString",
+      "alias": "ZIP Code",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "54656 (Sparta)",
+        "53020 (Elkhart Lake)",
+        "53061 (New Holstein)"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin3_name",
+      "type": "esriFieldTypeString",
+      "alias": "County",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Monroe County",
+        "Sheboygan County",
+        "Calumet County"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "admin2_name",
+      "type": "esriFieldTypeString",
+      "alias": "State",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Wisconsin",
+        "Wisconsin",
+        "Wisconsin"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "id",
+      "type": "esriFieldTypeString",
+      "alias": "Cell ID",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "86275e46fffffff",
+        "86275dd2fffffff",
+        "86275dd37ffffff"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22086A_B",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music Through iTunes Last 6 Mo",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        10,
+        26,
+        15
+      ],
+      "has_data": true
+    },
+    {
+      "name": "MP22086A_B_P",
+      "type": "esriFieldTypeDouble",
+      "alias": "2025 Purchased Music Through iTunes Last 6 Mo (%)",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        5.13,
+        5.25,
+        3.7
+      ],
+      "has_data": true
+    },
+    {
+      "name": "thematic_value",
+      "type": "esriFieldTypeDouble",
+      "alias": "thematic_value",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        5.13,
+        5.25,
+        3.7
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Area",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        71274999.9921875,
+        72532499.99609375,
+        72603749.99609375
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Shape__Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape__Length",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        31443.232471987707,
+        31715.463531115172,
+        31731.135203113627
+      ],
+      "has_data": true
+    },
+    {
+      "name": "CreationDate",
+      "type": "esriFieldTypeDate",
+      "alias": "CreationDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492102413,
+        1758492102413,
+        1758492102413
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Creator",
+      "type": "esriFieldTypeString",
+      "alias": "Creator",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    },
+    {
+      "name": "EditDate",
+      "type": "esriFieldTypeDate",
+      "alias": "EditDate",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        1758492102413,
+        1758492102413,
+        1758492102413
+      ],
+      "has_data": true
+    },
+    {
+      "name": "Editor",
+      "type": "esriFieldTypeString",
+      "alias": "Editor",
+      "nullable": true,
+      "domain": null,
+      "sample_values": [
+        "Synapse54",
+        "Synapse54",
+        "Synapse54"
+      ],
+      "has_data": true
+    }
+  ],
+  "csv_file": "layer_32_WI_Purchased_Music_Through_iTunes.csv"
+}
