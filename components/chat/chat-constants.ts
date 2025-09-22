@@ -25,6 +25,12 @@ export const ANALYSIS_CATEGORIES = {
   'Outlier Detection': [
     'Show me markets that have outliers with unique entertainment preferences'
   ],
+  'Entertainment Infrastructure': [
+    'Which markets have the best radio station coverage for classic rock promotion?',
+    'Show me theater accessibility scores for documentary distribution planning',
+    'Where do radio stations and theaters combine to create optimal launch markets?',
+    'Which areas have the strongest entertainment infrastructure for The Doors Documentary?'
+  ],
   'Competitive Analysis': [
     'Show me areas with the best opportunities for documentary theatrical release'
   ],

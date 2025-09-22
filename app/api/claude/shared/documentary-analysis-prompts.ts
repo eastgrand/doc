@@ -21,6 +21,7 @@ const UNIVERSAL_DOCUMENTARY_REQUIREMENTS = `
 - Primary Metrics: Doors Audience Score (27-69 range, composite index)
 - Market Focus: Entertainment consumption, cultural engagement, music affinity
 - Geographic Scope: IL, IN, WI (core documentary launch markets)
+- Entertainment Infrastructure: Radio stations (classic rock format coverage), theaters (documentary screening venues)
 `;
 
 export const documentaryAnalysisPrompts = {
@@ -88,6 +89,8 @@ DATA STRUCTURE:
 - entertainment_spending: Spending capacity on cultural events
 - venue_accessibility: Theater and cultural venue density
 - target_demographic_density: Age 45-70 population concentration
+- radio_station_coverage: Classic rock format radio station density and signal coverage
+- theater_accessibility: Documentary screening venue availability and accessibility
 
 CRITICAL REQUIREMENTS:
 1. ALWAYS rank and prioritize by doors_audience_score (27-69 scale)

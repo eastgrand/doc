@@ -40,11 +40,17 @@ export class TheaterAccessibilityProcessor extends BaseProcessor {
     const records = rawResults.map((recordRaw: unknown, index: number) => {
       const record = (recordRaw && typeof recordRaw === 'object') ? recordRaw as Record<string, unknown> : {};
       
-      // Extract theater infrastructure metrics
+      // Extract theater infrastructure metrics (estimated)
       const theaterDensity = this.extractNumericValue(record, ['theater_density_2mile_radius', 'venue_count_2mile', 'theater_count'], 0);
       const totalCapacity = this.extractNumericValue(record, ['total_theater_capacity_sqft', 'venue_capacity_total', 'seating_capacity'], 0);
       const salesVolume = this.extractNumericValue(record, ['total_annual_sales_volume', 'venue_revenue_annual', 'theater_sales'], 0);
       const employeeCount = this.extractNumericValue(record, ['total_employees', 'venue_staff_count', 'theater_employees'], 0);
+      
+      // Extract actual point layer theater counts
+      const actualTheaterCountIL = this.extractNumericValue(record, ['il_theaters_count', 'IL_theaters_within_area'], 0);
+      const actualTheaterCountIN = this.extractNumericValue(record, ['in_theaters_count', 'IN_theaters_within_area'], 0);
+      const actualTheaterCountWI = this.extractNumericValue(record, ['wi_theaters_count', 'WI_theaters_within_area'], 0);
+      const totalActualTheaters = actualTheaterCountIL + actualTheaterCountIN + actualTheaterCountWI;
       
       // Extract accessibility metrics
       const accessibilityRating = this.extractNumericValue(record, ['venue_accessibility_rating', 'ada_compliance_score', 'accessibility_index'], 0);
@@ -56,9 +62,10 @@ export class TheaterAccessibilityProcessor extends BaseProcessor {
       const medianIncome = this.extractNumericValue(record, this.configManager.getFieldMapping('incomeField'), 0);
       const populationDensity = totalPop > 0 ? (totalPop / 2.59) : 0; // Approximate density per sq mile for hex area
       
-      // Calculate composite theater accessibility score
-      const theaterScore = this.calculateTheaterAccessibilityScore({
-        density: theaterDensity,
+      // Calculate composite theater accessibility score (enhanced with actual counts)
+      const theaterScore = this.calculateEnhancedTheaterAccessibilityScore({
+        estimatedDensity: theaterDensity,
+        actualCount: totalActualTheaters,
         capacity: totalCapacity,
         accessibility: accessibilityRating,
         infrastructure: salesVolume + (employeeCount * 50000), // Convert employees to revenue equivalent
@@ -87,11 +94,18 @@ export class TheaterAccessibilityProcessor extends BaseProcessor {
         properties: {
           [scoreField]: theaterScore,
           
-          // Theater infrastructure metrics
+          // Theater infrastructure metrics (estimated)
           theater_density_2mile: theaterDensity,
           total_theater_capacity: totalCapacity,
           theater_sales_volume_annual: salesVolume,
           theater_employee_count: employeeCount,
+          
+          // Actual point layer theater data
+          actual_theaters_il: actualTheaterCountIL,
+          actual_theaters_in: actualTheaterCountIN,
+          actual_theaters_wi: actualTheaterCountWI,
+          actual_theaters_total: totalActualTheaters,
+          theater_data_comparison: this.getTheaterDataComparison(theaterDensity, totalActualTheaters),
           
           // Accessibility assessment
           venue_accessibility_rating: accessibilityRating,
@@ -164,35 +178,51 @@ export class TheaterAccessibilityProcessor extends BaseProcessor {
   }
 
   /**
-   * Calculate composite theater accessibility score
-   * Weights: Density (30%), Capacity (25%), Accessibility (20%), Infrastructure (15%), Location (10%)
+   * Calculate enhanced theater accessibility score with actual point layer data
+   * Weights: Actual Count (35%), Estimated Density (20%), Capacity (20%), Accessibility (15%), Infrastructure (10%)
+   */
+  private calculateEnhancedTheaterAccessibilityScore(metrics: {
+    estimatedDensity: number, actualCount: number, capacity: number, accessibility: number, infrastructure: number, location: number
+  }): number {
+    const weights = {
+      actualCount: 0.35,      // Actual theater count from point layers (highest weight)
+      estimatedDensity: 0.20, // Estimated density within 2-mile radius
+      capacity: 0.20,         // Total seating capacity
+      accessibility: 0.15,    // ADA compliance and access features
+      infrastructure: 0.10    // Sales volume and operational health
+    };
+    
+    // Normalize each metric to 0-100 scale
+    const normalizedActual = Math.min((metrics.actualCount / 8) * 100, 100); // Max score at 8+ actual theaters
+    const normalizedEstimated = Math.min((metrics.estimatedDensity / 10) * 100, 100); // Max 10 estimated theaters
+    const normalizedCapacity = Math.min((metrics.capacity / 100000) * 100, 100); // Max 100k capacity
+    const normalizedAccessibility = Math.min(metrics.accessibility, 100);
+    const normalizedInfrastructure = Math.min((metrics.infrastructure / 5000000) * 100, 100); // Max $5M infrastructure
+    
+    const weightedScore = 
+      (normalizedActual * weights.actualCount) +
+      (normalizedEstimated * weights.estimatedDensity) +
+      (normalizedCapacity * weights.capacity) +
+      (normalizedAccessibility * weights.accessibility) +
+      (normalizedInfrastructure * weights.infrastructure);
+    
+    return Math.round(weightedScore * 100) / 100;
+  }
+
+  /**
+   * Legacy method for backward compatibility
    */
   private calculateTheaterAccessibilityScore(metrics: {
     density: number, capacity: number, accessibility: number, infrastructure: number, location: number
   }): number {
-    const weights = {
-      density: 0.30,      // Number of theaters within 2-mile radius
-      capacity: 0.25,     // Total seating capacity
-      accessibility: 0.20, // ADA compliance and access features
-      infrastructure: 0.15, // Sales volume and operational health
-      location: 0.10      // Population density and market match
-    };
-    
-    // Normalize each metric to 0-100 scale
-    const normalizedDensity = Math.min((metrics.density / 10) * 100, 100); // Max 10 theaters
-    const normalizedCapacity = Math.min((metrics.capacity / 100000) * 100, 100); // Max 100k capacity
-    const normalizedAccessibility = Math.min(metrics.accessibility, 100);
-    const normalizedInfrastructure = Math.min((metrics.infrastructure / 5000000) * 100, 100); // Max $5M infrastructure
-    const normalizedLocation = Math.min((metrics.location / 5000) * 100, 100); // Max 5k people per sq mile
-    
-    const weightedScore = 
-      (normalizedDensity * weights.density) +
-      (normalizedCapacity * weights.capacity) +
-      (normalizedAccessibility * weights.accessibility) +
-      (normalizedInfrastructure * weights.infrastructure) +
-      (normalizedLocation * weights.location);
-    
-    return Math.round(weightedScore * 100) / 100;
+    return this.calculateEnhancedTheaterAccessibilityScore({
+      estimatedDensity: metrics.density,
+      actualCount: 0, // No actual count in legacy calls
+      capacity: metrics.capacity,
+      accessibility: metrics.accessibility,
+      infrastructure: metrics.infrastructure,
+      location: metrics.location
+    });
   }
 
   private categorizeTheaterAccessibility(score: number): string {
@@ -408,5 +438,33 @@ export class TheaterAccessibilityProcessor extends BaseProcessor {
     return records.filter(record => 
       (Number(record.properties?.venue_accessibility_rating) || 0) >= 75
     ).length;
+  }
+
+  /**
+   * Compare estimated vs actual theater data
+   */
+  private getTheaterDataComparison(estimated: number, actual: number): string {
+    if (actual === 0 && estimated === 0) {
+      return 'No theaters detected in either dataset';
+    }
+    
+    if (actual === 0) {
+      return `Estimated ${estimated} theaters, but no actual point data available`;
+    }
+    
+    if (estimated === 0) {
+      return `${actual} actual theaters identified, no estimation data`;
+    }
+    
+    const difference = Math.abs(estimated - actual);
+    const percentDiff = estimated > 0 ? (difference / estimated) * 100 : 0;
+    
+    if (percentDiff < 20) {
+      return `Good data alignment: ${estimated} estimated vs ${actual} actual theaters`;
+    } else if (percentDiff < 50) {
+      return `Moderate data variance: ${estimated} estimated vs ${actual} actual theaters`;
+    } else {
+      return `Significant data variance: ${estimated} estimated vs ${actual} actual theaters - review data sources`;
+    }
   }
 }

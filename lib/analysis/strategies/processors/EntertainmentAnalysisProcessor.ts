@@ -57,10 +57,23 @@ export class EntertainmentAnalysisProcessor extends BaseProcessor {
       const concertAttendance = this.extractNumericValue(record, ['concert_attendance_frequency', 'live_music_events'], 0);
       const documentaryConsumption = this.extractNumericValue(record, ['documentary_consumption_rate', 'documentary_viewing'], 0);
       
-      // Extract theater infrastructure data
+      // Extract theater infrastructure data (both estimated and actual point counts)
       const theaterDensity = this.extractNumericValue(record, ['theater_density_2mile_radius', 'venue_count'], 0);
       const theaterCapacity = this.extractNumericValue(record, ['total_theater_capacity_sqft', 'venue_capacity'], 0);
       const theaterSales = this.extractNumericValue(record, ['total_annual_sales_volume', 'venue_revenue'], 0);
+      
+      // Extract actual point layer counts for theaters
+      const actualTheaterCountIL = this.extractNumericValue(record, ['il_theaters_count', 'IL_theaters_within_area'], 0);
+      const actualTheaterCountIN = this.extractNumericValue(record, ['in_theaters_count', 'IN_theaters_within_area'], 0);
+      const actualTheaterCountWI = this.extractNumericValue(record, ['wi_theaters_count', 'WI_theaters_within_area'], 0);
+      const totalActualTheaters = actualTheaterCountIL + actualTheaterCountIN + actualTheaterCountWI;
+      
+      // Extract radio station infrastructure
+      const radioStationCount = this.extractNumericValue(record, ['radio_stations_count', 'radio_stations_within_area', 'nearby_radio_stations'], 0);
+      const classicRockRadioIL = this.extractNumericValue(record, ['MP22014A_B', 'il_classic_rock_radio_pct'], 0);
+      const classicRockRadioIN = this.extractNumericValue(record, ['MP22014A_B', 'in_classic_rock_radio_pct'], 0);
+      const classicRockRadioWI = this.extractNumericValue(record, ['MP22014A_B', 'wi_classic_rock_radio_pct'], 0);
+      const avgClassicRockPenetration = (classicRockRadioIL + classicRockRadioIN + classicRockRadioWI) / 3;
       
       // Extract ZIP code context for stakeholder communication
       const zipCode = this.extractFieldValue(record, ['zip_code', 'admin4_name', 'ZIP_CODE']) || 'N/A';
@@ -105,9 +118,18 @@ export class EntertainmentAnalysisProcessor extends BaseProcessor {
           documentary_appeal_profile: this.getDocumentaryAppealProfile(documentaryConsumption, culturalEngagementScore),
           market_opportunity_assessment: this.getMarketOpportunityAssessment(entertainmentScore, marketAccessibilityScore),
           
-          // Theater infrastructure assessment
+          // Theater infrastructure assessment (estimated + actual)
           venue_infrastructure_strength: this.getVenueInfrastructureStrength(theaterDensity, theaterCapacity, theaterSales),
           screening_venue_recommendations: this.getScreeningVenueRecommendations(theaterDensity, theaterCapacity),
+          actual_theater_count: totalActualTheaters,
+          theater_breakdown_by_state: this.getTheaterBreakdownByState(actualTheaterCountIL, actualTheaterCountIN, actualTheaterCountWI),
+          theater_accessibility_score: this.calculateTheaterAccessibilityScore(totalActualTheaters, theaterDensity),
+          
+          // Radio station infrastructure
+          radio_station_count: radioStationCount,
+          classic_rock_radio_penetration: avgClassicRockPenetration,
+          radio_coverage_assessment: this.getRadioCoverageAssessment(radioStationCount, avgClassicRockPenetration),
+          radio_promotion_potential: this.getRadioPromotionPotential(radioStationCount, avgClassicRockPenetration),
           
           // Geographic context for stakeholder communication
           zip_code_context: zipCode,
@@ -123,7 +145,18 @@ export class EntertainmentAnalysisProcessor extends BaseProcessor {
           documentary_consumption_rate: documentaryConsumption,
           theater_density_2mile: theaterDensity,
           theater_capacity_total: theaterCapacity,
-          theater_sales_annual: theaterSales
+          theater_sales_annual: theaterSales,
+          
+          // Actual point layer data
+          actual_theaters_il: actualTheaterCountIL,
+          actual_theaters_in: actualTheaterCountIN,
+          actual_theaters_wi: actualTheaterCountWI,
+          actual_theaters_total: totalActualTheaters,
+          radio_stations_nearby: radioStationCount,
+          classic_rock_radio_il_pct: classicRockRadioIL,
+          classic_rock_radio_in_pct: classicRockRadioIN,
+          classic_rock_radio_wi_pct: classicRockRadioWI,
+          classic_rock_radio_avg_pct: avgClassicRockPenetration
         },
         shapValues: (record.shap_values || {}) as Record<string, number>
       };
@@ -335,7 +368,73 @@ export class EntertainmentAnalysisProcessor extends BaseProcessor {
   }
 
   private getClassicRockStationCount(records: any[]): number {
-    // Estimate based on market accessibility scores
+    // Use actual radio station counts where available, fallback to estimation
+    const actualStationCount = records.reduce((sum, r) => sum + (Number(r.properties?.radio_stations_nearby) || 0), 0);
+    if (actualStationCount > 0) {
+      return actualStationCount;
+    }
+    // Fallback to estimation if no actual data
     return Math.round(records.length * 0.15); // Approximate 15% of markets have classic rock stations
+  }
+
+  /**
+   * Get theater breakdown by state for analysis
+   */
+  private getTheaterBreakdownByState(ilCount: number, inCount: number, wiCount: number): string {
+    const total = ilCount + inCount + wiCount;
+    if (total === 0) return 'No theaters identified in analysis area';
+    
+    const breakdown = [];
+    if (ilCount > 0) breakdown.push(`IL: ${ilCount}`);
+    if (inCount > 0) breakdown.push(`IN: ${inCount}`);
+    if (wiCount > 0) breakdown.push(`WI: ${wiCount}`);
+    
+    return `${breakdown.join(', ')} (Total: ${total} theaters)`;
+  }
+
+  /**
+   * Calculate theater accessibility score based on actual and estimated data
+   */
+  private calculateTheaterAccessibilityScore(actualCount: number, estimatedDensity: number): number {
+    // Weight actual data higher than estimates
+    const actualWeight = 0.7;
+    const estimatedWeight = 0.3;
+    
+    const actualScore = Math.min((actualCount / 5) * 100, 100); // Max score at 5+ theaters
+    const estimatedScore = Math.min((estimatedDensity / 10) * 100, 100); // Max score at 10+ estimated
+    
+    return Math.round((actualScore * actualWeight + estimatedScore * estimatedWeight) * 100) / 100;
+  }
+
+  /**
+   * Assess radio coverage for promotional opportunities
+   */
+  private getRadioCoverageAssessment(stationCount: number, classicRockPenetration: number): string {
+    if (stationCount >= 5 && classicRockPenetration >= 75) {
+      return 'Excellent Radio Coverage - Multiple stations with strong classic rock presence';
+    }
+    if (stationCount >= 3 && classicRockPenetration >= 50) {
+      return 'Good Radio Coverage - Adequate stations with decent classic rock format';
+    }
+    if (stationCount >= 2 && classicRockPenetration >= 25) {
+      return 'Moderate Radio Coverage - Limited stations but some classic rock presence';
+    }
+    if (stationCount >= 1) {
+      return 'Basic Radio Coverage - Minimal stations, limited promotional opportunity';
+    }
+    return 'No Radio Coverage - No identified radio stations for promotional support';
+  }
+
+  /**
+   * Evaluate radio promotion potential
+   */
+  private getRadioPromotionPotential(stationCount: number, classicRockPenetration: number): string {
+    const promotionScore = (stationCount * 20) + (classicRockPenetration * 0.8);
+    
+    if (promotionScore >= 80) return 'High Promotion Potential - Strong radio partnership opportunities';
+    if (promotionScore >= 60) return 'Good Promotion Potential - Viable radio marketing channels';
+    if (promotionScore >= 40) return 'Moderate Promotion Potential - Limited but workable radio options';
+    if (promotionScore >= 20) return 'Low Promotion Potential - Minimal radio marketing support';
+    return 'No Radio Promotion Potential - Focus on digital and alternative marketing';
   }
 }
