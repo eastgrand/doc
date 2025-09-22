@@ -945,27 +945,94 @@ python configure_microservice.py doors_documentary doors_audience_score
 # ✅ Microservice configuration completed!
 ```
 
-### Step 5.3: Test and Deploy
+### Step 5.3: Deploy to Render Using Blueprint
+
+**Render automatically detects the `render.yaml` blueprint file and deploys accordingly.**
 
 ```bash
-# Navigate to microservice
-cd ../../shap-microservice
+# Navigate to microservice directory  
+cd /path/to/shap-microservice
 
-# Test locally
-python -m uvicorn main:app --reload --port 8000
+# Verify render.yaml exists and is configured
+cat render.yaml
 
-# Test API endpoint
-curl -X POST "http://localhost:8000/predict" \
-  -H "Content-Type: application/json" \
-  -d '{"LATITUDE": 41.8781, "LONGITUDE": -87.6298, "MP22055A_B_P": 25.0}'
+# Expected YAML structure:
+# services:
+#   - type: web
+#     name: your-project-microservice
+#     env: python
+#     plan: starter
+#     startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 180
+#     buildCommand: pip install -r requirements_py313.txt
 
-# Deploy to production
+# Deploy to production (triggers automatic Blueprint deployment)
 git add .
-git commit -m "Deploy doors_documentary microservice - automated configuration"
+git commit -m "Deploy your_project microservice - automated configuration"
 git push origin main
 ```
 
-### Step 5.4: Integration with Main Automation
+### Step 5.4: Render Blueprint Deployment Process
+
+**Render will automatically:**
+
+1. **Detect Blueprint**: Render reads `render.yaml` from your repository root
+2. **Create Services**: Automatically provisions web service and worker (if configured)
+3. **Install Dependencies**: Runs `buildCommand` from YAML (pip install requirements)
+4. **Start Application**: Executes `startCommand` from YAML (gunicorn with specified settings)
+5. **Configure Environment**: Sets environment variables defined in YAML
+
+**Go to Render Dashboard:**
+
+1. **Visit**: https://dashboard.render.com
+2. **Connect Repository**: Click "New" → "Blueprint"
+3. **Select Repository**: Choose your `project-microservice` repository
+4. **Review Configuration**: Render shows services from `render.yaml`
+5. **Deploy**: Click "Create Services" - deployment starts automatically
+
+**Monitor Deployment:**
+- **Build Logs**: Shows dependency installation progress
+- **Deploy Logs**: Shows application startup
+- **Service URL**: Provided once deployment completes
+- **Expected URL**: `https://your-project-microservice.onrender.com`
+
+### Step 5.5: Create Project-Specific GitHub Repository
+
+**IMPORTANT: Each project needs its own microservice repository to avoid overwriting existing deployments.**
+
+```bash
+# Create new GitHub repository for your project
+# Example repository names:
+# - doors-documentary-microservice
+# - athletic-brands-microservice  
+# - your-project-microservice
+
+# You need to:
+# 1. Go to https://github.com and create a new repository
+# 2. Use naming convention: [project-name]-microservice
+# 3. Make it public (for Render free tier) or private (with paid plan)
+# 4. Do NOT initialize with README, .gitignore, or license
+```
+
+**Example repositories:**
+- Doors Documentary: `https://github.com/eastgrand/doc-microservice.git`
+- Athletic Brands: `https://github.com/eastgrand/athletic-microservice.git`
+- Real Estate: `https://github.com/eastgrand/real-estate-microservice.git`
+
+### Step 5.6: Update Microservice Git Remote
+
+```bash
+# Navigate to microservice directory
+cd /path/to/shap-microservice  # or your microservice directory
+
+# Update git remote to new project-specific repository
+git remote set-url origin https://github.com/YOUR_USERNAME/YOUR_PROJECT-microservice.git
+
+# Verify the remote was updated
+git remote -v
+# Should show: origin https://github.com/YOUR_USERNAME/YOUR_PROJECT-microservice.git
+```
+
+### Step 5.7: Integration with Main Automation
 
 **Update: `scripts/automation/run_complete_automation.py`**
 
@@ -983,6 +1050,12 @@ if microservice_package_created:
     if result.returncode == 0:
         print("✅ Microservice automatically configured!")
         print(result.stdout)
+        
+        # Prompt for GitHub repository URL
+        print("\n📝 Next: Set up project-specific GitHub repository")
+        print("   1. Create new repository: https://github.com/new")
+        print("   2. Use name: {}-microservice".format(project_name))
+        print("   3. Update git remote in microservice directory")
     else:
         print("⚠️  Automated configuration failed, falling back to manual process")
         print(result.stderr)

@@ -134,10 +134,15 @@ RANDOM_STATE = 42
             with open(yaml_file, 'r') as f:
                 content = f.read()
             
-            # Update common YAML fields
+            # Update common YAML fields for Render Blueprint
             import re
-            content = re.sub(r'name:\s*.*', f'name: {self.project_name}-microservice', content)
+            content = re.sub(r'name:\s*.*-microservice', f'name: {self.project_name}-microservice', content)
             content = re.sub(r'TARGET_VARIABLE:\s*.*', f'TARGET_VARIABLE: {self.target_variable}', content)
+            
+            # Update service description
+            project_display = self.project_name.replace('_', ' ').title()
+            content = re.sub(r'# .*Analysis.*SHAP Microservice', f'# {project_display} Analysis SHAP Microservice', content)
+            content = re.sub(r'value: ".*Analysis.*SHAP Microservice"', f'value: "{project_display} Analysis SHAP Microservice"', content)
             
             with open(yaml_file, 'w') as f:
                 f.write(content)
@@ -169,10 +174,22 @@ RANDOM_STATE = 42
             
             print(f"\n✅ Microservice configuration completed!")
             print(f"📁 Ready for deployment from: {self.microservice_path}")
+            print(f"\n📝 IMPORTANT: Set up project-specific GitHub repository")
+            print(f"   Each project needs its own microservice repository to avoid overwriting existing deployments.")
             print(f"\nNext steps:")
-            print(f"  1. cd {self.microservice_path}")
-            print(f"  2. Test locally: python -m uvicorn main:app --reload")
-            print(f"  3. Deploy to production: git add . && git commit -m 'Deploy {self.project_name}' && git push")
+            print(f"  1. Create GitHub repository: https://github.com/new")
+            print(f"     Suggested name: {self.project_name}-microservice")
+            print(f"  2. cd {self.microservice_path}")
+            print(f"  3. git remote set-url origin https://github.com/YOUR_USERNAME/{self.project_name}-microservice.git")
+            print(f"  4. Deploy: git add . && git commit -m 'Deploy {self.project_name}' && git push")
+            print(f"  5. Go to https://dashboard.render.com → New → Blueprint")
+            print(f"  6. Select your {self.project_name}-microservice repository")
+            print(f"  7. Render will auto-deploy using render.yaml blueprint")
+            print(f"\n📋 Render Blueprint (render.yaml) includes:")
+            print(f"   - Web service with gunicorn")
+            print(f"   - Environment variables for {self.target_variable}")
+            print(f"   - Automatic dependency installation")
+            print(f"\n⚠️  Do NOT use the existing microservice repository - create a new one!")
             
         except Exception as e:
             print(f"❌ Configuration failed: {e}")
