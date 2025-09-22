@@ -146,7 +146,7 @@ interface HexagonFeature {
   zipCode: string;
   county: string;
   state: string;
-  geometry: __esri.Geometry;
+  geometry: any;
   attributes: Record<string, any>;
   scores?: {
     classicRockAffinity?: number;
@@ -310,7 +310,7 @@ export class DoorsDocumentarySingleServiceAdapter {
    * Query all 5 Tapestry segments across all three states
    */
   async queryAllTapestrySegments(
-    geometry?: __esri.Geometry,
+    geometry?: any,
     states: ('IL' | 'IN' | 'WI')[] = ['IL', 'IN', 'WI']
   ): Promise<Map<string, QueryResult[]>> {
     console.log('[DoorsAdapter] Querying all 5 Tapestry segments...');
@@ -343,7 +343,7 @@ export class DoorsDocumentarySingleServiceAdapter {
    * Query classic rock audience data across all three states
    */
   async queryClassicRockAudience(
-    geometry?: __esri.Geometry,
+    geometry?: any,
     states: ('IL' | 'IN' | 'WI')[] = ['IL', 'IN', 'WI']
   ): Promise<QueryResult[]> {
     console.log('[DoorsAdapter] Querying classic rock audience data...');
@@ -359,7 +359,7 @@ export class DoorsDocumentarySingleServiceAdapter {
    * Query all entertainment metrics for comprehensive scoring
    */
   async queryEntertainmentMetrics(
-    geometry?: __esri.Geometry,
+    geometry?: any,
     states: ('IL' | 'IN' | 'WI')[] = ['IL', 'IN', 'WI']
   ): Promise<Map<string, QueryResult[]>> {
     console.log('[DoorsAdapter] Querying comprehensive entertainment metrics...');
@@ -403,7 +403,7 @@ export class DoorsDocumentarySingleServiceAdapter {
    * Query theater infrastructure locations
    */
   async queryTheaterInfrastructure(
-    geometry?: __esri.Geometry,
+    geometry?: any,
     states: ('IL' | 'IN' | 'WI')[] = ['IL', 'IN', 'WI']
   ): Promise<QueryResult[]> {
     console.log('[DoorsAdapter] Querying theater infrastructure...');
@@ -418,7 +418,7 @@ export class DoorsDocumentarySingleServiceAdapter {
   /**
    * Query radio station coverage (all states combined)
    */
-  async queryRadioStations(geometry?: __esri.Geometry): Promise<QueryResult> {
+  async queryRadioStations(geometry?: any): Promise<QueryResult> {
     console.log('[DoorsAdapter] Querying radio station coverage...');
     
     return this.queryLayer(
@@ -434,7 +434,7 @@ export class DoorsDocumentarySingleServiceAdapter {
    */
   private async queryLayer(
     layerId: number,
-    geometry?: __esri.Geometry,
+    geometry?: any,
     layerType: string,
     state: string
   ): Promise<QueryResult> {
