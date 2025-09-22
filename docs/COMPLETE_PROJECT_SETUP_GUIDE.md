@@ -570,12 +570,18 @@ du -sh projects/ 2>/dev/null || echo "Projects directory cleaned"
 # Navigate to automation directory
 cd scripts/automation
 
-# Activate Python virtual environment
+# CRITICAL: Activate Python virtual environment
+# All Python automation scripts REQUIRE the venv
 source ../venv/bin/activate
 
 # Verify environment
 python --version
 pip list | grep pandas
+
+# Note: If venv doesn't exist, create it:
+# python3 -m venv ../venv
+# source ../venv/bin/activate
+# pip install -r ../requirements.txt
 ```
 
 ### Step 3.2: Run Complete Automation Pipeline
@@ -1176,10 +1182,11 @@ python layer_config_generator.py \
   "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__b1cab1ae067f4359/FeatureServer" \
   --project doors_documentary
 
-# Step 5: Run post-automation field mapping
-python semantic_field_resolver.py
+# Step 5: Run post-automation field mapping (requires venv)
+source ../venv/bin/activate  # REQUIRED: Must use venv for Python dependencies
+python semantic_field_resolver_simple.py  # Use simplified version to avoid CLI crashes
 
-# Step 6: Run layer categorization
+# Step 6: Run layer categorization (requires venv)
 python layer_categorization_post_processor.py
 
 # Step 7: Generate map constraints

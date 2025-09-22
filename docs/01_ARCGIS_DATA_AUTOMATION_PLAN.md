@@ -35,7 +35,7 @@ s
 | Component | Status | File Location | Description |
 |-----------|--------|---------------|-------------|
 | **Score Calculator** | ✅ **COMPLETED** | `scripts/automation/automated_score_calculator.py` | Calculate analysis-specific scores using existing formulas |
-| **Semantic Field Resolver** | ✅ **COMPLETED** | `scripts/automation/semantic_field_resolver.py` | AI-powered field mapping with unlimited project type scalability |
+| **Semantic Field Resolver** | ✅ **COMPLETED** | `scripts/automation/semantic_field_resolver_simple.py` | AI-powered field mapping with unlimited project type scalability (simplified version to avoid CLI crashes) |
 | **Configurable Algorithm Engine** | ✅ **COMPLETED** | `scripts/automation/configurable_algorithm_engine.py` | Semantic field resolution with modular plugin architecture |
 | **Project Type Configs** | ✅ **COMPLETED** | `scripts/automation/project_types/` | Modular configuration system with plugin registry |
 | **Layer Config Generator** | ✅ **COMPLETED** | `scripts/automation/layer_config_generator.py` | Auto-generate layer list widget configurations |
@@ -141,7 +141,7 @@ The composite index layers appear in the layer list widget under the "composite-
 ### ✅ **Semantic Field Resolver** - COMPLETED
 
 **Status**: ✅ **IMPLEMENTED** with 800+ lines of Python code
-**File**: `scripts/automation/semantic_field_resolver.py`
+**File**: `scripts/automation/semantic_field_resolver_simple.py`
 
 **Revolutionary Feature**: **Unlimited Project Type Scalability** - Same algorithms work for retail, real estate, healthcare, finance, and any future project types through semantic field resolution.
 

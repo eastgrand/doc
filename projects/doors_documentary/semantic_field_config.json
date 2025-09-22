@@ -1,0 +1,10 @@
+{
+  "semantic_mappings": {
+    "target_performance": "strategic_value",
+    "geographic_identifier": "zip_code"
+  },
+  "validation_status": "auto_resolved",
+  "validation_timestamp": "2025-09-22T10:16:19.776012",
+  "project_path": "/Users/voldeck/code/mpiq-ai-chat/projects/doors_documentary",
+  "total_fields": 2
+}
