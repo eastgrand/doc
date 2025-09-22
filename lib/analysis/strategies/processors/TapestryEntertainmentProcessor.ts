@@ -253,13 +253,14 @@ export class TapestryEntertainmentProcessor extends BaseProcessor {
   private getDocumentaryAppealRating(dominantSegment: string, percentage: number): string {
     const segmentCode = dominantSegment.split(' - ')[0];
     
-    const baseAppeal = {
+    const appealMap: Record<string, number> = {
       'K1': 75, // High cultural engagement
       'K2': 60, // Moderate interest, family-driven
       'I1': 50, // Traditional preferences, moderate appeal
       'J1': 85, // Highest documentary consumption
       'L1': 70  // Tech-savvy, premium content consumers
-    }[segmentCode as keyof typeof baseAppeal] || 50;
+    };
+    const baseAppeal = appealMap[segmentCode] || 50;
     
     // Adjust for concentration
     const concentrationMultiplier = Math.min(percentage / 20, 2.0); // Up to 2x boost for high concentration
@@ -312,13 +313,14 @@ export class TapestryEntertainmentProcessor extends BaseProcessor {
   private getSpendingCapacityAssessment(dominantSegment: string, medianIncome: number): string {
     const segmentCode = dominantSegment.split(' - ')[0];
     
-    const baseCapacity = {
+    const capacityMap: Record<string, string> = {
       'K1': 'High Spending Capacity',
       'K2': 'Moderate-High Spending Capacity',
       'I1': 'Moderate Spending Capacity',
       'J1': 'High Spending Capacity',
       'L1': 'Premium Spending Capacity'
-    }[segmentCode as keyof typeof baseCapacity] || 'Moderate Spending Capacity';
+    };
+    const baseCapacity = capacityMap[segmentCode] || 'Moderate Spending Capacity';
     
     // Adjust based on income
     if (medianIncome >= 80000) return `${baseCapacity} - Affluent Income Level`;
