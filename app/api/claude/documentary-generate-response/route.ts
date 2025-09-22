@@ -17,7 +17,7 @@ import { unionByGeoId } from '../../../../types/union-layer';
 import { multiEndpointFormatting, strategicSynthesis } from '../shared/base-prompt';
 import { GeoAwarenessEngine } from '../../../../lib/geo/GeoAwarenessEngine';
 import { getDocumentaryAnalysisPrompt } from '../shared/documentary-analysis-prompts';
-import { resolveAreaName as resolveSharedAreaName, getFSA as getSharedFSA, resolveRegionName as resolveSharedRegionName } from '@/lib/shared/AreaName';
+import { resolveAreaName as resolveSharedAreaName, getZip as getSharedFSA, resolveRegionName as resolveSharedRegionName } from '@/lib/shared/AreaName';
 import { getAnalysisLayers, sanitizeSummaryForAnalysis, sanitizeRankingArrayForAnalysis } from '@/lib/analysis/analysisLens';
 import { filterFeaturesBySpatialFilterIds, extractFeatureId } from '@/lib/analysis/utils/spatialFilter';
 import { getPrimaryScoreField, getTopFieldDefinitions } from '@/lib/analysis/strategies/processors/HardcodedFieldDefs';

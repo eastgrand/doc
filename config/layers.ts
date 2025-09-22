@@ -2,7 +2,7 @@
 // Auto-generated on 2025-09-22T10:56:15.792953
 // This file maintains compatibility with existing system components
 
-import { LayerConfig } from '../types/layers';
+import type { LayerConfig } from '../types/layers';
 
 export type LayerType = 'index' | 'point' | 'percentage' | 'amount';
 export type AccessLevel = 'read' | 'write' | 'admin';
@@ -15151,3 +15151,11 @@ export const generationMetadata = {
   groupCount: 1,
   automationVersion: '1.0.0'
 };
+
+// Helper functions for backward compatibility
+export function getLayerConfigById(id: string | number): LayerConfig | undefined {
+  return layerConfigs.find(layer => layer.id === id || layer.id === String(id));
+}
+
+// Spatial reference layer ID for spatial filtering
+export const SPATIAL_REFERENCE_LAYER_ID = '100'; // Default to first layer or specify appropriate ID
