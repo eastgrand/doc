@@ -1186,6 +1186,11 @@ python layer_config_generator.py \
   "https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__b1cab1ae067f4359/FeatureServer" \
   --project doors_documentary
 
+# CRITICAL: Replace layers.ts with the newly generated configuration
+cd ../..
+cp config/layers_generated.ts config/layers.ts
+echo "✅ Updated layers.ts with newly generated configuration including radio stations and theaters"
+
 # Step 5: Run post-automation field mapping (requires venv)
 source ../venv/bin/activate  # REQUIRED: Must use venv for Python dependencies
 python semantic_field_resolver_simple.py  # Use simplified version to avoid CLI crashes

@@ -267,6 +267,20 @@ config = create_project_configuration_from_plugin('/path/to/project', 'finance')
 - ✅ **Layer group management** and hierarchical organization
 - ✅ **Comprehensive reporting** with statistics and integration guides
 
+**CRITICAL POST-GENERATION STEP**:
+After running `layer_config_generator.py`, you **MUST** copy the generated configuration to replace the active layers file:
+
+```bash
+# Replace active layers configuration with newly generated version
+cp config/layers_generated.ts config/layers.ts
+```
+
+**Why this step is required**:
+- `layer_config_generator.py` creates `config/layers_generated.ts` with all discovered layers
+- The application reads from `config/layers.ts` (not the generated file)
+- This includes critical point layers like radio stations and theaters for entertainment projects
+- Without this step, new layers (especially entertainment infrastructure) won't be available
+
 **Test Results**:
 
 - ✅ Successfully analyzed 56 layers from Nike service
