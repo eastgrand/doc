@@ -57,7 +57,7 @@ export interface SummaryTemplates {
 // Processor-specific configuration interfaces
 export interface ComparativeConfig {
   comparisonType: 'geographic' | 'temporal' | 'categorical';
-  groupingStrategy: 'city' | 'region' | 'store' | 'timeframe';
+  groupingStrategy: 'city' | 'region' | 'store' | 'timeframe' | 'hexagon';
   normalizationMethod: 'global' | 'grouped' | 'percentile';
   entityLabels: { primary: string; secondary: string; };
 }
