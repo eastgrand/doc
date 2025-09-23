@@ -203,10 +203,12 @@ export class FederatedLayerService {
       // Add state identifier to each feature's attributes
       const stateFeatures = results.features.map((feature, index) => {
         const graphic = feature.clone();
-        // Add composite ID to ensure uniqueness across states
+        // Use the hexagon cell ID as the unique identifier
+        // The 'id' field contains the H3 hexagon ID which is consistent across states
         graphic.attributes = {
           ...graphic.attributes,
-          FEDERATED_ID: `${service.identifier}_${feature.attributes.OBJECTID || index}`,
+          OBJECTID: index + 1, // Create numeric OBJECTID for ArcGIS (1-based)
+          HEXAGON_ID: feature.attributes.id || feature.attributes.ID || feature.attributes.h3_id, // H3 hexagon cell ID
           SOURCE_STATE: service.identifier,
           SOURCE_SERVICE: service.url
         };
@@ -237,9 +239,13 @@ export class FederatedLayerService {
     const sampleFeature = features[0];
     const fields = this.extractFieldsFromFeature(sampleFeature);
     
-    // Add federated fields
+    // Add federated fields (OBJECTID already exists from extractFieldsFromFeature if needed)
+    const hasObjectId = fields.some(f => f.name === "OBJECTID");
+    if (!hasObjectId) {
+      fields.push({ name: "OBJECTID", type: "oid", alias: "Object ID" });
+    }
     fields.push(
-      { name: "FEDERATED_ID", type: "string", alias: "Federated ID" },
+      { name: "HEXAGON_ID", type: "string", alias: "Hexagon Cell ID" },
       { name: "SOURCE_STATE", type: "string", alias: "Source State" },
       { name: "SOURCE_SERVICE", type: "string", alias: "Source Service" }
     );
@@ -249,7 +255,7 @@ export class FederatedLayerService {
       title: `${config.layerName} (Federated: ${config.services.map(s => s.identifier).join(', ')})`,
       source: features,
       fields: fields,
-      objectIdField: "FEDERATED_ID",
+      objectIdField: "OBJECTID",
       geometryType: "polygon", // H3 hexagons are polygons
       spatialReference: { wkid: 4326 },
       renderer: this.createDefaultRenderer(),
@@ -273,7 +279,7 @@ export class FederatedLayerService {
     
     for (const [key, value] of Object.entries(attributes)) {
       // Skip federated fields as we'll add them separately
-      if (key === 'FEDERATED_ID' || key === 'SOURCE_STATE' || key === 'SOURCE_SERVICE') {
+      if (key === 'OBJECTID' || key === 'HEXAGON_ID' || key === 'SOURCE_STATE' || key === 'SOURCE_SERVICE') {
         continue;
       }
       
@@ -331,14 +337,14 @@ export class FederatedLayerService {
    */
   private createPopupTemplate(fields: any[]): any {
     const fieldInfos = fields
-      .filter(f => f.name !== 'FEDERATED_ID' && f.name !== 'SOURCE_SERVICE')
+      .filter(f => f.name !== 'OBJECTID' && f.name !== 'SOURCE_SERVICE')
       .map(field => ({
         fieldName: field.name,
         label: field.alias || field.name
       }));
     
     return {
-      title: "{SOURCE_STATE} - Hexagon {OBJECTID}",
+      title: "{SOURCE_STATE} - Hexagon {HEXAGON_ID}",
       content: [{
         type: "fields",
         fieldInfos: fieldInfos
