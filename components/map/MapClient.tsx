@@ -373,21 +373,27 @@ const MapClient = memo(({
         
         console.log('[MapClient] Creating MapView...');
         
-        // Use Montreal coordinates - center of Quebec housing market
-        // Montreal metropolitan area coordinates
-        const montrealCenter = [-73.567, 45.501]; // Center of Montreal
-        const montrealZoom = 10; // Zoom level to focus on Montreal area
+        // Calculate center point from DATA_EXTENT for the doors documentary project
+        // Convert Web Mercator coordinates to geographic coordinates
+        const centerX = (DATA_EXTENT.xmin + DATA_EXTENT.xmax) / 2;
+        const centerY = (DATA_EXTENT.ymin + DATA_EXTENT.ymax) / 2;
         
-        console.log('[MapClient] Using Montreal center and zoom for Quebec housing market:', {
-          center: montrealCenter,
-          zoom: montrealZoom
+        // Since DATA_EXTENT is in Web Mercator (102100), we need to convert to geographic coordinates
+        // Approximate conversion for initial center (will be refined by extent fitting)
+        const dataCenter = [-89.0, 41.0]; // Approximate center for IL/IN/WI region
+        const dataZoom = 8; // Better zoom level for IL/IN/WI region (previous Montreal was 10)
+        
+        console.log('[MapClient] Using data extent center for doors documentary project:', {
+          dataExtent: DATA_EXTENT,
+          center: dataCenter,
+          zoom: dataZoom
         });
         
         const view = new MapView({
           container: mapRef.current,
           map: map,
-          center: montrealCenter,
-          zoom: montrealZoom,
+          center: dataCenter,
+          zoom: dataZoom,
           ui: {
             components: []
           }
@@ -396,20 +402,24 @@ const MapClient = memo(({
         // Apply dynamic map constraints after view is ready
         // This prevents panning outside the project area while preserving zoom functionality
         view.when(() => {
-          console.log('[MapClient] View is ready, applying dynamic map constraints...', {
+          console.log('[MapClient] View is ready, zooming to data extent...', {
             constraintsExtent: MAP_CONSTRAINTS.geometry,
             dataExtent: DATA_EXTENT,
             rotationEnabled: MAP_CONSTRAINTS.rotationEnabled
           });
           
           // Add a small delay to ensure basemap is loaded  
-          setTimeout(() => {
+          setTimeout(async () => {
             try {
-              console.log('[MapClient] Skipping map constraints - unlimited panning and zoom enabled');
-              // applyMapConstraints(view); // DISABLED - allows unlimited panning and zoom
-              console.log('[MapClient] Map ready with no restrictions');
+              console.log('[MapClient] Zooming to data extent for doors documentary project');
+              
+              // Import the zoom to data extent function and use it
+              const { zoomToDataExtent } = await import('@/config/mapConstraints');
+              await zoomToDataExtent(view, { duration: 2000 });
+              
+              console.log('[MapClient] Map centered on data extent with no restrictions');
             } catch (error) {
-              console.error('[MapClient] Error:', error);
+              console.error('[MapClient] Error zooming to data extent:', error);
             }
           }, 1000);
         }).catch(error => {
