@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Duplicate OBJECTIDs</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Testing OBJECTID Uniqueness in Federated Layers</h1>
+    <div id="output"></div>
+    
+    <script type="module">
+        // Wait for the map to load and check for duplicate OBJECTIDs
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                // Open the map page in an iframe
+                const iframe = document.createElement('iframe');
+                iframe.src = '/map';
+                iframe.style.width = '100%';
+                iframe.style.height = '600px';
+                document.body.appendChild(iframe);
+                
+                // Monitor console for errors
+                const originalError = console.error;
+                const originalWarn = console.warn;
+                const errors = [];
+                
+                console.error = function(...args) {
+                    const errorStr = args.join(' ');
+                    if (errorStr.includes('validation error')) {
+                        errors.push(errorStr);
+                        document.getElementById('output').innerHTML += `<div class="error">ERROR: ${errorStr}</div>`;
+                    }
+                    originalError.apply(console, args);
+                };
+                
+                console.warn = function(...args) {
+                    const warnStr = args.join(' ');
+                    if (warnStr.includes('validation error')) {
+                        errors.push(warnStr);
+                        document.getElementById('output').innerHTML += `<div class="error">WARN: ${warnStr}</div>`;
+                    }
+                    originalWarn.apply(console, args);
+                };
+                
+                // Check for duplicates after 10 seconds
+                setTimeout(() => {
+                    document.getElementById('output').innerHTML += `<div>Found ${errors.length} validation errors</div>`;
+                }, 10000);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

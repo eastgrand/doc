@@ -118,7 +118,26 @@ export class FederatedLayerService {
         timestamp: Date.now() 
       });
 
-      console.log(`[FederatedLayer] Successfully created federated layer with ${allFeatures.length} features`);
+      // Debug: Check for duplicate OBJECTIDs
+      const objectIds = allFeatures.map(f => f.attributes.OBJECTID);
+      const uniqueObjectIds = new Set(objectIds);
+      if (objectIds.length !== uniqueObjectIds.size) {
+        console.error(`[FederatedLayer] ⚠️ DUPLICATE OBJECTIDs DETECTED!`);
+        console.error(`[FederatedLayer] Total features: ${objectIds.length}, Unique OBJECTIDs: ${uniqueObjectIds.size}`);
+        
+        // Find duplicates
+        const seen = new Set();
+        const duplicates = new Set();
+        for (const id of objectIds) {
+          if (seen.has(id)) {
+            duplicates.add(id);
+          }
+          seen.add(id);
+        }
+        console.error(`[FederatedLayer] Duplicate OBJECTIDs:`, Array.from(duplicates).slice(0, 10));
+      }
+      
+      console.log(`[FederatedLayer] Successfully created federated layer with ${allFeatures.length} features (${uniqueObjectIds.size} unique OBJECTIDs)`);
       return federatedLayer;
 
     } catch (error) {

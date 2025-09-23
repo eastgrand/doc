@@ -366,42 +366,42 @@ export const POINT_LOCATION_LAYERS = [
 export const FEDERATED_LAYER_GROUPS = [
   {
     id: 'classic-rock-audience',
-    name: '🎸 Classic Rock Audience',
+    name: 'Classic Rock Audience',
     description: 'Primary target demographic for doors documentary',
     priority: 1,
     layers: ['Classic Rock Listeners', 'Classic Rock Radio Format Listeners', 'Rock Music Performance Attendance', 'Rock Radio Listeners']
   },
   {
     id: 'documentary-interest',
-    name: '🎬 Documentary & Biography Interest',
+    name: 'Documentary & Biography Interest',
     description: 'Audience interested in documentary and biography content',
     priority: 2,
     layers: ['Movie Theater Attendance', 'Documentary Movie Viewers', 'Biography Genre Movie Attendance', 'Biography Book Purchases', 'Entertainment/Celebrity Info Seekers']
   },
   {
     id: 'demographics',
-    name: '👥 Demographics',
+    name: 'Demographics',
     description: 'Target demographic segments',
     priority: 3,
     layers: ['Baby Boomers', 'Generation X', 'Millennials', 'Gen Z', 'Gen Alpha']
   },
   {
     id: 'entertainment-spending',
-    name: '💰 Entertainment Spending',
+    name: 'Entertainment Spending',
     description: 'Market analysis and spending patterns',
     priority: 4,
     layers: ['Entertainment & Recreation Spending', 'Movie Ticket Spending', 'Music/CD Spending', 'Theater/Opera/Concert Spending']
   },
   {
     id: 'digital-streaming',
-    name: '📱 Digital Music & Streaming',
+    name: 'Digital Music & Streaming',
     description: 'Digital music consumption and promotional channels',
     priority: 5,
     layers: ['Spotify Listeners', 'Apple Music Listeners', 'iHeartRadio Listeners', 'Amazon Music Listeners', 'Pandora Listeners']
   },
   {
     id: 'music-purchasing',
-    name: '🛒 Music Purchasing Behavior',
+    name: 'Music Purchasing Behavior',
     description: 'Music buying patterns and preferences',
     priority: 6,
     layers: ['Music Store Purchases', 'iTunes Music Purchases', 'Amazon Music Purchases']

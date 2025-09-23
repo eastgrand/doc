@@ -45,18 +45,20 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ progress: externalPr
   const [allFacts, setAllFacts] = useState<LoadingFact[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const factIntervalRef = useRef<NodeJS.Timeout>();
+  const internalProgressRef = useRef(externalProgress);
   
   // Fetch project stats
   const { stats: projectStats } = useProjectStats();
   
   console.log('[LoadingModal] Render:', { show, externalProgress, internalProgress });
   
-  // Simplified useEffect to avoid loops - only update when external progress increases
+  // Simplified useEffect to avoid loops - only update when external progress changes
   useEffect(() => {
-    if (externalProgress > internalProgress) {
+    if (externalProgress > internalProgressRef.current) {
       setInternalProgress(externalProgress);
+      internalProgressRef.current = externalProgress;
     }
-  }, [externalProgress, internalProgress]); // Add internalProgress to dependencies
+  }, [externalProgress]); // Only depend on externalProgress to avoid loops
   
   
   // Load facts

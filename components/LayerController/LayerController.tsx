@@ -543,10 +543,22 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
   }, []);
   // Memoize the initialization function
   const initializeLayers = useCallback(async () => {
+    console.log('[LayerController] initializeLayers called', {
+      initializationInProgress: initializationInProgress.current,
+      hasView: !!view,
+      hasConfig: !!config,
+      isInitialized,
+      hasInitialized: hasInitialized.current
+    });
+    
     if (initializationInProgress.current || !view || !config || isInitialized) {
+      console.log('[LayerController] Skipping initialization - already in progress or initialized');
       return;
     }
+    
+    // Mark that initialization is in progress
     initializationInProgress.current = true;
+    console.log('[LayerController] Starting layer initialization for federated layers');
     try {
       // Use federated layers for doors documentary project
       const totalLayers = FEDERATED_LAYERS_CONFIG.length + POINT_LOCATION_LAYERS.length;
@@ -572,7 +584,21 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         try {
           const federatedLayer = await federatedService.createFederatedLayer(federatedConfig);
           
+          // Check if layer already exists in map
+          const existingLayer = view.map.layers.find((l: any) => l.title === federatedLayer.title);
+          if (existingLayer) {
+            console.warn(`[LayerController] ⚠️ Layer already exists in map: ${federatedLayer.title}`, {
+              existingId: existingLayer.id,
+              newId: federatedLayer.id,
+              mapLayerCount: view.map.layers.length
+            });
+            // Use the existing layer instead of creating a duplicate
+            federatedLayer.destroy();
+            continue;
+          }
+          
           // Add to map
+          console.log(`[LayerController] Adding federated layer to map: ${federatedLayer.title} with ID: ${federatedLayer.id}`);
           view.map.add(federatedLayer);
           
           // Configure layer properties
@@ -581,10 +607,30 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
           federatedLayer.minScale = 0; // Visible at all zoom levels
           federatedLayer.maxScale = 0; // Visible at all zoom levels
           
+          // Add deferred renderer configuration for quartile visualization
+          (federatedLayer as any)._deferredRendererConfig = {
+            type: 'quartile',
+            field: 'thematic_value',
+            colors: ['#f7fcb9', '#addd8e', '#41ab5d', '#006837'] // Green color scheme
+          };
+          
+          // Set up visibility watcher for deferred renderer application
+          federatedLayer.watch('visible', async (visible: boolean) => {
+            if (visible && (federatedLayer as any)._deferredRendererConfig) {
+              console.log(`[LayerController] 🎯 Federated layer became visible, applying deferred renderer: ${federatedLayer.id}`);
+              const { applyDeferredRenderer } = await import('./utils');
+              await applyDeferredRenderer(federatedLayer);
+            }
+          });
+          
           // Find the appropriate group for this layer
           const layerGroup = FEDERATED_LAYER_GROUPS.find(group => 
             group.layers.includes(federatedConfig.layerName)
           );
+          
+          if (!layerGroup) {
+            console.warn(`[LayerController] ⚠️ Layer "${federatedConfig.layerName}" not found in any group, using 'general'`);
+          }
           
           const layerId = federatedConfig.layerName.toLowerCase().replace(/[^a-z0-9]/g, '_');
           
@@ -661,6 +707,16 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       // Set states atomically to prevent race conditions
       layerStatesRef.current = newLayerStates;
       setLayerStates(newLayerStates);
+      
+      // Log summary of created layers
+      const layersByGroup: { [key: string]: string[] } = {};
+      Object.values(newLayerStates).forEach(state => {
+        const group = state.group || 'ungrouped';
+        if (!layersByGroup[group]) layersByGroup[group] = [];
+        layersByGroup[group].push(state.name);
+      });
+      console.log('[LayerController] ✅ Created layers by group:', layersByGroup);
+      
       onLayerStatesChange?.(newLayerStates);
       // NEW: Provide created layers for CustomPopupManager
       const createdLayers = Object.values(newLayerStates)
@@ -699,22 +755,10 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     onLayerInitializationProgress, 
     onInitializationComplete
   ]);
-  // Initialize layers with proper race condition protection
+  // Initialize layers when view and config are ready
   useEffect(() => {
     if (!view || !config) return;
-    // Create unique identifier for this view+config combination to prevent duplicates
-    const viewId = view.container ? view.container.id : 'default';
-    const configHash = JSON.stringify(config.groups?.map((g: any) => g.id).sort());
-    const initId = `${viewId}-${configHash}`;
-    // Check if we've already initialized this exact combination or initialization is in progress
-    if (hasInitialized.current === initId || initializationInProgress.current || isInitialized) {
-      console.log('[LayerController] Already initialized or in progress, skipping:', initId);
-      return;
-    }
-    // Reset state for new initialization
-    console.log('[LayerController] Starting fresh initialization for:', initId);
-    hasInitialized.current = initId;
-    setIsInitialized(false);
+    
     // Update collapsed groups when config changes
     if (config?.defaultCollapsed) {
       const collapsedGroupIds = Object.entries(config.defaultCollapsed)
@@ -722,6 +766,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         .map(([groupId]) => groupId);
       setCollapsedGroups(new Set(collapsedGroupIds));
     }
+    
     initializeLayers();
   }, [view, config, initializeLayers]);
   // Set mounted state
