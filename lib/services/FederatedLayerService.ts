@@ -140,10 +140,21 @@ export class FederatedLayerService {
       
       const allFeatures: Graphic[] = [];
       let successCount = 0;
+      let globalObjectId = 1; // Global counter for unique OBJECTID across all states
       
       stateResults.forEach((result, index) => {
         if (result.status === 'fulfilled') {
-          allFeatures.push(...result.value);
+          // Update OBJECTID to be globally unique
+          const featuresWithGlobalId = result.value.map(feature => {
+            const graphic = feature.clone();
+            graphic.attributes = {
+              ...graphic.attributes,
+              OBJECTID: globalObjectId++
+            };
+            return graphic;
+          });
+          
+          allFeatures.push(...featuresWithGlobalId);
           successCount++;
           console.log(`[FederatedLayer] ${services[index].identifier}: ${result.value.length} features`);
         } else {
@@ -159,11 +170,23 @@ export class FederatedLayerService {
     } else {
       // Sequential fetch (fallback for debugging)
       const allFeatures: Graphic[] = [];
+      let globalObjectId = 1; // Global counter for unique OBJECTID across all states
       
       for (const service of services) {
         try {
           const features = await this.fetchStateData(service);
-          allFeatures.push(...features);
+          
+          // Update OBJECTID to be globally unique
+          const featuresWithGlobalId = features.map(feature => {
+            const graphic = feature.clone();
+            graphic.attributes = {
+              ...graphic.attributes,
+              OBJECTID: globalObjectId++
+            };
+            return graphic;
+          });
+          
+          allFeatures.push(...featuresWithGlobalId);
           console.log(`[FederatedLayer] ${service.identifier}: ${features.length} features`);
         } catch (error) {
           console.error(`[FederatedLayer] Failed to fetch ${service.identifier}:`, error);
@@ -201,13 +224,12 @@ export class FederatedLayerService {
       const results = await sourceLayer.queryFeatures(query);
       
       // Add state identifier to each feature's attributes
-      const stateFeatures = results.features.map((feature, index) => {
+      const stateFeatures = results.features.map((feature) => {
         const graphic = feature.clone();
         // Use the hexagon cell ID as the unique identifier
         // The 'id' field contains the H3 hexagon ID which is consistent across states
         graphic.attributes = {
           ...graphic.attributes,
-          OBJECTID: index + 1, // Create numeric OBJECTID for ArcGIS (1-based)
           HEXAGON_ID: feature.attributes.id || feature.attributes.ID || feature.attributes.h3_id, // H3 hexagon cell ID
           SOURCE_STATE: service.identifier,
           SOURCE_SERVICE: service.url
