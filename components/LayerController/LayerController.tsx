@@ -33,6 +33,9 @@ import { VisualizationControls } from './VisualizationControls';
 import type { BlendMode } from '@/utils/visualizations/base-visualization';
 import { createLayer } from './utils';
 import type { LayerStatesMap } from './types';
+import { FederatedLayerService } from '@/lib/services/FederatedLayerService';
+import { FEDERATED_LAYERS_CONFIG, FEDERATED_LAYER_GROUPS, POINT_LOCATION_LAYERS } from '@/config/federated-layers-config';
+import { createEnhancedPointLayer } from './createPointLayers';
 // Export the types
 export interface LayerControllerRef {
   layerStates: LayerStatesMap;
@@ -545,89 +548,114 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     }
     initializationInProgress.current = true;
     try {
-      const totalLayers = (config.groups || []).reduce((sum: number, group: any) => sum + ((group.layers || []).filter((layer: any) => !layer.skipLayerList).length), 0);
+      // Use federated layers for doors documentary project
+      const totalLayers = FEDERATED_LAYERS_CONFIG.length + POINT_LOCATION_LAYERS.length;
       setLoadingState((prev: any) => ({
         ...prev,
         total: totalLayers,
         status: 'loading'
       }));
+      
+      console.log(`[LayerController] 🎯 Initializing ${totalLayers} federated layers for doors documentary`);
       const newLayerStates: LayerStatesMap = {};
-      for (const group of (config.groups || [])) {
-        if (group.layers) {
-          for (const layerConfig of group.layers) {
-            console.log(`[LayerController] Creating layer: ${layerConfig.name}`);
-            const [layer, errors] = await createLayer(layerConfig, config, view, layerStatesRef);
-            if (layer) {
-              // Add ALL layers to the map (aligned with GitHub unified repo)
-              view.map.add(layer);
-              
-              // Set up visibility watcher for deferred renderer application
-              if ((layer as any)._deferredRendererConfig) {
-                console.log(`[LayerController] ⏰ Setting up visibility watcher for deferred renderer: ${layer.id}`);
-                layer.watch('visible', async (visible: boolean) => {
-                  if (visible && (layer as any)._deferredRendererConfig) {
-                    console.log(`[LayerController] 🎯 Layer became visible, applying deferred renderer: ${layer.id}`);
-                    const { applyDeferredRenderer } = await import('./utils');
-                    await applyDeferredRenderer(layer);
-                  }
-                });
-              }
-              // Skip creating layer state for layers with skipLayerList: true
-              if (layerConfig.skipLayerList) {
-                console.log(`[LayerController] Skipping layer state creation for hidden layer: ${layerConfig.name}`);
-                continue;
-              }
-              // Set visibility based on config
-              const shouldBeVisible = config.defaultVisibility?.[layerConfig.id] || false;
-              layer.visible = shouldBeVisible;
-              // Preserve higher opacity for location layers, use 0.6 for others
-              const layerOpacity = layerConfig.name?.toLowerCase().includes('locations') ? layer.opacity : 0.6;
-              layer.opacity = layerOpacity;
-              newLayerStates[layerConfig.id] = {
-                id: layerConfig.id,
-                name: layerConfig.name,
-                layer,
-                visible: shouldBeVisible,
-                opacity: layerOpacity,
-                order: 0,
-                group: group.id,
-                loading: false,
-                filters: [],
-                isVirtual: false,
-                active: false
-              };
-            } else {
-              // Skip creating layer state for failed layers that have skipLayerList: true
-              if (layerConfig.skipLayerList) {
-                console.log(`[LayerController] Skipping failed hidden layer: ${layerConfig.name}`);
-                continue;
-              }
-              // Create placeholder state for layers that failed to create
-              console.log(`[LayerController] Failed to create layer: ${layerConfig.name}`);
-              newLayerStates[layerConfig.id] = {
-                id: layerConfig.id,
-                name: layerConfig.name,
-                layer: null, // No layer created yet
-                visible: false,
-                opacity: layerConfig.name?.toLowerCase().includes('locations') ? 1.0 : 0.6,
-                order: 0,
-                group: group.id,
-                loading: false,
-                filters: [],
-                isVirtual: false,
-                active: false
-              };
-            }
-            const loadedCount = Object.keys(newLayerStates).length;
-            setLoadingState((prev: any) => ({
-              ...prev,
-              loaded: loadedCount
-            }));
-            onLayerInitializationProgress?.({
+      const federatedService = new FederatedLayerService();
+      
+      // Initialize federated service
+      await federatedService.initializeWithSingleService();
+      
+      let loadedCount = 0;
+      
+      // Create federated layers (combining IL/IN/WI data)
+      for (const federatedConfig of FEDERATED_LAYERS_CONFIG) {
+        console.log(`[LayerController] 🔄 Creating federated layer: ${federatedConfig.layerName}`);
+        
+        try {
+          const federatedLayer = await federatedService.createFederatedLayer(federatedConfig);
+          
+          // Add to map
+          view.map.add(federatedLayer);
+          
+          // Configure layer properties
+          federatedLayer.visible = false; // Start hidden
+          federatedLayer.opacity = 0.7;
+          federatedLayer.minScale = 0; // Visible at all zoom levels
+          federatedLayer.maxScale = 0; // Visible at all zoom levels
+          
+          // Find the appropriate group for this layer
+          const layerGroup = FEDERATED_LAYER_GROUPS.find(group => 
+            group.layers.includes(federatedConfig.layerName)
+          );
+          
+          const layerId = federatedConfig.layerName.toLowerCase().replace(/[^a-z0-9]/g, '_');
+          
+          newLayerStates[layerId] = {
+            id: layerId,
+            name: federatedConfig.layerName,
+            layer: federatedLayer,
+            visible: false,
+            opacity: 0.7,
+            order: loadedCount,
+            group: layerGroup?.id || 'general',
+            loading: false,
+            filters: [],
+            isVirtual: false,
+            active: false
+          };
+          
+          loadedCount++;
+          handleInitializationProgress({
+            total: totalLayers,
+            loaded: loadedCount,
+            currentLayer: federatedConfig.layerName,
+            status: 'loading'
+          });
+          
+          console.log(`[LayerController] ✅ Created federated layer: ${federatedConfig.layerName}`);
+          
+        } catch (error) {
+          console.error(`[LayerController] ❌ Failed to create federated layer: ${federatedConfig.layerName}`, error);
+        }
+      }
+      
+      // Create point location layers with enhanced symbols (theaters and radio stations)
+      for (const pointLayerConfig of POINT_LOCATION_LAYERS) {
+        console.log(`[LayerController] 📍 Creating enhanced point location layer: ${pointLayerConfig.name}`);
+        
+        try {
+          // Use enhanced point layer creation for special symbols and coverage
+          const layer = await createEnhancedPointLayer(pointLayerConfig, view);
+          
+          if (layer) {
+            view.map.add(layer);
+            
+            newLayerStates[pointLayerConfig.id] = {
+              id: pointLayerConfig.id,
+              name: pointLayerConfig.name,
+              layer,
+              visible: false,
+              opacity: 1.0,
+              order: loadedCount,
+              group: pointLayerConfig.group, // This will be 'ungrouped'
+              loading: false,
+              filters: [],
+              isVirtual: false,
+              active: false
+            };
+            
+            loadedCount++;
+            handleInitializationProgress({
+              total: totalLayers,
               loaded: loadedCount,
-              total: totalLayers
+              currentLayer: pointLayerConfig.name,
+              status: 'loading'
             });
+            
+            console.log(`[LayerController] ✅ Created enhanced point layer: ${pointLayerConfig.name}`);
+          } else {
+            console.error(`[LayerController] ❌ Failed to create enhanced point layer: ${pointLayerConfig.name}`);
           }
+        } catch (error) {
+          console.error(`[LayerController] ❌ Error creating point layer: ${pointLayerConfig.name}`, error);
         }
       }
       // Set states atomically to prevent race conditions
@@ -978,13 +1006,20 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         console.log('Layer reordering:', { from: active.id, to: over.id });
       }
     };
-    // Group layers by their group property - only include groups with visible layers
-    const groupedLayers = (config.groups || [])
-      .map((group: any) => ({
-        ...group,
+    // Group layers by their group property using federated layer groups
+    const groupedLayers = FEDERATED_LAYER_GROUPS
+      .map((group) => ({
+        id: group.id,
+        name: group.name,
+        description: group.description,
+        priority: group.priority,
         layerStates: Object.values(layerStates).filter(state => state.group === group.id)
       }))
-      .filter((group: any) => group.layerStates.length > 0); // Only show groups that have layers
+      .filter((group) => group.layerStates.length > 0) // Only show groups that have layers
+      .sort((a, b) => a.priority - b.priority); // Sort by priority
+    
+    // Get ungrouped layers (for Movie Theaters and Radio stations)
+    const ungroupedLayers = Object.values(layerStates).filter(state => state.group === 'ungrouped');
     return (
       <div className="layer-controller h-full overflow-y-auto">
         <div className="p-4">
@@ -998,6 +1033,25 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
               <Progress value={(loadingState.loaded / loadingState.total) * 100} className="h-2" />
             </div>
           )}
+          {/* Ungrouped Layers First */}
+          {ungroupedLayers.length > 0 && (
+            <div className="mb-4">
+              {ungroupedLayers.map((layerState: any) => (
+                <DraggableLayer
+                  key={layerState.id}
+                  id={layerState.id}
+                  title={layerState.name}
+                  description={`Layer: ${layerState.name}`}
+                  isVisible={layerState.visible}
+                  isLoading={layerState.loading}
+                  layer={layerState.layer || null}
+                  onToggle={() => handleToggleLayer(layerState.id)}
+                  onShowLegend={handleShowLegend}
+                />
+              ))}
+            </div>
+          )}
+          
           {/* Layer Groups */}
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
             <SortableContext items={Object.keys(layerStates)} strategy={verticalListSortingStrategy}>
@@ -1005,7 +1059,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
                 <DraggableGroup
                   key={group.id}
                   id={group.id}
-                  title={group.title}
+                  title={group.name}
                   description={group.description}
                   isCollapsed={collapsedGroups.has(group.id)}
                   onToggleCollapse={() => handleToggleGroup(group.id)}
