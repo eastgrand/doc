@@ -261,12 +261,12 @@ export class FederatedLayerService {
     const sampleFeature = features[0];
     const fields = this.extractFieldsFromFeature(sampleFeature);
     
-    // Add federated fields (OBJECTID already exists from extractFieldsFromFeature if needed)
-    const hasObjectId = fields.some(f => f.name === "OBJECTID");
-    if (!hasObjectId) {
-      fields.push({ name: "OBJECTID", type: "oid", alias: "Object ID" });
-    }
-    fields.push(
+    // Remove OBJECTID if it exists (we'll add it properly as oid type)
+    const filteredFields = fields.filter(f => f.name !== "OBJECTID");
+    
+    // Add federated fields with OBJECTID as oid type
+    filteredFields.push(
+      { name: "OBJECTID", type: "oid", alias: "Object ID" },
       { name: "HEXAGON_ID", type: "string", alias: "Hexagon Cell ID" },
       { name: "SOURCE_STATE", type: "string", alias: "Source State" },
       { name: "SOURCE_SERVICE", type: "string", alias: "Source Service" }
@@ -276,12 +276,12 @@ export class FederatedLayerService {
     const federatedLayer = new FeatureLayer({
       title: `${config.layerName} (Federated: ${config.services.map(s => s.identifier).join(', ')})`,
       source: features,
-      fields: fields,
+      fields: filteredFields,
       objectIdField: "OBJECTID",
       geometryType: "polygon", // H3 hexagons are polygons
       spatialReference: { wkid: 4326 },
       renderer: this.createDefaultRenderer(),
-      popupTemplate: this.createPopupTemplate(fields),
+      popupTemplate: this.createPopupTemplate(filteredFields),
       // Performance optimizations
       minScale: 0,
       maxScale: 0,
