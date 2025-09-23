@@ -781,12 +781,17 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       }
     };
     const handleToggleLayer = async (layerId: string) => {
-      console.log('handleToggleLayer called for:', layerId);
+      console.log('[LayerController] handleToggleLayer called for:', layerId);
       const newStates = { ...layerStatesRef.current };
       if (newStates[layerId]) {
         const oldVisible = newStates[layerId].visible;
         newStates[layerId].visible = !oldVisible;
-        console.log('Toggling layer visibility from', oldVisible, 'to', newStates[layerId].visible);
+        console.log(`[LayerController] Toggling layer ${layerId} visibility from ${oldVisible} to ${newStates[layerId].visible}`, {
+          hasLayer: !!newStates[layerId].layer,
+          hasDeferredRenderer: !!(newStates[layerId].layer as any)?._deferredRendererConfig,
+          layerName: newStates[layerId].name,
+          currentRenderer: newStates[layerId].layer?.renderer?.type
+        });
         // LAZY LOADING: Create layer if it doesn't exist and is being turned on
         if (newStates[layerId].visible && !newStates[layerId].layer) {
           console.log(`[LayerController] Creating layer on demand: ${layerId}`);
@@ -929,6 +934,17 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         }
         if (newStates[layerId].layer) {
           newStates[layerId].layer.visible = newStates[layerId].visible;
+          
+          // Apply deferred renderer immediately when toggling layer to visible
+          if (newStates[layerId].visible && (newStates[layerId].layer as any)._deferredRendererConfig) {
+            console.log(`[LayerController] 🎯 Layer toggled visible, applying deferred renderer immediately: ${layerId}`);
+            import('./utils').then(async ({ applyDeferredRenderer }) => {
+              await applyDeferredRenderer(newStates[layerId].layer);
+            }).catch(error => {
+              console.error(`[LayerController] ❌ Error applying deferred renderer for ${layerId}:`, error);
+            });
+          }
+          
           // Additional debugging for location layers
           if (newStates[layerId].name?.toLowerCase().includes('locations')) {
             console.log(`🔍 Location layer ${layerId} debug info:`, {
