@@ -343,7 +343,7 @@ const DraggableGroup: React.FC<DraggableGroupProps> = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <h3 
+              <div 
                 className="flex-1 text-xs font-medium cursor-pointer flex items-center gap-2 select-none" 
                 onClick={onToggleCollapse}
               >
@@ -352,7 +352,7 @@ const DraggableGroup: React.FC<DraggableGroupProps> = ({
                   <ChevronDown size={16} className="flex-shrink-0" />
                 }
                 {title}
-              </h3>
+              </div>
             </TooltipTrigger>
             {description && (
               <TooltipContent>
