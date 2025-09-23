@@ -151,7 +151,7 @@ export class FederatedLayerService {
    * Fetch data from all state services in parallel
    */
   private async fetchAllStateData(config: FederatedLayerConfig): Promise<Graphic[]> {
-    const { services, parallelFetch = true } = config;
+    const { services, parallelFetch = false } = config; // Default to sequential to prevent AbortErrors
     
     if (parallelFetch) {
       // Fetch all states in parallel for better performance
@@ -190,8 +190,9 @@ export class FederatedLayerService {
       // Sequential fetch (fallback for debugging)
       const allFeatures: Graphic[] = [];
       
-      for (const service of services) {
+      for (const [index, service] of services.entries()) {
         try {
+          console.log(`[FederatedLayer] Fetching ${service.identifier} (${index + 1}/${services.length})...`);
           const features = await this.fetchStateData(service);
           
           // Update OBJECTID to be globally unique across all layers and states
@@ -205,9 +206,15 @@ export class FederatedLayerService {
           });
           
           allFeatures.push(...featuresWithGlobalId);
-          console.log(`[FederatedLayer] ${service.identifier}: ${features.length} features`);
+          console.log(`[FederatedLayer] ✅ ${service.identifier}: ${features.length} features loaded`);
+          
+          // Small delay between requests to prevent overwhelming the service
+          if (index < services.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 200));
+          }
+          
         } catch (error) {
-          console.error(`[FederatedLayer] Failed to fetch ${service.identifier}:`, error);
+          console.error(`[FederatedLayer] ❌ Failed to fetch ${service.identifier}:`, error);
         }
       }
       

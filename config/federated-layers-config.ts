@@ -45,7 +45,7 @@ export const FEDERATED_LAYERS_CONFIG: FederatedLayerConfig[] = [
       WI: 110  // WI Listened to Classic Rock Music 6 Mo
     }),
     cacheTimeout: 300000, // 5 minutes
-    parallelFetch: true
+    parallelFetch: false // Sequential to prevent AbortErrors
   },
   
   {
