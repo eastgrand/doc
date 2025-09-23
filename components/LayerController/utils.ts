@@ -114,6 +114,10 @@ const createLayer = async (
           compositeLayer.visible = false;
           compositeLayer.popupEnabled = false;
           
+          // Set scale visibility to ensure composite layers are visible at all zoom levels
+          compositeLayer.minScale = 0; // Visible at all zoom levels
+          compositeLayer.maxScale = 0; // Visible at all zoom levels
+          
           // Apply skipLayerList property for composite layers
           if (layerConfig.skipLayerList) {
             (compositeLayer as any).listMode = "hide";
@@ -160,6 +164,11 @@ const createLayer = async (
       (layer as any).listMode = "hide";
       console.log(`Layer ${layerConfig.name} will be hidden from layer list`);
     }
+    
+    // Set scale visibility to ensure layers are visible at all zoom levels
+    layer.minScale = 0; // Visible at all zoom levels
+    layer.maxScale = 0; // Visible at all zoom levels
+    console.log(`[LC createLayer] Set scale visibility for all zoom levels: ${layerConfig.id}`);
     
     // Note: Popups will be handled by CustomPopupManager component (green popup style)
     console.log(`✅ Layer created for CustomPopupManager handling: ${layerConfig.id}`);
