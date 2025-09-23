@@ -3,9 +3,6 @@
  * Handles the unified 106-layer service with entertainment and demographic data
  */
 
-import { loadModules } from '@arcgis/core';
-import type __esri from '@arcgis/core/__esri';
-
 interface DoorsLayerMapping {
   // Classic Rock & Music Layers
   classicRock: {
@@ -168,8 +165,8 @@ export class DoorsDocumentarySingleServiceAdapter {
   private baseUrl: string;
   private layerMapping: DoorsLayerMapping;
   private fieldMapping: DoorsFieldMapping;
-  private Query: typeof __esri.Query;
-  private FeatureLayer: typeof __esri.FeatureLayer;
+  private Query: any; // Will be dynamically loaded
+  private FeatureLayer: any; // Will be dynamically loaded
   
   constructor() {
     this.baseUrl = 'https://services8.arcgis.com/VhrZdFGa39zmfR47/arcgis/rest/services/Synapse54__b1cab1ae067f4359/FeatureServer';
@@ -295,13 +292,14 @@ export class DoorsDocumentarySingleServiceAdapter {
   async initialize(): Promise<void> {
     console.log('[DoorsAdapter] Initializing single service adapter...');
     
-    const [Query, FeatureLayer] = await loadModules([
-      '@arcgis/core/rest/support/Query',
-      '@arcgis/core/layers/FeatureLayer'
+    // Dynamic imports for ArcGIS modules
+    const [QueryModule, FeatureLayerModule] = await Promise.all([
+      import('@arcgis/core/rest/support/Query'),
+      import('@arcgis/core/layers/FeatureLayer')
     ]);
     
-    this.Query = Query;
-    this.FeatureLayer = FeatureLayer;
+    this.Query = QueryModule.default;
+    this.FeatureLayer = FeatureLayerModule.default;
     
     console.log('[DoorsAdapter] Service adapter initialized successfully');
   }
