@@ -936,10 +936,11 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
           newStates[layerId].layer.visible = newStates[layerId].visible;
           
           // Apply deferred renderer immediately when toggling layer to visible
-          if (newStates[layerId].visible && (newStates[layerId].layer as any)._deferredRendererConfig) {
+          if (newStates[layerId].visible && newStates[layerId].layer && (newStates[layerId].layer as any)._deferredRendererConfig) {
             console.log(`[LayerController] 🎯 Layer toggled visible, applying deferred renderer immediately: ${layerId}`);
+            const layer = newStates[layerId].layer;
             import('./utils').then(async ({ applyDeferredRenderer }) => {
-              await applyDeferredRenderer(newStates[layerId].layer);
+              await applyDeferredRenderer(layer);
             }).catch(error => {
               console.error(`[LayerController] ❌ Error applying deferred renderer for ${layerId}:`, error);
             });
