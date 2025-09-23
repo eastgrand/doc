@@ -501,12 +501,9 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
   });
   // Initialize collapsed groups from config
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(() => {
-    if (config?.defaultCollapsed) {
-      return new Set(Object.entries(config.defaultCollapsed)
-        .filter(([_, isCollapsed]: [string, any]) => isCollapsed)
-        .map(([groupId]: [string, any]) => groupId));
-    }
-    return new Set<string>();
+    // Default all groups to collapsed for doors documentary project
+    const allGroupIds = FEDERATED_LAYER_GROUPS.map(group => group.id);
+    return new Set(allGroupIds);
   });
   const [currentLegendData, setCurrentLegendData] = useState<StandardizedLegendData | null>(null);
   const [popoverAnchorElement, setPopoverAnchorElement] = useState<HTMLElement | null>(null);
@@ -776,12 +773,9 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
     if (!view || !config) return;
     
     // Update collapsed groups when config changes
-    if (config?.defaultCollapsed) {
-      const collapsedGroupIds = Object.entries(config.defaultCollapsed)
-        .filter(([_, isCollapsed]) => isCollapsed)
-        .map(([groupId]) => groupId);
-      setCollapsedGroups(new Set(collapsedGroupIds));
-    }
+    // Always start with all groups collapsed for doors documentary project
+    const allGroupIds = FEDERATED_LAYER_GROUPS.map(group => group.id);
+    setCollapsedGroups(new Set(allGroupIds));
     
     initializeLayers();
   }, [view, config, initializeLayers]);
