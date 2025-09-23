@@ -25,6 +25,7 @@ export class FederatedLayerService {
   private cache: Map<string, { layer: __esri.FeatureLayer; timestamp: number }> = new Map();
   private readonly DEFAULT_CACHE_TIMEOUT = 300000; // 5 minutes
   private singleServiceAdapter?: DoorsDocumentarySingleServiceAdapter;
+  private static globalObjectIdCounter = 1; // Class-level counter to ensure uniqueness across all layers
 
   /**
    * Initialize with single service adapter for Doors Documentary
@@ -159,16 +160,15 @@ export class FederatedLayerService {
       
       const allFeatures: Graphic[] = [];
       let successCount = 0;
-      let globalObjectId = 1; // Global counter for unique OBJECTID across all states
       
       stateResults.forEach((result, index) => {
         if (result.status === 'fulfilled') {
-          // Update OBJECTID to be globally unique
+          // Update OBJECTID to be globally unique across all layers and states
           const featuresWithGlobalId = result.value.map(feature => {
             const graphic = feature.clone();
             graphic.attributes = {
               ...graphic.attributes,
-              OBJECTID: globalObjectId++
+              OBJECTID: FederatedLayerService.globalObjectIdCounter++
             };
             return graphic;
           });
@@ -189,18 +189,17 @@ export class FederatedLayerService {
     } else {
       // Sequential fetch (fallback for debugging)
       const allFeatures: Graphic[] = [];
-      let globalObjectId = 1; // Global counter for unique OBJECTID across all states
       
       for (const service of services) {
         try {
           const features = await this.fetchStateData(service);
           
-          // Update OBJECTID to be globally unique
+          // Update OBJECTID to be globally unique across all layers and states
           const featuresWithGlobalId = features.map(feature => {
             const graphic = feature.clone();
             graphic.attributes = {
               ...graphic.attributes,
-              OBJECTID: globalObjectId++
+              OBJECTID: FederatedLayerService.globalObjectIdCounter++
             };
             return graphic;
           });
@@ -276,21 +275,80 @@ export class FederatedLayerService {
       throw new Error('No features to create layer from');
     }
     
-    // Get fields from the first feature
-    const sampleFeature = features[0];
-    const fields = this.extractFieldsFromFeature(sampleFeature);
+    // Get fields from the source layer instead of inferring them
+    const sourceService = config.services[0]; // Use first service as template
+    let sourceFields: any[] = [];
+    
+    try {
+      // Get field definitions directly from the source service
+      const sourceLayer = new FeatureLayer({
+        url: sourceService.layerId !== undefined 
+          ? `${sourceService.url}/${sourceService.layerId}`
+          : sourceService.url
+      });
+      
+      await sourceLayer.load();
+      sourceFields = sourceLayer.fields.map((field: any) => ({
+        name: field.name,
+        type: field.type,
+        alias: field.alias,
+        length: field.length,
+        nullable: field.nullable !== false // Default to nullable unless explicitly false
+      }));
+      
+      console.log(`[FederatedLayer] Loaded ${sourceFields.length} field definitions from source service`);
+      
+    } catch (error) {
+      console.warn('[FederatedLayer] Failed to load source fields, falling back to feature extraction:', error);
+      // Fallback to old method
+      const sampleFeature = features[0];
+      sourceFields = this.extractFieldsFromFeature(sampleFeature);
+    }
     
     // Remove OBJECTID if it exists (we'll add it properly as oid type)
-    const filteredFields = fields.filter(f => f.name !== "OBJECTID");
+    const filteredFields = sourceFields.filter(f => f.name !== "OBJECTID");
     
     // Add federated fields with OBJECTID as oid type
     filteredFields.push(
-      { name: "OBJECTID", type: "oid", alias: "Object ID" },
-      { name: "HEXAGON_ID", type: "string", alias: "Hexagon Cell ID" },
-      { name: "SOURCE_STATE", type: "string", alias: "Source State" },
-      { name: "SOURCE_SERVICE", type: "string", alias: "Source Service" }
+      { name: "OBJECTID", type: "oid", alias: "Object ID", nullable: false },
+      { name: "HEXAGON_ID", type: "string", alias: "Hexagon Cell ID", nullable: true },
+      { name: "SOURCE_STATE", type: "string", alias: "Source State", nullable: true },
+      { name: "SOURCE_SERVICE", type: "string", alias: "Source Service", nullable: true }
     );
     
+    // Debug: Validate features before creating layer
+    console.log(`[FederatedLayer] Validating ${features.length} features before layer creation...`);
+    console.log(`[FederatedLayer] Sample feature attributes:`, Object.keys(features[0].attributes));
+    console.log(`[FederatedLayer] Sample OBJECTID values:`, features.slice(0, 5).map(f => f.attributes.OBJECTID));
+    console.log(`[FederatedLayer] Field definitions:`, filteredFields.map(f => `${f.name}:${f.type}`));
+    
+    // Check for any null or undefined OBJECTIDs
+    const invalidObjIds = features.filter(f => f.attributes.OBJECTID == null || f.attributes.OBJECTID === undefined);
+    if (invalidObjIds.length > 0) {
+      console.error(`[FederatedLayer] Found ${invalidObjIds.length} features with invalid OBJECTID values`);
+    }
+    
+    // Check for duplicate OBJECTIDs
+    const objectIds = features.map(f => f.attributes.OBJECTID);
+    const uniqueObjectIds = new Set(objectIds);
+    if (objectIds.length !== uniqueObjectIds.size) {
+      console.error(`[FederatedLayer] DUPLICATE OBJECTIDs detected in ${config.layerName}!`);
+      console.error(`[FederatedLayer] Total: ${objectIds.length}, Unique: ${uniqueObjectIds.size}`);
+    }
+    
+    // Validate geometry exists and type
+    const invalidGeometry = features.filter(f => !f.geometry || f.geometry === null);
+    if (invalidGeometry.length > 0) {
+      console.error(`[FederatedLayer] Found ${invalidGeometry.length} features with invalid geometry`);
+    }
+    
+    // Check geometry types
+    const geometryTypes = [...new Set(features.map(f => f.geometry?.type).filter(Boolean))];
+    console.log(`[FederatedLayer] Geometry types found:`, geometryTypes);
+    if (geometryTypes.length > 1) {
+      console.warn(`[FederatedLayer] Mixed geometry types detected:`, geometryTypes);
+    }
+
     // Create the federated layer
     const federatedLayer = new FeatureLayer({
       title: `${config.layerName} (Federated: ${config.services.map(s => s.identifier).join(', ')})`,
@@ -306,6 +364,12 @@ export class FederatedLayerService {
       maxScale: 0,
       labelsVisible: false,
       legendEnabled: true
+    });
+    
+    // Add load error handling to capture validation details
+    federatedLayer.load().catch((error) => {
+      console.error(`[FederatedLayer] Layer load error:`, error);
+      console.error(`[FederatedLayer] Error details:`, error.details || error.message);
     });
     
     return federatedLayer;
@@ -433,5 +497,20 @@ export class FederatedLayerService {
       size: this.cache.size,
       entries: Array.from(this.cache.keys())
     };
+  }
+
+  /**
+   * Reset the global OBJECTID counter - useful for testing or reinitialization
+   */
+  static resetGlobalObjectIdCounter(): void {
+    FederatedLayerService.globalObjectIdCounter = 1;
+    console.log('[FederatedLayer] Global OBJECTID counter reset to 1');
+  }
+
+  /**
+   * Get current global OBJECTID counter value
+   */
+  static getGlobalObjectIdCounter(): number {
+    return FederatedLayerService.globalObjectIdCounter;
   }
 }
