@@ -577,12 +577,20 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       
       let loadedCount = 0;
       
-      // Create federated layers (combining IL/IN/WI data)
-      for (const federatedConfig of FEDERATED_LAYERS_CONFIG) {
-        console.log(`[LayerController] 🔄 Creating federated layer: ${federatedConfig.layerName}`);
+      // Create federated layers in small batches to prevent overwhelming services
+      const BATCH_SIZE = 3; // Only create 3 layers at a time
+      console.log(`[LayerController] Creating ${FEDERATED_LAYERS_CONFIG.length} federated layers in batches of ${BATCH_SIZE}...`);
+      
+      for (let i = 0; i < FEDERATED_LAYERS_CONFIG.length; i += BATCH_SIZE) {
+        const batch = FEDERATED_LAYERS_CONFIG.slice(i, i + BATCH_SIZE);
+        console.log(`[LayerController] 📦 Processing batch ${Math.floor(i/BATCH_SIZE) + 1}/${Math.ceil(FEDERATED_LAYERS_CONFIG.length/BATCH_SIZE)} (${batch.length} layers)`);
         
-        try {
-          const federatedLayer = await federatedService.createFederatedLayer(federatedConfig);
+        // Process batch sequentially
+        for (const federatedConfig of batch) {
+          console.log(`[LayerController] 🔄 Creating federated layer: ${federatedConfig.layerName}`);
+          
+          try {
+            const federatedLayer = await federatedService.createFederatedLayer(federatedConfig);
           
           // Check if layer already exists in map
           const existingLayer = view.map.layers.find((l: any) => l.title === federatedLayer.title);
@@ -662,6 +670,13 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
           console.error(`[LayerController] ❌ Failed to create federated layer: ${federatedConfig.layerName}`, error);
         }
       }
+      
+      // Small delay between batches to prevent overwhelming services
+      if (i + BATCH_SIZE < FEDERATED_LAYERS_CONFIG.length) {
+        console.log(`[LayerController] ⏳ Waiting 1 second before next batch...`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
       
       // Create point location layers with enhanced symbols (theaters and radio stations)
       for (const pointLayerConfig of POINT_LOCATION_LAYERS) {
