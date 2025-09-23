@@ -237,7 +237,7 @@ const DraggableLayer: React.FC<DraggableLayerProps> = ({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div className="flex-1 cursor-default select-none min-w-0">
-                    <span className="text-sm font-medium block leading-tight line-clamp-2">
+                    <span className="text-xs font-medium block leading-tight line-clamp-2">
                       {title}
                     </span>
                   </div>
@@ -344,7 +344,7 @@ const DraggableGroup: React.FC<DraggableGroupProps> = ({
           <Tooltip>
             <TooltipTrigger asChild>
               <h3 
-                className="flex-1 text-sm font-medium cursor-pointer flex items-center gap-2 select-none" 
+                className="flex-1 text-xs font-medium cursor-pointer flex items-center gap-2 select-none" 
                 onClick={onToggleCollapse}
               >
                 {isCollapsed ? 
@@ -551,7 +551,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       hasInitialized: hasInitialized.current
     });
     
-    if (initializationInProgress.current || !view || !config || isInitialized) {
+    if (initializationInProgress.current || !view || !config || isInitialized || hasInitialized.current === 'completed') {
       console.log('[LayerController] Skipping initialization - already in progress or initialized');
       return;
     }
@@ -749,6 +749,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
       // Call onInitializationComplete before setting isInitialized
       onInitializationComplete?.();
       // Set initialized state last
+      hasInitialized.current = 'completed'; // Mark as completed to prevent re-initialization
       setIsInitialized(true);
     } catch (error) {
       setLoadingState({
@@ -1146,7 +1147,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
             <div className="text-center py-8 text-gray-500">
               <p>No layers available</p>
               {(config.groups || []).length === 0 && (
-                <p className="text-sm mt-2">No layer groups configured</p>
+                <p className="text-xs mt-2">No layer groups configured</p>
               )}
             </div>
           )}
