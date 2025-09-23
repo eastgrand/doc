@@ -15,11 +15,14 @@ import Polygon from '@arcgis/core/geometry/Polygon';
 import Graphic from '@arcgis/core/Graphic';
 
 // SVG icons for theaters and radio stations
+// Theater icon - simple building/venue shape
 const THEATER_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#8B4513">
-  <path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/>
+  <path d="M4 21V9l8-6 8 6v12h-6v-7h-4v7H4z"/>
+  <circle cx="12" cy="10" r="2" fill="#FFF"/>
 </svg>`;
 
-const RADIO_TOWER_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#FF6B6B">
+// Radio tower icon with blue color
+const RADIO_TOWER_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#2563EB">
   <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zm2 13h-4v-1h4v1zm0-3h-4v-1c0-.55-.45-1-1-1s-1 .45-1 1v1c-1.39-.64-2.35-1.89-2.5-3.36l.9.9c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L6.41 6.73c-.39-.39-1.02-.39-1.41 0s-.39 1.02 0 1.41l.9.9C6.05 9.36 6 9.67 6 10h12c0-.33-.05-.64-.09-.96l.9-.9c.39-.39.39-1.02 0-1.41s-1.02-.39-1.41 0l-1.4 1.4c-.15-1.47-1.11-2.72-2.5-3.36V4c0-.55-.45-1-1-1s-1 .45-1 1v.77C10.11 5.41 9.15 6.66 9 8.13l-1.4-1.4c-.39-.39-1.02-.39-1.41 0z"/>
   <circle cx="12" cy="9" r="2" fill="#FFF"/>
 </svg>`;
@@ -146,9 +149,9 @@ export async function createRadioStationLayer(
           const coverageGraphic = new Graphic({
             geometry: buffer,
             symbol: new SimpleFillSymbol({
-              color: [255, 107, 107, 0.4], // Red with 0.4 opacity matching radio tower color
+              color: [37, 99, 235, 0.6], // Blue with 0.6 opacity for better visibility
               outline: {
-                color: [255, 107, 107, 0.8],
+                color: [37, 99, 235, 0.9],
                 width: 1.5,
                 style: 'dash'
               }
@@ -181,9 +184,9 @@ export async function createRadioStationLayer(
         spatialReference: view.spatialReference,
         renderer: new SimpleRenderer({
           symbol: new SimpleFillSymbol({
-            color: [255, 107, 107, 0.4], // Red with 0.4 opacity
+            color: [37, 99, 235, 0.6], // Blue with 0.6 opacity for better visibility
             outline: {
-              color: [255, 107, 107, 0.8],
+              color: [37, 99, 235, 0.9],
               width: 1.5,
               style: 'dash'
             }
