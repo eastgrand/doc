@@ -30,6 +30,43 @@ interface PopupField {
   label: string;
 }
 
+/**
+ * Apply deferred quartile renderer to a layer when it becomes visible
+ */
+const applyDeferredRenderer = async (layer: FeatureLayer): Promise<void> => {
+  const deferredConfig = (layer as any)._deferredRendererConfig;
+  if (!deferredConfig) {
+    return; // No deferred renderer to apply
+  }
+
+  console.log(`[LC applyDeferredRenderer] ✨ Applying deferred quartile renderer to layer: ${layer.id}`);
+  
+  try {
+    const { createQuartileRenderer } = await import('@/utils/createQuartileRenderer');
+    const rendererResult = await createQuartileRenderer({
+      layer: layer,
+      field: deferredConfig.field,
+      isCurrency: deferredConfig.isCurrency,
+      isCompositeIndex: deferredConfig.isCompositeIndex,
+      opacity: deferredConfig.opacity,
+      outlineWidth: deferredConfig.outlineWidth,
+      outlineColor: deferredConfig.outlineColor
+    });
+    
+    if (rendererResult?.renderer) {
+      layer.renderer = rendererResult.renderer;
+      console.log(`✅ Successfully applied deferred quartile renderer to layer: ${layer.id}`);
+      
+      // Clear the deferred config since it's been applied
+      delete (layer as any)._deferredRendererConfig;
+    } else {
+      console.warn(`⚠️ No renderer returned for deferred layer: ${layer.id}`);
+    }
+  } catch (error) {
+    console.error(`❌ Error applying deferred renderer for layer ${layer.id}:`, error);
+  }
+};
+
 const createLayer = async (
   layerConfig: LayerConfig,
   config: ProjectLayerConfig,
@@ -137,121 +174,22 @@ const createLayer = async (
       return [null, [`Renderer field '${layerConfig.rendererField}' not found`]];
     }
 
-    // **NEW: Apply quartile renderer for layers with rendererField**
+    // **DEFERRED: Skip quartile renderer creation during initial load for performance**
+    // Renderers will be applied when layers become visible
     if (layerConfig.rendererField) {
-      console.log(`[LC createLayer] ✨ Applying quartile renderer to layer: ${layerConfig.id}, field: ${layerConfig.rendererField}`);
-      console.log(`[LC createLayer] 🔍 Layer config details:`, {
-        id: layerConfig.id,
-        name: layerConfig.name,
-        rendererField: layerConfig.rendererField,
-        type: layerConfig.type,
-        group: layerConfig.group
-      });
+      console.log(`[LC createLayer] ⏳ Deferring quartile renderer for layer: ${layerConfig.id}, field: ${layerConfig.rendererField} (will apply when visible)`);
       
-      try {
-        const { createQuartileRenderer } = await import('@/utils/createQuartileRenderer');
-        const rendererResult = await createQuartileRenderer({
-          layer: layer,
-          field: layerConfig.rendererField,
-          isCurrency: layerConfig.type === 'amount',
-          isCompositeIndex: layerConfig.type === 'index',
-          opacity: STANDARD_OPACITY,
-          outlineWidth: 0.5,
-          outlineColor: [128, 128, 128]
-        });
-        
-        if (rendererResult?.renderer) {
-          layer.renderer = rendererResult.renderer;
-          console.log(`✅ Successfully applied quartile renderer to layer: ${layerConfig.id}`);
-          console.log(`🎨 Renderer details:`, {
-            type: rendererResult.renderer.type,
-            field: rendererResult.renderer.field,
-            classBreakInfos: rendererResult.renderer.classBreakInfos?.length || 0,
-            // More detailed logging
-            hasDefaultSymbol: !!rendererResult.renderer.defaultSymbol,
-            classBreakDetails: rendererResult.renderer.classBreakInfos?.map(cb => ({
-              minValue: cb.minValue,
-              maxValue: cb.maxValue,
-              label: cb.label,
-              hasSymbol: !!cb.symbol,
-              // Log symbol details for debugging
-              symbolType: cb.symbol?.type,
-              symbolColor: cb.symbol?.color,
-              symbolOutline: cb.symbol && 'outline' in cb.symbol ? cb.symbol.outline : undefined
-            })) || []
-          });
-          
-          // Log the full class breaks for debugging (specifically for problematic layers)
-          if (layerConfig.name?.includes('Google Pay')) {
-            console.log(`🔍 [GOOGLE PAY DEBUG] Full class break details:`, 
-              rendererResult.renderer.classBreakInfos?.map((cb, index) => ({
-                quartile: index + 1,
-                minValue: cb.minValue,
-                maxValue: cb.maxValue,
-                label: cb.label,
-                color: cb.symbol?.color,
-                outline: cb.symbol && 'outline' in cb.symbol ? cb.symbol.outline : undefined
-              }))
-            );
-          }
-          
-          // Also log that the renderer has been set on the layer
-          console.log(`🗺️ Layer renderer set:`, {
-            layerId: layerConfig.id,
-            layerName: layerConfig.name,
-            rendererType: layer.renderer?.type,
-            rendererField: (layer.renderer as any)?.field,
-            // Special check for Google Pay layer
-            isGooglePayLayer: layerConfig.name?.includes('Google Pay'),
-            layerVisible: layer.visible,
-            layerOpacity: layer.opacity
-          });
-          
-          // Extra debugging for Google Pay layer specifically
-          if (layerConfig.name?.includes('Google Pay')) {
-            console.log(`🔍 [GOOGLE PAY DEBUG] Detailed renderer info:`, {
-              hasRenderer: !!layer.renderer,
-              rendererConstructor: layer.renderer?.constructor.name,
-              classBreakCount: (layer.renderer as any)?.classBreakInfos?.length,
-              firstBreak: (layer.renderer as any)?.classBreakInfos?.[0],
-              defaultSymbol: (layer.renderer as any)?.defaultSymbol,
-              field: (layer.renderer as any)?.field,
-              layerLoaded: layer.loaded,
-              layerMinScale: layer.minScale,
-              layerMaxScale: layer.maxScale
-            });
-            
-            // Check if the quartile breaks are actually meaningful
-            const classBreaks = (layer.renderer as any)?.classBreakInfos;
-            if (classBreaks && classBreaks.length > 0) {
-              console.log(`🔍 [GOOGLE PAY DEBUG] Full quartile analysis:`, {
-                quartileCount: classBreaks.length,
-                quartiles: classBreaks.map((cb: any, i: number) => ({
-                  quartile: i + 1,
-                  range: `${cb.minValue} - ${cb.maxValue}`,
-                  width: cb.maxValue - cb.minValue,
-                  symbolColor: cb.symbol?.color,
-                  label: cb.label
-                })),
-                minRange: Math.min(...classBreaks.map((cb: any) => cb.maxValue - cb.minValue)),
-                maxRange: Math.max(...classBreaks.map((cb: any) => cb.maxValue - cb.minValue))
-              });
-              
-              // Check if ranges are too narrow to be meaningful
-              const minWidth = Math.min(...classBreaks.map((cb: any) => cb.maxValue - cb.minValue));
-              if (minWidth < 0.01) {
-                console.warn(`🔍 [GOOGLE PAY DEBUG] WARNING: Quartile ranges are extremely narrow (min: ${minWidth}), this may cause rendering issues`);
-              }
-            }
-          }
-        } else {
-          console.warn(`⚠️ No renderer returned for layer: ${layerConfig.id}, using default styling`);
-          console.warn(`🔍 Renderer result:`, rendererResult);
-        }
-      } catch (rendererError) {
-        console.error(`❌ Error creating quartile renderer for layer ${layerConfig.id}:`, rendererError);
-        // Layer will use default renderer
-      }
+      // Store renderer configuration for later application
+      (layer as any)._deferredRendererConfig = {
+        field: layerConfig.rendererField,
+        isCurrency: layerConfig.type === 'amount',
+        isCompositeIndex: layerConfig.type === 'index',
+        opacity: STANDARD_OPACITY,
+        outlineWidth: 0.5,
+        outlineColor: [128, 128, 128]
+      };
+      
+      console.log(`⚡ Layer ${layerConfig.id} loaded without renderer - will apply on visibility change`);
     } else {
       console.log(`[LC createLayer] No rendererField specified for layer: ${layerConfig.id}, using default styling`);
       
@@ -313,5 +251,5 @@ const createLayer = async (
   }
 };
 
-export { createLayer };
+export { createLayer, applyDeferredRenderer };
 // Do not export LocalLayerState or LocalLayerStatesMap from this file 

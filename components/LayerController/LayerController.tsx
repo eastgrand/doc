@@ -560,6 +560,18 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
             if (layer) {
               // Add ALL layers to the map (aligned with GitHub unified repo)
               view.map.add(layer);
+              
+              // Set up visibility watcher for deferred renderer application
+              if ((layer as any)._deferredRendererConfig) {
+                console.log(`[LayerController] ⏰ Setting up visibility watcher for deferred renderer: ${layer.id}`);
+                layer.watch('visible', async (visible: boolean) => {
+                  if (visible && (layer as any)._deferredRendererConfig) {
+                    console.log(`[LayerController] 🎯 Layer became visible, applying deferred renderer: ${layer.id}`);
+                    const { applyDeferredRenderer } = await import('./utils');
+                    await applyDeferredRenderer(layer);
+                  }
+                });
+              }
               // Skip creating layer state for layers with skipLayerList: true
               if (layerConfig.skipLayerList) {
                 console.log(`[LayerController] Skipping layer state creation for hidden layer: ${layerConfig.name}`);
@@ -799,7 +811,27 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
               const currentStates = { ...layerStatesRef.current };
               if (layer) {
                 view.map.add(layer);
+                
+                // Set up visibility watcher for deferred renderer application
+                if ((layer as any)._deferredRendererConfig) {
+                  console.log(`[LayerController] ⏰ Setting up visibility watcher for lazy-loaded deferred renderer: ${layer.id}`);
+                  layer.watch('visible', async (visible: boolean) => {
+                    if (visible && (layer as any)._deferredRendererConfig) {
+                      console.log(`[LayerController] 🎯 Lazy-loaded layer became visible, applying deferred renderer: ${layer.id}`);
+                      const { applyDeferredRenderer } = await import('./utils');
+                      await applyDeferredRenderer(layer);
+                    }
+                  });
+                }
+                
                 layer.visible = true;
+                
+                // Apply deferred renderer immediately for lazy-loaded layers since they become visible right away
+                if ((layer as any)._deferredRendererConfig) {
+                  console.log(`[LayerController] 🎯 Lazy-loaded layer visible immediately, applying deferred renderer: ${layer.id}`);
+                  const { applyDeferredRenderer } = await import('./utils');
+                  await applyDeferredRenderer(layer);
+                }
                 const layerOpacity = layerConfig.name?.toLowerCase().includes('locations') ? layer.opacity : 0.6;
                 layer.opacity = layerOpacity;
                 currentStates[layerId].layer = layer;
