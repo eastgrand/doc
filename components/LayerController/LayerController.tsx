@@ -612,21 +612,24 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
           federatedLayer.minScale = 0; // Visible at all zoom levels
           federatedLayer.maxScale = 0; // Visible at all zoom levels
           
-          // Add deferred renderer configuration for quartile visualization
-          (federatedLayer as any)._deferredRendererConfig = {
-            type: 'quartile',
-            field: 'thematic_value',
-            colors: ['#f7fcb9', '#addd8e', '#41ab5d', '#006837'] // Green color scheme
-          };
+          // For now, apply a simple renderer immediately to make layers visible
+          // The field for quartile rendering varies by layer type
+          const SimpleRenderer = (await import('@arcgis/core/renderers/SimpleRenderer')).default;
+          const SimpleFillSymbol = (await import('@arcgis/core/symbols/SimpleFillSymbol')).default;
           
-          // Set up visibility watcher for deferred renderer application
-          federatedLayer.watch('visible', async (visible: boolean) => {
-            if (visible && (federatedLayer as any)._deferredRendererConfig) {
-              console.log(`[LayerController] 🎯 Federated layer became visible, applying deferred renderer: ${federatedLayer.id}`);
-              const { applyDeferredRenderer } = await import('./utils');
-              await applyDeferredRenderer(federatedLayer);
-            }
+          federatedLayer.renderer = new SimpleRenderer({
+            symbol: new SimpleFillSymbol({
+              color: [41, 171, 93, 0.4], // Green with 40% opacity
+              outline: {
+                color: [41, 171, 93, 0.8],
+                width: 0.5
+              }
+            })
           });
+          
+          console.log(`[LayerController] Applied simple renderer to federated layer: ${federatedLayer.title}`);
+          
+          // No deferred renderer needed - simple renderer applied immediately
           
           // Find the appropriate group for this layer
           const layerGroup = FEDERATED_LAYER_GROUPS.find(group => 
@@ -1018,16 +1021,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         if (newStates[layerId].layer) {
           newStates[layerId].layer.visible = newStates[layerId].visible;
           
-          // Apply deferred renderer immediately when toggling layer to visible
-          if (newStates[layerId].visible && newStates[layerId].layer && (newStates[layerId].layer as any)._deferredRendererConfig) {
-            console.log(`[LayerController] 🎯 Layer toggled visible, applying deferred renderer immediately: ${layerId}`);
-            const layer = newStates[layerId].layer;
-            import('./utils').then(async ({ applyDeferredRenderer }) => {
-              await applyDeferredRenderer(layer);
-            }).catch(error => {
-              console.error(`[LayerController] ❌ Error applying deferred renderer for ${layerId}:`, error);
-            });
-          }
+          // No deferred renderer needed for federated layers - they have simple renderers
           
           // Additional debugging for location layers
           if (newStates[layerId].name?.toLowerCase().includes('locations')) {
