@@ -42,10 +42,30 @@ const applyDeferredRenderer = async (layer: FeatureLayer): Promise<void> => {
   console.log(`[LC applyDeferredRenderer] ✨ Applying deferred quartile renderer to layer: ${layer.id}`);
   
   try {
+    let fieldToUse = deferredConfig.field;
+    
+    // Auto-detect percentage field if requested
+    if (fieldToUse === 'AUTO_DETECT_PERCENTAGE') {
+      const percentageField = layer.fields?.find(field => 
+        field.name.includes('_P') || 
+        field.name.toLowerCase().includes('percent') ||
+        field.name.toLowerCase().includes('pct')
+      );
+      
+      if (percentageField) {
+        fieldToUse = percentageField.name;
+        console.log(`[LC applyDeferredRenderer] Auto-detected percentage field: ${fieldToUse}`);
+      } else {
+        console.warn(`[LC applyDeferredRenderer] No percentage field found for ${layer.id}, available fields:`, 
+          layer.fields?.map(f => f.name).join(', '));
+        return;
+      }
+    }
+    
     const { createQuartileRenderer } = await import('@/utils/createQuartileRenderer');
     const rendererResult = await createQuartileRenderer({
       layer: layer,
-      field: deferredConfig.field,
+      field: fieldToUse,
       isCurrency: deferredConfig.isCurrency,
       isCompositeIndex: deferredConfig.isCompositeIndex,
       opacity: deferredConfig.opacity,

@@ -613,28 +613,17 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
           federatedLayer.maxScale = 0; // Visible at all zoom levels
           
           // Add deferred renderer configuration for quartile visualization
-          // Find the appropriate numeric field for rendering (typically percentage field)
-          const percentageField = federatedLayer.fields?.find(field => 
-            field.name.includes('_P') || 
-            field.name.toLowerCase().includes('percent') ||
-            field.name.toLowerCase().includes('pct')
-          );
+          // Configure with field detection in deferred renderer itself
+          (federatedLayer as any)._deferredRendererConfig = {
+            field: 'AUTO_DETECT_PERCENTAGE', // Special flag to auto-detect _P field
+            isCurrency: false,
+            isCompositeIndex: false,
+            opacity: 0.7,
+            outlineWidth: 0.5,
+            outlineColor: [128, 128, 128]
+          };
           
-          if (percentageField) {
-            (federatedLayer as any)._deferredRendererConfig = {
-              field: percentageField.name,
-              isCurrency: false,
-              isCompositeIndex: false,
-              opacity: 0.7,
-              outlineWidth: 0.5,
-              outlineColor: [128, 128, 128]
-            };
-            
-            console.log(`[LayerController] Configured deferred renderer for ${federatedLayer.title} using field: ${percentageField.name}`);
-          } else {
-            console.warn(`[LayerController] No percentage field found for ${federatedLayer.title}, available fields:`, 
-              federatedLayer.fields?.map(f => f.name).join(', '));
-          }
+          console.log(`[LayerController] Configured deferred renderer for ${federatedLayer.title} with auto-detect percentage field`);
           
           // Set up visibility watcher for deferred renderer application
           federatedLayer.watch('visible', async (visible: boolean) => {
