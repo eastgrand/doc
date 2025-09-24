@@ -612,24 +612,38 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
           federatedLayer.minScale = 0; // Visible at all zoom levels
           federatedLayer.maxScale = 0; // Visible at all zoom levels
           
-          // For now, apply a simple renderer immediately to make layers visible
-          // The field for quartile rendering varies by layer type
-          const SimpleRenderer = (await import('@arcgis/core/renderers/SimpleRenderer')).default;
-          const SimpleFillSymbol = (await import('@arcgis/core/symbols/SimpleFillSymbol')).default;
+          // Add deferred renderer configuration for quartile visualization
+          // Find the appropriate numeric field for rendering (typically percentage field)
+          const percentageField = federatedLayer.fields?.find(field => 
+            field.name.includes('_P') || 
+            field.name.toLowerCase().includes('percent') ||
+            field.name.toLowerCase().includes('pct')
+          );
           
-          federatedLayer.renderer = new SimpleRenderer({
-            symbol: new SimpleFillSymbol({
-              color: [41, 171, 93, 0.4], // Green with 40% opacity
-              outline: {
-                color: [41, 171, 93, 0.8],
-                width: 0.5
-              }
-            })
+          if (percentageField) {
+            (federatedLayer as any)._deferredRendererConfig = {
+              field: percentageField.name,
+              isCurrency: false,
+              isCompositeIndex: false,
+              opacity: 0.7,
+              outlineWidth: 0.5,
+              outlineColor: [128, 128, 128]
+            };
+            
+            console.log(`[LayerController] Configured deferred renderer for ${federatedLayer.title} using field: ${percentageField.name}`);
+          } else {
+            console.warn(`[LayerController] No percentage field found for ${federatedLayer.title}, available fields:`, 
+              federatedLayer.fields?.map(f => f.name).join(', '));
+          }
+          
+          // Set up visibility watcher for deferred renderer application
+          federatedLayer.watch('visible', async (visible: boolean) => {
+            if (visible && (federatedLayer as any)._deferredRendererConfig) {
+              console.log(`[LayerController] 🎯 Federated layer became visible, applying deferred renderer: ${federatedLayer.id}`);
+              const { applyDeferredRenderer } = await import('./utils');
+              await applyDeferredRenderer(federatedLayer);
+            }
           });
-          
-          console.log(`[LayerController] Applied simple renderer to federated layer: ${federatedLayer.title}`);
-          
-          // No deferred renderer needed - simple renderer applied immediately
           
           // Find the appropriate group for this layer
           const layerGroup = FEDERATED_LAYER_GROUPS.find(group => 
@@ -1021,7 +1035,16 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
         if (newStates[layerId].layer) {
           newStates[layerId].layer.visible = newStates[layerId].visible;
           
-          // No deferred renderer needed for federated layers - they have simple renderers
+          // Apply deferred renderer immediately when toggling layer to visible
+          if (newStates[layerId].visible && newStates[layerId].layer && (newStates[layerId].layer as any)._deferredRendererConfig) {
+            console.log(`[LayerController] 🎯 Layer toggled visible, applying deferred renderer immediately: ${layerId}`);
+            const layer = newStates[layerId].layer;
+            import('./utils').then(async ({ applyDeferredRenderer }) => {
+              await applyDeferredRenderer(layer);
+            }).catch(error => {
+              console.error(`[LayerController] ❌ Error applying deferred renderer for ${layerId}:`, error);
+            });
+          }
           
           // Additional debugging for location layers
           if (newStates[layerId].name?.toLowerCase().includes('locations')) {
