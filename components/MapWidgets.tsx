@@ -48,12 +48,13 @@ interface MapWidgetsProps {
   showQuickStatsPanel?: boolean; // NEW: For quickStats button active state
 }
 
-// Define Quebec City Bookmarks Data
+// Define Midwest City Bookmarks Data
 const CITY_BOOKMARKS_DATA = [
-  { name: "Montreal", extent: { xmin: -73.9, ymin: 45.4, xmax: -73.3, ymax: 45.7 } },
-  { name: "Quebec City", extent: { xmin: -71.4, ymin: 46.7, xmax: -71.0, ymax: 46.9 } },
-  { name: "Laval", extent: { xmin: -73.9, ymin: 45.5, xmax: -73.6, ymax: 45.7 } },
-  { name: "Gatineau", extent: { xmin: -76.0, ymin: 45.3, xmax: -75.5, ymax: 45.6 } }
+  { name: "Chicago", extent: { xmin: -87.9, ymin: 41.6, xmax: -87.5, ymax: 42.0 } },
+  { name: "Indianapolis", extent: { xmin: -86.3, ymin: 39.6, xmax: -85.9, ymax: 40.0 } },
+  { name: "Madison", extent: { xmin: -89.6, ymin: 43.0, xmax: -89.2, ymax: 43.3 } },
+  { name: "Milwaukee", extent: { xmin: -88.1, ymin: 42.8, xmax: -87.7, ymax: 43.2 } },
+  { name: "Springfield", extent: { xmin: -89.8, ymin: 39.6, xmax: -89.4, ymax: 39.9 } }
 ];
 
 // +++ REMOVE LEGEND GENERATION LOGIC +++
@@ -335,7 +336,7 @@ const MapWidgets: React.FC<MapWidgetsProps> = memo(function MapWidgets({
             // Wait for view to be ready before setting bookmarks
             view.when(() => {
               try {
-                // Create Bookmark instances from Quebec city data
+                // Create Bookmark instances from Midwest city data
                 const cityBookmarks = new Collection(
                   CITY_BOOKMARKS_DATA.map(city => {
                     return new Bookmark({
