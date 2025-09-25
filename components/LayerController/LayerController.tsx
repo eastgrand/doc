@@ -590,31 +590,34 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
             const federatedLayer = await federatedService.createFederatedLayer(federatedConfig);
           
           // Check if layer already exists in map
-          const existingLayer = view.map.layers.find((l: any) => l.title === federatedLayer.title);
+          const existingLayer = view.map.layers.find((l: any) => l.title === federatedLayer.title) as __esri.FeatureLayer;
+          
+          // Use existing layer if found, otherwise use new one
+          const layerToUse = existingLayer || federatedLayer;
+          
           if (existingLayer) {
             console.warn(`[LayerController] ⚠️ Layer already exists in map: ${federatedLayer.title}`, {
               existingId: existingLayer.id,
               newId: federatedLayer.id,
               mapLayerCount: view.map.layers.length
             });
-            // Use the existing layer instead of creating a duplicate
+            // Destroy the duplicate since we'll use the existing one
             federatedLayer.destroy();
-            continue;
+          } else {
+            // Add new layer to map
+            console.log(`[LayerController] Adding federated layer to map: ${federatedLayer.title} with ID: ${federatedLayer.id}`);
+            view.map.add(federatedLayer);
           }
           
-          // Add to map
-          console.log(`[LayerController] Adding federated layer to map: ${federatedLayer.title} with ID: ${federatedLayer.id}`);
-          view.map.add(federatedLayer);
-          
           // Configure layer properties
-          federatedLayer.visible = false; // Start hidden
-          federatedLayer.opacity = 0.7;
-          federatedLayer.minScale = 0; // Visible at all zoom levels
-          federatedLayer.maxScale = 0; // Visible at all zoom levels
+          layerToUse.visible = false; // Start hidden
+          layerToUse.opacity = 0.7;
+          layerToUse.minScale = 0; // Visible at all zoom levels
+          layerToUse.maxScale = 0; // Visible at all zoom levels
           
           // Add deferred renderer configuration for quartile visualization
           // Configure with field detection in deferred renderer itself
-          (federatedLayer as any)._deferredRendererConfig = {
+          (layerToUse as any)._deferredRendererConfig = {
             field: 'AUTO_DETECT_PERCENTAGE', // Special flag to auto-detect _P field
             isCurrency: false,
             isCompositeIndex: false,
@@ -623,14 +626,14 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
             outlineColor: [128, 128, 128]
           };
           
-          console.log(`[LayerController] Configured deferred renderer for ${federatedLayer.title} with auto-detect percentage field`);
+          console.log(`[LayerController] Configured deferred renderer for ${layerToUse.title} with auto-detect percentage field`);
           
           // Set up visibility watcher for deferred renderer application
-          federatedLayer.watch('visible', async (visible: boolean) => {
-            if (visible && (federatedLayer as any)._deferredRendererConfig) {
-              console.log(`[LayerController] 🎯 Federated layer became visible, applying deferred renderer: ${federatedLayer.id}`);
+          layerToUse.watch('visible', async (visible: boolean) => {
+            if (visible && (layerToUse as any)._deferredRendererConfig) {
+              console.log(`[LayerController] 🎯 Federated layer became visible, applying deferred renderer: ${layerToUse.id}`);
               const { applyDeferredRenderer } = await import('./utils');
-              await applyDeferredRenderer(federatedLayer);
+              await applyDeferredRenderer(layerToUse);
             }
           });
           
@@ -648,7 +651,7 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
           newLayerStates[layerId] = {
             id: layerId,
             name: federatedConfig.layerName,
-            layer: federatedLayer,
+            layer: layerToUse,
             visible: false,
             opacity: 0.7,
             order: loadedCount,
@@ -769,7 +772,6 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
   }, [
     view, 
     config, 
-    isInitialized, 
     onLayerStatesChange, 
     onLayerInitializationProgress, 
     onInitializationComplete
@@ -778,13 +780,19 @@ const LayerController = forwardRef<LayerControllerRef, LayerControllerProps>(({
   useEffect(() => {
     if (!view || !config) return;
     
+    // Check if already initialized or in progress
+    if (initializationInProgress.current || hasInitialized.current === 'completed') {
+      console.log('[LayerController] Skipping useEffect initialization - already in progress or completed');
+      return;
+    }
+    
     // Update collapsed groups when config changes
     // Always start with all groups collapsed for doors documentary project
     const allGroupIds = FEDERATED_LAYER_GROUPS.map(group => group.id);
     setCollapsedGroups(new Set(allGroupIds));
     
     initializeLayers();
-  }, [view, config, initializeLayers]);
+  }, [view, config]); // Remove initializeLayers from dependencies to prevent infinite loop
   // Set mounted state
   useEffect(() => {
     isMountedRef.current = true;

@@ -375,8 +375,11 @@ export class FederatedLayerService {
     
     // Add load error handling to capture validation details
     federatedLayer.load().catch((error) => {
-      console.error(`[FederatedLayer] Layer load error:`, error);
-      console.error(`[FederatedLayer] Error details:`, error.details || error.message);
+      // Ignore AbortErrors as they're expected when components unmount
+      if (error.name !== 'AbortError') {
+        console.error(`[FederatedLayer] Layer load error:`, error);
+        console.error(`[FederatedLayer] Error details:`, error.details || error.message);
+      }
     });
     
     return federatedLayer;

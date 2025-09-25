@@ -376,7 +376,7 @@ export const FEDERATED_LAYER_GROUPS = [
     name: 'Documentary & Biography Interest',
     description: 'Audience interested in documentary and biography content',
     priority: 2,
-    layers: ['Movie Theater Attendance', 'Documentary Movie Viewers', 'Biography Genre Movie Attendance', 'Biography Book Purchases', 'Entertainment/Celebrity Info Seekers']
+    layers: ['Movie Theater Attendance', 'Documentary Movie Viewers', 'Biography Genre Movie Theater', 'Biography Genre Movie Attendance', 'Biography Book Purchases', 'Entertainment/Celebrity Info Seekers']
   },
   {
     id: 'demographics',

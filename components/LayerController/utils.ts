@@ -46,6 +46,7 @@ const applyDeferredRenderer = async (layer: FeatureLayer): Promise<void> => {
     
     // Auto-detect percentage field if requested
     if (fieldToUse === 'AUTO_DETECT_PERCENTAGE') {
+      // First try to find a percentage field
       const percentageField = layer.fields?.find(field => 
         field.name.includes('_P') || 
         field.name.toLowerCase().includes('percent') ||
@@ -56,9 +57,23 @@ const applyDeferredRenderer = async (layer: FeatureLayer): Promise<void> => {
         fieldToUse = percentageField.name;
         console.log(`[LC applyDeferredRenderer] Auto-detected percentage field: ${fieldToUse}`);
       } else {
-        console.warn(`[LC applyDeferredRenderer] No percentage field found for ${layer.id}, available fields:`, 
-          layer.fields?.map(f => f.name).join(', '));
-        return;
+        // For federated layers, look for the main value field
+        // Skip system fields and find the first numeric field that looks like actual data
+        const systemFields = ['OBJECTID', 'id', 'ID', 'h3_id', 'HEXAGON_ID', 'SOURCE_STATE', 'SOURCE_SERVICE', 
+                            'Shape__Area', 'Shape__Length', 'Shape_Area', 'Shape_Length'];
+        const valueField = layer.fields?.find(field => 
+          !systemFields.includes(field.name) && 
+          (field.type === 'double' || field.type === 'integer' || field.type === 'single')
+        );
+        
+        if (valueField) {
+          fieldToUse = valueField.name;
+          console.log(`[LC applyDeferredRenderer] Auto-detected value field: ${fieldToUse} for layer: ${layer.id}`);
+        } else {
+          console.warn(`[LC applyDeferredRenderer] No suitable field found for ${layer.id}, available fields:`, 
+            layer.fields?.map(f => `${f.name}(${f.type})`).join(', '));
+          return;
+        }
       }
     }
     

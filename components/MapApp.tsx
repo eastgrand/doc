@@ -44,7 +44,7 @@ const DynamicUnifiedAnalysis = dynamic(() => import('@/components/unified-analys
 
 // Define widget buttons and visible widgets
 
-const VISIBLE_WIDGETS = ['search', 'bookmarks', 'layerList', 'print', 'basemapGallery', 'quickStats'];
+const VISIBLE_WIDGETS = ['search', 'bookmarks', 'layerList', 'print', 'basemapGallery'];
 
 interface MapLegendState {
   title: string;
